@@ -8,7 +8,9 @@
           <element id="module-output" name="trunk" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="junit:junit:4.11" />
+          <element id="library" level="project" name="junit-4.11" />
+          <element id="library" level="project" name="struts-2.3.7" />
+          <element id="library" level="project" name="hibernate-4.1.9" />
         </element>
       </element>
     </root>

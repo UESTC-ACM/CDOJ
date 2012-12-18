@@ -36,7 +36,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="junit:junit:4.11" level="project" />
+    <orderEntry type="library" name="junit-4.11" level="project" />
+    <orderEntry type="library" name="struts-2.3.7" level="project" />
+    <orderEntry type="library" name="struts-2.3.7" level="project" />
+    <orderEntry type="library" name="hibernate-4.1.9" level="project" />
+    <orderEntry type="library" name="hibernate-4.1.9" level="project" />
   </component>
 </module>
 
