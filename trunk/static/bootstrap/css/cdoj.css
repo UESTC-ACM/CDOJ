@@ -18,3 +18,14 @@ body {
 	margin-top: 20px;
 	text-align: center;
 }
+
+table {
+	table-layout: fixed;
+}
+td {
+	word-break: keep-all;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow:ellipsis;
+}
+
