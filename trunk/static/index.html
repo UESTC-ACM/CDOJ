@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv=Content-Type content="text/html;charset=utf-8">
+		<!-- Bootstrap的CSS -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+		<!-- 我的自定义CSS -->
+		<link href="bootstrap/css/cdoj.css" rel="stylesheet">
+
+		<!-- 网站标题，暂时先这样 -->
+		<title>${position} - UESTC Online Judge</title>
+
+	</head>
+
+	<body>
+		<!-- 
+		Navbar 
+		@TODO:
+		决定导航上的项目有哪些
+		分隔符的颜色需要微调
+		Navbar都要用
+		-->
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<!-- 留白。。。 -->
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a><!-- 留白。。。 -->
+
+					<!-- 导航部分 -->
+					<ul class="nav">
+						<li class="active">
+						<a href="./index.html#">CDOJ</a>
+						</li>
+						<li class="divider-vertical"></li>
+
+						<li class="">
+						<a href="./problem.html">Problems</a>
+						</li>
+						<li class="divider-vertical"></li>
+
+						<li class="">
+						<a href="./contest.html">Contests</a>
+						</li>
+						<li class="divider-vertical"></li>
+
+						<li class="">
+						<a href="./statu.html">Status</a>
+						</li>
+						<li class="divider-vertical"></li>
+
+						<li class="">
+						<a href="./ranklist.html">Ranklist</a>
+						</li>
+						<li class="divider-vertical"></li>
+
+						<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Links<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<!-- 固定链接 -->
+							<li><a href="#">BBS</a></li>
+							<li><a href="#">Wiki</a></li>
+							<li><a href="http://www.mzry1992.com/blog/">mzry1992.com</a></li>
+
+							<!-- Click这里就交给何老师了 -->
+							<li class="divider"></li>
+							<li class="nav-header">Click</li>
+							<li><a href="#">F.A.Q</a></li>
+							<li><a href="#">Download</a></li>
+							<li><a href="#">Step-by-Step</a></li>
+							<li><a href="#">Team Honors</a></li>
+
+						</ul>
+						</li>
+						<li class="divider-vertical"></li>
+
+					</ul><!-- 导航部分 -->
+
+					<!-- 快速搜索框 -->
+					<form class="navbar-search pull-right" action="">
+						<input type="text" class="search-query span2" placeholder="Search">
+					</form>
+
+					<!-- 
+					用户信息菜单，现在这里只是一个登陆后的展示，没有登录的时候下拉菜单只有登录和注册的选项！
+					-->
+					<ul class="nav pull-right">
+						<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-user"></i>
+							mzry1992	
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<!-- 用户中心的入口 -->
+							<li>
+							<a href="./usercenter.html">
+								<i class="icon-home"></i>
+								User center
+							</a>
+							</li>
+
+							<!-- 未读消息 -->
+							<li>
+							<a href="./message.html">
+								<i class="icon-envelope"></i>
+								Message
+								<span class="badge badge-success">2</span>
+							</a>
+							</li>
+
+							<!-- 收藏夹 -->
+							<li>
+							<a href="./bookmark.html">
+								<i class="icon-folder-open"></i>
+								Bookmark
+							</a>
+							</li>
+
+							<!-- 登出 -->
+							<li>
+							<a href="./logout.html">
+								<i class="icon-off"></i>
+								Logout
+							</a>
+							</li>
+						</ul>
+					</ul><!-- 用户相关的菜单 -->
+
+				</div>
+			</div>
+		</div><!-- navbar -->
+
+		<!-- container -->
+		<!-- 与顶端保留60px的空白防止被navbar挡住 -->
+		<div class="container" style="margin-top:60px">
+			<!-- 这一部分保留给NOTICE信息！ -->
+			<div class="row">
+				<div class="span12">
+					<div class="alert alert-block">
+						<a class="close" data-dismiss="alert">×</a>
+						<h3 class="alert-heading">Notice</h3>
+						<p><a href="#">趣味赛第五场（正式赛）比赛推迟</a></p>
+						<p><a href="#">趣味赛正式赛时间和机房开放的通知</a></p>
+					</div>
+				</div>
+			</div><!-- NOTICE -->
+
+		</div>
+
+		<!-- Footer -->
+		
+
+		<!-- 要用到的JS，放在后面加快网页加载速度 -->
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script src="bootstrap/js/bootstrap.min.js"></script>
+
+	</body>
+</html>
