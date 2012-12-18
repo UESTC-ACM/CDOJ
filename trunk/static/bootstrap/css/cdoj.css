@@ -1,3 +1,19 @@
 body {
 	min-width: 940px;
 }
+
+#wrap {
+	margin-top: 60px;
+}
+
+#footer {
+	background-color: whiteSmoke;
+	height: 60px;
+	bottom: 0px;
+	width: 100%;
+	POSITION: absolute;
+	z-index: 1030;
+}
+.credit {
+	margin-top: 20px;
+}

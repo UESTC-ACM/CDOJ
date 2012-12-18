@@ -86,8 +86,9 @@
 						<input type="text" class="search-query span2" placeholder="Search">
 					</form>
 
+					<!-- 用户信息菜单，自行取用 -->
 					<!-- 
-					用户信息菜单，现在这里只是一个登陆后的展示，没有登录的时候下拉菜单只有登录和注册的选项！
+					用户信息菜单，登陆后
 					-->
 					<ul class="nav pull-right">
 						<li class="dropdown">
@@ -132,29 +133,66 @@
 						</ul>
 					</ul><!-- 用户相关的菜单 -->
 
+					<!-- 
+					用户信息菜单，没有登录的时候
+					-->
+					<ul class="nav pull-right">
+						<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-pencil"></i>
+							Login
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<!-- 登陆按钮 -->
+							<li>
+							<a href="./login.html">
+								<i class="icon-ok-circle"></i>
+								Login
+							</a>
+							</li>
+
+							<!-- 注册按钮 -->
+							<li>
+							<a href="./register.html">
+								<i class="icon-plus-sign"></i>
+								Register
+							</a>
+							</li>
+
+						</ul>
+					</ul><!-- 用户相关的菜单 -->
+
 				</div>
 			</div>
 		</div><!-- navbar -->
 
-		<!-- container -->
-		<!-- 与顶端保留60px的空白防止被navbar挡住 -->
-		<div class="container" style="margin-top:60px">
-			<!-- 这一部分保留给NOTICE信息！ -->
-			<div class="row">
-				<div class="span12">
-					<div class="alert alert-block">
-						<a class="close" data-dismiss="alert">×</a>
-						<h3 class="alert-heading">Notice</h3>
-						<p><a href="#">趣味赛第五场（正式赛）比赛推迟</a></p>
-						<p><a href="#">趣味赛正式赛时间和机房开放的通知</a></p>
+		<!-- 正文 -->
+		<div id="wrap">
+			<div class="container">
+				<!-- 这一部分保留给NOTICE信息！ -->
+				<div class="row">
+					<div class="span12">
+						<div class="alert alert-block">
+							<a class="close" data-dismiss="alert">×</a>
+							<h3 class="alert-heading">Notice</h3>
+							<p><a href="#">趣味赛第五场（正式赛）比赛推迟</a></p>
+							<p><a href="#">趣味赛正式赛时间和机房开放的通知</a></p>
+						</div>
 					</div>
-				</div>
-			</div><!-- NOTICE -->
+				</div><!-- NOTICE -->
 
+			</div>
 		</div>
 
 		<!-- Footer -->
-		
+		<div id="footer">
+			<div class="container">
+				<p class="muted credit">
+				UESTC Online Judge
+				</p>
+			</div>
+		</div>	
 
 		<!-- 要用到的JS，放在后面加快网页加载速度 -->
 		<script src="http://code.jquery.com/jquery-latest.js"></script>
