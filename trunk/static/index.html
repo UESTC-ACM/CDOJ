@@ -34,27 +34,28 @@
 
 					<!-- 导航部分 -->
 					<ul class="nav">
+						<!-- 当前页面class为active -->
 						<li class="active">
 						<a href="./index.html#">CDOJ</a>
 						</li>
 						<li class="divider-vertical"></li>
 
-						<li class="">
+						<li>
 						<a href="./problem.html">Problems</a>
 						</li>
 						<li class="divider-vertical"></li>
 
-						<li class="">
+						<li>
 						<a href="./contest.html">Contests</a>
 						</li>
 						<li class="divider-vertical"></li>
 
-						<li class="">
+						<li>
 						<a href="./statu.html">Status</a>
 						</li>
 						<li class="divider-vertical"></li>
 
-						<li class="">
+						<li>
 						<a href="./ranklist.html">Ranklist</a>
 						</li>
 						<li class="divider-vertical"></li>
@@ -94,7 +95,7 @@
 						<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<i class="icon-user"></i>
-							mzry1992	
+							${user.name}
 							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu">
@@ -176,6 +177,7 @@
 						<div class="alert alert-block">
 							<a class="close" data-dismiss="alert">×</a>
 							<h3 class="alert-heading">Notice</h3>
+							<p><a href="#">${notice[0].title}</a></p>
 							<p><a href="#">趣味赛第五场（正式赛）比赛推迟</a></p>
 							<p><a href="#">趣味赛正式赛时间和机房开放的通知</a></p>
 						</div>
@@ -189,7 +191,7 @@
 		<div id="footer">
 			<div class="container">
 				<p class="muted credit">
-				UESTC Online Judge
+				UESTC Online Judge <i class="icon-flag"></i> UESTC ACM-ICPC Team 
 				</p>
 			</div>
 		</div>	
