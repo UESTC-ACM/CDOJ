@@ -3,9 +3,11 @@
 	<head>
 		<link rel="icon" type="image/png" href="img/logo/favicon128.png">
 		<meta http-equiv=Content-Type content="text/html;charset=utf-8">
-		<!-- Bootstrap的CSS -->
+		<!-- 要用到的CSS -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/prettify.css" rel="stylesheet">
+
 		<!-- 我的自定义CSS -->
 		<link href="css/cdoj.css" rel="stylesheet">
 
@@ -223,42 +225,85 @@
 				</div>
 
 				<div class="row">
-					<div class="span9">
+					<div class="span12">
 						<div class="hero-unit">
 							<h2>UESTC Online Judge</h2>
-							<p>
-							这里可以用作介绍。
-							<br/>
-							小朋友们大家好，还记得我是谁吗？
-							<br/>
-							对了，我就是葛炮！
-							</p>
-							<p>
-							现在缺的东西：
-							<br />
-							网站背景可以有。
-							<br />
-							logo和favicon和banner都是随手乱做的。。求大神做个好看的。。
-							<br />
-							页面的最小宽度需要仔细考虑，现在暂时设置为940px
-							<br />
-							主页slide展示的图片为1170*450
-							<br />
-							favicon的大小是128*128的png，当然，其它尺寸也可以备几个。
-							banner的大小是234*60。
-							logo的大小是88*31
-							</p>
-							<p><a class="btn btn-primary btn-large" href="#">More »</a></p>
+							<div>
+								<ul id="tab" class="nav nav-pills">
+									<li class="active"><a href="#tab-todo-list" data-toggle="tab">TODO</a></li>
+									<li class=""><a href="#tab-test" data-toggle="tab">测试</a></li>
+									<li class=""><a href="#tab-test-prettify" data-toggle="tab">代码高亮</a></li>
+								</ul>
+								<div id="TabContent" class="tab-content">
+									<div class="tab-pane fade active in" id="tab-todo-list">
+										<p>
+										现在缺的东西：
+										<br />
+										网站背景可以有。
+										<br />
+										logo和favicon和banner都是随手乱做的。。求大神做个好看的。。
+										<br />
+										页面的最小宽度需要仔细考虑，现在暂时设置为940px
+										<br />
+										主页slide展示的图片为1170*450，或则和其宽高比例一样的图片！最小宽度不能小于1028！（这个只是暂时的规定，后面可以修改，但是一定要保证图片的宽高比例都一样，不然效果会很呵呵的）。
+										<br />
+										favicon的大小是128*128的png，当然，其它尺寸也可以备几个。
+										banner的大小是234*60。
+										logo的大小是88*31
+										</p>
+									</div>
+									<div class="tab-pane fade" id="tab-test">
+										<p>
+										这里可以用作介绍。
+										<br/>
+										小朋友们大家好，还记得我是谁吗？
+										<br/>
+										对了，我就是葛炮！
+										</p>
+										<p><a class="btn btn-primary btn-large" href="#">More »</a></p>
+									</div>
+									<div class="tab-pane fade" id="tab-test-prettify">	
+									<p>注意，后台需要对其先转义，然后注意&lt;/pre&gt;的位置</p>
+									<p>TODO:代码全选功能</p>
+									<h4>C</h4>
+										<pre class="prettyprint linenums">
+#include &lt;stdio.h&gt;
+int main()
+{
+	int a, b;
+	scanf("%d %d",&a, &b);
+	printf("%d", a+b);
+	return 0;
+}</pre>
+<h4>C++</h4>
+										<pre class="prettyprint linenums">
+#include  &lt;iostream&gt;
+using namespace std;
+int main()
+{
+	int a,b;
+	cin &gt;&gt; a &gt;&gt; b;
+	cout &lt;&lt; a+b &lt;&lt; endl;
+	return 0;
+}</pre>
+<h4>java</h4>
+										<pre class="prettyprint linenums">
+import java.io.*;
+import java.util.*;
+public class Main
+{
+	public static void main(String[] args) throws Exception
+	{
+		Scanner cin=new Scanner(System.in);
+		int a=cin.nextInt(), b=cin.nextInt();
+		System.out.println (a + b);
+	}
+}</pre>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-
-					<div class="span3">
-						<h2>OJ state</h2>
-						<p>服务器运行状态</p>
-						<p>今天又收了4斤节操哟～</p>
-						<p>服务器求更新</p>
-					</div>
-
 				</div>
 
 				<div class="row">
@@ -312,7 +357,7 @@
 						<!-- 快速跳转题目 -->
 						<form class="well form-horizontal">
 							<input type="text" class="span2" placeholder="Problem ID...">
-							<button type="submit" class="btn">GO!</button>
+							<button type="submit" class="btn btn-primary">GO!</button>
 						</form>
 
 					</div>
@@ -342,8 +387,10 @@
 		</div>	
 
 		<!-- 要用到的JS，放在后面加快网页加载速度 -->
-		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.js"></script>
+		<script src="js/prettify.js"></script>
+		<script src="js/cdoj.js"></script>
 
 		<!-- 主页专用 -->
 		<script src="js/cdoj.index.js"></script>
