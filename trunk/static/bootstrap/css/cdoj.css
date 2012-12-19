@@ -29,3 +29,6 @@ td {
 	text-overflow:ellipsis;
 }
 
+.textcenter {
+	text-align: center;
+}

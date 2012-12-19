@@ -4,7 +4,7 @@
 		<meta http-equiv=Content-Type content="text/html;charset=utf-8">
 		<!-- Bootstrap的CSS -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 		<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 		<!-- 我的自定义CSS -->
 		<link href="bootstrap/css/cdoj.css" rel="stylesheet">
@@ -171,128 +171,23 @@
 		<!-- 正文 -->
 		<div id="wrap">
 			<div class="container">
-				<div id="activityCarousel" class="carousel slide">
-					<!-- Carousel items -->
-					<div class="carousel-inner">
-						<div class="item active">
-							<img src="image/test001.png">
-							<div class="carousel-caption">
-								<h4>趣味赛</h4>
-								<p>这里可以写一些小介绍之类的东西。要注意图片大小必须严格是1170*450。做海报的时候可以顺便做了</p>
-							</div>
-						</div>
-
-						<div class="item">
-							<img src="image/test002.png">
-							<div class="carousel-caption">
-								<h4>四维较量</h4>
-								<p>想想数据库和后台怎么维护吧</p>
-							</div>
-						</div>
-
-					</div>
-					<!-- Carousel nav -->
-					<a class="carousel-control left" href="#activityCarousel" data-slide="prev">&lsaquo;</a>
-					<a class="carousel-control right" href="#activityCarousel" data-slide="next">&rsaquo;</a>
-				</div>
-
+				<!-- 这一部分保留给NOTICE信息！ -->
 				<div class="row">
-					<!-- 这一部分保留给NOTICE信息 -->
 					<div class="span12">
 						<div class="alert alert-block">
+							<a class="close" data-dismiss="alert">×</a>
 							<h3 class="alert-heading">Notice</h3>
-							<p>
-							<!-- 新消息 -->
-							<span class="label label-important">new</span>
-							<a href="#">趣味赛第五场（正式赛）比赛推迟(2012-12-15 13:06:00)</a>
-							&nbsp;&nbsp;&nbsp;&nbsp;
-
-							<!-- 旧消息 -->
-							<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
-							&nbsp;&nbsp;&nbsp;&nbsp;
-
-							<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
-							&nbsp;&nbsp;&nbsp;&nbsp;
-
-							<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
-							&nbsp;&nbsp;&nbsp;&nbsp;
-
-							</p>
-						</div>
-					</div><!-- NOTICE -->
-				</div>
-
-				<div class="row">
-					<div class="span9">
-						<div class="hero-unit">
-							<h2>UESTC Online Judge</h2>
-							<p>
-							这里可以用作介绍。
-							<br/>
-							小朋友们大家好，还记得我是谁吗？
-							<br/>
-							对了，我就是葛炮！
-							</p>
-							<p><a class="btn btn-primary btn-large" href="#">More »</a></p>
+							<p><a href="#">${notice[0].title}</a></p>
+							<p><a href="#">趣味赛第五场（正式赛）比赛推迟</a></p>
+							<p><a href="#">趣味赛正式赛时间和机房开放的通知</a></p>
 						</div>
 					</div>
-
-					<div class="span3">
-						<h2>OJ state</h2>
-						<p>服务器运行状态</p>
-						<p>今天又收了4斤节操哟～</p>
-						<p>服务器求更新</p>
-					</div>
-
-				</div>
-
-				<div class="row">
-					<div class="span9">
-						<h2>Contests
-							<p class="pull-right"><a class="btn btn-primary" href="./contest.html">More »</a></p>
-						</h2>
-
-						<table class="table table-striped table-bordered table-condensed">
-							<tbody>
-								<tr>
-									<td>2012英才院赛</td>
-									<td class="span3">2012-12-18 20:00:00</td>
-									<td class="span2"><span class="label label-info">pending</span></td>
-								</tr>
-								<tr>
-									<td>微固学院&计算机学院兴趣小组每周一练（2）</td>
-									<td class="span3">2012-12-18 20:00:00</td>
-									<td class="span2"><span class="label label-important">running</span></td>
-								</tr>
-								<tr>
-									<td>第四届ACM趣味程序设计竞赛第二场（热身赛，陈题）</td>
-									<td class="span3">2012-12-18 20:00:00</td>
-									<td class="span2"><span class="label label-success">ended</span></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<div class="span3">
-						<h2>Problems
-							<p class="pull-right"><a class="btn btn-primary" href="./problem.html">More »</a></p>
-						</h2>
-
-						<table class="table table-striped table-bordered table-condensed">
-							<tbody>
-								<tr>
-									<td>A+B Problem</td>
-									<td></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-
-				</div>
+				</div><!-- NOTICE -->
 
 			</div>
 		</div>
 
-		<!-- Footer
+		<!-- Footer -->
 		<div id="footer">
 			<div class="container">
 				<p class="muted credit">
@@ -300,14 +195,10 @@
 				</p>
 			</div>
 		</div>	
-		-->
 
 		<!-- 要用到的JS，放在后面加快网页加载速度 -->
 		<script src="http://code.jquery.com/jquery-latest.js"></script>
-		<script src="bootstrap/js/bootstrap.js"></script>
-
-		<!-- 主页专用 -->
-		<script src="bootstrap/js/cdoj.index.js"></script>
+		<script src="bootstrap/js/bootstrap.min.js"></script>
 
 	</body>
 </html>
