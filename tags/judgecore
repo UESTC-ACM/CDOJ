@@ -1,0 +1,58 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BIN_DIR	../branches/Makefile	/^BIN_DIR=$(DIR)\/bin$/;"	m
+CFLAGS	../branches/Makefile	/^CFLAGS=-Wall -W -g -O2$/;"	m
+CXX	../branches/Makefile	/^CXX=g++$/;"	m
+CXXLD	../branches/Makefile	/^CXXLD=g++$/;"	m
+DEPS	../branches/Makefile	/^DEPS=$(patsubst $(OBJ_DIR)\/%.o, $(DEPS_DIR)\/%.d, $(OBJS))$/;"	m
+DEPS_DIR	../branches/Makefile	/^DEPS_DIR=$(DIR)\/deps$/;"	m
+DIR	../branches/Makefile	/^DIR=$(shell pwd)$/;"	m
+EXTENSION	../branches/Makefile	/^EXTENSION=cc$/;"	m
+FM_LOG_DEBUG	../branches/include/logger.h	39;"	d
+FM_LOG_DEBUG	../branches/include/logger.h	46;"	d
+FM_LOG_FATAL	../branches/include/logger.h	34;"	d
+FM_LOG_FATAL	../branches/include/logger.h	41;"	d
+FM_LOG_MONITOR	../branches/include/logger.h	36;"	d
+FM_LOG_MONITOR	../branches/include/logger.h	43;"	d
+FM_LOG_NOTICE	../branches/include/logger.h	37;"	d
+FM_LOG_NOTICE	../branches/include/logger.h	44;"	d
+FM_LOG_TRACE	../branches/include/logger.h	38;"	d
+FM_LOG_TRACE	../branches/include/logger.h	45;"	d
+FM_LOG_WARNING	../branches/include/logger.h	35;"	d
+FM_LOG_WARNING	../branches/include/logger.h	42;"	d
+INCLUDE	../branches/Makefile	/^INCLUDE=\\$/;"	m
+INCLUDE_DIR	../branches/Makefile	/^INCLUDE_DIR=$(DIR)\/include$/;"	m
+LDFLAGS	../branches/Makefile	/^LDFLAGS=$/;"	m
+LIB_DIR	../branches/Makefile	/^LIB_DIR=$(DIR)\/lib$/;"	m
+LOGBUFSIZ	../branches/src/logger.cc	19;"	d	file:
+LOG_DEBUG	../branches/src/logger.cc	/^const int LOG_DEBUG		= 5;$/;"	v
+LOG_FATAL	../branches/src/logger.cc	/^const int LOG_FATAL		= 0;$/;"	v
+LOG_LEVEL_NOTE	../branches/src/logger.cc	/^static char LOG_LEVEL_NOTE[][10]	=$/;"	v	file:
+LOG_MONITOR	../branches/src/logger.cc	/^const int LOG_MONITOR	= 2;$/;"	v
+LOG_NOTICE	../branches/src/logger.cc	/^const int LOG_NOTICE	= 3;$/;"	v
+LOG_ON	../branches/include/logger.h	11;"	d
+LOG_TRACE	../branches/src/logger.cc	/^const int LOG_TRACE		= 4;$/;"	v
+LOG_WARNING	../branches/src/logger.cc	/^const int LOG_WARNING	= 1; $/;"	v
+OBJS	../branches/Makefile	/^OBJS=$(patsubst $(SRC_DIR)\/%.$(EXTENSION), $(OBJ_DIR)\/%.o,$(wildcard $(SRC_DIR)\/*.$(EXTENSION)))$/;"	m
+OBJ_DIR	../branches/Makefile	/^OBJ_DIR=$(DIR)\/obj$/;"	m
+PROGRAM	../branches/Makefile	/^PROGRAM=$(BIN_DIR)\/judgecore$/;"	m
+SRC_DIR	../branches/Makefile	/^SRC_DIR=$(DIR)\/src$/;"	m
+__LOGGER_H__	../branches/include/logger.h	6;"	d
+log_add_info	../branches/include/logger.h	/^void log_add_info(const char* info);$/;"	p	signature:(const char* info)
+log_add_info	../branches/src/logger.cc	/^void log_add_info(const char* info) {$/;"	f	signature:(const char* info)
+log_buffer	../branches/src/logger.cc	/^static char	log_buffer[LOGBUFSIZ];$/;"	v	file:
+log_close	../branches/include/logger.h	/^void log_close();$/;"	p	signature:()
+log_close	../branches/src/logger.cc	/^void log_close() {$/;"	f	signature:()
+log_extra_info	../branches/src/logger.cc	/^static char	log_extra_info[LOGBUFSIZ];$/;"	v	file:
+log_fileName	../branches/src/logger.cc	/^static char* 	log_fileName	= NULL;$/;"	v	file:
+log_fp	../branches/src/logger.cc	/^static FILE* 	log_fp			= NULL;$/;"	v	file:
+log_open	../branches/include/logger.h	/^bool log_open(const char* fileName);$/;"	p	signature:(const char* fileName)
+log_open	../branches/src/logger.cc	/^bool log_open(const char* fileName) {$/;"	f	signature:(const char* fileName)
+log_opened	../branches/src/logger.cc	/^static bool		log_opened		= false;$/;"	v	file:
+log_write	../branches/src/logger.cc	/^static void log_write(int level, const char* file, const int line, const char* fmt, ...) {$/;"	f	file:	signature:(int level, const char* file, const int line, const char* fmt, ...)
+log_write	../branches/src/logger.cc	/^static void log_write(int, const char* , const int, const char* , ...);$/;"	p	file:	signature:(int, const char* , const int, const char* , ...)
+main	../branches/src/main.cc	/^int main() {$/;"	f	signature:()
