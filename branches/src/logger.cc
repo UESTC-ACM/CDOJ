@@ -39,7 +39,7 @@ bool log_open(const char* fileName) {
 	atexit(log_close);
 	log_opened = true;
 	log_extra_info[0] = 0;
-	FM_LOG_NOTICE("log_open");
+	OJ_LOG_NOTICE("log_open");
 	return true;
 }
 
@@ -47,7 +47,7 @@ bool log_open(const char* fileName) {
 
 void log_close() {
 	if (log_opened) {
-		FM_LOG_TRACE("log_close");
+		OJ_LOG_TRACE("log_close");
 		fclose(log_fp);
 		free(log_fileName);
 		log_fp			= NULL;

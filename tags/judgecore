@@ -4,6 +4,15 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
+APPBUFSIZ	../branches/include/AppException.h	10;"	d
+AppException	../branches/include/AppException.h	/^	AppException() {$/;"	f	class:AppException	access:public	signature:()
+AppException	../branches/include/AppException.h	/^	AppException(const std::string& _message) : _message(_message) {$/;"	f	class:AppException	access:public	signature:(const std::string& _message)
+AppException	../branches/include/AppException.h	/^class AppException {$/;"	c
+AppException::AppException	../branches/include/AppException.h	/^	AppException() {$/;"	f	class:AppException	access:public	signature:()
+AppException::AppException	../branches/include/AppException.h	/^	AppException(const std::string& _message) : _message(_message) {$/;"	f	class:AppException	access:public	signature:(const std::string& _message)
+AppException::_message	../branches/include/AppException.h	/^	std::string _message;$/;"	m	class:AppException	access:private
+AppException::message	../branches/include/AppException.h	/^	const char* message() {$/;"	f	class:AppException	access:public	signature:()
+AppException::printStackTrace	../branches/include/AppException.h	/^	void printStackTrace() {$/;"	f	class:AppException	access:public	signature:()
 BIN_DIR	../branches/Makefile	/^BIN_DIR=$(DIR)\/bin$/;"	m
 CFLAGS	../branches/Makefile	/^CFLAGS=-Wall -W -g -O2$/;"	m
 CXX	../branches/Makefile	/^CXX=g++$/;"	m
@@ -12,18 +21,6 @@ DEPS	../branches/Makefile	/^DEPS=$(patsubst $(OBJ_DIR)\/%.o, $(DEPS_DIR)\/%.d, $
 DEPS_DIR	../branches/Makefile	/^DEPS_DIR=$(DIR)\/deps$/;"	m
 DIR	../branches/Makefile	/^DIR=$(shell pwd)$/;"	m
 EXTENSION	../branches/Makefile	/^EXTENSION=cc$/;"	m
-FM_LOG_DEBUG	../branches/include/logger.h	39;"	d
-FM_LOG_DEBUG	../branches/include/logger.h	46;"	d
-FM_LOG_FATAL	../branches/include/logger.h	34;"	d
-FM_LOG_FATAL	../branches/include/logger.h	41;"	d
-FM_LOG_MONITOR	../branches/include/logger.h	36;"	d
-FM_LOG_MONITOR	../branches/include/logger.h	43;"	d
-FM_LOG_NOTICE	../branches/include/logger.h	37;"	d
-FM_LOG_NOTICE	../branches/include/logger.h	44;"	d
-FM_LOG_TRACE	../branches/include/logger.h	38;"	d
-FM_LOG_TRACE	../branches/include/logger.h	45;"	d
-FM_LOG_WARNING	../branches/include/logger.h	35;"	d
-FM_LOG_WARNING	../branches/include/logger.h	42;"	d
 INCLUDE	../branches/Makefile	/^INCLUDE=\\$/;"	m
 INCLUDE_DIR	../branches/Makefile	/^INCLUDE_DIR=$(DIR)\/include$/;"	m
 LDFLAGS	../branches/Makefile	/^LDFLAGS=$/;"	m
@@ -39,9 +36,23 @@ LOG_TRACE	../branches/src/logger.cc	/^const int LOG_TRACE		= 4;$/;"	v
 LOG_WARNING	../branches/src/logger.cc	/^const int LOG_WARNING	= 1; $/;"	v
 OBJS	../branches/Makefile	/^OBJS=$(patsubst $(SRC_DIR)\/%.$(EXTENSION), $(OBJ_DIR)\/%.o,$(wildcard $(SRC_DIR)\/*.$(EXTENSION)))$/;"	m
 OBJ_DIR	../branches/Makefile	/^OBJ_DIR=$(DIR)\/obj$/;"	m
+OJ_LOG_DEBUG	../branches/include/logger.h	39;"	d
+OJ_LOG_DEBUG	../branches/include/logger.h	46;"	d
+OJ_LOG_FATAL	../branches/include/logger.h	34;"	d
+OJ_LOG_FATAL	../branches/include/logger.h	41;"	d
+OJ_LOG_MONITOR	../branches/include/logger.h	36;"	d
+OJ_LOG_MONITOR	../branches/include/logger.h	43;"	d
+OJ_LOG_NOTICE	../branches/include/logger.h	37;"	d
+OJ_LOG_NOTICE	../branches/include/logger.h	44;"	d
+OJ_LOG_TRACE	../branches/include/logger.h	38;"	d
+OJ_LOG_TRACE	../branches/include/logger.h	45;"	d
+OJ_LOG_WARNING	../branches/include/logger.h	35;"	d
+OJ_LOG_WARNING	../branches/include/logger.h	42;"	d
 PROGRAM	../branches/Makefile	/^PROGRAM=$(BIN_DIR)\/judgecore$/;"	m
 SRC_DIR	../branches/Makefile	/^SRC_DIR=$(DIR)\/src$/;"	m
+__APPEXCEPTION_H__	../branches/include/AppException.h	2;"	d
 __LOGGER_H__	../branches/include/logger.h	6;"	d
+_message	../branches/include/AppException.h	/^	std::string _message;$/;"	m	class:AppException	access:private
 log_add_info	../branches/include/logger.h	/^void log_add_info(const char* info);$/;"	p	signature:(const char* info)
 log_add_info	../branches/src/logger.cc	/^void log_add_info(const char* info) {$/;"	f	signature:(const char* info)
 log_buffer	../branches/src/logger.cc	/^static char	log_buffer[LOGBUFSIZ];$/;"	v	file:
@@ -56,3 +67,5 @@ log_opened	../branches/src/logger.cc	/^static bool		log_opened		= false;$/;"	v	f
 log_write	../branches/src/logger.cc	/^static void log_write(int level, const char* file, const int line, const char* fmt, ...) {$/;"	f	file:	signature:(int level, const char* file, const int line, const char* fmt, ...)
 log_write	../branches/src/logger.cc	/^static void log_write(int, const char* , const int, const char* , ...);$/;"	p	file:	signature:(int, const char* , const int, const char* , ...)
 main	../branches/src/main.cc	/^int main() {$/;"	f	signature:()
+message	../branches/include/AppException.h	/^	const char* message() {$/;"	f	class:AppException	access:public	signature:()
+printStackTrace	../branches/include/AppException.h	/^	void printStackTrace() {$/;"	f	class:AppException	access:public	signature:()
