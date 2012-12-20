@@ -1,7 +1,5 @@
 #include "logger.h"
 
-static void log_write(int, const char* , const int, const char* , ...);
-
 const int LOG_FATAL		= 0;
 const int LOG_WARNING	= 1; 
 const int LOG_MONITOR	= 2;
@@ -45,7 +43,7 @@ bool log_open(const char* fileName) {
 
 #endif // LOG_ON
 
-void log_close() {
+void log_close(void) {
 	if (log_opened) {
 		OJ_LOG_TRACE("log_close");
 		fclose(log_fp);
@@ -56,7 +54,7 @@ void log_close() {
 	}
 }
 
-static void log_write(int level, const char* file, const int line, const char* fmt, ...) {
+void log_write(int level, const char* file, const int line, const char* fmt, ...) {
 	if (log_opened == false) {
 		fprintf(stderr, "log_open not called yet\n");
 		exit(1);

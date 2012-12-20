@@ -7,10 +7,11 @@
 
 class AppException {
 public:
-	AppException();
+	AppException(void);
 	AppException(const std::string& _message);
-	const char* message() const;
-	void printStackTrace() const;
+	~AppException(void);
+	const char* message(void) const;
+	void printStackTrace(void) const;
 
 private:
 	std::string _message;

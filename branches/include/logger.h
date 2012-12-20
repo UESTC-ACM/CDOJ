@@ -20,8 +20,9 @@
 #include <sys/file.h>
 
 bool log_open(const char* fileName);
-void log_close();
+void log_close(void);
 void log_add_info(const char* info);
+void log_write(int, const char* , const int, const char* , ...);
 
 extern const int LOG_FATAL;
 extern const int LOG_WARNING;

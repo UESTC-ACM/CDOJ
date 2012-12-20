@@ -5,7 +5,7 @@
 #include <exception>
 #include "AppException.h"
 
-AppException::AppException() {
+AppException::AppException(void) {
 	_message = "";
 }
 
@@ -13,11 +13,14 @@ AppException::AppException(const std::string& _message)
 	: _message(_message) {
 }
 
-const char* AppException::message() const {
+AppException::~AppException(void) {
+}
+
+const char* AppException::message(void) const {
 	return _message.c_str();
 }
 
-void AppException::printStackTrace() const {
+void AppException::printStackTrace(void) const {
 	static void* array[APPBUFSIZ];
 	int nSize = backtrace(array, APPBUFSIZ);
 	char** symbols = backtrace_symbols(array, nSize);

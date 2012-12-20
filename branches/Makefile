@@ -5,6 +5,7 @@
 
 DIR=$(shell pwd)
 BIN_DIR=$(DIR)/bin
+LOG_DIR=$(DIR)/log
 LIB_DIR=$(DIR)/lib
 SRC_DIR=$(DIR)/src
 INCLUDE_DIR=$(DIR)/include
@@ -44,5 +45,5 @@ rebuild: clean all
 
 clean:
 	@echo clean project...
-	@rm -rf $(OBJS) $(LIB_DIR)/lib* $(BIN_DIR)/*
+	@rm -rf $(OBJS) $(LIB_DIR)/lib* $(PROGRAM) $(LOG_DIR)/*.log
 
