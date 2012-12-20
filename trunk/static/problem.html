@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="icon" type="image/png" href="img/logo/favicon128.png">
+		<meta http-equiv=Content-Type content="text/html;charset=utf-8">
+		<!-- 要用到的CSS -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/prettify.css" rel="stylesheet">
+
+		<!-- 我的自定义CSS -->
+		<link href="css/cdoj.css" rel="stylesheet">
+
+		<!-- 网站标题，暂时先这样 -->
+		<title>${position} - UESTC Online Judge</title>
+
+	</head>
+
+	<body>
+		<!-- 
+		Navbar 
+		@TODO:
+		决定导航上的项目有哪些
+		分隔符的颜色需要微调
+		Navbar都要用
+		-->
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<!-- 留白。。。 -->
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a><!-- 留白。。。 -->
+
+					<!-- 导航部分 -->
+					<ul class="nav">
+						<!-- 当前页面class为active -->
+						<li>
+						<a href="./index.html#">CDOJ</a>
+						</li>
+						<li class="divider-vertical"></li>
+
+						<li class="active">
+						<a href="./problem.html">Problems</a>
+						</li>
+						<li class="divider-vertical"></li>
+
+						<li>
+						<a href="./contest.html">Contests</a>
+						</li>
+						<li class="divider-vertical"></li>
+
+						<li>
+						<a href="./statu.html">Status</a>
+						</li>
+						<li class="divider-vertical"></li>
+
+						<li>
+						<a href="./ranklist.html">Ranklist</a>
+						</li>
+						<li class="divider-vertical"></li>
+
+						<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Links<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<!-- 固定链接 -->
+							<li><a href="#">BBS</a></li>
+							<li><a href="#">Wiki</a></li>
+							<li><a href="http://www.mzry1992.com/blog/">mzry1992.com</a></li>
+
+							<!-- Click这里就交给何老师了 -->
+							<li class="divider"></li>
+							<li class="nav-header">Click</li>
+							<li><a href="#">F.A.Q</a></li>
+							<li><a href="#">Download</a></li>
+							<li><a href="#">Step-by-Step</a></li>
+							<li><a href="#">Team Honors</a></li>
+
+						</ul>
+						</li>
+						<li class="divider-vertical"></li>
+
+					</ul><!-- 导航部分 -->
+
+					<!-- 快速搜索框 -->
+					<form class="navbar-search pull-right" action="">
+						<input type="text" class="search-query span2" placeholder="Search">
+					</form>
+
+					<!-- 用户信息菜单，自行取用 -->
+					<!-- 
+					用户信息菜单，登陆后
+					-->
+					<ul class="nav pull-right">
+						<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-user"></i>
+							${user.name}
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<!-- 用户中心的入口 -->
+							<li>
+							<a href="./usercenter.html">
+								<i class="icon-home"></i>
+								User center
+							</a>
+							</li>
+
+							<!-- 未读消息 -->
+							<li>
+							<a href="./message.html">
+								<i class="icon-envelope"></i>
+								Message
+								<span class="badge badge-success">2</span>
+							</a>
+							</li>
+
+							<!-- 收藏夹 -->
+							<li>
+							<a href="./bookmark.html">
+								<i class="icon-folder-open"></i>
+								Bookmark
+							</a>
+							</li>
+
+							<!-- 登出 -->
+							<li>
+							<a href="./logout.html">
+								<i class="icon-off"></i>
+								Logout
+							</a>
+							</li>
+						</ul>
+					</ul><!-- 用户相关的菜单 -->
+
+					<!-- 
+					用户信息菜单，没有登录的时候
+					-->
+					<ul class="nav pull-right">
+						<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-pencil"></i>
+							Login
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<!-- 登陆按钮 -->
+							<li>
+							<a href="./login.html">
+								<i class="icon-ok-circle"></i>
+								Login
+							</a>
+							</li>
+
+							<!-- 注册按钮 -->
+							<li>
+							<a href="./register.html">
+								<i class="icon-plus-sign"></i>
+								Register
+							</a>
+							</li>
+
+						</ul>
+					</ul><!-- 用户相关的菜单 -->
+
+				</div>
+			</div>
+		</div><!-- navbar -->
+
+		<!-- 正文 -->
+		<div id="wrap">
+			<div class="container">
+				<!-- 这一部分保留给NOTICE信息 -->
+				<div class="row">
+					<div class="span12">
+						<div class="alert alert-block">
+							<div class="row">
+								<div class="span1">
+									<h4 class="alert-heading">Notice</h4>
+								</div>
+								<div class="span10">
+									<marquee class="notice" onmouseover="javascript:this.stop();" onmouseout="javascript:this.start()">
+									<!-- 新消息 -->
+									<span class="label label-important">new</span>
+									<a href="#">趣味赛第五场（正式赛）比赛推迟(2012-12-15 13:06:00)</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;
+
+									<!-- 旧消息 -->
+									<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;
+
+									<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;
+
+									<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;
+
+									</marquee>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div><!-- NOTICE -->
+
+<!-- 题目分页和跳转 -->
+				<div class="row">
+					<div class="span9">
+					<div class="pagination pagination-centered">
+  <ul>
+    <li><a href="#">前一页</a></li>
+    <li class="active">
+      <a href="#">1</a>
+    </li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">后一页</a></li>
+  </ul>
+</div>
+					</div>
+											<!-- 快速跳转题目 -->
+						<form class="well form-horizontal pull-right">
+							<input type="text" class="span2" placeholder="Problem ID...">
+							<button type="submit" class="btn btn-primary">GO!</button>
+						</form>
+				</div>
+				
+				<!-- 题目列表 -->
+				<div class="row">
+					<div class="span12">
+						<table class="table table-striped table-bordered table-condensed table-problemlist">
+							<!-- 标题在cdoj.css中强制定义了居中 -->
+							<thead>
+								<tr>
+									<th class="info-solved"><i class="icon-screenshot"></i></th>
+									<th class="info-problem-id">#</th>
+									<th>Title</th>
+									<th class="info-problem-difficulty">节操</th>
+									<th class="info-problem-ac">Accept</th>
+									<th class="info-problem-ratio">Ratio</th>
+								</tr>
+							</thead>
+							<!-- 参照第一行的CSS！有些列需要强制靠右 -->
+							<tbody>
+								<tr>
+									<td><i class="icon-ok"></i></td>
+									<td class="info-right">1</td>
+									<td>
+										<!-- 题目名称与来源 -->
+										<span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="./problem_single.html">A+B Problem</a></span>
+										
+										<!-- 标签们！ -->
+										<span class="label label-info pull-right tags">data structs</span>
+										<span class="label label-info pull-right tags">dp</span>
+										<span class="label label-info pull-right tags">binary search</span>
+									</td>
+									<!-- 难度 -->
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<!-- 通过数 -->
+									<td class="info-right">100000</td>
+									<!-- AC率 -->
+									<td class="info-right">10.09%</td>
+								</tr>
+								
+								<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+								
+																<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+																<tr>
+									<td><i class="icon-ok"></i></td>
+									<td class="info-right">1</td>
+									<td>
+										<!-- 题目名称与来源 -->
+										<span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="./problem_single.html">A+B Problem</a></span>
+										
+										<!-- 标签们！ -->
+										<span class="label label-info pull-right tags">data structs</span>
+										<span class="label label-info pull-right tags">dp</span>
+										<span class="label label-info pull-right tags">binary search</span>
+									</td>
+									<!-- 难度 -->
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<!-- 通过数 -->
+									<td class="info-right">100000</td>
+									<!-- AC率 -->
+									<td class="info-right">10.09%</td>
+								</tr>
+								
+								<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+								
+																<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+																<tr>
+									<td><i class="icon-ok"></i></td>
+									<td class="info-right">1</td>
+									<td>
+										<!-- 题目名称与来源 -->
+										<span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="./problem_single.html">A+B Problem</a></span>
+										
+										<!-- 标签们！ -->
+										<span class="label label-info pull-right tags">data structs</span>
+										<span class="label label-info pull-right tags">dp</span>
+										<span class="label label-info pull-right tags">binary search</span>
+									</td>
+									<!-- 难度 -->
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<!-- 通过数 -->
+									<td class="info-right">100000</td>
+									<!-- AC率 -->
+									<td class="info-right">10.09%</td>
+								</tr>
+								
+								<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+								
+																<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+																<tr>
+									<td><i class="icon-ok"></i></td>
+									<td class="info-right">1</td>
+									<td>
+										<!-- 题目名称与来源 -->
+										<span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="./problem_single.html">A+B Problem</a></span>
+										
+										<!-- 标签们！ -->
+										<span class="label label-info pull-right tags">data structs</span>
+										<span class="label label-info pull-right tags">dp</span>
+										<span class="label label-info pull-right tags">binary search</span>
+									</td>
+									<!-- 难度 -->
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<!-- 通过数 -->
+									<td class="info-right">100000</td>
+									<!-- AC率 -->
+									<td class="info-right">10.09%</td>
+								</tr>
+								
+								<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+								
+																<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+																<tr>
+									<td><i class="icon-ok"></i></td>
+									<td class="info-right">1</td>
+									<td>
+										<!-- 题目名称与来源 -->
+										<span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="./problem_single.html">A+B Problem</a></span>
+										
+										<!-- 标签们！ -->
+										<span class="label label-info pull-right tags">data structs</span>
+										<span class="label label-info pull-right tags">dp</span>
+										<span class="label label-info pull-right tags">binary search</span>
+									</td>
+									<!-- 难度 -->
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<!-- 通过数 -->
+									<td class="info-right">100000</td>
+									<!-- AC率 -->
+									<td class="info-right">10.09%</td>
+								</tr>
+								
+								<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+								
+																<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+																<tr>
+									<td><i class="icon-ok"></i></td>
+									<td class="info-right">1</td>
+									<td>
+										<!-- 题目名称与来源 -->
+										<span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="./problem_single.html">A+B Problem</a></span>
+										
+										<!-- 标签们！ -->
+										<span class="label label-info pull-right tags">data structs</span>
+										<span class="label label-info pull-right tags">dp</span>
+										<span class="label label-info pull-right tags">binary search</span>
+									</td>
+									<!-- 难度 -->
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<!-- 通过数 -->
+									<td class="info-right">100000</td>
+									<!-- AC率 -->
+									<td class="info-right">10.09%</td>
+								</tr>
+								
+								<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+								
+																<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+																<tr>
+									<td><i class="icon-ok"></i></td>
+									<td class="info-right">1</td>
+									<td>
+										<!-- 题目名称与来源 -->
+										<span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="./problem_single.html">A+B Problem</a></span>
+										
+										<!-- 标签们！ -->
+										<span class="label label-info pull-right tags">data structs</span>
+										<span class="label label-info pull-right tags">dp</span>
+										<span class="label label-info pull-right tags">binary search</span>
+									</td>
+									<!-- 难度 -->
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<!-- 通过数 -->
+									<td class="info-right">100000</td>
+									<!-- AC率 -->
+									<td class="info-right">10.09%</td>
+								</tr>
+								
+								<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+								
+																<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+																<tr>
+									<td><i class="icon-ok"></i></td>
+									<td class="info-right">1</td>
+									<td>
+										<!-- 题目名称与来源 -->
+										<span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="./problem_single.html">A+B Problem</a></span>
+										
+										<!-- 标签们！ -->
+										<span class="label label-info pull-right tags">data structs</span>
+										<span class="label label-info pull-right tags">dp</span>
+										<span class="label label-info pull-right tags">binary search</span>
+									</td>
+									<!-- 难度 -->
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<!-- 通过数 -->
+									<td class="info-right">100000</td>
+									<!-- AC率 -->
+									<td class="info-right">10.09%</td>
+								</tr>
+								
+								<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+								
+																<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+																<tr>
+									<td><i class="icon-ok"></i></td>
+									<td class="info-right">1</td>
+									<td>
+										<!-- 题目名称与来源 -->
+										<span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="./problem_single.html">A+B Problem</a></span>
+										
+										<!-- 标签们！ -->
+										<span class="label label-info pull-right tags">data structs</span>
+										<span class="label label-info pull-right tags">dp</span>
+										<span class="label label-info pull-right tags">binary search</span>
+									</td>
+									<!-- 难度 -->
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<!-- 通过数 -->
+									<td class="info-right">100000</td>
+									<!-- AC率 -->
+									<td class="info-right">10.09%</td>
+								</tr>
+								
+								<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+								
+																<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+																<tr>
+									<td><i class="icon-ok"></i></td>
+									<td class="info-right">1</td>
+									<td>
+										<!-- 题目名称与来源 -->
+										<span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="./problem_single.html">A+B Problem</a></span>
+										
+										<!-- 标签们！ -->
+										<span class="label label-info pull-right tags">data structs</span>
+										<span class="label label-info pull-right tags">dp</span>
+										<span class="label label-info pull-right tags">binary search</span>
+									</td>
+									<!-- 难度 -->
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<!-- 通过数 -->
+									<td class="info-right">100000</td>
+									<!-- AC率 -->
+									<td class="info-right">10.09%</td>
+								</tr>
+								
+								<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+								
+																<tr>
+									<td></td>
+									<td class="info-right">2</td>
+									<td>
+										8球胜负(eight) 
+										<span class="label label-info pull-right tags">implementation</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+									<td class="info-right">1</td>
+									<td class="info-right">100.00%</td>
+								</tr>
+								
+								<tr>
+									<td><i class="icon-remove"></i></td>
+									<td class="info-right">9999</td>
+									<td>
+										One million ways to make love
+										<span class="label label-info pull-right tags">binary search</span>
+										<span class="label label-info pull-right tags">data structures</span>
+										<span class="label label-info pull-right tags">implementation</span>
+										<span class="label label-info pull-right tags">sortings</span>
+									</td>
+									<td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+									<td class="info-right">1000</td>
+									<td class="info-right">0.00%</td>
+								</tr>
+							</tbody>
+
+						</table>
+					</div>
+				</div>
+				
+<!-- 题目分页和跳转 -->
+				<div class="row">
+					<div class="span9">
+					<div class="pagination pagination-centered">
+  <ul>
+    <li><a href="#">前一页</a></li>
+    <li class="active">
+      <a href="#">1</a>
+    </li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">后一页</a></li>
+  </ul>
+</div>
+					</div>
+											<!-- 快速跳转题目 -->
+						<form class="well form-horizontal pull-right">
+							<input type="text" class="span2" placeholder="Problem ID...">
+							<button type="submit" class="btn btn-primary">GO!</button>
+						</form>
+				</div>
+				
+				
+			</div>
+		</div>
+
+		<!-- Footer -->
+		<div id="footer">
+			<div class="container">
+				<div class="row">
+					<div class="span12">
+						<p class="pull-left">
+						<a id="logo-banner" href="./index.html"></a>
+						</p>
+						<p class="muted credit">
+						UESTC Online Judge
+						</p>
+						<p class="muted credit">
+						©2012 UESTC ACM-ICPC Team, All Copyrights Reserved.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>	
+
+		<!-- 要用到的JS，放在后面加快网页加载速度 -->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/prettify.js"></script>
+		<script src="js/cdoj.js"></script>
+
+	</body>
+</html>

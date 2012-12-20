@@ -5,11 +5,19 @@ body {
 
 /* 内容部分用wrap整个包围起来，与上下文有60px的margin */
 #wrap {
-	margin: 60px 0 60px 0;
+	margin: 80px 0 60px 0;
+	min-height: 800px;
 }
 
-/* footer与底部留一些空隙吧 */
+/* footer与底部留一些空隙吧，加点花纹看起来稍微好一点了 */
 #footer {
+	padding: 60px 0 60px 0;
+	background-color: #222;
+	background: #222 url(../img/footer-top.png) top center repeat-x;
+}
+/* 版权信息 */
+.credit {
+	text-align: center;
 }
 
 /* 调整表格样式以保证不出现表格换行的情况！ */
@@ -22,18 +30,47 @@ td {
 	overflow: hidden;
 	text-overflow:ellipsis;
 }
+td.info-center {
+	text-align: center;
+}
+td.info-right {
+	text-align: right;
+}
+.table-problemlist th{
+	text-align: center;
+}
 
 /* 自定义的几个比较常用的信息的格式设置 */
-td.info-time {
+.info-time {
 	width: 160px;
 	text-align: center;
 }
-td.info-problem-difficulty {
-	width: 80px;
-}
-td.info-contest-state {
+.info-contest-state {
 	width: 60px;
 	text-align: center;
+}
+.info-solved {
+	width: 14px;
+}
+.info-problem-id {
+	width: 32px;
+}
+.info-problem-source {
+	display: block;
+}
+.info-problem-difficulty {
+	width: 70px;
+}
+.info-problem-ac {
+	width: 60px;
+}
+.info-problem-ratio {
+	width: 60px;
+}
+
+/* 标签 */
+.tags {
+	margin: 0 4px 0 4px;
 }
 
 /* logo相关 */

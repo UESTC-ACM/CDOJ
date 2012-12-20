@@ -173,6 +173,38 @@
 		<!-- 正文 -->
 		<div id="wrap">
 			<div class="container">
+				<!-- 这一部分保留给NOTICE信息 -->
+				<div class="row">
+					<div class="span12">
+						<div class="alert alert-block">
+							<div class="row">
+								<div class="span1">
+									<h4 class="alert-heading">Notice</h4>
+								</div>
+								<div class="span10">
+									<marquee class="notice" onmouseover="javascript:this.stop();" onmouseout="javascript:this.start()">
+									<!-- 新消息 -->
+									<span class="label label-important">new</span>
+									<a href="#">趣味赛第五场（正式赛）比赛推迟(2012-12-15 13:06:00)</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;
+
+									<!-- 旧消息 -->
+									<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;
+
+									<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;
+
+									<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;
+
+									</marquee>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div><!-- NOTICE -->
+
 				<div id="activityCarousel" class="carousel slide">
 					<!-- Carousel items -->
 					<div class="carousel-inner">
@@ -196,32 +228,6 @@
 					<!-- Carousel nav -->
 					<a class="carousel-control left" href="#activityCarousel" data-slide="prev">&lsaquo;</a>
 					<a class="carousel-control right" href="#activityCarousel" data-slide="next">&rsaquo;</a>
-				</div>
-
-				<div class="row">
-					<!-- 这一部分保留给NOTICE信息 -->
-					<div class="span12">
-						<div class="alert alert-block">
-							<h3 class="alert-heading">Notice</h3>
-							<marquee onmouseover="javascript:this.stop();" onmouseout="javascript:this.start()">
-							<!-- 新消息 -->
-							<span class="label label-important">new</span>
-							<a href="#">趣味赛第五场（正式赛）比赛推迟(2012-12-15 13:06:00)</a>
-							&nbsp;&nbsp;&nbsp;&nbsp;
-
-							<!-- 旧消息 -->
-							<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
-							&nbsp;&nbsp;&nbsp;&nbsp;
-
-							<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
-							&nbsp;&nbsp;&nbsp;&nbsp;
-
-							<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
-							&nbsp;&nbsp;&nbsp;&nbsp;
-
-							</marquee>
-						</div>
-					</div><!-- NOTICE -->
 				</div>
 
 				<div class="row">
@@ -355,8 +361,8 @@ public class Main
 						</table>
 
 						<!-- 快速跳转题目 -->
-						<form class="well form-horizontal">
-							<input type="text" class="span2" placeholder="Problem ID...">
+						<form class="form-horizontal">
+							<input type="text" class="span3" placeholder="Problem ID...">
 							<button type="submit" class="btn btn-primary">GO!</button>
 						</form>
 
@@ -391,9 +397,6 @@ public class Main
 		<script src="js/bootstrap.js"></script>
 		<script src="js/prettify.js"></script>
 		<script src="js/cdoj.js"></script>
-
-		<!-- 主页专用 -->
-		<script src="js/cdoj.index.js"></script>
 
 	</body>
 </html>
