@@ -11,6 +11,16 @@
 		<!-- 我的自定义CSS -->
 		<link href="css/cdoj.css" rel="stylesheet">
 
+		<!-- 要用到的JS -->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/prettify.js"></script>
+		<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+		<!-- 如果需要开启内网模式的话请解压MathJax.zip到网页根目录下然后将上面替换成这个
+		<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+		-->
+		<script src="js/cdoj.js"></script>
+		
 		<!-- 网站标题，暂时先这样 -->
 		<title>${position} - UESTC Online Judge</title>
 
@@ -239,6 +249,7 @@
 									<li class="active"><a href="#tab-todo-list" data-toggle="tab">TODO</a></li>
 									<li class=""><a href="#tab-test" data-toggle="tab">测试</a></li>
 									<li class=""><a href="#tab-test-prettify" data-toggle="tab">代码高亮</a></li>
+									<li class=""><a href="#tab-test-mathjax" data-toggle="tab">公式测试</a></li>
 								</ul>
 								<div id="TabContent" class="tab-content">
 									<div class="tab-pane fade active in" id="tab-todo-list">
@@ -269,9 +280,9 @@
 										<p><a class="btn btn-primary btn-large" href="#">More »</a></p>
 									</div>
 									<div class="tab-pane fade" id="tab-test-prettify">	
-									<p>注意，后台需要对其先转义，然后注意&lt;/pre&gt;的位置</p>
-									<p>TODO:代码全选功能</p>
-									<h4>C</h4>
+										<p>注意，后台需要对其先转义，然后注意&lt;/pre&gt;的位置</p>
+										<p>TODO:代码全选功能</p>
+										<h4>C</h4>
 										<pre class="prettyprint linenums">
 #include &lt;stdio.h&gt;
 int main()
@@ -306,6 +317,10 @@ public class Main
 	}
 }</pre>
 									</div>
+									
+									<div class="tab-pane fade" id="tab-test-mathjax">
+									</div>
+									
 								</div>
 							</div>
 						</div>
@@ -391,12 +406,6 @@ public class Main
 				</div>
 			</div>
 		</div>	
-
-		<!-- 要用到的JS，放在后面加快网页加载速度 -->
-		<script src="js/jquery.min.js"></script>
-		<script src="js/bootstrap.js"></script>
-		<script src="js/prettify.js"></script>
-		<script src="js/cdoj.js"></script>
 
 	</body>
 </html>

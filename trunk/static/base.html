@@ -11,6 +11,16 @@
 		<!-- 我的自定义CSS -->
 		<link href="css/cdoj.css" rel="stylesheet">
 
+		<!-- 要用到的JS -->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/prettify.js"></script>
+		<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+		<!-- 如果需要开启内网模式的话请解压MathJax.zip到网页根目录下然后将上面替换成这个
+		<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+		-->
+		<script src="js/cdoj.js"></script>
+		
 		<!-- 网站标题，暂时先这样 -->
 		<title>${position} - UESTC Online Judge</title>
 
@@ -173,31 +183,37 @@
 		<!-- 正文 -->
 		<div id="wrap">
 			<div class="container">
+				<!-- 这一部分保留给NOTICE信息 -->
 				<div class="row">
-					<!-- 这一部分保留给NOTICE信息 -->
 					<div class="span12">
 						<div class="alert alert-block">
-							<h3 class="alert-heading">Notice</h3>
-							<marquee onmouseover="javascript:this.stop();" onmouseout="javascript:this.start()">
-							<!-- 新消息 -->
-							<span class="label label-important">new</span>
-							<a href="#">趣味赛第五场（正式赛）比赛推迟(2012-12-15 13:06:00)</a>
-							&nbsp;&nbsp;&nbsp;&nbsp;
+							<div class="row">
+								<div class="span1">
+									<h4 class="alert-heading">Notice</h4>
+								</div>
+								<div class="span10">
+									<marquee class="notice" onmouseover="javascript:this.stop();" onmouseout="javascript:this.start()">
+									<!-- 新消息 -->
+									<span class="label label-important">new</span>
+									<a href="#">趣味赛第五场（正式赛）比赛推迟(2012-12-15 13:06:00)</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;
 
-							<!-- 旧消息 -->
-							<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
-							&nbsp;&nbsp;&nbsp;&nbsp;
+									<!-- 旧消息 -->
+									<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;
 
-							<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
-							&nbsp;&nbsp;&nbsp;&nbsp;
+									<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;
 
-							<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
-							&nbsp;&nbsp;&nbsp;&nbsp;
+									<a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;
 
-							</marquee>
+									</marquee>
+								</div>
+							</div>
 						</div>
-					</div><!-- NOTICE -->
-				</div>
+					</div>
+				</div><!-- NOTICE -->
 
 			</div>
 		</div>
@@ -220,12 +236,6 @@
 				</div>
 			</div>
 		</div>	
-
-		<!-- 要用到的JS，放在后面加快网页加载速度 -->
-		<script src="js/jquery.min.js"></script>
-		<script src="js/bootstrap.js"></script>
-		<script src="js/prettify.js"></script>
-		<script src="js/cdoj.js"></script>
 
 	</body>
 </html>
