@@ -48,6 +48,9 @@ td.info-right {
 }
 
 /* 自定义的几个比较常用的信息的格式设置 */
+.font-code {
+	font-family: Consolas,"Lucida Console","Andale Mono","Bitstream Vera Sans Mono","Courier New",Courier;
+}
 .info-time {
 	width: 160px;
 	text-align: center;
