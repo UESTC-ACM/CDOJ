@@ -34,12 +34,6 @@ td {
 	overflow: hidden;
 	text-overflow:ellipsis;
 }
-td.info-center {
-	text-align: center;
-}
-td.info-right {
-	text-align: right;
-}
 .table-problemlist th {
 	text-align: center;
 }
@@ -48,8 +42,18 @@ td.info-right {
 }
 
 /* 自定义的几个比较常用的信息的格式设置 */
+.pull-center {
+	margin-left: auto;
+	margin-right: auto;
+}
 .font-code {
 	font-family: Consolas,"Lucida Console","Andale Mono","Bitstream Vera Sans Mono","Courier New",Courier;
+}
+.pos-center {
+	text-align: center;
+}
+.pos-right {
+	text-align: right;
 }
 .info-time {
 	width: 160px;

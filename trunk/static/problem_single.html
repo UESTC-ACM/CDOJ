@@ -20,7 +20,7 @@
 		<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 		-->
 		<script src="js/cdoj.js"></script>
-		
+
 		<!-- 网站标题，暂时先这样 -->
 		<title>${position} - UESTC Online Judge</title>
 
@@ -222,14 +222,33 @@
 							<h2>Problem 9999. One million ways to make love</h2>
 						</div>
 
+						<!-- 导航链接 -->
+						<div class="span12">
+							<ul class="nav nav-pills">
+								<li class="active">
+								<a href="#">Problem</a>
+								</li>
+								<li><a href="./problem_single_submit.html">Submit</a></li>
+								<li><a href="./problem_single_status.html">Status</a></li>
+								<li><a href="./problem_single_discuss.html">Discuss</a></li>
+							</ul>
+
+						</div>
+
 						<!-- 题目信息 -->
-						<div class="span6">
-							<dl class="well dl-horizontal">
+						<div class="span12">
+							<dl class="dl-horizontal">
 								<dt>Time limit</dt>
-								<dd><span class="label label-important">1 second</span></dd>
+								<dd><span>2 / 1 second (Java / others)</span></dd>
 
 								<dt>Memory limit</dt>
-								<dd><span class="label label-important">64 megabytes</span></dd>
+								<dd><span>128 / 64 megabytes (Java / others)</span></dd>
+
+								<dt>Total accepted</dt>
+								<dd><span>100</span></dd>
+
+								<dt>Total submissions</dt>
+								<dd><span>1000</span></dd>
 
 							</dl>
 						</div>
@@ -237,56 +256,56 @@
 						<!-- 描述 -->
 						<div class="span12">
 
-<p>
-\begin{align}
-\dot{x} & = \sigma(y-x) \\
-\dot{y} & = \rho x - y - xz \\
-\dot{z} & = -\beta z + xy
-\end{align}
-</p>
+							<p>
+							\begin{align}
+							\dot{x} & = \sigma(y-x) \\
+							\dot{y} & = \rho x - y - xz \\
+							\dot{z} & = -\beta z + xy
+							\end{align}
+							</p>
 
-<p>\[
-\left( \sum_{k=1}^n a_k b_k \right)^{\!\!2} \leq
- \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
-\]</p>
+							<p>\[
+							\left( \sum_{k=1}^n a_k b_k \right)^{\!\!2} \leq
+							\left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
+							\]</p>
 
-<p>\[
-  \mathbf{V}_1 \times \mathbf{V}_2 =
-   \begin{vmatrix}
-    \mathbf{i} & \mathbf{j} & \mathbf{k} \\
-    \frac{\partial X}{\partial u} & \frac{\partial Y}{\partial u} & 0 \\
-    \frac{\partial X}{\partial v} & \frac{\partial Y}{\partial v} & 0 \\
-   \end{vmatrix}
-\]</p>
+							<p>\[
+							\mathbf{V}_1 \times \mathbf{V}_2 =
+							\begin{vmatrix}
+							\mathbf{i} & \mathbf{j} & \mathbf{k} \\
+							\frac{\partial X}{\partial u} & \frac{\partial Y}{\partial u} & 0 \\
+							\frac{\partial X}{\partial v} & \frac{\partial Y}{\partial v} & 0 \\
+							\end{vmatrix}
+							\]</p>
 
-<p>\[P(E) = {n \choose k} p^k (1-p)^{ n-k} \]</p>
+							<p>\[P(E) = {n \choose k} p^k (1-p)^{ n-k} \]</p>
 
-<p>\[
-   \frac{1}{(\sqrt{\phi \sqrt{5}}-\phi) e^{\frac25 \pi}} =
-     1+\frac{e^{-2\pi}} {1+\frac{e^{-4\pi}} {1+\frac{e^{-6\pi}}
-      {1+\frac{e^{-8\pi}} {1+\ldots} } } }
-\]</p>
+							<p>\[
+							\frac{1}{(\sqrt{\phi \sqrt{5}}-\phi) e^{\frac25 \pi}} =
+							1+\frac{e^{-2\pi}} {1+\frac{e^{-4\pi}} {1+\frac{e^{-6\pi}}
+							{1+\frac{e^{-8\pi}} {1+\ldots} } } }
+							\]</p>
 
-<p>\[
-  1 +  \frac{q^2}{(1-q)}+\frac{q^6}{(1-q)(1-q^2)}+\cdots =
-    \prod_{j=0}^{\infty}\frac{1}{(1-q^{5j+2})(1-q^{5j+3})},
-     \quad\quad \text{for $|q|<1$}.
-\]</p>
+							<p>\[
+							1 +  \frac{q^2}{(1-q)}+\frac{q^6}{(1-q)(1-q^2)}+\cdots =
+							\prod_{j=0}^{\infty}\frac{1}{(1-q^{5j+2})(1-q^{5j+3})},
+							\quad\quad \text{for $|q|<1$}.
+							\]</p>
 
-<p>
-\begin{align}
-  \nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} & = \frac{4\pi}{c}\vec{\mathbf{j}} \\
-  \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
-  \nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
-  \nabla \cdot \vec{\mathbf{B}} & = 0
-\end{align}
-</p>
+							<p>
+							\begin{align}
+							\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} & = \frac{4\pi}{c}\vec{\mathbf{j}} \\
+							\nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
+							\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
+							\nabla \cdot \vec{\mathbf{B}} & = 0
+							\end{align}
+							</p>
 
-<p>Finally, while display equations look good for a page of samples, the
-ability to mix math and text in a paragraph is also important.  This
-expression \(\sqrt{3x-1}+(1+x)^2\) is an example of an inline equation.  As
-you see, MathJax equations can be used this way as well, without unduly
-disturbing the spacing between lines.</p>
+							<p>Finally, while display equations look good for a page of samples, the
+							ability to mix math and text in a paragraph is also important.  This
+							expression \(\sqrt{3x-1}+(1+x)^2\) is an example of an inline equation.  As
+							you see, MathJax equations can be used this way as well, without unduly
+							disturbing the spacing between lines.</p>
 
 							<p>
 							There is no true love falling from the sky.So if you want to get into God Luo's heart,you must take action.As we all know,if you don't try to make love,love will never come into being.There are one million ways to make the love between you and God Luo.If you find one of them, your dream about love will come true.
@@ -320,31 +339,31 @@ disturbing the spacing between lines.</p>
 							There is an integer T(T&lt;=100) in the first line, indecating the number of test cases.
 							</p>
 							<p>
-The first line of each test case contains 10 integers(no more than 50)indicating the number of each kind of beads which God Luo has.
-</p>
-<p>
-The second line contains 10 integers(no more than 50) indicating the need of each kind of beads to compose the necklace.
-</p>
-<p>
-The third line contains an interger n(0&lt;=n&lt;=10) indicating there are n spell in total.
-</p>
-<p>
-Then n lines follow,and there are two strings in each line.The first string is the left part of the spell, and the second is the right part.
-</p>
-<p>
-</p>
-<p>
-Notice:
-</p>
-<p>
-1.The length of second string is always 1.
-</p>
-<p>
-2.The length of first string is L which satisfies that 2&lt;=L&lt;=10.
-</p>
-<p>
-3.The right part of each line is distinct while some left parts can be the same.
-</p>
+							The first line of each test case contains 10 integers(no more than 50)indicating the number of each kind of beads which God Luo has.
+							</p>
+							<p>
+							The second line contains 10 integers(no more than 50) indicating the need of each kind of beads to compose the necklace.
+							</p>
+							<p>
+							The third line contains an interger n(0&lt;=n&lt;=10) indicating there are n spell in total.
+							</p>
+							<p>
+							Then n lines follow,and there are two strings in each line.The first string is the left part of the spell, and the second is the right part.
+							</p>
+							<p>
+							</p>
+							<p>
+							Notice:
+							</p>
+							<p>
+							1.The length of second string is always 1.
+							</p>
+							<p>
+							2.The length of first string is L which satisfies that 2&lt;=L&lt;=10.
+							</p>
+							<p>
+							3.The right part of each line is distinct while some left parts can be the same.
+							</p>
 						</div>
 
 						<!-- Output -->
@@ -353,8 +372,8 @@ Notice:
 						</div>
 						<div class="span12">
 							</p>
-For each test case, output the maximum number of the necklaces can be made from the initial beads.
-</p>
+							For each test case, output the maximum number of the necklaces can be made from the initial beads.
+							</p>
 						</div>
 
 						<!-- Sample -->
@@ -391,54 +410,54 @@ For each test case, output the maximum number of the necklaces can be made from 
 											2<br />
 											</p>
 										</td>
-								</tbody>
-							</table>
+									</tbody>
+								</table>
+							</div>
+
+							<!-- Hint -->
+							<div class="span12">
+								<h2>Hint</h2>
+							</div>
+							<div class="span12">
+								<p>
+								沈老师太厉害了
+								</p>
+							</div>
+
+							<!-- Source -->
+							<div class="span12">
+								<h2>Source</h2>
+							</div>
+							<div class="span12">
+								<p>
+								罗神粉丝俱乐部
+								</p>
+							</div>
 						</div>
 
-						<!-- Hint -->
-						<div class="span12">
-							<h2>Hint</h2>
-						</div>
-						<div class="span12">
-							<p>
-							沈老师太厉害了
-							</p>
-						</div>
-
-						<!-- Source -->
-						<div class="span12">
-							<h2>Source</h2>
-						</div>
-						<div class="span12">
-							<p>
-							罗神粉丝俱乐部
-							</p>
-						</div>
 					</div>
 
 				</div>
-
 			</div>
-		</div>
 
-		<!-- Footer -->
-		<div id="footer">
-			<div class="container">
-				<div class="row">
-					<div class="span12">
-						<p class="pull-left">
-						<a id="logo-banner" href="./index.html"></a>
-						</p>
-						<p class="muted credit">
-						UESTC Online Judge
-						</p>
-						<p class="muted credit">
-						©2012 UESTC ACM-ICPC Team, All Copyrights Reserved.
-						</p>
+			<!-- Footer -->
+			<div id="footer">
+				<div class="container">
+					<div class="row">
+						<div class="span12">
+							<p class="pull-left">
+							<a id="logo-banner" href="./index.html"></a>
+							</p>
+							<p class="muted credit">
+							UESTC Online Judge
+							</p>
+							<p class="muted credit">
+							©2012 UESTC ACM-ICPC Team, All Copyrights Reserved.
+							</p>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>	
+			</div>	
 
-	</body>
-</html>
+		</body>
+	</html>
