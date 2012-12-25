@@ -1,3 +1,11 @@
+/**
+ * Copyright 2012, fish <lyhypacm@gmail.com>
+ *
+ * Compiler Factory Class
+ * 		compiler factory, we use this class to
+ * get all kinds of compilers' instance, which
+ * has been defined in cofiguration file.
+ */
 #ifndef __COMPILER_FACTORY_H__
 #define __COMPILER_FACTORY_H__
 

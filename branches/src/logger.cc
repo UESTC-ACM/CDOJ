@@ -1,5 +1,12 @@
+/**
+ * Copyright 2012, fish <lyhypacm@gmail.com>
+ *
+ * Simple System Logger
+ * 		A simple logger for c/c++
+ */
 #include "logger.h"
 
+#ifdef LOG_ON
 const int LOG_FATAL		= 0;
 const int LOG_WARNING	= 1; 
 const int LOG_MONITOR	= 2;
@@ -73,7 +80,7 @@ void log_write(int level, const char* file, const int line, const char* fmt, ...
 	va_end(ap);
 
 	size_t count = snprintf(buffer, LOGBUFSIZ,
-			"%s\x7 [%s]\x7 [%s:%d]%s\x7 %s\x7\n",
+			"%s [%s] [%s:%d]\nEXTRA: %s\nBUFFER: %s\n\n",
 			LOG_LEVEL_NOTE[level], dateTime, file, line, log_extra_info, log_buffer);
 	int log_fd = log_fp->_fileno;
 	if (flock(log_fd, LOCK_EX) == 0) {
@@ -92,4 +99,6 @@ void log_add_info(const char* info) {
 	int len = strlen(log_extra_info);
 	snprintf(log_extra_info + len, LOGBUFSIZ - len, "\x7 [%s]", info);
 }
+#endif
+
 

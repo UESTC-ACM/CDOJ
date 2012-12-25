@@ -22,8 +22,9 @@ INCLUDE=\
 
 CXX=g++
 CXXLD=g++
-CFLAGS=-Wall -W -g -O2
-LDFLAGS=
+DEBUG=-g
+CFLAGS=-Wall -W -g -O2 $(DEBUG)
+LDFLAGS=$(DEBUG)
 
 .PHONY: all clean rebuild
 

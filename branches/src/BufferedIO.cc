@@ -1,3 +1,12 @@
+/**
+ * Copyright 2012, fish <lyhypacm@gmail.com>
+ *
+ * Buffered IO Utils base class
+ *		All the buffered io class will be it's
+ * subclass, it handle file descriptor and 
+ * buffer space, we can change the buffer size
+ * by changing the value of BUFFER_SIZE.
+ */
 #include "BufferedIO.h"
 #include "logger.h"
 
@@ -8,8 +17,7 @@
 #include <cstdlib>
 
 BufferedIO::BufferedIO() {
-	buffer = (uint8_t *)malloc(sizeof(uint8_t) * BUFFER_SIZE);
-	OJ_LOG_DEBUG("Passed");
+	buffer = new uint8_t[BUFFER_SIZE];
 }
 
 BufferedIO::BufferedIO(int fd)
@@ -25,6 +33,6 @@ BufferedIO::BufferedIO(const char* fileName) throw(AppException) {
 
 BufferedIO::~BufferedIO() {
 	if (buffer != NULL)
-		free(buffer);
+		delete buffer;
 }
 
