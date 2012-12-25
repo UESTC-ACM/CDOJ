@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: clover:clover:1.3-rc4">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/clover/clover/1.3-rc4/clover-1.3-rc4.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/clover/clover/1.3-rc4/clover-1.3-rc4-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/clover/clover/1.3-rc4/clover-1.3-rc4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
