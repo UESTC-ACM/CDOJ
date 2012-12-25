@@ -1,3 +1,10 @@
+/**
+ * Copyright 2012, fish <lyhypacm@gmail.com>
+ *
+ * Buffered IO class implementation
+ *		we use this class object to read data from
+ * a file whose name or descriptor has been pre-defined.
+ */
 #ifndef __BUFFERED_READER_H__
 #define __BUFFERED_READER_H__
 

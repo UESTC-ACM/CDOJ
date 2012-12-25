@@ -1,3 +1,10 @@
+/**
+ * Copyright 2012, fish <lyhypacm@gmail.com>
+ *
+ * Compiler Entity 
+ *  	store a compiler's information, and
+ * parameters. It's just a abstract class.
+ */
 #include "Compiler.h"
 #include "logger.h"
 

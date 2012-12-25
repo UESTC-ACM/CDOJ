@@ -1,3 +1,11 @@
+/**
+ * Copyright 2012, fish <lyhypacm@gmail.com>
+ *
+ * Compiler Factory Class
+ * 		compiler factory, we use this class to
+ * get all kinds of compilers' instance, which
+ * has been defined in cofiguration file.
+ */
 #include "CompilerFactory.h"
 
 CompilerFactory* CompilerFactory::instance = NULL;

@@ -1,3 +1,11 @@
+/**
+ * Copyright 2012, fish <lyhypacm@gmail.com>
+ *
+ * Application Exception Class
+ *		all customized exception of this project
+ * will use this class to deal with customized
+ * actions.
+ */
 #include <cstdlib>
 #include <cstdio>
 #include <execinfo.h>
