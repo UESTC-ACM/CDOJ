@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: msv:xsdlib:20030807">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/msv/xsdlib/20030807/xsdlib-20030807.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/msv/xsdlib/20030807/xsdlib-20030807-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/msv/xsdlib/20030807/xsdlib-20030807-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
