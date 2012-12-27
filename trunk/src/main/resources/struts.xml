@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="admin" namespace="/admin" extends="struts-default">
+        <action name="toWelcome" class="cn.edu.uestc.acmicpc.action.admin.AdminWelcome" method="toWelcome">
+            <result>/index.jsp</result>
+        </action>
+    </package>
+</struts>
