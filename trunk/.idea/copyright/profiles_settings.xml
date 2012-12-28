@@ -1,0 +1,7 @@
+<component name="CopyrightManager">
+  <settings default="cdoj">
+    <module2copyright>
+      <element module="Default" copyright="cdoj" />
+    </module2copyright>
+  </settings>
+</component>
