@@ -72,10 +72,19 @@ string Gen(string file)
 
 int main()
 {
-	cout << Gen("index") << endl;
-	cout << Gen("problem") << endl;
-	cout << Gen("problem_single") << endl;
-	cout << Gen("problem_single_submit") << endl;
+	FILE *pfile = fopen("work.txt","r");
+	if (pfile == NULL)
+	{
+		puts("Can not open work.txt!");
+		return 0;
+	}
+	string filename;
+	while (fscanf(pfile,"%s",buf) != EOF)
+	{
+		filename = buf;
+		cout << Gen(filename) << endl;
+	}
 
+	fclose(pfile);
 	return 0;
 }

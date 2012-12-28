@@ -1,3 +1,29 @@
-#include(problem_single_header)
+#include(include/problem_single_header)
 
-#include(problem_single_footer)
+<!-- 语言选择 -->
+<div class="row">
+	<div class="span12">
+		
+	</div>
+</div>
+
+<!-- 编辑框 -->
+<div class="row">
+	<div class="span12">
+		<textarea id="sourceCodeEditor"> 
+		</textarea>
+		<script>
+			editAreaLoader.init({
+				id: "sourceCodeEditor"
+				,start_highlight: true
+				,syntax: "cpp"	
+				,allow_toggle: false 
+				,toolbar: "syntax_selection"
+				,syntax_selection_allow: "c,cpp,java"
+				,show_line_colors: true
+			});
+		</script>
+	</div>
+</div>
+
+#include(include/problem_single_footer)
