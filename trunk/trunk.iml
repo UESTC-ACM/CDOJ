@@ -9,16 +9,11 @@
         <webroots>
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/src/main/java" />
-          <root url="file://$MODULE_DIR$/src/main/resources" />
-        </sourceRoots>
       </configuration>
       <facet type="Struts2" name="Struts 2">
         <configuration>
           <fileset id="s2fileset" name="My Fileset " removed="false">
             <file>file://$MODULE_DIR$/src/main/resources/struts.xml</file>
-            <file>jar://$MAVEN_REPOSITORY$/org/apache/struts/struts2-core/2.3.8/struts2-core-2.3.8.jar!/struts-default.xml</file>
           </fileset>
           <propertiesKeys disabled="false" />
         </configuration>
@@ -60,7 +55,6 @@
     <orderEntry type="library" name="Maven: org.freemarker:freemarker:2.3.19" level="project" />
     <orderEntry type="library" name="Maven: commons-fileupload:commons-fileupload:1.2.2" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.0.1" level="project" />
-    <orderEntry type="library" name="Maven: com.sun:tools:1.5.0" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate.common:hibernate-commons-annotations:4.0.1.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.logging:jboss-logging:3.1.0.CR2" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:4.1.9.Final" level="project" />
@@ -70,6 +64,23 @@
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.22" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-oxm:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc-portlet:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet:servlet-api:3.0-alpha-1" level="project" />
   </component>
 </module>
