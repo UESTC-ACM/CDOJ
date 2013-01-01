@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 #include "BufferedIO.h"
-#include "logger.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -51,5 +50,7 @@ BufferedIO::BufferedIO(const char* fileName) throw(AppException) {
 BufferedIO::~BufferedIO() {
 	if (buffer != NULL)
 		delete buffer;
+	if (fd >= 3)
+		close(fd);
 }
 

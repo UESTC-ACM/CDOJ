@@ -40,10 +40,9 @@ public:
 	BufferedIO(int fd);
 	BufferedIO(const char* fileName) throw(AppException);
 	virtual ~BufferedIO();
+	uint8_t* buffer;
 protected:
 	int fd;
-public:
-	uint8_t* buffer;
 };
 
 #endif // __BUFFERED_IO_H__
