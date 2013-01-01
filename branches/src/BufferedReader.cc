@@ -37,7 +37,7 @@ BufferedReader::BufferedReader(const char* fileName)
 	throw(AppException) : BufferedIO(fileName) {
 }
 
-uint8_t BufferedReader::readUInt8() throw(AppException) {
+uint8_t BufferedReader::readUInt8(void) throw(AppException) {
 	if (fd < 0)
 		throw AppException("cannot open input file.");
 	uint8_t value;
@@ -47,7 +47,7 @@ uint8_t BufferedReader::readUInt8() throw(AppException) {
 	return value;
 }
 
-uint16_t BufferedReader::readUInt16() throw(AppException) {
+uint16_t BufferedReader::readUInt16(void) throw(AppException) {
 	if (fd < 0)
 		throw AppException("cannot open input file.");
 	uint16_t value;
@@ -57,7 +57,7 @@ uint16_t BufferedReader::readUInt16() throw(AppException) {
 	return value;
 }
 
-uint32_t BufferedReader::readUInt32() throw(AppException) {
+uint32_t BufferedReader::readUInt32(void) throw(AppException) {
 	if (fd < 0)
 		throw AppException("cannot open input file.");
 	uint32_t value;
@@ -67,7 +67,7 @@ uint32_t BufferedReader::readUInt32() throw(AppException) {
 	return value;
 }
 
-uint64_t BufferedReader::readUInt64() throw(AppException) {
+uint64_t BufferedReader::readUInt64(void) throw(AppException) {
 	if (fd < 0)
 		throw AppException("cannot open input file.");
 	uint64_t value;
@@ -76,4 +76,23 @@ uint64_t BufferedReader::readUInt64() throw(AppException) {
 		throw AppException("read from file error.");
 	return value;
 }
+
+/*const char* BufferedReader::read(void) throw(AppException) {
+	if (fd < 0)
+		throw AppException("cannot open input file.");
+	uint8_t value;
+	size_t result;
+	size_t current = 0;
+
+	while (current < BUFFER_SIZE - 1) {
+		result = read(fd, &value, sizeof(uint8_t));
+		if (result == 0x00 || result == 0x0A || result == 0x0D
+			|| result == 0x20 || result == 0x09)
+			break;
+		buffer[current++] = result;
+	}
+	buffer[current] = 0;
+	if (current == 0) return NULL;
+	return buffer;
+}*/
 

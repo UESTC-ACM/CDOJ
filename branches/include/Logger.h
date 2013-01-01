@@ -16,25 +16,38 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-#include <cstdio>
-#include "Logger.h"
-#include "AppException.h"
-#include "BufferedIO.h"
+#ifndef __LOGGER_H__
+#define __LOGGER_H__
 
-int main(int argc, char* argv[]) {
-	Logger* logger = Logger::getInstance();
-	logger->open();
-	logger->log(INFO, __FILE__, __LINE__, "core begin with argc = %d argv address %p", argc, argv);
-	BufferedIO* bufferIO = new BufferedIO(0);
-	try {
-		printf("%p\n", bufferIO->buffer);
-		throw AppException("catched exception");
-	} catch (const AppException& e) {
-		e.printStackTrace();
-	}
-	if (bufferIO != NULL)
-		delete bufferIO;
-	logger->close();
-	return 0;
-}
+#include "AppException.h"
+
+// logger buffer size
+#define BUFFSIZE 1024
+
+/**
+ * logger types
+ */
+enum LoggerFlag {
+	FATAL, WARNING, MONITOR, NOTICE, TRADE, DEBUG, INFO
+};
+
+/**
+ * Simple System Logger
+ * 		A simple logger for c/c++
+ */
+
+class Logger {
+public:
+	static Logger* getInstance();
+	void open() throw(AppException);
+	void close();
+	void log(LoggerFlag loggerFlag, const char* file, const int line, const char* fmt, ...);
+private:
+	Logger();
+	static Logger* instance;
+	// file pointer, if it's NULL, that means logger is close, otherwise, logger is open
+	FILE* fp;
+};
+
+#endif // __LOGGER_H__
 

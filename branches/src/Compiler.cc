@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 #include "Compiler.h"
-#include "logger.h"
+#include "Logger.h"
 
 /**
  * Compiler Entity 
@@ -34,7 +34,8 @@ Compiler::~Compiler(void) {
 
 bool Compiler::compile(int sockId) {
 	// TODO
-	OJ_LOG_NOTICE("begin compile sockId: %d\n", sockId);
+	Logger* logger = Logger::getInstance();
+	logger->log(INFO, __FILE__, __LINE__, "begin compile sockId: %d\n", sockId);
 	return true;
 }
 
