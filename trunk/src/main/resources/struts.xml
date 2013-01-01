@@ -26,7 +26,7 @@
 
 <struts>
     <package name="admin" namespace="/admin" extends="struts-default">
-        <action name="toWelcome" class="cn.edu.uestc.acmicpc.action.admin.AdminWelcome" method="toWelcome">
+        <action name="toWelcome" class="adminWelcomeAction" method="toWelcome">
             <result>/index.jsp</result>
         </action>
     </package>
