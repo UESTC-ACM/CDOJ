@@ -29,6 +29,17 @@ import com.opensymphony.xwork2.ActionSupport;
  * Time: 下午3:03
  */
 public class AdminWelcome extends ActionSupport {
+
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public String toWelcome() throws Exception {
         return SUCCESS;
     }

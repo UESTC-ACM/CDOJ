@@ -24,22 +24,28 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 		  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
+
+    <!-- spring configure file location -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applictionContext.xml</param-value>
+    </context-param>
+
+    <!-- spring listener -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!-- struts2 filter -->
     <filter>
         <filter-name>struts2</filter-name>
-        <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+        <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>struts2</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    <filter>
-        <filter-name>struts-cleanup</filter-name>
-        <filter-class>org.apache.struts2.dispatcher.ActionContextCleanUp</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>struts-cleanup</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
