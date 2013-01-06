@@ -1,29 +1,52 @@
 #include(include/problem_single_header)
 
+<!--
+  ~ /*
+  ~  * cdoj, UESTC ACMICPC Online Judge
+  ~  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
+  ~  * 	mzry1992 <@link muziriyun@gmail.com>
+  ~  *
+  ~  * This program is free software; you can redistribute it and/or
+  ~  * modify it under the terms of the GNU General Public License
+  ~  * as published by the Free Software Foundation; either version 2
+  ~  * of the License, or (at your option) any later version.
+  ~  *
+  ~  * This program is distributed in the hope that it will be useful,
+  ~  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  * GNU General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program; if not, write to the Free Software
+  ~  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  ~  */
+  -->
+
 <!-- 语言选择 -->
 <div class="row">
-	<div class="span12">
-		
-	</div>
+    <div class="span12">
+
+    </div>
 </div>
 
 <!-- 编辑框 -->
 <div class="row">
-	<div class="span12">
-		<textarea id="sourceCodeEditor"> 
-		</textarea>
-		<script>
-			editAreaLoader.init({
-				id: "sourceCodeEditor"
-				,start_highlight: true
-				,syntax: "cpp"	
-				,allow_toggle: false 
-				,toolbar: "syntax_selection"
-				,syntax_selection_allow: "c,cpp,java"
-				,show_line_colors: true
-			});
-		</script>
-	</div>
+    <div class="span12">
+        <textarea id="sourceCodeEditor">
+        </textarea>
+        <script>
+            editAreaLoader.init({
+                id:"sourceCodeEditor", start_highlight:true, syntax:"cpp", allow_toggle:false, toolbar:"syntax_selection", syntax_selection_allow:"c,cpp,java", show_line_colors:true
+            });
+        </script>
+    </div>
+</div>
+
+<!-- 提交 -->
+<div class="row">
+    <div class="span12">
+        <div class="btn btn-success">Submit</div>
+    </div>
 </div>
 
 #include(include/problem_single_footer)

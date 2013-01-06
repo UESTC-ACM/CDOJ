@@ -1,0 +1,86 @@
+/*
+ *
+ *  * cdoj, UESTC ACMICPC Online Judge
+ *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
+ *  * 	mzry1992 <@link muziriyun@gmail.com>
+ *  *
+ *  * This program is free software; you can redistribute it and/or
+ *  * modify it under the terms of the GNU General Public License
+ *  * as published by the Free Software Foundation; either version 2
+ *  * of the License, or (at your option) any later version.
+ *  *
+ *  * This program is distributed in the hope that it will be useful,
+ *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  * GNU General Public License for more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License
+ *  * along with this program; if not, write to the Free Software
+ *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ */
+
+body {
+    background-color: #F0F0EE;
+    font: 12px monospace, sans-serif;
+}
+
+select {
+    background-color: #F9F9F9;
+    border: solid 1px #888888;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+    color: #2B6FB6;
+}
+
+h1 {
+    font-size: 1.5em;
+}
+
+div#char_list {
+    height: 200px;
+    overflow: auto;
+    padding: 1px;
+    border: 1px solid #0A246A;
+    background-color: #F9F9F9;
+    clear: both;
+    margin-top: 5px;
+}
+
+a.char {
+    display: block;
+    float: left;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    margin: 1px;
+    border: solid 1px #888888;
+    text-align: center;
+    cursor: pointer;
+}
+
+a.char:hover {
+    background-color: #CCCCCC;
+}
+
+.preview {
+    border: solid 1px #888888;
+    width: 50px;
+    padding: 2px 5px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    background-color: #CCCCCC;
+    font-size: 2em;
+    float: right;
+    font-weight: bold;
+    margin: 0 0 5px 5px;
+}
+
+#preview_code {
+    font-size: 1.1em;
+    width: 70px;
+}
