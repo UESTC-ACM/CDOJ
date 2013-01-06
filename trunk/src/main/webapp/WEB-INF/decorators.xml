@@ -1,5 +1,4 @@
-</div>
-</div>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!--
   ~ /*
@@ -23,30 +22,9 @@
   ~  */
   -->
 
-<!-- Footer -->
-<div id="footer">
-    <div class="container">
-        <div class="row">
-            <div class="span3 pull-left">
-                <a id="logo-banner" href="./index.html"></a>
-            </div>
-            <div class="span9">
-                <p class="muted credit">
-                    UESTC Online Judge
-                </p>
+<decorators defaultdir="/Views/Decorators">
+    <decorator name="default" page="decDefault.jsp">
+        <pattern>/*</pattern>
+    </decorator>
 
-                <p class="muted credit">
-                    Gnomovision version 69, Copyright (C) 2012 lyhypacm, mzry1992
-                    <br/>
-                    Gnomovision comes with ABSOLUTELY NO WARRANTY
-                    <br/>
-                    This is free software, and you are welcome to redistribute it under <a
-                        href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt">certain conditions</a>
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-
-</body>
-</html>
+</decorators>

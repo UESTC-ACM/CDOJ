@@ -25,11 +25,19 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <!-- for test -->
     <bean
-        id="adminWelcomeAction"
-        class="cn.edu.uestc.acmicpc.action.admin.AdminWelcome"
-        scope="prototype">
-        <property name="message" value="Hello SSH!"/>
+            id="testUser"
+            class="cn.edu.uestc.acmicpc.entity.test.User"
+            scope="prototype">
+        <property name="userName" value="mzry1992"/>
+    </bean>
+
+    <bean
+            id="indexPageAction"
+            class="cn.edu.uestc.acmicpc.action.test.IndexPage"
+            scope="prototype">
+        <property name="user" ref="testUser"/>
     </bean>
 
 </beans>

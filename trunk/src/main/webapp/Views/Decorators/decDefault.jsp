@@ -1,5 +1,7 @@
-<!DOCTYPE html>
-<!--
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
+<%--
   ~ /*
   ~  * cdoj, UESTC ACMICPC Online Judge
   ~  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
@@ -19,36 +21,42 @@
   ~  * along with this program; if not, write to the Free Software
   ~  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   ~  */
-  -->
+  --%>
+
+<%--
+  Created by IntelliJ IDEA.
+  User: mzry1992
+  Date: 13-1-6
+  Time: 上午11:00
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html lang="en">
 <head>
-    <link rel="icon" type="image/png" href="img/logo/favicon128.png">
+    <link rel="icon" type="image/png" href="<s:url value="/Images/logo/favicon128.png"/>">
     <meta http-equiv=Content-Type content="text/html;charset=utf-8">
     <!-- 要用到的CSS -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/prettify.css" rel="stylesheet">
-
+    <link href="<s:url value="/Styles/bootstrap.css"/>" rel="stylesheet">
+    <link href="<s:url value="/Styles/prettify.css"/>" rel="stylesheet">
     <!-- 我的自定义CSS -->
-    <link href="css/cdoj.css" rel="stylesheet">
-
+    <link href="../Styles/cdoj.css" rel="stylesheet">
     <!-- 要用到的JS -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/prettify.js"></script>
+    <script src="<s:url value="/Scripts/jquery.min.js"/>"></script>
+    <script src="<s:url value="/Scripts/bootstrap.js"/>"></script>
+    <script src="<s:url value="/Scripts/prettify.js"/>"></script>
     <script type="text/javascript"
             src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <!-- 如果需要开启内网模式的话请解压MathJax.zip到plugin目录下然后将上面替换成这个
-         <script type="text/javascript" src="plugin/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+         <script type="text/javascript" src="/Plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
          -->
-    <script src="plugin/ckeditor/ckeditor.js"></script>
-    <script src="plugin/edit_area/edit_area_full.js"></script>
-
-    <script src="js/cdoj.js"></script>
+    <script src="<s:url value="/Plugins/ckeditor/ckeditor.js"/>"></script>
+    <script src="<s:url value="/Plugins/edit_area/edit_area_full.js"/>"></script>
+    <script src="<s:url value="/Scripts/cdoj.js"/>"></script>
 
     <!-- 网站标题，暂时先这样 -->
-    <title>${position} - UESTC Online Judge</title>
+    <title><decorator:title/> - UESTC Online Judge</title>
 
 </head>
 
@@ -134,7 +142,7 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="icon-user"></i>
-                        ${user.name}
+                        ${user.userName}
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
@@ -215,92 +223,8 @@
 <!-- 正文 -->
 <div id="wrap">
     <div class="container">
-        <!-- 这一部分保留给NOTICE信息 -->
-        <div class="row">
-            <div class="span12">
-                <div class="alert alert-block">
-                    <div class="row">
-                        <div class="span1">
-                            <h4 class="alert-heading">Notice</h4>
-                        </div>
-                        <div class="span10">
-                            <marquee class="notice" onmouseover="javascript:this.stop();"
-                                     onmouseout="javascript:this.start()">
-                                <!-- 新消息 -->
-                                <span class="label label-important">new</span>
-                                <a href="#">趣味赛第五场（正式赛）比赛推迟(2012-12-15 13:06:00)</a>
-                                &nbsp;&nbsp;&nbsp;&nbsp;
 
-                                <!-- 旧消息 -->
-                                <a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
-                                &nbsp;&nbsp;&nbsp;&nbsp;
-
-                                <a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
-                                &nbsp;&nbsp;&nbsp;&nbsp;
-
-                                <a href="#">趣味赛正式赛时间和机房开放的通知(2012-09-14 12:30:42)</a>
-                                &nbsp;&nbsp;&nbsp;&nbsp;
-
-                            </marquee>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- NOTICE -->
-
-
-        <div class="problem">
-            <div class="row">
-                <!-- 题目标题 -->
-                <div class="span12">
-                    <h2>Problem 9999. One million ways to make love</h2>
-                </div>
-
-                <!-- 导航链接 -->
-                <div class="span12">
-                    <ul class="nav nav-pills">
-                        <li class="active">
-                            <a href="#">Problem</a>
-                        </li>
-                        <li><a href="./problem_single_submit.html">Submit</a></li>
-                        <li><a href="./problem_single_status.html">Status</a></li>
-                        <li><a href="./problem_single_discuss.html">Discuss</a></li>
-                    </ul>
-
-                </div>
-
-
-                <!-- 语言选择 -->
-                <div class="row">
-                    <div class="span12">
-
-                    </div>
-                </div>
-
-                <!-- 编辑框 -->
-                <div class="row">
-                    <div class="span12">
-                        <textarea id="sourceCodeEditor">
-                        </textarea>
-                        <script>
-                            editAreaLoader.init({
-                                id:"sourceCodeEditor", start_highlight:true, syntax:"cpp", allow_toggle:false, toolbar:"syntax_selection", syntax_selection_allow:"c,cpp,java", show_line_colors:true
-                            });
-                        </script>
-                    </div>
-                </div>
-
-                <!-- 提交 -->
-                <div class="row">
-                    <div class="span12">
-                        <div class="btn btn-success">Submit</div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
+        <decorator:body/>
 
     </div>
 </div>
@@ -332,5 +256,3 @@
 
 </body>
 </html>
-
-

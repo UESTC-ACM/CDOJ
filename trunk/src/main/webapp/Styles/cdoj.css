@@ -1,0 +1,146 @@
+/*
+ *
+ *  * cdoj, UESTC ACMICPC Online Judge
+ *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
+ *  * 	mzry1992 <@link muziriyun@gmail.com>
+ *  *
+ *  * This program is free software; you can redistribute it and/or
+ *  * modify it under the terms of the GNU General Public License
+ *  * as published by the Free Software Foundation; either version 2
+ *  * of the License, or (at your option) any later version.
+ *  *
+ *  * This program is distributed in the hope that it will be useful,
+ *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  * GNU General Public License for more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License
+ *  * along with this program; if not, write to the Free Software
+ *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ */
+
+/* 限制最小宽度 */
+body {
+    min-width: 940px;
+}
+
+/* 内容部分用wrap整个包围起来，与上下文有60px的margin */
+#wrap {
+    margin: 80px 0 60px 0;
+}
+
+/* footer与底部留一些空隙吧，加点花纹看起来稍微好一点了 */
+#footer {
+    padding: 60px 0 60px 0;
+    background-color: #222;
+    background: #222 url(../Images/footer-top.png) top center repeat-x;
+}
+
+/* 版权信息 */
+.credit {
+    text-align: center;
+}
+
+/* problem! */
+.problem {
+}
+
+/* 调整表格样式以保证不出现表格换行的情况！ */
+table {
+    table-layout: fixed;
+}
+
+td {
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table-problemlist th {
+    text-align: center;
+}
+
+.table-sample th {
+    text-align: center;
+}
+
+/* 自定义的几个比较常用的信息的格式设置 */
+.pull-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.font-code {
+    font-family: Consolas, "Lucida Console", "Andale Mono", "Bitstream Vera Sans Mono", "Courier New", Courier;
+}
+
+.pos-center {
+    text-align: center;
+}
+
+.pos-right {
+    text-align: right;
+}
+
+.info-time {
+    width: 160px;
+    text-align: center;
+}
+
+.info-contest-state {
+    width: 60px;
+    text-align: center;
+}
+
+.info-solved {
+    width: 14px;
+}
+
+.info-problem-id {
+    width: 32px;
+}
+
+.info-problem-source {
+    display: block;
+}
+
+.info-problem-difficulty {
+    width: 70px;
+}
+
+.info-problem-ac {
+    width: 60px;
+}
+
+.info-problem-ratio {
+    width: 60px;
+}
+
+/* 标签 */
+.tags {
+    margin: 0 4px 0 4px;
+}
+
+/* logo相关 */
+#logo-banner {
+    margin: 0 16px 0 16px;
+    width: 234px;
+    height: 60px;
+    display: block;
+    background: url(../Images/logo/banner.png) no-repeat;
+}
+
+#logo {
+    width: 88px;
+    height: 31px;
+    display: block;
+    background: url(../Images/logo/logo.png) no-repeat;
+}
+
+/* 代码提交框 */
+#sourceCodeEditor {
+    width: 100%;
+    height: 480px;
+}
