@@ -72,7 +72,7 @@ public abstract class BaseCondition {
     /**
      * get Criterion objects from conditions
      *
-     * @param upperCaseFirst wheather columns' name begin uppercase letter first
+     * @param upperCaseFirst whether columns' name begin uppercase letter first
      * @return criterion list we need
      */
     @SuppressWarnings("ConstantConditions")
