@@ -28,10 +28,16 @@
 
 <struts>
 
-    <!-- for test -->
-    <package name="test" namespace="/test" extends="struts-default">
+    <package name="index" namespace="/index" extends="struts-default">
         <action name="index" class="indexPageAction" method="toIndex">
             <result name="success">/Views/Templates/index.jsp</result>
         </action>
     </package>
+
+    <package name="problem" namespace="/problem" extends="struts-default">
+        <action name="problemList" class="problemListAction" method="toProblemList">
+            <result name="success">/Views/Templates/index.jsp</result>
+        </action>
+    </package>
+
 </struts>

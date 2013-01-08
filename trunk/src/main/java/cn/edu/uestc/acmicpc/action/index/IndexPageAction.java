@@ -20,35 +20,53 @@
  *
  */
 
-package spring.ioc;
+package cn.edu.uestc.acmicpc.action.index;
 
-import junit.framework.TestCase;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
-import org.springframework.core.io.ClassPathResource;
+import cn.edu.uestc.acmicpc.entity.test.Contest;
+import cn.edu.uestc.acmicpc.entity.test.Problem;
+import cn.edu.uestc.acmicpc.entity.test.User;
+import com.opensymphony.xwork2.ActionSupport;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: mzry1992
- * Date: 13-1-1
- * Time: 上午12:00
+ * Date: 13-1-5
+ * Time: 下午11:14
  * To change this template use File | Settings | File Templates.
  */
-public class IoCMain extends TestCase {
+public class IndexPageAction extends ActionSupport {
 
-    ClassPathResource resource;
-    BeanFactory factory;
+    private User user;
+    private List<Problem> problemList;
+    private List<Contest> contestList;
 
-    protected void setUp() throws Exception {
-        resource = new ClassPathResource("beans.xml");
-        factory = new XmlBeanFactory(resource);
+    public User getUser() {
+        return user;
     }
 
-    protected void tearDown() throws Exception {
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void testIoc() {
-        IoCService service = (IoCService)factory.getBean("iocService");
-        service.display();
+    public List<Problem> getProblemList() {
+        return problemList;
+    }
+
+    public void setProblemList(List<Problem> problemList) {
+        this.problemList = problemList;
+    }
+
+    public List<Contest> getContestList() {
+        return contestList;
+    }
+
+    public void setContestList(List<Contest> contestList) {
+        this.contestList = contestList;
+    }
+
+    public String toIndex() throws Exception {
+        return SUCCESS;
     }
 }

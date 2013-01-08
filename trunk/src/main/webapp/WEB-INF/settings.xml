@@ -20,31 +20,6 @@
   ~  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   ~  */
   -->
-
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-    <!-- for test -->
-    <bean
-            id="testUser"
-            class="cn.edu.uestc.acmicpc.entity.test.User"
-            scope="prototype">
-        <property name="userName" value="mzry1992"/>
-    </bean>
-
-    <!-- Action -->
-    <bean
-            id="indexPageAction"
-            class="cn.edu.uestc.acmicpc.action.index.IndexPageAction"
-            scope="prototype">
-        <property name="user" ref="testUser"/>
-    </bean>
-
-    <bean
-        id="problemListAction"
-        class="cn.edu.uestc.acmicpc.action.problem.ProblemListAction"
-        scope="prototype">
-    </bean>
-
-</beans>
+<!DOCTYPE config [<!ELEMENT config ANY>]>
+<config>
+</config>
