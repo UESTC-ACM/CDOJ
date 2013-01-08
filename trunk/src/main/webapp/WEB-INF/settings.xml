@@ -20,6 +20,9 @@
   ~  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   ~  */
   -->
-<!DOCTYPE config [<!ELEMENT config ANY>]>
-<config>
-</config>
+<!DOCTYPE cdoj-settings SYSTEM "cdoj-settings.dtd">
+<cdoj-settings>
+    <setting name="setting">
+        <item id="encoding" description="default encoding">UTF-8</item>
+    </setting>
+</cdoj-settings>

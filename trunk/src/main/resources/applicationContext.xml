@@ -26,25 +26,24 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- for test -->
-    <bean
-            id="testUser"
-            class="cn.edu.uestc.acmicpc.entity.test.User"
-            scope="prototype">
+    <bean id="testUser"
+          class="cn.edu.uestc.acmicpc.entity.test.User"
+          scope="prototype">
         <property name="userName" value="mzry1992"/>
     </bean>
+    <bean id="testSettings"
+          class="cn.edu.uestc.acmicpc.action.test.TestSettingsAction"
+          scope="prototype"/>
 
     <!-- Action -->
-    <bean
-            id="indexPageAction"
-            class="cn.edu.uestc.acmicpc.action.index.IndexPageAction"
-            scope="prototype">
+    <bean id="indexPageAction"
+          class="cn.edu.uestc.acmicpc.action.index.IndexPageAction"
+          scope="prototype">
         <property name="user" ref="testUser"/>
     </bean>
 
-    <bean
-        id="problemListAction"
-        class="cn.edu.uestc.acmicpc.action.problem.ProblemListAction"
-        scope="prototype">
-    </bean>
+    <bean id="problemListAction"
+          class="cn.edu.uestc.acmicpc.action.problem.ProblemListAction"
+          scope="prototype"/>
 
 </beans>
