@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
   ~ /*
   ~  * cdoj, UESTC ACMICPC Online Judge
@@ -21,31 +20,23 @@
   ~  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   ~  */
   -->
+ <!-- START SNIPPET: settingsDtd -->
 
-<!DOCTYPE struts PUBLIC
-        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-        "http://struts.apache.org/dtds/struts-2.0.dtd">
+ <!--
+    UESTC Online Judge Settings configuration DTD.
+    Use the following DOCTYPE
 
-<struts>
+    <!DOCTYPE cdoj-settings SYSTEM "cdoj-settings.dtd">
+ -->
+<!ELEMENT cdoj-settings (setting)*>
+<!ELEMENT setting (item)*>
+<!ATTLIST setting
+    name CDATA #REQUIRED
+>
 
-    <package name="index" namespace="/index" extends="struts-default">
-        <default-action-ref name="index"/>
-        <action name="index" class="indexPageAction" method="toIndex">
-            <result>/views/index/index.jsp</result>
-        </action>
-    </package>
+<!ELEMENT item (#PCDATA)>
+<!ATTLIST item
+    id CDATA #REQUIRED
+    description CDATA #REQUIRED
+>
 
-    <package name="problem" namespace="/problem" extends="struts-default">
-        <action name="problemList" class="problemListAction" method="toProblemList">
-            <result>/views/index/index.jsp</result>
-        </action>
-    </package>
-
-    <package name="test" namespace="/test" extends="struts-default">
-        <default-action-ref name="index"/>
-        <action name="index" class="testSettings">
-            <result>/views/test/index.jsp</result>
-        </action>
-    </package>
-
-</struts>

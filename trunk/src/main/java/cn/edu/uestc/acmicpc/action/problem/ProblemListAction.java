@@ -22,6 +22,7 @@
 
 package cn.edu.uestc.acmicpc.action.problem;
 
+import cn.edu.uestc.acmicpc.action.BaseAction;
 import com.opensymphony.xwork2.ActionSupport;
 
 import java.util.List;
@@ -30,9 +31,11 @@ import java.util.List;
  * action of /problem/problemList.action
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
+ * @version 2
  */
-public class ProblemListAction extends ActionSupport {
+public class ProblemListAction extends BaseAction {
+
+    private static final long serialVersionUID = 1523046166991379254L;
 
     public String toProblemList() {
         return SUCCESS;

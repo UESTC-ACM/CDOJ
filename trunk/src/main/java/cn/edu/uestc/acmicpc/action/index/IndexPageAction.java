@@ -22,6 +22,7 @@
 
 package cn.edu.uestc.acmicpc.action.index;
 
+import cn.edu.uestc.acmicpc.action.BaseAction;
 import cn.edu.uestc.acmicpc.entity.test.Contest;
 import cn.edu.uestc.acmicpc.entity.test.Problem;
 import cn.edu.uestc.acmicpc.entity.test.User;
@@ -33,11 +34,12 @@ import java.util.List;
  * action of /index/index.action
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
+ * @version 2
  */
 
-public class IndexPageAction extends ActionSupport {
+public class IndexPageAction extends BaseAction {
 
+    private static final long serialVersionUID = 1689142403463050894L;
     private User user;
     private List<Problem> problemList;
     private List<Contest> contestList;

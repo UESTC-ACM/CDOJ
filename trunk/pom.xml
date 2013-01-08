@@ -35,6 +35,7 @@
         <org.apache.struts.version>2.3.8</org.apache.struts.version>
         <org.springframework.version>3.1.3.RELEASE</org.springframework.version>
         <org.hibernate.version>4.1.9.Final</org.hibernate.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
@@ -199,6 +200,18 @@
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>maven-jetty-plugin</artifactId>
+                <version>6.1.26</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <fork>true</fork>
+                    <executable>${JAVA_HOME}/bin/javac</executable>
+                    <compilerVersion>1.7</compilerVersion>
+                </configuration>
             </plugin>
         </plugins>
         <finalName>trunk</finalName>

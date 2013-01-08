@@ -30,7 +30,7 @@
     <!-- spring configure file location -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:applictionContext.xml</param-value>
+        <param-value>classpath:applicationContext.xml</param-value>
     </context-param>
 
     <!-- spring listener -->

@@ -47,21 +47,21 @@ import java.util.List;
 public abstract class BaseCondition {
 
     /**
-     * method for user to invoke special columns
+     * Method for user to invoke special columns
      *
      * @param conditions conditions that to be considered
      */
     public abstract void invoke(ArrayList<Criterion> conditions);
 
     /**
-     * basic condition type of database handler
+     * Basic condition type of database handler
      */
     public enum ConditionType {
         eq, gt, lt, ge, le, like
     }
 
     /**
-     * get Criterion objects from conditions
+     * Get Criterion objects from conditions
      *
      * @return criterion list we need
      */
@@ -70,7 +70,7 @@ public abstract class BaseCondition {
     }
 
     /**
-     * get Criterion objects from conditions
+     * Get Criterion objects from conditions
      *
      * @param upperCaseFirst whether columns' name begin uppercase letter first
      * @return criterion list we need
@@ -118,7 +118,7 @@ public abstract class BaseCondition {
     }
 
     /**
-     * annotation for condition expressions
+     * Annotation for condition expressions
      */
     @Retention(RetentionPolicy.RUNTIME)
     public @interface Exp {
