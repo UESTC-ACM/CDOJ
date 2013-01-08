@@ -20,28 +20,22 @@
  *
  */
 
-package spring.ioc;
+package cn.edu.uestc.acmicpc.action.problem;
+
+import com.opensymphony.xwork2.ActionSupport;
+
+import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: mzry1992
- * Date: 12-12-31
- * Time: 下午11:57
- * To change this template use File | Settings | File Templates.
+ * description
+ *
+ * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ * @version 1
  */
-public class IoCService {
+public class ProblemListAction extends ActionSupport {
 
-    private String message;
-
-    public String getMessage() {
-        return message;
+    public String toProblemList() {
+        return SUCCESS;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void display() {
-        System.out.println(getMessage());
-    }
 }

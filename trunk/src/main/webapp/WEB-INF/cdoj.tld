@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
 <!--
   ~ /*
   ~  * cdoj, UESTC ACMICPC Online Judge
@@ -21,30 +22,24 @@
   ~  */
   -->
 
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1">
 
-    <!-- for test -->
-    <bean
-            id="testUser"
-            class="cn.edu.uestc.acmicpc.entity.test.User"
-            scope="prototype">
-        <property name="userName" value="mzry1992"/>
-    </bean>
+    <tlib-version>1.0</tlib-version>
+    <short-name>cdojTags</short-name>
+    <uri>http://acm.uestc.edu.cn</uri>
 
-    <!-- Action -->
-    <bean
-            id="indexPageAction"
-            class="cn.edu.uestc.acmicpc.action.index.IndexPageAction"
-            scope="prototype">
-        <property name="user" ref="testUser"/>
-    </bean>
-
-    <bean
-        id="problemListAction"
-        class="cn.edu.uestc.acmicpc.action.problem.ProblemListAction"
-        scope="prototype">
-    </bean>
-
-</beans>
+    <!-- Invoke 'Generate' action to add tags or functions -->
+    <tag>
+        <name>navigation</name>
+        <tag-class>cn.edu.uestc.acmicpc.template.tag.NavigationTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>current</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+</taglib>

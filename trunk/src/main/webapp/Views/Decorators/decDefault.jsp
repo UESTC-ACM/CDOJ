@@ -1,6 +1,8 @@
+<%@ page import="org.apache.struts2.ServletActionContext" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
+<%@ taglib prefix="cdoj" uri="/WEB-INF/cdoj.tld" %>
 <%--
   ~ /*
   ~  * cdoj, UESTC ACMICPC Online Judge
@@ -41,7 +43,7 @@
     <link href="<s:url value="/Styles/bootstrap.css"/>" rel="stylesheet">
     <link href="<s:url value="/Styles/prettify.css"/>" rel="stylesheet">
     <!-- 我的自定义CSS -->
-    <link href="../Styles/cdoj.css" rel="stylesheet">
+    <link href="<s:url value="/Styles/cdoj.css"/>" rel="stylesheet">
     <!-- 要用到的JS -->
     <script src="<s:url value="/Scripts/jquery.min.js"/>"></script>
     <script src="<s:url value="/Scripts/bootstrap.js"/>"></script>
@@ -80,14 +82,16 @@
 
             <!-- 导航部分 -->
             <ul class="nav">
+                <cdoj:navigation current="<%= ServletActionContext.getActionMapping().getNamespace()%>"/>
+
                 <!-- 当前页面class为active -->
                 <li class="active">
-                    <a href="./index.html#">CDOJ</a>
+                    <a href="<s:url action="index" namespace="/index"/>">CDOJ</a>
                 </li>
                 <li class="divider-vertical"></li>
 
                 <li>
-                    <a href="./problem.html">Problems</a>
+                    <a href="<s:url action="problemList" namespace="/problem"/>">Problems</a>
                 </li>
                 <li class="divider-vertical"></li>
 
@@ -102,7 +106,7 @@
                 <li class="divider-vertical"></li>
 
                 <li>
-                    <a href="./ranklist.html">Ranklist</a>
+                    <a href="./users.html">Users</a>
                 </li>
                 <li class="divider-vertical"></li>
 
@@ -135,9 +139,7 @@
             </form>
 
             <!-- 用户信息菜单，自行取用 -->
-            <!--
-                       用户信息菜单，登陆后
-                       -->
+            <!-- 用户信息菜单，登陆后 -->
             <ul class="nav pull-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -234,7 +236,7 @@
     <div class="container">
         <div class="row">
             <div class="span3 pull-left">
-                <a id="logo-banner" href="./index.html"></a>
+                <a id="logo-banner" href="<s:url action="index"/>"></a>
             </div>
             <div class="span9">
                 <p class="muted credit">
