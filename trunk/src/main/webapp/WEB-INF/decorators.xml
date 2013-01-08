@@ -22,7 +22,7 @@
   ~  */
   -->
 
-<decorators defaultdir="/Views/Decorators">
+<decorators defaultdir="/views/decorators">
     <decorator name="default" page="decDefault.jsp">
         <pattern>/*</pattern>
     </decorator>
