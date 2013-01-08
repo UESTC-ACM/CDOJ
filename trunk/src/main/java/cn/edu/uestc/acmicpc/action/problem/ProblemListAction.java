@@ -27,7 +27,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.util.List;
 
 /**
- * description
+ * action of /problem/problemList.action
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1

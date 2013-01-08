@@ -1,3 +1,7 @@
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
+<%@ taglib prefix="cdoj" uri="/WEB-INF/cdoj.tld" %>
 <%--
   ~ /*
   ~  * cdoj, UESTC ACMICPC Online Judge
@@ -38,7 +42,7 @@
     <!-- Carousel items -->
     <div class="carousel-inner">
         <div class="item active">
-            <img src="../Images/test/test001.png">
+            <img src="<s:url value="/images/test/test001.png"/>">
 
             <div class="carousel-caption">
                 <h4>趣味赛</h4>
@@ -48,7 +52,7 @@
         </div>
 
         <div class="item">
-            <img src="../Images/test/test002.png">
+            <img src="<s:url value="/images/test/test002.png"/>">
 
             <div class="carousel-caption">
                 <h4>四维较量</h4>
@@ -187,7 +191,7 @@ public class Main
     </div>
     <div class="span4">
         <h2>Problems
-            <p class="pull-right"><a class="btn btn-primary" href="./problem.html">More »</a></p>
+            <p class="pull-right"><a class="btn btn-primary" href="<s:url action="problemList" namespace="/problem"/>">More »</a></p>
         </h2>
 
         <table class="table table-striped table-bordered">

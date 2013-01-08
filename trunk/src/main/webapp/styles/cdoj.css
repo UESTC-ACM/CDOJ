@@ -34,7 +34,7 @@ body {
 #footer {
     padding: 60px 0 60px 0;
     background-color: #222;
-    background: #222 url(../Images/footer-top.png) top center repeat-x;
+    background: #222 url(../images/footer-top.png) top center repeat-x;
 }
 
 /* 版权信息 */
@@ -129,14 +129,14 @@ td {
     width: 234px;
     height: 60px;
     display: block;
-    background: url(../Images/logo/banner.png) no-repeat;
+    background: url(../images/logo/banner.png) no-repeat;
 }
 
 #logo {
     width: 88px;
     height: 31px;
     display: block;
-    background: url(../Images/logo/logo.png) no-repeat;
+    background: url(../images/logo/logo.png) no-repeat;
 }
 
 /* 代码提交框 */

@@ -36,26 +36,26 @@
 
 <html lang="en">
 <head>
-    <link rel="icon" type="image/png" href="<s:url value="/Images/logo/favicon128.png"/>">
+    <link rel="icon" type="image/png" href="<s:url value="/images/logo/favicon128.png"/>">
     <meta http-equiv=Content-Type content="text/html;charset=utf-8">
     <!-- 要用到的CSS -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="<s:url value="/Styles/bootstrap.css"/>" rel="stylesheet">
-    <link href="<s:url value="/Styles/prettify.css"/>" rel="stylesheet">
+    <link href="<s:url value="/styles/bootstrap.css"/>" rel="stylesheet">
+    <link href="<s:url value="/styles/prettify.css"/>" rel="stylesheet">
     <!-- 我的自定义CSS -->
-    <link href="<s:url value="/Styles/cdoj.css"/>" rel="stylesheet">
+    <link href="<s:url value="/styles/cdoj.css"/>" rel="stylesheet">
     <!-- 要用到的JS -->
-    <script src="<s:url value="/Scripts/jquery.min.js"/>"></script>
-    <script src="<s:url value="/Scripts/bootstrap.js"/>"></script>
-    <script src="<s:url value="/Scripts/prettify.js"/>"></script>
+    <script src="<s:url value="/scripts/jquery.min.js"/>"></script>
+    <script src="<s:url value="/scripts/bootstrap.js"/>"></script>
+    <script src="<s:url value="/scripts/prettify.js"/>"></script>
     <script type="text/javascript"
             src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <!-- 如果需要开启内网模式的话请解压MathJax.zip到plugin目录下然后将上面替换成这个
          <script type="text/javascript" src="/Plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
          -->
-    <script src="<s:url value="/Plugins/ckeditor/ckeditor.js"/>"></script>
-    <script src="<s:url value="/Plugins/edit_area/edit_area_full.js"/>"></script>
-    <script src="<s:url value="/Scripts/cdoj.js"/>"></script>
+    <script src="<s:url value="/plugins/ckeditor/ckeditor.js"/>"></script>
+    <script src="<s:url value="/plugins/edit_area/edit_area_full.js"/>"></script>
+    <script src="<s:url value="/scripts/cdoj.js"/>"></script>
 
     <!-- 网站标题，暂时先这样 -->
     <title><decorator:title/> - UESTC Online Judge</title>
@@ -82,7 +82,6 @@
 
             <!-- 导航部分 -->
             <ul class="nav">
-                <cdoj:navigation current="<%= ServletActionContext.getActionMapping().getNamespace()%>"/>
 
                 <!-- 当前页面class为active -->
                 <li class="active">
@@ -225,6 +224,7 @@
 <!-- 正文 -->
 <div id="wrap">
     <div class="container">
+        <cdoj:navigation current="<%= ServletActionContext.getActionMapping().getNamespace()%>"/>
 
         <decorator:body/>
 
