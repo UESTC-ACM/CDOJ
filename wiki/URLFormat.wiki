@@ -1,0 +1,13 @@
+#labels Phase-Design,Phase-Implementation
+= URL format standard =
+
+== Index ==
+|| */index/* || index page of CDOJ ||
+
+== Problem ==
+|| */problem/list/* || problem list, page 1 ||
+|| */problem/list/{page}* || problem list, {page} defined the page to show ||
+|| */problem/{id}/ || show problem{id}* ||
+|| */problem/{id}/submit/* || submit problem{id} ||
+|| */problem/{id}/status/* || status of problem{id} ||
+|| */problem/{id}/edit/* || admin page of problem{id} ||
