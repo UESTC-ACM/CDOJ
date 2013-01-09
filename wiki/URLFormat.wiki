@@ -1,15 +1,23 @@
 #labels Phase-Design,Phase-Implementation
 = URL format standard =
 
-|| *Router address* || ||
-|| */* || index page of CDOJ ||
-|| */index/* || index page of CDOJ ||
-|| */problemset/page/* || problem list, page 1 ||
-|| */problemset/page/{page}* || problem list, {page} defined the page to show ||
-|| */problemset/problem/{id}* || show problem{id} ||
+|| *Router address* || Action || ||
+|| */* || index/indexPageAction || index page of CDOJ ||
+|| */index/* || index/indexPageAction || index page of CDOJ ||
+|| */problemset/page/* || problem/ProblemListAction || problem list, page 1 ||
+|| */problemset/page/{page}* || problem/ProblemListAction || problem list, {page} defined the page to show ||
+|| */problemset/problem/{id}* || problem/ProblemShowAction || show problem{id} ||
 
 == TODO ==
 || *Router address* || ||
 || */index/{id}* || show articles ||
 || */problemset/problem/{id}/submit/* || submit problem{id} ||
 || */problemset/problem/{id}/status/* || status of problem{id} ||
+|| */contest/pages/* || contest list, like *problemset/pages/* ||
+|| */contest/pages/{page}* || contest list, like *problemset/pages/{page}* ||
+|| */contest/show/{id}* || show contest{id} ||
+|| */contest/show/{id}/ranklist* || ranklist of contest{id} ||
+|| */contest/show/{id}/status* || ||
+|| */contest/show/{id}/problem/{id}* || problem{id} of contest{id} ||
+|| */contest/show/{id}/problem/{id}/submit/* || ||
+|| */contest/show/{id}/problem/{id}/status/* || ||

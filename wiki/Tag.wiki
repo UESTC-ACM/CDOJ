@@ -1,0 +1,43 @@
+#labels Phase-Design,Phase-Implementation
+= Tags in cdoj.tld =
+
+== pagination ==
+show a simple pagination.
+
+=== usage ===
+{{{
+<cdoj:pagination current="" total="" baseUrl="" displayDist=""/>
+}}}
+
+=== example ===
+{{{
+<s:url action="page" namespace="/problemset" id="paginationPages" />
+<cdoj:pagination current="${page}" total="30" baseUrl="${paginationPages}" displayDist="4"/>
+}}}
+
+=== result ===
+It will display a pagination like this:
+{{{
+← First | « | {pages} | » | Last →
+}}}
+and {pages} is:
+
+*situation 1:* the total pages is small than 3+displayDist*2
+{{{
+1 | 2 | --- | total
+}}}
+*situation 2:* the current pages is small than 2+dispalyDist
+{{{
+                                         midPage
+1 | midPage-displayDist | --- | ? |  2+displayDist  | ? |  --- | 2+2*displayDist | ...
+}}}
+*situation 3:* the current pages is big than total-1-displayDist
+{{{
+                                             midPage
+...| total-1-2*displayDist | --- | ? |  total-1-displayDist  | ? |  --- | total-1 | total
+}}}
+*other situations:*
+{{{
+                                     midPage
+...| current-displayDist | --- | ? | current | ? |  --- | current+displayDist | ...
+}}}		
