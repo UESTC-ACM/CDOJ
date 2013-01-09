@@ -22,19 +22,19 @@
 #include "BufferedIO.h"
 
 int main(int argc, char* argv[]) {
-	Logger* logger = Logger::getInstance();
-	logger->open();
-	logger->log(INFO, __FILE__, __LINE__, "core begin with argc = %d argv address %p", argc, argv);
-	BufferedIO* bufferIO = new BufferedIO(0);
 	try {
+		Logger* logger = Logger::getInstance();
+		logger->open();
+		logger->log(INFO, __FILE__, __LINE__, "core begin with argc = %d argv address %p", argc, argv);
+		BufferedIO* bufferIO = new BufferedIO(0);
 		printf("%p\n", bufferIO->buffer);
 		throw AppException("catched exception");
+		if (bufferIO != NULL)
+			delete bufferIO;
+		logger->close();
 	} catch (const AppException& e) {
 		e.printStackTrace();
 	}
-	if (bufferIO != NULL)
-		delete bufferIO;
-	logger->close();
 	return 0;
 }
 

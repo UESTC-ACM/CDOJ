@@ -77,22 +77,23 @@ uint64_t BufferedReader::readUInt64(void) throw(AppException) {
 	return value;
 }
 
-/*const char* BufferedReader::read(void) throw(AppException) {
+const char* BufferedReader::next(void) throw(AppException) {
 	if (fd < 0)
 		throw AppException("cannot open input file.");
-	uint8_t value;
+	char value;
 	size_t result;
 	size_t current = 0;
 
 	while (current < BUFFER_SIZE - 1) {
-		result = read(fd, &value, sizeof(uint8_t));
-		if (result == 0x00 || result == 0x0A || result == 0x0D
-			|| result == 0x20 || result == 0x09)
+		result = read(fd, &value, sizeof(char));
+		if (result == 0x00 || value == 0x00 ||
+			value == 0x0A || value == 0x0D
+			|| value == 0x20 || value == 0x09)
 			break;
-		buffer[current++] = result;
+		buffer[current++] = value;
 	}
 	buffer[current] = 0;
 	if (current == 0) return NULL;
 	return buffer;
-}*/
+}
 
