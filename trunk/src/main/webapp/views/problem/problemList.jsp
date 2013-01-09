@@ -1,3 +1,7 @@
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
+<%@ taglib prefix="cdoj" uri="/WEB-INF/cdoj.tld" %>
 <%--
   ~ /*
   ~  * cdoj, UESTC ACMICPC Online Judge
@@ -33,6 +37,8 @@
     <title>Problem</title>
 </head>
 <body>
+
+<s:property value="page"/>
 
 <!-- 题目分页和跳转 -->
 <div class="row">

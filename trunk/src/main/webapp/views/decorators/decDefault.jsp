@@ -1,4 +1,3 @@
-<%@ page import="org.apache.struts2.ServletActionContext" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
@@ -86,12 +85,12 @@
 
                 <!-- 当前页面class为active -->
                 <li class="active">
-                    <a href="<s:url action="index" namespace="/index"/>">CDOJ</a>
+                    <a href="<s:url action="index" namespace="/"/>">CDOJ</a>
                 </li>
                 <li class="divider-vertical"></li>
 
                 <li>
-                    <a href="<s:url action="problemList" namespace="/problem"/>">Problems</a>
+                    <a href="<s:url action="page" namespace="/problemset"/>">Problems</a>
                 </li>
                 <li class="divider-vertical"></li>
 
@@ -225,7 +224,6 @@
 <!-- 正文 -->
 <div id="wrap">
     <div class="container">
-        <cdoj:navigation current="<%= ServletActionContext.getActionMapping().getNamespace()%>"/>
 
         <decorator:body/>
 

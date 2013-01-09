@@ -33,10 +33,29 @@ import java.util.List;
 
 public class Contest {
 
+    /**
+     * contest title
+     */
     private String title;
+
+    /**
+     * contest description
+     */
     private String description;
+
+    /**
+     * contest start time
+     */
     private int time;
+
+    /**
+     * contest length
+     */
     private int length;
+
+    /**
+     * contest visible statement
+     */
     private Boolean isVisible;
 
     public String getTitle() {

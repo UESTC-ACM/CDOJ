@@ -27,22 +27,33 @@
         "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
+    <!-- route support -->
+    <constant name="struts.action.extension" value=","/>
+    <constant name="struts.enable.SlashesInActionNames" value="true"/>
 
-    <package name="index" namespace="/index" extends="struts-default">
-        <default-action-ref name="index"/>
+    <!-- default package -->
+    <package name="cdoj-default" extends="struts-default">
+    </package>
+
+    <package name="index" namespace="/" extends="cdoj-default">
+        <default-action-ref name="index" />
         <action name="index" class="indexPageAction" method="toIndex">
             <result>/views/index/indexPage.jsp</result>
         </action>
     </package>
 
-    <package name="problem" namespace="/problem" extends="struts-default">
-        <default-action-ref name="problemList" />
-        <action name="problemList" class="problemListAction" method="toProblemList">
+    <package name="problemset" namespace="/problemset" extends="cdoj-default">
+        <action name="page/*" class="problemListAction" method="toProblemList">
+            <param name="page">{1}</param>
             <result>/views/problem/problemList.jsp</result>
+        </action>
+        <action name="problem/*" class="problemShowAction" method="toProblem">
+            <param name="problemId">{1}</param>
+            <result>/views/problem/problemShow.jsp</result>
         </action>
     </package>
 
-    <package name="test" namespace="/test" extends="struts-default">
+    <package name="test" namespace="/test" extends="cdoj-default">
         <default-action-ref name="index"/>
         <action name="index" class="testSettings">
             <result>/views/test/index.jsp</result>
