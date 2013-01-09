@@ -1,15 +1,15 @@
 #labels Phase-Design,Phase-Implementation
 = URL format standard =
 
-== Index ==
-|| *Router address* || *Normal address* || ||
-|| */index/* || */index/index.action* || index page of CDOJ ||
+|| *Router address* || ||
+|| */* || index page of CDOJ ||
+|| */index/* || index page of CDOJ ||
+|| */problemset/page/* || problem list, page 1 ||
+|| */problemset/page/{page}* || problem list, {page} defined the page to show ||
+|| */problemset/problem/{id}* || show problem{id} ||
 
-== Problem ==
-|| *Router address* || *Normal address* || ||
-|| */problem/list/* || */problem/list.action* || problem list, page 1 ||
-|| */problem/list/{page}* || */problem/list.action?page={page}* || problem list, {page} defined the page to show ||
-|| */problem/{id}/* || */problem/problem.action?id={id}* || show problem{id} ||
-|| */problem/{id}/submit/* || */problem/problemSubmit.action?id={id}* || submit problem{id} ||
-|| */problem/{id}/status/* || */problem/problemStatus.action?id={id}* || status of problem{id} ||
-|| */problem/{id}/edit/* || */problem/problemEdit.action?id={id}* || admin page of problem{id} ||
+== TODO ==
+|| *Router address* || ||
+|| */index/{id}* || show articles ||
+|| */problemset/problem/{id}/submit/* || submit problem{id} ||
+|| */problemset/problem/{id}/status/* || status of problem{id} ||
