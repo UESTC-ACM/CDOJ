@@ -78,6 +78,8 @@ BufferedWriter::writeUInt64	../branches/src/BufferedWriter.cc	/^void BufferedWri
 BufferedWriter::writeUInt8	../branches/include/BufferedWriter.h	/^	void writeUInt8(uint8_t value) throw(AppException);$/;"	p	class:BufferedWriter	access:public	signature:(uint8_t value)
 BufferedWriter::writeUInt8	../branches/src/BufferedWriter.cc	/^void BufferedWriter::writeUInt8(uint8_t value) throw(AppException) {$/;"	f	class:BufferedWriter	signature:(uint8_t value)
 CFLAGS	../branches/Makefile	/^CFLAGS=-Wall -W -g -O2 $(DEBUG) $(CXXFLAGS)$/;"	m
+COMPILER_BUF_SIZE	../branches/src/Compiler.cc	23;"	d	file:
+COMPILING	../branches/src/Compiler.cc	24;"	d	file:
 CXX	../branches/Makefile	/^CXX=g++$/;"	m
 CXXFLAGS	../branches/Makefile	/^CXXFLAGS=-std=gnu++11$/;"	m
 CXXLD	../branches/Makefile	/^CXXLD=g++$/;"	m
@@ -125,6 +127,7 @@ FATAL	../branches/include/Logger.h	/^	FATAL, WARNING, MONITOR, NOTICE, TRADE, DE
 INCLUDE	../branches/Makefile	/^INCLUDE=\\$/;"	m
 INCLUDE_DIR	../branches/Makefile	/^INCLUDE_DIR=$(DIR)\/include$/;"	m
 INFO	../branches/include/Logger.h	/^	FATAL, WARNING, MONITOR, NOTICE, TRADE, DEBUG, INFO$/;"	e	enum:LoggerFlag
+INTERNAL_ERROR	../branches/src/Compiler.cc	25;"	d	file:
 LDFLAGS	../branches/Makefile	/^LDFLAGS=$(DEBUG) $(CXXFLAGS)$/;"	m
 LIB_DIR	../branches/Makefile	/^LIB_DIR=$(DIR)\/lib$/;"	m
 LOG_DIR	../branches/Makefile	/^LOG_DIR=$(DIR)\/log$/;"	m
@@ -141,8 +144,8 @@ Logger::getInstance	../branches/include/Logger.h	/^	static Logger* getInstance()
 Logger::getInstance	../branches/src/Logger.cc	/^Logger* Logger::getInstance(void) {$/;"	f	class:Logger	signature:(void)
 Logger::instance	../branches/include/Logger.h	/^	static Logger* instance;$/;"	m	class:Logger	access:private
 Logger::instance	../branches/src/Logger.cc	/^Logger* Logger::instance;$/;"	m	class:Logger	file:
-Logger::log	../branches/include/Logger.h	/^	void log(LoggerFlag loggerFlag, const char* file, const int line, const char* fmt, ...);$/;"	p	class:Logger	access:public	signature:(LoggerFlag loggerFlag, const char* file, const int line, const char* fmt, ...)
-Logger::log	../branches/src/Logger.cc	/^void Logger::log(LoggerFlag flag, const char* file, const int line, const char* fmt, ...) {$/;"	f	class:Logger	signature:(LoggerFlag flag, const char* file, const int line, const char* fmt, ...)
+Logger::log	../branches/include/Logger.h	/^	void log(LoggerFlag loggerFlag, const char* fmt, ...);$/;"	p	class:Logger	access:public	signature:(LoggerFlag loggerFlag, const char* fmt, ...)
+Logger::log	../branches/src/Logger.cc	/^void Logger::log(LoggerFlag flag, const char* fmt, ...) {$/;"	f	class:Logger	signature:(LoggerFlag flag, const char* fmt, ...)
 Logger::open	../branches/include/Logger.h	/^	void open() throw(AppException);$/;"	p	class:Logger	access:public	signature:()
 Logger::open	../branches/src/Logger.cc	/^void Logger::open(void) throw(AppException) {$/;"	f	class:Logger	signature:(void)
 LoggerFlag	../branches/include/Logger.h	/^enum LoggerFlag {$/;"	g
@@ -152,6 +155,28 @@ OBJS	../branches/Makefile	/^OBJS=$(patsubst $(SRC_DIR)\/%.$(EXTENSION), $(OBJ_DI
 OBJ_DIR	../branches/Makefile	/^OBJ_DIR=$(DIR)\/obj$/;"	m
 PROGRAM	../branches/Makefile	/^PROGRAM=$(BIN_DIR)\/judgecore$/;"	m
 SRC_DIR	../branches/Makefile	/^SRC_DIR=$(DIR)\/src$/;"	m
+Settings	../branches/include/Settings.h	/^	Settings();$/;"	p	class:Settings	access:private	signature:()
+Settings	../branches/include/Settings.h	/^class Settings {$/;"	c
+Settings	../branches/src/Settings.cc	/^Settings::Settings() {$/;"	f	class:Settings	signature:()
+Settings::Settings	../branches/include/Settings.h	/^	Settings();$/;"	p	class:Settings	access:private	signature:()
+Settings::Settings	../branches/src/Settings.cc	/^Settings::Settings() {$/;"	f	class:Settings	signature:()
+Settings::chroot	../branches/include/Settings.h	/^	void chroot() const throw(AppException);$/;"	p	class:Settings	access:public	signature:() const
+Settings::chroot	../branches/src/Settings.cc	/^void Settings::chroot(void) const throw(AppException) {$/;"	f	class:Settings	signature:(void) const
+Settings::clean	../branches/include/Settings.h	/^	void clean(int fd) const throw(AppException);$/;"	p	class:Settings	access:public	signature:(int fd) const
+Settings::clean	../branches/src/Settings.cc	/^void Settings::clean(int fd) const throw(AppException) {$/;"	f	class:Settings	signature:(int fd) const
+Settings::dataDir	../branches/include/Settings.h	/^	std::string dataDir;$/;"	m	class:Settings	access:private
+Settings::getDataDir	../branches/include/Settings.h	/^	std::string getDataDir() const;$/;"	p	class:Settings	access:public	signature:() const
+Settings::getDataDir	../branches/src/Settings.cc	/^std::string Settings::getDataDir(void) const {$/;"	f	class:Settings	signature:(void) const
+Settings::getInstance	../branches/include/Settings.h	/^	static const Settings* getInstance();$/;"	p	class:Settings	access:public	signature:()
+Settings::getInstance	../branches/src/Settings.cc	/^const Settings* Settings::getInstance() {$/;"	f	class:Settings	signature:()
+Settings::getLogFile	../branches/include/Settings.h	/^	std::string getLogFile() const;$/;"	p	class:Settings	access:public	signature:() const
+Settings::getLogFile	../branches/src/Settings.cc	/^std::string Settings::getLogFile(void) const {$/;"	f	class:Settings	signature:(void) const
+Settings::getTempDir	../branches/include/Settings.h	/^	std::string getTempDir() const;$/;"	p	class:Settings	access:public	signature:() const
+Settings::getTempDir	../branches/src/Settings.cc	/^std::string Settings::getTempDir(void) const {$/;"	f	class:Settings	signature:(void) const
+Settings::instance	../branches/include/Settings.h	/^	static Settings* instance;$/;"	m	class:Settings	access:private
+Settings::instance	../branches/src/Settings.cc	/^Settings* Settings::instance;$/;"	m	class:Settings	file:
+Settings::logFile	../branches/include/Settings.h	/^	std::string logFile;$/;"	m	class:Settings	access:private
+Settings::tempDir	../branches/include/Settings.h	/^	std::string tempDir;$/;"	m	class:Settings	access:private
 TRADE	../branches/include/Logger.h	/^	FATAL, WARNING, MONITOR, NOTICE, TRADE, DEBUG, INFO$/;"	e	enum:LoggerFlag
 WARNING	../branches/include/Logger.h	/^	FATAL, WARNING, MONITOR, NOTICE, TRADE, DEBUG, INFO$/;"	e	enum:LoggerFlag
 __APPEXCEPTION_H__	../branches/include/AppException.h	20;"	d
@@ -161,8 +186,13 @@ __BUFFERED_WRITER_H__	../branches/include/BufferedWriter.h	20;"	d
 __COMPILER_FACTORY_H__	../branches/include/CompilerFactory.h	20;"	d
 __COMPILER_H__	../branches/include/Compiler.h	20;"	d
 __LOGGER_H__	../branches/include/Logger.h	20;"	d
+__SETTINGS_H__	../branches/include/Settings.h	20;"	d
 _message	../branches/include/AppException.h	/^	std::string _message;$/;"	m	class:AppException	access:private
 buffer	../branches/include/BufferedIO.h	/^	char* buffer;$/;"	m	class:BufferedIO	access:public
+chroot	../branches/include/Settings.h	/^	void chroot() const throw(AppException);$/;"	p	class:Settings	access:public	signature:() const
+chroot	../branches/src/Settings.cc	/^void Settings::chroot(void) const throw(AppException) {$/;"	f	class:Settings	signature:(void) const
+clean	../branches/include/Settings.h	/^	void clean(int fd) const throw(AppException);$/;"	p	class:Settings	access:public	signature:(int fd) const
+clean	../branches/src/Settings.cc	/^void Settings::clean(int fd) const throw(AppException) {$/;"	f	class:Settings	signature:(int fd) const
 close	../branches/include/Logger.h	/^	void close();$/;"	p	class:Logger	access:public	signature:()
 close	../branches/src/Logger.cc	/^void Logger::close(void) {$/;"	f	class:Logger	signature:(void)
 compile	../branches/include/Compiler.h	/^	bool compile(int sockId);$/;"	p	class:Compiler	access:public	signature:(int sockId)
@@ -170,6 +200,7 @@ compile	../branches/include/Compiler.h	/^	virtual bool compile() = 0;$/;"	p	clas
 compile	../branches/src/Compiler.cc	/^bool Compiler::compile(int sockId) {$/;"	f	class:Compiler	signature:(int sockId)
 compilers	../branches/include/CompilerFactory.h	/^	static std::map<int, const Compiler*> compilers;$/;"	m	class:CompilerFactory	access:private
 compilers	../branches/src/CompilerFactory.cc	/^std::map<int, const Compiler*> CompilerFactory::compilers;$/;"	m	class:CompilerFactory	file:
+dataDir	../branches/include/Settings.h	/^	std::string dataDir;$/;"	m	class:Settings	access:private
 extension	../branches/include/Compiler.h	/^	std::string extension;$/;"	m	class:Compiler	access:private
 fd	../branches/include/BufferedIO.h	/^	int fd;$/;"	m	class:BufferedIO	access:protected
 fp	../branches/include/Logger.h	/^	FILE* fp;$/;"	m	class:Logger	access:private
@@ -177,23 +208,34 @@ getCompiler	../branches/include/CompilerFactory.h	/^	const Compiler* getCompiler
 getCompiler	../branches/include/CompilerFactory.h	/^	const Compiler* getCompiler(std::string extension) const;$/;"	p	class:CompilerFactory	access:public	signature:(std::string extension) const
 getCompiler	../branches/src/CompilerFactory.cc	/^const Compiler* CompilerFactory::getCompiler(int id) const {$/;"	f	class:CompilerFactory	signature:(int id) const
 getCompiler	../branches/src/CompilerFactory.cc	/^const Compiler* CompilerFactory::getCompiler(std::string extension) const {$/;"	f	class:CompilerFactory	signature:(std::string extension) const
+getDataDir	../branches/include/Settings.h	/^	std::string getDataDir() const;$/;"	p	class:Settings	access:public	signature:() const
+getDataDir	../branches/src/Settings.cc	/^std::string Settings::getDataDir(void) const {$/;"	f	class:Settings	signature:(void) const
 getExtension	../branches/include/Compiler.h	/^	std::string getExtension(void) const;$/;"	p	class:Compiler	access:public	signature:(void) const
 getExtension	../branches/src/Compiler.cc	/^std::string Compiler::getExtension(void) const {$/;"	f	class:Compiler	signature:(void) const
 getId	../branches/include/Compiler.h	/^	int getId(void) const;$/;"	p	class:Compiler	access:public	signature:(void) const
 getId	../branches/src/Compiler.cc	/^int Compiler::getId(void) const {$/;"	f	class:Compiler	signature:(void) const
 getInstance	../branches/include/CompilerFactory.h	/^	static const CompilerFactory* getInstance(void);$/;"	p	class:CompilerFactory	access:public	signature:(void)
 getInstance	../branches/include/Logger.h	/^	static Logger* getInstance();$/;"	p	class:Logger	access:public	signature:()
+getInstance	../branches/include/Settings.h	/^	static const Settings* getInstance();$/;"	p	class:Settings	access:public	signature:()
 getInstance	../branches/src/CompilerFactory.cc	/^const CompilerFactory* CompilerFactory::getInstance(void) {$/;"	f	class:CompilerFactory	signature:(void)
 getInstance	../branches/src/Logger.cc	/^Logger* Logger::getInstance(void) {$/;"	f	class:Logger	signature:(void)
+getInstance	../branches/src/Settings.cc	/^const Settings* Settings::getInstance() {$/;"	f	class:Settings	signature:()
+getLogFile	../branches/include/Settings.h	/^	std::string getLogFile() const;$/;"	p	class:Settings	access:public	signature:() const
+getLogFile	../branches/src/Settings.cc	/^std::string Settings::getLogFile(void) const {$/;"	f	class:Settings	signature:(void) const
 getName	../branches/include/Compiler.h	/^	std::string getName(void) const;$/;"	p	class:Compiler	access:public	signature:(void) const
 getName	../branches/src/Compiler.cc	/^std::string Compiler::getName(void) const {$/;"	f	class:Compiler	signature:(void) const
+getTempDir	../branches/include/Settings.h	/^	std::string getTempDir() const;$/;"	p	class:Settings	access:public	signature:() const
+getTempDir	../branches/src/Settings.cc	/^std::string Settings::getTempDir(void) const {$/;"	f	class:Settings	signature:(void) const
 id	../branches/include/Compiler.h	/^	int id;$/;"	m	class:Compiler	access:private
 instance	../branches/include/CompilerFactory.h	/^	static CompilerFactory* instance;$/;"	m	class:CompilerFactory	access:private
 instance	../branches/include/Logger.h	/^	static Logger* instance;$/;"	m	class:Logger	access:private
+instance	../branches/include/Settings.h	/^	static Settings* instance;$/;"	m	class:Settings	access:private
 instance	../branches/src/CompilerFactory.cc	/^CompilerFactory* CompilerFactory::instance = NULL;$/;"	m	class:CompilerFactory	file:
 instance	../branches/src/Logger.cc	/^Logger* Logger::instance;$/;"	m	class:Logger	file:
-log	../branches/include/Logger.h	/^	void log(LoggerFlag loggerFlag, const char* file, const int line, const char* fmt, ...);$/;"	p	class:Logger	access:public	signature:(LoggerFlag loggerFlag, const char* file, const int line, const char* fmt, ...)
-log	../branches/src/Logger.cc	/^void Logger::log(LoggerFlag flag, const char* file, const int line, const char* fmt, ...) {$/;"	f	class:Logger	signature:(LoggerFlag flag, const char* file, const int line, const char* fmt, ...)
+instance	../branches/src/Settings.cc	/^Settings* Settings::instance;$/;"	m	class:Settings	file:
+log	../branches/include/Logger.h	/^	void log(LoggerFlag loggerFlag, const char* fmt, ...);$/;"	p	class:Logger	access:public	signature:(LoggerFlag loggerFlag, const char* fmt, ...)
+log	../branches/src/Logger.cc	/^void Logger::log(LoggerFlag flag, const char* fmt, ...) {$/;"	f	class:Logger	signature:(LoggerFlag flag, const char* fmt, ...)
+logFile	../branches/include/Settings.h	/^	std::string logFile;$/;"	m	class:Settings	access:private
 main	../branches/src/main.cc	/^int main(int argc, char* argv[]) {$/;"	f	signature:(int argc, char* argv[])
 message	../branches/include/AppException.h	/^	const char* message(void) const;$/;"	p	class:AppException	access:public	signature:(void) const
 message	../branches/src/AppException.cc	/^const char* AppException::message(void) const {$/;"	f	class:AppException	signature:(void) const
@@ -212,6 +254,7 @@ readUInt64	../branches/include/BufferedReader.h	/^	uint64_t readUInt64(void) thr
 readUInt64	../branches/src/BufferedReader.cc	/^uint64_t BufferedReader::readUInt64(void) throw(AppException) {$/;"	f	class:BufferedReader	signature:(void)
 readUInt8	../branches/include/BufferedReader.h	/^	uint8_t readUInt8(void) throw(AppException);$/;"	p	class:BufferedReader	access:public	signature:(void)
 readUInt8	../branches/src/BufferedReader.cc	/^uint8_t BufferedReader::readUInt8(void) throw(AppException) {$/;"	f	class:BufferedReader	signature:(void)
+tempDir	../branches/include/Settings.h	/^	std::string tempDir;$/;"	m	class:Settings	access:private
 writeUInt16	../branches/include/BufferedWriter.h	/^	void writeUInt16(uint16_t value) throw(AppException);$/;"	p	class:BufferedWriter	access:public	signature:(uint16_t value)
 writeUInt16	../branches/src/BufferedWriter.cc	/^void BufferedWriter::writeUInt16(uint16_t value) throw(AppException) {$/;"	f	class:BufferedWriter	signature:(uint16_t value)
 writeUInt32	../branches/include/BufferedWriter.h	/^	void writeUInt32(uint32_t value) throw(AppException);$/;"	p	class:BufferedWriter	access:public	signature:(uint32_t value)

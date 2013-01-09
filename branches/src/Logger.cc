@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <cstdio>
 #include <cstring>
 #include <ctime>
 #include <cstdlib>
@@ -26,7 +25,7 @@
 #include <cstdarg>
 #include <error.h>
 #include "Logger.h"
-#include "BufferedReader.h"
+#include "Settings.h"
 
 Logger* Logger::instance;
 static char LOG_LEVEL_NOTE[][10]	=
@@ -47,23 +46,8 @@ Logger* Logger::getInstance(void) {
 }
 
 void Logger::open(void) throw(AppException) {
-	if (fp == NULL) {
-		const char* line;
-		BufferedReader* bufferReader = new BufferedReader("config/log.cfg");
-		if (bufferReader == NULL)
-			throw new AppException("can not open log file");
-		while ((line = bufferReader->next()) != NULL) {
-			if (strncmp(line, "logFile=", 8) == 0) {
-				line += 8;
-				break;
-			}
-		}
-		if (line != NULL) {
-			puts(line);
-			fp = fopen(line, "a");
-		}
-		delete bufferReader;
-	}
+	if (fp == NULL)
+		fp = fopen(Settings::getInstance()->getLogFile().c_str(), "a");
 }
 
 void Logger::close(void) {
@@ -71,25 +55,22 @@ void Logger::close(void) {
 		fclose(fp);
 }
 
-void Logger::log(LoggerFlag flag, const char* file, const int line, const char* fmt, ...) {
+void Logger::log(LoggerFlag flag, const char* fmt, ...) {
 	if (fp != NULL) {
 		static char buffer[BUFFSIZE];
 		static char log_buffer[BUFFSIZE];
 		static char dateTime[100];
-		static char line_str[20];
 		static time_t now;
 		now = time(NULL);
 
 		strftime(dateTime, 99, "%Y-%m-%d %H:%M:%S", localtime(&now));
-		snprintf(line_str, 19, "%d", line);
 		va_list ap;
 		va_start(ap, fmt);
 		vsnprintf(log_buffer, BUFFSIZE, fmt, ap);
 		va_end(ap);
 
 		size_t count = snprintf(buffer, BUFFSIZE,
-			"[%s][%s][%s:%d]: %s\n", LOG_LEVEL_NOTE[flag], dateTime, file, line,
-			log_buffer);
+			"[%s][%s]: %s\n", LOG_LEVEL_NOTE[flag], dateTime, log_buffer);
 		int fd = fp->_fileno;
 		if (flock(fd, LOCK_EX) == 0) {
 			if (write(fd, buffer, count) < 0) {

@@ -18,6 +18,11 @@
  */
 #include "Compiler.h"
 #include "Logger.h"
+#include "BufferedWriter.h"
+
+#define	COMPILER_BUF_SIZE	1024
+#define	COMPILING			0
+#define	INTERNAL_ERROR		11
 
 /**
  * Compiler Entity 
@@ -35,7 +40,18 @@ Compiler::~Compiler(void) {
 bool Compiler::compile(int sockId) {
 	// TODO
 	Logger* logger = Logger::getInstance();
-	logger->log(INFO, __FILE__, __LINE__, "begin compile sockId: %d\n", sockId);
+	BufferedWriter* bufferWriter = new BufferedWriter(sockId);
+	static char buf[COMPILER_BUF_SIZE];
+	try {
+		logger->log(INFO, "begin compile sockId: %d\n", sockId);
+		bufferWriter->writeUInt32(COMPILING);
+	} catch (AppException& e) {
+		e.printStackTrace();
+		bufferWriter->writeUInt32(INTERNAL_ERROR);
+		return false;
+	}
+	if (bufferWriter != NULL)
+		delete bufferWriter;
 	return true;
 }
 
