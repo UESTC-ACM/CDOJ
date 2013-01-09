@@ -38,23 +38,11 @@
 </head>
 <body>
 
-<s:property value="page"/>
-
 <!-- 题目分页和跳转 -->
 <div class="row">
     <div class="span9">
-        <div class="pagination pagination-centered">
-            <ul>
-                <li><a href="#">前一页</a></li>
-                <li class="active">
-                    <a href="#">1</a>
-                </li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">后一页</a></li>
-            </ul>
-        </div>
+        <s:url action="page" namespace="/problemset" id="paginationPages" />
+        <cdoj:pagination current="${page}" total="30" baseUrl="${paginationPages}" displayDist="4"/>
     </div>
     <!-- 快速跳转题目 -->
     <form class="well form-horizontal pull-right">

@@ -33,13 +33,27 @@
 
     <!-- Invoke 'Generate' action to add tags or functions -->
     <tag>
-        <name>navigation</name>
-        <tag-class>cn.edu.uestc.acmicpc.template.tag.NavigationTag</tag-class>
+        <name>pagination</name>
+        <tag-class>cn.edu.uestc.acmicpc.template.tag.PaginationTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>current</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>total</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>baseUrl</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>displayDist</name>
+            <required>true</required>
         </attribute>
     </tag>
 </taglib>
