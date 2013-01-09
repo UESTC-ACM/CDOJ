@@ -23,17 +23,18 @@
 /* 限制最小宽度 */
 body {
     min-width: 940px;
+    background-color: #222;
 }
 
 /* 内容部分用wrap整个包围起来，与上下文有60px的margin */
 #wrap {
-    margin: 80px 0 60px 0;
+    padding: 80px 0 60px 0;
+    background-color: white;
 }
 
 /* footer与底部留一些空隙吧，加点花纹看起来稍微好一点了 */
 #footer {
     padding: 60px 0 60px 0;
-    background-color: #222;
     background: #222 url(../images/footer-top.png) top center repeat-x;
 }
 

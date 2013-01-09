@@ -31,13 +31,14 @@
     <package name="index" namespace="/index" extends="struts-default">
         <default-action-ref name="index"/>
         <action name="index" class="indexPageAction" method="toIndex">
-            <result>/views/index/index.jsp</result>
+            <result>/views/index/indexPage.jsp</result>
         </action>
     </package>
 
     <package name="problem" namespace="/problem" extends="struts-default">
+        <default-action-ref name="problemList" />
         <action name="problemList" class="problemListAction" method="toProblemList">
-            <result>/views/index/index.jsp</result>
+            <result>/views/problem/problemList.jsp</result>
         </action>
     </package>
 
