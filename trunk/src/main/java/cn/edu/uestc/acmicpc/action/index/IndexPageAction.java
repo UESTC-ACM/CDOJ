@@ -40,9 +40,30 @@ import java.util.List;
 public class IndexPageAction extends BaseAction {
 
     private static final long serialVersionUID = 1689142403463050894L;
+
+    /**
+     * current user
+     */
     private User user;
+
+    /**
+     * problemList show on indexpage
+     */
     private List<Problem> problemList;
+
+    /**
+     * contestList show on indexpage
+     */
     private List<Contest> contestList;
+
+    /**
+     * Default action, retrun success to show indexpage
+     *
+     * @return success flag
+     */
+    public String toIndex() throws Exception {
+        return SUCCESS;
+    }
 
     public User getUser() {
         return user;
@@ -68,7 +89,4 @@ public class IndexPageAction extends BaseAction {
         this.contestList = contestList;
     }
 
-    public String toIndex() throws Exception {
-        return SUCCESS;
-    }
 }

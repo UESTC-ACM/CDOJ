@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-
-<!--
+<%--
   ~ /*
   ~  * cdoj, UESTC ACMICPC Online Judge
   ~  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
@@ -20,26 +18,21 @@
   ~  * along with this program; if not, write to the Free Software
   ~  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   ~  */
-  -->
+  --%>
 
-<taglib xmlns="http://java.sun.com/xml/ns/javaee"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
-        version="2.1">
-
-    <tlib-version>1.0</tlib-version>
-    <short-name>cdojTags</short-name>
-    <uri>http://acm.uestc.edu.cn</uri>
-
-    <!-- Invoke 'Generate' action to add tags or functions -->
-    <tag>
-        <name>navigation</name>
-        <tag-class>cn.edu.uestc.acmicpc.template.tag.NavigationTag</tag-class>
-        <body-content>empty</body-content>
-        <attribute>
-            <name>current</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-    </tag>
-</taglib>
+<%--
+  Created by IntelliJ IDEA.
+  User: mzry1992
+  Date: 13-1-9
+  Time: 下午7:49
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Error</title>
+</head>
+<body>
+    Error 404
+</body>
+</html>

@@ -31,14 +31,35 @@ import java.util.List;
  * action of /problem/problemList.action
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 2
+ * @version 3
  */
 public class ProblemListAction extends BaseAction {
 
     private static final long serialVersionUID = 1523046166991379254L;
 
+    /**
+     * current page to show
+     */
+    private Integer page;
+
+    /**
+     * Default action, return success to show problemList
+     * page is 1 while it's undefined
+     *
+     * @return success flag
+     */
     public String toProblemList() {
+        if (page == null)
+            page = 1;
+
         return SUCCESS;
     }
 
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
 }

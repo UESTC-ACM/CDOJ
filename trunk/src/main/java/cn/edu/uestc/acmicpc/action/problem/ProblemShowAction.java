@@ -34,9 +34,29 @@ public class ProblemShowAction extends BaseAction {
 
     private static final long serialVersionUID = -1013694381845590042L;
 
-    private int problemId;
+    /**
+     * problem to show
+     */
+    private Integer problemId;
 
+    /**
+     * Default action.
+     * @TODO if problemId is INVALID, return ERROR
+     *
+     * @return success or error
+     */
     public String toProblem() {
+        if (problemId == null)
+            problemId = 1;
+
         return SUCCESS;
+    }
+
+    public Integer getProblemId() {
+        return problemId;
+    }
+
+    public void setProblemId(Integer problemId) {
+        this.problemId = problemId;
     }
 }
