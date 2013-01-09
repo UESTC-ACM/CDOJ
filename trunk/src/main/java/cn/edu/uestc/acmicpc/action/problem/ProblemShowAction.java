@@ -20,23 +20,23 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.entity.test;
+package cn.edu.uestc.acmicpc.action.problem;
+
+import cn.edu.uestc.acmicpc.action.BaseAction;
 
 /**
- * Entity of user (for test)
+ * action of problem/{problemid}
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
+public class ProblemShowAction extends BaseAction {
 
-public class User {
-    private String userName;
+    private static final long serialVersionUID = -1013694381845590042L;
 
-    public String getUserName() {
-        return userName;
-    }
+    private int problemId;
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public String toProblem() {
+        return SUCCESS;
     }
 }
