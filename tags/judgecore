@@ -29,15 +29,15 @@ BufferedIO	../branches/include/BufferedIO.h	/^	BufferedIO(const char* fileName) 
 BufferedIO	../branches/include/BufferedIO.h	/^	BufferedIO(int fd);$/;"	p	class:BufferedIO	access:public	signature:(int fd)
 BufferedIO	../branches/include/BufferedIO.h	/^class BufferedIO {$/;"	c
 BufferedIO	../branches/src/BufferedIO.cc	/^BufferedIO::BufferedIO() {$/;"	f	class:BufferedIO	signature:()
-BufferedIO	../branches/src/BufferedIO.cc	/^BufferedIO::BufferedIO(const char* fileName) throw(AppException) {$/;"	f	class:BufferedIO	signature:(const char* fileName)
+BufferedIO	../branches/src/BufferedIO.cc	/^BufferedIO::BufferedIO(const char* fileName) throw(AppException) : BufferedIO() {$/;"	f	class:BufferedIO	signature:(const char* fileName)
 BufferedIO	../branches/src/BufferedIO.cc	/^BufferedIO::BufferedIO(int fd)$/;"	f	class:BufferedIO	signature:(int fd)
 BufferedIO::BufferedIO	../branches/include/BufferedIO.h	/^	BufferedIO();$/;"	p	class:BufferedIO	access:public	signature:()
 BufferedIO::BufferedIO	../branches/include/BufferedIO.h	/^	BufferedIO(const char* fileName) throw(AppException);$/;"	p	class:BufferedIO	access:public	signature:(const char* fileName)
 BufferedIO::BufferedIO	../branches/include/BufferedIO.h	/^	BufferedIO(int fd);$/;"	p	class:BufferedIO	access:public	signature:(int fd)
 BufferedIO::BufferedIO	../branches/src/BufferedIO.cc	/^BufferedIO::BufferedIO() {$/;"	f	class:BufferedIO	signature:()
-BufferedIO::BufferedIO	../branches/src/BufferedIO.cc	/^BufferedIO::BufferedIO(const char* fileName) throw(AppException) {$/;"	f	class:BufferedIO	signature:(const char* fileName)
+BufferedIO::BufferedIO	../branches/src/BufferedIO.cc	/^BufferedIO::BufferedIO(const char* fileName) throw(AppException) : BufferedIO() {$/;"	f	class:BufferedIO	signature:(const char* fileName)
 BufferedIO::BufferedIO	../branches/src/BufferedIO.cc	/^BufferedIO::BufferedIO(int fd)$/;"	f	class:BufferedIO	signature:(int fd)
-BufferedIO::buffer	../branches/include/BufferedIO.h	/^	uint8_t* buffer;$/;"	m	class:BufferedIO	access:public
+BufferedIO::buffer	../branches/include/BufferedIO.h	/^	char* buffer;$/;"	m	class:BufferedIO	access:public
 BufferedIO::fd	../branches/include/BufferedIO.h	/^	int fd;$/;"	m	class:BufferedIO	access:protected
 BufferedIO::~BufferedIO	../branches/include/BufferedIO.h	/^	virtual ~BufferedIO();$/;"	p	class:BufferedIO	access:public	signature:()
 BufferedIO::~BufferedIO	../branches/src/BufferedIO.cc	/^BufferedIO::~BufferedIO() {$/;"	f	class:BufferedIO	signature:()
@@ -50,6 +50,8 @@ BufferedReader::BufferedReader	../branches/include/BufferedReader.h	/^	BufferedR
 BufferedReader::BufferedReader	../branches/include/BufferedReader.h	/^	BufferedReader(const int& fd);$/;"	p	class:BufferedReader	access:public	signature:(const int& fd)
 BufferedReader::BufferedReader	../branches/src/BufferedReader.cc	/^BufferedReader::BufferedReader(const char* fileName)$/;"	f	class:BufferedReader	signature:(const char* fileName)
 BufferedReader::BufferedReader	../branches/src/BufferedReader.cc	/^BufferedReader::BufferedReader(const int& fd)$/;"	f	class:BufferedReader	signature:(const int& fd)
+BufferedReader::next	../branches/include/BufferedReader.h	/^	const char* next(void) throw(AppException);$/;"	p	class:BufferedReader	access:public	signature:(void)
+BufferedReader::next	../branches/src/BufferedReader.cc	/^const char* BufferedReader::next(void) throw(AppException) {$/;"	f	class:BufferedReader	signature:(void)
 BufferedReader::readUInt16	../branches/include/BufferedReader.h	/^	uint16_t readUInt16(void) throw(AppException);$/;"	p	class:BufferedReader	access:public	signature:(void)
 BufferedReader::readUInt16	../branches/src/BufferedReader.cc	/^uint16_t BufferedReader::readUInt16(void) throw(AppException) {$/;"	f	class:BufferedReader	signature:(void)
 BufferedReader::readUInt32	../branches/include/BufferedReader.h	/^	uint32_t readUInt32(void) throw(AppException);$/;"	p	class:BufferedReader	access:public	signature:(void)
@@ -75,8 +77,9 @@ BufferedWriter::writeUInt64	../branches/include/BufferedWriter.h	/^	void writeUI
 BufferedWriter::writeUInt64	../branches/src/BufferedWriter.cc	/^void BufferedWriter::writeUInt64(uint64_t value) throw(AppException) {$/;"	f	class:BufferedWriter	signature:(uint64_t value)
 BufferedWriter::writeUInt8	../branches/include/BufferedWriter.h	/^	void writeUInt8(uint8_t value) throw(AppException);$/;"	p	class:BufferedWriter	access:public	signature:(uint8_t value)
 BufferedWriter::writeUInt8	../branches/src/BufferedWriter.cc	/^void BufferedWriter::writeUInt8(uint8_t value) throw(AppException) {$/;"	f	class:BufferedWriter	signature:(uint8_t value)
-CFLAGS	../branches/Makefile	/^CFLAGS=-Wall -W -g -O2 $(DEBUG)$/;"	m
+CFLAGS	../branches/Makefile	/^CFLAGS=-Wall -W -g -O2 $(DEBUG) $(CXXFLAGS)$/;"	m
 CXX	../branches/Makefile	/^CXX=g++$/;"	m
+CXXFLAGS	../branches/Makefile	/^CXXFLAGS=-std=gnu++11$/;"	m
 CXXLD	../branches/Makefile	/^CXXLD=g++$/;"	m
 Compiler	../branches/include/Compiler.h	/^	Compiler(int id, std::string name, std::string extension);$/;"	p	class:Compiler	access:public	signature:(int id, std::string name, std::string extension)
 Compiler	../branches/include/Compiler.h	/^class Compiler {$/;"	c
@@ -122,7 +125,7 @@ FATAL	../branches/include/Logger.h	/^	FATAL, WARNING, MONITOR, NOTICE, TRADE, DE
 INCLUDE	../branches/Makefile	/^INCLUDE=\\$/;"	m
 INCLUDE_DIR	../branches/Makefile	/^INCLUDE_DIR=$(DIR)\/include$/;"	m
 INFO	../branches/include/Logger.h	/^	FATAL, WARNING, MONITOR, NOTICE, TRADE, DEBUG, INFO$/;"	e	enum:LoggerFlag
-LDFLAGS	../branches/Makefile	/^LDFLAGS=$(DEBUG)$/;"	m
+LDFLAGS	../branches/Makefile	/^LDFLAGS=$(DEBUG) $(CXXFLAGS)$/;"	m
 LIB_DIR	../branches/Makefile	/^LIB_DIR=$(DIR)\/lib$/;"	m
 LOG_DIR	../branches/Makefile	/^LOG_DIR=$(DIR)\/log$/;"	m
 LOG_LEVEL_NOTE	../branches/src/Logger.cc	/^static char LOG_LEVEL_NOTE[][10]	=$/;"	v	file:
@@ -137,6 +140,7 @@ Logger::fp	../branches/include/Logger.h	/^	FILE* fp;$/;"	m	class:Logger	access:p
 Logger::getInstance	../branches/include/Logger.h	/^	static Logger* getInstance();$/;"	p	class:Logger	access:public	signature:()
 Logger::getInstance	../branches/src/Logger.cc	/^Logger* Logger::getInstance(void) {$/;"	f	class:Logger	signature:(void)
 Logger::instance	../branches/include/Logger.h	/^	static Logger* instance;$/;"	m	class:Logger	access:private
+Logger::instance	../branches/src/Logger.cc	/^Logger* Logger::instance;$/;"	m	class:Logger	file:
 Logger::log	../branches/include/Logger.h	/^	void log(LoggerFlag loggerFlag, const char* file, const int line, const char* fmt, ...);$/;"	p	class:Logger	access:public	signature:(LoggerFlag loggerFlag, const char* file, const int line, const char* fmt, ...)
 Logger::log	../branches/src/Logger.cc	/^void Logger::log(LoggerFlag flag, const char* file, const int line, const char* fmt, ...) {$/;"	f	class:Logger	signature:(LoggerFlag flag, const char* file, const int line, const char* fmt, ...)
 Logger::open	../branches/include/Logger.h	/^	void open() throw(AppException);$/;"	p	class:Logger	access:public	signature:()
@@ -158,7 +162,7 @@ __COMPILER_FACTORY_H__	../branches/include/CompilerFactory.h	20;"	d
 __COMPILER_H__	../branches/include/Compiler.h	20;"	d
 __LOGGER_H__	../branches/include/Logger.h	20;"	d
 _message	../branches/include/AppException.h	/^	std::string _message;$/;"	m	class:AppException	access:private
-buffer	../branches/include/BufferedIO.h	/^	uint8_t* buffer;$/;"	m	class:BufferedIO	access:public
+buffer	../branches/include/BufferedIO.h	/^	char* buffer;$/;"	m	class:BufferedIO	access:public
 close	../branches/include/Logger.h	/^	void close();$/;"	p	class:Logger	access:public	signature:()
 close	../branches/src/Logger.cc	/^void Logger::close(void) {$/;"	f	class:Logger	signature:(void)
 compile	../branches/include/Compiler.h	/^	bool compile(int sockId);$/;"	p	class:Compiler	access:public	signature:(int sockId)
@@ -187,12 +191,15 @@ id	../branches/include/Compiler.h	/^	int id;$/;"	m	class:Compiler	access:private
 instance	../branches/include/CompilerFactory.h	/^	static CompilerFactory* instance;$/;"	m	class:CompilerFactory	access:private
 instance	../branches/include/Logger.h	/^	static Logger* instance;$/;"	m	class:Logger	access:private
 instance	../branches/src/CompilerFactory.cc	/^CompilerFactory* CompilerFactory::instance = NULL;$/;"	m	class:CompilerFactory	file:
+instance	../branches/src/Logger.cc	/^Logger* Logger::instance;$/;"	m	class:Logger	file:
 log	../branches/include/Logger.h	/^	void log(LoggerFlag loggerFlag, const char* file, const int line, const char* fmt, ...);$/;"	p	class:Logger	access:public	signature:(LoggerFlag loggerFlag, const char* file, const int line, const char* fmt, ...)
 log	../branches/src/Logger.cc	/^void Logger::log(LoggerFlag flag, const char* file, const int line, const char* fmt, ...) {$/;"	f	class:Logger	signature:(LoggerFlag flag, const char* file, const int line, const char* fmt, ...)
 main	../branches/src/main.cc	/^int main(int argc, char* argv[]) {$/;"	f	signature:(int argc, char* argv[])
 message	../branches/include/AppException.h	/^	const char* message(void) const;$/;"	p	class:AppException	access:public	signature:(void) const
 message	../branches/src/AppException.cc	/^const char* AppException::message(void) const {$/;"	f	class:AppException	signature:(void) const
 name	../branches/include/Compiler.h	/^	std::string name;$/;"	m	class:Compiler	access:private
+next	../branches/include/BufferedReader.h	/^	const char* next(void) throw(AppException);$/;"	p	class:BufferedReader	access:public	signature:(void)
+next	../branches/src/BufferedReader.cc	/^const char* BufferedReader::next(void) throw(AppException) {$/;"	f	class:BufferedReader	signature:(void)
 open	../branches/include/Logger.h	/^	void open() throw(AppException);$/;"	p	class:Logger	access:public	signature:()
 open	../branches/src/Logger.cc	/^void Logger::open(void) throw(AppException) {$/;"	f	class:Logger	signature:(void)
 printStackTrace	../branches/include/AppException.h	/^	void printStackTrace(void) const;$/;"	p	class:AppException	access:public	signature:(void) const

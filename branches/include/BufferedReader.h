@@ -37,7 +37,7 @@ public:
 	uint16_t readUInt16(void) throw(AppException);
 	uint32_t readUInt32(void) throw(AppException);
 	uint64_t readUInt64(void) throw(AppException);
-	//const char* read(void) throw(AppException);
+	const char* next(void) throw(AppException);
 };
 
 #endif // __BUFFERED_READER_H__

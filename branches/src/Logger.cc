@@ -28,6 +28,7 @@
 #include "Logger.h"
 #include "BufferedReader.h"
 
+Logger* Logger::instance;
 static char LOG_LEVEL_NOTE[][10]	=
 	{ "FATAL", "WARNING", "MONITOR", "NOTICE", "TRACE", "DEBUG", "INFO" };
 
@@ -51,7 +52,7 @@ void Logger::open(void) throw(AppException) {
 		BufferedReader* bufferReader = new BufferedReader("config/log.cfg");
 		if (bufferReader == NULL)
 			throw new AppException("can not open log file");
-		/*while ((line = bufferReader->read()) != NULL) {
+		while ((line = bufferReader->next()) != NULL) {
 			if (strncmp(line, "logFile=", 8) == 0) {
 				line += 8;
 				break;
@@ -60,7 +61,7 @@ void Logger::open(void) throw(AppException) {
 		if (line != NULL) {
 			puts(line);
 			fp = fopen(line, "a");
-		}*/
+		}
 		delete bufferReader;
 	}
 }

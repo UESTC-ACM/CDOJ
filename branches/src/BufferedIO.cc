@@ -33,15 +33,15 @@
  */
  
 BufferedIO::BufferedIO() {
-	buffer = new uint8_t[BUFFER_SIZE];
+	buffer = new char[BUFFER_SIZE];
 }
 
 BufferedIO::BufferedIO(int fd)
-	: fd(fd) {
-	BufferedIO();
+	: BufferedIO() {
+	this->fd = fd;
 }
 
-BufferedIO::BufferedIO(const char* fileName) throw(AppException) {
+BufferedIO::BufferedIO(const char* fileName) throw(AppException) : BufferedIO() {
 	fd = open(fileName, O_RDONLY);
 	if (fd < 0)
 		throw AppException("cannot open input file.");

@@ -23,8 +23,9 @@ INCLUDE=\
 CXX=g++
 CXXLD=g++
 DEBUG=-g
-CFLAGS=-Wall -W -g -O2 $(DEBUG)
-LDFLAGS=$(DEBUG)
+CXXFLAGS=-std=gnu++11
+CFLAGS=-Wall -W -g -O2 $(DEBUG) $(CXXFLAGS)
+LDFLAGS=$(DEBUG) $(CXXFLAGS)
 
 .PHONY: all clean rebuild
 
