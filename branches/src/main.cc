@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
 	try {
 		Logger* logger = Logger::getInstance();
 		logger->open();
-		logger->log(INFO, __FILE__, __LINE__, "core begin with argc = %d argv address %p", argc, argv);
+		logger->log(INFO, "core begin with argc = %d argv address %p", argc, argv);
 		BufferedIO* bufferIO = new BufferedIO(0);
 		printf("%p\n", bufferIO->buffer);
 		throw AppException("catched exception");

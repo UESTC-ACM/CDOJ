@@ -1,6 +1,6 @@
 /*
  * cdoj, UESTC ACMICPC Online Judge
- * Copyright (c) 2012  fish <@link lyhypacm@gmail.com>
+ * Copyright (c) 2013  fish <@link lyhypacm@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,38 +16,31 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-#ifndef __LOGGER_H__
-#define __LOGGER_H__
+#ifndef __SETTINGS_H__
+#define __SETTINGS_H__
 
+#include <string>
 #include "AppException.h"
 
-// logger buffer size
-#define BUFFSIZE 1024
-
 /**
- * logger types
+ * Global Settings class, all system settings
+ * 		will be stored in this class instance.
  */
-enum LoggerFlag {
-	FATAL, WARNING, MONITOR, NOTICE, TRADE, DEBUG, INFO
-};
-
-/**
- * Simple System Logger
- * 		A simple logger for c/c++
- */
-
-class Logger {
+class Settings {
 public:
-	static Logger* getInstance();
-	void open() throw(AppException);
-	void close();
-	void log(LoggerFlag loggerFlag, const char* fmt, ...);
+	std::string getTempDir() const;
+	std::string getDataDir() const;
+	std::string getLogFile() const;
+	void chroot() const throw(AppException);
+	void clean(int fd) const throw(AppException);
+	static const Settings* getInstance();
 private:
-	Logger();
-	static Logger* instance;
-	// file pointer, if it's NULL, that means logger is close, otherwise, logger is open
-	FILE* fp;
+	Settings();
+	static Settings* instance;
+	std::string tempDir;
+	std::string dataDir;
+	std::string logFile;
 };
 
-#endif // __LOGGER_H__
+#endif // __SETTINGS_H__
 
