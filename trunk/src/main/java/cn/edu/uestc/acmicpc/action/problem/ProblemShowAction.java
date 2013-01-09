@@ -41,7 +41,7 @@ public class ProblemShowAction extends BaseAction {
 
     /**
      * Default action.
-     * @TODO if problemId is INVALID, return ERROR
+     * TODO if problemId is INVALID, return ERROR
      *
      * @return success or error
      */

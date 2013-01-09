@@ -29,33 +29,81 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * A tag to show the navigation.
+ * A tag to show the pagination.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
 
-public class NavigationTag extends Tag {
+public class PaginationTag extends Tag {
 
-    private String current;
+    /**
+     * current page
+     */
+    private Integer current;
+
+    /**
+     * total page
+     */
+    private Integer total;
+
+    /**
+     * the base url like /problemset/pages/
+     */
+    private String baseUrl;
+
+    /**
+     * the min/max page will show before/after current page is current-displayDist/current+displayDist
+     */
+    private Integer displayDist;
 
     @Override
     public Component getBean(ValueStack valueStack, HttpServletRequest request, HttpServletResponse response) {
-        return new NavigationTagService(valueStack);
+        return new PaginationTagService(valueStack);
     }
 
+    /**
+     * put params into paginationTagService
+     */
     @Override
     protected void populateParams() {
         super.populateParams();
-        NavigationTagService navigationTagService = (NavigationTagService)getComponent();
-        navigationTagService.setCurrent(getCurrent());
+        PaginationTagService paginationTagService = (PaginationTagService)getComponent();
+        paginationTagService.setCurrent(getCurrent());
+        paginationTagService.setTotal(getTotal());
+        paginationTagService.setBaseUrl(getBaseUrl());
+        paginationTagService.setDisplayDist(getDisplayDist());
     }
 
-    public String getCurrent() {
+    public Integer getCurrent() {
         return current;
     }
 
-    public void setCurrent(String current) {
+    public void setCurrent(Integer current) {
         this.current = current;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public Integer getDisplayDist() {
+        return displayDist;
+    }
+
+    public void setDisplayDist(Integer displayDist) {
+        this.displayDist = displayDist;
     }
 }
