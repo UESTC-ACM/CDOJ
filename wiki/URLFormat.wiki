@@ -2,12 +2,14 @@
 = URL format standard =
 
 == Index ==
-|| */index/* || index page of CDOJ ||
+|| *Router address* || *Normal address* || ||
+|| */index/* || */index/index.action* || index page of CDOJ ||
 
 == Problem ==
-|| */problem/list/* || problem list, page 1 ||
-|| */problem/list/{page}* || problem list, {page} defined the page to show ||
-|| */problem/{id}/ || show problem{id}* ||
-|| */problem/{id}/submit/* || submit problem{id} ||
-|| */problem/{id}/status/* || status of problem{id} ||
-|| */problem/{id}/edit/* || admin page of problem{id} ||
+|| *Router address* || *Normal address* || ||
+|| */problem/list/* || */problem/list.action* || problem list, page 1 ||
+|| */problem/list/{page}* || */problem/list.action?page={page}* || problem list, {page} defined the page to show ||
+|| */problem/{id}/* || */problem/problem.action?id={id}* || show problem{id} ||
+|| */problem/{id}/submit/* || */problem/problemSubmit.action?id={id}* || submit problem{id} ||
+|| */problem/{id}/status/* || */problem/problemStatus.action?id={id}* || status of problem{id} ||
+|| */problem/{id}/edit/* || */problem/problemEdit.action?id={id}* || admin page of problem{id} ||
