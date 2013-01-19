@@ -74,7 +74,7 @@
                 <td class="info-right">1</td>
                 <td>
                     <!-- 题目名称与来源 -->
-                    <span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="./problem_single.html">A+B Problem</a></span>
+                    <span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="<s:url action="problem/1" namespace="/problemset"/>">A+B Problem</a></span>
 
                     <!-- 标签们！ -->
                     <span class="label pull-right tags">data structs</span>
@@ -94,7 +94,7 @@
                 <td class="info-right">2</td>
                 <td>
                     <!-- 题目名称与来源 -->
-                    <span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="./problem_single.html">A+B Problem</a></span>
+                    <span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="<s:url action="problem/2" namespace="/problemset"/>">A+B Problem</a></span>
 
                     <span class="label pull-right tags">implementation</span>
                 </td>
@@ -108,7 +108,7 @@
                 <td class="info-right">9999</td>
                 <td>
                     <!-- 题目名称与来源 -->
-                    <span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="./problem_single.html">A+B Problem</a></span>
+                    <span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="<s:url action="problem/3" namespace="/problemset"/>">A+B Problem</a></span>
 
                     <span class="label pull-right tags">binary search</span>
                     <span class="label pull-right tags">data structures</span>

@@ -46,8 +46,8 @@
           class="cn.edu.uestc.acmicpc.action.problem.ProblemListAction"
           scope="prototype"/>
 
-    <bean id="problemShowAction"
-          class="cn.edu.uestc.acmicpc.action.problem.ProblemShowAction"
+    <bean id="problemAction"
+          class="cn.edu.uestc.acmicpc.action.problem.ProblemAction"
           scope="prototype"/>
 
 </beans>
