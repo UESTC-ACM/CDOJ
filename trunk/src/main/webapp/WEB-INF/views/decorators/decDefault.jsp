@@ -83,14 +83,14 @@
             <!-- 导航部分 -->
             <ul class="nav">
 
-                <!-- 当前页面class为active -->
-                <li class="active">
+                <li class="divider-vertical"></li>
+                <li>
                     <a href="<s:url action="index" namespace="/"/>">CDOJ</a>
                 </li>
                 <li class="divider-vertical"></li>
 
                 <li>
-                    <a href="<s:url action="page" namespace="/problemset"/>">Problems</a>
+                    <a href="<s:url action="page/1" namespace="/problemset"/>">Problems</a>
                 </li>
                 <li class="divider-vertical"></li>
 
