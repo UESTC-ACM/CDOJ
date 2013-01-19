@@ -20,29 +20,19 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.action.test;
+package cn.edu.uestc.acmicpc.db.dao;
 
-import cn.edu.uestc.acmicpc.action.BaseAction;
-import cn.edu.uestc.acmicpc.util.Settings;
+import cn.edu.uestc.acmicpc.db.entity.Message;
 
 /**
- * Settings online test case.
+ * DAO for message entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public class TestSettingsAction extends BaseAction {
-
-    private static final long serialVersionUID = 3996065941916276840L;
-
-    /**
-     * Default action, to put setting's value into request.
-     *
-     * @return success flag
-     */
+public class MessageDAO extends DAO<Message, Integer> {
     @Override
-    public String execute() {
-        request.put("encoding", Settings.SETTING_ENCODING);
-        return SUCCESS;
+    protected Class<Message> getReferenceClass() {
+        return Message.class;
     }
 }

@@ -21,33 +21,12 @@
   ~  */
   -->
 
-<beans xmlns="http://www.springframework.org/schema/beans"
+<beans default-lazy-init="true"
+       xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-    <!-- for test -->
-    <bean id="testUser"
-          class="cn.edu.uestc.acmicpc.entity.test.User"
-          scope="prototype">
-        <property name="userName" value="mzry1992"/>
-    </bean>
-    <bean id="testSettings"
-          class="cn.edu.uestc.acmicpc.action.test.TestSettingsAction"
-          scope="prototype"/>
-
-    <!-- Action -->
-    <bean id="indexPageAction"
-          class="cn.edu.uestc.acmicpc.action.index.IndexPageAction"
-          scope="prototype">
-        <property name="user" ref="testUser"/>
-    </bean>
-
-    <bean id="problemListAction"
-          class="cn.edu.uestc.acmicpc.action.problem.ProblemListAction"
-          scope="prototype"/>
-
-    <bean id="problemAction"
-          class="cn.edu.uestc.acmicpc.action.problem.ProblemAction"
-          scope="prototype"/>
-
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+    <import resource="applicationContext-resources.xml"/>
+    <import resource="applicationContext-jpa.xml"/>
+    <import resource="applicationContext-actions.xml"/>
 </beans>

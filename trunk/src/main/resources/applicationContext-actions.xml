@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
   ~ /*
   ~  * cdoj, UESTC ACMICPC Online Judge
@@ -21,13 +20,9 @@
   ~  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   ~  */
   -->
-
-<!DOCTYPE struts PUBLIC
-        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-        "http://struts.apache.org/dtds/struts-2.0.dtd">
-
-<struts>
-    <!-- default package -->
-    <package name="cdoj-default" extends="struts-default">
-    </package>
-</struts>
+<beans default-lazy-init="true"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+</beans>
