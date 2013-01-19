@@ -2,17 +2,17 @@
 = URL format standard =
 
 || *Router address* || Action || ||
-|| */* || index/indexPageAction || index page of CDOJ ||
-|| */index/* || index/indexPageAction || index page of CDOJ ||
+|| */* || index/indexAction || index page of CDOJ ||
+|| */index/* || index/indexAction || index page of CDOJ ||
 || */problemset/page/* || problem/ProblemListAction || problem list, page 1 ||
 || */problemset/page/{page}* || problem/ProblemListAction || problem list, {page} defined the page to show ||
-|| */problemset/problem/{id}* || problem/ProblemShowAction || show problem{id} ||
+|| */problemset/problem/{id}* || problem/ProblemAction || show problem{id} ||
+|| */problemset/problem/{id}/submit* || problem/ProblemAction || submit problem{id} ||
+|| */user/register* || user/RegisterAction || register page ||
 
 == TODO ==
 || *Router address* || ||
 || */index/{id}* || show articles ||
-|| */problemset/problem/{id}/submit/* || submit problem{id} ||
-|| */problemset/problem/{id}/status/* || status of problem{id} ||
 || */contest/pages/* || contest list, like *problemset/pages/* ||
 || */contest/pages/{page}* || contest list, like *problemset/pages/{page}* ||
 || */contest/show/{id}* || show contest{id} ||
