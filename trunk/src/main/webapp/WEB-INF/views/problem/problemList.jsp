@@ -41,8 +41,8 @@
 <!-- 题目分页和跳转 -->
 <div class="row">
     <div class="span9">
-        <s:url action="page" namespace="/problemset" id="paginationPages" />
-        <cdoj:pagination current="${page}" total="30" baseUrl="${paginationPages}" displayDist="4"/>
+        <s:url action="page/" namespace="/problemset" id="paginationPages" />
+        <cdoj:pagination current="${pageId}" total="30" baseUrl="${paginationPages}" displayDist="4"/>
     </div>
     <!-- 快速跳转题目 -->
     <form class="well form-horizontal pull-right">

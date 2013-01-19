@@ -40,7 +40,7 @@ public class ProblemListAction extends BaseAction {
     /**
      * current page to show
      */
-    private Integer page;
+    private Integer pageId;
 
     /**
      * Default action, return success to show problemList
@@ -49,17 +49,17 @@ public class ProblemListAction extends BaseAction {
      * @return success flag
      */
     public String toProblemList() {
-        if (page == null)
-            page = 1;
+        if (pageId == null)
+            pageId = 1;
 
         return SUCCESS;
     }
 
-    public Integer getPage() {
-        return page;
+    public Integer getPageId() {
+        return pageId;
     }
 
-    public void setPage(Integer page) {
-        this.page = page;
+    public void setPageId(Integer pageId) {
+        this.pageId = pageId;
     }
 }
