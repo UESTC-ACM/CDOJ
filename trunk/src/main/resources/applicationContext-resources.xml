@@ -33,10 +33,10 @@
             </list>
         </property>
     </bean>
-    <bean id="uestcojDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="${uestcoj.driver}"/>
-        <property name="url" value="${uestcoj.url}"/>
-        <property name="username" value="${uestcoj.username}"/>
-        <property name="password" value="${uestcoj.password}"/>
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${db.driver}"/>
+        <property name="url" value="${db.url}"/>
+        <property name="username" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
     </bean>
 </beans>

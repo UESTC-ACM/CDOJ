@@ -27,51 +27,51 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
     <bean id="articleDAO" class="cn.edu.uestc.acmicpc.db.dao.ArticleDAO">
-        <property name="sessionFactory" ref="uestcojSessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="codeDAO" class="cn.edu.uestc.acmicpc.db.dao.CodeDAO">
-        <property name="sessionFactory" ref="uestcojSessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="compileinfoDAO" class="cn.edu.uestc.acmicpc.db.dao.CompileinfoDAO">
-        <property name="sessionFactory" ref="uestcojSessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="contestDAO" class="cn.edu.uestc.acmicpc.db.dao.ContestDAO">
-        <property name="sessionFactory" ref="uestcojSessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="contestproblemDAO" class="cn.edu.uestc.acmicpc.db.dao.ContestproblemDAO">
-        <property name="sessionFactory" ref="uestcojSessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="contestTeamInfoDAO" class="cn.edu.uestc.acmicpc.db.dao.ContestTeamInfoDAO">
-        <property name="sessionFactory" ref="uestcojSessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="contestuserDAO" class="cn.edu.uestc.acmicpc.db.dao.ContestuserDAO">
-        <property name="sessionFactory" ref="uestcojSessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="departmentDAO" class="cn.edu.uestc.acmicpc.db.dao.DepartmentDAO">
-        <property name="sessionFactory" ref="uestcojSessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="discussDAO" class="cn.edu.uestc.acmicpc.db.dao.DiscussDAO">
-        <property name="sessionFactory" ref="uestcojSessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="languageDAO" class="cn.edu.uestc.acmicpc.db.dao.LanguageDAO">
-        <property name="sessionFactory" ref="uestcojSessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="messageDAO" class="cn.edu.uestc.acmicpc.db.dao.MessageDAO">
-        <property name="sessionFactory" ref="uestcojSessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="problemDAO" class="cn.edu.uestc.acmicpc.db.dao.ProblemDAO">
-        <property name="sessionFactory" ref="uestcojSessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="problemtagDAO" class="cn.edu.uestc.acmicpc.db.dao.ProblemtagDAO">
-        <property name="sessionFactory" ref="uestcojSessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="statusDAO" class="cn.edu.uestc.acmicpc.db.dao.StatusDAO">
-        <property name="sessionFactory" ref="uestcojSessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="tagDAO" class="cn.edu.uestc.acmicpc.db.dao.TagDAO">
-        <property name="sessionFactory" ref="uestcojSessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="userDAO" class="cn.edu.uestc.acmicpc.db.dao.UserDAO">
-        <property name="sessionFactory" ref="uestcojSessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 </beans>
