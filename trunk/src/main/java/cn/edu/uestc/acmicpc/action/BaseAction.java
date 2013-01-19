@@ -22,6 +22,8 @@
 
 package cn.edu.uestc.acmicpc.action;
 
+import cn.edu.uestc.acmicpc.interceptor.AppInterceptor;
+import cn.edu.uestc.acmicpc.interceptor.iface.IActionInterceptor;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.interceptor.RequestAware;
@@ -33,9 +35,10 @@ import java.util.Map;
  * Base action support, add specified common elements in here.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
-public class BaseAction extends ActionSupport implements RequestAware, SessionAware, ApplicationAware {
+public class BaseAction extends ActionSupport
+        implements RequestAware, SessionAware, ApplicationAware, IActionInterceptor {
     private static final long serialVersionUID = -3221772654123596229L;
 
     /**
@@ -88,4 +91,11 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
         this.session = session;
     }
 
+    @Override
+    public void onActionExecuting(AppInterceptor.ActionInfo actionInfo) {
+    }
+
+    @Override
+    public void onActionExecuted() {
+    }
 }
