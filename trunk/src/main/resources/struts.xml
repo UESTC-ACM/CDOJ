@@ -30,4 +30,13 @@
     <!-- default package -->
     <package name="cdoj-default" extends="struts-default">
     </package>
+
+    <!-- index package -->
+    <package name="index" namespace="/" extends="cdoj-default">
+        <default-action-ref name="index" />
+        <action name="index" class="indexAction" method="toIndex">
+            <result>/WEB-INF/views/index/indexPage.jsp</result>
+        </action>
+    </package>
+
 </struts>

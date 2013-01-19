@@ -22,6 +22,7 @@
 
 package cn.edu.uestc.acmicpc.db.dao;
 
+import cn.edu.uestc.acmicpc.db.dao.base.DAO;
 import cn.edu.uestc.acmicpc.db.entity.ContestTeamInfo;
 
 /**
