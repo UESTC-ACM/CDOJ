@@ -22,11 +22,9 @@
 
 package cn.edu.uestc.acmicpc.template.tag;
 
-import java.io.Writer;
-import java.util.Dictionary;
-import java.util.List;
-
 import com.opensymphony.xwork2.util.ValueStack;
+
+import java.io.Writer;
 
 /**
  * A tag service to show the navigation.
