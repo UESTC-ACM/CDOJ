@@ -29,7 +29,8 @@
 
     <bean id="indexAction"
           class="cn.edu.uestc.acmicpc.action.index.IndexAction"
-          scope="prototype"
-          />
+          scope="prototype">
+        <property name="userDAO" ref="userDAO"/>
+    </bean>
 
 </beans>

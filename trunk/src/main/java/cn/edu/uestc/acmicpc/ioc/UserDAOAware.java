@@ -20,43 +20,21 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.db.dao;
+package cn.edu.uestc.acmicpc.ioc;
 
-import cn.edu.uestc.acmicpc.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.db.entity.User;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-
-import java.util.List;
+import cn.edu.uestc.acmicpc.db.dao.UserDAO;
 
 /**
- * DAO for user entity.
+ * For all class which need userDAO entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 1
  */
-public class UserDAO extends DAO<User, Integer> {
-    @Override
-    protected Class<User> getReferenceClass() {
-        return User.class;
-    }
-
+public interface UserDAOAware {
     /**
-     * Get user by it's unique name.
+     * Put userDAO into class.
      *
-     * @param name user's name
-     * @return user entity, null if not exists
+     * @param userDAO userDAO object
      */
-    public User getUserByName(String name) {
-        if (name == null)
-            return null;
-        Session session = getSession();
-        Criteria criteria = session.createCriteria(User.class);
-        criteria.add(Restrictions.eq("userName", name));
-        List list = criteria.list();
-        if (list == null || list.isEmpty())
-            return null;
-        return (User) list.get(0);
-    }
+    public void setUserDAO(UserDAO userDAO);
 }
