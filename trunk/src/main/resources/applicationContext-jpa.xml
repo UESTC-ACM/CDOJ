@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
   ~ /*
   ~  * cdoj, UESTC ACMICPC Online Judge
@@ -37,10 +38,6 @@
                 <prop key="hibernate.current_session_context_class">
                     org.springframework.orm.hibernate4.SpringSessionContext
                 </prop>
-                <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/uestcoj</prop>
-                <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
-                <prop key="hibernate.connection.username">root</prop>
-                <prop key="hibernate.connection.password">root</prop>
             </props>
         </property>
         <property name="annotatedClasses">

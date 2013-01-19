@@ -20,7 +20,7 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.db.dao.base;
+package cn.edu.uestc.acmicpc.db.dao.iface;
 
 import cn.edu.uestc.acmicpc.util.AppException;
 

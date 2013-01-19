@@ -20,10 +20,10 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.db.dao;
+package cn.edu.uestc.acmicpc.db.dao.base;
 
 import cn.edu.uestc.acmicpc.db.dao.base.BaseDAO;
-import cn.edu.uestc.acmicpc.db.dao.base.IDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.AppException;
 import org.hibernate.HibernateException;
 
