@@ -29,7 +29,7 @@ import java.util.Date;
  * global static class to deal with strings
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @SuppressWarnings("UnusedDeclaration")
 public class StringUtil {
@@ -118,5 +118,17 @@ public class StringUtil {
     public static String getFilenameExt(String filename) {
         int position = filename.lastIndexOf(".");
         return position > -1 ? filename.substring(position) : "";
+    }
+
+    /**
+     * If {@code str1} is not {@code null} return {@code str1},
+     * otherwise return {@code str2}.
+     *
+     * @param str1 main string
+     * @param str2 backup string
+     * @return expected value
+     */
+    public static String choose(String str1, String str2) {
+        return !isNullOrEmpty(str1) ? str1 : str2;
     }
 }

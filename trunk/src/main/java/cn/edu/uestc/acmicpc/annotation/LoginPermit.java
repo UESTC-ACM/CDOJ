@@ -20,43 +20,47 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.db.dao;
+package cn.edu.uestc.acmicpc.annotation;
 
-import cn.edu.uestc.acmicpc.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.db.entity.User;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-
-import java.util.List;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
- * DAO for user entity.
+ * Login permission controller.
+ * <p/>
+ * Use this annotation to validate users' types.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 1
  */
-public class UserDAO extends DAO<User, Integer> {
-    @Override
-    protected Class<User> getReferenceClass() {
-        return User.class;
+@Retention(RetentionPolicy.RUNTIME)
+public @interface LoginPermit {
+    public enum AuthType {
+        /**
+         * normal user
+         */
+        NORMAL,
+        /**
+         * administrator
+         */
+        ADMIN,
+        /**
+         * constant user
+         */
+        TEACHER
     }
 
     /**
-     * Get user by it's unique name.
+     * Set user type needed.
      *
-     * @param name user's name
-     * @return user entity, null if not exists
+     * @return User type needed.
      */
-    public User getUserByName(String name) {
-        if (name == null)
-            return null;
-        Session session = getSession();
-        Criteria criteria = session.createCriteria(User.class);
-        criteria.add(Restrictions.eq("userName", name));
-        List list = criteria.list();
-        if (list == null || list.isEmpty())
-            return null;
-        return (User) list.get(0);
-    }
+    public AuthType value() default AuthType.NORMAL;
+
+    /**
+     * Need user login or not
+     *
+     * @return if this action will need user login, set it true.
+     */
+    public boolean NeedLogin() default true;
 }

@@ -23,19 +23,22 @@
 package cn.edu.uestc.acmicpc.action.index;
 
 import cn.edu.uestc.acmicpc.action.BaseAction;
+import cn.edu.uestc.acmicpc.annotation.LoginPermit;
 
 /**
  * action for index page
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
+ * @version 2
  */
+@LoginPermit(NeedLogin = false)
 public class IndexAction extends BaseAction {
 
     private static final long serialVersionUID = 5952440824378350944L;
 
     /**
      * method of index action
+     *
      * @return
      */
     public String toIndex() {
