@@ -27,7 +27,7 @@ import com.opensymphony.xwork2.util.ValueStack;
 import java.io.Writer;
 
 /**
- * A tag service to show the navigation.
+ * A tag service to show the pagination.
  *
  * ← First | « | {pages} |  | » | Last →
  * and {pages} is like this:
@@ -94,7 +94,7 @@ public class PaginationTagService extends TagService {
         if (toPage == null)
             url = "#";
         else
-            url = String.format("%s/%d",getBaseUrl(),toPage);
+            url = String.format("%s%d",getBaseUrl(),toPage);
         result += String.format("<a href=\"%s\">%s</a>",url,name);
         result += "</li>\n";
         return result;

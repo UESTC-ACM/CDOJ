@@ -191,7 +191,7 @@ public class Main
     </div>
     <div class="span4">
         <h2>Problems
-            <p class="pull-right"><a class="btn btn-primary" href="<s:url action="problemList" namespace="/problem"/>">More »</a></p>
+            <p class="pull-right"><a class="btn btn-primary" href="<s:url action="page/1" namespace="/problemset"/>">More »</a></p>
         </h2>
 
         <table class="table table-striped table-bordered">

@@ -44,7 +44,7 @@
 
     <package name="problemset" namespace="/problemset" extends="cdoj-default">
         <action name="page/*" class="problemListAction" method="toProblemList">
-            <param name="page">{1}</param>
+            <param name="pageId">{1}</param>
             <result>/WEB-INF/views/problem/problemList.jsp</result>
         </action>
         <action name="problem/*" class="problemShowAction" method="toProblem">
