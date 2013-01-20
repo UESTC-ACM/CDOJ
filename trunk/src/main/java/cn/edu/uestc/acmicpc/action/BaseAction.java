@@ -28,6 +28,8 @@ import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.interceptor.AppInterceptor;
 import cn.edu.uestc.acmicpc.interceptor.iface.IActionInterceptor;
 import cn.edu.uestc.acmicpc.ioc.UserDAOAware;
+import cn.edu.uestc.acmicpc.util.AppException;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.*;
@@ -43,7 +45,7 @@ import java.util.Map;
  * Base action support, add specified common elements in here.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 public class BaseAction extends ActionSupport
         implements RequestAware, SessionAware, ApplicationAware, IActionInterceptor,
@@ -235,22 +237,42 @@ public class BaseAction extends ActionSupport
         } catch (Exception e) {
         }
         User user = getCurrentUser();
-        if (permit == null || !permit.NeedLogin()) {
-            currentUser = user;
-            request.put("currentUser", user);
-            return;
-        }
-        if (user == null) {
-            // TODO "/user/log" is login page
-            redirect(getContextPath("/user/log"));
+        try {
+            if (permit == null || !permit.NeedLogin()) {
+                currentUser = user;
+                request.put("currentUser", user);
+                return;
+            }
+            if (user == null) {
+                // TODO "/user/log" is login page
+                redirect(getContextPath("/user/log"));
+                actionInfo.setCancel(true);
+                actionInfo.setActionResult(REDIRECT);
+                return;
+            } else if (permit.value() != Global.AuthenticationType.NORMAL) {
+                if (user.getType() != permit.value().ordinal()) {
+                    throw new AppException("This user is not "
+                            + permit.value().getDescription() + ".");
+                }
+                // TODO add extra option here
+            }
+        } catch (AppException e) {
             actionInfo.setCancel(true);
-            actionInfo.setActionResult(REDIRECT);
-            return;
-        } else if (permit.value() != LoginPermit.AuthType.NORMAL) {
-            // TODO validate user here
+            actionInfo.setActionResult(setError(e.getMessage()));
         }
         currentUser = user;
         request.put("currentUser", currentUser);
+    }
+
+    /**
+     * Put error message into request and return error signal.
+     *
+     * @param message error message
+     * @return error signal
+     */
+    private String setError(String message) {
+        request.put("errorMsg", message);
+        return ERROR;
     }
 
     @Override

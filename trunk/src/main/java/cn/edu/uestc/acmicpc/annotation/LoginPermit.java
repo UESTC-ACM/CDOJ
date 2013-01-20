@@ -22,6 +22,8 @@
 
 package cn.edu.uestc.acmicpc.annotation;
 
+import cn.edu.uestc.acmicpc.util.Global;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -31,31 +33,19 @@ import java.lang.annotation.RetentionPolicy;
  * Use this annotation to validate users' types.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LoginPermit {
-    public enum AuthType {
-        /**
-         * normal user
-         */
-        NORMAL,
-        /**
-         * administrator
-         */
-        ADMIN,
-        /**
-         * constant user
-         */
-        TEACHER
-    }
 
     /**
-     * Set user type needed.
+     * Set user type needed. The user type can refer to
+     * {@link cn.edu.uestc.acmicpc.util.Global.AuthenticationType}.
      *
      * @return User type needed.
+     * @see cn.edu.uestc.acmicpc.util.Global.AuthenticationType
      */
-    public AuthType value() default AuthType.NORMAL;
+    public Global.AuthenticationType value() default Global.AuthenticationType.NORMAL;
 
     /**
      * Need user login or not
