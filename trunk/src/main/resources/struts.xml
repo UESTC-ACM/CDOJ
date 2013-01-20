@@ -32,6 +32,7 @@
             <interceptor name="appInterceptor"
                          class="cn.edu.uestc.acmicpc.interceptor.AppInterceptor"/>
             <interceptor-stack name="cdojCheckStack">
+                <interceptor-ref name="defaultStack"/>
                 <interceptor-ref name="appInterceptor"/>
             </interceptor-stack>
         </interceptors>
@@ -53,6 +54,13 @@
     <package name="index" namespace="/" extends="default">
         <action name="index" class="indexAction" method="toIndex">
             <result>/WEB-INF/views/index/indexPage.jsp</result>
+        </action>
+    </package>
+
+    <!-- test package -->
+    <package name="test" namespace="/test" extends="default">
+        <action name="test" class="testAction" method="toTest">
+            <result>/WEB-INF/views/test/index.jsp</result>
         </action>
     </package>
 

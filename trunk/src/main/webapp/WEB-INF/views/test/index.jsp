@@ -29,6 +29,6 @@
     <title>CDOJ</title>
 </head>
 <body>
-encoding: <s:property value="#request.encoding"/><br/>
+encoding: <s:property value="#request.tags"/><br/>
 </body>
 </html>
