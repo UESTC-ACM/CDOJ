@@ -27,13 +27,30 @@
         "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
+    <package name="default" extends="struts-default">
+        <interceptors>
+            <interceptor name="appInterceptor"
+                         class="cn.edu.uestc.acmicpc.interceptor.AppInterceptor"/>
+            <interceptor-stack name="cdojCheckStack">
+                <interceptor-ref name="appInterceptor"/>
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="cdojCheckStack"/>
+        <default-action-ref name="notFound"/>
+        <global-results>
+            <result name="error">/WEB-INF/views/error/error.jsp</result>
+            <result name="redirect">/WEB-INF/views/master/redirect.jsp</result>
+        </global-results>
+        <action name="notFound">
+            <result name="error">/WEB-INF/views/index/indexPage.jsp</result>
+        </action>
+    </package>
     <!-- default package -->
-    <package name="cdoj-default" extends="struts-default">
+    <package name="cdoj-default" extends="default">
     </package>
 
     <!-- index package -->
-    <package name="index" namespace="/" extends="cdoj-default">
-        <default-action-ref name="index" />
+    <package name="index" namespace="/" extends="default">
         <action name="index" class="indexAction" method="toIndex">
             <result>/WEB-INF/views/index/indexPage.jsp</result>
         </action>

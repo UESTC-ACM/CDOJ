@@ -20,22 +20,32 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.ioc;
-
-import cn.edu.uestc.acmicpc.db.dao.UserDAO;
+package cn.edu.uestc.acmicpc.util;
 
 /**
- * For all class which need userDAO entity.
+ * Global enumerates and constants inside project.
+ * <p/>
+ * <strong>WARN:</strong> this file may be rewritten carefully.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
- * @see UserDAO
  */
-public interface UserDAOAware {
-    /**
-     * Put userDAO into class.
-     *
-     * @param userDAO userDAO object
-     */
-    public void setUserDAO(UserDAO userDAO);
+public class Global {
+    public enum AuthenticationType {
+        NORMAL("normal user"), ADMIN("administrator"), CONSTANT("constant user");
+        private String description;
+
+        private AuthenticationType(String description) {
+            this.description = description;
+        }
+
+        /**
+         * Get enumerate value's description.
+         *
+         * @return description string for specific authentication type
+         */
+        public String getDescription() {
+            return description;
+        }
+    }
 }
