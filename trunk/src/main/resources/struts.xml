@@ -42,7 +42,7 @@
             <result name="error">/WEB-INF/views/error/error.jsp</result>
             <result name="redirect">/WEB-INF/views/master/redirect.jsp</result>
         </global-results>
-        <action name="notFound" class="cn.edu.uestc.acmicpc.action.BaseAction">
+        <action name="notFound" class="baseAction">
             <result>/WEB-INF/views/index/index.jsp</result>
         </action>
     </package>
@@ -59,6 +59,7 @@
         <action name="register" class="registerAction" method="toRegister">
             <result>/WEB-INF/views/user/register.jsp</result>
         </action>
+        <action name="login" class="loginAction" method="login"/>
     </package>
 
     <!-- test package -->
