@@ -43,17 +43,21 @@
             <result name="redirect">/WEB-INF/views/master/redirect.jsp</result>
         </global-results>
         <action name="notFound" class="cn.edu.uestc.acmicpc.action.BaseAction">
-            <result>/WEB-INF/views/index/indexPage.jsp</result>
+            <result>/WEB-INF/views/index/index.jsp</result>
         </action>
-    </package>
-    <!-- default package -->
-    <package name="cdoj-default" extends="default">
     </package>
 
     <!-- index package -->
     <package name="index" namespace="/" extends="default">
         <action name="index" class="indexAction" method="toIndex">
-            <result>/WEB-INF/views/index/indexPage.jsp</result>
+            <result>/WEB-INF/views/index/index.jsp</result>
+        </action>
+    </package>
+
+    <!-- user package -->
+    <package name="user" namespace="/user" extends="default">
+        <action name="register" class="registerAction" method="toRegister">
+            <result>/WEB-INF/views/user/register.jsp</result>
         </action>
     </package>
 

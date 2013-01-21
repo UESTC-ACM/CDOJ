@@ -22,6 +22,7 @@
 
 
 import cn.edu.uestc.acmicpc.db.dao.TagDAO;
+import cn.edu.uestc.acmicpc.db.dao.UserDAO;
 import cn.edu.uestc.acmicpc.db.entity.Tag;
 import cn.edu.uestc.acmicpc.util.AppException;
 import org.junit.Test;

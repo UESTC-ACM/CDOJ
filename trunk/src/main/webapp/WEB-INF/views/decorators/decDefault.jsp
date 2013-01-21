@@ -138,83 +138,81 @@
             </form>
 
             <!-- 用户信息菜单，自行取用 -->
-            <!-- 用户信息菜单，登陆后 -->
-            <ul class="nav pull-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="icon-user"></i>
-                        ${user.userName}
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <!-- 用户中心的入口 -->
-                        <li>
-                            <a href="./usercenter.html">
-                                <i class="icon-home"></i>
-                                User center
-                            </a>
-                        </li>
+            <s:if test="#user == null">
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-pencil"></i>
+                            Login
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- 登陆按钮 -->
+                            <li>
+                                <a href="./login.html">
+                                    <i class="icon-ok-circle"></i>
+                                    Login
+                                </a>
+                            </li>
 
-                        <!-- 未读消息 -->
-                        <li>
-                            <a href="./message.html">
-                                <i class="icon-envelope"></i>
-                                Message
-                                <span class="badge badge-success">2</span>
-                            </a>
-                        </li>
+                            <!-- 注册按钮 -->
+                            <li>
+                                <a href="<s:url namespace="/user" action="register"/>">
+                                    <i class="icon-plus-sign"></i>
+                                    Register
+                                </a>
+                            </li>
 
-                        <!-- 收藏夹 -->
-                        <li>
-                            <a href="./bookmark.html">
-                                <i class="icon-folder-open"></i>
-                                Bookmark
-                            </a>
-                        </li>
+                        </ul>
+                    </li>
+                </ul>
+            </s:if>
+            <s:else>
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-user"></i>
+                                ${user.userName}
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- 用户中心的入口 -->
+                            <li>
+                                <a href="./usercenter.html">
+                                    <i class="icon-home"></i>
+                                    User center
+                                </a>
+                            </li>
 
-                        <!-- 登出 -->
-                        <li>
-                            <a href="./logout.html">
-                                <i class="icon-off"></i>
-                                Logout
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <!-- 用户相关的菜单 -->
+                            <!-- 未读消息 -->
+                            <li>
+                                <a href="./message.html">
+                                    <i class="icon-envelope"></i>
+                                    Message
+                                    <span class="badge badge-success">2</span>
+                                </a>
+                            </li>
 
-            <!--
-                       用户信息菜单，没有登录的时候
-                       -->
-            <ul class="nav pull-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="icon-pencil"></i>
-                        Login
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <!-- 登陆按钮 -->
-                        <li>
-                            <a href="./login.html">
-                                <i class="icon-ok-circle"></i>
-                                Login
-                            </a>
-                        </li>
+                            <!-- 收藏夹 -->
+                            <li>
+                                <a href="./bookmark.html">
+                                    <i class="icon-folder-open"></i>
+                                    Bookmark
+                                </a>
+                            </li>
 
-                        <!-- 注册按钮 -->
-                        <li>
-                            <a href="./register.html">
-                                <i class="icon-plus-sign"></i>
-                                Register
-                            </a>
-                        </li>
-
-                    </ul>
-                </li>
-            </ul>
-            <!-- 用户相关的菜单 -->
+                            <!-- 登出 -->
+                            <li>
+                                <a href="./logout.html">
+                                    <i class="icon-off"></i>
+                                    Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <!-- 用户相关的菜单 -->
+            </s:else>
 
         </div>
     </div>
