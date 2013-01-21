@@ -38,4 +38,9 @@
         <property name="tagDAO" ref="tagDAO"/>
     </bean>
 
+    <bean id="registerAction"
+          class="cn.edu.uestc.acmicpc.action.user.RegisterAction"
+          scope="prototype"
+          />
+
 </beans>
