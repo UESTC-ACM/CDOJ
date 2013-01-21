@@ -62,34 +62,5 @@
             </list>
         </property>
     </bean>
-    <bean id="uestcojTransactionManager"
-          class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="uestcojTransactionInterceptor"
-          class="org.springframework.transaction.interceptor.TransactionInterceptor">
-        <property name="transactionManager">
-            <ref bean="uestcojTransactionManager"/>
-        </property>
-        <property name="transactionAttributes">
-            <props>
-                <prop key="delete*">PROPAGATION_REQUIRED</prop>
-                <prop key="add*">PROPAGATION_REQUIRED</prop>
-                <prop key="update*">PROPAGATION_REQUIRED</prop>
-                <prop key="save*">PROPAGATION_REQUIRED</prop>
-                <prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
-            </props>
-        </property>
-    </bean>
-    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-        <property name="beanNames">
-            <list>
-                <value>*DAO</value>
-            </list>
-        </property>
-        <property name="interceptorNames">
-            <value>uestcojTransactionInterceptor</value>
-        </property>
-    </bean>
     <import resource="applicationContext-dao.xml"/>
 </beans>
