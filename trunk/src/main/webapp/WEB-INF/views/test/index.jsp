@@ -29,6 +29,8 @@
     <title>CDOJ</title>
 </head>
 <body>
-encoding: <s:property value="#request.tags"/><br/>
+<s:iterator value="#request.tags" var="tag">
+    <s:property value="#tag.tagId"/> <s:property value="#tag.name"/><br />
+</s:iterator>
 </body>
 </html>

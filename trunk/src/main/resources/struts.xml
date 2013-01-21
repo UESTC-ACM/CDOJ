@@ -42,8 +42,8 @@
             <result name="error">/WEB-INF/views/error/error.jsp</result>
             <result name="redirect">/WEB-INF/views/master/redirect.jsp</result>
         </global-results>
-        <action name="notFound">
-            <result name="error">/WEB-INF/views/index/indexPage.jsp</result>
+        <action name="notFound" class="cn.edu.uestc.acmicpc.action.BaseAction">
+            <result>/WEB-INF/views/index/indexPage.jsp</result>
         </action>
     </package>
     <!-- default package -->
