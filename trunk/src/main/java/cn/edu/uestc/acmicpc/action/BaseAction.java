@@ -45,7 +45,7 @@ import java.util.Map;
  * Base action support, add specified common elements in here.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
+ * @version 5
  */
 public class BaseAction extends ActionSupport
         implements RequestAware, SessionAware, ApplicationAware, IActionInterceptor,
@@ -270,10 +270,21 @@ public class BaseAction extends ActionSupport
      * @param message error message
      * @return error signal
      */
-    private String setError(String message) {
+    protected String setError(String message) {
         request.put("errorMsg", message);
         return ERROR;
     }
+
+    /**
+     * Put exception's error message into request and return error signal.
+     *
+     * @param e application exception
+     * @return error signal
+     */
+    protected String setError(AppException e) {
+        return setError(e.getMessage());
+    }
+
 
     @Override
     public void setServletRequest(HttpServletRequest request) {
@@ -290,5 +301,24 @@ public class BaseAction extends ActionSupport
     @Override
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
+    }
+
+    /**
+     * Redirect to reference page with specific message.
+     *
+     * @param msg message content
+     * @return redirect signal
+     */
+    protected String redirectToRefer(String msg) {
+        return redirect(httpServletRequest.getHeader("Referer"), msg);
+    }
+
+    /**
+     * Redirect to reference page with no message.
+     *
+     * @return redirect signal
+     */
+    protected String redirectToRefer() {
+        return redirectToRefer(null);
     }
 }
