@@ -31,6 +31,7 @@ import java.io.Serializable;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
+@Table(name = "problemtag", schema = "", catalog = "uestcoj")
 @Entity
 public class Problemtag implements Serializable {
     private static final long serialVersionUID = 8758938774072713107L;

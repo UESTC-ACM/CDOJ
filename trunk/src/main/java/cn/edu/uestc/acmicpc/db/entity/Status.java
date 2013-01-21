@@ -32,6 +32,7 @@ import java.sql.Timestamp;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
+@Table(name = "status", schema = "", catalog = "uestcoj")
 @Entity
 public class Status implements Serializable {
     private static final long serialVersionUID = 4819326443036942394L;

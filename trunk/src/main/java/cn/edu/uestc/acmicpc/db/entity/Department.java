@@ -32,6 +32,7 @@ import java.util.Collection;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
+@Table(name = "department", schema = "", catalog = "uestcoj")
 @Entity
 public class Department implements Serializable {
     private static final long serialVersionUID = -2249534733683595360L;
