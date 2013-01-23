@@ -22,12 +22,18 @@
 
 package cn.edu.uestc.acmicpc.db.dao.base;
 
-import cn.edu.uestc.acmicpc.db.dao.base.BaseDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.AppException;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Projections;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -36,13 +42,17 @@ import java.util.List;
  * @param <Entity> Entity's type
  * @param <PK>     Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         extends BaseDAO implements IDAO<Entity, PK> {
     @Override
     public Serializable add(Entity entity) throws AppException {
-        return getSession().save(entity);
+        Session session = getSession();
+        Transaction transaction = session.beginTransaction();
+        Serializable result = session.save(entity);
+        transaction.commit();
+        return result;
     }
 
     @SuppressWarnings("unchecked")
@@ -53,12 +63,18 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
 
     @Override
     public void update(Entity entity) throws AppException {
-        getSession().update(entity);
+        Session session = getSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(entity);
+        transaction.commit();
     }
 
     @Override
     public void delete(Entity entity) throws AppException {
-        getSession().delete(entity);
+        Session session = getSession();
+        Transaction transaction = session.beginTransaction();
+        session.delete(entity);
+        transaction.commit();
     }
 
     @SuppressWarnings("unchecked")
@@ -71,6 +87,30 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
             throw new AppException("Invoke findAll method error.");
         }
         return list;
+    }
+
+    public Long count() throws AppException {
+        try {
+            Criteria criteria = getSession().createCriteria(getReferenceClass());
+            criteria.setProjection(Projections.count(getKeyFieldName()));
+            Long result = (Long) criteria.uniqueResult();
+            return result;
+        } catch (HibernateException e) {
+            throw new AppException("Invoke count method error.");
+        }
+    }
+
+    protected String getKeyFieldName() {
+        Method[] methods = getReferenceClass().getMethods();
+        for (Method method : methods) {
+            if (method.getAnnotation(Id.class) != null) {
+                Column column = method.getAnnotation(Column.class);
+                if (column == null)
+                    return null;
+                return column.name();
+            }
+        }
+        return null;
     }
 
     /**

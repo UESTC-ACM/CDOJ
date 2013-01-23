@@ -28,7 +28,6 @@ import cn.edu.uestc.acmicpc.db.entity.Tag;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.AppException;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -41,7 +40,7 @@ import java.util.List;
  * Simple database test class.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 public class DatabaseTest {
 
@@ -60,6 +59,7 @@ public class DatabaseTest {
         userDAO = applicationContext.getBean(UserDAO.class);
         departmentDAO = applicationContext.getBean(DepartmentDAO.class);
     }
+
     /**
      * Simple test by connecting with database with DAO.
      */
@@ -74,16 +74,26 @@ public class DatabaseTest {
      * Test for User DAO
      */
     @Test
-    public void testUserDAO() throws Exception {
-        User user = new User();
-        user.setUserName("mzry1992");
-        user.setPassword("6614183");
-        user.setNickName("haha");
-        user.setEmail("muziriyun@qq.com");
-        user.setSchool("UESTC");
-        user.setDepartmentByDepartmentId(departmentDAO.get(1));
-        user.setStudentId("2010013100008");
-        user.setLastLogin(new Timestamp(new Date().getTime()));
-        userDAO.add(user);
+    public void testUserDAO() throws AppException {
+        User user = userDAO.getUserByName("mzry1992");
+        if (user == null) {
+            user = new User();
+            user.setUserName("mzry1992");
+            user.setPassword("123456");
+            user.setNickName("haha");
+            user.setEmail("muziriyun@qq.com");
+            user.setSchool("UESTC");
+            user.setDepartmentByDepartmentId(departmentDAO.get(1));
+            user.setStudentId("2010013100008");
+            user.setLastLogin(new Timestamp(new Date().getTime()));
+            userDAO.add(user);
+        } else {
+            System.out.println(user.getUserId() + " " + user.getUserName());
+        }
+    }
+
+    @Test
+    public void testCount() throws AppException {
+        System.out.println(tagDAO.count());
     }
 }

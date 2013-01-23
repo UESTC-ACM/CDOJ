@@ -31,6 +31,7 @@ import cn.edu.uestc.acmicpc.ioc.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.AppException;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.StringUtil;
+import cn.edu.uestc.acmicpc.view.PageInfo;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.*;
 
@@ -45,12 +46,17 @@ import java.util.Map;
  * Base action support, add specified common elements in here.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 5
+ * @version 6
  */
 public class BaseAction extends ActionSupport
         implements RequestAware, SessionAware, ApplicationAware, IActionInterceptor,
         ServletResponseAware, ServletRequestAware, UserDAOAware {
     private static final long serialVersionUID = -3221772654123596229L;
+
+    /**
+     * Number of records per page
+     */
+    protected static final int RECORD_PER_PAGE = 50;
 
     /**
      * Global constant
@@ -333,5 +339,27 @@ public class BaseAction extends ActionSupport
      */
     protected String redirectToRefer() {
         return redirectToRefer(null);
+    }
+
+    /**
+     * Build a page html content according to number of records, records per page,
+     * base URL and display distance.
+     * <p/>
+     * <strong>Example:</strong>
+     * Get total and set it into {@code buildPageInfo} method: <br />
+     * {@code PageInfo pageInfo = buildPageInfo(articleDAO.count(), RECORD_PER_PAGE);}
+     *
+     * @param count           total number of records
+     * @param countPerPage    number of records per page
+     * @param baseURL         base URL
+     * @param displayDistance display distance for page numbers
+     * @return return a PageInfo object and put the HTML content into request attribute list.
+     */
+    protected PageInfo buildPageInfo(int count, int countPerPage,
+                                     String baseURL, int displayDistance) {
+        PageInfo pageInfo = PageInfo.create(count, countPerPage,
+                baseURL, displayDistance, httpServletRequest.getQueryString());
+        request.put("pageInfo", pageInfo.getHtmlString());
+        return pageInfo;
     }
 }

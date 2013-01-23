@@ -26,8 +26,8 @@ import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 
-import java.util.Date;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * collect information from register action and generate a User class.
@@ -89,6 +89,7 @@ public class UserDTO {
 
     /**
      * Val
+     *
      * @return
      */
     public User getUser() {
