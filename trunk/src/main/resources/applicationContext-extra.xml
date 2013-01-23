@@ -21,6 +21,7 @@
   ~  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   ~  */
   -->
+
 <!--suppress XmlUnusedNamespaceDeclaration -->
 <beans default-lazy-init="true"
        xmlns="http://www.springframework.org/schema/beans"
@@ -30,30 +31,8 @@
        http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
        xmlns:aop="http://www.springframework.org/schema/aop">
-    <bean id="baseAction"
-          class="cn.edu.uestc.acmicpc.action.BaseAction"
-          scope="prototype">
-        <property name="userDAO" ref="userDAO"/>
-        <property name="global" ref="global"/>
-    </bean>
-    <bean id="indexAction"
-          class="cn.edu.uestc.acmicpc.action.index.IndexAction"
-          scope="prototype">
-        <property name="userDAO" ref="userDAO"/>
-    </bean>
-    <bean id="testAction"
-          class="cn.edu.uestc.acmicpc.action.test.TestAction"
-          scope="prototype">
-        <property name="userDAO" ref="userDAO"/>
-        <property name="tagDAO" ref="tagDAO"/>
-    </bean>
-    <bean id="registerAction"
-          class="cn.edu.uestc.acmicpc.action.user.RegisterAction"
-          scope="prototype">
-        <property name="userDAO" ref="userDAO"/>
-    </bean>
-    <bean id="loginAction"
-          class="cn.edu.uestc.acmicpc.action.user.LoginAction">
-        <property name="userDAO" ref="userDAO"/>
+    <bean id="global" class="cn.edu.uestc.acmicpc.util.Global"
+          scope="singleton">
+        <property name="departmentDAO" ref="departmentDAO"/>
     </bean>
 </beans>

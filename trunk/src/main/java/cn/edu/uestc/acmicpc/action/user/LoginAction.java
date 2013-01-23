@@ -35,10 +35,13 @@ import java.util.Date;
  * Login action for user login.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @LoginPermit(NeedLogin = false)
 public class LoginAction extends BaseAction {
+
+    private static final long serialVersionUID = 2034049134718450987L;
+
     /**
      * login with {@code userName} and {@code password}.
      *

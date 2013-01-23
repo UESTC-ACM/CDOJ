@@ -53,6 +53,19 @@ public class BaseAction extends ActionSupport
     private static final long serialVersionUID = -3221772654123596229L;
 
     /**
+     * Global constant
+     */
+    private Global global;
+
+    public Global getGlobal() {
+        return global;
+    }
+
+    public void setGlobal(Global global) {
+        this.global = global;
+    }
+
+    /**
      * Request attribute map.
      */
     protected Map<String, Object> request;

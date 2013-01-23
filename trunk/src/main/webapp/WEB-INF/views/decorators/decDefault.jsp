@@ -221,10 +221,12 @@
 
 <!-- 正文 -->
 <div id="wrap">
-    <div class="container">
+    <div class="mzry1992">
+        <div class="container">
 
-        <decorator:body/>
+            <decorator:body/>
 
+        </div>
     </div>
 </div>
 
