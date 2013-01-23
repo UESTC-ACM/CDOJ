@@ -1,0 +1,17 @@
+INSERT IGNORE INTO`uestcoj`.`department` (`departmentId`, `name`) VALUES ('1', 'Others');
+INSERT IGNORE INTO`uestcoj`.`department` (`departmentId`, `name`) VALUES ('2', 'School of Information and Software Engineering');
+INSERT IGNORE INTO`uestcoj`.`department` (`departmentId`, `name`) VALUES ('3', 'School of Mathematical Sciences');
+INSERT IGNORE INTO`uestcoj`.`department` (`departmentId`, `name`) VALUES ('4', 'School of Management and Economics');
+INSERT IGNORE INTO`uestcoj`.`department` (`departmentId`, `name`) VALUES ('5', 'School of Automation Engineering');
+INSERT IGNORE INTO`uestcoj`.`department` (`departmentId`, `name`) VALUES ('6', 'School of Mechatronics Engineering');
+INSERT IGNORE INTO`uestcoj`.`department` (`departmentId`, `name`) VALUES ('7', 'School of Optoelectronic Information');
+INSERT IGNORE INTO`uestcoj`.`department` (`departmentId`, `name`) VALUES ('8', 'School of Computer Science & Engineering');
+INSERT IGNORE INTO`uestcoj`.`department` (`departmentId`, `name`) VALUES ('9', 'School of Life Science and Technology');
+INSERT IGNORE INTO`uestcoj`.`department` (`departmentId`, `name`) VALUES ('10', 'School of Foreign Languages');
+INSERT IGNORE INTO`uestcoj`.`department` (`departmentId`, `name`) VALUES ('11', 'School of Energy Science and Engineering');
+INSERT IGNORE INTO`uestcoj`.`department` (`departmentId`, `name`) VALUES ('12', 'School of Marxism Education');
+INSERT IGNORE INTO`uestcoj`.`department` (`departmentId`, `name`) VALUES ('13', 'School of Political Science and Public Administration');
+INSERT IGNORE INTO`uestcoj`.`department` (`departmentId`, `name`) VALUES ('14', 'School of Microelectronics and Solid-State Electronics');
+INSERT IGNORE INTO`uestcoj`.`department` (`departmentId`, `name`) VALUES ('15', 'School of Electronic Engineering');
+INSERT IGNORE INTO`uestcoj`.`department` (`departmentId`, `name`) VALUES ('16', 'School of Physical Electronics');
+INSERT IGNORE INTO`uestcoj`.`department` (`departmentId`, `name`) VALUES ('17', 'School of Communication & Information Engineering');
