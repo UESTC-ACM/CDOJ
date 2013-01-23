@@ -30,52 +30,39 @@
        http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
        xmlns:aop="http://www.springframework.org/schema/aop">
-    <bean id="articleDAO" class="cn.edu.uestc.acmicpc.db.dao.ArticleDAO">
+    <bean id="BaseDAO" class="cn.edu.uestc.acmicpc.db.dao.base.BaseDAO">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="codeDAO" class="cn.edu.uestc.acmicpc.db.dao.CodeDAO">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="articleDAO" class="cn.edu.uestc.acmicpc.db.dao.ArticleDAO" parent="BaseDAO">
     </bean>
-    <bean id="compileinfoDAO" class="cn.edu.uestc.acmicpc.db.dao.CompileinfoDAO">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="codeDAO" class="cn.edu.uestc.acmicpc.db.dao.CodeDAO" parent="BaseDAO">
     </bean>
-    <bean id="contestDAO" class="cn.edu.uestc.acmicpc.db.dao.ContestDAO">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="compileinfoDAO" class="cn.edu.uestc.acmicpc.db.dao.CompileinfoDAO" parent="BaseDAO">
     </bean>
-    <bean id="contestproblemDAO" class="cn.edu.uestc.acmicpc.db.dao.ContestproblemDAO">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="contestDAO" class="cn.edu.uestc.acmicpc.db.dao.ContestDAO" parent="BaseDAO">
     </bean>
-    <bean id="contestTeamInfoDAO" class="cn.edu.uestc.acmicpc.db.dao.ContestTeamInfoDAO">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="contestproblemDAO" class="cn.edu.uestc.acmicpc.db.dao.ContestproblemDAO" parent="BaseDAO">
     </bean>
-    <bean id="contestuserDAO" class="cn.edu.uestc.acmicpc.db.dao.ContestuserDAO">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="contestTeamInfoDAO" class="cn.edu.uestc.acmicpc.db.dao.ContestTeamInfoDAO" parent="BaseDAO">
     </bean>
-    <bean id="departmentDAO" class="cn.edu.uestc.acmicpc.db.dao.DepartmentDAO">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="contestuserDAO" class="cn.edu.uestc.acmicpc.db.dao.ContestuserDAO" parent="BaseDAO">
     </bean>
-    <bean id="discussDAO" class="cn.edu.uestc.acmicpc.db.dao.DiscussDAO">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="departmentDAO" class="cn.edu.uestc.acmicpc.db.dao.DepartmentDAO" parent="BaseDAO">
     </bean>
-    <bean id="languageDAO" class="cn.edu.uestc.acmicpc.db.dao.LanguageDAO">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="discussDAO" class="cn.edu.uestc.acmicpc.db.dao.DiscussDAO" parent="BaseDAO">
     </bean>
-    <bean id="messageDAO" class="cn.edu.uestc.acmicpc.db.dao.MessageDAO">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="languageDAO" class="cn.edu.uestc.acmicpc.db.dao.LanguageDAO" parent="BaseDAO">
     </bean>
-    <bean id="problemDAO" class="cn.edu.uestc.acmicpc.db.dao.ProblemDAO">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="messageDAO" class="cn.edu.uestc.acmicpc.db.dao.MessageDAO" parent="BaseDAO">
     </bean>
-    <bean id="problemtagDAO" class="cn.edu.uestc.acmicpc.db.dao.ProblemtagDAO">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="problemDAO" class="cn.edu.uestc.acmicpc.db.dao.ProblemDAO" parent="BaseDAO">
     </bean>
-    <bean id="statusDAO" class="cn.edu.uestc.acmicpc.db.dao.StatusDAO">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="problemtagDAO" class="cn.edu.uestc.acmicpc.db.dao.ProblemtagDAO" parent="BaseDAO">
     </bean>
-    <bean id="tagDAO" class="cn.edu.uestc.acmicpc.db.dao.TagDAO">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="statusDAO" class="cn.edu.uestc.acmicpc.db.dao.StatusDAO" parent="BaseDAO">
     </bean>
-    <bean id="userDAO" class="cn.edu.uestc.acmicpc.db.dao.UserDAO">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="tagDAO" class="cn.edu.uestc.acmicpc.db.dao.TagDAO" parent="BaseDAO">
+    </bean>
+    <bean id="userDAO" class="cn.edu.uestc.acmicpc.db.dao.UserDAO" parent="BaseDAO">
     </bean>
 </beans>

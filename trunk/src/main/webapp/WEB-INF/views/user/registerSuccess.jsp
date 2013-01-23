@@ -45,7 +45,7 @@
             <p>Nick name : |<s:property value="userDTO.nickName"/>|</p>
             <p>Email : |<s:property value="userDTO.email"/>|</p>
             <p>School : |<s:property value="userDTO.school"/>|</p>
-            <p>Department : |<s:property value="userDTO.department"/>|</p>
+            <p>Department : |<s:property value="userDTO.departmentId"/>|</p>
             <p>Student ID : |<s:property value="userDTO.studentId"/>|</p>
         </s:div>
     </s:div>

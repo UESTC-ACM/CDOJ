@@ -23,14 +23,16 @@
 package cn.edu.uestc.acmicpc.action.user;
 
 import cn.edu.uestc.acmicpc.action.BaseAction;
+import cn.edu.uestc.acmicpc.db.dao.DepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dto.UserDTO;
 import com.opensymphony.xwork2.validator.annotations.*;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
 /**
  * Action for register
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
+ * @version 2
  */
 
 public class RegisterAction extends BaseAction {
@@ -42,6 +44,15 @@ public class RegisterAction extends BaseAction {
      */
     private UserDTO userDTO;
 
+    /**
+     * department dao, use for get a department entity by id.
+     */
+    private DepartmentDAO departmentDAO;
+
+    /**
+     * Register action! with so many validators! ha ha...
+     * @return
+     */
     @Validations(
             requiredStrings = {
                     @RequiredStringValidator(
@@ -63,10 +74,6 @@ public class RegisterAction extends BaseAction {
                     @RequiredStringValidator(
                             fieldName = "userDTO.school",
                             key = "error.school.validation"
-                    ),
-                    @RequiredStringValidator(
-                            fieldName = "userDTO.department",
-                            key = "error.department.validation"
                     ),
                     @RequiredStringValidator(
                             fieldName = "userDTO.studentId",
@@ -121,8 +128,8 @@ public class RegisterAction extends BaseAction {
                             key = "error.passwordRepeat.validation"
                     ),
                     @FieldExpressionValidator(
-                            fieldName = "userDTO.department",
-                            expression = "userDTO.department in global.departmentList.{name}",
+                            fieldName = "userDTO.departmentId",
+                            expression = "userDTO.departmentId in global.departmentList.{departmentId}",
                             key = "error.department.validation"
                     )
             },
@@ -135,7 +142,26 @@ public class RegisterAction extends BaseAction {
 
     )
     public String toRegister() {
+        try {
+            if (userDAO.getUserByName(userDTO.getUserName()) != null) {
+                addFieldError("userDTO.userName","User name has been used!");
+                return INPUT;
+            }
+            userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
+            userDAO.add(userDTO.getUser());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return SUCCESS;
+    }
+
+    /**
+     * Default method for the first time visit register page.
+     * @return INPUT
+     */
+    @SkipValidation
+    public String execute() {
+        return INPUT;
     }
 
     public UserDTO getUserDTO() {
@@ -144,5 +170,13 @@ public class RegisterAction extends BaseAction {
 
     public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
+    }
+
+    public DepartmentDAO getDepartmentDAO() {
+        return departmentDAO;
+    }
+
+    public void setDepartmentDAO(DepartmentDAO departmentDAO) {
+        this.departmentDAO = departmentDAO;
     }
 }

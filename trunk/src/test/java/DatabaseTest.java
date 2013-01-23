@@ -21,33 +21,69 @@
  */
 
 
+import cn.edu.uestc.acmicpc.db.dao.DepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.TagDAO;
 import cn.edu.uestc.acmicpc.db.dao.UserDAO;
 import cn.edu.uestc.acmicpc.db.entity.Tag;
+import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.AppException;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Simple database test class.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 public class DatabaseTest {
+
+    /**
+     * Resources and DAOs..
+     */
+    private ApplicationContext applicationContext;
+    private TagDAO tagDAO;
+    private UserDAO userDAO;
+    private DepartmentDAO departmentDAO;
+
+    @Before
+    public void initDAO() throws Exception {
+        applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        tagDAO = applicationContext.getBean(TagDAO.class);
+        userDAO = applicationContext.getBean(UserDAO.class);
+        departmentDAO = applicationContext.getBean(DepartmentDAO.class);
+    }
     /**
      * Simple test by connecting with database with DAO.
      */
     @Test
     public void testDataBaseConnection() throws AppException {
-        ApplicationContext applicationContext
-                = new ClassPathXmlApplicationContext("applicationContext.xml");
-        TagDAO tagDAO = applicationContext.getBean(TagDAO.class);
         List<Tag> tags = tagDAO.findAll();
         for (Tag tag : tags)
             System.out.println(tag.getTagId() + " " + tag.getName());
+    }
+
+    /**
+     * Test for User DAO
+     */
+    @Test
+    public void testUserDAO() throws Exception {
+        User user = new User();
+        user.setUserName("mzry1992");
+        user.setPassword("6614183");
+        user.setNickName("haha");
+        user.setEmail("muziriyun@qq.com");
+        user.setSchool("UESTC");
+        user.setDepartmentByDepartmentId(departmentDAO.get(1));
+        user.setStudentId("2010013100008");
+        user.setLastLogin(new Timestamp(new Date().getTime()));
+        userDAO.add(user);
     }
 }
