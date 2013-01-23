@@ -68,7 +68,7 @@ public class PaginationTag extends Tag {
     @Override
     protected void populateParams() {
         super.populateParams();
-        PaginationTagService paginationTagService = (PaginationTagService)getComponent();
+        PaginationTagService paginationTagService = (PaginationTagService) getComponent();
         paginationTagService.setCurrent(getCurrent());
         paginationTagService.setTotal(getTotal());
         paginationTagService.setBaseUrl(getBaseUrl());

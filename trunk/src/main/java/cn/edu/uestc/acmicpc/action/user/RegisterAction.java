@@ -51,6 +51,7 @@ public class RegisterAction extends BaseAction {
 
     /**
      * Register action! with so many validators! ha ha...
+     *
      * @return
      */
     @Validations(
@@ -144,7 +145,7 @@ public class RegisterAction extends BaseAction {
     public String toRegister() {
         try {
             if (userDAO.getUserByName(userDTO.getUserName()) != null) {
-                addFieldError("userDTO.userName","User name has been used!");
+                addFieldError("userDTO.userName", "User name has been used!");
                 return INPUT;
             }
             userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
@@ -157,6 +158,7 @@ public class RegisterAction extends BaseAction {
 
     /**
      * Default method for the first time visit register page.
+     *
      * @return INPUT
      */
     @SkipValidation

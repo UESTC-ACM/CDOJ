@@ -33,7 +33,7 @@ import java.util.List;
  * @param <Entity> Entity's type
  * @param <PK>     Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 public interface IDAO<Entity extends Serializable, PK extends Serializable> {
     /**
@@ -77,4 +77,12 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
      * @throws AppException
      */
     public List<Entity> findAll() throws AppException;
+
+    /**
+     * Count the number of records in the table.
+     *
+     * @return number of records we query
+     * @throws AppException
+     */
+    public Long count() throws AppException;
 }
