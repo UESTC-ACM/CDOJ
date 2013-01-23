@@ -27,10 +27,11 @@ import cn.edu.uestc.acmicpc.db.dao.UserDAO;
 import cn.edu.uestc.acmicpc.db.entity.Tag;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.AppException;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -40,24 +41,39 @@ import java.util.List;
  * Simple database test class.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:applicationContext-test.xml"})
 public class DatabaseTest {
 
     /**
-     * Resources and DAOs..
+     * TagDAO entity
      */
-    private ApplicationContext applicationContext;
+    @Autowired
     private TagDAO tagDAO;
+    /**
+     * UserDAO entity
+     */
+    @Autowired
     private UserDAO userDAO;
+
+    /**
+     * DepartmentDAO entity
+     */
+    @Autowired
     private DepartmentDAO departmentDAO;
 
-    @Before
-    public void initDAO() throws Exception {
-        applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-        tagDAO = applicationContext.getBean(TagDAO.class);
-        userDAO = applicationContext.getBean(UserDAO.class);
-        departmentDAO = applicationContext.getBean(DepartmentDAO.class);
+    public void setTagDAO(TagDAO tagDAO) {
+        this.tagDAO = tagDAO;
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+
+    public void setDepartmentDAO(DepartmentDAO departmentDAO) {
+        this.departmentDAO = departmentDAO;
     }
 
     /**
@@ -92,6 +108,11 @@ public class DatabaseTest {
         }
     }
 
+    /**
+     * Test DAO count method.
+     *
+     * @throws AppException
+     */
     @Test
     public void testCount() throws AppException {
         System.out.println(tagDAO.count());
