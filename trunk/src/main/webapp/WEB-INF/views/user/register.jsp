@@ -37,42 +37,56 @@
     <title>Register</title>
 </head>
 <body>
-    <div class="row">
-        <div class="span12">
-            <form class="form-horizontal">
+    <s:div cssClass="row">
+        <s:div cssClass="span12">
+            <s:form action="register" enctype="multipart/form-data" theme="bootstrap" cssClass="form-horizontal">
                 <fieldset>
                     <legend>Register</legend>
-                    <div class="control-group">
-                        <label class="control-label" for="userName">User name</label>
-                        <div class="controls">
-                            <input type="text" class="input-xlarge" id="userName">
-                            <small class="help-inline">字母，数字，汉字皆可</small>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="password">Password</label>
-                        <div class="controls">
-                            <input type="text" class="input-xlarge" id="password">
-                            <small class="help-inline">字母，数字，汉字皆可</small>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="passwordRepeat">Repeat your password</label>
-                        <div class="controls">
-                            <input type="text" class="input-xlarge" id="passwordRepeat">
-                            <small class="help-inline">字母，数字，汉字皆可</small>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="email">Email</label>
-                        <div class="controls">
-                            <input type="text" class="input-xlarge" id="email">
-                            <small class="help-inline">字母，数字，汉字皆可</small>
-                        </div>
-                    </div>
+                    <s:textfield name="userDTO.userName"
+                                 size="24"
+                                 cssClass="span3"
+                                 label="User Name"/>
+                    <s:password name="userDTO.password"
+                                 size="24"
+                                 cssClass="span3"
+                                 label="Password"/>
+                    <s:password name="userDTO.passwordRepeat"
+                                 size="24"
+                                 cssClass="span3"
+                                 label="Repeat your password"/>
                 </fieldset>
-            </form>
-        </div>
-    </div>
+                <fieldset>
+                    <legend>Information</legend>
+                    <s:textfield name="userDTO.nickName"
+                                 size="24"
+                                 cssClass="span3"
+                                 label="Nick name"/>
+                    <s:textfield name="userDTO.email"
+                                 size="24"
+                                 cssClass="span3"
+                                 label="Email"/>
+                    <s:textfield name="userDTO.school"
+                                 size="24"
+                                 cssClass="span3"
+                                 label="School"/>
+                    <s:select name="userDTO.department"
+                              list="global.departmentList"
+                              cssClass="span3"
+                              label="Department"/>
+                    <s:textfield name="userDTO.studentId"
+                                 size="24"
+                                 cssClass="span3"
+                                 label="Student ID"/>
+                </fieldset>
+                <fieldset>
+                    <s:div cssClass="form-actions">
+                        <s:submit method="toRegister"
+                                  cssClass="btn btn-primary"
+                                  value="Submit"/>
+                    </s:div>
+                </fieldset>
+            </s:form>
+        </s:div>
+    </s:div>
 </body>
 </html>

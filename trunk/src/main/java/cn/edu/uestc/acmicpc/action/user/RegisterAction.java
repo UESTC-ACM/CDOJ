@@ -23,20 +23,121 @@
 package cn.edu.uestc.acmicpc.action.user;
 
 import cn.edu.uestc.acmicpc.action.BaseAction;
+import cn.edu.uestc.acmicpc.db.dto.UserDTO;
+import com.opensymphony.xwork2.validator.annotations.*;
 
 /**
- * description
+ * Action for register
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
+
 public class RegisterAction extends BaseAction {
 
     private static final long serialVersionUID = -2854303130010851540L;
 
-    public String toRegister() {
+    /**
+     * user dto...
+     */
+    private UserDTO userDTO;
 
+    @Validations(
+            requiredStrings = {
+                    @RequiredStringValidator(
+                            fieldName = "userDTO.userName",
+                            key = "error.userName.validation"
+                    ),
+                    @RequiredStringValidator(
+                            fieldName = "userDTO.password",
+                            key = "error.password.validation"
+                    ),
+                    @RequiredStringValidator(
+                            fieldName = "userDTO.nickName",
+                            key = "error.nickName.validation"
+                    ),
+                    @RequiredStringValidator(
+                            fieldName = "userDTO.email",
+                            key = "error.email.validation"
+                    ),
+                    @RequiredStringValidator(
+                            fieldName = "userDTO.school",
+                            key = "error.school.validation"
+                    ),
+                    @RequiredStringValidator(
+                            fieldName = "userDTO.department",
+                            key = "error.department.validation"
+                    ),
+                    @RequiredStringValidator(
+                            fieldName = "userDTO.studentId",
+                            key = "error.studentId.validation"
+                    )
+            },
+            stringLengthFields = {
+                    @StringLengthFieldValidator(
+                            fieldName = "userDTO.password",
+                            key = "error.password.validation",
+                            minLength = "6",
+                            maxLength = "20",
+                            trim = false
+                    )
+            },
+            customValidators = {
+                    @CustomValidator(
+                            type = "regex",
+                            fieldName = "userDTO.userName",
+                            key = "error.userName.validation",
+                            parameters = {
+                                    @ValidationParameter(
+                                            name = "expression",
+                                            value = "\\b^[a-zA-Z0-9_]{4,24}$\\b"
+                                    ),
+                                    @ValidationParameter(
+                                            name = "trim",
+                                            value = "false"
+                                    )
+                            }
+                    ),
+                    @CustomValidator(
+                            type = "regex",
+                            fieldName = "userDTO.nickName",
+                            key = "error.nickName.validation",
+                            parameters = {
+                                    @ValidationParameter(
+                                            name = "expression",
+                                            value = "\\b^[^\\s]{2,20}$\\b"
+                                    ),
+                                    @ValidationParameter(
+                                            name = "trim",
+                                            value = "false"
+                                    )
+                            }
+                    )
+            },
+            fieldExpressions = {
+                    @FieldExpressionValidator(
+                            fieldName = "userDTO.passwordRepeat",
+                            expression = "userDTO.password == userDTO.passwordRepeat",
+                            key = "error.passwordRepeat.validation"
+                    )
+            },
+            emails = {
+                    @EmailValidator(
+                            fieldName = "userDTO.email",
+                            key = "error.email.validation"
+                    )
+            }
+
+    )
+    public String toRegister() {
         return SUCCESS;
     }
 
+    public UserDTO getUserDTO() {
+        return userDTO;
+    }
+
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
+    }
 }

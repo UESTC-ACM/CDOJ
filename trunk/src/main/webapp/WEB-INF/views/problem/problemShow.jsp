@@ -38,7 +38,6 @@
 </head>
 <body>
 
-    <div class="problem">
         <div class="row">
             <!-- 题目标题 -->
             <div class="span12">
@@ -262,6 +261,5 @@
             </div>
 
         </div>
-    </div>
 </body>
 </html>

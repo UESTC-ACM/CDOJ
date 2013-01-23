@@ -33,4 +33,5 @@
     <import resource="applicationContext-resources.xml"/>
     <import resource="applicationContext-jpa.xml"/>
     <import resource="applicationContext-actions.xml"/>
+    <import resource="applicationContext-extra.xml"/>
 </beans>

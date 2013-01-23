@@ -163,6 +163,13 @@
             <version>1.7.1</version>
         </dependency>
 
+        <!-- bootstrap theme -->
+        <dependency>
+            <groupId>com.jgeppert.struts2.bootstrap</groupId>
+            <artifactId>struts2-bootstrap-plugin</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+
         <!-- JUnit -->
         <dependency>
             <groupId>junit</groupId>

@@ -26,15 +26,19 @@ body {
     background-color: #222;
 }
 
-/* 内容部分用wrap整个包围起来，与上下文有60px的margin */
+/* 内容部分用wrap整个包围起来 */
 #wrap {
-    padding: 80px 0 60px 0;
+    padding: 80px 0 10px 0;
     background-color: white;
 }
 
-/* footer与底部留一些空隙吧，加点花纹看起来稍微好一点了 */
+.mzry1992 {
+    min-height: 300px;
+}
+
+/* footer */
 #footer {
-    padding: 60px 0 60px 0;
+    padding: 60px 0 20px 0;
     background: #222 url(../images/footer-top.png) top center repeat-x;
 }
 
@@ -44,7 +48,7 @@ body {
 }
 
 /* problem! */
-.problem {
+.container {
 }
 
 /* 调整表格样式以保证不出现表格换行的情况！ */

@@ -22,15 +22,21 @@
 
 package cn.edu.uestc.acmicpc.util;
 
+import cn.edu.uestc.acmicpc.db.dao.DepartmentDAO;
+import cn.edu.uestc.acmicpc.db.entity.Department;
+
+import java.util.List;
+
 /**
  * Global enumerates and constants inside project.
  * <p/>
  * <strong>WARN:</strong> this file may be rewritten carefully.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 public class Global {
+
     public enum AuthenticationType {
         NORMAL("normal user"), ADMIN("administrator"), CONSTANT("constant user");
         private String description;
@@ -48,4 +54,42 @@ public class Global {
             return description;
         }
     }
+
+    /**
+     * Department DAO using for get all departments.
+     */
+    private static DepartmentDAO departmentDAO;
+
+    /**
+     * Department list.
+     */
+    private static List<Department> departmentList;
+
+    /**
+     * Static constructor.
+     */
+    static {
+        try {
+            setDepartmentList(departmentDAO.findAll());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void setDepartmentDAO(DepartmentDAO departmentDAO) {
+        Global.departmentDAO = departmentDAO;
+    }
+
+    /**
+     * Get all departments in database.
+     * @return All departments
+     */
+    public static List<Department> getDepartmentList() {
+        return departmentList;
+    }
+
+    public static void setDepartmentList(List<Department> departmentList) {
+        Global.departmentList = departmentList;
+    }
+
 }
