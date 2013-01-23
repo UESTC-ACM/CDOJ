@@ -119,6 +119,11 @@ public class RegisterAction extends BaseAction {
                             fieldName = "userDTO.passwordRepeat",
                             expression = "userDTO.password == userDTO.passwordRepeat",
                             key = "error.passwordRepeat.validation"
+                    ),
+                    @FieldExpressionValidator(
+                            fieldName = "userDTO.department",
+                            expression = "userDTO.department in global.departmentList.{name}",
+                            key = "error.department.validation"
                     )
             },
             emails = {

@@ -38,22 +38,23 @@
     </bean>
     <bean id="indexAction"
           class="cn.edu.uestc.acmicpc.action.index.IndexAction"
+          parent="baseAction"
           scope="prototype">
-        <property name="userDAO" ref="userDAO"/>
     </bean>
     <bean id="testAction"
           class="cn.edu.uestc.acmicpc.action.test.TestAction"
+          parent="baseAction"
           scope="prototype">
-        <property name="userDAO" ref="userDAO"/>
         <property name="tagDAO" ref="tagDAO"/>
     </bean>
     <bean id="registerAction"
           class="cn.edu.uestc.acmicpc.action.user.RegisterAction"
+          parent="baseAction"
           scope="prototype">
-        <property name="userDAO" ref="userDAO"/>
     </bean>
     <bean id="loginAction"
-          class="cn.edu.uestc.acmicpc.action.user.LoginAction">
-        <property name="userDAO" ref="userDAO"/>
+          class="cn.edu.uestc.acmicpc.action.user.LoginAction"
+          parent="baseAction"
+          scope="prototype">
     </bean>
 </beans>

@@ -70,7 +70,7 @@
                                  cssClass="span3"
                                  label="School"/>
                     <s:select name="userDTO.department"
-                              list="global.departmentList"
+                              list="global.departmentList.{name}"
                               cssClass="span3"
                               label="Department"/>
                     <s:textfield name="userDTO.studentId"
