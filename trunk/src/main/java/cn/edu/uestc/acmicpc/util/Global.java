@@ -33,7 +33,7 @@ import java.util.List;
  * <strong>WARN:</strong> this file may be rewritten carefully.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 public class Global {
 
@@ -58,38 +58,35 @@ public class Global {
     /**
      * Department DAO using for get all departments.
      */
-    private static DepartmentDAO departmentDAO;
+    private DepartmentDAO departmentDAO;
 
     /**
      * Department list.
      */
-    private static List<Department> departmentList;
+    private List<Department> departmentList;
 
     /**
-     * Static constructor.
+     * Initializer.
      */
-    static {
-        try {
-            setDepartmentList(departmentDAO.findAll());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+    public void init() throws AppException {
+        this.departmentList = departmentDAO.findAll();
     }
 
-    public static void setDepartmentDAO(DepartmentDAO departmentDAO) {
-        Global.departmentDAO = departmentDAO;
+    /**
+     * Get departmentDAO object from Spring IoC
+     *
+     * @param departmentDAO struts departmentDAO
+     */
+    public void setDepartmentDAO(DepartmentDAO departmentDAO) {
+        this.departmentDAO = departmentDAO;
     }
 
     /**
      * Get all departments in database.
+     *
      * @return All departments
      */
-    public static List<Department> getDepartmentList() {
+    public List<Department> getDepartmentList() {
         return departmentList;
     }
-
-    public static void setDepartmentList(List<Department> departmentList) {
-        Global.departmentList = departmentList;
-    }
-
 }

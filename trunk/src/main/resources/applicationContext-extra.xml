@@ -32,7 +32,7 @@
        http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
        xmlns:aop="http://www.springframework.org/schema/aop">
     <bean id="global" class="cn.edu.uestc.acmicpc.util.Global"
-          scope="singleton">
+          init-method="init" scope="singleton">
         <property name="departmentDAO" ref="departmentDAO"/>
     </bean>
 </beans>
