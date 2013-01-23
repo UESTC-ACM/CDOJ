@@ -68,9 +68,12 @@
                     <s:textfield name="userDTO.school"
                                  size="24"
                                  cssClass="span3"
+                                 value="UESTC"
                                  label="School"/>
-                    <s:select name="userDTO.department"
-                              list="global.departmentList.{name}"
+                    <s:select name="userDTO.departmentId"
+                              list="global.departmentList"
+                              listKey="departmentId"
+                              listValue="name"
                               cssClass="span3"
                               label="Department"/>
                     <s:textfield name="userDTO.studentId"

@@ -51,6 +51,7 @@
           class="cn.edu.uestc.acmicpc.action.user.RegisterAction"
           parent="baseAction"
           scope="prototype">
+        <property name="departmentDAO" ref="departmentDAO"/>
     </bean>
     <bean id="loginAction"
           class="cn.edu.uestc.acmicpc.action.user.LoginAction"

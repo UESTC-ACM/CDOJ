@@ -22,7 +22,12 @@
 
 package cn.edu.uestc.acmicpc.db.dto;
 
+import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.util.StringUtil;
+
+import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  * collect information from register action and generate a User class.
@@ -63,9 +68,14 @@ public class UserDTO {
     private String school;
 
     /**
-     * Input: department
+     * Input: departmentId
      */
-    private String department;
+    private int departmentId;
+
+    /**
+     * Department entity
+     */
+    private Department department;
 
     /**
      * Input: student ID
@@ -82,9 +92,20 @@ public class UserDTO {
      * @return
      */
     public User getUser() {
+        user = new User();
+        user.setUserName(getUserName());
+        user.setPassword(StringUtil.encodeSHA1(getPassword()));
+        user.setNickName(getNickName());
+        user.setEmail(getEmail());
+        user.setSchool(getSchool());
+        user.setDepartmentByDepartmentId(getDepartment());
+        user.setStudentId(getStudentId());
+        user.setLastLogin(new Timestamp(new Date().getTime()));
+        user.setSolved(0);
+        user.setTried(0);
+        user.setType(0);
         return user;
     }
-
 
     public void setUser(User user) {
         this.user = user;
@@ -138,19 +159,27 @@ public class UserDTO {
         this.school = school;
     }
 
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
     public String getStudentId() {
         return studentId;
     }
 
     public void setStudentId(String studentId) {
         this.studentId = studentId;
+    }
+
+    public int getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 }
