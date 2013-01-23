@@ -42,7 +42,7 @@ import java.util.List;
  * @param <Entity> Entity's type
  * @param <PK>     Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         extends BaseDAO implements IDAO<Entity, PK> {
@@ -51,7 +51,12 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
         Serializable result = session.save(entity);
-        transaction.commit();
+        try {
+            transaction.commit();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            throw new AppException("Invoke add method error.");
+        }
         return result;
     }
 
@@ -66,7 +71,12 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
         session.update(entity);
-        transaction.commit();
+        try {
+            transaction.commit();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            throw new AppException("Invoke update method error.");
+        }
     }
 
     @Override
@@ -74,7 +84,12 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
         session.delete(entity);
-        transaction.commit();
+        try {
+            transaction.commit();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            throw new AppException("Invoke delete method error.");
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -100,6 +115,11 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         }
     }
 
+    /**
+     * Get reference entity's id field name.
+     *
+     * @return id field name
+     */
     protected String getKeyFieldName() {
         Method[] methods = getReferenceClass().getMethods();
         for (Method method : methods) {

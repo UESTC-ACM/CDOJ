@@ -22,9 +22,12 @@
 
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.util.Global;
+import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
@@ -32,14 +35,21 @@ import java.util.List;
  * Util class test
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:applicationContext-test.xml"})
 public class UtilTest {
+    @Autowired
+    private Global global = null;
+
+    public void setGlobal(Global global) {
+        this.global = global;
+    }
+
     @Test
     public void testGlobal() {
-        ApplicationContext context
-                = new ClassPathXmlApplicationContext("applicationContext.xml");
-        Global global = context.getBean("global", Global.class);
+        Assert.assertNotNull("Constructor global instance is null.", global);
         List<Department> departments = global.getDepartmentList();
         for (Department department : departments) {
             System.out.println(department.getDepartmentId()
