@@ -244,8 +244,33 @@
                     <compilerVersion>1.7</compilerVersion>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <show>private</show>
+                    <nohelp>true</nohelp>
+                </configuration>
+            </plugin>
         </plugins>
         <finalName>trunk</finalName>
     </build>
-
+    <reporting>
+        <plugins>
+            <plugin>
+                <!-- http://maven.apache.org/plugins/maven-javadoc-plugin/javadoc-mojo.html -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <encoding>UF-8</encoding>
+                    <charset>UTF-8</charset>
+                    <docencoding>UTF-8</docencoding>
+                    <stylesheetfile>${basedir}/src/main/javadoc/stylesheet.css</stylesheetfile>
+                    <show>protected</show>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

@@ -27,6 +27,7 @@ import cn.edu.uestc.acmicpc.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.dao.DepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dto.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.util.exception.ValidatorException;
 import com.alibaba.fastjson.JSON;
 import com.opensymphony.xwork2.validator.annotations.*;
 import org.apache.struts2.interceptor.validation.SkipValidation;
@@ -39,7 +40,7 @@ import java.util.Map;
  * Action for register
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 4
+ * @version 5
  */
 @LoginPermit(NeedLogin = false)
 public class RegisterAction extends BaseAction {
@@ -59,7 +60,7 @@ public class RegisterAction extends BaseAction {
     /**
      * Register action! with so many validators! ha ha...
      *
-     * @return
+     * @return <strong>NONE</strong> signal, process in front
      */
     @Validations(
             requiredStrings = {
@@ -166,14 +167,10 @@ public class RegisterAction extends BaseAction {
     public String toRegister() {
         Map<String, String> json = new HashMap<String, String>();
         try {
-            if (userDAO.getEntityByUniqueField("userName", userDTO.getUserName()) != null) {
-                addFieldError("userDTO.userName", "User name has been used!");
-                return INPUT;
-            }
-            if (userDAO.getEntityByUniqueField("email", userDTO.getEmail()) != null) {
-                addFieldError("userDTO.email", "Email has benn used!");
-                return INPUT;
-            }
+            if (userDAO.getEntityByUniqueField("userName", userDTO.getUserName()) != null)
+                throw new ValidatorException("userDTO.userName", "User name has been used!");
+            if (userDAO.getEntityByUniqueField("email", userDTO.getEmail()) != null)
+                throw new ValidatorException("userDTO.email", "Email has benn used!");
             userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
             User user = userDTO.getUser();
             userDAO.add(userDTO.getUser());
@@ -182,6 +179,10 @@ public class RegisterAction extends BaseAction {
             session.put("lastLogin", user.getLastLogin());
             session.put("userType", user.getType());
             json.put("result", "ok");
+        } catch (ValidatorException e) {
+            json.put("result", "error");
+            for (String key : e.getJson().keySet())
+                json.put(key, e.getJson().get(key));
         } catch (Exception e) {
             // TODO fix the error msg
             json.put("result", "error");
@@ -192,7 +193,7 @@ public class RegisterAction extends BaseAction {
         } catch (IOException e) {
             return setError("Internal error occurred.");
         }
-        return redirect(getContextPath("/"), "Register successful!");
+        return NONE;
     }
 
     /**

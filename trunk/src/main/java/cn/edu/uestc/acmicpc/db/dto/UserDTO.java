@@ -88,9 +88,9 @@ public class UserDTO {
     private User user;
 
     /**
-     * Val
+     * Build user entity according to this DTO
      *
-     * @return
+     * @return expected user entity
      */
     public User getUser() {
         user = new User();

@@ -26,9 +26,9 @@ package cn.edu.uestc.acmicpc.util.exception;
  * Specific exception for DAO
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
-public class FieldNotUniqueException extends AppException {
+public class FieldNotUniqueException extends Exception {
     /**
      * Construct a new application exception with {@code null} as its detail
      * message and cause.
