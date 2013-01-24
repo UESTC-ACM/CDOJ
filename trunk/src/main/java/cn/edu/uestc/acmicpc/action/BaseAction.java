@@ -128,6 +128,11 @@ public class BaseAction extends ActionSupport
     protected final String TOINDEX = "toIndex";
 
     /**
+     * JSON flag.
+     */
+    protected final String JSON = "json";
+
+    /**
      * Implement {@link ApplicationAware} interface, with Ioc.
      *
      * @param application application attribute

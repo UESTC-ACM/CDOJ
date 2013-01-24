@@ -27,7 +27,7 @@
         "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-    <package name="default" extends="struts-default">
+    <package name="default" extends="json-default">
         <interceptors>
             <interceptor name="appInterceptor"
                          class="cn.edu.uestc.acmicpc.interceptor.AppInterceptor"/>
@@ -46,23 +46,6 @@
         <action name="notFound" class="baseAction">
             <result>/WEB-INF/views/error/404.jsp</result>
         </action>
-    </package>
-
-    <!-- index package -->
-    <package name="index" namespace="/" extends="default">
-        <default-action-ref name="index"/>
-        <action name="index" class="indexAction" method="toIndex">
-            <result>/WEB-INF/views/index/index.jsp</result>
-        </action>
-    </package>
-
-    <!-- user package -->
-    <package name="user" namespace="/user" extends="default">
-        <action name="register" class="registerAction"/>
-        <action name="login" class="loginAction">
-            <result name="input">/WEB-INF/views/user/login.jsp</result>
-        </action>
-        <action name="logout" class="logoutAction" method="toLogout"/>
     </package>
 
     <!-- test package -->
