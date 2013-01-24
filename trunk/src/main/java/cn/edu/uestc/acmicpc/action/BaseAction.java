@@ -198,7 +198,7 @@ public class BaseAction extends ActionSupport
      * Redirect to specific url with no message.
      *
      * @param url expected url
-     * @return
+     * @return <strong>REDIRECT</strong> signal
      */
     protected String redirect(String url) {
         return redirect(url, null);
@@ -209,7 +209,7 @@ public class BaseAction extends ActionSupport
      *
      * @param url expected url
      * @param msg information message
-     * @return
+     * @return <strong>REDIRECT</strong> signal
      */
     protected String redirect(String url, String msg) {
         request.put("msg", msg == null ? "" : msg);

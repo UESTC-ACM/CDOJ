@@ -58,9 +58,7 @@
 
     <!-- user package -->
     <package name="user" namespace="/user" extends="default">
-        <action name="register" class="registerAction">
-            <result name="input">/WEB-INF/views/user/register.jsp</result>
-        </action>
+        <action name="register" class="registerAction"/>
         <action name="login" class="loginAction">
             <result name="input">/WEB-INF/views/user/login.jsp</result>
         </action>

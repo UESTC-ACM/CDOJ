@@ -39,7 +39,7 @@ public class IndexAction extends BaseAction {
     /**
      * method of index action
      *
-     * @return
+     * @return <strong>SUCCESS</strong> signal
      */
     public String toIndex() {
         return SUCCESS;
