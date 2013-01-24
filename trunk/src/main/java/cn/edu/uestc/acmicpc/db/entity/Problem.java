@@ -30,7 +30,7 @@ import java.util.Collection;
  * Problem information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @Table(name = "problem", schema = "", catalog = "uestcoj")
 @Entity
@@ -38,7 +38,8 @@ public class Problem implements Serializable {
     private static final long serialVersionUID = -334230877056963653L;
     private int problemId;
 
-    @Column(name = "problemId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "problemId", nullable = false, insertable = true,
+            updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
     public int getProblemId() {
@@ -51,7 +52,8 @@ public class Problem implements Serializable {
 
     private String title;
 
-    @Column(name = "title", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    @Column(name = "title", nullable = false, insertable = true, updatable = true,
+            length = 50, precision = 0)
     @Basic
     public String getTitle() {
         return title;
@@ -63,7 +65,8 @@ public class Problem implements Serializable {
 
     private String description;
 
-    @Column(name = "description", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
+    @Column(name = "description", nullable = false, insertable = true, updatable = true,
+            length = 65535, precision = 0)
     @Basic
     public String getDescription() {
         return description;
@@ -75,7 +78,8 @@ public class Problem implements Serializable {
 
     private String input;
 
-    @Column(name = "input", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
+    @Column(name = "input", nullable = false, insertable = true, updatable = true,
+            length = 65535, precision = 0)
     @Basic
     public String getInput() {
         return input;
@@ -87,7 +91,8 @@ public class Problem implements Serializable {
 
     private String output;
 
-    @Column(name = "output", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
+    @Column(name = "output", nullable = false, insertable = true, updatable = true,
+            length = 65535, precision = 0)
     @Basic
     public String getOutput() {
         return output;
@@ -99,7 +104,8 @@ public class Problem implements Serializable {
 
     private String sampleInput;
 
-    @Column(name = "sampleInput", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
+    @Column(name = "sampleInput", nullable = false, insertable = true, updatable = true,
+            length = 65535, precision = 0)
     @Basic
     public String getSampleInput() {
         return sampleInput;
@@ -111,7 +117,8 @@ public class Problem implements Serializable {
 
     private String sampleOutput;
 
-    @Column(name = "sampleOutput", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
+    @Column(name = "sampleOutput", nullable = false, insertable = true, updatable = true,
+            length = 65535, precision = 0)
     @Basic
     public String getSampleOutput() {
         return sampleOutput;
@@ -123,7 +130,8 @@ public class Problem implements Serializable {
 
     private String hint;
 
-    @Column(name = "hint", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
+    @Column(name = "hint", nullable = false, insertable = true, updatable = true,
+            length = 65535, precision = 0)
     @Basic
     public String getHint() {
         return hint;
@@ -135,7 +143,8 @@ public class Problem implements Serializable {
 
     private String source;
 
-    @Column(name = "source", nullable = false, insertable = true, updatable = true, length = 100, precision = 0)
+    @Column(name = "source", nullable = false, insertable = true, updatable = true,
+            length = 100, precision = 0)
     @Basic
     public String getSource() {
         return source;
@@ -147,7 +156,8 @@ public class Problem implements Serializable {
 
     private int timeLimit;
 
-    @Column(name = "timeLimit", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "timeLimit", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public int getTimeLimit() {
         return timeLimit;
@@ -159,7 +169,8 @@ public class Problem implements Serializable {
 
     private int memoryLimit;
 
-    @Column(name = "memoryLimit", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "memoryLimit", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public int getMemoryLimit() {
         return memoryLimit;
@@ -171,7 +182,8 @@ public class Problem implements Serializable {
 
     private int solved;
 
-    @Column(name = "solved", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "solved", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public int getSolved() {
         return solved;
@@ -183,7 +195,8 @@ public class Problem implements Serializable {
 
     private int tried;
 
-    @Column(name = "tried", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "tried", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public int getTried() {
         return tried;
@@ -195,7 +208,8 @@ public class Problem implements Serializable {
 
     private boolean isSpj;
 
-    @Column(name = "isSPJ", nullable = false, insertable = true, updatable = true, length = 0, precision = 0)
+    @Column(name = "isSPJ", nullable = false, insertable = true, updatable = true,
+            length = 0, precision = 0)
     @Basic
     public boolean isSpj() {
         return isSpj;
@@ -207,7 +221,8 @@ public class Problem implements Serializable {
 
     private boolean isVisible;
 
-    @Column(name = "isVisible", nullable = false, insertable = true, updatable = true, length = 0, precision = 0)
+    @Column(name = "isVisible", nullable = false, insertable = true, updatable = true,
+            length = 0, precision = 0)
     @Basic
     public boolean isVisible() {
         return isVisible;
@@ -219,7 +234,8 @@ public class Problem implements Serializable {
 
     private int outputLimit;
 
-    @Column(name = "outputLimit", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "outputLimit", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public int getOutputLimit() {
         return outputLimit;
@@ -231,7 +247,8 @@ public class Problem implements Serializable {
 
     private int javaTimeLimit;
 
-    @Column(name = "javaTimeLimit", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "javaTimeLimit", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public int getJavaTimeLimit() {
         return javaTimeLimit;
@@ -243,7 +260,8 @@ public class Problem implements Serializable {
 
     private int javaMemoryLimit;
 
-    @Column(name = "javaMemoryLimit", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "javaMemoryLimit", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public int getJavaMemoryLimit() {
         return javaMemoryLimit;
@@ -255,7 +273,8 @@ public class Problem implements Serializable {
 
     private int dataCount;
 
-    @Column(name = "dataCount", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "dataCount", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public int getDataCount() {
         return dataCount;
@@ -267,7 +286,8 @@ public class Problem implements Serializable {
 
     private int difficulty;
 
-    @Column(name = "difficulty", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "difficulty", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public int getDifficulty() {
         return difficulty;

@@ -30,7 +30,7 @@ import java.sql.Timestamp;
  * Status information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @Table(name = "status", schema = "", catalog = "uestcoj")
 @Entity
@@ -38,7 +38,8 @@ public class Status implements Serializable {
     private static final long serialVersionUID = 4819326443036942394L;
     private int statusId;
 
-    @Column(name = "statusId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "statusId", nullable = false, insertable = true,
+            updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
     public int getStatusId() {
@@ -51,7 +52,8 @@ public class Status implements Serializable {
 
     private int result;
 
-    @Column(name = "result", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "result", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public int getResult() {
         return result;
@@ -63,7 +65,8 @@ public class Status implements Serializable {
 
     private int memoryCost;
 
-    @Column(name = "memoryCost", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "memoryCost", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public int getMemoryCost() {
         return memoryCost;
@@ -75,7 +78,8 @@ public class Status implements Serializable {
 
     private int timeCost;
 
-    @Column(name = "timeCost", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "timeCost", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public int getTimeCost() {
         return timeCost;
@@ -87,7 +91,8 @@ public class Status implements Serializable {
 
     private int length;
 
-    @Column(name = "length", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "length", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public int getLength() {
         return length;
@@ -99,7 +104,8 @@ public class Status implements Serializable {
 
     private Timestamp time;
 
-    @Column(name = "time", nullable = false, insertable = true, updatable = true, length = 19, precision = 0)
+    @Column(name = "time", nullable = false, insertable = true, updatable = true,
+            length = 19, precision = 0)
     @Basic
     public Timestamp getTime() {
         return time;
@@ -111,7 +117,8 @@ public class Status implements Serializable {
 
     private int caseNumber;
 
-    @Column(name = "caseNumber", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "caseNumber", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public int getCaseNumber() {
         return caseNumber;

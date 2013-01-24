@@ -22,6 +22,7 @@
 
 package cn.edu.uestc.acmicpc.util;
 
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.xml.XmlNode;
 import cn.edu.uestc.acmicpc.xml.XmlParser;
 import org.apache.struts2.ServletActionContext;
@@ -70,7 +71,7 @@ public class Settings {
     /**
      * initialize configuration mappings from configuration file.
      *
-     * @throws AppException
+     * @throws cn.edu.uestc.acmicpc.util.exception.AppException
      */
     private static void init() throws AppException {
         settings = new HashMap<String, Map<String, String>>();

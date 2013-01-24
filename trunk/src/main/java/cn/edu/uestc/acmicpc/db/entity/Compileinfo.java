@@ -30,7 +30,7 @@ import java.util.Collection;
  * Compile information which compiler returns.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @Table(name = "compileinfo", schema = "", catalog = "uestcoj")
 @Entity
@@ -38,7 +38,8 @@ public class Compileinfo implements Serializable {
     private static final long serialVersionUID = 1404496264299518630L;
     private int compileInfoId;
 
-    @Column(name = "compileInfoId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "compileInfoId", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
     public int getCompileInfoId() {
@@ -51,7 +52,8 @@ public class Compileinfo implements Serializable {
 
     private String content;
 
-    @Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
+    @Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535,
+            precision = 0)
     @Basic
     public String getContent() {
         return content;

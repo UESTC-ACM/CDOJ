@@ -22,7 +22,8 @@
 
 package cn.edu.uestc.acmicpc.db.dao.iface;
 
-import cn.edu.uestc.acmicpc.util.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -33,7 +34,7 @@ import java.util.List;
  * @param <Entity> Entity's type
  * @param <PK>     Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 public interface IDAO<Entity extends Serializable, PK extends Serializable> {
     /**
@@ -85,4 +86,14 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
      * @throws AppException
      */
     public Long count() throws AppException;
+
+    /**
+     * Get unique entity by the field name, if the field is not unique field, throw
+     * {@code AppException}.
+     *
+     * @param fieldName the unique field name
+     * @return unique result, null if not exist
+     * @throws AppException
+     */
+    public Entity getEntityByUniqueField(String fieldName, Object value) throws FieldNotUniqueException;
 }

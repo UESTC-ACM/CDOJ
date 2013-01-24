@@ -29,14 +29,15 @@ import java.io.Serializable;
  * Mappings between contest and problems.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @Entity
 public class Contestproblem implements Serializable {
     private static final long serialVersionUID = -9079259357297937419L;
     private int contestProblemId;
 
-    @Column(name = "contestProblemId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "contestProblemId", nullable = false, insertable = true,
+            updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
     public int getContestProblemId() {
@@ -49,7 +50,8 @@ public class Contestproblem implements Serializable {
 
     private int order;
 
-    @Column(name = "order", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "order", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public int getOrder() {
         return order;

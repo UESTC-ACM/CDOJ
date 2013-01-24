@@ -30,7 +30,7 @@ import java.util.Collection;
  * Code information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @Table(name = "code", schema = "", catalog = "uestcoj")
 @Entity
@@ -38,7 +38,8 @@ public class Code implements Serializable {
     private static final long serialVersionUID = 6092881044668152921L;
     private int codeId;
 
-    @Column(name = "codeId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "codeId", nullable = false, insertable = true, updatable = true, length = 10,
+            precision = 0, unique = true)
     @Id
     @GeneratedValue
     public int getCodeId() {
@@ -51,7 +52,8 @@ public class Code implements Serializable {
 
     private String content;
 
-    @Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
+    @Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535,
+            precision = 0)
     @Basic
     public String getContent() {
         return content;

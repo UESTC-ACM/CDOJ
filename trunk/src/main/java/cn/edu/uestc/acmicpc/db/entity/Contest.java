@@ -31,7 +31,7 @@ import java.util.Collection;
  * Contest information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @Table(name = "contest", schema = "", catalog = "uestcoj")
 @Entity
@@ -39,7 +39,8 @@ public class Contest implements Serializable {
     private static final long serialVersionUID = -3631561809657861853L;
     private int contestId;
 
-    @Column(name = "contestId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "contestId", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
     public int getContestId() {
@@ -52,7 +53,8 @@ public class Contest implements Serializable {
 
     private String title;
 
-    @Column(name = "title", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    @Column(name = "title", nullable = false, insertable = true, updatable = true, length = 50,
+            precision = 0)
     @Basic
     public String getTitle() {
         return title;
@@ -64,7 +66,8 @@ public class Contest implements Serializable {
 
     private String description;
 
-    @Column(name = "description", nullable = false, insertable = true, updatable = true, length = 200, precision = 0)
+    @Column(name = "description", nullable = false, insertable = true, updatable = true,
+            length = 200, precision = 0)
     @Basic
     public String getDescription() {
         return description;
@@ -76,7 +79,8 @@ public class Contest implements Serializable {
 
     private byte type;
 
-    @Column(name = "type", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
+    @Column(name = "type", nullable = false, insertable = true, updatable = true,
+            length = 3, precision = 0)
     @Basic
     public byte getType() {
         return type;
@@ -88,7 +92,8 @@ public class Contest implements Serializable {
 
     private Timestamp time;
 
-    @Column(name = "time", nullable = false, insertable = true, updatable = true, length = 19, precision = 0)
+    @Column(name = "time", nullable = false, insertable = true, updatable = true,
+            length = 19, precision = 0)
     @Basic
     public Timestamp getTime() {
         return time;
@@ -100,7 +105,8 @@ public class Contest implements Serializable {
 
     private int length;
 
-    @Column(name = "length", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "length", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public int getLength() {
         return length;
@@ -112,7 +118,8 @@ public class Contest implements Serializable {
 
     private boolean isVisible;
 
-    @Column(name = "isVisible", nullable = false, insertable = true, updatable = true, length = 0, precision = 0)
+    @Column(name = "isVisible", nullable = false, insertable = true, updatable = true,
+            length = 0, precision = 0)
     @Basic
     public boolean isVisible() {
         return isVisible;

@@ -22,7 +22,7 @@
 
 package cn.edu.uestc.acmicpc.xml;
 
-import cn.edu.uestc.acmicpc.util.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.util.*;
 

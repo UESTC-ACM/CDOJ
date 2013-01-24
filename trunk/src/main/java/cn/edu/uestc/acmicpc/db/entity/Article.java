@@ -30,7 +30,7 @@ import java.sql.Timestamp;
  * Article information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @Table(name = "article", schema = "", catalog = "uestcoj")
 @Entity
@@ -38,7 +38,8 @@ public class Article implements Serializable {
     private static final long serialVersionUID = 8886825769658373290L;
     private int articleId;
 
-    @Column(name = "articleId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "articleId", nullable = false, insertable = true, updatable = true, length = 10,
+            precision = 0, unique = true)
     @Id
     @GeneratedValue
     public int getArticleId() {
@@ -51,7 +52,8 @@ public class Article implements Serializable {
 
     private String title;
 
-    @Column(name = "title", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    @Column(name = "title", nullable = false, insertable = true, updatable = true, length = 50,
+            precision = 0)
     @Basic
     public String getTitle() {
         return title;
@@ -63,7 +65,8 @@ public class Article implements Serializable {
 
     private String content;
 
-    @Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
+    @Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535,
+            precision = 0)
     @Basic
     public String getContent() {
         return content;
@@ -75,7 +78,8 @@ public class Article implements Serializable {
 
     private String author;
 
-    @Column(name = "author", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    @Column(name = "author", nullable = false, insertable = true, updatable = true, length = 50,
+            precision = 0)
     @Basic
     public String getAuthor() {
         return author;
@@ -87,7 +91,8 @@ public class Article implements Serializable {
 
     private Timestamp time;
 
-    @Column(name = "time", nullable = false, insertable = true, updatable = true, length = 19, precision = 0)
+    @Column(name = "time", nullable = false, insertable = true, updatable = true, length = 19,
+            precision = 0)
     @Basic
     public Timestamp getTime() {
         return time;
@@ -99,7 +104,8 @@ public class Article implements Serializable {
 
     private int clicked;
 
-    @Column(name = "clicked", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "clicked", nullable = false, insertable = true, updatable = true, length = 10,
+            precision = 0)
     @Basic
     public int getClicked() {
         return clicked;
@@ -111,7 +117,8 @@ public class Article implements Serializable {
 
     private int order;
 
-    @Column(name = "order", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "order", nullable = false, insertable = true, updatable = true, length = 10,
+            precision = 0)
     @Basic
     public int getOrder() {
         return order;
@@ -123,7 +130,8 @@ public class Article implements Serializable {
 
     private boolean isNotice;
 
-    @Column(name = "isNotice", nullable = false, insertable = true, updatable = true, length = 0, precision = 0)
+    @Column(name = "isNotice", nullable = false, insertable = true, updatable = true, length = 0,
+            precision = 0)
     @Basic
     public boolean isNotice() {
         return isNotice;
@@ -135,7 +143,8 @@ public class Article implements Serializable {
 
     private boolean visible;
 
-    @Column(name = "visible", nullable = false, insertable = true, updatable = true, length = 0, precision = 0)
+    @Column(name = "visible", nullable = false, insertable = true, updatable = true, length = 0,
+            precision = 0)
     @Basic
     public boolean isVisible() {
         return visible;
