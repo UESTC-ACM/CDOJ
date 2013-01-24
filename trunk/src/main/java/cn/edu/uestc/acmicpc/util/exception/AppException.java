@@ -20,7 +20,7 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.util;
+package cn.edu.uestc.acmicpc.util.exception;
 
 import java.io.Serializable;
 

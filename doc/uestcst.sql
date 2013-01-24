@@ -11,7 +11,9 @@ CREATE  TABLE IF NOT EXISTS `uestcst`.`user` (
   `department` VARCHAR(50) NOT NULL DEFAULT '' ,
   `phone` VARCHAR(20) NOT NULL DEFAULT '' ,
   PRIMARY KEY (`userId`) ,
-  UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) )
+  UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) ,
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) ,
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) )
 ENGINE = InnoDB;
 
 CREATE  TABLE IF NOT EXISTS `uestcst`.`contest` (

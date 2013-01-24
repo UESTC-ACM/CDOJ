@@ -30,7 +30,7 @@ import java.util.Collection;
  * Languages for compiler.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @Table(name = "language", schema = "", catalog = "uestcoj")
 @Entity
@@ -38,7 +38,8 @@ public class Language implements Serializable {
     private static final long serialVersionUID = 6622284482431851438L;
     private int languageId;
 
-    @Column(name = "languageId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "languageId", nullable = false, insertable = true,
+            updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
     public int getLanguageId() {
@@ -51,7 +52,8 @@ public class Language implements Serializable {
 
     private String name;
 
-    @Column(name = "name", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    @Column(name = "name", nullable = false, insertable = true, updatable = true,
+            length = 50, precision = 0)
     @Basic
     public String getName() {
         return name;
@@ -63,7 +65,8 @@ public class Language implements Serializable {
 
     private String extension;
 
-    @Column(name = "extension", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "extension", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public String getExtension() {
         return extension;
@@ -75,7 +78,8 @@ public class Language implements Serializable {
 
     private String param;
 
-    @Column(name = "param", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
+    @Column(name = "param", nullable = false, insertable = true, updatable = true,
+            length = 65535, precision = 0)
     @Basic
     public String getParam() {
         return param;

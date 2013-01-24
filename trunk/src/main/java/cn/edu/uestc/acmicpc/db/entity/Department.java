@@ -30,7 +30,7 @@ import java.util.Collection;
  * Department information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @Table(name = "department", schema = "", catalog = "uestcoj")
 @Entity
@@ -38,7 +38,8 @@ public class Department implements Serializable {
     private static final long serialVersionUID = -2249534733683595360L;
     private int departmentId;
 
-    @Column(name = "departmentId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "departmentId", nullable = false, insertable = true,
+            updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
     public int getDepartmentId() {
@@ -51,7 +52,8 @@ public class Department implements Serializable {
 
     private String name;
 
-    @Column(name = "name", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    @Column(name = "name", nullable = false, insertable = true, updatable = true,
+            length = 50, precision = 0)
     @Basic
     public String getName() {
         return name;

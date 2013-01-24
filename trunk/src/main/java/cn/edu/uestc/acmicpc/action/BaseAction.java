@@ -28,7 +28,7 @@ import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.interceptor.AppInterceptor;
 import cn.edu.uestc.acmicpc.interceptor.iface.IActionInterceptor;
 import cn.edu.uestc.acmicpc.ioc.UserDAOAware;
-import cn.edu.uestc.acmicpc.util.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.view.PageInfo;

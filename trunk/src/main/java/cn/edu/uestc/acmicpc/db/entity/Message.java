@@ -30,7 +30,7 @@ import java.sql.Timestamp;
  * Message information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @Table(name = "message", schema = "", catalog = "uestcoj")
 @Entity
@@ -38,7 +38,8 @@ public class Message implements Serializable {
     private static final long serialVersionUID = -5394211914105594037L;
     private int messageId;
 
-    @Column(name = "messageId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "messageId", nullable = false, insertable = true,
+            updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
     public int getMessageId() {
@@ -51,7 +52,8 @@ public class Message implements Serializable {
 
     private String title;
 
-    @Column(name = "title", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    @Column(name = "title", nullable = false, insertable = true, updatable = true,
+            length = 50, precision = 0)
     @Basic
     public String getTitle() {
         return title;
@@ -63,7 +65,8 @@ public class Message implements Serializable {
 
     private String content;
 
-    @Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
+    @Column(name = "content", nullable = false, insertable = true, updatable = true,
+            length = 65535, precision = 0)
     @Basic
     public String getContent() {
         return content;
@@ -75,7 +78,8 @@ public class Message implements Serializable {
 
     private Timestamp time;
 
-    @Column(name = "time", nullable = false, insertable = true, updatable = true, length = 19, precision = 0)
+    @Column(name = "time", nullable = false, insertable = true, updatable = true,
+            length = 19, precision = 0)
     @Basic
     public Timestamp getTime() {
         return time;
@@ -87,7 +91,8 @@ public class Message implements Serializable {
 
     private boolean isOpened;
 
-    @Column(name = "isOpened", nullable = false, insertable = true, updatable = true, length = 0, precision = 0)
+    @Column(name = "isOpened", nullable = false, insertable = true, updatable = true,
+            length = 0, precision = 0)
     @Basic
     public boolean isOpened() {
         return isOpened;

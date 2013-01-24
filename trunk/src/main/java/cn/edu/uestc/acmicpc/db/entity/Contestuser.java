@@ -29,7 +29,7 @@ import java.io.Serializable;
  * Mappings between contests and users.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @Table(name = "contestuser", schema = "", catalog = "uestcoj")
 @Entity
@@ -37,7 +37,8 @@ public class Contestuser implements Serializable {
     private static final long serialVersionUID = -8408381521779421508L;
     private int contestUserId;
 
-    @Column(name = "contestUserId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "contestUserId", nullable = false, insertable = true,
+            updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
     public int getContestUserId() {
@@ -50,7 +51,8 @@ public class Contestuser implements Serializable {
 
     private byte status;
 
-    @Column(name = "status", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
+    @Column(name = "status", nullable = false, insertable = true, updatable = true,
+            length = 3, precision = 0)
     @Basic
     public byte getStatus() {
         return status;

@@ -23,12 +23,14 @@
 package cn.edu.uestc.acmicpc.db.dao.base;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
-import cn.edu.uestc.acmicpc.util.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -42,7 +44,7 @@ import java.util.List;
  * @param <Entity> Entity's type
  * @param <PK>     Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         extends BaseDAO implements IDAO<Entity, PK> {
@@ -128,6 +130,30 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
                 if (column == null)
                     return null;
                 return column.name();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Entity getEntityByUniqueField(String fieldName, Object value) throws FieldNotUniqueException {
+        Method[] methods = getReferenceClass().getMethods();
+        for (Method method : methods) {
+            Column column = method.getAnnotation(Column.class);
+            if (column != null && column.name().equals(fieldName)) {
+                if (column.unique() == true) {
+                    if (value == null)
+                        return null;
+                    Session session = getSession();
+                    Criteria criteria = session.createCriteria(getReferenceClass());
+                    criteria.add(Restrictions.eq(fieldName, value));
+                    List list = criteria.list();
+                    if (list == null || list.isEmpty())
+                        return null;
+                    return (Entity) list.get(0);
+                } else {
+                    throw new FieldNotUniqueException("Field '" + fieldName + "' is not unique.");
+                }
             }
         }
         return null;

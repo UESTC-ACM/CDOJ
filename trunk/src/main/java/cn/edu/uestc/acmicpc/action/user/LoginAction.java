@@ -25,7 +25,7 @@ package cn.edu.uestc.acmicpc.action.user;
 import cn.edu.uestc.acmicpc.action.BaseAction;
 import cn.edu.uestc.acmicpc.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.util.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 
 import java.sql.Timestamp;

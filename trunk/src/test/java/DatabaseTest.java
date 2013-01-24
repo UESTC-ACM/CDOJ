@@ -26,7 +26,9 @@ import cn.edu.uestc.acmicpc.db.dao.TagDAO;
 import cn.edu.uestc.acmicpc.db.dao.UserDAO;
 import cn.edu.uestc.acmicpc.db.entity.Tag;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.util.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +93,7 @@ public class DatabaseTest {
      */
     @Test
     public void testUserDAO() throws AppException {
-        User user = userDAO.getUserByName("mzry1992");
+        User user = userDAO.getEntityByUniqueField("userName", "mzry1992");
         if (user == null) {
             user = new User();
             user.setUserName("mzry1992");
@@ -116,5 +118,26 @@ public class DatabaseTest {
     @Test
     public void testCount() throws AppException {
         System.out.println(tagDAO.count());
+    }
+
+    /**
+     * Test new method for get entity by unique field name
+     *
+     * @throws FieldNotUniqueException
+     */
+    @Test
+    public void testGetEntityByUnique() throws FieldNotUniqueException {
+        User user = userDAO.getEntityByUniqueField("userName", "mzry1992");
+        Assert.assertEquals("UESTC", user.getSchool());
+    }
+
+    /**
+     * Test new method for get entity by unique field name by a non-unique field
+     *
+     * @throws FieldNotUniqueException
+     */
+    @Test(expected = FieldNotUniqueException.class)
+    public void testGetEntityByUniqueWithNotUniqueField() throws FieldNotUniqueException {
+        userDAO.getEntityByUniqueField("password", "123456");
     }
 }

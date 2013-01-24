@@ -31,7 +31,7 @@ import java.util.Collection;
  * Discuss for problems.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @Table(name = "discuss", schema = "", catalog = "uestcoj")
 @Entity
@@ -39,7 +39,8 @@ public class Discuss implements Serializable {
     private static final long serialVersionUID = -9155275753251130485L;
     private int discussId;
 
-    @Column(name = "discussId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "discussId", nullable = false, insertable = true,
+            updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
     public int getDiscussId() {
@@ -52,7 +53,8 @@ public class Discuss implements Serializable {
 
     private String content;
 
-    @Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
+    @Column(name = "content", nullable = false, insertable = true, updatable = true,
+            length = 65535, precision = 0)
     @Basic
     public String getContent() {
         return content;
@@ -64,7 +66,8 @@ public class Discuss implements Serializable {
 
     private Timestamp time;
 
-    @Column(name = "time", nullable = false, insertable = true, updatable = true, length = 19, precision = 0)
+    @Column(name = "time", nullable = false, insertable = true, updatable = true,
+            length = 19, precision = 0)
     @Basic
     public Timestamp getTime() {
         return time;

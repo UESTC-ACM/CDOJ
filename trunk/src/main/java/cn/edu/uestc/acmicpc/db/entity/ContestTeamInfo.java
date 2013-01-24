@@ -29,7 +29,7 @@ import java.io.Serializable;
  * Contest team information, for school programming contest.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @Table(name = "contest_team_info", schema = "", catalog = "uestcoj")
 @Entity
@@ -37,7 +37,8 @@ public class ContestTeamInfo implements Serializable {
     private static final long serialVersionUID = -5816811480409208296L;
     private int teamId;
 
-    @Column(name = "teamId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "teamId", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
     public int getTeamId() {
@@ -50,7 +51,8 @@ public class ContestTeamInfo implements Serializable {
 
     private int userId;
 
-    @Column(name = "userId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "userId", nullable = false, insertable = true, updatable = true,
+            length = 10, precision = 0)
     @Basic
     public int getUserId() {
         return userId;
@@ -62,7 +64,8 @@ public class ContestTeamInfo implements Serializable {
 
     private String name;
 
-    @Column(name = "name", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    @Column(name = "name", nullable = false, insertable = true, updatable = true,
+            length = 50, precision = 0)
     @Basic
     public String getName() {
         return name;
@@ -74,7 +77,8 @@ public class ContestTeamInfo implements Serializable {
 
     private String coderName;
 
-    @Column(name = "coderName", nullable = false, insertable = true, updatable = true, length = 150, precision = 0)
+    @Column(name = "coderName", nullable = false, insertable = true, updatable = true,
+            length = 150, precision = 0)
     @Basic
     public String getCoderName() {
         return coderName;
@@ -86,7 +90,8 @@ public class ContestTeamInfo implements Serializable {
 
     private String sex;
 
-    @Column(name = "sex", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
+    @Column(name = "sex", nullable = false, insertable = true, updatable = true,
+            length = 3, precision = 0)
     @Basic
     public String getSex() {
         return sex;
@@ -98,7 +103,8 @@ public class ContestTeamInfo implements Serializable {
 
     private String department;
 
-    @Column(name = "department", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    @Column(name = "department", nullable = false, insertable = true, updatable = true,
+            length = 50, precision = 0)
     @Basic
     public String getDepartment() {
         return department;
@@ -110,7 +116,8 @@ public class ContestTeamInfo implements Serializable {
 
     private String grade;
 
-    @Column(name = "grade", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    @Column(name = "grade", nullable = false, insertable = true, updatable = true,
+            length = 50, precision = 0)
     @Basic
     public String getGrade() {
         return grade;
@@ -122,7 +129,8 @@ public class ContestTeamInfo implements Serializable {
 
     private String phone;
 
-    @Column(name = "phone", nullable = false, insertable = true, updatable = true, length = 100, precision = 0)
+    @Column(name = "phone", nullable = false, insertable = true, updatable = true,
+            length = 100, precision = 0)
     @Basic
     public String getPhone() {
         return phone;
@@ -134,7 +142,8 @@ public class ContestTeamInfo implements Serializable {
 
     private String size;
 
-    @Column(name = "size", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    @Column(name = "size", nullable = false, insertable = true, updatable = true,
+            length = 50, precision = 0)
     @Basic
     public String getSize() {
         return size;
@@ -146,7 +155,8 @@ public class ContestTeamInfo implements Serializable {
 
     private String email;
 
-    @Column(name = "email", nullable = false, insertable = true, updatable = true, length = 300, precision = 0)
+    @Column(name = "email", nullable = false, insertable = true, updatable = true,
+            length = 300, precision = 0)
     @Basic
     public String getEmail() {
         return email;
@@ -158,7 +168,8 @@ public class ContestTeamInfo implements Serializable {
 
     private String school;
 
-    @Column(name = "school", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    @Column(name = "school", nullable = false, insertable = true, updatable = true,
+            length = 50, precision = 0)
     @Basic
     public String getSchool() {
         return school;
@@ -170,7 +181,8 @@ public class ContestTeamInfo implements Serializable {
 
     private byte state;
 
-    @Column(name = "state", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
+    @Column(name = "state", nullable = false, insertable = true, updatable = true,
+            length = 3, precision = 0)
     @Basic
     public byte getState() {
         return state;

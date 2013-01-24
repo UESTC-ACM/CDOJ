@@ -31,7 +31,7 @@ import java.util.Collection;
  * User information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @Table(name = "user", schema = "", catalog = "uestcoj")
 @Entity
@@ -39,7 +39,8 @@ public class User implements Serializable {
     private static final long serialVersionUID = -1942419166710527006L;
     private int userId;
 
-    @Column(name = "userId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "userId", nullable = false, insertable = true, updatable = true, length = 10,
+            precision = 0, unique = true)
     @Id
     @GeneratedValue
     public int getUserId() {
@@ -52,7 +53,8 @@ public class User implements Serializable {
 
     private String userName;
 
-    @Column(name = "userName", nullable = false, insertable = true, updatable = true, length = 24, precision = 0)
+    @Column(name = "userName", nullable = false, insertable = true, updatable = true, length = 24,
+            precision = 0, unique = true)
     @Basic
     public String getUserName() {
         return userName;
@@ -64,7 +66,8 @@ public class User implements Serializable {
 
     private String studentId;
 
-    @Column(name = "studentId", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    @Column(name = "studentId", nullable = false, insertable = true, updatable = true, length = 50,
+            precision = 0)
     @Basic
     public String getStudentId() {
         return studentId;
@@ -76,7 +79,8 @@ public class User implements Serializable {
 
     private String password;
 
-    @Column(name = "password", nullable = false, insertable = true, updatable = true, length = 40, precision = 0)
+    @Column(name = "password", nullable = false, insertable = true, updatable = true, length = 40,
+            precision = 0)
     @Basic
     public String getPassword() {
         return password;
@@ -88,7 +92,8 @@ public class User implements Serializable {
 
     private String school;
 
-    @Column(name = "school", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    @Column(name = "school", nullable = false, insertable = true, updatable = true, length = 50,
+            precision = 0)
     @Basic
     public String getSchool() {
         return school;
@@ -100,7 +105,8 @@ public class User implements Serializable {
 
     private String nickName;
 
-    @Column(name = "nickName", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+    @Column(name = "nickName", nullable = false, insertable = true, updatable = true, length = 50,
+            precision = 0)
     @Basic
     public String getNickName() {
         return nickName;
@@ -112,7 +118,8 @@ public class User implements Serializable {
 
     private String email;
 
-    @Column(name = "email", nullable = false, insertable = true, updatable = true, length = 100, precision = 0)
+    @Column(name = "email", nullable = false, insertable = true, updatable = true, length = 100,
+            precision = 0, unique = true)
     @Basic
     public String getEmail() {
         return email;
@@ -124,7 +131,8 @@ public class User implements Serializable {
 
     private int solved;
 
-    @Column(name = "solved", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "solved", nullable = false, insertable = true, updatable = true, length = 10,
+            precision = 0)
     @Basic
     public int getSolved() {
         return solved;
@@ -136,7 +144,8 @@ public class User implements Serializable {
 
     private int tried;
 
-    @Column(name = "tried", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "tried", nullable = false, insertable = true, updatable = true, length = 10,
+            precision = 0)
     @Basic
     public int getTried() {
         return tried;
@@ -148,7 +157,8 @@ public class User implements Serializable {
 
     private int type;
 
-    @Column(name = "type", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+    @Column(name = "type", nullable = false, insertable = true, updatable = true, length = 10,
+            precision = 0)
     @Basic
     public int getType() {
         return type;
@@ -160,7 +170,8 @@ public class User implements Serializable {
 
     private Timestamp lastLogin;
 
-    @Column(name = "lastLogin", nullable = false, insertable = true, updatable = true, length = 19, precision = 0)
+    @Column(name = "lastLogin", nullable = false, insertable = true, updatable = true, length = 19,
+            precision = 0)
     @Basic
     public Timestamp getLastLogin() {
         return lastLogin;

@@ -26,7 +26,7 @@ import cn.edu.uestc.acmicpc.action.BaseAction;
 import cn.edu.uestc.acmicpc.db.dao.TagDAO;
 import cn.edu.uestc.acmicpc.db.entity.Tag;
 import cn.edu.uestc.acmicpc.ioc.TagDAOAware;
-import cn.edu.uestc.acmicpc.util.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.util.List;
 

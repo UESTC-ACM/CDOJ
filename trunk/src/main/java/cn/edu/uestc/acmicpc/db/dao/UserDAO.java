@@ -34,7 +34,7 @@ import java.util.List;
  * DAO for user entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 public class UserDAO extends DAO<User, Integer> {
     @Override
@@ -47,7 +47,10 @@ public class UserDAO extends DAO<User, Integer> {
      *
      * @param name user's name
      * @return user entity, null if not exists
+     * @deprecated this method is instead by
+     *             {@code getEntityByUniqueField("userName", value)}
      */
+    @Deprecated
     public User getUserByName(String name) {
         if (name == null)
             return null;

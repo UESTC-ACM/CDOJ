@@ -24,6 +24,7 @@ package cn.edu.uestc.acmicpc.util;
 
 import cn.edu.uestc.acmicpc.db.dao.DepartmentDAO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.util.List;
 
