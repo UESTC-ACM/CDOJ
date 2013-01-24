@@ -39,6 +39,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 
@@ -46,7 +47,7 @@ import java.util.Map;
  * Base action support, add specified common elements in here.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 6
+ * @version 7
  */
 public class BaseAction extends ActionSupport
         implements RequestAware, SessionAware, ApplicationAware, IActionInterceptor,
@@ -226,7 +227,7 @@ public class BaseAction extends ActionSupport
             String userName = (String) request.get("userName");
             String password = (String) request.get("password");
             Date lastLogin = (Date) request.get("lastLogin");
-            User user = userDAO.getEntityByUniqueField("usrName",userName);
+            User user = userDAO.getEntityByUniqueField("usrName", userName);
             if (user == null || !user.getPassword().equals(password)
                     || !user.getLastLogin().equals(lastLogin))
                 return null;
@@ -371,5 +372,14 @@ public class BaseAction extends ActionSupport
                 baseURL, displayDistance, httpServletRequest.getQueryString());
         request.put("pageInfo", pageInfo.getHtmlString());
         return pageInfo;
+    }
+
+    /**
+     * Write string content into web page.
+     *
+     * @param content content
+     */
+    protected void out(String content) throws IOException {
+        httpServletResponse.getWriter().write(content);
     }
 }

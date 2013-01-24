@@ -27,14 +27,19 @@ import cn.edu.uestc.acmicpc.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.dao.DepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dto.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
+import com.alibaba.fastjson.JSON;
 import com.opensymphony.xwork2.validator.annotations.*;
 import org.apache.struts2.interceptor.validation.SkipValidation;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Action for register
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 3
+ * @version 4
  */
 @LoginPermit(NeedLogin = false)
 public class RegisterAction extends BaseAction {
@@ -159,13 +164,14 @@ public class RegisterAction extends BaseAction {
 
     )
     public String toRegister() {
+        Map<String, String> json = new HashMap<String, String>();
         try {
             if (userDAO.getEntityByUniqueField("userName", userDTO.getUserName()) != null) {
                 addFieldError("userDTO.userName", "User name has been used!");
                 return INPUT;
             }
-            if (userDAO.getEntityByUniqueField("email",userDTO.getEmail()) != null) {
-                addFieldError("userDTO.email","Email has benn used!");
+            if (userDAO.getEntityByUniqueField("email", userDTO.getEmail()) != null) {
+                addFieldError("userDTO.email", "Email has benn used!");
                 return INPUT;
             }
             userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
@@ -175,10 +181,18 @@ public class RegisterAction extends BaseAction {
             session.put("password", user.getPassword());
             session.put("lastLogin", user.getLastLogin());
             session.put("userType", user.getType());
+            json.put("result", "ok");
         } catch (Exception e) {
-            e.printStackTrace();
+            // TODO fix the error msg
+            json.put("result", "error");
+            json.put("error_msg", "error_msg");
         }
-        return redirect(getContextPath("/"),"Register successful!");
+        try {
+            out(JSON.toJSONString(json));
+        } catch (IOException e) {
+            return setError("Internal error occurred.");
+        }
+        return redirect(getContextPath("/"), "Register successful!");
     }
 
     /**
