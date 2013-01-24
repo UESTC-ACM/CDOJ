@@ -28,12 +28,13 @@ body {
 
 /* 内容部分用wrap整个包围起来 */
 #wrap {
-    padding: 80px 0 10px 0;
+    padding: 80px 0 0 0;
     background-color: white;
 }
 
 .mzry1992 {
-    min-height: 300px;
+    padding: 20px 0 20px 0;
+    min-height: 400px;
 }
 
 /* footer */

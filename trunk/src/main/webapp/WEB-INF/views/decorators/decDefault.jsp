@@ -40,13 +40,13 @@
     <meta http-equiv=Content-Type content="text/html;charset=utf-8">
     <!-- 要用到的CSS -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="<s:url value="/styles/bootstrap.css"/>" rel="stylesheet">
+    <link href="<s:url value="/styles/bootstrap.min.css"/>" rel="stylesheet">
     <link href="<s:url value="/styles/prettify.css"/>" rel="stylesheet">
     <!-- 我的自定义CSS -->
     <link href="<s:url value="/styles/cdoj.css"/>" rel="stylesheet">
     <!-- 要用到的JS -->
     <script src="<s:url value="/scripts/jquery.min.js"/>"></script>
-    <script src="<s:url value="/scripts/bootstrap.js"/>"></script>
+    <script src="<s:url value="/scripts/bootstrap.min.js"/>"></script>
     <script src="<s:url value="/scripts/prettify.js"/>"></script>
     <script type="text/javascript"
             src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -57,32 +57,18 @@
     <script src="<s:url value="/plugins/edit_area/edit_area_full.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj.js"/>"></script>
 
+    <decorator:head/>
+
     <!-- 网站标题，暂时先这样 -->
     <title><decorator:title/> - UESTC Online Judge</title>
 
 </head>
 
 <body>
-<!--
-        Navbar
-        @TODO:
-        决定导航上的项目有哪些
-        分隔符的颜色需要微调
-        Navbar都要用
-        -->
-<div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <!-- 留白。。。 -->
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a><!-- 留白。。。 -->
-
-            <!-- 导航部分 -->
+<s:div cssClass="navbar navbar-fixed-top">
+    <s:div cssClass="navbar-inner">
+        <s:div cssClass="container">
             <ul class="nav">
-
                 <li class="divider-vertical"></li>
                 <li>
                     <a href="<s:url action="index" namespace="/"/>">CDOJ</a>
@@ -131,14 +117,12 @@
 
             </ul>
             <!-- 导航部分 -->
-
             <!-- 快速搜索框 -->
             <form class="navbar-search pull-right" action="">
                 <input type="text" class="search-query span2" placeholder="Search">
             </form>
 
-            <!-- 用户信息菜单，自行取用 -->
-            <s:if test="#user == null">
+            <s:if test="#session.userName == null">
                 <ul class="nav pull-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -147,15 +131,13 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <!-- 登陆按钮 -->
                             <li>
-                                <a href="./login.html">
+                                <s:a action="login" namespace="/user">
                                     <i class="icon-ok-circle"></i>
                                     Login
-                                </a>
+                                </s:a>
                             </li>
 
-                            <!-- 注册按钮 -->
                             <li>
                                 <a href="<s:url namespace="/user" action="register"/>">
                                     <i class="icon-plus-sign"></i>
@@ -172,7 +154,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="icon-user"></i>
-                                ${user.userName}
+                                <s:property value="#session.userName"/>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
@@ -203,10 +185,10 @@
 
                             <!-- 登出 -->
                             <li>
-                                <a href="./logout.html">
+                                <s:a action="logout" namespace="/user">
                                     <i class="icon-off"></i>
                                     Logout
-                                </a>
+                                </s:a>
                             </li>
                         </ul>
                     </li>
@@ -214,30 +196,25 @@
                 <!-- 用户相关的菜单 -->
             </s:else>
 
-        </div>
-    </div>
-</div>
-<!-- navbar -->
+        </s:div>
+    </s:div>
+</s:div>
 
-<!-- 正文 -->
-<div id="wrap">
-    <div class="mzry1992">
-        <div class="container">
-
+<s:div id="wrap">
+    <s:div cssClass="mzry1992">
+        <s:div cssClass="container">
             <decorator:body/>
+        </s:div>
+    </s:div>
+</s:div>
 
-        </div>
-    </div>
-</div>
-
-<!-- Footer -->
-<div id="footer">
-    <div class="container">
-        <div class="row">
-            <div class="span3 pull-left">
-                <a id="logo-banner" href="<s:url action="index"/>"></a>
-            </div>
-            <div class="span9">
+<s:div id="footer">
+    <s:div cssClass="container">
+        <s:div cssClass="row">
+            <s:div cssClass="span3 pull-left">
+                <s:a id="logo-banner" action="index" namespace="/"/>
+            </s:div>
+            <s:div cssClass="span9">
                 <p class="muted credit">
                     UESTC Online Judge
                 </p>
@@ -250,10 +227,10 @@
                     This is free software, and you are welcome to redistribute it under <a
                         href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt">certain conditions</a>
                 </p>
-            </div>
-        </div>
-    </div>
-</div>
+            </s:div>
+        </s:div>
+    </s:div>
+</s:div>
 
 </body>
 </html>

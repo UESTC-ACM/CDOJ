@@ -48,9 +48,9 @@ public @interface LoginPermit {
     public Global.AuthenticationType value() default Global.AuthenticationType.NORMAL;
 
     /**
-     * Need user login or not
+     * Need user toLogin or not
      *
-     * @return if this action will need user login, set it true.
+     * @return if this action will need user toLogin, set it true.
      */
     public boolean NeedLogin() default true;
 }

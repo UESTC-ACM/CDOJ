@@ -41,14 +41,16 @@
         <global-results>
             <result name="error">/WEB-INF/views/error/error.jsp</result>
             <result name="redirect">/WEB-INF/views/master/redirect.jsp</result>
+            <result name="toIndex">/WEB-INF/views/index/index.jsp</result>
         </global-results>
         <action name="notFound" class="baseAction">
-            <result>/WEB-INF/views/index/index.jsp</result>
+            <result>/WEB-INF/views/error/404.jsp</result>
         </action>
     </package>
 
     <!-- index package -->
     <package name="index" namespace="/" extends="default">
+        <default-action-ref name="index"/>
         <action name="index" class="indexAction" method="toIndex">
             <result>/WEB-INF/views/index/index.jsp</result>
         </action>
@@ -57,10 +59,12 @@
     <!-- user package -->
     <package name="user" namespace="/user" extends="default">
         <action name="register" class="registerAction">
-            <result name="success">/WEB-INF/views/user/registerSuccess.jsp</result>
             <result name="input">/WEB-INF/views/user/register.jsp</result>
         </action>
-        <action name="login" class="loginAction" method="login"/>
+        <action name="login" class="loginAction">
+            <result name="input">/WEB-INF/views/user/login.jsp</result>
+        </action>
+        <action name="logout" class="logoutAction" method="toLogout"/>
     </package>
 
     <!-- test package -->

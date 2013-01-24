@@ -107,12 +107,12 @@ public class BaseAction extends ActionSupport
     protected ServletContext servletContext;
 
     /**
-     * Current login user.
+     * Current toLogin user.
      */
     protected User currentUser;
 
     /**
-     * userDAO for user login check.
+     * userDAO for user toLogin check.
      */
     protected UserDAO userDAO = null;
 
@@ -120,6 +120,11 @@ public class BaseAction extends ActionSupport
      * redirect flag.
      */
     protected final String REDIRECT = "redirect";
+
+    /**
+     * to index flag.
+     */
+    protected final String TOINDEX = "toIndex";
 
     /**
      * Implement {@link ApplicationAware} interface, with Ioc.
@@ -212,19 +217,24 @@ public class BaseAction extends ActionSupport
     }
 
     /**
-     * Get current login user, if no user had login, return {@code null}.
+     * Get current toLogin user, if no user had toLogin, return {@code null}.
      *
-     * @return current login user entity
+     * @return current toLogin user entity
      */
     protected User getCurrentUser() {
-        String userName = (String) request.get("userName");
-        String password = (String) request.get("password");
-        Date lastLogin = (Date) request.get("lastLogin");
-        User user = userDAO.getUserByName(userName);
-        if (user == null || !user.getPassword().equals(password)
-                || !user.getLastLogin().equals(lastLogin))
+        try {
+            String userName = (String) request.get("userName");
+            String password = (String) request.get("password");
+            Date lastLogin = (Date) request.get("lastLogin");
+            User user = userDAO.getEntityByUniqueField("usrName",userName);
+            if (user == null || !user.getPassword().equals(password)
+                    || !user.getLastLogin().equals(lastLogin))
+                return null;
+            return user;
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
-        return user;
+        }
     }
 
     /**
@@ -263,7 +273,7 @@ public class BaseAction extends ActionSupport
                 return;
             }
             if (user == null) {
-                // TODO "/user/log" is login page
+                // TODO "/user/log" is toLogin page
                 redirect(getContextPath("/user/log"));
                 actionInfo.setCancel(true);
                 actionInfo.setActionResult(REDIRECT);
