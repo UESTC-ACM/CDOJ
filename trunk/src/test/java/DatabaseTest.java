@@ -94,20 +94,24 @@ public class DatabaseTest {
      */
     @Test
     public void testUserDAO() throws AppException {
-        User user = userDAO.getEntityByUniqueField("userName", "mzry1992");
-        if (user == null) {
-            user = new User();
-            user.setUserName("mzry1992");
-            user.setPassword("123456");
-            user.setNickName("haha");
-            user.setEmail("muziriyun@qq.com");
-            user.setSchool("UESTC");
-            user.setDepartmentByDepartmentId(departmentDAO.get(1));
-            user.setStudentId("2010013100008");
-            user.setLastLogin(new Timestamp(new Date().getTime()));
-            userDAO.add(user);
-        } else {
-            System.out.println(user.getUserId() + " " + user.getUserName());
+        try {
+            User user = userDAO.getEntityByUniqueField("userName", "mzry1992");
+            if (user == null) {
+                user = new User();
+                user.setUserName("mzry1992");
+                user.setPassword("123456");
+                user.setNickName("haha");
+                user.setEmail("muziriyun@qq.com");
+                user.setSchool("UESTC");
+                user.setDepartmentByDepartmentId(departmentDAO.get(1));
+                user.setStudentId("2010013100008");
+                user.setLastLogin(new Timestamp(new Date().getTime()));
+                userDAO.add(user);
+            } else {
+                System.out.println(user.getUserId() + " " + user.getUserName());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

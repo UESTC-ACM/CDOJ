@@ -29,13 +29,41 @@
     $(function () {
 
         // make code pretty
-        window.prettyPrint && prettyPrint()
+        window.prettyPrint && prettyPrint();
 
         // 主页的slide
-        $('#activityCarousel').carousel()
+        $('#activityCarousel').carousel();
 
         //题目列表来源弹出效果
-        $('.info-problem-source').tooltip()
+        $('.info-problem-source').tooltip();
+
+        $("#registerModal").on("show", function() {    // wire up the Register button
+            $("#registerModal a.btn-primary").on("click", function(e) {
+                var info = {
+                    username: $("#username1").val(),
+                    password: $("#password1").val(),
+                    repassword: $("#repassword").val(),
+                    nickname: $("#nickname").val(),
+                    school: $("#school").val(),
+                    qq: $("#qq").val(),
+                    email: $("#email").val(),
+                    blog: $("#blog").val(),
+                    share: $("#share").val()
+                };
+                $.post('user/register', info, function(data) {
+                    if (data == "success") {
+                        $("#registerModal").modal('hide');
+                        window.location.reload();
+                    } else {
+                        console.log(data);
+                        alert("haha");
+                    }
+                });
+            });
+        });
+        $("#registerModal").on("hide", function() {    // remove the event listeners when the dialog is dismissed
+            $("#registerModal a.btn-primary").off("click");
+        });
 
     })
 }(window.jQuery)

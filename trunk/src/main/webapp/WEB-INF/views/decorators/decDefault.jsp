@@ -65,6 +65,13 @@
 </head>
 
 <body>
+<script>
+    $(document).on("click", ".alert", function(e) {
+        bootbox.alert("Hello world!", function() {
+            console.log("Alert Callback");
+        });
+    });
+</script>
 <s:div cssClass="navbar navbar-fixed-top">
     <s:div cssClass="navbar-inner">
         <s:div cssClass="container">
@@ -139,10 +146,12 @@
                             </li>
 
                             <li>
-                                <a href="<s:url namespace="/user" action="register"/>">
+                                <!-- Button to trigger modal -->
+                                <a href="#registerModal" role="button" data-toggle="modal">
                                     <i class="icon-plus-sign"></i>
                                     Register
                                 </a>
+
                             </li>
 
                         </ul>
@@ -199,6 +208,67 @@
         </s:div>
     </s:div>
 </s:div>
+
+<!-- Register Modal -->
+<div id="registerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="registerModal" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="registerModalLabel">Register</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal">
+            <fieldset>`
+                <s:textfield name="userDTO.userName"
+                             maxLength="24"
+                             cssClass="span4"
+                             label="User Name"
+                             theme="bootstrap"/>
+                <s:password name="userDTO.password"
+                            maxLength="20"
+                            cssClass="span4"
+                            label="Password"
+                            theme="bootstrap"/>
+                <s:password name="userDTO.passwordRepeat"
+                            maxLength="20"
+                            cssClass="span4"
+                            label="Repeat your password"
+                            theme="bootstrap"/>
+                <s:textfield name="userDTO.nickName"
+                             maxLength="20"
+                             cssClass="span4"
+                             label="Nick name"
+                             theme="bootstrap"/>
+                <s:textfield name="userDTO.email"
+                             maxLength="100"
+                             cssClass="span4"
+                             label="Email"
+                             theme="bootstrap"/>
+                <s:textfield name="userDTO.school"
+                             maxLength="50"
+                             cssClass="span4"
+                             value="UESTC"
+                             label="School"
+                             theme="bootstrap"/>
+                <s:select name="userDTO.departmentId"
+                          list="global.departmentList"
+                          listKey="departmentId"
+                          listValue="name"
+                          cssClass="span4"
+                          label="Department"
+                          theme="bootstrap"/>
+                <s:textfield name="userDTO.studentId"
+                             maxLength="20"
+                             cssClass="span4"
+                             label="Student ID"
+                             theme="bootstrap"/>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+        <a href="#" class="btn btn-primary">Register</a>
+    </div>
+</div>
 
 <s:div id="wrap">
     <s:div cssClass="mzry1992">

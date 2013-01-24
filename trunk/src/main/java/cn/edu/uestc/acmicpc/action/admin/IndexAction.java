@@ -20,33 +20,25 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.action.index;
+package cn.edu.uestc.acmicpc.action.admin;
 
 import cn.edu.uestc.acmicpc.action.BaseAction;
 import cn.edu.uestc.acmicpc.annotation.LoginPermit;
-import org.apache.struts2.convention.annotation.*;
+import cn.edu.uestc.acmicpc.util.Global;
 
 /**
- * action for index page
+ * description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 3
+ * @version 1
  */
-@ParentPackage("default")
-@Namespace("/")
-@Results({@Result(location = "/WEB-INF/views/index/index.jsp")})
-@LoginPermit(NeedLogin = false)
+@LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class IndexAction extends BaseAction {
 
-    private static final long serialVersionUID = 5952440824378350944L;
+    private static final long serialVersionUID = -754990150765691696L;
 
-    /**
-     * method of index action
-     *
-     * @return <strong>SUCCESS</strong> signal
-     */
-    @Action("index")
     public String toIndex() {
         return SUCCESS;
     }
+
 }
