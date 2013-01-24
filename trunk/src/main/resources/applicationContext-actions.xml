@@ -58,4 +58,9 @@
           parent="baseAction"
           scope="prototype">
     </bean>
+    <bean id="logoutAction"
+          class="cn.edu.uestc.acmicpc.action.user.LogoutAction"
+          parent="baseAction"
+          scope="prototype">
+    </bean>
 </beans>

@@ -23,8 +23,10 @@
 package cn.edu.uestc.acmicpc.action.user;
 
 import cn.edu.uestc.acmicpc.action.BaseAction;
+import cn.edu.uestc.acmicpc.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.dao.DepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dto.UserDTO;
+import cn.edu.uestc.acmicpc.db.entity.User;
 import com.opensymphony.xwork2.validator.annotations.*;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
@@ -32,9 +34,9 @@ import org.apache.struts2.interceptor.validation.SkipValidation;
  * Action for register
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 2
+ * @version 3
  */
-
+@LoginPermit(NeedLogin = false)
 public class RegisterAction extends BaseAction {
 
     private static final long serialVersionUID = -2854303130010851540L;
@@ -86,6 +88,20 @@ public class RegisterAction extends BaseAction {
                             fieldName = "userDTO.password",
                             key = "error.password.validation",
                             minLength = "6",
+                            maxLength = "20",
+                            trim = false
+                    ),
+                    @StringLengthFieldValidator(
+                            fieldName = "userDTO.school",
+                            key = "error.school.validation",
+                            minLength = "1",
+                            maxLength = "50",
+                            trim = false
+                    ),
+                    @StringLengthFieldValidator(
+                            fieldName = "userDTO.studentId",
+                            key = "error.studentId.validation",
+                            minLength = "1",
                             maxLength = "20",
                             trim = false
                     )
@@ -144,16 +160,25 @@ public class RegisterAction extends BaseAction {
     )
     public String toRegister() {
         try {
-            if (userDAO.getUserByName(userDTO.getUserName()) != null) {
+            if (userDAO.getEntityByUniqueField("userName", userDTO.getUserName()) != null) {
                 addFieldError("userDTO.userName", "User name has been used!");
                 return INPUT;
             }
+            if (userDAO.getEntityByUniqueField("email",userDTO.getEmail()) != null) {
+                addFieldError("userDTO.email","Email has benn used!");
+                return INPUT;
+            }
             userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
+            User user = userDTO.getUser();
             userDAO.add(userDTO.getUser());
+            session.put("userName", user.getUserName());
+            session.put("password", user.getPassword());
+            session.put("lastLogin", user.getLastLogin());
+            session.put("userType", user.getType());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return SUCCESS;
+        return redirect(getContextPath("/"),"Register successful!");
     }
 
     /**

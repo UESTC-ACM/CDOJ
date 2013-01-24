@@ -43,42 +43,42 @@
                 <fieldset>
                     <legend>Register</legend>
                     <s:textfield name="userDTO.userName"
-                                 size="24"
-                                 cssClass="span3"
+                                 maxLength="24"
+                                 cssClass="span4"
                                  label="User Name"/>
                     <s:password name="userDTO.password"
-                                 size="24"
-                                 cssClass="span3"
+                                 maxLength="20"
+                                 cssClass="span4"
                                  label="Password"/>
                     <s:password name="userDTO.passwordRepeat"
-                                 size="24"
-                                 cssClass="span3"
+                                 maxLength="20"
+                                 cssClass="span4"
                                  label="Repeat your password"/>
                 </fieldset>
                 <fieldset>
                     <legend>Information</legend>
                     <s:textfield name="userDTO.nickName"
-                                 size="24"
-                                 cssClass="span3"
+                                 maxLength="20"
+                                 cssClass="span4"
                                  label="Nick name"/>
                     <s:textfield name="userDTO.email"
-                                 size="24"
-                                 cssClass="span3"
+                                 maxLength="100"
+                                 cssClass="span4"
                                  label="Email"/>
                     <s:textfield name="userDTO.school"
-                                 size="24"
-                                 cssClass="span3"
+                                 maxLength="50"
+                                 cssClass="span4"
                                  value="UESTC"
                                  label="School"/>
                     <s:select name="userDTO.departmentId"
                               list="global.departmentList"
                               listKey="departmentId"
                               listValue="name"
-                              cssClass="span3"
+                              cssClass="span4"
                               label="Department"/>
                     <s:textfield name="userDTO.studentId"
-                                 size="24"
-                                 cssClass="span3"
+                                 maxLength="20"
+                                 cssClass="span4"
                                  label="Student ID"/>
                 </fieldset>
                 <fieldset>

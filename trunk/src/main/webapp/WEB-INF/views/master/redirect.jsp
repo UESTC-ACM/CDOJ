@@ -30,43 +30,26 @@
 <%@ page language="java" pageEncoding="UTF-8"%><%@ taglib prefix="s" uri="/struts-tags"%><!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script type="text/javascript">
         (function(){
-            var msg = "${msg}";
             var url = "${url}";
-            if(msg) alert(msg);
             url ? location.href = url : history.back();
         })();
     </script>
-    <style type="text/css">
-        body {
-            font-size: 12px;
-        }
-
-        .info {
-            border: 2px solid #eee;
-            margin: 16px 8px;
-            padding: 8px 16px;
-        }
-
-        h1 {
-            font-size: 20px;
-            color: #ab1b27;
-        }
-
-        p {
-            font-size: 14px;
-            padding-left: 24px;
-        }
-    </style>
+    <title>Redirect</title>
 </head>
 <body>
-<noscript>
-    <div class="info">
-        <h1>正在跳转：</h1>
-        <p class="info">页面正在跳转，如果您的浏览器不支持自动跳转，请手动<a href="${url}">点击这里</a>。</p>
-    </div>
-</noscript>
+<s:div cssClass="row">
+    <s:div cssClass="span8 offset2">
+        <s:div cssClass="alert alert-success" cssStyle="margin-top: 100px">
+            <h3>
+                ${msg}
+            </h3>
+            <p>
+                If your browser does not support automatically redirect, please click <a class="btn btn-small btn-primary" href="${url}">here</a>
+            </p>
+        </s:div>
+    </s:div>
+</s:div>
 </body>
-</html>tml>
+</html>

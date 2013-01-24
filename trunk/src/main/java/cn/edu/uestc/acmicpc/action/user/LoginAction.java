@@ -27,31 +27,80 @@ import cn.edu.uestc.acmicpc.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.StringUtil;
+import com.opensymphony.xwork2.validator.annotations.*;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import java.sql.Timestamp;
 import java.util.Date;
 
 /**
- * Login action for user login.
+ * Login action for user toLogin.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 @LoginPermit(NeedLogin = false)
 public class LoginAction extends BaseAction {
 
     private static final long serialVersionUID = 2034049134718450987L;
 
+    private String userName;
+    private String password;
+
+    @Validations(
+            requiredStrings = {
+                    @RequiredStringValidator(
+                            fieldName = "userName",
+                            key = "error.userName.validation"
+                    ),
+                    @RequiredStringValidator(
+                            fieldName = "password",
+                            key = "error.password.validation"
+                    )
+            },
+            stringLengthFields = {
+                    @StringLengthFieldValidator(
+                            fieldName = "password",
+                            key = "error.password.validation",
+                            minLength = "6",
+                            maxLength = "20",
+                            trim = false
+                    )
+            },
+            customValidators = {
+                    @CustomValidator(
+                            type = "regex",
+                            fieldName = "userName",
+                            key = "error.userName.validation",
+                            parameters = {
+                                    @ValidationParameter(
+                                            name = "expression",
+                                            value = "\\b^[a-zA-Z0-9_]{4,24}$\\b"
+                                    ),
+                                    @ValidationParameter(
+                                            name = "trim",
+                                            value = "false"
+                                    )
+                            }
+                    )
+            }
+    )
     /**
-     * login with {@code userName} and {@code password}.
+     * toLogin with {@code userName} and {@code password}.
      *
      * @return action signal
      */
-    public String login() {
+    public String toLogin() {
+        //Has login.
+        if (session.get("userName") != null)
+            return TOINDEX;
         try {
-            User user = userDAO.getUserByName(get("userName"));
-            if (user == null || !StringUtil.encodeSHA1(get("password")).equals(user.getPassword()))
-                throw new AppException("User or password is wrong, please try again.");
+            User user = userDAO.getEntityByUniqueField("userName",getUserName());
+            if (user == null || !StringUtil.encodeSHA1(getPassword()).equals(user.getPassword()))
+            {
+                addFieldError("password","User or password is wrong, please try again.");
+                return INPUT;
+            }
             try {
                 user.setLastLogin(new Timestamp(new Date().getTime()));
                 userDAO.update(user);
@@ -70,6 +119,36 @@ public class LoginAction extends BaseAction {
         } catch (Exception e) {
             return setError("Unknown exception occurred.");
         }
-        return redirectToRefer();
+        return redirectToRefer("Login successfully!");
     }
+
+    /**
+     * Default method for the first time visit login page.
+     *
+     * @return INPUT
+     */
+    @SkipValidation
+    public String execute() {
+        //Has login.
+        if (session.get("userName") != null)
+            return TOINDEX;
+        return INPUT;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }
