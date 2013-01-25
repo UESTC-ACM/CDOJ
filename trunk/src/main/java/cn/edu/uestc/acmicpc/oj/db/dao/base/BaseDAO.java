@@ -22,30 +22,42 @@
 
 package cn.edu.uestc.acmicpc.oj.db.dao.base;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Base DAO Implementation for <strong>Hibernate 4</strong>.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
+@Transactional
 public class BaseDAO {
     private SessionFactory sessionFactory;
 
+    /**
+     * Set session factory from IoC.
+     *
+     * @param sessionFactory sessionFactory from bean settings
+     */
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
+    /**
+     * Get current database session
+     *
+     * @return if the IoC works, return current session, otherwise open a new session
+     */
     public Session getSession() {
         Session session;
-        try {
-            session = sessionFactory.getCurrentSession();
-        } catch (HibernateException e) {
-            session = sessionFactory.openSession();
-        }
+//        try {
+//            session = sessionFactory.getCurrentSession();
+//        } catch (HibernateException e) {
+//            e.printStackTrace();
+        session = sessionFactory.openSession();
+//        }
         return session;
     }
 }

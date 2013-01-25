@@ -91,20 +91,19 @@ public class LoginAction extends BaseAction {
      */
     public String toLogin() {
         try {
-            User user = userDAO.getEntityByUniqueField("userName",getUserName());
-            if (user == null || !StringUtil.encodeSHA1(getPassword()).equals(user.getPassword()))
-            {
-                addFieldError("password","User or password is wrong, please try again.");
+            User user = userDAO.getEntityByUniqueField("userName", getUserName());
+            if (user == null || !StringUtil.encodeSHA1(getPassword()).equals(user.getPassword())) {
+                addFieldError("password", "User or password is wrong, please try again.");
                 return INPUT;
             }
             try {
                 user.setLastLogin(new Timestamp(new Date().getTime()));
                 userDAO.update(user);
             } catch (AppException e) {
-                json.put("result",setError(e));
+                json.put("result", setError(e));
                 return JSON;
             } catch (Exception e) {
-                json.put("result",setError("Unknown exception occurred."));
+                json.put("result", setError("Unknown exception occurred."));
                 return JSON;
             }
             user = userDAO.get(user.getUserId());
@@ -113,13 +112,13 @@ public class LoginAction extends BaseAction {
             session.put("lastLogin", user.getLastLogin());
             session.put("userType", user.getType());
         } catch (AppException e) {
-            json.put("result",setError(e));
+            json.put("result", setError(e));
             return JSON;
         } catch (Exception e) {
-            json.put("result",setError("Unknown exception occurred."));
+            json.put("result", setError("Unknown exception occurred."));
             return JSON;
         }
-        json.put("result","ok");
+        json.put("result", "ok");
         return JSON;
     }
 
