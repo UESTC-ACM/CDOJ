@@ -27,22 +27,37 @@
 <%--
   Created by IntelliJ IDEA.
   User: mzry1992
-  Date: 13-1-24
-  Time: 下午6:14
+  Date: 13-1-25
+  Time: 下午11:58
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Admin</title>
+    <title></title>
 </head>
 <body>
-<s:div cssClass="row">
-    <s:div cssClass="span2">
-        <page:applyDecorator name="empty" page="/WEB-INF/views/admin/sidebar.jsp"/>
-    </s:div>
-    <s:div cssClass="span10">
-        何何
+<s:div id="footer">
+    <s:div cssClass="container">
+        <s:div cssClass="row">
+            <s:div cssClass="span3 pull-left">
+                <s:a id="logo-banner" action="index" namespace="/"/>
+            </s:div>
+            <s:div cssClass="span9">
+                <p class="muted credit">
+                    UESTC Online Judge
+                </p>
+
+                <p class="muted credit">
+                    Gnomovision version 69, Copyright (C) 2012 lyhypacm, mzry1992
+                    <br/>
+                    Gnomovision comes with ABSOLUTELY NO WARRANTY
+                    <br/>
+                    This is free software, and you are welcome to redistribute it under <a
+                        href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt">certain conditions</a>
+                </p>
+            </s:div>
+        </s:div>
     </s:div>
 </s:div>
 </body>

@@ -52,6 +52,11 @@ body {
 .container {
 }
 
+.tabbable {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
 /* 调整表格样式以保证不出现表格换行的情况！ */
 table {
     table-layout: fixed;
@@ -153,6 +158,6 @@ td {
 
 /* register modal */
 #registerModal {
-    width: 900px;
+    width: 960px;
     left: 36%;
 }

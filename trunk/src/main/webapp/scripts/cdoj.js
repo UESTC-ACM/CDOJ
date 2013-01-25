@@ -104,7 +104,7 @@ function Button(button,callback) {
 
         Dialog($("#registerModal"),function(e) {
             info=$("#registerModal .form-horizontal").serializeArray();
-            $.post('user/register', info, function(data) {
+            $.post('/user/register', info, function(data) {
                 if (validation($("#registerModal .form-horizontal"),data) == true) {
                     $("#registerModal").modal('hide');
                     window.location.reload();
@@ -114,7 +114,7 @@ function Button(button,callback) {
 
         Dialog($("#loginModal"),function(e) {
             info=$(".form-horizontal").serializeArray();
-            $.post('user/login', info, function(data) {
+            $.post('/user/login', info, function(data) {
                 if (validation($(".form-horizontal"),data) == true) {
                     $("#loginModal").modal('hide');
                     window.location.reload();
@@ -123,7 +123,7 @@ function Button(button,callback) {
         });
 
         Button($("#logoutButton"),function(e) {
-            $.post('user/logout',function(data) {
+            $.post('/user/logout',function(data) {
                 if (data["result"] == "ok")
                     window.location.reload();
             });

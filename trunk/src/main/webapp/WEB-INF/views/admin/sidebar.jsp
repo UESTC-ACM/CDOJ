@@ -27,23 +27,41 @@
 <%--
   Created by IntelliJ IDEA.
   User: mzry1992
-  Date: 13-1-24
-  Time: 下午6:14
+  Date: 13-1-25
+  Time: 下午11:59
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Admin</title>
+    <title></title>
 </head>
 <body>
-<s:div cssClass="row">
-    <s:div cssClass="span2">
-        <page:applyDecorator name="empty" page="/WEB-INF/views/admin/sidebar.jsp"/>
-    </s:div>
-    <s:div cssClass="span10">
-        何何
-    </s:div>
+<s:div cssClass="well" cssStyle="padding: 8px 0;">
+    <ul class="nav nav-list">
+        <li class="nav-header"><i class="icon-home"></i>Admin</li>
+        <li class="active"><a href="#">OJ status</a></li>
+        <li><a href="#">Backup</a></li>
+        <li><a href="#">Help</a></li>
+
+        <li class="divider"></li>
+
+        <li class="nav-header"><i class="icon-user"></i>User</li>
+        <li><a href="#">User list</a></li>
+
+        <li class="divider"></li>
+
+        <li class="nav-header"><i class="icon-file"></i>Problem</li>
+        <li><a href="#">Problem list</a></li>
+        <li><a href="#">Add problem</a></li>
+
+        <li class="divider"></li>
+
+        <li class="nav-header"><i class="icon-screenshot"></i>Contest</li>
+        <li><a href="#">Contest list</a></li>
+        <li><a href="#">Add contest</a></li>
+
+    </ul>
 </s:div>
 </body>
 </html>
