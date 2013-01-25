@@ -1,6 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!--
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
+<%@ taglib prefix="cdoj" uri="/WEB-INF/cdoj.tld" %>
+<%--
   ~ /*
   ~  * cdoj, UESTC ACMICPC Online Judge
   ~  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
@@ -20,12 +22,14 @@
   ~  * along with this program; if not, write to the Free Software
   ~  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   ~  */
-  -->
+  --%>
 
-<decorators defaultdir="/WEB-INF/views/decorators">
-    <decorator name="default" page="decDefault.jsp">
-        <pattern>/*</pattern>
-    </decorator>
-
-    <decorator name="empty" page="decEmpty.jsp"/>
-</decorators>
+<%--
+  Created by IntelliJ IDEA.
+  User: mzry1992
+  Date: 13-1-25
+  Time: 下午11:48
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<decorator:body/>

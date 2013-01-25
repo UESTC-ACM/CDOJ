@@ -26,4 +26,9 @@
         "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
+    <package name="admin" namespace="/admin" extends="default">
+        <action name="index" class="adminIndexAction" method="toIndex">
+            <result>/WEB-INF/views/admin/index.jsp</result>
+        </action>
+    </package>
 </struts>
