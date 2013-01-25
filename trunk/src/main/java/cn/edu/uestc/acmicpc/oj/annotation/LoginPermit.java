@@ -20,40 +20,37 @@
  *
  */
 
-import cn.edu.uestc.acmicpc.oj.db.entity.Department;
-import cn.edu.uestc.acmicpc.oj.util.Global;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+package cn.edu.uestc.acmicpc.oj.annotation;
 
-import java.util.List;
+import cn.edu.uestc.acmicpc.oj.util.Global;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
- * Util class test
+ * Login permission controller.
+ * <p/>
+ * Use this annotation to validate users' types.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 2
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:applicationContext-test.xml"})
-public class UtilTest {
-    @Autowired
-    private Global global = null;
+@Retention(RetentionPolicy.RUNTIME)
+public @interface LoginPermit {
 
-    public void setGlobal(Global global) {
-        this.global = global;
-    }
+    /**
+     * Set user type needed. The user type can refer to
+     * {@link cn.edu.uestc.acmicpc.oj.util.Global.AuthenticationType}.
+     *
+     * @return User type needed.
+     * @see cn.edu.uestc.acmicpc.oj.util.Global.AuthenticationType
+     */
+    public Global.AuthenticationType value() default Global.AuthenticationType.NORMAL;
 
-    @Test
-    public void testGlobal() {
-        Assert.assertNotNull("Constructor global instance is null.", global);
-        List<Department> departments = global.getDepartmentList();
-        for (Department department : departments) {
-            System.out.println(department.getDepartmentId()
-                    + "\t" + department.getName());
-        }
-    }
+    /**
+     * Need user toLogin or not
+     *
+     * @return if this action will need user toLogin, set it true.
+     */
+    public boolean NeedLogin() default true;
 }
