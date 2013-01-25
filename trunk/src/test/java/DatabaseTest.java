@@ -131,7 +131,7 @@ public class DatabaseTest {
      */
     @Test
     public void testGetEntityByUnique() throws FieldNotUniqueException {
-        User user = userDAO.getEntityByUniqueField("userName", "mzry1992");
+        User user = userDAO.getEntityByUniqueField("userName", "UESTC_Izayoi");
         Assert.assertEquals("UESTC", user.getSchool());
     }
 

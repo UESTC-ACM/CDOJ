@@ -28,8 +28,6 @@ import cn.edu.uestc.acmicpc.oj.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.util.StringUtil;
 import com.opensymphony.xwork2.validator.annotations.*;
-import org.apache.struts2.convention.annotation.*;
-import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -38,10 +36,8 @@ import java.util.Date;
  * Login action for user toLogin.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
-@ParentPackage("default")
-@Namespace("/user")
 @LoginPermit(NeedLogin = false)
 public class LoginAction extends BaseAction {
 
@@ -93,7 +89,6 @@ public class LoginAction extends BaseAction {
      *
      * @return action signal
      */
-    @Action("login")
     public String toLogin() {
         try {
             User user = userDAO.getEntityByUniqueField("userName",getUserName());
@@ -126,19 +121,6 @@ public class LoginAction extends BaseAction {
         }
         json.put("result","ok");
         return JSON;
-    }
-
-    /**
-     * Default method for the first time visit login page.
-     *
-     * @return INPUT
-     */
-    @SkipValidation
-    public String execute() {
-        //Has login.
-        if (session.get("userName") != null)
-            return TOINDEX;
-        return INPUT;
     }
 
     public String getUserName() {
