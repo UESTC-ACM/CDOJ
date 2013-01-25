@@ -133,6 +133,11 @@ public class BaseAction extends ActionSupport
     protected final String JSON = "json";
 
     /**
+     * JSON result.
+     */
+    protected Map<String, Object> json;
+
+    /**
      * Implement {@link ApplicationAware} interface, with Ioc.
      *
      * @param application application attribute
@@ -386,5 +391,13 @@ public class BaseAction extends ActionSupport
      */
     protected void out(String content) throws IOException {
         httpServletResponse.getWriter().write(content);
+    }
+
+    public Map<String, Object> getJson() {
+        return json;
+    }
+
+    public void setJson(Map<String, Object> json) {
+        this.json = json;
     }
 }

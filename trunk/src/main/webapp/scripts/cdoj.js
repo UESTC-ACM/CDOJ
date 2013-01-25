@@ -39,17 +39,8 @@
 
         $("#registerModal").on("show", function() {    // wire up the Register button
             $("#registerModal a.btn-primary").on("click", function(e) {
-                var info = {
-                    username: $("#username1").val(),
-                    password: $("#password1").val(),
-                    repassword: $("#repassword").val(),
-                    nickname: $("#nickname").val(),
-                    school: $("#school").val(),
-                    qq: $("#qq").val(),
-                    email: $("#email").val(),
-                    blog: $("#blog").val(),
-                    share: $("#share").val()
-                };
+                info=$("#registerModal .form-horizontal").serializeArray();
+                console.log(info);
                 $.post('user/register', info, function(data) {
                     if (data == "success") {
                         $("#registerModal").modal('hide');

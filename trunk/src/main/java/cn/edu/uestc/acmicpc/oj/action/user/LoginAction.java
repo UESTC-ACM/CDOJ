@@ -28,6 +28,10 @@ import cn.edu.uestc.acmicpc.oj.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.util.StringUtil;
 import com.opensymphony.xwork2.validator.annotations.*;
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.ParentPackage;
+import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import java.sql.Timestamp;
@@ -39,6 +43,9 @@ import java.util.Date;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 3
  */
+@ParentPackage("default")
+@Namespace("/user")
+@Results({@Result(name="json",type="json",params = {"root","json"})})
 @LoginPermit(NeedLogin = false)
 public class LoginAction extends BaseAction {
 
