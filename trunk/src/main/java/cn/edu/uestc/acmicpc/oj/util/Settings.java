@@ -35,10 +35,28 @@ import java.util.Map;
  * <strong>settings.xml</strong>.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 public class Settings {
+    /**
+     * Global encoding
+     */
     public static final String SETTING_ENCODING;
+
+    /**
+     * Upload file size limit(in MB)
+     */
+    public static final Integer SETTING_UPLOAD_SIZE;
+
+    /**
+     * Upload file's types
+     */
+    public static final String SETTING_UPLOAD_TYPES;
+
+    /**
+     * Upload files store folder
+     */
+    public static final String SETTING_UPLOAD_FOLDER;
 
     /**
      * setting map from configuration file.
@@ -66,12 +84,16 @@ public class Settings {
         }
 
         SETTING_ENCODING = getConfig("setting", "encoding");
+        SETTING_UPLOAD_SIZE = Integer.valueOf(getConfig("setting", "uploadSize"));
+        SETTING_UPLOAD_TYPES = getConfig("setting", "uploadTypes");
+        SETTING_UPLOAD_FOLDER = getConfig("settings", "uploadFolder");
     }
 
     /**
      * initialize configuration mappings from configuration file.
      *
      * @throws cn.edu.uestc.acmicpc.oj.util.exception.AppException
+     *
      */
     private static void init() throws AppException {
         settings = new HashMap<String, Map<String, String>>();

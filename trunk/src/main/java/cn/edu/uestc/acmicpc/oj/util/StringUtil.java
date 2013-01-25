@@ -29,7 +29,7 @@ import java.util.Date;
  * global static class to deal with strings
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 4
  */
 @SuppressWarnings("UnusedDeclaration")
 public class StringUtil {
@@ -130,5 +130,18 @@ public class StringUtil {
      */
     public static String choose(String str1, String str2) {
         return !isNullOrEmpty(str1) ? str1 : str2;
+    }
+
+    /**
+     * Check whether the file can match types list
+     *
+     * @param fileName file name
+     * @param types    type list splitting with ';'
+     * @return if this file can be upload, return {@code true}
+     */
+    public static boolean containTypes(String fileName, String types) {
+        String ext = getFilenameExt(fileName).replace(".", "");
+        ext = String.format(";%s;", ext).toLowerCase();
+        return String.format(";%s;", types).toLowerCase().indexOf(ext) > -1;
     }
 }
