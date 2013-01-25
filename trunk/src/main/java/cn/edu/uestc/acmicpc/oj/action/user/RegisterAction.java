@@ -41,7 +41,6 @@ import java.util.Map;
  */
 @ParentPackage("default")
 @Namespace("/user")
-@Results({@Result(name="json",type="json",params = {"root","json"})})
 @LoginPermit(NeedLogin = false)
 public class RegisterAction extends BaseAction {
 
@@ -56,11 +55,6 @@ public class RegisterAction extends BaseAction {
      * department dao, use for get a department entity by id.
      */
     private DepartmentDAO departmentDAO;
-
-    /**
-     * return message
-     */
-    private Map<String, Object> json;
 
     /**
      * Register action! with so many validators! ha ha...
@@ -111,11 +105,4 @@ public class RegisterAction extends BaseAction {
         this.departmentDAO = departmentDAO;
     }
 
-    public Map<String, Object> getJson() {
-        return json;
-    }
-
-    public void setJson(Map<String, Object> json) {
-        this.json = json;
-    }
 }

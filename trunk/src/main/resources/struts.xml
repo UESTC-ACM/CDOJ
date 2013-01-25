@@ -42,6 +42,9 @@
             <result name="error">/WEB-INF/views/error/error.jsp</result>
             <result name="redirect">/WEB-INF/views/master/redirect.jsp</result>
             <result name="toIndex">/WEB-INF/views/index/index.jsp</result>
+            <result name="json" type="json">
+                <param name="root">json</param>
+            </result>
         </global-results>
         <action name="notFound" class="baseAction">
             <result>/WEB-INF/views/error/404.jsp</result>
