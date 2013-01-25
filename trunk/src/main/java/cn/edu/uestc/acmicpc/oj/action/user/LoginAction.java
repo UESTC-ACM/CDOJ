@@ -1,0 +1,154 @@
+/*
+ *
+ *  * cdoj, UESTC ACMICPC Online Judge
+ *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
+ *  * 	mzry1992 <@link muziriyun@gmail.com>
+ *  *
+ *  * This program is free software; you can redistribute it and/or
+ *  * modify it under the terms of the GNU General Public License
+ *  * as published by the Free Software Foundation; either version 2
+ *  * of the License, or (at your option) any later version.
+ *  *
+ *  * This program is distributed in the hope that it will be useful,
+ *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  * GNU General Public License for more details.
+ *  *
+ *  * You should have received a copy of the GNU General Public License
+ *  * along with this program; if not, write to the Free Software
+ *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ */
+
+package cn.edu.uestc.acmicpc.oj.action.user;
+
+import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.oj.db.entity.User;
+import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
+import cn.edu.uestc.acmicpc.oj.util.StringUtil;
+import com.opensymphony.xwork2.validator.annotations.*;
+import org.apache.struts2.interceptor.validation.SkipValidation;
+
+import java.sql.Timestamp;
+import java.util.Date;
+
+/**
+ * Login action for user toLogin.
+ *
+ * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ * @version 3
+ */
+@LoginPermit(NeedLogin = false)
+public class LoginAction extends BaseAction {
+
+    private static final long serialVersionUID = 2034049134718450987L;
+
+    private String userName;
+    private String password;
+
+    @Validations(
+            requiredStrings = {
+                    @RequiredStringValidator(
+                            fieldName = "userName",
+                            key = "error.userName.validation"
+                    ),
+                    @RequiredStringValidator(
+                            fieldName = "password",
+                            key = "error.password.validation"
+                    )
+            },
+            stringLengthFields = {
+                    @StringLengthFieldValidator(
+                            fieldName = "password",
+                            key = "error.password.validation",
+                            minLength = "6",
+                            maxLength = "20",
+                            trim = false
+                    )
+            },
+            customValidators = {
+                    @CustomValidator(
+                            type = "regex",
+                            fieldName = "userName",
+                            key = "error.userName.validation",
+                            parameters = {
+                                    @ValidationParameter(
+                                            name = "expression",
+                                            value = "\\b^[a-zA-Z0-9_]{4,24}$\\b"
+                                    ),
+                                    @ValidationParameter(
+                                            name = "trim",
+                                            value = "false"
+                                    )
+                            }
+                    )
+            }
+    )
+    /**
+     * toLogin with {@code userName} and {@code password}.
+     *
+     * @return action signal
+     */
+    public String toLogin() {
+        //Has login.
+        if (session.get("userName") != null)
+            return TOINDEX;
+        try {
+            User user = userDAO.getEntityByUniqueField("userName",getUserName());
+            if (user == null || !StringUtil.encodeSHA1(getPassword()).equals(user.getPassword()))
+            {
+                addFieldError("password","User or password is wrong, please try again.");
+                return INPUT;
+            }
+            try {
+                user.setLastLogin(new Timestamp(new Date().getTime()));
+                userDAO.update(user);
+            } catch (AppException e) {
+                return setError(e);
+            } catch (Exception e) {
+                return setError("Unknown exception occurred.");
+            }
+            user = userDAO.get(user.getUserId());
+            session.put("userName", user.getUserName());
+            session.put("password", user.getPassword());
+            session.put("lastLogin", user.getLastLogin());
+            session.put("userType", user.getType());
+        } catch (AppException e) {
+            return setError(e);
+        } catch (Exception e) {
+            return setError("Unknown exception occurred.");
+        }
+        return redirectToRefer("Login successfully!");
+    }
+
+    /**
+     * Default method for the first time visit login page.
+     *
+     * @return INPUT
+     */
+    @SkipValidation
+    public String execute() {
+        //Has login.
+        if (session.get("userName") != null)
+            return TOINDEX;
+        return INPUT;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+}

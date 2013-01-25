@@ -46,22 +46,22 @@
         </property>
         <property name="annotatedClasses">
             <list>
-                <value>cn.edu.uestc.acmicpc.db.entity.Article</value>
-                <value>cn.edu.uestc.acmicpc.db.entity.Code</value>
-                <value>cn.edu.uestc.acmicpc.db.entity.Compileinfo</value>
-                <value>cn.edu.uestc.acmicpc.db.entity.Contest</value>
-                <value>cn.edu.uestc.acmicpc.db.entity.ContestTeamInfo</value>
-                <value>cn.edu.uestc.acmicpc.db.entity.Contestproblem</value>
-                <value>cn.edu.uestc.acmicpc.db.entity.Contestuser</value>
-                <value>cn.edu.uestc.acmicpc.db.entity.Department</value>
-                <value>cn.edu.uestc.acmicpc.db.entity.Discuss</value>
-                <value>cn.edu.uestc.acmicpc.db.entity.Language</value>
-                <value>cn.edu.uestc.acmicpc.db.entity.Message</value>
-                <value>cn.edu.uestc.acmicpc.db.entity.Problem</value>
-                <value>cn.edu.uestc.acmicpc.db.entity.Problemtag</value>
-                <value>cn.edu.uestc.acmicpc.db.entity.Status</value>
-                <value>cn.edu.uestc.acmicpc.db.entity.Tag</value>
-                <value>cn.edu.uestc.acmicpc.db.entity.User</value>
+                <value>cn.edu.uestc.acmicpc.oj.db.entity.Article</value>
+                <value>cn.edu.uestc.acmicpc.oj.db.entity.Code</value>
+                <value>cn.edu.uestc.acmicpc.oj.db.entity.Compileinfo</value>
+                <value>cn.edu.uestc.acmicpc.oj.db.entity.Contest</value>
+                <value>cn.edu.uestc.acmicpc.oj.db.entity.ContestTeamInfo</value>
+                <value>cn.edu.uestc.acmicpc.oj.db.entity.Contestproblem</value>
+                <value>cn.edu.uestc.acmicpc.oj.db.entity.Contestuser</value>
+                <value>cn.edu.uestc.acmicpc.oj.db.entity.Department</value>
+                <value>cn.edu.uestc.acmicpc.oj.db.entity.Discuss</value>
+                <value>cn.edu.uestc.acmicpc.oj.db.entity.Language</value>
+                <value>cn.edu.uestc.acmicpc.oj.db.entity.Message</value>
+                <value>cn.edu.uestc.acmicpc.oj.db.entity.Problem</value>
+                <value>cn.edu.uestc.acmicpc.oj.db.entity.Problemtag</value>
+                <value>cn.edu.uestc.acmicpc.oj.db.entity.Status</value>
+                <value>cn.edu.uestc.acmicpc.oj.db.entity.Tag</value>
+                <value>cn.edu.uestc.acmicpc.oj.db.entity.User</value>
             </list>
         </property>
     </bean>

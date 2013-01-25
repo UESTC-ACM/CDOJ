@@ -30,7 +30,7 @@
     <package name="default" extends="json-default">
         <interceptors>
             <interceptor name="appInterceptor"
-                         class="cn.edu.uestc.acmicpc.interceptor.AppInterceptor"/>
+                         class="cn.edu.uestc.acmicpc.oj.interceptor.AppInterceptor"/>
             <interceptor-stack name="cdojCheckStack">
                 <interceptor-ref name="defaultStack"/>
                 <interceptor-ref name="appInterceptor"/>

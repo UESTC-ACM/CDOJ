@@ -21,15 +21,14 @@
  */
 
 
-import cn.edu.uestc.acmicpc.db.dao.DepartmentDAO;
-import cn.edu.uestc.acmicpc.db.dao.TagDAO;
-import cn.edu.uestc.acmicpc.db.dao.UserDAO;
-import cn.edu.uestc.acmicpc.db.entity.Tag;
-import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
+import cn.edu.uestc.acmicpc.oj.db.dao.DepartmentDAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.TagDAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.UserDAO;
+import cn.edu.uestc.acmicpc.oj.db.entity.Tag;
+import cn.edu.uestc.acmicpc.oj.db.entity.User;
+import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
+import cn.edu.uestc.acmicpc.oj.util.exception.FieldNotUniqueException;
 import org.junit.Assert;
-import cn.edu.uestc.acmicpc.util.StringUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

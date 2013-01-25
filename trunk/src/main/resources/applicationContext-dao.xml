@@ -30,39 +30,39 @@
        http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
        xmlns:aop="http://www.springframework.org/schema/aop">
-    <bean id="BaseDAO" class="cn.edu.uestc.acmicpc.db.dao.base.BaseDAO">
+    <bean id="BaseDAO" class="cn.edu.uestc.acmicpc.oj.db.dao.base.BaseDAO">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="articleDAO" class="cn.edu.uestc.acmicpc.db.dao.ArticleDAO" parent="BaseDAO">
+    <bean id="articleDAO" class="cn.edu.uestc.acmicpc.oj.db.dao.ArticleDAO" parent="BaseDAO">
     </bean>
-    <bean id="codeDAO" class="cn.edu.uestc.acmicpc.db.dao.CodeDAO" parent="BaseDAO">
+    <bean id="codeDAO" class="cn.edu.uestc.acmicpc.oj.db.dao.CodeDAO" parent="BaseDAO">
     </bean>
-    <bean id="compileinfoDAO" class="cn.edu.uestc.acmicpc.db.dao.CompileinfoDAO" parent="BaseDAO">
+    <bean id="compileinfoDAO" class="cn.edu.uestc.acmicpc.oj.db.dao.CompileinfoDAO" parent="BaseDAO">
     </bean>
-    <bean id="contestDAO" class="cn.edu.uestc.acmicpc.db.dao.ContestDAO" parent="BaseDAO">
+    <bean id="contestDAO" class="cn.edu.uestc.acmicpc.oj.db.dao.ContestDAO" parent="BaseDAO">
     </bean>
-    <bean id="contestproblemDAO" class="cn.edu.uestc.acmicpc.db.dao.ContestproblemDAO" parent="BaseDAO">
+    <bean id="contestproblemDAO" class="cn.edu.uestc.acmicpc.oj.db.dao.ContestproblemDAO" parent="BaseDAO">
     </bean>
-    <bean id="contestTeamInfoDAO" class="cn.edu.uestc.acmicpc.db.dao.ContestTeamInfoDAO" parent="BaseDAO">
+    <bean id="contestTeamInfoDAO" class="cn.edu.uestc.acmicpc.oj.db.dao.ContestTeamInfoDAO" parent="BaseDAO">
     </bean>
-    <bean id="contestuserDAO" class="cn.edu.uestc.acmicpc.db.dao.ContestuserDAO" parent="BaseDAO">
+    <bean id="contestuserDAO" class="cn.edu.uestc.acmicpc.oj.db.dao.ContestuserDAO" parent="BaseDAO">
     </bean>
-    <bean id="departmentDAO" class="cn.edu.uestc.acmicpc.db.dao.DepartmentDAO" parent="BaseDAO">
+    <bean id="departmentDAO" class="cn.edu.uestc.acmicpc.oj.db.dao.DepartmentDAO" parent="BaseDAO">
     </bean>
-    <bean id="discussDAO" class="cn.edu.uestc.acmicpc.db.dao.DiscussDAO" parent="BaseDAO">
+    <bean id="discussDAO" class="cn.edu.uestc.acmicpc.oj.db.dao.DiscussDAO" parent="BaseDAO">
     </bean>
-    <bean id="languageDAO" class="cn.edu.uestc.acmicpc.db.dao.LanguageDAO" parent="BaseDAO">
+    <bean id="languageDAO" class="cn.edu.uestc.acmicpc.oj.db.dao.LanguageDAO" parent="BaseDAO">
     </bean>
-    <bean id="messageDAO" class="cn.edu.uestc.acmicpc.db.dao.MessageDAO" parent="BaseDAO">
+    <bean id="messageDAO" class="cn.edu.uestc.acmicpc.oj.db.dao.MessageDAO" parent="BaseDAO">
     </bean>
-    <bean id="problemDAO" class="cn.edu.uestc.acmicpc.db.dao.ProblemDAO" parent="BaseDAO">
+    <bean id="problemDAO" class="cn.edu.uestc.acmicpc.oj.db.dao.ProblemDAO" parent="BaseDAO">
     </bean>
-    <bean id="problemtagDAO" class="cn.edu.uestc.acmicpc.db.dao.ProblemtagDAO" parent="BaseDAO">
+    <bean id="problemtagDAO" class="cn.edu.uestc.acmicpc.oj.db.dao.ProblemtagDAO" parent="BaseDAO">
     </bean>
-    <bean id="statusDAO" class="cn.edu.uestc.acmicpc.db.dao.StatusDAO" parent="BaseDAO">
+    <bean id="statusDAO" class="cn.edu.uestc.acmicpc.oj.db.dao.StatusDAO" parent="BaseDAO">
     </bean>
-    <bean id="tagDAO" class="cn.edu.uestc.acmicpc.db.dao.TagDAO" parent="BaseDAO">
+    <bean id="tagDAO" class="cn.edu.uestc.acmicpc.oj.db.dao.TagDAO" parent="BaseDAO">
     </bean>
-    <bean id="userDAO" class="cn.edu.uestc.acmicpc.db.dao.UserDAO" parent="BaseDAO">
+    <bean id="userDAO" class="cn.edu.uestc.acmicpc.oj.db.dao.UserDAO" parent="BaseDAO">
     </bean>
 </beans>

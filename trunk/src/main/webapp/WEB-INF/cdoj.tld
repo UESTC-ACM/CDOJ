@@ -34,7 +34,7 @@
     <!-- Invoke 'Generate' action to add tags or functions -->
     <tag>
         <name>pagination</name>
-        <tag-class>cn.edu.uestc.acmicpc.template.tag.PaginationTag</tag-class>
+        <tag-class>cn.edu.uestc.acmicpc.oj.tag.PaginationTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>current</name>
