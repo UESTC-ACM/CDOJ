@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +48,7 @@ import java.util.Map;
  * Base action support, add specified common elements in here.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 7
+ * @version 8
  */
 public class BaseAction extends ActionSupport
         implements RequestAware, SessionAware, ApplicationAware, IActionInterceptor,
@@ -136,7 +136,7 @@ public class BaseAction extends ActionSupport
     /**
      * JSON result.
      */
-    protected Map<String, Object> json = new HashMap<String,Object>();
+    protected Map<String, Object> json = new HashMap<String, Object>();
 
     /**
      * Implement {@link ApplicationAware} interface, with Ioc.
@@ -171,6 +171,7 @@ public class BaseAction extends ActionSupport
     @Override
     public void onActionExecuting(AppInterceptor.ActionInfo actionInfo) {
         checkIE6(actionInfo);
+        checkAuth(actionInfo);
     }
 
     @Override
@@ -235,10 +236,10 @@ public class BaseAction extends ActionSupport
      */
     protected User getCurrentUser() {
         try {
-            String userName = (String) request.get("userName");
-            String password = (String) request.get("password");
-            Date lastLogin = (Date) request.get("lastLogin");
-            User user = userDAO.getEntityByUniqueField("usrName", userName);
+            String userName = (String) session.get("userName");
+            String password = (String) session.get("password");
+            Timestamp lastLogin = (Timestamp) session.get("lastLogin");
+            User user = userDAO.getEntityByUniqueField("userName", userName);
             if (user == null || !user.getPassword().equals(password)
                     || !user.getLastLogin().equals(lastLogin))
                 return null;

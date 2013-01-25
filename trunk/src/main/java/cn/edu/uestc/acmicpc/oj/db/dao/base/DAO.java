@@ -44,7 +44,7 @@ import java.util.List;
  * @param <Entity> Entity's type
  * @param <PK>     Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
+ * @version 5
  */
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         extends BaseDAO implements IDAO<Entity, PK> {
@@ -52,12 +52,16 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     public Serializable add(Entity entity) throws AppException {
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
-        Serializable result = session.save(entity);
+        Serializable result = 0;
         try {
+            result = session.save(entity);
             transaction.commit();
         } catch (HibernateException e) {
             transaction.rollback();
             throw new AppException("Invoke add method error.");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
         }
         return result;
     }
@@ -65,19 +69,33 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     @SuppressWarnings("unchecked")
     @Override
     public Entity get(PK key) throws AppException {
-        return (Entity) getSession().get(getReferenceClass(), key);
+        Session session = getSession();
+        Entity result = null;
+        try {
+            result = (Entity) session.get(getReferenceClass(), key);
+        } catch (HibernateException e) {
+            throw new AppException(e.getMessage());
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return result;
     }
 
     @Override
     public void update(Entity entity) throws AppException {
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
-        session.update(entity);
         try {
+            session.update(entity);
             transaction.commit();
         } catch (HibernateException e) {
+            e.printStackTrace();
             transaction.rollback();
             throw new AppException("Invoke update method error.");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
         }
     }
 
@@ -85,12 +103,15 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     public void delete(Entity entity) throws AppException {
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
-        session.delete(entity);
         try {
+            session.delete(entity);
             transaction.commit();
         } catch (HibernateException e) {
             transaction.rollback();
             throw new AppException("Invoke delete method error.");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
         }
     }
 
@@ -98,23 +119,32 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     @Override
     public List<Entity> findAll() throws AppException {
         List<Entity> list;
+        Session session = getSession();
         try {
-            list = getSession().createCriteria(getReferenceClass()).list();
+            list = session.createCriteria(getReferenceClass()).list();
         } catch (HibernateException e) {
             throw new AppException("Invoke findAll method error.");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
         }
         return list;
     }
 
     public Long count() throws AppException {
+        Session session = getSession();
+        Long result = 0L;
         try {
-            Criteria criteria = getSession().createCriteria(getReferenceClass());
+            Criteria criteria = session.createCriteria(getReferenceClass());
             criteria.setProjection(Projections.count(getKeyFieldName()));
-            Long result = (Long) criteria.uniqueResult();
-            return result;
+            result = (Long) criteria.uniqueResult();
         } catch (HibernateException e) {
             throw new AppException("Invoke count method error.");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
         }
+        return result;
     }
 
     /**
@@ -135,28 +165,36 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Entity getEntityByUniqueField(String fieldName, Object value) throws FieldNotUniqueException {
+        Entity result = null;
         Method[] methods = getReferenceClass().getMethods();
-        for (Method method : methods) {
-            Column column = method.getAnnotation(Column.class);
-            if (column != null && column.name().equals(fieldName)) {
-                if (column.unique() == true) {
-                    if (value == null)
-                        return null;
-                    Session session = getSession();
-                    Criteria criteria = session.createCriteria(getReferenceClass());
-                    criteria.add(Restrictions.eq(fieldName, value));
-                    List list = criteria.list();
-                    if (list == null || list.isEmpty())
-                        return null;
-                    return (Entity) list.get(0);
-                } else {
-                    throw new FieldNotUniqueException("Field '" + fieldName + "' is not unique.");
+        Session session = getSession();
+        try {
+            for (Method method : methods) {
+                Column column = method.getAnnotation(Column.class);
+                if (column != null && column.name().equals(fieldName)) {
+                    if (column.unique()) {
+                        if (value == null)
+                            return null;
+                        Criteria criteria = session.createCriteria(getReferenceClass());
+                        criteria.add(Restrictions.eq(fieldName, value));
+                        List list = criteria.list();
+                        if (list == null || list.isEmpty())
+                            return null;
+                        result = (Entity) list.get(0);
+                        break;
+                    } else {
+                        throw new FieldNotUniqueException("Field '" + fieldName + "' is not unique.");
+                    }
                 }
             }
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
         }
-        return null;
+        return result;
     }
 
     /**

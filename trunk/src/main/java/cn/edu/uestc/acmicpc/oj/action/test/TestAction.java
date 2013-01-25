@@ -23,9 +23,11 @@
 package cn.edu.uestc.acmicpc.oj.action.test;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.oj.db.dao.TagDAO;
 import cn.edu.uestc.acmicpc.oj.db.entity.Tag;
 import cn.edu.uestc.acmicpc.oj.ioc.TagDAOAware;
+import cn.edu.uestc.acmicpc.oj.util.Global;
 import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
 
 import java.util.List;
@@ -34,29 +36,28 @@ import java.util.List;
  * Test Action for cdoj.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
+@LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class TestAction extends BaseAction implements TagDAOAware {
     private TagDAO tagDAO = null;
 
     /**
      * Go to test index page
      *
-     * @return success signal
+     * @return <strong>SUCCESS</strong> signal
      */
     public String toTest() {
         try {
             List<Tag> tags = tagDAO.findAll();
             request.put("tags", tags);
         } catch (AppException e) {
-            e.printStackTrace();
         }
         return SUCCESS;
     }
 
     @Override
     public void setTagDAO(TagDAO tagDAO) {
-        System.out.println(tagDAO);
         this.tagDAO = tagDAO;
     }
 }

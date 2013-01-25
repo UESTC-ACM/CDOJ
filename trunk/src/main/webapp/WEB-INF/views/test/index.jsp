@@ -30,7 +30,8 @@
 </head>
 <body>
 <s:iterator value="#request.tags" var="tag">
-    <s:property value="#tag.tagId"/> <s:property value="#tag.name"/><br />
+    <s:property value="#tag.tagId"/> <s:property value="#tag.name"/><br/>
 </s:iterator>
+<s:property value="#request.currentUser.id"/><br/>
 </body>
 </html>

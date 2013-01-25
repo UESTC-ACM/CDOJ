@@ -43,7 +43,7 @@ import java.util.List;
  * Simple database test class.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
+ * @version 5
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:applicationContext-test.xml"})
@@ -92,12 +92,12 @@ public class DatabaseTest {
      * Test for User DAO
      */
     @Test
-    public void testUserDAO() throws AppException {
+    public void testUserDAO() throws Exception {
         try {
-            User user = userDAO.getEntityByUniqueField("userName", "mzry1992");
+            User user = userDAO.getEntityByUniqueField("userName", "UESTC_Izayoi");
             if (user == null) {
                 user = new User();
-                user.setUserName("mzry1992");
+                user.setUserName("UESTC_Izayoi");
                 user.setPassword("123456");
                 user.setNickName("haha");
                 user.setEmail("muziriyun@qq.com");
@@ -110,7 +110,7 @@ public class DatabaseTest {
                 System.out.println(user.getUserId() + " " + user.getUserName());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 
@@ -143,5 +143,12 @@ public class DatabaseTest {
     @Test(expected = FieldNotUniqueException.class)
     public void testGetEntityByUniqueWithNotUniqueField() throws FieldNotUniqueException {
         userDAO.getEntityByUniqueField("password", "123456");
+    }
+
+    @Test
+    public void testUserUpdate() throws AppException, FieldNotUniqueException {
+        User user = userDAO.getEntityByUniqueField("userName", "UESTC_Izayoi");
+        user.setLastLogin(new Timestamp(new Date().getTime()));
+        userDAO.update(user);
     }
 }
