@@ -27,22 +27,14 @@ import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.oj.db.dao.DepartmentDAO;
 import cn.edu.uestc.acmicpc.oj.db.dto.UserDTO;
 import cn.edu.uestc.acmicpc.oj.db.entity.User;
-import cn.edu.uestc.acmicpc.oj.util.exception.ValidatorException;
-import org.apache.struts2.convention.annotation.*;
 import com.opensymphony.xwork2.validator.annotations.*;
-import org.apache.struts2.interceptor.validation.SkipValidation;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Action for register
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 7
+ * @version 8
  */
-@ParentPackage("default")
-@Namespace("/user")
 @LoginPermit(NeedLogin = false)
 public class RegisterAction extends BaseAction {
 
@@ -164,7 +156,6 @@ public class RegisterAction extends BaseAction {
                     )
             }
     )
-    @Action("register")
     public String toRegister() {
         try {
             if (userDAO.getEntityByUniqueField("userName", userDTO.getUserName()) != null) {

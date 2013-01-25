@@ -57,11 +57,9 @@
         </action>
     </package>
 
-    <!-- test package -->
-    <package name="test" namespace="/test" extends="default">
-        <action name="test" class="testAction" method="toTest">
-            <result>/WEB-INF/views/test/index.jsp</result>
-        </action>
-    </package>
+    <include file="struts-admin.xml"/>
+    <include file="struts-index.xml"/>
+    <include file="struts-user.xml"/>
+    <include file="struts-test.xml"/>
 
 </struts>

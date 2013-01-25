@@ -24,17 +24,13 @@ package cn.edu.uestc.acmicpc.oj.action.index;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
-import org.apache.struts2.convention.annotation.*;
 
 /**
  * action for index page
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 3
+ * @version 4
  */
-@ParentPackage("default")
-@Namespace("/")
-@Results({@Result(location = "/WEB-INF/views/index/index.jsp")})
 @LoginPermit(NeedLogin = false)
 public class IndexAction extends BaseAction {
 
@@ -45,7 +41,6 @@ public class IndexAction extends BaseAction {
      *
      * @return <strong>SUCCESS</strong> signal
      */
-    @Action("index")
     public String toIndex() {
         return SUCCESS;
     }

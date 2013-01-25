@@ -24,9 +24,6 @@ package cn.edu.uestc.acmicpc.oj.action.user;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
-import org.apache.struts2.convention.annotation.*;
-
-import java.util.HashMap;
 
 /**
  * Logout action, remove session about user information.
@@ -34,14 +31,11 @@ import java.util.HashMap;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
-@ParentPackage("default")
-@Namespace("/user")
 @LoginPermit(NeedLogin = true)
 public class LogoutAction extends BaseAction {
 
     private static final long serialVersionUID = -4720877248873990818L;
 
-    @Action("logout")
     public String toLogout() {
         session.remove("userName");
         session.remove("password");
