@@ -139,10 +139,11 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <s:a action="login" namespace="/user">
+                                <!-- Button to trigger modal -->
+                                <a href="#loginModal" role="button" data-toggle="modal">
                                     <i class="icon-ok-circle"></i>
                                     Login
-                                </s:a>
+                                </a>
                             </li>
 
                             <li>
@@ -151,7 +152,6 @@
                                     <i class="icon-plus-sign"></i>
                                     Register
                                 </a>
-
                             </li>
 
                         </ul>
@@ -194,10 +194,10 @@
 
                             <!-- 登出 -->
                             <li>
-                                <s:a action="logout" namespace="/user">
+                                <a href="#" id="logoutButton">
                                     <i class="icon-off"></i>
                                     Logout
-                                </s:a>
+                                </a>
                             </li>
                         </ul>
                     </li>
@@ -208,6 +208,34 @@
         </s:div>
     </s:div>
 </s:div>
+
+<!-- Login Modal -->
+<div id="loginModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="loginModal" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="loginModalLabel">Login</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal">
+            <fieldset>`
+                <s:textfield name="userName"
+                             maxLength="24"
+                             cssClass="span4"
+                             label="User Name"
+                             theme="bootstrap"/>
+                <s:password name="password"
+                            maxLength="20"
+                            cssClass="span4"
+                            label="Password"
+                            theme="bootstrap"/>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+        <a href="#" class="btn btn-primary">Login</a>
+    </div>
+</div>
 
 <!-- Register Modal -->
 <div id="registerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="registerModal" aria-hidden="true">

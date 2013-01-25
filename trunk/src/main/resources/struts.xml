@@ -34,6 +34,7 @@
             <interceptor-stack name="cdojCheckStack">
                 <interceptor-ref name="defaultStack"/>
                 <interceptor-ref name="appInterceptor"/>
+                <interceptor-ref name="jsonValidationWorkflowStack"/>
             </interceptor-stack>
         </interceptors>
         <default-interceptor-ref name="cdojCheckStack"/>
@@ -42,6 +43,11 @@
             <result name="error">/WEB-INF/views/error/error.jsp</result>
             <result name="redirect">/WEB-INF/views/master/redirect.jsp</result>
             <result name="toIndex">/WEB-INF/views/index/index.jsp</result>
+            <result name="input" type="json">
+                <param name="root">
+                    fieldErrors
+                </param>
+            </result>
             <result name="json" type="json">
                 <param name="root">json</param>
             </result>

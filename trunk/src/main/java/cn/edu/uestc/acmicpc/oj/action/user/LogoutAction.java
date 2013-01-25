@@ -24,10 +24,9 @@ package cn.edu.uestc.acmicpc.oj.action.user;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
-import org.apache.struts2.convention.annotation.Namespace;
-import org.apache.struts2.convention.annotation.ParentPackage;
-import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+import org.apache.struts2.convention.annotation.*;
+
+import java.util.HashMap;
 
 /**
  * Logout action, remove session about user information.
@@ -37,18 +36,19 @@ import org.apache.struts2.convention.annotation.Results;
  */
 @ParentPackage("default")
 @Namespace("/user")
-@Results({@Result(name="json",type="json",params = {"root","json"})})
 @LoginPermit(NeedLogin = true)
 public class LogoutAction extends BaseAction {
 
     private static final long serialVersionUID = -4720877248873990818L;
 
+    @Action("logout")
     public String toLogout() {
         session.remove("userName");
         session.remove("password");
         session.remove("lastLogin");
         session.remove("userType");
-        return redirectToRefer("Logout successfully!");
+        json.put("result","ok");
+        return JSON;
     }
 
 }
