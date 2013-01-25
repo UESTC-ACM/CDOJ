@@ -24,5 +24,10 @@
 <cdoj-settings>
     <setting name="setting">
         <item id="encoding" description="default encoding">UTF-8</item>
+        <item id="uploadSize" description="upload file size(in MB)">100</item>
+        <item id="uploadTypes" description="upload file's types">
+            in;out;jpg;jpeg;png;gif;doc;docx;xls;xlsx;ppt;pptx;pdf;rar;zip;
+        </item>
+        <item id="uploadFolder" description="upload files store folder">/Uploads/</item>
     </setting>
 </cdoj-settings>
