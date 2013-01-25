@@ -29,6 +29,8 @@ import cn.edu.uestc.acmicpc.oj.db.dto.UserDTO;
 import cn.edu.uestc.acmicpc.oj.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.util.exception.ValidatorException;
 import org.apache.struts2.convention.annotation.*;
+import com.opensymphony.xwork2.validator.annotations.*;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,16 +61,120 @@ public class RegisterAction extends BaseAction {
     /**
      * Register action! with so many validators! ha ha...
      *
-     * @return <strong>NONE</strong> signal, process in front
+     * @return <strong>JSON</strong> signal, process in front
      */
+    @Validations(
+            requiredStrings = {
+                    @RequiredStringValidator(
+                            fieldName = "userDTO.userName",
+                            key = "error.userName.validation"
+                    ),
+                    @RequiredStringValidator(
+                            fieldName = "userDTO.password",
+                            key = "error.password.validation"
+                    ),
+                    @RequiredStringValidator(
+                            fieldName = "userDTO.nickName",
+                            key = "error.nickName.validation"
+                    ),
+                    @RequiredStringValidator(
+                            fieldName = "userDTO.email",
+                            key = "error.email.validation"
+                    ),
+                    @RequiredStringValidator(
+                            fieldName = "userDTO.school",
+                            key = "error.school.validation"
+                    ),
+                    @RequiredStringValidator(
+                            fieldName = "userDTO.studentId",
+                            key = "error.studentId.validation"
+                    )
+            },
+            stringLengthFields = {
+                    @StringLengthFieldValidator(
+                            fieldName = "userDTO.password",
+                            key = "error.password.validation",
+                            minLength = "6",
+                            maxLength = "20",
+                            trim = false
+                    ),
+                    @StringLengthFieldValidator(
+                            fieldName = "userDTO.school",
+                            key = "error.school.validation",
+                            minLength = "1",
+                            maxLength = "50",
+                            trim = false
+                    ),
+                    @StringLengthFieldValidator(
+                            fieldName = "userDTO.studentId",
+                            key = "error.studentId.validation",
+                            minLength = "1",
+                            maxLength = "20",
+                            trim = false
+                    )
+            },
+            customValidators = {
+                    @CustomValidator(
+                            type = "regex",
+                            fieldName = "userDTO.userName",
+                            key = "error.userName.validation",
+                            parameters = {
+                                    @ValidationParameter(
+                                            name = "expression",
+                                            value = "\\b^[a-zA-Z0-9_]{4,24}$\\b"
+                                    ),
+                                    @ValidationParameter(
+                                            name = "trim",
+                                            value = "false"
+                                    )
+                            }
+                    ),
+                    @CustomValidator(
+                            type = "regex",
+                            fieldName = "userDTO.nickName",
+                            key = "error.nickName.validation",
+                            parameters = {
+                                    @ValidationParameter(
+                                            name = "expression",
+                                            value = "\\b^[^\\s]{2,20}$\\b"
+                                    ),
+                                    @ValidationParameter(
+                                            name = "trim",
+                                            value = "false"
+                                    )
+                            }
+                    )
+            },
+            fieldExpressions = {
+                    @FieldExpressionValidator(
+                            fieldName = "userDTO.passwordRepeat",
+                            expression = "userDTO.password == userDTO.passwordRepeat",
+                            key = "error.passwordRepeat.validation"
+                    ),
+                    @FieldExpressionValidator(
+                            fieldName = "userDTO.departmentId",
+                            expression = "userDTO.departmentId in global.departmentList.{departmentId}",
+                            key = "error.department.validation"
+                    )
+            },
+            emails = {
+                    @EmailValidator(
+                            fieldName = "userDTO.email",
+                            key = "error.email.validation"
+                    )
+            }
+    )
     @Action("register")
     public String toRegister() {
-        json = new HashMap<String, Object>();
         try {
-            if (userDAO.getEntityByUniqueField("userName", userDTO.getUserName()) != null)
-                throw new ValidatorException("userDTO.userName", "User name has been used!");
-            if (userDAO.getEntityByUniqueField("email", userDTO.getEmail()) != null)
-                throw new ValidatorException("userDTO.email", "Email has benn used!");
+            if (userDAO.getEntityByUniqueField("userName", userDTO.getUserName()) != null) {
+                addFieldError("userDTO.userName", "User name has been used!");
+                return INPUT;
+            }
+            if (userDAO.getEntityByUniqueField("email", userDTO.getEmail()) != null) {
+                addFieldError("userDTO.email", "Email has benn used!");
+                return INPUT;
+            }
             userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
             User user = userDTO.getUser();
             userDAO.add(userDTO.getUser());
@@ -77,14 +183,9 @@ public class RegisterAction extends BaseAction {
             session.put("lastLogin", user.getLastLogin());
             session.put("userType", user.getType());
             json.put("result", "ok");
-        } catch (ValidatorException e) {
-            json.put("result", "error");
-            for (String key : e.getJson().keySet())
-                json.put(key, e.getJson().get(key));
         } catch (Exception e) {
             // TODO fix the error msg
-            json.put("result", "error");
-            json.put("error_msg", "error_msg");
+            json.put("result", "error_msg");
         }
         return JSON;
     }

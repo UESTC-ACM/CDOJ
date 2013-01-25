@@ -41,6 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -135,7 +136,7 @@ public class BaseAction extends ActionSupport
     /**
      * JSON result.
      */
-    protected Map<String, Object> json;
+    protected Map<String, Object> json = new HashMap<String,Object>();
 
     /**
      * Implement {@link ApplicationAware} interface, with Ioc.

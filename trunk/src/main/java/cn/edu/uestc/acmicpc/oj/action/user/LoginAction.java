@@ -28,10 +28,7 @@ import cn.edu.uestc.acmicpc.oj.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.util.StringUtil;
 import com.opensymphony.xwork2.validator.annotations.*;
-import org.apache.struts2.convention.annotation.Namespace;
-import org.apache.struts2.convention.annotation.ParentPackage;
-import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+import org.apache.struts2.convention.annotation.*;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import java.sql.Timestamp;
@@ -45,7 +42,6 @@ import java.util.Date;
  */
 @ParentPackage("default")
 @Namespace("/user")
-@Results({@Result(name="json",type="json",params = {"root","json"})})
 @LoginPermit(NeedLogin = false)
 public class LoginAction extends BaseAction {
 
@@ -97,10 +93,8 @@ public class LoginAction extends BaseAction {
      *
      * @return action signal
      */
+    @Action("login")
     public String toLogin() {
-        //Has login.
-        if (session.get("userName") != null)
-            return TOINDEX;
         try {
             User user = userDAO.getEntityByUniqueField("userName",getUserName());
             if (user == null || !StringUtil.encodeSHA1(getPassword()).equals(user.getPassword()))
@@ -112,9 +106,11 @@ public class LoginAction extends BaseAction {
                 user.setLastLogin(new Timestamp(new Date().getTime()));
                 userDAO.update(user);
             } catch (AppException e) {
-                return setError(e);
+                json.put("result",setError(e));
+                return JSON;
             } catch (Exception e) {
-                return setError("Unknown exception occurred.");
+                json.put("result",setError("Unknown exception occurred."));
+                return JSON;
             }
             user = userDAO.get(user.getUserId());
             session.put("userName", user.getUserName());
@@ -122,11 +118,14 @@ public class LoginAction extends BaseAction {
             session.put("lastLogin", user.getLastLogin());
             session.put("userType", user.getType());
         } catch (AppException e) {
-            return setError(e);
+            json.put("result",setError(e));
+            return JSON;
         } catch (Exception e) {
-            return setError("Unknown exception occurred.");
+            json.put("result",setError("Unknown exception occurred."));
+            return JSON;
         }
-        return redirectToRefer("Login successfully!");
+        json.put("result","ok");
+        return JSON;
     }
 
     /**
