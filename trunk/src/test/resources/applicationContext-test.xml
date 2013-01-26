@@ -32,12 +32,15 @@
        http://www.springframework.org/schema/tx/spring-tx-3.1.xsd"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx">
-    <bean id="utilTest" class="UtilTest">
+    <bean id="utilTest" class="cn.edu.uestc.acmicpc.oj.test.util.UtilTest">
         <property name="global" ref="global"/>
     </bean>
-    <bean id="databaseTest" class="DatabaseTest">
+    <bean id="databaseTest" class="cn.edu.uestc.acmicpc.oj.test.db.DatabaseTest">
         <property name="tagDAO" ref="tagDAO"/>
         <property name="userDAO" ref="userDAO"/>
         <property name="departmentDAO" ref="departmentDAO"/>
+    </bean>
+    <bean id="aopTest" class="cn.edu.uestc.acmicpc.oj.test.db.AOPTest">
+        <property name="userDAO" ref="userDAO"/>
     </bean>
 </beans>

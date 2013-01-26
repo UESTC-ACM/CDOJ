@@ -20,20 +20,21 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.db.dao;
+package cn.edu.uestc.acmicpc.oj.db.dao.impl;
 
 import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.Code;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.IProblemtagDAO;
+import cn.edu.uestc.acmicpc.oj.db.entity.Problemtag;
 
 /**
- * DAO for code entity.
+ * DAO for problemtag entity
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
-public class CodeDAO extends DAO<Code, Integer> {
+public class ProblemtagDAO extends DAO<Problemtag, Integer> implements IProblemtagDAO {
     @Override
-    protected Class<Code> getReferenceClass() {
-        return Code.class;
+    protected Class<Problemtag> getReferenceClass() {
+        return Problemtag.class;
     }
 }

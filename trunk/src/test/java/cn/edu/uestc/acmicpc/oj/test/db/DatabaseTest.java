@@ -1,4 +1,4 @@
-/*
+package cn.edu.uestc.acmicpc.oj.test.db;/*
  *
  *  * cdoj, UESTC ACMICPC Online Judge
  *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
@@ -21,11 +21,14 @@
  */
 
 
-import cn.edu.uestc.acmicpc.oj.db.dao.DepartmentDAO;
-import cn.edu.uestc.acmicpc.oj.db.dao.TagDAO;
-import cn.edu.uestc.acmicpc.oj.db.dao.UserDAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.IDepartmentDAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.ITagDAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.impl.DepartmentDAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.impl.UserDAO;
 import cn.edu.uestc.acmicpc.oj.db.entity.Tag;
 import cn.edu.uestc.acmicpc.oj.db.entity.User;
+import cn.edu.uestc.acmicpc.oj.ioc.TagDAOAware;
 import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.util.exception.FieldNotUniqueException;
 import org.junit.Assert;
@@ -43,30 +46,31 @@ import java.util.List;
  * Simple database test class.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 5
+ * @version 6
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:applicationContext-test.xml"})
-public class DatabaseTest {
+public class DatabaseTest implements TagDAOAware {
 
     /**
-     * TagDAO entity
+     * ITagDAO entity
      */
     @Autowired
-    private TagDAO tagDAO;
+    private ITagDAO tagDAO;
     /**
      * UserDAO entity
      */
     @Autowired
-    private UserDAO userDAO;
+    private IUserDAO userDAO;
 
     /**
      * DepartmentDAO entity
      */
     @Autowired
-    private DepartmentDAO departmentDAO;
+    private IDepartmentDAO departmentDAO;
 
-    public void setTagDAO(TagDAO tagDAO) {
+    @Override
+    public void setTagDAO(ITagDAO tagDAO) {
         this.tagDAO = tagDAO;
     }
 
@@ -130,7 +134,7 @@ public class DatabaseTest {
      * @throws FieldNotUniqueException
      */
     @Test
-    public void testGetEntityByUnique() throws FieldNotUniqueException {
+    public void testGetEntityByUnique() throws FieldNotUniqueException, AppException {
         User user = userDAO.getEntityByUniqueField("userName", "UESTC_Izayoi");
         Assert.assertEquals("UESTC", user.getSchool());
     }
@@ -141,7 +145,7 @@ public class DatabaseTest {
      * @throws FieldNotUniqueException
      */
     @Test(expected = FieldNotUniqueException.class)
-    public void testGetEntityByUniqueWithNotUniqueField() throws FieldNotUniqueException {
+    public void testGetEntityByUniqueWithNotUniqueField() throws FieldNotUniqueException, AppException {
         userDAO.getEntityByUniqueField("password", "123456");
     }
 

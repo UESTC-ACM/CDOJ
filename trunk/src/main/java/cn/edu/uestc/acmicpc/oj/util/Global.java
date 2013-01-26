@@ -22,7 +22,7 @@
 
 package cn.edu.uestc.acmicpc.oj.util;
 
-import cn.edu.uestc.acmicpc.oj.db.dao.DepartmentDAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.impl.DepartmentDAO;
 import cn.edu.uestc.acmicpc.oj.db.entity.Department;
 import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
 

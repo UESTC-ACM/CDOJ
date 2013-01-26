@@ -20,22 +20,21 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.ioc;
+package cn.edu.uestc.acmicpc.oj.db.dao.impl;
 
-import cn.edu.uestc.acmicpc.oj.db.dao.iface.ITagDAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.ILanguageDAO;
+import cn.edu.uestc.acmicpc.oj.db.entity.Language;
 
 /**
- * For all class which need ITagDAO entity.
+ * DAO for language entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 2
- * @see ITagDAO
  */
-public interface TagDAOAware {
-    /**
-     * Put tagDAO into class.
-     *
-     * @param tagDAO tagDAO object
-     */
-    public void setTagDAO(ITagDAO tagDAO);
+public class LanguageDAO extends DAO<Language, Integer> implements ILanguageDAO {
+    @Override
+    protected Class<Language> getReferenceClass() {
+        return Language.class;
+    }
 }

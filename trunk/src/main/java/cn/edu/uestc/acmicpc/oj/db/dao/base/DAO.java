@@ -27,8 +27,6 @@ import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.util.exception.FieldNotUniqueException;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -44,107 +42,66 @@ import java.util.List;
  * @param <Entity> Entity's type
  * @param <PK>     Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 5
+ * @version 6
  */
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         extends BaseDAO implements IDAO<Entity, PK> {
     @Override
     public Serializable add(Entity entity) throws AppException {
-        Session session = getSession();
-        Transaction transaction = session.beginTransaction();
-        Serializable result = 0;
         try {
-            result = session.save(entity);
-            transaction.commit();
+            return getSession().save(entity);
         } catch (HibernateException e) {
-            transaction.rollback();
             throw new AppException("Invoke add method error.");
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
         }
-        return result;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public Entity get(PK key) throws AppException {
-        Session session = getSession();
-        Entity result = null;
         try {
-            result = (Entity) session.get(getReferenceClass(), key);
+            return (Entity) getSession().get(getReferenceClass(), key);
         } catch (HibernateException e) {
-            throw new AppException(e.getMessage());
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
+            throw new AppException("Invoke get method error.");
         }
-        return result;
     }
 
     @Override
     public void update(Entity entity) throws AppException {
-        Session session = getSession();
-        Transaction transaction = session.beginTransaction();
         try {
-            session.update(entity);
-            transaction.commit();
+            getSession().update(entity);
         } catch (HibernateException e) {
-            e.printStackTrace();
-            transaction.rollback();
             throw new AppException("Invoke update method error.");
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
         }
     }
 
     @Override
     public void delete(Entity entity) throws AppException {
-        Session session = getSession();
-        Transaction transaction = session.beginTransaction();
         try {
-            session.delete(entity);
-            transaction.commit();
+            getSession().delete(entity);
         } catch (HibernateException e) {
-            transaction.rollback();
             throw new AppException("Invoke delete method error.");
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
         }
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public List<Entity> findAll() throws AppException {
-        List<Entity> list;
-        Session session = getSession();
         try {
-            list = session.createCriteria(getReferenceClass()).list();
+            return getSession().createCriteria(getReferenceClass()).list();
         } catch (HibernateException e) {
             throw new AppException("Invoke findAll method error.");
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
         }
-        return list;
     }
 
+    @Override
     public Long count() throws AppException {
-        Session session = getSession();
-        Long result = 0L;
         try {
-            Criteria criteria = session.createCriteria(getReferenceClass());
+            Criteria criteria = getSession().createCriteria(getReferenceClass());
             criteria.setProjection(Projections.count(getKeyFieldName()));
-            result = (Long) criteria.uniqueResult();
+            return (Long) criteria.uniqueResult();
         } catch (HibernateException e) {
             throw new AppException("Invoke count method error.");
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
         }
-        return result;
     }
 
     /**
@@ -167,10 +124,9 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
 
     @SuppressWarnings("unchecked")
     @Override
-    public Entity getEntityByUniqueField(String fieldName, Object value) throws FieldNotUniqueException {
+    public Entity getEntityByUniqueField(String fieldName, Object value) throws FieldNotUniqueException, AppException {
         Entity result = null;
         Method[] methods = getReferenceClass().getMethods();
-        Session session = getSession();
         try {
             for (Method method : methods) {
                 Column column = method.getAnnotation(Column.class);
@@ -178,7 +134,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
                     if (column.unique()) {
                         if (value == null)
                             return null;
-                        Criteria criteria = session.createCriteria(getReferenceClass());
+                        Criteria criteria = getSession().createCriteria(getReferenceClass());
                         criteria.add(Restrictions.eq(fieldName, value));
                         List list = criteria.list();
                         if (list == null || list.isEmpty())
@@ -190,9 +146,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
                     }
                 }
             }
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
+        } catch (HibernateException e) {
+            throw new AppException("Invoke getEntityByUniqueField method error.");
         }
         return result;
     }

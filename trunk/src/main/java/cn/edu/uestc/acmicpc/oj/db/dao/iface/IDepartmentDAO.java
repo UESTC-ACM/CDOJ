@@ -20,20 +20,15 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.db.dao;
+package cn.edu.uestc.acmicpc.oj.db.dao.iface;
 
-import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.Compileinfo;
+import cn.edu.uestc.acmicpc.oj.db.entity.Department;
 
 /**
- * DAO for compileinfo entity.
+ * DepartmentDAO AOP interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public class CompileinfoDAO extends DAO<Compileinfo, Integer> {
-    @Override
-    protected Class<Compileinfo> getReferenceClass() {
-        return Compileinfo.class;
-    }
+public interface IDepartmentDAO extends IDAO<Department, Integer> {
 }

@@ -20,20 +20,15 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.db.dao;
+package cn.edu.uestc.acmicpc.oj.db.dao.iface;
 
-import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.ContestTeamInfo;
+import cn.edu.uestc.acmicpc.oj.db.entity.Contestuser;
 
 /**
- * DAO for contestTeamInfo entity.
+ * ContestuserDAO AOP interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public class ContestTeamInfoDAO extends DAO<ContestTeamInfo, Integer> {
-    @Override
-    protected Class<ContestTeamInfo> getReferenceClass() {
-        return ContestTeamInfo.class;
-    }
+public interface IContestuserDAO extends IDAO<Contestuser, Integer> {
 }

@@ -20,20 +20,15 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.db.dao;
+package cn.edu.uestc.acmicpc.oj.db.dao.iface;
 
-import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.Problemtag;
+import cn.edu.uestc.acmicpc.oj.db.entity.Language;
 
 /**
- * DAO for problemtag entity
+ * LanguageDAO AOP interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public class ProblemtagDAO extends DAO<Problemtag, Integer> {
-    @Override
-    protected Class<Problemtag> getReferenceClass() {
-        return Problemtag.class;
-    }
+public interface ILanguageDAO extends IDAO<Language, Integer> {
 }

@@ -20,18 +20,19 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.db.dao;
+package cn.edu.uestc.acmicpc.oj.db.dao.impl;
 
 import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.IArticleDAO;
 import cn.edu.uestc.acmicpc.oj.db.entity.Article;
 
 /**
  * DAO for article entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
-public class ArticleDAO extends DAO<Article, Integer> {
+public class ArticleDAO extends DAO<Article, Integer> implements IArticleDAO {
     @Override
     protected Class<Article> getReferenceClass() {
         return Article.class;
