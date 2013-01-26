@@ -96,16 +96,10 @@ public class LoginAction extends BaseAction {
                 addFieldError("password", "User or password is wrong, please try again.");
                 return INPUT;
             }
-            try {
-                user.setLastLogin(new Timestamp(new Date().getTime()));
-                userDAO.update(user);
-            } catch (AppException e) {
-                json.put("result", setError(e));
-                return JSON;
-            } catch (Exception e) {
-                json.put("result", setError("Unknown exception occurred."));
-                return JSON;
-            }
+
+            user.setLastLogin(new Timestamp(new Date().getTime()/1000*1000));
+            userDAO.update(user);
+
             user = userDAO.get(user.getUserId());
             session.put("userName", user.getUserName());
             session.put("password", user.getPassword());

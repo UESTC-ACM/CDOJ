@@ -27,8 +27,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: mzry1992
-  Date: 13-1-25
-  Time: 下午11:54
+  Date: 13-1-26
+  Time: 下午11:07
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -37,19 +37,14 @@
     <title></title>
 </head>
 <body>
-<s:div cssClass="navbar navbar-fixed-top navbar-inverse">
-    <s:div cssClass="navbar-inner">
-        <s:div cssClass="container">
-            <ul class="nav">
-                <page:applyDecorator name="empty" page="/WEB-INF/views/common/navbarList.jsp"/>
-            </ul>
-            <!-- 导航部分 -->
-            <!-- 快速搜索框 -->
-            <form class="navbar-search pull-right" action="">
-                <input type="text" class="search-query span2" placeholder="Search">
-            </form>
+<s:div cssClass="row">
+    <s:div cssClass="span12">
+        <s:div cssClass="alert alert-info">
 
-            <page:applyDecorator name="empty" page="/WEB-INF/views/common/navbarUser.jsp"/>
+            User Name : <s:property value="currentUser.userName"/><br/>
+            Password : <s:property value="currentUser.password"/><br/>
+            Last Login : <s:property value="currentUser.lastLogin"/><br/>
+            Email : <s:property value="currentUser.email"/><br/>
 
         </s:div>
     </s:div>
