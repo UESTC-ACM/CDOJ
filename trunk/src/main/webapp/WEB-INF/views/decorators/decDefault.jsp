@@ -69,9 +69,13 @@
 <page:applyDecorator name="empty" page="/WEB-INF/views/common/navbar.jsp"/>
 <page:applyDecorator name="empty" page="/WEB-INF/views/common/modal.jsp"/>
 
+
 <s:div id="wrap">
     <s:div cssClass="mzry1992">
         <s:div cssClass="container">
+
+            <page:applyDecorator name="empty" page="/WEB-INF/views/common/debug.jsp"/>
+
             <decorator:body/>
         </s:div>
     </s:div>

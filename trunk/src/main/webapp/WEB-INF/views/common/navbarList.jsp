@@ -27,39 +27,61 @@
 <%--
   Created by IntelliJ IDEA.
   User: mzry1992
-  Date: 13-1-24
-  Time: 下午2:24
+  Date: 13-1-26
+  Time: 下午11:19
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Login</title>
+    <title></title>
 </head>
 <body>
-<s:div cssClass="row">
-    <s:div cssClass="span12">
-        <s:form action="login" enctype="multipart/form-data" theme="bootstrap" cssClass="form-horizontal">
-            <fieldset>
-                <legend>Login</legend>
-                <s:textfield name="userName"
-                             maxLength="24"
-                             cssClass="span4"
-                             label="User Name"/>
-                <s:password name="password"
-                            maxLength="20"
-                            cssClass="span4"
-                            label="Password"/>
-            </fieldset>
-            <fieldset>
-                <s:div cssClass="form-actions">
-                    <s:submit method="toLogin"
-                              cssClass="btn btn-primary"
-                              value="Submit"/>
-                </s:div>
-            </fieldset>
-        </s:form>
-    </s:div>
-</s:div>
+<li class="divider-vertical"></li>
+
+<li>
+    <a href="<s:url action="index" namespace="/"/>">CDOJ</a>
+</li>
+<li class="divider-vertical"></li>
+
+<li>
+    <a href="<s:url action="page/1" namespace="/problemset"/>">Problems</a>
+</li>
+<li class="divider-vertical"></li>
+
+<li>
+    <a href="./contest.html">Contests</a>
+</li>
+<li class="divider-vertical"></li>
+
+<li>
+    <a href="./statu.html">Status</a>
+</li>
+<li class="divider-vertical"></li>
+
+<li>
+    <a href="./users.html">Users</a>
+</li>
+<li class="divider-vertical"></li>
+
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Links<b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        <!-- 固定链接 -->
+        <li><a href="#">BBS</a></li>
+        <li><a href="#">Wiki</a></li>
+        <li><a href="http://www.mzry1992.com/blog/">mzry1992.com</a></li>
+
+        <!-- Click这里就交给何老师了 -->
+        <li class="divider"></li>
+        <li class="nav-header">Click</li>
+        <li><a href="#">F.A.Q</a></li>
+        <li><a href="#">Download</a></li>
+        <li><a href="#">Step-by-Step</a></li>
+        <li><a href="#">Team Honors</a></li>
+
+    </ul>
+</li>
+<li class="divider-vertical"></li>
 </body>
 </html>

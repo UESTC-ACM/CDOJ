@@ -48,7 +48,7 @@ import java.util.Map;
  * Base action support, add specified common elements in here.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 9
+ * @version 10
  */
 public class BaseAction extends ActionSupport
         implements RequestAware, SessionAware, ApplicationAware, IActionInterceptor,
@@ -234,7 +234,7 @@ public class BaseAction extends ActionSupport
      *
      * @return current toLogin user entity
      */
-    protected User getCurrentUser() {
+    protected User getCurrentUserEntity() {
         try {
             String userName = (String) session.get("userName");
             String password = (String) session.get("password");
@@ -250,6 +250,10 @@ public class BaseAction extends ActionSupport
         }
     }
 
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
     /**
      * Get actual absolute path of a virtual path.
      *
@@ -262,6 +266,36 @@ public class BaseAction extends ActionSupport
         return result;
     }
 
+    /**
+     * Get action url by namespace, action name and parameter.
+     *
+     * <strong>Example</strong>
+     * getActionURL("/problem","page","/1") return acm.uestc.edu.cn/problem/page/1
+     * getActionURL("/problem","page","?id=1") return acm.uestc.edu.cn/problem/page?id=1
+     *
+     * @param namespace
+     * @param name
+     * @param parameterString
+     * @return action url
+     */
+    protected String getActionURL(String namespace,String name,String parameterString) {
+        String result = namespace.equals("/") ? "":namespace;
+        result = result+"/"+name;
+        if (parameterString != null)
+            result = result+parameterString;
+        return getContextPath(result);
+    }
+
+    /**
+     * Get action url by namespace and action name
+     *
+     * @param namespace
+     * @param name
+     * @return action url
+     */
+    protected String getActionURL(String namespace,String name) {
+        return getActionURL(namespace, name,null);
+    }
     /**
      * Check user type.
      *
@@ -278,7 +312,7 @@ public class BaseAction extends ActionSupport
             permit = p2 != null ? p2 : permit;
         } catch (Exception e) {
         }
-        User user = getCurrentUser();
+        User user = getCurrentUserEntity();
         try {
             if (permit == null || !permit.NeedLogin()) {
                 currentUser = user;
@@ -286,8 +320,7 @@ public class BaseAction extends ActionSupport
                 return;
             }
             if (user == null) {
-                // TODO "/user/log" is toLogin page
-                redirect(getContextPath("/user/log"));
+                redirect(getActionURL("/","index"),"Fuck!");
                 actionInfo.setCancel(true);
                 actionInfo.setActionResult(REDIRECT);
                 return;

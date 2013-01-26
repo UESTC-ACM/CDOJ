@@ -37,7 +37,7 @@
     <title></title>
 </head>
 <body>
-<s:if test="#session.userName == null">
+<s:if test="currentUser == null">
     <!-- Login Modal -->
     <div id="loginModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="loginModal" aria-hidden="true">
         <div class="modal-header">

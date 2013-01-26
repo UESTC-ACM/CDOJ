@@ -101,7 +101,7 @@ public class UserDTO {
         user.setSchool(getSchool());
         user.setDepartmentByDepartmentId(getDepartment());
         user.setStudentId(getStudentId());
-        user.setLastLogin(new Timestamp(new Date().getTime()));
+        user.setLastLogin(new Timestamp(new Date().getTime()/1000*1000));
         user.setSolved(0);
         user.setTried(0);
         user.setType(0);
