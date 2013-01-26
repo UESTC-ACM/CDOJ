@@ -1,3 +1,4 @@
+package cn.edu.uestc.acmicpc.oj.test.db;
 /*
  *
  *  * cdoj, UESTC ACMICPC Online Judge
@@ -20,40 +21,35 @@
  *
  */
 
-import cn.edu.uestc.acmicpc.oj.db.entity.Department;
-import cn.edu.uestc.acmicpc.oj.util.Global;
-import org.junit.Assert;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.oj.db.entity.User;
+import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
+import cn.edu.uestc.acmicpc.oj.util.exception.FieldNotUniqueException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.List;
-
 /**
- * Util class test
+ * Test cases for AOP framework
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 1
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:applicationContext-test.xml"})
-public class UtilTest {
+public class AOPTest {
     @Autowired
-    private Global global = null;
+    IUserDAO userDAO = null;
 
-    public void setGlobal(Global global) {
-        this.global = global;
+    public void setUserDAO(IUserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 
     @Test
-    public void testGlobal() {
-        Assert.assertNotNull("Constructor global instance is null.", global);
-        List<Department> departments = global.getDepartmentList();
-        for (Department department : departments) {
-            System.out.println(department.getDepartmentId()
-                    + "\t" + department.getName());
-        }
+    public void testDataBaseConnection() throws FieldNotUniqueException, AppException {
+        User user = userDAO.getEntityByUniqueField("userName", "UESTC_Izayoi");
+        System.out.println(user.getUserName());
     }
 }

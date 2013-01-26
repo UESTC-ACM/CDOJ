@@ -20,20 +20,21 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.db.dao;
+package cn.edu.uestc.acmicpc.oj.db.dao.impl;
 
 import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.Status;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.IMessageDAO;
+import cn.edu.uestc.acmicpc.oj.db.entity.Message;
 
 /**
- * DAO for status.
+ * DAO for message entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
-public class StatusDAO extends DAO<Status, Integer> {
+public class MessageDAO extends DAO<Message, Integer> implements IMessageDAO {
     @Override
-    protected Class<Status> getReferenceClass() {
-        return Status.class;
+    protected Class<Message> getReferenceClass() {
+        return Message.class;
     }
 }

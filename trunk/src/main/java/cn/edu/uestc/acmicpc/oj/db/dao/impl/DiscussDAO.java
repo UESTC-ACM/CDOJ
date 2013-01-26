@@ -20,20 +20,21 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.db.dao;
+package cn.edu.uestc.acmicpc.oj.db.dao.impl;
 
 import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.Message;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.IDiscussDAO;
+import cn.edu.uestc.acmicpc.oj.db.entity.Discuss;
 
 /**
- * DAO for message entity.
+ * DAO for discuss entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
-public class MessageDAO extends DAO<Message, Integer> {
+public class DiscussDAO extends DAO<Discuss, Integer> implements IDiscussDAO {
     @Override
-    protected Class<Message> getReferenceClass() {
-        return Message.class;
+    protected Class<Discuss> getReferenceClass() {
+        return Discuss.class;
     }
 }

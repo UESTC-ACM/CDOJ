@@ -20,20 +20,21 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.db.dao;
+package cn.edu.uestc.acmicpc.oj.db.dao.impl;
 
 import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.Department;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.oj.db.entity.Problem;
 
 /**
- * DAO for department entity.
+ * DAO for problem entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
-public class DepartmentDAO extends DAO<Department, Integer> {
+public class ProblemDAO extends DAO<Problem, Integer> implements IProblemDAO {
     @Override
-    protected Class<Department> getReferenceClass() {
-        return Department.class;
+    protected Class<Problem> getReferenceClass() {
+        return Problem.class;
     }
 }

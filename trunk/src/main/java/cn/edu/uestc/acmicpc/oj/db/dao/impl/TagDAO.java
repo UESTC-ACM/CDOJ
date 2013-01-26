@@ -20,22 +20,21 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.ioc;
+package cn.edu.uestc.acmicpc.oj.db.dao.impl;
 
+import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
 import cn.edu.uestc.acmicpc.oj.db.dao.iface.ITagDAO;
+import cn.edu.uestc.acmicpc.oj.db.entity.Tag;
 
 /**
- * For all class which need ITagDAO entity.
+ * DAO for tag entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 2
- * @see ITagDAO
  */
-public interface TagDAOAware {
-    /**
-     * Put tagDAO into class.
-     *
-     * @param tagDAO tagDAO object
-     */
-    public void setTagDAO(ITagDAO tagDAO);
+public class TagDAO extends DAO<Tag, Integer> implements ITagDAO {
+    @Override
+    protected Class<Tag> getReferenceClass() {
+        return Tag.class;
+    }
 }

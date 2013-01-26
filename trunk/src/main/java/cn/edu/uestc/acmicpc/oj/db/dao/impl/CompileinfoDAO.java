@@ -20,20 +20,21 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.db.dao;
+package cn.edu.uestc.acmicpc.oj.db.dao.impl;
 
 import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.Contestuser;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.ICompileinfoDAO;
+import cn.edu.uestc.acmicpc.oj.db.entity.Compileinfo;
 
 /**
- * DAO for contestuser entity.
+ * DAO for compileinfo entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
-public class ContestuserDAO extends DAO<Contestuser, Integer> {
+public class CompileinfoDAO extends DAO<Compileinfo, Integer> implements ICompileinfoDAO {
     @Override
-    protected Class<Contestuser> getReferenceClass() {
-        return Contestuser.class;
+    protected Class<Compileinfo> getReferenceClass() {
+        return Compileinfo.class;
     }
 }

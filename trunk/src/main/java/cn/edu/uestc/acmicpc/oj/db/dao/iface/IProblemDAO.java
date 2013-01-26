@@ -20,20 +20,15 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.db.dao;
+package cn.edu.uestc.acmicpc.oj.db.dao.iface;
 
-import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.Tag;
+import cn.edu.uestc.acmicpc.oj.db.entity.Problem;
 
 /**
- * DAO for tag entity.
+ * ProblemDAO AOP interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public class TagDAO extends DAO<Tag, Integer> {
-    @Override
-    protected Class<Tag> getReferenceClass() {
-        return Tag.class;
-    }
+public interface IProblemDAO extends IDAO<Problem, Integer> {
 }

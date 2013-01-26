@@ -68,23 +68,19 @@
             </list>
         </property>
     </bean>
-    <!--<bean id="transactionManager"-->
-    <!--class="org.springframework.orm.hibernate4.HibernateTransactionManager">-->
-    <!--<property name="sessionFactory" ref="sessionFactory"/>-->
-    <!--</bean>-->
-    <!--<tx:advice id="txAdvice" transaction-manager="transactionManager">-->
-    <!--<tx:attributes>-->
-    <!--<tx:method name="save*" propagation="REQUIRED"/>-->
-    <!--<tx:method name="add*" propagation="REQUIRED"/>-->
-    <!--<tx:method name="update*" propagation="REQUIRED"/>-->
-    <!--<tx:method name="del*" propagation="REQUIRED"/>-->
-    <!--&lt;!&ndash;hibernate4必须配置为开启事务 否则 getCurrentSession()获取不到&ndash;&gt;-->
-    <!--<tx:method name="find*" propagation="REQUIRED" read-only="true"/>-->
-    <!--</tx:attributes>-->
-    <!--</tx:advice>-->
-    <!--<aop:config>-->
-    <!--<aop:pointcut id="txPointcut" expression="execution(* cn.edu.uestc.acmicpc.oj.db.dao.*(..))"/>-->
-    <!--<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>-->
-    <!--</aop:config>-->
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="add*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="del*" propagation="REQUIRED"/>
+            <tx:method name="find*" propagation="REQUIRED" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+    <tx:annotation-driven/>
     <import resource="applicationContext-dao.xml"/>
 </beans>

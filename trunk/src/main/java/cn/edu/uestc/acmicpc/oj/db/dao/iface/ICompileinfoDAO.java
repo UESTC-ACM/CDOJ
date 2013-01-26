@@ -20,20 +20,15 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.db.dao;
+package cn.edu.uestc.acmicpc.oj.db.dao.iface;
 
-import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.Language;
+import cn.edu.uestc.acmicpc.oj.db.entity.Compileinfo;
 
 /**
- * DAO for language entity.
+ * CompileinfoDAO AOP interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public class LanguageDAO extends DAO<Language, Integer> {
-    @Override
-    protected Class<Language> getReferenceClass() {
-        return Language.class;
-    }
+public interface ICompileinfoDAO extends IDAO<Compileinfo, Integer> {
 }

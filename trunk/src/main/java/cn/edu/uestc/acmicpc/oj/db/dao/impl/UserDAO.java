@@ -20,45 +20,45 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.db.dao.base;
+package cn.edu.uestc.acmicpc.oj.db.dao.impl;
 
-import org.hibernate.HibernateException;
+import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.oj.db.entity.User;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
- * Base DAO Implementation for <strong>Hibernate 4</strong>.
+ * DAO for user entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @Transactional
-public class BaseDAO {
-    private SessionFactory sessionFactory;
-
-    /**
-     * Set session factory from IoC.
-     *
-     * @param sessionFactory sessionFactory from bean settings
-     */
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+@Repository
+public class UserDAO extends DAO<User, Integer> implements IUserDAO {
+    @Override
+    protected Class<User> getReferenceClass() {
+        return User.class;
     }
 
-    /**
-     * Get current database session
-     *
-     * @return if the IoC works, return current session, otherwise open a new session
-     */
-    public Session getSession() {
-        Session session;
-        try {
-            session = sessionFactory.getCurrentSession();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-            session = sessionFactory.openSession();
-        }
-        return session;
+
+    @Override
+    @Deprecated
+    public User getUserByName(String name) {
+        if (name == null)
+            return null;
+        Session session = getSession();
+        Criteria criteria = session.createCriteria(User.class);
+        criteria.add(Restrictions.eq("userName", name));
+        List list = criteria.list();
+        if (list == null || list.isEmpty())
+            return null;
+        return (User) list.get(0);
     }
 }

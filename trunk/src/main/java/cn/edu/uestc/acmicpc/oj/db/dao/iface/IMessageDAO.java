@@ -20,22 +20,15 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.ioc;
+package cn.edu.uestc.acmicpc.oj.db.dao.iface;
 
-import cn.edu.uestc.acmicpc.oj.db.dao.iface.ITagDAO;
+import cn.edu.uestc.acmicpc.oj.db.entity.Message;
 
 /**
- * For all class which need ITagDAO entity.
+ * MessageDAO AOP interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
- * @see ITagDAO
+ * @version 1
  */
-public interface TagDAOAware {
-    /**
-     * Put tagDAO into class.
-     *
-     * @param tagDAO tagDAO object
-     */
-    public void setTagDAO(ITagDAO tagDAO);
+public interface IMessageDAO extends IDAO<Message, Integer> {
 }

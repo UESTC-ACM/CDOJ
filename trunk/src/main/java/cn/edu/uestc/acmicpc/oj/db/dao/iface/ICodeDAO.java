@@ -20,20 +20,15 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.db.dao;
+package cn.edu.uestc.acmicpc.oj.db.dao.iface;
 
-import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.Discuss;
+import cn.edu.uestc.acmicpc.oj.db.entity.Code;
 
 /**
- * DAO for discuss entity.
+ * CodeDAO AOP interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public class DiscussDAO extends DAO<Discuss, Integer> {
-    @Override
-    protected Class<Discuss> getReferenceClass() {
-        return Discuss.class;
-    }
+public interface ICodeDAO extends IDAO<Code, Integer> {
 }

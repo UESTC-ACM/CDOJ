@@ -22,14 +22,14 @@
 
 package cn.edu.uestc.acmicpc.oj.ioc;
 
-import cn.edu.uestc.acmicpc.oj.db.dao.UserDAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.IUserDAO;
 
 /**
  * For all class which need userDAO entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
- * @see UserDAO
+ * @version 2
+ * @see IUserDAO
  */
 public interface UserDAOAware {
     /**
@@ -37,5 +37,5 @@ public interface UserDAOAware {
      *
      * @param userDAO userDAO object
      */
-    public void setUserDAO(UserDAO userDAO);
+    public void setUserDAO(IUserDAO userDAO);
 }

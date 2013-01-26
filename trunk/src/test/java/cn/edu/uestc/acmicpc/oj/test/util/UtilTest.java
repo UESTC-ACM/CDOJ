@@ -1,3 +1,4 @@
+package cn.edu.uestc.acmicpc.oj.test.util;
 /*
  *
  *  * cdoj, UESTC ACMICPC Online Judge
@@ -20,48 +21,40 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.action.test;
-
-import cn.edu.uestc.acmicpc.oj.action.BaseAction;
-import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
-import cn.edu.uestc.acmicpc.oj.db.dao.iface.ITagDAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.Tag;
-import cn.edu.uestc.acmicpc.oj.ioc.TagDAOAware;
+import cn.edu.uestc.acmicpc.oj.db.entity.Department;
 import cn.edu.uestc.acmicpc.oj.util.Global;
-import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
 /**
- * Test Action for cdoj.
+ * Util class test
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 3
  */
-@LoginPermit(value = Global.AuthenticationType.NORMAL)
-public class TestAction extends BaseAction implements TagDAOAware {
-    private static final long serialVersionUID = 3513904272112800586L;
-    /**
-     * TagDAO from IoC.
-     */
-    private ITagDAO tagDAO = null;
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:applicationContext-test.xml"})
+public class UtilTest {
+    @Autowired
+    private Global global = null;
 
-    /**
-     * Go to test index page
-     *
-     * @return <strong>SUCCESS</strong> signal
-     */
-    public String toTest() {
-        try {
-            List<Tag> tags = tagDAO.findAll();
-            request.put("tags", tags);
-        } catch (AppException e) {
-        }
-        return SUCCESS;
+    public void setGlobal(Global global) {
+        this.global = global;
     }
 
-    @Override
-    public void setTagDAO(ITagDAO tagDAO) {
-        this.tagDAO = tagDAO;
+    @Test
+    public void testGlobal() {
+        Assert.assertNotNull("Constructor global instance is null.", global);
+        List<Department> departments = global.getDepartmentList();
+        for (Department department : departments) {
+            System.out.println(department.getDepartmentId()
+                    + "\t" + department.getName());
+        }
     }
 }

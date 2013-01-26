@@ -23,7 +23,7 @@
 package cn.edu.uestc.acmicpc.oj.action;
 
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
-import cn.edu.uestc.acmicpc.oj.db.dao.UserDAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.oj.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.interceptor.AppInterceptor;
 import cn.edu.uestc.acmicpc.oj.interceptor.iface.IActionInterceptor;
@@ -48,7 +48,7 @@ import java.util.Map;
  * Base action support, add specified common elements in here.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 8
+ * @version 9
  */
 public class BaseAction extends ActionSupport
         implements RequestAware, SessionAware, ApplicationAware, IActionInterceptor,
@@ -116,7 +116,7 @@ public class BaseAction extends ActionSupport
     /**
      * userDAO for user toLogin check.
      */
-    protected UserDAO userDAO = null;
+    protected IUserDAO userDAO = null;
 
     /**
      * redirect flag.
@@ -341,7 +341,7 @@ public class BaseAction extends ActionSupport
     }
 
     @Override
-    public void setUserDAO(UserDAO userDAO) {
+    public void setUserDAO(IUserDAO userDAO) {
         this.userDAO = userDAO;
     }
 

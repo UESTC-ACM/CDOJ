@@ -34,11 +34,12 @@ import java.util.List;
  * @param <Entity> Entity's type
  * @param <PK>     Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 public interface IDAO<Entity extends Serializable, PK extends Serializable> {
     /**
      * Add entity into database, and return number of Row changed.
+     *
      *
      * @param entity entity to be added.
      * @return number of rows changed.
@@ -95,5 +96,5 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
      * @return unique result, null if not exist
      * @throws AppException
      */
-    public Entity getEntityByUniqueField(String fieldName, Object value) throws FieldNotUniqueException;
+    public Entity getEntityByUniqueField(String fieldName, Object value) throws FieldNotUniqueException, AppException;
 }
