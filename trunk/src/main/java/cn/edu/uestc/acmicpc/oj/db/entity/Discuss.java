@@ -22,6 +22,8 @@
 
 package cn.edu.uestc.acmicpc.oj.db.entity;
 
+import cn.edu.uestc.acmicpc.oj.annotation.IdSetter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -47,6 +49,7 @@ public class Discuss implements Serializable {
         return discussId;
     }
 
+    @IdSetter
     public void setDiscussId(int discussId) {
         this.discussId = discussId;
     }

@@ -20,6 +20,8 @@
 
 package cn.edu.uestc.acmicpc.oj.db.condition;
 
+import cn.edu.uestc.acmicpc.oj.annotation.IdSetter;
+import cn.edu.uestc.acmicpc.oj.util.ReflectionUtil;
 import cn.edu.uestc.acmicpc.oj.util.StringUtil;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -39,9 +41,52 @@ import java.util.List;
  * We can write a simple class than extends this class, and add the Exp
  * annotation to each field of the class. If we do not do with, the field
  * will be passed into invoke() method.
+ * <p/>
+ * <strong>For developer</strong>:
+ * <ul>
+ * <li>
+ * In default, the class field's name is equal to the data field's name.
+ * If you want to map the class field into another data field, use the
+ * {@code MapField} parameter please.
+ * <p/>
+ * For example:
+ * <p/>
+ * <code>
+ * {@literal @}Exp(MapField = "userId", Type = ConditionType.eq)<br/>
+ * public Integer id;
+ * </code>
+ * </li>
+ * <li>
+ * If the field is other class's key field, please mark the setter of the
+ * field with {@code IdSetter} annotation and user the {@code MapObject} parameter.
+ * <p/>
+ * For example:
+ * <p/>
+ * <code>
+ * {@literal @}Exp(Type = ConditionType.eq, MapObject = Department.class)<br/>
+ * public Integer departmentId;
+ * </code>
+ * </li>
+ * <li>
+ * {@code ConditionType.like} type will add % in two ends of the string, otherwise
+ * rewrite the invoke method to deal with ti.
+ * <p/>
+ * For example:
+ * <p/>
+ * <code>
+ * public String userName;
+ * <br/>
+ * {@literal @}Override<br/>
+ * public void invoke(ArrayList<Criterion> conditions) {<br/>
+ * &nbsp;&nbsp;if (userName != null)<br/>
+ * &nbsp;&nbsp;&nbsp;&nbsp;conditions.add(Restrictions.like("userName", "%" + userName"));<br/>
+ * }
+ * </code>
+ * </li>
+ * </ul>
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @SuppressWarnings("UnusedDeclaration")
 public abstract class BaseCondition {
@@ -78,10 +123,10 @@ public abstract class BaseCondition {
     @SuppressWarnings("ConstantConditions")
     public List<Criterion> getCriterionList(boolean upperCaseFirst) {
         ArrayList<Criterion> list = new ArrayList<Criterion>();
-        Class<?> cls = this.getClass();
-        Class<?> rcls = Restrictions.class;
-        Class<?> ocls = Object.class;
-        for (Field f : cls.getFields()) {
+        Class<?> clazz = this.getClass();
+        Class<?> restrictionsClass = Restrictions.class;
+        Class<?> objectClass = Object.class;
+        for (Field f : clazz.getFields()) {
             Object value;
             Exp exp = f.getAnnotation(Exp.class);
             try {
@@ -97,16 +142,15 @@ public abstract class BaseCondition {
             mapField = upperCaseFirst ? mapField.substring(0, 1).toUpperCase()
                     + mapField.substring(1) : mapField;
             try {
-                if (!exp.MapObject().equals(ocls)) {
+                if (!exp.MapObject().equals(objectClass)) {
                     Object obj = exp.MapObject().newInstance();
-                    Method m = exp.MapObject()
-                            .getMethod("setId", Integer.class);
-                    m.invoke(obj, value);
+                    Method method = ReflectionUtil.getMethodByAnnotation(exp.MapObject(), IdSetter.class);
+                    method.invoke(obj, value);
                     value = obj;
                 }
                 value = exp.Type().name().equals("like") ? String.format(
                         "%%%s%%", value) : value;
-                Criterion c = (Criterion) rcls.getMethod(exp.Type().name(),
+                Criterion c = (Criterion) restrictionsClass.getMethod(exp.Type().name(),
                         String.class, Object.class).invoke(null, mapField,
                         value);
                 list.add(c);

@@ -22,6 +22,8 @@
 
 package cn.edu.uestc.acmicpc.oj.db.entity;
 
+import cn.edu.uestc.acmicpc.oj.annotation.IdSetter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -46,6 +48,7 @@ public class Status implements Serializable {
         return statusId;
     }
 
+    @IdSetter
     public void setStatusId(int statusId) {
         this.statusId = statusId;
     }

@@ -26,17 +26,17 @@ package cn.edu.uestc.acmicpc.oj.view;
  * Object to build view's page tags.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 public class PageInfo {
     /**
      * Current page number
      */
-    private int currentPage;
+    private Long currentPage;
     /**
      * Total number of pages
      */
-    private int totalPages;
+    private Long totalPages;
     /**
      * The base URL, in other words, URL prefix
      */
@@ -51,7 +51,7 @@ public class PageInfo {
      */
     private String htmlString;
 
-    private PageInfo(int currentPage, int totalPages,
+    private PageInfo(Long currentPage, Long totalPages,
                      String baseURL, int displayDistance, String htmlString) {
         this.currentPage = currentPage;
         this.totalPages = totalPages;
@@ -60,19 +60,19 @@ public class PageInfo {
         this.htmlString = htmlString;
     }
 
-    public int getCurrentPage() {
+    public Long getCurrentPage() {
         return currentPage;
     }
 
-    public void setCurrentPage(int currentPage) {
+    public void setCurrentPage(Long currentPage) {
         this.currentPage = currentPage;
     }
 
-    public int getTotalPages() {
+    public Long getTotalPages() {
         return totalPages;
     }
 
-    public void setTotalPages(int totalPages) {
+    public void setTotalPages(Long totalPages) {
         this.totalPages = totalPages;
     }
 
@@ -108,17 +108,17 @@ public class PageInfo {
      * @param queryString  html query string, which start with ? in URL string
      * @return a specific PageInfo object
      */
-    public static PageInfo create(int count, int countPerPage, String baseURL,
+    public static PageInfo create(Long count, Long countPerPage, String baseURL,
                                   int displayDistance, String queryString) {
         queryString = queryString == null ? "" : queryString;
         countPerPage = countPerPage <= 0 ? 20 : countPerPage;
-        int currentPage = 1;
+        Long currentPage = 1L;
         if (queryString.startsWith("page=")
                 || queryString.indexOf("&page=") > -1) {
             String page = queryString.replaceAll(".*&?page=", "");
             page = page.replaceAll("&.*", "");
             try {
-                currentPage = Integer.parseInt(page);
+                currentPage = Long.parseLong(page);
             } catch (Exception e) {
             }
         }
@@ -126,7 +126,7 @@ public class PageInfo {
         queryString = queryString.length() < 1 || queryString.startsWith("&") ? queryString
                 : "&" + queryString;
         currentPage = currentPage == 0 ? 1 : currentPage;
-        int max = (count + countPerPage - 1) / countPerPage;
+        Long max = (count + countPerPage - 1) / countPerPage;
         currentPage = currentPage > max ? max : currentPage;
         currentPage = currentPage < 1 ? 1 : currentPage;
         // TODO format the HTML content use htmlString

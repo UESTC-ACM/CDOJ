@@ -25,13 +25,13 @@
 <decorators defaultdir="/WEB-INF/views/decorators">
 
     <decorator name="admin" page="decAdmin.jsp">
-        <pattern>/admin/*</pattern>
+        <userCondition>/admin/*</userCondition>
     </decorator>
 
     <decorator name="empty" page="decEmpty.jsp"/>
 
     <decorator name="default" page="decDefault.jsp">
-        <pattern>/*</pattern>
+        <userCondition>/*</userCondition>
     </decorator>
 
 </decorators>

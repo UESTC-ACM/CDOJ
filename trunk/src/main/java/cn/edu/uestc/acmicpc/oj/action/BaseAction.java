@@ -48,7 +48,7 @@ import java.util.Map;
  * Base action support, add specified common elements in here.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 10
+ * @version 11
  */
 public class BaseAction extends ActionSupport
         implements RequestAware, SessionAware, ApplicationAware, IActionInterceptor,
@@ -58,7 +58,7 @@ public class BaseAction extends ActionSupport
     /**
      * Number of records per page
      */
-    protected static final int RECORD_PER_PAGE = 50;
+    protected static final Long RECORD_PER_PAGE = 50L;
 
     /**
      * Global constant
@@ -268,7 +268,7 @@ public class BaseAction extends ActionSupport
 
     /**
      * Get action url by namespace, action name and parameter.
-     *
+     * <p/>
      * <strong>Example</strong>
      * getActionURL("/problem","page","/1") return acm.uestc.edu.cn/problem/page/1
      * getActionURL("/problem","page","?id=1") return acm.uestc.edu.cn/problem/page?id=1
@@ -278,11 +278,11 @@ public class BaseAction extends ActionSupport
      * @param parameterString
      * @return action url
      */
-    protected String getActionURL(String namespace,String name,String parameterString) {
-        String result = namespace.equals("/") ? "":namespace;
-        result = result+"/"+name;
+    protected String getActionURL(String namespace, String name, String parameterString) {
+        String result = namespace.equals("/") ? "" : namespace;
+        result = result + "/" + name;
         if (parameterString != null)
-            result = result+parameterString;
+            result = result + parameterString;
         return getContextPath(result);
     }
 
@@ -293,9 +293,10 @@ public class BaseAction extends ActionSupport
      * @param name
      * @return action url
      */
-    protected String getActionURL(String namespace,String name) {
-        return getActionURL(namespace, name,null);
+    protected String getActionURL(String namespace, String name) {
+        return getActionURL(namespace, name, null);
     }
+
     /**
      * Check user type.
      *
@@ -320,7 +321,7 @@ public class BaseAction extends ActionSupport
                 return;
             }
             if (user == null) {
-                redirect(getActionURL("/","index"),"Fuck!");
+                redirect(getActionURL("/", "index"), "Fuck!");
                 actionInfo.setCancel(true);
                 actionInfo.setActionResult(REDIRECT);
                 return;
@@ -403,7 +404,8 @@ public class BaseAction extends ActionSupport
      * <p/>
      * <strong>Example:</strong>
      * Get total and set it into {@code buildPageInfo} method: <br />
-     * {@code PageInfo pageInfo = buildPageInfo(articleDAO.count(), RECORD_PER_PAGE);}
+     * {@code PageInfo pageInfo = buildPageInfo(articleDAO.count(), RECORD_PER_PAGE,
+     * getContextPath("") + "/Problem", null);}
      *
      * @param count           total number of records
      * @param countPerPage    number of records per page
@@ -411,10 +413,11 @@ public class BaseAction extends ActionSupport
      * @param displayDistance display distance for page numbers
      * @return return a PageInfo object and put the HTML content into request attribute list.
      */
-    protected PageInfo buildPageInfo(int count, int countPerPage,
-                                     String baseURL, int displayDistance) {
+    protected PageInfo buildPageInfo(Long count, Long countPerPage,
+                                     String baseURL, Integer displayDistance) {
         PageInfo pageInfo = PageInfo.create(count, countPerPage,
-                baseURL, displayDistance, httpServletRequest.getQueryString());
+                baseURL, displayDistance == null ? 3 : displayDistance,
+                httpServletRequest.getQueryString());
         request.put("pageInfo", pageInfo.getHtmlString());
         return pageInfo;
     }
