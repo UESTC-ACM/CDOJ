@@ -69,23 +69,23 @@
 
     <filter-mapping>
         <filter-name>OpenSessionInViewFilter</filter-name>
-        <url-userCondition>/*</url-userCondition>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>Set Character Encoding</filter-name>
-        <url-userCondition>/*</url-userCondition>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>struts-prepare</filter-name>
-        <url-userCondition>/*</url-userCondition>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>sitemesh</filter-name>
-        <url-userCondition>/*</url-userCondition>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>struts-execute</filter-name>
-        <url-userCondition>/*</url-userCondition>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
 
     <welcome-file-list>

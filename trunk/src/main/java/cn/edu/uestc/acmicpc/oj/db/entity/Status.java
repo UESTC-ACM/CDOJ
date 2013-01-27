@@ -173,28 +173,28 @@ public class Status implements Serializable {
         this.codeByCodeId = codeByCodeId;
     }
 
-    private Compileinfo compileinfoByCompileInfoId;
+    private CompileInfo compileInfoByCompileInfoId;
 
     @ManyToOne
     @JoinColumn(name = "compileInfoId", referencedColumnName = "compileInfoId")
-    public Compileinfo getCompileinfoByCompileInfoId() {
-        return compileinfoByCompileInfoId;
+    public CompileInfo getCompileInfoByCompileInfoId() {
+        return compileInfoByCompileInfoId;
     }
 
-    public void setCompileinfoByCompileInfoId(Compileinfo compileinfoByCompileInfoId) {
-        this.compileinfoByCompileInfoId = compileinfoByCompileInfoId;
+    public void setCompileInfoByCompileInfoId(CompileInfo compileInfoByCompileInfoId) {
+        this.compileInfoByCompileInfoId = compileInfoByCompileInfoId;
     }
 
-    private Contest contestByConetstId;
+    private Contest contestByContestId;
 
     @ManyToOne
-    @JoinColumn(name = "conetstId", referencedColumnName = "contestId")
-    public Contest getContestByConetstId() {
-        return contestByConetstId;
+    @JoinColumn(name = "contestId", referencedColumnName = "contestId")
+    public Contest getContestByContestId() {
+        return contestByContestId;
     }
 
-    public void setContestByConetstId(Contest contestByConetstId) {
-        this.contestByConetstId = contestByConetstId;
+    public void setContestByContestId(Contest contestByContestId) {
+        this.contestByContestId = contestByContestId;
     }
 
     private Language languageByLanguageId;

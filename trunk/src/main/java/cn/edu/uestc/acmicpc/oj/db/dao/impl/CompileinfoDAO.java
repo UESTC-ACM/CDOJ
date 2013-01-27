@@ -24,7 +24,7 @@ package cn.edu.uestc.acmicpc.oj.db.dao.impl;
 
 import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
 import cn.edu.uestc.acmicpc.oj.db.dao.iface.ICompileinfoDAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.Compileinfo;
+import cn.edu.uestc.acmicpc.oj.db.entity.CompileInfo;
 
 /**
  * DAO for compileinfo entity.
@@ -32,9 +32,9 @@ import cn.edu.uestc.acmicpc.oj.db.entity.Compileinfo;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 2
  */
-public class CompileinfoDAO extends DAO<Compileinfo, Integer> implements ICompileinfoDAO {
+public class CompileinfoDAO extends DAO<CompileInfo, Integer> implements ICompileinfoDAO {
     @Override
-    protected Class<Compileinfo> getReferenceClass() {
-        return Compileinfo.class;
+    protected Class<CompileInfo> getReferenceClass() {
+        return CompileInfo.class;
     }
 }

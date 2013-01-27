@@ -33,9 +33,9 @@ import java.io.Serializable;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 2
  */
-@Table(name = "problemtag", schema = "", catalog = "uestcoj")
+@Table(name = "problemTag", schema = "", catalog = "uestcoj")
 @Entity
-public class Problemtag implements Serializable {
+public class ProblemTag implements Serializable {
     private static final long serialVersionUID = 8758938774072713107L;
     private int problemTagId;
 
@@ -57,7 +57,7 @@ public class Problemtag implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Problemtag that = (Problemtag) o;
+        ProblemTag that = (ProblemTag) o;
 
         if (problemTagId != that.problemTagId) return false;
 

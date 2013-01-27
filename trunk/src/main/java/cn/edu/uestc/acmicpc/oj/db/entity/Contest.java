@@ -162,31 +162,31 @@ public class Contest implements Serializable {
         return result;
     }
 
-    private Collection<Contestproblem> contestproblemsByContestId;
+    private Collection<ContestProblem> contestProblemsByContestId;
 
     @OneToMany(mappedBy = "contestByContestId")
-    public Collection<Contestproblem> getContestproblemsByContestId() {
-        return contestproblemsByContestId;
+    public Collection<ContestProblem> getContestProblemsByContestId() {
+        return contestProblemsByContestId;
     }
 
-    public void setContestproblemsByContestId(Collection<Contestproblem> contestproblemsByContestId) {
-        this.contestproblemsByContestId = contestproblemsByContestId;
+    public void setContestProblemsByContestId(Collection<ContestProblem> contestProblemsByContestId) {
+        this.contestProblemsByContestId = contestProblemsByContestId;
     }
 
-    private Collection<Contestuser> contestusersByContestId;
+    private Collection<ContestUser> contestUsersByContestId;
 
     @OneToMany(mappedBy = "contestByContestId")
-    public Collection<Contestuser> getContestusersByContestId() {
-        return contestusersByContestId;
+    public Collection<ContestUser> getContestUsersByContestId() {
+        return contestUsersByContestId;
     }
 
-    public void setContestusersByContestId(Collection<Contestuser> contestusersByContestId) {
-        this.contestusersByContestId = contestusersByContestId;
+    public void setContestUsersByContestId(Collection<ContestUser> contestUsersByContestId) {
+        this.contestUsersByContestId = contestUsersByContestId;
     }
 
     private Collection<Status> statusesByContestId;
 
-    @OneToMany(mappedBy = "contestByConetstId")
+    @OneToMany(mappedBy = "contestByContestId")
     public Collection<Status> getStatusesByContestId() {
         return statusesByContestId;
     }

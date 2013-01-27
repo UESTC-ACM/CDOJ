@@ -357,14 +357,14 @@ public class Problem implements Serializable {
         return result;
     }
 
-    private Collection<Contestproblem> contestproblemsByProblemId;
+    private Collection<ContestProblem> contestproblemsByProblemId;
 
     @OneToMany(mappedBy = "problemByProblemId")
-    public Collection<Contestproblem> getContestproblemsByProblemId() {
+    public Collection<ContestProblem> getContestproblemsByProblemId() {
         return contestproblemsByProblemId;
     }
 
-    public void setContestproblemsByProblemId(Collection<Contestproblem> contestproblemsByProblemId) {
+    public void setContestproblemsByProblemId(Collection<ContestProblem> contestproblemsByProblemId) {
         this.contestproblemsByProblemId = contestproblemsByProblemId;
     }
 
@@ -379,14 +379,14 @@ public class Problem implements Serializable {
         this.discussesByProblemId = discussesByProblemId;
     }
 
-    private Collection<Problemtag> problemtagsByProblemId;
+    private Collection<ProblemTag> problemtagsByProblemId;
 
     @OneToMany(mappedBy = "problemByProblemId")
-    public Collection<Problemtag> getProblemtagsByProblemId() {
+    public Collection<ProblemTag> getProblemtagsByProblemId() {
         return problemtagsByProblemId;
     }
 
-    public void setProblemtagsByProblemId(Collection<Problemtag> problemtagsByProblemId) {
+    public void setProblemtagsByProblemId(Collection<ProblemTag> problemtagsByProblemId) {
         this.problemtagsByProblemId = problemtagsByProblemId;
     }
 
