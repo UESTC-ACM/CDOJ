@@ -36,9 +36,27 @@ function refreshUserList(condition) {
     console.log(condition);
     $.post('/admin/user/search', condition, function(data) {
 
+        console.log(data);
+
         var tbody = $('#userList');
         // remove old user list
         tbody.find('tr').remove();
+        // put user list
+        $.each(data.userList,function(index,value){
+            var html = "<tr>"+
+                "<td>"+value.userName+"</td>"+
+                "<td>"+value.nickName+"</td>"+
+                "<td>"+value.email+"</td>"+
+                "<td>"+value.school+"</td>"+
+                "<td>"+value.department+"</td>"+
+                "<td>"+value.studentId+"</td>"+
+                "<td>"+value.type+"</td>"+
+                "<td>"+value.lastLogin+"</td>"+
+                "</tr>";
+            tbody.append(html);
+            console.log(index);
+            console.log(value);
+        });
 
     });
 }
