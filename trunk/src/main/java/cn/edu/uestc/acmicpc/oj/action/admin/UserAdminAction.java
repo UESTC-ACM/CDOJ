@@ -26,12 +26,14 @@ import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.oj.db.condition.UserCondition;
 import cn.edu.uestc.acmicpc.oj.db.entity.User;
+import cn.edu.uestc.acmicpc.oj.db.view.UserView;
 import cn.edu.uestc.acmicpc.oj.util.DatabaseUtil;
 import cn.edu.uestc.acmicpc.oj.util.Global;
 import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import org.hibernate.Criteria;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -79,10 +81,13 @@ public class UserAdminAction extends BaseAction {
             PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
             List<User> userList = userDAO.findAll(criteria, pageInfo.getCurrentPage(),
                     RECORD_PER_PAGE, null, null);
+            List<UserView> userViewList = new ArrayList<UserView>();
+            for (User user: userList)
+                userViewList.add(new UserView(user));
             request.put("pageInfo", pageInfo);
             json.put("result", "ok");
             json.put("condition", userCondition);
-            json.put("userList", userList);
+            json.put("userList", userViewList);
         } catch (AppException e) {
             json.put("result", "error");
         }
