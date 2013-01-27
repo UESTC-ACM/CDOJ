@@ -48,6 +48,10 @@ body {
     text-align: center;
 }
 
+.avatar {
+    margin: -10px 0 -10px;
+}
+
 /* problem! */
 .container {
 }

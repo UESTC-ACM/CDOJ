@@ -23,9 +23,15 @@
   -->
 
 <decorators defaultdir="/WEB-INF/views/decorators">
+
+    <decorator name="admin" page="decAdmin.jsp">
+        <pattern>/admin/*</pattern>
+    </decorator>
+
+    <decorator name="empty" page="decEmpty.jsp"/>
+
     <decorator name="default" page="decDefault.jsp">
         <pattern>/*</pattern>
     </decorator>
 
-    <decorator name="empty" page="decEmpty.jsp"/>
 </decorators>

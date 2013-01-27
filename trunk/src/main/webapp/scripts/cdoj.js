@@ -89,6 +89,19 @@ function Button(button,callback) {
     button.on("click",callback);
 }
 
+function GetAvatar(position) {
+    if (position.length == 0)   return;
+
+    var result = $.gravatar(position.attr("email"), {
+        method: 'append',
+        size: 40,
+        image: 'retro',
+        rating: 'pg'});
+
+    result.attr("class","avatar");
+    position.replaceWith(result);
+}
+
 !function ($) {
 
     $(function () {
@@ -101,6 +114,8 @@ function Button(button,callback) {
 
         //题目列表来源弹出效果
         $('.info-problem-source').tooltip();
+
+        GetAvatar($('img#avatar'));
 
         Dialog($("#registerModal"),function(e) {
             info=$("#registerModal .form-horizontal").serializeArray();

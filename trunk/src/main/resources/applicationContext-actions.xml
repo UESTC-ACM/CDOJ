@@ -75,4 +75,8 @@
           parent="baseAction"
           scope="prototype">
     </bean>
+    <bean id="userAdminAction"
+          class="cn.edu.uestc.acmicpc.oj.action.admin.UserAdminAction"
+          parent="baseAction"
+          scope="prototype"/>
 </beans>
