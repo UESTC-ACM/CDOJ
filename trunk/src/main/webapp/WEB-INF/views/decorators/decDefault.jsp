@@ -36,27 +36,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/png" href="<s:url value="/images/logo/favicon128.png"/>">
-    <meta http-equiv=Content-Type content="text/html;charset=utf-8">
-    <!-- 要用到的CSS -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="<s:url value="/styles/bootstrap.min.css"/>" rel="stylesheet">
-    <link href="<s:url value="/styles/prettify.css"/>" rel="stylesheet">
-    <!-- 我的自定义CSS -->
-    <link href="<s:url value="/styles/cdoj.css"/>" rel="stylesheet">
-    <!-- 要用到的JS -->
-    <script src="<s:url value="/scripts/jquery.min.js"/>"></script>
-    <script src="<s:url value="/scripts/bootstrap.min.js"/>"></script>
-    <script src="<s:url value="/scripts/prettify.js"/>"></script>
-    <script type="text/javascript"
-            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- 如果需要开启内网模式的话请解压MathJax.zip到plugin目录下然后将上面替换成这个
-         <script type="text/javascript" src="/Plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-         -->
-    <script src="<s:url value="/plugins/ckeditor/ckeditor.js"/>"></script>
-    <script src="<s:url value="/plugins/edit_area/edit_area_full.js"/>"></script>
-    <script src="<s:url value="/scripts/cdoj.js"/>"></script>
-
+    <page:applyDecorator name="empty" page="/WEB-INF/views/common/header.jsp"/>
     <decorator:head/>
 
     <!-- 网站标题，暂时先这样 -->
@@ -68,7 +48,6 @@
 
 <page:applyDecorator name="empty" page="/WEB-INF/views/common/navbar.jsp"/>
 <page:applyDecorator name="empty" page="/WEB-INF/views/common/modal.jsp"/>
-
 
 <s:div id="wrap">
     <s:div cssClass="mzry1992">

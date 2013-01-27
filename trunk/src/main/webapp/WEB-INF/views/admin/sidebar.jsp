@@ -39,15 +39,15 @@
 <body>
 <s:div cssClass="well" cssStyle="padding: 8px 0;">
     <ul class="nav nav-list">
-        <li class="nav-header"><i class="icon-home"></i>Admin</li>
-        <li class="active"><a href="#">OJ status</a></li>
+        <li class="nav-header"><i class="icon-home"></i>Dashboard</li>
+        <li><a href="#">OJ status</a></li>
         <li><a href="#">Backup</a></li>
         <li><a href="#">Help</a></li>
 
         <li class="divider"></li>
 
         <li class="nav-header"><i class="icon-user"></i>User</li>
-        <li><a href="#">User list</a></li>
+        <li><s:a action="list" namespace="/admin/user">User list</s:a></li>
 
         <li class="divider"></li>
 

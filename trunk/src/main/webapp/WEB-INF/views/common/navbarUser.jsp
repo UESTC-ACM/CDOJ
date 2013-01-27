@@ -70,7 +70,7 @@
     <ul class="nav pull-right">
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-white icon-user"></i>
+                <img id="avatar" email="<s:property value="currentUser.email"/>"/>
                 <s:property value="currentUser.userName"/>
                 <b class="caret"></b>
             </a>

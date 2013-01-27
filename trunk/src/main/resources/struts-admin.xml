@@ -31,4 +31,11 @@
             <result>/WEB-INF/views/admin/index.jsp</result>
         </action>
     </package>
+    <package name="userAdmin" namespace="/admin/user" extends="admin">
+        <action name="list" class="userAdminAction" method="toUserList">
+            <result>/WEB-INF/views/admin/user.jsp</result>
+        </action>
+        <action name="search" class="userAdminAction" method="toSearch"/>
+        <action name="edit" class="userAdminAction" method="toEdit"/>
+    </package>
 </struts>
