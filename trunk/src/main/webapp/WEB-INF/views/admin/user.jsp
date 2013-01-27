@@ -34,19 +34,25 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <script src="<s:url value="/scripts/cdoj.admin.user.js"/>"></script>
     <title>User</title>
 </head>
 <body>
+
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th>User Name</th>
+            <th>User name</th>
+            <th>Nick name</th>
             <th>Email</th>
-            <th>Last login</th>
+            <th>School</th>
+            <th>Department</th>
+            <th>Student ID</th>
             <th>Type</th>
+            <th>Last login</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="userList">
         <tr>
             <td>He he</td>
             <td>aaa</td>

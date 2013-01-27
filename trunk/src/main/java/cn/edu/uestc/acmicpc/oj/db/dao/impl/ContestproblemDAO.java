@@ -24,7 +24,7 @@ package cn.edu.uestc.acmicpc.oj.db.dao.impl;
 
 import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
 import cn.edu.uestc.acmicpc.oj.db.dao.iface.IContestproblemDAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.Contestproblem;
+import cn.edu.uestc.acmicpc.oj.db.entity.ContestProblem;
 
 /**
  * DAO for contestproblem entity.
@@ -32,9 +32,9 @@ import cn.edu.uestc.acmicpc.oj.db.entity.Contestproblem;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 2
  */
-public class ContestproblemDAO extends DAO<Contestproblem, Integer> implements IContestproblemDAO {
+public class ContestproblemDAO extends DAO<ContestProblem, Integer> implements IContestproblemDAO {
     @Override
-    protected Class<Contestproblem> getReferenceClass() {
-        return Contestproblem.class;
+    protected Class<ContestProblem> getReferenceClass() {
+        return ContestProblem.class;
     }
 }

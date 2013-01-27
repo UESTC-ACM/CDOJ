@@ -222,14 +222,14 @@ public class User implements Serializable {
         return result;
     }
 
-    private Collection<Contestuser> contestusersByUserId;
+    private Collection<ContestUser> contestusersByUserId;
 
     @OneToMany(mappedBy = "userByUserId")
-    public Collection<Contestuser> getContestusersByUserId() {
+    public Collection<ContestUser> getContestusersByUserId() {
         return contestusersByUserId;
     }
 
-    public void setContestusersByUserId(Collection<Contestuser> contestusersByUserId) {
+    public void setContestusersByUserId(Collection<ContestUser> contestusersByUserId) {
         this.contestusersByUserId = contestusersByUserId;
     }
 

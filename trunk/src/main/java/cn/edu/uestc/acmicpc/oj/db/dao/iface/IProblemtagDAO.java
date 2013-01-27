@@ -22,7 +22,7 @@
 
 package cn.edu.uestc.acmicpc.oj.db.dao.iface;
 
-import cn.edu.uestc.acmicpc.oj.db.entity.Problemtag;
+import cn.edu.uestc.acmicpc.oj.db.entity.ProblemTag;
 
 /**
  * ProblemtagDAO AOP interface.
@@ -30,5 +30,5 @@ import cn.edu.uestc.acmicpc.oj.db.entity.Problemtag;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public interface IProblemtagDAO extends IDAO<Problemtag, Integer> {
+public interface IProblemtagDAO extends IDAO<ProblemTag, Integer> {
 }

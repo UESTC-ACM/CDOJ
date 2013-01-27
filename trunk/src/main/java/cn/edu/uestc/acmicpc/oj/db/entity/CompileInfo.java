@@ -34,9 +34,9 @@ import java.util.Collection;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 2
  */
-@Table(name = "compileinfo", schema = "", catalog = "uestcoj")
+@Table(name = "compileInfo", schema = "", catalog = "uestcoj")
 @Entity
-public class Compileinfo implements Serializable {
+public class CompileInfo implements Serializable {
     private static final long serialVersionUID = 1404496264299518630L;
     private int compileInfoId;
 
@@ -71,7 +71,7 @@ public class Compileinfo implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Compileinfo that = (Compileinfo) o;
+        CompileInfo that = (CompileInfo) o;
 
         if (compileInfoId != that.compileInfoId) return false;
         if (content != null ? !content.equals(that.content) : that.content != null) return false;
@@ -88,7 +88,7 @@ public class Compileinfo implements Serializable {
 
     private Collection<Status> statusesByCompileInfoId;
 
-    @OneToMany(mappedBy = "compileinfoByCompileInfoId")
+    @OneToMany(mappedBy = "compileInfoByCompileInfoId")
     public Collection<Status> getStatusesByCompileInfoId() {
         return statusesByCompileInfoId;
     }

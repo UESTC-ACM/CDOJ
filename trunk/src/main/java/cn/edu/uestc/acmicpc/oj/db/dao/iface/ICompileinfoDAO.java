@@ -22,7 +22,7 @@
 
 package cn.edu.uestc.acmicpc.oj.db.dao.iface;
 
-import cn.edu.uestc.acmicpc.oj.db.entity.Compileinfo;
+import cn.edu.uestc.acmicpc.oj.db.entity.CompileInfo;
 
 /**
  * CompileinfoDAO AOP interface.
@@ -30,5 +30,5 @@ import cn.edu.uestc.acmicpc.oj.db.entity.Compileinfo;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public interface ICompileinfoDAO extends IDAO<Compileinfo, Integer> {
+public interface ICompileinfoDAO extends IDAO<CompileInfo, Integer> {
 }

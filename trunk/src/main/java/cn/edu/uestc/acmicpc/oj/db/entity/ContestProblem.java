@@ -33,8 +33,9 @@ import java.io.Serializable;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 2
  */
+@Table(name = "contestProblem", schema = "", catalog = "uestcoj")
 @Entity
-public class Contestproblem implements Serializable {
+public class ContestProblem implements Serializable {
     private static final long serialVersionUID = -9079259357297937419L;
     private int contestProblemId;
 
@@ -69,7 +70,7 @@ public class Contestproblem implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Contestproblem that = (Contestproblem) o;
+        ContestProblem that = (ContestProblem) o;
 
         if (contestProblemId != that.contestProblemId) return false;
         if (order != that.order) return false;

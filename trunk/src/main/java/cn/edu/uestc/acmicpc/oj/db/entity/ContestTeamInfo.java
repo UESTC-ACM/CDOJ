@@ -33,7 +33,7 @@ import java.io.Serializable;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 2
  */
-@Table(name = "contest_team_info", schema = "", catalog = "uestcoj")
+@Table(name = "contestTeamInfo", schema = "", catalog = "uestcoj")
 @Entity
 public class ContestTeamInfo implements Serializable {
     private static final long serialVersionUID = -5816811480409208296L;

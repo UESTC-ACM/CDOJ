@@ -22,7 +22,7 @@
 
 package cn.edu.uestc.acmicpc.oj.db.dao.iface;
 
-import cn.edu.uestc.acmicpc.oj.db.entity.Contestproblem;
+import cn.edu.uestc.acmicpc.oj.db.entity.ContestProblem;
 
 /**
  * ContestproblemDAO AOP interface.
@@ -30,5 +30,5 @@ import cn.edu.uestc.acmicpc.oj.db.entity.Contestproblem;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public interface IContestproblemDAO extends IDAO<Contestproblem, Integer> {
+public interface IContestproblemDAO extends IDAO<ContestProblem, Integer> {
 }

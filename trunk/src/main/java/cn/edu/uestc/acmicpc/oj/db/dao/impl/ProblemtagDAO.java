@@ -24,7 +24,7 @@ package cn.edu.uestc.acmicpc.oj.db.dao.impl;
 
 import cn.edu.uestc.acmicpc.oj.db.dao.base.DAO;
 import cn.edu.uestc.acmicpc.oj.db.dao.iface.IProblemtagDAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.Problemtag;
+import cn.edu.uestc.acmicpc.oj.db.entity.ProblemTag;
 
 /**
  * DAO for problemtag entity
@@ -32,9 +32,9 @@ import cn.edu.uestc.acmicpc.oj.db.entity.Problemtag;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 2
  */
-public class ProblemtagDAO extends DAO<Problemtag, Integer> implements IProblemtagDAO {
+public class ProblemtagDAO extends DAO<ProblemTag, Integer> implements IProblemtagDAO {
     @Override
-    protected Class<Problemtag> getReferenceClass() {
-        return Problemtag.class;
+    protected Class<ProblemTag> getReferenceClass() {
+        return ProblemTag.class;
     }
 }

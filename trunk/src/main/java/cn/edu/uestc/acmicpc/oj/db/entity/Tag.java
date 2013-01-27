@@ -86,14 +86,14 @@ public class Tag implements Serializable {
         return result;
     }
 
-    private Collection<Problemtag> problemtagsByTagId;
+    private Collection<ProblemTag> problemTagsByTagId;
 
     @OneToMany(mappedBy = "tagByTagId")
-    public Collection<Problemtag> getProblemtagsByTagId() {
-        return problemtagsByTagId;
+    public Collection<ProblemTag> getProblemTagsByTagId() {
+        return problemTagsByTagId;
     }
 
-    public void setProblemtagsByTagId(Collection<Problemtag> problemtagsByTagId) {
-        this.problemtagsByTagId = problemtagsByTagId;
+    public void setProblemTagsByTagId(Collection<ProblemTag> problemTagsByTagId) {
+        this.problemTagsByTagId = problemTagsByTagId;
     }
 }
