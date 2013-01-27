@@ -22,6 +22,8 @@
 
 package cn.edu.uestc.acmicpc.oj.db.entity;
 
+import cn.edu.uestc.acmicpc.oj.annotation.IdSetter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
@@ -46,6 +48,7 @@ public class Language implements Serializable {
         return languageId;
     }
 
+    @IdSetter
     public void setLanguageId(int languageId) {
         this.languageId = languageId;
     }

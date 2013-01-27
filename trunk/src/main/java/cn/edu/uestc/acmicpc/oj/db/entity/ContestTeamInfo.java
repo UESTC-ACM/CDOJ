@@ -22,6 +22,8 @@
 
 package cn.edu.uestc.acmicpc.oj.db.entity;
 
+import cn.edu.uestc.acmicpc.oj.annotation.IdSetter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -45,6 +47,7 @@ public class ContestTeamInfo implements Serializable {
         return teamId;
     }
 
+    @IdSetter
     public void setTeamId(int teamId) {
         this.teamId = teamId;
     }

@@ -24,16 +24,21 @@ package cn.edu.uestc.acmicpc.oj.action.admin;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.oj.db.condition.UserCondition;
+import cn.edu.uestc.acmicpc.oj.db.entity.User;
+import cn.edu.uestc.acmicpc.oj.util.DatabaseUtil;
 import cn.edu.uestc.acmicpc.oj.util.Global;
+import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
+import cn.edu.uestc.acmicpc.oj.view.PageInfo;
+import org.hibernate.Criteria;
 
-import java.util.Iterator;
-import java.util.Map;
+import java.util.List;
 
 /**
  * action for edit user information.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
+ * @version 2
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class UserAdminAction extends BaseAction {
@@ -43,15 +48,44 @@ public class UserAdminAction extends BaseAction {
     }
 
     /**
-     * Search pattern
+     * Conditions for user search.
      */
-    private String pattern;
-    public void setPattern(String pattern) {
-        this.pattern = pattern;
+    private UserCondition userCondition;
+
+    /**
+     * Setter of userCondition for Ioc.
+     *
+     * @param userCondition newly userCondition
+     */
+    public void setUserCondition(UserCondition userCondition) {
+        this.userCondition = userCondition;
     }
 
+    /**
+     * Search action.
+     * <p/>
+     * Find all records by conditions and return them as a list in JSON, and the condition
+     * set will set in JSON named "condition".
+     *
+     * @return <strong>JSON</strong> signal
+     */
     public String toSearch() {
-        json.put("result",pattern);
+        try {
+            Criteria criteria = userDAO.createCriteria();
+            DatabaseUtil.putCriterionIntoCriteria(criteria, userCondition.getCriterionList());
+            Long count = userDAO.count(criteria);
+            criteria = userDAO.createCriteria();
+            DatabaseUtil.putCriterionIntoCriteria(criteria, userCondition.getCriterionList());
+            PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
+            List<User> userList = userDAO.findAll(criteria, pageInfo.getCurrentPage(),
+                    RECORD_PER_PAGE, null, null);
+            request.put("pageInfo", pageInfo);
+            json.put("result", "ok");
+            json.put("condition", userCondition);
+            json.put("userList", userList);
+        } catch (AppException e) {
+            json.put("result", "error");
+        }
         return JSON;
     }
 

@@ -38,6 +38,9 @@ import java.util.List;
  */
 public class Global {
 
+    /**
+     * User's authentication type(`type` column in user entity).
+     */
     public enum AuthenticationType {
         NORMAL("normal user"), ADMIN("administrator"), CONSTANT("constant user");
         private String description;

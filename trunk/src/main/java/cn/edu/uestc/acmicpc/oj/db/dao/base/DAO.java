@@ -27,7 +27,7 @@ import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.util.exception.FieldNotUniqueException;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -43,10 +43,46 @@ import java.util.List;
  * @param <Entity> Entity's type
  * @param <PK>     Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 6
+ * @version 7
  */
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         extends BaseDAO implements IDAO<Entity, PK> {
+    @Override
+    public Criteria createCriteria() throws AppException {
+        try {
+            return getSession().createCriteria(getReferenceClass());
+        } catch (Exception e) {
+            throw new AppException("Get criteria error");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Entity> findAll(Criteria criteria, Long currentPage,
+                                Long countPerPage, String orderField,
+                                Boolean asc) throws AppException {
+        try {
+            if (orderField != null)
+                criteria.addOrder(asc ? Order.asc(orderField) : Order.desc(orderField));
+            criteria.setFirstResult(currentPage == null ? 0 : (int) (currentPage - 1));
+            if (countPerPage != null)
+                criteria.setMaxResults((int) countPerPage.longValue());
+            return criteria.list();
+        } catch (HibernateException e) {
+            throw new AppException("Invoke findAll method error.");
+        }
+    }
+
+    @Override
+    public Long count(Criteria criteria) throws AppException {
+        try {
+            criteria.setProjection(Projections.count(getKeyFieldName()));
+            return (Long) criteria.uniqueResult();
+        } catch (HibernateException e) {
+            throw new AppException("Invoke count method error.");
+        }
+    }
+
     @Override
     public Serializable add(Entity entity) throws AppException {
         try {
@@ -84,25 +120,14 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<Entity> findAll() throws AppException {
-        try {
-            return getSession().createCriteria(getReferenceClass()).list();
-        } catch (HibernateException e) {
-            throw new AppException("Invoke findAll method error.");
-        }
+        return findAll(createCriteria(), null, null, null, null);
     }
 
     @Override
     public Long count() throws AppException {
-        try {
-            Criteria criteria = getSession().createCriteria(getReferenceClass());
-            criteria.setProjection(Projections.count(getKeyFieldName()));
-            return (Long) criteria.uniqueResult();
-        } catch (HibernateException e) {
-            throw new AppException("Invoke count method error.");
-        }
+        return count(createCriteria());
     }
 
     /**
