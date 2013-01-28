@@ -46,7 +46,7 @@
         </div>
         <div class="modal-body">
             <form class="form-horizontal">
-                <fieldset>`
+                <fieldset>
                     <s:textfield name="userName"
                                  maxLength="24"
                                  cssClass="span4"
@@ -74,7 +74,7 @@
         </div>
         <div class="modal-body">
             <form class="form-horizontal">
-                <fieldset>`
+                <fieldset>
                     <s:textfield name="userDTO.userName"
                                  maxLength="24"
                                  cssClass="span4"

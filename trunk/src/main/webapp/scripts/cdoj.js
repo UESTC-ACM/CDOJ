@@ -145,6 +145,7 @@ function GetAvatar(position) {
         });
 
         Dialog($("#loginModal"),function(e) {
+            console.log("hi");
             info=$(".form-horizontal").serializeArray();
             $.post('/user/login', info, function(data) {
                 if (validation($(".form-horizontal"),data) == true) {
