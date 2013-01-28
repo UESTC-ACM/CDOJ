@@ -20,12 +20,11 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.db.condition;
+package cn.edu.uestc.acmicpc.oj.db.condition.impl;
 
+import cn.edu.uestc.acmicpc.oj.db.condition.base.BaseCondition;
+import cn.edu.uestc.acmicpc.oj.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.oj.db.entity.Department;
-import org.hibernate.criterion.Criterion;
-
-import java.util.ArrayList;
 
 /**
  * User search condition.
@@ -74,6 +73,6 @@ public class UserCondition extends BaseCondition {
     public String school;
 
     @Override
-    public void invoke(ArrayList<Criterion> conditions) {
+    public void invoke(Condition condition) {
     }
 }

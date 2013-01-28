@@ -33,9 +33,14 @@ import java.util.Date;
  * collect information from register action and generate a User class.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
+ * @version 2
  */
 public class UserDTO {
+
+    /**
+     * Input: user id, set null for new user
+     */
+    private Integer userId;
 
     /**
      * Input: user name
@@ -70,7 +75,7 @@ public class UserDTO {
     /**
      * Input: departmentId
      */
-    private int departmentId;
+    private Integer departmentId;
 
     /**
      * Department entity
@@ -81,6 +86,53 @@ public class UserDTO {
      * Input: student ID
      */
     private String studentId;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    /**
+     * Input: number of problems the user has solved
+     */
+    private Integer solved;
+
+    public Integer getSolved() {
+        return solved;
+    }
+
+    public void setSolved(Integer solved) {
+        this.solved = solved;
+    }
+
+    public Integer getTried() {
+        return tried;
+    }
+
+    public void setTried(Integer tried) {
+        this.tried = tried;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    /**
+     * Input: number the problems the user has tried
+     */
+    private Integer tried;
+
+    /**
+     * Input: User type
+     */
+    private Integer type;
 
     /**
      * Output: A user entity
@@ -94,6 +146,7 @@ public class UserDTO {
      */
     public User getUser() {
         user = new User();
+        user.setUserId(getUserId());
         user.setUserName(getUserName());
         user.setPassword(StringUtil.encodeSHA1(getPassword()));
         user.setNickName(getNickName());
@@ -101,10 +154,10 @@ public class UserDTO {
         user.setSchool(getSchool());
         user.setDepartmentByDepartmentId(getDepartment());
         user.setStudentId(getStudentId());
-        user.setLastLogin(new Timestamp(new Date().getTime()/1000*1000));
-        user.setSolved(0);
-        user.setTried(0);
-        user.setType(0);
+        user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
+        user.setSolved(getSolved() == null ? 0 : getSolved());
+        user.setTried(getTried() == null ? 0 : getTried());
+        user.setType(getType() == null ? 0 : getType());
         return user;
     }
 

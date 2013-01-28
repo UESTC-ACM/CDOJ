@@ -1,4 +1,6 @@
-package cn.edu.uestc.acmicpc.oj.test.db;/*
+package cn.edu.uestc.acmicpc.oj.test.db;
+
+/*
  *
  *  * cdoj, UESTC ACMICPC Online Judge
  *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
@@ -21,17 +23,20 @@ package cn.edu.uestc.acmicpc.oj.test.db;/*
  */
 
 
+import cn.edu.uestc.acmicpc.oj.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.oj.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.oj.db.dao.iface.ITagDAO;
-import cn.edu.uestc.acmicpc.oj.db.dao.impl.DepartmentDAO;
 import cn.edu.uestc.acmicpc.oj.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.impl.DepartmentDAO;
 import cn.edu.uestc.acmicpc.oj.db.dao.impl.UserDAO;
 import cn.edu.uestc.acmicpc.oj.db.entity.Tag;
 import cn.edu.uestc.acmicpc.oj.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.ioc.TagDAOAware;
+import cn.edu.uestc.acmicpc.oj.util.StringUtil;
 import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.util.exception.FieldNotUniqueException;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,11 +53,30 @@ import java.util.Random;
  * Simple database test class.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 6
+ * @version 7
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:applicationContext-test.xml"})
 public class DatabaseTest implements TagDAOAware {
+
+    @Before
+    public void init() {
+        try {
+            User user = new User();
+            user.setUserName("admin");
+            user.setPassword(StringUtil.encodeSHA1("admin"));
+            user.setNickName("admin");
+            user.setEmail("acm@uestc.edu.cn");
+            user.setSchool("UESTC");
+            user.setDepartmentByDepartmentId(departmentDAO.get(1));
+            user.setStudentId("2010013100008");
+            user.setLastLogin(new Timestamp(new Date().getTime()));
+            User check = userDAO.getEntityByUniqueField("userName", user.getUserName());
+            if (check == null)
+                userDAO.add(user);
+        } catch (Exception e) {
+        }
+    }
 
     /**
      * ITagDAO entity
@@ -101,18 +125,18 @@ public class DatabaseTest implements TagDAOAware {
     @Ignore
     public void testUserDAO() throws Exception {
         try {
-            for (int i = 0;i < 500;i++) {
+            for (int i = 0; i < 500; i++) {
                 User user = new User();
                 int id = new Random().nextInt();
-                user.setUserName(String.format("TEST_%d",id));
+                user.setUserName(String.format("TEST_%d", id));
                 user.setPassword("123456");
                 user.setNickName("haha");
-                user.setEmail(String.format("TEST_%d@mzry1992.com",id));
+                user.setEmail(String.format("TEST_%d@mzry1992.com", id));
                 user.setSchool("UESTC");
                 user.setDepartmentByDepartmentId(departmentDAO.get(1));
                 user.setStudentId("2010013100008");
                 user.setLastLogin(new Timestamp(new Date().getTime()));
-                User check = userDAO.getEntityByUniqueField("userName",user.getUserName());
+                User check = userDAO.getEntityByUniqueField("userName", user.getUserName());
                 if (check == null)
                     userDAO.add(user);
             }
@@ -138,7 +162,7 @@ public class DatabaseTest implements TagDAOAware {
      */
     @Test
     public void testGetEntityByUnique() throws FieldNotUniqueException, AppException {
-        User user = userDAO.getEntityByUniqueField("userName", "UESTC_Izayoi");
+        User user = userDAO.getEntityByUniqueField("userName", "admin");
         Assert.assertEquals("UESTC", user.getSchool());
     }
 
@@ -154,8 +178,17 @@ public class DatabaseTest implements TagDAOAware {
 
     @Test
     public void testUserUpdate() throws AppException, FieldNotUniqueException {
-        User user = userDAO.getEntityByUniqueField("userName", "UESTC_Izayoi");
+        User user = userDAO.getEntityByUniqueField("userName", "admin");
         user.setLastLogin(new Timestamp(new Date().getTime()));
         userDAO.update(user);
+    }
+
+    @Test
+    public void testUserCondition() throws AppException {
+        UserCondition userCondition = new UserCondition();
+        userCondition.startId = 50;
+        userCondition.endId = 100;
+        Long count = userDAO.count(userCondition.getCondition());
+        Assert.assertEquals(51L, count.longValue());
     }
 }

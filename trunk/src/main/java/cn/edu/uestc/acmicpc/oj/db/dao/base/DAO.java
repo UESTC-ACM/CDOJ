@@ -22,14 +22,13 @@
 
 package cn.edu.uestc.acmicpc.oj.db.dao.base;
 
+import cn.edu.uestc.acmicpc.oj.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.oj.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.util.exception.FieldNotUniqueException;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -43,12 +42,16 @@ import java.util.List;
  * @param <Entity> Entity's type
  * @param <PK>     Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 7
+ * @version 8
  */
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         extends BaseDAO implements IDAO<Entity, PK> {
-    @Override
-    public Criteria createCriteria() throws AppException {
+    /**
+     * Create a criteria object from session.
+     *
+     * @return expected criteria entity
+     */
+    private Criteria createCriteria() throws AppException {
         try {
             return getSession().createCriteria(getReferenceClass());
         } catch (Exception e) {
@@ -56,27 +59,58 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         }
     }
 
+    /**
+     * Update criteria entity according to specific  conditions.
+     *
+     * @param criteria
+     */
+    private void updateCriteria(Criteria criteria, Condition condition) {
+        if (condition.orders != null) {
+            for (Condition.Order order : condition.orders) {
+                criteria.addOrder(order.asc ? Order.asc(order.field) : Order.desc(order.field));
+            }
+        }
+        criteria.setFirstResult(condition.currentPage == null ? 0 : (int) (condition.currentPage - 1));
+        if (condition.countPerPage != null)
+            criteria.setMaxResults((int) condition.countPerPage.longValue());
+        if (condition.criterionList != null) {
+            for (Criterion criterion : condition.criterionList) {
+                criteria.add(criterion);
+            }
+        }
+        if (condition.projections != null) {
+            ProjectionList projectionList = Projections.projectionList();
+            for (Projection projection : condition.projections) {
+                projectionList.add(projection);
+            }
+            criteria.setProjection(projectionList);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     @Override
-    public List<Entity> findAll(Criteria criteria, Long currentPage,
-                                Long countPerPage, String orderField,
-                                Boolean asc) throws AppException {
+    public List<Entity> findAll(Condition condition) throws AppException {
+        if (condition == null)
+            condition = new Condition();
         try {
-            if (orderField != null)
-                criteria.addOrder(asc ? Order.asc(orderField) : Order.desc(orderField));
-            criteria.setFirstResult(currentPage == null ? 0 : (int) (currentPage - 1));
-            if (countPerPage != null)
-                criteria.setMaxResults((int) countPerPage.longValue());
+            Criteria criteria = createCriteria();
+            updateCriteria(criteria, condition);
             return criteria.list();
         } catch (HibernateException e) {
+            e.printStackTrace();
             throw new AppException("Invoke findAll method error.");
         }
     }
 
     @Override
-    public Long count(Criteria criteria) throws AppException {
+    public Long count(Condition condition) throws AppException {
+        if (condition == null)
+            condition = new Condition();
         try {
-            criteria.setProjection(Projections.count(getKeyFieldName()));
+            Criteria criteria = createCriteria();
+            condition.projections = null;
+            condition.addProjection(Projections.count(getKeyFieldName()));
+            updateCriteria(criteria, condition);
             return (Long) criteria.uniqueResult();
         } catch (HibernateException e) {
             throw new AppException("Invoke count method error.");
@@ -122,12 +156,12 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
 
     @Override
     public List<Entity> findAll() throws AppException {
-        return findAll(createCriteria(), null, null, null, null);
+        return findAll(null);
     }
 
     @Override
     public Long count() throws AppException {
-        return count(createCriteria());
+        return count(null);
     }
 
     /**
