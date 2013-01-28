@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package cn.edu.uestc.acmicpc.oj.db.condition;
+package cn.edu.uestc.acmicpc.oj.db.condition.base;
 
 import cn.edu.uestc.acmicpc.oj.annotation.IdSetter;
 import cn.edu.uestc.acmicpc.oj.util.ReflectionUtil;
@@ -30,8 +30,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * We can use this class to transform conditions to database's Criterion list
@@ -86,7 +84,7 @@ import java.util.List;
  * </ul>
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 @SuppressWarnings("UnusedDeclaration")
 public abstract class BaseCondition {
@@ -94,9 +92,9 @@ public abstract class BaseCondition {
     /**
      * Method for user to invoke special columns
      *
-     * @param conditions conditions that to be considered
+     * @param condition conditions that to be considered
      */
-    public abstract void invoke(ArrayList<Criterion> conditions);
+    public abstract void invoke(Condition condition);
 
     /**
      * Basic condition type of database handler
@@ -110,8 +108,8 @@ public abstract class BaseCondition {
      *
      * @return criterion list we need
      */
-    public List<Criterion> getCriterionList() {
-        return getCriterionList(false);
+    public Condition getCondition() {
+        return getCondition(false);
     }
 
     /**
@@ -121,8 +119,8 @@ public abstract class BaseCondition {
      * @return criterion list we need
      */
     @SuppressWarnings("ConstantConditions")
-    public List<Criterion> getCriterionList(boolean upperCaseFirst) {
-        ArrayList<Criterion> list = new ArrayList<Criterion>();
+    public Condition getCondition(boolean upperCaseFirst) {
+        Condition condition = new Condition();
         Class<?> clazz = this.getClass();
         Class<?> restrictionsClass = Restrictions.class;
         Class<?> objectClass = Object.class;
@@ -153,12 +151,12 @@ public abstract class BaseCondition {
                 Criterion c = (Criterion) restrictionsClass.getMethod(exp.Type().name(),
                         String.class, Object.class).invoke(null, mapField,
                         value);
-                list.add(c);
+                condition.addCriterion(c);
             } catch (Exception ignored) {
             }
         }
-        invoke(list);
-        return list;
+        invoke(condition);
+        return condition;
     }
 
     /**

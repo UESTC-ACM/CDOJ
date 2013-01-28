@@ -24,14 +24,14 @@ package cn.edu.uestc.acmicpc.oj.action.admin;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
-import cn.edu.uestc.acmicpc.oj.db.condition.UserCondition;
+import cn.edu.uestc.acmicpc.oj.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.oj.db.condition.impl.UserCondition;
+import cn.edu.uestc.acmicpc.oj.db.dto.UserDTO;
 import cn.edu.uestc.acmicpc.oj.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.db.view.UserView;
-import cn.edu.uestc.acmicpc.oj.util.DatabaseUtil;
 import cn.edu.uestc.acmicpc.oj.util.Global;
 import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
-import org.hibernate.Criteria;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ import java.util.List;
  * action for edit user information.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 2
+ * @version 3
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class UserAdminAction extends BaseAction {
@@ -73,18 +73,14 @@ public class UserAdminAction extends BaseAction {
      */
     public String toSearch() {
         try {
-            Criteria criteria = userDAO.createCriteria();
-            DatabaseUtil.putCriterionIntoCriteria(criteria, userCondition.getCriterionList());
-            Long count = userDAO.count(criteria);
-            criteria = userDAO.createCriteria();
-            DatabaseUtil.putCriterionIntoCriteria(criteria, userCondition.getCriterionList());
+            Long count = userDAO.count(userCondition.getCondition());
             PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
-            List<User> userList = userDAO.findAll(criteria, pageInfo.getCurrentPage(),
-                    RECORD_PER_PAGE, null, null);
+            List<User> userList = userDAO.findAll(new Condition(pageInfo.getCurrentPage(),
+                    RECORD_PER_PAGE, null, null));
             List<UserView> userViewList = new ArrayList<UserView>();
-            for (User user: userList)
+            for (User user : userList)
                 userViewList.add(new UserView(user));
-            json.put("pageInfo",pageInfo.getHtmlString());
+            json.put("pageInfo", pageInfo.getHtmlString());
             json.put("result", "ok");
             json.put("condition", userCondition);
             json.put("userList", userViewList);
@@ -94,7 +90,20 @@ public class UserAdminAction extends BaseAction {
         return JSON;
     }
 
+    /**
+     * User database transform object entity.
+     */
+    private UserDTO userDTO;
+
     public String toEdit() {
+        User user = userDTO.getUser();
+        try {
+            userDAO.update(user);
+            json.put("result", "error");
+        } catch (AppException e) {
+            json.put("result", "error");
+            json.put("error_msg", e.getMessage());
+        }
         return JSON;
     }
 

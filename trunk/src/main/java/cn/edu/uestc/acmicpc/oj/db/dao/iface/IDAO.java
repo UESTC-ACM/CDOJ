@@ -22,9 +22,9 @@
 
 package cn.edu.uestc.acmicpc.oj.db.dao.iface;
 
+import cn.edu.uestc.acmicpc.oj.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.util.exception.FieldNotUniqueException;
-import org.hibernate.Criteria;
 
 import java.io.Serializable;
 import java.util.List;
@@ -35,7 +35,7 @@ import java.util.List;
  * @param <Entity> Entity's type
  * @param <PK>     Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 5
+ * @version 6
  */
 public interface IDAO<Entity extends Serializable, PK extends Serializable> {
     /**
@@ -82,20 +82,12 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
     /**
      * List all entities in tables by conditions.
-     * <p/>
-     * <strong>WARN</strong>: the criteria object will be changed inside the method.
      *
-     * @param criteria     condition set
-     * @param currentPage  current page number
-     * @param countPerPage number of records per page
-     * @param orderField   order field name, null if not needed
-     * @param asc          whether sort the order field asc or not
+     * @param condition extra conditions for query
      * @return expected entity list
      * @throws AppException
      */
-    public List<Entity> findAll(Criteria criteria, Long currentPage,
-                                Long countPerPage, String orderField,
-                                Boolean asc) throws AppException;
+    public List<Entity> findAll(Condition condition) throws AppException;
 
     /**
      * Count the number of records in the table.
@@ -107,21 +99,12 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
     /**
      * Count the number of records in the table by conditions.
-     * <p/>
-     * <strong>WARN</strong>: the criteria object will be changed inside the method.
      *
-     * @param criteria condition set
+     * @param condition condition object
      * @return number of records we query
      * @throws AppException
      */
-    public Long count(Criteria criteria) throws AppException;
-
-    /**
-     * Create a criteria object from session.
-     *
-     * @return expected criteria entity
-     */
-    public Criteria createCriteria() throws AppException;
+    public Long count(Condition condition) throws AppException;
 
     /**
      * Get unique entity by the field name, if the field is not unique field, throw
