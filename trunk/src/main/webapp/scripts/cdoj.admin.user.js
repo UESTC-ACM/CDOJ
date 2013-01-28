@@ -42,6 +42,8 @@ function refreshUserList(condition) {
     $.post('/admin/user/search', condition, function(data) {
 
         console.log(data);
+        $('#pageInfo').empty();
+        $('#pageInfo').append(data.pageInfo);
 
         userList = data.userList;
 
@@ -84,6 +86,7 @@ function editUserDialog(index) {
 
 $(document).ready(function(){
     userList = refreshUserList({
-        "userCondition.startId":null
+        "userCondition.startId":10,
+        "userCondition.endId":50
     });
 });

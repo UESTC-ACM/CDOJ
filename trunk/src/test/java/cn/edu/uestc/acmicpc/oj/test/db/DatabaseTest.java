@@ -32,6 +32,7 @@ import cn.edu.uestc.acmicpc.oj.ioc.TagDAOAware;
 import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.util.exception.FieldNotUniqueException;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Simple database test class.
@@ -96,22 +98,23 @@ public class DatabaseTest implements TagDAOAware {
      * Test for User DAO
      */
     @Test
+    @Ignore
     public void testUserDAO() throws Exception {
         try {
-            User user = userDAO.getEntityByUniqueField("userName", "UESTC_Izayoi");
-            if (user == null) {
-                user = new User();
-                user.setUserName("UESTC_Izayoi");
+            for (int i = 0;i < 500;i++) {
+                User user = new User();
+                int id = new Random().nextInt();
+                user.setUserName(String.format("TEST_%d",id));
                 user.setPassword("123456");
                 user.setNickName("haha");
-                user.setEmail("muziriyun@qq.com");
+                user.setEmail(String.format("TEST_%d@mzry1992.com",id));
                 user.setSchool("UESTC");
                 user.setDepartmentByDepartmentId(departmentDAO.get(1));
                 user.setStudentId("2010013100008");
                 user.setLastLogin(new Timestamp(new Date().getTime()));
-                userDAO.add(user);
-            } else {
-                System.out.println(user.getUserId() + " " + user.getUserName());
+                User check = userDAO.getEntityByUniqueField("userName",user.getUserName());
+                if (check == null)
+                    userDAO.add(user);
             }
         } catch (Exception e) {
             throw e;
