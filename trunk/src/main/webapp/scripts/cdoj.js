@@ -80,6 +80,23 @@ function Dialog(dialog, callback) {
 }
 
 /**
+ * Show a dialog, we can define the action when dialog show.
+ * @param dialog
+ * @param onShow
+ * @param callback
+ * @constructor
+ */
+function Dialog(dialog,onShow,callback) {
+    dialog.on("show", function() {    // wire up the button
+        onShow();
+        $("a.btn-primary").on("click", callback);
+    });
+    dialog.on("hide", function() {    // remove the event listeners when the dialog is dismissed
+        $("a.btn-primary").off("click");
+    });
+}
+
+/**
  * Button click event!
  * @param button
  * @param callback

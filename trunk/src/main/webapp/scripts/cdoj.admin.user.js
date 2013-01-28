@@ -29,40 +29,61 @@
  */
 
 /**
+ * user info
+ */
+var userList;
+
+/**
  * refresh the user list
  * @param condition
  */
 function refreshUserList(condition) {
-    console.log(condition);
+
     $.post('/admin/user/search', condition, function(data) {
 
         console.log(data);
+
+        userList = data.userList;
+
+        if (data.result == "error") {
+            //TODO alert?
+            return;
+        }
 
         var tbody = $('#userList');
         // remove old user list
         tbody.find('tr').remove();
         // put user list
-        $.each(data.userList,function(index,value){
-            var html = "<tr>"+
-                "<td>"+value.userName+"</td>"+
-                "<td>"+value.nickName+"</td>"+
-                "<td>"+value.email+"</td>"+
-                "<td>"+value.school+"</td>"+
-                "<td>"+value.department+"</td>"+
-                "<td>"+value.studentId+"</td>"+
-                "<td>"+value.type+"</td>"+
-                "<td>"+value.lastLogin+"</td>"+
-                "</tr>";
-            tbody.append(html);
-            console.log(index);
-            console.log(value);
-        });
+        $.each(userList,function(index,value){
+            var html = '<tr>'+
+                '<td>'+value.userId+'</td>'+
+                '<td>'+value.userName+'</td>'+
+                '<td>'+value.nickName+'</td>'+
+                '<td>'+value.email+'</td>'+
+                '<td>'+value.type+'</td>'+
+                '<td>'+value.lastLogin+'</td>'+
+                '<td><a href="#" onclick="editUserDialog('+index+')"><i class="icon-pencil"/></a></td>'+
+                '</tr>';
 
+            tbody.append(html);
+        });
     });
 }
 
+function editUserDialog(index) {
+    userDialog = $("#userEditModal");
+    Dialog(userDialog,function() {
+        console.log(userList[index]);
+        userDialog.find("#userEditModalLabel").empty();
+        userDialog.find("#userEditModalLabel").append(userList[index]);
+    },function(e) {
+        userDialog.hide();
+    });
+    userDialog.modal();
+}
+
 $(document).ready(function(){
-    refreshUserList({
+    userList = refreshUserList({
         "userCondition.startId":null
     });
 });

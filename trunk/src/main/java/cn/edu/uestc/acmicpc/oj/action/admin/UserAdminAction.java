@@ -84,7 +84,7 @@ public class UserAdminAction extends BaseAction {
             List<UserView> userViewList = new ArrayList<UserView>();
             for (User user: userList)
                 userViewList.add(new UserView(user));
-            request.put("pageInfo", pageInfo);
+            json.put("pageInfo",pageInfo.getHtmlString());
             json.put("result", "ok");
             json.put("condition", userCondition);
             json.put("userList", userViewList);
