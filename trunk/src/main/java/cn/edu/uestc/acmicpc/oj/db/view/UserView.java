@@ -31,10 +31,11 @@ import java.sql.Timestamp;
  * use for return user information with json type.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
+ * @version 2
  */
 public class UserView {
 
+    private int userId;
     private String userName;
     private String password;
     private String nickName;
@@ -53,6 +54,7 @@ public class UserView {
      * @param user
      */
     public UserView(User user) {
+        setUserId(user.getUserId());
         setUserName(user.getUserName());
         setPassword(user.getPassword());
         setNickName(user.getNickName());
@@ -64,6 +66,14 @@ public class UserView {
         setSolved(user.getSolved());
         setType(Global.AuthenticationType.values()[user.getType()].getDescription());
         setLastLogin(user.getLastLogin());
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {

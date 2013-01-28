@@ -101,6 +101,30 @@ public class PageInfo {
     }
 
     /**
+     * get a li tag formated like <li class="sytle"><a href="url">name</a></li>
+     *
+     * @param style  the CSS style of li tag
+     * @param toPage the page to go
+     * @param name   the name display on the pagination
+     * @param baseURL the baseURL to show
+     * @return a li tag
+     */
+    private static String getLiTag(String style, Long toPage, String name, String baseURL) {
+        String result = "<li";
+        if (style != null)
+            result += String.format(" class=\"%s\"", style);
+        result += ">";
+        String url;
+        if (toPage == null)
+            url = "#";
+        else
+            url = String.format("%s%d", baseURL, toPage);
+        result += String.format("<a href=\"%s\">%s</a>", url, name);
+        result += "</li>\n";
+        return result;
+    }
+
+    /**
      * Create a PageInfo object
      *
      * @param count        total number of records
@@ -112,7 +136,9 @@ public class PageInfo {
                                   int displayDistance, String queryString) {
         queryString = queryString == null ? "" : queryString;
         countPerPage = countPerPage <= 0 ? 20 : countPerPage;
+
         Long currentPage = 1L;
+
         if (queryString.startsWith("page=")
                 || queryString.indexOf("&page=") > -1) {
             String page = queryString.replaceAll(".*&?page=", "");
@@ -125,12 +151,67 @@ public class PageInfo {
         queryString = queryString.replaceAll("&?page=\\d+", "");
         queryString = queryString.length() < 1 || queryString.startsWith("&") ? queryString
                 : "&" + queryString;
-        currentPage = currentPage == 0 ? 1 : currentPage;
-        Long max = (count + countPerPage - 1) / countPerPage;
-        currentPage = currentPage > max ? max : currentPage;
+
+        Long totalPages = (count + countPerPage - 1) / countPerPage;
+        currentPage = currentPage > totalPages ? totalPages : currentPage;
         currentPage = currentPage < 1 ? 1 : currentPage;
+
         // TODO format the HTML content use htmlString
-        String htmlString = "";
+        String htmlString = "<div class=\"pagination pagination-centered\">\n" +
+                "            <ul>\n";
+        if (currentPage == 1) {
+            htmlString += getLiTag("disabled", null, "← First",baseURL);
+            htmlString += getLiTag("disabled", null, "«",baseURL);
+        } else {
+            htmlString += getLiTag(null, 1L, "← First",baseURL);
+            htmlString += getLiTag(null, currentPage - 1, "«",baseURL);
+        }
+
+
+        if (totalPages <= 3 + displayDistance * 2) {
+            for (long i = 1; i <= totalPages; i++)
+                if (i == currentPage)
+                    htmlString += getLiTag("active", i, String.format("%d", i),baseURL);
+                else
+                    htmlString += getLiTag(null, i, String.format("%d", i),baseURL);
+        } else {
+            if (currentPage <= 2 + displayDistance) {
+                for (long i = 1; i <= 2 + displayDistance * 2; i++)
+                    if (i == currentPage)
+                        htmlString += getLiTag("active", i, String.format("%d", i),baseURL);
+                    else
+                        htmlString += getLiTag(null, i, String.format("%d", i),baseURL);
+                htmlString += getLiTag("disabled", null, "...",baseURL);
+            } else if (currentPage >= totalPages - 1 - displayDistance) {
+                htmlString += getLiTag("disabled", null, "...",baseURL);
+                for (long i = totalPages - 1 - displayDistance * 2; i <= totalPages; i++)
+                    if (i == currentPage)
+                        htmlString += getLiTag("active", i, String.format("%d", i),baseURL);
+                    else
+                        htmlString += getLiTag(null, i, String.format("%d", i),baseURL);
+            } else {
+                htmlString += getLiTag("disabled", null, "...",baseURL);
+                for (long i = currentPage - displayDistance; i <= currentPage + displayDistance; i++)
+                    if (i == currentPage)
+                        htmlString += getLiTag("active", i, String.format("%d", i),baseURL);
+                    else
+                        htmlString += getLiTag(null, i, String.format("%d", i),baseURL);
+                htmlString += getLiTag("disabled", null, "...",baseURL);
+            }
+        }
+
+        if (currentPage.equals(totalPages)) {
+            htmlString += getLiTag("disabled", null, "»",baseURL);
+            htmlString += getLiTag("disabled", null, "Last →",baseURL);
+        } else {
+            htmlString += getLiTag(null, currentPage + 1, "»",baseURL);
+            htmlString += getLiTag(null, totalPages, "Last →",baseURL);
+        }
+
+        htmlString += "\n" +
+                "            </ul>\n" +
+                "        </div>\n";
+
         return new PageInfo(currentPage, countPerPage, baseURL, displayDistance, htmlString);
     }
 }

@@ -39,33 +39,38 @@
 </head>
 <body>
 
+<div id="pageInfo">
+</div>
+
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
+            <th style="width: 30px;">Id</th>
             <th>User name</th>
             <th>Nick name</th>
             <th>Email</th>
-            <th>School</th>
-            <th>Department</th>
-            <th>Student ID</th>
-            <th>Type</th>
+            <th style="width: 100px;">Type</th>
             <th>Last login</th>
+            <th style="width: 14px;"></th>
         </tr>
     </thead>
     <tbody id="userList">
-        <tr>
-            <td>He he</td>
-            <td>aaa</td>
-            <td>He he</td>
-            <td>aaa</td>
-        </tr>
-        <tr>
-            <td>He he</td>
-            <td>aaa</td>
-            <td>He he</td>
-            <td>aaa</td>
-        </tr>
     </tbody>
 </table>
+
+<!-- User edit Modal -->
+<div id="userEditModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="userEditModal" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="userEditModalLabel"></h3>
+    </div>
+    <div class="modal-body">
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</a>
+        <a href="#" class="btn btn-primary">Update</a>
+    </div>
+</div>
+
 </body>
 </html>
