@@ -111,7 +111,7 @@ public abstract class BaseCondition {
      * @return criterion list we need
      */
     public List<Criterion> getCriterionList() {
-        return getCriterionList(true);
+        return getCriterionList(false);
     }
 
     /**
