@@ -29,11 +29,6 @@
  */
 
 /**
- * user info
- */
-var userList;
-
-/**
  * refresh the user list
  * @param condition
  */
@@ -41,17 +36,21 @@ function refreshUserList(condition) {
 
     $.post('/admin/user/search', condition, function(data) {
 
-        console.log(data);
-        $('#pageInfo').empty();
-        $('#pageInfo').append(data.pageInfo);
-
-        userList = data.userList;
-
         if (data.result == "error") {
             //TODO alert?
             return;
         }
 
+        //pagination
+        $('#pageInfo').empty();
+        $('#pageInfo').append(data.pageInfo);
+        $('#pageInfo').find('a').click(function(e) {
+            console.log(this);
+            console.log(this.attr("href"));
+            return false;
+        });
+
+        userList = data.userList;
         var tbody = $('#userList');
         // remove old user list
         tbody.find('tr').remove();
@@ -66,7 +65,6 @@ function refreshUserList(condition) {
                 '<td>'+value.lastLogin+'</td>'+
                 '<td><a href="#" onclick="editUserDialog('+index+')"><i class="icon-pencil"/></a></td>'+
                 '</tr>';
-
             tbody.append(html);
         });
     });
