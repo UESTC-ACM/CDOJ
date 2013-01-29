@@ -119,7 +119,6 @@ function GetAvatar(position) {
 
         Dialog($("#registerModal"),function(e) {
             info=$("#registerModal .form-horizontal").serializeArray();
-            console.log(info);
             $.post('/user/register', info, function(data) {
                 if (validation($("#registerModal .form-horizontal"),data) == true) {
                     $("#registerModal").modal('hide');
@@ -129,7 +128,6 @@ function GetAvatar(position) {
         });
 
         Dialog($("#loginModal"),function(e) {
-            console.log("hi");
             info=$(".form-horizontal").serializeArray();
             $.post('/user/login', info, function(data) {
                 if (validation($(".form-horizontal"),data) == true) {
