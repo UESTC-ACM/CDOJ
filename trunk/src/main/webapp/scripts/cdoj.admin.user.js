@@ -39,6 +39,7 @@ var currentCondition;
  */
 function refreshUserList(condition) {
     $.post('/admin/user/search', condition, function(data) {
+        console.log(data);
         if (data.result == "error") {
             //TODO alert?
             return;
@@ -69,11 +70,16 @@ function refreshUserList(condition) {
                 '<td>'+value.email+'</td>'+
                 '<td>'+value.type+'</td>'+
                 '<td>'+value.lastLogin+'</td>'+
-                '<td><a href="#" onclick="editUserDialog('+index+')"><i class="icon-pencil"/></a></td>'+
+                '<td><a href="#" value="'+value.userId+'" id="editUserButton""><i class="icon-pencil"/></a></td>'+
                 '</tr>';
             tbody.append(html);
         });
     });
+}
+
+function editUserDialog(index) {
+    console.log(index);
+    return false;
 }
 
 $(document).ready(function(){
@@ -128,7 +134,14 @@ $(document).ready(function(){
                 deleteList.push($(this).attr("value"));
             }
         });
-        console.log(deleteList.join());
+        if (confirm('Are you sure to delete '+deleteList.join()+'?') == true)
+        {
+            queryString = "method=delete&id="+deleteList.join();
+            $.post('/admin/user/operator?'+queryString,function(data){
+                console.log(data);
+            });
+            refreshUserList(currentCondition);
+        }
         return false;
     });
 

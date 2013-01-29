@@ -86,6 +86,15 @@ public class LoginAction extends BaseAction {
     )
     /**
      * toLogin with {@code userName} and {@code password}.
+     <strong>JSON output</strong>:
+     * <ul>
+     * <li>
+     * For success: {"result":"ok"}
+     * </li>
+     * <li>
+     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+     * </li>
+     * </ul>
      *
      * @return action signal
      */
@@ -106,10 +115,12 @@ public class LoginAction extends BaseAction {
             session.put("lastLogin", user.getLastLogin());
             session.put("userType", user.getType());
         } catch (AppException e) {
-            json.put("result", setError(e));
+            json.put("result", "error");
+            json.put("error_msg",setError(e));
             return JSON;
         } catch (Exception e) {
-            json.put("result", setError("Unknown exception occurred."));
+            json.put("result", "error");
+            json.put("error_msg",setError("Unknown exception occurred."));
             return JSON;
         }
         json.put("result", "ok");
