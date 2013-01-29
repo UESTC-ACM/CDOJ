@@ -29,13 +29,16 @@
  */
 
 /**
+ * current search condition
+ */
+var currentCondition;
+
+/**
  * refresh the user list
  * @param condition
  */
 function refreshUserList(condition) {
-
     $.post('/admin/user/search', condition, function(data) {
-
         if (data.result == "error") {
             //TODO alert?
             return;
@@ -46,10 +49,14 @@ function refreshUserList(condition) {
         $('#pageInfo').append(data.pageInfo);
         $('#pageInfo').find('a').click(function(e) {
             console.log(this);
-            console.log(this.attr("href"));
+            console.log($(this).attr("href"));
+            currentCondition.currentPage = $(this).attr("href");
+            refreshUserList(currentCondition);
             return false;
         });
 
+        //search information
+        $('input.')
         userList = data.userList;
         var tbody = $('#userList');
         // remove old user list
@@ -70,21 +77,15 @@ function refreshUserList(condition) {
     });
 }
 
-function editUserDialog(index) {
-    userDialog = $("#userEditModal");
-    Dialog(userDialog,function() {
-        console.log(userList[index]);
-        userDialog.find("#userEditModalLabel").empty();
-        userDialog.find("#userEditModalLabel").append(userList[index]);
-    },function(e) {
-        userDialog.hide();
-    });
-    userDialog.modal();
-}
-
 $(document).ready(function(){
-    userList = refreshUserList({
+    currentCondition = {
+        "currentPage":1,
         "userCondition.startId":10,
-        "userCondition.endId":50
-    });
+        "userCondition.endId":100,
+        "userCondition.userName":"TEST",
+        "userCondition.type":0,
+        "userCondition.school":"UE",
+        "userCondition.departmentId":null
+    };
+    refreshUserList(currentCondition);
 });

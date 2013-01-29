@@ -93,4 +93,5 @@ public class Global {
     public List<Department> getDepartmentList() {
         return departmentList;
     }
+
 }

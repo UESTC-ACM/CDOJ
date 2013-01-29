@@ -121,6 +121,7 @@
                 </fieldset>
             </form>
         </div>
+
         <div class="modal-footer">
             <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
             <a href="#" class="btn btn-primary">Register</a>
