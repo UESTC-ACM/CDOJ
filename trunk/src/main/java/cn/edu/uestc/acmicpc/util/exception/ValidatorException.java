@@ -20,24 +20,37 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.util;
+package cn.edu.uestc.acmicpc.util.exception;
 
-import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Global method for get method and field from objects.
+ * A simple exception implement for JSON inside.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public class ReflectionUtil {
-    @SuppressWarnings("unchecked")
-    public static Method getMethodByAnnotation(Class<?> clazz, Class annotation) {
-        Method[] methods = clazz.getMethods();
-        for (Method method : methods) {
-            if (method.getAnnotation(annotation) != null)
-                return method;
-        }
-        return null;
+public class ValidatorException extends Exception {
+    private Map<String, String> json;
+
+    /**
+     * Constructor for multiple keys and values
+     *
+     * @param json JSON Mapping
+     */
+    public ValidatorException(Map<String, String> json) {
+        super();
+        this.json = json;
+    }
+
+    public ValidatorException(String key, String value) {
+        super();
+        json = new HashMap<String, String>();
+        json.put(key, value);
+    }
+
+    public Map<String, String> getJson() {
+        return json;
     }
 }

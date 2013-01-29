@@ -20,29 +20,24 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.util;
+package cn.edu.uestc.acmicpc.util;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Criterion;
+import java.lang.reflect.Method;
 
 /**
- * All actions for database.
+ * Global method for get method and field from objects.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public class DatabaseUtil {
-    /**
-     * Put all criterion in the criterion list into criteria object.
-     *
-     * @param criteria      criteria object
-     * @param criterionList criterion list
-     */
-    public static void putCriterionIntoCriteria(Criteria criteria,
-                                                Iterable<Criterion> criterionList) {
-        if (criteria == null || criterionList == null)
-            return;
-        for (Criterion criterion : criterionList)
-            criteria.add(criterion);
+public class ReflectionUtil {
+    @SuppressWarnings("unchecked")
+    public static Method getMethodByAnnotation(Class<?> clazz, Class annotation) {
+        Method[] methods = clazz.getMethods();
+        for (Method method : methods) {
+            if (method.getAnnotation(annotation) != null)
+                return method;
+        }
+        return null;
     }
 }

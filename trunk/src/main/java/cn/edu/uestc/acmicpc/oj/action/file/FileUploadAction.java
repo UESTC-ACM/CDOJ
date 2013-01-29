@@ -23,10 +23,10 @@
 package cn.edu.uestc.acmicpc.oj.action.file;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
-import cn.edu.uestc.acmicpc.oj.util.ArrayUtil;
-import cn.edu.uestc.acmicpc.oj.util.Settings;
-import cn.edu.uestc.acmicpc.oj.util.StringUtil;
-import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.ArrayUtil;
+import cn.edu.uestc.acmicpc.util.Settings;
+import cn.edu.uestc.acmicpc.util.StringUtil;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -111,6 +111,15 @@ public abstract class FileUploadAction extends BaseAction {
     /**
      * Upload files and return as JSON type.
      * <p/>
+     * <strong>JSON output</strong>:
+     * <ul>
+     * <li>
+     * For success: {"result":"ok"}
+     * </li>
+     * <li>
+     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+     * </li>
+     * </ul>
      * <strong>WARN</strong>: the files should be uploaded as
      * <strong>POST</strong> parameters.
      */
@@ -130,7 +139,8 @@ public abstract class FileUploadAction extends BaseAction {
                 json.put("error_msg", e.getMessage());
             }
         }
-        json.put("result", "ok");
+        if (json.get("result") != null)
+            json.put("result", "ok");
     }
 
     /**

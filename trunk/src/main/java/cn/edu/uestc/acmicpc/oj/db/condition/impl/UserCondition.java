@@ -53,7 +53,7 @@ public class UserCondition extends BaseCondition {
     /**
      * User's type.
      *
-     * @see cn.edu.uestc.acmicpc.oj.util.Global.AuthenticationType
+     * @see cn.edu.uestc.acmicpc.util.Global.AuthenticationType
      */
     @Exp(Type = ConditionType.eq)
     public Integer type;

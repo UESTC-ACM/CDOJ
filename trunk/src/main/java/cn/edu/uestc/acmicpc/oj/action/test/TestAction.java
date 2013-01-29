@@ -27,8 +27,8 @@ import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.oj.db.dao.iface.ITagDAO;
 import cn.edu.uestc.acmicpc.oj.db.entity.Tag;
 import cn.edu.uestc.acmicpc.oj.ioc.TagDAOAware;
-import cn.edu.uestc.acmicpc.oj.util.Global;
-import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.util.List;
 

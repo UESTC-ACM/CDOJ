@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package cn.edu.uestc.acmicpc.oj.util;
+package cn.edu.uestc.acmicpc.util;
 
 import java.security.MessageDigest;
 import java.text.DateFormat;

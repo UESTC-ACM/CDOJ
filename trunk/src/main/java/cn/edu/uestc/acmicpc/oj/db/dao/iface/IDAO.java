@@ -23,8 +23,8 @@
 package cn.edu.uestc.acmicpc.oj.db.dao.iface;
 
 import cn.edu.uestc.acmicpc.oj.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
-import cn.edu.uestc.acmicpc.oj.util.exception.FieldNotUniqueException;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 import java.io.Serializable;
 import java.util.List;

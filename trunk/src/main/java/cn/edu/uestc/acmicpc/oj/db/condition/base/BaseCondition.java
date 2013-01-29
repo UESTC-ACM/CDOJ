@@ -21,8 +21,8 @@
 package cn.edu.uestc.acmicpc.oj.db.condition.base;
 
 import cn.edu.uestc.acmicpc.oj.annotation.IdSetter;
-import cn.edu.uestc.acmicpc.oj.util.ReflectionUtil;
-import cn.edu.uestc.acmicpc.oj.util.StringUtil;
+import cn.edu.uestc.acmicpc.util.ReflectionUtil;
+import cn.edu.uestc.acmicpc.util.StringUtil;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 

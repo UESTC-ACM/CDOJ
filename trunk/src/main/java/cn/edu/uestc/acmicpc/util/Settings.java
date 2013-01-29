@@ -20,9 +20,9 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.util;
+package cn.edu.uestc.acmicpc.util;
 
-import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.xml.XmlNode;
 import cn.edu.uestc.acmicpc.oj.xml.XmlParser;
 import org.apache.struts2.ServletActionContext;
@@ -92,7 +92,7 @@ public class Settings {
     /**
      * initialize configuration mappings from configuration file.
      *
-     * @throws cn.edu.uestc.acmicpc.oj.util.exception.AppException
+     * @throws cn.edu.uestc.acmicpc.util.exception.AppException
      *
      */
     private static void init() throws AppException {

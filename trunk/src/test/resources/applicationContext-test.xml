@@ -44,4 +44,6 @@
         <property name="userDAO" ref="userDAO"/>
         <property name="departmentDAO" ref="departmentDAO"/>
     </bean>
+    <bean id="arrayUtilTest" class="cn.edu.uestc.acmicpc.oj.test.util.ArrayUtilTest">
+    </bean>
 </beans>
