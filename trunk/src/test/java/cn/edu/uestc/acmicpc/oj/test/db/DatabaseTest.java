@@ -188,6 +188,7 @@ public class DatabaseTest implements TagDAOAware {
      * @throws AppException
      */
     @Test
+    @Ignore
     public void testUserConditionByStartIdAndEndId() throws AppException {
         UserCondition userCondition = new UserCondition();
         userCondition.startId = 50;

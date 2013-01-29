@@ -26,13 +26,17 @@ import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.oj.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.oj.db.condition.impl.UserCondition;
+import cn.edu.uestc.acmicpc.oj.db.dao.impl.DepartmentDAO;
 import cn.edu.uestc.acmicpc.oj.db.dto.UserDTO;
 import cn.edu.uestc.acmicpc.oj.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.db.view.UserView;
+import cn.edu.uestc.acmicpc.oj.ioc.DepartmentDAOAware;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import com.opensymphony.xwork2.validator.annotations.*;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +48,17 @@ import java.util.List;
  * @version 4
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class UserAdminAction extends BaseAction {
+public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
 
+    @SkipValidation
     public String toUserList() {
         return SUCCESS;
     }
+
+    /**
+     * department dao, use for get a department entity by id.
+     */
+    private DepartmentDAO departmentDAO;
 
     /**
      * Conditions for user search.
@@ -86,6 +96,7 @@ public class UserAdminAction extends BaseAction {
      *
      * @return <strong>JSON</strong> signal
      */
+    @SkipValidation
     public String toSearch() {
         try {
             Condition condition = userCondition.getCondition();
@@ -110,6 +121,8 @@ public class UserAdminAction extends BaseAction {
         return JSON;
     }
 
+    private UserDTO userDTO;
+
     /**
      * User database transform object entity.
      * <p/>
@@ -123,17 +136,63 @@ public class UserAdminAction extends BaseAction {
      * </li>
      * </ul>
      */
-    private UserDTO userDTO;
-
+    @Validations(
+            requiredStrings = {
+                    @RequiredStringValidator(
+                            fieldName = "userDTO.school",
+                            key = "error.school.validation"
+                    ),
+                    @RequiredStringValidator(
+                            fieldName = "userDTO.studentId",
+                            key = "error.studentId.validation"
+                    )
+            },
+            stringLengthFields = {
+                    @StringLengthFieldValidator(
+                            fieldName = "userDTO.school",
+                            key = "error.school.validation",
+                            minLength = "1",
+                            maxLength = "50",
+                            trim = false
+                    ),
+                    @StringLengthFieldValidator(
+                            fieldName = "userDTO.studentId",
+                            key = "error.studentId.validation",
+                            minLength = "1",
+                            maxLength = "20",
+                            trim = false
+                    )
+            },
+            fieldExpressions = {
+                    @FieldExpressionValidator(
+                            fieldName = "userDTO.departmentId",
+                            expression = "userDTO.departmentId in global.departmentList.{departmentId}",
+                            key = "error.department.validation"
+                    ),
+                    @FieldExpressionValidator(
+                            fieldName = "userDTO.type",
+                            expression = "userDTO.type in global.authenticationTypeList.{ordinal()}",
+                            key = "error.type.validation"
+                    )
+            }
+    )
     public String toEdit() {
-        User user = userDTO.getUser();
         try {
+            User user = userDAO.get(userDTO.getUserId());
+            if (user == null)
+                throw new AppException("No such user!");
+            user.setSchool(userDTO.getSchool());
+            user.setDepartmentByDepartmentId(departmentDAO.get(userDTO.getDepartmentId()));
+            user.setSchool(userDTO.getSchool());
+            user.setStudentId(userDTO.getStudentId());
+            user.setType(userDTO.getType());
             userDAO.update(user);
             json.put("result", "ok");
         } catch (AppException e) {
             json.put("result", "error");
             json.put("error_msg", e.getMessage());
         } catch (Exception e) {
+            e.printStackTrace();
             json.put("result", "error");
             json.put("error_msg", "Unknown exception occurred.");
         }
@@ -158,7 +217,6 @@ public class UserAdminAction extends BaseAction {
     public String toOperatorUser() {
         try {
             int count = 0, total = 0;
-            System.out.println(get("id") + " " + get("method"));
             Integer[] ids = ArrayUtil.parseIntArray(get("id"));
             String method = get("method");
             for (Integer id : ids)
@@ -184,6 +242,10 @@ public class UserAdminAction extends BaseAction {
         return JSON;
     }
 
+    public UserDTO getUserDTO() {
+        return userDTO;
+    }
+
     /**
      * User DTO setter for IoC.
      *
@@ -192,5 +254,13 @@ public class UserAdminAction extends BaseAction {
     @SuppressWarnings("UnusedDeclaration")
     public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
+    }
+
+    public DepartmentDAO getDepartmentDAO() {
+        return departmentDAO;
+    }
+
+    public void setDepartmentDAO(DepartmentDAO departmentDAO) {
+        this.departmentDAO = departmentDAO;
     }
 }

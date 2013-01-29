@@ -99,7 +99,7 @@ td {
 }
 
 /* register modal */
-#registerModal {
+#registerModal,#userEditModal{
     width: 960px;
     left: 36%;
 }

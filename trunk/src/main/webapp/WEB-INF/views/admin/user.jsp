@@ -104,9 +104,11 @@
                     </div>
                     <div class="input-prepend">
                         <span class="add-on">Type</span>
-                        <s:textfield name="userCondition.type"
-                                     maxLength="1"
-                                     cssClass="input-mini"/>
+                        <s:select name="userCondition.type"
+                                  list="global.authenticationTypeList"
+                                  listKey="ordinal()"
+                                  listValue="description"
+                                  cssClass="span4"/>
                     </div>
                 </div>
                 <div class="control-group">
@@ -141,6 +143,53 @@
         <h3 id="userEditModalLabel"></h3>
     </div>
     <div class="modal-body">
+        <form class="form-horizontal">
+            <fieldset>
+                <s:textfield name="userDTO.userId"
+                             maxLength="20"
+                             cssClass="span4"
+                             label="User ID"
+                             readonly="true"
+                             theme="bootstrap"/>
+                <s:textfield name="userDTO.nickName"
+                             maxLength="20"
+                             cssClass="span4"
+                             label="Nick name"
+                             readonly="true"
+                             theme="bootstrap"/>
+                <s:textfield name="userDTO.email"
+                             maxLength="100"
+                             cssClass="span4"
+                             label="Email"
+                             readonly="true"
+                             theme="bootstrap"/>
+                <s:textfield name="userDTO.school"
+                             maxLength="50"
+                             cssClass="span4"
+                             value="UESTC"
+                             label="School"
+                             theme="bootstrap"/>
+                <s:select name="userDTO.departmentId"
+                          list="global.departmentList"
+                          listKey="departmentId"
+                          listValue="name"
+                          cssClass="span4"
+                          label="Department"
+                          theme="bootstrap"/>
+                <s:textfield name="userDTO.studentId"
+                             maxLength="20"
+                             cssClass="span4"
+                             label="Student ID"
+                             theme="bootstrap"/>
+                <s:select name="userDTO.type"
+                          list="global.authenticationTypeList"
+                          listKey="ordinal()"
+                          listValue="description"
+                          cssClass="span4"
+                          label="Type"
+                          theme="bootstrap"/>
+            </fieldset>
+        </form>
     </div>
     <div class="modal-footer">
         <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</a>

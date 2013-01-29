@@ -34,12 +34,16 @@
 var currentCondition;
 
 /**
+ * current user list
+ */
+var userList;
+
+/**
  * refresh the user list
  * @param condition
  */
 function refreshUserList(condition) {
     $.post('/admin/user/search', condition, function(data) {
-        console.log(data);
         if (data.result == "error") {
             //TODO alert?
             return;
@@ -49,8 +53,6 @@ function refreshUserList(condition) {
         $('#pageInfo').empty();
         $('#pageInfo').append(data.pageInfo);
         $('#pageInfo').find('a').click(function(e) {
-            console.log(this);
-            console.log($(this).attr("href"));
             currentCondition.currentPage = $(this).attr("href");
             refreshUserList(currentCondition);
             return false;
@@ -70,22 +72,50 @@ function refreshUserList(condition) {
                 '<td>'+value.email+'</td>'+
                 '<td>'+value.type+'</td>'+
                 '<td>'+value.lastLogin+'</td>'+
-                '<td><a href="#" value="'+value.userId+'" id="editUserButton""><i class="icon-pencil"/></a></td>'+
+                '<td><a href="#" onclick="return editUserDialog('+index+')"><i class="icon-pencil"/></a></td>'+
                 '</tr>';
             tbody.append(html);
         });
     });
 }
 
+/**
+ * show dialog to edit user defined in userList[index]
+ *
+ * @param index
+ * @return always return false to stop url jump event.
+ */
 function editUserDialog(index) {
-    console.log(index);
+    user = userList[index];
+    userDTO = {
+        "userDTO.userId":user.userId,
+        "userDTO.nickName":user.nickName,
+        "userDTO.email":user.email,
+        "userDTO.school":user.school,
+        "userDTO.departmentId":user.departmentId,
+        "userDTO.studentId":user.studentId,
+        "userDTO.type":user.type
+    };
+    $.each(userDTO, function(index,value) {
+        $('#'+index.replace('.','_')).attr("value",value);
+    });
+    $('#userDTO_type').find('option').each(function(){
+        if ($(this).text() == userDTO["userDTO.type"])
+            $('#userDTO_type').attr("value",$(this).val());
+    });
+    dialog = $('#userEditModal');
+    dialog.find('#userEditModalLabel').empty();
+    dialog.find('#userEditModalLabel').append(user.userName);
+    dialog.modal();
     return false;
 }
 
 $(document).ready(function(){
 
-    $('#userCondition_departmentId').prepend('<option value="0">All</option>');
-    $('#userCondition_departmentId').attr("value",0);
+    $('#userCondition_departmentId').prepend('<option value="-1">All</option>');
+    $('#userCondition_departmentId').attr("value",-1);
+    $('#userCondition_type').prepend('<option value="-1">All</option>');
+    $('#userCondition_type').attr("value",-1);
 
     currentCondition = {
         "currentPage":null,
@@ -102,8 +132,10 @@ $(document).ready(function(){
             if (index.indexOf('.') != -1)
                 currentCondition[index] = $('#'+index.replace('.','_')).val();
         });
-        if (currentCondition["userCondition.departmentId"] == 0)
+        if (currentCondition["userCondition.departmentId"] == -1)
             currentCondition["userCondition.departmentId"] = null;
+        if (currentCondition["userCondition.type"] == -1)
+            currentCondition["userCondition.type"] = null;
         currentCondition.currentPage = 1;
         refreshUserList(currentCondition);
         $('#TabMenu a:first').tab('show');
@@ -138,11 +170,23 @@ $(document).ready(function(){
         {
             queryString = "method=delete&id="+deleteList.join();
             $.post('/admin/user/operator?'+queryString,function(data){
-                console.log(data);
+                alert(data.result);
+                refreshUserList(currentCondition);
             });
-            refreshUserList(currentCondition);
         }
         return false;
+    });
+
+    Dialog($('#userEditModal'),function(e){
+        info = $('#userEditModal .form-horizontal').serializeArray();
+        $.post('/admin/user/edit', info, function(data) {
+            console.log(info);
+            console.log(data);
+            if (validation($("#userEditModal .form-horizontal"),data) == true) {
+                $("#userEditModal").modal('hide');
+                refreshUserList(currentCondition);
+            }
+        });
     });
 
     refreshUserList(currentCondition);

@@ -26,6 +26,7 @@ import cn.edu.uestc.acmicpc.oj.db.dao.impl.DepartmentDAO;
 import cn.edu.uestc.acmicpc.oj.db.entity.Department;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,10 +71,19 @@ public class Global {
     private List<Department> departmentList;
 
     /**
+     * authentication type list
+     */
+    private List<AuthenticationType> authenticationTypeList;
+
+    /**
      * Initializer.
      */
     public void init() throws AppException {
         this.departmentList = departmentDAO.findAll();
+        this.authenticationTypeList = new ArrayList<AuthenticationType>();
+        this.authenticationTypeList.clear();
+        for (AuthenticationType authenticationType:AuthenticationType.values())
+            authenticationTypeList.add(authenticationType);
     }
 
     /**
@@ -94,4 +104,12 @@ public class Global {
         return departmentList;
     }
 
+    /**
+     * Get all authentications.
+     *
+     * @return All authentication type
+     */
+    public List<AuthenticationType> getAuthenticationTypeList() {
+        return authenticationTypeList;
+    }
 }
