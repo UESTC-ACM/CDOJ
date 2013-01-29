@@ -399,6 +399,15 @@ public class BaseAction extends ActionSupport
     }
 
     /**
+     * save current page information from post.
+     */
+    private Long currentPage;
+
+    public void setCurrentPage(Long currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    /**
      * Build a page html content according to number of records, records per page,
      * base URL and display distance.
      * <p/>
@@ -417,7 +426,7 @@ public class BaseAction extends ActionSupport
                                      String baseURL, Integer displayDistance) {
         PageInfo pageInfo = PageInfo.create(count, countPerPage,
                 baseURL, displayDistance == null ? 3 : displayDistance,
-                httpServletRequest.getQueryString());
+                currentPage);
         request.put("pageInfo", pageInfo.getHtmlString());
         return pageInfo;
     }

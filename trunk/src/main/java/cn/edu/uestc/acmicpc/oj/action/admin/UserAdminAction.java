@@ -52,13 +52,14 @@ public class UserAdminAction extends BaseAction {
     /**
      * Conditions for user search.
      */
-    private UserCondition userCondition;
+    public UserCondition userCondition;
 
     /**
      * Setter of userCondition for Ioc.
      *
      * @param userCondition newly userCondition
      */
+    @Deprecated
     public void setUserCondition(UserCondition userCondition) {
         this.userCondition = userCondition;
     }
@@ -73,10 +74,12 @@ public class UserAdminAction extends BaseAction {
      */
     public String toSearch() {
         try {
+            Condition condition = userCondition.getCondition();
             Long count = userDAO.count(userCondition.getCondition());
             PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
-            List<User> userList = userDAO.findAll(new Condition(pageInfo.getCurrentPage(),
-                    RECORD_PER_PAGE, null, null));
+            condition.currentPage = pageInfo.getCurrentPage();
+            condition.countPerPage = RECORD_PER_PAGE;
+            List<User> userList = userDAO.findAll(condition);
             List<UserView> userViewList = new ArrayList<UserView>();
             for (User user : userList)
                 userViewList.add(new UserView(user));
@@ -107,4 +110,7 @@ public class UserAdminAction extends BaseAction {
         return JSON;
     }
 
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
+    }
 }

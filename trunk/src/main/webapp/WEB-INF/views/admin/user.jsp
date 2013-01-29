@@ -58,6 +58,58 @@
     </tbody>
 </table>
 
+<div id="userCondition">
+    <form class="well form-inline">
+        <div class="control-group">
+            <div class="input-prepend">
+                <span class="add-on">Form</span>
+                <s:textfield name="userCondition.startId"
+                             maxLength="6"
+                             cssClass="input-small"/>
+            </div>
+            <div class="input-prepend">
+                <span class="add-on">To</span>
+                <s:textfield name="userCondition.endId"
+                             maxLength="6"
+                             cssClass="input-small"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="input-prepend">
+                <span class="add-on">User name</span>
+                <s:textfield name="userCondition.userName"
+                             maxLength="24"
+                             cssClass="span4"/>
+            </div>
+            <div class="input-prepend">
+                <span class="add-on">Type</span>
+                <s:textfield name="userCondition.type"
+                             maxLength="1"
+                             cssClass="input-mini"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="input-prepend">
+                <span class="add-on">School</span>
+                <s:textfield name="userCondition.school"
+                             maxLength="50"
+                             cssClass="span4"/>
+            </div>
+            <div class="input-prepend">
+                <span class="add-on">Department</span>
+                <s:select name="userDTO.departmentId"
+                          list="global.departmentList"
+                          listKey="departmentId"
+                          listValue="name"
+                          cssClass="span4"/>
+            </div>
+        </div>
+        <s:submit cssClass="btn btn-primary"
+                  value="Search"
+                  theme="bootstrap"/>
+    </form>
+</div>
+
 <!-- User edit Modal -->
 <div id="userEditModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="userEditModal" aria-hidden="true">
     <div class="modal-header">

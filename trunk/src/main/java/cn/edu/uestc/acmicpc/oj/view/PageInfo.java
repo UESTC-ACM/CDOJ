@@ -129,28 +129,13 @@ public class PageInfo {
      *
      * @param count        total number of records
      * @param countPerPage number of records per page
-     * @param queryString  html query string, which start with ? in URL string
+     * @param currentPage  current page number to show
      * @return a specific PageInfo object
      */
     public static PageInfo create(Long count, Long countPerPage, String baseURL,
-                                  int displayDistance, String queryString) {
-        queryString = queryString == null ? "" : queryString;
+                                  int displayDistance, Long currentPage) {
         countPerPage = countPerPage <= 0 ? 20 : countPerPage;
-
-        Long currentPage = 1L;
-
-        if (queryString.startsWith("page=")
-                || queryString.indexOf("&page=") > -1) {
-            String page = queryString.replaceAll(".*&?page=", "");
-            page = page.replaceAll("&.*", "");
-            try {
-                currentPage = Long.parseLong(page);
-            } catch (Exception e) {
-            }
-        }
-        queryString = queryString.replaceAll("&?page=\\d+", "");
-        queryString = queryString.length() < 1 || queryString.startsWith("&") ? queryString
-                : "&" + queryString;
+        currentPage = currentPage == null ? 1: currentPage;
 
         Long totalPages = (count + countPerPage - 1) / countPerPage;
         currentPage = currentPage > totalPages ? totalPages : currentPage;
