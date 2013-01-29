@@ -20,20 +20,24 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.util.exception;
+package cn.edu.uestc.acmicpc.util.exception;
+
+import java.io.Serializable;
 
 /**
- * Specific exception for DAO
+ * Global Application Exception class
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 1
  */
-public class FieldNotUniqueException extends Exception {
+public class AppException extends Exception implements Serializable {
+    private static final long serialVersionUID = -4267655542557102261L;
+
     /**
      * Construct a new application exception with {@code null} as its detail
      * message and cause.
      */
-    public FieldNotUniqueException() {
+    public AppException() {
         super();
     }
 
@@ -43,7 +47,7 @@ public class FieldNotUniqueException extends Exception {
      *
      * @param message the detail message
      */
-    public FieldNotUniqueException(String message) {
+    public AppException(String message) {
         super(message);
     }
 
@@ -54,7 +58,7 @@ public class FieldNotUniqueException extends Exception {
      * @param message the detail message
      * @param cause   the cause
      */
-    public FieldNotUniqueException(String message, Throwable cause) {
+    public AppException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -64,7 +68,7 @@ public class FieldNotUniqueException extends Exception {
      *
      * @param cause the cause
      */
-    public FieldNotUniqueException(Throwable cause) {
+    public AppException(Throwable cause) {
         super(cause);
     }
 
@@ -80,8 +84,8 @@ public class FieldNotUniqueException extends Exception {
      * @param writableStackTrace whether or not the stack trace should
      *                           be writable
      */
-    public FieldNotUniqueException(String message, Throwable cause,
-                                   boolean enableSuppression, boolean writableStackTrace) {
+    public AppException(String message, Throwable cause,
+                        boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

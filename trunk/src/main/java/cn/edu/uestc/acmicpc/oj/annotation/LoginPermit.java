@@ -22,7 +22,7 @@
 
 package cn.edu.uestc.acmicpc.oj.annotation;
 
-import cn.edu.uestc.acmicpc.oj.util.Global;
+import cn.edu.uestc.acmicpc.util.Global;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -40,10 +40,10 @@ public @interface LoginPermit {
 
     /**
      * Set user type needed. The user type can refer to
-     * {@link cn.edu.uestc.acmicpc.oj.util.Global.AuthenticationType}.
+     * {@link cn.edu.uestc.acmicpc.util.Global.AuthenticationType}.
      *
      * @return User type needed.
-     * @see cn.edu.uestc.acmicpc.oj.util.Global.AuthenticationType
+     * @see cn.edu.uestc.acmicpc.util.Global.AuthenticationType
      */
     public Global.AuthenticationType value() default Global.AuthenticationType.NORMAL;
 

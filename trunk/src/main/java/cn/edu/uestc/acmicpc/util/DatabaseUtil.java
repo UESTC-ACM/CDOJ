@@ -20,37 +20,29 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.util.exception;
+package cn.edu.uestc.acmicpc.util;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
 
 /**
- * A simple exception implement for JSON inside.
+ * All actions for database.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public class ValidatorException extends Exception {
-    private Map<String, String> json;
-
+public class DatabaseUtil {
     /**
-     * Constructor for multiple keys and values
+     * Put all criterion in the criterion list into criteria object.
      *
-     * @param json JSON Mapping
+     * @param criteria      criteria object
+     * @param criterionList criterion list
      */
-    public ValidatorException(Map<String, String> json) {
-        super();
-        this.json = json;
-    }
-
-    public ValidatorException(String key, String value) {
-        super();
-        json = new HashMap<String, String>();
-        json.put(key, value);
-    }
-
-    public Map<String, String> getJson() {
-        return json;
+    public static void putCriterionIntoCriteria(Criteria criteria,
+                                                Iterable<Criterion> criterionList) {
+        if (criteria == null || criterionList == null)
+            return;
+        for (Criterion criterion : criterionList)
+            criteria.add(criterion);
     }
 }

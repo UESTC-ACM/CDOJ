@@ -20,11 +20,11 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.util;
+package cn.edu.uestc.acmicpc.util;
 
 import cn.edu.uestc.acmicpc.oj.db.dao.impl.DepartmentDAO;
 import cn.edu.uestc.acmicpc.oj.db.entity.Department;
-import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.util.List;
 

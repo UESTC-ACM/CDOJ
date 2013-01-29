@@ -24,7 +24,7 @@ package cn.edu.uestc.acmicpc.oj.db.dto;
 
 import cn.edu.uestc.acmicpc.oj.db.entity.Department;
 import cn.edu.uestc.acmicpc.oj.db.entity.User;
-import cn.edu.uestc.acmicpc.oj.util.StringUtil;
+import cn.edu.uestc.acmicpc.util.StringUtil;
 
 import java.sql.Timestamp;
 import java.util.Date;

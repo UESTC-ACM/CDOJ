@@ -24,8 +24,8 @@ package cn.edu.uestc.acmicpc.oj.db.dao.base;
 
 import cn.edu.uestc.acmicpc.oj.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.oj.db.dao.iface.IDAO;
-import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
-import cn.edu.uestc.acmicpc.oj.util.exception.FieldNotUniqueException;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.*;

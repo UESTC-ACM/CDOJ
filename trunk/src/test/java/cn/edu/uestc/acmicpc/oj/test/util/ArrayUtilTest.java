@@ -1,4 +1,3 @@
-package cn.edu.uestc.acmicpc.oj.test.util;
 /*
  *
  *  * cdoj, UESTC ACMICPC Online Judge
@@ -21,41 +20,34 @@ package cn.edu.uestc.acmicpc.oj.test.util;
  *
  */
 
-import cn.edu.uestc.acmicpc.oj.db.entity.Department;
-import cn.edu.uestc.acmicpc.util.Global;
+package cn.edu.uestc.acmicpc.oj.test.util;
+
+import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.List;
-
 /**
- * Util class test
+ * Test case for array util methods.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 1
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml",
         "classpath:applicationContext-test.xml"})
-public class UtilTest {
-    @Autowired
-    private Global global = null;
-
-    public void setGlobal(Global global) {
-        this.global = global;
-    }
-
+public class ArrayUtilTest {
     @Test
-    public void testGlobal() {
-        Assert.assertNotNull("Constructor global instance is null.", global);
-        List<Department> departments = global.getDepartmentList();
-        for (Department department : departments) {
-            System.out.println(department.getDepartmentId()
-                    + "\t" + department.getName());
-        }
+    public void testParseIntArray() {
+        Assert.assertArrayEquals(new Integer[]{null}, ArrayUtil.parseIntArray(""));
+        Assert.assertArrayEquals(new Integer[]{1}, ArrayUtil.parseIntArray("1"));
+        Assert.assertArrayEquals(new Integer[]{1, 2, 31424, null, 1231},
+                ArrayUtil.parseIntArray("1, 2, 31424 , 123154153151541234 , 1231"));
+        Assert.assertArrayEquals(new Integer[]{1, 2, 31424, null, 1231},
+                ArrayUtil.parseIntArray("1,2,31424,123154153151541234,1231"));
+        Assert.assertArrayEquals(new Integer[]{null, null},
+                ArrayUtil.parseIntArray("1s, error"));
     }
 }

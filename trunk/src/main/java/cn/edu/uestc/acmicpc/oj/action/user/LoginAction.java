@@ -25,8 +25,8 @@ package cn.edu.uestc.acmicpc.oj.action.user;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.oj.db.entity.User;
-import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
-import cn.edu.uestc.acmicpc.oj.util.StringUtil;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.StringUtil;
 import com.opensymphony.xwork2.validator.annotations.*;
 
 import java.sql.Timestamp;

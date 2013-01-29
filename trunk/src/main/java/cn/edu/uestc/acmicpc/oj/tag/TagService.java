@@ -22,7 +22,7 @@
 
 package cn.edu.uestc.acmicpc.oj.tag;
 
-import cn.edu.uestc.acmicpc.oj.util.StringUtil;
+import cn.edu.uestc.acmicpc.util.StringUtil;
 import com.opensymphony.xwork2.util.ValueStack;
 import org.apache.struts2.components.ContextBean;
 

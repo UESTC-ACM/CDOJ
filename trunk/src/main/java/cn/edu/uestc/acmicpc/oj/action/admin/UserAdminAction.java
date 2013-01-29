@@ -29,9 +29,10 @@ import cn.edu.uestc.acmicpc.oj.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.oj.db.dto.UserDTO;
 import cn.edu.uestc.acmicpc.oj.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.db.view.UserView;
-import cn.edu.uestc.acmicpc.oj.util.Global;
-import cn.edu.uestc.acmicpc.oj.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
+import cn.edu.uestc.acmicpc.util.ArrayUtil;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ import java.util.List;
  * action for edit user information.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 3
+ * @version 4
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class UserAdminAction extends BaseAction {
@@ -69,6 +70,18 @@ public class UserAdminAction extends BaseAction {
      * <p/>
      * Find all records by conditions and return them as a list in JSON, and the condition
      * set will set in JSON named "condition".
+     * <p/>
+     * <strong>JSON output</strong>:
+     * <ul>
+     * <li>
+     * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>,
+     * "condition", <strong>UserCondition entity</strong>,
+     * "userList":<strong>query result</strong>}
+     * </li>
+     * <li>
+     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+     * </li>
+     * </ul>
      *
      * @return <strong>JSON</strong> signal
      */
@@ -89,12 +102,25 @@ public class UserAdminAction extends BaseAction {
             json.put("userList", userViewList);
         } catch (AppException e) {
             json.put("result", "error");
+        } catch (Exception e) {
+            json.put("result", "error");
+            json.put("error_msg", "Unknown exception occurred.");
         }
         return JSON;
     }
 
     /**
      * User database transform object entity.
+     * <p/>
+     * <strong>JSON output</strong>:
+     * <ul>
+     * <li>
+     * For success: {"result":"ok"}
+     * </li>
+     * <li>
+     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+     * </li>
+     * </ul>
      */
     private UserDTO userDTO;
 
@@ -102,18 +128,65 @@ public class UserAdminAction extends BaseAction {
         User user = userDTO.getUser();
         try {
             userDAO.update(user);
-            json.put("result", "error");
+            json.put("result", "ok");
         } catch (AppException e) {
             json.put("result", "error");
             json.put("error_msg", e.getMessage());
+        } catch (Exception e) {
+            json.put("result", "error");
+            json.put("error_msg", "Unknown exception occurred.");
         }
         return JSON;
     }
 
+    /**
+     * Action to operate multiple users.
+     * <p/>
+     * <strong>JSON output</strong>:
+     * <ul>
+     * <li>
+     * For success: {"result":"ok", "msg":<strong>successful message</strong>}
+     * </li>
+     * <li>
+     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+     * </li>
+     * </ul>
+     *
+     * @return <strong>JSON</strong> signal.
+     */
     public String toOperatorUser() {
+        try {
+            int count = 0, total = 0;
+            Integer[] ids = ArrayUtil.parseIntArray(get("id"));
+            String method = get("method");
+            for (int i = 0; i < ids.length; ++i)
+                if (ids[i] != null) {
+                    ++total;
+                    try {
+                        if ("delete".equals(method)) {
+                            userDAO.delete(userDAO.get(ids[i]));
+                        }
+                        ++count;
+                    } catch (AppException e) {
+                    }
+                }
+            json.put("result", "ok");
+            String message = "";
+            if ("delete".equals(message))
+                message = String.format("%d total, %d deleted.", total, count);
+            json.put("msg", message);
+        } catch (Exception e) {
+            json.put("result", "error");
+            json.put("error_msg", "Unknown exception occurred.");
+        }
         return JSON;
     }
 
+    /**
+     * User DTO setter for IoC.
+     *
+     * @param userDTO user data transform object
+     */
     public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
     }

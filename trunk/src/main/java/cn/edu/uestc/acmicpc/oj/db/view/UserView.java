@@ -23,7 +23,7 @@
 package cn.edu.uestc.acmicpc.oj.db.view;
 
 import cn.edu.uestc.acmicpc.oj.db.entity.User;
-import cn.edu.uestc.acmicpc.oj.util.Global;
+import cn.edu.uestc.acmicpc.util.Global;
 
 import java.sql.Timestamp;
 

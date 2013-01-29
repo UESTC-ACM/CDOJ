@@ -20,13 +20,13 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.util;
+package cn.edu.uestc.acmicpc.util;
 
 /**
  * Array util functions.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 public class ArrayUtil {
     /**
@@ -70,6 +70,29 @@ public class ArrayUtil {
         Object[] result = new Object[array.length];
         for (int i = 0; i < result.length; i++)
             result[i] = array[i];
+        return result;
+    }
+
+    /**
+     * Transform string array into integer array.
+     * <p/>
+     * Set element null if it can not be parsed to integer.
+     *
+     * @param s integer list splitting with ','
+     * @return expected integer array
+     */
+    public static Integer[] parseIntArray(String s) {
+        if (s == null)
+            return new Integer[0];
+        String[] arr = s.split("[,]");
+        Integer[] result = new Integer[arr.length];
+        for (int i = 0; i < arr.length; ++i) {
+            try {
+                result[i] = Integer.parseInt(arr[i].trim());
+            } catch (NumberFormatException e) {
+                result[i] = null;
+            }
+        }
         return result;
     }
 }

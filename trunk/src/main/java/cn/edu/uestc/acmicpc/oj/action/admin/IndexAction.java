@@ -24,7 +24,7 @@ package cn.edu.uestc.acmicpc.oj.action.admin;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
-import cn.edu.uestc.acmicpc.oj.util.Global;
+import cn.edu.uestc.acmicpc.util.Global;
 
 /**
  * description
