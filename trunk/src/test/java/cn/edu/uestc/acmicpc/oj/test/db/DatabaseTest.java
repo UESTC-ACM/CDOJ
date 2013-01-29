@@ -35,10 +35,7 @@ import cn.edu.uestc.acmicpc.oj.ioc.TagDAOAware;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -123,25 +120,21 @@ public class DatabaseTest implements TagDAOAware {
      */
     @Test
     @Ignore
-    public void testUserDAO() throws Exception {
-        try {
-            for (int i = 0; i < 500; i++) {
-                User user = new User();
-                int id = new Random().nextInt();
-                user.setUserName(String.format("TEST_%d", id));
-                user.setPassword("123456");
-                user.setNickName("haha");
-                user.setEmail(String.format("TEST_%d@mzry1992.com", id));
-                user.setSchool("UESTC");
-                user.setDepartmentByDepartmentId(departmentDAO.get(1));
-                user.setStudentId("2010013100008");
-                user.setLastLogin(new Timestamp(new Date().getTime()));
-                User check = userDAO.getEntityByUniqueField("userName", user.getUserName());
-                if (check == null)
-                    userDAO.add(user);
-            }
-        } catch (Exception e) {
-            throw e;
+    public void testUserDAO() throws AppException, FieldNotUniqueException {
+        for (int i = 0; i < 500; i++) {
+            User user = new User();
+            int id = new Random().nextInt();
+            user.setUserName(String.format("TEST_%d", id));
+            user.setPassword("123456");
+            user.setNickName("haha");
+            user.setEmail(String.format("TEST_%d@mzry1992.com", id));
+            user.setSchool("UESTC");
+            user.setDepartmentByDepartmentId(departmentDAO.get(1));
+            user.setStudentId("2010013100008");
+            user.setLastLogin(new Timestamp(new Date().getTime()));
+            User check = userDAO.getEntityByUniqueField("userName", user.getUserName());
+            if (check == null)
+                userDAO.add(user);
         }
     }
 
@@ -215,5 +208,18 @@ public class DatabaseTest implements TagDAOAware {
         userCondition.userName = "admin";
         Long count = userDAO.count(userCondition.getCondition());
         Assert.assertEquals(1L, count.longValue());
+    }
+
+    /**
+     * Test for DAO delete method.
+     */
+    @Test
+    @Ignore
+    public void testDelete() throws AppException, FieldNotUniqueException {
+        User user = userDAO.getEntityByUniqueField("userName", "admin");
+        Long oldCount = userDAO.count();
+        userDAO.delete(user);
+        Long newCount = userDAO.count();
+        Assert.assertEquals(oldCount - 1, newCount.longValue());
     }
 }

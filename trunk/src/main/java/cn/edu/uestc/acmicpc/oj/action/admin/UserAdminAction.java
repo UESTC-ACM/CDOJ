@@ -60,6 +60,7 @@ public class UserAdminAction extends BaseAction {
      *
      * @param userCondition newly userCondition
      */
+    @SuppressWarnings("UnusedDeclaration")
     @Deprecated
     public void setUserCondition(UserCondition userCondition) {
         this.userCondition = userCondition;
@@ -157,18 +158,18 @@ public class UserAdminAction extends BaseAction {
     public String toOperatorUser() {
         try {
             int count = 0, total = 0;
-            System.out.println(get("id")+" "+get("method"));
+            System.out.println(get("id") + " " + get("method"));
             Integer[] ids = ArrayUtil.parseIntArray(get("id"));
             String method = get("method");
-            for (int i = 0; i < ids.length; ++i)
-                if (ids[i] != null) {
+            for (Integer id : ids)
+                if (id != null) {
                     ++total;
                     try {
                         if ("delete".equals(method)) {
-                            userDAO.delete(userDAO.get(ids[i]));
+                            userDAO.delete(userDAO.get(id));
                         }
                         ++count;
-                    } catch (AppException e) {
+                    } catch (AppException ignored) {
                     }
                 }
             json.put("result", "ok");
@@ -188,6 +189,7 @@ public class UserAdminAction extends BaseAction {
      *
      * @param userDTO user data transform object
      */
+    @SuppressWarnings("UnusedDeclaration")
     public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
     }

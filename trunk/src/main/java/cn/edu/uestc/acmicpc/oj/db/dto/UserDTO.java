@@ -146,7 +146,8 @@ public class UserDTO {
      */
     public User getUser() {
         user = new User();
-        user.setUserId(getUserId());
+        if (getUserId() != null)
+            user.setUserId(getUserId());
         user.setUserName(getUserName());
         user.setPassword(StringUtil.encodeSHA1(getPassword()));
         user.setNickName(getNickName());
