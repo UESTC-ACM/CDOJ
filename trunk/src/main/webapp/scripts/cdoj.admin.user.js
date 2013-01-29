@@ -55,8 +55,6 @@ function refreshUserList(condition) {
             return false;
         });
 
-        //search information
-        $('input.')
         userList = data.userList;
         var tbody = $('#userList');
         // remove old user list
@@ -64,6 +62,7 @@ function refreshUserList(condition) {
         // put user list
         $.each(userList,function(index,value){
             var html = '<tr>'+
+                '<td><input type="checkbox" id="deleteSelector'+value.userId+'" value="'+value.userId+'"></td>'+
                 '<td>'+value.userId+'</td>'+
                 '<td>'+value.userName+'</td>'+
                 '<td>'+value.nickName+'</td>'+
@@ -78,14 +77,60 @@ function refreshUserList(condition) {
 }
 
 $(document).ready(function(){
+
+    $('#userCondition_departmentId').prepend('<option value="0">All</option>');
+    $('#userCondition_departmentId').attr("value",0);
+
     currentCondition = {
-        "currentPage":1,
-        "userCondition.startId":10,
-        "userCondition.endId":100,
-        "userCondition.userName":"TEST",
-        "userCondition.type":0,
-        "userCondition.school":"UE",
+        "currentPage":null,
+        "userCondition.startId":null,
+        "userCondition.endId":null,
+        "userCondition.userName":null,
+        "userCondition.type":null,
+        "userCondition.school":null,
         "userCondition.departmentId":null
     };
+
+    $('input#search').click(function(e) {
+        $.each(currentCondition, function(index,value) {
+            if (index.indexOf('.') != -1)
+                currentCondition[index] = $('#'+index.replace('.','_')).val();
+        });
+        if (currentCondition["userCondition.departmentId"] == 0)
+            currentCondition["userCondition.departmentId"] = null;
+        currentCondition.currentPage = 1;
+        refreshUserList(currentCondition);
+        $('#TabMenu a:first').tab('show');
+        return false;
+    });
+
+    $('a#selectAllUser').click(function(e) {
+        selectorList = $('#userList').find(':checkbox');
+        $.each(selectorList,function() {
+            $(this).attr("checked", true);
+        });
+        return false;
+    });
+
+    $('a#clearSelectedUser').click(function(e) {
+        selectorList = $('#userList').find(':checkbox');
+        $.each(selectorList,function() {
+            $(this).attr("checked", false);
+        });
+        return false;
+    });
+
+    $('a#deleteSelectedUser').click(function(e) {
+        selectorList = $('#userList').find(':checkbox');
+        var deleteList = new Array();
+        $.each(selectorList,function() {
+            if ($(this).attr("checked") == "checked") {
+                deleteList.push($(this).attr("value"));
+            }
+        });
+        console.log(deleteList.join());
+        return false;
+    });
+
     refreshUserList(currentCondition);
 });

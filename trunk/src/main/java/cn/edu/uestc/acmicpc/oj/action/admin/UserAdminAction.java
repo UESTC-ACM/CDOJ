@@ -110,6 +110,10 @@ public class UserAdminAction extends BaseAction {
         return JSON;
     }
 
+    public String toOperatorUser() {
+        return JSON;
+    }
+
     public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
     }

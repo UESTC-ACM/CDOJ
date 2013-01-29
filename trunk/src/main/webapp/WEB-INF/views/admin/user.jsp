@@ -39,75 +39,99 @@
 </head>
 <body>
 
-<div id="pageInfo">
-</div>
 
-<table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th style="width: 30px;">Id</th>
-            <th>User name</th>
-            <th>Nick name</th>
-            <th>Email</th>
-            <th style="width: 100px;">Type</th>
-            <th>Last login</th>
-            <th style="width: 14px;"></th>
-        </tr>
-    </thead>
-    <tbody id="userList">
-    </tbody>
-</table>
+<ul id="TabMenu" class="nav nav-pills">
+    <li class="active">
+        <a href="#tab-user-list" data-toggle="tab">User list</a>
+    </li>
+    <li><a href="#tab-user-search" data-toggle="tab">Search</a></li>
+</ul>
 
-<div id="userCondition">
-    <form class="well form-inline">
-        <div class="control-group">
-            <div class="input-prepend">
-                <span class="add-on">Form</span>
-                <s:textfield name="userCondition.startId"
-                             maxLength="6"
-                             cssClass="input-small"/>
-            </div>
-            <div class="input-prepend">
-                <span class="add-on">To</span>
-                <s:textfield name="userCondition.endId"
-                             maxLength="6"
-                             cssClass="input-small"/>
-            </div>
+<div id="TabContent" class="tab-content">
+    <div class="tab-pane fade active in" id="tab-user-list">
+        <div id="pageInfo">
         </div>
-        <div class="control-group">
-            <div class="input-prepend">
-                <span class="add-on">User name</span>
-                <s:textfield name="userCondition.userName"
-                             maxLength="24"
-                             cssClass="span4"/>
-            </div>
-            <div class="input-prepend">
-                <span class="add-on">Type</span>
-                <s:textfield name="userCondition.type"
-                             maxLength="1"
-                             cssClass="input-mini"/>
-            </div>
+
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th style="width: 14px;"><i class="icon-th-list"/></th>
+                <th style="width: 30px;">Id</th>
+                <th>User name</th>
+                <th>Nick name</th>
+                <th>Email</th>
+                <th style="width: 100px;">Type</th>
+                <th>Last login</th>
+                <th style="width: 14px;"></th>
+            </tr>
+            </thead>
+            <tbody id="userList">
+            </tbody>
+        </table>
+
+        <div id="userSelector">
+             <form action="well form-inline">
+                 <a href="#" class="btn" id="selectAllUser">Select all</a>
+                 <a href="#" class="btn" id="clearSelectedUser">Clear</a>
+                 <a href="#" class="pull-right btn btn-danger" id="deleteSelectedUser">Delete selected user</a>
+             </form>
         </div>
-        <div class="control-group">
-            <div class="input-prepend">
-                <span class="add-on">School</span>
-                <s:textfield name="userCondition.school"
-                             maxLength="50"
-                             cssClass="span4"/>
-            </div>
-            <div class="input-prepend">
-                <span class="add-on">Department</span>
-                <s:select name="userDTO.departmentId"
-                          list="global.departmentList"
-                          listKey="departmentId"
-                          listValue="name"
-                          cssClass="span4"/>
-            </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-user-search">
+        <div id="userCondition">
+            <form class="well form-inline">
+                <div class="control-group">
+                    <div class="input-prepend">
+                        <span class="add-on">Form</span>
+                        <s:textfield name="userCondition.startId"
+                                     maxLength="6"
+                                     cssClass="input-small"/>
+                    </div>
+                    <div class="input-prepend">
+                        <span class="add-on">To</span>
+                        <s:textfield name="userCondition.endId"
+                                     maxLength="6"
+                                     cssClass="input-small"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="input-prepend">
+                        <span class="add-on">User name</span>
+                        <s:textfield name="userCondition.userName"
+                                     maxLength="24"
+                                     cssClass="span4"/>
+                    </div>
+                    <div class="input-prepend">
+                        <span class="add-on">Type</span>
+                        <s:textfield name="userCondition.type"
+                                     maxLength="1"
+                                     cssClass="input-mini"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="input-prepend">
+                        <span class="add-on">School</span>
+                        <s:textfield name="userCondition.school"
+                                     maxLength="50"
+                                     cssClass="span4"/>
+                    </div>
+                    <div class="input-prepend">
+                        <span class="add-on">Department</span>
+                        <s:select name="userCondition.departmentId"
+                                  list="global.departmentList"
+                                  listKey="departmentId"
+                                  listValue="name"
+                                  cssClass="span4"/>
+                    </div>
+                </div>
+                <s:submit name="search"
+                          cssClass="btn btn-primary"
+                          value="Search"
+                          theme="bootstrap"/>
+            </form>
         </div>
-        <s:submit cssClass="btn btn-primary"
-                  value="Search"
-                  theme="bootstrap"/>
-    </form>
+    </div>
 </div>
 
 <!-- User edit Modal -->
