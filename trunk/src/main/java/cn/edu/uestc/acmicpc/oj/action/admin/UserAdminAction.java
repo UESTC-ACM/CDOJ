@@ -157,6 +157,7 @@ public class UserAdminAction extends BaseAction {
     public String toOperatorUser() {
         try {
             int count = 0, total = 0;
+            System.out.println(get("id")+" "+get("method"));
             Integer[] ids = ArrayUtil.parseIntArray(get("id"));
             String method = get("method");
             for (int i = 0; i < ids.length; ++i)
