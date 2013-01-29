@@ -31,7 +31,7 @@ import java.sql.Timestamp;
  * use for return user information with json type.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 2
+ * @version 3
  */
 public class UserView {
 
@@ -51,7 +51,7 @@ public class UserView {
     /**
      * construct UserView entity by User entity.
      *
-     * @param user
+     * @param user specific user entity
      */
     public UserView(User user) {
         setUserId(user.getUserId());
@@ -68,6 +68,7 @@ public class UserView {
         setLastLogin(user.getLastLogin());
     }
 
+    @SuppressWarnings("unused")
     public int getUserId() {
         return userId;
     }
@@ -76,6 +77,7 @@ public class UserView {
         this.userId = userId;
     }
 
+    @SuppressWarnings("unused")
     public String getUserName() {
         return userName;
     }
@@ -84,6 +86,7 @@ public class UserView {
         this.userName = userName;
     }
 
+    @SuppressWarnings("unused")
     public String getPassword() {
         return password;
     }
@@ -92,6 +95,7 @@ public class UserView {
         this.password = password;
     }
 
+    @SuppressWarnings("unused")
     public String getNickName() {
         return nickName;
     }
@@ -100,6 +104,7 @@ public class UserView {
         this.nickName = nickName;
     }
 
+    @SuppressWarnings("unused")
     public String getEmail() {
         return email;
     }
@@ -108,6 +113,7 @@ public class UserView {
         this.email = email;
     }
 
+    @SuppressWarnings("unused")
     public String getSchool() {
         return school;
     }
@@ -116,6 +122,7 @@ public class UserView {
         this.school = school;
     }
 
+    @SuppressWarnings("unused")
     public String getDepartment() {
         return department;
     }
@@ -124,6 +131,7 @@ public class UserView {
         this.department = department;
     }
 
+    @SuppressWarnings("unused")
     public String getStudentId() {
         return studentId;
     }
@@ -132,6 +140,7 @@ public class UserView {
         this.studentId = studentId;
     }
 
+    @SuppressWarnings("unused")
     public int getTried() {
         return tried;
     }
@@ -140,6 +149,7 @@ public class UserView {
         this.tried = tried;
     }
 
+    @SuppressWarnings("unused")
     public int getSolved() {
         return solved;
     }
@@ -148,6 +158,7 @@ public class UserView {
         this.solved = solved;
     }
 
+    @SuppressWarnings("unused")
     public String getType() {
         return type;
     }
@@ -156,6 +167,7 @@ public class UserView {
         this.type = type;
     }
 
+    @SuppressWarnings("unused")
     public Timestamp getLastLogin() {
         return lastLogin;
     }
