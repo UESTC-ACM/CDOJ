@@ -63,7 +63,7 @@ public class UserCondition extends BaseCondition {
      *
      * @see Department
      */
-    @Exp(Type = ConditionType.eq, MapObject = Department.class)
+    @Exp(MapField = "departmentByDepartmentId", Type = ConditionType.eq, MapObject = Department.class)
     public Integer departmentId;
 
     /**

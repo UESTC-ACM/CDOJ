@@ -176,6 +176,12 @@ public class DatabaseTest implements TagDAOAware {
         userDAO.getEntityByUniqueField("password", "123456");
     }
 
+    /**
+     * Test for userDAO update method.
+     *
+     * @throws AppException
+     * @throws FieldNotUniqueException
+     */
     @Test
     public void testUserUpdate() throws AppException, FieldNotUniqueException {
         User user = userDAO.getEntityByUniqueField("userName", "admin");
@@ -183,12 +189,31 @@ public class DatabaseTest implements TagDAOAware {
         userDAO.update(user);
     }
 
+    /**
+     * Test for user startId and endId condition.
+     *
+     * @throws AppException
+     */
     @Test
-    public void testUserCondition() throws AppException {
+    public void testUserConditionByStartIdAndEndId() throws AppException {
         UserCondition userCondition = new UserCondition();
         userCondition.startId = 50;
         userCondition.endId = 100;
         Long count = userDAO.count(userCondition.getCondition());
         Assert.assertEquals(51L, count.longValue());
+    }
+
+    /**
+     * Test for user departmentId condition.
+     *
+     * @throws AppException
+     */
+    @Test
+    public void testUserConditionDepartmentId() throws AppException {
+        UserCondition userCondition = new UserCondition();
+        userCondition.departmentId = 1;
+        userCondition.userName = "admin";
+        Long count = userDAO.count(userCondition.getCondition());
+        Assert.assertEquals(1L, count.longValue());
     }
 }

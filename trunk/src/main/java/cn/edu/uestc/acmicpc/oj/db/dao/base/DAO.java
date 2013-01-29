@@ -70,7 +70,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
                 criteria.addOrder(order.asc ? Order.asc(order.field) : Order.desc(order.field));
             }
         }
-        criteria.setFirstResult(condition.currentPage == null ? 0 : (int) ((condition.currentPage - 1)*condition.countPerPage));
+        criteria.setFirstResult(condition.currentPage == null ? 0 : (int) ((condition.currentPage - 1) * condition.countPerPage));
         if (condition.countPerPage != null)
             criteria.setMaxResults((int) condition.countPerPage.longValue());
         if (condition.criterionList != null) {
