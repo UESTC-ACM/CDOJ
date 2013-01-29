@@ -41,7 +41,7 @@ public class UserView {
     private String nickName;
     private String email;
     private String school;
-    private String department;
+    private int departmentId;
     private String studentId;
     private int tried;
     private int solved;
@@ -60,7 +60,7 @@ public class UserView {
         setNickName(user.getNickName());
         setEmail(user.getEmail());
         setSchool(user.getSchool());
-        setDepartment(user.getDepartmentByDepartmentId().getName());
+        setDepartmentId(user.getDepartmentByDepartmentId().getDepartmentId());
         setStudentId(user.getStudentId());
         setTried(user.getTried());
         setSolved(user.getSolved());
@@ -122,13 +122,12 @@ public class UserView {
         this.school = school;
     }
 
-    @SuppressWarnings("unused")
-    public String getDepartment() {
-        return department;
+    public int getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
     }
 
     @SuppressWarnings("unused")

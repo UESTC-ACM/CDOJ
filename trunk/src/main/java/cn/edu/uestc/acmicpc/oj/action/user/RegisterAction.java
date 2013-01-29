@@ -27,6 +27,7 @@ import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.oj.db.dao.impl.DepartmentDAO;
 import cn.edu.uestc.acmicpc.oj.db.dto.UserDTO;
 import cn.edu.uestc.acmicpc.oj.db.entity.User;
+import cn.edu.uestc.acmicpc.oj.ioc.DepartmentDAOAware;
 import com.opensymphony.xwork2.validator.annotations.*;
 
 /**
@@ -36,7 +37,7 @@ import com.opensymphony.xwork2.validator.annotations.*;
  * @version 8
  */
 @LoginPermit(NeedLogin = false)
-public class RegisterAction extends BaseAction {
+public class RegisterAction extends BaseAction implements DepartmentDAOAware {
 
     private static final long serialVersionUID = -2854303130010851540L;
 
@@ -52,6 +53,7 @@ public class RegisterAction extends BaseAction {
 
     /**
      * Register action! with so many validators! ha ha...
+     * @TODO edit the document
      *
      * @return <strong>JSON</strong> signal, process in front
      */
@@ -176,7 +178,8 @@ public class RegisterAction extends BaseAction {
             json.put("result", "ok");
         } catch (Exception e) {
             // TODO fix the error msg
-            json.put("result", "error_msg");
+            json.put("result", "error");
+            json.put("error_msg", "Unknown exception occurred.");
         }
         return JSON;
     }

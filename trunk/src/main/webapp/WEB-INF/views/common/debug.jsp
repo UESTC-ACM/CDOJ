@@ -40,12 +40,11 @@
 <s:div cssClass="row">
     <s:div cssClass="span12">
         <s:div cssClass="alert alert-info">
-
             User Name : <s:property value="currentUser.userName"/><br/>
             Password : <s:property value="currentUser.password"/><br/>
             Last Login : <s:property value="currentUser.lastLogin"/><br/>
             Email : <s:property value="currentUser.email"/><br/>
-
+            AuthenticationType : <s:property value="global.authenticationTypeList"/><br/>
         </s:div>
     </s:div>
 </s:div>

@@ -35,7 +35,7 @@ function validation(form, result) {
     if (result["result"] != null) {
         //has result! no field error!
         if (result["result"] != "ok") //unknow error
-            alert(result["result"]);
+            alert(result["error_msg"]);
         return true;
     }
     else {
@@ -128,9 +128,9 @@ function GetAvatar(position) {
         });
 
         Dialog($("#loginModal"),function(e) {
-            info=$(".form-horizontal").serializeArray();
+            info=$("#loginModal .form-horizontal").serializeArray();
             $.post('/user/login', info, function(data) {
-                if (validation($(".form-horizontal"),data) == true) {
+                if (validation($("#loginModal .form-horizontal"),data) == true) {
                     $("#loginModal").modal('hide');
                     window.location.reload();
                 }
