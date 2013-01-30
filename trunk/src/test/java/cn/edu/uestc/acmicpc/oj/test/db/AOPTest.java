@@ -81,7 +81,7 @@ public class AOPTest {
 
     @Test
     public void testDataBaseConnection() throws FieldNotUniqueException, AppException {
-        User user = userDAO.getEntityByUniqueField("userName", "admin");
+        User user = userDAO.getEntityByUniqueField("userName", "administrator");
         System.out.println(user.getUserName());
     }
 }

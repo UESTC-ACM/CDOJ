@@ -24,6 +24,7 @@ package cn.edu.uestc.acmicpc.oj.action.user;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.oj.db.dao.impl.DepartmentDAO;
 import cn.edu.uestc.acmicpc.oj.db.dto.UserDTO;
 import cn.edu.uestc.acmicpc.oj.db.entity.User;
@@ -49,7 +50,7 @@ public class RegisterAction extends BaseAction implements DepartmentDAOAware {
     /**
      * department dao, use for get a department entity by id.
      */
-    private DepartmentDAO departmentDAO;
+    private IDepartmentDAO departmentDAO;
 
     /**
      * Register action! with so many validators! ha ha...
@@ -192,11 +193,11 @@ public class RegisterAction extends BaseAction implements DepartmentDAOAware {
         this.userDTO = userDTO;
     }
 
-    public DepartmentDAO getDepartmentDAO() {
+    public IDepartmentDAO getDepartmentDAO() {
         return departmentDAO;
     }
 
-    public void setDepartmentDAO(DepartmentDAO departmentDAO) {
+    public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
         this.departmentDAO = departmentDAO;
     }
 
