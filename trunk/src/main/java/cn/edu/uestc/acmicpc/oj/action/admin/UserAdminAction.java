@@ -51,6 +51,11 @@ import java.util.List;
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
 
+    /**
+     * return the user.jsp for base view
+     *
+     * @return SUCCESS
+     */
     @SkipValidation
     public String toUserList() {
         return SUCCESS;

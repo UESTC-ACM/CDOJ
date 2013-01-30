@@ -39,4 +39,12 @@
         <action name="edit" class="userAdminAction" method="toEdit"/>
         <action name="operator" class="userAdminAction" method="toOperatorUser"/>
     </package>
+    <package name="problemAdmin" namespace="/admin/problem" extends="admin">
+        <action name="list" class="problemAdminAction" method="toProblemList">
+            <result>/WEB-INF/views/admin/problem.jsp</result>
+        </action>
+        <action name="search" class="problemAdminAction" method="toSearch"/>
+        <action name="edit" class="problemAdminAction" method="toEdit"/>
+        <action name="operator" class="problemAdminAction" method="toOperatorProblem"/>
+    </package>
 </struts>

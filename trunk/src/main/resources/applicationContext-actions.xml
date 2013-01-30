@@ -81,4 +81,9 @@
           scope="prototype">
         <property name="departmentDAO" ref="departmentDAO"/>
     </bean>
+    <bean id="problemAdminAction"
+          class="cn.edu.uestc.acmicpc.oj.action.admin.ProblemAdminAction"
+          parent="baseAction"
+          scope="prototype">
+    </bean>
 </beans>

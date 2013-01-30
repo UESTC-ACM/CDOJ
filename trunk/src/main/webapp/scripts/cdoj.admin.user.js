@@ -180,8 +180,6 @@ $(document).ready(function(){
     Dialog($('#userEditModal'),function(e){
         info = $('#userEditModal .form-horizontal').serializeArray();
         $.post('/admin/user/edit', info, function(data) {
-            console.log(info);
-            console.log(data);
             if (validation($("#userEditModal .form-horizontal"),data) == true) {
                 $("#userEditModal").modal('hide');
                 refreshUserList(currentCondition);
