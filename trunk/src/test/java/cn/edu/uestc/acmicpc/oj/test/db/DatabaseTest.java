@@ -59,7 +59,7 @@ import java.util.Random;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:applicationContext-test.xml"})
-public class DatabaseTest implements TagDAOAware,UserDAOAware,DepartmentDAOAware,ProblemDAOAware {
+public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAware, ProblemDAOAware {
 
     @Ignore
     @Before
@@ -101,6 +101,7 @@ public class DatabaseTest implements TagDAOAware,UserDAOAware,DepartmentDAOAware
     /**
      * ProblemDAO entity
      */
+    @Autowired
     private IProblemDAO problemDAO;
 
     public void setProblemDAO(IProblemDAO problemDAO) {
@@ -243,17 +244,17 @@ public class DatabaseTest implements TagDAOAware,UserDAOAware,DepartmentDAOAware
      * Test for add new problem
      */
     @Test
-    public void testAddProblem() throws AppException,Exception {
+    public void testAddProblem() throws AppException, Exception {
         Problem problem = new Problem();
         Integer randomId = new Random().nextInt();
-        problem.setTitle("Problem "+randomId.toString());
-        problem.setDescription("Description "+randomId.toString());
-        problem.setInput("Input "+randomId.toString());
-        problem.setOutput("Output "+randomId.toString());
-        problem.setSampleInput("Sample input "+randomId.toString());
-        problem.setSampleOutput("Sample output "+randomId.toString());
-        problem.setHint("Hint "+randomId.toString());
-        problem.setSource("Source "+randomId.toString());
+        problem.setTitle("Problem " + randomId.toString());
+        problem.setDescription("Description " + randomId.toString());
+        problem.setInput("Input " + randomId.toString());
+        problem.setOutput("Output " + randomId.toString());
+        problem.setSampleInput("Sample input " + randomId.toString());
+        problem.setSampleOutput("Sample output " + randomId.toString());
+        problem.setHint("Hint " + randomId.toString());
+        problem.setSource("Source " + randomId.toString());
         problem.setTimeLimit(Math.abs(new Random().nextInt()));
         problem.setMemoryLimit(Math.abs(new Random().nextInt()));
         problem.setSpj(new Random().nextBoolean());
@@ -262,7 +263,7 @@ public class DatabaseTest implements TagDAOAware,UserDAOAware,DepartmentDAOAware
         problem.setJavaMemoryLimit(Math.abs(new Random().nextInt()));
         problem.setJavaTimeLimit(Math.abs(new Random().nextInt()));
         problem.setDataCount(Math.abs(new Random().nextInt()));
-        problem.setDifficulty(Math.abs(new Random().nextInt())%5+1);
+        problem.setDifficulty(Math.abs(new Random().nextInt()) % 5 + 1);
         problemDAO.add(problem);
     }
 
