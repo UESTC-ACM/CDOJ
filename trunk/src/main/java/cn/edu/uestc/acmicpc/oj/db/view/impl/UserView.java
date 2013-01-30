@@ -20,20 +20,22 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.db.view;
+package cn.edu.uestc.acmicpc.oj.db.view.impl;
 
 import cn.edu.uestc.acmicpc.oj.db.entity.User;
+import cn.edu.uestc.acmicpc.oj.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.Global;
 
 import java.sql.Timestamp;
 
 /**
- * use for return user information with json type.
+ * Use for return user information with json type.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 3
+ * @version 4
  */
-public class UserView {
+@SuppressWarnings("UnusedDeclaration")
+public class UserView extends View<User> {
 
     private int userId;
     private String userName;
@@ -48,24 +50,10 @@ public class UserView {
     private String type;
     private Timestamp lastLogin;
 
-    /**
-     * construct UserView entity by User entity.
-     *
-     * @param user specific user entity
-     */
     public UserView(User user) {
-        setUserId(user.getUserId());
-        setUserName(user.getUserName());
-        setPassword(user.getPassword());
-        setNickName(user.getNickName());
-        setEmail(user.getEmail());
-        setSchool(user.getSchool());
+        super(user);
         setDepartmentId(user.getDepartmentByDepartmentId().getDepartmentId());
-        setStudentId(user.getStudentId());
-        setTried(user.getTried());
-        setSolved(user.getSolved());
         setType(Global.AuthenticationType.values()[user.getType()].getDescription());
-        setLastLogin(user.getLastLogin());
     }
 
     @SuppressWarnings("unused")
@@ -126,6 +114,7 @@ public class UserView {
         return departmentId;
     }
 
+    @Ignored
     public void setDepartmentId(int departmentId) {
         this.departmentId = departmentId;
     }
@@ -162,6 +151,7 @@ public class UserView {
         return type;
     }
 
+    @Ignored
     public void setType(String type) {
         this.type = type;
     }

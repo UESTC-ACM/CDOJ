@@ -29,10 +29,34 @@ import java.util.Date;
  * global static class to deal with strings
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
+ * @version 5
  */
 @SuppressWarnings("UnusedDeclaration")
 public class StringUtil {
+    /**
+     * get Setter or Getter name, return {@code null} if exception occurred.
+     *
+     * @param methodType method type for getter or setter
+     * @param name       field name
+     * @return method name
+     */
+    public static String getGetterOrSetter(MethodType methodType, String name) {
+        try {
+            char charAt = name.charAt(0);
+            if (charAt >= 'a' && charAt <= 'z') {
+                charAt = (char) (charAt - 'a' + 'A');
+            }
+            return String.format("%s%c%s", methodType == MethodType.GETTER ? "get" : "set",
+                    charAt, name.substring(1));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public enum MethodType {
+        GETTER, SETTER
+    }
+
     /**
      * repeat a string many times
      * <p/>
@@ -142,6 +166,6 @@ public class StringUtil {
     public static boolean containTypes(String fileName, String types) {
         String ext = getFilenameExt(fileName).replace(".", "");
         ext = String.format(";%s;", ext).toLowerCase();
-        return String.format(";%s;", types).toLowerCase().indexOf(ext) > -1;
+        return String.format(";%s;", types).toLowerCase().contains(ext);
     }
 }
