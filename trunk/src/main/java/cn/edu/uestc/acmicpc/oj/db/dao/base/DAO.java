@@ -60,9 +60,10 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     }
 
     /**
-     * Update criteria entity according to specific  conditions.
+     * Update criteria entity according to specific conditions.
      *
-     * @param criteria
+     * @param criteria  Criteria object to update
+     * @param condition conditions for criteria query
      */
     private void updateCriteria(Criteria criteria, Condition condition) {
         if (condition.orders != null) {
