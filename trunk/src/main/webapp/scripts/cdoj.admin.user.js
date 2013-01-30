@@ -45,7 +45,7 @@ var userList;
 function refreshUserList(condition) {
     $.post('/admin/user/search', condition, function(data) {
         if (data.result == "error") {
-            //TODO alert?
+            alert(data.error_msg);
             return;
         }
 

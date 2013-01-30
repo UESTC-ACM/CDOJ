@@ -26,6 +26,7 @@ import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.oj.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.oj.db.condition.impl.ProblemCondition;
+import cn.edu.uestc.acmicpc.oj.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.oj.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.oj.db.entity.Problem;
 import cn.edu.uestc.acmicpc.oj.db.view.impl.ProblemView;
@@ -49,9 +50,14 @@ public class ProblemAdminAction extends BaseAction {
     /**
      * ProblemDAO for problem search.
      */
-    private IProblemDAO problemDAO = null;
+    private IProblemDAO problemDAO;
 
-    public ProblemCondition problemCondition = null;
+    public ProblemCondition problemCondition;
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void setProblemCondition(ProblemCondition problemCondition) {
+        this.problemCondition = problemCondition;
+    }
 
     /**
      * Setter of ProblemDAO for Ioc.
@@ -108,7 +114,9 @@ public class ProblemAdminAction extends BaseAction {
             json.put("problemList", problemViewList);
         } catch (AppException e) {
             json.put("result", "error");
+            json.put("error_msg", e.getMessage());
         } catch (Exception e) {
+            e.printStackTrace();
             json.put("result", "error");
             json.put("error_msg", "Unknown exception occurred.");
         }
@@ -116,7 +124,6 @@ public class ProblemAdminAction extends BaseAction {
     }
 
     /**
-     * 看下新建题目和修改题目能不能写在一起？
      *
      * @return <strong>JSON</strong> signal
      */

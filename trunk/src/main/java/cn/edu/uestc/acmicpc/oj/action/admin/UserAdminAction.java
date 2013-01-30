@@ -77,7 +77,6 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
      * @param userCondition newly userCondition
      */
     @SuppressWarnings("UnusedDeclaration")
-    @Deprecated
     public void setUserCondition(UserCondition userCondition) {
         this.userCondition = userCondition;
     }
@@ -122,6 +121,7 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
             json.put("result", "error");
         } catch (Exception e) {
             json.put("result", "error");
+            e.printStackTrace();
             json.put("error_msg", "Unknown exception occurred.");
         }
         return JSON;

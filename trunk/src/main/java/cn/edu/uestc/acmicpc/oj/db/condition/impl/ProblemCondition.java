@@ -55,7 +55,7 @@ public class ProblemCondition extends BaseCondition {
     public String hint;
     public String source;
 
-    @Exp(Type = ConditionType.eq)
+    @Exp(MapField = "isSpj", Type = ConditionType.eq)
     public Boolean isSpj;
 
     @Exp(MapField = "difficulty", Type = ConditionType.ge)
