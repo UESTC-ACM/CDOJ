@@ -31,19 +31,19 @@ import org.hibernate.criterion.Restrictions;
  * Problem search condition.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ProblemCondition extends BaseCondition {
     /**
      * Start user id.
      */
-    @Exp(MapField = "userId", Type = ConditionType.ge)
+    @Exp(MapField = "problemId", Type = ConditionType.ge)
     public Integer startId;
     /**
      * End user id.
      */
-    @Exp(MapField = "userId", Type = ConditionType.le)
+    @Exp(MapField = "problemId", Type = ConditionType.le)
     public Integer endId;
 
     public String title;
@@ -55,8 +55,8 @@ public class ProblemCondition extends BaseCondition {
     public String hint;
     public String source;
 
-    @Exp(MapField = "isSpj", Type = ConditionType.eq)
-    public Boolean isSpj;
+    @Exp(Type = ConditionType.eq)
+    public Boolean spj;
 
     @Exp(MapField = "difficulty", Type = ConditionType.ge)
     public Integer startDifficulty;

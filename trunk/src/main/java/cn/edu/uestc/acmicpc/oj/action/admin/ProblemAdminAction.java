@@ -26,7 +26,6 @@ import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.oj.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.oj.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.oj.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.oj.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.oj.db.entity.Problem;
 import cn.edu.uestc.acmicpc.oj.db.view.impl.ProblemView;
@@ -54,6 +53,11 @@ public class ProblemAdminAction extends BaseAction {
 
     public ProblemCondition problemCondition;
 
+    /**
+     * Setter of problemCondition for Ioc.
+     *
+     * @param problemCondition newly problemCondition
+     */
     @SuppressWarnings("UnusedDeclaration")
     public void setProblemCondition(ProblemCondition problemCondition) {
         this.problemCondition = problemCondition;
@@ -100,7 +104,7 @@ public class ProblemAdminAction extends BaseAction {
     public String toSearch() {
         try {
             Condition condition = problemCondition.getCondition();
-            Long count = userDAO.count(problemCondition.getCondition());
+            Long count = problemDAO.count(problemCondition.getCondition());
             PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
             condition.currentPage = pageInfo.getCurrentPage();
             condition.countPerPage = RECORD_PER_PAGE;
@@ -124,7 +128,6 @@ public class ProblemAdminAction extends BaseAction {
     }
 
     /**
-     *
      * @return <strong>JSON</strong> signal
      */
     public String toEdit() {

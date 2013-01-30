@@ -50,4 +50,7 @@
     <bean id="viewTest" class="cn.edu.uestc.acmicpc.oj.test.db.ViewTest">
         <property name="departmentDAO" ref="departmentDAO"/>
     </bean>
+    <bean id="conditionTest" class="cn.edu.uestc.acmicpc.oj.test.db.ConditionTest">
+        <property name="problemDAO" ref="problemDAO"/>
+    </bean>
 </beans>
