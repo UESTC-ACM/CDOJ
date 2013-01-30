@@ -65,14 +65,31 @@ public class ProblemAdminAction extends BaseAction {
     /**
      * return the problem.jsp for base view
      *
-     * @return SUCCESS
+     * @return <strong>SUCCESS</strong> signal
      */
     public String toProblemList() {
         return SUCCESS;
     }
 
     /**
-     * @return
+     * Search action.
+     * <p/>
+     * Find all records by conditions and return them as a list in JSON, and the condition
+     * set will set in JSON named "condition".
+     * <p/>
+     * <strong>JSON output</strong>:
+     * <ul>
+     * <li>
+     * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>,
+     * "condition", <strong>ProblemCondition entity</strong>,
+     * "problemList":<strong>query result</strong>}
+     * </li>
+     * <li>
+     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+     * </li>
+     * </ul>
+     *
+     * @return <strong>JSON</strong> signal
      */
     public String toSearch() {
         try {
@@ -82,13 +99,13 @@ public class ProblemAdminAction extends BaseAction {
             condition.currentPage = pageInfo.getCurrentPage();
             condition.countPerPage = RECORD_PER_PAGE;
             List<Problem> problemList = problemDAO.findAll(condition);
-            List<ProblemView> userViewList = new ArrayList<ProblemView>();
+            List<ProblemView> problemViewList = new ArrayList<ProblemView>();
             for (Problem problem : problemList)
-                userViewList.add(new ProblemView(problem));
+                problemViewList.add(new ProblemView(problem, true));
             json.put("pageInfo", pageInfo.getHtmlString());
             json.put("result", "ok");
             json.put("condition", problemCondition);
-            json.put("userList", userViewList);
+            json.put("problemList", problemViewList);
         } catch (AppException e) {
             json.put("result", "error");
         } catch (Exception e) {
@@ -101,14 +118,14 @@ public class ProblemAdminAction extends BaseAction {
     /**
      * 看下新建题目和修改题目能不能写在一起？
      *
-     * @return
+     * @return <strong>JSON</strong> signal
      */
     public String toEdit() {
         return JSON;
     }
 
     /**
-     * @return
+     * @return <strong>JSON</strong> signal
      */
     public String toOperatorProblem() {
         return JSON;

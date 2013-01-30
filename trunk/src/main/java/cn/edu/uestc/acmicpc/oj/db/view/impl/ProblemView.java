@@ -22,14 +22,23 @@
 
 package cn.edu.uestc.acmicpc.oj.db.view.impl;
 
+import cn.edu.uestc.acmicpc.oj.db.dao.impl.ProblemtagDAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.impl.TagDAO;
 import cn.edu.uestc.acmicpc.oj.db.entity.Problem;
+import cn.edu.uestc.acmicpc.oj.db.entity.ProblemTag;
+import cn.edu.uestc.acmicpc.oj.db.entity.Tag;
 import cn.edu.uestc.acmicpc.oj.db.view.base.View;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Use for return problem information with json type.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ProblemView extends View<Problem> {
@@ -53,9 +62,31 @@ public class ProblemView extends View<Problem> {
     private int javaMemoryLimit;
     private int dataCount;
     private int difficulty;
+    private List<String> tags;
 
-    public ProblemView(Problem problem) {
-        super(problem);
+    /**
+     * Get ProblemView entity by problem entity.
+     *
+     * @param problem specific problem entity
+     * @param ignored ignore super constructor or not
+     * @throws AppException
+     */
+    public ProblemView(Problem problem, boolean ignored) throws AppException {
+        super(ignored ? null : problem);
+        if (ignored) {
+            setProblemId(problem.getProblemId());
+            setTitle(problem.getTitle());
+            setDifficulty(problem.getDifficulty());
+            setSolved(problem.getSolved());
+            setTried(problem.getTried());
+            setSource(problem.getSource());
+        }
+        List<String> list = new LinkedList<String>();
+        Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
+        for (ProblemTag problemTag : problemTags) {
+            list.add(problemTag.getTagByTagId().getName());
+        }
+        setTags(list);
     }
 
     public int getProblemId() {
@@ -216,5 +247,14 @@ public class ProblemView extends View<Problem> {
 
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    @Ignored
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 }

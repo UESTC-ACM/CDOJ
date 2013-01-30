@@ -25,6 +25,8 @@ package cn.edu.uestc.acmicpc.oj.db.view.base;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 
 import java.io.Serializable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -32,7 +34,7 @@ import java.lang.reflect.Method;
  * Base view entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 public class View<Entity extends Serializable> {
     /**
@@ -41,26 +43,28 @@ public class View<Entity extends Serializable> {
      * @param entity specific entity
      */
     public View(Entity entity) {
+        if (entity == null)
+            return;
         Method[] methods = getClass().getMethods();
         for (Method method : methods) {
             if (method.getName().startsWith("set")) {
                 String name = StringUtil.getGetterOrSetter(StringUtil.MethodType.GETTER,
                         method.getName().substring(3));
-                Ignored viewExp = method.getAnnotation(Ignored.class);
-                if (viewExp != null && viewExp.value()) {
-                    continue;
-                }
-                try {
-                    Method getter = entity.getClass().getMethod(name);
-                    method.invoke(this, getter.invoke(entity));
-                } catch (NoSuchMethodException e) {
-                } catch (InvocationTargetException e) {
-                } catch (IllegalAccessException e) {
+                Ignored ignored1 = method.getAnnotation(Ignored.class);
+                if (ignored1 == null || !ignored1.value()) {
+                    try {
+                        Method getter = entity.getClass().getMethod(name);
+                        method.invoke(this, getter.invoke(entity));
+                    } catch (NoSuchMethodException ignored) {
+                    } catch (InvocationTargetException ignored) {
+                    } catch (IllegalAccessException ignored) {
+                    }
                 }
             }
         }
     }
 
+    @Retention(RetentionPolicy.RUNTIME)
     protected @interface Ignored {
         public boolean value() default true;
     }

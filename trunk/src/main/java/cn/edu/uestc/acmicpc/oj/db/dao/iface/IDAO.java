@@ -35,7 +35,7 @@ import java.util.List;
  * @param <Entity> Entity's type
  * @param <PK>     Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 6
+ * @version 7
  */
 public interface IDAO<Entity extends Serializable, PK extends Serializable> {
     /**
@@ -46,6 +46,14 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
      * @throws AppException
      */
     public Serializable add(Entity entity) throws AppException;
+
+    /**
+     * Add entity or update entity, according to key value of the entity.
+     *
+     * @param entity entity to be added or updated
+     * @throws AppException
+     */
+    public void addOrUpdate(Entity entity) throws AppException;
 
     /**
      * Get entity by key value.

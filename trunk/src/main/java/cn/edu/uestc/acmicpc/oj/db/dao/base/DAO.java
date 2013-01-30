@@ -46,6 +46,15 @@ import java.util.List;
  */
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         extends BaseDAO implements IDAO<Entity, PK> {
+    @Override
+    public void addOrUpdate(Entity entity) throws AppException {
+        try {
+            getSession().saveOrUpdate(entity);
+        } catch (HibernateException e) {
+            throw new AppException("Invoke addOrUpdate method error.");
+        }
+    }
+
     /**
      * Create a criteria object from session.
      *

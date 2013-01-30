@@ -47,4 +47,7 @@
     </bean>
     <bean id="arrayUtilTest" class="cn.edu.uestc.acmicpc.oj.test.util.ArrayUtilTest">
     </bean>
+    <bean id="viewTest" class="cn.edu.uestc.acmicpc.oj.test.db.ViewTest">
+        <property name="departmentDAO" ref="departmentDAO"/>
+    </bean>
 </beans>
