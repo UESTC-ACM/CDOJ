@@ -35,6 +35,7 @@ import java.util.Date;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 3
  */
+@SuppressWarnings("UnusedDeclaration")
 public class UserDTO {
 
     /**
@@ -245,8 +246,6 @@ public class UserDTO {
      */
     public void updateUser(User user) {
         user.setSchool(school);
-        department = new Department();
-        department.setDepartmentId(departmentId);
         user.setDepartmentByDepartmentId(department);
         user.setSchool(school);
         user.setStudentId(studentId);

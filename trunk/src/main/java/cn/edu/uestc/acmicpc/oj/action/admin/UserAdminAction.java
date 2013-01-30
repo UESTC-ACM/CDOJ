@@ -47,6 +47,7 @@ import java.util.List;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 5
  */
+@SuppressWarnings("UnusedDeclaration")
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
 
@@ -195,6 +196,7 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
             User user = userDAO.get(userDTO.getUserId());
             if (user == null)
                 throw new AppException("No such user!");
+            userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
             userDTO.updateUser(user);
             userDAO.update(user);
             json.put("result", "ok");
@@ -261,7 +263,6 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
      *
      * @param userDTO user data transform object
      */
-    @SuppressWarnings("UnusedDeclaration")
     public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
     }
