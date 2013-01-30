@@ -42,7 +42,7 @@ import java.util.List;
  * @param <Entity> Entity's type
  * @param <PK>     Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 8
+ * @version 9
  */
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         extends BaseDAO implements IDAO<Entity, PK> {
@@ -122,6 +122,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
             updateCriteria(criteria, condition);
             return (Long) criteria.uniqueResult();
         } catch (HibernateException e) {
+            e.printStackTrace();
             throw new AppException("Invoke count method error.");
         }
     }

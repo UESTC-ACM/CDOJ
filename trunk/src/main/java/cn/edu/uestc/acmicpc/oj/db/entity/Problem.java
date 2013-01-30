@@ -32,7 +32,7 @@ import java.util.Collection;
  * Problem information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 @Table(name = "problem", schema = "", catalog = "uestcoj")
 @Entity
@@ -214,7 +214,7 @@ public class Problem implements Serializable {
     @Column(name = "isSPJ", nullable = false, insertable = true, updatable = true,
             length = 0, precision = 0)
     @Basic
-    public boolean isSpj() {
+    public boolean getSpj() {
         return isSpj;
     }
 
