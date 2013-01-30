@@ -52,7 +52,7 @@
         <li class="divider"></li>
 
         <li class="nav-header"><i class="icon-file"></i>Problem</li>
-        <li><a href="#">Problem list</a></li>
+        <li><s:a action="list" namespace="/admin/problem">Problem list</s:a></li>
         <li><a href="#">Add problem</a></li>
 
         <li class="divider"></li>

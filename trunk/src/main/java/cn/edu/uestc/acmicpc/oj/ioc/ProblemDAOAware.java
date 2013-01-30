@@ -22,19 +22,19 @@
 
 package cn.edu.uestc.acmicpc.oj.ioc;
 
-import cn.edu.uestc.acmicpc.oj.db.dao.iface.IDepartmentDAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.IProblemDAO;
 
 /**
- * For all class which need department dao entity.
+ * For all class which need problem dao entity.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
-public interface DepartmentDAOAware {
+public interface ProblemDAOAware {
     /**
-     * put departmentDAO into class
+     * put problemDAO into class
      *
-     * @param departmentDAO
+     * @param problemDAO
      */
-    public void setDepartmentDAO(IDepartmentDAO departmentDAO);
+    public void setProblemDAO(IProblemDAO problemDAO);
 }

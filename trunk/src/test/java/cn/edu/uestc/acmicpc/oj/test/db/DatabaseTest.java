@@ -25,13 +25,18 @@ package cn.edu.uestc.acmicpc.oj.test.db;
 
 import cn.edu.uestc.acmicpc.oj.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.oj.db.dao.iface.IDepartmentDAO;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.oj.db.dao.iface.ITagDAO;
 import cn.edu.uestc.acmicpc.oj.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.oj.db.dao.impl.DepartmentDAO;
 import cn.edu.uestc.acmicpc.oj.db.dao.impl.UserDAO;
+import cn.edu.uestc.acmicpc.oj.db.entity.Problem;
 import cn.edu.uestc.acmicpc.oj.db.entity.Tag;
 import cn.edu.uestc.acmicpc.oj.db.entity.User;
+import cn.edu.uestc.acmicpc.oj.ioc.DepartmentDAOAware;
+import cn.edu.uestc.acmicpc.oj.ioc.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.oj.ioc.TagDAOAware;
+import cn.edu.uestc.acmicpc.oj.ioc.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
@@ -54,8 +59,9 @@ import java.util.Random;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:applicationContext-test.xml"})
-public class DatabaseTest implements TagDAOAware {
+public class DatabaseTest implements TagDAOAware,UserDAOAware,DepartmentDAOAware,ProblemDAOAware {
 
+    @Ignore
     @Before
     public void init() {
         try {
@@ -92,16 +98,25 @@ public class DatabaseTest implements TagDAOAware {
     @Autowired
     private IDepartmentDAO departmentDAO;
 
+    /**
+     * ProblemDAO entity
+     */
+    private IProblemDAO problemDAO;
+
+    public void setProblemDAO(IProblemDAO problemDAO) {
+        this.problemDAO = problemDAO;
+    }
+
     @Override
     public void setTagDAO(ITagDAO tagDAO) {
         this.tagDAO = tagDAO;
     }
 
-    public void setUserDAO(UserDAO userDAO) {
+    public void setUserDAO(IUserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
-    public void setDepartmentDAO(DepartmentDAO departmentDAO) {
+    public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
         this.departmentDAO = departmentDAO;
     }
 
@@ -155,7 +170,7 @@ public class DatabaseTest implements TagDAOAware {
      */
     @Test
     public void testGetEntityByUnique() throws FieldNotUniqueException, AppException {
-        User user = userDAO.getEntityByUniqueField("userName", "admin");
+        User user = userDAO.getEntityByUniqueField("userName", "administrator");
         Assert.assertEquals("UESTC", user.getSchool());
     }
 
@@ -177,7 +192,7 @@ public class DatabaseTest implements TagDAOAware {
      */
     @Test
     public void testUserUpdate() throws AppException, FieldNotUniqueException {
-        User user = userDAO.getEntityByUniqueField("userName", "admin");
+        User user = userDAO.getEntityByUniqueField("userName", "administrator");
         user.setLastLogin(new Timestamp(new Date().getTime()));
         userDAO.update(user);
     }
@@ -223,4 +238,32 @@ public class DatabaseTest implements TagDAOAware {
         Long newCount = userDAO.count();
         Assert.assertEquals(oldCount - 1, newCount.longValue());
     }
+
+    /**
+     * Test for add new problem
+     */
+    @Test
+    public void testAddProblem() throws AppException,Exception {
+        Problem problem = new Problem();
+        Integer randomId = new Random().nextInt();
+        problem.setTitle("Problem "+randomId.toString());
+        problem.setDescription("Description "+randomId.toString());
+        problem.setInput("Input "+randomId.toString());
+        problem.setOutput("Output "+randomId.toString());
+        problem.setSampleInput("Sample input "+randomId.toString());
+        problem.setSampleOutput("Sample output "+randomId.toString());
+        problem.setHint("Hint "+randomId.toString());
+        problem.setSource("Source "+randomId.toString());
+        problem.setTimeLimit(Math.abs(new Random().nextInt()));
+        problem.setMemoryLimit(Math.abs(new Random().nextInt()));
+        problem.setSpj(new Random().nextBoolean());
+        problem.setVisible(true);
+        problem.setOutputLimit(Math.abs(new Random().nextInt()));
+        problem.setJavaMemoryLimit(Math.abs(new Random().nextInt()));
+        problem.setJavaTimeLimit(Math.abs(new Random().nextInt()));
+        problem.setDataCount(Math.abs(new Random().nextInt()));
+        problem.setDifficulty(Math.abs(new Random().nextInt())%5+1);
+        problemDAO.add(problem);
+    }
+
 }

@@ -26,11 +26,13 @@ import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.oj.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.oj.db.condition.impl.UserCondition;
+import cn.edu.uestc.acmicpc.oj.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.oj.db.dao.impl.DepartmentDAO;
 import cn.edu.uestc.acmicpc.oj.db.dto.UserDTO;
 import cn.edu.uestc.acmicpc.oj.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.db.view.UserView;
 import cn.edu.uestc.acmicpc.oj.ioc.DepartmentDAOAware;
+import cn.edu.uestc.acmicpc.oj.ioc.UserDAOAware;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.Global;
@@ -64,7 +66,7 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
     /**
      * department dao, use for get a department entity by id.
      */
-    private DepartmentDAO departmentDAO;
+    private IDepartmentDAO departmentDAO;
 
     /**
      * Conditions for user search.
@@ -272,11 +274,11 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
         this.userDTO = userDTO;
     }
 
-    public DepartmentDAO getDepartmentDAO() {
+    public IDepartmentDAO getDepartmentDAO() {
         return departmentDAO;
     }
 
-    public void setDepartmentDAO(DepartmentDAO departmentDAO) {
+    public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
         this.departmentDAO = departmentDAO;
     }
 }

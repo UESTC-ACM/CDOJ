@@ -31,21 +31,4 @@
     <short-name>cdojTags</short-name>
     <uri>http://acm.uestc.edu.cn</uri>
 
-    <tag>
-        <name>avatar</name>
-        <tag-class>cn.edu.uestc.acmicpc.oj.tag.AvatarTag</tag-class>
-        <body-content>empty</body-content>
-        <attribute>
-            <name>userName</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>size</name>
-        </attribute>
-        <attribute>
-            <name>defaultImage</name>
-        </attribute>
-    </tag>
-
 </taglib>
