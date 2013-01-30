@@ -33,7 +33,7 @@ import java.util.Date;
  * collect information from register action and generate a User class.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 2
+ * @version 3
  */
 public class UserDTO {
 
@@ -236,5 +236,20 @@ public class UserDTO {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    /**
+     * Update user entity by userDTO fields.
+     *
+     * @param user specific user entity to edit
+     */
+    public void updateUser(User user) {
+        user.setSchool(school);
+        department = new Department();
+        department.setDepartmentId(departmentId);
+        user.setDepartmentByDepartmentId(department);
+        user.setSchool(school);
+        user.setStudentId(studentId);
+        user.setType(type);
     }
 }

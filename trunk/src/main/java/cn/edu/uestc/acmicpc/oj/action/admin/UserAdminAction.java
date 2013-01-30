@@ -45,7 +45,7 @@ import java.util.List;
  * action for edit user information.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 4
+ * @version 5
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
@@ -176,16 +176,26 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
                     )
             }
     )
+
+    /**
+     * To edit user entity.
+     * <p/>
+     * <strong>JSON output</strong>:
+     * <ul>
+     * <li>
+     * For success: {"result":"ok"}
+     * </li>
+     * <li>
+     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+     * </li>
+     * </ul>
+     */
     public String toEdit() {
         try {
             User user = userDAO.get(userDTO.getUserId());
             if (user == null)
                 throw new AppException("No such user!");
-            user.setSchool(userDTO.getSchool());
-            user.setDepartmentByDepartmentId(departmentDAO.get(userDTO.getDepartmentId()));
-            user.setSchool(userDTO.getSchool());
-            user.setStudentId(userDTO.getStudentId());
-            user.setType(userDTO.getType());
+            userDTO.updateUser(user);
             userDAO.update(user);
             json.put("result", "ok");
         } catch (AppException e) {
