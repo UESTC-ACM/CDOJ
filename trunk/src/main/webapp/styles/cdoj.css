@@ -64,18 +64,6 @@ td {
     text-overflow: ellipsis;
 }
 
-.pull-center {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.pos-center {
-    text-align: center;
-}
-.pos-right {
-    text-align: right;
-}
-
 #logo-banner {
     margin: 0 16px 0 16px;
     width: 234px;
@@ -106,5 +94,17 @@ td {
 }
 
 .table tbody td {
-    text-align: right;
+    text-align: left;
+}
+
+.pull-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pos-center {
+    text-align: center;
+}
+.pos-left {
+    text-align: left;
 }
