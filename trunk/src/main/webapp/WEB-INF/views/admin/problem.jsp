@@ -93,47 +93,43 @@
                 <div class="control-group">
                     <div class="input-prepend">
                         <span class="add-on">Form</span>
-                        <s:textfield name="userCondition.startId"
+                        <s:textfield name="problemCondition.startId"
                                      maxLength="6"
                                      cssClass="input-small"/>
                     </div>
                     <div class="input-prepend">
                         <span class="add-on">To</span>
-                        <s:textfield name="userCondition.endId"
+                        <s:textfield name="problemCondition.endId"
                                      maxLength="6"
                                      cssClass="input-small"/>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="input-prepend">
-                        <span class="add-on">User name</span>
-                        <s:textfield name="userCondition.userName"
-                                     maxLength="24"
-                                     cssClass="span4"/>
+                        <span class="add-on">Keyword</span>
+                        <s:textfield name="problemCondition.keyword"
+                                     maxLength="100"
+                                     cssClass="span8"/>
                     </div>
-                    <div class="input-prepend">
-                        <span class="add-on">Type</span>
-                        <s:select name="userCondition.type"
-                                  list="global.authenticationTypeList"
-                                  listKey="ordinal()"
-                                  listValue="description"
-                                  cssClass="span4"/>
+                </div>
+                <div class="control-group">
+                    <div class="btn-group" data-toggle="buttons-checkbox">
+                        <button class="btn btn-info">Is SPJ</button>
+                        <button class="btn btn-info">Is visible</button>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="input-prepend">
-                        <span class="add-on">School</span>
-                        <s:textfield name="userCondition.school"
-                                     maxLength="50"
-                                     cssClass="span4"/>
+                        <span class="add-on">Difficulty from</span>
+                        <s:textfield name="problemCondition.startDifficulty"
+                                     maxLength="6"
+                                     cssClass="input-small"/>
                     </div>
                     <div class="input-prepend">
-                        <span class="add-on">Department</span>
-                        <s:select name="userCondition.departmentId"
-                                  list="global.departmentList"
-                                  listKey="departmentId"
-                                  listValue="name"
-                                  cssClass="span4"/>
+                        <span class="add-on">To</span>
+                        <s:textfield name="problemCondition.endDifficulty"
+                                     maxLength="6"
+                                     cssClass="input-small"/>
                     </div>
                 </div>
                 <s:submit name="search"

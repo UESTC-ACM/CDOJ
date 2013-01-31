@@ -119,12 +119,12 @@ $(document).ready(function(){
 
     currentCondition = {
         "currentPage":null,
-        "userCondition.startId":null,
-        "userCondition.endId":null,
-        "userCondition.userName":null,
-        "userCondition.type":null,
-        "userCondition.school":null,
-        "userCondition.departmentId":null
+        "userCondition.startId":undefined,
+        "userCondition.endId":undefined,
+        "userCondition.userName":undefined,
+        "userCondition.type":undefined,
+        "userCondition.school":undefined,
+        "userCondition.departmentId":undefined
     };
 
     $('input#search').click(function(e) {
@@ -133,9 +133,9 @@ $(document).ready(function(){
                 currentCondition[index] = $('#'+index.replace('.','_')).val();
         });
         if (currentCondition["userCondition.departmentId"] == -1)
-            currentCondition["userCondition.departmentId"] = null;
+            currentCondition["userCondition.departmentId"] = undefined;
         if (currentCondition["userCondition.type"] == -1)
-            currentCondition["userCondition.type"] = null;
+            currentCondition["userCondition.type"] = undefined;
         currentCondition.currentPage = 1;
         refreshUserList(currentCondition);
         $('#TabMenu a:first').tab('show');

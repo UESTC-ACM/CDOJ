@@ -69,7 +69,7 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
     /**
      * Conditions for user search.
      */
-    public UserCondition userCondition;
+    private UserCondition userCondition = new UserCondition();
 
     /**
      * Setter of userCondition for Ioc.
