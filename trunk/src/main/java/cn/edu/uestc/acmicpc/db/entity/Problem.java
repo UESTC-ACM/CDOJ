@@ -22,8 +22,6 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.oj.annotation.IdSetter;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
@@ -32,7 +30,7 @@ import java.util.Collection;
  * Problem information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @Table(name = "problem", schema = "", catalog = "uestcoj")
 @Entity
@@ -48,7 +46,6 @@ public class Problem implements Serializable {
         return problemId;
     }
 
-    @IdSetter
     public void setProblemId(int problemId) {
         this.problemId = problemId;
     }
@@ -214,11 +211,11 @@ public class Problem implements Serializable {
     @Column(name = "isSPJ", nullable = false, insertable = true, updatable = true,
             length = 0, precision = 0)
     @Basic
-    public boolean getSpj() {
+    public boolean getIsSPJ() {
         return isSpj;
     }
 
-    public void setSpj(boolean spj) {
+    public void setIsSPJ(boolean spj) {
         isSpj = spj;
     }
 

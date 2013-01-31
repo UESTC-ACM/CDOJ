@@ -33,7 +33,7 @@
        http://www.springframework.org/schema/tx/spring-tx-3.1.xsd"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx">
-    <bean id="BaseDAO" class="cn.edu.uestc.acmicpc.db.dao.base.BaseDAO">
+    <bean id="BaseDAO" class="cn.edu.uestc.acmicpc.db.dao.base.BaseDAO" scope="singleton">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="articleDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ArticleDAO" parent="BaseDAO">

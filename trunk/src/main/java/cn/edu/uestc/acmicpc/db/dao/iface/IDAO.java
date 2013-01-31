@@ -123,4 +123,6 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
      * @throws AppException
      */
     public Entity getEntityByUniqueField(String fieldName, Object value) throws FieldNotUniqueException, AppException;
+
+    Long customCount(Condition condition) throws AppException;
 }

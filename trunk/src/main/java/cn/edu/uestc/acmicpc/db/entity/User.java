@@ -22,8 +22,6 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.oj.annotation.IdSetter;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -33,7 +31,7 @@ import java.util.Collection;
  * User information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 @Table(name = "user", schema = "", catalog = "uestcoj")
 @Entity
@@ -49,7 +47,6 @@ public class User implements Serializable {
         return userId;
     }
 
-    @IdSetter
     public void setUserId(int userId) {
         this.userId = userId;
     }

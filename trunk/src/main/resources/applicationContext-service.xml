@@ -35,8 +35,10 @@
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx">
     <bean id="judgeService" class="cn.edu.uestc.acmicpc.service.JudgeService"
-          init-method="run" lazy-init="false" scope="singleton">
+          init-method="init" lazy-init="false" scope="singleton">
         <property name="problemDAO" ref="problemDAO"/>
         <property name="statusDAO" ref="statusDAO"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="compileinfoDAO" ref="compileinfoDAO"/>
     </bean>
 </beans>

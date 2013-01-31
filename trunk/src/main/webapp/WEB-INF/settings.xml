@@ -30,4 +30,8 @@
         </item>
         <item id="uploadFolder" description="upload files store folder">/Uploads/</item>
     </setting>
+    <setting name="judge">
+        <item id="dataPath" description="data path name">/WEB-INF/Data/</item>
+        <item id="tempPath" description="work path name">/WEB-INF/temp/</item>
+    </setting>
 </cdoj-settings>

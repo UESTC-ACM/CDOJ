@@ -22,10 +22,17 @@
 
 package cn.edu.uestc.acmicpc.service;
 
+import cn.edu.uestc.acmicpc.db.dao.iface.ICompileinfoDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.ioc.CompileinfoDAOAware;
 import cn.edu.uestc.acmicpc.ioc.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.ioc.StatusDAOAware;
+import cn.edu.uestc.acmicpc.ioc.UserDAOAware;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Judge main service, use multi-thread architecture to process judge
@@ -33,23 +40,35 @@ import cn.edu.uestc.acmicpc.ioc.StatusDAOAware;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public class JudgeService implements ProblemDAOAware, StatusDAOAware {
+public class JudgeService implements ProblemDAOAware, StatusDAOAware, UserDAOAware, CompileinfoDAOAware {
     /**
-     * ProblemDAO for initialize problem information.
+     * ProblemDAO for initializing problem information.
      */
-    @SuppressWarnings({"FieldCanBeLocal", "UnusedDeclaration"})
     private IProblemDAO problemDAO;
 
     /**
-     * StatusDAO for read status information.
+     * StatusDAO for reading status information.
      */
-    @SuppressWarnings({"FieldCanBeLocal", "UnusedDeclaration"})
     private IStatusDAO statusDAO;
 
     /**
-     * Main process.
+     * UserDAO for updating user entity.
      */
-    public void run() {
+    private IUserDAO userDAO;
+
+    /**
+     * CompileinfoDAO for add compile information.
+     */
+    private ICompileinfoDAO compileinfoDAO;
+
+    List<Thread> threads = new LinkedList<Thread>();
+
+    public void init() {
+        for (int i = 0; i < 3; ++i) {
+            Thread thread = new Thread(new JudgeThread(userDAO, problemDAO, statusDAO, compileinfoDAO));
+            thread.start();
+            threads.add(thread);
+        }
     }
 
     @Override
@@ -60,5 +79,15 @@ public class JudgeService implements ProblemDAOAware, StatusDAOAware {
     @Override
     public void setStatusDAO(IStatusDAO statusDAO) {
         this.statusDAO = statusDAO;
+    }
+
+    @Override
+    public void setCompileinfoDAO(ICompileinfoDAO compileinfoDAO) {
+        this.compileinfoDAO = compileinfoDAO;
+    }
+
+    @Override
+    public void setUserDAO(IUserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 }

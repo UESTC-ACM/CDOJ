@@ -22,8 +22,6 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.oj.annotation.IdSetter;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
@@ -32,7 +30,7 @@ import java.util.Collection;
  * Compile information which compiler returns.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 @Table(name = "compileInfo", schema = "", catalog = "uestcoj")
 @Entity
@@ -48,7 +46,6 @@ public class CompileInfo implements Serializable {
         return compileInfoId;
     }
 
-    @IdSetter
     public void setCompileInfoId(int compileInfoId) {
         this.compileInfoId = compileInfoId;
     }

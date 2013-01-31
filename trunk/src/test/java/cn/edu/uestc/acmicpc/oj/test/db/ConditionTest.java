@@ -60,7 +60,7 @@ public class ConditionTest {
         ProblemCondition problemCondition = new ProblemCondition();
         problemCondition.startId = 1;
         problemCondition.endId = 100;
-        problemCondition.spj = false;
+        problemCondition.isSPJ = false;
         System.out.println(problemDAO.count(problemCondition.getCondition()));
     }
 }

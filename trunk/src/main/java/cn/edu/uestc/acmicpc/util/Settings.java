@@ -35,7 +35,7 @@ import java.util.Map;
  * <strong>settings.xml</strong>.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 public class Settings {
     /**
@@ -57,6 +57,16 @@ public class Settings {
      * Upload files store folder
      */
     public static final String SETTING_UPLOAD_FOLDER;
+
+    /**
+     * Data path name
+     */
+    public static final String JUDGE_DATA_PATH;
+
+    /**
+     * Work path name
+     */
+    public static final String JUDGE_TEMP_PATH;
 
     /**
      * setting map from configuration file.
@@ -87,6 +97,9 @@ public class Settings {
         SETTING_UPLOAD_SIZE = Integer.valueOf(getConfig("setting", "uploadSize"));
         SETTING_UPLOAD_TYPES = getConfig("setting", "uploadTypes");
         SETTING_UPLOAD_FOLDER = getConfig("settings", "uploadFolder");
+
+        JUDGE_DATA_PATH = getConfig("judge", "dataPath");
+        JUDGE_TEMP_PATH = getConfig("judge", "tempPath");
     }
 
     /**

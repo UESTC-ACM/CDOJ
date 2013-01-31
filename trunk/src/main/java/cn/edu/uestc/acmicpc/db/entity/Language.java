@@ -22,8 +22,6 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.oj.annotation.IdSetter;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
@@ -32,7 +30,7 @@ import java.util.Collection;
  * Languages for compiler.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 @Table(name = "language", schema = "", catalog = "uestcoj")
 @Entity
@@ -48,7 +46,6 @@ public class Language implements Serializable {
         return languageId;
     }
 
-    @IdSetter
     public void setLanguageId(int languageId) {
         this.languageId = languageId;
     }

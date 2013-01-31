@@ -37,5 +37,6 @@
     <bean id="global" class="cn.edu.uestc.acmicpc.util.Global"
           init-method="init" scope="singleton">
         <property name="departmentDAO" ref="departmentDAO"/>
+        <property name="languageDAO" ref="languageDAO"/>
     </bean>
 </beans>
