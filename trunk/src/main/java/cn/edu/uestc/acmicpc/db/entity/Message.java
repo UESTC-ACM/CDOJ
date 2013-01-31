@@ -94,11 +94,11 @@ public class Message implements Serializable {
     @Column(name = "isOpened", nullable = false, insertable = true, updatable = true,
             length = 0, precision = 0)
     @Basic
-    public boolean isOpened() {
+    public boolean getIsOpened() {
         return isOpened;
     }
 
-    public void setOpened(boolean opened) {
+    public void setIsOpened(boolean opened) {
         isOpened = opened;
     }
 

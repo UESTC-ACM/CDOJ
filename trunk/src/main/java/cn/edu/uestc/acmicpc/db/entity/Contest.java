@@ -31,7 +31,7 @@ import java.util.Collection;
  * Contest information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @Table(name = "contest", schema = "", catalog = "uestcoj")
 @Entity
@@ -121,11 +121,11 @@ public class Contest implements Serializable {
     @Column(name = "isVisible", nullable = false, insertable = true, updatable = true,
             length = 0, precision = 0)
     @Basic
-    public boolean isVisible() {
+    public boolean getIsVisible() {
         return isVisible;
     }
 
-    public void setVisible(boolean visible) {
+    public void setIsVisible(boolean visible) {
         isVisible = visible;
     }
 

@@ -30,7 +30,7 @@ import java.util.Collection;
  * Problem information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
+ * @version 5
  */
 @Table(name = "problem", schema = "", catalog = "uestcoj")
 @Entity
