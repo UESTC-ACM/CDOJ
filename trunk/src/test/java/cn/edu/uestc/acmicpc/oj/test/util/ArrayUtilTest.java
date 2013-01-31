@@ -33,11 +33,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Test case for array util methods.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml",
-        "classpath:applicationContext-test.xml"})
+@ContextConfiguration({"classpath:applicationContext-test.xml"})
 public class ArrayUtilTest {
     @Test
     public void testParseIntArray() {

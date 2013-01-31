@@ -35,10 +35,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Test cases for conditions entities.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:applicationContext-test.xml"})
+@ContextConfiguration({"classpath:applicationContext-test.xml"})
 public class ConditionTest {
     /**
      * problem DAO for database query.

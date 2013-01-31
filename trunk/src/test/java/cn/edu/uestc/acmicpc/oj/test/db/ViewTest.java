@@ -42,10 +42,10 @@ import java.util.Date;
  * Test cases for view.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:applicationContext-test.xml"})
+@ContextConfiguration({"classpath:applicationContext-test.xml"})
 public class ViewTest implements DepartmentDAOAware {
     @Autowired
     private IDepartmentDAO departmentDAO;

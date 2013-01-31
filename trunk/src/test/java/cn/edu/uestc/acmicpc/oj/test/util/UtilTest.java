@@ -36,11 +36,10 @@ import java.util.List;
  * Util class test
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml",
-        "classpath:applicationContext-test.xml"})
+@ContextConfiguration({"classpath:applicationContext-test.xml"})
 public class UtilTest {
     @Autowired
     private Global global = null;

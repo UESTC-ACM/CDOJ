@@ -53,10 +53,10 @@ import java.util.Random;
  * Simple database test class.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 7
+ * @version 8
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:applicationContext-test.xml"})
+@ContextConfiguration({"classpath:applicationContext-test.xml"})
 public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAware, ProblemDAOAware {
 
     @Ignore
