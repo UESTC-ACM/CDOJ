@@ -30,7 +30,7 @@
 
 var currentCondition;
 
-function getTitle(title,source) {
+function getTitle(title,source,spj,visible) {
     var html = '';
     html = '<span class="info-problem-source pull-left" data-original-title="'+source+'"><a href="./problem_single.html">'+title+'</a></span>';
     return html;
@@ -78,7 +78,7 @@ function refreshProblemList(condition) {
         $.each(problemList,function(index,value){
             var html = '<tr>'+
                 '<td>'+value.problemId+'</td>'+
-                '<td>'+getTitle(value.title,value.source)+getTags(value.tags)+'</td>'+
+                '<td>'+getTitle(value.title,value.source,value.spj,value.visible)+getTags(value.tags)+'</td>'+
                 '<td>'+getDifficulty(value.difficulty)+'</td>'+
                 '<td>'+value.solved+'</td>'+
                 '<td>'+value.tried+'</td>'+
