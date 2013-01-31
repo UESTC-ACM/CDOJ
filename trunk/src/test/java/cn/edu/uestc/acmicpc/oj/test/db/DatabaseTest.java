@@ -243,26 +243,28 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
      */
     @Test
     public void testAddProblem() throws AppException, Exception {
-        Problem problem = new Problem();
-        Integer randomId = new Random().nextInt();
-        problem.setTitle("Problem " + randomId.toString());
-        problem.setDescription("Description " + randomId.toString());
-        problem.setInput("Input " + randomId.toString());
-        problem.setOutput("Output " + randomId.toString());
-        problem.setSampleInput("Sample input " + randomId.toString());
-        problem.setSampleOutput("Sample output " + randomId.toString());
-        problem.setHint("Hint " + randomId.toString());
-        problem.setSource("Source " + randomId.toString());
-        problem.setTimeLimit(Math.abs(new Random().nextInt()));
-        problem.setMemoryLimit(Math.abs(new Random().nextInt()));
-        problem.setIsSpj(new Random().nextBoolean());
-        problem.setIsVisible(true);
-        problem.setOutputLimit(Math.abs(new Random().nextInt()));
-        problem.setJavaMemoryLimit(Math.abs(new Random().nextInt()));
-        problem.setJavaTimeLimit(Math.abs(new Random().nextInt()));
-        problem.setDataCount(Math.abs(new Random().nextInt()));
-        problem.setDifficulty(Math.abs(new Random().nextInt()) % 5 + 1);
-        problemDAO.add(problem);
+        for (int i = 1;i <= 200;i++) {
+            Problem problem = new Problem();
+            Integer randomId = new Random().nextInt();
+            problem.setTitle("Problem " + randomId.toString());
+            problem.setDescription("Description " + randomId.toString());
+            problem.setInput("Input " + randomId.toString());
+            problem.setOutput("Output " + randomId.toString());
+            problem.setSampleInput("Sample input " + randomId.toString());
+            problem.setSampleOutput("Sample output " + randomId.toString());
+            problem.setHint("Hint " + randomId.toString());
+            problem.setSource("Source " + randomId.toString());
+            problem.setTimeLimit(Math.abs(new Random().nextInt()));
+            problem.setMemoryLimit(Math.abs(new Random().nextInt()));
+            problem.setIsSpj(new Random().nextBoolean());
+            problem.setIsVisible(new Random().nextBoolean());
+            problem.setOutputLimit(Math.abs(new Random().nextInt()));
+            problem.setJavaMemoryLimit(Math.abs(new Random().nextInt()));
+            problem.setJavaTimeLimit(Math.abs(new Random().nextInt()));
+            problem.setDataCount(Math.abs(new Random().nextInt()));
+            problem.setDifficulty(Math.abs(new Random().nextInt()) % 5 + 1);
+            problemDAO.add(problem);
+        }
     }
 
 }

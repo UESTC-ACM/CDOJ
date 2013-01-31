@@ -51,7 +51,7 @@ function getTags(tags) {
 
 function getDifficulty(difficulty) {
     var html = '';
-    for (var i = 1;i <= difficulty;i += 2)
+    for (var i = 2;i <= difficulty;i += 2)
         html += '<i class="icon-star"></i>';
     if (difficulty%2 == 1)
         html += '<i class="icon-star-empty"></i>';
@@ -71,7 +71,7 @@ function refreshProblemList(condition) {
         $('#pageInfo').append(data.pageInfo);
         $('#pageInfo').find('a').click(function(e) {
             currentCondition.currentPage = $(this).attr("href");
-            refreshUserList(currentCondition);
+            refreshProblemList(currentCondition);
             return false;
         });
 
@@ -96,20 +96,22 @@ function refreshProblemList(condition) {
 
 $(document).ready(function(){
     currentCondition = {
-        "currentPage":1,
-        "problemCondition.startId":null,
-        "problemCondition.endId":null,
-        "problemCondition.title":null,
-        "problemCondition.description":null,
-        "problemCondition.input":null,
-        "problemCondition.output":null,
-        "problemCondition.sampleInput":null,
-        "problemCondition.sampleOutput":null,
-        "problemCondition.hint":null,
-        "problemCondition.source":null,
-        "problemCondition.isSpj":null,
-        "problemCondition.startDifficulty":null,
-        "problemCondition.endDifficulty":null
+        "currentPage":null,
+        "problemCondition.startId":undefined,
+        "problemCondition.endId":undefined,
+        "problemCondition.title":undefined,
+        "problemCondition.description":undefined,
+        "problemCondition.input":undefined,
+        "problemCondition.output":undefined,
+        "problemCondition.sampleInput":undefined,
+        "problemCondition.sampleOutput":undefined,
+        "problemCondition.hint":undefined,
+        "problemCondition.source":undefined,
+        "problemCondition.isVisible":undefined,
+        "problemCondition.isSpj":undefined,
+        "problemCondition.startDifficulty":undefined,
+        "problemCondition.endDifficulty":undefined,
+        "problemCondition.keyword":undefined
     }
 
     refreshProblemList(currentCondition);
