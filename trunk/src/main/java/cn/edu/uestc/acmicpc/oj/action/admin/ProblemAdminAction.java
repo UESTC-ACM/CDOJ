@@ -22,6 +22,7 @@
 
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
+import cn.edu.uestc.acmicpc.db.dto.ProblemDTO;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
@@ -30,6 +31,7 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemListView;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
+import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -40,7 +42,7 @@ import java.util.List;
  * action for list, search, edit, add problem.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 2
+ * @version 3
  */
 @SuppressWarnings("UnusedDeclaration")
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
@@ -127,17 +129,99 @@ public class ProblemAdminAction extends BaseAction {
         return JSON;
     }
 
+    public ProblemDTO getProblemDTO() {
+        return problemDTO;
+    }
+
     /**
+     * Problem DTO setter for IoC.
+     *
+     * @param problemDTO problem data transform object
+     */
+    public void setProblemDTO(ProblemDTO problemDTO) {
+        this.problemDTO = problemDTO;
+    }
+
+    /**
+     * User database transform object entity.
+     */
+    private ProblemDTO problemDTO;
+
+    /**
+     * To edit user entity.
+     * <p/>
+     * <strong>JSON output</strong>:
+     * <ul>
+     * <li>
+     * For success: {"result":"ok"}
+     * </li>
+     * <li>
+     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+     * </li>
+     * </ul>
+     *
      * @return <strong>JSON</strong> signal
      */
     public String toEdit() {
+        try {
+            Problem problem = problemDAO.get(problemDTO.getProblemId());
+            if (problem == null)
+                throw new AppException("No such problem!");
+            //userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
+            problemDTO.updateProblem(problem);
+            problemDAO.update(problem);
+            json.put("result", "ok");
+        } catch (AppException e) {
+            json.put("result", "error");
+            json.put("error_msg", e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            json.put("result", "error");
+            json.put("error_msg", "Unknown exception occurred.");
+        }
         return JSON;
     }
 
     /**
-     * @return <strong>JSON</strong> signal
+     * Action to operate multiple problems.
+     * <p/>
+     * <strong>JSON output</strong>:
+     * <ul>
+     * <li>
+     * For success: {"result":"ok", "msg":<strong>successful message</strong>}
+     * </li>
+     * <li>
+     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+     * </li>
+     * </ul>
+     *
+     * @return <strong>JSON</strong> signal.
      */
     public String toOperatorProblem() {
+        try {
+            int count = 0, total = 0;
+            Integer[] ids = ArrayUtil.parseIntArray(get("id"));
+            String method = get("method");
+            for (Integer id : ids)
+                if (id != null) {
+                    ++total;
+                    try {
+                        if ("delete".equals(method)) {
+                            problemDAO.delete(problemDAO.get(id));
+                        }
+                        ++count;
+                    } catch (AppException ignored) {
+                    }
+                }
+            json.put("result", "ok");
+            String message = "";
+            if ("delete".equals(message))
+                message = String.format("%d total, %d deleted.", total, count);
+            json.put("msg", message);
+        } catch (Exception e) {
+            json.put("result", "error");
+            json.put("error_msg", "Unknown exception occurred.");
+        }
         return JSON;
     }
 

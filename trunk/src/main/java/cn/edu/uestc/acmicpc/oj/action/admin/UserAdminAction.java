@@ -127,10 +127,13 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
         return JSON;
     }
 
+    /**
+     * User database transform object entity.
+     */
     private UserDTO userDTO;
 
     /**
-     * User database transform object entity.
+     * To edit user entity.
      * <p/>
      * <strong>JSON output</strong>:
      * <ul>
@@ -141,6 +144,8 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
      * For error: {"result":"error", "error_msg":<strong>error message</strong>}
      * </li>
      * </ul>
+     *
+     * @return <strong>JSON</strong> signal
      */
     @Validations(
             requiredStrings = {
@@ -182,20 +187,6 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
                     )
             }
     )
-
-    /**
-     * To edit user entity.
-     * <p/>
-     * <strong>JSON output</strong>:
-     * <ul>
-     * <li>
-     * For success: {"result":"ok"}
-     * </li>
-     * <li>
-     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-     * </li>
-     * </ul>
-     */
     public String toEdit() {
         try {
             User user = userDAO.get(userDTO.getUserId());

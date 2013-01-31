@@ -41,10 +41,10 @@ import java.util.Date;
  * Test cases for AOP framework
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:applicationContext-test.xml"})
+@ContextConfiguration({"classpath:applicationContext-test.xml"})
 public class AOPTest {
     @Before
     public void init() {

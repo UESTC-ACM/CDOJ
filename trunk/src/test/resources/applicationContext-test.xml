@@ -32,6 +32,7 @@
        http://www.springframework.org/schema/tx/spring-tx-3.1.xsd"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx">
+    <import resource="applicationContext.xml"/>
     <bean id="utilTest" class="cn.edu.uestc.acmicpc.oj.test.util.UtilTest">
         <property name="global" ref="global"/>
     </bean>
@@ -53,4 +54,5 @@
     <bean id="conditionTest" class="cn.edu.uestc.acmicpc.oj.test.db.ConditionTest">
         <property name="problemDAO" ref="problemDAO"/>
     </bean>
+    <bean scope="singleton" id="judgeService" class="cn.edu.uestc.acmicpc.service.JudgeService"/>
 </beans>
