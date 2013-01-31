@@ -30,7 +30,7 @@ import java.sql.Timestamp;
  * Article information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @Table(name = "article", schema = "", catalog = "uestcoj")
 @Entity
@@ -133,11 +133,11 @@ public class Article implements Serializable {
     @Column(name = "isNotice", nullable = false, insertable = true, updatable = true, length = 0,
             precision = 0)
     @Basic
-    public boolean isNotice() {
+    public boolean getIsNotice() {
         return isNotice;
     }
 
-    public void setNotice(boolean notice) {
+    public void setIsNotice(boolean notice) {
         isNotice = notice;
     }
 
@@ -146,7 +146,7 @@ public class Article implements Serializable {
     @Column(name = "visible", nullable = false, insertable = true, updatable = true, length = 0,
             precision = 0)
     @Basic
-    public boolean isVisible() {
+    public boolean getVisible() {
         return visible;
     }
 

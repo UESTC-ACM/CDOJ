@@ -185,16 +185,16 @@ public class ProblemView extends View<Problem> {
         return isSpj;
     }
 
-    public void setSpj(boolean spj) {
-        isSpj = spj;
+    public void setSpj(boolean isSPJ) {
+        this.isSpj = isSPJ;
     }
 
-    public boolean isVisible() {
+    public boolean getIsVisible() {
         return isVisible;
     }
 
-    public void setVisible(boolean visible) {
-        isVisible = visible;
+    public void setIsVisible(boolean isVisible) {
+        this.isVisible = isVisible;
     }
 
     public int getOutputLimit() {

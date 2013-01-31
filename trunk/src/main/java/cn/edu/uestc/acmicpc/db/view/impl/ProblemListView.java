@@ -37,6 +37,7 @@ import java.util.List;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
+@SuppressWarnings("UnusedDeclaration")
 public class ProblemListView extends View<Problem> {
 
     private int problemId;
@@ -44,7 +45,7 @@ public class ProblemListView extends View<Problem> {
     private String source;
     private int solved;
     private int tried;
-    private boolean isSpj;
+    private boolean isSPJ;
     private boolean isVisible;
     private int difficulty;
     private List<String> tags;
@@ -105,20 +106,20 @@ public class ProblemListView extends View<Problem> {
         this.tried = tried;
     }
 
-    public boolean isSpj() {
-        return isSpj;
+    public boolean getIsSpj() {
+        return isSPJ;
     }
 
-    public void setSpj(boolean spj) {
-        isSpj = spj;
+    public void setIsSpj(boolean SPJ) {
+        isSPJ = SPJ;
     }
 
-    public boolean isVisible() {
+    public boolean getIsVisible() {
         return isVisible;
     }
 
-    public void setVisible(boolean visible) {
-        isVisible = visible;
+    public void setIsVisible(boolean isVisible) {
+        this.isVisible = isVisible;
     }
 
     public int getDifficulty() {
