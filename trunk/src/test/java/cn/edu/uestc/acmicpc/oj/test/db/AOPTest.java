@@ -21,9 +21,9 @@ package cn.edu.uestc.acmicpc.oj.test.db;
  *
  */
 
-import cn.edu.uestc.acmicpc.oj.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.oj.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.User;
+import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;

@@ -24,11 +24,11 @@ package cn.edu.uestc.acmicpc.oj.action.admin;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
-import cn.edu.uestc.acmicpc.oj.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.oj.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.oj.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.Problem;
-import cn.edu.uestc.acmicpc.oj.db.view.impl.ProblemView;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.db.view.impl.ProblemView;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;

@@ -23,11 +23,11 @@
 package cn.edu.uestc.acmicpc.oj.action;
 
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
-import cn.edu.uestc.acmicpc.oj.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.User;
+import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.interceptor.AppInterceptor;
 import cn.edu.uestc.acmicpc.oj.interceptor.iface.IActionInterceptor;
-import cn.edu.uestc.acmicpc.oj.ioc.UserDAOAware;
+import cn.edu.uestc.acmicpc.ioc.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;

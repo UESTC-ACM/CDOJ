@@ -24,9 +24,9 @@ package cn.edu.uestc.acmicpc.oj.action.test;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
-import cn.edu.uestc.acmicpc.oj.db.dao.iface.ITagDAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.Tag;
-import cn.edu.uestc.acmicpc.oj.ioc.TagDAOAware;
+import cn.edu.uestc.acmicpc.db.dao.iface.ITagDAO;
+import cn.edu.uestc.acmicpc.db.entity.Tag;
+import cn.edu.uestc.acmicpc.ioc.TagDAOAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
