@@ -56,7 +56,7 @@ public class ProblemCondition extends BaseCondition {
     public String source;
 
     @Exp(Type = ConditionType.eq)
-    public Boolean isSPJ;
+    public Boolean isSpj;
 
     @Exp(MapField = "difficulty", Type = ConditionType.ge)
     public Integer startDifficulty;

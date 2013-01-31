@@ -255,8 +255,8 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
         problem.setSource("Source " + randomId.toString());
         problem.setTimeLimit(Math.abs(new Random().nextInt()));
         problem.setMemoryLimit(Math.abs(new Random().nextInt()));
-        problem.setIsSPJ(new Random().nextBoolean());
-        problem.setVisible(true);
+        problem.setIsSpj(new Random().nextBoolean());
+        problem.setIsVisible(true);
         problem.setOutputLimit(Math.abs(new Random().nextInt()));
         problem.setJavaMemoryLimit(Math.abs(new Random().nextInt()));
         problem.setJavaTimeLimit(Math.abs(new Random().nextInt()));

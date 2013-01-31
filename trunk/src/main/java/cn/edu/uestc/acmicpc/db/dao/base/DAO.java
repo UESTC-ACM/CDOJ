@@ -136,7 +136,6 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
             updateCriteria(criteria, condition);
             return (Long) criteria.uniqueResult();
         } catch (HibernateException e) {
-            e.printStackTrace();
             throw new AppException("Invoke count method error.");
         }
     }
