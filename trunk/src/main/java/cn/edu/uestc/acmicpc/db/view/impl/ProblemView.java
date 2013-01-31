@@ -65,19 +65,10 @@ public class ProblemView extends View<Problem> {
      * Get ProblemView entity by problem entity.
      *
      * @param problem specific problem entity
-     * @param ignored ignore super constructor or not
      * @throws AppException
      */
-    public ProblemView(Problem problem, boolean ignored) throws AppException {
-        super(ignored ? null : problem);
-        if (ignored) {
-            setProblemId(problem.getProblemId());
-            setTitle(problem.getTitle());
-            setDifficulty(problem.getDifficulty());
-            setSolved(problem.getSolved());
-            setTried(problem.getTried());
-            setSource(problem.getSource());
-        }
+    public ProblemView(Problem problem) throws AppException {
+        super(problem);
         List<String> list = new LinkedList<String>();
         Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
         for (ProblemTag problemTag : problemTags) {

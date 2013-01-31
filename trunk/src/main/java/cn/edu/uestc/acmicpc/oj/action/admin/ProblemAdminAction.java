@@ -28,7 +28,7 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.db.view.impl.ProblemView;
+import cn.edu.uestc.acmicpc.db.view.impl.ProblemListView;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -109,13 +109,13 @@ public class ProblemAdminAction extends BaseAction {
             condition.currentPage = pageInfo.getCurrentPage();
             condition.countPerPage = RECORD_PER_PAGE;
             List<Problem> problemList = problemDAO.findAll(condition);
-            List<ProblemView> problemViewList = new ArrayList<ProblemView>();
+            List<ProblemListView> problemListViewList = new ArrayList<ProblemListView>();
             for (Problem problem : problemList)
-                problemViewList.add(new ProblemView(problem, true));
+                problemListViewList.add(new ProblemListView(problem));
             json.put("pageInfo", pageInfo.getHtmlString());
             json.put("result", "ok");
             json.put("condition", problemCondition);
-            json.put("problemList", problemViewList);
+            json.put("problemList", problemListViewList);
         } catch (AppException e) {
             json.put("result", "error");
             json.put("error_msg", e.getMessage());

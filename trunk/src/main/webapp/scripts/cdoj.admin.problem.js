@@ -30,6 +30,29 @@
 
 var currentCondition;
 
+function getTitle(title,source) {
+    var html = '';
+    html = '<span class="info-problem-source pull-left" data-original-title="'+source+'"><a href="./problem_single.html">'+title+'</a></span>';
+    return html;
+}
+
+function getTags(tags) {
+    var html = '';
+    $.each(tags,function(index,value) {
+        html += '<span class="label label-info pull-right tags">'+value+'</span>';
+    });
+    return html;
+}
+
+function getDifficulty(difficulty) {
+    var html = '';
+    for (var i = 1;i <= difficulty;i += 2)
+        html += '<i class="icon-star"></i>';
+    if (difficulty%2 == 1)
+        html += '<i class="icon-star-empty"></i>';
+    return html;
+}
+
 function refreshProblemList(condition) {
     $.post('/admin/problem/search', condition, function(data) {
         console.log(condition);
@@ -47,6 +70,21 @@ function refreshProblemList(condition) {
             return false;
         });
 
+        problemList = data.problemList;
+        var tbody = $('#problemList');
+        // remove old user list
+        tbody.find('tr').remove();
+        // put user list
+        $.each(problemList,function(index,value){
+            var html = '<tr>'+
+                '<td>'+value.problemId+'</td>'+
+                '<td>'+getTitle(value.title,value.source)+getTags(value.tags)+'</td>'+
+                '<td>'+getDifficulty(value.difficulty)+'</td>'+
+                '<td>'+value.solved+'</td>'+
+                '<td>'+value.tried+'</td>'+
+                '</tr>';
+            tbody.append(html);
+        });
         console.log(data);
     });
 }
@@ -54,7 +92,7 @@ function refreshProblemList(condition) {
 $(document).ready(function(){
     currentCondition = {
         "currentPage":1,
-        "problemCondition.startId":1,
+        "problemCondition.startId":null,
         "problemCondition.endId":null,
         "problemCondition.title":null,
         "problemCondition.description":null,
@@ -67,12 +105,6 @@ $(document).ready(function(){
         "problemCondition.isSpj":null,
         "problemCondition.startDifficulty":null,
         "problemCondition.endDifficulty":null,
-        "userCondition.startId":1,
-        "userCondition.endId":null,
-        "userCondition.userName":null,
-        "userCondition.type":null,
-        "userCondition.school":null,
-        "userCondition.departmentId":null
     }
 
     refreshProblemList(currentCondition);
