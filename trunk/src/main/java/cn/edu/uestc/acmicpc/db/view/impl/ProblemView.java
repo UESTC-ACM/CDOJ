@@ -35,7 +35,7 @@ import java.util.List;
  * Use for return problem information with json type.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ProblemView extends View<Problem> {
@@ -181,11 +181,11 @@ public class ProblemView extends View<Problem> {
         this.tried = tried;
     }
 
-    public boolean isSpj() {
+    public boolean getIsSpj() {
         return isSpj;
     }
 
-    public void setSpj(boolean isSPJ) {
+    public void setIsSpj(boolean isSPJ) {
         this.isSpj = isSPJ;
     }
 
