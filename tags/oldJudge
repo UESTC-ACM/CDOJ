@@ -93,7 +93,7 @@ init_RF_table	../branches/oldJudge/include/rf_table.h	/^void init_RF_table(int l
 input_file	../branches/oldJudge/include/judge.h	/^    std::string input_file;$/;"	m	namespace:problem
 int_ignored	../branches/oldJudge/src/judge_all.cc	/^int int_ignored;$/;"	v
 io_redirect	../branches/oldJudge/include/judge.h	/^void io_redirect()$/;"	f	signature:()
-is_space_char	../branches/oldJudge/include/judge.h	623;"	d
+is_space_char	../branches/oldJudge/include/judge.h	618;"	d
 is_valid_syscall	../branches/oldJudge/include/judge.h	/^bool is_valid_syscall(int lang, int syscall_id)$/;"	f	signature:(int lang, int syscall_id)
 java_memory_factor	../branches/oldJudge/include/judge.h	/^    int java_memory_factor          = 2;$/;"	m	namespace:judge_conf
 java_time_factor	../branches/oldJudge/include/judge.h	/^    int java_time_factor            = 2;$/;"	m	namespace:judge_conf
