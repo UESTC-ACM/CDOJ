@@ -46,6 +46,7 @@ import java.util.List;
  */
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         extends BaseDAO implements IDAO<Entity, PK> {
+
     @Override
     public void addOrUpdate(Entity entity) throws AppException {
         try {
@@ -108,6 +109,19 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
             return criteria.list();
         } catch (HibernateException e) {
             throw new AppException("Invoke findAll method error.");
+        }
+    }
+
+    @Override
+    public Long customCount(Condition condition) throws AppException {
+        if (condition == null)
+            return count();
+        try {
+            Criteria criteria = createCriteria();
+            updateCriteria(criteria, condition);
+            return (Long) criteria.uniqueResult();
+        } catch (HibernateException e) {
+            throw new AppException("Invoke customCount method error.");
         }
     }
 

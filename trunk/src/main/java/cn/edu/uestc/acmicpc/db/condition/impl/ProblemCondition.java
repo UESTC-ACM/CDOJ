@@ -31,7 +31,7 @@ import org.hibernate.criterion.Restrictions;
  * Problem search condition.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ProblemCondition extends BaseCondition {
@@ -56,7 +56,7 @@ public class ProblemCondition extends BaseCondition {
     public String source;
 
     @Exp(Type = ConditionType.eq)
-    public Boolean spj;
+    public Boolean isSPJ;
 
     @Exp(MapField = "difficulty", Type = ConditionType.ge)
     public Integer startDifficulty;

@@ -22,8 +22,6 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.oj.annotation.IdSetter;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -31,7 +29,7 @@ import java.io.Serializable;
  * Contest team information, for school programming contest.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 @Table(name = "contestTeamInfo", schema = "", catalog = "uestcoj")
 @Entity
@@ -47,7 +45,6 @@ public class ContestTeamInfo implements Serializable {
         return teamId;
     }
 
-    @IdSetter
     public void setTeamId(int teamId) {
         this.teamId = teamId;
     }

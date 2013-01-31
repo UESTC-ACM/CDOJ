@@ -22,8 +22,14 @@
 
 package cn.edu.uestc.acmicpc.util;
 
+import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
 import cn.edu.uestc.acmicpc.db.dao.impl.DepartmentDAO;
+import cn.edu.uestc.acmicpc.db.dao.impl.LanguageDAO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
+import cn.edu.uestc.acmicpc.db.entity.Language;
+import cn.edu.uestc.acmicpc.ioc.DepartmentDAOAware;
+import cn.edu.uestc.acmicpc.ioc.LanguageDAOAware;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.util.ArrayList;
@@ -36,9 +42,9 @@ import java.util.List;
  * <strong>WARN:</strong> this file may be rewritten carefully.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
+ * @version 5
  */
-public class Global {
+public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
     @SuppressWarnings("UnusedDeclaration")
     public enum OnlineJudgeReturnType {
@@ -91,12 +97,19 @@ public class Global {
     /**
      * Department DAO using for get all departments.
      */
-    private DepartmentDAO departmentDAO;
+    private IDepartmentDAO departmentDAO;
+
+    /**
+     * Language DAO using for get all languages.
+     */
+    private ILanguageDAO languageDAO;
 
     /**
      * Department list.
      */
     private List<Department> departmentList;
+
+    private List<Language> languageList;
 
     /**
      * authentication type list
@@ -104,22 +117,34 @@ public class Global {
     private List<AuthenticationType> authenticationTypeList;
 
     /**
+     * Get all languages.
+     *
+     * @return compile language list
+     */
+    public List<Language> getLanguageList() {
+        return languageList;
+    }
+
+    /**
      * Initializer.
      */
     public void init() throws AppException {
         this.departmentList = departmentDAO.findAll();
+        this.languageList = languageDAO.findAll();
+
         this.authenticationTypeList = new ArrayList<AuthenticationType>();
-        this.authenticationTypeList.clear();
         Collections.addAll(authenticationTypeList, AuthenticationType.values());
     }
 
-    /**
-     * Get departmentDAO object from Spring IoC
-     *
-     * @param departmentDAO struts departmentDAO
-     */
-    public void setDepartmentDAO(DepartmentDAO departmentDAO) {
+
+    @Override
+    public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
         this.departmentDAO = departmentDAO;
+    }
+
+    @Override
+    public void setLanguageDAO(ILanguageDAO languageDAO) {
+        this.languageDAO = languageDAO;
     }
 
     /**

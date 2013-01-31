@@ -20,16 +20,17 @@
 
 package cn.edu.uestc.acmicpc.db.condition.base;
 
-import cn.edu.uestc.acmicpc.oj.annotation.IdSetter;
-import cn.edu.uestc.acmicpc.util.ReflectionUtil;
+import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 /**
  * We can use this class to transform conditions to database's Criterion list
@@ -55,8 +56,7 @@ import java.lang.reflect.Method;
  * </code>
  * </li>
  * <li>
- * If the field is other class's key field, please mark the setter of the
- * field with {@code IdSetter} annotation and user the {@code MapObject} parameter.
+ * If the field is other class's key field, please use the {@code MapObject} parameter.
  * <p/>
  * For example:
  * <p/>
@@ -67,7 +67,7 @@ import java.lang.reflect.Method;
  * </li>
  * <li>
  * {@code ConditionType.like} type will add % in two ends of the string, otherwise
- * rewrite the invoke method to deal with ti.
+ * rewrite the invoke method to deal with it.
  * <p/>
  * For example:
  * <p/>
@@ -84,7 +84,7 @@ import java.lang.reflect.Method;
  * </ul>
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @SuppressWarnings("UnusedDeclaration")
 public abstract class BaseCondition {
@@ -141,10 +141,14 @@ public abstract class BaseCondition {
                     + mapField.substring(1) : mapField;
             try {
                 if (!exp.MapObject().equals(objectClass)) {
-                    Object obj = exp.MapObject().newInstance();
-                    Method method = ReflectionUtil.getMethodByAnnotation(exp.MapObject(), IdSetter.class);
-                    method.invoke(obj, value);
-                    value = obj;
+                    String name = exp.MapObject().getName()
+                            .substring(exp.MapObject().getName().lastIndexOf('.') + 1);
+                    String DAOName = name.substring(0, 1).toLowerCase()
+                            + name.substring(1) + "DAO";
+                    ApplicationContext applicationContext =
+                            new ClassPathXmlApplicationContext("applicationContext.xml");
+                    IDAO DAO = (IDAO) applicationContext.getBean(DAOName);
+                    value = DAO.get((Serializable) value);
                 }
                 value = exp.Type().name().equals("like") ? String.format(
                         "%%%s%%", value) : value;
@@ -152,7 +156,8 @@ public abstract class BaseCondition {
                         String.class, Object.class).invoke(null, mapField,
                         value);
                 condition.addCriterion(c);
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         invoke(condition);

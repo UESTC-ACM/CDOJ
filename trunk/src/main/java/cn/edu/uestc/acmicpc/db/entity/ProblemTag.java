@@ -22,8 +22,6 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.oj.annotation.IdSetter;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -31,7 +29,7 @@ import java.io.Serializable;
  * Mappings between problems and tags.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 @Table(name = "problemTag", schema = "", catalog = "uestcoj")
 @Entity
@@ -47,7 +45,6 @@ public class ProblemTag implements Serializable {
         return problemTagId;
     }
 
-    @IdSetter
     public void setProblemTagId(int problemTagId) {
         this.problemTagId = problemTagId;
     }

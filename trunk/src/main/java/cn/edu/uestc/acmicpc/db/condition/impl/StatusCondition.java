@@ -20,17 +20,39 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.annotation;
+package cn.edu.uestc.acmicpc.db.condition.impl;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.db.entity.User;
 
 /**
- * Id setter flag for database entities.
+ * Status search condition.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-@Retention(RetentionPolicy.RUNTIME)
-public @interface IdSetter {
+@SuppressWarnings("UnusedDeclaration")
+public class StatusCondition extends BaseCondition {
+    /**
+     * Start status id.
+     */
+    @Exp(MapField = "statusId", Type = ConditionType.ge)
+    public Integer startId;
+    /**
+     * End status id.
+     */
+    @Exp(MapField = "statusId", Type = ConditionType.le)
+    public Integer endId;
+
+    @Exp(Type = ConditionType.eq, MapObject = User.class)
+    public Integer userId;
+
+    @Exp(Type = ConditionType.eq, MapObject = Problem.class)
+    public Integer problemId;
+
+    @Override
+    public void invoke(Condition condition) {
+    }
 }
