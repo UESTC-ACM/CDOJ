@@ -23,20 +23,18 @@ package cn.edu.uestc.acmicpc.oj.test.db;
  */
 
 
-import cn.edu.uestc.acmicpc.oj.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.oj.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.oj.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.oj.db.dao.iface.ITagDAO;
-import cn.edu.uestc.acmicpc.oj.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.oj.db.dao.impl.DepartmentDAO;
-import cn.edu.uestc.acmicpc.oj.db.dao.impl.UserDAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.Problem;
-import cn.edu.uestc.acmicpc.oj.db.entity.Tag;
-import cn.edu.uestc.acmicpc.oj.db.entity.User;
-import cn.edu.uestc.acmicpc.oj.ioc.DepartmentDAOAware;
-import cn.edu.uestc.acmicpc.oj.ioc.ProblemDAOAware;
-import cn.edu.uestc.acmicpc.oj.ioc.TagDAOAware;
-import cn.edu.uestc.acmicpc.oj.ioc.UserDAOAware;
+import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
+import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ITagDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.db.entity.Tag;
+import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.ioc.DepartmentDAOAware;
+import cn.edu.uestc.acmicpc.ioc.ProblemDAOAware;
+import cn.edu.uestc.acmicpc.ioc.TagDAOAware;
+import cn.edu.uestc.acmicpc.ioc.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;

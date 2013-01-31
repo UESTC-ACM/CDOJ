@@ -21,7 +21,7 @@ package cn.edu.uestc.acmicpc.oj.test.util;
  *
  */
 
-import cn.edu.uestc.acmicpc.oj.db.entity.Department;
+import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.util.Global;
 import org.junit.Assert;
 import org.junit.Test;

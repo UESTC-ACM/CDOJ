@@ -24,11 +24,10 @@ package cn.edu.uestc.acmicpc.oj.action.user;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
-import cn.edu.uestc.acmicpc.oj.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.oj.db.dao.impl.DepartmentDAO;
-import cn.edu.uestc.acmicpc.oj.db.dto.UserDTO;
-import cn.edu.uestc.acmicpc.oj.db.entity.User;
-import cn.edu.uestc.acmicpc.oj.ioc.DepartmentDAOAware;
+import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
+import cn.edu.uestc.acmicpc.db.dto.UserDTO;
+import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.ioc.DepartmentDAOAware;
 import com.opensymphony.xwork2.validator.annotations.*;
 
 /**

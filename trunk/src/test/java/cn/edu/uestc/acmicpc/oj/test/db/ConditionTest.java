@@ -22,8 +22,8 @@
 
 package cn.edu.uestc.acmicpc.oj.test.db;
 
-import cn.edu.uestc.acmicpc.oj.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.oj.db.dao.impl.ProblemDAO;
+import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
+import cn.edu.uestc.acmicpc.db.dao.impl.ProblemDAO;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -22,16 +22,15 @@
 
 package cn.edu.uestc.acmicpc.oj.test.db;
 
-import cn.edu.uestc.acmicpc.oj.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.oj.db.entity.User;
-import cn.edu.uestc.acmicpc.oj.db.view.impl.UserView;
-import cn.edu.uestc.acmicpc.oj.ioc.DepartmentDAOAware;
+import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
+import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.db.view.impl.UserView;
+import cn.edu.uestc.acmicpc.ioc.DepartmentDAOAware;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
