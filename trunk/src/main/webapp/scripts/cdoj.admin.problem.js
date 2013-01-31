@@ -30,9 +30,14 @@
 
 var currentCondition;
 
-function getTitle(title,source,spj,visible) {
+function getTitle(title,source,isSpj,isVisible) {
     var html = '';
-    html = '<span class="info-problem-source pull-left" data-original-title="'+source+'"><a href="./problem_single.html">'+title+'</a></span>';
+    if (isVisible == true)
+        html += '<i class="icon-eye-open pull-left tags"/>';
+    if (isSpj == true)
+        html += '<span class="label label-important tags pull-left">SPJ</span>';
+    html += '<span class="info-problem-source pull-left" data-original-title="'+source+'"><a href="./problem_single.html">'
+        +title+'</a></span>';
     return html;
 }
 
@@ -78,7 +83,7 @@ function refreshProblemList(condition) {
         $.each(problemList,function(index,value){
             var html = '<tr>'+
                 '<td>'+value.problemId+'</td>'+
-                '<td>'+getTitle(value.title,value.source,value.spj,value.visible)+getTags(value.tags)+'</td>'+
+                '<td>'+getTitle(value.title,value.source,value.isSpj,value.isVisible)+getTags(value.tags)+'</td>'+
                 '<td>'+getDifficulty(value.difficulty)+'</td>'+
                 '<td>'+value.solved+'</td>'+
                 '<td>'+value.tried+'</td>'+
@@ -104,7 +109,7 @@ $(document).ready(function(){
         "problemCondition.source":null,
         "problemCondition.isSpj":null,
         "problemCondition.startDifficulty":null,
-        "problemCondition.endDifficulty":null,
+        "problemCondition.endDifficulty":null
     }
 
     refreshProblemList(currentCondition);
