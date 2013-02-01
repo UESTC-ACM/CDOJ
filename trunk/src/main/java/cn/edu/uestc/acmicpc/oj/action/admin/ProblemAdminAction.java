@@ -53,7 +53,7 @@ public class ProblemAdminAction extends BaseAction {
      */
     private IProblemDAO problemDAO;
 
-    private ProblemCondition problemCondition = new ProblemCondition();
+    public ProblemCondition problemCondition = new ProblemCondition();
 
     /**
      * Setter of problemCondition for Ioc.

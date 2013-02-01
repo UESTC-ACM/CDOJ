@@ -114,5 +114,24 @@ $(document).ready(function(){
         "problemCondition.keyword":undefined
     }
 
+    $('input#search').click(function(e) {
+        $.each(currentCondition, function(index,value) {
+            if (index.indexOf('.') != -1)
+                currentCondition[index] = $('#'+index.replace('.','_')).val();
+        });
+        currentCondition.currentPage = 1;
+        refreshProblemList(currentCondition);
+        $('#TabMenu a:first').tab('show');
+        return false;
+    });
+
+    $('input#reset').click(function(e) {
+        $.each(currentCondition, function(index,value) {
+            if (index.indexOf('.') != -1)
+                $('#'+index.replace('.','_')).attr('value','');
+        });
+        return false;
+    });
+
     refreshProblemList(currentCondition);
 });
