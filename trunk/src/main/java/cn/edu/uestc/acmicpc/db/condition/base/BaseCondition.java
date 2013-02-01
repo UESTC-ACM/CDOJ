@@ -118,7 +118,7 @@ public abstract class BaseCondition {
      * @param upperCaseFirst whether columns' name begin uppercase letter first
      * @return criterion list we need
      */
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings({"ConstantConditions", "unchecked"})
     public Condition getCondition(boolean upperCaseFirst) {
         Condition condition = new Condition();
         Class<?> clazz = this.getClass();

@@ -35,7 +35,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Test cases for conditions entities.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:applicationContext-test.xml"})
@@ -60,6 +60,8 @@ public class ConditionTest {
         ProblemCondition problemCondition = new ProblemCondition();
         problemCondition.startId = 1;
         problemCondition.endId = 100;
+        problemCondition.isSpj = null;
+        System.out.println(problemDAO.count(problemCondition.getCondition()));
         problemCondition.isSpj = false;
         System.out.println(problemDAO.count(problemCondition.getCondition()));
     }
