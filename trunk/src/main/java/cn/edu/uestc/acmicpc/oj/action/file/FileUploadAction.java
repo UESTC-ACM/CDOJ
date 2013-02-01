@@ -22,6 +22,7 @@
 
 package cn.edu.uestc.acmicpc.oj.action.file;
 
+import cn.edu.uestc.acmicpc.ioc.SettingsAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.Settings;
@@ -45,9 +46,9 @@ import java.util.Map;
  * <strong>WARN</strong>: please user {@code getParameter} to get parameter.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
-public abstract class FileUploadAction extends BaseAction {
+public abstract class FileUploadAction extends BaseAction implements SettingsAware {
     private static final long serialVersionUID = 3467163443657536111L;
 
     /**
@@ -71,6 +72,11 @@ public abstract class FileUploadAction extends BaseAction {
     protected Map<String, String[]> parameters = new HashMap<String, String[]>();
 
     /**
+     * Global Settings.
+     */
+    private Settings settings;
+
+    /**
      * Get parameter from servlet request.
      *
      * @param field key name
@@ -81,7 +87,7 @@ public abstract class FileUploadAction extends BaseAction {
                 parameters.get(field), ",") : httpServletRequest.getParameter(field);
     }
 
-    FileUploadAction() {
+    public FileUploadAction() {
         super();
         initFiles();
     }
@@ -93,7 +99,7 @@ public abstract class FileUploadAction extends BaseAction {
         if (StringUtil.choose(httpServletRequest.getContentType(), "").indexOf("multipart/form-data") == -1)
             return;
         DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
-        String path = servletContext.getRealPath(Settings.SETTING_UPLOAD_FOLDER);
+        String path = servletContext.getRealPath(settings.SETTING_UPLOAD_FOLDER);
         diskFileItemFactory.setRepository(new File(path));
         diskFileItemFactory.setSizeThreshold(SIZE_THRESHOLD);
         ServletFileUpload upload = new ServletFileUpload(diskFileItemFactory);
@@ -125,13 +131,13 @@ public abstract class FileUploadAction extends BaseAction {
      */
     public void upload() {
         json = new HashMap<String, Object>();
-        request.put("fileSize", Settings.SETTING_UPLOAD_SIZE);
-        request.put("fileTypes", Settings.SETTING_UPLOAD_TYPES);
+        request.put("fileSize", settings.SETTING_UPLOAD_SIZE);
+        request.put("fileTypes", settings.SETTING_UPLOAD_TYPES);
         if (httpServletRequest.getMethod().equals("POST") && uploadFiles.get("file") != null) {
             FileItem fileItem = uploadFiles.get("file");
             try {
-                request.put("url", handleUploadFile(fileItem, Settings.SETTING_UPLOAD_TYPES,
-                        Settings.SETTING_UPLOAD_SIZE));
+                request.put("url", handleUploadFile(fileItem, settings.SETTING_UPLOAD_TYPES,
+                        settings.SETTING_UPLOAD_SIZE));
                 request.put("name", fileItem.getName());
                 request.put("extName", StringUtil.getFilenameExt(fileItem.getName()));
             } catch (AppException e) {
@@ -161,12 +167,17 @@ public abstract class FileUploadAction extends BaseAction {
         String filename = StringUtil.generateFileName(fileItem.getName(),
                 rndSeed);
         String path = ServletActionContext.getServletContext().getRealPath(
-                Settings.SETTING_UPLOAD_FOLDER);
+                settings.SETTING_UPLOAD_FOLDER);
         try {
             fileItem.write(new File(path + "\\" + filename));
         } catch (Exception e) {
             return null;
         }
-        return Settings.SETTING_UPLOAD_FOLDER.substring(1) + filename;
+        return settings.SETTING_UPLOAD_FOLDER.substring(1) + filename;
+    }
+
+    @Override
+    public void setSettings(Settings settings) {
+        this.settings = settings;
     }
 }

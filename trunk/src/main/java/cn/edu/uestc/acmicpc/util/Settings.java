@@ -25,9 +25,15 @@ package cn.edu.uestc.acmicpc.util;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.xml.XmlNode;
 import cn.edu.uestc.acmicpc.oj.xml.XmlParser;
-import org.apache.struts2.ServletActionContext;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,71 +41,76 @@ import java.util.Map;
  * <strong>settings.xml</strong>.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 public class Settings {
     /**
      * Global encoding
      */
-    public static final String SETTING_ENCODING;
+    public final String SETTING_ENCODING;
 
     /**
      * Upload file size limit(in MB)
      */
-    public static final Integer SETTING_UPLOAD_SIZE;
+    public final Integer SETTING_UPLOAD_SIZE;
 
     /**
      * Upload file's types
      */
-    public static final String SETTING_UPLOAD_TYPES;
+    public final String SETTING_UPLOAD_TYPES;
 
     /**
      * Upload files store folder
      */
-    public static final String SETTING_UPLOAD_FOLDER;
+    public final String SETTING_UPLOAD_FOLDER;
 
     /**
      * Data path name
      */
-    public static final String JUDGE_DATA_PATH;
+    public final String JUDGE_DATA_PATH;
 
     /**
      * Work path name
      */
-    public static final String JUDGE_TEMP_PATH;
+    public final String JUDGE_TEMP_PATH;
 
     /**
      * setting map from configuration file.
      */
-    private static Map<String, Map<String, String>> settings;
-
-    /**
-     * description map from configuration file.
-     */
-    private static Map<String, Map<String, String>> descriptions;
+    private static Map<String, Object> settings;
 
     /**
      * location of <strong>settings.xml</strong>.
      */
-    private static final String SETTINGS_XML_PATH = "/WEB-INF/settings.xml";
+    private static final String SETTINGS_XML_PATH = "classpath:settings.xml";
 
     /**
      * Static constructor.
      */
-    static {
+    public Settings() {
         try {
             init();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        SETTING_ENCODING = getConfig("setting", "encoding");
-        SETTING_UPLOAD_SIZE = Integer.valueOf(getConfig("setting", "uploadSize"));
-        SETTING_UPLOAD_TYPES = getConfig("setting", "uploadTypes");
-        SETTING_UPLOAD_FOLDER = getConfig("settings", "uploadFolder");
+        SETTING_ENCODING = (String) getConfig("setting", "encoding", "value");
+        SETTING_UPLOAD_SIZE = Integer.valueOf((String) getConfig("setting", "uploadSize", "value"));
+        SETTING_UPLOAD_TYPES = (String) getConfig("setting", "uploadTypes", "value");
+        SETTING_UPLOAD_FOLDER = (String) getConfig("setting", "uploadFolder", "value");
 
-        JUDGE_DATA_PATH = getConfig("judge", "dataPath");
-        JUDGE_TEMP_PATH = getConfig("judge", "tempPath");
+        JUDGE_DATA_PATH = (String) getConfig("judge", "dataPath", "value");
+        JUDGE_TEMP_PATH = (String) getConfig("judge", "tempPath", "value");
+
+        System.out.println(SETTING_ENCODING);
+        System.out.println(SETTING_UPLOAD_SIZE);
+        System.out.println(SETTING_UPLOAD_TYPES);
+        System.out.println(SETTING_UPLOAD_FOLDER);
+
+        System.out.println(JUDGE_TEMP_PATH);
+        System.out.println(JUDGE_DATA_PATH);
+
+
     }
 
     /**
@@ -108,10 +119,18 @@ public class Settings {
      * @throws cn.edu.uestc.acmicpc.util.exception.AppException
      *
      */
-    private static void init() throws AppException {
-        settings = new HashMap<String, Map<String, String>>();
-        descriptions = new HashMap<String, Map<String, String>>();
-        String path = ServletActionContext.getServletContext().getRealPath(SETTINGS_XML_PATH);
+    private void init() throws AppException {
+        settings = new HashMap<>();
+        String path;
+        ResourceLoader loader = new DefaultResourceLoader();
+        Resource resource = loader.getResource(SETTINGS_XML_PATH);
+        try {
+            path = resource.getFile().getPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        System.out.println(path);
         XmlParser xmlParser = new XmlParser(path);
         XmlNode root;
         try {
@@ -120,41 +139,53 @@ public class Settings {
             throw new AppException("there no root node in the settings file.");
         }
         for (XmlNode node : root.getChildList()) {
-            Map<String, String> childSettings = new HashMap<String, String>();
-            Map<String, String> childDescriptions = new HashMap<String, String>();
-            for (XmlNode child : node.getChildList()) {
-                childSettings.put(child.getAttribute("id").toUpperCase(), child.getInnerText());
-                childDescriptions.put(child.getAttribute("description").toUpperCase(), child.getInnerText());
+            Map<String, Object> map = new HashMap<>();
+            for (XmlNode childNode : node.getChildList()) {
+                if (childNode.getTagName().equals("list")) {
+                    List<Map<String, String>> list = new LinkedList<>();
+                    for (XmlNode childNode2 : childNode.getChildList()) { // item
+                        list.add(parseItem(childNode2));
+                    }
+                    map.put(childNode.getAttribute("name"), list);
+                } else { //item
+                    map.put(childNode.getAttribute("name"), parseItem(node));
+                }
             }
-            settings.put(node.getAttribute("name").toUpperCase(), childSettings);
-            descriptions.put(node.getAttribute("name").toUpperCase(), childDescriptions);
+            settings.put(node.getAttribute("name"), map);
         }
+    }
+
+    private Map<String, String> parseItem(XmlNode node) throws AppException {
+        Map<String, String> result = new HashMap<>();
+        if (node.getInnerText() != null)
+            result.put("value", node.getInnerText());
+        for (XmlNode childNode : node.getChildList()) {
+            result.put(childNode.getAttribute("name"), childNode.getAttribute("value"));
+        }
+        return result;
     }
 
     /**
      * Get configuration value from <strong>settings.xml</strong>.
      *
-     * @param category category name
-     * @param name     item name
+     * @param path setting path
      * @return item value
      */
-    public static String getConfig(String category, String name) {
-        category = category.toUpperCase();
-        name = name.toUpperCase();
-        return settings.get(category) == null
-                || settings.get(category).get(name) == null ? "" : settings.get(category).get(name).trim();
-    }
-
-    /**
-     * Get configuration description from <strong>settings.xml</strong>.
-     *
-     * @param category category name
-     * @param name     item name
-     * @return item description
-     */
-    public static String getDescription(String category, String name) {
-        category = category.toUpperCase();
-        name = name.toUpperCase();
-        return descriptions.get(category) == null ? "" : descriptions.get(category).get(name);
+    private Object getConfig(String... path) {
+        try {
+            Object current = settings;
+            for (String aPath : path) {
+                Method method = current.getClass().getMethod("get", Object.class);
+                current = method.invoke(current, aPath);
+            }
+            if (current instanceof String) {
+                return ((String) current).trim();
+            } else {
+                return current;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

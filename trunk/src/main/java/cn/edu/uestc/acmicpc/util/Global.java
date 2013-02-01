@@ -24,8 +24,6 @@ package cn.edu.uestc.acmicpc.util;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
-import cn.edu.uestc.acmicpc.db.dao.impl.DepartmentDAO;
-import cn.edu.uestc.acmicpc.db.dao.impl.LanguageDAO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.Language;
 import cn.edu.uestc.acmicpc.ioc.DepartmentDAOAware;
@@ -42,7 +40,7 @@ import java.util.List;
  * <strong>WARN:</strong> this file may be rewritten carefully.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 5
+ * @version 6
  */
 public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
@@ -55,7 +53,8 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
         OJ_RE_FPE("Runtime Error on test# $case"), OJ_RE_BUS("Runtime Error on test# $case"),
         OJ_RE_ABRT("Runtime Error on test# $case"), OJ_RE_UNKNOWN("Runtime Error on test# $case"),
         OJ_RF("Restricted Function on test# $case"), OJ_SE("System Error on test# $case"),
-        OJ_RE_JAVA("Runtime Error on test# $case");
+        OJ_RE_JAVA("Runtime Error on test# $case"), OJ_JUDGING("Queuing"),
+        OJ_RUNNING("Running on test# $case"), OJ_REJUDGING("Queuing");
         private String description;
 
         /**

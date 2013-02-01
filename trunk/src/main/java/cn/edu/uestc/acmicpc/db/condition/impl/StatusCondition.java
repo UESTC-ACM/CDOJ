@@ -26,12 +26,18 @@ import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.util.Global;
+import org.hibernate.criterion.Junction;
+import org.hibernate.criterion.Restrictions;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Status search condition.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @SuppressWarnings("UnusedDeclaration")
 public class StatusCondition extends BaseCondition {
@@ -46,13 +52,39 @@ public class StatusCondition extends BaseCondition {
     @Exp(MapField = "statusId", Type = ConditionType.le)
     public Integer endId;
 
+    /**
+     * User's id.
+     */
     @Exp(Type = ConditionType.eq, MapObject = User.class)
     public Integer userId;
 
+    /**
+     * Problem's id.
+     */
     @Exp(Type = ConditionType.eq, MapObject = Problem.class)
     public Integer problemId;
 
+    /**
+     * Judging result list(<strong>PRIMARY</strong>).
+     */
+    public List<Global.OnlineJudgeReturnType> result = new LinkedList<Global.OnlineJudgeReturnType>();
+
+    /**
+     * Judging result int format.
+     */
+    public Integer iResult;
+
     @Override
     public void invoke(Condition condition) {
+        if (!result.isEmpty() || iResult != null) {
+            if (!result.isEmpty()) {
+                Junction junction = Restrictions.disjunction();
+                for (Global.OnlineJudgeReturnType onlineJudgeReturnType : result)
+                    junction.add(Restrictions.eq("result", onlineJudgeReturnType.ordinal()));
+                condition.addCriterion(junction);
+            } else {
+                condition.addCriterion(Restrictions.eq("result", iResult));
+            }
+        }
     }
 }

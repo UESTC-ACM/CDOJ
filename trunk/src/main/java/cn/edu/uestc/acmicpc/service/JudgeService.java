@@ -22,25 +22,24 @@
 
 package cn.edu.uestc.acmicpc.service;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.ICompileinfoDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.ioc.CompileinfoDAOAware;
-import cn.edu.uestc.acmicpc.ioc.ProblemDAOAware;
-import cn.edu.uestc.acmicpc.ioc.StatusDAOAware;
-import cn.edu.uestc.acmicpc.ioc.UserDAOAware;
+import cn.edu.uestc.acmicpc.db.dao.iface.*;
+import cn.edu.uestc.acmicpc.ioc.*;
+import cn.edu.uestc.acmicpc.service.entity.Judge;
+import cn.edu.uestc.acmicpc.service.entity.JudgeItem;
+import cn.edu.uestc.acmicpc.service.entity.Scheduler;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Judge main service, use multi-thread architecture to process judge
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
-public class JudgeService implements ProblemDAOAware, StatusDAOAware, UserDAOAware, CompileinfoDAOAware {
+public class JudgeService implements ProblemDAOAware, StatusDAOAware, UserDAOAware, CompileinfoDAOAware, CodeDAOAware {
     /**
      * ProblemDAO for initializing problem information.
      */
@@ -61,14 +60,31 @@ public class JudgeService implements ProblemDAOAware, StatusDAOAware, UserDAOAwa
      */
     private ICompileinfoDAO compileinfoDAO;
 
-    List<Thread> threads = new LinkedList<Thread>();
+    /**
+     * CodeDAO for fetch user's source code.
+     */
+    private ICodeDAO codeDAO;
+
+    /**
+     * Judging main thread.
+     */
+    private Scheduler scheduler;
+    private Thread schedulerThread;
+    private static Thread[] judgeThreads;
+    private static Judge[] judges;
+    /**
+     * Judging Queue.
+     */
+    private static final BlockingQueue<JudgeItem> judgeQueue = new LinkedBlockingQueue<>();
+    private List<Thread> threads = new LinkedList<>();
 
     public void init() {
-        for (int i = 0; i < 3; ++i) {
-            Thread thread = new Thread(new JudgeThread(userDAO, problemDAO, statusDAO, compileinfoDAO));
-            thread.start();
-            threads.add(thread);
-        }
+        scheduler = new Scheduler(statusDAO, judgeQueue);
+        schedulerThread = new Thread(scheduler);
+        judgeThreads = new Thread[0];
+    }
+
+    public void destroy() {
     }
 
     @Override
@@ -89,5 +105,10 @@ public class JudgeService implements ProblemDAOAware, StatusDAOAware, UserDAOAwa
     @Override
     public void setUserDAO(IUserDAO userDAO) {
         this.userDAO = userDAO;
+    }
+
+    @Override
+    public void setCodeDAO(ICodeDAO codeDAO) {
+        this.codeDAO = codeDAO;
     }
 }
