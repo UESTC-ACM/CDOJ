@@ -89,53 +89,75 @@
 
     <div class="tab-pane fade" id="tab-problem-search">
         <div id="userCondition">
-            <form class="well form-inline">
+            <form class="form-horizontal">
                 <div class="control-group">
-                    <div class="input-prepend">
-                        <span class="add-on">Form</span>
-                        <s:textfield name="problemCondition.startId"
-                                     maxLength="6"
-                                     cssClass="input-small"/>
-                    </div>
-                    <div class="input-prepend">
-                        <span class="add-on">To</span>
-                        <s:textfield name="problemCondition.endId"
-                                     maxLength="6"
-                                     cssClass="input-small"/>
+                    <label class="control-label" for="problemCondition.startId">Problem ID</label>
+                    <div class="controls">
+                        <div class="input-prepend inline">
+                            <span class="add-on">Form</span>
+                            <s:textfield name="problemCondition.startId"
+                                         maxLength="6"
+                                         cssClass="input-small"/>
+                        </div>
+                        <div class="input-prepend">
+                            <span class="add-on">To</span>
+                            <s:textfield name="problemCondition.endId"
+                                         maxLength="6"
+                                         cssClass="input-small"/>
+                        </div>
                     </div>
                 </div>
                 <div class="control-group">
-                    <div class="input-prepend">
-                        <span class="add-on">Keyword</span>
-                        <s:textfield name="problemCondition.keyword"
+                    <label class="control-label" for="problemCondition.startDifficulty">Difficulty</label>
+                    <div class="controls">
+                        <div class="input-prepend inline">
+                            <span class="add-on">Form</span>
+                            <s:textfield name="problemCondition.startDifficulty"
+                                         maxLength="6"
+                                         cssClass="input-small"/>
+                        </div>
+                        <div class="input-prepend">
+                            <span class="add-on">To</span>
+                            <s:textfield name="problemCondition.endDifficulty"
+                                         maxLength="6"
+                                         cssClass="input-small"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="problemCondition.title">Title</label>
+                    <div class="controls">
+                        <s:textfield name="problemCondition.title"
                                      maxLength="100"
-                                     cssClass="span8"/>
+                                     cssClass="span6"/>
                     </div>
                 </div>
                 <div class="control-group">
-                    <div class="btn-group" data-toggle="buttons-checkbox">
-                        <button class="btn btn-info">Is SPJ</button>
-                        <button class="btn btn-info">Is visible</button>
-                    </div>
+                    <label class="control-label" for="problemCondition.keyword">Keyword</label>
+                        <div class="controls">
+                            <s:textfield name="problemCondition.keyword"
+                                         maxLength="100"
+                                         cssClass="span6"/>
+                        </div>
                 </div>
                 <div class="control-group">
-                    <div class="input-prepend">
-                        <span class="add-on">Difficulty from</span>
-                        <s:textfield name="problemCondition.startDifficulty"
-                                     maxLength="6"
-                                     cssClass="input-small"/>
-                    </div>
-                    <div class="input-prepend">
-                        <span class="add-on">To</span>
-                        <s:textfield name="problemCondition.endDifficulty"
-                                     maxLength="6"
-                                     cssClass="input-small"/>
+                    <div class="controls">
+                        <div class="btn-group" data-toggle="buttons-checkbox">
+                            <button class="btn btn-info">Is SPJ</button>
+                            <button class="btn btn-info">Is visible</button>
+                        </div>
                     </div>
                 </div>
-                <s:submit name="search"
-                          cssClass="btn btn-primary"
-                          value="Search"
-                          theme="bootstrap"/>
+                <div class="form-actions">
+                    <s:submit name="search"
+                              cssClass="btn btn-primary"
+                              value="Search"
+                              theme="bootstrap"/>
+                    <s:submit name="reset"
+                              cssClass="btn btn-danger"
+                              value="Reset"
+                              theme="bootstrap"/>
+                </div>
             </form>
         </div>
     </div>

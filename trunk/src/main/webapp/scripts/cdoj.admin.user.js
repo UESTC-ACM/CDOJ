@@ -142,6 +142,16 @@ $(document).ready(function(){
         return false;
     });
 
+    $('input#reset').click(function(e) {
+        $.each(currentCondition, function(index,value) {
+            if (index.indexOf('.') != -1)
+                $('#'+index.replace('.','_')).attr('value','');
+        });
+        $('userCondition_departmentId').attr('value',-1);
+        $('userCondition_type').attr('value',-1);
+        return false;
+    });
+
     $('a#selectAllUser').click(function(e) {
         selectorList = $('#userList').find(':checkbox');
         $.each(selectorList,function() {
