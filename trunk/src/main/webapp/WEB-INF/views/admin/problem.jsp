@@ -141,6 +141,19 @@
                         </div>
                 </div>
                 <div class="control-group">
+                    <label class="control-label"></label>
+                    <div class="controls">
+                        <label class="radio inline">
+                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                            A
+                        </label>
+                        <label class="radio inline">
+                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                            B
+                        </label>
+                    </div>
+                </div>
+                <div class="control-group">
                     <div class="controls">
                         <div class="btn-group" data-toggle="buttons-checkbox">
                             <button class="btn btn-info">Is SPJ</button>

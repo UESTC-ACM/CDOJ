@@ -147,8 +147,8 @@ $(document).ready(function(){
             if (index.indexOf('.') != -1)
                 $('#'+index.replace('.','_')).attr('value','');
         });
-        $('userCondition_departmentId').attr('value',-1);
-        $('userCondition_type').attr('value',-1);
+        $('#userCondition_departmentId').attr('value',-1);
+        $('#userCondition_type').attr('value',-1);
         return false;
     });
 

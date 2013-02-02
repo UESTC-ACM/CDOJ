@@ -56,6 +56,7 @@
                     This is free software, and you are welcome to redistribute it under <a
                         href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt">certain conditions</a>
                 </p>
+
             </s:div>
         </s:div>
     </s:div>

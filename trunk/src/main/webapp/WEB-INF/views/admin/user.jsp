@@ -121,7 +121,7 @@
                     <div class="controls">
                         <s:textfield name="userCondition.school"
                                      maxLength="50"
-                                     cssClass="span4"/>
+                                     cssClass="span6"/>
                     </div>
                 </div>
                 <div class="control-group">
@@ -131,7 +131,7 @@
                                   list="global.departmentList"
                                   listKey="departmentId"
                                   listValue="name"
-                                  cssClass="span4"/>
+                                  cssClass="span6"/>
                     </div>
                 </div>
                 <div class="form-actions">
