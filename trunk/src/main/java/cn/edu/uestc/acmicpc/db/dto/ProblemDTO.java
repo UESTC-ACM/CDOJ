@@ -48,7 +48,7 @@ public class ProblemDTO {
     /**
      * Build new problem entity.
      *
-     * @return
+     * @return new problem entity
      */
     public Problem getProblem() {
         // TODO to build problem entity.

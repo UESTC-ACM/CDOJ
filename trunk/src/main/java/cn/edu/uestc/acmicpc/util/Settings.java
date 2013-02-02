@@ -41,7 +41,7 @@ import java.util.Map;
  * <strong>settings.xml</strong>.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
+ * @version 5
  */
 public class Settings {
     /**
@@ -138,9 +138,9 @@ public class Settings {
         } catch (IndexOutOfBoundsException e) {
             throw new AppException("there no root node in the settings file.");
         }
-        for (XmlNode node : root.getChildList()) {
+        for (XmlNode node : root.getChildList()) { // settings
             Map<String, Object> map = new HashMap<>();
-            for (XmlNode childNode : node.getChildList()) {
+            for (XmlNode childNode : node.getChildList()) { // item or list
                 if (childNode.getTagName().equals("list")) {
                     List<Map<String, String>> list = new LinkedList<>();
                     for (XmlNode childNode2 : childNode.getChildList()) { // item
@@ -148,13 +148,20 @@ public class Settings {
                     }
                     map.put(childNode.getAttribute("name"), list);
                 } else { //item
-                    map.put(childNode.getAttribute("name"), parseItem(node));
+                    map.put(childNode.getAttribute("name"), parseItem(childNode));
                 }
             }
             settings.put(node.getAttribute("name"), map);
         }
     }
 
+    /**
+     * parse item's information
+     *
+     * @param node item node
+     * @return item map
+     * @throws AppException
+     */
     private Map<String, String> parseItem(XmlNode node) throws AppException {
         Map<String, String> result = new HashMap<>();
         if (node.getInnerText() != null)
