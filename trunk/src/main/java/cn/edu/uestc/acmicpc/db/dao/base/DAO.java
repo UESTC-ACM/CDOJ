@@ -29,6 +29,7 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Column;
 import javax.persistence.Id;

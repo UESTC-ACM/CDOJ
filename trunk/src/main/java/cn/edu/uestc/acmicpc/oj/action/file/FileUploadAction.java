@@ -152,10 +152,10 @@ public abstract class FileUploadAction extends BaseAction implements SettingsAwa
     /**
      * Deal with upload file item
      *
-     * @param fileItem
-     * @param types
-     * @param size
-     * @return
+     * @param fileItem file item from request
+     * @param types    file type
+     * @param size     file maximum size limit
+     * @return new file name
      */
     private String handleUploadFile(FileItem fileItem, String types,
                                     Integer size) throws AppException {

@@ -34,9 +34,9 @@
        http://www.springframework.org/schema/tx/spring-tx-3.1.xsd"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx">
-    <!--<bean id="settings" class="cn.edu.uestc.acmicpc.util.Settings"-->
-    <!--lazy-init="false" scope="singleton">-->
-    <!--</bean>-->
+    <bean id="settings" class="cn.edu.uestc.acmicpc.util.Settings"
+          lazy-init="false" scope="singleton">
+    </bean>
     <bean id="global" class="cn.edu.uestc.acmicpc.util.Global"
           init-method="init" scope="singleton">
         <property name="departmentDAO" ref="departmentDAO"/>

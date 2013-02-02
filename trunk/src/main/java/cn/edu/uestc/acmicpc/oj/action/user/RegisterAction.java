@@ -53,7 +53,8 @@ public class RegisterAction extends BaseAction implements DepartmentDAOAware {
 
     /**
      * Register action! with so many validators! ha ha...
-     * @TODO edit the document
+     * <p/>
+     * TODO edit the document
      *
      * @return <strong>JSON</strong> signal, process in front
      */
