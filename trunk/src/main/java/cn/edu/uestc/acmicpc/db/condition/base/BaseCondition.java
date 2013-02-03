@@ -21,7 +21,6 @@
 package cn.edu.uestc.acmicpc.db.condition.base;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
-import cn.edu.uestc.acmicpc.util.BeanUtil;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -29,10 +28,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.lang.annotation.Retention;
@@ -91,9 +86,8 @@ import java.lang.reflect.Field;
  * </ul>
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 5
+ * @version 6
  */
-@Transactional
 public abstract class BaseCondition implements ApplicationContextAware {
 
     /**

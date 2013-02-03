@@ -102,13 +102,13 @@ public class Settings {
         JUDGE_DATA_PATH = (String) getConfig("judge", "dataPath", "value");
         JUDGE_TEMP_PATH = (String) getConfig("judge", "tempPath", "value");
 
-        System.out.println(SETTING_ENCODING);
-        System.out.println(SETTING_UPLOAD_SIZE);
-        System.out.println(SETTING_UPLOAD_TYPES);
-        System.out.println(SETTING_UPLOAD_FOLDER);
-
-        System.out.println(JUDGE_TEMP_PATH);
-        System.out.println(JUDGE_DATA_PATH);
+//        System.out.println(SETTING_ENCODING);
+//        System.out.println(SETTING_UPLOAD_SIZE);
+//        System.out.println(SETTING_UPLOAD_TYPES);
+//        System.out.println(SETTING_UPLOAD_FOLDER);
+//
+//        System.out.println(JUDGE_TEMP_PATH);
+//        System.out.println(JUDGE_DATA_PATH);
     }
 
     /**
@@ -128,7 +128,7 @@ public class Settings {
             e.printStackTrace();
             return;
         }
-        System.out.println(path);
+//        System.out.println(path);
         XmlParser xmlParser = new XmlParser(path);
         XmlNode root;
         try {
