@@ -27,7 +27,7 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.interceptor.AppInterceptor;
 import cn.edu.uestc.acmicpc.oj.interceptor.iface.IActionInterceptor;
-import cn.edu.uestc.acmicpc.ioc.UserDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -48,7 +48,7 @@ import java.util.Map;
  * Base action support, add specified common elements in here.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 11
+ * @version 12
  */
 public class BaseAction extends ActionSupport
         implements RequestAware, SessionAware, ApplicationAware, IActionInterceptor,
@@ -63,14 +63,15 @@ public class BaseAction extends ActionSupport
     /**
      * Global constant
      */
-    private Global global;
+    private ThreadLocal<Global> global = new ThreadLocal<>();
 
+    @SuppressWarnings("UnusedDeclaration")
     public Global getGlobal() {
-        return global;
+        return global.get();
     }
 
     public void setGlobal(Global global) {
-        this.global = global;
+        this.global.set(global);
     }
 
     /**
@@ -126,6 +127,7 @@ public class BaseAction extends ActionSupport
     /**
      * to index flag.
      */
+    @SuppressWarnings("UnusedDeclaration")
     protected final String TOINDEX = "toIndex";
 
     /**
@@ -136,7 +138,7 @@ public class BaseAction extends ActionSupport
     /**
      * JSON result.
      */
-    protected Map<String, Object> json = new HashMap<String, Object>();
+    protected Map<String, Object> json = new HashMap<>();
 
     /**
      * Implement {@link ApplicationAware} interface, with Ioc.
@@ -181,16 +183,16 @@ public class BaseAction extends ActionSupport
     /**
      * Check <strong>IE6</strong> browser.
      *
-     * @param actionInfo
+     * @param actionInfo action information entity
      */
     private void checkIE6(AppInterceptor.ActionInfo actionInfo) {
         String user_agent = httpServletRequest.getHeader("User-Agent");
-        if (user_agent != null && user_agent.indexOf("MSIE 6") > -1) {
+        if (user_agent != null && user_agent.contains("MSIE 6")) {
             try {
                 // TODO "/WEB-INF/views/shared/ie6.jsp" is error page, fixed it.
                 httpServletRequest.getRequestDispatcher("/WEB-INF/views/shared/ie6.jsp").forward(
                         httpServletRequest, httpServletResponse);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
             actionInfo.setCancel(true);
         }
@@ -250,6 +252,7 @@ public class BaseAction extends ActionSupport
         }
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public User getCurrentUser() {
         return currentUser;
     }
@@ -273,9 +276,9 @@ public class BaseAction extends ActionSupport
      * getActionURL("/problem","page","/1") return acm.uestc.edu.cn/problem/page/1
      * getActionURL("/problem","page","?id=1") return acm.uestc.edu.cn/problem/page?id=1
      *
-     * @param namespace
-     * @param name
-     * @param parameterString
+     * @param namespace       action's namespace
+     * @param name            action name
+     * @param parameterString parameter list for action
      * @return action url
      */
     protected String getActionURL(String namespace, String name, String parameterString) {
@@ -289,8 +292,8 @@ public class BaseAction extends ActionSupport
     /**
      * Get action url by namespace and action name
      *
-     * @param namespace
-     * @param name
+     * @param namespace action's namespace
+     * @param name      action name
      * @return action url
      */
     protected String getActionURL(String namespace, String name) {
@@ -311,7 +314,7 @@ public class BaseAction extends ActionSupport
                     .getMethod(actionInfo.getAction().getName())
                     .getAnnotation(LoginPermit.class);
             permit = p2 != null ? p2 : permit;
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         User user = getCurrentUserEntity();
         try {
@@ -394,6 +397,7 @@ public class BaseAction extends ActionSupport
      *
      * @return redirect signal
      */
+    @SuppressWarnings("UnusedDeclaration")
     protected String redirectToRefer() {
         return redirectToRefer(null);
     }
@@ -403,6 +407,7 @@ public class BaseAction extends ActionSupport
      */
     private Long currentPage;
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setCurrentPage(Long currentPage) {
         this.currentPage = currentPage;
     }
@@ -440,10 +445,12 @@ public class BaseAction extends ActionSupport
         httpServletResponse.getWriter().write(content);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public Map<String, Object> getJson() {
         return json;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setJson(Map<String, Object> json) {
         this.json = json;
     }

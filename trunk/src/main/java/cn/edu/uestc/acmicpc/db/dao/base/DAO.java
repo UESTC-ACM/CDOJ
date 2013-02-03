@@ -109,6 +109,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
             updateCriteria(criteria, condition);
             return criteria.list();
         } catch (HibernateException e) {
+            e.printStackTrace();
             throw new AppException("Invoke findAll method error.");
         }
     }

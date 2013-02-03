@@ -20,22 +20,21 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.ioc;
+package cn.edu.uestc.acmicpc.ioc.dao;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.ITagDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ICodeDAO;
 
 /**
- * For all class which need ITagDAO entity.
+ * For all class which need codeDAO entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
- * @see ITagDAO
+ * @version 1
  */
-public interface TagDAOAware {
+public interface CodeDAOAware {
     /**
-     * Put tagDAO into class.
+     * Put codeDAO into class.
      *
-     * @param tagDAO tagDAO object
+     * @param codeDAO codeDAO object
      */
-    public void setTagDAO(ITagDAO tagDAO);
+    public void setCodeDAO(ICodeDAO codeDAO);
 }

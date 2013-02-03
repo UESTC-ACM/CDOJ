@@ -20,21 +20,21 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.ioc;
+package cn.edu.uestc.acmicpc.ioc.condition;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.ICodeDAO;
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 
 /**
- * For all class which need codeDAO entity.
+ * For all class need status condition entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public interface CodeDAOAware {
+public interface StatusConditionAware {
     /**
-     * Put codeDAO into class.
+     * Put status condition entity into class.
      *
-     * @param codeDAO codeDAO object
+     * @param statusCondition specific status condition entity
      */
-    public void setCodeDAO(ICodeDAO codeDAO);
+    public void setStatusCondition(StatusCondition statusCondition);
 }

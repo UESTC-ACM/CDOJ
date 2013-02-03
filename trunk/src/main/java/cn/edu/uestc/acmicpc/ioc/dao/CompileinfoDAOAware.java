@@ -20,22 +20,21 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.ioc;
+package cn.edu.uestc.acmicpc.ioc.dao;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ICompileinfoDAO;
 
 /**
- * For all class which need userDAO entity.
+ * For all class which need compileinfoDAO entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
- * @see IUserDAO
+ * @version 1
  */
-public interface UserDAOAware {
+public interface CompileinfoDAOAware {
     /**
-     * Put userDAO into class.
+     * Put compileinfoDAO into class.
      *
-     * @param userDAO userDAO object
+     * @param compileinfoDAO newly compileinfoDAO entity
      */
-    public void setUserDAO(IUserDAO userDAO);
+    public void setCompileinfoDAO(ICompileinfoDAO compileinfoDAO);
 }

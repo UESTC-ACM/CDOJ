@@ -27,7 +27,7 @@ import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dto.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.ioc.DepartmentDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
 import com.opensymphony.xwork2.validator.annotations.*;
 
 /**

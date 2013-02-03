@@ -32,6 +32,7 @@ import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.Projections;
@@ -40,28 +41,31 @@ import org.hibernate.criterion.Projections;
  * Judge item for single problem.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
-public class JudgeItem {
+public class JudgeItem implements StatusConditionAware {
     public Status status;
     public CompileInfo compileInfo;
+    /**
+     * Status database condition.
+     */
+    StatusCondition statusCondition;
 
+    @SuppressWarnings("UnusedDeclaration")
     private int parseLanguage(String extension) {
-        if ("cc".equals(extension))
-            return 0;
-        else if ("c".equals(extension))
-            return 1;
-        else if ("java".equals(extension))
-            return 2;
-        else
-            return 3;
+        switch (extension) {
+            case "cc":
+                return 0;
+            case "c":
+                return 1;
+            case "java":
+                return 2;
+            default:
+                return 3;
+        }
     }
 
-    public JudgeItem(Status status) {
-        this.status = status;
-        compileInfo = null;
-    }
-
+    @SuppressWarnings("UnusedDeclaration")
     public String getSourceName() {
         if ("java".equals(status.getLanguageByLanguageId().getExtension()))
             return "Main.java";
@@ -88,7 +92,6 @@ public class JudgeItem {
         if (status.getResult() == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
             try {
                 User user = status.getUserByUserId();
-                StatusCondition statusCondition = new StatusCondition();
                 statusCondition.userId = user.getUserId();
                 Condition condition = statusCondition.getCondition();
                 condition.addProjection(Projections.countDistinct("problemId"));
@@ -108,5 +111,10 @@ public class JudgeItem {
             }
 
         }
+    }
+
+    @Override
+    public void setStatusCondition(StatusCondition statusCondition) {
+        this.statusCondition = statusCondition;
     }
 }

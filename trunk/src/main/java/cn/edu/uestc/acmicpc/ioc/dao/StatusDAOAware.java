@@ -20,21 +20,22 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.ioc;
+package cn.edu.uestc.acmicpc.ioc.dao;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 
 /**
- * For all class which need languageDAO entity.
+ * For all class which need statusDAO entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
+ * @see IStatusDAO
  */
-public interface LanguageDAOAware {
+public interface StatusDAOAware {
     /**
-     * Put languageDAO into class.
+     * Put statusDAO into class.
      *
-     * @param languageDAO languageDAO object
+     * @param statusDAO statusDAO object
      */
-    public void setLanguageDAO(ILanguageDAO languageDAO);
+    public void setStatusDAO(IStatusDAO statusDAO);
 }

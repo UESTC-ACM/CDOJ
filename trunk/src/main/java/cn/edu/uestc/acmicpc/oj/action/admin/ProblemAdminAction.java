@@ -23,6 +23,7 @@
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
 import cn.edu.uestc.acmicpc.db.dto.ProblemDTO;
+import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
@@ -42,11 +43,10 @@ import java.util.List;
  * action for list, search, edit, add problem.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 3
+ * @version 4
  */
-@SuppressWarnings("UnusedDeclaration")
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class ProblemAdminAction extends BaseAction {
+public class ProblemAdminAction extends BaseAction implements ProblemConditionAware {
 
     /**
      * ProblemDAO for problem search.
@@ -55,12 +55,7 @@ public class ProblemAdminAction extends BaseAction {
 
     public ProblemCondition problemCondition = new ProblemCondition();
 
-    /**
-     * Setter of problemCondition for Ioc.
-     *
-     * @param problemCondition newly problemCondition
-     */
-    @SuppressWarnings("UnusedDeclaration")
+    @Override
     public void setProblemCondition(ProblemCondition problemCondition) {
         this.problemCondition = problemCondition;
     }
@@ -111,7 +106,7 @@ public class ProblemAdminAction extends BaseAction {
             condition.currentPage = pageInfo.getCurrentPage();
             condition.countPerPage = RECORD_PER_PAGE;
             List<Problem> problemList = problemDAO.findAll(condition);
-            List<ProblemListView> problemListViewList = new ArrayList<ProblemListView>();
+            List<ProblemListView> problemListViewList = new ArrayList<>();
             for (Problem problem : problemList)
                 problemListViewList.add(new ProblemListView(problem));
             json.put("pageInfo", pageInfo.getHtmlString());
@@ -129,6 +124,7 @@ public class ProblemAdminAction extends BaseAction {
         return JSON;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public ProblemDTO getProblemDTO() {
         return problemDTO;
     }
@@ -138,6 +134,7 @@ public class ProblemAdminAction extends BaseAction {
      *
      * @param problemDTO problem data transform object
      */
+    @SuppressWarnings("UnusedDeclaration")
     public void setProblemDTO(ProblemDTO problemDTO) {
         this.problemDTO = problemDTO;
     }

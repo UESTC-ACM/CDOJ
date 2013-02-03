@@ -20,21 +20,22 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.ioc;
+package cn.edu.uestc.acmicpc.ioc.dao;
 
-import cn.edu.uestc.acmicpc.util.Settings;
+import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 
 /**
- * For all class which need Settings entity.
+ * For all class which need userDAO entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
+ * @see IUserDAO
  */
-public interface SettingsAware {
+public interface UserDAOAware {
     /**
-     * Put Settings entity into class.
+     * Put userDAO into class.
      *
-     * @param settings settings entity object
+     * @param userDAO userDAO object
      */
-    public void setSettings(Settings settings);
+    public void setUserDAO(IUserDAO userDAO);
 }

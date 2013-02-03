@@ -21,11 +21,18 @@
 package cn.edu.uestc.acmicpc.db.condition.base;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
+import cn.edu.uestc.acmicpc.util.BeanUtil;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.lang.annotation.Retention;
@@ -84,10 +91,16 @@ import java.lang.reflect.Field;
  * </ul>
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
+ * @version 5
  */
-@SuppressWarnings("UnusedDeclaration")
-public abstract class BaseCondition {
+@Transactional
+public abstract class BaseCondition implements ApplicationContextAware {
+
+    /**
+     * Spring application context.
+     */
+    @Autowired
+    private ApplicationContext applicationContext;
 
     /**
      * Method for user to invoke special columns
@@ -95,6 +108,21 @@ public abstract class BaseCondition {
      * @param condition conditions that to be considered
      */
     public abstract void invoke(Condition condition);
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+
+    public void clear() {
+        Field[] fields = getClass().getFields();
+        for (Field field : fields) {
+            try {
+                field.set(this, null);
+            } catch (IllegalAccessException ignored) {
+            }
+        }
+    }
 
     /**
      * Basic condition type of database handler
@@ -145,13 +173,12 @@ public abstract class BaseCondition {
                             .substring(exp.MapObject().getName().lastIndexOf('.') + 1);
                     String DAOName = name.substring(0, 1).toLowerCase()
                             + name.substring(1) + "DAO";
-                    ApplicationContext applicationContext =
-                            new ClassPathXmlApplicationContext("applicationContext.xml");
                     IDAO DAO = (IDAO) applicationContext.getBean(DAOName);
                     value = DAO.get((Serializable) value);
                 }
-                value = exp.Type().name().equals("like") ? String.format(
-                        "%%%s%%", value) : value;
+                if (exp.Type().name().equals("like")) {
+                    value = String.format("%%%s%%", value);
+                }
                 Criterion c = (Criterion) restrictionsClass.getMethod(exp.Type().name(),
                         String.class, Object.class).invoke(null, mapField,
                         value);

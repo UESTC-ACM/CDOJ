@@ -20,22 +20,21 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.ioc;
+package cn.edu.uestc.acmicpc.ioc.dao;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
+import cn.edu.uestc.acmicpc.util.Settings;
 
 /**
- * For all class which need statusDAO entity.
+ * For all class which need Settings entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
- * @see IStatusDAO
  */
-public interface StatusDAOAware {
+public interface SettingsAware {
     /**
-     * Put statusDAO into class.
+     * Put Settings entity into class.
      *
-     * @param statusDAO statusDAO object
+     * @param settings settings entity object
      */
-    public void setStatusDAO(IStatusDAO statusDAO);
+    public void setSettings(Settings settings);
 }

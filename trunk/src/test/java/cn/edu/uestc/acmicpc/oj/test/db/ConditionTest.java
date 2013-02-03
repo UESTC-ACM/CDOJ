@@ -23,13 +23,22 @@
 package cn.edu.uestc.acmicpc.oj.test.db;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.db.dao.impl.ProblemDAO;
+import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
+import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
+import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
 
 /**
  * Test cases for conditions entities.
@@ -39,30 +48,63 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:applicationContext-test.xml"})
-public class ConditionTest {
+public class ConditionTest implements ProblemDAOAware, UserDAOAware, UserConditionAware, ProblemConditionAware {
     /**
-     * problem DAO for database query.
+     * DAOs for database query.
      */
     @Autowired
-    private ProblemDAO problemDAO;
+    private IProblemDAO problemDAO;
+
+    @Autowired
+    private IUserDAO userDAO;
 
     /**
-     * Setter of problem for IoC.
-     *
-     * @param problemDAO problem DAO entity
+     * Conditions for database query.
      */
-    public void setProblemDAO(ProblemDAO problemDAO) {
-        this.problemDAO = problemDAO;
-    }
+    @Autowired
+    private UserCondition userCondition;
+
+    @Autowired
+    private ProblemCondition problemCondition;
 
     @Test
     public void testProblemCondition() throws AppException {
-        ProblemCondition problemCondition = new ProblemCondition();
+        problemCondition = new ProblemCondition();
         problemCondition.startId = 1;
         problemCondition.endId = 100;
         problemCondition.isSpj = null;
         System.out.println(problemDAO.count(problemCondition.getCondition()));
         problemCondition.isSpj = false;
         System.out.println(problemDAO.count(problemCondition.getCondition()));
+    }
+
+    @Test
+    public void testUserCondition() throws AppException {
+        userCondition.departmentId = 2;
+        List<User> users = userDAO.findAll(userCondition.getCondition());
+        for (User user : users) {
+            System.out.println(user.getUserId() + " " + user.getUserName() + " "
+                    + user.getDepartmentByDepartmentId().getName());
+        }
+    }
+
+    @Override
+    public void setProblemDAO(IProblemDAO problemDAO) {
+        this.problemDAO = problemDAO;
+    }
+
+    @Override
+    public void setUserDAO(IUserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+
+    @Override
+    public void setUserCondition(UserCondition userCondition) {
+        this.userCondition = userCondition;
+    }
+
+    @Override
+    public void setProblemCondition(ProblemCondition problemCondition) {
+        this.problemCondition = problemCondition;
     }
 }

@@ -22,6 +22,7 @@
 
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
+import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
@@ -30,7 +31,7 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dto.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
-import cn.edu.uestc.acmicpc.ioc.DepartmentDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.Global;
@@ -45,11 +46,10 @@ import java.util.List;
  * action for edit user information.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 5
+ * @version 6
  */
-@SuppressWarnings("UnusedDeclaration")
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
+public class UserAdminAction extends BaseAction implements DepartmentDAOAware, UserConditionAware {
 
     /**
      * return the user.jsp for base view
@@ -76,7 +76,7 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
      *
      * @param userCondition newly userCondition
      */
-    @SuppressWarnings("UnusedDeclaration")
+    @Override
     public void setUserCondition(UserCondition userCondition) {
         this.userCondition = userCondition;
     }
@@ -110,7 +110,7 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
             condition.currentPage = pageInfo.getCurrentPage();
             condition.countPerPage = RECORD_PER_PAGE;
             List<User> userList = userDAO.findAll(condition);
-            List<UserView> userViewList = new ArrayList<UserView>();
+            List<UserView> userViewList = new ArrayList<>();
             for (User user : userList)
                 userViewList.add(new UserView(user));
             json.put("pageInfo", pageInfo.getHtmlString());
@@ -250,6 +250,7 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
         return JSON;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public UserDTO getUserDTO() {
         return userDTO;
     }
@@ -259,12 +260,9 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware {
      *
      * @param userDTO user data transform object
      */
+    @SuppressWarnings("UnusedDeclaration")
     public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
-    }
-
-    public IDepartmentDAO getDepartmentDAO() {
-        return departmentDAO;
     }
 
     public void setDepartmentDAO(IDepartmentDAO departmentDAO) {

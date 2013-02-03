@@ -20,48 +20,22 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.action.test;
+package cn.edu.uestc.acmicpc.ioc.dao;
 
-import cn.edu.uestc.acmicpc.oj.action.BaseAction;
-import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITagDAO;
-import cn.edu.uestc.acmicpc.db.entity.Tag;
-import cn.edu.uestc.acmicpc.ioc.dao.TagDAOAware;
-import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-
-import java.util.List;
 
 /**
- * Test Action for cdoj.
+ * For all class which need ITagDAO entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 2
+ * @see ITagDAO
  */
-@LoginPermit(value = Global.AuthenticationType.NORMAL)
-public class TestAction extends BaseAction implements TagDAOAware {
-    private static final long serialVersionUID = 3513904272112800586L;
+public interface TagDAOAware {
     /**
-     * TagDAO from IoC.
-     */
-    private ITagDAO tagDAO = null;
-
-    /**
-     * Go to test index page
+     * Put tagDAO into class.
      *
-     * @return <strong>SUCCESS</strong> signal
+     * @param tagDAO tagDAO object
      */
-    public String toTest() {
-        try {
-            List<Tag> tags = tagDAO.findAll();
-            request.put("tags", tags);
-        } catch (AppException e) {
-        }
-        return SUCCESS;
-    }
-
-    @Override
-    public void setTagDAO(ITagDAO tagDAO) {
-        this.tagDAO = tagDAO;
-    }
+    public void setTagDAO(ITagDAO tagDAO);
 }
