@@ -60,7 +60,7 @@ public class ProblemDTO {
     /**
      * Update problem entity.
      *
-     * @param problem
+     * @param problem problem entity to be updated
      */
     public void updateProblem(Problem problem) {
         //TODO update entity

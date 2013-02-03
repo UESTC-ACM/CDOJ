@@ -69,7 +69,7 @@ public class ProblemView extends View<Problem> {
      */
     public ProblemView(Problem problem) throws AppException {
         super(problem);
-        List<String> list = new LinkedList<String>();
+        List<String> list = new LinkedList<>();
         Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
         for (ProblemTag problemTag : problemTags) {
             list.add(problemTag.getTagByTagId().getName());

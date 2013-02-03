@@ -22,19 +22,17 @@
 
 package cn.edu.uestc.acmicpc.service;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.*;
-import cn.edu.uestc.acmicpc.ioc.dao.*;
+import cn.edu.uestc.acmicpc.ioc.util.SettingsAware;
 import cn.edu.uestc.acmicpc.service.entity.Judge;
 import cn.edu.uestc.acmicpc.service.entity.JudgeItem;
 import cn.edu.uestc.acmicpc.service.entity.Scheduler;
+import cn.edu.uestc.acmicpc.util.Settings;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -42,48 +40,23 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Judge main service, use multi-thread architecture to process judge
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 @Transactional
-public class JudgeService implements ProblemDAOAware, StatusDAOAware,
-        UserDAOAware, CompileinfoDAOAware, CodeDAOAware, ApplicationContextAware {
-    /**
-     * ProblemDAO for initializing problem information.
-     */
-    private IProblemDAO problemDAO;
-
-    /**
-     * StatusDAO for reading status information.
-     */
-    private IStatusDAO statusDAO;
-
-    /**
-     * UserDAO for updating user entity.
-     */
-    private IUserDAO userDAO;
-
-    /**
-     * CompileinfoDAO for add compile information.
-     */
-    private ICompileinfoDAO compileinfoDAO;
-
-    /**
-     * CodeDAO for fetch user's source code.
-     */
-    private ICodeDAO codeDAO;
-
+public class JudgeService implements ApplicationContextAware, SettingsAware {
     /**
      * Judging main thread.
      */
+    @SuppressWarnings("FieldCanBeLocal")
     private Scheduler scheduler;
     private Thread schedulerThread;
     private static Thread[] judgeThreads;
+    @SuppressWarnings("FieldCanBeLocal")
     private static Judge[] judges;
     /**
      * Judging Queue.
      */
     private static final BlockingQueue<JudgeItem> judgeQueue = new LinkedBlockingQueue<>();
-    private List<Thread> threads = new LinkedList<>();
 
     /**
      * Spring application context
@@ -91,43 +64,55 @@ public class JudgeService implements ProblemDAOAware, StatusDAOAware,
     @Autowired
     private ApplicationContext applicationContext;
 
+    /**
+     * Fetch global Settings for judge.
+     */
+    private Settings settings;
+
+    /**
+     * Initialize the judge threads.
+     */
     public void init() {
         scheduler = applicationContext.getBean("scheduler", Scheduler.class);
         scheduler.setJudgeQueue(judgeQueue);
         schedulerThread = new Thread(scheduler);
-        judgeThreads = new Thread[0];
+        judgeThreads = new Thread[settings.JUDGE_LIST.size()];
+        judges = new Judge[settings.JUDGE_LIST.size()];
+        for (int i = 0; i < judgeThreads.length; ++i) {
+            judges[i] = applicationContext.getBean("judge", Judge.class);
+            judges[i].setJudgeQueue(judgeQueue);
+            judges[i].setWorkPath(settings.JUDGE_TEMP_PATH + "/" + settings.JUDGE_LIST.get(i).get("name") + "/");
+            judges[i].setTempPath(settings.JUDGE_TEMP_PATH + "/" + settings.JUDGE_LIST.get(i).get("name") + "/temp/");
+            judges[i].setJudgeName(settings.JUDGE_LIST.get(i).get("name"));
+            judgeThreads[i] = new Thread(judges[i]);
+            judgeThreads[i].start();
+        }
     }
 
+    /**
+     * Destroy the judge threads.
+     */
     public void destroy() {
-    }
-
-    @Override
-    public void setProblemDAO(IProblemDAO problemDAO) {
-        this.problemDAO = problemDAO;
-    }
-
-    @Override
-    public void setStatusDAO(IStatusDAO statusDAO) {
-        this.statusDAO = statusDAO;
-    }
-
-    @Override
-    public void setCompileinfoDAO(ICompileinfoDAO compileinfoDAO) {
-        this.compileinfoDAO = compileinfoDAO;
-    }
-
-    @Override
-    public void setUserDAO(IUserDAO userDAO) {
-        this.userDAO = userDAO;
-    }
-
-    @Override
-    public void setCodeDAO(ICodeDAO codeDAO) {
-        this.codeDAO = codeDAO;
+        try {
+            if (schedulerThread.isAlive()) {
+                schedulerThread.interrupt();
+            }
+            for (Thread judgeThread : judgeThreads) {
+                if (judgeThread.isAlive()) {
+                    judgeThread.interrupt();
+                }
+            }
+        } catch (SecurityException ignored) {
+        }
     }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+    }
+
+    @Override
+    public void setSettings(Settings settings) {
+        this.settings = settings;
     }
 }

@@ -55,9 +55,7 @@ public class View<Entity extends Serializable> {
                     try {
                         Method getter = entity.getClass().getMethod(name);
                         method.invoke(this, getter.invoke(entity));
-                    } catch (NoSuchMethodException ignored) {
-                    } catch (InvocationTargetException ignored) {
-                    } catch (IllegalAccessException ignored) {
+                    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
                     }
                 }
             }

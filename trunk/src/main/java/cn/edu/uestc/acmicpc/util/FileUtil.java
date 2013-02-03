@@ -20,21 +20,23 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.ioc.dao;
+package cn.edu.uestc.acmicpc.util;
 
-import cn.edu.uestc.acmicpc.util.Settings;
+import java.io.*;
 
 /**
- * For all class which need Settings entity.
+ * File util methods.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public interface SettingsAware {
-    /**
-     * Put Settings entity into class.
-     *
-     * @param settings settings entity object
-     */
-    public void setSettings(Settings settings);
+public class FileUtil {
+    public static void saveToFile(String content, String filePath) {
+        try {
+            OutputStream os = new BufferedOutputStream(new FileOutputStream(filePath));
+            os.write(content.getBytes());
+            os.close();
+        } catch (IOException ignored) {
+        }
+    }
 }

@@ -31,7 +31,16 @@
         <item name="uploadFolder" description="upload files store folder">/Uploads/</item>
     </setting>
     <setting name="judge">
-        <item name="dataPath" description="data path name">/WEB-INF/Data/</item>
-        <item name="tempPath" description="work path name">/WEB-INF/temp/</item>
+        <item name="judgeCore" description="judge core name">pyloncore</item>
+        <item name="dataPath" description="data path name">/WEB-INF/data/</item>
+        <item name="tempPath" description="work path name">/WEB-INF/work/</item>
+        <list name="judges" description="judge list">
+            <item name="judge" description="judge item">
+                <prop name="name" value="fish"/>
+            </item>
+            <item name="judge" description="judge item">
+                <prop name="name" value="mzry1992"/>
+            </item>
+        </list>
     </setting>
 </cdoj-settings>

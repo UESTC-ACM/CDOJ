@@ -185,14 +185,17 @@ public class RegisterAction extends BaseAction implements DepartmentDAOAware {
         return JSON;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public UserDTO getUserDTO() {
         return userDTO;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public IDepartmentDAO getDepartmentDAO() {
         return departmentDAO;
     }

@@ -33,6 +33,7 @@ import javax.servlet.ServletContext;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
+@SuppressWarnings("UnusedDeclaration")
 public class BeanUtil {
     /**
      * Get specific bean by bean name and servletContext.

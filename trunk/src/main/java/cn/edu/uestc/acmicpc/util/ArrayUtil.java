@@ -68,8 +68,7 @@ public class ArrayUtil {
         if (array == null || array.length < 1)
             return new Object[]{};
         Object[] result = new Object[array.length];
-        for (int i = 0; i < result.length; i++)
-            result[i] = array[i];
+        System.arraycopy(array, 0, result, 0, result.length);
         return result;
     }
 

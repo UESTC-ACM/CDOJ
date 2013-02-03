@@ -20,26 +20,21 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.service.entity;
+package cn.edu.uestc.acmicpc.ioc.util;
+
+import cn.edu.uestc.acmicpc.util.Settings;
 
 /**
- * Limit information for problem entity.
+ * For all class which need Settings entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public class ProblemLimit {
-    public int timeLimit;
-    public int memLimit;
-    public int outputLimit;
-    public int javaTimeLimit;
-    public int javaMemLimit;
-
-    public ProblemLimit(int timeLimit, int memLimit, int outputLimit, int javaMemLimit, int javaTimeLimit) {
-        this.timeLimit = timeLimit;
-        this.memLimit = memLimit;
-        this.outputLimit = outputLimit;
-        this.javaTimeLimit = javaTimeLimit;
-        this.javaMemLimit = javaMemLimit;
-    }
+public interface SettingsAware {
+    /**
+     * Put Settings entity into class.
+     *
+     * @param settings settings entity object
+     */
+    public void setSettings(Settings settings);
 }

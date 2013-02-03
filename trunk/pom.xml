@@ -272,6 +272,10 @@
                     <nohelp>true</nohelp>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
+            </plugin>
         </plugins>
         <finalName>trunk</finalName>
     </build>

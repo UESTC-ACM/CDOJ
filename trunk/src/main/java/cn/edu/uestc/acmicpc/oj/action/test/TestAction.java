@@ -55,7 +55,7 @@ public class TestAction extends BaseAction implements TagDAOAware {
         try {
             List<Tag> tags = tagDAO.findAll();
             request.put("tags", tags);
-        } catch (AppException e) {
+        } catch (AppException ignored) {
         }
         return SUCCESS;
     }

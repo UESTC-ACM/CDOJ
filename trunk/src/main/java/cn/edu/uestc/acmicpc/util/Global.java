@@ -44,7 +44,6 @@ import java.util.List;
  */
 public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
-    @SuppressWarnings("UnusedDeclaration")
     public enum OnlineJudgeReturnType {
         OJ_WAIT("Queuing"), OJ_AC("Accepted"), OJ_PE("Presentation Error on test# $case"),
         OJ_TLE("Time Limit Exceeded on test# $case"), OJ_MLE("Memory Limit Exceeded on test# $case"),
@@ -53,7 +52,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
         OJ_RE_FPE("Runtime Error on test# $case"), OJ_RE_BUS("Runtime Error on test# $case"),
         OJ_RE_ABRT("Runtime Error on test# $case"), OJ_RE_UNKNOWN("Runtime Error on test# $case"),
         OJ_RF("Restricted Function on test# $case"), OJ_SE("System Error on test# $case"),
-        OJ_RE_JAVA("Runtime Error on test# $case"), OJ_JUDGING("Queuing"),
+        OJ_RE_JAVA("Runtime Error on test# $case"), OJ_JUDGING("Judging..."),
         OJ_RUNNING("Running on test# $case"), OJ_REJUDGING("Queuing");
         private String description;
 
@@ -62,6 +61,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
          *
          * @return description string for specific online judge return type
          */
+        @SuppressWarnings("UnusedDeclaration")
         public String getDescription() {
             return description;
         }

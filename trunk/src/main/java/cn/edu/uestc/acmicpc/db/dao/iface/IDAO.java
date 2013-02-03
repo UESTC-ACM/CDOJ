@@ -53,6 +53,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
      * @param entity entity to be added or updated
      * @throws AppException
      */
+    @SuppressWarnings("UnusedDeclaration")
     public void addOrUpdate(Entity entity) throws AppException;
 
     /**

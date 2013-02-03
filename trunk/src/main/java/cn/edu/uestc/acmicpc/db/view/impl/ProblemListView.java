@@ -37,7 +37,6 @@ import java.util.List;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
-@SuppressWarnings("UnusedDeclaration")
 public class ProblemListView extends View<Problem> {
 
     private int problemId;
@@ -58,7 +57,7 @@ public class ProblemListView extends View<Problem> {
      */
     public ProblemListView(Problem problem) throws AppException {
         super(problem);
-        List<String> list = new LinkedList<String>();
+        List<String> list = new LinkedList<>();
         Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
         for (ProblemTag problemTag : problemTags) {
             list.add(problemTag.getTagByTagId().getName());

@@ -32,6 +32,7 @@ import org.apache.struts2.components.ContextBean;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
+@SuppressWarnings("UnusedDeclaration")
 public class TagService extends ContextBean {
     /**
      * default constructor

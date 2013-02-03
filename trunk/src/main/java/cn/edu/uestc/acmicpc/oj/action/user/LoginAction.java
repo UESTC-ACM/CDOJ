@@ -131,6 +131,7 @@ public class LoginAction extends BaseAction {
         return userName;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setUserName(String userName) {
         this.userName = userName;
     }
@@ -139,6 +140,7 @@ public class LoginAction extends BaseAction {
         return password;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setPassword(String password) {
         this.password = password;
     }
