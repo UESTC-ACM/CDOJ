@@ -37,10 +37,13 @@
     <bean id="baseCondition" class="cn.edu.uestc.acmicpc.db.condition.base.BaseCondition"
           abstract="true" scope="prototype">
     </bean>
-    <bean id="userCondition" class="cn.edu.uestc.acmicpc.db.condition.impl.UserCondition">
+    <bean id="userCondition" class="cn.edu.uestc.acmicpc.db.condition.impl.UserCondition"
+          parent="baseCondition">
     </bean>
-    <bean id="problemCondition" class="cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition">
+    <bean id="problemCondition" class="cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition"
+          parent="baseCondition">
     </bean>
-    <bean id="statusCondition" class="cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition">
+    <bean id="statusCondition" class="cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition"
+          parent="baseCondition">
     </bean>
 </beans>

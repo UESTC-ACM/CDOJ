@@ -32,6 +32,7 @@ import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ import java.util.List;
  * Test cases for conditions entities.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:applicationContext-test.xml"})
@@ -69,7 +70,7 @@ public class ConditionTest implements ProblemDAOAware, UserDAOAware, UserConditi
 
     @Test
     public void testProblemCondition() throws AppException {
-        problemCondition = new ProblemCondition();
+        problemCondition.clear();
         problemCondition.startId = 1;
         problemCondition.endId = 100;
         problemCondition.isSpj = null;
@@ -80,12 +81,15 @@ public class ConditionTest implements ProblemDAOAware, UserDAOAware, UserConditi
 
     @Test
     public void testUserCondition() throws AppException {
+        userCondition.clear();
         userCondition.departmentId = 2;
+        System.out.println("test: " + userCondition.departmentId);
         List<User> users = userDAO.findAll(userCondition.getCondition());
-        for (User user : users) {
-            System.out.println(user.getUserId() + " " + user.getUserName() + " "
-                    + user.getDepartmentByDepartmentId().getName());
-        }
+        Assert.assertEquals(1, users.size());
+//        for (User user : users) {
+//            System.out.println(user.getUserId() + " " + user.getUserName() + " "
+//                    + user.getDepartmentByDepartmentId().getName());
+//        }
     }
 
     @Override
