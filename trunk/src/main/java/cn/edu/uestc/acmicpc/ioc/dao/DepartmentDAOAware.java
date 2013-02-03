@@ -20,7 +20,7 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.ioc;
+package cn.edu.uestc.acmicpc.ioc.dao;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 

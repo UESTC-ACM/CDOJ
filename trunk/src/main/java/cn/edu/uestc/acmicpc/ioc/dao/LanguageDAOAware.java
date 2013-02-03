@@ -20,21 +20,21 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.ioc;
+package cn.edu.uestc.acmicpc.ioc.dao;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.ICompileinfoDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
 
 /**
- * For all class which need compileinfoDAO entity.
+ * For all class which need languageDAO entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public interface CompileinfoDAOAware {
+public interface LanguageDAOAware {
     /**
-     * Put compileinfoDAO into class.
+     * Put languageDAO into class.
      *
-     * @param compileinfoDAO newly compileinfoDAO entity
+     * @param languageDAO languageDAO object
      */
-    public void setCompileinfoDAO(ICompileinfoDAO compileinfoDAO);
+    public void setLanguageDAO(ILanguageDAO languageDAO);
 }

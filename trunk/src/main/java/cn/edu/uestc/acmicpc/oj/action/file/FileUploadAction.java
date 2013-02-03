@@ -22,7 +22,7 @@
 
 package cn.edu.uestc.acmicpc.oj.action.file;
 
-import cn.edu.uestc.acmicpc.ioc.SettingsAware;
+import cn.edu.uestc.acmicpc.ioc.dao.SettingsAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.Settings;
@@ -59,7 +59,7 @@ public abstract class FileUploadAction extends BaseAction implements SettingsAwa
     /**
      * Upload file list
      */
-    private Map<String, FileItem> uploadFiles = new HashMap<String, FileItem>();
+    private Map<String, FileItem> uploadFiles = new HashMap<>();
 
     /**
      * File item factory's size threshold.
@@ -69,7 +69,7 @@ public abstract class FileUploadAction extends BaseAction implements SettingsAwa
     /**
      * User defined parameter list.
      */
-    protected Map<String, String[]> parameters = new HashMap<String, String[]>();
+    protected Map<String, String[]> parameters = new HashMap<>();
 
     /**
      * Global Settings.
@@ -82,6 +82,7 @@ public abstract class FileUploadAction extends BaseAction implements SettingsAwa
      * @param field key name
      * @return parameter value
      */
+    @SuppressWarnings("UnusedDeclaration")
     protected String getParameter(String field) {
         return parameters.containsKey(field) ? ArrayUtil.join(
                 parameters.get(field), ",") : httpServletRequest.getParameter(field);
@@ -96,7 +97,7 @@ public abstract class FileUploadAction extends BaseAction implements SettingsAwa
      * Get all files to be uploaded.
      */
     private void initFiles() {
-        if (StringUtil.choose(httpServletRequest.getContentType(), "").indexOf("multipart/form-data") == -1)
+        if (!StringUtil.choose(httpServletRequest.getContentType(), "").contains("multipart/form-data"))
             return;
         DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
         String path = servletContext.getRealPath(settings.SETTING_UPLOAD_FOLDER);
@@ -105,12 +106,12 @@ public abstract class FileUploadAction extends BaseAction implements SettingsAwa
         ServletFileUpload upload = new ServletFileUpload(diskFileItemFactory);
         try {
             List<?> list = upload.parseRequest(httpServletRequest);
-            for (int i = 0; i < list.size(); i++) {
-                FileItem fileItem = (FileItem) list.get(i);
+            for (Object aList : list) {
+                FileItem fileItem = (FileItem) aList;
                 if (!fileItem.isFormField() && fileItem.get().length > 0)
                     uploadFiles.put(fileItem.getFieldName(), fileItem);
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -130,7 +131,7 @@ public abstract class FileUploadAction extends BaseAction implements SettingsAwa
      * <strong>POST</strong> parameters.
      */
     public void upload() {
-        json = new HashMap<String, Object>();
+        json = new HashMap<>();
         request.put("fileSize", settings.SETTING_UPLOAD_SIZE);
         request.put("fileTypes", settings.SETTING_UPLOAD_TYPES);
         if (httpServletRequest.getMethod().equals("POST") && uploadFiles.get("file") != null) {

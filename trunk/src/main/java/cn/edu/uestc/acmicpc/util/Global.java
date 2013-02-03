@@ -26,8 +26,8 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.Language;
-import cn.edu.uestc.acmicpc.ioc.DepartmentDAOAware;
-import cn.edu.uestc.acmicpc.ioc.LanguageDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.LanguageDAOAware;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.util.ArrayList;
@@ -120,6 +120,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
      *
      * @return compile language list
      */
+    @SuppressWarnings("UnusedDeclaration")
     public List<Language> getLanguageList() {
         return languageList;
     }
@@ -131,7 +132,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
         this.departmentList = departmentDAO.findAll();
         this.languageList = languageDAO.findAll();
 
-        this.authenticationTypeList = new ArrayList<AuthenticationType>();
+        this.authenticationTypeList = new ArrayList<>();
         Collections.addAll(authenticationTypeList, AuthenticationType.values());
     }
 

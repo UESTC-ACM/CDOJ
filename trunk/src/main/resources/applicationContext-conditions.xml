@@ -34,18 +34,13 @@
        http://www.springframework.org/schema/tx/spring-tx-3.1.xsd"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx">
-    <bean id="judgeItem" class="cn.edu.uestc.acmicpc.service.entity.JudgeItem" scope="prototype">
-        <property name="statusCondition" ref="statusCondition"/>
+    <bean id="baseCondition" class="cn.edu.uestc.acmicpc.db.condition.base.BaseCondition"
+          abstract="true" scope="prototype">
     </bean>
-    <bean id="scheduler" class="cn.edu.uestc.acmicpc.service.entity.Scheduler" scope="prototype">
-        <property name="statusDAO" ref="statusDAO"/>
-        <property name="statusCondition" ref="statusCondition"/>
+    <bean id="userCondition" class="cn.edu.uestc.acmicpc.db.condition.impl.UserCondition">
     </bean>
-    <bean id="judgeService" class="cn.edu.uestc.acmicpc.service.JudgeService"
-          init-method="init" destroy-method="destroy" lazy-init="false" scope="singleton">
-        <property name="problemDAO" ref="problemDAO"/>
-        <property name="statusDAO" ref="statusDAO"/>
-        <property name="userDAO" ref="userDAO"/>
-        <property name="compileinfoDAO" ref="compileinfoDAO"/>
+    <bean id="problemCondition" class="cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition">
+    </bean>
+    <bean id="statusCondition" class="cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition">
     </bean>
 </beans>

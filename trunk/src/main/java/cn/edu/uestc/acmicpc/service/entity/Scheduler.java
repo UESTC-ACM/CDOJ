@@ -6,9 +6,13 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
+import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
+import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.service.entity.JudgeItem;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import java.util.List;
 import java.util.Timer;
@@ -19,27 +23,37 @@ import java.util.concurrent.BlockingQueue;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-public class Scheduler implements Runnable {
+public class Scheduler implements Runnable, StatusConditionAware, StatusDAOAware {
 
     /**
      * StatusDAO for database operation.
      */
     private IStatusDAO statusDAO;
 
+    public void setJudgeQueue(BlockingQueue<JudgeItem> judgeQueue) {
+        this.judgeQueue = judgeQueue;
+    }
+
     /**
      * Judging queue.
      */
-    private final BlockingQueue<JudgeItem> judgeQueue;
+    private BlockingQueue<JudgeItem> judgeQueue;
+
+    /**
+     * Status database condition.
+     */
+    private StatusCondition statusCondition;
+
+    /**
+     * Spring application context
+     */
+    @Autowired
+    private ApplicationContext applicationContext;
 
     /**
      * Searching interval.
      */
     private long INTERVAL = 3L;
-
-    public Scheduler(IStatusDAO statusDAO, BlockingQueue<JudgeItem> queue) {
-        this.statusDAO = statusDAO;
-        this.judgeQueue = queue;
-    }
 
     @Override
     public void run() {
@@ -56,18 +70,28 @@ public class Scheduler implements Runnable {
      */
     private void searchForJudge() {
         try {
-            StatusCondition statusCondition = new StatusCondition();
             statusCondition.result.add(Global.OnlineJudgeReturnType.OJ_WAIT);
             statusCondition.result.add(Global.OnlineJudgeReturnType.OJ_REJUDGING);
             List<Status> statusList = statusDAO.findAll(statusCondition.getCondition());
             for (Status status : statusList) {
                 status.setResult(Global.OnlineJudgeReturnType.OJ_JUDGING.ordinal());
                 status.setCaseNumber(0);
-                JudgeItem judgeItem = new JudgeItem(status);
+                JudgeItem judgeItem = applicationContext.getBean("judgeItem", JudgeItem.class);
+                judgeItem.status = status;
                 statusDAO.update(status);
                 judgeQueue.put(judgeItem);
             }
         } catch (AppException | InterruptedException ignored) {
         }
+    }
+
+    @Override
+    public void setStatusCondition(StatusCondition statusCondition) {
+        this.statusCondition = statusCondition;
+    }
+
+    @Override
+    public void setStatusDAO(IStatusDAO statusDAO) {
+        this.statusDAO = statusDAO;
     }
 }

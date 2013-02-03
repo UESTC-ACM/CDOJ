@@ -41,7 +41,7 @@ import java.util.Map;
  * <strong>settings.xml</strong>.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 5
+ * @version 6
  */
 public class Settings {
     /**
@@ -109,8 +109,6 @@ public class Settings {
 
         System.out.println(JUDGE_TEMP_PATH);
         System.out.println(JUDGE_DATA_PATH);
-
-
     }
 
     /**

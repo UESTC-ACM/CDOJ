@@ -25,7 +25,7 @@ package cn.edu.uestc.acmicpc.oj.test.db;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
-import cn.edu.uestc.acmicpc.ioc.DepartmentDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.junit.Assert;

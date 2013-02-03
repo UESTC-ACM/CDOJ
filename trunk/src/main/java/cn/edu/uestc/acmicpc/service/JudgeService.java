@@ -23,10 +23,15 @@
 package cn.edu.uestc.acmicpc.service;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.*;
-import cn.edu.uestc.acmicpc.ioc.*;
+import cn.edu.uestc.acmicpc.ioc.dao.*;
 import cn.edu.uestc.acmicpc.service.entity.Judge;
 import cn.edu.uestc.acmicpc.service.entity.JudgeItem;
 import cn.edu.uestc.acmicpc.service.entity.Scheduler;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -39,7 +44,9 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 2
  */
-public class JudgeService implements ProblemDAOAware, StatusDAOAware, UserDAOAware, CompileinfoDAOAware, CodeDAOAware {
+@Transactional
+public class JudgeService implements ProblemDAOAware, StatusDAOAware,
+        UserDAOAware, CompileinfoDAOAware, CodeDAOAware, ApplicationContextAware {
     /**
      * ProblemDAO for initializing problem information.
      */
@@ -78,8 +85,15 @@ public class JudgeService implements ProblemDAOAware, StatusDAOAware, UserDAOAwa
     private static final BlockingQueue<JudgeItem> judgeQueue = new LinkedBlockingQueue<>();
     private List<Thread> threads = new LinkedList<>();
 
+    /**
+     * Spring application context
+     */
+    @Autowired
+    private ApplicationContext applicationContext;
+
     public void init() {
-        scheduler = new Scheduler(statusDAO, judgeQueue);
+        scheduler = applicationContext.getBean("scheduler", Scheduler.class);
+        scheduler.setJudgeQueue(judgeQueue);
         schedulerThread = new Thread(scheduler);
         judgeThreads = new Thread[0];
     }
@@ -110,5 +124,10 @@ public class JudgeService implements ProblemDAOAware, StatusDAOAware, UserDAOAwa
     @Override
     public void setCodeDAO(ICodeDAO codeDAO) {
         this.codeDAO = codeDAO;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }
