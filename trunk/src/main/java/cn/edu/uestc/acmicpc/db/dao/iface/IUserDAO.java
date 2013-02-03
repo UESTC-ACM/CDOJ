@@ -39,6 +39,7 @@ public interface IUserDAO extends IDAO<User, Integer> {
      * @deprecated this method is instead by
      *             {@code getEntityByUniqueField("userName", value)}
      */
+    @SuppressWarnings("UnusedDeclaration")
     @Deprecated
     public User getUserByName(String name);
 }

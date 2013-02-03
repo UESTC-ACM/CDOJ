@@ -22,7 +22,7 @@
 
 package cn.edu.uestc.acmicpc.oj.action.file;
 
-import cn.edu.uestc.acmicpc.ioc.dao.SettingsAware;
+import cn.edu.uestc.acmicpc.ioc.util.SettingsAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.Settings;

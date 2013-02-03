@@ -20,30 +20,21 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.util;
+package cn.edu.uestc.acmicpc.ioc.util;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Criterion;
+import cn.edu.uestc.acmicpc.util.Global;
 
 /**
- * All actions for database.
+ * For all class which need global entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-@SuppressWarnings("UnusedDeclaration")
-public class DatabaseUtil {
+public interface GlobalAware {
     /**
-     * Put all criterion in the criterion list into criteria object.
+     * Put Settings entity into class.
      *
-     * @param criteria      criteria object
-     * @param criterionList criterion list
+     * @param global global entity object
      */
-    public static void putCriterionIntoCriteria(Criteria criteria,
-                                                Iterable<Criterion> criterionList) {
-        if (criteria == null || criterionList == null)
-            return;
-        for (Criterion criterion : criterionList)
-            criteria.add(criterion);
-    }
+    public void setGlobal(Global global);
 }

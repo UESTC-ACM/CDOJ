@@ -31,6 +31,7 @@ import java.util.Map;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
+@SuppressWarnings("UnusedDeclaration")
 public class ValidatorException extends Exception {
     private Map<String, String> json;
 
@@ -46,7 +47,7 @@ public class ValidatorException extends Exception {
 
     public ValidatorException(String key, String value) {
         super();
-        json = new HashMap<String, String>();
+        json = new HashMap<>();
         json.put(key, value);
     }
 

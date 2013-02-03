@@ -41,7 +41,7 @@ import java.util.Map;
  * <strong>settings.xml</strong>.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 6
+ * @version 7
  */
 public class Settings {
     /**
@@ -65,6 +65,11 @@ public class Settings {
     public final String SETTING_UPLOAD_FOLDER;
 
     /**
+     * Judge core's name.
+     */
+    public final String JUDGE_JUDGE_CORE;
+
+    /**
      * Data path name
      */
     public final String JUDGE_DATA_PATH;
@@ -73,6 +78,11 @@ public class Settings {
      * Work path name
      */
     public final String JUDGE_TEMP_PATH;
+
+    /**
+     * Judge information list
+     */
+    public final List<Map<String, String>> JUDGE_LIST;
 
     /**
      * setting map from configuration file.
@@ -87,6 +97,7 @@ public class Settings {
     /**
      * Static constructor.
      */
+    @SuppressWarnings("unchecked")
     public Settings() {
         try {
             init();
@@ -99,16 +110,20 @@ public class Settings {
         SETTING_UPLOAD_TYPES = (String) getConfig("setting", "uploadTypes", "value");
         SETTING_UPLOAD_FOLDER = (String) getConfig("setting", "uploadFolder", "value");
 
+        JUDGE_JUDGE_CORE = (String) getConfig("judge", "judgeCore", "value");
         JUDGE_DATA_PATH = (String) getConfig("judge", "dataPath", "value");
         JUDGE_TEMP_PATH = (String) getConfig("judge", "tempPath", "value");
+        JUDGE_LIST = (List<Map<String, String>>) getConfig("judge", "judges");
 
 //        System.out.println(SETTING_ENCODING);
 //        System.out.println(SETTING_UPLOAD_SIZE);
 //        System.out.println(SETTING_UPLOAD_TYPES);
 //        System.out.println(SETTING_UPLOAD_FOLDER);
 //
+//        System.out.println(JUDGE_JUDGE_CORE);
 //        System.out.println(JUDGE_TEMP_PATH);
 //        System.out.println(JUDGE_DATA_PATH);
+//        System.out.println(JUDGE_LIST);
     }
 
     /**
@@ -128,7 +143,6 @@ public class Settings {
             e.printStackTrace();
             return;
         }
-//        System.out.println(path);
         XmlParser xmlParser = new XmlParser(path);
         XmlNode root;
         try {
@@ -139,17 +153,17 @@ public class Settings {
         for (XmlNode node : root.getChildList()) { // settings
             Map<String, Object> map = new HashMap<>();
             for (XmlNode childNode : node.getChildList()) { // item or list
-                if (childNode.getTagName().equals("list")) {
+                if (childNode.getTagName().trim().equals("list")) {
                     List<Map<String, String>> list = new LinkedList<>();
                     for (XmlNode childNode2 : childNode.getChildList()) { // item
                         list.add(parseItem(childNode2));
                     }
-                    map.put(childNode.getAttribute("name"), list);
+                    map.put(childNode.getAttribute("name").trim(), list);
                 } else { //item
-                    map.put(childNode.getAttribute("name"), parseItem(childNode));
+                    map.put(childNode.getAttribute("name").trim(), parseItem(childNode));
                 }
             }
-            settings.put(node.getAttribute("name"), map);
+            settings.put(node.getAttribute("name").trim(), map);
         }
     }
 
@@ -162,10 +176,10 @@ public class Settings {
      */
     private Map<String, String> parseItem(XmlNode node) throws AppException {
         Map<String, String> result = new HashMap<>();
-        if (node.getInnerText() != null)
-            result.put("value", node.getInnerText());
+        if (node.getInnerText() != null && !StringUtil.isNullOrWhiteSpace(node.getInnerText()))
+            result.put("value", node.getInnerText().trim());
         for (XmlNode childNode : node.getChildList()) {
-            result.put(childNode.getAttribute("name"), childNode.getAttribute("value"));
+            result.put(childNode.getAttribute("name"), childNode.getAttribute("value").trim());
         }
         return result;
     }

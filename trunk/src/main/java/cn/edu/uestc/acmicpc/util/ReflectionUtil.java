@@ -30,6 +30,7 @@ import java.lang.reflect.Method;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
+@SuppressWarnings("UnusedDeclaration")
 public class ReflectionUtil {
     @SuppressWarnings("unchecked")
     public static Method getMethodByAnnotation(Class<?> clazz, Class annotation) {

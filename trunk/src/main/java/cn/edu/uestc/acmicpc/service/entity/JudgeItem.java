@@ -24,15 +24,16 @@ package cn.edu.uestc.acmicpc.service.entity;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.ICompileinfoDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.*;
 import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
+import cn.edu.uestc.acmicpc.ioc.dao.CompileinfoDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.Projections;
@@ -41,9 +42,9 @@ import org.hibernate.criterion.Projections;
  * Judge item for single problem.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
-public class JudgeItem implements StatusConditionAware {
+public class JudgeItem implements CompileinfoDAOAware, StatusDAOAware, UserDAOAware, ProblemDAOAware, StatusConditionAware {
     public Status status;
     public CompileInfo compileInfo;
     /**
@@ -51,8 +52,25 @@ public class JudgeItem implements StatusConditionAware {
      */
     StatusCondition statusCondition;
 
-    @SuppressWarnings("UnusedDeclaration")
-    private int parseLanguage(String extension) {
+    /**
+     * Compileinfo DAO for database query.
+     */
+    private ICompileinfoDAO compileinfoDAO;
+    /**
+     * Status DAO for database query.
+     */
+    private IStatusDAO statusDAO;
+    /**
+     * User DAO for database query.
+     */
+    private IUserDAO userDAO;
+    /**
+     * Problem DAO for database query.
+     */
+    private IProblemDAO problemDAO;
+
+    public int parseLanguage() {
+        String extension = status.getLanguageByLanguageId().getExtension();
         switch (extension) {
             case "cc":
                 return 0;
@@ -74,8 +92,10 @@ public class JudgeItem implements StatusConditionAware {
 
     }
 
-    public void update(IUserDAO userDAO, IProblemDAO problemDAO, IStatusDAO statusDAO,
-                       ICompileinfoDAO compileinfoDAO) {
+    /**
+     * Update database for item.
+     */
+    public void update() {
         if (compileInfo != null) {
             if (compileInfo.getContent().length() > 65535)
                 compileInfo.setContent(compileInfo.getContent().substring(0, 65534));
@@ -116,5 +136,25 @@ public class JudgeItem implements StatusConditionAware {
     @Override
     public void setStatusCondition(StatusCondition statusCondition) {
         this.statusCondition = statusCondition;
+    }
+
+    @Override
+    public void setCompileinfoDAO(ICompileinfoDAO compileinfoDAO) {
+        this.compileinfoDAO = compileinfoDAO;
+    }
+
+    @Override
+    public void setProblemDAO(IProblemDAO problemDAO) {
+        this.problemDAO = problemDAO;
+    }
+
+    @Override
+    public void setStatusDAO(IStatusDAO statusDAO) {
+        this.statusDAO = statusDAO;
+    }
+
+    @Override
+    public void setUserDAO(IUserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 }

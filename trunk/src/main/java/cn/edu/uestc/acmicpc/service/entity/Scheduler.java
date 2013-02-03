@@ -1,14 +1,10 @@
 package cn.edu.uestc.acmicpc.service.entity;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.ICompileinfoDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
-import cn.edu.uestc.acmicpc.service.entity.JudgeItem;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +49,8 @@ public class Scheduler implements Runnable, StatusConditionAware, StatusDAOAware
     /**
      * Searching interval.
      */
-    private long INTERVAL = 3L;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final long INTERVAL = 3L;
 
     @Override
     public void run() {
