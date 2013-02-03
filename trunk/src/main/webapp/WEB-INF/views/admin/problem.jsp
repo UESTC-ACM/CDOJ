@@ -141,24 +141,45 @@
                         </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label"></label>
+                    <label class="control-label" for="problemCondition.source">Source</label>
+                    <div class="controls">
+                        <s:textfield name="problemCondition.source"
+                                     maxLength="100"
+                                     cssClass="span6"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Is SPJ</label>
                     <div class="controls">
                         <label class="radio inline">
-                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-                            A
+                            <input type="radio" name="problemCondition.isSpj" value checked="">
+                            All
                         </label>
                         <label class="radio inline">
-                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                            B
+                            <input type="radio" name="problemCondition.isSpj" value="true">
+                            Yes
+                        </label>
+                        <label class="radio inline">
+                            <input type="radio" name="problemCondition.isSpj" value="false">
+                            No
                         </label>
                     </div>
                 </div>
                 <div class="control-group">
+                    <label class="control-label">Is Visible</label>
                     <div class="controls">
-                        <div class="btn-group" data-toggle="buttons-checkbox">
-                            <button class="btn btn-info">Is SPJ</button>
-                            <button class="btn btn-info">Is visible</button>
-                        </div>
+                        <label class="radio inline">
+                            <input type="radio" name="problemCondition.isVisible" value checked="">
+                            All
+                        </label>
+                        <label class="radio inline">
+                            <input type="radio" name="problemCondition.isVisible" value="true">
+                            Yes
+                        </label>
+                        <label class="radio inline">
+                            <input type="radio" name="problemCondition.isVisible" value="false">
+                            No
+                        </label>
                     </div>
                 </div>
                 <div class="form-actions">

@@ -79,6 +79,15 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
     }
 
     /**
+     * Test!
+     *
+     * @return <strong>SUCCESS</strong> signal
+     */
+    public String toTest() {
+        return SUCCESS;
+    }
+
+    /**
      * Search action.
      * <p/>
      * Find all records by conditions and return them as a list in JSON, and the condition
