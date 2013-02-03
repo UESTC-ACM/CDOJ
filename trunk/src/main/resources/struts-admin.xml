@@ -46,5 +46,8 @@
         <action name="search" class="problemAdminAction" method="toSearch"/>
         <action name="edit" class="problemAdminAction" method="toEdit"/>
         <action name="operator" class="problemAdminAction" method="toOperatorProblem"/>
+        <action name="test" class="problemAdminAction" method="toTest">
+            <result>/WEB-INF/views/admin/problemEditor.jsp</result>
+        </action>
     </package>
 </struts>

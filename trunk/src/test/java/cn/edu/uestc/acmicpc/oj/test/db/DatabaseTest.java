@@ -250,6 +250,7 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
      * Test for add new problem
      */
     @Test
+    @Ignore
     public void testAddProblem() throws Exception {
         for (int i = 1; i <= 200; i++) {
             Problem problem = new Problem();

@@ -100,12 +100,6 @@ $(document).ready(function(){
         "problemCondition.startId":undefined,
         "problemCondition.endId":undefined,
         "problemCondition.title":undefined,
-        "problemCondition.description":undefined,
-        "problemCondition.input":undefined,
-        "problemCondition.output":undefined,
-        "problemCondition.sampleInput":undefined,
-        "problemCondition.sampleOutput":undefined,
-        "problemCondition.hint":undefined,
         "problemCondition.source":undefined,
         "problemCondition.isVisible":undefined,
         "problemCondition.isSpj":undefined,
@@ -119,6 +113,8 @@ $(document).ready(function(){
             if (index.indexOf('.') != -1)
                 currentCondition[index] = $('#'+index.replace('.','_')).val();
         });
+        currentCondition["problemCondition.isSpj"] = $(':radio[name="problemCondition.isSpj"]:checked').val();
+        currentCondition["problemCondition.isVisible"] = $(':radio[name="problemCondition.isVisible"]:checked').val();
         currentCondition.currentPage = 1;
         refreshProblemList(currentCondition);
         $('#TabMenu a:first').tab('show');
@@ -130,6 +126,8 @@ $(document).ready(function(){
             if (index.indexOf('.') != -1)
                 $('#'+index.replace('.','_')).attr('value','');
         });
+        $(':radio[name="problemCondition.isSpj"]:nth(0)').attr("checked",true);
+        $(':radio[name="problemCondition.isVisible"]:nth(0)').attr("checked",true);
         return false;
     });
 
