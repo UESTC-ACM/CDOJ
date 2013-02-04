@@ -166,6 +166,7 @@ public class Main
 <div class="row">
     <div class="span8">
         <h2>Contests
+            <!-- TODO p tag in h2 -->
             <p class="pull-right"><a class="btn btn-primary" href="./contest.html">More »</a></p>
         </h2>
 
@@ -191,7 +192,9 @@ public class Main
     </div>
     <div class="span4">
         <h2>Problems
-            <p class="pull-right"><a class="btn btn-primary" href="<s:url action="page/1" namespace="/problemset"/>">More »</a></p>
+            <!-- TODO p tag in h2 -->
+            <p class="pull-right"><a class="btn btn-primary" href="<s:url action="page/1" namespace="/problemset"/>">More
+                »</a></p>
         </h2>
 
         <table class="table table-striped table-bordered">
@@ -216,6 +219,7 @@ public class Main
 
         <!-- 快速跳转题目 -->
         <form class="form-horizontal">
+            <!-- TODO idea warning -->
             <input type="text" class="span3" placeholder="Problem ID...">
             <button type="submit" class="btn btn-primary">GO!</button>
         </form>

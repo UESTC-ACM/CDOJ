@@ -65,13 +65,16 @@
             <tr>
                 <td>1</td>
                 <td>
-                    <span class="info-problem-source pull-left" data-original-title="hehe"> <a href="./problem_single.html">A+B Problem</a></span>
-
-                    <span class="label label-info pull-right tags">data structs</span>
+                    <span class="info-problem-source pull-left" data-original-title="hehe">
+                    <%--suppress HtmlUnknownTarget --%>
+                    <a href="./problem_single.html">A+B Problem</a>
+                    </span>
+                    <span class="label label-info pull-right tags">data structure</span>
                     <span class="label label-info pull-right tags">dp</span>
                     <span class="label label-info pull-right tags">binary search</span>
                 </td>
-                <td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+                <td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i
+                        class="icon-star"></i></td>
                 <td>10</td>
                 <td>20</td>
             </tr>
@@ -79,6 +82,7 @@
         </table>
 
         <div id="userSelector">
+            <%--suppress HtmlUnknownTarget --%>
             <form action="well form-inline">
                 <a href="#" class="btn" id="selectAllUser">Select all</a>
                 <a href="#" class="btn" id="clearSelectedUser">Clear</a>
@@ -92,6 +96,7 @@
             <form class="form-horizontal">
                 <div class="control-group">
                     <label class="control-label" for="problemCondition.startId">Problem ID</label>
+
                     <div class="controls">
                         <div class="input-prepend inline">
                             <span class="add-on">Form</span>
@@ -109,6 +114,7 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="problemCondition.startDifficulty">Difficulty</label>
+
                     <div class="controls">
                         <div class="input-prepend inline">
                             <span class="add-on">Form</span>
@@ -126,6 +132,7 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="problemCondition.title">Title</label>
+
                     <div class="controls">
                         <s:textfield name="problemCondition.title"
                                      maxLength="100"
@@ -134,14 +141,16 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="problemCondition.keyword">Keyword</label>
-                        <div class="controls">
-                            <s:textfield name="problemCondition.keyword"
-                                         maxLength="100"
-                                         cssClass="span6"/>
-                        </div>
+
+                    <div class="controls">
+                        <s:textfield name="problemCondition.keyword"
+                                     maxLength="100"
+                                     cssClass="span6"/>
+                    </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="problemCondition.source">Source</label>
+
                     <div class="controls">
                         <s:textfield name="problemCondition.source"
                                      maxLength="100"
@@ -150,6 +159,7 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label">Is SPJ</label>
+
                     <div class="controls">
                         <label class="radio inline">
                             <input type="radio" name="problemCondition.isSpj" value checked="">
@@ -167,6 +177,7 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label">Is Visible</label>
+
                     <div class="controls">
                         <label class="radio inline">
                             <input type="radio" name="problemCondition.isVisible" value checked="">

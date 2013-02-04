@@ -41,11 +41,13 @@
 <!-- 题目分页和跳转 -->
 <div class="row">
     <div class="span9">
-        <s:url action="page/" namespace="/problemset" id="paginationPages" />
+        <s:url action="page/" namespace="/problemset" id="paginationPages"/>
+        <!-- TODO pagination tag deprecated -->
         <cdoj:pagination current="${pageId}" total="30" baseUrl="${paginationPages}" displayDist="4"/>
     </div>
     <!-- 快速跳转题目 -->
     <form class="well form-horizontal pull-right">
+        <!-- TODO idea warning -->
         <input type="text" class="span2" placeholder="Problem ID...">
         <button type="submit" class="btn btn-primary">GO!</button>
     </form>
@@ -74,7 +76,8 @@
                 <td class="info-right">1</td>
                 <td>
                     <!-- 题目名称与来源 -->
-                    <span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="<s:url action="problem/1" namespace="/problemset"/>">A+B Problem</a></span>
+                    <span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a
+                            href="<s:url action="problem/1" namespace="/problemset"/>">A+B Problem</a></span>
 
                     <!-- 标签们！ -->
                     <span class="label pull-right tags">data structs</span>
@@ -82,7 +85,8 @@
                     <span class="label pull-right tags">binary search</span>
                 </td>
                 <!-- 难度 -->
-                <td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></td>
+                <td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i
+                        class="icon-star"></i></td>
                 <!-- 通过数 -->
                 <td class="info-right">100000</td>
                 <!-- AC率 -->
@@ -94,11 +98,13 @@
                 <td class="info-right">2</td>
                 <td>
                     <!-- 题目名称与来源 -->
-                    <span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="<s:url action="problem/2" namespace="/problemset"/>">A+B Problem</a></span>
+                    <span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a
+                            href="<s:url action="problem/2" namespace="/problemset"/>">A+B Problem</a></span>
 
                     <span class="label pull-right tags">implementation</span>
                 </td>
-                <td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i></td>
+                <td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i
+                        class="icon-star-empty"></i></td>
                 <td class="info-right">1</td>
                 <td class="info-right">100.00%</td>
             </tr>
@@ -108,7 +114,8 @@
                 <td class="info-right">9999</td>
                 <td>
                     <!-- 题目名称与来源 -->
-                    <span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a href="<s:url action="problem/3" namespace="/problemset"/>">A+B Problem</a></span>
+                    <span class="info-problem-source pull-left" data-original-title="来源：2013世界总决赛"><a
+                            href="<s:url action="problem/3" namespace="/problemset"/>">A+B Problem</a></span>
 
                     <span class="label pull-right tags">binary search</span>
                     <span class="label pull-right tags">data structures</span>
@@ -144,6 +151,7 @@
     </div>
     <!-- 快速跳转题目 -->
     <form class="well form-horizontal pull-right">
+        <!-- TODO idea warning -->
         <input type="text" class="span2" placeholder="Problem ID...">
         <button type="submit" class="btn btn-primary">GO!</button>
     </form>

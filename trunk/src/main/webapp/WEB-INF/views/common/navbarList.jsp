@@ -37,6 +37,7 @@
     <title></title>
 </head>
 <body>
+<!-- TODO ul missing? -->
 <li class="divider-vertical"></li>
 
 <li>
@@ -50,16 +51,19 @@
 <li class="divider-vertical"></li>
 
 <li>
+    <%--suppress HtmlUnknownTarget --%>
     <a href="./contest.html">Contests</a>
 </li>
 <li class="divider-vertical"></li>
 
 <li>
-    <a href="./statu.html">Status</a>
+    <%--suppress HtmlUnknownTarget --%>
+    <a href="./status.html">Status</a>
 </li>
 <li class="divider-vertical"></li>
 
 <li>
+    <%--suppress HtmlUnknownTarget --%>
     <a href="./users.html">Users</a>
 </li>
 <li class="divider-vertical"></li>
