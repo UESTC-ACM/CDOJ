@@ -28,15 +28,23 @@
  * To change this template use File | Settings | File Templates.
  */
 
+/**
+ * current search condition
+ */
 var currentCondition;
 
-function getTitle(title, source, isSpj, isVisible) {
+/**
+ * current problem list
+ */
+var problemList;
+
+function getTitle(problemId,title, source, isSpj, isVisible) {
     var html = '';
     if (isVisible == true)
         html += '<i class="icon-eye-open pull-left tags"/>';
     if (isSpj == true)
         html += '<span class="label label-important tags pull-left">SPJ</span>';
-    html += '<span class="info-problem-source pull-left" data-original-title="' + source + '"><a href="./problem_single.html">'
+    html += '<a href="/admin/problem/editor/'+problemId+'" title="'+source+'">'
         + title + '</a></span>';
     return html;
 }
@@ -83,7 +91,7 @@ function refreshProblemList(condition) {
         $.each(problemList, function (index, value) {
             var html = '<tr>' +
                 '<td>' + value.problemId + '</td>' +
-                '<td>' + getTitle(value.title, value.source, value.isSpj, value.isVisible) + getTags(value.tags) + '</td>' +
+                '<td>' + getTitle(value.problemId,value.title, value.source, value.isSpj, value.isVisible) + getTags(value.tags) + '</td>' +
                 '<td>' + getDifficulty(value.difficulty) + '</td>' +
                 '<td>' + value.solved + '</td>' +
                 '<td>' + value.tried + '</td>' +
@@ -115,6 +123,10 @@ $(document).ready(function () {
         });
         currentCondition["problemCondition.isSpj"] = $(':radio[name="problemCondition.isSpj"]:checked').val();
         currentCondition["problemCondition.isVisible"] = $(':radio[name="problemCondition.isVisible"]:checked').val();
+        if (currentCondition["problemCondition.isSpj"] == "all")
+            currentCondition["problemCondition.isSpj"] = undefined;
+        if (currentCondition["problemCondition.isVisible"] == "all")
+            currentCondition["problemCondition.isVisible"] = undefined;
         currentCondition.currentPage = 1;
         refreshProblemList(currentCondition);
         $('#TabMenu a:first').tab('show');

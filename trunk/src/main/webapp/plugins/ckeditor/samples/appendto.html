@@ -1,79 +1,57 @@
 <!DOCTYPE html>
-
 <!--
-  ~ /*
-  ~  * cdoj, UESTC ACMICPC Online Judge
-  ~  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
-  ~  * 	mzry1992 <@link muziriyun@gmail.com>
-  ~  *
-  ~  * This program is free software; you can redistribute it and/or
-  ~  * modify it under the terms of the GNU General Public License
-  ~  * as published by the Free Software Foundation; either version 2
-  ~  * of the License, or (at your option) any later version.
-  ~  *
-  ~  * This program is distributed in the hope that it will be useful,
-  ~  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~  * GNU General Public License for more details.
-  ~  *
-  ~  * You should have received a copy of the GNU General Public License
-  ~  * along with this program; if not, write to the Free Software
-  ~  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-  ~  */
-  -->
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.html or http://ckeditor.com/license
+-->
 <html>
 <head>
-    <title>CKEDITOR.appendTo &mdash; CKEditor Sample</title>
-    <meta charset="utf-8">
-    <script src="../ckeditor.js"></script>
-    <link rel="stylesheet" href="sample.css">
+	<title>CKEDITOR.appendTo &mdash; CKEditor Sample</title>
+	<meta charset="utf-8">
+	<script src="../ckeditor.js"></script>
+	<link rel="stylesheet" href="sample.css">
 </head>
 <body>
-<h1 class="samples">
-    <a href="index.html">CKEditor Samples</a> &raquo; Append To Page Element Using JavaScript Code
-</h1>
-
-<div id="section1">
-    <div class="description">
-        <p>
-            <code>CKEDITOR.appendTo</code> is basically to place editors
-            inside existing DOM elements. Unlike <code>CKEDITOR.replace</code>,
-            a target container to be replaced is no longer necessary. A new editor
-            instance is inserted directly wherever it is desired.
-        </p>
+	<h1 class="samples">
+		<a href="index.html">CKEditor Samples</a> &raquo; Append To Page Element Using JavaScript Code
+	</h1>
+	<div id="section1">
+		<div class="description">
+			<p>
+				<code>CKEDITOR.appendTo</code> is basically to place editors
+				inside existing DOM elements. Unlike <code>CKEDITOR.replace</code>,
+				a target container to be replaced is no longer necessary. A new editor
+				instance is inserted directly wherever it is desired.
+			</p>
 <pre class="samples">CKEDITOR.appendTo( '<em>container_id</em>',
 	{ /* Configuration options to be used. */ }
 	'Editor content to be used.'
 );</pre>
-    </div>
-    <script>
+		</div>
+		<script>
 
-        // This call can be placed at any point after the
-        // <textarea>, or inside a <head><script> in a
-        // window.onload event handler.
+			// This call can be placed at any point after the
+			// <textarea>, or inside a <head><script> in a
+			// window.onload event handler.
 
-        // Replace the <textarea id="editor"> with an CKEditor
-        // instance, using default configurations.
-        CKEDITOR.appendTo('section1',
-                null,
-                '<p>This is some <strong>sample text</strong>. You are using <a href="http://ckeditor.com/">CKEditor</a>.</p>'
-        );
+			// Replace the <textarea id="editor"> with an CKEditor
+			// instance, using default configurations.
+			CKEDITOR.appendTo( 'section1',
+				null,
+				'<p>This is some <strong>sample text</strong>. You are using <a href="http://ckeditor.com/">CKEditor</a>.</p>'
+			);
 
-    </script>
-</div>
-<br>
-
-<div id="footer">
-    <hr>
-    <p>
-        CKEditor - The text editor for the Internet - <a class="samples"
-                                                         href="http://ckeditor.com/">http://ckeditor.com</a>
-    </p>
-
-    <p id="copy">
-        Copyright &copy; 2003-2012, <a class="samples" href="http://cksource.com/">CKSource</a> - Frederico
-        Knabben. All rights reserved.
-    </p>
-</div>
+		</script>
+	</div>
+	<br>
+	<div id="footer">
+		<hr>
+		<p>
+			CKEditor - The text editor for the Internet - <a class="samples" href="http://ckeditor.com/">http://ckeditor.com</a>
+		</p>
+		<p id="copy">
+			Copyright &copy; 2003-2013, <a class="samples" href="http://cksource.com/">CKSource</a> - Frederico
+			Knabben. All rights reserved.
+		</p>
+	</div>
 </body>
 </html>
