@@ -23,7 +23,7 @@
 package cn.edu.uestc.acmicpc.oj.action.user;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
-import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.StringUtil;

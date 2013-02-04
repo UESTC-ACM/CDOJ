@@ -20,71 +20,25 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.db.view.impl;
+package cn.edu.uestc.acmicpc.db.dto.impl;
 
+import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
-import cn.edu.uestc.acmicpc.db.view.base.View;
-import cn.edu.uestc.acmicpc.util.annotation.Ignored;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
- * Use for return problem information with json type.
+ * Problem entity data transform object.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 2
  */
 @SuppressWarnings("UnusedDeclaration")
-public class ProblemView extends View<Problem> {
-    private int problemId;
-    private String title;
-    private String description;
-    private String input;
-    private String output;
-    private String sampleInput;
-    private String sampleOutput;
-    private String hint;
-    private String source;
-    private int timeLimit;
-    private int memoryLimit;
-    private int solved;
-    private int tried;
-    private boolean isSpj;
-    private boolean isVisible;
-    private int outputLimit;
-    private int javaTimeLimit;
-    private int javaMemoryLimit;
-    private int dataCount;
-    private int difficulty;
-    private List<String> tags;
-
+public class ProblemDTO extends BaseDTO<Problem> {
     /**
-     * Get ProblemView entity by problem entity.
-     *
-     * @param problem specific problem entity
-     * @throws AppException
+     * Input: problem id
      */
-    public ProblemView(Problem problem) throws AppException {
-        super(problem);
-        List<String> list = new LinkedList<>();
-        Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
-        for (ProblemTag problemTag : problemTags) {
-            list.add(problemTag.getTagByTagId().getName());
-        }
-        setTags(list);
-    }
-
-    public int getProblemId() {
-        return problemId;
-    }
-
-    public void setProblemId(int problemId) {
-        this.problemId = problemId;
-    }
+    private Integer problemId;
+    private String title;
 
     public String getTitle() {
         return title;
@@ -186,16 +140,16 @@ public class ProblemView extends View<Problem> {
         return isSpj;
     }
 
-    public void setIsSpj(boolean isSPJ) {
-        this.isSpj = isSPJ;
+    public void setIsSpj(boolean spj) {
+        isSpj = spj;
     }
 
     public boolean getIsVisible() {
         return isVisible;
     }
 
-    public void setIsVisible(boolean isVisible) {
-        this.isVisible = isVisible;
+    public void setIsVisible(boolean visible) {
+        isVisible = visible;
     }
 
     public int getOutputLimit() {
@@ -238,12 +192,47 @@ public class ProblemView extends View<Problem> {
         this.difficulty = difficulty;
     }
 
-    public List<String> getTags() {
-        return tags;
+    private String description;
+    private String input;
+    private String output;
+    private String sampleInput;
+    private String sampleOutput;
+    private String hint;
+    private String source;
+    private int timeLimit;
+    private int memoryLimit;
+    private int solved;
+    private int tried;
+    private boolean isSpj;
+    private boolean isVisible;
+    private int outputLimit;
+    private int javaTimeLimit;
+    private int javaMemoryLimit;
+    private int dataCount;
+    private int difficulty;
+
+    public Integer getProblemId() {
+        return problemId;
     }
 
-    @Ignored
-    public void setTags(List<String> tags) {
-        this.tags = tags;
+    public void setProblemId(Integer problemId) {
+        this.problemId = problemId;
+    }
+
+    @Override
+    public Problem getEntity() throws AppException {
+        // TODO to get specific operations
+        return super.getEntity();
+    }
+
+    @Override
+    public void updateEntity(Problem problem) {
+        // TODO to get specific operations
+        super.updateEntity(problem);
+    }
+
+    @Override
+    protected Class<Problem> getReferenceClass() {
+        return Problem.class;
     }
 }

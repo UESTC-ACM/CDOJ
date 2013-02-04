@@ -20,49 +20,18 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.db.dto;
+package cn.edu.uestc.acmicpc.util.annotation;
 
-import cn.edu.uestc.acmicpc.db.entity.Problem;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
- * Problem entity data transform object.
+ * Ignored flag for reflection class.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-@SuppressWarnings("UnusedDeclaration")
-public class ProblemDTO {
-    /**
-     * Input: problem id
-     */
-    private Integer problemId;
-
-    public Integer getProblemId() {
-        return problemId;
-    }
-
-    public void setProblemId(Integer problemId) {
-        this.problemId = problemId;
-    }
-
-    /**
-     * Build new problem entity.
-     *
-     * @return new problem entity
-     */
-    public Problem getProblem() {
-        // TODO to build problem entity.
-        Problem problem = new Problem();
-        problem.setProblemId(getProblemId());
-        return problem;
-    }
-
-    /**
-     * Update problem entity.
-     *
-     * @param problem problem entity to be updated
-     */
-    public void updateProblem(Problem problem) {
-        //TODO update entity
-    }
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Ignored {
+    public boolean value() default true;
 }

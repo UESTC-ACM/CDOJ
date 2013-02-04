@@ -23,9 +23,9 @@
 package cn.edu.uestc.acmicpc.oj.action.user;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
-import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.db.dto.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
 import com.opensymphony.xwork2.validator.annotations.*;
@@ -34,7 +34,7 @@ import com.opensymphony.xwork2.validator.annotations.*;
  * Action for register
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 8
+ * @version 9
  */
 @LoginPermit(NeedLogin = false)
 public class RegisterAction extends BaseAction implements DepartmentDAOAware {
@@ -170,8 +170,8 @@ public class RegisterAction extends BaseAction implements DepartmentDAOAware {
                 return INPUT;
             }
             userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
-            User user = userDTO.getUser();
-            userDAO.add(userDTO.getUser());
+            User user = userDTO.getEntity();
+            userDAO.add(user);
             session.put("userName", user.getUserName());
             session.put("password", user.getPassword());
             session.put("lastLogin", user.getLastLogin());

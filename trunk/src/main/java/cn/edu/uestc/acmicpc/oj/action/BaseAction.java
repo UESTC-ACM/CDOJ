@@ -22,7 +22,7 @@
 
 package cn.edu.uestc.acmicpc.oj.action;
 
-import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.interceptor.AppInterceptor;

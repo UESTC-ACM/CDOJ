@@ -22,10 +22,10 @@
 
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
-import cn.edu.uestc.acmicpc.db.dto.ProblemDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
 import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
-import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
@@ -43,7 +43,7 @@ import java.util.List;
  * action for list, search, edit, add problem.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 4
+ * @version 6
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class ProblemAdminAction extends BaseAction implements ProblemConditionAware {
@@ -154,7 +154,7 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
     private ProblemDTO problemDTO;
 
     /**
-     * To edit user entity.
+     * To add or edit user entity.
      * <p/>
      * <strong>JSON output</strong>:
      * <ul>
@@ -170,11 +170,16 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
      */
     public String toEdit() {
         try {
-            Problem problem = problemDAO.get(problemDTO.getProblemId());
+            Problem problem;
+            if (problemDTO.getProblemId() != null) { //edit
+                problem = problemDAO.get(problemDTO.getProblemId());
+                problemDTO.updateEntity(problem);
+            } else { //add
+                problem = problemDTO.getEntity();
+            }
             if (problem == null)
                 throw new AppException("No such problem!");
             //userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
-            problemDTO.updateProblem(problem);
             problemDAO.update(problem);
             json.put("result", "ok");
         } catch (AppException e) {
