@@ -162,7 +162,7 @@
 
                     <div class="controls">
                         <label class="radio inline">
-                            <input type="radio" name="problemCondition.isSpj" value checked="">
+                            <input type="radio" name="problemCondition.isSpj" value="all" checked="">
                             All
                         </label>
                         <label class="radio inline">
@@ -180,7 +180,7 @@
 
                     <div class="controls">
                         <label class="radio inline">
-                            <input type="radio" name="problemCondition.isVisible" value checked="">
+                            <input type="radio" name="problemCondition.isVisible" value="all" checked="">
                             All
                         </label>
                         <label class="radio inline">

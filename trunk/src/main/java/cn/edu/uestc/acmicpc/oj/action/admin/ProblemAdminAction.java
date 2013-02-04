@@ -79,11 +79,52 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
     }
 
     /**
-     * Test!
+     * editor mode flag
+     */
+    private String editorFlag;
+
+    /**
+     * save target problem id
+     */
+    private Integer targetProblemId;
+
+    /**
+     * save problem to edit
+     */
+    private Problem targetProblem;
+
+    public String getEditorFlag() {
+        return editorFlag;
+    }
+
+    public Integer getTargetProblemId() {
+        return targetProblemId;
+    }
+
+    public void setTargetProblemId(Integer targetProblemId) {
+        this.targetProblemId = targetProblemId;
+    }
+
+    public Problem getTargetProblem() {
+        return targetProblem;
+    }
+    /**
+     * Go to problem editor view!
      *
      * @return <strong>SUCCESS</strong> signal
      */
-    public String toTest() {
+    public String toProblemEditor() {
+        editorFlag = "new";
+        if (targetProblemId != null) {
+            try {
+                targetProblem = problemDAO.get(targetProblemId);
+                if (targetProblem == null)
+                    throw new AppException("Wrong problem ID!");
+                editorFlag = "edit";
+            } catch (AppException e) {
+                redirect(getActionURL("/admin", "index"), e.getMessage());
+            }
+        }
         return SUCCESS;
     }
 

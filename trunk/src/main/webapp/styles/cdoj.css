@@ -108,3 +108,30 @@ td {
 .pos-left {
     text-align: left;
 }
+
+.font-code {
+    font-family: Consolas, "Lucida Console", "Andale Mono", "Bitstream Vera Sans Mono", "Courier New", Courier;
+    word-break:break-all;
+}
+
+.textarea-mini {
+    min-height: 120px;
+}
+
+.textarea-big {
+    min-height: 240px;
+}
+
+.textarea-large {
+    min-height: 320px;
+}
+
+.textarea-content {
+    position: relative;
+    padding: 4px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}

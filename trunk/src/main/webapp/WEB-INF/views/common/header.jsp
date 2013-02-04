@@ -57,7 +57,6 @@
 <!-- 如果需要开启内网模式的话请解压MathJax.zip到plugin目录下然后将上面替换成这个
 <script type="text/javascript" src="/Plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 -->
-<script src="<s:url value="/plugins/edit_area/edit_area_full.js"/>"></script>
 <script src="<s:url value="/scripts/cdoj.js"/>"></script>
 </body>
 </html>

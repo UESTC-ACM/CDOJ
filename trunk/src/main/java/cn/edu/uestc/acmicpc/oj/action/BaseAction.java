@@ -430,7 +430,7 @@ public class BaseAction extends ActionSupport
     protected PageInfo buildPageInfo(Long count, Long countPerPage,
                                      String baseURL, Integer displayDistance) {
         PageInfo pageInfo = PageInfo.create(count, countPerPage,
-                baseURL, displayDistance == null ? 3 : displayDistance,
+                baseURL, displayDistance == null ? 4 : displayDistance,
                 currentPage);
         request.put("pageInfo", pageInfo.getHtmlString());
         return pageInfo;
