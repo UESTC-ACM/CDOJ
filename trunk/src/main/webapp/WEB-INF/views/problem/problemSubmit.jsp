@@ -38,49 +38,50 @@
 </head>
 <body>
 
-        <div class="row">
-            <!-- 题目标题 -->
-            <div class="span12">
-                <h2>Problem 9999. One million ways to make love</h2>
-            </div>
+<div class="row">
+    <!-- 题目标题 -->
+    <div class="span12">
+        <h2>Problem 9999. One million ways to make love</h2>
+    </div>
 
-            <s:url action="problem/" namespace="/problemset" id="problemUrl"/>
-            <!-- 导航链接 -->
-            <div class="span12">
-                <ul class="nav nav-pills">
-                    <li><a href="${problemUrl}${problemId}">Problem</a></li>
-                    <li class="active">
-                        <a href="#">Submit</a>
-                    </li>
-                    <li><a href="${problemUrl}${problemId}/status">Status</a></li>
-                    <li><a href="${problemUrl}${problemId}/discuss">Discuss</a></li>
-                </ul>
-            </div>
-        </div>
+    <s:url action="problem/" namespace="/problemset" id="problemUrl"/>
+    <!-- 导航链接 -->
+    <div class="span12">
+        <ul class="nav nav-pills">
+            <li><a href="${problemUrl}${problemId}">Problem</a></li>
+            <li class="active">
+                <a href="#">Submit</a>
+            </li>
+            <li><a href="${problemUrl}${problemId}/status">Status</a></li>
+            <li><a href="${problemUrl}${problemId}/discuss">Discuss</a></li>
+        </ul>
+    </div>
+</div>
 
-        <div class="row">
-            <!-- 语言选择 -->
-            <div class="span12">
+<div class="row">
+    <!-- 语言选择 -->
+    <div class="span12">
 
-            </div>
+    </div>
 
-            <!-- 编辑框 -->
-                <div class="span12">
-                    <textarea id="sourceCodeEditor">
-                    </textarea>
-                    <script>
-                        editAreaLoader.init({
-                            id:"sourceCodeEditor", start_highlight:true, syntax:"cpp", allow_toggle:false, toolbar:"syntax_selection", syntax_selection_allow:"c,cpp,java", show_line_colors:true
-                        });
-                    </script>
-                </div>
+    <!-- 编辑框 -->
+    <div class="span12">
+        <!-- TODO idea warning -->
+        <textarea id="sourceCodeEditor">
+        </textarea>
+        <script>
+            editAreaLoader.init({
+                id: "sourceCodeEditor", start_highlight: true, syntax: "cpp", allow_toggle: false, toolbar: "syntax_selection", syntax_selection_allow: "c,cpp,java", show_line_colors: true
+            });
+        </script>
+    </div>
 
-            <!-- 提交 -->
-                <div class="span12">
-                    <div class="btn btn-success">Submit</div>
-                </div>
+    <!-- 提交 -->
+    <div class="span12">
+        <div class="btn btn-success">Submit</div>
+    </div>
 
-        </div>
+</div>
 
 </body>
 </html>

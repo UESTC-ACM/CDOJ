@@ -55,7 +55,7 @@
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
-                <th style="width: 14px;"><i class="icon-th-list"/></th>
+                <th style="width: 14px;"><i class="icon-th-list"></i></th>
                 <th style="width: 30px;">Id</th>
                 <th>User name</th>
                 <th>Nick name</th>
@@ -70,11 +70,12 @@
         </table>
 
         <div id="userSelector">
-             <form action="well form-inline">
-                 <a href="#" class="btn" id="selectAllUser">Select all</a>
-                 <a href="#" class="btn" id="clearSelectedUser">Clear</a>
-                 <a href="#" class="pull-right btn btn-danger" id="deleteSelectedUser">Delete selected user</a>
-             </form>
+            <%--suppress HtmlUnknownTarget --%>
+            <form action="well form-inline">
+                <a href="#" class="btn" id="selectAllUser">Select all</a>
+                <a href="#" class="btn" id="clearSelectedUser">Clear</a>
+                <a href="#" class="pull-right btn btn-danger" id="deleteSelectedUser">Delete selected user</a>
+            </form>
         </div>
     </div>
 
@@ -83,6 +84,7 @@
             <form class="form-horizontal">
                 <div class="control-group">
                     <label class="control-label" for="userCondition.startId">User ID</label>
+
                     <div class="controls">
                         <div class="input-prepend inline">
                             <span class="add-on">Form</span>
@@ -100,6 +102,7 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="userCondition.userName">User name</label>
+
                     <div class="controls">
                         <s:textfield name="userCondition.userName"
                                      maxLength="24"
@@ -108,6 +111,7 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="userCondition.type">Type</label>
+
                     <div class="controls">
                         <s:select name="userCondition.type"
                                   list="global.authenticationTypeList"
@@ -118,6 +122,7 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="userCondition.school">School</label>
+
                     <div class="controls">
                         <s:textfield name="userCondition.school"
                                      maxLength="50"
@@ -126,6 +131,7 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="userCondition.departmentId">Department</label>
+
                     <div class="controls">
                         <s:select name="userCondition.departmentId"
                                   list="global.departmentList"
@@ -150,7 +156,8 @@
 </div>
 
 <!-- User edit Modal -->
-<div id="userEditModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="userEditModal" aria-hidden="true">
+<div id="userEditModal" class="modal hide fade" tabindex="-1" role="dialog"
+     aria-labelledby="userEditModal" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="userEditModalLabel"></h3>

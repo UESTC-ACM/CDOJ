@@ -31,7 +31,7 @@ import org.hibernate.criterion.Restrictions;
  * Problem search condition.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ProblemCondition extends BaseCondition {
@@ -46,14 +46,19 @@ public class ProblemCondition extends BaseCondition {
     @Exp(MapField = "problemId", Type = ConditionType.le)
     public Integer endId;
 
+    /**
+     * Title.
+     */
+    @Exp(Type = ConditionType.like)
     public String title;
-    public String description;
-    public String input;
-    public String output;
-    public String sampleInput;
-    public String sampleOutput;
-    public String hint;
+    @Exp(Type = ConditionType.like)
     public String source;
+
+    /**
+     * Keyword for {@code description}, {@code input}, {@code output},
+     * {@code sampleInput}, {@code sampleOutput} and {@code hint}.
+     */
+    public String keyword;
 
     @Exp(Type = ConditionType.eq)
     public Boolean isSpj;
@@ -69,22 +74,13 @@ public class ProblemCondition extends BaseCondition {
 
     @Override
     public void invoke(Condition condition) {
-        String[] fields = new String[]{"title", "description", "input", "output",
-                "sampleInput", "sampleOutput", "hint", "source"};
-        boolean found = false;
-        Junction junction = Restrictions.disjunction();
-        for (String field : fields) {
-            try {
-                if (getClass().getField(field).get(this) != null) {
-                    found = true;
-                    junction.add(Restrictions.like(field,
-                            String.format("%%%s%%", (String) getClass().getField(field).get(this))));
-                }
-            } catch (IllegalAccessException e) {
-            } catch (NoSuchFieldException e) {
+        if (keyword != null) {
+            String[] fields = new String[]{"description", "input", "output",
+                    "sampleInput", "sampleOutput", "hint"};
+            Junction junction = Restrictions.disjunction();
+            for (String field : fields) {
+                junction.add(Restrictions.like(field, String.format("%%%s%%", keyword)));
             }
-        }
-        if (found) {
             condition.addCriterion(junction);
         }
     }

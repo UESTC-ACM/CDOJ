@@ -46,6 +46,7 @@
             <!-- 导航部分 -->
             <!-- 快速搜索框 -->
             <form class="navbar-search pull-right" action="">
+                <!-- TODO please check idea warning -->
                 <input type="text" class="search-query span2" placeholder="Search">
             </form>
 

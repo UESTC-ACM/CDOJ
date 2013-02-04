@@ -30,36 +30,36 @@
 
 var currentCondition;
 
-function getTitle(title,source,isSpj,isVisible) {
+function getTitle(title, source, isSpj, isVisible) {
     var html = '';
     if (isVisible == true)
         html += '<i class="icon-eye-open pull-left tags"/>';
     if (isSpj == true)
         html += '<span class="label label-important tags pull-left">SPJ</span>';
-    html += '<span class="info-problem-source pull-left" data-original-title="'+source+'"><a href="./problem_single.html">'
-        +title+'</a></span>';
+    html += '<span class="info-problem-source pull-left" data-original-title="' + source + '"><a href="./problem_single.html">'
+        + title + '</a></span>';
     return html;
 }
 
 function getTags(tags) {
     var html = '';
-    $.each(tags,function(index,value) {
-        html += '<span class="label label-info pull-right tags">'+value+'</span>';
+    $.each(tags, function (index, value) {
+        html += '<span class="label label-info pull-right tags">' + value + '</span>';
     });
     return html;
 }
 
 function getDifficulty(difficulty) {
     var html = '';
-    for (var i = 2;i <= difficulty;i += 2)
+    for (var i = 2; i <= difficulty; i += 2)
         html += '<i class="icon-star"></i>';
-    if (difficulty%2 == 1)
+    if (difficulty % 2 == 1)
         html += '<i class="icon-star-empty"></i>';
     return html;
 }
 
 function refreshProblemList(condition) {
-    $.post('/admin/problem/search', condition, function(data) {
+    $.post('/admin/problem/search', condition, function (data) {
         console.log(condition);
         if (data.result == "error") {
             alert(data.error_msg);
@@ -69,7 +69,7 @@ function refreshProblemList(condition) {
         //pagination
         $('#pageInfo').empty();
         $('#pageInfo').append(data.pageInfo);
-        $('#pageInfo').find('a').click(function(e) {
+        $('#pageInfo').find('a').click(function (e) {
             currentCondition.currentPage = $(this).attr("href");
             refreshProblemList(currentCondition);
             return false;
@@ -80,13 +80,13 @@ function refreshProblemList(condition) {
         // remove old user list
         tbody.find('tr').remove();
         // put user list
-        $.each(problemList,function(index,value){
-            var html = '<tr>'+
-                '<td>'+value.problemId+'</td>'+
-                '<td>'+getTitle(value.title,value.source,value.isSpj,value.isVisible)+getTags(value.tags)+'</td>'+
-                '<td>'+getDifficulty(value.difficulty)+'</td>'+
-                '<td>'+value.solved+'</td>'+
-                '<td>'+value.tried+'</td>'+
+        $.each(problemList, function (index, value) {
+            var html = '<tr>' +
+                '<td>' + value.problemId + '</td>' +
+                '<td>' + getTitle(value.title, value.source, value.isSpj, value.isVisible) + getTags(value.tags) + '</td>' +
+                '<td>' + getDifficulty(value.difficulty) + '</td>' +
+                '<td>' + value.solved + '</td>' +
+                '<td>' + value.tried + '</td>' +
                 '</tr>';
             tbody.append(html);
         });
@@ -94,24 +94,24 @@ function refreshProblemList(condition) {
     });
 }
 
-$(document).ready(function(){
+$(document).ready(function () {
     currentCondition = {
-        "currentPage":null,
-        "problemCondition.startId":undefined,
-        "problemCondition.endId":undefined,
-        "problemCondition.title":undefined,
-        "problemCondition.source":undefined,
-        "problemCondition.isVisible":undefined,
-        "problemCondition.isSpj":undefined,
-        "problemCondition.startDifficulty":undefined,
-        "problemCondition.endDifficulty":undefined,
-        "problemCondition.keyword":undefined
+        "currentPage": null,
+        "problemCondition.startId": undefined,
+        "problemCondition.endId": undefined,
+        "problemCondition.title": undefined,
+        "problemCondition.source": undefined,
+        "problemCondition.isVisible": undefined,
+        "problemCondition.isSpj": undefined,
+        "problemCondition.startDifficulty": undefined,
+        "problemCondition.endDifficulty": undefined,
+        "problemCondition.keyword": undefined
     }
 
-    $('input#search').click(function(e) {
-        $.each(currentCondition, function(index,value) {
+    $('input#search').click(function (e) {
+        $.each(currentCondition, function (index, value) {
             if (index.indexOf('.') != -1)
-                currentCondition[index] = $('#'+index.replace('.','_')).val();
+                currentCondition[index] = $('#' + index.replace('.', '_')).val();
         });
         currentCondition["problemCondition.isSpj"] = $(':radio[name="problemCondition.isSpj"]:checked').val();
         currentCondition["problemCondition.isVisible"] = $(':radio[name="problemCondition.isVisible"]:checked').val();
@@ -121,13 +121,13 @@ $(document).ready(function(){
         return false;
     });
 
-    $('input#reset').click(function(e) {
-        $.each(currentCondition, function(index,value) {
+    $('input#reset').click(function (e) {
+        $.each(currentCondition, function (index, value) {
             if (index.indexOf('.') != -1)
-                $('#'+index.replace('.','_')).attr('value','');
+                $('#' + index.replace('.', '_')).attr('value', '');
         });
-        $(':radio[name="problemCondition.isSpj"]:nth(0)').attr("checked",true);
-        $(':radio[name="problemCondition.isVisible"]:nth(0)').attr("checked",true);
+        $(':radio[name="problemCondition.isSpj"]:nth(0)').attr("checked", true);
+        $(':radio[name="problemCondition.isVisible"]:nth(0)').attr("checked", true);
         return false;
     });
 

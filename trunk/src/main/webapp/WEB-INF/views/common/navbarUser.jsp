@@ -48,6 +48,7 @@
             <ul class="dropdown-menu">
                 <li>
                     <!-- Button to trigger modal -->
+                        <%--suppress HtmlUnknownTarget --%>
                     <a href="#loginModal" role="button" data-toggle="modal">
                         <i class="icon-ok-circle"></i>
                         Login
@@ -56,6 +57,7 @@
 
                 <li>
                     <!-- Button to trigger modal -->
+                        <%--suppress HtmlUnknownTarget --%>
                     <a href="#registerModal" role="button" data-toggle="modal">
                         <i class="icon-plus-sign"></i>
                         Register
@@ -70,6 +72,7 @@
     <ul class="nav pull-right">
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <!-- TODO src missing? -->
                 <img id="avatar" email="<s:property value="currentUser.email"/>"/>
                 <s:property value="currentUser.userName"/>
                 <b class="caret"></b>
@@ -85,6 +88,7 @@
                 </s:if>
                 <!-- 用户中心的入口 -->
                 <li>
+                        <%--suppress HtmlUnknownTarget --%>
                     <a href="./usercenter.html">
                         <i class="icon-home"></i>
                         User center
@@ -93,6 +97,7 @@
 
                 <!-- 未读消息 -->
                 <li>
+                        <%--suppress HtmlUnknownTarget --%>
                     <a href="./message.html">
                         <i class="icon-envelope"></i>
                         Message
@@ -102,6 +107,7 @@
 
                 <!-- 收藏夹 -->
                 <li>
+                        <%--suppress HtmlUnknownTarget --%>
                     <a href="./bookmark.html">
                         <i class="icon-folder-open"></i>
                         Bookmark
