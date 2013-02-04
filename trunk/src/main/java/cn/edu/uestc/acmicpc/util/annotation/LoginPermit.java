@@ -20,7 +20,7 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.annotation;
+package cn.edu.uestc.acmicpc.util.annotation;
 
 import cn.edu.uestc.acmicpc.util.Global;
 

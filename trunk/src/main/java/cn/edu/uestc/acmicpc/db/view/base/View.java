@@ -22,11 +22,10 @@
 
 package cn.edu.uestc.acmicpc.db.view.base;
 
+import cn.edu.uestc.acmicpc.util.annotation.Ignored;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 
 import java.io.Serializable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -60,10 +59,5 @@ public class View<Entity extends Serializable> {
                 }
             }
         }
-    }
-
-    @Retention(RetentionPolicy.RUNTIME)
-    protected @interface Ignored {
-        public boolean value() default true;
     }
 }

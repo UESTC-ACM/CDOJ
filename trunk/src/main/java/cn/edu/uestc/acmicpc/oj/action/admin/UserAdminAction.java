@@ -24,11 +24,11 @@ package cn.edu.uestc.acmicpc.oj.action.admin;
 
 import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
-import cn.edu.uestc.acmicpc.oj.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.db.dto.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
 import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
@@ -46,7 +46,7 @@ import java.util.List;
  * action for edit user information.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 6
+ * @version 7
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class UserAdminAction extends BaseAction implements DepartmentDAOAware, UserConditionAware {
@@ -193,7 +193,7 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware, U
             if (user == null)
                 throw new AppException("No such user!");
             userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
-            userDTO.updateUser(user);
+            userDTO.updateEntity(user);
             userDAO.update(user);
             json.put("result", "ok");
         } catch (AppException e) {

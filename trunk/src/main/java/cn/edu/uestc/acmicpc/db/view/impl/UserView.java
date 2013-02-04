@@ -25,6 +25,7 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.annotation.Ignored;
 
 import java.sql.Timestamp;
 

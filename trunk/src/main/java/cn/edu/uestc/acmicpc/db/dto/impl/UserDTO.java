@@ -20,11 +20,14 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.db.dto;
+package cn.edu.uestc.acmicpc.db.dto.impl;
 
+import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.StringUtil;
+import cn.edu.uestc.acmicpc.util.annotation.Ignored;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -33,10 +36,10 @@ import java.util.Date;
  * collect information from register action and generate a User class.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 3
+ * @version 4
  */
 @SuppressWarnings("UnusedDeclaration")
-public class UserDTO {
+public class UserDTO extends BaseDTO<User> {
 
     /**
      * Input: user id, set null for new user
@@ -101,6 +104,7 @@ public class UserDTO {
      */
     private Integer solved;
 
+    @Ignored
     public Integer getSolved() {
         return solved;
     }
@@ -109,6 +113,7 @@ public class UserDTO {
         this.solved = solved;
     }
 
+    @Ignored
     public Integer getTried() {
         return tried;
     }
@@ -117,6 +122,7 @@ public class UserDTO {
         this.tried = tried;
     }
 
+    @Ignored
     public Integer getType() {
         return type;
     }
@@ -140,22 +146,10 @@ public class UserDTO {
      */
     private User user;
 
-    /**
-     * Build user entity according to this DTO
-     *
-     * @return expected user entity
-     */
-    public User getUser() {
-        user = new User();
-        if (getUserId() != null)
-            user.setUserId(getUserId());
-        user.setUserName(getUserName());
+    @Override
+    public User getEntity() throws AppException {
+        user = super.getEntity();
         user.setPassword(StringUtil.encodeSHA1(getPassword()));
-        user.setNickName(getNickName());
-        user.setEmail(getEmail());
-        user.setSchool(getSchool());
-        user.setDepartmentByDepartmentId(getDepartment());
-        user.setStudentId(getStudentId());
         user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
         user.setSolved(getSolved() == null ? 0 : getSolved());
         user.setTried(getTried() == null ? 0 : getTried());
@@ -175,6 +169,7 @@ public class UserDTO {
         this.userName = userName;
     }
 
+    @Ignored
     public String getPassword() {
         return password;
     }
@@ -240,15 +235,21 @@ public class UserDTO {
     }
 
     /**
-     * Update user entity by userDTO fields.
+     * User is very special, the user name and password etc can not be changed in this method.
      *
-     * @param user specific user entity to edit
+     * @param user user entity to be updated
      */
-    public void updateUser(User user) {
+    @Override
+    public void updateEntity(User user) {
         user.setSchool(school);
         user.setDepartmentByDepartmentId(department);
         user.setSchool(school);
         user.setStudentId(studentId);
         user.setType(type);
+    }
+
+    @Override
+    protected Class<User> getReferenceClass() {
+        return User.class;
     }
 }
