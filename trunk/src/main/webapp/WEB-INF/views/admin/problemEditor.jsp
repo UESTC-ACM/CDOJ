@@ -34,7 +34,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <script src="<s:url value="/plugins/ckeditor/ckeditor.js"/>"></script>
+    <script src="<s:url value="/plugins/epiceditor/js/epiceditor.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj.admin.problemEditor.js"/>"></script>
     <title>Problem</title>
 </head>
@@ -64,21 +64,21 @@
     </div>
 
     <div class="span10">
-        <div contenteditable="true" id="problemDTO_description" class="textarea-content textarea-large">
+        <div id="problemDTO_description" class="textarea-content textarea-large">
             ${targetProblem.description}
         </div>
     </div>
 
     <div class="span10">
         <h2>Input</h2>
-        <div contenteditable="true" id="problemDTO_input" class="textarea-content textarea-mini">
+        <div id="problemDTO_input" class="textarea-content textarea-mini">
             ${targetProblem.input}
         </div>
     </div>
 
     <div class="span10">
         <h2>Output</h2>
-        <div contenteditable="true" id="problemDTO_output" class="textarea-content textarea-mini">
+        <div id="problemDTO_output" class="textarea-content textarea-mini">
             ${targetProblem.output}
         </div>
     </div>
@@ -95,12 +95,12 @@
             <tbody class="font-code">
             <tr>
                 <td>
-                    <div contenteditable="true" id="problemDTO_sampleInput" class="textarea-content textarea-big">
+                    <div id="problemDTO_sampleInput" class="textarea-content textarea-big">
                         ${targetProblem.sampleInput}
                     </div>
                 </td>
                 <td>
-                    <div contenteditable="true" id="problemDTO_sampleOutput" class="textarea-content textarea-big">
+                    <div id="problemDTO_sampleOutput" class="textarea-content textarea-big">
                         ${targetProblem.sampleOutput}
                     </div>
                 </td>
@@ -111,7 +111,7 @@
 
     <div class="span10">
         <h2>Hint</h2>
-        <div contenteditable="true" id="problemDTO_hint" class="textarea-content textarea-mini">
+        <div id="problemDTO_hint" class="textarea-content textarea-mini">
             ${targetProblem.hint}
         </div>
     </div>
