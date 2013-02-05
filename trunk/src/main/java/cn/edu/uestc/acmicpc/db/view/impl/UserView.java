@@ -33,9 +33,8 @@ import java.sql.Timestamp;
  * Use for return user information with json type.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 4
+ * @version 5
  */
-@SuppressWarnings("UnusedDeclaration")
 public class UserView extends View<User> {
 
     private int userId;
@@ -57,60 +56,66 @@ public class UserView extends View<User> {
         setType(Global.AuthenticationType.values()[user.getType()].getDescription());
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings("UnusedDeclaration")
     public int getUserId() {
         return userId;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    @SuppressWarnings("unused")
     public String getUserName() {
         return userName;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings("UnusedDeclaration")
     public String getPassword() {
         return password;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setPassword(String password) {
         this.password = password;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings("UnusedDeclaration")
     public String getNickName() {
         return nickName;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings("UnusedDeclaration")
     public String getEmail() {
         return email;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setEmail(String email) {
         this.email = email;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings("UnusedDeclaration")
     public String getSchool() {
         return school;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setSchool(String school) {
         this.school = school;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public int getDepartmentId() {
         return departmentId;
     }
@@ -120,34 +125,37 @@ public class UserView extends View<User> {
         this.departmentId = departmentId;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings("UnusedDeclaration")
     public String getStudentId() {
         return studentId;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setStudentId(String studentId) {
         this.studentId = studentId;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings("UnusedDeclaration")
     public int getTried() {
         return tried;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setTried(int tried) {
         this.tried = tried;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings("UnusedDeclaration")
     public int getSolved() {
         return solved;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setSolved(int solved) {
         this.solved = solved;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings("UnusedDeclaration")
     public String getType() {
         return type;
     }
@@ -157,11 +165,12 @@ public class UserView extends View<User> {
         this.type = type;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings("UnusedDeclaration")
     public Timestamp getLastLogin() {
         return lastLogin;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setLastLogin(Timestamp lastLogin) {
         this.lastLogin = lastLogin;
     }
