@@ -28,20 +28,57 @@
  * To change this template use File | Settings | File Templates.
  */
 
-CKEDITOR.disableAutoInline = true;
+var epicEditorOpts = {
+    container: 'epiceditor',
+    basePath: '/plugins/epiceditor',
+    clientSideStorage: true,
+    localStorageName: 'epiceditor',
+    useNativeFullsreen: true,
+    parser: marked,
+    file: {
+        name: 'epiceditor',
+        defaultContent: '',
+        autoSave: 100
+    },
+    theme: {
+        base:'/themes/base/epiceditor.css',
+        preview:'/themes/preview/github.css',
+        editor:'/themes/editor/epic-light.css'
+    },
+    focusOnLoad: true,
+    shortcut: {
+        modifier: 18,
+        fullscreen: 70,
+        preview: 80
+    }
+};
+
+var editors = {
+    "problemDTO_description":undefined,
+    "problemDTO_input":undefined,
+    "problemDTO_output":undefined,
+    "problemDTO_sampleInput":undefined,
+    "problemDTO_sampleOutput":undefined,
+    "problemDTO_hint":undefined
+};
+
+//TODO load problem data if edit mode is edit.
+//TODO clean the styles paste into editor
 
 $(document).ready(function () {
-    var editorDescription = CKEDITOR.inline(document.getElementById('problemDTO_description'));
-    var editorInput = CKEDITOR.inline(document.getElementById('problemDTO_input'));
-    var editorOutput = CKEDITOR.inline(document.getElementById('problemDTO_output'));
-    var editorHint = CKEDITOR.inline(document.getElementById('problemDTO_hint'));
+    $.each(editors,function(editorId) {
+        var editorOpts = epicEditorOpts;
+        editorOpts.localStorageName =
+            editorOpts.container =
+                editorOpts.file.name = editorId;
+        editors[editorId] = new EpicEditor(editorOpts).load();
+    });
+    console.log(editors);
 
     $('input#submit').click(function (e) {
-        problemDTO = {
-            "problemDTO.sampleInput":$('#problemDTO_sampleInput')[0].innerText,
-            "problemDTO.sampleOutput":$('#problemDTO_sampleOutput')[0].innerText
-        }
-        console.log(problemDTO);
+        $.each(editors,function() {
+            console.log(this.previewer.innerHTML);
+        });
         return false;
     });
 });
