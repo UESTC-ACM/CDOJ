@@ -47,7 +47,7 @@
                 Add new problem
             </s:if>
             <s:else>
-                Edit problem
+                Edit problem <span id="problemId"><s:property value='targetProblem.problemId'/></span>
             </s:else>
         </h3>
         <div class="control-group">
@@ -55,7 +55,7 @@
                 <input type="text"
                        name="problemDTO.title"
                        maxlength="50"
-                       value="${targetProblem.title}"
+                       value="<s:property value='targetProblem.title'/>"
                        id="problemDTO_title"
                        class="span10"
                        placeholder="Enter title here">
@@ -64,23 +64,17 @@
     </div>
 
     <div class="span10">
-        <div id="problemDTO_description" class="textarea-content textarea-large">
-            ${targetProblem.description}
-        </div>
+        <div id="problemDTO_description" class="textarea-content textarea-large"><s:property value='targetProblem.description' escape="true"/></div>
     </div>
 
     <div class="span10">
         <h2>Input</h2>
-        <div id="problemDTO_input" class="textarea-content textarea-mini">
-            ${targetProblem.input}
-        </div>
+        <div id="problemDTO_input" class="textarea-content textarea-mini">${targetProblem.input}</div>
     </div>
 
     <div class="span10">
         <h2>Output</h2>
-        <div id="problemDTO_output" class="textarea-content textarea-mini">
-            ${targetProblem.output}
-        </div>
+        <div id="problemDTO_output" class="textarea-content textarea-mini">${targetProblem.output}</div>
     </div>
 
     <div class="span10">
@@ -95,14 +89,10 @@
             <tbody class="font-code">
             <tr>
                 <td>
-                    <div id="problemDTO_sampleInput" class="textarea-content textarea-big">
-                        ${targetProblem.sampleInput}
-                    </div>
+                    <div id="problemDTO_sampleInput" class="textarea-content textarea-big">${targetProblem.sampleInput}</div>
                 </td>
                 <td>
-                    <div id="problemDTO_sampleOutput" class="textarea-content textarea-big">
-                        ${targetProblem.sampleOutput}
-                    </div>
+                    <div id="problemDTO_sampleOutput" class="textarea-content textarea-big">${targetProblem.sampleOutput}</div>
                 </td>
             </tr>
             </tbody>
@@ -111,9 +101,7 @@
 
     <div class="span10">
         <h2>Hint</h2>
-        <div id="problemDTO_hint" class="textarea-content textarea-mini">
-            ${targetProblem.hint}
-        </div>
+        <div id="problemDTO_hint" class="textarea-content textarea-mini">${targetProblem.hint}</div>
     </div>
 
     <div class="span10">
