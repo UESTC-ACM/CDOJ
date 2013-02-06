@@ -36,17 +36,17 @@ import java.util.Collection;
 @Entity
 public class Tag implements Serializable {
     private static final long serialVersionUID = 8221283073294354906L;
-    private int tagId;
+    private Integer tagId;
 
     @Column(name = "tagId", nullable = false, insertable = true,
             updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
-    public int getTagId() {
+    public Integer getTagId() {
         return tagId;
     }
 
-    public void setTagId(int tagId) {
+    public void setTagId(Integer tagId) {
         this.tagId = tagId;
     }
 
@@ -70,7 +70,7 @@ public class Tag implements Serializable {
 
         Tag tag = (Tag) o;
 
-        if (tagId != tag.tagId) return false;
+        if (!tagId.equals(tag.tagId)) return false;
         if (name != null ? !name.equals(tag.name) : tag.name != null) return false;
 
         return true;

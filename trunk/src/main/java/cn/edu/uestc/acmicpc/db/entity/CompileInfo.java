@@ -30,23 +30,23 @@ import java.util.Collection;
  * Compile information which compiler returns.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @Table(name = "compileInfo", schema = "", catalog = "uestcoj")
 @Entity
 public class CompileInfo implements Serializable {
     private static final long serialVersionUID = 1404496264299518630L;
-    private int compileInfoId;
+    private Integer compileInfoId;
 
     @Column(name = "compileInfoId", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
-    public int getCompileInfoId() {
+    public Integer getCompileInfoId() {
         return compileInfoId;
     }
 
-    public void setCompileInfoId(int compileInfoId) {
+    public void setCompileInfoId(Integer compileInfoId) {
         this.compileInfoId = compileInfoId;
     }
 
@@ -70,7 +70,7 @@ public class CompileInfo implements Serializable {
 
         CompileInfo that = (CompileInfo) o;
 
-        if (compileInfoId != that.compileInfoId) return false;
+        if (!compileInfoId.equals(that.compileInfoId)) return false;
         if (content != null ? !content.equals(that.content) : that.content != null) return false;
 
         return true;

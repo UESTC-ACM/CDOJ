@@ -36,19 +36,19 @@ import java.util.List;
  * description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
+ * @version 2
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ProblemListView extends View<Problem> {
 
-    private int problemId;
+    private Integer problemId;
     private String title;
     private String source;
-    private int solved;
-    private int tried;
-    private boolean isSPJ;
-    private boolean isVisible;
-    private int difficulty;
+    private Integer solved;
+    private Integer tried;
+    private Boolean isSPJ;
+    private Boolean isVisible;
+    private Integer difficulty;
     private List<String> tags;
 
     /**
@@ -67,11 +67,11 @@ public class ProblemListView extends View<Problem> {
         setTags(list);
     }
 
-    public int getProblemId() {
+    public Integer getProblemId() {
         return problemId;
     }
 
-    public void setProblemId(int problemId) {
+    public void setProblemId(Integer problemId) {
         this.problemId = problemId;
     }
 
@@ -91,43 +91,43 @@ public class ProblemListView extends View<Problem> {
         this.source = source;
     }
 
-    public int getSolved() {
+    public Integer getSolved() {
         return solved;
     }
 
-    public void setSolved(int solved) {
+    public void setSolved(Integer solved) {
         this.solved = solved;
     }
 
-    public int getTried() {
+    public Integer getTried() {
         return tried;
     }
 
-    public void setTried(int tried) {
+    public void setTried(Integer tried) {
         this.tried = tried;
     }
 
-    public boolean getIsSpj() {
+    public Boolean getIsSpj() {
         return isSPJ;
     }
 
-    public void setIsSpj(boolean SPJ) {
+    public void setIsSpj(Boolean SPJ) {
         isSPJ = SPJ;
     }
 
-    public boolean getIsVisible() {
+    public Boolean getIsVisible() {
         return isVisible;
     }
 
-    public void setIsVisible(boolean isVisible) {
+    public void setIsVisible(Boolean isVisible) {
         this.isVisible = isVisible;
     }
 
-    public int getDifficulty() {
+    public Integer getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(int difficulty) {
+    public void setDifficulty(Integer difficulty) {
         this.difficulty = difficulty;
     }
 

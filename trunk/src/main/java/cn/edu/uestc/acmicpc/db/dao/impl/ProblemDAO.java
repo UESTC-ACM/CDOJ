@@ -30,9 +30,14 @@ import cn.edu.uestc.acmicpc.db.entity.Problem;
  * DAO for problem entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 public class ProblemDAO extends DAO<Problem, Integer> implements IProblemDAO {
+    @Override
+    protected Class<Integer> getPKClass() {
+        return Integer.class;
+    }
+
     @Override
     protected Class<Problem> getReferenceClass() {
         return Problem.class;

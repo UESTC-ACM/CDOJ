@@ -29,36 +29,36 @@ import java.io.Serializable;
  * Mappings between contests and users.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @Table(name = "contestUser", schema = "", catalog = "uestcoj")
 @Entity
 public class ContestUser implements Serializable {
     private static final long serialVersionUID = -8408381521779421508L;
-    private int contestUserId;
+    private Integer contestUserId;
 
     @Column(name = "contestUserId", nullable = false, insertable = true,
             updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
-    public int getContestUserId() {
+    public Integer getContestUserId() {
         return contestUserId;
     }
 
-    public void setContestUserId(int contestUserId) {
+    public void setContestUserId(Integer contestUserId) {
         this.contestUserId = contestUserId;
     }
 
-    private byte status;
+    private Byte status;
 
     @Column(name = "status", nullable = false, insertable = true, updatable = true,
             length = 3, precision = 0)
     @Basic
-    public byte getStatus() {
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(Byte status) {
         this.status = status;
     }
 
@@ -69,8 +69,8 @@ public class ContestUser implements Serializable {
 
         ContestUser that = (ContestUser) o;
 
-        if (contestUserId != that.contestUserId) return false;
-        if (status != that.status) return false;
+        if (!contestUserId.equals(that.contestUserId)) return false;
+        if (!status.equals(that.status)) return false;
 
         return true;
     }

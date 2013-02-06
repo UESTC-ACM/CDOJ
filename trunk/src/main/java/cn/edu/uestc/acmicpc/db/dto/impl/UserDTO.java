@@ -36,7 +36,7 @@ import java.util.Date;
  * collect information from register action and generate a User class.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 4
+ * @version 5
  */
 @SuppressWarnings("UnusedDeclaration")
 public class UserDTO extends BaseDTO<User> {
@@ -150,6 +150,7 @@ public class UserDTO extends BaseDTO<User> {
     public User getEntity() throws AppException {
         user = super.getEntity();
         user.setPassword(StringUtil.encodeSHA1(getPassword()));
+        user.setDepartmentByDepartmentId(department);
         user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
         user.setSolved(getSolved() == null ? 0 : getSolved());
         user.setTried(getTried() == null ? 0 : getTried());
@@ -178,6 +179,7 @@ public class UserDTO extends BaseDTO<User> {
         this.password = password;
     }
 
+    @Ignored
     public String getPasswordRepeat() {
         return passwordRepeat;
     }
@@ -218,14 +220,16 @@ public class UserDTO extends BaseDTO<User> {
         this.studentId = studentId;
     }
 
-    public int getDepartmentId() {
+    @Ignored
+    public Integer getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(int departmentId) {
+    public void setDepartmentId(Integer departmentId) {
         this.departmentId = departmentId;
     }
 
+    @Ignored
     public Department getDepartment() {
         return department;
     }

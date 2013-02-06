@@ -30,23 +30,23 @@ import java.util.Collection;
  * Department information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @Table(name = "department", schema = "", catalog = "uestcoj")
 @Entity
 public class Department implements Serializable {
     private static final long serialVersionUID = -2249534733683595360L;
-    private int departmentId;
+    private Integer departmentId;
 
     @Column(name = "departmentId", nullable = false, insertable = true,
             updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
-    public int getDepartmentId() {
+    public Integer getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(int departmentId) {
+    public void setDepartmentId(Integer departmentId) {
         this.departmentId = departmentId;
     }
 
@@ -70,7 +70,7 @@ public class Department implements Serializable {
 
         Department that = (Department) o;
 
-        if (departmentId != that.departmentId) return false;
+        if (!departmentId.equals(that.departmentId)) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
 
         return true;

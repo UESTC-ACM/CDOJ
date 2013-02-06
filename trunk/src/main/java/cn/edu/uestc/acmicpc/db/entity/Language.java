@@ -36,17 +36,17 @@ import java.util.Collection;
 @Entity
 public class Language implements Serializable {
     private static final long serialVersionUID = 6622284482431851438L;
-    private int languageId;
+    private Integer languageId;
 
     @Column(name = "languageId", nullable = false, insertable = true,
             updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
-    public int getLanguageId() {
+    public Integer getLanguageId() {
         return languageId;
     }
 
-    public void setLanguageId(int languageId) {
+    public void setLanguageId(Integer languageId) {
         this.languageId = languageId;
     }
 
@@ -96,7 +96,7 @@ public class Language implements Serializable {
 
         Language language = (Language) o;
 
-        if (languageId != language.languageId) return false;
+        if (!languageId.equals(language.languageId)) return false;
         if (extension != null ? !extension.equals(language.extension) : language.extension != null) return false;
         if (name != null ? !name.equals(language.name) : language.name != null) return false;
         if (param != null ? !param.equals(language.param) : language.param != null) return false;

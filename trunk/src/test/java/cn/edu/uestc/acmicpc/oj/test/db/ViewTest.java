@@ -61,6 +61,7 @@ public class ViewTest implements DepartmentDAOAware {
         user.setDepartmentByDepartmentId(departmentDAO.get(1));
         user.setStudentId("2010013100008");
         user.setLastLogin(new Timestamp(new Date().getTime()));
+        user.setType(0);
         UserView userView = new UserView(user);
         Assert.assertEquals("admin", userView.getUserName());
     }

@@ -54,7 +54,7 @@ import java.util.Random;
  * Simple database test class.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 8
+ * @version 9
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:applicationContext-test.xml"})
@@ -69,11 +69,14 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
             user.setUserName("admin");
             user.setPassword(StringUtil.encodeSHA1("admin"));
             user.setNickName("admin");
-            user.setEmail("acm@uestc.edu.cn");
+            user.setEmail("admin@localhost.com");
             user.setSchool("UESTC");
             user.setDepartmentByDepartmentId(departmentDAO.get(1));
             user.setStudentId("2010013100008");
             user.setLastLogin(new Timestamp(new Date().getTime()));
+            user.setSolved(0);
+            user.setTried(0);
+            user.setType(0);
             User check = userDAO.getEntityByUniqueField("userName", user.getUserName());
             if (check == null)
                 userDAO.add(user);
@@ -154,6 +157,9 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
             user.setDepartmentByDepartmentId(departmentDAO.get(1));
             user.setStudentId("2010013100008");
             user.setLastLogin(new Timestamp(new Date().getTime()));
+            user.setSolved(0);
+            user.setTried(0);
+            user.setType(0);
             User check = userDAO.getEntityByUniqueField("userName", user.getUserName());
             if (check == null)
                 userDAO.add(user);
@@ -279,5 +285,25 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
     @Override
     public void setUserCondition(UserCondition userCondition) {
         this.userCondition = userCondition;
+    }
+
+    @Test
+    public void testSingleUser() throws FieldNotUniqueException, AppException {
+        User user = new User();
+        int id = new Random().nextInt();
+        user.setUserName(String.format("TEST_%d", id));
+        user.setPassword(StringUtil.encodeSHA1("123456"));
+        user.setNickName("haha");
+        user.setEmail(String.format("TEST_%d@mzry1992.com", id));
+        user.setSchool("UESTC");
+        user.setDepartmentByDepartmentId(departmentDAO.get(1));
+        user.setStudentId("2010013100008");
+        user.setLastLogin(new Timestamp(new Date().getTime()));
+        user.setSolved(0);
+        user.setTried(0);
+        user.setType(0);
+        User check = userDAO.getEntityByUniqueField("userName", user.getUserName());
+        if (check == null)
+            userDAO.add(user);
     }
 }

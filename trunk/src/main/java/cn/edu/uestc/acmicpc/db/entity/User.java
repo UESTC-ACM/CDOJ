@@ -31,23 +31,23 @@ import java.util.Collection;
  * User information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 5
  */
 @Table(name = "user", schema = "", catalog = "uestcoj")
 @Entity
 public class User implements Serializable {
     private static final long serialVersionUID = -1942419166710527006L;
-    private int userId;
+    private Integer userId;
 
     @Column(name = "userId", nullable = false, insertable = true, updatable = true, length = 10,
             precision = 0, unique = true)
     @Id
     @GeneratedValue
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -129,42 +129,42 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    private int solved;
+    private Integer solved;
 
     @Column(name = "solved", nullable = false, insertable = true, updatable = true, length = 10,
             precision = 0)
     @Basic
-    public int getSolved() {
+    public Integer getSolved() {
         return solved;
     }
 
-    public void setSolved(int solved) {
+    public void setSolved(Integer solved) {
         this.solved = solved;
     }
 
-    private int tried;
+    private Integer tried;
 
     @Column(name = "tried", nullable = false, insertable = true, updatable = true, length = 10,
             precision = 0)
     @Basic
-    public int getTried() {
+    public Integer getTried() {
         return tried;
     }
 
-    public void setTried(int tried) {
+    public void setTried(Integer tried) {
         this.tried = tried;
     }
 
-    private int type;
+    private Integer type;
 
     @Column(name = "type", nullable = false, insertable = true, updatable = true, length = 10,
             precision = 0)
     @Basic
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -188,10 +188,10 @@ public class User implements Serializable {
 
         User user = (User) o;
 
-        if (solved != user.solved) return false;
-        if (tried != user.tried) return false;
-        if (type != user.type) return false;
-        if (userId != user.userId) return false;
+        if (!solved.equals(user.solved)) return false;
+        if (!tried.equals(user.tried)) return false;
+        if (!type.equals(user.type)) return false;
+        if (!userId.equals(user.userId)) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
         if (lastLogin != null ? !lastLogin.equals(user.lastLogin) : user.lastLogin != null) return false;
         if (nickName != null ? !nickName.equals(user.nickName) : user.nickName != null) return false;

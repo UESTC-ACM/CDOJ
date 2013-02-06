@@ -31,23 +31,23 @@ import java.util.Collection;
  * Discuss for problems.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @Table(name = "discuss", schema = "", catalog = "uestcoj")
 @Entity
 public class Discuss implements Serializable {
     private static final long serialVersionUID = -9155275753251130485L;
-    private int discussId;
+    private Integer discussId;
 
     @Column(name = "discussId", nullable = false, insertable = true,
             updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
-    public int getDiscussId() {
+    public Integer getDiscussId() {
         return discussId;
     }
 
-    public void setDiscussId(int discussId) {
+    public void setDiscussId(Integer discussId) {
         this.discussId = discussId;
     }
 
@@ -84,7 +84,7 @@ public class Discuss implements Serializable {
 
         Discuss discuss = (Discuss) o;
 
-        if (discussId != discuss.discussId) return false;
+        if (!discussId.equals(discuss.discussId)) return false;
         if (content != null ? !content.equals(discuss.content) : discuss.content != null) return false;
         if (time != null ? !time.equals(discuss.time) : discuss.time != null) return false;
 

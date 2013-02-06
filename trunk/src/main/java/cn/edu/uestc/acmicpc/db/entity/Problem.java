@@ -30,23 +30,23 @@ import java.util.Collection;
  * Problem information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 5
+ * @version 6
  */
 @Table(name = "problem", schema = "", catalog = "uestcoj")
 @Entity
 public class Problem implements Serializable {
     private static final long serialVersionUID = -334230877056963653L;
-    private int problemId;
+    private Integer problemId;
 
     @Column(name = "problemId", nullable = false, insertable = true,
             updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
-    public int getProblemId() {
+    public Integer getProblemId() {
         return problemId;
     }
 
-    public void setProblemId(int problemId) {
+    public void setProblemId(Integer problemId) {
         this.problemId = problemId;
     }
 
@@ -154,146 +154,146 @@ public class Problem implements Serializable {
         this.source = source;
     }
 
-    private int timeLimit;
+    private Integer timeLimit;
 
     @Column(name = "timeLimit", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
-    public int getTimeLimit() {
+    public Integer getTimeLimit() {
         return timeLimit;
     }
 
-    public void setTimeLimit(int timeLimit) {
+    public void setTimeLimit(Integer timeLimit) {
         this.timeLimit = timeLimit;
     }
 
-    private int memoryLimit;
+    private Integer memoryLimit;
 
     @Column(name = "memoryLimit", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
-    public int getMemoryLimit() {
+    public Integer getMemoryLimit() {
         return memoryLimit;
     }
 
-    public void setMemoryLimit(int memoryLimit) {
+    public void setMemoryLimit(Integer memoryLimit) {
         this.memoryLimit = memoryLimit;
     }
 
-    private int solved;
+    private Integer solved;
 
     @Column(name = "solved", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
-    public int getSolved() {
+    public Integer getSolved() {
         return solved;
     }
 
-    public void setSolved(int solved) {
+    public void setSolved(Integer solved) {
         this.solved = solved;
     }
 
-    private int tried;
+    private Integer tried;
 
     @Column(name = "tried", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
-    public int getTried() {
+    public Integer getTried() {
         return tried;
     }
 
-    public void setTried(int tried) {
+    public void setTried(Integer tried) {
         this.tried = tried;
     }
 
-    private boolean isSpj;
+    private Boolean isSpj;
 
     @Column(name = "isSPJ", nullable = false, insertable = true, updatable = true,
             length = 0, precision = 0)
     @Basic
-    public boolean getIsSpj() {
+    public Boolean getIsSpj() {
         return isSpj;
     }
 
-    public void setIsSpj(boolean spj) {
+    public void setIsSpj(Boolean spj) {
         isSpj = spj;
     }
 
-    private boolean isVisible;
+    private Boolean isVisible;
 
     @Column(name = "isVisible", nullable = false, insertable = true, updatable = true,
             length = 0, precision = 0)
     @Basic
-    public boolean getIsVisible() {
+    public Boolean getIsVisible() {
         return isVisible;
     }
 
-    public void setIsVisible(boolean visible) {
+    public void setIsVisible(Boolean visible) {
         isVisible = visible;
     }
 
-    private int outputLimit;
+    private Integer outputLimit;
 
     @Column(name = "outputLimit", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
-    public int getOutputLimit() {
+    public Integer getOutputLimit() {
         return outputLimit;
     }
 
-    public void setOutputLimit(int outputLimit) {
+    public void setOutputLimit(Integer outputLimit) {
         this.outputLimit = outputLimit;
     }
 
-    private int javaTimeLimit;
+    private Integer javaTimeLimit;
 
     @Column(name = "javaTimeLimit", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
-    public int getJavaTimeLimit() {
+    public Integer getJavaTimeLimit() {
         return javaTimeLimit;
     }
 
-    public void setJavaTimeLimit(int javaTimeLimit) {
+    public void setJavaTimeLimit(Integer javaTimeLimit) {
         this.javaTimeLimit = javaTimeLimit;
     }
 
-    private int javaMemoryLimit;
+    private Integer javaMemoryLimit;
 
     @Column(name = "javaMemoryLimit", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
-    public int getJavaMemoryLimit() {
+    public Integer getJavaMemoryLimit() {
         return javaMemoryLimit;
     }
 
-    public void setJavaMemoryLimit(int javaMemoryLimit) {
+    public void setJavaMemoryLimit(Integer javaMemoryLimit) {
         this.javaMemoryLimit = javaMemoryLimit;
     }
 
-    private int dataCount;
+    private Integer dataCount;
 
     @Column(name = "dataCount", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
-    public int getDataCount() {
+    public Integer getDataCount() {
         return dataCount;
     }
 
-    public void setDataCount(int dataCount) {
+    public void setDataCount(Integer dataCount) {
         this.dataCount = dataCount;
     }
 
-    private int difficulty;
+    private Integer difficulty;
 
     @Column(name = "difficulty", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
-    public int getDifficulty() {
+    public Integer getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(int difficulty) {
+    public void setDifficulty(Integer difficulty) {
         this.difficulty = difficulty;
     }
 
@@ -304,18 +304,18 @@ public class Problem implements Serializable {
 
         Problem problem = (Problem) o;
 
-        if (dataCount != problem.dataCount) return false;
-        if (difficulty != problem.difficulty) return false;
+        if (!dataCount.equals(problem.dataCount)) return false;
+        if (!difficulty.equals(problem.difficulty)) return false;
         if (isSpj != problem.isSpj) return false;
         if (isVisible != problem.isVisible) return false;
-        if (javaMemoryLimit != problem.javaMemoryLimit) return false;
-        if (javaTimeLimit != problem.javaTimeLimit) return false;
-        if (memoryLimit != problem.memoryLimit) return false;
-        if (outputLimit != problem.outputLimit) return false;
-        if (problemId != problem.problemId) return false;
-        if (solved != problem.solved) return false;
-        if (timeLimit != problem.timeLimit) return false;
-        if (tried != problem.tried) return false;
+        if (!javaMemoryLimit.equals(problem.javaMemoryLimit)) return false;
+        if (!javaTimeLimit.equals(problem.javaTimeLimit)) return false;
+        if (!memoryLimit.equals(problem.memoryLimit)) return false;
+        if (!outputLimit.equals(problem.outputLimit)) return false;
+        if (!problemId.equals(problem.problemId)) return false;
+        if (!solved.equals(problem.solved)) return false;
+        if (!timeLimit.equals(problem.timeLimit)) return false;
+        if (!tried.equals(problem.tried)) return false;
         if (description != null ? !description.equals(problem.description) : problem.description != null) return false;
         if (hint != null ? !hint.equals(problem.hint) : problem.hint != null) return false;
         if (input != null ? !input.equals(problem.input) : problem.input != null) return false;

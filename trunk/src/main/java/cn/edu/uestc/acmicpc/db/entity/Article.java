@@ -30,23 +30,23 @@ import java.sql.Timestamp;
  * Article information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
+ * @version 5
  */
 @Table(name = "article", schema = "", catalog = "uestcoj")
 @Entity
 public class Article implements Serializable {
     private static final long serialVersionUID = 8886825769658373290L;
-    private int articleId;
+    private Integer articleId;
 
     @Column(name = "articleId", nullable = false, insertable = true, updatable = true, length = 10,
             precision = 0, unique = true)
     @Id
     @GeneratedValue
-    public int getArticleId() {
+    public Integer getArticleId() {
         return articleId;
     }
 
-    public void setArticleId(int articleId) {
+    public void setArticleId(Integer articleId) {
         this.articleId = articleId;
     }
 
@@ -102,55 +102,55 @@ public class Article implements Serializable {
         this.time = time;
     }
 
-    private int clicked;
+    private Integer clicked;
 
     @Column(name = "clicked", nullable = false, insertable = true, updatable = true, length = 10,
             precision = 0)
     @Basic
-    public int getClicked() {
+    public Integer getClicked() {
         return clicked;
     }
 
-    public void setClicked(int clicked) {
+    public void setClicked(Integer clicked) {
         this.clicked = clicked;
     }
 
-    private int order;
+    private Integer order;
 
     @Column(name = "order", nullable = false, insertable = true, updatable = true, length = 10,
             precision = 0)
     @Basic
-    public int getOrder() {
+    public Integer getOrder() {
         return order;
     }
 
-    public void setOrder(int order) {
+    public void setOrder(Integer order) {
         this.order = order;
     }
 
-    private boolean isNotice;
+    private Boolean isNotice;
 
     @Column(name = "isNotice", nullable = false, insertable = true, updatable = true, length = 0,
             precision = 0)
     @Basic
-    public boolean getIsNotice() {
+    public Boolean getIsNotice() {
         return isNotice;
     }
 
-    public void setIsNotice(boolean notice) {
+    public void setIsNotice(Boolean notice) {
         isNotice = notice;
     }
 
-    private boolean visible;
+    private Boolean visible;
 
     @Column(name = "visible", nullable = false, insertable = true, updatable = true, length = 0,
             precision = 0)
     @Basic
-    public boolean getVisible() {
+    public Boolean getVisible() {
         return visible;
     }
 
-    public void setVisible(boolean visible) {
+    public void setVisible(Boolean visible) {
         this.visible = visible;
     }
 
@@ -161,10 +161,10 @@ public class Article implements Serializable {
 
         Article article = (Article) o;
 
-        if (articleId != article.articleId) return false;
-        if (clicked != article.clicked) return false;
+        if (!articleId.equals(article.articleId)) return false;
+        if (!clicked.equals(article.clicked)) return false;
         if (isNotice != article.isNotice) return false;
-        if (order != article.order) return false;
+        if (!order.equals(article.order)) return false;
         if (visible != article.visible) return false;
         if (author != null ? !author.equals(article.author) : article.author != null) return false;
         if (content != null ? !content.equals(article.content) : article.content != null) return false;

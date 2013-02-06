@@ -9,22 +9,23 @@ import java.sql.Timestamp;
  * Contest entity data transform object.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
+@SuppressWarnings("UnusedDeclaration")
 public class ContestDTO extends BaseDTO<Contest> {
-    private int contestId;
+    private Integer contestId;
     private String title;
     private String description;
-    private byte type;
+    private Byte type;
     private Timestamp time;
-    private int length;
-    private boolean isVisible;
+    private Integer length;
+    private Boolean isVisible;
 
-    public int getContestId() {
+    public Integer getContestId() {
         return contestId;
     }
 
-    public void setContestId(int contestId) {
+    public void setContestId(Integer contestId) {
         this.contestId = contestId;
     }
 
@@ -44,11 +45,11 @@ public class ContestDTO extends BaseDTO<Contest> {
         this.description = description;
     }
 
-    public byte getType() {
+    public Byte getType() {
         return type;
     }
 
-    public void setType(byte type) {
+    public void setType(Byte type) {
         this.type = type;
     }
 
@@ -60,19 +61,19 @@ public class ContestDTO extends BaseDTO<Contest> {
         this.time = time;
     }
 
-    public int getLength() {
+    public Integer getLength() {
         return length;
     }
 
-    public void setLength(int length) {
+    public void setLength(Integer length) {
         this.length = length;
     }
 
-    public boolean getIsVisible() {
+    public Boolean getIsVisible() {
         return isVisible;
     }
 
-    public void setIsVisible(boolean visible) {
+    public void setIsVisible(Boolean visible) {
         isVisible = visible;
     }
 

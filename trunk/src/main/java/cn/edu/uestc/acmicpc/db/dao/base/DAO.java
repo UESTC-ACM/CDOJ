@@ -24,6 +24,7 @@ package cn.edu.uestc.acmicpc.db.dao.base;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
+import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 import org.hibernate.Criteria;
@@ -33,6 +34,7 @@ import org.hibernate.criterion.*;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -42,7 +44,7 @@ import java.util.List;
  * @param <Entity> Entity's type
  * @param <PK>     Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 9
+ * @version 10
  */
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         extends BaseDAO implements IDAO<Entity, PK> {
@@ -50,10 +52,61 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     @Override
     public void addOrUpdate(Entity entity) throws AppException {
         try {
+            if (getId(entity) == null)
+                initId(entity);
             getSession().saveOrUpdate(entity);
         } catch (HibernateException e) {
+            e.printStackTrace();
             throw new AppException("Invoke addOrUpdate method error.");
         }
+    }
+
+    /**
+     * Initialize key value to 0
+     *
+     * @param entity entity to be updated
+     */
+    protected void initId(Entity entity) {
+        Method[] methods = entity.getClass().getMethods();
+        for (Method method : methods) {
+            Id id = method.getAnnotation(Id.class);
+            if (id != null)
+                try {
+                    String name = StringUtil.getGetterOrSetter(StringUtil.MethodType.SETTER,
+                            method.getName().substring(3));
+                    Method setter = entity.getClass().getMethod(name, getPKClass());
+                    setter.invoke(entity, 0);
+                } catch (IllegalAccessException | InvocationTargetException |
+                        NoSuchMethodException ignored) {
+                }
+        }
+
+    }
+
+    /**
+     * Get primary key's type.
+     *
+     * @return primary key's type
+     */
+    protected abstract Class<PK> getPKClass();
+
+    /**
+     * Get key entity's key value.
+     *
+     * @param entity entity object
+     * @return entity's key value
+     */
+    protected Object getId(Entity entity) {
+        Method[] methods = entity.getClass().getMethods();
+        for (Method method : methods) {
+            Id id = method.getAnnotation(Id.class);
+            if (id != null)
+                try {
+                    return method.invoke(entity);
+                } catch (IllegalAccessException | InvocationTargetException ignored) {
+                }
+        }
+        return null;
     }
 
     /**
@@ -122,6 +175,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
             updateCriteria(criteria, condition);
             return (Long) criteria.uniqueResult();
         } catch (HibernateException e) {
+            e.printStackTrace();
             throw new AppException("Invoke customCount method error.");
         }
     }
@@ -137,6 +191,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
             updateCriteria(criteria, condition);
             return (Long) criteria.uniqueResult();
         } catch (HibernateException e) {
+            e.printStackTrace();
             throw new AppException("Invoke count method error.");
         }
     }
@@ -144,8 +199,11 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     @Override
     public Serializable add(Entity entity) throws AppException {
         try {
+            if (getId(entity) == null)
+                initId(entity);
             return getSession().save(entity);
         } catch (HibernateException e) {
+            e.printStackTrace();
             throw new AppException("Invoke add method error.");
         }
     }
@@ -165,6 +223,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         try {
             getSession().update(entity);
         } catch (HibernateException e) {
+            e.printStackTrace();
             throw new AppException("Invoke update method error.");
         }
     }
@@ -174,6 +233,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         try {
             getSession().delete(entity);
         } catch (HibernateException e) {
+            e.printStackTrace();
             throw new AppException("Invoke delete method error.");
         }
     }
@@ -231,6 +291,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
                 }
             }
         } catch (HibernateException e) {
+            e.printStackTrace();
             throw new AppException("Invoke getEntityByUniqueField method error.");
         }
         return result;
