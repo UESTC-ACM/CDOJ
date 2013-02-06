@@ -62,22 +62,69 @@ var editors = {
     "problemDTO_hint":undefined
 };
 
-//TODO load problem data if edit mode is edit.
+var problemDTO = {
+    "problemDTO.problemId":null,
+    "problemDTO.title":undefined,
+    "problemDTO.description":undefined,
+    "problemDTO.input":undefined,
+    "problemDTO.output":undefined,
+    "problemDTO.sampleInput":undefined,
+    "problemDTO.sampleOutput":undefined,
+    "problemDTO.hint":undefined,
+    "problemDTO.source":undefined,
+    "problemDTO.timeLimit":0,
+    "problemDTO.memoryLimit":0,
+    "problemDTO.isSpj":0,
+    "problemDTO.isVisible":0,
+    "problemDTO.outputLimit":0,
+    "problemDTO.javaTimeLimit":0,
+    "problemDTO.javaMemoryLimit":0,
+    "problemDTO.dataCount":0,
+    "problemDTO.difficulty":0
+};
+
+var problemId;
+var editMode = "new";
+
 //TODO clean the styles paste into editor
 
 $(document).ready(function () {
+
+    editMode = $('#editorFlag').attr("value");
+    if (editMode == "edit")
+        problemId = $('#problemId')[0].innerHTML;
+
     $.each(editors,function(editorId) {
         var editorOpts = epicEditorOpts;
-        editorOpts.localStorageName =
-            editorOpts.container =
-                editorOpts.file.name = editorId;
-        editors[editorId] = new EpicEditor(editorOpts).load();
+        editorOpts.container = editorId;
+        if (editMode == "new") {
+            editorOpts.file.name = editorId+"new";
+            editors[editorId] = new EpicEditor(editorOpts).load();
+        }
+        else {
+            editorOpts.file.name = editorId+problemId;
+            var oldContent = $('#'+editorId)[0].innerHTML;
+            console.log(oldContent);
+            editors[editorId] = new EpicEditor(editorOpts).load();
+            editors[editorId].importFile(editorOpts.file.name,oldContent);
+        }
     });
-    console.log(editors);
 
     $('input#submit').click(function (e) {
-        $.each(editors,function() {
-            console.log(this.previewer.innerHTML);
+        if (editMode == "edit")
+            problemDTO["problemDTO.problemId"] = problemId;
+        problemDTO["problemDTO.title"] = $('#problemDTO_title').val();
+        problemDTO["problemDTO.source"] = $('#problemDTO_source').val();
+        $.each(editors,function(editorId) {
+            problemDTO[editorId.replace('_','.')] = this.exportFile();
+        });
+        console.log(problemDTO);
+        $.post("/admin/problem/edit",problemDTO,function(data){
+            console.log(data);
+            if (data.result == "ok")
+                alert("Successful!");
+            else
+                alert(data.error_msg);
         });
         return false;
     });

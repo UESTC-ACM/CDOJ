@@ -121,6 +121,7 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
                 if (targetProblem == null)
                     throw new AppException("Wrong problem ID!");
                 editorFlag = "edit";
+                System.out.println(targetProblem.getDescription());
             } catch (AppException e) {
                 redirect(getActionURL("/admin", "index"), e.getMessage());
             }
@@ -220,7 +221,6 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
             }
             if (problem == null)
                 throw new AppException("No such problem!");
-            //userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
             problemDAO.update(problem);
             json.put("result", "ok");
         } catch (AppException e) {
