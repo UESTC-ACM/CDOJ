@@ -93,10 +93,12 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
      */
     private Problem targetProblem;
 
+    @SuppressWarnings("UnusedDeclaration")
     public String getEditorFlag() {
         return editorFlag;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public Integer getTargetProblemId() {
         return targetProblemId;
     }
@@ -105,9 +107,11 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
         this.targetProblemId = targetProblemId;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public Problem getTargetProblem() {
         return targetProblem;
     }
+
     /**
      * Go to problem editor view!
      *
@@ -221,7 +225,7 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
             }
             if (problem == null)
                 throw new AppException("No such problem!");
-            problemDAO.update(problem);
+            problemDAO.addOrUpdate(problem);
             json.put("result", "ok");
         } catch (AppException e) {
             json.put("result", "error");
