@@ -30,9 +30,14 @@ import cn.edu.uestc.acmicpc.db.entity.Discuss;
  * DAO for discuss entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 public class DiscussDAO extends DAO<Discuss, Integer> implements IDiscussDAO {
+    @Override
+    protected Class<Integer> getPKClass() {
+        return Integer.class;
+    }
+
     @Override
     protected Class<Discuss> getReferenceClass() {
         return Discuss.class;

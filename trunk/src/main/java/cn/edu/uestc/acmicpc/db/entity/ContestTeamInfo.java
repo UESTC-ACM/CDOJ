@@ -29,36 +29,36 @@ import java.io.Serializable;
  * Contest team information, for school programming contest.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @Table(name = "contestTeamInfo", schema = "", catalog = "uestcoj")
 @Entity
 public class ContestTeamInfo implements Serializable {
     private static final long serialVersionUID = -5816811480409208296L;
-    private int teamId;
+    private Integer teamId;
 
     @Column(name = "teamId", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
-    public int getTeamId() {
+    public Integer getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(int teamId) {
+    public void setTeamId(Integer teamId) {
         this.teamId = teamId;
     }
 
-    private int userId;
+    private Integer userId;
 
     @Column(name = "userId", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -179,16 +179,16 @@ public class ContestTeamInfo implements Serializable {
         this.school = school;
     }
 
-    private byte state;
+    private Byte state;
 
     @Column(name = "state", nullable = false, insertable = true, updatable = true,
             length = 3, precision = 0)
     @Basic
-    public byte getState() {
+    public Byte getState() {
         return state;
     }
 
-    public void setState(byte state) {
+    public void setState(Byte state) {
         this.state = state;
     }
 
@@ -199,9 +199,9 @@ public class ContestTeamInfo implements Serializable {
 
         ContestTeamInfo that = (ContestTeamInfo) o;
 
-        if (state != that.state) return false;
-        if (teamId != that.teamId) return false;
-        if (userId != that.userId) return false;
+        if (!state.equals(that.state)) return false;
+        if (!teamId.equals(that.teamId)) return false;
+        if (!userId.equals(that.userId)) return false;
         if (coderName != null ? !coderName.equals(that.coderName) : that.coderName != null) return false;
         if (department != null ? !department.equals(that.department) : that.department != null) return false;
         if (email != null ? !email.equals(that.email) : that.email != null) return false;

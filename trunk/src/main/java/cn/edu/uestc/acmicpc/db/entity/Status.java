@@ -30,75 +30,75 @@ import java.sql.Timestamp;
  * Status information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @Table(name = "status", schema = "", catalog = "uestcoj")
 @Entity
 public class Status implements Serializable {
     private static final long serialVersionUID = 4819326443036942394L;
-    private int statusId;
+    private Integer statusId;
 
     @Column(name = "statusId", nullable = false, insertable = true,
             updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
-    public int getStatusId() {
+    public Integer getStatusId() {
         return statusId;
     }
 
-    public void setStatusId(int statusId) {
+    public void setStatusId(Integer statusId) {
         this.statusId = statusId;
     }
 
-    private int result;
+    private Integer result;
 
     @Column(name = "result", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
-    public int getResult() {
+    public Integer getResult() {
         return result;
     }
 
-    public void setResult(int result) {
+    public void setResult(Integer result) {
         this.result = result;
     }
 
-    private int memoryCost;
+    private Integer memoryCost;
 
     @Column(name = "memoryCost", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
-    public int getMemoryCost() {
+    public Integer getMemoryCost() {
         return memoryCost;
     }
 
-    public void setMemoryCost(int memoryCost) {
+    public void setMemoryCost(Integer memoryCost) {
         this.memoryCost = memoryCost;
     }
 
-    private int timeCost;
+    private Integer timeCost;
 
     @Column(name = "timeCost", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
-    public int getTimeCost() {
+    public Integer getTimeCost() {
         return timeCost;
     }
 
-    public void setTimeCost(int timeCost) {
+    public void setTimeCost(Integer timeCost) {
         this.timeCost = timeCost;
     }
 
-    private int length;
+    private Integer length;
 
     @Column(name = "length", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
-    public int getLength() {
+    public Integer getLength() {
         return length;
     }
 
-    public void setLength(int length) {
+    public void setLength(Integer length) {
         this.length = length;
     }
 
@@ -115,16 +115,16 @@ public class Status implements Serializable {
         this.time = time;
     }
 
-    private int caseNumber;
+    private Integer caseNumber;
 
     @Column(name = "caseNumber", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
-    public int getCaseNumber() {
+    public Integer getCaseNumber() {
         return caseNumber;
     }
 
-    public void setCaseNumber(int caseNumber) {
+    public void setCaseNumber(Integer caseNumber) {
         this.caseNumber = caseNumber;
     }
 
@@ -135,12 +135,12 @@ public class Status implements Serializable {
 
         Status status = (Status) o;
 
-        if (caseNumber != status.caseNumber) return false;
-        if (length != status.length) return false;
-        if (memoryCost != status.memoryCost) return false;
-        if (result != status.result) return false;
-        if (statusId != status.statusId) return false;
-        if (timeCost != status.timeCost) return false;
+        if (!caseNumber.equals(status.caseNumber)) return false;
+        if (!length.equals(status.length)) return false;
+        if (!memoryCost.equals(status.memoryCost)) return false;
+        if (!result.equals(status.result)) return false;
+        if (!statusId.equals(status.statusId)) return false;
+        if (!timeCost.equals(status.timeCost)) return false;
         if (time != null ? !time.equals(status.time) : status.time != null) return false;
 
         return true;

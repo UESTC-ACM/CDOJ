@@ -179,6 +179,7 @@ public class RegisterAction extends BaseAction implements DepartmentDAOAware {
             json.put("result", "ok");
         } catch (Exception e) {
             // TODO fix the error msg
+            e.printStackTrace();
             json.put("result", "error");
             json.put("error_msg", "Unknown exception occurred.");
         }

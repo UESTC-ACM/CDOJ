@@ -29,23 +29,23 @@ import java.io.Serializable;
  * Mappings between problems and tags.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @Table(name = "problemTag", schema = "", catalog = "uestcoj")
 @Entity
 public class ProblemTag implements Serializable {
     private static final long serialVersionUID = 8758938774072713107L;
-    private int problemTagId;
+    private Integer problemTagId;
 
     @Column(name = "problemTagId", nullable = false, insertable = true,
             updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
-    public int getProblemTagId() {
+    public Integer getProblemTagId() {
         return problemTagId;
     }
 
-    public void setProblemTagId(int problemTagId) {
+    public void setProblemTagId(Integer problemTagId) {
         this.problemTagId = problemTagId;
     }
 
@@ -56,7 +56,7 @@ public class ProblemTag implements Serializable {
 
         ProblemTag that = (ProblemTag) o;
 
-        if (problemTagId != that.problemTagId) return false;
+        if (!problemTagId.equals(that.problemTagId)) return false;
 
         return true;
     }

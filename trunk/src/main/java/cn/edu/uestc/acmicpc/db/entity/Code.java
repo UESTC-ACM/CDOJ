@@ -30,23 +30,23 @@ import java.util.Collection;
  * Code information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @Table(name = "code", schema = "", catalog = "uestcoj")
 @Entity
 public class Code implements Serializable {
     private static final long serialVersionUID = 6092881044668152921L;
-    private int codeId;
+    private Integer codeId;
 
     @Column(name = "codeId", nullable = false, insertable = true, updatable = true, length = 10,
             precision = 0, unique = true)
     @Id
     @GeneratedValue
-    public int getCodeId() {
+    public Integer getCodeId() {
         return codeId;
     }
 
-    public void setCodeId(int codeId) {
+    public void setCodeId(Integer codeId) {
         this.codeId = codeId;
     }
 
@@ -70,7 +70,7 @@ public class Code implements Serializable {
 
         Code code = (Code) o;
 
-        if (codeId != code.codeId) return false;
+        if (!codeId.equals(code.codeId)) return false;
         if (content != null ? !content.equals(code.content) : code.content != null) return false;
 
         return true;

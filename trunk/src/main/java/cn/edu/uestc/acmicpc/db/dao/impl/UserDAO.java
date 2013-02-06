@@ -37,11 +37,16 @@ import java.util.List;
  * DAO for user entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
+ * @version 5
  */
 @Transactional
 @Repository
 public class UserDAO extends DAO<User, Integer> implements IUserDAO {
+    @Override
+    protected Class<Integer> getPKClass() {
+        return Integer.class;
+    }
+
     @Override
     protected Class<User> getReferenceClass() {
         return User.class;

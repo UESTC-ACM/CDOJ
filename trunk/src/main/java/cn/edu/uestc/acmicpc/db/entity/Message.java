@@ -30,23 +30,23 @@ import java.sql.Timestamp;
  * Message information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @Table(name = "message", schema = "", catalog = "uestcoj")
 @Entity
 public class Message implements Serializable {
     private static final long serialVersionUID = -5394211914105594037L;
-    private int messageId;
+    private Integer messageId;
 
     @Column(name = "messageId", nullable = false, insertable = true,
             updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
-    public int getMessageId() {
+    public Integer getMessageId() {
         return messageId;
     }
 
-    public void setMessageId(int messageId) {
+    public void setMessageId(Integer messageId) {
         this.messageId = messageId;
     }
 
@@ -89,16 +89,16 @@ public class Message implements Serializable {
         this.time = time;
     }
 
-    private boolean isOpened;
+    private Boolean isOpened;
 
     @Column(name = "isOpened", nullable = false, insertable = true, updatable = true,
             length = 0, precision = 0)
     @Basic
-    public boolean getIsOpened() {
+    public Boolean getIsOpened() {
         return isOpened;
     }
 
-    public void setIsOpened(boolean opened) {
+    public void setIsOpened(Boolean opened) {
         isOpened = opened;
     }
 
@@ -110,7 +110,7 @@ public class Message implements Serializable {
         Message message = (Message) o;
 
         if (isOpened != message.isOpened) return false;
-        if (messageId != message.messageId) return false;
+        if (!messageId.equals(message.messageId)) return false;
         if (content != null ? !content.equals(message.content) : message.content != null) return false;
         if (time != null ? !time.equals(message.time) : message.time != null) return false;
         if (title != null ? !title.equals(message.title) : message.title != null) return false;

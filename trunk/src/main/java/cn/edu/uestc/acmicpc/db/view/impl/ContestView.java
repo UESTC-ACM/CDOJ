@@ -29,25 +29,25 @@ import java.sql.Timestamp;
 
 /**
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ContestView extends View<Contest> {
-    private int contestId;
+    private Integer contestId;
     private String title;
     private String description;
-    private byte type;
+    private Byte type;
     private Timestamp time;
-    private int length;
-    private boolean isVisible;
+    private Integer length;
+    private Boolean isVisible;
 
     @SuppressWarnings("UnusedDeclaration")
-    public int getContestId() {
+    public Integer getContestId() {
         return contestId;
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public void setContestId(int contestId) {
+    public void setContestId(Integer contestId) {
         this.contestId = contestId;
     }
 
@@ -71,12 +71,12 @@ public class ContestView extends View<Contest> {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public byte getType() {
+    public Byte getType() {
         return type;
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public void setType(byte type) {
+    public void setType(Byte type) {
         this.type = type;
     }
 
@@ -90,22 +90,22 @@ public class ContestView extends View<Contest> {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public int getLength() {
+    public Integer getLength() {
         return length;
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public void setLength(int length) {
+    public void setLength(Integer length) {
         this.length = length;
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public boolean getIsVisible() {
+    public Boolean getIsVisible() {
         return isVisible;
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public void setIsVisible(boolean visible) {
+    public void setIsVisible(Boolean visible) {
         isVisible = visible;
     }
 

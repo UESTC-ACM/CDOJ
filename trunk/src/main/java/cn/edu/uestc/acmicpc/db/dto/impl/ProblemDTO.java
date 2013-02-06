@@ -104,91 +104,75 @@ public class ProblemDTO extends BaseDTO<Problem> {
         this.source = source;
     }
 
-    public int getTimeLimit() {
+    public Integer getTimeLimit() {
         return timeLimit;
     }
 
-    public void setTimeLimit(int timeLimit) {
+    public void setTimeLimit(Integer timeLimit) {
         this.timeLimit = timeLimit;
     }
 
-    public int getMemoryLimit() {
+    public Integer getMemoryLimit() {
         return memoryLimit;
     }
 
-    public void setMemoryLimit(int memoryLimit) {
+    public void setMemoryLimit(Integer memoryLimit) {
         this.memoryLimit = memoryLimit;
     }
 
-    public int getSolved() {
-        return solved;
-    }
-
-    public void setSolved(int solved) {
-        this.solved = solved;
-    }
-
-    public int getTried() {
-        return tried;
-    }
-
-    public void setTried(int tried) {
-        this.tried = tried;
-    }
-
-    public boolean getIsSpj() {
+    public Boolean getIsSpj() {
         return isSpj;
     }
 
-    public void setIsSpj(boolean spj) {
+    public void setIsSpj(Boolean spj) {
         isSpj = spj;
     }
 
-    public boolean getIsVisible() {
+    public Boolean getIsVisible() {
         return isVisible;
     }
 
-    public void setIsVisible(boolean visible) {
+    public void setIsVisible(Boolean visible) {
         isVisible = visible;
     }
 
-    public int getOutputLimit() {
+    public Integer getOutputLimit() {
         return outputLimit;
     }
 
-    public void setOutputLimit(int outputLimit) {
+    public void setOutputLimit(Integer outputLimit) {
         this.outputLimit = outputLimit;
     }
 
-    public int getJavaTimeLimit() {
+    public Integer getJavaTimeLimit() {
         return javaTimeLimit;
     }
 
-    public void setJavaTimeLimit(int javaTimeLimit) {
+    public void setJavaTimeLimit(Integer javaTimeLimit) {
         this.javaTimeLimit = javaTimeLimit;
     }
 
-    public int getJavaMemoryLimit() {
+    public Integer getJavaMemoryLimit() {
         return javaMemoryLimit;
     }
 
-    public void setJavaMemoryLimit(int javaMemoryLimit) {
+    public void setJavaMemoryLimit(Integer javaMemoryLimit) {
         this.javaMemoryLimit = javaMemoryLimit;
     }
 
-    public int getDataCount() {
+    public Integer getDataCount() {
         return dataCount;
     }
 
-    public void setDataCount(int dataCount) {
+    public void setDataCount(Integer dataCount) {
         this.dataCount = dataCount;
     }
 
-    public int getDifficulty() {
+    public Integer getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(int difficulty) {
+    public void setDifficulty(Integer difficulty) {
         this.difficulty = difficulty;
     }
 
@@ -199,17 +183,15 @@ public class ProblemDTO extends BaseDTO<Problem> {
     private String sampleOutput;
     private String hint;
     private String source;
-    private int timeLimit;
-    private int memoryLimit;
-    private int solved;
-    private int tried;
-    private boolean isSpj;
-    private boolean isVisible;
-    private int outputLimit;
-    private int javaTimeLimit;
-    private int javaMemoryLimit;
-    private int dataCount;
-    private int difficulty;
+    private Integer timeLimit;
+    private Integer memoryLimit;
+    private Boolean isSpj;
+    private Boolean isVisible;
+    private Integer outputLimit;
+    private Integer javaTimeLimit;
+    private Integer javaMemoryLimit;
+    private Integer dataCount;
+    private Integer difficulty;
 
     public Integer getProblemId() {
         return problemId;

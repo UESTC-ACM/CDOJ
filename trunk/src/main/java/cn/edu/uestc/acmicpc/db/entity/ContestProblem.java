@@ -29,36 +29,36 @@ import java.io.Serializable;
  * Mappings between contest and problems.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 @Table(name = "contestProblem", schema = "", catalog = "uestcoj")
 @Entity
 public class ContestProblem implements Serializable {
     private static final long serialVersionUID = -9079259357297937419L;
-    private int contestProblemId;
+    private Integer contestProblemId;
 
     @Column(name = "contestProblemId", nullable = false, insertable = true,
             updatable = true, length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
-    public int getContestProblemId() {
+    public Integer getContestProblemId() {
         return contestProblemId;
     }
 
-    public void setContestProblemId(int contestProblemId) {
+    public void setContestProblemId(Integer contestProblemId) {
         this.contestProblemId = contestProblemId;
     }
 
-    private int order;
+    private Integer order;
 
     @Column(name = "order", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
-    public int getOrder() {
+    public Integer getOrder() {
         return order;
     }
 
-    public void setOrder(int order) {
+    public void setOrder(Integer order) {
         this.order = order;
     }
 
@@ -69,8 +69,8 @@ public class ContestProblem implements Serializable {
 
         ContestProblem that = (ContestProblem) o;
 
-        if (contestProblemId != that.contestProblemId) return false;
-        if (order != that.order) return false;
+        if (!contestProblemId.equals(that.contestProblemId)) return false;
+        if (!order.equals(that.order)) return false;
 
         return true;
     }

@@ -37,17 +37,17 @@ import java.util.Collection;
 @Entity
 public class Contest implements Serializable {
     private static final long serialVersionUID = -3631561809657861853L;
-    private int contestId;
+    private Integer contestId;
 
     @Column(name = "contestId", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0, unique = true)
     @Id
     @GeneratedValue
-    public int getContestId() {
+    public Integer getContestId() {
         return contestId;
     }
 
-    public void setContestId(int contestId) {
+    public void setContestId(Integer contestId) {
         this.contestId = contestId;
     }
 
@@ -77,16 +77,16 @@ public class Contest implements Serializable {
         this.description = description;
     }
 
-    private byte type;
+    private Byte type;
 
     @Column(name = "type", nullable = false, insertable = true, updatable = true,
             length = 3, precision = 0)
     @Basic
-    public byte getType() {
+    public Byte getType() {
         return type;
     }
 
-    public void setType(byte type) {
+    public void setType(Byte type) {
         this.type = type;
     }
 
@@ -103,29 +103,29 @@ public class Contest implements Serializable {
         this.time = time;
     }
 
-    private int length;
+    private Integer length;
 
     @Column(name = "length", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
-    public int getLength() {
+    public Integer getLength() {
         return length;
     }
 
-    public void setLength(int length) {
+    public void setLength(Integer length) {
         this.length = length;
     }
 
-    private boolean isVisible;
+    private Boolean isVisible;
 
     @Column(name = "isVisible", nullable = false, insertable = true, updatable = true,
             length = 0, precision = 0)
     @Basic
-    public boolean getIsVisible() {
+    public Boolean getIsVisible() {
         return isVisible;
     }
 
-    public void setIsVisible(boolean visible) {
+    public void setIsVisible(Boolean visible) {
         isVisible = visible;
     }
 
@@ -136,10 +136,10 @@ public class Contest implements Serializable {
 
         Contest contest = (Contest) o;
 
-        if (contestId != contest.contestId) return false;
+        if (!contestId.equals(contest.contestId)) return false;
         if (isVisible != contest.isVisible) return false;
-        if (length != contest.length) return false;
-        if (type != contest.type) return false;
+        if (!length.equals(contest.length)) return false;
+        if (!type.equals(contest.type)) return false;
         if (description != null ? !description.equals(contest.description) : contest.description != null) return false;
         if (time != null ? !time.equals(contest.time) : contest.time != null) return false;
         if (title != null ? !title.equals(contest.title) : contest.title != null) return false;

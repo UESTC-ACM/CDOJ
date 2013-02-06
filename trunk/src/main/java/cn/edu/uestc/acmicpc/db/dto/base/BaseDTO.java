@@ -39,7 +39,7 @@ import java.lang.reflect.Method;
  * you do not set value in get/update method.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 public abstract class BaseDTO<Entity extends Serializable> {
     protected abstract Class<Entity> getReferenceClass();
@@ -59,13 +59,13 @@ public abstract class BaseDTO<Entity extends Serializable> {
                 if (method.getName().startsWith("get")) {
                     String name = StringUtil.getGetterOrSetter(StringUtil.MethodType.SETTER,
                             method.getName().substring(3));
-                    Ignored ignored = method.getAnnotation(Ignored.class);
-                    if (ignored == null || !ignored.value()) {
+                    Ignored ignored1 = method.getAnnotation(Ignored.class);
+                    if (ignored1 == null || !ignored1.value()) {
                         try {
                             Method setter = entity.getClass().getMethod(name, method.getReturnType());
                             setter.invoke(entity, method.invoke(this));
-                        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                            e.printStackTrace();
+                        } catch (NoSuchMethodException | InvocationTargetException |
+                                IllegalAccessException ignored) {
                         }
                     }
                 }

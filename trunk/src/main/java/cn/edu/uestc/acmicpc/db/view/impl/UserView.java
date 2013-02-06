@@ -33,20 +33,20 @@ import java.sql.Timestamp;
  * Use for return user information with json type.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 5
+ * @version 6
  */
 public class UserView extends View<User> {
 
-    private int userId;
+    private Integer userId;
     private String userName;
     private String password;
     private String nickName;
     private String email;
     private String school;
-    private int departmentId;
+    private Integer departmentId;
     private String studentId;
-    private int tried;
-    private int solved;
+    private Integer tried;
+    private Integer solved;
     private String type;
     private Timestamp lastLogin;
 
@@ -57,12 +57,12 @@ public class UserView extends View<User> {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -116,12 +116,12 @@ public class UserView extends View<User> {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public int getDepartmentId() {
+    public Integer getDepartmentId() {
         return departmentId;
     }
 
     @Ignored
-    public void setDepartmentId(int departmentId) {
+    public void setDepartmentId(Integer departmentId) {
         this.departmentId = departmentId;
     }
 
@@ -136,22 +136,22 @@ public class UserView extends View<User> {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public int getTried() {
+    public Integer getTried() {
         return tried;
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public void setTried(int tried) {
+    public void setTried(Integer tried) {
         this.tried = tried;
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public int getSolved() {
+    public Integer getSolved() {
         return solved;
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public void setSolved(int solved) {
+    public void setSolved(Integer solved) {
         this.solved = solved;
     }
 
