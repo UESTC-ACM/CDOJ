@@ -9,7 +9,7 @@ import java.sql.Timestamp;
  * Contest entity data transform object.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ContestDTO extends BaseDTO<Contest> {
@@ -67,6 +67,10 @@ public class ContestDTO extends BaseDTO<Contest> {
 
     public void setLength(Integer length) {
         this.length = length;
+    }
+
+    public ContestDTO() {
+        super();
     }
 
     public Boolean getIsVisible() {
