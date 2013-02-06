@@ -208,7 +208,10 @@ public class ProblemDTO extends BaseDTO<Problem> {
     @Override
     public Problem getEntity() throws AppException {
         // TODO to get specific operations
-        return super.getEntity();
+        Problem problem = super.getEntity();
+        problem.setSolved(0);
+        problem.setTried(0);
+        return problem;
     }
 
     @Override
