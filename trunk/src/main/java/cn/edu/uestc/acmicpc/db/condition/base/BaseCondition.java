@@ -108,6 +108,9 @@ public abstract class BaseCondition implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
+    /**
+     * Clear all field, and set then to {@code null}.
+     */
     public void clear() {
         Field[] fields = getClass().getFields();
         for (Field field : fields) {
