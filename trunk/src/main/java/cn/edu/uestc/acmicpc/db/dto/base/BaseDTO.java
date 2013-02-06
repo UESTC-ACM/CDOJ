@@ -28,6 +28,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -39,10 +40,23 @@ import java.lang.reflect.Method;
  * you do not set value in get/update method.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 public abstract class BaseDTO<Entity extends Serializable> {
     protected abstract Class<Entity> getReferenceClass();
+
+    public BaseDTO() {
+        Field[] fields = getClass().getFields();
+        for (Field field : fields) {
+            try {
+                if (field.get(this) == null) {
+                    field.set(this, 0);
+                    field.set(this, "");
+                }
+            } catch (IllegalAccessException ignored) {
+            }
+        }
+    }
 
     /**
      * Get entity by DTO fields.
