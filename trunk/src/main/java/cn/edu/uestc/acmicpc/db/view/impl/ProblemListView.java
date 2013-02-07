@@ -27,6 +27,7 @@ import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
 import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.annotation.Ignored;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -36,7 +37,7 @@ import java.util.List;
  * description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 2
+ * @version 3
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ProblemListView extends View<Problem> {
@@ -56,13 +57,14 @@ public class ProblemListView extends View<Problem> {
      *
      * @param problem specific problem entity
      * @throws cn.edu.uestc.acmicpc.util.exception.AppException
+     *
      */
     public ProblemListView(Problem problem) throws AppException {
         super(problem);
         List<String> list = new LinkedList<>();
         Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
         for (ProblemTag problemTag : problemTags) {
-            list.add(problemTag.getTagByTagId().getName());
+            list.add(StringEscapeUtils.escapeHtml4(problemTag.getTagByTagId().getName()));
         }
         setTags(list);
     }
