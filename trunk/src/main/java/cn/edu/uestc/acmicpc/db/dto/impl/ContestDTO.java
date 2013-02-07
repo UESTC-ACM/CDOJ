@@ -2,7 +2,6 @@ package cn.edu.uestc.acmicpc.db.dto.impl;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
-
 import java.sql.Timestamp;
 
 /**
