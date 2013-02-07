@@ -298,6 +298,7 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
                                     setter.invoke(problem, ReflectionUtil.valueOf(value, getter.getReturnType()));
                                 }
                             }
+                            problemDAO.update(problem);
                         }
                         ++count;
                     } catch (AppException ignored) {
