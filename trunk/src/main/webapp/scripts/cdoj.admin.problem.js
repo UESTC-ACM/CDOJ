@@ -38,12 +38,45 @@ var currentCondition;
  */
 var problemList;
 
+var visibleClass = 'icon-eye-open';
+var unVisibleClass = 'icon-eye-close';
+
+function editVisible(id,value) {
+    var queryString = '/admin/problem/operator?method=edit';
+    queryString += '&id='+id;
+    queryString += '&field=isVisible';
+    queryString += '&value='+value;
+    $.post(queryString,function(data){
+        if (data.result == "ok") {
+            var icon = $('#visibleState[problemId="'+id+'"]');
+            console.log(icon);
+            if (value == false)
+            {
+                icon.removeClass(visibleClass);
+                icon.addClass(unVisibleClass);
+            }
+            else
+            {
+                icon.removeClass(unVisibleClass);
+                icon.addClass(visibleClass);
+            }
+        }
+    });
+}
+
 function getTitle(problemId,title, source, isSpj, isVisible) {
     var html = '';
+
+    html += '<i id="visibleState" problemId="'+problemId+'" class="';
     if (isVisible == true)
-        html += '<i class="icon-eye-open pull-left tags"/>';
+        html += visibleClass;
+    else
+        html += unVisibleClass;
+    html += ' pull-left tags" onclick="editVisible('+problemId+','+(!isVisible)+');"/>';
+
     if (isSpj == true)
         html += '<span class="label label-important tags pull-left">SPJ</span>';
+
     html += '<a href="/admin/problem/editor/'+problemId+'" title="'+source+'">'
         + title + '</a></span>';
     return html;
@@ -98,7 +131,6 @@ function refreshProblemList(condition) {
                 '</tr>';
             tbody.append(html);
         });
-        console.log(data);
     });
 }
 
