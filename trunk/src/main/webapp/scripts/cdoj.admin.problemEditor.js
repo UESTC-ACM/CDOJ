@@ -118,13 +118,16 @@ $(document).ready(function () {
         $.each(editors,function(editorId) {
             problemDTO[editorId.replace('_','.')] = this.exportFile();
         });
-        console.log(problemDTO);
-        $.post("/admin/problem/edit",problemDTO,function(data){
-            console.log(data);
-            if (data.result == "ok")
+        $.post("/admin/problem/edit",problemDTO,function(data) {
+            if (validation($('#problemEditor'),data)) {
                 alert("Successful!");
+                $.each(editors,function() {
+                    this.remove(this.settings.file.name);
+                });
+                window.location.href= "/admin/problem/list";
+            }
             else
-                alert(data.error_msg);
+                $('html,body').animate({scrollTop: '0px'}, 400);
         });
         return false;
     });

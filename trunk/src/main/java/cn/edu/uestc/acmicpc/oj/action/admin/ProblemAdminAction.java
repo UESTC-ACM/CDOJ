@@ -23,6 +23,7 @@
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
+import cn.edu.uestc.acmicpc.db.view.impl.ProblemView;
 import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.ReflectionUtil;
@@ -37,6 +38,9 @@ import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.Validations;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import javax.persistence.Column;
 import java.lang.reflect.Method;
@@ -78,6 +82,7 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
      *
      * @return <strong>SUCCESS</strong> signal
      */
+    @SkipValidation
     public String toProblemList() {
         return SUCCESS;
     }
@@ -95,7 +100,7 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
     /**
      * save problem to edit
      */
-    private Problem targetProblem;
+    private ProblemView targetProblem;
 
     @SuppressWarnings("UnusedDeclaration")
     public String getEditorFlag() {
@@ -112,7 +117,7 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public Problem getTargetProblem() {
+    public ProblemView getTargetProblem() {
         return targetProblem;
     }
 
@@ -121,15 +126,15 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
      *
      * @return <strong>SUCCESS</strong> signal
      */
+    @SkipValidation
     public String toProblemEditor() {
         editorFlag = "new";
         if (targetProblemId != null) {
             try {
-                targetProblem = problemDAO.get(targetProblemId);
-                if (targetProblem == null)
+                targetProblem = new ProblemView(problemDAO.get(targetProblemId));
+                if (targetProblem.getProblemId() == null)
                     throw new AppException("Wrong problem ID!");
                 editorFlag = "edit";
-                System.out.println(targetProblem.getDescription());
             } catch (AppException e) {
                 redirect(getActionURL("/admin", "index"), e.getMessage());
             }
@@ -157,6 +162,7 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
      *
      * @return <strong>JSON</strong> signal
      */
+    @SkipValidation
     public String toSearch() {
         try {
             Condition condition = problemCondition.getCondition();
@@ -218,6 +224,15 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
      *
      * @return <strong>JSON</strong> signal
      */
+    @Validations(
+            requiredStrings = {
+                    @RequiredStringValidator(
+                            fieldName = "problemDTO.title",
+                            key = "error.problemTitle.validation",
+                            trim = true
+                    )
+            }
+    )
     public String toEdit() {
         try {
             Problem problem;
@@ -257,6 +272,7 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
      *
      * @return <strong>JSON</strong> signal.
      */
+    @SkipValidation
     public String toOperatorProblem() {
         try {
             int count = 0, total = 0;

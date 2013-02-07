@@ -39,7 +39,7 @@
     <title>Problem</title>
 </head>
 <body>
-<div class="row">
+<div class="row" id="problemEditor">
 
     <div class="span10">
         <h3 id="editorFlag" value="${editorFlag}">
@@ -47,7 +47,7 @@
                 Add new problem
             </s:if>
             <s:else>
-                Edit problem <span id="problemId"><s:property value='targetProblem.problemId'/></span>
+                Edit problem <span id="problemId">${targetProblem.problemId}</span>
             </s:else>
         </h3>
         <div class="control-group">
@@ -55,7 +55,7 @@
                 <input type="text"
                        name="problemDTO.title"
                        maxlength="50"
-                       value="<s:property value='targetProblem.title'/>"
+                       value="${targetProblem.title}"
                        id="problemDTO_title"
                        class="span10"
                        placeholder="Enter title here">
@@ -64,7 +64,7 @@
     </div>
 
     <div class="span10">
-        <div id="problemDTO_description" class="textarea-content textarea-large"><s:property value='targetProblem.description' escape="true"/></div>
+        <div id="problemDTO_description" class="textarea-content textarea-large">${targetProblem.description}</div>
     </div>
 
     <div class="span10">
