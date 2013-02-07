@@ -22,40 +22,45 @@
 
 package cn.edu.uestc.acmicpc.util;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 /**
- * Global method for get method and field from objects.
+ * Object global methods.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
 @SuppressWarnings("UnusedDeclaration")
-public class ReflectionUtil {
-    @SuppressWarnings("unchecked")
-    public static Method getMethodByAnnotation(Class<?> clazz, Class annotation) {
-        Method[] methods = clazz.getMethods();
-        for (Method method : methods) {
-            if (method.getAnnotation(annotation) != null)
-                return method;
-        }
-        return null;
-    }
-
+public class ObjectUtil {
     /**
-     * Convert a string value to specific type.
+     * Output object's fields and methods.
      *
-     * @param value      string value
-     * @param targetType target type class
-     * @return target value
+     * @param obj object to be printed
+     * @return information about the object
      */
-    public static Object valueOf(String value, Class<?> targetType) {
-        try {
-            Method convertMethod = targetType
-                    .getMethod("valueOf", String.class);
-            return convertMethod.invoke(null, value);
-        } catch (Exception e) {
-            return value;
+    public static String toString(Object obj) {
+        if (obj == null)
+            return "null";
+        ArrayList<String> list = new ArrayList<>();
+        Class<?> cls = obj.getClass();
+        for (Field f : cls.getFields()) {
+            try {
+                list.add(String.format("%s : %s", f.getName(), f.get(obj).toString()));
+            } catch (Exception ignored) {
+            }
         }
+        for (Method m : cls.getMethods()) {
+            try {
+                String name = m.getName();
+                if (!name.startsWith("get"))
+                    continue;
+                name = name.substring(3);
+                list.add(String.format("%s : %s", name, m.invoke(obj).toString()));
+            } catch (Exception ignored) {
+            }
+        }
+        return String.format("{ %s }", ArrayUtil.join(list.toArray(), " , "));
     }
 }

@@ -25,6 +25,8 @@ package cn.edu.uestc.acmicpc.oj.action.admin;
 import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
 import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.util.ReflectionUtil;
+import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
@@ -36,6 +38,8 @@ import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
+import javax.persistence.Column;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +47,7 @@ import java.util.List;
  * action for list, search, edit, add problem.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 6
+ * @version 7
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class ProblemAdminAction extends BaseAction implements ProblemConditionAware {
@@ -262,8 +266,22 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
                 if (id != null) {
                     ++total;
                     try {
+                        Problem problem = problemDAO.get(id);
                         if ("delete".equals(method)) {
-                            problemDAO.delete(problemDAO.get(id));
+                            problemDAO.delete(problem);
+                        } else if ("edit".equals(method)) {
+                            String field = get("field");
+                            String value = get("value");
+                            Method[] methods = problem.getClass().getMethods();
+                            for (Method getter : methods) {
+                                Column column = getter.getAnnotation(Column.class);
+                                if (column != null && column.name().equals(field)) {
+                                    String setterName = StringUtil.getGetterOrSetter(StringUtil.MethodType.SETTER,
+                                            getter.getName().substring(3));
+                                    Method setter = problem.getClass().getMethod(setterName, getter.getReturnType());
+                                    setter.invoke(problem, ReflectionUtil.valueOf(value, getter.getReturnType()));
+                                }
+                            }
                         }
                         ++count;
                     } catch (AppException ignored) {
@@ -271,8 +289,11 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
                 }
             json.put("result", "ok");
             String message = "";
-            if ("delete".equals(message))
+            if ("delete".equals(method))
                 message = String.format("%d total, %d deleted.", total, count);
+            else if ("edit".equals(method)) {
+                message = String.format("%d total, %d changed.", total, count);
+            }
             json.put("msg", message);
         } catch (Exception e) {
             json.put("result", "error");
