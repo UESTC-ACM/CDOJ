@@ -27,6 +27,7 @@ import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
 import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.annotation.Ignored;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -36,7 +37,7 @@ import java.util.List;
  * Use for return problem information with json type.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
+ * @version 5
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ProblemView extends View<Problem> {
@@ -73,7 +74,7 @@ public class ProblemView extends View<Problem> {
         List<String> list = new LinkedList<>();
         Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
         for (ProblemTag problemTag : problemTags) {
-            list.add(problemTag.getTagByTagId().getName());
+            list.add(StringEscapeUtils.escapeHtml4(problemTag.getTagByTagId().getName()));
         }
         setTags(list);
     }

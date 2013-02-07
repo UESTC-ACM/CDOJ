@@ -24,6 +24,7 @@ package cn.edu.uestc.acmicpc.db.view.base;
 
 import cn.edu.uestc.acmicpc.util.annotation.Ignored;
 import cn.edu.uestc.acmicpc.util.StringUtil;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -33,7 +34,7 @@ import java.lang.reflect.Method;
  * Base view entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 public class View<Entity extends Serializable> {
     /**
@@ -53,7 +54,11 @@ public class View<Entity extends Serializable> {
                 if (ignored1 == null || !ignored1.value()) {
                     try {
                         Method getter = entity.getClass().getMethod(name);
-                        method.invoke(this, getter.invoke(entity));
+                        if (getter.getReturnType().equals(String.class)) {
+                            method.invoke(this, StringEscapeUtils.escapeHtml4((String) getter.invoke(entity)));
+                        } else {
+                            method.invoke(this, getter.invoke(entity));
+                        }
                     } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
                     }
                 }
