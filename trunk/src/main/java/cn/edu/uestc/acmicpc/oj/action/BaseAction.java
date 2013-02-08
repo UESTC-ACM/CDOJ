@@ -367,6 +367,7 @@ public class BaseAction extends ActionSupport
 
     @Override
     public void setServletRequest(HttpServletRequest request) {
+        System.out.println("set request: " + request);
         httpServletRequest = request;
         httpSession = httpServletRequest.getSession();
         servletContext = httpSession.getServletContext();

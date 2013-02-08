@@ -28,7 +28,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -38,25 +37,15 @@ import java.lang.reflect.Method;
  * <strong>USAGE</strong>:
  * extends the class from this class, and set the getter with {@code Ignored} if
  * you do not set value in get/update method.
+ * <p/>
+ * If set the field to {@code null}, this field will not be updated in
+ * {@code updateEntity} method.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 public abstract class BaseDTO<Entity extends Serializable> {
     protected abstract Class<Entity> getReferenceClass();
-
-    public BaseDTO() {
-        Field[] fields = getClass().getFields();
-        for (Field field : fields) {
-            try {
-                if (field.get(this) == null) {
-                    field.set(this, 0);
-                    field.set(this, "");
-                }
-            } catch (IllegalAccessException ignored) {
-            }
-        }
-    }
 
     /**
      * Get entity by DTO fields.
@@ -77,7 +66,17 @@ public abstract class BaseDTO<Entity extends Serializable> {
                     if (ignored1 == null || !ignored1.value()) {
                         try {
                             Method setter = entity.getClass().getMethod(name, method.getReturnType());
-                            setter.invoke(entity, method.invoke(this));
+                            Method getter = entity.getClass().getMethod(method.getName());
+                            if (method.invoke(this) != null)
+                                setter.invoke(entity, method.invoke(this));
+                            if (getter.invoke(entity) == null) {
+                                // If entity's field is null, we must initialize the value of this field
+                                if (getter.getReturnType().equals(String.class)) {
+                                    setter.invoke(entity, "");
+                                } else {
+                                    setter.invoke(entity, 0);
+                                }
+                            }
                         } catch (NoSuchMethodException | InvocationTargetException |
                                 IllegalAccessException ignored) {
                         }
@@ -107,7 +106,8 @@ public abstract class BaseDTO<Entity extends Serializable> {
                 if (ignored == null || !ignored.value()) {
                     try {
                         Method setter = entity.getClass().getMethod(name, method.getReturnType());
-                        setter.invoke(entity, method.invoke(this));
+                        if (method.invoke(this) != null)
+                            setter.invoke(entity, method.invoke(this));
                     } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                         e.printStackTrace();
                     }

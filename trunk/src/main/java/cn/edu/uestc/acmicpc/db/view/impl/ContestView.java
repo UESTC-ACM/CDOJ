@@ -28,6 +28,8 @@ import cn.edu.uestc.acmicpc.db.view.base.View;
 import java.sql.Timestamp;
 
 /**
+ * Contest information view.
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 2
  */

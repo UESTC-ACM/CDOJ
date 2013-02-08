@@ -36,7 +36,7 @@ import java.util.Date;
  * collect information from register action and generate a User class.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 6
+ * @version 7
  */
 @SuppressWarnings("UnusedDeclaration")
 public class UserDTO extends BaseDTO<User> {
@@ -250,11 +250,14 @@ public class UserDTO extends BaseDTO<User> {
      */
     @Override
     public void updateEntity(User user) {
-        user.setSchool(school);
-        user.setDepartmentByDepartmentId(department);
-        user.setSchool(school);
-        user.setStudentId(studentId);
-        user.setType(type);
+        if (school != null)
+            user.setSchool(school);
+        if (department != null)
+            user.setDepartmentByDepartmentId(department);
+        if (studentId != null)
+            user.setStudentId(studentId);
+        if (type != null)
+            user.setType(type);
     }
 
     @Override
