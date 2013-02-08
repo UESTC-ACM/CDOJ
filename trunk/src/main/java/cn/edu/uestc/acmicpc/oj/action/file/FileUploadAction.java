@@ -24,6 +24,7 @@ package cn.edu.uestc.acmicpc.oj.action.file;
 
 import cn.edu.uestc.acmicpc.ioc.util.SettingsAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.oj.interceptor.AppInterceptor;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.Settings;
 import cn.edu.uestc.acmicpc.util.StringUtil;
@@ -88,9 +89,12 @@ public abstract class FileUploadAction extends BaseAction implements SettingsAwa
                 parameters.get(field), ",") : httpServletRequest.getParameter(field);
     }
 
-    public FileUploadAction() {
-        super();
-        initFiles();
+    @Override
+    public void onActionExecuting(AppInterceptor.ActionInfo actionInfo) {
+        super.onActionExecuting(actionInfo);
+        if (!actionInfo.getCancel()) {
+            initFiles();
+        }
     }
 
     /**

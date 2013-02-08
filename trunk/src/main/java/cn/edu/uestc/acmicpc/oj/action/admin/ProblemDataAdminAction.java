@@ -22,18 +22,51 @@
 
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
+import cn.edu.uestc.acmicpc.db.view.impl.ProblemDataView;
+import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.file.FileUploadAction;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
+ * @version 2
  */
-public class ProblemDataAdminAction extends FileUploadAction {
-
+@LoginPermit(Global.AuthenticationType.ADMIN)
+public class ProblemDataAdminAction extends FileUploadAction implements ProblemDAOAware {
+    private IProblemDAO problemDAO;
     private Integer targetProblemId;
 
+    private ProblemDTO problemDTO;
+
+    private ProblemDataView problemDataView;
+
+    @SuppressWarnings("UnusedDeclaration")
+    public ProblemDataView getProblemDataView() {
+        return problemDataView;
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void setProblemDataView(ProblemDataView problemDataView) {
+        this.problemDataView = problemDataView;
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public ProblemDTO getProblemDTO() {
+        return problemDTO;
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void setProblemDTO(ProblemDTO problemDTO) {
+        this.problemDTO = problemDTO;
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
     public Integer getTargetProblemId() {
         return targetProblemId;
     }
@@ -43,14 +76,30 @@ public class ProblemDataAdminAction extends FileUploadAction {
     }
 
     /**
-
      * Go to problem data editor view!
      *
      * @return <strong>SUCCESS</strong> signal
      */
     public String toProblemDataEditor() {
-        //targetProblemId
+        try {
+            problemDataView = new ProblemDataView(problemDAO.get(targetProblemId));
+        } catch (AppException e) {
+            return setError("Specific problem doesn't exist.");
+        }
         return SUCCESS;
     }
 
+    /**
+     * Update problem's limits and data.
+     *
+     * @return <strong>SUCCESS</strong> signal
+     */
+    public String updateProblemData() {
+        return SUCCESS;
+    }
+
+    @Override
+    public void setProblemDAO(IProblemDAO problemDAO) {
+        this.problemDAO = problemDAO;
+    }
 }
