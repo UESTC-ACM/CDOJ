@@ -49,7 +49,6 @@ function editVisible(id,value) {
     $.post(queryString,function(data){
         if (data.result == "ok") {
             var icon = $('#visibleState[problemId="'+id+'"]');
-            console.log(icon);
             if (value == false)
             {
                 icon.removeClass(visibleClass);
@@ -60,6 +59,7 @@ function editVisible(id,value) {
                 icon.removeClass(unVisibleClass);
                 icon.addClass(visibleClass);
             }
+            icon.click(function(){editVisible(id,!value)});
         }
     });
 }
@@ -77,7 +77,7 @@ function getTitle(problemId,title, source, isSpj, isVisible) {
     if (isSpj == true)
         html += '<span class="label label-important tags pull-left">SPJ</span>';
 
-    html += '<a href="/admin/problem/editor/'+problemId+'" title="'+source+'">'
+    html += '<a href="#'+problemId+'" title="'+source+'">'
         + title + '</a></span>';
     return html;
 }
@@ -126,8 +126,8 @@ function refreshProblemList(condition) {
                 '<td>' + value.problemId + '</td>' +
                 '<td>' + getTitle(value.problemId,value.title, value.source, value.isSpj, value.isVisible) + getTags(value.tags) + '</td>' +
                 '<td>' + getDifficulty(value.difficulty) + '</td>' +
-                '<td>' + value.solved + '</td>' +
-                '<td>' + value.tried + '</td>' +
+                '<td><a href="/admin/problem/editor/' + value.problemId + '" title="Edit problem"><i class="icon-pencil"</a></td>' +
+                '<td><a href="/admin/problem/data/' + value.problemId + '" title="Edit data"><i class="icon-cog"</a></td>' +
                 '</tr>';
             tbody.append(html);
         });

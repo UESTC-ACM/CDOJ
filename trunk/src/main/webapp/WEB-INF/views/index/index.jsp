@@ -140,8 +140,7 @@ int main()
 	return 0;
 }</pre>
                         <h4>java</h4>
-										<pre class="prettyprint linenums">
-import java.io.*;
+										<pre class="prettyprint linenums"><code>import java.io.*;
 import java.util.*;
 public class Main
 {
@@ -151,7 +150,7 @@ public class Main
 		int a=cin.nextInt(), b=cin.nextInt();
 		System.out.println (a + b);
 	}
-}</pre>
+}</code></pre>
                     </div>
 
                     <div class="tab-pane fade" id="tab-test-mathjax">

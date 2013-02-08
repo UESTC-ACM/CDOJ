@@ -30,6 +30,7 @@
   Date: 13-1-30
   Time: 下午2:13
   To change this template use File | Settings | File Templates.
+  @TODO problem selector, difficult edit, tag.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -57,27 +58,11 @@
                 <th style="width: 30px;">Id</th>
                 <th>Title</th>
                 <th style="width: 70px;">Difficulty</th>
-                <th style="width: 60px;">Accept</th>
-                <th style="width: 60px;">Submit</th>
+                <th style="width: 14px;"></th>
+                <th style="width: 14px;"></th>
             </tr>
             </thead>
             <tbody id="problemList">
-            <tr>
-                <td>1</td>
-                <td>
-                    <span class="info-problem-source pull-left" data-original-title="hehe">
-                    <%--suppress HtmlUnknownTarget --%>
-                    <a href="./problem_single.html">A+B Problem</a>
-                    </span>
-                    <span class="label label-info pull-right tags">data structure</span>
-                    <span class="label label-info pull-right tags">dp</span>
-                    <span class="label label-info pull-right tags">binary search</span>
-                </td>
-                <td><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i
-                        class="icon-star"></i></td>
-                <td>10</td>
-                <td>20</td>
-            </tr>
             </tbody>
         </table>
 
