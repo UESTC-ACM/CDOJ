@@ -50,5 +50,10 @@
             <param name="targetProblemId">{1}</param>
             <result>/WEB-INF/views/admin/problemEditor.jsp</result>
         </action>
+
+        <action name="data/*" class="problemDataAdminAction" method="toProblemDataEditor">
+            <param name="targetProblemId">{1}</param>
+            <result>/WEB-INF/views/admin/problemDataEditor.jsp</result>
+        </action>
     </package>
 </struts>
