@@ -71,16 +71,7 @@ var problemDTO = {
     "problemDTO.sampleInput":undefined,
     "problemDTO.sampleOutput":undefined,
     "problemDTO.hint":undefined,
-    "problemDTO.source":undefined,
-    "problemDTO.timeLimit":0,
-    "problemDTO.memoryLimit":0,
-    "problemDTO.isSpj":0,
-    "problemDTO.isVisible":0,
-    "problemDTO.outputLimit":0,
-    "problemDTO.javaTimeLimit":0,
-    "problemDTO.javaMemoryLimit":0,
-    "problemDTO.dataCount":0,
-    "problemDTO.difficulty":0
+    "problemDTO.source":undefined
 };
 
 var problemId;

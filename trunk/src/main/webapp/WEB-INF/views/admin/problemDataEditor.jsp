@@ -37,6 +37,140 @@
     <title>Problem</title>
 </head>
 <body>
-<h1>Hello ${targetProblemId}</h1>
+<div class="row" id="problemEditor">
+
+    <div class="span10">
+        <form class="form-horizontal" method="post" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Problem ${targetProblemId}</legend>
+                <div class="row">
+                    <div class="span4">
+                        <div class="control-group">
+                            <label class="control-label">Time limit</label>
+                            <div class="controls">
+                                <div class="input-append">
+                                    <input type="text"
+                                           name="problemDTO.timeLimit"
+                                           maxlength="6"
+                                           value="${problemDataView.timeLimit}"
+                                           id="problemDTO_timeLimit"
+                                           class="span1">
+                                    <span class="add-on">ms</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Memory limit</label>
+                            <div class="controls">
+                                <div class="input-append">
+                                    <input type="text"
+                                           name="problemDTO.memoryLimit"
+                                           maxlength="10"
+                                           value="${problemDataView.memoryLimit}"
+                                           id="problemDTO_memoryLimit"
+                                           class="span2">
+                                    <span class="add-on">KB</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Output limit</label>
+                            <div class="controls">
+                                <div class="input-append">
+                                    <input type="text"
+                                           name="problemDTO.outputLimit"
+                                           maxlength="10"
+                                           value="${problemDataView.outputLimit}"
+                                           id="problemDTO_outputLimit"
+                                           class="span2">
+                                    <span class="add-on">KB</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Is SPJ</label>
+                            <div class="controls">
+                                <label class="radio inline">
+                                    <input type="radio"
+                                           name="problemDTO.isSpj"
+                                           value="true"
+                                           <s:if test="problemDataView.isSpj == true"/>checked="true">
+                                    Yes
+                                </label>
+                                <label class="radio inline">
+                                    <input type="radio"
+                                           name="problemDTO.isSpj"
+                                           value="false"
+                                           <s:if test="problemDataView.isSpj == false"/>checked="true">
+                                    No
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="control-group">
+                            <label class="control-label">Java time limit</label>
+                            <div class="controls">
+                                <div class="input-append">
+                                    <input type="text"
+                                           name="problemDTO.javaTimeLimit"
+                                           maxlength="6"
+                                           value="${problemDataView.javaTimeLimit}"
+                                           id="problemDTO_javaTimeLimit"
+                                           class="span1">
+                                    <span class="add-on">ms</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Java memory limit</label>
+                            <div class="controls">
+                                <div class="input-append">
+                                    <input type="text"
+                                           name="problemDTO.javaMemoryLimit"
+                                           maxlength="6"
+                                           value="${problemDataView.javaMemoryLimit}"
+                                           id="problemDTO_javaMemoryLimit"
+                                           class="span2">
+                                    <span class="add-on">KB</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Problem data</legend>
+                <div class="control-group">
+                    <label class="control-label">Current data count</label>
+                    <div class="controls">
+                        <input type="text"
+                               name="problemDTO.javaMemoryLimit"
+                               maxlength="6"
+                               value="${problemDataView.dataCount}"
+                               id="problemDTO_dataCount"
+                               class="span1"
+                               readonly="true">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Upload data file</label>
+                    <div class="controls">
+                        <input type="file"
+                               id="input">
+                        <span class="help-inline">Please use zip to package your files.</span>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <s:submit name="submit"
+                              cssClass="btn btn-primary"
+                              value="Submit"
+                              theme="bootstrap"/>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
 </body>
 </html>

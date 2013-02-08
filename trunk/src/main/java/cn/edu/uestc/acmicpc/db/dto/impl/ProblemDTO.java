@@ -164,14 +164,6 @@ public class ProblemDTO extends BaseDTO<Problem> {
         this.javaMemoryLimit = javaMemoryLimit;
     }
 
-    public Integer getDataCount() {
-        return dataCount;
-    }
-
-    public void setDataCount(Integer dataCount) {
-        this.dataCount = dataCount;
-    }
-
     public Integer getDifficulty() {
         return difficulty;
     }
@@ -194,7 +186,6 @@ public class ProblemDTO extends BaseDTO<Problem> {
     private Integer outputLimit;
     private Integer javaTimeLimit;
     private Integer javaMemoryLimit;
-    private Integer dataCount;
     private Integer difficulty;
 
     public Integer getProblemId() {
