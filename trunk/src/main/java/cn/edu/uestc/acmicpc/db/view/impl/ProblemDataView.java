@@ -38,6 +38,7 @@ public class ProblemDataView extends View<Problem> {
     private Integer javaTimeLimit;
     private Integer javaMemoryLimit;
     private Integer dataCount;
+    private Boolean isSpj;
 
     public Integer getTimeLimit() {
         return timeLimit;
@@ -85,6 +86,14 @@ public class ProblemDataView extends View<Problem> {
 
     public void setDataCount(Integer dataCount) {
         this.dataCount = dataCount;
+    }
+
+    public Boolean getSpj() {
+        return isSpj;
+    }
+
+    public void setSpj(Boolean spj) {
+        isSpj = spj;
     }
 
     /**

@@ -55,7 +55,6 @@
             <param name="targetProblemId">{1}</param>
             <result>/WEB-INF/views/admin/problemDataEditor.jsp</result>
         </action>
-        <action name="updateProblemData" class="problemDataAdminAction" method="updateProblemData">
-        </action>
+        <action name="updateProblemData" class="problemDataAdminAction" method="updateProblemData"/>
     </package>
 </struts>
