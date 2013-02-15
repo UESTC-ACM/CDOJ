@@ -97,6 +97,10 @@ td {
     text-align: left;
 }
 
+.difficult-span {
+    padding: 0px;
+}
+
 .pull-center {
     margin-left: auto;
     margin-right: auto;
