@@ -51,5 +51,6 @@
 <script type="text/javascript"
         src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <script src="<s:url value="/scripts/cdoj.js"/>"></script>
+<script src="<s:url value="/scripts/cdoj.util.string.js"/>"></script>
 </body>
 </html>
