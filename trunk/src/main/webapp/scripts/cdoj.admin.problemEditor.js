@@ -94,8 +94,8 @@ $(document).ready(function () {
         }
         else {
             editorOpts.file.name = editorId+problemId;
-            var oldContent = $('#'+editorId)[0].innerHTML;
-            console.log(oldContent);
+            var oldContent = $('#'+editorId)[0].innerHTML.toString();
+            oldContent = js.lang.String.decodeHtml(oldContent);
             editors[editorId] = new EpicEditor(editorOpts).load();
             editors[editorId].importFile(editorOpts.file.name,oldContent);
         }
