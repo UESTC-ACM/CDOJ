@@ -41,11 +41,16 @@ var problemList;
 var visibleClass = 'icon-eye-open';
 var unVisibleClass = 'icon-eye-close';
 
-function editVisible(id,value) {
+function getQueryString(field,id,value) {
     var queryString = '/admin/problem/operator?method=edit';
     queryString += '&id='+id;
-    queryString += '&field=isVisible';
+    queryString += '&field='+field;
     queryString += '&value='+value;
+    return queryString;
+}
+
+function editVisible(id,value) {
+    var queryString = getQueryString('isVisible',id,value);
     $.post(queryString,function(data){
         if (data.result == "ok") {
             var icon = $('#visibleState[problemId="'+id+'"]');
@@ -59,7 +64,7 @@ function editVisible(id,value) {
                 icon.removeClass(unVisibleClass);
                 icon.addClass(visibleClass);
             }
-            icon.click(function(){editVisible(id,!value)});
+            icon.live('click',function(){editVisible(id,!value)});
         }
     });
 }
@@ -67,12 +72,12 @@ function editVisible(id,value) {
 function getTitle(problemId,title, source, isSpj, isVisible) {
     var html = '';
 
-    html += '<i id="visibleState" problemId="'+problemId+'" class="';
+    html += '<i id="visibleState" isVisible="'+isVisible+'"problemId="'+problemId+'" class="';
     if (isVisible == true)
         html += visibleClass;
     else
         html += unVisibleClass;
-    html += ' pull-left tags" onclick="editVisible('+problemId+','+(!isVisible)+');"/>';
+    html += ' pull-left tags"/>';
 
     if (isSpj == true)
         html += '<span class="label label-important tags pull-left">SPJ</span>';
@@ -91,12 +96,38 @@ function getTags(tags) {
 }
 
 function getDifficulty(difficulty) {
+    difficulty = Math.max(1,Math.min(difficulty,5));
     var html = '';
-    for (var i = 2; i <= difficulty; i += 2)
-        html += '<i class="icon-star"></i>';
-    if (difficulty % 2 == 1)
-        html += '<i class="icon-star-empty"></i>';
+    for (var i = 1; i <= difficulty; i++)
+        html += '<i class="difficulty-level icon-star" value="'+i+'"></i>';
+    for (var i = difficulty+1; i <= 5; i++)
+        html += '<i class="difficulty-level icon-star-empty" value="'+i+'"></i>';
     return html;
+}
+
+function blindVisibleEdit() {
+    $('#visibleState').live('click',function(){
+        var id = $(this).attr('problemId');
+        var visible = ($(this).attr('isVisible') == 'true')?true:false;
+        editVisible(id,!visible);
+    });
+}
+
+function blindDifficultSpan() {
+    $('i.difficulty-level').live('click',function(){
+        var target = $(this);
+        var problemId = target.parent().attr('problemId');
+        var value = target.attr('value');
+        var queryString = getQueryString('difficulty',problemId,value);
+        $.post(queryString,function(data){
+            if (data.result == "ok") {
+                var parentNode = target.parent();
+                parentNode.empty();
+                parentNode.append(getDifficulty(value));
+                blindDifficultSpan();
+            }
+        });
+    });
 }
 
 function refreshProblemList(condition) {
@@ -125,12 +156,15 @@ function refreshProblemList(condition) {
             var html = '<tr>' +
                 '<td>' + value.problemId + '</td>' +
                 '<td>' + getTitle(value.problemId,value.title, value.source, value.isSpj, value.isVisible) + getTags(value.tags) + '</td>' +
-                '<td>' + getDifficulty(value.difficulty) + '</td>' +
+                '<td class="difficult-span" problemId="'+value.problemId+'">' + getDifficulty(value.difficulty) + '</td>' +
                 '<td><a href="/admin/problem/editor/' + value.problemId + '" title="Edit problem"><i class="icon-pencil"</a></td>' +
                 '<td><a href="/admin/problem/data/' + value.problemId + '" title="Edit data"><i class="icon-cog"</a></td>' +
                 '</tr>';
             tbody.append(html);
         });
+
+        blindVisibleEdit();
+        blindDifficultSpan();
     });
 }
 

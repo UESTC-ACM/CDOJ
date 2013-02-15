@@ -65,15 +65,6 @@
             <tbody id="problemList">
             </tbody>
         </table>
-
-        <div id="userSelector">
-            <%--suppress HtmlUnknownTarget --%>
-            <form action="well form-inline">
-                <a href="#" class="btn" id="selectAllUser">Select all</a>
-                <a href="#" class="btn" id="clearSelectedUser">Clear</a>
-                <a href="#" class="pull-right btn btn-danger" id="deleteSelectedUser">Delete selected user</a>
-            </form>
-        </div>
     </div>
 
     <div class="tab-pane fade" id="tab-problem-search">
