@@ -59,7 +59,6 @@
                 <th>Title</th>
                 <th style="width: 70px;">Difficulty</th>
                 <th style="width: 14px;"></th>
-                <th style="width: 14px;"></th>
             </tr>
             </thead>
             <tbody id="problemList">
