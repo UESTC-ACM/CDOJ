@@ -31,7 +31,7 @@
 var epicEditorOpts = {
     container: 'epiceditor',
     basePath: '/plugins/epiceditor',
-    clientSideStorage: true,
+    clientSideStorage: false,
     localStorageName: 'epiceditor',
     useNativeFullsreen: true,
     parser: marked,
@@ -89,6 +89,7 @@ $(document).ready(function () {
         var editorOpts = epicEditorOpts;
         editorOpts.container = editorId;
         if (editMode == "new") {
+            editorOpts.clientSideStorage = true;
             editorOpts.file.name = editorId+"new";
             editors[editorId] = new EpicEditor(editorOpts).load();
         }
