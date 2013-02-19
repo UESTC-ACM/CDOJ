@@ -32,5 +32,10 @@
         <action name="test" class="testAction" method="toTest">
             <result>/WEB-INF/views/test/index.jsp</result>
         </action>
+
+        <action name="upload/index" class="testFileUploadAction" method="execute">
+            <result name="success">/WEB-INF/views/test/uploadFile.jsp</result>
+        </action>
+        <action name="upload/upload" class="testFileUploadAction" method="onUploadFile"/>
     </package>
 </struts>

@@ -86,23 +86,22 @@ $(document).ready(function () {
         problemId = $('#problemId')[0].innerHTML;
 
     $.each(editors,function(editorId) {
-        var editorOpts = epicEditorOpts;
-        editorOpts.container = editorId;
+        epicEditorOpts.container = editorId;
         if (editMode == "new") {
-            editorOpts.clientSideStorage = true;
-            editorOpts.file.name = editorId+"new";
-            editors[editorId] = new EpicEditor(editorOpts).load();
+            epicEditorOpts.clientSideStorage = true;
+            epicEditorOpts.file.name = editorId+"new";
+            editors[editorId] = new EpicEditor(epicEditorOpts).load();
         }
         else {
-            editorOpts.file.name = editorId+problemId;
+            epicEditorOpts.file.name = editorId+problemId;
             var oldContent = $('#'+editorId)[0].innerHTML.toString();
             oldContent = js.lang.String.decodeHtml(oldContent);
-            editors[editorId] = new EpicEditor(editorOpts).load();
-            editors[editorId].importFile(editorOpts.file.name,oldContent);
+            editors[editorId] = new EpicEditor(epicEditorOpts).load();
+            editors[editorId].importFile(epicEditorOpts.file.name,oldContent);
         }
     });
 
-    $('input#submit').click(function (e) {
+    $('input#submit').click(function () {
         if (editMode == "edit")
             problemDTO["problemDTO.problemId"] = problemId;
         problemDTO["problemDTO.title"] = $('#problemDTO_title').val();
@@ -110,6 +109,7 @@ $(document).ready(function () {
         $.each(editors,function(editorId) {
             problemDTO[editorId.replace('_','.')] = this.exportFile();
         });
+        //noinspection JSUnresolvedFunction
         $.post("/admin/problem/edit",problemDTO,function(data) {
             if (validation($('#problemEditor'),data)) {
                 alert("Successful!");
