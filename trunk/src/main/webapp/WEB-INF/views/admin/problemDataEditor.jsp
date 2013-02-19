@@ -34,15 +34,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <link href="<s:url value="/plugins/uploadify/uploadify.css"/>" rel="stylesheet">
+    <script src="<s:url value="/plugins/uploadify/jquery.uploadify.js"/>"></script>
+    <script src="<s:url value="/scripts/cdoj.admin.problemDataAdmin.js"/>"></script>
     <title>Problem</title>
 </head>
 <body>
 <div class="row" id="problemEditor">
 
     <div class="span10">
-        <form class="form-horizontal" method="post" enctype="multipart/form-data">
+        <form class="form-horizontal">
             <fieldset>
-                <legend>Problem ${targetProblemId}</legend>
+                <legend>Problem <span id="problemId">${targetProblemId}</span></legend>
                 <div class="row">
                     <div class="span4">
                         <div class="control-group">
@@ -157,7 +160,7 @@
                     <label class="control-label">Upload data file</label>
                     <div class="controls">
                         <input type="file"
-                               id="input">
+                               id="problemDataUploader">
                         <span class="help-inline">Please use zip to package your files.</span>
                     </div>
                 </div>

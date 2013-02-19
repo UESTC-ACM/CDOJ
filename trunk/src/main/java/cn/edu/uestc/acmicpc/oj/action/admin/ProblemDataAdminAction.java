@@ -90,11 +90,28 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
     }
 
     /**
+     * Upload data file.
+     *
+     * @return <strong>SUCCESS</strong> signal.
+     */
+    public String uploadProblemDataFile() {
+        setSavePath("/Uploads/Temp");
+        System.out.println(getSavePath());
+        try {
+            uploadFile();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return SUCCESS;
+    }
+
+    /**
      * Update problem's limits and data.
      *
      * @return <strong>SUCCESS</strong> signal
      */
     public String updateProblemData() {
+
         return SUCCESS;
     }
 
