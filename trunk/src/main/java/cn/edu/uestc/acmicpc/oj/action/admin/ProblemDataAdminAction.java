@@ -102,7 +102,8 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
         } catch (Exception e){
             e.printStackTrace();
         }
-        return SUCCESS;
+        json.put("success",true);
+        return JSON;
     }
 
     /**
