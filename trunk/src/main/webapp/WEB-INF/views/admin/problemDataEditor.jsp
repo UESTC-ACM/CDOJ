@@ -34,8 +34,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <link href="<s:url value="/plugins/uploadify/uploadify.css"/>" rel="stylesheet">
-    <script src="<s:url value="/plugins/uploadify/jquery.uploadify.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj.admin.problemDataAdmin.js"/>"></script>
     <title>Problem</title>
 </head>

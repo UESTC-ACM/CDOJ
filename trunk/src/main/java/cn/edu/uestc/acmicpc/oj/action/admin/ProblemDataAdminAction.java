@@ -95,7 +95,7 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
      * @return <strong>SUCCESS</strong> signal.
      */
     public String uploadProblemDataFile() {
-        setSavePath("/Uploads/Temp");
+        setSavePath("/uploads/temp");
         System.out.println(getSavePath());
         try {
             uploadFile();

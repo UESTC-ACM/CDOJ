@@ -34,16 +34,6 @@ $(document).ready(function () {
     problemId = $('#problemId')[0].innerHTML;
     console.log(problemId);
 
-    //TODO need change upload plugin or set NeedLogin = false
-    $("#problemDataUploader").uploadify({
-        swf           : '/plugins/uploadify/uploadify.swf',
-       //uploader      : '/admin/problem/uploadProblemDataFile/'+problemId,
-        uploader      : '/test/upload/upload',
-
-        fileObjName   : 'uploadFile'
-    });
-
-    console.log('/admin/problem/uploadProblemDataFile/'+problemId);
     $('input#submit').click(function(){
 
         return false;
