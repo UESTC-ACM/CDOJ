@@ -1,0 +1,85 @@
+def version = "3.2"
+def filename = "fineuploader"
+def srcDir = 'client'
+def jsSrcDir = "$srcDir/js"
+
+apply plugin: 'js'
+
+def coreFiles = ["${jsSrcDir}/header.js",
+                 "${jsSrcDir}/util.js",
+                 "${jsSrcDir}/button.js",
+                 "${jsSrcDir}/uploader.basic.js",
+                 "${jsSrcDir}/dnd.js",
+                 "${jsSrcDir}/uploader.js",
+                 "${jsSrcDir}/handler.base.js",
+                 "${jsSrcDir}/handler.form.js",
+                 "${jsSrcDir}/handler.xhr.js"]
+
+def cssFiles = ["$srcDir/fineuploader.css"]
+
+def imageFiles = ["$srcDir/loading.gif",
+                  "$srcDir/processing.gif"]
+
+def jQueryPluginFiles = ["${jsSrcDir}/jquery-plugin.js"]
+
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.eriwen:gradle-js-plugin:1.0.2'
+    }
+}
+
+combineJs {
+    source = files(coreFiles)
+    dest = file("$buildDir/${filename}-${version}.js")
+}
+
+task combineJsJquery(type: com.eriwen.gradle.js.tasks.CombineJsTask) {
+    source = files(coreFiles + jQueryPluginFiles)
+    dest = file("$buildDir/jquery.${filename}-${version}.js")
+}
+
+minifyJs {
+    source = combineJs
+    dest = file("$buildDir/${filename}-${version}.min.js")
+}
+
+task minifyJsJquery(type: com.eriwen.gradle.js.tasks.MinifyJsTask) {
+    source = combineJsJquery
+    dest = file("$buildDir/jquery.${filename}-${version}.min.js")
+}
+
+task zipJquery(type: Zip) {
+    baseName "jquery.$filename-$version"
+    from files("$buildDir")
+    destinationDir file('release')
+}
+
+task zip(type: Zip) {
+    baseName "$filename-$version"
+    from files("$buildDir")
+    destinationDir file('release')
+}
+
+task copyResources(type:Copy) {
+    from cssFiles + imageFiles
+    into 'build'
+    rename { String fileName ->
+        fileName.replace('.css', "-${version}.css")
+    }
+}
+
+task clean << {
+    delete files("$buildDir")
+}
+
+task createJQueryRelease(dependsOn: ['clean', 'minifyJsJquery', 'copyResources', 'zipJquery']) {
+    outputs.upToDateWhen { false }
+}
+
+task createRelease(dependsOn: ['clean', 'minifyJs', 'copyResources', 'zip']) {
+    outputs.upToDateWhen { false }
+}

@@ -69,7 +69,7 @@ public class TestFileUploadAction extends BaseAction {
     }
 
     public String getSavePath() {
-        return servletContext.getRealPath("/Uploads/Temp");
+        return servletContext.getRealPath("/uploads/temp");
     }
 
     public String onUploadFile() throws Exception {
