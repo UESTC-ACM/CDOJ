@@ -29,10 +29,20 @@
  */
 
 var problemId;
+var uploaderUrl;
 
 $(document).ready(function () {
     problemId = $('#problemId')[0].innerHTML;
-    console.log(problemId);
+    uploaderUrl = '/admin/problem/uploadProblemDataFile/'+problemId;
+    console.log(uploaderUrl);
+
+    $('#jquery-wrapped-fine-uploader').fineUploader({
+        multiple: false,
+        request: {
+            endpoint: uploaderUrl,
+            inputName: 'uploadFile'
+        }
+    });
 
     $('input#submit').click(function(){
 

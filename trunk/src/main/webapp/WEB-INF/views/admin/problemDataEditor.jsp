@@ -34,12 +34,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <page:applyDecorator name="empty" page="/WEB-INF/views/common/fileUploaderHeader.jsp"/>
     <script src="<s:url value="/scripts/cdoj.admin.problemDataAdmin.js"/>"></script>
     <title>Problem</title>
 </head>
 <body>
 <div class="row" id="problemEditor">
-
+    <div id="jquery-wrapped-fine-uploader"></div>
     <div class="span10">
         <form class="form-horizontal">
             <fieldset>
