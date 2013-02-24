@@ -35,7 +35,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 2
+ * @version 3
  */
 @LoginPermit(Global.AuthenticationType.ADMIN)
 public class ProblemDataAdminAction extends FileUploadAction implements ProblemDAOAware {
@@ -92,17 +92,19 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
     /**
      * Upload data file.
      *
-     * @return <strong>SUCCESS</strong> signal.
+     * @return <strong>JSON</strong> signal.
      */
     public String uploadProblemDataFile() {
         setSavePath("/uploads/temp");
         System.out.println(getSavePath());
         try {
             uploadFile();
-        } catch (Exception e){
+        } catch (Exception e) {
+            json.put("result", "error");
+            json.put("error_msg", "Unknown exception occurred.");
             e.printStackTrace();
         }
-        json.put("success",true);
+        json.put("result", "ok");
         return JSON;
     }
 
@@ -111,8 +113,8 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
      *
      * @return <strong>SUCCESS</strong> signal
      */
+    @SuppressWarnings("UnusedDeclaration")
     public String updateProblemData() {
-
         return SUCCESS;
     }
 

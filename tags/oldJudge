@@ -22,18 +22,18 @@ EXIT_TIMEOUT	../branches/oldJudge/include/judge.h	/^    const int EXIT_TIMEOUT  
 EXIT_UNKNOWN	../branches/oldJudge/include/judge.h	/^    const int EXIT_UNKNOWN          = 127;$/;"	m	namespace:judge_conf
 EXIT_UNPRIVILEGED	../branches/oldJudge/include/judge.h	/^    const int EXIT_UNPRIVILEGED     = 1;$/;"	m	namespace:judge_conf
 EXIT_VERY_FIRST	../branches/oldJudge/include/judge.h	/^    const int EXIT_VERY_FIRST       = 4;$/;"	m	namespace:judge_conf
-FM_LOG_DEBUG	../branches/oldJudge/include/logger.h	60;"	d
-FM_LOG_DEBUG	../branches/oldJudge/include/logger.h	67;"	d
-FM_LOG_FATAL	../branches/oldJudge/include/logger.h	65;"	d
-FM_LOG_FATAL	../branches/oldJudge/include/logger.h	72;"	d
-FM_LOG_MONITOR	../branches/oldJudge/include/logger.h	63;"	d
-FM_LOG_MONITOR	../branches/oldJudge/include/logger.h	70;"	d
-FM_LOG_NOTICE	../branches/oldJudge/include/logger.h	62;"	d
-FM_LOG_NOTICE	../branches/oldJudge/include/logger.h	69;"	d
-FM_LOG_TRACE	../branches/oldJudge/include/logger.h	61;"	d
-FM_LOG_TRACE	../branches/oldJudge/include/logger.h	68;"	d
-FM_LOG_WARNING	../branches/oldJudge/include/logger.h	64;"	d
-FM_LOG_WARNING	../branches/oldJudge/include/logger.h	71;"	d
+FM_LOG_DEBUG	../branches/oldJudge/include/logger.h	64;"	d
+FM_LOG_DEBUG	../branches/oldJudge/include/logger.h	71;"	d
+FM_LOG_FATAL	../branches/oldJudge/include/logger.h	69;"	d
+FM_LOG_FATAL	../branches/oldJudge/include/logger.h	76;"	d
+FM_LOG_MONITOR	../branches/oldJudge/include/logger.h	67;"	d
+FM_LOG_MONITOR	../branches/oldJudge/include/logger.h	74;"	d
+FM_LOG_NOTICE	../branches/oldJudge/include/logger.h	66;"	d
+FM_LOG_NOTICE	../branches/oldJudge/include/logger.h	73;"	d
+FM_LOG_TRACE	../branches/oldJudge/include/logger.h	65;"	d
+FM_LOG_TRACE	../branches/oldJudge/include/logger.h	72;"	d
+FM_LOG_WARNING	../branches/oldJudge/include/logger.h	68;"	d
+FM_LOG_WARNING	../branches/oldJudge/include/logger.h	75;"	d
 GCC_COMPILE_ERROR	../branches/oldJudge/include/judge.h	/^    const int GCC_COMPILE_ERROR = 1;$/;"	m	namespace:judge_conf
 GIGA	../branches/oldJudge/include/judge.h	/^    const int GIGA              = KILO * MEGA;  \/\/ 1G$/;"	m	namespace:judge_conf
 INCLUDE	../branches/oldJudge/Makefile	/^INCLUDE=include\/$/;"	m
@@ -50,7 +50,6 @@ LOG_FATAL	../branches/oldJudge/include/logger.h	/^const int LOG_FATAL         = 
 LOG_LEVEL_NOTE	../branches/oldJudge/include/logger.h	/^static char LOG_LEVEL_NOTE[][10] =$/;"	v
 LOG_MONITOR	../branches/oldJudge/include/logger.h	/^const int LOG_MONITOR       = 2;$/;"	v
 LOG_NOTICE	../branches/oldJudge/include/logger.h	/^const int LOG_NOTICE        = 3;$/;"	v
-LOG_OFF	../branches/oldJudge/include/logger.h	34;"	d
 LOG_TRACE	../branches/oldJudge/include/logger.h	/^const int LOG_TRACE         = 4;$/;"	v
 LOG_WARNING	../branches/oldJudge/include/logger.h	/^const int LOG_WARNING       = 1;$/;"	v
 MEGA	../branches/oldJudge/include/judge.h	/^    const int MEGA              = KILO * KILO;  \/\/ 1M$/;"	m	namespace:judge_conf
@@ -93,7 +92,7 @@ init_RF_table	../branches/oldJudge/include/rf_table.h	/^void init_RF_table(int l
 input_file	../branches/oldJudge/include/judge.h	/^    std::string input_file;$/;"	m	namespace:problem
 int_ignored	../branches/oldJudge/src/judge_all.cc	/^int int_ignored;$/;"	v
 io_redirect	../branches/oldJudge/include/judge.h	/^void io_redirect()$/;"	f	signature:()
-is_space_char	../branches/oldJudge/include/judge.h	618;"	d
+is_space_char	../branches/oldJudge/include/judge.h	621;"	d
 is_valid_syscall	../branches/oldJudge/include/judge.h	/^bool is_valid_syscall(int lang, int syscall_id)$/;"	f	signature:(int lang, int syscall_id)
 java_memory_factor	../branches/oldJudge/include/judge.h	/^    int java_memory_factor          = 2;$/;"	m	namespace:judge_conf
 java_time_factor	../branches/oldJudge/include/judge.h	/^    int java_time_factor            = 2;$/;"	m	namespace:judge_conf
@@ -159,7 +158,7 @@ load	../branches/oldJudge/include/judge.h	/^    void load()$/;"	f	namespace:judg
 log_add_info	../branches/oldJudge/include/logger.h	/^void log_add_info(const char *info)$/;"	f	signature:(const char *info)
 log_add_info	../branches/oldJudge/include/logger.h	/^void log_add_info(const char *info);$/;"	p	signature:(const char *info)
 log_buffer	../branches/oldJudge/include/logger.h	/^static char log_buffer[log_buffer_size];$/;"	v
-log_buffer_size	../branches/oldJudge/include/logger.h	79;"	d
+log_buffer_size	../branches/oldJudge/include/logger.h	83;"	d
 log_close	../branches/oldJudge/include/logger.h	/^void log_close()$/;"	f	signature:()
 log_close	../branches/oldJudge/include/logger.h	/^void log_close();$/;"	p	signature:()
 log_extra_info	../branches/oldJudge/include/logger.h	/^static char log_extra_info[log_buffer_size];$/;"	v
@@ -176,6 +175,7 @@ main	../branches/oldJudge/src/judge_all.cc	/^int main(int argc, char *argv[], ch
 malarm	../branches/oldJudge/include/judge.h	/^int malarm(int which, int milliseconds)$/;"	f	signature:(int which, int milliseconds)
 memory_limit	../branches/oldJudge/include/judge.h	/^    int memory_limit        = 65536;$/;"	m	namespace:problem
 memory_usage	../branches/oldJudge/include/judge.h	/^    long memory_usage       = 0;$/;"	m	namespace:problem
+needCompile	../branches/oldJudge/include/judge.h	/^	bool needCompile		= false;$/;"	m	namespace:problem
 oj_compare_output	../branches/oldJudge/include/judge.h	/^int oj_compare_output(std::string file_std, std::string file_exec)$/;"	f	signature:(std::string file_std, std::string file_exec)
 oj_compare_output_spj	../branches/oldJudge/include/judge.h	/^int oj_compare_output_spj($/;"	f	signature:( std::string file_in, std::string file_std, std::string file_exec, std::string spj_exec, std::string file_spj)
 output_file_std	../branches/oldJudge/include/judge.h	/^    std::string output_file_std;$/;"	m	namespace:problem
@@ -191,6 +191,7 @@ problem::input_file	../branches/oldJudge/include/judge.h	/^    std::string input
 problem::lang	../branches/oldJudge/include/judge.h	/^    int lang                = 0;$/;"	m	namespace:problem
 problem::memory_limit	../branches/oldJudge/include/judge.h	/^    int memory_limit        = 65536;$/;"	m	namespace:problem
 problem::memory_usage	../branches/oldJudge/include/judge.h	/^    long memory_usage       = 0;$/;"	m	namespace:problem
+problem::needCompile	../branches/oldJudge/include/judge.h	/^	bool needCompile		= false;$/;"	m	namespace:problem
 problem::output_file_std	../branches/oldJudge/include/judge.h	/^    std::string output_file_std;$/;"	m	namespace:problem
 problem::output_limit	../branches/oldJudge/include/judge.h	/^    int output_limit        = 8192;$/;"	m	namespace:problem
 problem::result	../branches/oldJudge/include/judge.h	/^    int result              = 0;$/;"	m	namespace:problem
