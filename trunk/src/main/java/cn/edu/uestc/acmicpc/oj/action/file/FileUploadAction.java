@@ -24,19 +24,18 @@ package cn.edu.uestc.acmicpc.oj.action.file;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.util.List;
 
 /**
  * Action for file upload service
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
+ * @version 5
  */
 public class FileUploadAction extends BaseAction {
 
+    private static final int BUFFER_SIZE = 2048;
     private List<File> uploadFile;
     private List<String> uploadFileContentType;
     private List<String> uploadFileFileName;
@@ -80,28 +79,40 @@ public class FileUploadAction extends BaseAction {
     }
 
     /**
-     * Upload files.
+     * Upload files and return all uploaded files' absolute path.
      * <p/>
      * We should set ourselves' type filter for this upload action.
-     *
-     * @throws Exception
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void uploadFile() throws Exception {
+    public String[] uploadFile() {
         // TODO check type and size
         File dir = new File(getSavePath());
         if (!dir.exists()) {
             dir.mkdirs();
         }
         List<File> files = getUploadFile();
+        String[] result = new String[files.size()];
         for (int i = 0; i < files.size(); i++) {
-            FileOutputStream fos = new FileOutputStream(getSavePath() + "//" + getUploadFileFileName().get(i));
-            FileInputStream fis = new FileInputStream(getUploadFile().get(i));
-            byte[] buffers = new byte[1024];
-            int len;
-            while ((len = fis.read(buffers)) != -1) {
-                fos.write(buffers, 0, len);
+            result[i] = getSavePath() + "//" + getUploadFileFileName().get(i);
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(result[i]);
+                FileInputStream fileInputStream = new FileInputStream(getUploadFile().get(i));
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, BUFFER_SIZE);
+                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream, BUFFER_SIZE);
+                byte[] buffer = new byte[BUFFER_SIZE];
+                int len;
+                while ((len = bufferedInputStream.read(buffer)) != -1) {
+                    bufferedOutputStream.write(buffer, 0, len);
+                }
+                bufferedOutputStream.flush();
+                bufferedOutputStream.close();
+                bufferedInputStream.close();
+            } catch (IOException e) {
+                // this file cannot be uploaded.
+                e.printStackTrace();
+                result[i] = null;
             }
         }
+        return result;
     }
 }
