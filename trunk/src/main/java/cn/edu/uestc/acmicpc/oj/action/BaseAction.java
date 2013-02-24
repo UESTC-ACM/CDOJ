@@ -22,6 +22,7 @@
 
 package cn.edu.uestc.acmicpc.oj.action;
 
+import cn.edu.uestc.acmicpc.util.Settings;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.User;
@@ -48,7 +49,7 @@ import java.util.Map;
  * Base action support, add specified common elements in here.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 12
+ * @version 13
  */
 public class BaseAction extends ActionSupport
         implements RequestAware, SessionAware, ApplicationAware, IActionInterceptor,
@@ -139,6 +140,16 @@ public class BaseAction extends ActionSupport
      * JSON result.
      */
     protected Map<String, Object> json = new HashMap<>();
+
+    /**
+     * Global settings for actions.
+     */
+    protected Settings settings;
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
 
     /**
      * Implement {@link ApplicationAware} interface, with Ioc.

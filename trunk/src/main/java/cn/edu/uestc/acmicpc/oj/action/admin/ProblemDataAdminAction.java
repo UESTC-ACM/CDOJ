@@ -28,14 +28,18 @@ import cn.edu.uestc.acmicpc.db.view.impl.ProblemDataView;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.file.FileUploadAction;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.ZipUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+
+import java.io.File;
+import java.util.zip.ZipFile;
 
 /**
  * description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 3
+ * @version 4
  */
 @LoginPermit(Global.AuthenticationType.ADMIN)
 public class ProblemDataAdminAction extends FileUploadAction implements ProblemDAOAware {
@@ -90,7 +94,14 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
     }
 
     /**
-     * Upload data file.
+     * Upload data file, and modified the data files.
+     * <p/>
+     * <strong>WARN</strong>: all the origin data files may be deleted.
+     * <p/>
+     * <strong>INFO</strong>:
+     * <p/>
+     * All files in data folder should named from 1 to number of cases, input files
+     * end with ".in" and output files end with ".out".
      *
      * @return <strong>JSON</strong> signal.
      */
@@ -98,14 +109,41 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
         setSavePath("/uploads/temp");
         System.out.println(getSavePath());
         try {
-            uploadFile();
+            String[] files = uploadFile();
+            // In this case, uploaded file should only contains one element.
+            if (files == null || files.length < 1)
+                throw new AppException("Fetch uploaded file error.");
+            ZipFile zipFile = new ZipFile(files[0]);
+            String dataPath = settings.JUDGE_DATA_PATH + "/" + targetProblemId;
+            clearDirectory(dataPath);
+            ZipUtil.unzipFile(zipFile, dataPath);
+            json.put("result", "ok");
+        } catch (AppException e) {
+            json.put("result", "error");
+            json.put("error_msg", e.getMessage());
         } catch (Exception e) {
             json.put("result", "error");
             json.put("error_msg", "Unknown exception occurred.");
             e.printStackTrace();
         }
-        json.put("result", "ok");
         return JSON;
+    }
+
+    /**
+     * Clear all the files under the path.
+     * <p/>
+     * <strong>WARN</strong>: this operation cannot be reverted.
+     *
+     * @param path absolute path value
+     */
+    private void clearDirectory(String path) throws AppException {
+        File file = new File(path);
+        if (file.exists()) {
+            if (!file.delete())
+                throw new AppException("can not delete the data folder.");
+        }
+        if (!file.mkdirs())
+            throw new AppException("can not create the data folder.");
     }
 
     /**

@@ -38,6 +38,7 @@
           scope="prototype">
         <property name="userDAO" ref="userDAO"/>
         <property name="global" ref="global"/>
+        <property name="settings" ref="settings"/>
     </bean>
 
     <bean id="fileUploadAction"
