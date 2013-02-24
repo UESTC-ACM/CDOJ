@@ -33,7 +33,7 @@ import java.util.List;
  * Action for file upload service
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 public class FileUploadAction extends BaseAction {
 
@@ -47,14 +47,17 @@ public class FileUploadAction extends BaseAction {
         return uploadFile;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setUploadFile(List<File> uploadFile) {
         this.uploadFile = uploadFile;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public List<String> getUploadFileContentType() {
         return uploadFileContentType;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setUploadFileContentType(List<String> uploadFileContentType) {
         this.uploadFileContentType = uploadFileContentType;
     }
@@ -63,6 +66,7 @@ public class FileUploadAction extends BaseAction {
         return uploadFileFileName;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setUploadFileFileName(List<String> uploadFileFileName) {
         this.uploadFileFileName = uploadFileFileName;
     }
@@ -75,19 +79,28 @@ public class FileUploadAction extends BaseAction {
         this.savePath = savePath;
     }
 
+    /**
+     * Upload files.
+     * <p/>
+     * We should set ourselves' type filter for this upload action.
+     *
+     * @throws Exception
+     */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void uploadFile() throws Exception {
+        // TODO check type and size
         File dir = new File(getSavePath());
-        if(!dir.exists()){
+        if (!dir.exists()) {
             dir.mkdirs();
         }
         List<File> files = getUploadFile();
-        for(int i = 0;i < files.size();i++){
-            FileOutputStream fos = new FileOutputStream(getSavePath()+"//"+getUploadFileFileName().get(i));
-            FileInputStream fis=new FileInputStream(getUploadFile().get(i));
-            byte []buffers = new byte[1024];
-            int len = 0;
-            while((len = fis.read(buffers)) != -1){
-                fos.write(buffers,0,len);
+        for (int i = 0; i < files.size(); i++) {
+            FileOutputStream fos = new FileOutputStream(getSavePath() + "//" + getUploadFileFileName().get(i));
+            FileInputStream fis = new FileInputStream(getUploadFile().get(i));
+            byte[] buffers = new byte[1024];
+            int len;
+            while ((len = fis.read(buffers)) != -1) {
+                fos.write(buffers, 0, len);
             }
         }
     }

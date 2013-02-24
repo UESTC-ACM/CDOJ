@@ -44,7 +44,9 @@
 
 int log_open(const char *filename);
 void log_close();
+#ifndef LOG_OFF
 static void log_write(int, const char *, const int, const char *, ...);
+#endif
 void log_add_info(const char *info);
 
 const int LOG_FATAL         = 0;
@@ -53,8 +55,10 @@ const int LOG_MONITOR       = 2;
 const int LOG_NOTICE        = 3;
 const int LOG_TRACE         = 4;
 const int LOG_DEBUG         = 5;
+#ifndef LOG_OFF
 static char LOG_LEVEL_NOTE[][10] =
 { "FATAL", "WARNING", "MONITOR", "NOTICE", "TRACE", "DEBUG" };
+#endif
 
 #ifndef LOG_OFF
 #define FM_LOG_DEBUG(x...)   log_write(LOG_DEBUG, __FILE__, __LINE__, ##x)
@@ -77,7 +81,9 @@ static char *log_filename           = NULL;
 static int  log_opened              = 0;
 
 #define log_buffer_size 8192
+#ifndef LOG_OFF
 static char log_buffer[log_buffer_size];
+#endif
 static char log_extra_info[log_buffer_size];
 
 #ifndef LOG_OFF
@@ -122,6 +128,7 @@ void log_close()
     }
 }
 
+#ifndef LOG_OFF
 static void log_write(int level, const char *file,
         const int line, const char *fmt, ...)
 {
@@ -163,6 +170,7 @@ static void log_write(int level, const char *file,
         exit(1);
     }
 }
+#endif
 
 void log_add_info(const char *info)
 {

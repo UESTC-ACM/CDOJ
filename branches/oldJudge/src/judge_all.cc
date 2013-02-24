@@ -44,125 +44,127 @@ int main(int argc, char *argv[], char *envp[])
     }
     signal(SIGALRM, timeout);
 
-	//compile
-    pid_t compiler = fork();
-    int status = 0;
-    if (compiler < 0)
-    {
-        FM_LOG_WARNING("error fork compiler");
-        exit(judge_conf::EXIT_COMPILE);
-    }
-    else if (compiler == 0)
-    {
-		// run compiler
-        log_add_info("compiler");
-        set_compile_limit();
-        stdout = freopen(problem::stdout_file_compiler.c_str(), "w", stdout);
-        stderr = freopen(problem::stderr_file_compiler.c_str(), "w", stderr);
+	if (problem::needCompile) {
+		//compile
+		pid_t compiler = fork();
+		int status = 0;
+		if (compiler < 0)
+		{
+		    FM_LOG_WARNING("error fork compiler");
+		    exit(judge_conf::EXIT_COMPILE);
+		}
+		else if (compiler == 0)
+		{
+			// run compiler
+		    log_add_info("compiler");
+		    set_compile_limit();
+		    stdout = freopen(problem::stdout_file_compiler.c_str(), "w", stdout);
+		    stderr = freopen(problem::stderr_file_compiler.c_str(), "w", stderr);
 
-        if (stdout == NULL || stderr == NULL)
-        {
-            FM_LOG_WARNING("error freopen: stdout(%p), stderr(%p)", stdout, stderr);
-            exit(judge_conf::EXIT_COMPILE);
-        }
+		    if (stdout == NULL || stderr == NULL)
+		    {
+		        FM_LOG_WARNING("error freopen: stdout(%p), stderr(%p)", stdout, stderr);
+		        exit(judge_conf::EXIT_COMPILE);
+		    }
 
-        //malarm(ITIMER_REAL, judge_conf::compile_time_limit);
-        switch (problem::lang)
-        {
-            case judge_conf::LANG_C:
-                FM_LOG_TRACE("start: gcc -static -w -O2 -DOJ -o %s %s",
-                        problem::exec_file.c_str(), problem::source_file.c_str());
-                execlp("gcc", "gcc", "-static", "-w", "-O2", "-DOJ",
-                       "-o", problem::exec_file.c_str(),
-                       problem::source_file.c_str(),
-                       NULL);
-                break;
+		    //malarm(ITIMER_REAL, judge_conf::compile_time_limit);
+		    switch (problem::lang)
+		    {
+		        case judge_conf::LANG_C:
+		            FM_LOG_TRACE("start: gcc -static -w -O2 -DOJ -o %s %s",
+		                    problem::exec_file.c_str(), problem::source_file.c_str());
+		            execlp("gcc", "gcc", "-static", "-w", "-O2", "-DOJ",
+		                   "-o", problem::exec_file.c_str(),
+		                   problem::source_file.c_str(),
+		                   NULL);
+		            break;
 
-            case judge_conf::LANG_CPP:
-                FM_LOG_TRACE("start: g++ -static -w -O2 -DOJ -o %s %s",
-                        problem::exec_file.c_str(), problem::source_file.c_str());
-                execlp("g++", "g++", "-static", "-w", "-O2", "-DOJ",
-                       "-o", problem::exec_file.c_str(),
-                       problem::source_file.c_str(),
-                       NULL);
-                break;
+		        case judge_conf::LANG_CPP:
+		            FM_LOG_TRACE("start: g++ -static -w -O2 -DOJ -o %s %s",
+		                    problem::exec_file.c_str(), problem::source_file.c_str());
+		            execlp("g++", "g++", "-static", "-w", "-O2", "-DOJ",
+		                   "-o", problem::exec_file.c_str(),
+		                   problem::source_file.c_str(),
+		                   NULL);
+		            break;
 
-            case judge_conf::LANG_JAVA:
-                FM_LOG_TRACE("start: javac %s -d %s", problem::source_file.c_str(), problem::temp_dir.c_str());
-                execlp("javac", "javac",
-                       problem::source_file.c_str(), "-d", problem::temp_dir.c_str(),
-                       NULL);
-                break;
+		        case judge_conf::LANG_JAVA:
+		            FM_LOG_TRACE("start: javac %s -d %s", problem::source_file.c_str(), problem::temp_dir.c_str());
+		            execlp("javac", "javac",
+		                   problem::source_file.c_str(), "-d", problem::temp_dir.c_str(),
+		                   NULL);
+		            break;
 
-            case judge_conf::LANG_PASCAL:
-                FM_LOG_TRACE("start: fpc -o%s %s -Co -Cr -Ct -Ci",
-                        problem::exec_file.c_str(), problem::source_file.c_str());
-                execlp("fpc", "fpc", problem::source_file.c_str(),
-                       ("-o" + problem::exec_file).c_str(),
-                        "-Co", "-Cr", "-Ct", "-Ci",
-                       NULL);
-                break;
-        }
+		        case judge_conf::LANG_PASCAL:
+		            FM_LOG_TRACE("start: fpc -o%s %s -Co -Cr -Ct -Ci",
+		                    problem::exec_file.c_str(), problem::source_file.c_str());
+		            execlp("fpc", "fpc", problem::source_file.c_str(),
+		                   ("-o" + problem::exec_file).c_str(),
+		                    "-Co", "-Cr", "-Ct", "-Ci",
+		                   NULL);
+		            break;
+		    }
 
-		// execlp error
-        FM_LOG_WARNING("exec error");
-        exit(judge_conf::EXIT_COMPILE);
-    }
-    else
-    {
-		// Judger
-        pid_t w = waitpid(compiler, &status, WUNTRACED);
-        if (w == -1)
-        {
-            FM_LOG_WARNING("waitpid error");
-            exit(judge_conf::EXIT_COMPILE);
-        }
+			// execlp error
+		    FM_LOG_WARNING("exec error");
+		    exit(judge_conf::EXIT_COMPILE);
+		}
+		else
+		{
+			// Judger
+		    pid_t w = waitpid(compiler, &status, WUNTRACED);
+		    if (w == -1)
+		    {
+		        FM_LOG_WARNING("waitpid error");
+		        exit(judge_conf::EXIT_COMPILE);
+		    }
 
-        FM_LOG_TRACE("compiler finished");
-        if (WIFEXITED(status))
-        {
-            if (EXIT_SUCCESS == WEXITSTATUS(status))
-            {
-                FM_LOG_TRACE("compile succeeded");
-            }
-            else if (judge_conf::GCC_COMPILE_ERROR == WEXITSTATUS(status))
-            {
-                FM_LOG_TRACE("compile error");
-                output_result(judge_conf::OJ_CE);
-                exit(judge_conf::EXIT_OK);
-            }
-            else
-            {
-                FM_LOG_WARNING(" compiler unknown exit status %d", WEXITSTATUS(status));
-                exit(judge_conf::EXIT_COMPILE);
-            }
-        }
-        else
-        {
-            if (WIFSIGNALED(status))
-            {
-                //if (SIGALRM == WTERMSIG(status))
-                    //FM_LOG_WARNING("compiler time limit exceeded");
-                //else
-                    //FM_LOG_WARNING("unknown signal(%d)", WTERMSIG(status));
-                FM_LOG_WARNING("compiler limit exceeded");
-                output_result(judge_conf::OJ_CE);
-                stderr = freopen(problem::stderr_file_compiler.c_str(), "w", stderr);
-                fprintf(stderr, "Compiler Limit Exceeded\n");
-                exit(judge_conf::EXIT_OK);
-            }
-            else if (WIFSTOPPED(status))
-            {
-                FM_LOG_WARNING("stopped by signal %d\n", WSTOPSIG(status));
-            }
-            else
-            {
-                FM_LOG_WARNING("unknown stop reason, status(%d)", status);
-            }
-            exit(judge_conf::EXIT_COMPILE);
-        }
-    }
-    //end of fork for compiler, compile succeeded here
+		    FM_LOG_TRACE("compiler finished");
+		    if (WIFEXITED(status))
+		    {
+		        if (EXIT_SUCCESS == WEXITSTATUS(status))
+		        {
+		            FM_LOG_TRACE("compile succeeded");
+		        }
+		        else if (judge_conf::GCC_COMPILE_ERROR == WEXITSTATUS(status))
+		        {
+		            FM_LOG_TRACE("compile error");
+		            output_result(judge_conf::OJ_CE);
+		            exit(judge_conf::EXIT_OK);
+		        }
+		        else
+		        {
+		            FM_LOG_WARNING(" compiler unknown exit status %d", WEXITSTATUS(status));
+		            exit(judge_conf::EXIT_COMPILE);
+		        }
+		    }
+		    else
+		    {
+		        if (WIFSIGNALED(status))
+		        {
+		            //if (SIGALRM == WTERMSIG(status))
+		                //FM_LOG_WARNING("compiler time limit exceeded");
+		            //else
+		                //FM_LOG_WARNING("unknown signal(%d)", WTERMSIG(status));
+		            FM_LOG_WARNING("compiler limit exceeded");
+		            output_result(judge_conf::OJ_CE);
+		            stderr = freopen(problem::stderr_file_compiler.c_str(), "w", stderr);
+		            fprintf(stderr, "Compiler Limit Exceeded\n");
+		            exit(judge_conf::EXIT_OK);
+		        }
+		        else if (WIFSTOPPED(status))
+		        {
+		            FM_LOG_WARNING("stopped by signal %d\n", WSTOPSIG(status));
+		        }
+		        else
+		        {
+		            FM_LOG_WARNING("unknown stop reason, status(%d)", status);
+		        }
+		        exit(judge_conf::EXIT_COMPILE);
+		    }
+		}
+		//end of fork for compiler, compile succeeded here
+	}
 
 	//Judge----------------------------------------------------------------------
     struct rusage rused;

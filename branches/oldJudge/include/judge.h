@@ -183,6 +183,8 @@ namespace problem
 
     bool spj                = false;
 
+	bool needCompile		= false;
+
     std::string uid;
 
     std::string temp_dir;
@@ -216,7 +218,7 @@ namespace problem
         FM_LOG_DEBUG("temp_dir      %s", temp_dir.c_str());
         FM_LOG_DEBUG("data_dir      %s", data_dir.c_str());
         FM_LOG_DEBUG("source_file   %s", source_file.c_str());
-        FM_LOG_DEBUG("data_file     %s", data_file.c_str());
+        FM_LOG_DEBUG("need compile  %s", needCompile ? "true" : "false");
         FM_LOG_DEBUG("");
     }
 };
@@ -226,9 +228,9 @@ void parse_arguments(int argc, char *argv[])
     int opt;
     extern char *optarg;
 
-    while ((opt = getopt(argc, argv, "l:u:s:n:D:d:t:m:o:S:I:O")) != -1) {
+    while ((opt = getopt(argc, argv, "l:u:s:n:D:d:t:m:o:I:O:SC")) != -1) {
         switch (opt) {
-            case 'u': problem::uid          	= optarg;       break;
+			case 'u': problem::uid          	= optarg;       break;
             case 's': problem::source_file  	= optarg;       break;
             case 'n': problem::id           	= atoi(optarg); break;
             case 'D': problem::data_dir     	= optarg;       break;
@@ -240,6 +242,7 @@ void parse_arguments(int argc, char *argv[])
             case 'l': problem::lang         	= atoi(optarg); break;
 			case 'I': problem::input_file		= optarg;		break;
 			case 'O': problem::output_file_std	= optarg;		break;
+			case 'C': problem::needCompile		= true;			break;
             default:
                 FM_LOG_WARNING("unknown option provided: -%c %s", opt, optarg);
                 exit(judge_conf::EXIT_BAD_PARAM);
