@@ -31,7 +31,10 @@ function validation(form, result) {
     if (result["result"] != null) {
         //has result! no field error!
         if (result["result"] != "ok") //unknow error
+        {
             alert(result["error_msg"]);
+            return false;
+        }
         return true;
     }
     else {

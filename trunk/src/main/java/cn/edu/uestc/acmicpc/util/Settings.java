@@ -25,6 +25,10 @@ package cn.edu.uestc.acmicpc.util;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.xml.XmlNode;
 import cn.edu.uestc.acmicpc.oj.xml.XmlParser;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -43,46 +47,46 @@ import java.util.Map;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 7
  */
-public class Settings {
+public class Settings implements ApplicationContextAware {
     /**
      * Global encoding
      */
-    public final String SETTING_ENCODING;
+    public String SETTING_ENCODING;
 
     /**
      * Upload file size limit(in MB)
      */
-    public final Integer SETTING_UPLOAD_SIZE;
+    public Integer SETTING_UPLOAD_SIZE;
 
     /**
      * Upload file's types
      */
-    public final String SETTING_UPLOAD_TYPES;
+    public String SETTING_UPLOAD_TYPES;
 
     /**
      * Upload files store folder
      */
-    public final String SETTING_UPLOAD_FOLDER;
+    public String SETTING_UPLOAD_FOLDER;
 
     /**
      * Judge core's name.
      */
-    public final String JUDGE_JUDGE_CORE;
+    public String JUDGE_JUDGE_CORE;
 
     /**
      * Data path name
      */
-    public final String JUDGE_DATA_PATH;
+    public String JUDGE_DATA_PATH;
 
     /**
      * Work path name
      */
-    public final String JUDGE_TEMP_PATH;
+    public String JUDGE_TEMP_PATH;
 
     /**
      * Judge information list
      */
-    public final List<Map<String, String>> JUDGE_LIST;
+    public List<Map<String, String>> JUDGE_LIST;
 
     /**
      * setting map from configuration file.
@@ -95,35 +99,13 @@ public class Settings {
     private static final String SETTINGS_XML_PATH = "classpath:settings.xml";
 
     /**
-     * Static constructor.
+     * Spring application context
      */
-    @SuppressWarnings("unchecked")
-    public Settings() {
-        try {
-            init();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @Autowired
+    private ApplicationContext applicationContext;
 
-        SETTING_ENCODING = (String) getConfig("setting", "encoding", "value");
-        SETTING_UPLOAD_SIZE = Integer.valueOf((String) getConfig("setting", "uploadSize", "value"));
-        SETTING_UPLOAD_TYPES = (String) getConfig("setting", "uploadTypes", "value");
-        SETTING_UPLOAD_FOLDER = (String) getConfig("setting", "uploadFolder", "value");
-
-        JUDGE_JUDGE_CORE = (String) getConfig("judge", "judgeCore", "value");
-        JUDGE_DATA_PATH = (String) getConfig("judge", "dataPath", "value");
-        JUDGE_TEMP_PATH = (String) getConfig("judge", "tempPath", "value");
-        JUDGE_LIST = (List<Map<String, String>>) getConfig("judge", "judges");
-
-//        System.out.println(SETTING_ENCODING);
-//        System.out.println(SETTING_UPLOAD_SIZE);
-//        System.out.println(SETTING_UPLOAD_TYPES);
-//        System.out.println(SETTING_UPLOAD_FOLDER);
-//
-//        System.out.println(JUDGE_JUDGE_CORE);
-//        System.out.println(JUDGE_TEMP_PATH);
-//        System.out.println(JUDGE_DATA_PATH);
-//        System.out.println(JUDGE_LIST);
+    private String getAbsolutePath(String path) throws IOException {
+        return applicationContext.getResource("").getFile().getAbsolutePath()+"/"+path;
     }
 
     /**
@@ -132,7 +114,7 @@ public class Settings {
      * @throws cn.edu.uestc.acmicpc.util.exception.AppException
      *
      */
-    private void init() throws AppException {
+    private void init() throws AppException, IOException {
         settings = new HashMap<>();
         String path;
         ResourceLoader loader = new DefaultResourceLoader();
@@ -165,6 +147,26 @@ public class Settings {
             }
             settings.put(node.getAttribute("name").trim(), map);
         }
+
+        SETTING_ENCODING = (String) getConfig("setting", "encoding", "value");
+        SETTING_UPLOAD_SIZE = Integer.valueOf((String) getConfig("setting", "uploadSize", "value"));
+        SETTING_UPLOAD_TYPES = (String) getConfig("setting", "uploadTypes", "value");
+        SETTING_UPLOAD_FOLDER = (String) getConfig("setting", "uploadFolder", "value");
+
+        JUDGE_JUDGE_CORE = (String) getConfig("judge", "judgeCore", "value");
+        JUDGE_DATA_PATH = getAbsolutePath((String) getConfig("judge", "dataPath", "value"));
+        JUDGE_TEMP_PATH = getAbsolutePath((String) getConfig("judge", "tempPath", "value"));
+        JUDGE_LIST = (List<Map<String, String>>) getConfig("judge", "judges");
+
+//        System.out.println(SETTING_ENCODING);
+//        System.out.println(SETTING_UPLOAD_SIZE);
+//        System.out.println(SETTING_UPLOAD_TYPES);
+//        System.out.println(SETTING_UPLOAD_FOLDER);
+//
+        System.out.println(JUDGE_JUDGE_CORE);
+        System.out.println(JUDGE_TEMP_PATH);
+        System.out.println(JUDGE_DATA_PATH);
+        System.out.println(JUDGE_LIST);
     }
 
     /**
@@ -206,5 +208,10 @@ public class Settings {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }

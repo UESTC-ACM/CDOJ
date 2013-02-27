@@ -24,6 +24,7 @@ package cn.edu.uestc.acmicpc.oj.action.admin;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemDataView;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.file.FileUploadAction;
@@ -31,6 +32,11 @@ import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.ZipUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import com.opensymphony.xwork2.validator.annotations.IntRangeFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.Validations;
+import org.apache.commons.fileupload.FileUploadBase;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import java.io.File;
 import java.util.zip.ZipFile;
@@ -84,6 +90,7 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
      *
      * @return <strong>SUCCESS</strong> signal
      */
+    @SkipValidation
     public String toProblemDataEditor() {
         try {
             problemDataView = new ProblemDataView(problemDAO.get(targetProblemId));
@@ -105,6 +112,7 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
      *
      * @return <strong>JSON</strong> signal.
      */
+    @SkipValidation
     public String uploadProblemDataFile() {
         setSavePath("/uploads/temp");
         System.out.println(getSavePath());
@@ -113,18 +121,16 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
             // In this case, uploaded file should only contains one element.
             if (files == null || files.length < 1)
                 throw new AppException("Fetch uploaded file error.");
-            System.out.println(files[0]);
-            ZipFile zipFile = new ZipFile(files[0]);
-            String dataPath = settings.JUDGE_DATA_PATH + "/" + targetProblemId;
-            clearDirectory(dataPath);
-            ZipUtil.unzipFile(zipFile, dataPath);
-            json.put("result", "ok");
+            File tempFile = new File(files[0]);
+            File targetFile = new File(getSavePath()+"/problem_"+targetProblemId+".zip");
+            tempFile.renameTo(targetFile);
+            json.put("success", "true");
         } catch (AppException e) {
-            json.put("result", "error");
-            json.put("error_msg", e.getMessage());
+            json.put("success", "false");
+            json.put("error", e.getMessage());
         } catch (Exception e) {
-            json.put("result", "error");
-            json.put("error_msg", "Unknown exception occurred.");
+            json.put("success", "false");
+            json.put("error", "Unknown exception occurred.");
             e.printStackTrace();
         }
         return JSON;
@@ -148,13 +154,91 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
     }
 
     /**
-     * Update problem's limits and data.
+     * To update problem test information.
+     * <p/>
+     * <strong>JSON output</strong>:
+     * <ul>
+     * <li>
+     * For success: {"result":"ok"}
+     * </li>
+     * <li>
+     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+     * </li>
+     * </ul>
      *
-     * @return <strong>SUCCESS</strong> signal
+     * @return <strong>JSON</strong> signal
+     *
+     *
+    "problemDTO.timeLimit":null,
+    "problemDTO.memoryLimit":undefined,
+    "problemDTO.outputLimit":undefined,
+    "problemDTO.javaTimeLimit":undefined,
+    "problemDTO.javaMemoryLimit":undefined,
+    "problemDTO.isSpj":undefined
+
      */
+    @Validations(
+            intRangeFields = {
+                    @IntRangeFieldValidator(
+                            fieldName = "problemDTO.timeLimit",
+                            min = "0",
+                            max = "60000",
+                            key = "error.timeLimit.validation"
+                    ),
+                    @IntRangeFieldValidator(
+                            fieldName = "problemDTO.javaTimeLimit",
+                            min = "0",
+                            max = "60000",
+                            key = "error.timeLimit.validation"
+                    ),
+                    @IntRangeFieldValidator(
+                            fieldName = "problemDTO.memoryLimit",
+                            min = "0",
+                            max = "262144",
+                            key = "error.memoryLimit.validation"
+                    ),
+                    @IntRangeFieldValidator(
+                            fieldName = "problemDTO.javaMemoryLimit",
+                            min = "0",
+                            max = "262144",
+                            key = "error.memoryLimit.validation"
+                    ),
+                    @IntRangeFieldValidator(
+                            fieldName = "problemDTO.outputLimit",
+                            min = "0",
+                            max = "262144",
+                            key = "error.outputLimit.validation"
+                    )
+            }
+    )
     @SuppressWarnings("UnusedDeclaration")
     public String updateProblemData() {
-        return SUCCESS;
+        setSavePath("/uploads/temp");
+        try {
+            Problem problem = null;
+            if (problemDTO.getProblemId() != null) { //edit
+                problem = problemDAO.get(problemDTO.getProblemId());
+                problemDTO.updateEntity(problem);
+            }
+            if (problem == null)
+                throw new AppException("No such problem!");
+            problemDAO.addOrUpdate(problem);
+
+            ZipFile zipFile = new ZipFile(getSavePath()+"/problem_"+targetProblemId+".zip");
+            String dataPath = settings.JUDGE_DATA_PATH + "/" + targetProblemId;
+            clearDirectory(dataPath);
+            ZipUtil.unzipFile(zipFile, dataPath);
+
+            json.put("result", "ok");
+        } catch (AppException e) {
+            json.put("result", "error");
+            json.put("error_msg", e.getMessage());
+        } catch (Exception e) {
+            json.put("result", "error");
+            json.put("error_msg", "Unknown exception occurred.");
+            e.printStackTrace();
+        }
+        return JSON;
     }
 
     @Override
