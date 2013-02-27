@@ -35,6 +35,7 @@
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx">
     <bean id="settings" class="cn.edu.uestc.acmicpc.util.Settings"
+          init-method="init"
           lazy-init="false" scope="singleton">
     </bean>
     <bean id="global" class="cn.edu.uestc.acmicpc.util.Global"

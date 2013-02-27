@@ -30,11 +30,22 @@
 
 var problemId;
 var uploaderUrl;
+var updateUrl;
+
+var problemDTO = {
+    "problemDTO.timeLimit":null,
+    "problemDTO.memoryLimit":undefined,
+    "problemDTO.outputLimit":undefined,
+    "problemDTO.javaTimeLimit":undefined,
+    "problemDTO.javaMemoryLimit":undefined,
+    "problemDTO.isSpj":undefined
+};
 
 $(document).ready(function () {
     problemId = $('#problemId')[0].innerHTML;
     uploaderUrl = '/admin/problem/uploadProblemDataFile/'+problemId;
-    console.log(uploaderUrl);
+    updateUrl = '/admin/problem/updateProblemData/'+problemId;
+    problemDTO["problemDTO.problemId"] = problemId;
 
     $('#fileUploader').fineUploader({
         request: {
@@ -50,6 +61,7 @@ $(document).ready(function () {
         },
         template:
             '<div class="qq-upload-button btn btn-success">{uploadButtonText}</div>' +
+            '<pre class="qq-upload-drop-area span12"><span>{dragZoneText}</span></pre>' +
             '<span class="qq-drop-processing"><span>{dropProcessingText}</span><span class="qq-drop-processing-spinner"></span></span>' +
             '<ul class="qq-upload-list" style="padding-top: 10px; text-align: center;"></ul>',
         classes: {
@@ -60,7 +72,13 @@ $(document).ready(function () {
     });
 
     $('input#submit').click(function(){
-
+        $.post(updateUrl,problemDTO,function(data) {
+            if (validation($('#problemEditor'),data)) {
+                console.log(data);
+                alert('Successful!');
+                //window.location.href= '/admin/problem/list';
+            }
+        });
         return false;
     });
 });

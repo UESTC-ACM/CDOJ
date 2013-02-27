@@ -112,11 +112,11 @@ $(document).ready(function () {
         //noinspection JSUnresolvedFunction
         $.post("/admin/problem/edit",problemDTO,function(data) {
             if (validation($('#problemEditor'),data)) {
-                alert("Successful!");
+                alert('Successful!');
                 $.each(editors,function() {
                     this.remove(this.settings.file.name);
                 });
-                window.location.href= "/admin/problem/list";
+                window.location.href= '/admin/problem/list';
             }
             else
                 $('html,body').animate({scrollTop: '0px'}, 400);
