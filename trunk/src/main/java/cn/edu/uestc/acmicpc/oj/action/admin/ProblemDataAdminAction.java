@@ -113,6 +113,7 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
             // In this case, uploaded file should only contains one element.
             if (files == null || files.length < 1)
                 throw new AppException("Fetch uploaded file error.");
+            System.out.println(files[0]);
             ZipFile zipFile = new ZipFile(files[0]);
             String dataPath = settings.JUDGE_DATA_PATH + "/" + targetProblemId;
             clearDirectory(dataPath);

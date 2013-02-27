@@ -93,7 +93,7 @@ public class FileUploadAction extends BaseAction {
         List<File> files = getUploadFile();
         String[] result = new String[files.size()];
         for (int i = 0; i < files.size(); i++) {
-            result[i] = getSavePath() + "//" + getUploadFileFileName().get(i);
+            result[i] = getSavePath() + "/" + getUploadFileFileName().get(i);
             try {
                 FileOutputStream fileOutputStream = new FileOutputStream(result[i]);
                 FileInputStream fileInputStream = new FileInputStream(getUploadFile().get(i));

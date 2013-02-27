@@ -40,9 +40,11 @@
 <link rel="icon" type="image/png" href="<s:url value="/images/logo/favicon128.png"/>">
 <meta http-equiv=Content-Type content="text/html;charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="<s:url value="/styles/cdoj.css"/>" rel="stylesheet">
+
 <link href="<s:url value="/styles/bootstrap.min.css"/>" rel="stylesheet">
 <link href="<s:url value="/styles/prettify.css"/>" rel="stylesheet">
+<link href="<s:url value="/styles/cdoj.css"/>" rel="stylesheet">
+
 <script src="<s:url value="/scripts/jquery.min.js"/>"></script>
 <script src="<s:url value="/scripts/jquery.gravatar.js"/>"></script>
 <script src="<s:url value="/scripts/md5.js"/>"></script>

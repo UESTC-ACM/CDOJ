@@ -40,7 +40,6 @@
 </head>
 <body>
 <div class="row" id="problemEditor">
-    <div id="jquery-wrapped-fine-uploader"></div>
     <div class="span10">
         <form class="form-horizontal">
             <fieldset>
@@ -158,8 +157,7 @@
                 <div class="control-group">
                     <label class="control-label">Upload data file</label>
                     <div class="controls">
-                        <input type="file"
-                               id="problemDataUploader">
+                        <div id="fileUploader"></div>
                         <span class="help-inline">Please use zip to package your files.</span>
                     </div>
                 </div>
