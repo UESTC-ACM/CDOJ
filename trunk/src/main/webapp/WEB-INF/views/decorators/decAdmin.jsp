@@ -36,8 +36,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <page:applyDecorator name="empty" page="/WEB-INF/views/common/header.jsp"/>
     <decorator:head/>
+    <page:applyDecorator name="empty" page="/WEB-INF/views/common/header.jsp"/>
 
     <!-- 网站标题，暂时先这样 -->
     <title>Admin - <decorator:title/> - UESTC Online Judge</title>

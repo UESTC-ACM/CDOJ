@@ -36,12 +36,27 @@ $(document).ready(function () {
     uploaderUrl = '/admin/problem/uploadProblemDataFile/'+problemId;
     console.log(uploaderUrl);
 
-    $('#jquery-wrapped-fine-uploader').fineUploader({
-        multiple: false,
+    $('#fileUploader').fineUploader({
         request: {
             endpoint: uploaderUrl,
             inputName: 'uploadFile'
-        }
+        },
+        validation: {
+            allowedExtensions: ['zip'],
+            sizeLimit: 52428800 // 50 MB = 50 * 1024 * 1024 bytes
+        },
+        text: {
+            uploadButton: '<i class="icon-upload icon-white"></i>Choose file'
+        },
+        template:
+            '<div class="qq-upload-button btn btn-success">{uploadButtonText}</div>' +
+            '<span class="qq-drop-processing"><span>{dropProcessingText}</span><span class="qq-drop-processing-spinner"></span></span>' +
+            '<ul class="qq-upload-list" style="padding-top: 10px; text-align: center;"></ul>',
+        classes: {
+            success: 'alert alert-success',
+            fail: 'alert alert-error'
+        },
+        multiple: false
     });
 
     $('input#submit').click(function(){
