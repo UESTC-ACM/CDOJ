@@ -65,14 +65,13 @@ $(document).ready(function () {
     });
 
     $('input#submit').click(function(){
-        problemDTO = $('#problemEditor').find('.form-horizontal').serializeArray();
+        problemDTO = $('#problemEditor').getFormData();
         problemDTO["problemDTO.problemId"] = problemId;
-        console.log(problemDTO);
         $.post(updateUrl, problemDTO, function(data) {
             if (validation($('#problemEditor'), data)) {
                 console.log(data);
                 alert('Successful!');
-                //window.location.reload();
+                window.location.reload();
             }
         });
         return false;

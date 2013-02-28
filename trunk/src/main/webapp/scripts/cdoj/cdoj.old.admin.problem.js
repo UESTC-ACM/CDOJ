@@ -182,16 +182,7 @@ $(document).ready(function () {
     }
 
     $('input#search').click(function (e) {
-        $.each(currentCondition, function (index, value) {
-            if (index.indexOf('.') != -1)
-                currentCondition[index] = $('#' + index.replace('.', '_')).val();
-        });
-        currentCondition["problemCondition.isSpj"] = $(':radio[name="problemCondition.isSpj"]:checked').val();
-        currentCondition["problemCondition.isVisible"] = $(':radio[name="problemCondition.isVisible"]:checked').val();
-        if (currentCondition["problemCondition.isSpj"] == "all")
-            currentCondition["problemCondition.isSpj"] = undefined;
-        if (currentCondition["problemCondition.isVisible"] == "all")
-            currentCondition["problemCondition.isVisible"] = undefined;
+        currentCondition = $('#problemCondition').getFormData();
         currentCondition.currentPage = 1;
         refreshProblemList(currentCondition);
         $('#TabMenu a:first').tab('show');

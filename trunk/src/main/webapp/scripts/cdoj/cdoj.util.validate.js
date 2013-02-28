@@ -38,7 +38,7 @@
     $.fn.checkValidate = function(userOptions) {
         var options = mergeOptions({
                 result: {"result": "ok"},
-                onSuccess: function(e){}
+                onSuccess: function(){}
             },
             userOptions);
 

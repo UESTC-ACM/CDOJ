@@ -67,7 +67,7 @@
     </div>
 
     <div class="tab-pane fade" id="tab-problem-search">
-        <div id="userCondition">
+        <div id="problemCondition">
             <form class="form-horizontal">
                 <div class="control-group">
                     <label class="control-label" for="problemCondition.startId">Problem ID</label>
