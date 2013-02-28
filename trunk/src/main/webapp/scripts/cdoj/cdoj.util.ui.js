@@ -37,7 +37,7 @@
      */
     $.fn.setDialog = function(userOptions) {
         var options = mergeOptions({
-                callback: function(e) {},
+                callback: function() {},
                 button: $('a.btn-primary')
             },
             userOptions);
@@ -62,7 +62,7 @@
      */
     $.fn.setButton = function(userOptions) {
         var options = mergeOptions({
-                callback: function(e) {}
+                callback: function() {}
             },
             userOptions);
 
