@@ -22,10 +22,9 @@
 
 package cn.edu.uestc.acmicpc.util;
 
+import cn.edu.uestc.acmicpc.checker.base.Checker;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Enumeration;
@@ -36,19 +35,22 @@ import java.util.zip.ZipFile;
  * Operations for zip files.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 public class ZipUtil {
-    private static final int BUFFER_SIZE = 2048;
 
     /**
      * Unzip the zip file and put all the files in the zip file to the path.
+     * <p/>
+     * <strong>WARN:</strong>
+     * If the file list can not pass the checker's validation, delete all the contents in the {@code path},
+     * and the {@code path} itself.
      *
      * @param zipFile zipFile object
      * @param path    target path
      * @throws AppException if exception occurred, convert them into {@code AppException} object.
      */
-    public static void unzipFile(ZipFile zipFile, String path) throws AppException {
+    public static void unzipFile(ZipFile zipFile, String path, Checker<File> checker) throws AppException {
         try {
             Enumeration enumeration = zipFile.entries();
             while (enumeration.hasMoreElements()) {
@@ -58,26 +60,26 @@ public class ZipUtil {
                         throw new Exception();
                     continue;
                 }
-                BufferedInputStream bufferedInputStream = new BufferedInputStream(zipFile.getInputStream(zipEntry));
                 File file = new File(path + "/" + zipEntry.getName());
                 File parent = file.getParentFile();
                 if (parent != null && !parent.exists()) {
                     if (!parent.mkdirs())
                         throw new AppException();
                 }
-                FileOutputStream fileOutputStream = new FileOutputStream(file);
-                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream, BUFFER_SIZE);
-                int len;
-                byte[] buffer = new byte[BUFFER_SIZE];
-                while ((len = bufferedInputStream.read(buffer, 0, BUFFER_SIZE)) != -1) {
-                    bufferedOutputStream.write(buffer, 0, len);
-                }
-                bufferedOutputStream.flush();
-                bufferedOutputStream.close();
-                bufferedInputStream.close();
+                FileUtil.saveToFile(zipFile.getInputStream(zipEntry), new FileOutputStream(file));
             }
             zipFile.close();
+            File targetFile = new File(path);
+            try {
+                checker.check(targetFile);
+            } catch (AppException e) {
+                FileUtil.clearDirectory(targetFile.getAbsolutePath());
+                throw e;
+            }
+        } catch (AppException e) {
+            throw e;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new AppException("Unzip zip file error.");
         }
     }

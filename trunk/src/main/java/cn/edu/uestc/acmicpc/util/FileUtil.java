@@ -22,21 +22,86 @@
 
 package cn.edu.uestc.acmicpc.util;
 
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+
 import java.io.*;
 
 /**
  * File util methods.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 public class FileUtil {
+    private static final int BUFFER_SIZE = 2048;
+
+    /**
+     * Save string into the specific file.
+     *
+     * @param content  string content
+     * @param filePath file's path
+     */
     public static void saveToFile(String content, String filePath) {
         try {
-            OutputStream os = new BufferedOutputStream(new FileOutputStream(filePath));
-            os.write(content.getBytes());
-            os.close();
+            OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(filePath));
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
+            bufferedOutputStream.write(content.getBytes());
+            bufferedOutputStream.close();
         } catch (IOException ignored) {
         }
+    }
+
+    /**
+     * Save inputStream's content into outputStream.
+     *
+     * @param inputStream  input stream to read
+     * @param outputStream output stream to write
+     * @throws IOException
+     */
+    public static void saveToFile(InputStream inputStream, OutputStream outputStream) throws IOException {
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, BUFFER_SIZE);
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream, BUFFER_SIZE);
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int len;
+        while ((len = bufferedInputStream.read(buffer)) != -1) {
+            bufferedOutputStream.write(buffer, 0, len);
+        }
+        bufferedOutputStream.flush();
+        bufferedOutputStream.close();
+        bufferedInputStream.close();
+    }
+
+    /**
+     * Recursively delete the contents of {@code targetFile}, but not the {@code targetFile} itself.
+     * <p/>
+     * If the {@code targetFile}  does not exist or it is not a directory, return {@code 0}.
+     *
+     * @return the total number of files deleted
+     */
+    public static int deleteContents(File targetFile) {
+        if (targetFile.exists() && targetFile.isDirectory())
+            return org.aspectj.util.FileUtil.deleteContents(targetFile);
+        else
+            return 0;
+    }
+
+    /**
+     * Clear all the files under the path.
+     * <p/>
+     * <strong>WARN</strong>: this operation cannot be reverted.
+     *
+     * @param path absolute path value
+     */
+    public static void clearDirectory(String path) throws AppException {
+        clearDirectory(new File(path));
+    }
+
+    public static void moveDirectory(File fromDir, File toDir) throws IOException, AppException {
+        org.aspectj.util.FileUtil.copyDir(fromDir, toDir);
+        clearDirectory(fromDir);
+    }
+
+    private static void clearDirectory(File file) throws AppException {
+        deleteContents(file);
     }
 }

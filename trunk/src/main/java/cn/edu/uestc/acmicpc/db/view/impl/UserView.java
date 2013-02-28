@@ -25,7 +25,7 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.annotation.Ignored;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 
 import java.sql.Timestamp;
 
@@ -120,7 +120,7 @@ public class UserView extends View<User> {
         return departmentId;
     }
 
-    @Ignored
+    @Ignore
     public void setDepartmentId(Integer departmentId) {
         this.departmentId = departmentId;
     }
@@ -160,7 +160,7 @@ public class UserView extends View<User> {
         return type;
     }
 
-    @Ignored
+    @Ignore
     public void setType(String type) {
         this.type = type;
     }

@@ -23,6 +23,7 @@
 package cn.edu.uestc.acmicpc.oj.action.file;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.util.FileUtil;
 
 import java.io.*;
 import java.util.List;
@@ -31,11 +32,10 @@ import java.util.List;
  * Action for file upload service
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 5
+ * @version 6
  */
 public class FileUploadAction extends BaseAction {
 
-    private static final int BUFFER_SIZE = 2048;
     private List<File> uploadFile;
     private List<String> uploadFileContentType;
     private List<String> uploadFileFileName;
@@ -93,20 +93,9 @@ public class FileUploadAction extends BaseAction {
         List<File> files = getUploadFile();
         String[] result = new String[files.size()];
         for (int i = 0; i < files.size(); i++) {
-            result[i] = getSavePath() + "/" + getUploadFileFileName().get(i);
             try {
-                FileOutputStream fileOutputStream = new FileOutputStream(result[i]);
-                FileInputStream fileInputStream = new FileInputStream(getUploadFile().get(i));
-                BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, BUFFER_SIZE);
-                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream, BUFFER_SIZE);
-                byte[] buffer = new byte[BUFFER_SIZE];
-                int len;
-                while ((len = bufferedInputStream.read(buffer)) != -1) {
-                    bufferedOutputStream.write(buffer, 0, len);
-                }
-                bufferedOutputStream.flush();
-                bufferedOutputStream.close();
-                bufferedInputStream.close();
+                result[i] = getSavePath() + "/" + getUploadFileFileName().get(i);
+                FileUtil.saveToFile(new FileInputStream(getUploadFile().get(i)), new FileOutputStream(result[i]));
             } catch (IOException e) {
                 // this file cannot be uploaded.
                 e.printStackTrace();

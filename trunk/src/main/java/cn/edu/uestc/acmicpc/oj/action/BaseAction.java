@@ -49,7 +49,7 @@ import java.util.Map;
  * Base action support, add specified common elements in here.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 13
+ * @version 14
  */
 public class BaseAction extends ActionSupport
         implements RequestAware, SessionAware, ApplicationAware, IActionInterceptor,
@@ -378,7 +378,6 @@ public class BaseAction extends ActionSupport
 
     @Override
     public void setServletRequest(HttpServletRequest request) {
-        System.out.println("set request: " + request);
         httpServletRequest = request;
         httpSession = httpServletRequest.getSession();
         servletContext = httpSession.getServletContext();
