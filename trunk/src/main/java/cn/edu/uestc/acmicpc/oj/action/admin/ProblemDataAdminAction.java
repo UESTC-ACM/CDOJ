@@ -86,7 +86,7 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
     }
 
     private String getDataZipFileName() {
-        return getSavePath() + "/problem_" + targetProblemId + ".zip";
+        return settings.SETTING_UPLOAD_FOLDER + "/problem_" + targetProblemId + ".zip";
     }
 
     /**
@@ -119,8 +119,7 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
     @SkipValidation
     public String uploadProblemDataFile() {
         try {
-            setSavePath("/uploads/temp");
-            System.out.println(getSavePath());
+            setSavePath(settings.SETTING_UPLOAD_FOLDER);
             String[] files = uploadFile();
             // In this case, uploaded file should only contains one element.
             if (files == null || files.length != 1)
@@ -131,6 +130,16 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
                 throw new AppException("Internal exception: target file exists and can not be deleted.");
             if (!tempFile.renameTo(targetFile))
                 throw new AppException("Internal exception: can not move file.");
+
+            ZipFile zipFile = new ZipFile(getDataZipFileName());
+            String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/" + targetProblemId;
+            ZipUtil.unzipFile(zipFile, tempDirectory, new ZipDataChecker());
+
+            File dataPath = new File(tempDirectory);
+            File[] dataFiles = dataPath.listFiles();
+            assert dataFiles != null;
+            json.put("total", dataFiles.length / 2);
+
             json.put("success", "true");
         } catch (AppException e) {
             e.printStackTrace();
@@ -159,13 +168,6 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
      *
      * @return <strong>JSON</strong> signal
      *         <p/>
-     *         <p/>
-     *         "problemDTO.timeLimit":null,
-     *         "problemDTO.memoryLimit":undefined,
-     *         "problemDTO.outputLimit":undefined,
-     *         "problemDTO.javaTimeLimit":undefined,
-     *         "problemDTO.javaMemoryLimit":undefined,
-     *         "problemDTO.isSpj":undefined
      */
     @Validations(
             intRangeFields = {
@@ -204,7 +206,6 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
     @SuppressWarnings("UnusedDeclaration")
     public String updateProblemData() {
         try {
-            setSavePath("/uploads/temp");
             Problem problem = null;
             if (problemDTO.getProblemId() != null) { //edit
                 problem = problemDAO.get(problemDTO.getProblemId());
@@ -214,20 +215,13 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
                 throw new AppException("No such problem!");
             problemDAO.addOrUpdate(problem);
 
-            ZipFile zipFile = new ZipFile(getDataZipFileName());
             String dataPath = settings.JUDGE_DATA_PATH + "/" + targetProblemId;
-            String tempDirectory = getSavePath() + "/" + targetProblemId;
-            ZipUtil.unzipFile(zipFile, tempDirectory, new ZipDataChecker());
+            String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/" + targetProblemId;
             FileUtil.clearDirectory(dataPath);
             File targetFile = new File(dataPath);
             File currentFile = new File(tempDirectory);
-            System.out.println("from: " + currentFile.getAbsolutePath());
-            System.out.println("to: " + targetFile.getAbsolutePath());
             FileUtil.moveDirectory(currentFile, targetFile);
             json.put("result", "ok");
-            File[] files = targetFile.listFiles();
-            assert files != null;
-            json.put("total", files.length / 2);
         } catch (AppException e) {
             json.put("result", "error");
             json.put("error_msg", e.getMessage());

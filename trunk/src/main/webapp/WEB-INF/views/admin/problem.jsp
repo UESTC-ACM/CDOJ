@@ -35,7 +35,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <script src="<s:url value="/scripts/cdoj.admin.problem.js"/>"></script>
+    <script src="<s:url value="/scripts/cdoj/cdoj.old.admin.problem.js"/>"></script>
     <title>Problem</title>
 </head>
 <body>
