@@ -35,7 +35,7 @@
 <html>
 <head>
     <page:applyDecorator name="empty" page="/WEB-INF/views/common/fileUploaderHeader.jsp"/>
-    <script src="<s:url value="/scripts/cdoj.admin.problemDataAdmin.js"/>"></script>
+    <script src="<s:url value="/scripts/cdoj/cdoj.old.admin.problemDataAdmin.js"/>"></script>
     <title>Problem</title>
 </head>
 <body>
@@ -158,7 +158,7 @@
                     <label class="control-label">Upload data file</label>
                     <div class="controls">
                         <div id="fileUploader"></div>
-                        <span class="help-inline">Please use zip to package your files.</span>
+                        <span id="fileUploaderAttention" class="help-inline">Please use zip to package your files.</span>
                     </div>
                 </div>
 

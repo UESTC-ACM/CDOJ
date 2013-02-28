@@ -151,7 +151,7 @@ public class Settings implements ApplicationContextAware {
         SETTING_ENCODING = (String) getConfig("setting", "encoding", "value");
         SETTING_UPLOAD_SIZE = Integer.valueOf((String) getConfig("setting", "uploadSize", "value"));
         SETTING_UPLOAD_TYPES = (String) getConfig("setting", "uploadTypes", "value");
-        SETTING_UPLOAD_FOLDER = (String) getConfig("setting", "uploadFolder", "value");
+        SETTING_UPLOAD_FOLDER = getAbsolutePath((String) getConfig("setting", "uploadFolder", "value"));
 
         JUDGE_JUDGE_CORE = (String) getConfig("judge", "judgeCore", "value");
         JUDGE_DATA_PATH = getAbsolutePath((String) getConfig("judge", "dataPath", "value"));
@@ -163,10 +163,10 @@ public class Settings implements ApplicationContextAware {
 //        System.out.println(SETTING_UPLOAD_TYPES);
 //        System.out.println(SETTING_UPLOAD_FOLDER);
 //
-        System.out.println(JUDGE_JUDGE_CORE);
-        System.out.println(JUDGE_TEMP_PATH);
-        System.out.println(JUDGE_DATA_PATH);
-        System.out.println(JUDGE_LIST);
+//        System.out.println(JUDGE_JUDGE_CORE);
+//        System.out.println(JUDGE_TEMP_PATH);
+//        System.out.println(JUDGE_DATA_PATH);
+//        System.out.println(JUDGE_LIST);
     }
 
     /**

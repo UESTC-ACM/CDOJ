@@ -73,7 +73,7 @@
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <!-- TODO src missing? -->
-                <img id="avatar" email="<s:property value="currentUser.email"/>"/>
+                <img id="userAvatar" email="<s:property value="currentUser.email"/>"/>
                 <s:property value="currentUser.userName"/>
                 <b class="caret"></b>
             </a>

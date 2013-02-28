@@ -67,7 +67,7 @@ function refreshUserList(condition) {
             var html = '<tr>'+
                 '<td><input type="checkbox" id="deleteSelector'+value.userId+'" value="'+value.userId+'"></td>'+
                 '<td>'+value.userId+'</td>'+
-                '<td>'+value.userName+'</td>'+
+                '<td><img id="usersAvatar" email="'+value.email+'"/>'+value.userName+'</td>'+
                 '<td>'+value.nickName+'</td>'+
                 '<td>'+value.email+'</td>'+
                 '<td>'+value.type+'</td>'+
@@ -76,6 +76,12 @@ function refreshUserList(condition) {
                 '</tr>';
             tbody.append(html);
         });
+
+        // get userList avatars
+        $('img#usersAvatar').setAvatar({
+            size: 37
+        });
+
     });
 }
 
@@ -187,14 +193,16 @@ $(document).ready(function(){
         return false;
     });
 
-    Dialog($('#userEditModal'),function(e){
-        info = $('#userEditModal .form-horizontal').serializeArray();
-        $.post('/admin/user/edit', info, function(data) {
-            if (validation($("#userEditModal .form-horizontal"),data) == true) {
-                $("#userEditModal").modal('hide');
-                refreshUserList(currentCondition);
-            }
-        });
+    $('#userEditModal').setDialog({
+        callback: function(e) {
+            info = $('#userEditModal .form-horizontal').serializeArray();
+            $.post('/admin/user/edit', info, function(data) {
+                if (validation($("#userEditModal .form-horizontal"),data) == true) {
+                    $("#userEditModal").modal('hide');
+                    refreshUserList(currentCondition);
+                }
+            });
+        }
     });
 
     refreshUserList(currentCondition);

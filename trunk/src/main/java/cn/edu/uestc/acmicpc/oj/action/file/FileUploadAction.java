@@ -71,7 +71,7 @@ public class FileUploadAction extends BaseAction {
     }
 
     public String getSavePath() {
-        return servletContext.getRealPath(savePath);
+        return savePath;
     }
 
     public void setSavePath(String savePath) {

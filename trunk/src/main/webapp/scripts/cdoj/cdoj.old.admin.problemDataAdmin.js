@@ -32,20 +32,10 @@ var problemId;
 var uploaderUrl;
 var updateUrl;
 
-var problemDTO = {
-    "problemDTO.timeLimit":null,
-    "problemDTO.memoryLimit":undefined,
-    "problemDTO.outputLimit":undefined,
-    "problemDTO.javaTimeLimit":undefined,
-    "problemDTO.javaMemoryLimit":undefined,
-    "problemDTO.isSpj":undefined
-};
-
 $(document).ready(function () {
     problemId = $('#problemId')[0].innerHTML;
     uploaderUrl = '/admin/problem/uploadProblemDataFile/'+problemId;
     updateUrl = '/admin/problem/updateProblemData/'+problemId;
-    problemDTO["problemDTO.problemId"] = problemId;
 
     $('#fileUploader').fineUploader({
         request: {
@@ -69,14 +59,20 @@ $(document).ready(function () {
             fail: 'alert alert-error'
         },
         multiple: false
+    }).on('complete', function(event, id, name, response) {
+            if (response.success)
+                $('#fileUploaderAttention').replaceWith('Total data: '+response.total);
     });
 
     $('input#submit').click(function(){
-        $.post(updateUrl,problemDTO,function(data) {
-            if (validation($('#problemEditor'),data)) {
+        problemDTO = $('#problemEditor').find('.form-horizontal').serializeArray();
+        problemDTO["problemDTO.problemId"] = problemId;
+        console.log(problemDTO);
+        $.post(updateUrl, problemDTO, function(data) {
+            if (validation($('#problemEditor'), data)) {
                 console.log(data);
                 alert('Successful!');
-                //window.location.href= '/admin/problem/list';
+                //window.location.reload();
             }
         });
         return false;

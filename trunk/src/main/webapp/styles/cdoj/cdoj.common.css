@@ -24,12 +24,10 @@ body {
     min-width: 940px;
     background-color: #222;
 }
-
 #wrap {
     padding: 80px 0 0 0;
     background-color: white;
 }
-
 .mzry1992 {
     padding: 20px 0 20px 0;
     min-height: 400px;
@@ -38,102 +36,45 @@ body {
 /* footer */
 #footer {
     padding: 60px 0 20px 0;
-    background: #222 url(../images/footer-top.png) top center repeat-x;
+    background: #222 url(../../images/footer-top.png) top center repeat-x;
 }
-
 .credit {
     text-align: center;
 }
 
-.avatar {
-    margin: -10px 0 -10px;
-}
-
-/* problem! */
-.container {
-}
-
-table {
-    table-layout: fixed;
-}
-
-td {
-    word-break: keep-all;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
+/* logo */
 #logo-banner {
     margin: 0 16px 0 16px;
     width: 234px;
     height: 60px;
     display: block;
-    background: url(../images/logo/banner.png) no-repeat;
+    background: url(../../images/logo/banner.png) no-repeat;
 }
-
 #logo {
     width: 88px;
     height: 31px;
     display: block;
-    background: url(../images/logo/logo.png) no-repeat;
+    background: url(../../images/logo/logo.png) no-repeat;
 }
 
-/* register modal */
-#registerModal,#userEditModal{
-    width: 960px;
-    left: 36%;
-}
-
-.tags {
-    margin-right: 4px;
-}
-
-.table thead th {
-    text-align: center;
-}
-
-.table tbody td {
-    text-align: left;
-}
-
-.difficult-span {
-    padding: 0px;
-}
-
+/* useful styles */
 .pull-center {
     margin-left: auto;
     margin-right: auto;
 }
-
 .pos-center {
     text-align: center;
 }
 .pos-left {
     text-align: left;
 }
-
 .font-code {
     font-family: Consolas, "Lucida Console", "Andale Mono", "Bitstream Vera Sans Mono", "Courier New", Courier;
     word-break:break-all;
 }
-
-.textarea-mini {
-    min-height: 120px;
+.tags {
+    margin-right: 4px;
 }
-
-.textarea-big {
-    min-height: 240px;
-}
-
-.textarea-large {
-    min-height: 320px;
-}
-
-.textarea-content {
-    position: relative;
-    padding: 4px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.difficult-span {
+    padding: 0px;
 }

@@ -63,82 +63,56 @@ function validation(form, result) {
     }
 }
 
-/**
- * Show a dialog ONLY have one primary button
- * @param dialog
- * @param callback
- * @constructor
- */
-function Dialog(dialog, callback) {
-    dialog.on("show", function() {    // wire up the button
-        $("a.btn-primary").on("click", callback);
-    });
-    dialog.on("hide", function() {    // remove the event listeners when the dialog is dismissed
-        $("a.btn-primary").off("click");
-    });
-}
-
-/**
- * Button click event!
- * @param button
- * @param callback
- * @constructor
- */
-function Button(button,callback) {
-    button.on("click",callback);
-}
-
-function GetAvatar(position) {
-    if (position.length == 0)   return;
-
-    var result = $.gravatar(position.attr("email"), {
-        method: 'append',
-        size: 40,
-        image: 'retro',
-        rating: 'pg'});
-
-    result.attr("class","avatar");
-    position.replaceWith(result);
-}
-
 !function ($) {
 
     $(function () {
 
         // make code pretty
         window.prettyPrint && prettyPrint();
+        // get avatars
+        $('img#userAvatar').setAvatar();
 
         $('#activityCarousel').carousel();
 
         $('.info-problem-source').tooltip();
 
-        GetAvatar($('img#avatar'));
-
-        Dialog($("#registerModal"),function(e) {
-            info=$("#registerModal .form-horizontal").serializeArray();
-            $.post('/user/register', info, function(data) {
-                if (validation($("#registerModal .form-horizontal"),data) == true) {
-                    $("#registerModal").modal('hide');
-                    window.location.reload();
-                }
-            });
+        $("#registerModal").setDialog({
+            callback: function(e) {
+                info=$("#registerModal").find(".form-horizontal").serializeArray();
+                $.post('/user/register', info, function(data) {
+                    $("#registerModal").find(".form-horizontal").checkValidate({
+                        result: data,
+                        onSuccess: function(e) {
+                            $("#registerModal").modal('hide');
+                            window.location.reload();
+                        }
+                    });
+                });
+            }
         });
 
-        Dialog($("#loginModal"),function(e) {
-            info=$("#loginModal .form-horizontal").serializeArray();
-            $.post('/user/login', info, function(data) {
-                if (validation($("#loginModal .form-horizontal"),data) == true) {
-                    $("#loginModal").modal('hide');
-                    window.location.reload();
-                }
-            });
+        $("#loginModal").setDialog({
+            callback: function(e) {
+                info=$("#loginModal").find(".form-horizontal").serializeArray();
+                $.post('/user/login', info, function(data) {
+                    $("#loginModal").find(".form-horizontal").checkValidate({
+                        result: data,
+                        onSuccess: function(e) {
+                            $("#loginModal").modal('hide');
+                            window.location.reload();
+                        }
+                    });
+                });
+            }
         });
 
-        Button($("#logoutButton"),function(e) {
-            $.post('/user/logout',function(data) {
-                if (data["result"] == "ok")
-                    window.location.reload();
-            });
+        $("#logoutButton").setButton({
+            callback: function(e) {
+                $.post('/user/logout',function(data) {
+                    if (data["result"] == "ok")
+                        window.location.reload();
+                });
+            }
         });
     })
 }(window.jQuery)

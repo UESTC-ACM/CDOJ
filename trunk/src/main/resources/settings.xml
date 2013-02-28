@@ -28,7 +28,7 @@
         <item name="uploadTypes" description="upload file's types">
             in;out;jpg;jpeg;png;gif;doc;docx;xls;xlsx;ppt;pptx;pdf;rar;zip;
         </item>
-        <item name="uploadFolder" description="upload files store folder">/Uploads/</item>
+        <item name="uploadFolder" description="upload files store folder">/uploads/</item>
     </setting>
     <setting name="judge">
         <item name="judgeCore" description="judge core name">pyloncore</item>
