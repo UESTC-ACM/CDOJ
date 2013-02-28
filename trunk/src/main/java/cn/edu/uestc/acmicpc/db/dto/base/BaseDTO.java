@@ -23,7 +23,7 @@
 package cn.edu.uestc.acmicpc.db.dto.base;
 
 import cn.edu.uestc.acmicpc.util.StringUtil;
-import cn.edu.uestc.acmicpc.util.annotation.Ignored;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.io.Serializable;
@@ -35,14 +35,14 @@ import java.lang.reflect.Method;
  * Base DTO entity, use reflection to update entity.
  * <p/>
  * <strong>USAGE</strong>:
- * extends the class from this class, and set the getter with {@code Ignored} if
+ * extends the class from this class, and set the getter with {@code Ignore} if
  * you do not set value in get/update method.
  * <p/>
  * If set the field to {@code null}, this field will not be updated in
  * {@code updateEntity} method.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
+ * @version 5
  */
 public abstract class BaseDTO<Entity extends Serializable> {
     protected abstract Class<Entity> getReferenceClass();
@@ -62,8 +62,8 @@ public abstract class BaseDTO<Entity extends Serializable> {
                 if (method.getName().startsWith("get")) {
                     String name = StringUtil.getGetterOrSetter(StringUtil.MethodType.SETTER,
                             method.getName().substring(3));
-                    Ignored ignored1 = method.getAnnotation(Ignored.class);
-                    if (ignored1 == null || !ignored1.value()) {
+                    Ignore ignore = method.getAnnotation(Ignore.class);
+                    if (ignore == null || !ignore.value()) {
                         try {
                             Method setter = entity.getClass().getMethod(name, method.getReturnType());
                             Method getter = entity.getClass().getMethod(method.getName());
@@ -102,14 +102,13 @@ public abstract class BaseDTO<Entity extends Serializable> {
             if (method.getName().startsWith("get")) {
                 String name = StringUtil.getGetterOrSetter(StringUtil.MethodType.SETTER,
                         method.getName().substring(3));
-                Ignored ignored = method.getAnnotation(Ignored.class);
-                if (ignored == null || !ignored.value()) {
+                Ignore ignore = method.getAnnotation(Ignore.class);
+                if (ignore == null || !ignore.value()) {
                     try {
                         Method setter = entity.getClass().getMethod(name, method.getReturnType());
                         if (method.invoke(this) != null)
                             setter.invoke(entity, method.invoke(this));
-                    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                        e.printStackTrace();
+                    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
                     }
                 }
             }

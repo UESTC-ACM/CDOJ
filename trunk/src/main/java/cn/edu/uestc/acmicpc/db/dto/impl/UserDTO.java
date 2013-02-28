@@ -26,7 +26,7 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.StringUtil;
-import cn.edu.uestc.acmicpc.util.annotation.Ignored;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.sql.Timestamp;
@@ -109,7 +109,7 @@ public class UserDTO extends BaseDTO<User> {
      */
     private Integer solved;
 
-    @Ignored
+    @Ignore
     public Integer getSolved() {
         return solved;
     }
@@ -118,7 +118,7 @@ public class UserDTO extends BaseDTO<User> {
         this.solved = solved;
     }
 
-    @Ignored
+    @Ignore
     public Integer getTried() {
         return tried;
     }
@@ -127,7 +127,7 @@ public class UserDTO extends BaseDTO<User> {
         this.tried = tried;
     }
 
-    @Ignored
+    @Ignore
     public Integer getType() {
         return type;
     }
@@ -175,7 +175,7 @@ public class UserDTO extends BaseDTO<User> {
         this.userName = userName;
     }
 
-    @Ignored
+    @Ignore
     public String getPassword() {
         return password;
     }
@@ -184,7 +184,7 @@ public class UserDTO extends BaseDTO<User> {
         this.password = password;
     }
 
-    @Ignored
+    @Ignore
     public String getPasswordRepeat() {
         return passwordRepeat;
     }
@@ -225,7 +225,7 @@ public class UserDTO extends BaseDTO<User> {
         this.studentId = studentId;
     }
 
-    @Ignored
+    @Ignore
     public Integer getDepartmentId() {
         return departmentId;
     }
@@ -234,7 +234,7 @@ public class UserDTO extends BaseDTO<User> {
         this.departmentId = departmentId;
     }
 
-    @Ignored
+    @Ignore
     public Department getDepartment() {
         return department;
     }

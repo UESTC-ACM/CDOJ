@@ -22,20 +22,20 @@
 
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
+import cn.edu.uestc.acmicpc.checker.ZipDataChecker;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemDataView;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.file.FileUploadAction;
+import cn.edu.uestc.acmicpc.util.FileUtil;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.ZipUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import com.opensymphony.xwork2.validator.annotations.IntRangeFieldValidator;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
-import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import java.io.File;
@@ -45,7 +45,7 @@ import java.util.zip.ZipFile;
  * description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 4
+ * @version 5
  */
 @LoginPermit(Global.AuthenticationType.ADMIN)
 public class ProblemDataAdminAction extends FileUploadAction implements ProblemDAOAware {
@@ -85,6 +85,10 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
         this.targetProblemId = targetProblemId;
     }
 
+    private String getDataZipFileName() {
+        return getSavePath() + "/problem_" + targetProblemId + ".zip";
+    }
+
     /**
      * Go to problem data editor view!
      *
@@ -114,43 +118,30 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
      */
     @SkipValidation
     public String uploadProblemDataFile() {
-        setSavePath("/uploads/temp");
-        System.out.println(getSavePath());
         try {
+            setSavePath("/uploads/temp");
+            System.out.println(getSavePath());
             String[] files = uploadFile();
             // In this case, uploaded file should only contains one element.
-            if (files == null || files.length < 1)
+            if (files == null || files.length != 1)
                 throw new AppException("Fetch uploaded file error.");
             File tempFile = new File(files[0]);
-            File targetFile = new File(getSavePath()+"/problem_"+targetProblemId+".zip");
-            tempFile.renameTo(targetFile);
+            File targetFile = new File(getDataZipFileName());
+            if (targetFile.exists() && !targetFile.delete())
+                throw new AppException("Internal exception: target file exists and can not be deleted.");
+            if (!tempFile.renameTo(targetFile))
+                throw new AppException("Internal exception: can not move file.");
             json.put("success", "true");
         } catch (AppException e) {
+            e.printStackTrace();
             json.put("success", "false");
             json.put("error", e.getMessage());
         } catch (Exception e) {
+            e.printStackTrace();
             json.put("success", "false");
             json.put("error", "Unknown exception occurred.");
-            e.printStackTrace();
         }
         return JSON;
-    }
-
-    /**
-     * Clear all the files under the path.
-     * <p/>
-     * <strong>WARN</strong>: this operation cannot be reverted.
-     *
-     * @param path absolute path value
-     */
-    private void clearDirectory(String path) throws AppException {
-        File file = new File(path);
-        if (file.exists()) {
-            if (!file.delete())
-                throw new AppException("can not delete the data folder.");
-        }
-        if (!file.mkdirs())
-            throw new AppException("can not create the data folder.");
     }
 
     /**
@@ -167,15 +158,14 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
      * </ul>
      *
      * @return <strong>JSON</strong> signal
-     *
-     *
-    "problemDTO.timeLimit":null,
-    "problemDTO.memoryLimit":undefined,
-    "problemDTO.outputLimit":undefined,
-    "problemDTO.javaTimeLimit":undefined,
-    "problemDTO.javaMemoryLimit":undefined,
-    "problemDTO.isSpj":undefined
-
+     *         <p/>
+     *         <p/>
+     *         "problemDTO.timeLimit":null,
+     *         "problemDTO.memoryLimit":undefined,
+     *         "problemDTO.outputLimit":undefined,
+     *         "problemDTO.javaTimeLimit":undefined,
+     *         "problemDTO.javaMemoryLimit":undefined,
+     *         "problemDTO.isSpj":undefined
      */
     @Validations(
             intRangeFields = {
@@ -213,8 +203,8 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
     )
     @SuppressWarnings("UnusedDeclaration")
     public String updateProblemData() {
-        setSavePath("/uploads/temp");
         try {
+            setSavePath("/uploads/temp");
             Problem problem = null;
             if (problemDTO.getProblemId() != null) { //edit
                 problem = problemDAO.get(problemDTO.getProblemId());
@@ -224,12 +214,20 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
                 throw new AppException("No such problem!");
             problemDAO.addOrUpdate(problem);
 
-            ZipFile zipFile = new ZipFile(getSavePath()+"/problem_"+targetProblemId+".zip");
+            ZipFile zipFile = new ZipFile(getDataZipFileName());
             String dataPath = settings.JUDGE_DATA_PATH + "/" + targetProblemId;
-            clearDirectory(dataPath);
-            ZipUtil.unzipFile(zipFile, dataPath);
-
+            String tempDirectory = getSavePath() + "/" + targetProblemId;
+            ZipUtil.unzipFile(zipFile, tempDirectory, new ZipDataChecker());
+            FileUtil.clearDirectory(dataPath);
+            File targetFile = new File(dataPath);
+            File currentFile = new File(tempDirectory);
+            System.out.println("from: " + currentFile.getAbsolutePath());
+            System.out.println("to: " + targetFile.getAbsolutePath());
+            FileUtil.moveDirectory(currentFile, targetFile);
             json.put("result", "ok");
+            File[] files = targetFile.listFiles();
+            assert files != null;
+            json.put("total", files.length / 2);
         } catch (AppException e) {
             json.put("result", "error");
             json.put("error_msg", e.getMessage());

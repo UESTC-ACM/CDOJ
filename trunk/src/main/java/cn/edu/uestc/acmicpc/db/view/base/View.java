@@ -22,7 +22,7 @@
 
 package cn.edu.uestc.acmicpc.db.view.base;
 
-import cn.edu.uestc.acmicpc.util.annotation.Ignored;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -50,8 +50,8 @@ public class View<Entity extends Serializable> {
             if (method.getName().startsWith("set")) {
                 String name = StringUtil.getGetterOrSetter(StringUtil.MethodType.GETTER,
                         method.getName().substring(3));
-                Ignored ignored1 = method.getAnnotation(Ignored.class);
-                if (ignored1 == null || !ignored1.value()) {
+                Ignore ignore = method.getAnnotation(Ignore.class);
+                if (ignore == null || !ignore.value()) {
                     try {
                         Method getter = entity.getClass().getMethod(name);
                         if (getter.getReturnType().equals(String.class)) {

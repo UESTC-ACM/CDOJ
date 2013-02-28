@@ -20,18 +20,24 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.util.annotation;
+package cn.edu.uestc.acmicpc.checker.base;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
- * Ignored flag for reflection class.
+ * Checker for file uploader or unzip tools.
+ * <p/>
+ * We can use {@code Checker} Entity when upload files or unzip a {@code zip} file.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Ignored {
-    public boolean value() default true;
+public interface Checker<Entity> {
+    /**
+     * Check certain entity, if the entity is invalid, throws an {@code AppException} object.
+     *
+     * @param entity entity to be checked
+     * @throws AppException
+     */
+    public void check(Entity entity) throws AppException;
 }

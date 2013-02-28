@@ -25,7 +25,7 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
 import cn.edu.uestc.acmicpc.db.view.base.View;
-import cn.edu.uestc.acmicpc.util.annotation.Ignored;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -137,7 +137,7 @@ public class ProblemListView extends View<Problem> {
         return tags;
     }
 
-    @Ignored
+    @Ignore
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
