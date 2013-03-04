@@ -41,6 +41,18 @@
     };
 
     /**
+     * Default setter
+     *
+     * @param input
+     * @param data
+     */
+    var defaultSetter = function(input,data) {
+        if (data == undefined)
+            data = '';
+        input.attr('value',data);
+    };
+
+    /**
      * All extractions
      *
      * @type {{}}
@@ -51,6 +63,19 @@
             if (result == 'all')
                 result = undefined;
             return result;
+        }
+    };
+
+    /**
+     * All setters
+     *
+     * @type {{radio: Function}}
+     */
+    var dataSetter = {
+        radio: function(input,data) {
+            if (data == undefined)
+                data = 'all';
+            $(':radio[name="'+input.attr('name')+'"]').find('[value="'+data+'"]').attr("checked", true);
         }
     };
 
@@ -69,6 +94,19 @@
         return result;
     }
 
+    /**
+     * Set data
+     *
+     * @param input
+     * @param value
+     */
+    function setData(input,value) {
+        defaultSetter(input,value);
+        $.each(dataSetter,function(index,setter){
+            if (index == input.attr('type'))
+                setter(input,value);
+        });
+    }
     /**
      * Unused node list
      *
@@ -101,15 +139,29 @@
         return result;
     };
 
+
     /**
      * Set data into selected form.
      *
      * @param data
      */
     $.fn.setFormData = function(data) {
+        var form = $(this);
         $.each(data,function(index,value) {
-
+            var input = form.find(':input[name='+index+']');
+            if (input != null) {
+                setData(input,value);
+            }
         });
+    }
+
+    $.fn.resetFormData = function() {
+        var inputs = $(this).find(':input');
+
+        $.each(inputs,function(){
+            var input = $(this);
+            setData(input,undefined);
+        })
     }
 
 }(jQuery));

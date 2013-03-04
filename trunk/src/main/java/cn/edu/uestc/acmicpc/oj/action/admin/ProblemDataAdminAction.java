@@ -188,12 +188,12 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
                             max = "262144",
                             key = "error.memoryLimit.validation"
                     ),
-//                    @IntRangeFieldValidator(
-//                            fieldName = "problemDTO.javaMemoryLimit",
-//                            min = "0",
-//                            max = "262144",
-//                            key = "error.memoryLimit.validation"
-//                    ),
+                    @IntRangeFieldValidator(
+                            fieldName = "problemDTO.javaMemoryLimit",
+                            min = "0",
+                            max = "262144",
+                            key = "error.memoryLimit.validation"
+                    ),
                     @IntRangeFieldValidator(
                             fieldName = "problemDTO.outputLimit",
                             min = "0",
@@ -212,17 +212,21 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
             }
             if (problem == null)
                 throw new AppException("No such problem!");
-            problemDAO.addOrUpdate(problem);
 
             String dataPath = settings.JUDGE_DATA_PATH + "/" + targetProblemId;
             String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/" + targetProblemId;
             File targetFile = new File(dataPath);
             File currentFile = new File(tempDirectory);
             // If the uploaded file list is empty, that means we don't update the data folder.
-            if (FileUtil.countFiles(currentFile) != 0) {
+            int dataCount = FileUtil.countFiles(currentFile);
+            if (dataCount != 0) {
                 FileUtil.clearDirectory(dataPath);
                 FileUtil.moveDirectory(currentFile, targetFile);
+
+                problem.setDataCount(dataCount);
             }
+
+            problemDAO.addOrUpdate(problem);
             json.put("result", "ok");
         } catch (AppException e) {
             json.put("result", "error");
