@@ -25,50 +25,48 @@
   --%>
 
 <%--
-  Created by IntelliJ IDEA.
-  User: mzry1992
-  Date: 13-1-6
-  Time: 上午11:00
-  To change this template use File | Settings | File Templates.
+ Decorator for admin part.
+
+ @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ @version 1
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <page:applyDecorator name="empty" page="/WEB-INF/views/common/header.jsp"/>
+    <page:applyDecorator name="head" page="/WEB-INF/views/common/header.jsp"/>
     <decorator:head/>
 
-    <!-- 网站标题，暂时先这样 -->
     <title>Admin - <decorator:title/> - UESTC Online Judge</title>
 
 </head>
 
 <body>
 
-<page:applyDecorator name="empty" page="/WEB-INF/views/common/navbar.jsp"/>
-<page:applyDecorator name="empty" page="/WEB-INF/views/common/modal.jsp"/>
+<page:applyDecorator name="body" page="/WEB-INF/views/common/navbar.jsp"/>
+<page:applyDecorator name="body" page="/WEB-INF/views/common/modal.jsp"/>
 
-<s:div id="wrap">
-    <s:div cssClass="mzry1992">
-        <s:div cssClass="container">
+<div id="wrap">
+    <div class="mzry1992">
+        <div class="container">
 
-            <page:applyDecorator name="empty" page="/WEB-INF/views/common/debug.jsp"/>
+            <page:applyDecorator name="body" page="/WEB-INF/views/common/debug.jsp"/>
 
-            <s:div cssClass="row">
-                <s:div cssClass="span2">
-                    <page:applyDecorator name="empty" page="/WEB-INF/views/admin/sidebar.jsp"/>
-                </s:div>
-                <s:div cssClass="span10">
+            <div class="row">
+                <div class="span2">
+                    <page:applyDecorator name="body" page="/WEB-INF/views/admin/sidebar.jsp"/>
+                </div>
+                <div class="span10">
                     <decorator:body/>
-                </s:div>
-            </s:div>
+                </div>
+            </div>
 
-        </s:div>
-    </s:div>
-</s:div>
+        </div>
+    </div>
+</div>
 
-<page:applyDecorator name="empty" page="/WEB-INF/views/common/footer.jsp"/>
+<page:applyDecorator name="body" page="/WEB-INF/views/common/footer.jsp"/>
 
 </body>
 </html>

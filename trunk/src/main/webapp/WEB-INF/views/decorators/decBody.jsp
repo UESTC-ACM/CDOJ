@@ -25,42 +25,10 @@
   --%>
 
 <%--
- Sidebar of all admin page.
+ Decorator use for extra all things content in <body></body> tag
 
  @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  @version 1
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-<div class="well" style="padding: 8px 0;">
-    <ul class="nav nav-list">
-        <li class="nav-header"><i class="icon-home"></i>Dashboard</li>
-        <li><a href="#">OJ status</a></li>
-        <li><a href="#">Backup</a></li>
-        <li><a href="#">Help</a></li>
-
-        <li class="divider"></li>
-
-        <li class="nav-header"><i class="icon-user"></i>User</li>
-        <li><s:a action="list" namespace="/admin/user">User list</s:a></li>
-
-        <li class="divider"></li>
-
-        <li class="nav-header"><i class="icon-file"></i>Problem</li>
-        <li><s:a action="list" namespace="/admin/problem">Problem list</s:a></li>
-        <li><s:a action="editor/" namespace="/admin/problem">Add problem</s:a></li>
-
-        <li class="divider"></li>
-
-        <li class="nav-header"><i class="icon-screenshot"></i>Contest</li>
-        <li><a href="#">Contest list</a></li>
-        <li><a href="#">Add contest</a></li>
-
-    </ul>
-</div>
-</body>
-</html>
+<decorator:body/>

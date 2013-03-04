@@ -28,7 +28,8 @@
         <pattern>/admin/*</pattern>
     </decorator>
 
-    <decorator name="empty" page="decEmpty.jsp"/>
+    <decorator name="body" page="decBody.jsp"/>
+    <decorator name="head" page="decHead.jsp"/>
 
     <decorator name="default" page="decDefault.jsp">
         <pattern>/*</pattern>

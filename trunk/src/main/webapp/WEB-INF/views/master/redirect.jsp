@@ -21,11 +21,10 @@
   --%>
 
 <%--
-  Created by IntelliJ IDEA.
-  User: fish
-  Date: 13-1-20
-  Time: 下午1:40
-  To change this template use File | Settings | File Templates.
+ redirect page
+
+ @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ @version 1
 --%>
 <%@ page language="java" pageEncoding="UTF-8"%><%@ taglib prefix="s" uri="/struts-tags"%><!DOCTYPE html>
 <html>
@@ -39,17 +38,17 @@
     <title>Redirect</title>
 </head>
 <body>
-<s:div cssClass="row">
-    <s:div cssClass="span8 offset2">
-        <s:div cssClass="alert alert-success" cssStyle="margin-top: 100px">
+<div class="row">
+    <div class="span8 offset2">
+        <div class="alert alert-success" style="margin-top: 100px">
             <h3>
                 ${msg}
             </h3>
             <p>
                 If your browser does not support automatically redirect, please click <a class="btn btn-small btn-primary" href="${url}">here</a>
             </p>
-        </s:div>
-    </s:div>
-</s:div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -25,11 +25,10 @@
   --%>
 
 <%--
-  Created by IntelliJ IDEA.
-  User: mzry1992
-  Date: 13-1-25
-  Time: 下午11:58
-  To change this template use File | Settings | File Templates.
+ Footer part of all pages.
+
+ @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ @version 1
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -37,13 +36,13 @@
     <title></title>
 </head>
 <body>
-<s:div id="footer">
-    <s:div cssClass="container">
-        <s:div cssClass="row">
-            <s:div cssClass="span3 pull-left">
+<div id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="span3 pull-left">
                 <s:a id="logo-banner" action="index" namespace="/"/>
-            </s:div>
-            <s:div cssClass="span9">
+            </div>
+            <div class="span9">
                 <p class="muted credit">
                     UESTC Online Judge
                 </p>
@@ -56,10 +55,9 @@
                     This is free software, and you are welcome to redistribute it under <a
                         href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt">certain conditions</a>
                 </p>
-
-            </s:div>
-        </s:div>
-    </s:div>
-</s:div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

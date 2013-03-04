@@ -21,47 +21,11 @@
  */
 
 /**
- * validation!
- * @param the form need validate
- * @param result from server
- * @return {Boolean}, if pass validate, return true.
+ * Javascript for all page.
+ *
+ * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ * @version 1
  */
-function validation(form, result) {
-
-    if (result["result"] != null) {
-        //has result! no field error!
-        if (result["result"] != "ok") //unknow error
-        {
-            alert(result["error_msg"]);
-            return false;
-        }
-        return true;
-    }
-    else {
-        //field error!
-
-        // Clear existing errors on submit
-        form.find("div.error").removeClass("error");
-        form.find("span.s2_help_inline").remove();
-        form.find("div.s2_validation_errors").remove();
-
-        $.each(result, function(index, value) {
-            var element = form.find(":input[name=\"" + index + "\"]"), controlGroup, controls;
-            if (element && element.length > 0) {
-
-                // select first element
-                element = $(element[0]);
-                controlGroup = element.closest("div.control-group");
-                controlGroup.addClass('error');
-                controls = controlGroup.find("div.controls");
-                if (controls) {
-                    controls.append("<span class='help-inline s2_help_inline'>" + value[0] + "</span>");
-                }
-            }
-        });
-        return false;
-    }
-}
 
 !function ($) {
 
@@ -69,12 +33,10 @@ function validation(form, result) {
 
         // make code pretty
         window.prettyPrint && prettyPrint();
+
         // get avatars
         $('img#userAvatar').setAvatar();
 
-        $('#activityCarousel').carousel();
-
-        $('.info-problem-source').tooltip();
 
         $("#registerModal").setDialog({
             callback: function(e) {

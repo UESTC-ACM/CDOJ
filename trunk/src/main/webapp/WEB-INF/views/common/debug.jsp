@@ -25,11 +25,10 @@
   --%>
 
 <%--
-  Created by IntelliJ IDEA.
-  User: mzry1992
-  Date: 13-1-26
-  Time: 下午11:07
-  To change this template use File | Settings | File Templates.
+ Show debug information
+
+ @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ @version 1
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -37,16 +36,16 @@
     <title></title>
 </head>
 <body>
-<s:div cssClass="row">
-    <s:div cssClass="span12">
-        <s:div cssClass="alert alert-info">
+<div class="row">
+    <div class="span12">
+        <div class="alert alert-info">
             User Name : <s:property value="currentUser.userName"/><br/>
             Password : <s:property value="currentUser.password"/><br/>
             Last Login : <s:property value="currentUser.lastLogin"/><br/>
             Email : <s:property value="currentUser.email"/><br/>
             AuthenticationType : <s:property value="global.authenticationTypeList"/><br/>
-        </s:div>
-    </s:div>
-</s:div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
