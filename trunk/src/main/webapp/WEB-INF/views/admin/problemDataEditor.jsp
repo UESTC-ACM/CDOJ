@@ -39,7 +39,7 @@
     <title>Problem</title>
 </head>
 <body>
-<div class="row" id="problemEditor">
+<div class="row" id="problemDataEditor">
     <div class="span10">
         <form class="form-horizontal">
             <fieldset>
@@ -95,14 +95,14 @@
                                     <input type="radio"
                                            name="problemDTO.isSpj"
                                            value="true"
-                                           <s:if test="problemDataView.isSpj == true"/>checked="true">
+                                           <s:if test="problemDataView.isSpj == true">checked="true"</s:if>>
                                     Yes
                                 </label>
                                 <label class="radio inline">
                                     <input type="radio"
                                            name="problemDTO.isSpj"
                                            value="false"
-                                           <s:if test="problemDataView.isSpj == false"/>checked="true">
+                                           <s:if test="problemDataView.isSpj == false">checked="true"</s:if>>
                                     No
                                 </label>
                             </div>
@@ -146,7 +146,7 @@
                     <label class="control-label">Current data count</label>
                     <div class="controls">
                         <input type="text"
-                               name="problemDTO.javaMemoryLimit"
+                               name="problemDTO.dataCount"
                                maxlength="6"
                                value="${problemDataView.dataCount}"
                                id="problemDTO_dataCount"

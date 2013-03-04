@@ -190,12 +190,7 @@ $(document).ready(function () {
     });
 
     $('input#reset').click(function (e) {
-        $.each(currentCondition, function (index, value) {
-            if (index.indexOf('.') != -1)
-                $('#' + index.replace('.', '_')).attr('value', '');
-        });
-        $(':radio[name="problemCondition.isSpj"]:nth(0)').attr("checked", true);
-        $(':radio[name="problemCondition.isVisible"]:nth(0)').attr("checked", true);
+        $('#problemCondition').resetFormData();
         return false;
     });
 

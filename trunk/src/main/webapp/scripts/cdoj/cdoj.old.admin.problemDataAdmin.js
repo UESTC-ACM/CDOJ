@@ -65,11 +65,10 @@ $(document).ready(function () {
     });
 
     $('input#submit').click(function(){
-        problemDTO = $('#problemEditor').getFormData();
+        problemDTO = $('#problemDataEditor').getFormData();
         problemDTO["problemDTO.problemId"] = problemId;
         $.post(updateUrl, problemDTO, function(data) {
-            if (validation($('#problemEditor'), data)) {
-                console.log(data);
+            if (validation($('#problemDataEditor'), data)) {
                 alert('Successful!');
                 window.location.reload();
             }

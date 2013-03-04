@@ -88,12 +88,12 @@ public class ProblemDataView extends View<Problem> {
         this.dataCount = dataCount;
     }
 
-    public Boolean getSpj() {
+    public Boolean getIsSpj() {
         return isSpj;
     }
 
-    public void setSpj(Boolean spj) {
-        isSpj = spj;
+    public void setIsSpj(Boolean isSpj) {
+        this.isSpj = isSpj;
     }
 
     /**
