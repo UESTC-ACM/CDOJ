@@ -30,7 +30,7 @@ import java.io.*;
  * File util methods.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 public class FileUtil {
     private static final int BUFFER_SIZE = 2048;
@@ -86,7 +86,7 @@ public class FileUtil {
     }
 
     /**
-     * Clear all the files under the path.
+     * Clear all the files under the path and delete the directory.
      * <p/>
      * <strong>WARN</strong>: this operation cannot be reverted.
      *
@@ -96,12 +96,45 @@ public class FileUtil {
         clearDirectory(new File(path));
     }
 
+    /**
+     * Move a directory into specific location.
+     *
+     * @param fromDir origin directory location
+     * @param toDir   destination location
+     * @throws IOException
+     * @throws AppException
+     */
     public static void moveDirectory(File fromDir, File toDir) throws IOException, AppException {
         org.aspectj.util.FileUtil.copyDir(fromDir, toDir);
         clearDirectory(fromDir);
     }
 
+    /**
+     * Count number of files in the folder.
+     *
+     * @param file file pointer
+     * @return number of files in the folder
+     */
+    public static int countFiles(File file) {
+        if (!file.exists())
+            return 0;
+        File[] files = file.listFiles();
+        if (files == null)
+            return 0;
+        return files.length;
+    }
+
+    /**
+     * Delete specific directory.
+     *
+     * @param file directory file pointer
+     * @throws AppException
+     */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private static void clearDirectory(File file) throws AppException {
-        deleteContents(file);
+        if (file.exists()) {
+            deleteContents(file);
+            file.delete();
+        }
     }
 }
