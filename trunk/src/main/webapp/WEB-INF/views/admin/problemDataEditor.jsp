@@ -35,7 +35,7 @@
 <html>
 <head>
     <page:applyDecorator name="empty" page="/WEB-INF/views/common/fileUploaderHeader.jsp"/>
-    <script src="<s:url value="/scripts/cdoj/cdoj.old.admin.problemDataAdmin.js"/>"></script>
+    <script src="<s:url value="/scripts/cdoj/cdoj.admin.problemDataAdmin.js"/>"></script>
     <title>Problem</title>
 </head>
 <body>

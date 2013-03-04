@@ -223,7 +223,7 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
                 FileUtil.clearDirectory(dataPath);
                 FileUtil.moveDirectory(currentFile, targetFile);
 
-                problem.setDataCount(dataCount);
+                problem.setDataCount(dataCount/2);
             }
 
             problemDAO.addOrUpdate(problem);
