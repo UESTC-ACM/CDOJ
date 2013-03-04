@@ -139,7 +139,6 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
             File[] dataFiles = dataPath.listFiles();
             assert dataFiles != null;
             json.put("total", dataFiles.length / 2);
-
             json.put("success", "true");
         } catch (AppException e) {
             e.printStackTrace();
@@ -189,12 +188,12 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
                             max = "262144",
                             key = "error.memoryLimit.validation"
                     ),
-                    @IntRangeFieldValidator(
-                            fieldName = "problemDTO.javaMemoryLimit",
-                            min = "0",
-                            max = "262144",
-                            key = "error.memoryLimit.validation"
-                    ),
+//                    @IntRangeFieldValidator(
+//                            fieldName = "problemDTO.javaMemoryLimit",
+//                            min = "0",
+//                            max = "262144",
+//                            key = "error.memoryLimit.validation"
+//                    ),
                     @IntRangeFieldValidator(
                             fieldName = "problemDTO.outputLimit",
                             min = "0",
@@ -217,10 +216,13 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
 
             String dataPath = settings.JUDGE_DATA_PATH + "/" + targetProblemId;
             String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/" + targetProblemId;
-            FileUtil.clearDirectory(dataPath);
             File targetFile = new File(dataPath);
             File currentFile = new File(tempDirectory);
-            FileUtil.moveDirectory(currentFile, targetFile);
+            // If the uploaded file list is empty, that means we don't update the data folder.
+            if (FileUtil.countFiles(currentFile) != 0) {
+                FileUtil.clearDirectory(dataPath);
+                FileUtil.moveDirectory(currentFile, targetFile);
+            }
             json.put("result", "ok");
         } catch (AppException e) {
             json.put("result", "error");

@@ -37,7 +37,7 @@ import java.util.concurrent.BlockingQueue;
  * Problem judge component.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 public class Judge implements Runnable, SettingsAware {
     public void setJudgeName(String judgeName) {
@@ -105,36 +105,61 @@ public class Judge implements Runnable, SettingsAware {
         try {
             int numberOfTestCase = judgeItem.status.getProblemByProblemId().getDataCount();
             boolean isAccepted = true;
-            for (int i = 0; i < numberOfTestCase; ++i) {
-                judgeItem.status.setCaseNumber(i + 1);
-                FileUtil.saveToFile(judgeItem.status.getCodeByCodeId().getContent(), workPath + "/" + judgeItem.getSourceName());
+            for (int currentTestCase = 1; isAccepted && currentTestCase <= numberOfTestCase; ++currentTestCase) {
+                judgeItem.status.setCaseNumber(currentTestCase);
+                FileUtil.saveToFile(judgeItem.status.getCodeByCodeId().getContent(),
+                        tempPath + "/" + judgeItem.getSourceName());
                 int problemId = judgeItem.status.getProblemByProblemId().getProblemId();
-                String bash = "sudo ./" + workPath + settings.JUDGE_JUDGE_CORE + " -l " + judgeItem.parseLanguage();
-                bash += " -u " + judgeItem.status.getStatusId();
-                bash += " -s " + workPath + "/temp/" + judgeItem.getSourceName();
-                bash += " -n " + problemId;
-                bash += " -D " + settings.JUDGE_DATA_PATH + '/' + problemId + " -d " + tempPath;
-                if (judgeItem.status.getLanguageByLanguageId().getExtension().equals(".java")) {
-                    bash += " -t " + judgeItem.status.getProblemByProblemId().getJavaTimeLimit();
-                    bash += " -m " + judgeItem.status.getProblemByProblemId().getJavaMemoryLimit();
-                } else {
-                    bash += " -t " + judgeItem.status.getProblemByProblemId().getTimeLimit();
-                    bash += " -m " + judgeItem.status.getProblemByProblemId().getMemoryLimit();
-                }
-                bash += " -o " + judgeItem.status.getProblemByProblemId().getOutputLimit();
+                StringBuilder stringBuilder = new StringBuilder();
+
+                stringBuilder.append(workPath);
+                stringBuilder.append("/");
+                stringBuilder.append(settings.JUDGE_JUDGE_CORE);
+                stringBuilder.append(" -u ");
+                stringBuilder.append(judgeItem.status.getStatusId());
+                stringBuilder.append(" -s ");
+                stringBuilder.append(judgeItem.getSourceName());
+                stringBuilder.append(" -n ");
+                stringBuilder.append(problemId);
+                stringBuilder.append(" -D ");
+                stringBuilder.append(settings.JUDGE_DATA_PATH);
+                stringBuilder.append("/").append(judgeItem.status.getProblemByProblemId()).append("/");
+                stringBuilder.append(" -d ");
+                stringBuilder.append(tempPath);
+                stringBuilder.append(" -t ");
+                stringBuilder.append(judgeItem.status.getProblemByProblemId().getTimeLimit());
+                stringBuilder.append(" -m ");
+                stringBuilder.append(judgeItem.status.getProblemByProblemId().getMemoryLimit());
+                stringBuilder.append(" -o ");
+                stringBuilder.append(judgeItem.status.getProblemByProblemId().getOutputLimit());
+                if (judgeItem.status.getProblemByProblemId().getIsSpj())
+                    stringBuilder.append(" -S");
+                stringBuilder.append(" -l ");
+                // TODO 1 - C 2- C++ 3- Java
+                stringBuilder.append(judgeItem.status.getLanguageByLanguageId());
+                stringBuilder.append(" -I ");
+                stringBuilder.append(settings.JUDGE_DATA_PATH).append("/")
+                        .append(judgeItem.status.getProblemByProblemId())
+                        .append("/").append(currentTestCase).append(".in");
+                stringBuilder.append(" -O ");
+                stringBuilder.append(settings.JUDGE_DATA_PATH).append("/")
+                        .append(judgeItem.status.getProblemByProblemId())
+                        .append("/").append(currentTestCase).append(".out");
+                if (currentTestCase == 1)
+                    stringBuilder.append(" -C");
 
                 Process p;
-                String res = "";
+                String callBackString = "";
                 try {
-                    p = Runtime.getRuntime().exec(bash);
+                    p = Runtime.getRuntime().exec(stringBuilder.toString());
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
                     String line;
                     while ((line = bufferedReader.readLine()) != null) {
-                        res += line;
+                        callBackString += line;
                     }
                 } catch (Exception ignored) {
                 }
-                String[] ret = res.split(" ");
+                String[] ret = callBackString.split(" ");
                 if (ret != null && ret.length >= 3) {
                     int result = Integer.parseInt(ret[0]);
                     if (result == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {

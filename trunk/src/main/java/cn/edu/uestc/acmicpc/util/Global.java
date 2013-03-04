@@ -40,20 +40,20 @@ import java.util.List;
  * <strong>WARN:</strong> this file may be rewritten carefully.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 6
+ * @version 7
  */
 public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
     public enum OnlineJudgeReturnType {
-        OJ_WAIT("Queuing"), OJ_AC("Accepted"), OJ_PE("Presentation Error on test# $case"),
-        OJ_TLE("Time Limit Exceeded on test# $case"), OJ_MLE("Memory Limit Exceeded on test# $case"),
-        OJ_WA("Wrong Answer on test# $case"), OJ_OLE("Output Limit Exceeded on test# $case"),
-        OJ_CE("Compilation Error"), OJ_RE_SEGV("Runtime Error on test# $case"),
-        OJ_RE_FPE("Runtime Error on test# $case"), OJ_RE_BUS("Runtime Error on test# $case"),
-        OJ_RE_ABRT("Runtime Error on test# $case"), OJ_RE_UNKNOWN("Runtime Error on test# $case"),
-        OJ_RF("Restricted Function on test# $case"), OJ_SE("System Error on test# $case"),
-        OJ_RE_JAVA("Runtime Error on test# $case"), OJ_JUDGING("Judging..."),
-        OJ_RUNNING("Running on test# $case"), OJ_REJUDGING("Queuing");
+        OJ_WAIT("Queuing"), OJ_AC("Accepted"), OJ_PE("Presentation Error on test $case"),
+        OJ_TLE("Time Limit Exceeded on test $case"), OJ_MLE("Memory Limit Exceeded on test $case"),
+        OJ_WA("Wrong Answer on test $case"), OJ_OLE("Output Limit Exceeded on test $case"),
+        OJ_CE("Compilation Error"), OJ_RE_SEGV("Runtime Error on test $case"),
+        OJ_RE_FPE("Runtime Error on test $case"), OJ_RE_BUS("Runtime Error on test $case"),
+        OJ_RE_ABRT("Runtime Error on test $case"), OJ_RE_UNKNOWN("Runtime Error on test $case"),
+        OJ_RF("Restricted Function on test $case"), OJ_SE("System Error on test $case"),
+        OJ_RE_JAVA("Runtime Error on test $case"), OJ_JUDGING("Judging..."),
+        OJ_RUNNING("Running on test $case"), OJ_REJUDGING("Queuing");
         private String description;
 
         /**
