@@ -222,6 +222,7 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware, U
      *
      * @return <strong>JSON</strong> signal.
      */
+    @SkipValidation
     public String toOperatorUser() {
         try {
             int count = 0, total = 0;

@@ -241,6 +241,7 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
                 problemDTO.updateEntity(problem);
             } else { //add
                 problem = problemDTO.getEntity();
+                problem.setIsVisible(false);
             }
             if (problem == null)
                 throw new AppException("No such problem!");

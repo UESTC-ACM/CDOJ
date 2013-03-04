@@ -21,11 +21,10 @@
  */
 
 /**
- * Created with IntelliJ IDEA.
- * User: mzry1992
- * Date: 13-2-19
- * Time: 下午5:04
- * To change this template use File | Settings | File Templates.
+ * All function used in problem data admin page.
+ *
+ * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ * @version 1
  */
 
 var problemId;
