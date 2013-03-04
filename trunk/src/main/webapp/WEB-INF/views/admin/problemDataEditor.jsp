@@ -25,16 +25,15 @@
   --%>
 
 <%--
-  Created by IntelliJ IDEA.
-  User: mzry1992
-  Date: 13-2-8
-  Time: 下午1:59
-  To change this template use File | Settings | File Templates.
+ Admin problem data page
+
+ @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ @version 1
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <page:applyDecorator name="empty" page="/WEB-INF/views/common/fileUploaderHeader.jsp"/>
+    <page:applyDecorator name="head" page="/WEB-INF/views/common/fileUploaderHeader.jsp"/>
     <script src="<s:url value="/scripts/cdoj/cdoj.admin.problemDataAdmin.js"/>"></script>
     <title>Problem</title>
 </head>

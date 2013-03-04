@@ -20,6 +20,13 @@
 ~  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 ~  */
 --%>
+
+<%--
+ Other error page
+
+ @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ @version 1
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>

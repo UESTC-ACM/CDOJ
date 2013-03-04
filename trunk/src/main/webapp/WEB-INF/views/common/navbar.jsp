@@ -25,11 +25,10 @@
   --%>
 
 <%--
-  Created by IntelliJ IDEA.
-  User: mzry1992
-  Date: 13-1-25
-  Time: 下午11:54
-  To change this template use File | Settings | File Templates.
+ Navbar
+
+ @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ @version 1
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -37,23 +36,21 @@
     <title></title>
 </head>
 <body>
-<s:div cssClass="navbar navbar-fixed-top navbar-inverse">
-    <s:div cssClass="navbar-inner">
-        <s:div cssClass="container">
+<div class="navbar navbar-fixed-top navbar-inverse">
+    <div class="navbar-inner">
+        <div class="container">
             <ul class="nav">
-                <page:applyDecorator name="empty" page="/WEB-INF/views/common/navbarList.jsp"/>
+                <page:applyDecorator name="body" page="/WEB-INF/views/common/navbarList.jsp"/>
             </ul>
-            <!-- 导航部分 -->
-            <!-- 快速搜索框 -->
             <form class="navbar-search pull-right" action="">
                 <!-- TODO please check idea warning -->
                 <input type="text" class="search-query span2" placeholder="Search">
             </form>
 
-            <page:applyDecorator name="empty" page="/WEB-INF/views/common/navbarUser.jsp"/>
+            <page:applyDecorator name="body" page="/WEB-INF/views/common/navbarUser.jsp"/>
 
-        </s:div>
-    </s:div>
-</s:div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

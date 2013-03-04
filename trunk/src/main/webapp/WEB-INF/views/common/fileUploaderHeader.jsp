@@ -25,28 +25,26 @@
   --%>
 
 <%--
-  Created by IntelliJ IDEA.
-  User: mzry1992
-  Date: 13-2-20
-  Time: 下午3:30
-  To change this template use File | Settings | File Templates.
+ All javascript used for fileupload plugin
+
+ @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ @version 1
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title></title>
+    <link href="<s:url value="/plugins/file-uploader-master/client/fineuploader.css"/>" rel="stylesheet">
+    <script src="<s:url value="/plugins/file-uploader-master/client/js/header.js"/>"></script>
+    <script src="<s:url value="/plugins/file-uploader-master/client/js/util.js"/>"></script>
+    <script src="<s:url value="/plugins/file-uploader-master/client/js/button.js"/>"></script>
+    <script src="<s:url value="/plugins/file-uploader-master/client/js/handler.base.js"/>"></script>
+    <script src="<s:url value="/plugins/file-uploader-master/client/js/handler.form.js"/>"></script>
+    <script src="<s:url value="/plugins/file-uploader-master/client/js/handler.xhr.js"/>"></script>
+    <script src="<s:url value="/plugins/file-uploader-master/client/js/uploader.basic.js"/>"></script>
+    <script src="<s:url value="/plugins/file-uploader-master/client/js/dnd.js"/>"></script>
+    <script src="<s:url value="/plugins/file-uploader-master/client/js/uploader.js"/>"></script>
+    <script src="<s:url value="/plugins/file-uploader-master/client/js/jquery-plugin.js"/>"></script>
 </head>
 <body>
-<link href="<s:url value="/plugins/file-uploader-master/client/fineuploader.css"/>" rel="stylesheet">
-<script src="<s:url value="/plugins/file-uploader-master/client/js/header.js"/>"></script>
-<script src="<s:url value="/plugins/file-uploader-master/client/js/util.js"/>"></script>
-<script src="<s:url value="/plugins/file-uploader-master/client/js/button.js"/>"></script>
-<script src="<s:url value="/plugins/file-uploader-master/client/js/handler.base.js"/>"></script>
-<script src="<s:url value="/plugins/file-uploader-master/client/js/handler.form.js"/>"></script>
-<script src="<s:url value="/plugins/file-uploader-master/client/js/handler.xhr.js"/>"></script>
-<script src="<s:url value="/plugins/file-uploader-master/client/js/uploader.basic.js"/>"></script>
-<script src="<s:url value="/plugins/file-uploader-master/client/js/dnd.js"/>"></script>
-<script src="<s:url value="/plugins/file-uploader-master/client/js/uploader.js"/>"></script>
-<script src="<s:url value="/plugins/file-uploader-master/client/js/jquery-plugin.js"/>"></script>
 </body>
 </html>

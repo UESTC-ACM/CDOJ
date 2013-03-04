@@ -25,12 +25,10 @@
   --%>
 
 <%--
-  Created by IntelliJ IDEA.
-  User: mzry1992
-  Date: 13-1-30
-  Time: 下午2:13
-  To change this template use File | Settings | File Templates.
-  @TODO problem selector, difficult edit, tag.
+ Admin problem list page
+
+ @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ @version 1
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>

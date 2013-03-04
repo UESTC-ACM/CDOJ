@@ -25,11 +25,10 @@
   --%>
 
 <%--
-  Created by IntelliJ IDEA.
-  User: mzry1992
-  Date: 13-1-26
-  Time: 下午11:20
-  To change this template use File | Settings | File Templates.
+ User menu on navbar
+
+ @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ @version 1
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -48,7 +47,6 @@
             <ul class="dropdown-menu">
                 <li>
                     <!-- Button to trigger modal -->
-                        <%--suppress HtmlUnknownTarget --%>
                     <a href="#loginModal" role="button" data-toggle="modal">
                         <i class="icon-ok-circle"></i>
                         Login
@@ -57,7 +55,6 @@
 
                 <li>
                     <!-- Button to trigger modal -->
-                        <%--suppress HtmlUnknownTarget --%>
                     <a href="#registerModal" role="button" data-toggle="modal">
                         <i class="icon-plus-sign"></i>
                         Register
@@ -86,35 +83,26 @@
                         </s:a>
                     </li>
                 </s:if>
-                <!-- 用户中心的入口 -->
+
                 <li>
-                        <%--suppress HtmlUnknownTarget --%>
-                    <a href="./usercenter.html">
+                    <a href="#">
                         <i class="icon-home"></i>
                         User center
                     </a>
                 </li>
-
-                <!-- 未读消息 -->
                 <li>
-                        <%--suppress HtmlUnknownTarget --%>
-                    <a href="./message.html">
+                    <a href="#">
                         <i class="icon-envelope"></i>
                         Message
                         <span class="badge badge-success">2</span>
                     </a>
                 </li>
-
-                <!-- 收藏夹 -->
                 <li>
-                        <%--suppress HtmlUnknownTarget --%>
-                    <a href="./bookmark.html">
+                    <a href="#">
                         <i class="icon-folder-open"></i>
                         Bookmark
                     </a>
                 </li>
-
-                <!-- 登出 -->
                 <li>
                     <a href="#" id="logoutButton">
                         <i class="icon-off"></i>
@@ -124,7 +112,6 @@
             </ul>
         </li>
     </ul>
-    <!-- 用户相关的菜单 -->
 </s:else>
 </body>
 </html>

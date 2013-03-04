@@ -25,11 +25,10 @@
   --%>
 
 <%--
-  Created by IntelliJ IDEA.
-  User: mzry1992
-  Date: 13-1-26
-  Time: 下午11:19
-  To change this template use File | Settings | File Templates.
+ Nav list on navbar
+
+ @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ @version 1
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -39,51 +38,40 @@
 <body>
 <!-- TODO ul missing? -->
 <li class="divider-vertical"></li>
-
 <li>
     <a href="<s:url action="index" namespace="/"/>">CDOJ</a>
 </li>
 <li class="divider-vertical"></li>
-
 <li>
-    <a href="<s:url action="page/1" namespace="/problemset"/>">Problems</a>
+    <a href="#">Problems</a>
 </li>
 <li class="divider-vertical"></li>
-
 <li>
-    <%--suppress HtmlUnknownTarget --%>
-    <a href="./contest.html">Contests</a>
+    <a href="#">Contests</a>
 </li>
 <li class="divider-vertical"></li>
-
 <li>
-    <%--suppress HtmlUnknownTarget --%>
-    <a href="./status.html">Status</a>
+    <a href="#">Status</a>
 </li>
 <li class="divider-vertical"></li>
-
 <li>
-    <%--suppress HtmlUnknownTarget --%>
-    <a href="./users.html">Users</a>
+    <a href="#">Users</a>
 </li>
 <li class="divider-vertical"></li>
 
 <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Links<b class="caret"></b></a>
     <ul class="dropdown-menu">
-        <!-- 固定链接 -->
         <li><a href="#">BBS</a></li>
         <li><a href="#">Wiki</a></li>
         <li><a href="http://www.mzry1992.com/blog/">mzry1992.com</a></li>
 
-        <!-- Click这里就交给何老师了 -->
         <li class="divider"></li>
         <li class="nav-header">Click</li>
         <li><a href="#">F.A.Q</a></li>
         <li><a href="#">Download</a></li>
         <li><a href="#">Step-by-Step</a></li>
         <li><a href="#">Team Honors</a></li>
-
     </ul>
 </li>
 <li class="divider-vertical"></li>

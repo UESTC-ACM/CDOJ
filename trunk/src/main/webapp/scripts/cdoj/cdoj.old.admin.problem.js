@@ -132,7 +132,7 @@ function blindDifficultSpan() {
 
 function refreshProblemList(condition) {
     $.post('/admin/problem/search', condition, function (data) {
-        console.log(condition);
+
         if (data.result == "error") {
             alert(data.error_msg);
             return;
