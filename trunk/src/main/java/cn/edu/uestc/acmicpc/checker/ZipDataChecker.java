@@ -29,9 +29,33 @@ import java.io.File;
 
 /**
  * Data checker for data.zip files.
+ * <p/>
+ * <strong>Check items</strong>:
+ * <ul>
+ * <li>
+ * All file names in the zip file will match "*.in" or "*.out".
+ * </li>
+ * <li>
+ * The file name will be numbered from 1 to number of test cases.
+ * </li>
+ * <li>
+ * For all the data files, input file and output file will match.
+ * </li>
+ * </ul>
+ * <p/>
+ * <strong>For developers</strong>:
+ * <p/>
+ * This checker will not consider the folders in the zip file, that
+ * means if the zip file only contains a folder and the folder contains
+ * a valid file structure, this checker will not check the files in the
+ * folder.
+ * <strong>For administrators</strong>:
+ * <p/>
+ * Please put all data files in the zip file's root, rather than a
+ * specific folder.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 public class ZipDataChecker implements Checker<File> {
     @Override

@@ -32,9 +32,13 @@ import java.lang.reflect.Method;
 
 /**
  * Base view entity.
+ * <p/>
+ * <strong>USAGE</strong>:
+ * Create subclass and set ignore tag for some fields which we want
+ * to initialize ourselves.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 public class View<Entity extends Serializable> {
     /**

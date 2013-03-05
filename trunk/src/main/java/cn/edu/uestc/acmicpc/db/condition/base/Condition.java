@@ -30,9 +30,15 @@ import java.util.List;
 
 /**
  * Other conditions setting for DAO findAll method.
+ * <p/>
+ * <strong>For Developers</strong>:
+ * <p/>
+ * {@code currentPage} and {@code countPerPage} can be {@code null},
+ * if the fields is {@code null} we ignore this restriction, otherwise
+ * we consider the record range by this two fields.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @version 2
  */
 public class Condition {
     /**
