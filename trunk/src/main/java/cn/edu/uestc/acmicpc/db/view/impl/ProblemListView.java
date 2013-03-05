@@ -42,6 +42,7 @@ import java.util.List;
 @SuppressWarnings("UnusedDeclaration")
 public class ProblemListView extends View<Problem> {
 
+    //@TODO add pass state field
     private Integer problemId;
     private String title;
     private String source;

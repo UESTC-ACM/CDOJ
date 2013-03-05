@@ -43,7 +43,7 @@
 </li>
 <li class="divider-vertical"></li>
 <li>
-    <a href="#">Problems</a>
+    <a href="<s:url action="index" namespace="/problem"/>">Problems</a>
 </li>
 <li class="divider-vertical"></li>
 <li>
