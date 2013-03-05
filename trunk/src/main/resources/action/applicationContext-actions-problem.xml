@@ -39,6 +39,7 @@
           scope="prototype">
         <property name="problemDAO" ref="problemDAO"/>
         <property name="problemCondition" ref="problemCondition"/>
+        <property name="statusDAO" ref="statusDAO"/>
     </bean>
 
 </beans>
