@@ -24,6 +24,7 @@ package cn.edu.uestc.acmicpc.db.dto.impl;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
@@ -124,6 +125,7 @@ public class ProblemDTO extends BaseDTO<Problem> {
         this.memoryLimit = memoryLimit;
     }
 
+    @Ignore
     public Boolean getIsSpj() {
         return isSpj;
     }
@@ -132,6 +134,7 @@ public class ProblemDTO extends BaseDTO<Problem> {
         isSpj = spj;
     }
 
+    @Ignore
     public Boolean getIsVisible() {
         return isVisible;
     }
@@ -202,6 +205,10 @@ public class ProblemDTO extends BaseDTO<Problem> {
         Problem problem = super.getEntity();
         problem.setSolved(0);
         problem.setTried(0);
+        problem.setDataCount(0);
+        problem.setIsSpj(false);
+        problem.setIsVisible(false);
+        problem.setProblemId(null);
         return problem;
     }
 

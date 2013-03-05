@@ -25,6 +25,7 @@ package cn.edu.uestc.acmicpc.oj.action.admin;
 import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemView;
 import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
+import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.ReflectionUtil;
 import cn.edu.uestc.acmicpc.util.StringUtil;
@@ -54,7 +55,7 @@ import java.util.List;
  * @version 7
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class ProblemAdminAction extends BaseAction implements ProblemConditionAware {
+public class ProblemAdminAction extends BaseAction implements ProblemConditionAware, ProblemDAOAware {
 
     /**
      * ProblemDAO for problem search.
@@ -178,75 +179,6 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
             json.put("result", "ok");
             json.put("condition", problemCondition);
             json.put("problemList", problemListViewList);
-        } catch (AppException e) {
-            json.put("result", "error");
-            json.put("error_msg", e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            json.put("result", "error");
-            json.put("error_msg", "Unknown exception occurred.");
-        }
-        return JSON;
-    }
-
-    @SuppressWarnings("UnusedDeclaration")
-    public ProblemDTO getProblemDTO() {
-        return problemDTO;
-    }
-
-    /**
-     * Problem DTO setter for IoC.
-     *
-     * @param problemDTO problem data transform object
-     */
-    @SuppressWarnings("UnusedDeclaration")
-    public void setProblemDTO(ProblemDTO problemDTO) {
-        this.problemDTO = problemDTO;
-    }
-
-    /**
-     * User database transform object entity.
-     */
-    private ProblemDTO problemDTO;
-
-    /**
-     * To add or edit user entity.
-     * <p/>
-     * <strong>JSON output</strong>:
-     * <ul>
-     * <li>
-     * For success: {"result":"ok"}
-     * </li>
-     * <li>
-     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-     * </li>
-     * </ul>
-     *
-     * @return <strong>JSON</strong> signal
-     */
-    @Validations(
-            requiredStrings = {
-                    @RequiredStringValidator(
-                            fieldName = "problemDTO.title",
-                            key = "error.problemTitle.validation",
-                            trim = true
-                    )
-            }
-    )
-    public String toEdit() {
-        try {
-            Problem problem;
-            if (problemDTO.getProblemId() != null) { //edit
-                problem = problemDAO.get(problemDTO.getProblemId());
-                problemDTO.updateEntity(problem);
-            } else { //add
-                problem = problemDTO.getEntity();
-                problem.setIsVisible(false);
-            }
-            if (problem == null)
-                throw new AppException("No such problem!");
-            problemDAO.addOrUpdate(problem);
-            json.put("result", "ok");
         } catch (AppException e) {
             json.put("result", "error");
             json.put("error_msg", e.getMessage());

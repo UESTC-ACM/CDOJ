@@ -33,6 +33,7 @@
        http://www.springframework.org/schema/tx/spring-tx-3.1.xsd"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx">
+
     <bean id="baseAction"
           class="cn.edu.uestc.acmicpc.oj.action.BaseAction"
           scope="prototype">
@@ -47,65 +48,10 @@
           scope="prototype">
     </bean>
 
-    <bean id="indexAction"
-          class="cn.edu.uestc.acmicpc.oj.action.index.IndexAction"
-          parent="baseAction"
-          scope="prototype">
-    </bean>
-
-    <bean id="testAction"
-          class="cn.edu.uestc.acmicpc.oj.action.test.TestAction"
-          parent="baseAction"
-          scope="prototype">
-        <property name="tagDAO" ref="tagDAO"/>
-    </bean>
-    <bean id="testFileUploadAction"
-          class="cn.edu.uestc.acmicpc.oj.action.test.TestFileUploadAction"
-          parent="baseAction"
-          scope="prototype">
-    </bean>
-
-    <bean id="registerAction"
-          class="cn.edu.uestc.acmicpc.oj.action.user.RegisterAction"
-          parent="baseAction"
-          scope="prototype">
-        <property name="departmentDAO" ref="departmentDAO"/>
-    </bean>
-    <bean id="loginAction"
-          class="cn.edu.uestc.acmicpc.oj.action.user.LoginAction"
-          parent="baseAction"
-          scope="prototype">
-    </bean>
-    <bean id="logoutAction"
-          class="cn.edu.uestc.acmicpc.oj.action.user.LogoutAction"
-          parent="baseAction"
-          scope="prototype">
-    </bean>
-
-    <bean id="adminIndexAction"
-          class="cn.edu.uestc.acmicpc.oj.action.admin.IndexAction"
-          parent="baseAction"
-          scope="prototype">
-    </bean>
-    <bean id="userAdminAction"
-          class="cn.edu.uestc.acmicpc.oj.action.admin.UserAdminAction"
-          parent="baseAction"
-          scope="prototype">
-        <property name="departmentDAO" ref="departmentDAO"/>
-        <property name="userCondition" ref="userCondition"/>
-    </bean>
-    <bean id="problemAdminAction"
-          class="cn.edu.uestc.acmicpc.oj.action.admin.ProblemAdminAction"
-          parent="baseAction"
-          scope="prototype">
-        <property name="problemDAO" ref="problemDAO"/>
-        <property name="problemCondition" ref="problemCondition"/>
-    </bean>
-    <bean id="problemDataAdminAction"
-          class="cn.edu.uestc.acmicpc.oj.action.admin.ProblemDataAdminAction"
-          parent="fileUploadAction"
-          scope="prototype">
-        <property name="problemDAO" ref="problemDAO"/>
-    </bean>
+    <import resource="action/applicationContext-actions-problem.xml"/>
+    <import resource="action/applicationContext-actions-index.xml"/>
+    <import resource="action/applicationContext-actions-test.xml"/>
+    <import resource="action/applicationContext-actions-admin.xml"/>
+    <import resource="action/applicationContext-actions-user.xml"/>
 
 </beans>

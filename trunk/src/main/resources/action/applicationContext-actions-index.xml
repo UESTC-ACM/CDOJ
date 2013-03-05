@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
   ~ /*
   ~  * cdoj, UESTC ACMICPC Online Judge
@@ -22,20 +21,22 @@
   ~  */
   -->
 
-<!DOCTYPE struts PUBLIC
-        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<beans default-lazy-init="true"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-3.1.xsd"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx">
 
-<struts>
-    <!-- test package -->
-    <package name="test" namespace="/test" extends="default">
-        <action name="test" class="testAction" method="toTest">
-            <result>/WEB-INF/views/test/index.jsp</result>
-        </action>
+    <bean id="indexAction"
+          class="cn.edu.uestc.acmicpc.oj.action.index.IndexAction"
+          parent="baseAction"
+          scope="prototype">
+    </bean>
 
-        <action name="upload/index" class="testFileUploadAction" method="execute">
-            <result name="success">/WEB-INF/views/test/uploadFile.jsp</result>
-        </action>
-        <action name="upload/upload" class="testFileUploadAction" method="onUploadFile"/>
-    </package>
-</struts>
+</beans>
