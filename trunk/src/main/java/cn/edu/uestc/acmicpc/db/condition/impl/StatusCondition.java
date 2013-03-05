@@ -37,7 +37,7 @@ import java.util.List;
  * Status search condition.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 @SuppressWarnings("UnusedDeclaration")
 public class StatusCondition extends BaseCondition {
@@ -55,19 +55,19 @@ public class StatusCondition extends BaseCondition {
     /**
      * User's id.
      */
-    @Exp(Type = ConditionType.eq, MapObject = User.class)
+    @Exp(MapField = "userByUserId", Type = ConditionType.eq, MapObject = User.class)
     public Integer userId;
 
     /**
      * Problem's id.
      */
-    @Exp(Type = ConditionType.eq, MapObject = Problem.class)
+    @Exp(MapField = "problemByProblemId", Type = ConditionType.eq, MapObject = Problem.class)
     public Integer problemId;
 
     /**
      * Judging result list(<strong>PRIMARY</strong>).
      */
-    public List<Global.OnlineJudgeReturnType> result = new LinkedList<Global.OnlineJudgeReturnType>();
+    public List<Global.OnlineJudgeReturnType> result = new LinkedList<>();
 
     /**
      * Judging result int format.
@@ -76,8 +76,8 @@ public class StatusCondition extends BaseCondition {
 
     @Override
     public void invoke(Condition condition) {
-        if (!result.isEmpty() || iResult != null) {
-            if (!result.isEmpty()) {
+        if (result != null && !result.isEmpty() || iResult != null) {
+            if (result != null && !result.isEmpty()) {
                 Junction junction = Restrictions.disjunction();
                 for (Global.OnlineJudgeReturnType onlineJudgeReturnType : result)
                     junction.add(Restrictions.eq("result", onlineJudgeReturnType.ordinal()));

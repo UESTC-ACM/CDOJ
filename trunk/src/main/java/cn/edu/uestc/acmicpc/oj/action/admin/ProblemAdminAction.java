@@ -22,27 +22,26 @@
 
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.db.view.impl.ProblemListView;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemView;
 import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
+import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
-import cn.edu.uestc.acmicpc.util.ReflectionUtil;
-import cn.edu.uestc.acmicpc.util.StringUtil;
-import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.db.view.impl.ProblemListView;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.ReflectionUtil;
+import cn.edu.uestc.acmicpc.util.StringUtil;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
-import com.opensymphony.xwork2.validator.annotations.Validations;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import javax.persistence.Column;
@@ -54,11 +53,12 @@ import java.util.List;
  * action for list, search, edit, add problem.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 7
+ * @version 8
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class ProblemAdminAction extends BaseAction
-        implements ProblemConditionAware, ProblemDAOAware, StatusDAOAware {
+        implements ProblemConditionAware, ProblemDAOAware,
+        StatusDAOAware, StatusConditionAware {
 
     /**
      * ProblemDAO for problem search.
@@ -70,7 +70,8 @@ public class ProblemAdminAction extends BaseAction
      */
     private IStatusDAO statusDAO;
 
-    public ProblemCondition problemCondition = new ProblemCondition();
+    public ProblemCondition problemCondition;
+    private StatusCondition statusCondition;
 
     @Override
     public void setProblemCondition(ProblemCondition problemCondition) {
@@ -182,7 +183,7 @@ public class ProblemAdminAction extends BaseAction
             List<Problem> problemList = problemDAO.findAll(condition);
             List<ProblemListView> problemListViewList = new ArrayList<>();
             for (Problem problem : problemList)
-                problemListViewList.add(new ProblemListView(problem, getCurrentUser(), statusDAO));
+                problemListViewList.add(new ProblemListView(problem, getCurrentUser(), statusDAO, statusCondition));
             json.put("pageInfo", pageInfo.getHtmlString());
             json.put("result", "ok");
             json.put("condition", problemCondition);
@@ -263,5 +264,10 @@ public class ProblemAdminAction extends BaseAction
     @Override
     public void setStatusDAO(IStatusDAO statusDAO) {
         this.statusDAO = statusDAO;
+    }
+
+    @Override
+    public void setStatusCondition(StatusCondition statusCondition) {
+        this.statusCondition = statusCondition;
     }
 }
