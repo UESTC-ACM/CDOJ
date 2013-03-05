@@ -22,10 +22,12 @@
 
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
+import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemView;
 import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.ReflectionUtil;
 import cn.edu.uestc.acmicpc.util.StringUtil;
@@ -55,12 +57,18 @@ import java.util.List;
  * @version 7
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class ProblemAdminAction extends BaseAction implements ProblemConditionAware, ProblemDAOAware {
+public class ProblemAdminAction extends BaseAction
+        implements ProblemConditionAware, ProblemDAOAware, StatusDAOAware {
 
     /**
      * ProblemDAO for problem search.
      */
     private IProblemDAO problemDAO;
+
+    /**
+     * StatusDAO for status queries.
+     */
+    private IStatusDAO statusDAO;
 
     public ProblemCondition problemCondition = new ProblemCondition();
 
@@ -174,7 +182,7 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
             List<Problem> problemList = problemDAO.findAll(condition);
             List<ProblemListView> problemListViewList = new ArrayList<>();
             for (Problem problem : problemList)
-                problemListViewList.add(new ProblemListView(problem));
+                problemListViewList.add(new ProblemListView(problem, getCurrentUser(), statusDAO));
             json.put("pageInfo", pageInfo.getHtmlString());
             json.put("result", "ok");
             json.put("condition", problemCondition);
@@ -252,4 +260,8 @@ public class ProblemAdminAction extends BaseAction implements ProblemConditionAw
         return JSON;
     }
 
+    @Override
+    public void setStatusDAO(IStatusDAO statusDAO) {
+        this.statusDAO = statusDAO;
+    }
 }

@@ -53,6 +53,7 @@
           scope="prototype">
         <property name="problemDAO" ref="problemDAO"/>
         <property name="problemCondition" ref="problemCondition"/>
+        <property name="statusDAO" ref="statusDAO"/>
     </bean>
     <bean id="problemStatementAdminAction"
           class="cn.edu.uestc.acmicpc.oj.action.admin.ProblemStatementAdminAction"

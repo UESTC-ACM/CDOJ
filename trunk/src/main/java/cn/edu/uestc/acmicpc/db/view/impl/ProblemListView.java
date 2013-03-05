@@ -22,9 +22,13 @@
 
 package cn.edu.uestc.acmicpc.db.view.impl;
 
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
+import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.base.View;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -37,12 +41,35 @@ import java.util.List;
  * description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 3
+ * @version 4
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ProblemListView extends View<Problem> {
 
-    //@TODO add pass state field
+    /**
+     * State: not submitted
+     */
+    public static final int NONE = 0;
+    /**
+     * State: submitted but failed
+     */
+    public static final int FAILED = 1;
+    /**
+     * State: submitted and passed
+     */
+    public static final int PASSED = 2;
+
+    private Integer state;
+
+    public Integer getState() {
+        return state;
+    }
+
+    @Ignore
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
     private Integer problemId;
     private String title;
     private String source;
@@ -60,7 +87,7 @@ public class ProblemListView extends View<Problem> {
      * @throws cn.edu.uestc.acmicpc.util.exception.AppException
      *
      */
-    public ProblemListView(Problem problem) throws AppException {
+    public ProblemListView(Problem problem, User currentUser, IStatusDAO statusDAO) throws AppException {
         super(problem);
         List<String> list = new LinkedList<>();
         Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
@@ -68,6 +95,28 @@ public class ProblemListView extends View<Problem> {
             list.add(StringEscapeUtils.escapeHtml4(problemTag.getTagByTagId().getName()));
         }
         setTags(list);
+        if (currentUser == null) {
+            setState(NONE);
+        } else {
+            StatusCondition statusCondition = new StatusCondition();
+            statusCondition.userId = currentUser.getUserId();
+            statusCondition.problemId = problemId;
+            long count = statusDAO.count(statusCondition.getCondition());
+            if (count == 0) {
+                setState(NONE);
+            } else {
+                statusCondition.clear();
+                statusCondition.userId = currentUser.getUserId();
+                statusCondition.problemId = problemId;
+                List<Global.OnlineJudgeReturnType> result = new LinkedList<>();
+                result.add(Global.OnlineJudgeReturnType.OJ_AC);
+                statusCondition.result = result;
+                if (statusDAO.count(statusCondition.getCondition()) != 0)
+                    setState(PASSED);
+                else
+                    setState(FAILED);
+            }
+        }
     }
 
     public Integer getProblemId() {
