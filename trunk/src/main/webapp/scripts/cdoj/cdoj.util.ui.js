@@ -45,7 +45,10 @@
         $.each(this, function() {
             var self = $(this);
             self.on("show", function() {    // wire up the button
-                options.button.on("click", options.callback);
+                options.button.on("click", function(){
+                    options.callback();
+                    return false;
+                });
             });
             self.on("hide", function() {    // remove the event listeners when the dialog is dismissed
                 options.button.off("click");
@@ -67,7 +70,10 @@
             userOptions);
 
         $.each(this, function() {
-            $(this).on("click", options.callback);
+            $(this).on("click", function(){
+                options.callback();
+                return false;
+            });
         });
 
         return this;

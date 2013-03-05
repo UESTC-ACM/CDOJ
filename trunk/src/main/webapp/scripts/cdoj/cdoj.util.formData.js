@@ -27,7 +27,7 @@
  * @version 1
  */
 
-(function($) {
+(function ($) {
     'use strict';
 
     /**
@@ -36,7 +36,7 @@
      * @param input A validate jQuery :input node.
      * @return {*} The data in this input node.
      */
-    var defaultExtraction = function(input) {
+    var defaultExtraction = function (input) {
         return input.val();
     };
 
@@ -46,10 +46,10 @@
      * @param input
      * @param data
      */
-    var defaultSetter = function(input,data) {
+    var defaultSetter = function (input, data) {
         if (data == undefined)
             data = '';
-        input.attr('value',data);
+        input.attr('value', data);
     };
 
     /**
@@ -58,9 +58,15 @@
      * @type {{}}
      */
     var dataExtractions = {
-        radio: function(input) {
-            var result = $(':radio[name="'+input.attr('name')+'"]:checked').val();
+        radio: function (input) {
+            var result = $(':radio[name="' + input.attr('name') + '"]:checked').val();
             if (result == 'all')
+                result = undefined;
+            return result;
+        },
+        select: function (input) {
+            var result = input.val();
+            if (result == -1)
                 result = undefined;
             return result;
         }
@@ -72,10 +78,18 @@
      * @type {{radio: Function}}
      */
     var dataSetter = {
-        radio: function(input,data) {
+        radio: function (input, data) {
             if (data == undefined)
                 data = 'all';
-            $(':radio[name="'+input.attr('name')+'"]').find('[value="'+data+'"]').attr("checked", true);
+            if (input.attr('value') == data)
+                input.attr('checked',true);
+            else
+                input.attr('checked',false);
+        },
+        select: function (input, data) {
+            if (data == undefined)
+                data = -1;
+            input.attr('value',data);
         }
     };
 
@@ -87,8 +101,9 @@
      */
     function extractData(input) {
         var result = defaultExtraction(input);
-        $.each(dataExtractions,function(index,extraction){
-            if (index == input.attr('type'))
+        $.each(dataExtractions, function (index, extraction) {
+            if (index == input.attr('type') ||
+                index == input[0].localName)
                 result = extraction(input);
         });
         return result;
@@ -100,19 +115,25 @@
      * @param input
      * @param value
      */
-    function setData(input,value) {
-        defaultSetter(input,value);
-        $.each(dataSetter,function(index,setter){
-            if (index == input.attr('type'))
-                setter(input,value);
+    function setData(input, value) {
+        var hasSet = false;
+        $.each(dataSetter, function (index, setter) {
+            if (index == input.attr('type') ||
+                index == input[0].localName) {
+                setter(input, value);
+                hasSet = true;
+            }
         });
+        if (hasSet == false)
+            defaultSetter(input, value);
     }
+
     /**
      * Unused node list
      *
      * @type {Array}
      */
-    var ignoreList = ['submit','reset','button','image','file'];
+    var ignoreList = ['submit', 'reset', 'button', 'image', 'file'];
 
     /**
      * Ignore some unused :input node
@@ -121,17 +142,17 @@
      * @return {*}
      */
     function ignore(input) {
-        return $.inArray(input.attr('type'),ignoreList);
+        return $.inArray(input.attr('type'), ignoreList);
     }
 
     /**
      * Get selected form's all data field.
      */
-    $.fn.getFormData = function() {
+    $.fn.getFormData = function () {
         var inputs = $(this).find(':input');
         var result = {};
 
-        $.each(inputs,function(){
+        $.each(inputs, function () {
             var input = $(this);
             if (ignore(input) == -1)
                 result[input.attr('name')] = extractData(input);
@@ -145,22 +166,24 @@
      *
      * @param data
      */
-    $.fn.setFormData = function(data) {
+    $.fn.setFormData = function (data) {
         var form = $(this);
-        $.each(data,function(index,value) {
-            var input = form.find(':input[name='+index+']');
-            if (input != null) {
-                setData(input,value);
-            }
+        $.each(data, function (index, value) {
+            var input = form.find(':input[name="' + index + '"]');
+            if (ignore(input) == -1)
+                if (input != null)
+                    setData(input, value);
         });
     }
 
-    $.fn.resetFormData = function() {
+    $.fn.resetFormData = function () {
         var inputs = $(this).find(':input');
 
-        $.each(inputs,function(){
+        $.each(inputs, function () {
             var input = $(this);
-            setData(input,undefined);
+            if (ignore(input) == -1)
+                if (input != null)
+                    setData(input, undefined);
         })
     }
 

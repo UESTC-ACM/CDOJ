@@ -60,7 +60,7 @@
     <script src="<s:url value="/scripts/cdoj/cdoj.util.avatar.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.string.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.ui.js"/>"></script>
-    <script src="<s:url value="/scripts/cdoj/cdoj.old.js"/>"></script>
+    <script src="<s:url value="/scripts/cdoj/cdoj.js"/>"></script>
 </head>
 <body>
 </body>

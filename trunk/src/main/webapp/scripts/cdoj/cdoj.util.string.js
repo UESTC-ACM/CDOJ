@@ -21,12 +21,12 @@
  */
 
 /**
- * Created with IntelliJ IDEA.
- * User: mzry1992
- * Date: 13-2-15
- * Time: 下午4:01
- * To change this template use File | Settings | File Templates.
+ * HTML escape and unescape function
+ *
+ * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ * @version 1
  */
+
 
 js = {lang:{}};
 

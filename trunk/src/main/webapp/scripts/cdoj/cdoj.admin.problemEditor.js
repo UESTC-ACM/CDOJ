@@ -21,12 +21,12 @@
  */
 
 /**
- * Created with IntelliJ IDEA.
- * User: mzry1992
- * Date: 13-2-4
- * Time: 下午5:39
- * To change this template use File | Settings | File Templates.
+ * All function used in problem statement editor page.
+ *
+ * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ * @version 1
  */
+
 
 var epicEditorOpts = {
     container: 'epiceditor',
@@ -75,21 +75,21 @@ var problemDTO = {
 };
 
 var problemId;
-var editMode = "new";
+var editMode = 'new';
 
 //TODO clean the styles paste into editor
 
 $(document).ready(function () {
 
-    editMode = $('#editorFlag').attr("value");
-    if (editMode == "edit")
+    editMode = $('#editorFlag').attr('value');
+    if (editMode == 'edit')
         problemId = $('#problemId')[0].innerHTML;
 
     $.each(editors,function(editorId) {
         epicEditorOpts.container = editorId;
-        if (editMode == "new") {
+        if (editMode == 'new') {
             epicEditorOpts.clientSideStorage = true;
-            epicEditorOpts.file.name = editorId+"new";
+            epicEditorOpts.file.name = editorId+'new';
             editors[editorId] = new EpicEditor(epicEditorOpts).load();
         }
         else {
@@ -102,24 +102,27 @@ $(document).ready(function () {
     });
 
     $('input#submit').click(function () {
-        if (editMode == "edit")
-            problemDTO["problemDTO.problemId"] = problemId;
-        problemDTO["problemDTO.title"] = $('#problemDTO_title').val();
-        problemDTO["problemDTO.source"] = $('#problemDTO_source').val();
+        if (editMode == 'edit')
+            problemDTO['problemDTO.problemId'] = problemId;
+        problemDTO['problemDTO.title'] = $('#problemDTO_title').val();
+        problemDTO['problemDTO.source'] = $('#problemDTO_source').val();
         $.each(editors,function(editorId) {
             problemDTO[editorId.replace('_','.')] = this.exportFile();
         });
-        //noinspection JSUnresolvedFunction
-        $.post("/admin/problem/edit",problemDTO,function(data) {
-            if (validation($('#problemEditor'),data)) {
-                alert('Successful!');
-                $.each(editors,function() {
-                    this.remove(this.settings.file.name);
-                });
-                window.location.href= '/admin/problem/list';
-            }
-            else
-                $('html,body').animate({scrollTop: '0px'}, 400);
+        $.post('/admin/problem/edit',problemDTO,function(data) {
+            $('#problemEditor').checkValidate({
+                result: data,
+                onSuccess: function(){
+                    alert('Successful!');
+                    $.each(editors,function() {
+                        this.remove(this.settings.file.name);
+                    });
+                    window.location.href= '/admin/problem/list';
+                },
+                onFail: function(){
+                    $('html,body').animate({scrollTop: '0px'}, 400);
+                }
+            });
         });
         return false;
     });

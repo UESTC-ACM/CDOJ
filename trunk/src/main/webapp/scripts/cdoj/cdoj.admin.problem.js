@@ -21,11 +21,10 @@
  */
 
 /**
- * Created with IntelliJ IDEA.
- * User: mzry1992
- * Date: 13-1-30
- * Time: 下午9:13
- * To change this template use File | Settings | File Templates.
+ * All function used in problem admin list page.
+ *
+ * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ * @version 1
  */
 
 /**
@@ -41,38 +40,38 @@ var problemList;
 var visibleClass = 'icon-eye-open';
 var unVisibleClass = 'icon-eye-close';
 
-function getQueryString(field,id,value) {
+function getQueryString(field, id, value) {
     var queryString = '/admin/problem/operator?method=edit';
-    queryString += '&id='+id;
-    queryString += '&field='+field;
-    queryString += '&value='+value;
+    queryString += '&id=' + id;
+    queryString += '&field=' + field;
+    queryString += '&value=' + value;
     return queryString;
 }
 
-function editVisible(id,value) {
-    var queryString = getQueryString('isVisible',id,value);
-    $.post(queryString,function(data){
+function editVisible(id, value) {
+    var queryString = getQueryString('isVisible', id, value);
+    $.post(queryString, function (data) {
         if (data.result == "ok") {
-            var icon = $('#visibleState[problemId="'+id+'"]');
-            if (value == false)
-            {
+            var icon = $('#visibleState[problemId="' + id + '"]');
+            if (value == false) {
                 icon.removeClass(visibleClass);
                 icon.addClass(unVisibleClass);
             }
-            else
-            {
+            else {
                 icon.removeClass(unVisibleClass);
                 icon.addClass(visibleClass);
             }
-            icon.live('click',function(){editVisible(id,!value)});
+            icon.live('click', function () {
+                editVisible(id, !value)
+            });
         }
     });
 }
 
-function getTitle(problemId,title, source, isSpj, isVisible) {
+function getTitle(problemId, title, source, isSpj, isVisible) {
     var html = '';
 
-    html += '<i id="visibleState" isVisible="'+isVisible+'"problemId="'+problemId+'" class="';
+    html += '<i id="visibleState" isVisible="' + isVisible + '"problemId="' + problemId + '" class="';
     if (isVisible == true)
         html += visibleClass;
     else
@@ -82,7 +81,7 @@ function getTitle(problemId,title, source, isSpj, isVisible) {
     if (isSpj == true)
         html += '<span class="label label-important tags pull-left">SPJ</span>';
 
-    html += '<a href="/admin/problem/editor/'+problemId+'" title="Edit problem">'
+    html += '<a href="/admin/problem/editor/' + problemId + '" title="Edit problem">'
         + title + '</a></span>';
     return html;
 }
@@ -96,30 +95,30 @@ function getTags(tags) {
 }
 
 function getDifficulty(difficulty) {
-    difficulty = Math.max(1,Math.min(difficulty,5));
+    difficulty = Math.max(1, Math.min(difficulty, 5));
     var html = '';
     for (var i = 1; i <= difficulty; i++)
-        html += '<i class="difficulty-level icon-star" value="'+i+'"></i>';
-    for (var i = difficulty+1; i <= 5; i++)
-        html += '<i class="difficulty-level icon-star-empty" value="'+i+'"></i>';
+        html += '<i class="difficulty-level icon-star" value="' + i + '"></i>';
+    for (var i = difficulty + 1; i <= 5; i++)
+        html += '<i class="difficulty-level icon-star-empty" value="' + i + '"></i>';
     return html;
 }
 
 function blindVisibleEdit() {
-    $('#visibleState').live('click',function(){
+    $('#visibleState').live('click', function () {
         var id = $(this).attr('problemId');
-        var visible = ($(this).attr('isVisible') == 'true')?true:false;
-        editVisible(id,!visible);
+        var visible = ($(this).attr('isVisible') == 'true') ? true : false;
+        editVisible(id, !visible);
     });
 }
 
 function blindDifficultSpan() {
-    $('i.difficulty-level').live('click',function(){
+    $('i.difficulty-level').live('click', function () {
         var target = $(this);
         var problemId = target.parent().attr('problemId');
         var value = target.attr('value');
-        var queryString = getQueryString('difficulty',problemId,value);
-        $.post(queryString,function(data){
+        var queryString = getQueryString('difficulty', problemId, value);
+        $.post(queryString, function (data) {
             if (data.result == "ok") {
                 var parentNode = target.parent();
                 parentNode.empty();
@@ -155,8 +154,8 @@ function refreshProblemList(condition) {
         $.each(problemList, function (index, value) {
             var html = '<tr>' +
                 '<td>' + value.problemId + '</td>' +
-                '<td>' + getTitle(value.problemId,value.title, value.source, value.isSpj, value.isVisible) + getTags(value.tags) + '</td>' +
-                '<td class="difficult-span" problemId="'+value.problemId+'">' + getDifficulty(value.difficulty) + '</td>' +
+                '<td>' + getTitle(value.problemId, value.title, value.source, value.isSpj, value.isVisible) + getTags(value.tags) + '</td>' +
+                '<td class="difficult-span" problemId="' + value.problemId + '">' + getDifficulty(value.difficulty) + '</td>' +
                 '<td><a href="/admin/problem/data/' + value.problemId + '" title="Edit data"><i class="icon-cog"</a></td>' +
                 '</tr>';
             tbody.append(html);
@@ -181,17 +180,19 @@ $(document).ready(function () {
         "problemCondition.keyword": undefined
     }
 
-    $('input#search').click(function (e) {
-        currentCondition = $('#problemCondition').getFormData();
-        currentCondition.currentPage = 1;
-        refreshProblemList(currentCondition);
-        $('#TabMenu a:first').tab('show');
-        return false;
+    $('input#search').setButton({
+        callback: function () {
+            currentCondition = $('#problemCondition').getFormData();
+            currentCondition.currentPage = 1;
+            refreshProblemList(currentCondition);
+            $('#TabMenu a:first').tab('show');
+        }
     });
 
-    $('input#reset').click(function (e) {
-        $('#problemCondition').resetFormData();
-        return false;
+    $('input#reset').setButton({
+        callback: function () {
+            $('#problemCondition').resetFormData();
+        }
     });
 
     refreshProblemList(currentCondition);
