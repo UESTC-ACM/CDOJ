@@ -86,7 +86,7 @@ import java.lang.reflect.Field;
  * </ul>
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 6
+ * @version 7
  */
 public abstract class BaseCondition implements ApplicationContextAware {
 
@@ -98,6 +98,11 @@ public abstract class BaseCondition implements ApplicationContextAware {
 
     /**
      * Method for user to invoke special columns
+     * <p/>
+     * <strong>USAGE</strong>:
+     * <p/>
+     * We can iterator all the fields which will be considered, and
+     * handle the condition object according to the fields' values.
      *
      * @param condition conditions that to be considered
      */
@@ -129,19 +134,19 @@ public abstract class BaseCondition implements ApplicationContextAware {
     }
 
     /**
-     * Get Criterion objects from conditions
+     * Get {@code Condition} objects from conditions
      *
-     * @return criterion list we need
+     * @return condition object we need
      */
     public Condition getCondition() {
         return getCondition(false);
     }
 
     /**
-     * Get Criterion objects from conditions
+     * Get Condition objects from conditions
      *
      * @param upperCaseFirst whether columns' name begin uppercase letter first
-     * @return criterion list we need
+     * @return condition object we need
      */
     @SuppressWarnings({"ConstantConditions", "unchecked"})
     public Condition getCondition(boolean upperCaseFirst) {
@@ -193,10 +198,27 @@ public abstract class BaseCondition implements ApplicationContextAware {
      */
     @Retention(RetentionPolicy.RUNTIME)
     public @interface Exp {
+        /**
+         * Mapping field name.
+         *
+         * @return mapping field name
+         */
         public String MapField() default "";
 
+        /**
+         * Mapping object's class, we will get the persistence entity by
+         * specific DAO object.
+         *
+         * @return mapping object class
+         */
         public Class<?> MapObject() default Object.class;
 
+        /**
+         * Condition compare type, generate the condition clause by the
+         * compare type.
+         *
+         * @return condition compare type
+         */
         public ConditionType Type();
 
     }

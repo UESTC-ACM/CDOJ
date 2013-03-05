@@ -38,11 +38,15 @@ import java.util.List;
 
 /**
  * Global DAO implementation.
+ * <p/>
+ * <strong>WARN</strong>:
+ * This class is only a abstract class, please create subclass by
+ * overriding {@code getReference} method.
  *
  * @param <Entity> Entity's type
  * @param <PK>     Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 11
+ * @version 12
  */
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         extends BaseDAO implements IDAO<Entity, PK> {

@@ -28,6 +28,8 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * Checker for file uploader or unzip tools.
  * <p/>
  * We can use {@code Checker} Entity when upload files or unzip a {@code zip} file.
+ * <p/>
+ * Override {@code check} method for checker working.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
