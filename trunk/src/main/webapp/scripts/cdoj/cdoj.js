@@ -35,12 +35,11 @@
         window.prettyPrint && prettyPrint();
 
         // get avatars
-        $('img#userAvatar').setAvatar();
-
+        $('img#userAvatar').setAvatar({});
 
         $("#registerModal").setDialog({
-            callback: function(e) {
-                info=$("#registerModal").find(".form-horizontal").serializeArray();
+            callback: function() {
+                info=$("#registerModal").find(".form-horizontal").getFormData();
                 $.post('/user/register', info, function(data) {
                     $("#registerModal").find(".form-horizontal").checkValidate({
                         result: data,
@@ -54,8 +53,8 @@
         });
 
         $("#loginModal").setDialog({
-            callback: function(e) {
-                info=$("#loginModal").find(".form-horizontal").serializeArray();
+            callback: function() {
+                info=$("#loginModal").find(".form-horizontal").getFormData();
                 $.post('/user/login', info, function(data) {
                     $("#loginModal").find(".form-horizontal").checkValidate({
                         result: data,
@@ -69,7 +68,7 @@
         });
 
         $("#logoutButton").setButton({
-            callback: function(e) {
+            callback: function() {
                 $.post('/user/logout',function(data) {
                     if (data["result"] == "ok")
                         window.location.reload();

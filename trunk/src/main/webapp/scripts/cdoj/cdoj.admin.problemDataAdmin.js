@@ -67,10 +67,13 @@ $(document).ready(function () {
         problemDTO = $('#problemDataEditor').getFormData();
         problemDTO["problemDTO.problemId"] = problemId;
         $.post(updateUrl, problemDTO, function(data) {
-            if (validation($('#problemDataEditor'), data)) {
-                alert('Successful!');
-                window.location.reload();
-            }
+            $('#problemDataEditor').checkValidate({
+                result: data,
+                onSuccess: function(){
+                    alert('Successful!');
+                    window.location.reload();
+                }
+            })
         });
         return false;
     });

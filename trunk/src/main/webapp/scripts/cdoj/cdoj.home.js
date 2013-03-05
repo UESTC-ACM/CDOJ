@@ -35,4 +35,5 @@
         $('#activityCarousel').carousel();
 
     })
+
 }(window.jQuery)

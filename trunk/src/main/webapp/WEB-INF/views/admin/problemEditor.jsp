@@ -34,7 +34,7 @@
 <html>
 <head>
     <script src="<s:url value="/plugins/epiceditor/js/epiceditor.js"/>"></script>
-    <script src="<s:url value="/scripts/cdoj/cdoj.old.admin.problemEditor.js"/>"></script>
+    <script src="<s:url value="/scripts/cdoj/cdoj.admin.problemEditor.js"/>"></script>
     <title>Problem</title>
 </head>
 <body>

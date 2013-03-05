@@ -38,7 +38,8 @@
     $.fn.checkValidate = function(userOptions) {
         var options = mergeOptions({
                 result: {"result": "ok"},
-                onSuccess: function(){}
+                onSuccess: function(){},
+                onFail: function(){}
             },
             userOptions);
 
@@ -77,6 +78,8 @@
                         }
                     }
                 });
+
+                options.onFail();
                 return false;
             }
         });

@@ -33,7 +33,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <script src="<s:url value="/scripts/cdoj/cdoj.old.admin.user.js"/>"></script>
+    <script src="<s:url value="/scripts/cdoj/cdoj.admin.user.js"/>"></script>
     <title>User</title>
 </head>
 <body>

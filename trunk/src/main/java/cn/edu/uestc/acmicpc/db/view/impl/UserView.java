@@ -47,13 +47,14 @@ public class UserView extends View<User> {
     private String studentId;
     private Integer tried;
     private Integer solved;
-    private String type;
+    private String typeName;
+    private Integer type;
     private Timestamp lastLogin;
 
     public UserView(User user) {
         super(user);
         setDepartmentId(user.getDepartmentByDepartmentId().getDepartmentId());
-        setType(Global.AuthenticationType.values()[user.getType()].getDescription());
+        setTypeName(Global.AuthenticationType.values()[user.getType()].getDescription());
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -155,13 +156,20 @@ public class UserView extends View<User> {
         this.solved = solved;
     }
 
-    @SuppressWarnings("UnusedDeclaration")
-    public String getType() {
-        return type;
+    public String getTypeName() {
+        return typeName;
     }
 
     @Ignore
-    public void setType(String type) {
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
         this.type = type;
     }
 
