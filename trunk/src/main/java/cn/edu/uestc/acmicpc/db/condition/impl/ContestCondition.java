@@ -36,6 +36,7 @@ import java.util.Calendar;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
+@SuppressWarnings("UnusedDeclaration")
 public class ContestCondition extends BaseCondition {
     @Exp(MapField = "contestId", Type = ConditionType.ge)
     public Integer startId;

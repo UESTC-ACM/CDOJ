@@ -24,11 +24,13 @@ package cn.edu.uestc.acmicpc.oj.action.problem;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemListView;
 import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
+import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
@@ -44,11 +46,12 @@ import java.util.List;
  * action for list and search problem.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
+ * @version 2
  */
 @LoginPermit(NeedLogin = false)
 public class ProblemListAction extends BaseAction
-        implements ProblemConditionAware, ProblemDAOAware, StatusDAOAware {
+        implements ProblemConditionAware, ProblemDAOAware,
+        StatusDAOAware, StatusConditionAware {
 
     /**
      * ProblemDAO for problem search.
@@ -61,6 +64,7 @@ public class ProblemListAction extends BaseAction
      * StatusDAO for status queries.
      */
     private IStatusDAO statusDAO;
+    private StatusCondition statusCondition;
 
     @Override
     public void setProblemCondition(ProblemCondition problemCondition) {
@@ -118,7 +122,7 @@ public class ProblemListAction extends BaseAction
             List<Problem> problemList = problemDAO.findAll(condition);
             List<ProblemListView> problemListViewList = new ArrayList<>();
             for (Problem problem : problemList)
-                problemListViewList.add(new ProblemListView(problem, getCurrentUser(), statusDAO));
+                problemListViewList.add(new ProblemListView(problem, getCurrentUser(), statusDAO, statusCondition));
             json.put("pageInfo", pageInfo.getHtmlString());
             json.put("result", "ok");
             json.put("condition", problemCondition);
@@ -137,5 +141,10 @@ public class ProblemListAction extends BaseAction
     @Override
     public void setStatusDAO(IStatusDAO statusDAO) {
         this.statusDAO = statusDAO;
+    }
+
+    @Override
+    public void setStatusCondition(StatusCondition statusCondition) {
+        this.statusCondition = statusCondition;
     }
 }

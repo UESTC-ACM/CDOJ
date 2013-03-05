@@ -87,7 +87,9 @@ public class ProblemListView extends View<Problem> {
      * @throws cn.edu.uestc.acmicpc.util.exception.AppException
      *
      */
-    public ProblemListView(Problem problem, User currentUser, IStatusDAO statusDAO) throws AppException {
+    public ProblemListView(Problem problem, User currentUser,
+                           IStatusDAO statusDAO, StatusCondition statusCondition)
+            throws AppException {
         super(problem);
         List<String> list = new LinkedList<>();
         Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
@@ -98,7 +100,7 @@ public class ProblemListView extends View<Problem> {
         if (currentUser == null) {
             setState(NONE);
         } else {
-            StatusCondition statusCondition = new StatusCondition();
+            statusCondition.clear();
             statusCondition.userId = currentUser.getUserId();
             statusCondition.problemId = problemId;
             long count = statusDAO.count(statusCondition.getCondition());

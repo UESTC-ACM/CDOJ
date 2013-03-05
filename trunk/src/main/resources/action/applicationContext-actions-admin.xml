@@ -21,6 +21,7 @@
   ~  */
   -->
 
+<!--suppress XmlUnusedNamespaceDeclaration -->
 <beans default-lazy-init="true"
        xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -54,6 +55,7 @@
         <property name="problemDAO" ref="problemDAO"/>
         <property name="problemCondition" ref="problemCondition"/>
         <property name="statusDAO" ref="statusDAO"/>
+        <property name="statusCondition" ref="statusCondition"/>
     </bean>
     <bean id="problemStatementAdminAction"
           class="cn.edu.uestc.acmicpc.oj.action.admin.ProblemStatementAdminAction"
