@@ -26,6 +26,7 @@ import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
 import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
+import cn.edu.uestc.acmicpc.util.annotation.Markdown;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -37,7 +38,7 @@ import java.util.List;
  * Use for return problem information with json type.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 5
+ * @version 6
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ProblemView extends View<Problem> {
@@ -70,7 +71,7 @@ public class ProblemView extends View<Problem> {
      * @throws AppException
      */
     public ProblemView(Problem problem) throws AppException {
-        super(problem);
+        super(problem, true);
         List<String> list = new LinkedList<>();
         Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
         for (ProblemTag problemTag : problemTags) {
@@ -95,6 +96,7 @@ public class ProblemView extends View<Problem> {
         this.title = title;
     }
 
+    @Markdown
     public String getDescription() {
         return description;
     }
@@ -103,6 +105,7 @@ public class ProblemView extends View<Problem> {
         this.description = description;
     }
 
+    @Markdown
     public String getInput() {
         return input;
     }
@@ -111,6 +114,7 @@ public class ProblemView extends View<Problem> {
         this.input = input;
     }
 
+    @Markdown
     public String getOutput() {
         return output;
     }
@@ -135,6 +139,7 @@ public class ProblemView extends View<Problem> {
         this.sampleOutput = sampleOutput;
     }
 
+    @Markdown
     public String getHint() {
         return hint;
     }
