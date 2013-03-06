@@ -20,6 +20,8 @@
 
 package cn.edu.uestc.acmicpc.util;
 
+import org.apache.commons.lang3.CharUtils;
+
 import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,7 +31,7 @@ import java.util.Date;
  * global static class to deal with strings
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 5
+ * @version 6
  */
 @SuppressWarnings("UnusedDeclaration")
 public class StringUtil {
@@ -167,5 +169,41 @@ public class StringUtil {
         String ext = getFilenameExt(fileName).replace(".", "");
         ext = String.format(";%s;", ext).toLowerCase();
         return String.format(";%s;", types).toLowerCase().contains(ext);
+    }
+
+    /**
+     * Compare two string, skipping all white spaces.
+     *
+     * @param first  first string to be compared
+     * @param second second string to be compared
+     * @return if first string is smaller second string, return {@code -1},
+     *         if first string is larger than second string, return {@code 1},
+     *         otherwise return {@code 0}.
+     */
+    public static int compareSkipSpaces(String first, String second) {
+        char[] firstCharArray = first.toCharArray();
+        char[] secondCharArray = second.toCharArray();
+        for (int i = 0, j = 0; ; ) {
+            if (i < firstCharArray.length && CharUtil.isWhiteSpace(firstCharArray[i])) {
+                ++i;
+            } else if (j < secondCharArray.length && CharUtil.isWhiteSpace(secondCharArray[j])) {
+                ++j;
+            } else if (i == firstCharArray.length) {
+                if (j == secondCharArray.length) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            } else if (j == secondCharArray.length) {
+                return 1;
+            } else {
+                if (firstCharArray[i] != secondCharArray[j]) {
+                    return firstCharArray[i] < secondCharArray[j] ? -1 : 1;
+                } else {
+                    ++i;
+                    ++j;
+                }
+            }
+        }
     }
 }

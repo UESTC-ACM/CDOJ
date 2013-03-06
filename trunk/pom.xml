@@ -33,12 +33,35 @@
     <properties>
         <!-- SSH -->
         <org.apache.struts.version>2.3.8</org.apache.struts.version>
-        <org.springframework.version>3.1.3.RELEASE</org.springframework.version>
-        <org.hibernate.version>4.1.9.Final</org.hibernate.version>
+        <org.springframework.version>3.2.1.RELEASE</org.springframework.version>
+        <org.hibernate.version>4.2.0.CR2</org.hibernate.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
+        <!-- Global -->
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-tree</artifactId>
+            <version>4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-analysis</artifactId>
+            <version>4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-util</artifactId>
+            <version>4.1</version>
+        </dependency>
+        <!-- Global -->
+
         <!-- Struts2 -->
         <dependency>
             <groupId>org.apache.struts</groupId>
@@ -208,6 +231,14 @@
             <version>1.2.17</version>
         </dependency>
         <!-- log4j -->
+
+        <!-- markdown -->
+        <dependency>
+            <groupId>org.pegdown</groupId>
+            <artifactId>pegdown</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+        <!-- markdown -->
 
         <!-- action test -->
         <dependency>
