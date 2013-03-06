@@ -44,7 +44,7 @@ function getTitle(problemId, title, source, isSpj, isVisible) {
     if (isSpj == true)
         html += '<span class="label label-important tags pull-left">SPJ</span>';
 
-    html += '<a class="pull-left" href="/problem/' + problemId + '" title="'+source+'">'
+    html += '<a class="pull-left" href="/problem/show/' + problemId + '" title="'+source+'">'
         + title + '</a></span>';
     return html;
 }

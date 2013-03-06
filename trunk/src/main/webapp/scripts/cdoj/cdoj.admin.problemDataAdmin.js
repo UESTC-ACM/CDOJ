@@ -71,7 +71,7 @@ $(document).ready(function () {
                 result: data,
                 onSuccess: function(){
                     alert('Successful!');
-                    window.location.reload();
+                    window.location.href= '/admin/problem/list';
                 }
             })
         });

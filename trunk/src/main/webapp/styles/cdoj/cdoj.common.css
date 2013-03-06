@@ -68,13 +68,16 @@ body {
 .pos-left {
     text-align: left;
 }
-.font-code {
-    font-family: Consolas, "Lucida Console", "Andale Mono", "Bitstream Vera Sans Mono", "Courier New", Courier;
-    word-break:break-all;
-}
 .tags {
     margin-right: 4px;
 }
 .difficult-span {
     padding: 0px;
+}
+
+.sample {
+    background-color: white;
+    text-align: left;
+    font-family: Consolas, "Lucida Console", "Andale Mono", "Bitstream Vera Sans Mono", "Courier New", Courier;
+    word-break:break-all;
 }

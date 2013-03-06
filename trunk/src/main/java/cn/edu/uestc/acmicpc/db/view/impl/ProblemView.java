@@ -70,8 +70,8 @@ public class ProblemView extends View<Problem> {
      * @param problem specific problem entity
      * @throws AppException
      */
-    public ProblemView(Problem problem) throws AppException {
-        super(problem, true);
+    public ProblemView(Problem problem, boolean parseMarkdown) throws AppException {
+        super(problem, parseMarkdown);
         List<String> list = new LinkedList<>();
         Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
         for (ProblemTag problemTag : problemTags) {
@@ -96,7 +96,6 @@ public class ProblemView extends View<Problem> {
         this.title = title;
     }
 
-    @Markdown
     public String getDescription() {
         return description;
     }
@@ -105,7 +104,6 @@ public class ProblemView extends View<Problem> {
         this.description = description;
     }
 
-    @Markdown
     public String getInput() {
         return input;
     }
@@ -114,7 +112,6 @@ public class ProblemView extends View<Problem> {
         this.input = input;
     }
 
-    @Markdown
     public String getOutput() {
         return output;
     }
@@ -139,7 +136,6 @@ public class ProblemView extends View<Problem> {
         this.sampleOutput = sampleOutput;
     }
 
-    @Markdown
     public String getHint() {
         return hint;
     }

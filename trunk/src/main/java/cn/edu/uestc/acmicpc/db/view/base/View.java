@@ -80,15 +80,8 @@ public class View<Entity extends Serializable> {
                     try {
                         Method getter = entity.getClass().getMethod(name);
                         if (getter.getReturnType().equals(String.class)) {
-                            Markdown markdown = parseMarkdown ? method.getAnnotation(Markdown.class) : null;
-                            if (markdown != null && markdown.value()) {
-                                PegDownProcessor processor = new PegDownProcessor();
-                                String htmlString = StringEscapeUtils.escapeHtml4((String) getter.invoke(entity));
-                                String result = processor.markdownToHtml(htmlString);
-                                method.invoke(this, result);
-                            } else {
-                                method.invoke(this, StringEscapeUtils.escapeHtml4((String) getter.invoke(entity)));
-                            }
+                                //Trim useless blanks
+                                method.invoke(this, StringEscapeUtils.escapeHtml4((String) getter.invoke(entity)).trim());
                         } else {
                             method.invoke(this, getter.invoke(entity));
                         }

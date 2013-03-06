@@ -1,0 +1,102 @@
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
+<%@ taglib prefix="cdoj" uri="/WEB-INF/cdoj.tld" %>
+<%--
+  ~ /*
+  ~  * cdoj, UESTC ACMICPC Online Judge
+  ~  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
+  ~  * 	mzry1992 <@link muziriyun@gmail.com>
+  ~  *
+  ~  * This program is free software; you can redistribute it and/or
+  ~  * modify it under the terms of the GNU General Public License
+  ~  * as published by the Free Software Foundation; either version 2
+  ~  * of the License, or (at your option) any later version.
+  ~  *
+  ~  * This program is distributed in the hope that it will be useful,
+  ~  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  * GNU General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program; if not, write to the Free Software
+  ~  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  ~  */
+  --%>
+
+<%--
+ Problem statement
+
+ @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ @version 1
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <script src="<s:url value="/scripts/marked.js"/>"></script>
+    <script src="<s:url value="/scripts/cdoj/cdoj.util.markdown.js"/>"></script>
+    <script src="<s:url value="/scripts/cdoj/cdoj.problemShow.js"/>"></script>
+    <title>${targetProblem.title}</title>
+</head>
+<body>
+<div class="row" id="problem">
+    <div class="span12" id="problem_title">
+        <h1>${targetProblem.title}</h1>
+    </div>
+
+    <div class="span12" id="problem_description" type="markdown">
+        <textarea>${targetProblem.description}</textarea>
+    </div>
+    <div class="span12">
+        <h2>Input</h2>
+        <div id="problem_input" type="markdown">
+            <textarea>${targetProblem.input}</textarea>
+        </div>
+    </div>
+    <div class="span12">
+        <h2>Output</h2>
+        <div id="problem_output" type="markdown">
+            <textarea>${targetProblem.output}</textarea>
+        </div>
+    </div>
+    <div class="span12">
+        <h2>Sample input and output</h2>
+        <table class="table table-sample table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Sample Input</th>
+                <th>Sample Output</th>
+            </tr>
+            </thead>
+            <tbody class="font-code">
+            <tr>
+                <td>
+                    <pre class="sample" type="no-prettify">${targetProblem.sampleInput}</pre>
+                </td>
+                <td>
+                    <pre class="sample" type="no-prettify">${targetProblem.sampleOutput}</pre>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <s:if test="targetProblem.hint != ''">
+        <div class="span12">
+            <h2>Hint</h2>
+            <div class="well" id="problem_hint" type="markdown">
+                <textarea>${targetProblem.hint}</textarea>
+            </div>
+        </div>
+    </s:if>
+    <s:if test="targetProblem.source != ''">
+        <div class="span12">
+            <h2>Source</h2>
+            <div class="well" id="problem_source">
+                    ${targetProblem.source}
+            </div>
+        </div>
+    </s:if>
+
+</div>
+</body>
+</html>
