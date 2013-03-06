@@ -54,6 +54,7 @@
     <link href="<s:url value="/styles/cdoj/cdoj.textarea.css"/>" rel=stylesheet>
     <link href="<s:url value="/styles/cdoj/cdoj.modal.css"/>" rel=stylesheet>
 
+    <script src="<s:url value="/scripts/cdoj/cdoj.util.prettify.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.common.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.validate.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.formData.js"/>"></script>

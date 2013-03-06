@@ -141,7 +141,7 @@ public class ProblemAdminAction extends BaseAction
         editorFlag = "new";
         if (targetProblemId != null) {
             try {
-                targetProblem = new ProblemView(problemDAO.get(targetProblemId));
+                targetProblem = new ProblemView(problemDAO.get(targetProblemId), false);
                 if (targetProblem.getProblemId() == null)
                     throw new AppException("Wrong problem ID!");
                 editorFlag = "edit";
