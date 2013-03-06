@@ -57,7 +57,13 @@
         <property name="userCondition" ref="userCondition"/>
         <property name="problemCondition" ref="problemCondition"/>
     </bean>
-    <bean scope="singleton" id="judgeService" class="cn.edu.uestc.acmicpc.service.JudgeService"/>
+    <bean scope="singleton" id="judgeService"
+          class="cn.edu.uestc.acmicpc.service.JudgeService"/>
     <bean id="dtoTest" class="cn.edu.uestc.acmicpc.oj.test.db.DTOTest">
+    </bean>
+    <bean id="markdownTest" class="cn.edu.uestc.acmicpc.oj.test.util.MarkdownTest">
+    </bean>
+    <bean id="compareSkipSpacesTest"
+          class="cn.edu.uestc.acmicpc.oj.test.util.CompareSkipSpacesTest">
     </bean>
 </beans>

@@ -114,6 +114,7 @@ public class Settings implements ApplicationContextAware {
      * @throws cn.edu.uestc.acmicpc.util.exception.AppException
      *
      */
+    @SuppressWarnings({"UnusedDeclaration", "unchecked"})
     private void init() throws AppException, IOException {
         settings = new HashMap<>();
         String path;
