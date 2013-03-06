@@ -41,7 +41,22 @@
 <body>
 <div class="row" id="problem">
     <div class="span12" id="problem_title">
-        <h1>${targetProblem.title}</h1>
+        <h1 class="pull-left">${targetProblem.title}</h1>
+
+        <s:if test="currentUser.type == 1">
+            <div class="pull-right" style="margin: 10px 0;">
+                <s:a action="editor/%{targetProblem.problemId}" namespace="/admin/problem">
+                    <i class="icon-pencil"></i>
+                    Edit problem statement
+                </s:a>
+                <br/>
+                <s:a action="data/%{targetProblem.problemId}" namespace="/admin/problem">
+                    <i class="icon-cog"></i>
+                    Edit problem data
+                </s:a>
+            </div>
+        </s:if>
+
     </div>
 
     <div class="span12" id="problem_description" type="markdown">
@@ -49,12 +64,14 @@
     </div>
     <div class="span12">
         <h2>Input</h2>
+
         <div id="problem_input" type="markdown">
             <textarea>${targetProblem.input}</textarea>
         </div>
     </div>
     <div class="span12">
         <h2>Output</h2>
+
         <div id="problem_output" type="markdown">
             <textarea>${targetProblem.output}</textarea>
         </div>
@@ -83,6 +100,7 @@
     <s:if test="targetProblem.hint != ''">
         <div class="span12">
             <h2>Hint</h2>
+
             <div class="well" id="problem_hint" type="markdown">
                 <textarea>${targetProblem.hint}</textarea>
             </div>
@@ -91,6 +109,7 @@
     <s:if test="targetProblem.source != ''">
         <div class="span12">
             <h2>Source</h2>
+
             <div class="well" id="problem_source">
                     ${targetProblem.source}
             </div>
