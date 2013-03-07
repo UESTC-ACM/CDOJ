@@ -24,9 +24,7 @@ package cn.edu.uestc.acmicpc.db.view.base;
 
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.StringUtil;
-import cn.edu.uestc.acmicpc.util.annotation.Markdown;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.pegdown.PegDownProcessor;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -36,38 +34,20 @@ import java.lang.reflect.Method;
  * Base view entity.
  * <p/>
  * <strong>USAGE</strong>:
- * <ul>
- * <li>
  * Create subclass and set {@code ignore} tag for files' getter which we want
  * to initialize ourselves.
- * </li>
- * <li>
- * For markdown filed, we should set {@code Markdown} tag for the fields' getter,
- * and the view will parse the markdown string when {@code parseMarkdown} parameter is set to true.
- * </li>
- * </ul>
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 5
+ * @version 6
  */
 public class View<Entity extends Serializable> {
 
     /**
-     * Fetch data from entity and do not parse markdown fields.
+     * Fetch data from entity.
      *
      * @param entity specific entity
      */
     public View(Entity entity) {
-        this(entity, false);
-    }
-
-    /**
-     * Fetch data from entity.
-     *
-     * @param entity        specific entity
-     * @param parseMarkdown whether parse markdown fields or not
-     */
-    public View(Entity entity, boolean parseMarkdown) {
         if (entity == null)
             return;
         Method[] methods = getClass().getMethods();
@@ -80,8 +60,8 @@ public class View<Entity extends Serializable> {
                     try {
                         Method getter = entity.getClass().getMethod(name);
                         if (getter.getReturnType().equals(String.class)) {
-                                //Trim useless blanks
-                                method.invoke(this, StringEscapeUtils.escapeHtml4((String) getter.invoke(entity)).trim());
+                            //Trim useless blanks
+                            method.invoke(this, StringEscapeUtils.escapeHtml4((String) getter.invoke(entity)).trim());
                         } else {
                             method.invoke(this, getter.invoke(entity));
                         }
