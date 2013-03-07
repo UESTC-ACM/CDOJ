@@ -84,7 +84,7 @@ public class ProblemAction extends BaseAction implements ProblemDAOAware {
     public String toProblem() {
         if (targetProblemId != null) {
             try {
-                targetProblem = new ProblemView(problemDAO.get(targetProblemId), true);
+                targetProblem = new ProblemView(problemDAO.get(targetProblemId));
                 if (targetProblem.getProblemId() == null)
                     throw new AppException("Wrong problem ID!");
             } catch (AppException e) {
