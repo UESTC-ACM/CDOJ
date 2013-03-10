@@ -117,7 +117,7 @@ $(document).ready(function () {
                     $.each(editors,function() {
                         this.remove(this.settings.file.name);
                     });
-                    window.location.href= '/admin/problem/list';
+                    window.location.href= '/problem/show/'+problemId;
                 },
                 onFail: function(){
                     $('html,body').animate({scrollTop: '0px'}, 400);

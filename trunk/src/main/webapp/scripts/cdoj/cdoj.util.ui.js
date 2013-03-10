@@ -44,14 +44,20 @@
 
         $.each(this, function() {
             var self = $(this);
-            self.on("show", function() {    // wire up the button
-                options.button.on("click", function(){
+            self.on('show', function() {    // wire up the button
+                options.button.on('click', function(){
                     options.callback();
                     return false;
                 });
+                self.find('form').on('keydown', function(){
+                    if (event.keyCode == 13) {
+                        options.callback();
+                        return false;
+                    }
+                })
             });
-            self.on("hide", function() {    // remove the event listeners when the dialog is dismissed
-                options.button.off("click");
+            self.on('hide', function() {    // remove the event listeners when the dialog is dismissed
+                options.button.off('click');
             });
         });
 

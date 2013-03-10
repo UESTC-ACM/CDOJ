@@ -78,6 +78,6 @@ body {
 .sample {
     background-color: white;
     text-align: left;
-    font-family: Consolas, "Lucida Console", "Andale Mono", "Bitstream Vera Sans Mono", "Courier New", Courier;
     word-break:break-all;
+    margin: 0px;
 }
