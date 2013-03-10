@@ -101,7 +101,7 @@
         <div class="span12">
             <h2>Hint</h2>
 
-            <div class="well" id="problem_hint" type="markdown">
+            <div class="" id="problem_hint" type="markdown">
                 <textarea>${targetProblem.hint}</textarea>
             </div>
         </div>
@@ -110,7 +110,7 @@
         <div class="span12">
             <h2>Source</h2>
 
-            <div class="well" id="problem_source">
+            <div class="" id="problem_source">
                     ${targetProblem.source}
             </div>
         </div>

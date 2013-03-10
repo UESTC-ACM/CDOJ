@@ -44,6 +44,15 @@ $(document).ready(function () {
     // make code pretty
     prettify();
 
+    // make sample input and output have the same height
+    var height = 0;
+    $.each($('.sample'),function(){
+        height = Math.max(height,$(this).height());
+    });
+    $.each($('.sample'),function(){
+        $(this).css('height',height);
+    })
+
     MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']],
         displayMath: [['\\[','\\]'], ['$$','$$']]}});
     MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
