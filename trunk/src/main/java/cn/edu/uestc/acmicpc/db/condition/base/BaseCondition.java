@@ -21,7 +21,6 @@
 package cn.edu.uestc.acmicpc.db.condition.base;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
-import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -177,10 +176,10 @@ public abstract class BaseCondition implements ApplicationContextAware {
                     String DAOName = name.substring(0, 1).toLowerCase()
                             + name.substring(1) + "DAO";
                     IDAO DAO = (IDAO) applicationContext.getBean(DAOName);
-                    System.out.println("DAO: " + DAO.getClass().getName());
-                    System.out.println("key = " + value);
+//                    System.out.println("DAO: " + DAO.getClass().getName());
+//                    System.out.println("key = " + value);
                     value = DAO.get((Serializable) value);
-                    System.out.println("value = " + ObjectUtil.toString(value));
+//                    System.out.println("value = " + ObjectUtil.toString(value));
                 }
                 if (exp.Type().name().equals("like")) {
                     value = String.format("%%%s%%", value);

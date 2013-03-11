@@ -55,7 +55,7 @@ import java.io.File;
  * specific folder.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
+ * @version 3
  */
 public class ZipDataChecker implements Checker<File> {
     @Override
@@ -81,6 +81,8 @@ public class ZipDataChecker implements Checker<File> {
                 } catch (NumberFormatException e) {
                     throw new AppException("Data files must begin with numbers.");
                 }
+            } else if (current.getName().equals("spj.cc")) {
+                // spj checker, ignored
             } else {
                 throw new AppException("Data file contains unknown file type.");
             }

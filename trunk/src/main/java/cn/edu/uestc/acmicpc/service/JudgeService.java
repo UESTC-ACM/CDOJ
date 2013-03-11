@@ -44,15 +44,8 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 @Transactional
 public class JudgeService implements ApplicationContextAware, SettingsAware {
-    /**
-     * Judging main thread.
-     */
-    @SuppressWarnings("FieldCanBeLocal")
-    private Scheduler scheduler;
     private Thread schedulerThread;
     private static Thread[] judgeThreads;
-    @SuppressWarnings("FieldCanBeLocal")
-    private static Judge[] judges;
     /**
      * Judging Queue.
      */
@@ -73,11 +66,11 @@ public class JudgeService implements ApplicationContextAware, SettingsAware {
      * Initialize the judge threads.
      */
     public void init() {
-        scheduler = applicationContext.getBean("scheduler", Scheduler.class);
+        Scheduler scheduler = applicationContext.getBean("scheduler", Scheduler.class);
         scheduler.setJudgeQueue(judgeQueue);
         schedulerThread = new Thread(scheduler);
         judgeThreads = new Thread[settings.JUDGE_LIST.size()];
-        judges = new Judge[settings.JUDGE_LIST.size()];
+        Judge[] judges = new Judge[settings.JUDGE_LIST.size()];
         for (int i = 0; i < judgeThreads.length; ++i) {
             judges[i] = applicationContext.getBean("judge", Judge.class);
             judges[i].setJudgeQueue(judgeQueue);

@@ -45,7 +45,7 @@ import java.util.zip.ZipFile;
  * description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 5
+ * @version 6
  */
 @LoginPermit(Global.AuthenticationType.ADMIN)
 public class ProblemDataAdminAction extends FileUploadAction implements ProblemDAOAware {
@@ -153,7 +153,7 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
     }
 
     /**
-     * To update problem test information.
+     * To update problem test information and compile spj checker in the data folder.
      * <p/>
      * <strong>JSON output</strong>:
      * <ul>
@@ -218,12 +218,29 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
             File targetFile = new File(dataPath);
             File currentFile = new File(tempDirectory);
             // If the uploaded file list is empty, that means we don't update the data folder.
-            int dataCount = FileUtil.countFiles(currentFile);
+            int dataCount = 0;
+            boolean foundSpj = false;
+            File[] files = currentFile.listFiles();
+            assert files != null;
+            for (File file : files) {
+                if (file.getName().endsWith(".in")) {
+                    ++dataCount;
+                } else if (file.getName().equals("spj.cc")) {
+                    foundSpj = true;
+                }
+            }
             if (dataCount != 0) {
                 FileUtil.clearDirectory(dataPath);
                 FileUtil.moveDirectory(currentFile, targetFile);
+                problem.setDataCount(dataCount);
+            }
 
-                problem.setDataCount(dataCount/2);
+            if (foundSpj) {
+                Runtime runtime = Runtime.getRuntime();
+                Process process = runtime.exec("g++ spj.cc -O2");
+                process.waitFor();
+                process = runtime.exec("rm spj.cc");
+                process.waitFor();
             }
 
             problemDAO.addOrUpdate(problem);
