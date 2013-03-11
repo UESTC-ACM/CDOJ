@@ -37,7 +37,7 @@ import java.util.concurrent.BlockingQueue;
  * Problem judge component.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
+ * @version 4
  */
 public class Judge implements Runnable, SettingsAware {
     public void setJudgeName(String judgeName) {
@@ -135,7 +135,6 @@ public class Judge implements Runnable, SettingsAware {
                 if (judgeItem.status.getProblemByProblemId().getIsSpj())
                     stringBuilder.append(" -S");
                 stringBuilder.append(" -l ");
-                // TODO 1 - C 2- C++ 3- Java
                 stringBuilder.append(judgeItem.status.getLanguageByLanguageId());
                 stringBuilder.append(" -I ");
                 stringBuilder.append(settings.JUDGE_DATA_PATH).append("/")

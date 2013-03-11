@@ -34,7 +34,7 @@ import com.opensymphony.xwork2.validator.annotations.*;
  * Action for register
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 9
+ * @version 10
  */
 @LoginPermit(NeedLogin = false)
 public class RegisterAction extends BaseAction implements DepartmentDAOAware {
@@ -52,9 +52,10 @@ public class RegisterAction extends BaseAction implements DepartmentDAOAware {
     private IDepartmentDAO departmentDAO;
 
     /**
-     * Register action! with so many validators! ha ha...
+     * Register action.
      * <p/>
-     * TODO edit the document
+     * Check register information and pass then to validator, if the information is correct, write
+     * the user's information into database.
      *
      * @return <strong>JSON</strong> signal, process in front
      */
@@ -178,7 +179,6 @@ public class RegisterAction extends BaseAction implements DepartmentDAOAware {
             session.put("userType", user.getType());
             json.put("result", "ok");
         } catch (Exception e) {
-            // TODO fix the error msg
             e.printStackTrace();
             json.put("result", "error");
             json.put("error_msg", "Unknown exception occurred.");
