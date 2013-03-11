@@ -45,7 +45,7 @@ import java.util.zip.ZipFile;
  * description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 6
+ * @version 7
  */
 @LoginPermit(Global.AuthenticationType.ADMIN)
 public class ProblemDataAdminAction extends FileUploadAction implements ProblemDAOAware {
@@ -221,12 +221,13 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
             int dataCount = 0;
             boolean foundSpj = false;
             File[] files = currentFile.listFiles();
-            assert files != null;
-            for (File file : files) {
-                if (file.getName().endsWith(".in")) {
-                    ++dataCount;
-                } else if (file.getName().equals("spj.cc")) {
-                    foundSpj = true;
+            if (files != null) {
+                for (File file : files) {
+                    if (file.getName().endsWith(".in")) {
+                        ++dataCount;
+                    } else if (file.getName().equals("spj.cc")) {
+                        foundSpj = true;
+                    }
                 }
             }
             if (dataCount != 0) {
