@@ -76,8 +76,11 @@ body {
 }
 
 .sample {
+    border-radius: 4px;
+    padding: 8px;
     background-color: white;
     text-align: left;
     word-break:break-all;
     margin: 0px;
+    font-family: Consolas, "Lucida Console", "Andale Mono", "Bitstream Vera Sans Mono", "Courier New", Courier;
 }

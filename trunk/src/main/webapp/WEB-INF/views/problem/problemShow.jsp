@@ -42,6 +42,7 @@
 <div class="row" id="problem">
     <div class="span12" id="problem_title">
         <h1 class="pull-left">${targetProblem.title}</h1>
+        <span class="label label-important tags" style="margin: 12px 0 0 8px;">SPJ</span>
 
         <s:if test="currentUser.type == 1">
             <div class="pull-right" style="margin: 10px 0;">
@@ -57,6 +58,23 @@
             </div>
         </s:if>
 
+    </div>
+
+    <div class="span12">
+        <dl class="dl-horizontal">
+            <dt>Time limit</dt>
+            <dd><span>${targetProblem.javaTimeLimit} / ${targetProblem.timeLimit} ms (Java / others)</span></dd>
+
+            <dt>Memory limit</dt>
+            <dd><span>${targetProblem.javaMemoryLimit} / ${targetProblem.memoryLimit} kb (Java / others)</span></dd>
+
+            <dt>Total accepted</dt>
+            <dd><span>${targetProblem.solved}</span></dd>
+
+            <dt>Total submissions</dt>
+            <dd><span>${targetProblem.tried}</span></dd>
+
+        </dl>
     </div>
 
     <div class="span12" id="problem_description" type="markdown">
@@ -88,10 +106,14 @@
             <tbody class="font-code">
             <tr>
                 <td>
-                    <pre class="sample" type="no-prettify">${targetProblem.sampleInput}</pre>
+                    <div class="sample" type="no-prettify">
+                        <cdoj:format value="${targetProblem.sampleInput}"/>
+                    </div>
                 </td>
                 <td>
-                    <pre class="sample" type="no-prettify">${targetProblem.sampleOutput}</pre>
+                    <div class="sample" type="no-prettify">
+                        <cdoj:format value="${targetProblem.sampleOutput}"/>
+                    </div>
                 </td>
             </tr>
             </tbody>

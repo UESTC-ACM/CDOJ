@@ -36,6 +36,7 @@
     <title></title>
 </head>
 <body>
+<!--
 <div class="row">
     <div class="span12">
         <div class="alert alert-info">
@@ -47,5 +48,6 @@
         </div>
     </div>
 </div>
+-->
 </body>
 </html>

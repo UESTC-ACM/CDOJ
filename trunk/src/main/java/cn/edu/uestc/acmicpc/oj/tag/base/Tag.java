@@ -20,37 +20,15 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.tag;
+package cn.edu.uestc.acmicpc.oj.tag.base;
 
-import cn.edu.uestc.acmicpc.util.StringUtil;
-import com.opensymphony.xwork2.util.ValueStack;
-import org.apache.struts2.components.ContextBean;
+import org.apache.struts2.views.jsp.ContextBeanTag;
 
 /**
- * Base Tag Service, we can process tag service in the method <strong>start</strong> and <strong>end</strong>
+ * Customize JSP Tag Interface
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @version 1
  */
-@SuppressWarnings("UnusedDeclaration")
-public class TagService extends ContextBean {
-    /**
-     * default constructor
-     *
-     * @param valueStack valueStack object of the java bean
-     */
-    public TagService(ValueStack valueStack) {
-        super(valueStack);
-    }
-
-    /**
-     * put var into the <strong>context stack</strong>.
-     *
-     * @param var   key name
-     * @param value the mapping value of var
-     */
-    protected void putInContext(String var, Object value) {
-        if (!StringUtil.isNullOrWhiteSpace(var))
-            stack.getContext().put(var, value);
-    }
+public abstract class Tag extends ContextBeanTag {
 }

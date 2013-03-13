@@ -59,7 +59,7 @@
                 <th>User name</th>
                 <th>Nick name</th>
                 <th>Email</th>
-                <th style="width: 100px;">Type</th>
+                <th style="width: 90px;">Type</th>
                 <th>Last login</th>
                 <th style="width: 14px;"></th>
             </tr>
