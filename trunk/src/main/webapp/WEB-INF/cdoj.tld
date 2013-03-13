@@ -31,4 +31,14 @@
     <short-name>cdojTags</short-name>
     <uri>http://acm.uestc.edu.cn</uri>
 
+    <tag>
+        <name>format</name>
+        <tag-class>cn.edu.uestc.acmicpc.oj.tag.impl.FormatTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>value</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 </taglib>

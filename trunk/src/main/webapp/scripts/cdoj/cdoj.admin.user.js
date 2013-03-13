@@ -66,7 +66,7 @@ function refreshUserList(condition) {
             var html = '<tr>' +
                 '<td><input type="checkbox" id="deleteSelector' + value.userId + '" value="' + value.userId + '"></td>' +
                 '<td>' + value.userId + '</td>' +
-                '<td><img id="usersAvatar" email="' + value.email + '"/>' + value.userName + '</td>' +
+                '<td style="text-align: left;"><img id="usersAvatar" email="' + value.email + '"/>' + value.userName + '</td>' +
                 '<td>' + value.nickName + '</td>' +
                 '<td>' + value.email + '</td>' +
                 '<td>' + value.typeName + '</td>' +

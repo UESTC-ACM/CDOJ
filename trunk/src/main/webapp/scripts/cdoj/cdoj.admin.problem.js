@@ -79,7 +79,7 @@ function getTitle(problemId, title, source, isSpj, isVisible) {
     html += ' pull-left tags"/>';
 
     if (isSpj == true)
-        html += '<span class="label label-important tags pull-left">SPJ</span>';
+        html += '<span class="label label-important tags pull-right">SPJ</span>';
 
     html += '<a class="pull-left" href="/admin/problem/editor/' + problemId + '" title="Edit problem">'
         + title + '</a></span>';
@@ -98,9 +98,9 @@ function getDifficulty(difficulty) {
     difficulty = Math.max(1, Math.min(difficulty, 5));
     var html = '';
     for (var i = 1; i <= difficulty; i++)
-        html += '<i class="difficulty-level icon-star" value="' + i + '"></i>';
+        html += '<i class="difficulty-level icon-star pull-left" style="margin: 0px;" value="' + i + '"></i>';
     for (var i = difficulty + 1; i <= 5; i++)
-        html += '<i class="difficulty-level icon-star-empty" value="' + i + '"></i>';
+        html += '<i class="difficulty-level icon-star-empty pull-left" style="margin: 0px;" value="' + i + '"></i>';
     return html;
 }
 
