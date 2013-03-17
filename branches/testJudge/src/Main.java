@@ -36,7 +36,6 @@ public class Main {
     @SuppressWarnings("UnusedDeclaration")
     private static String temporaryPath;
     private static String dataPath;
-    private static String codePath;
     private static final Result[] JUDGE_RESULT = new Result[]{
             Result.CompilationError, Result.Accepted, Result.PresentationError, Result.TimeLimitExceeded,
             Result.MemoryLimitExceeded, Result.WrongAnswer, Result.OutputLimitExceeded, Result.CompilationError,
@@ -47,10 +46,10 @@ public class Main {
     public static void main(String[] args) {
         try {
             init();
-            System.out.println("=======List start=======");
-            listAllProblems();
-            listAllCodes();
-            System.out.println("========List end========");
+//            System.out.println("=======List start=======");
+//            listAllProblems();
+//            listAllCodes();
+//            System.out.println("========List end========");
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -62,6 +61,7 @@ public class Main {
      * List all codes' information, including the users' name
      * and their codes' name and their codes' path.
      */
+    @SuppressWarnings("UnusedDeclaration")
     private static void listAllCodes() {
         for (String key : codeMap.keySet()) {
             Map<String, String> map = codeMap.get(key);
@@ -76,6 +76,7 @@ public class Main {
     /**
      * List all problems' information, including problems' name and their test cases' path.
      */
+    @SuppressWarnings("UnusedDeclaration")
     private static void listAllProblems() {
         for (String key : problemMap.keySet()) {
             List<String> list = problemMap.get(key);
@@ -270,7 +271,7 @@ public class Main {
         // read the property file and find the path for data, codes and judgeCore.
         temporaryPath = properties.getProperty("path");
         dataPath = temporaryPath + "/data";
-        codePath = temporaryPath + "/codes";
+        String codePath = temporaryPath + "/codes";
         judgeCoreLocation = temporaryPath + "/bin";
         // judge core temporary path
         Main.temporaryPath = temporaryPath + "/temp";
