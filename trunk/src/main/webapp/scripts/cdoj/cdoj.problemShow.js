@@ -31,13 +31,13 @@ $(document).ready(function () {
 
     markdown();
 
-    $.each($('.sample'),function(){
+    $.each($('.sample'), function () {
         var md = $(this).html()
-            .replace('<textarea>','')
-            .replace('</textarea>','')
-            .replace('<TEXTAREA>','')
-            .replace('</TEXTAREA>','')
-            .replace('\r','<br/>');
+            .replace('<textarea>', '')
+            .replace('</textarea>', '')
+            .replace('<TEXTAREA>', '')
+            .replace('</TEXTAREA>', '')
+            .replace('\r', '<br/>');
         $(this).empty().append(md);
     });
 
@@ -46,30 +46,23 @@ $(document).ready(function () {
 
     // make sample input and output have the same height
     var height = 0;
-    $.each($('.sample'),function(){
-        height = Math.max(height,$(this).height());
+    $.each($('.sample'), function () {
+        height = Math.max(height, $(this).height());
     });
-    $.each($('.sample'),function(){
-        $(this).css('height',height);
-    })
+    $.each($('.sample'), function () {
+        $(this).css('height', height);
+    });
 
     //wired up problem submit modal
-    $("#problemSubmitModal").setDialog({
-        callback: function() {
-            info=$("#loginModal").find(".form-horizontal").getFormData();
-            $.post('/user/login', info, function(data) {
-                $("#loginModal").find(".form-horizontal").checkValidate({
-                    result: data,
-                    onSuccess: function(e) {
-                        $("#loginModal").modal('hide');
-                        window.location.reload();
-                    }
-                });
-            });
-        }
-    });
+    setSubmitDialog();
 
-    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']],
-        displayMath: [['\\[','\\]'], ['$$','$$']]}});
-    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+    MathJax.Hub.Config({tex2jax: {inlineMath: [
+        ['$', '$'],
+        ['\\(', '\\)']
+    ],
+        displayMath: [
+            ['\\[', '\\]'],
+            ['$$', '$$']
+        ]}});
+    MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
 });
