@@ -64,7 +64,8 @@
                         }
                     });
                 });
-            }
+            },
+            blindEnterKey: true
         });
 
         $("#logoutButton").setButton({

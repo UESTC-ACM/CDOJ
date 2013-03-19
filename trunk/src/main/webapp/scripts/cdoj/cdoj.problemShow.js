@@ -53,6 +53,22 @@ $(document).ready(function () {
         $(this).css('height',height);
     })
 
+    //wired up problem submit modal
+    $("#problemSubmitModal").setDialog({
+        callback: function() {
+            info=$("#loginModal").find(".form-horizontal").getFormData();
+            $.post('/user/login', info, function(data) {
+                $("#loginModal").find(".form-horizontal").checkValidate({
+                    result: data,
+                    onSuccess: function(e) {
+                        $("#loginModal").modal('hide');
+                        window.location.reload();
+                    }
+                });
+            });
+        }
+    });
+
     MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']],
         displayMath: [['\\[','\\]'], ['$$','$$']]}});
     MathJax.Hub.Queue(["Typeset",MathJax.Hub]);

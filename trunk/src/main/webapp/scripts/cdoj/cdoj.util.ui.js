@@ -27,7 +27,7 @@
  * @version 1
  */
 
-(function($) {
+(function ($) {
     'use strict';
 
     /**
@@ -35,28 +35,32 @@
      *
      * @param userOptions
      */
-    $.fn.setDialog = function(userOptions) {
+    $.fn.setDialog = function (userOptions) {
         var options = mergeOptions({
-                callback: function() {},
-                button: $('a.btn-primary')
+                callback: function () {
+                },
+                button: $('a.btn-primary'),
+                blindEnterKey: false
             },
             userOptions);
 
-        $.each(this, function() {
+        $.each(this, function () {
             var self = $(this);
-            self.on('show', function() {    // wire up the button
-                options.button.on('click', function(){
+            self.on('show', function () {    // wire up the button
+                options.button.on('click', function () {
                     options.callback();
                     return false;
                 });
-                self.find('form').on('keydown', function(){
-                    if (event.keyCode == 13) {
-                        options.callback();
-                        return false;
-                    }
-                })
+                if (options.blindEnterKey) {
+                    self.find('form').on('keydown', function () {
+                        if (event.keyCode == 13) {
+                            options.callback();
+                            return false;
+                        }
+                    });
+                }
             });
-            self.on('hide', function() {    // remove the event listeners when the dialog is dismissed
+            self.on('hide', function () {    // remove the event listeners when the dialog is dismissed
                 options.button.off('click');
             });
         });
@@ -69,14 +73,15 @@
      *
      * @param userOptions
      */
-    $.fn.setButton = function(userOptions) {
+    $.fn.setButton = function (userOptions) {
         var options = mergeOptions({
-                callback: function() {}
+                callback: function () {
+                }
             },
             userOptions);
 
-        $.each(this, function() {
-            $(this).on("click", function(){
+        $.each(this, function () {
+            $(this).on("click", function () {
                 options.callback();
                 return false;
             });

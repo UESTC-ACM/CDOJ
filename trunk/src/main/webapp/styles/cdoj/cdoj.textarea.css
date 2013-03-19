@@ -39,3 +39,9 @@
     border: 1px solid #ddd;
     border-radius: 4px;
 }
+
+.submit-area {
+    resize: none;
+    width: 915px;
+    height: 390px;
+}

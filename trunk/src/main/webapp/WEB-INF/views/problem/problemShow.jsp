@@ -138,6 +138,16 @@
         </div>
     </s:if>
 
+    <div class="span12">
+        <div class="btn-group-bottom">
+            <a href="#problemSubmitModal" class="btn btn-success" role="button" data-toggle="modal">Submit</a>
+            <a class="btn btn-success">Status</a>
+            <a class="btn btn-success">Discus</a>
+        </div>
+    </div>
 </div>
+
+<page:applyDecorator name="body" page="/WEB-INF/views/problem/problemSubmitModal.jsp"/>
+
 </body>
 </html>
