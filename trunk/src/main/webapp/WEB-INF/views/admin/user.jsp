@@ -155,7 +155,7 @@
 </div>
 
 <!-- User edit Modal -->
-<div id="userEditModal" class="modal hide fade" tabindex="-1" role="dialog"
+<div id="userEditModal" class="modal hide fade modal-large" tabindex="-1" role="dialog"
      aria-labelledby="userEditModal" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>

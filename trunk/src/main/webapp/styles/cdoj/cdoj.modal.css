@@ -20,7 +20,7 @@
  *
  */
 
-#registerModal,#userEditModal{
+.modal-large {
     width: 960px;
     left: 36%;
 }
