@@ -42,21 +42,21 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="loginModalLabel">Submit ${targetProblem.title}</h3>
+        <span style="display: none" id="submitProblemId" value="${targetProblem.problemId}"/>
     </div>
     <div class="modal-body">
         <form class="form-horizontal" style="height: 380px;">
             <fieldset>
-                <textarea class="submit-area" name="codeArea"></textarea>
+                <textarea class="submit-area" id="codeContent"></textarea>
             </fieldset>
         </form>
     </div>
     <div class="modal-footer">
         <div id="language-selector" class="pull-left">
-            <!-- @TODO auto get language list -->
-            <div class="btn-group" data-toggle="buttons-radio">
-                <button class="btn btn-info">C</button>
-                <button class="btn btn-info">C++</button>
-                <button class="btn btn-info">Java</button>
+            <div class="btn-group" data-toggle="buttons-radio" id="languageSelector">
+                <s:iterator value="global.languageList">
+                    <button class="btn btn-info" value="${languageId}">${name}</button>
+                </s:iterator>
             </div>
         </div>
 
