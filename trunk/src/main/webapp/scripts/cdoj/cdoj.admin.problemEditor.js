@@ -117,7 +117,10 @@ $(document).ready(function () {
                     $.each(editors,function() {
                         this.remove(this.settings.file.name);
                     });
-                    window.location.href= '/problem/show/'+problemId;
+                    if (editMode == 'edit')
+                        window.location.href= '/problem/show/'+problemId;
+                    else
+                        window.location.href= '/admin/problem/list';
                 },
                 onFail: function(){
                     $('html,body').animate({scrollTop: '0px'}, 400);

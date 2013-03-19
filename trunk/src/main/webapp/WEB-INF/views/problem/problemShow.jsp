@@ -42,7 +42,9 @@
 <div class="row" id="problem">
     <div class="span12" id="problem_title">
         <h1 class="pull-left">${targetProblem.title}</h1>
-        <span class="label label-important tags" style="margin: 12px 0 0 8px;">SPJ</span>
+        <s:if test="targetProblem.isSpj == true">
+            <span class="label label-important tags" style="margin: 12px 0 0 8px;">SPJ</span>
+        </s:if>
 
         <s:if test="currentUser.type == 1">
             <div class="pull-right" style="margin: 10px 0;">
