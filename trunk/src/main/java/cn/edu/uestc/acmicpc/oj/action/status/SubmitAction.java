@@ -23,6 +23,7 @@
 package cn.edu.uestc.acmicpc.oj.action.status;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 
 /**
  * action for submit code.
@@ -30,6 +31,7 @@ import cn.edu.uestc.acmicpc.oj.action.BaseAction;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
+@LoginPermit(NeedLogin = true)
 public class SubmitAction extends BaseAction {
 
     /**

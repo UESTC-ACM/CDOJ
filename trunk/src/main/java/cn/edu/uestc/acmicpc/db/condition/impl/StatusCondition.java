@@ -24,6 +24,7 @@ package cn.edu.uestc.acmicpc.db.condition.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.entity.Language;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.Global;
@@ -65,6 +66,17 @@ public class StatusCondition extends BaseCondition {
     public Integer problemId;
 
     /**
+     * Language's id.
+     */
+    @Exp(MapField = "languageByLanguageId", Type = ConditionType.eq, MapObject = Language.class)
+    public Integer languageId;
+
+    /**
+     * Contest's id.
+     */
+    public Integer contestId;
+
+    /**
      * Judging result list(<strong>PRIMARY</strong>).
      */
     public List<Global.OnlineJudgeReturnType> result = new LinkedList<>();
@@ -76,6 +88,14 @@ public class StatusCondition extends BaseCondition {
 
     @Override
     public void invoke(Condition condition) {
+        if (contestId == null)
+            contestId = -1;
+
+        if (contestId == -1)
+            condition.addCriterion(Restrictions.isNull("contestByContestId"));
+        else
+            condition.addCriterion(Restrictions.eq("contestByContestId", contestId));
+
         if (result != null && !result.isEmpty() || iResult != null) {
             if (result != null && !result.isEmpty()) {
                 Junction junction = Restrictions.disjunction();

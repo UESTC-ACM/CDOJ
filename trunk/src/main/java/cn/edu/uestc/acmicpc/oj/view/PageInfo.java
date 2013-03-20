@@ -146,6 +146,7 @@ public class PageInfo {
         currentPage = currentPage == null ? 1 : currentPage;
 
         Long totalPages = (count + countPerPage - 1) / countPerPage;
+        totalPages = totalPages < 1 ? 1 : totalPages;
         currentPage = currentPage > totalPages ? totalPages : currentPage;
         currentPage = currentPage < 1 ? 1 : currentPage;
 
