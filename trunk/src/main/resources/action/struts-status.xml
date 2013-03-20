@@ -27,9 +27,10 @@
 <struts>
     <package name="status" namespace="/status" extends="default">
         <default-action-ref name="index"/>
-        <action name="index" class="indexAction" method="toIndex">
-            <result>/WEB-INF/views/index/index.jsp</result>
+        <action name="index" class="statusAction" method="toStatusList">
+            <result>/WEB-INF/views/status/status.jsp</result>
         </action>
+        <action name="search" class="statusAction" method="toSearch"/>
         <action name="submit" class="submitAction" method="toSubmit"/>
     </package>
 </struts>
