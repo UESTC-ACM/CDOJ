@@ -34,7 +34,6 @@ import java.util.Calendar;
  * Contest database condition entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ContestCondition extends BaseCondition {

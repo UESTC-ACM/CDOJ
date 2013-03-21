@@ -31,7 +31,6 @@ import java.util.List;
  * Action for list and search all submit status
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
  */
 @LoginPermit(NeedLogin = false)
 public class StatusAction extends BaseAction

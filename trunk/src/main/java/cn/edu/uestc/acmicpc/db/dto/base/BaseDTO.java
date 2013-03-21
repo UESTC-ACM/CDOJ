@@ -42,7 +42,6 @@ import java.lang.reflect.Method;
  * {@code updateEntity} method.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 5
  */
 public abstract class BaseDTO<Entity extends Serializable> {
     protected abstract Class<Entity> getReferenceClass();

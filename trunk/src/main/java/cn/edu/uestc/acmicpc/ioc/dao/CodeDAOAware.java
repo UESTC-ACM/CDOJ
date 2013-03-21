@@ -28,7 +28,7 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ICodeDAO;
  * For all class which need codeDAO entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @see ICodeDAO
  */
 public interface CodeDAOAware {
     /**

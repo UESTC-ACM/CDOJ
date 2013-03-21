@@ -30,7 +30,6 @@ import java.sql.Timestamp;
  * Article information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 5
  */
 @Table(name = "article", schema = "", catalog = "uestcoj")
 @Entity

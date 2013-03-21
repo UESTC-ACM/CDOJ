@@ -30,7 +30,6 @@ import org.apache.struts2.components.ContextBean;
  * Base Tag Service, we can process tag service in the method <strong>start</strong> and <strong>end</strong>
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 @SuppressWarnings("UnusedDeclaration")
 public class TagService extends ContextBean {

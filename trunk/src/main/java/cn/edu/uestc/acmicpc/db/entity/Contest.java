@@ -31,7 +31,6 @@ import java.util.Collection;
  * Contest information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
  */
 @Table(name = "contest", schema = "", catalog = "uestcoj")
 @Entity

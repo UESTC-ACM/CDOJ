@@ -34,7 +34,6 @@ import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
  * interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  * @see cn.edu.uestc.acmicpc.oj.interceptor.iface.IActionInterceptor
  */
 public class AppInterceptor extends AbstractInterceptor {
@@ -53,7 +52,6 @@ public class AppInterceptor extends AbstractInterceptor {
      * Basic action information entity.
      *
      * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
-     * @version 1
      */
     public class ActionInfo {
 

@@ -40,10 +40,10 @@ import java.util.List;
  * <strong>WARN:</strong> this file may be rewritten carefully.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 7
  */
 public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
+    @SuppressWarnings("UnusedDeclaration")
     public enum OnlineJudgeReturnType {
         OJ_WAIT("Queuing"), OJ_AC("Accepted"), OJ_PE("Presentation Error on test $case"),
         OJ_TLE("Time Limit Exceeded on test $case"), OJ_MLE("Memory Limit Exceeded on test $case"),

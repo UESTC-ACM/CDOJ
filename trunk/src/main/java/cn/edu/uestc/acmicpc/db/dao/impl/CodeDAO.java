@@ -30,7 +30,6 @@ import cn.edu.uestc.acmicpc.db.entity.Code;
  * DAO for code entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 public class CodeDAO extends DAO<Code, Integer> implements ICodeDAO {
     @Override

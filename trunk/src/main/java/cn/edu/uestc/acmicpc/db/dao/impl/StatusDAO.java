@@ -30,7 +30,6 @@ import cn.edu.uestc.acmicpc.db.entity.Status;
  * DAO for status.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 public class StatusDAO extends DAO<Status, Integer> implements IStatusDAO {
     @Override

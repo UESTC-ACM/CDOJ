@@ -29,7 +29,6 @@ import java.io.Serializable;
  * Contest team information, for school programming contest.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
  */
 @Table(name = "contestTeamInfo", schema = "", catalog = "uestcoj")
 @Entity

@@ -28,7 +28,7 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ICompileinfoDAO;
  * For all class which need compileinfoDAO entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @see ICompileinfoDAO
  */
 public interface CompileinfoDAOAware {
     /**

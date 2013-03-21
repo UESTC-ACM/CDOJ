@@ -38,7 +38,6 @@ import java.util.List;
  * Status search condition.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 @SuppressWarnings("UnusedDeclaration")
 public class StatusCondition extends BaseCondition {

@@ -30,7 +30,6 @@ import java.util.Collection;
  * Problem tag information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 @Table(name = "tag", schema = "", catalog = "uestcoj")
 @Entity

@@ -42,7 +42,6 @@ import org.hibernate.criterion.Projections;
  * Judge item for single problem.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 public class JudgeItem implements CompileinfoDAOAware, StatusDAOAware, UserDAOAware, ProblemDAOAware, StatusConditionAware {
     public Status status;

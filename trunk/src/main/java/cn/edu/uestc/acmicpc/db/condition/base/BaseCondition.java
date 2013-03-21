@@ -86,7 +86,6 @@ import java.lang.reflect.Field;
  * </ul>
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 7
  */
 public abstract class BaseCondition implements ApplicationContextAware {
 

@@ -31,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Base DAO Implementation for <strong>Hibernate 4</strong>.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 @Transactional
 public class BaseDAO {

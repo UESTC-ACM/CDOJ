@@ -28,7 +28,6 @@ import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
  * For all class need status condition entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 public interface StatusConditionAware {
     /**

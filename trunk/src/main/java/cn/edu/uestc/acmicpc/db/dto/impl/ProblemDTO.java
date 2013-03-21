@@ -31,7 +31,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * Problem entity data transform object.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ProblemDTO extends BaseDTO<Problem> {

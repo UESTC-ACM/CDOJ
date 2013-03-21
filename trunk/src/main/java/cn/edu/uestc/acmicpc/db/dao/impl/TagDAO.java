@@ -30,7 +30,6 @@ import cn.edu.uestc.acmicpc.db.entity.Tag;
  * DAO for tag entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 public class TagDAO extends DAO<Tag, Integer> implements ITagDAO {
     @Override

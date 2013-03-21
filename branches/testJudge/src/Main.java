@@ -25,7 +25,6 @@ import java.util.*;
  * If 100 <strong>Mod</strong> cases is not 0, divide the score down to nearest integer.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 public class Main {
     // store problem's test case list.

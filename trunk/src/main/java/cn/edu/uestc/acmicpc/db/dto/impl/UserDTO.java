@@ -36,7 +36,6 @@ import java.util.Date;
  * collect information from register action and generate a User class.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 7
  */
 @SuppressWarnings("UnusedDeclaration")
 public class UserDTO extends BaseDTO<User> {

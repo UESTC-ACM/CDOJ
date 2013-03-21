@@ -32,7 +32,6 @@ import java.io.File;
  * Test cases for file utils.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 public class FileTest {
     @Test

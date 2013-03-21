@@ -30,7 +30,6 @@ import cn.edu.uestc.acmicpc.db.entity.Article;
  * DAO for article entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 public class ArticleDAO extends DAO<Article, Integer> implements IArticleDAO {
     @Override

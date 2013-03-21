@@ -29,7 +29,6 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
  * Logout action, remove session about user information.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
  */
 @LoginPermit(NeedLogin = true)
 public class LogoutAction extends BaseAction {

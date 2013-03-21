@@ -26,7 +26,6 @@ package cn.edu.uestc.acmicpc.util;
  * Character utils, list all methods for characters control.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 public class CharUtil {
     /**

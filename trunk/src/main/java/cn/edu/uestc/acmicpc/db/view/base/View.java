@@ -38,7 +38,6 @@ import java.lang.reflect.Method;
  * to initialize ourselves.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 6
  */
 public class View<Entity extends Serializable> {
 

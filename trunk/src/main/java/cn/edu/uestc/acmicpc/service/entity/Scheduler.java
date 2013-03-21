@@ -17,7 +17,6 @@ import java.util.concurrent.BlockingQueue;
 
 /**
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 public class Scheduler implements Runnable, StatusConditionAware, StatusDAOAware {
 

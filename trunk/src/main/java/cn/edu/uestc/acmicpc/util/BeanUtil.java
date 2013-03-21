@@ -31,7 +31,6 @@ import javax.servlet.ServletContext;
  * Manage methods for Spring Beans.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 @SuppressWarnings("UnusedDeclaration")
 public class BeanUtil {

@@ -33,7 +33,6 @@ import java.sql.Timestamp;
  * Use for return user information with json type.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 6
  */
 public class UserView extends View<User> {
 

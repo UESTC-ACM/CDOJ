@@ -33,7 +33,6 @@ import java.lang.annotation.RetentionPolicy;
  * Use this annotation to validate users' types.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LoginPermit {

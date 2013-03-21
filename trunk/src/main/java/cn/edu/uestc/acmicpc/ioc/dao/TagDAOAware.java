@@ -28,7 +28,6 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ITagDAO;
  * For all class which need ITagDAO entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
  * @see ITagDAO
  */
 public interface TagDAOAware {

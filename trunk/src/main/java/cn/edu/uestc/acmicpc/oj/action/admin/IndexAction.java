@@ -30,7 +30,6 @@ import cn.edu.uestc.acmicpc.util.Global;
  * description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class IndexAction extends BaseAction {

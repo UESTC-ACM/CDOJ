@@ -32,7 +32,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * Override {@code check} method for checker working.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 public interface Checker<Entity> {
     /**

@@ -30,7 +30,6 @@ import cn.edu.uestc.acmicpc.db.entity.ContestUser;
  * DAO for contestuser entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 public class ContestuserDAO extends DAO<ContestUser, Integer> implements IContestuserDAO {
     @Override

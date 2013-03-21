@@ -35,7 +35,6 @@ import com.opensymphony.xwork2.validator.annotations.Validations;
  * description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
  */
 public class ProblemStatementAdminAction extends BaseAction implements ProblemDAOAware {
 

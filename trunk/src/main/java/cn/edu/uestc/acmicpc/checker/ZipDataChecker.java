@@ -55,7 +55,6 @@ import java.io.File;
  * specific folder.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 public class ZipDataChecker implements Checker<File> {
     @Override

@@ -28,7 +28,7 @@ import cn.edu.uestc.acmicpc.util.Settings;
  * For all class which need Settings entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @see Settings
  */
 public interface SettingsAware {
     /**

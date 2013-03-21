@@ -28,7 +28,6 @@ import cn.edu.uestc.acmicpc.db.entity.Code;
  * CodeDAO AOP interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 public interface ICodeDAO extends IDAO<Code, Integer> {
 }

@@ -45,7 +45,6 @@ import java.util.Map;
  * <strong>settings.xml</strong>.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 7
  */
 public class Settings implements ApplicationContextAware {
     /**

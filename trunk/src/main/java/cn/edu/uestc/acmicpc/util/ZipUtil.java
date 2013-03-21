@@ -35,7 +35,6 @@ import java.util.zip.ZipFile;
  * Operations for zip files.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
  */
 public class ZipUtil {
 

@@ -35,14 +35,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
  * 简单的Xml解析器，将Xml文件的内容封装到列表中，以便其它模块调用。
  *
  * @author fish
- * @version 1
  */
 
 /**
  * Simple xml parser in order to mapping the xml file into a {@link XmlNode} object.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 public class XmlParser {
     private String fileName;

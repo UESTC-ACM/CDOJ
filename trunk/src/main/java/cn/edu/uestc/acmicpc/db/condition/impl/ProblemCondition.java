@@ -31,7 +31,6 @@ import org.hibernate.criterion.Restrictions;
  * Problem search condition.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ProblemCondition extends BaseCondition {

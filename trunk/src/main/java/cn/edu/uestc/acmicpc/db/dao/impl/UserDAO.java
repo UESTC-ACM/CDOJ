@@ -37,7 +37,6 @@ import java.util.List;
  * DAO for user entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 5
  */
 @Transactional
 @Repository

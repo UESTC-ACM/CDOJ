@@ -31,7 +31,6 @@ import java.util.Collection;
  * User information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 5
  */
 @Table(name = "user", schema = "", catalog = "uestcoj")
 @Entity
