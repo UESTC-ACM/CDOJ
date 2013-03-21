@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.db.view.impl;
+package cn.edu.uestc.acmicpc.ioc.dao;
 
 /**
  * Description
@@ -6,5 +6,5 @@ package cn.edu.uestc.acmicpc.db.view.impl;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
-public class ContestView {
+public class ContestDAOAware {
 }
