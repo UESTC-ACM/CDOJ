@@ -45,7 +45,6 @@ import java.util.zip.ZipFile;
  * description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 7
  */
 @LoginPermit(Global.AuthenticationType.ADMIN)
 public class ProblemDataAdminAction extends FileUploadAction implements ProblemDAOAware {

@@ -30,7 +30,6 @@ import java.sql.Timestamp;
  * Status information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
  */
 @Table(name = "status", schema = "", catalog = "uestcoj")
 @Entity

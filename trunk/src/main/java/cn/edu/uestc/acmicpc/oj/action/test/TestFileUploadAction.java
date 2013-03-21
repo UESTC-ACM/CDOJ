@@ -35,7 +35,6 @@ import java.util.List;
  * Test how to upload file with struts2.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
  */
 @LoginPermit(value = Global.AuthenticationType.NORMAL)
 public class TestFileUploadAction extends BaseAction {

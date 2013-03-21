@@ -31,7 +31,6 @@ import java.util.Date;
  * Global method for date operations.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 public class DateUtil {
     /**
@@ -41,6 +40,7 @@ public class DateUtil {
      * @return Date object for the string
      * @throws ParseException
      */
+    @SuppressWarnings("UnusedDeclaration")
     public static Date valueOf(String string) throws ParseException {
         return new SimpleDateFormat("yyyy/MM/dd").parse(string);
     }

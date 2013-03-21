@@ -41,7 +41,6 @@ import java.util.Date;
  * Test cases for AOP framework
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:applicationContext-test.xml"})

@@ -30,7 +30,6 @@ import cn.edu.uestc.acmicpc.db.entity.Language;
  * DAO for language entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 public class LanguageDAO extends DAO<Language, Integer> implements ILanguageDAO {
     @Override

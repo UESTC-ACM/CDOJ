@@ -28,7 +28,6 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
  * For all class which need userDAO entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
  * @see IUserDAO
  */
 public interface UserDAOAware {

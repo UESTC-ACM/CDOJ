@@ -20,8 +20,6 @@
 
 package cn.edu.uestc.acmicpc.util;
 
-import org.apache.commons.lang3.CharUtils;
-
 import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,7 +29,6 @@ import java.util.Date;
  * global static class to deal with strings
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 6
  */
 @SuppressWarnings("UnusedDeclaration")
 public class StringUtil {

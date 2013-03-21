@@ -1,0 +1,7 @@
+/.idea
+/.idea/
+/mvn_clean.bat
+/mvn_package.bat
+/mvn_run.bat
+/target
+/trunk.iml

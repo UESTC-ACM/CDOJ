@@ -30,7 +30,6 @@ import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
  * DAO for problemtag entity
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 public class ProblemtagDAO extends DAO<ProblemTag, Integer> implements IProblemtagDAO {
     @Override

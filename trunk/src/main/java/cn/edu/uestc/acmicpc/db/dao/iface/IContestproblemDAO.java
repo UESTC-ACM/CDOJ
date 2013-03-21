@@ -28,7 +28,6 @@ import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
  * ContestproblemDAO AOP interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 public interface IContestproblemDAO extends IDAO<ContestProblem, Integer> {
 }

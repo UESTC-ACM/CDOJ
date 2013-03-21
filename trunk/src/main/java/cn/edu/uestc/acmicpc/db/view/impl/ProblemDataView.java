@@ -29,7 +29,6 @@ import cn.edu.uestc.acmicpc.db.view.base.View;
  * Contest information view.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 public class ProblemDataView extends View<Problem> {
     private Integer timeLimit;

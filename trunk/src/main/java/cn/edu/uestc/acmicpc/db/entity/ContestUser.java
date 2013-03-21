@@ -29,7 +29,6 @@ import java.io.Serializable;
  * Mappings between contests and users.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
  */
 @Table(name = "contestUser", schema = "", catalog = "uestcoj")
 @Entity

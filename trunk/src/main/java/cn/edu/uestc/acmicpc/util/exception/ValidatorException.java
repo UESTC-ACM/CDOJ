@@ -29,7 +29,6 @@ import java.util.Map;
  * A simple exception implement for JSON inside.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ValidatorException extends Exception {

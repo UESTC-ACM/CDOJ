@@ -30,7 +30,6 @@ import java.util.Collection;
  * Code information.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
  */
 @Table(name = "code", schema = "", catalog = "uestcoj")
 @Entity

@@ -38,7 +38,6 @@ import java.util.List;
  * we consider the record range by this two fields.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
  */
 public class Condition {
     /**
@@ -122,7 +121,6 @@ public class Condition {
      * Order conditions.
      *
      * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
-     * @version 1
      */
     public class Order {
         public Order(String field, boolean asc) {

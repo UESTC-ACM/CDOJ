@@ -31,7 +31,6 @@ import java.util.Collection;
  * Discuss for problems.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
  */
 @Table(name = "discuss", schema = "", catalog = "uestcoj")
 @Entity

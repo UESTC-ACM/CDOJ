@@ -31,7 +31,6 @@ import java.sql.Timestamp;
  * Contest information view.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ContestView extends View<Contest> {

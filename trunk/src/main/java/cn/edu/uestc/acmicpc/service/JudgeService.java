@@ -40,7 +40,6 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Judge main service, use multi-thread architecture to process judge
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 @Transactional
 public class JudgeService implements ApplicationContextAware, SettingsAware {

@@ -29,7 +29,6 @@ import java.io.Serializable;
  * Mappings between problems and tags.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
  */
 @Table(name = "problemTag", schema = "", catalog = "uestcoj")
 @Entity

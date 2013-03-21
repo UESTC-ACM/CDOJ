@@ -36,7 +36,6 @@ import java.util.List;
  * Test Action for cdoj.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 @LoginPermit(value = Global.AuthenticationType.NORMAL)
 public class TestAction extends BaseAction implements TagDAOAware {

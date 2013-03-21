@@ -30,7 +30,6 @@ import java.util.Collection;
  * Compile information which compiler returns.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
  */
 @Table(name = "compileInfo", schema = "", catalog = "uestcoj")
 @Entity

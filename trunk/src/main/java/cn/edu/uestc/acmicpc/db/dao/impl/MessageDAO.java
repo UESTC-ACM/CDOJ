@@ -30,7 +30,6 @@ import cn.edu.uestc.acmicpc.db.entity.Message;
  * DAO for message entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 public class MessageDAO extends DAO<Message, Integer> implements IMessageDAO {
     @Override

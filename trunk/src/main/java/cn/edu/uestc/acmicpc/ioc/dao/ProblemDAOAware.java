@@ -28,7 +28,7 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
  * For all class which need problem dao entity.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
+ * @see IProblemDAO
  */
 public interface ProblemDAOAware {
     /**

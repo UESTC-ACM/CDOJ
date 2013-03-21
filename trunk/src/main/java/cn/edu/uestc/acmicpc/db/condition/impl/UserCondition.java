@@ -30,7 +30,6 @@ import cn.edu.uestc.acmicpc.db.entity.Department;
  * User search condition.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 public class UserCondition extends BaseCondition {
     /**

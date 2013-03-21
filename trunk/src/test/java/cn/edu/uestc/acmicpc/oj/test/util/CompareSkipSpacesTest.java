@@ -33,7 +33,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * All test cases for {@code StringUtil.compareSkipSpaces} methods.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:applicationContext-test.xml"})

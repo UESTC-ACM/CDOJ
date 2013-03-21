@@ -30,7 +30,6 @@ import java.util.*;
  * Basic node object used by xml parser.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 public class XmlNode implements Iterable<XmlNode> {
 

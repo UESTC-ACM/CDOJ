@@ -29,7 +29,6 @@ import java.io.Serializable;
  * Mappings between contest and problems.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
  */
 @Table(name = "contestProblem", schema = "", catalog = "uestcoj")
 @Entity

@@ -53,7 +53,6 @@ import java.util.List;
  * action for list, search, edit, add problem.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 8
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class ProblemAdminAction extends BaseAction

@@ -30,7 +30,6 @@ import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
  * DAO for compileinfo entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 public class CompileinfoDAO extends DAO<CompileInfo, Integer> implements ICompileinfoDAO {
     @Override

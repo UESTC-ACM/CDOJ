@@ -30,7 +30,6 @@ import java.util.Collection;
  * Languages for compiler.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 @Table(name = "language", schema = "", catalog = "uestcoj")
 @Entity

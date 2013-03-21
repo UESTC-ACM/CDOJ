@@ -30,7 +30,6 @@ import java.util.ArrayList;
  * Object global methods.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ObjectUtil {

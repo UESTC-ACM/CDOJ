@@ -26,7 +26,6 @@ package cn.edu.uestc.acmicpc.oj.view;
  * Object to build view's page tags.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 2
  */
 public class PageInfo {
     /**

@@ -29,7 +29,6 @@ import java.lang.annotation.RetentionPolicy;
  * Ignore flag for reflection class.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Ignore {

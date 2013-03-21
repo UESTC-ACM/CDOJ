@@ -37,7 +37,6 @@ import java.util.concurrent.BlockingQueue;
  * Problem judge component.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
  */
 public class Judge implements Runnable, SettingsAware {
     public void setJudgeName(String judgeName) {

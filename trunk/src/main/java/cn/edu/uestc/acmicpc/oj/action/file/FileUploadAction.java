@@ -32,7 +32,6 @@ import java.util.List;
  * Action for file upload service
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 6
  */
 public class FileUploadAction extends BaseAction {
 

@@ -37,7 +37,6 @@ import java.util.List;
  * Use for return problem information with json type.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 7
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ProblemView extends View<Problem> {

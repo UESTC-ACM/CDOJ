@@ -28,7 +28,6 @@ import org.apache.struts2.views.jsp.ContextBeanTag;
  * Customize JSP Tag Interface
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 public abstract class Tag extends ContextBeanTag {
 }

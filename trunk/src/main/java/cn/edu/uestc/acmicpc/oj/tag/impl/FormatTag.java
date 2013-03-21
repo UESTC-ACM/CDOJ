@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletResponse;
  * description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
  */
 public class FormatTag extends Tag {
 

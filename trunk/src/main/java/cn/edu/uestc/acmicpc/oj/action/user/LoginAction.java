@@ -36,7 +36,6 @@ import java.util.Date;
  * Login action for user toLogin.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 4
  */
 @LoginPermit(NeedLogin = false)
 public class LoginAction extends BaseAction {

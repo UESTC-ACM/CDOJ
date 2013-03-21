@@ -28,7 +28,6 @@ import cn.edu.uestc.acmicpc.db.entity.Article;
  * ArticleDAO AOP interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 public interface IArticleDAO extends IDAO<Article, Integer> {
 }

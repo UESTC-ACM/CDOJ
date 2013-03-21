@@ -8,7 +8,6 @@ import java.sql.Timestamp;
  * Contest entity data transform object.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ContestDTO extends BaseDTO<Contest> {

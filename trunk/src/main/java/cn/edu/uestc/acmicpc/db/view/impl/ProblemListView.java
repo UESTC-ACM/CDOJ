@@ -41,7 +41,6 @@ import java.util.List;
  * description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 4
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ProblemListView extends View<Problem> {

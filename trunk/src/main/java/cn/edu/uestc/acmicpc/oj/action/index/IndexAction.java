@@ -29,7 +29,6 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
  * action for index page
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 4
  */
 @LoginPermit(NeedLogin = false)
 public class IndexAction extends BaseAction {

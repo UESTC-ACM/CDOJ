@@ -28,7 +28,6 @@ import java.lang.reflect.Method;
  * Global method for get method and field from objects.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ReflectionUtil {

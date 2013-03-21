@@ -30,7 +30,6 @@ import java.io.*;
  * File util methods.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 3
  */
 public class FileUtil {
     private static final int BUFFER_SIZE = 2048;
@@ -115,6 +114,7 @@ public class FileUtil {
      * @param file file pointer
      * @return number of files in the folder
      */
+    @SuppressWarnings("UnusedDeclaration")
     public static int countFiles(File file) {
         if (!file.exists())
             return 0;

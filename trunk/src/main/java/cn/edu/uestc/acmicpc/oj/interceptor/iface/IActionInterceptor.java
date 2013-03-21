@@ -34,7 +34,7 @@ import cn.edu.uestc.acmicpc.oj.interceptor.AppInterceptor;
  * execute codes after action is invoke.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @version 1
+ * @see AppInterceptor.ActionInfo
  */
 public interface IActionInterceptor {
     /**

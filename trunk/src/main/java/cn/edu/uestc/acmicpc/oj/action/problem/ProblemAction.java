@@ -33,7 +33,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * action for show problem.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
  */
 @LoginPermit(NeedLogin = false)
 public class ProblemAction extends BaseAction implements ProblemDAOAware {
