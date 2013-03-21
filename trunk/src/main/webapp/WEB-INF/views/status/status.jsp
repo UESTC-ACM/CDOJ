@@ -34,7 +34,7 @@
 <html>
 <head>
     <script src="<s:url value="/scripts/cdoj/cdoj.status.js"/>"></script>
-    <title>Problem</title>
+    <title>Status</title>
 </head>
 <body>
 

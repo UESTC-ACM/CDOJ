@@ -2,7 +2,12 @@ package cn.edu.uestc.acmicpc.db.dto.impl;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
+import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Contest entity data transform object.
@@ -18,6 +23,24 @@ public class ContestDTO extends BaseDTO<Contest> {
     private Timestamp time;
     private Integer length;
     private Boolean isVisible;
+    private List<Integer> problemList;
+
+    public Boolean getVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(Boolean visible) {
+        isVisible = visible;
+    }
+
+    @Ignore
+    public List<Integer> getProblemList() {
+        return problemList;
+    }
+
+    public void setProblemList(List<Integer> problemList) {
+        this.problemList = problemList;
+    }
 
     public Integer getContestId() {
         return contestId;
@@ -67,16 +90,18 @@ public class ContestDTO extends BaseDTO<Contest> {
         this.length = length;
     }
 
-    public ContestDTO() {
-        super();
-    }
-
     public Boolean getIsVisible() {
         return isVisible;
     }
 
     public void setIsVisible(Boolean visible) {
         isVisible = visible;
+    }
+
+    @Override
+    public Contest getEntity() throws AppException {
+        Contest contest = super.getEntity();
+        return contest;
     }
 
     @Override
