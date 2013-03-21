@@ -80,6 +80,15 @@ public class ProblemListView extends View<Problem> {
     private List<String> tags;
 
     /**
+     * Get a simple problem list view use for contest list.
+     *
+     * @param problem
+     */
+    public ProblemListView(Problem problem) {
+        super(problem);
+    }
+
+    /**
      * Get ProblemListView entity by problem entity.
      *
      * @param problem specific problem entity

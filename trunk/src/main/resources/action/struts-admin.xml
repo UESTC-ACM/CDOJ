@@ -62,4 +62,9 @@
             <param name="targetProblemId">{1}</param>
         </action>
     </package>
+    <package name="contestAdmin" namespace="/admin/contest" extends="admin">
+        <action name="list" class="contestAdminAction" method="toContestList">
+            <result>/WEB-INF/views/admin/contest.jsp</result>
+        </action>
+    </package>
 </struts>

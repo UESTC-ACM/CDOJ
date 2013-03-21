@@ -42,6 +42,14 @@ public class ContestListView extends View<Contest> {
     private Integer length;
     private Boolean isVisible;
 
+    public Boolean getVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(Boolean visible) {
+        isVisible = visible;
+    }
+
     @SuppressWarnings("UnusedDeclaration")
     public Integer getContestId() {
         return contestId;
