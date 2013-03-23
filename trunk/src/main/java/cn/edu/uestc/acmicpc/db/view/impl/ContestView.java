@@ -21,7 +21,6 @@
 
 package cn.edu.uestc.acmicpc.db.view.impl;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 import cn.edu.uestc.acmicpc.db.entity.Problem;

@@ -22,9 +22,9 @@
 
 package cn.edu.uestc.acmicpc.util;
 
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.xml.XmlNode;
 import cn.edu.uestc.acmicpc.oj.xml.XmlParser;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -104,7 +104,7 @@ public class Settings implements ApplicationContextAware {
     private ApplicationContext applicationContext;
 
     private String getAbsolutePath(String path) throws IOException {
-        return applicationContext.getResource("").getFile().getAbsolutePath()+"/"+path;
+        return applicationContext.getResource("").getFile().getAbsolutePath() + "/" + path;
     }
 
     /**

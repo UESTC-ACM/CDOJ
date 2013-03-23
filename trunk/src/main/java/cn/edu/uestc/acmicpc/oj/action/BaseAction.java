@@ -22,17 +22,17 @@
 
 package cn.edu.uestc.acmicpc.oj.action;
 
-import cn.edu.uestc.acmicpc.util.Settings;
-import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.oj.interceptor.AppInterceptor;
 import cn.edu.uestc.acmicpc.oj.interceptor.iface.IActionInterceptor;
-import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
-import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.StringUtil;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.Settings;
+import cn.edu.uestc.acmicpc.util.StringUtil;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.*;
 

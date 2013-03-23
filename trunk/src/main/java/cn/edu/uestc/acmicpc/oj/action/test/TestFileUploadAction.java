@@ -73,21 +73,21 @@ public class TestFileUploadAction extends BaseAction {
 
     public String onUploadFile() throws Exception {
         try {
-        System.out.println(getSavePath());
-        File dir = new File(getSavePath());
-        if(!dir.exists()){
-            dir.mkdirs();
-        }
-        List<File> files = getUploadFile();
-        for(int i = 0;i < files.size();i++){
-            FileOutputStream fos = new FileOutputStream(getSavePath()+"//"+getUploadFileFileName().get(i));
-            FileInputStream fis=new FileInputStream(getUploadFile().get(i));
-            byte []buffers = new byte[1024];
-            int len = 0;
-            while((len = fis.read(buffers)) != -1){
-                fos.write(buffers,0,len);
+            System.out.println(getSavePath());
+            File dir = new File(getSavePath());
+            if (!dir.exists()) {
+                dir.mkdirs();
             }
-        }
+            List<File> files = getUploadFile();
+            for (int i = 0; i < files.size(); i++) {
+                FileOutputStream fos = new FileOutputStream(getSavePath() + "//" + getUploadFileFileName().get(i));
+                FileInputStream fis = new FileInputStream(getUploadFile().get(i));
+                byte[] buffers = new byte[1024];
+                int len = 0;
+                while ((len = fis.read(buffers)) != -1) {
+                    fos.write(buffers, 0, len);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -52,7 +52,7 @@ public class FormatTag extends Tag {
     @Override
     protected void populateParams() {
         super.populateParams();
-        FormatTagService formatTagService = (FormatTagService)getComponent();
+        FormatTagService formatTagService = (FormatTagService) getComponent();
         formatTagService.setValue(getValue());
     }
 

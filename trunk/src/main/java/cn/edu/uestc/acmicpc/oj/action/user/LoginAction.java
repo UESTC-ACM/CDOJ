@@ -22,11 +22,11 @@
 
 package cn.edu.uestc.acmicpc.oj.action.user;
 
-import cn.edu.uestc.acmicpc.oj.action.BaseAction;
-import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.StringUtil;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 import com.opensymphony.xwork2.validator.annotations.*;
 
 import java.sql.Timestamp;
@@ -105,7 +105,7 @@ public class LoginAction extends BaseAction {
                 return INPUT;
             }
 
-            user.setLastLogin(new Timestamp(new Date().getTime()/1000*1000));
+            user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
             userDAO.update(user);
 
             user = userDAO.get(user.getUserId());
@@ -115,11 +115,11 @@ public class LoginAction extends BaseAction {
             session.put("userType", user.getType());
         } catch (AppException e) {
             json.put("result", "error");
-            json.put("error_msg",setError(e));
+            json.put("error_msg", setError(e));
             return JSON;
         } catch (Exception e) {
             json.put("result", "error");
-            json.put("error_msg",setError("Unknown exception occurred."));
+            json.put("error_msg", setError("Unknown exception occurred."));
             return JSON;
         }
         json.put("result", "ok");

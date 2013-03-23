@@ -22,8 +22,8 @@
 
 package cn.edu.uestc.acmicpc.db.view.base;
 
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.StringUtil;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.Serializable;
