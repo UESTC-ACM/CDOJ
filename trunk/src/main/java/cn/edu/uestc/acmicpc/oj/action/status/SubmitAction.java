@@ -69,7 +69,7 @@ public class SubmitAction extends BaseAction {
      * @return JSON
      */
     public String toSubmit() {
-        System.out.println(codeContent+"\n -->"+languageId+"\n -->"+contestId+"\n -->"+problemId);
+        System.out.println(codeContent + "\n -->" + languageId + "\n -->" + contestId + "\n -->" + problemId);
         json.put("result", "ok");
         return JSON;
     }

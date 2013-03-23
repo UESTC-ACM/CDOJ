@@ -2,11 +2,13 @@ package cn.edu.uestc.acmicpc.db.dto.impl;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
-import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
+import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.sql.Timestamp;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -40,6 +42,13 @@ public class ContestDTO extends BaseDTO<Contest> {
 
     public void setProblemList(List<Integer> problemList) {
         this.problemList = problemList;
+    }
+
+    public void setProblemList(String string) {
+        Integer[] arr = ArrayUtil.parseIntArray(string);
+        List<Integer> list = new LinkedList<>();
+        Collections.addAll(list, arr);
+        this.problemList = list;
     }
 
     public Integer getContestId() {

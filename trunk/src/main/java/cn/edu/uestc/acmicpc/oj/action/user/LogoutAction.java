@@ -40,7 +40,7 @@ public class LogoutAction extends BaseAction {
         session.remove("password");
         session.remove("lastLogin");
         session.remove("userType");
-        json.put("result","ok");
+        json.put("result", "ok");
         return JSON;
     }
 

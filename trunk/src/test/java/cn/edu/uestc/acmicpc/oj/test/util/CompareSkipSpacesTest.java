@@ -53,16 +53,18 @@ public class CompareSkipSpacesTest {
     public void testSameByDeletingWhiteSpace() {
         Assert.assertEquals(0, StringUtil.compareSkipSpaces("c a t", "cat"));
     }
+
     /**
-     *The string has some white space({@code ' '} in it,and the some at the end of the string.
+     * The string has some white space({@code ' '} in it,and the some at the end of the string.
      */
 
     @Test
     public void testSameAboutEndingSpaces() {
         Assert.assertEquals(0, StringUtil.compareSkipSpaces("c a t    ", " c a t"));
     }
+
     /**
-     *base test of the different string with white space.
+     * base test of the different string with white space.
      */
 
     @Test
@@ -75,35 +77,34 @@ public class CompareSkipSpacesTest {
      */
 
     @Test
-    public void testAboutTabSpaces()
-    {
-        Assert.assertEquals(0,StringUtil.compareSkipSpaces("\tc\ta\tt\t","\tc\ta\tt\t"));
+    public void testAboutTabSpaces() {
+        Assert.assertEquals(0, StringUtil.compareSkipSpaces("\tc\ta\tt\t", "\tc\ta\tt\t"));
     }
+
     /**
      * The string has some Tab character in it,And this time the two string is not the same
      */
 
     @Test
-    public void testAboutTabSpacesWithDifferentString()
-    {
-        Assert.assertEquals("cat".compareTo("catt"),StringUtil.compareSkipSpaces("\tc\ta\tt\t","\tc\ta\tt\tt"));
+    public void testAboutTabSpacesWithDifferentString() {
+        Assert.assertEquals("cat".compareTo("catt"), StringUtil.compareSkipSpaces("\tc\ta\tt\t", "\tc\ta\tt\tt"));
     }
+
     /**
      * string with special character and thay are the same
      */
 
     @Test
-    public void testSameAboutSpecialCharacter()
-    {
-        Assert.assertEquals(0,StringUtil.compareSkipSpaces("\t\012\ta\tt\t","\t\012\ta\tt\t"));
+    public void testSameAboutSpecialCharacter() {
+        Assert.assertEquals(0, StringUtil.compareSkipSpaces("\t\012\ta\tt\t", "\t\012\ta\tt\t"));
     }
+
     /**
      * string with special character and thay are the same
      */
 
     @Test
-    public void testDifferentAboutSpecialCharacter()
-    {
-        Assert.assertEquals(1,StringUtil.compareSkipSpaces("\t\012\ta\tt\t","\t\012\t\001a\tt\t"));
+    public void testDifferentAboutSpecialCharacter() {
+        Assert.assertEquals(1, StringUtil.compareSkipSpaces("\t\012\ta\tt\t", "\t\012\t\001a\tt\t"));
     }
 }
