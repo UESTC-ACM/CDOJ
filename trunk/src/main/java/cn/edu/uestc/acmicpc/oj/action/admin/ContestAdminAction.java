@@ -23,10 +23,12 @@
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
+import cn.edu.uestc.acmicpc.db.view.impl.ContestView;
 import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Contest admin main page
@@ -44,10 +46,46 @@ public class ContestAdminAction extends BaseAction implements ContestDAOAware {
     }
 
     private String editorFlag;
+
+    public String getEditorFlag() {
+        return editorFlag;
+    }
+
+    public void setEditorFlag(String editorFlag) {
+        this.editorFlag = editorFlag;
+    }
+
+    public Integer getTargetContestId() {
+        return targetContestId;
+    }
+
+    public void setTargetContestId(Integer targetContestId) {
+        this.targetContestId = targetContestId;
+    }
+
+    public ContestView getTargetContest() {
+        return targetContest;
+    }
+
+    public void setTargetContest(ContestView targetContest) {
+        this.targetContest = targetContest;
+    }
+
     private Integer targetContestId;
+    private ContestView targetContest;
 
     public String toContestEditor() {
-
+        editorFlag = "new";
+        if (targetContestId != null) {
+            try {
+                targetContest = new ContestView(contestDAO.get(targetContestId));
+                if (targetContest.getContestId() == null)
+                    throw new AppException("Wrong problem ID!");
+                editorFlag = "edit";
+            } catch (AppException e) {
+                redirect(getActionURL("/admin", "index"), e.getMessage());
+            }
+        }
         return SUCCESS;
     }
 

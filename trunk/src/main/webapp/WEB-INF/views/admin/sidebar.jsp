@@ -58,7 +58,7 @@
 
         <li class="nav-header"><i class="icon-screenshot"></i>Contest</li>
         <li><s:a action="list" namespace="/admin/contest">Contest list</s:a></li>
-        <li><a href="#">Add contest</a></li>
+        <li><s:a action="editor/" namespace="/admin/contest">Add contest</s:a></li>
 
     </ul>
 </div>
