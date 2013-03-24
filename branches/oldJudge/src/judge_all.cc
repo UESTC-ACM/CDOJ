@@ -42,7 +42,7 @@ int main(int argc, char *argv[], char *envp[])
         FM_LOG_WARNING("set alarm for judge failed, %d: %s", errno, strerror(errno));
         exit(judge_conf::EXIT_VERY_FIRST);
     }
-    signal(SIGALRM, timeout);ssssDafasfa
+    signal(SIGALRM, timeout);
 
 	if (problem::needCompile) {
 		//compile
