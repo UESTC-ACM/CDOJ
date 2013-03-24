@@ -105,7 +105,7 @@ public abstract class BaseCondition implements ApplicationContextAware {
      *
      * @param condition conditions that to be considered
      */
-    public abstract void invoke(Condition condition);
+    protected abstract void invoke(Condition condition);
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -128,6 +128,7 @@ public abstract class BaseCondition implements ApplicationContextAware {
     /**
      * Basic condition type of database handler
      */
+    @SuppressWarnings("UnusedDeclaration")
     public enum ConditionType {
         eq, gt, lt, ge, le, like
     }
@@ -147,8 +148,8 @@ public abstract class BaseCondition implements ApplicationContextAware {
      * @param upperCaseFirst whether columns' name begin uppercase letter first
      * @return condition object we need
      */
-    @SuppressWarnings({"ConstantConditions", "unchecked"})
-    public Condition getCondition(boolean upperCaseFirst) {
+    @SuppressWarnings({"ConstantConditions", "unchecked", "SameParameterValue"})
+    Condition getCondition(boolean upperCaseFirst) {
         Condition condition = new Condition();
         Class<?> clazz = this.getClass();
         Class<?> restrictionsClass = Restrictions.class;

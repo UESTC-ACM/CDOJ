@@ -29,6 +29,7 @@ import java.io.Serializable;
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 public class AppException extends Exception implements Serializable {
     private static final long serialVersionUID = -4267655542557102261L;
 

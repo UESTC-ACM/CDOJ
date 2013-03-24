@@ -34,7 +34,7 @@ public interface ProblemDAOAware {
     /**
      * put problemDAO into class
      *
-     * @param problemDAO
+     * @param problemDAO specific problem DAO entity
      */
     public void setProblemDAO(IProblemDAO problemDAO);
 }

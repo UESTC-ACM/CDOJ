@@ -52,7 +52,7 @@ public class JudgeItem implements CompileinfoDAOAware, StatusDAOAware, UserDAOAw
     /**
      * Status database condition.
      */
-    StatusCondition statusCondition;
+    private StatusCondition statusCondition;
 
     /**
      * Compileinfo DAO for database query.
@@ -71,6 +71,7 @@ public class JudgeItem implements CompileinfoDAOAware, StatusDAOAware, UserDAOAw
      */
     private IProblemDAO problemDAO;
 
+    @SuppressWarnings("UnusedDeclaration")
     public int parseLanguage() {
         String extension = status.getLanguageByLanguageId().getExtension();
         switch (extension) {

@@ -80,6 +80,7 @@ public class ProblemAction extends BaseAction implements ProblemDAOAware {
      *
      * @return <strong>SUCCESS</strong> signal
      */
+    @SuppressWarnings("SameReturnValue")
     public String toProblem() {
         if (targetProblemId != null) {
             try {

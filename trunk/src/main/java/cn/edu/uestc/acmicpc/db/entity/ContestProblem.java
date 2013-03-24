@@ -30,6 +30,7 @@ import java.io.Serializable;
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 @Table(name = "contestProblem", schema = "", catalog = "uestcoj")
 @Entity
 public class ContestProblem implements Serializable {

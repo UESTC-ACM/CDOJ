@@ -69,7 +69,7 @@ public class ProblemAdminAction extends BaseAction
      */
     private IStatusDAO statusDAO;
 
-    public ProblemCondition problemCondition;
+    private ProblemCondition problemCondition;
     private StatusCondition statusCondition;
 
     @Override
@@ -91,6 +91,7 @@ public class ProblemAdminAction extends BaseAction
      *
      * @return <strong>SUCCESS</strong> signal
      */
+    @SuppressWarnings("SameReturnValue")
     @SkipValidation
     public String toProblemList() {
         return SUCCESS;
@@ -135,6 +136,7 @@ public class ProblemAdminAction extends BaseAction
      *
      * @return <strong>SUCCESS</strong> signal
      */
+    @SuppressWarnings("SameReturnValue")
     @SkipValidation
     public String toProblemEditor() {
         editorFlag = "new";

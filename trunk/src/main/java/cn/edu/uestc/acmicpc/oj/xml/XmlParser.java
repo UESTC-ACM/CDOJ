@@ -43,7 +43,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class XmlParser {
-    private String fileName;
+    private final String fileName;
 
     /**
      * Construct a {@link XmlParser} and set specified xml file name.

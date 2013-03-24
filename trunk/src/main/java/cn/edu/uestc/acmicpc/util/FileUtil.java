@@ -22,8 +22,6 @@
 
 package cn.edu.uestc.acmicpc.util;
 
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import java.io.*;
 
 /**
@@ -77,6 +75,7 @@ public class FileUtil {
      *
      * @return the total number of files deleted
      */
+    @SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
     public static int deleteContents(File targetFile) {
         if (targetFile.exists() && targetFile.isDirectory())
             return org.aspectj.util.FileUtil.deleteContents(targetFile);
@@ -91,7 +90,7 @@ public class FileUtil {
      *
      * @param path absolute path value
      */
-    public static void clearDirectory(String path) throws AppException {
+    public static void clearDirectory(String path) {
         clearDirectory(new File(path));
     }
 
@@ -101,9 +100,8 @@ public class FileUtil {
      * @param fromDir origin directory location
      * @param toDir   destination location
      * @throws IOException
-     * @throws AppException
      */
-    public static void moveDirectory(File fromDir, File toDir) throws IOException, AppException {
+    public static void moveDirectory(File fromDir, File toDir) throws IOException {
         org.aspectj.util.FileUtil.copyDir(fromDir, toDir);
         clearDirectory(fromDir);
     }
@@ -128,10 +126,9 @@ public class FileUtil {
      * Delete specific directory.
      *
      * @param file directory file pointer
-     * @throws AppException
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private static void clearDirectory(File file) throws AppException {
+    private static void clearDirectory(File file) {
         if (file.exists()) {
             deleteContents(file);
             file.delete();

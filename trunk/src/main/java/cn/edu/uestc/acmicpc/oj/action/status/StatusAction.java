@@ -36,6 +36,7 @@ import java.util.List;
 public class StatusAction extends BaseAction
         implements StatusConditionAware, StatusDAOAware {
 
+    @SuppressWarnings("SameReturnValue")
     @SkipValidation
     public String toStatusList() {
         return SUCCESS;

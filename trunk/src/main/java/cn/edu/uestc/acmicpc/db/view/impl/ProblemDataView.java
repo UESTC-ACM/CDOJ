@@ -30,6 +30,7 @@ import cn.edu.uestc.acmicpc.db.view.base.View;
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 public class ProblemDataView extends View<Problem> {
     private Integer timeLimit;
     private Integer memoryLimit;

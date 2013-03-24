@@ -56,10 +56,12 @@ public class FormatTag extends Tag {
         formatTagService.setValue(getValue());
     }
 
+    @SuppressWarnings("WeakerAccess")
     public String getValue() {
         return value;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setValue(String value) {
         this.value = value;
     }

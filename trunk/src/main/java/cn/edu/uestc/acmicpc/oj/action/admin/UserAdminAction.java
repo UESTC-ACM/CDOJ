@@ -51,13 +51,15 @@ import java.util.List;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class UserAdminAction extends BaseAction implements DepartmentDAOAware, UserConditionAware {
+public class UserAdminAction extends BaseAction
+        implements DepartmentDAOAware, UserConditionAware {
 
     /**
      * return the user.jsp for base view
      *
      * @return SUCCESS
      */
+    @SuppressWarnings("SameReturnValue")
     @SkipValidation
     public String toUserList() {
         return SUCCESS;
@@ -71,7 +73,7 @@ public class UserAdminAction extends BaseAction implements DepartmentDAOAware, U
     /**
      * Conditions for user search.
      */
-    public UserCondition userCondition = new UserCondition();
+    private UserCondition userCondition;
 
     /**
      * Setter of userCondition for Ioc.

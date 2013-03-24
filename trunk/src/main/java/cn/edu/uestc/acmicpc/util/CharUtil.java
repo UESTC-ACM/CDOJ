@@ -27,6 +27,7 @@ package cn.edu.uestc.acmicpc.util;
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@SuppressWarnings("WeakerAccess")
 public class CharUtil {
     /**
      * Check whether expected character is white space or not.

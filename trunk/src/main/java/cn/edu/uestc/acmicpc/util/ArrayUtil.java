@@ -27,6 +27,7 @@ package cn.edu.uestc.acmicpc.util;
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 public class ArrayUtil {
     /**
      * Join all objects into a string, splitting with {@code flag}.
@@ -63,6 +64,7 @@ public class ArrayUtil {
      * @param <T>   element type
      * @return expected array
      */
+    @SuppressWarnings("WeakerAccess")
     public static <T> Object[] toArray(T[] array) {
         if (array == null || array.length < 1)
             return new Object[]{};

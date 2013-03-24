@@ -30,6 +30,7 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ICodeDAO;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @see ICodeDAO
  */
+@SuppressWarnings("UnusedDeclaration")
 public interface CodeDAOAware {
     /**
      * Put codeDAO into class.

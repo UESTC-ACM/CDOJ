@@ -44,7 +44,8 @@ public class FileUploadAction extends BaseAction {
 
     private String savePath;
 
-    public List<File> getUploadFile() {
+    @SuppressWarnings("WeakerAccess")
+    protected List<File> getUploadFile() {
         return uploadFile;
     }
 
@@ -63,7 +64,8 @@ public class FileUploadAction extends BaseAction {
         this.uploadFileContentType = uploadFileContentType;
     }
 
-    public List<String> getUploadFileFileName() {
+    @SuppressWarnings("WeakerAccess")
+    protected List<String> getUploadFileFileName() {
         return uploadFileFileName;
     }
 
@@ -72,11 +74,12 @@ public class FileUploadAction extends BaseAction {
         this.uploadFileFileName = uploadFileFileName;
     }
 
-    public String getSavePath() {
+    @SuppressWarnings("WeakerAccess")
+    protected String getSavePath() {
         return savePath;
     }
 
-    public void setSavePath(String savePath) {
+    protected void setSavePath(String savePath) {
         this.savePath = savePath;
     }
 
@@ -86,7 +89,7 @@ public class FileUploadAction extends BaseAction {
      * We should set ourselves' type filter for this upload action.
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public String[] uploadFile() {
+    protected String[] uploadFile() {
         // TODO check type and size
         File dir = new File(getSavePath());
         if (!dir.exists()) {

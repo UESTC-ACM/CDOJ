@@ -31,6 +31,7 @@ import cn.edu.uestc.acmicpc.db.entity.Department;
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 public class UserCondition extends BaseCondition {
     /**
      * Start user id.

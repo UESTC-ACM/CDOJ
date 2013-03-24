@@ -25,6 +25,7 @@ public class Scheduler implements Runnable, StatusConditionAware, StatusDAOAware
      */
     private IStatusDAO statusDAO;
 
+    @SuppressWarnings("SameParameterValue")
     public void setJudgeQueue(BlockingQueue<JudgeItem> judgeQueue) {
         this.judgeQueue = judgeQueue;
     }

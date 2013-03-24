@@ -34,7 +34,7 @@ public interface DepartmentDAOAware {
     /**
      * put departmentDAO into class
      *
-     * @param departmentDAO
+     * @param departmentDAO specific department DAO entity
      */
     public void setDepartmentDAO(IDepartmentDAO departmentDAO);
 }

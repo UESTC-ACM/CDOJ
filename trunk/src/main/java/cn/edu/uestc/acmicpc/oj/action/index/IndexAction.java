@@ -40,6 +40,7 @@ public class IndexAction extends BaseAction {
      *
      * @return <strong>SUCCESS</strong> signal
      */
+    @SuppressWarnings("SameReturnValue")
     public String toIndex() {
         return SUCCESS;
     }

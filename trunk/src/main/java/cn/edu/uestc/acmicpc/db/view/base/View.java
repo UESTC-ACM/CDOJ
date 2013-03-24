@@ -46,7 +46,7 @@ public class View<Entity extends Serializable> {
      *
      * @param entity specific entity
      */
-    public View(Entity entity) {
+    protected View(Entity entity) {
         if (entity == null)
             return;
         Method[] methods = getClass().getMethods();

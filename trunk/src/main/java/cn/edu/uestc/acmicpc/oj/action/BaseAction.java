@@ -50,6 +50,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 public class BaseAction extends ActionSupport
         implements RequestAware, SessionAware, ApplicationAware, IActionInterceptor,
         ServletResponseAware, ServletRequestAware, UserDAOAware {
@@ -63,7 +64,7 @@ public class BaseAction extends ActionSupport
     /**
      * Global constant
      */
-    private ThreadLocal<Global> global = new ThreadLocal<>();
+    private final ThreadLocal<Global> global = new ThreadLocal<>();
 
     @SuppressWarnings("UnusedDeclaration")
     public Global getGlobal() {
@@ -87,21 +88,25 @@ public class BaseAction extends ActionSupport
     /**
      * Application attribute map.
      */
+    @SuppressWarnings("WeakerAccess")
     protected Map<String, Object> application;
 
     /**
      * Http Servlet Request.
      */
+    @SuppressWarnings("WeakerAccess")
     protected HttpServletRequest httpServletRequest;
 
     /**
      * Http Servlet Response.
      */
+    @SuppressWarnings("WeakerAccess")
     protected HttpServletResponse httpServletResponse;
 
     /**
      * Http Session.
      */
+    @SuppressWarnings("WeakerAccess")
     protected HttpSession httpSession;
 
     /**
@@ -112,6 +117,7 @@ public class BaseAction extends ActionSupport
     /**
      * Current toLogin user.
      */
+    @SuppressWarnings("WeakerAccess")
     protected User currentUser;
 
     /**
@@ -122,6 +128,7 @@ public class BaseAction extends ActionSupport
     /**
      * redirect flag.
      */
+    @SuppressWarnings("WeakerAccess")
     protected final String REDIRECT = "redirect";
 
     /**
@@ -246,7 +253,7 @@ public class BaseAction extends ActionSupport
      *
      * @return current toLogin user entity
      */
-    protected User getCurrentUserEntity() {
+    User getCurrentUserEntity() {
         try {
             String userName = (String) session.get("userName");
             String password = (String) session.get("password");
@@ -273,7 +280,7 @@ public class BaseAction extends ActionSupport
      * @param path path which we want to transform
      * @return actual path
      */
-    protected String getContextPath(String path) {
+    String getContextPath(String path) {
         String result = StringUtil.choose(httpServletRequest.getContextPath(), "") + "/";
         result += path != null && path.startsWith("/") ? path.substring(1) : "";
         return result;
@@ -291,7 +298,8 @@ public class BaseAction extends ActionSupport
      * @param parameterString parameter list for action
      * @return action url
      */
-    protected String getActionURL(String namespace, String name, String parameterString) {
+    @SuppressWarnings("SameParameterValue")
+    String getActionURL(String namespace, String name, String parameterString) {
         String result = namespace.equals("/") ? "" : namespace;
         result = result + "/" + name;
         if (parameterString != null)
@@ -306,6 +314,7 @@ public class BaseAction extends ActionSupport
      * @param name      action name
      * @return action url
      */
+    @SuppressWarnings("SameParameterValue")
     protected String getActionURL(String namespace, String name) {
         return getActionURL(namespace, name, null);
     }
@@ -359,6 +368,7 @@ public class BaseAction extends ActionSupport
      * @param message error message
      * @return error signal
      */
+    @SuppressWarnings("SameReturnValue")
     protected String setError(String message) {
         request.put("errorMsg", message);
         return ERROR;
@@ -398,7 +408,8 @@ public class BaseAction extends ActionSupport
      * @param msg message content
      * @return redirect signal
      */
-    protected String redirectToRefer(String msg) {
+    @SuppressWarnings("SameParameterValue")
+    String redirectToRefer(String msg) {
         return redirect(httpServletRequest.getHeader("Referer"), msg);
     }
 
@@ -437,6 +448,7 @@ public class BaseAction extends ActionSupport
      * @param displayDistance display distance for page numbers
      * @return return a PageInfo object and put the HTML content into request attribute list.
      */
+    @SuppressWarnings("SameParameterValue")
     protected PageInfo buildPageInfo(Long count, Long countPerPage,
                                      String baseURL, Integer displayDistance) {
         PageInfo pageInfo = PageInfo.create(count, countPerPage,

@@ -30,6 +30,7 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 @LoginPermit(NeedLogin = true)
 public class SubmitAction extends BaseAction {
 

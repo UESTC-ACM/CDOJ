@@ -50,6 +50,7 @@ public class TestAction extends BaseAction implements TagDAOAware {
      *
      * @return <strong>SUCCESS</strong> signal
      */
+    @SuppressWarnings({"SameReturnValue", "UnusedDeclaration"})
     public String toTest() {
         try {
             List<Tag> tags = tagDAO.findAll();
