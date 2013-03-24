@@ -40,19 +40,19 @@
     <link href="<s:url value="/styles/bootstrap.min.css"/>" rel="stylesheet">
     <link href="<s:url value="/styles/prettify.css"/>" rel="stylesheet">
 
-    <script src="<s:url value="/scripts/jquery.min.js"/>"></script>
-    <script src="<s:url value="/scripts/jquery.gravatar.js"/>"></script>
-    <script src="<s:url value="/scripts/md5.js"/>"></script>
-    <script src="<s:url value="/scripts/bootstrap.min.js"/>"></script>
-    <script src="<s:url value="/scripts/prettify.js"/>"></script>
-    <script type="text/javascript"
-            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
     <link href="<s:url value="/styles/cdoj/cdoj.common.css"/>" rel=stylesheet>
     <link href="<s:url value="/styles/cdoj/cdoj.avatar.css"/>" rel=stylesheet>
     <link href="<s:url value="/styles/cdoj/cdoj.table.css"/>" rel=stylesheet>
     <link href="<s:url value="/styles/cdoj/cdoj.textarea.css"/>" rel=stylesheet>
     <link href="<s:url value="/styles/cdoj/cdoj.modal.css"/>" rel=stylesheet>
+
+    <script src="<s:url value="/plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"/>"></script>
+
+    <script src="<s:url value="/scripts/jquery.min.js"/>"></script>
+    <script src="<s:url value="/scripts/jquery.gravatar.js"/>"></script>
+    <script src="<s:url value="/scripts/md5.js"/>"></script>
+    <script src="<s:url value="/scripts/bootstrap.min.js"/>"></script>
+    <script src="<s:url value="/scripts/prettify.js"/>"></script>
 
     <script src="<s:url value="/scripts/cdoj/cdoj.util.prettify.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.common.js"/>"></script>
@@ -62,6 +62,7 @@
     <script src="<s:url value="/scripts/cdoj/cdoj.util.string.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.ui.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.js"/>"></script>
+
 </head>
 <body>
 </body>

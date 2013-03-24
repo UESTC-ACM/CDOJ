@@ -148,6 +148,22 @@
             </fieldset>
             <fieldset>
                 <legend>Problem list</legend>
+                <div class="row">
+                    <div class="span10">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="width: 14px;"><a href="#" id="add_problem"><i class="icon-plus"></i></a></th>
+                                <th style="width: 30px;">Id</th>
+                                <th>Title</th>
+                                <th style="width: 70px;">Difficulty</th>
+                            </tr>
+                            </thead>
+                            <tbody id="problemList">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
                 <div class="form-actions">
                     <s:submit name="submit"
