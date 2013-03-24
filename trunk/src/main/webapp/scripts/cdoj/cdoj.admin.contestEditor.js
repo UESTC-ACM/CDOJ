@@ -26,12 +26,62 @@
  * @version 1
  */
 
-$(document).ready(function () {
-    $('#dp1').datepicker({
-        format: 'mm-dd-yyyy'
-    });
+var problemListTable;
+var addProblemLine =
+    '<tr>' +
+        '<td><a href="#" class="remove_problem"><i class="icon-minus"></i></a></td>' +
+        '<td contenteditable="true" class="problem_id"></td>' +
+        '<td class="problem_title"></td>' +
+        '<td class="problem_difficult"></td>' +
+    '</tr>';
 
+function removeProblem(id) {
+    problemListTable.find('tr[value="'+id+'"]').remove();
+    $.each(problemListTable.find('tr'), function(){
+        var myId = $(this).attr('value');
+        if (myId > id)
+            $(this).attr('value', myId-1);
+    });
+}
+
+function updateProblem(id) {
+    var line = problemListTable.find('tr[value="'+id+'"]');
+    //var problemId = line.find('problem_id')[0].innerHTML.toString();
+    line.find('.problem_title').append(id+" --> ");
+}
+
+$(document).ready(function () {
+    //Date picker
     $('#contestDTO_time_days').datepicker({
         format: 'yyyy-mm-dd'
+    })
+
+    //Problem list table
+    problemListTable = $('#problemList');
+
+    //Problem add button
+    $('#add_problem').setButton({
+        callback: function(){
+            var lineId = problemListTable.find('tr').size();
+            var line = $(addProblemLine);
+            line.attr('value', lineId);
+            problemListTable.append(line);
+            line = problemListTable.find('tr[value="'+lineId+'"]');
+
+            line.find('.remove_problem').live('click', function(){
+                console.log(line.attr('value'));
+                removeProblem(line.attr('value'));
+                return false;
+            });
+
+            line.find('.problem_id').live('keydown', function(){
+                if (event.keyCode == 13) {
+                    console.log(line.attr('value'));
+                    updateProblem(line.attr('value'));
+                    return false;
+                }
+            });
+            return false;
+        }
     })
 });
