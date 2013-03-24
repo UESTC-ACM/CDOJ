@@ -108,7 +108,7 @@ public class PageInfo {
     }
 
     /**
-     * get a li tag formated like <li class="sytle"><a href="url">name</a></li>
+     * get a li tag formatted like <li class="sytle"><a href="url">name</a></li>
      *
      * @param style   the CSS style of li tag
      * @param toPage  the page to go

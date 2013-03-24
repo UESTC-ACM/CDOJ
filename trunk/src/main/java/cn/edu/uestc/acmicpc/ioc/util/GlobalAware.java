@@ -30,6 +30,7 @@ import cn.edu.uestc.acmicpc.util.Global;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @see Global
  */
+@SuppressWarnings("UnusedDeclaration")
 public interface GlobalAware {
     /**
      * Put Settings entity into class.

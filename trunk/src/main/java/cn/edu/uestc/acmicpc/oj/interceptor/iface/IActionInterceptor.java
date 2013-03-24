@@ -47,6 +47,7 @@ public interface IActionInterceptor {
     /**
      * This method will be invoked after action is executed.
      */
+    @SuppressWarnings("EmptyMethod")
     public void onActionExecuted();
 
 

@@ -57,7 +57,7 @@ public class ProblemListAction extends BaseAction
      */
     private IProblemDAO problemDAO;
 
-    public ProblemCondition problemCondition = new ProblemCondition();
+    private ProblemCondition problemCondition;
 
     /**
      * StatusDAO for status queries.
@@ -84,6 +84,7 @@ public class ProblemListAction extends BaseAction
      *
      * @return <strong>SUCCESS</strong> signal
      */
+    @SuppressWarnings("SameReturnValue")
     @SkipValidation
     public String toProblemList() {
         return SUCCESS;

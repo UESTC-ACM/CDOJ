@@ -46,20 +46,24 @@ import java.util.Map;
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 public class Settings implements ApplicationContextAware {
     /**
      * Global encoding
      */
+    @SuppressWarnings("WeakerAccess")
     public String SETTING_ENCODING;
 
     /**
      * Upload file size limit(in MB)
      */
+    @SuppressWarnings("WeakerAccess")
     public Integer SETTING_UPLOAD_SIZE;
 
     /**
      * Upload file's types
      */
+    @SuppressWarnings("WeakerAccess")
     public String SETTING_UPLOAD_TYPES;
 
     /**

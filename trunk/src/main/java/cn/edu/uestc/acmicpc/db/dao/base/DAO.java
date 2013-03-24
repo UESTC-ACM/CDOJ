@@ -47,6 +47,7 @@ import java.util.List;
  * @param <PK>     Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         extends BaseDAO implements IDAO<Entity, PK> {
 
@@ -209,7 +210,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
      *
      * @return id field name
      */
-    protected String getKeyFieldName() {
+    String getKeyFieldName() {
         Method[] methods = getReferenceClass().getMethods();
         for (Method method : methods) {
             if (method.getAnnotation(Id.class) != null) {

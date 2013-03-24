@@ -44,6 +44,7 @@ import java.util.Date;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:applicationContext-test.xml"})
+@SuppressWarnings("UnusedDeclaration")
 public class AOPTest {
     @Before
     public void init() {

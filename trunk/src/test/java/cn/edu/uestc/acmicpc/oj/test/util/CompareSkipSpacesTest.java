@@ -73,7 +73,7 @@ public class CompareSkipSpacesTest {
     }
 
     /**
-     * The string has some Tab character in it,I think they are also white and space,hiahia
+     * The string has some Tab character in it,I think they are also white and space.
      */
 
     @Test
@@ -91,7 +91,7 @@ public class CompareSkipSpacesTest {
     }
 
     /**
-     * string with special character and thay are the same
+     * string with special character and they are the same
      */
 
     @Test
@@ -100,7 +100,7 @@ public class CompareSkipSpacesTest {
     }
 
     /**
-     * string with special character and thay are the same
+     * string with special character and they are the same
      */
 
     @Test

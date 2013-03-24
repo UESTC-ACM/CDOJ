@@ -58,11 +58,11 @@ public class AppInterceptor extends AbstractInterceptor {
         /**
          * Controller class
          */
-        private Class<?> controller;
+        private final Class<?> controller;
         /**
          * Application context.
          */
-        private ActionContext action;
+        private final ActionContext action;
         /**
          * The action process will be stopped or not.
          */
@@ -85,10 +85,12 @@ public class AppInterceptor extends AbstractInterceptor {
             return action;
         }
 
+        @SuppressWarnings("UnusedDeclaration")
         public boolean getCancel() {
             return cancel;
         }
 
+        @SuppressWarnings("SameParameterValue")
         public void setCancel(boolean cancel) {
             this.cancel = cancel;
         }

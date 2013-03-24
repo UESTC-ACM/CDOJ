@@ -53,6 +53,7 @@ public class DateUtil {
      * @param offset add offset
      * @return new date after add operation
      */
+    @SuppressWarnings("SameParameterValue")
     public static Date add(Date date, int field, int offset) {
         Calendar cd = Calendar.getInstance();
         cd.setTime(date);

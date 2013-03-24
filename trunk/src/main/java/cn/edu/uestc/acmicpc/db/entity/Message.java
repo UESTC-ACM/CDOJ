@@ -31,6 +31,7 @@ import java.sql.Timestamp;
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 @Table(name = "message", schema = "", catalog = "uestcoj")
 @Entity
 public class Message implements Serializable {

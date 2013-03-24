@@ -37,6 +37,7 @@ import java.util.List;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
+@SuppressWarnings("UnusedDeclaration")
 public class ContestView extends View<Contest> {
     private Integer contestId;
     private String description;

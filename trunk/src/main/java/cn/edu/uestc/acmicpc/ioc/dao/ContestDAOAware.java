@@ -33,7 +33,7 @@ public interface ContestDAOAware {
     /**
      * put problemDAO into class
      *
-     * @param contestDAO
+     * @param contestDAO specific contest DAO entity
      */
     public void setContestDAO(IContestDAO contestDAO);
 }

@@ -52,7 +52,7 @@ public abstract class BaseDTO<Entity extends Serializable> {
      * @return new entity instance
      * @throws AppException
      */
-    public Entity getEntity() throws AppException {
+    protected Entity getEntity() throws AppException {
         try {
             Constructor<Entity> constructor = getReferenceClass().getConstructor();
             Entity entity = constructor.newInstance();
@@ -95,7 +95,7 @@ public abstract class BaseDTO<Entity extends Serializable> {
      *
      * @param entity entity to be updated
      */
-    public void updateEntity(Entity entity) {
+    protected void updateEntity(Entity entity) {
         Method[] methods = getClass().getMethods();
         for (Method method : methods) {
             if (method.getName().startsWith("get")) {

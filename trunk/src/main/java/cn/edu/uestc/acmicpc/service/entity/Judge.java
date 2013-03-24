@@ -71,6 +71,7 @@ public class Judge implements Runnable, SettingsAware {
      */
     private String tempPath;
 
+    @SuppressWarnings("SameParameterValue")
     public void setJudgeQueue(BlockingQueue<JudgeItem> judgeQueue) {
         this.judgeQueue = judgeQueue;
     }
@@ -100,7 +101,7 @@ public class Judge implements Runnable, SettingsAware {
      *
      * @param judgeItem judge item to be judged
      */
-    public void judge(JudgeItem judgeItem) {
+    void judge(JudgeItem judgeItem) {
         try {
             int numberOfTestCase = judgeItem.status.getProblemByProblemId().getDataCount();
             boolean isAccepted = true;

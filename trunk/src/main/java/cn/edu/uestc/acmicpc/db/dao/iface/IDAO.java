@@ -44,6 +44,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
      * @return number of rows changed.
      * @throws AppException
      */
+    @SuppressWarnings("UnusedReturnValue")
     public Serializable add(Entity entity) throws AppException;
 
     /**

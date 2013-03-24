@@ -32,7 +32,7 @@ import java.io.Writer;
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class FormatTagService extends TagService {
+class FormatTagService extends TagService {
 
     /**
      * String need to replace
@@ -52,6 +52,7 @@ public class FormatTagService extends TagService {
         return super.start(writer);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public String getValue() {
         return value;
     }

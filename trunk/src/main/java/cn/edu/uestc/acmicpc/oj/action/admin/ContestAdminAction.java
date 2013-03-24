@@ -36,11 +36,13 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
+@SuppressWarnings("UnusedDeclaration")
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class ContestAdminAction extends BaseAction implements ContestDAOAware {
 
     private IContestDAO contestDAO;
 
+    @SuppressWarnings("SameReturnValue")
     public String toContestList() {
         return SUCCESS;
     }
@@ -74,6 +76,7 @@ public class ContestAdminAction extends BaseAction implements ContestDAOAware {
     private Integer targetContestId;
     private ContestView targetContest;
 
+    @SuppressWarnings("SameReturnValue")
     public String toContestEditor() {
         editorFlag = "new";
         if (targetContestId != null) {

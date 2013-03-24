@@ -34,6 +34,7 @@ import java.sql.Timestamp;
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 public class UserView extends View<User> {
 
     private Integer userId;
@@ -120,6 +121,7 @@ public class UserView extends View<User> {
         return departmentId;
     }
 
+    @SuppressWarnings("WeakerAccess")
     @Ignore
     public void setDepartmentId(Integer departmentId) {
         this.departmentId = departmentId;
@@ -159,6 +161,7 @@ public class UserView extends View<User> {
         return typeName;
     }
 
+    @SuppressWarnings("WeakerAccess")
     @Ignore
     public void setTypeName(String typeName) {
         this.typeName = typeName;

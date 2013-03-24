@@ -36,6 +36,7 @@ public class IndexAction extends BaseAction {
 
     private static final long serialVersionUID = -754990150765691696L;
 
+    @SuppressWarnings("SameReturnValue")
     public String toIndex() {
         return SUCCESS;
     }

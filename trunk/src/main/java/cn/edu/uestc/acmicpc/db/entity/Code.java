@@ -31,6 +31,7 @@ import java.util.Collection;
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 @Table(name = "code", schema = "", catalog = "uestcoj")
 @Entity
 public class Code implements Serializable {

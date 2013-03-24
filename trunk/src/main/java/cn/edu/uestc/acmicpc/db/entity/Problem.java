@@ -31,6 +31,7 @@ import java.util.Collection;
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 @Table(name = "problem", schema = "", catalog = "uestcoj")
 @Entity
 public class Problem implements Serializable {
@@ -45,6 +46,7 @@ public class Problem implements Serializable {
         return problemId;
     }
 
+    @SuppressWarnings("SameParameterValue")
     public void setProblemId(Integer problemId) {
         this.problemId = problemId;
     }
@@ -201,6 +203,7 @@ public class Problem implements Serializable {
         return tried;
     }
 
+    @SuppressWarnings("SameParameterValue")
     public void setTried(Integer tried) {
         this.tried = tried;
     }

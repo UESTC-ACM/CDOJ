@@ -39,6 +39,7 @@ import java.util.List;
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 public class Condition {
     /**
      * Current page number.
@@ -89,9 +90,10 @@ public class Condition {
      * @param field new order field name
      * @param asc   whether new order field asc or not
      */
+    @SuppressWarnings("WeakerAccess")
     public void addOrder(String field, boolean asc) {
         if (orders == null)
-            orders = new LinkedList<Order>();
+            orders = new LinkedList<>();
         orders.add(new Order(field, asc));
     }
 
@@ -102,7 +104,7 @@ public class Condition {
      */
     public void addProjection(Projection projection) {
         if (projections == null)
-            projections = new LinkedList<Projection>();
+            projections = new LinkedList<>();
         projections.add(projection);
     }
 
@@ -113,7 +115,7 @@ public class Condition {
      */
     public void addCriterion(Criterion criterion) {
         if (criterionList == null)
-            criterionList = new LinkedList<Criterion>();
+            criterionList = new LinkedList<>();
         criterionList.add(criterion);
     }
 
@@ -131,10 +133,10 @@ public class Condition {
         /**
          * Order field name.
          */
-        public String field;
+        public final String field;
         /**
          * Whether order field asc or not.
          */
-        public boolean asc;
+        public final boolean asc;
     }
 }

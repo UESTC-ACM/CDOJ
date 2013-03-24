@@ -36,7 +36,7 @@ public interface IUserDAO extends IDAO<User, Integer> {
      * @param name user's name
      * @return user entity, null if not exists
      * @deprecated this method is instead by
-     *             {@code getEntityByUniqueField("userName", value)}
+     *             {@code getEntityByUniqueField(userName, value)}
      */
     @SuppressWarnings("UnusedDeclaration")
     @Deprecated

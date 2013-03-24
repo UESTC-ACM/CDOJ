@@ -82,7 +82,7 @@ public class ProblemListView extends View<Problem> {
     /**
      * Get a simple problem list view use for contest list.
      *
-     * @param problem
+     * @param problem specific problem entity
      */
     public ProblemListView(Problem problem) {
         super(problem);

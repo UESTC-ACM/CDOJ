@@ -29,6 +29,7 @@ import cn.edu.uestc.acmicpc.oj.action.BaseAction;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
+@SuppressWarnings({"WeakerAccess", "UnusedDeclaration"})
 public class ContestStatementAdminAction extends BaseAction {
 
 }

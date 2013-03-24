@@ -36,6 +36,7 @@ import java.util.List;
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 @LoginPermit(value = Global.AuthenticationType.NORMAL)
 public class TestFileUploadAction extends BaseAction {
 
@@ -43,6 +44,7 @@ public class TestFileUploadAction extends BaseAction {
     private List<String> uploadFileContentType;
     private List<String> uploadFileFileName;
 
+    @SuppressWarnings("WeakerAccess")
     public List<File> getUploadFile() {
         return uploadFile;
     }
@@ -59,6 +61,7 @@ public class TestFileUploadAction extends BaseAction {
         this.uploadFileContentType = uploadFileContentType;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public List<String> getUploadFileFileName() {
         return uploadFileFileName;
     }
@@ -67,11 +70,13 @@ public class TestFileUploadAction extends BaseAction {
         this.uploadFileFileName = uploadFileFileName;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public String getSavePath() {
         return servletContext.getRealPath("/uploads/temp");
     }
 
-    public String onUploadFile() throws Exception {
+    @SuppressWarnings("SameReturnValue")
+    public String onUploadFile() {
         try {
             System.out.println(getSavePath());
             File dir = new File(getSavePath());
@@ -83,7 +88,7 @@ public class TestFileUploadAction extends BaseAction {
                 FileOutputStream fos = new FileOutputStream(getSavePath() + "//" + getUploadFileFileName().get(i));
                 FileInputStream fis = new FileInputStream(getUploadFile().get(i));
                 byte[] buffers = new byte[1024];
-                int len = 0;
+                int len;
                 while ((len = fis.read(buffers)) != -1) {
                     fos.write(buffers, 0, len);
                 }

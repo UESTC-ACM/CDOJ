@@ -50,7 +50,7 @@ public class BaseDAO {
      *
      * @return if the IoC works, return current session, otherwise open a new session
      */
-    public Session getSession() {
+    protected Session getSession() {
         Session session;
         try {
             session = sessionFactory.getCurrentSession();

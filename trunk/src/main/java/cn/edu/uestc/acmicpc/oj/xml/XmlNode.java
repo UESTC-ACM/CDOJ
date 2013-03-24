@@ -77,6 +77,7 @@ public class XmlNode implements Iterable<XmlNode> {
      * @param key the name of the attribute we want to remove
      * @throws AppException
      */
+    @SuppressWarnings("UnusedDeclaration")
     public void removeAttribute(String key) throws AppException {
         if (getAttributes() == null)
             throw new AppException("The attribute list is null.");
@@ -160,15 +161,16 @@ public class XmlNode implements Iterable<XmlNode> {
         return childList;
     }
 
-    public void setChildList(List<XmlNode> childList) {
+    void setChildList(List<XmlNode> childList) {
         this.childList = childList;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public Map<String, String> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(Map<String, String> attributes) {
+    void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
     }
 
