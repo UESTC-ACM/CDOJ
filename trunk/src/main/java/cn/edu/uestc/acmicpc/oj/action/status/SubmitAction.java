@@ -22,8 +22,17 @@
 
 package cn.edu.uestc.acmicpc.oj.action.status;
 
+import cn.edu.uestc.acmicpc.db.dao.iface.*;
+import cn.edu.uestc.acmicpc.db.dto.impl.CodeDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.StatusDTO;
+import cn.edu.uestc.acmicpc.db.entity.Code;
+import cn.edu.uestc.acmicpc.db.entity.Language;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.ioc.dao.CodeDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * action for submit code.
@@ -32,7 +41,8 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
  */
 @SuppressWarnings("UnusedDeclaration")
 @LoginPermit(NeedLogin = true)
-public class SubmitAction extends BaseAction {
+public class SubmitAction extends BaseAction
+        implements StatusDAOAware, CodeDAOAware {
 
     /**
      * Code
@@ -55,6 +65,15 @@ public class SubmitAction extends BaseAction {
     private Integer problemId;
 
     /**
+     * DAO for database
+     */
+    private IStatusDAO statusDAO;
+    private ICodeDAO codeDAO;
+    private IContestDAO contestDAO;
+    private ILanguageDAO languageDAO;
+    private IProblemDAO problemDAO;
+
+    /**
      * Submit code to judge core.
      * <p/>
      * <strong>JSON output</strong>:
@@ -70,7 +89,26 @@ public class SubmitAction extends BaseAction {
      * @return JSON
      */
     public String toSubmit() {
-        System.out.println(codeContent + "\n -->" + languageId + "\n -->" + contestId + "\n -->" + problemId);
+        try {
+            StatusDTO statusDTO = new StatusDTO();
+            statusDTO.setContest(contestDAO.get(contestId));
+            Language language = languageDAO.get(languageId);
+            if (language == null)
+                throw new AppException("No such language");
+            statusDTO.setLanguage(language);
+            Problem problem = problemDAO.get(problemId);
+            if (problem == null)
+                throw new AppException("No such problem");
+            CodeDTO codeDTO = new CodeDTO();
+            codeDTO.setContent(codeContent);
+            Code code = codeDTO.getEntity();
+            codeDAO.add(code);
+            statusDTO.setCode(code);
+            statusDAO.add(statusDTO.getEntity());
+        } catch (AppException e) {
+            json.put("result", "error");
+            json.put("error_msg", e.getMessage());
+        }
         json.put("result", "ok");
         return JSON;
     }
@@ -105,5 +143,15 @@ public class SubmitAction extends BaseAction {
 
     public void setProblemId(Integer problemId) {
         this.problemId = problemId;
+    }
+
+    @Override
+    public void setCodeDAO(ICodeDAO codeDAO) {
+        this.codeDAO = codeDAO;
+    }
+
+    @Override
+    public void setStatusDAO(IStatusDAO statusDAO) {
+        this.statusDAO = statusDAO;
     }
 }
