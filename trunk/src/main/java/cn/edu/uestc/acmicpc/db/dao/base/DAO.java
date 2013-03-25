@@ -169,6 +169,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     @Override
     public Entity get(PK key) throws AppException {
         try {
+            if (key == null)
+                return null;
             return (Entity) getSession().get(getReferenceClass(), key);
         } catch (HibernateException e) {
             throw new AppException("Invoke get method error.");
@@ -188,7 +190,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     @Override
     public void delete(Entity entity) throws AppException {
         try {
-            getSession().delete(entity);
+            if (entity != null)
+                getSession().delete(entity);
         } catch (HibernateException e) {
             e.printStackTrace();
             throw new AppException("Invoke delete method error.");
