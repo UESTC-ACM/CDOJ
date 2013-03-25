@@ -156,7 +156,7 @@ function refreshProblemList(condition) {
                 '<td>' + value.problemId + '</td>' +
                 '<td>' + getTitle(value.problemId, value.title, value.source, value.isSpj, value.isVisible) + getTags(value.tags) + '</td>' +
                 '<td class="difficult-span" problemId="' + value.problemId + '">' + getDifficulty(value.difficulty) + '</td>' +
-                '<td><a href="/admin/problem/data/' + value.problemId + '" title="Edit data"><i class="icon-cog"</a></td>' +
+                '<td><a href="/admin/problem/data/' + value.problemId + '" title="Edit data"><i class="icon-cog"></i></a></td>' +
                 '</tr>';
             tbody.append(html);
         });

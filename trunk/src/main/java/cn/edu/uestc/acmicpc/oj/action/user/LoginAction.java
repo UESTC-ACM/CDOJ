@@ -126,7 +126,8 @@ public class LoginAction extends BaseAction {
         return JSON;
     }
 
-    String getUserName() {
+    //!
+    public String getUserName() {
         return userName;
     }
 
@@ -135,7 +136,8 @@ public class LoginAction extends BaseAction {
         this.userName = userName;
     }
 
-    String getPassword() {
+    //!
+    public String getPassword() {
         return password;
     }
 
