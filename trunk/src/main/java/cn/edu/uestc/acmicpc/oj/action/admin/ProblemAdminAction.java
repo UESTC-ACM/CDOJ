@@ -69,7 +69,8 @@ public class ProblemAdminAction extends BaseAction
      */
     private IStatusDAO statusDAO;
 
-    private ProblemCondition problemCondition;
+    //!
+    public ProblemCondition problemCondition;
     private StatusCondition statusCondition;
 
     @Override
