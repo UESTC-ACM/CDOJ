@@ -71,20 +71,25 @@ public class ConditionTest implements ProblemDAOAware, UserDAOAware, UserConditi
     @Test
     public void testProblemCondition() throws AppException {
         problemCondition.clear();
-        problemCondition.startId = 1;
-        problemCondition.endId = 100;
-        problemCondition.isSpj = null;
+        problemCondition.setStartId(1);
+        problemCondition.setEndId(100);
+        problemCondition.setIsSpj(null);
         System.out.println(problemDAO.count(problemCondition.getCondition()));
-        problemCondition.isSpj = false;
+        problemCondition.setIsSpj(false);
         System.out.println(problemDAO.count(problemCondition.getCondition()));
+        Assert.assertTrue(problemDAO.count(problemCondition.getCondition()) > 0);
+        problemCondition.clear();
+        problemCondition.setStartId(2);
+        problemCondition.setEndId(1);
+        Assert.assertEquals(new Long(0), problemDAO.count(problemCondition.getCondition()));
     }
 
     @Test
     @Ignore
     public void testUserCondition() throws AppException {
         userCondition.clear();
-        userCondition.departmentId = 2;
-        System.out.println("test: " + userCondition.departmentId);
+        userCondition.setDepartmentId(2);
+        System.out.println("test: " + userCondition.getDepartmentId());
         List<User> users = userDAO.findAll(userCondition.getCondition());
         Assert.assertEquals(1, users.size());
 //        for (User user : users) {

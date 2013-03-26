@@ -52,6 +52,24 @@ public class StringUtil {
         }
     }
 
+    /**
+     * Get specific field name from it's getter or setter name
+     *
+     * @param methodName method's name
+     * @return filed's name
+     */
+    public static String getFieldNameFromGetterOrSetter(String methodName) {
+        if (methodName.startsWith("get") || methodName.startsWith("set")) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(CharUtil.toLowerCase(methodName.charAt(3)));
+            if (methodName.length() > 4)
+                stringBuilder.append(methodName.substring(4));
+            return stringBuilder.toString();
+        } else {
+            return null;
+        }
+    }
+
     public enum MethodType {
         GETTER, SETTER
     }

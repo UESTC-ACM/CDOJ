@@ -37,28 +37,91 @@ import java.util.Calendar;
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ContestCondition extends BaseCondition {
-    @Exp(MapField = "contestId", Type = ConditionType.ge)
-    public Integer startId;
+    private Integer startId;
 
-    @Exp(MapField = "contestId", Type = ConditionType.le)
-    public Integer endId;
+    private Integer endId;
 
-    @Exp(Type = ConditionType.like)
     private String title;
 
-    @Exp(Type = ConditionType.like)
     private String description;
 
-    @Exp(Type = ConditionType.eq)
-    private byte type;
+    private Byte type;
 
-    // TODO use Timestamp or Date or Integer?
+    @Exp(MapField = "contestId", Type = ConditionType.ge)
+    public Integer getStartId() {
+        return startId;
+    }
+
+    public void setStartId(Integer startId) {
+        this.startId = startId;
+    }
+
+    @Exp(MapField = "contestId", Type = ConditionType.le)
+    public Integer getEndId() {
+        return endId;
+    }
+
+    public void setEndId(Integer endId) {
+        this.endId = endId;
+    }
+
+    @Exp(Type = ConditionType.like)
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Exp(Type = ConditionType.like)
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Exp(Type = ConditionType.eq)
+    public Byte getType() {
+        return type;
+    }
+
+    public void setType(Byte type) {
+        this.type = type;
+    }
+
     @Exp(MapField = "time", Type = ConditionType.ge)
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
+
+    @Exp(Type = ConditionType.eq)
+    public Boolean getIsVisible() {
+        return isVisible;
+    }
+
+    public void setIsVisible(Boolean visible) {
+        isVisible = visible;
+    }
+
     private Timestamp startTime;
 
     private Timestamp endTime;
 
-    @Exp(Type = ConditionType.eq)
     private Boolean isVisible;
 
     @Override

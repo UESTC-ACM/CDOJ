@@ -37,39 +37,111 @@ public class ProblemCondition extends BaseCondition {
     /**
      * Start user id.
      */
-    @Exp(MapField = "problemId", Type = ConditionType.ge)
-    public Integer startId;
+    private Integer startId;
     /**
      * End user id.
      */
-    @Exp(MapField = "problemId", Type = ConditionType.le)
-    public Integer endId;
+    private Integer endId;
 
     /**
      * Title.
      */
-    @Exp(Type = ConditionType.like)
-    public String title;
-    @Exp(Type = ConditionType.like)
-    public String source;
+    private String title;
+    private String source;
 
     /**
      * Keyword for {@code description}, {@code input}, {@code output},
      * {@code sampleInput}, {@code sampleOutput} and {@code hint}.
      */
-    public String keyword;
+    private String keyword;
 
-    @Exp(Type = ConditionType.eq)
-    public Boolean isSpj;
+    private Boolean isSpj;
 
-    @Exp(Type = ConditionType.eq)
-    public Boolean isVisible;
+    private Boolean isVisible;
 
-    @Exp(MapField = "difficulty", Type = ConditionType.ge)
-    public Integer startDifficulty;
+    private Integer startDifficulty;
 
     @Exp(MapField = "difficulty", Type = ConditionType.le)
-    public Integer endDifficulty;
+    public Integer getEndDifficulty() {
+        return endDifficulty;
+    }
+
+    public void setEndDifficulty(Integer endDifficulty) {
+        this.endDifficulty = endDifficulty;
+    }
+
+    @Exp(MapField = "difficulty", Type = ConditionType.ge)
+    public Integer getStartDifficulty() {
+        return startDifficulty;
+    }
+
+    public void setStartDifficulty(Integer startDifficulty) {
+        this.startDifficulty = startDifficulty;
+    }
+
+    @Exp(Type = ConditionType.eq)
+    public Boolean getIsVisible() {
+        return isVisible;
+    }
+
+    public void setIsVisible(Boolean visible) {
+        isVisible = visible;
+    }
+
+    @Exp(Type = ConditionType.eq)
+    public Boolean getIsSpj() {
+        return isSpj;
+    }
+
+    public void setIsSpj(Boolean spj) {
+        isSpj = spj;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    @Exp(Type = ConditionType.like)
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    @Exp(Type = ConditionType.like)
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Exp(MapField = "problemId", Type = ConditionType.le)
+    public Integer getEndId() {
+        return endId;
+    }
+
+    public void setEndId(Integer endId) {
+        this.endId = endId;
+    }
+
+    @Exp(MapField = "problemId", Type = ConditionType.ge)
+    public Integer getStartId() {
+        return startId;
+    }
+
+    public void setStartId(Integer startId) {
+        this.startId = startId;
+    }
+
+    private Integer endDifficulty;
 
     @Override
     public void invoke(Condition condition) {

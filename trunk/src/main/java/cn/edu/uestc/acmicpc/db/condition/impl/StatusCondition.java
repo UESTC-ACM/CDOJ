@@ -44,46 +44,110 @@ public class StatusCondition extends BaseCondition {
     /**
      * Start status id.
      */
-    @Exp(MapField = "statusId", Type = ConditionType.ge)
-    public Integer startId;
+    private Integer startId;
     /**
      * End status id.
      */
-    @Exp(MapField = "statusId", Type = ConditionType.le)
-    public Integer endId;
+    private Integer endId;
 
     /**
      * User's id.
      */
-    @Exp(MapField = "userByUserId", Type = ConditionType.eq, MapObject = User.class)
-    public Integer userId;
+    private Integer userId;
 
     /**
      * Problem's id.
      */
-    @Exp(MapField = "problemByProblemId", Type = ConditionType.eq, MapObject = Problem.class)
-    public Integer problemId;
+    private Integer problemId;
 
     /**
      * Language's id.
      */
-    @Exp(MapField = "languageByLanguageId", Type = ConditionType.eq, MapObject = Language.class)
-    public Integer languageId;
+    private Integer languageId;
 
     /**
      * Contest's id.
      */
-    public Integer contestId;
+    private Integer contestId;
 
     /**
      * Judging result list(<strong>PRIMARY</strong>).
      */
-    public List<Global.OnlineJudgeReturnType> result = new LinkedList<>();
+    private List<Global.OnlineJudgeReturnType> result = new LinkedList<>();
+
+    public Integer getIResult() {
+        return iResult;
+    }
+
+    public void setIResult(Integer iResult) {
+        this.iResult = iResult;
+    }
+
+    @Exp(MapField = "statusId", Type = ConditionType.ge)
+    public Integer getStartId() {
+        return startId;
+    }
+
+    public void setStartId(Integer startId) {
+        this.startId = startId;
+    }
+
+    @Exp(MapField = "statusId", Type = ConditionType.le)
+    public Integer getEndId() {
+        return endId;
+    }
+
+    public void setEndId(Integer endId) {
+        this.endId = endId;
+    }
+
+    @Exp(MapField = "userByUserId", Type = ConditionType.eq, MapObject = User.class)
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    @Exp(MapField = "problemByProblemId", Type = ConditionType.eq, MapObject = Problem.class)
+    public Integer getProblemId() {
+        return problemId;
+    }
+
+    public void setProblemId(Integer problemId) {
+        this.problemId = problemId;
+    }
+
+    @Exp(MapField = "languageByLanguageId", Type = ConditionType.eq, MapObject = Language.class)
+    public Integer getLanguageId() {
+        return languageId;
+    }
+
+    public void setLanguageId(Integer languageId) {
+        this.languageId = languageId;
+    }
+
+    public Integer getContestId() {
+        return contestId;
+    }
+
+    public void setContestId(Integer contestId) {
+        this.contestId = contestId;
+    }
+
+    public List<Global.OnlineJudgeReturnType> getResult() {
+        return result;
+    }
+
+    public void setResult(List<Global.OnlineJudgeReturnType> result) {
+        this.result = result;
+    }
 
     /**
      * Judging result int format.
      */
-    public Integer iResult;
+    private Integer iResult;
 
     @Override
     public void invoke(Condition condition) {

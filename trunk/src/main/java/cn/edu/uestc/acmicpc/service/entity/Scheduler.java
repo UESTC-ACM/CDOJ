@@ -67,8 +67,8 @@ public class Scheduler implements Runnable, StatusConditionAware, StatusDAOAware
      */
     private void searchForJudge() {
         try {
-            statusCondition.result.add(Global.OnlineJudgeReturnType.OJ_WAIT);
-            statusCondition.result.add(Global.OnlineJudgeReturnType.OJ_REJUDGING);
+            statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_WAIT);
+            statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_REJUDGING);
             List<Status> statusList = statusDAO.findAll(statusCondition.getCondition());
             for (Status status : statusList) {
                 status.setResult(Global.OnlineJudgeReturnType.OJ_JUDGING.ordinal());

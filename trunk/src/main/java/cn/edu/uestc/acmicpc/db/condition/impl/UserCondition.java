@@ -36,41 +36,89 @@ public class UserCondition extends BaseCondition {
     /**
      * Start user id.
      */
-    @Exp(MapField = "userId", Type = ConditionType.ge)
-    public Integer startId;
+    private Integer startId;
     /**
      * End user id.
      */
-    @Exp(MapField = "userId", Type = ConditionType.le)
-    public Integer endId;
+    private Integer endId;
 
     /**
      * User name (partly matches).
      */
-    @Exp(Type = ConditionType.like)
-    public String userName;
+    private String userName;
 
     /**
      * User's type.
      *
      * @see cn.edu.uestc.acmicpc.util.Global.AuthenticationType
      */
-    @Exp(Type = ConditionType.eq)
-    public Integer type;
+    private Integer type;
 
     /**
      * User's department's id.
      *
      * @see Department
      */
+    private Integer departmentId;
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
     @Exp(MapField = "departmentByDepartmentId", Type = ConditionType.eq, MapObject = Department.class)
-    public Integer departmentId;
+    public Integer getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    @Exp(Type = ConditionType.eq)
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    @Exp(Type = ConditionType.like)
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    @Exp(MapField = "userId", Type = ConditionType.le)
+    public Integer getEndId() {
+        return endId;
+    }
+
+    public void setEndId(Integer endId) {
+        this.endId = endId;
+    }
+
+    @Exp(MapField = "userId", Type = ConditionType.ge)
+    public Integer getStartId() {
+        return startId;
+    }
+
+    public void setStartId(Integer startId) {
+        this.startId = startId;
+    }
 
     /**
      * User's school(partly matches).
      */
     @Exp(Type = ConditionType.like)
-    public String school;
+    private String school;
 
     @Override
     public void invoke(Condition condition) {
