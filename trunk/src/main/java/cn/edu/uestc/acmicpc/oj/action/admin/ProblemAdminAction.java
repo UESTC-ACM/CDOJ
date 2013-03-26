@@ -77,6 +77,10 @@ public class ProblemAdminAction extends BaseAction
         this.problemCondition = problemCondition;
     }
 
+    public ProblemCondition getProblemCondition() {
+        return problemCondition;
+    }
+
     /**
      * Setter of ProblemDAO for Ioc.
      *
@@ -251,9 +255,8 @@ public class ProblemAdminAction extends BaseAction
             String message = "";
             if ("delete".equals(method))
                 message = String.format("%d total, %d deleted.", total, count);
-            else if ("edit".equals(method)) {
+            else if ("edit".equals(method))
                 message = String.format("%d total, %d changed.", total, count);
-            }
             json.put("msg", message);
         } catch (Exception e) {
             json.put("result", "error");
