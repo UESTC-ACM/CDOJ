@@ -41,7 +41,7 @@ import java.lang.reflect.Method;
  * <strong>USAGE</strong>
  * <p/>
  * We can write a simple class than extends this class, and add the Exp
- * annotation to each field of the class. If we do not do with, the field
+ * annotation to each getter of the class. If we do not do with, the field
  * will be passed into invoke() method.
  * <p/>
  * <strong>For developer</strong>:
@@ -55,7 +55,7 @@ import java.lang.reflect.Method;
  * <p/>
  * <code>
  * {@literal @}Exp(MapField = "userId", Type = ConditionType.eq)<br/>
- * public Integer id;
+ * public Integer getId();
  * </code>
  * </li>
  * <li>
@@ -65,7 +65,7 @@ import java.lang.reflect.Method;
  * <p/>
  * <code>
  * {@literal @}Exp(Type = ConditionType.eq, MapObject = Department.class)<br/>
- * public Integer departmentId;
+ * public Integer getDepartmentId;
  * </code>
  * </li>
  * <li>
@@ -75,7 +75,7 @@ import java.lang.reflect.Method;
  * For example:
  * <p/>
  * <code>
- * public String userName;
+ * public String getUserName;
  * <br/>
  * {@literal @}Override<br/>
  * public void invoke(ArrayList<Criterion> conditions) {<br/>
@@ -155,18 +155,20 @@ public abstract class BaseCondition implements ApplicationContextAware {
         Class<?> clazz = this.getClass();
         Class<?> restrictionsClass = Restrictions.class;
         Class<?> objectClass = Object.class;
-        for (Method method : clazz.getMethods())
+        for (Method method : clazz.getMethods()) {
             if (method.getName().startsWith("get")) {
                 try {
                     String fieldName = StringUtil.getFieldNameFromGetterOrSetter(method.getName());
                     Object value;
                     Exp exp = method.getAnnotation(Exp.class);
+                    if (exp == null)
+                        continue;
                     try {
                         value = method.invoke(this);
                     } catch (Exception e) {
                         continue;
                     }
-                    if (value == null || exp == null)
+                    if (value == null)
                         continue;
                     String mapField = exp.MapField();
                     mapField = StringUtil.isNullOrWhiteSpace(mapField) ? fieldName : mapField;
@@ -191,6 +193,7 @@ public abstract class BaseCondition implements ApplicationContextAware {
 //                    e.printStackTrace();
                 }
             }
+        }
         invoke(condition);
         return condition;
     }
