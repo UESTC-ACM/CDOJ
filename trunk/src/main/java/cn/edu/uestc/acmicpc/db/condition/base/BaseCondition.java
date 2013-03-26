@@ -33,6 +33,7 @@ import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * We can use this class to transform conditions to database's Criterion list
@@ -154,44 +155,42 @@ public abstract class BaseCondition implements ApplicationContextAware {
         Class<?> clazz = this.getClass();
         Class<?> restrictionsClass = Restrictions.class;
         Class<?> objectClass = Object.class;
-        for (Field f : clazz.getFields()) {
-            Object value;
-            Exp exp = f.getAnnotation(Exp.class);
-            try {
-                value = f.get(this);
-            } catch (Exception e) {
-                continue;
-            }
-            if (value == null || exp == null)
-                continue;
-            String mapField = exp.MapField();
-            mapField = StringUtil.isNullOrWhiteSpace(mapField) ? f.getName()
-                    : mapField;
-            mapField = upperCaseFirst ? mapField.substring(0, 1).toUpperCase()
-                    + mapField.substring(1) : mapField;
-            try {
-                if (!exp.MapObject().equals(objectClass)) {
-                    String name = exp.MapObject().getName()
-                            .substring(exp.MapObject().getName().lastIndexOf('.') + 1);
-                    String DAOName = name.substring(0, 1).toLowerCase()
-                            + name.substring(1) + "DAO";
-                    IDAO DAO = (IDAO) applicationContext.getBean(DAOName);
-//                    System.out.println("DAO: " + DAO.getClass().getName());
-//                    System.out.println("key = " + value);
-                    value = DAO.get((Serializable) value);
-//                    System.out.println("value = " + ObjectUtil.toString(value));
+        for (Method method : clazz.getMethods())
+            if (method.getName().startsWith("get")) {
+                try {
+                    String fieldName = StringUtil.getFieldNameFromGetterOrSetter(method.getName());
+                    Object value;
+                    Exp exp = method.getAnnotation(Exp.class);
+                    try {
+                        value = method.invoke(this);
+                    } catch (Exception e) {
+                        continue;
+                    }
+                    if (value == null || exp == null)
+                        continue;
+                    String mapField = exp.MapField();
+                    mapField = StringUtil.isNullOrWhiteSpace(mapField) ? fieldName : mapField;
+                    mapField = upperCaseFirst ? mapField.substring(0, 1).toUpperCase()
+                            + mapField.substring(1) : mapField;
+                    if (!exp.MapObject().equals(objectClass)) {
+                        String name = exp.MapObject().getName()
+                                .substring(exp.MapObject().getName().lastIndexOf('.') + 1);
+                        String DAOName = name.substring(0, 1).toLowerCase()
+                                + name.substring(1) + "DAO";
+                        IDAO DAO = (IDAO) applicationContext.getBean(DAOName);
+                        value = DAO.get((Serializable) value);
+                    }
+                    if (exp.Type().name().equals("like")) {
+                        value = String.format("%%%s%%", value);
+                    }
+                    Criterion c = (Criterion) restrictionsClass.getMethod(exp.Type().name(),
+                            String.class, Object.class).invoke(null, mapField,
+                            value);
+                    condition.addCriterion(c);
+                } catch (Exception e) {
+//                    e.printStackTrace();
                 }
-                if (exp.Type().name().equals("like")) {
-                    value = String.format("%%%s%%", value);
-                }
-                Criterion c = (Criterion) restrictionsClass.getMethod(exp.Type().name(),
-                        String.class, Object.class).invoke(null, mapField,
-                        value);
-                condition.addCriterion(c);
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-        }
         invoke(condition);
         return condition;
     }

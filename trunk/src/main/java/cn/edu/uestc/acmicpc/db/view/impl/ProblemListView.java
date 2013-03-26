@@ -109,18 +109,18 @@ public class ProblemListView extends View<Problem> {
             setState(NONE);
         } else {
             statusCondition.clear();
-            statusCondition.userId = currentUser.getUserId();
-            statusCondition.problemId = problemId;
+            statusCondition.setUserId(currentUser.getUserId());
+            statusCondition.setProblemId(problemId);
             long count = statusDAO.count(statusCondition.getCondition());
             if (count == 0) {
                 setState(NONE);
             } else {
                 statusCondition.clear();
-                statusCondition.userId = currentUser.getUserId();
-                statusCondition.problemId = problemId;
+                statusCondition.setUserId(currentUser.getUserId());
+                statusCondition.setProblemId(problemId);
                 List<Global.OnlineJudgeReturnType> result = new LinkedList<>();
                 result.add(Global.OnlineJudgeReturnType.OJ_AC);
-                statusCondition.result = result;
+                statusCondition.setResult(result);
                 if (statusDAO.count(statusCondition.getCondition()) != 0)
                     setState(PASSED);
                 else

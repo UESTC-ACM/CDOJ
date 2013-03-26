@@ -126,7 +126,7 @@ public class LoginAction extends BaseAction {
         return JSON;
     }
 
-    //!
+    @SuppressWarnings("WeakerAccess")
     public String getUserName() {
         return userName;
     }
@@ -136,7 +136,7 @@ public class LoginAction extends BaseAction {
         this.userName = userName;
     }
 
-    //!
+    @SuppressWarnings("WeakerAccess")
     public String getPassword() {
         return password;
     }

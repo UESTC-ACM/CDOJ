@@ -113,7 +113,7 @@ public class ProblemListAction extends BaseAction
     @SkipValidation
     public String toSearch() {
         try {
-            problemCondition.isVisible = true;
+            problemCondition.setIsVisible(true);
             Condition condition = problemCondition.getCondition();
             Long count = problemDAO.count(problemCondition.getCondition());
             PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);

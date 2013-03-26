@@ -7,6 +7,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 public class CodeDTO extends BaseDTO<Code> {
     private Integer codeId;
     private String content;

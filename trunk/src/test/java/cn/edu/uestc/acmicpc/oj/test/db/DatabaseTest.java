@@ -221,8 +221,8 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
     @Ignore
     public void testUserConditionByStartIdAndEndId() throws AppException {
         userCondition.clear();
-        userCondition.startId = 50;
-        userCondition.endId = 100;
+        userCondition.setStartId(50);
+        userCondition.setEndId(100);
         Long count = userDAO.count(userCondition.getCondition());
         Assert.assertEquals(51L, count.longValue());
     }
@@ -235,8 +235,8 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
     @Test
     public void testUserConditionDepartmentId() throws AppException {
         userCondition.clear();
-        userCondition.departmentId = 1;
-        userCondition.userName = "admin";
+        userCondition.setDepartmentId(1);
+        userCondition.setUserName("admin");
         Long count = userDAO.count(userCondition.getCondition());
         System.out.println(count);
     }

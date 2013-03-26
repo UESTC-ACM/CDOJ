@@ -115,7 +115,7 @@ public class JudgeItem implements CompileinfoDAOAware, StatusDAOAware, UserDAOAw
         if (status.getResult() == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
             try {
                 User user = status.getUserByUserId();
-                statusCondition.userId = user.getUserId();
+                statusCondition.setUserId(user.getUserId());
                 Condition condition = statusCondition.getCondition();
                 condition.addProjection(Projections.countDistinct("problemId"));
                 Long count = statusDAO.customCount(condition);
@@ -123,7 +123,7 @@ public class JudgeItem implements CompileinfoDAOAware, StatusDAOAware, UserDAOAw
                 userDAO.update(user);
                 statusCondition = new StatusCondition();
                 Problem problem = status.getProblemByProblemId();
-                statusCondition.problemId = problem.getProblemId();
+                statusCondition.setProblemId(problem.getProblemId());
                 condition = statusCondition.getCondition();
                 condition.addProjection(Projections.countDistinct("userId"));
                 count = statusDAO.customCount(condition);
