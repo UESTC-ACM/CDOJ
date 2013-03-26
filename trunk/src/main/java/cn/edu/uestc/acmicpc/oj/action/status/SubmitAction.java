@@ -89,8 +89,6 @@ public class SubmitAction extends BaseAction
      */
     public String toSubmit() {
         try {
-            System.out.println("submit: contest = " + contestId + " language = " + languageId);
-            System.out.println("submit: problem = " + problemId + " code_content =\n" + codeContent);
             StatusDTO statusDTO = new StatusDTO();
             statusDTO.setContest(contestDAO.get(contestId));
             Language language = languageDAO.get(languageId);

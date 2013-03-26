@@ -13,9 +13,12 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.view.base.View;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 
+import javax.xml.bind.annotation.XmlElementDecl;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Use for return status information with json type.
@@ -28,7 +31,17 @@ public class StatusView extends View<Status> {
     private Integer userId;
     private String userName;
     private Integer problemId;
-    private Integer returnType;
+    private String returnType;
+    private Integer returnTypeId;
+
+    public Integer getReturnTypeId() {
+        return returnTypeId;
+    }
+
+    @Ignore
+    public void setReturnTypeId(Integer returnTypeId) {
+        this.returnTypeId = returnTypeId;
+    }
 
     public Integer getStatusId() {
         return statusId;
@@ -65,11 +78,12 @@ public class StatusView extends View<Status> {
         this.problemId = problemId;
     }
 
-    public Integer getReturnType() {
+    public String getReturnType() {
         return returnType;
     }
 
-    public void setReturnType(Integer returnType) {
+    @Ignore
+    public void setReturnType(String returnType) {
         this.returnType = returnType;
     }
 
@@ -140,5 +154,7 @@ public class StatusView extends View<Status> {
         setUserName(status.getUserByUserId().getUserName());
         setProblemId(status.getProblemByProblemId().getProblemId());
         setLanguageId(status.getLanguageByLanguageId().getLanguageId());
+        setReturnTypeId(status.getResult());
+        setReturnType(Global.OnlineJudgeReturnType.values()[status.getResult()].getDescription());
     }
 }

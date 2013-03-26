@@ -35,7 +35,15 @@ function setSubmitDialog() {
             info['problemId'] = $('#submitProblemId').attr('value');
 
             $.post('/status/submit', info, function (data) {
-                console.log(data);
+                if (data.result == 'error')
+                    alert(data.error_msg);
+                else if (data.result == 'ok')
+                    window.location.href= '/status/index';
+                else {
+                    alert('Please login first!');
+                    $("#problemSubmitModal").modal('hide');
+                    $("#loginModal").modal();
+                }
             });
         }
     });

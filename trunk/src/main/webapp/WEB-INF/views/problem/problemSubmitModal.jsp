@@ -55,7 +55,7 @@
         <div id="language-selector" class="pull-left">
             <div class="btn-group" data-toggle="buttons-radio" id="languageSelector">
                 <s:iterator value="global.languageList">
-                    <button class="btn btn-info" value="${languageId}">${name}</button>
+                    <button class="btn btn-info <s:if test="languageId == 2">active</s:if>" value="${languageId}">${name}</button>
                 </s:iterator>
             </div>
         </div>
