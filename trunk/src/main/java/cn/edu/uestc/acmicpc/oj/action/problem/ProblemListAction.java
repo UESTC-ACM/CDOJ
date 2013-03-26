@@ -70,6 +70,10 @@ public class ProblemListAction extends BaseAction
         this.problemCondition = problemCondition;
     }
 
+    public ProblemCondition getProblemCondition() {
+        return problemCondition;
+    }
+
     /**
      * Setter of ProblemDAO for Ioc.
      *
