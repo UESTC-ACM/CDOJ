@@ -215,7 +215,8 @@ public class ProblemDTO extends BaseDTO<Problem> {
     public void updateEntity(Problem problem) {
         // TODO to get specific operations
         super.updateEntity(problem);
-        problem.setIsSpj(getIsSpj());
+        if (getIsSpj() != null)
+            problem.setIsSpj(getIsSpj());
     }
 
     @Override

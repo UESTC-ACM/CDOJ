@@ -28,8 +28,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.StatusDTO;
 import cn.edu.uestc.acmicpc.db.entity.Code;
 import cn.edu.uestc.acmicpc.db.entity.Language;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.ioc.dao.CodeDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.*;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -42,7 +41,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 @SuppressWarnings("UnusedDeclaration")
 @LoginPermit(NeedLogin = true)
 public class SubmitAction extends BaseAction
-        implements StatusDAOAware, CodeDAOAware {
+        implements StatusDAOAware, CodeDAOAware, ContestDAOAware, LanguageDAOAware, ProblemDAOAware {
 
     /**
      * Code
@@ -106,8 +105,13 @@ public class SubmitAction extends BaseAction
             statusDTO.setCode(code);
             statusDAO.add(statusDTO.getEntity());
         } catch (AppException e) {
+            e.printStackTrace();
             json.put("result", "error");
             json.put("error_msg", e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            json.put("result", "error");
+            json.put("error_msg", "Unknown exception occurred.");
         }
         json.put("result", "ok");
         return JSON;
@@ -153,5 +157,20 @@ public class SubmitAction extends BaseAction
     @Override
     public void setStatusDAO(IStatusDAO statusDAO) {
         this.statusDAO = statusDAO;
+    }
+
+    @Override
+    public void setContestDAO(IContestDAO contestDAO) {
+        this.contestDAO = contestDAO;
+    }
+
+    @Override
+    public void setProblemDAO(IProblemDAO problemDAO) {
+        this.problemDAO = problemDAO;
+    }
+
+    @Override
+    public void setLanguageDAO(ILanguageDAO languageDAO) {
+        this.languageDAO = languageDAO;
     }
 }

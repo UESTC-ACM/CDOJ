@@ -21,15 +21,37 @@
 
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
+import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.db.view.impl.ProblemListView;
+import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
+import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+
+import java.util.List;
 
 /**
- * Description
+ * Use for edit contest info.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
 @SuppressWarnings({"WeakerAccess", "UnusedDeclaration"})
-public class ContestStatementAdminAction extends BaseAction {
+public class ContestStatementAdminAction extends BaseAction implements ContestDAOAware{
+
+    /**
+     * Use for update contest info
+     */
+    IContestDAO contestDAO;
+
+    @Override
+    public void setContestDAO(IContestDAO contestDAO) {
+        this.contestDAO = contestDAO;
+    }
 
 }
