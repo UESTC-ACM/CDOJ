@@ -27,6 +27,7 @@
  */
 
 var problemListTable;
+var lineId;
 var addProblemLine =
     '<tr>' +
         '<td><a href="#" class="remove_problem"><i class="icon-minus"></i></a></td>' +
@@ -37,17 +38,13 @@ var addProblemLine =
 
 function removeProblem(id) {
     problemListTable.find('tr[value="'+id+'"]').remove();
-    $.each(problemListTable.find('tr'), function(){
-        var myId = $(this).attr('value');
-        if (myId > id)
-            $(this).attr('value', myId-1);
-    });
 }
 
 function updateProblem(id) {
     var line = problemListTable.find('tr[value="'+id+'"]');
-    //var problemId = line.find('problem_id')[0].innerHTML.toString();
-    line.find('.problem_title').append(id+" --> ");
+    var problemId = line.find('.problem_id')[0].innerHTML;
+    line.find('.problem_title').empty();
+    line.find('.problem_title').append(id + " --> " + problemId);
 }
 
 $(document).ready(function () {
@@ -59,28 +56,30 @@ $(document).ready(function () {
     //Problem list table
     problemListTable = $('#problemList');
 
+    lineId = 0;
     //Problem add button
     $('#add_problem').setButton({
         callback: function(){
-            var lineId = problemListTable.find('tr').size();
             var line = $(addProblemLine);
-            line.attr('value', lineId);
+            var nowId = lineId;
+            lineId++;
+            line.attr('value', nowId);
             problemListTable.append(line);
-            line = problemListTable.find('tr[value="'+lineId+'"]');
+            line = problemListTable.find('tr[value="'+nowId+'"]');
 
             line.find('.remove_problem').live('click', function(){
-                console.log(line.attr('value'));
-                removeProblem(line.attr('value'));
+                removeProblem(nowId);
                 return false;
             });
 
             line.find('.problem_id').live('keydown', function(){
-                if (event.keyCode == 13) {
-                    console.log(line.attr('value'));
-                    updateProblem(line.attr('value'));
+                if (event.keyCode == 13)
                     return false;
-                }
             });
+            line.find('.problem_id').live('keyup', function(){
+                updateProblem(nowId);
+            });
+
             return false;
         }
     })
