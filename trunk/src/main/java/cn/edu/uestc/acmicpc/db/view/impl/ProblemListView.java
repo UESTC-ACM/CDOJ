@@ -22,6 +22,7 @@
 
 package cn.edu.uestc.acmicpc.db.view.impl;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
@@ -111,7 +112,10 @@ public class ProblemListView extends View<Problem> {
             statusCondition.clear();
             statusCondition.setUserId(currentUser.getUserId());
             statusCondition.setProblemId(problemId);
-            long count = statusDAO.count(statusCondition.getCondition());
+            Condition condition = statusCondition.getCondition();
+            condition.currentPage = 1L;
+            condition.countPerPage = 1L;
+            long count = statusDAO.count(condition);
             if (count == 0) {
                 setState(NONE);
             } else {
@@ -121,7 +125,10 @@ public class ProblemListView extends View<Problem> {
                 List<Global.OnlineJudgeReturnType> result = new LinkedList<>();
                 result.add(Global.OnlineJudgeReturnType.OJ_AC);
                 statusCondition.setResult(result);
-                if (statusDAO.count(statusCondition.getCondition()) != 0)
+                condition = statusCondition.getCondition();
+                condition.currentPage = 1L;
+                condition.countPerPage = 1L;
+                if (statusDAO.count(condition) != 0)
                     setState(PASSED);
                 else
                     setState(FAILED);
