@@ -36,6 +36,16 @@ var addProblemLine =
         '<td class="problem_difficult"></td>' +
     '</tr>';
 
+function getDifficulty(difficulty) {
+    difficulty = Math.max(1, Math.min(difficulty, 5));
+    var html = '';
+    for (var i = 1; i <= difficulty; i++)
+        html += '<i class="difficulty-level icon-star pull-left" style="margin: 0px;" value="' + i + '"></i>';
+    for (var i = difficulty + 1; i <= 5; i++)
+        html += '<i class="difficulty-level icon-star-empty pull-left" style="margin: 0px;" value="' + i + '"></i>';
+    return html;
+}
+
 function removeProblem(id) {
     problemListTable.find('tr[value="'+id+'"]').remove();
 }
@@ -43,8 +53,30 @@ function removeProblem(id) {
 function updateProblem(id) {
     var line = problemListTable.find('tr[value="'+id+'"]');
     var problemId = line.find('.problem_id')[0].innerHTML;
-    line.find('.problem_title').empty();
-    line.find('.problem_title').append(id + " --> " + problemId);
+
+    var condition = {
+        "currentPage": 1,
+        "problemCondition.startId": problemId,
+        "problemCondition.endId": problemId
+    }
+
+    $.post('/admin/problem/search', condition, function (data) {
+        var currentProblemId = line.find('.problem_id')[0].innerHTML;
+        if (currentProblemId == problemId) {
+            line.removeClass('error');
+            line.find('.problem_title').empty();
+            line.find('.problem_difficult').empty();
+            if (data.problemList.length == 0) {
+                line.addClass('error');
+                line.find('.problem_title').append('No such problem');
+            }
+            else {
+                var problem = data.problemList[0];
+                line.find('.problem_title').append(problem.title);
+                line.find('.problem_difficult').append(getDifficulty(problem.difficulty));
+            }
+        }
+    });
 }
 
 $(document).ready(function () {

@@ -80,25 +80,25 @@
                                 <input type="text"
                                        maxlength="10"
                                        id="contestDTO_time_days"
-                                       style="width: 74px;">
+                                       style="width: 80px;">
                                 <input type="text"
                                        maxlength="2"
                                        id="contestDTO_time_hours"
                                        value="00"
-                                       style="width: 16px;">
+                                       style="width: 20px;">
                                 <span>:</span>
                                 <input type="text"
                                        maxlength="2"
                                        id="contestDTO_time_minutes"
                                        value="00"
-                                       style="width: 16px;">
+                                       style="width: 20px;">
                                 <span>:</span>
                                 <input type="text"
                                        maxlength="2"
                                        id="contestDTO_time_seconds"
                                        readonly="true"
                                        value="00"
-                                       style="width: 16px;">
+                                       style="width: 20px;">
                             </div>
                         </div>
                         <div class="control-group">
@@ -107,26 +107,26 @@
                                 <input type="text"
                                        maxlength="10"
                                        id="contestDTO_length_days"
-                                       style="width: 74px;">
+                                       style="width: 80px;">
                                 <span>days</span>
                                 <input type="text"
                                        maxlength="2"
                                        id="contestDTO_length_hours"
                                        value="00"
-                                       style="width: 16px;">
+                                       style="width: 20px;">
                                 <span>:</span>
                                 <input type="text"
                                        maxlength="2"
                                        id="contestDTO_length_minutes"
                                        value="00"
-                                       style="width: 16px;">
+                                       style="width: 20px;">
                                 <span>:</span>
                                 <input type="text"
                                        maxlength="2"
                                        id="contestDTO_length_seconds"
                                        readonly="true"
                                        value="00"
-                                       style="width: 16px;">
+                                       style="width: 20px;">
                             </div>
                         </div>
                     </div>
