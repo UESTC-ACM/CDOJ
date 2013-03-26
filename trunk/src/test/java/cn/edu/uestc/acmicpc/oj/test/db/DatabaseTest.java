@@ -289,6 +289,11 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
         this.userCondition = userCondition;
     }
 
+    @Override
+    public UserCondition getUserCondition() {
+        return userCondition;
+    }
+
     @Test
     public void testSingleUser() throws FieldNotUniqueException, AppException {
         User user = new User();

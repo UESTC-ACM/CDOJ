@@ -36,4 +36,11 @@ public interface ProblemConditionAware {
      * @param problemCondition specific problem condition entity
      */
     public void setProblemCondition(ProblemCondition problemCondition);
+
+    /**
+     * get problem condition entity.
+     *
+     * @return specific problem condition
+     */
+    public ProblemCondition getProblemCondition();
 }

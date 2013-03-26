@@ -151,4 +151,9 @@ public class ProblemListAction extends BaseAction
     public void setStatusCondition(StatusCondition statusCondition) {
         this.statusCondition = statusCondition;
     }
+
+    @Override
+    public StatusCondition getStatusCondition() {
+        return statusCondition;
+    }
 }

@@ -36,4 +36,11 @@ public interface UserConditionAware {
      * @param userCondition specific user condition entity
      */
     public void setUserCondition(UserCondition userCondition);
+
+    /**
+     * get user condition entity.
+     *
+     * @return specific user condition
+     */
+    public UserCondition getUserCondition();
 }

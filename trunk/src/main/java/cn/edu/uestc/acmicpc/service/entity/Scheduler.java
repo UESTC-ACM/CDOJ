@@ -88,6 +88,11 @@ public class Scheduler implements Runnable, StatusConditionAware, StatusDAOAware
     }
 
     @Override
+    public StatusCondition getStatusCondition() {
+        return statusCondition;
+    }
+
+    @Override
     public void setStatusDAO(IStatusDAO statusDAO) {
         this.statusDAO = statusDAO;
     }
