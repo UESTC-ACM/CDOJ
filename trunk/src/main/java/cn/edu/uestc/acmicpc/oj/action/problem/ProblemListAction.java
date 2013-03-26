@@ -125,8 +125,9 @@ public class ProblemListAction extends BaseAction
             condition.countPerPage = RECORD_PER_PAGE;
             List<Problem> problemList = problemDAO.findAll(condition);
             List<ProblemListView> problemListViewList = new ArrayList<>();
-            for (Problem problem : problemList)
+            for (Problem problem : problemList) {
                 problemListViewList.add(new ProblemListView(problem, getCurrentUser(), statusDAO, statusCondition));
+            }
             json.put("pageInfo", pageInfo.getHtmlString());
             json.put("result", "ok");
             json.put("condition", problemCondition);
