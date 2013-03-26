@@ -65,11 +65,12 @@ public class Scheduler implements Runnable, StatusConditionAware, StatusDAOAware
     /**
      * Search status in queuing.
      */
+    @SuppressWarnings("unchecked")
     private void searchForJudge() {
         try {
             statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_WAIT);
             statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_REJUDGING);
-            List<Status> statusList = statusDAO.findAll(statusCondition.getCondition());
+            List<Status> statusList = (List<Status>) statusDAO.findAll(statusCondition.getCondition());
             for (Status status : statusList) {
                 status.setResult(Global.OnlineJudgeReturnType.OJ_JUDGING.ordinal());
                 status.setCaseNumber(0);

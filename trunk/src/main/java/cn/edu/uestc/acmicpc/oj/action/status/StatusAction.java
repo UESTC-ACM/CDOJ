@@ -68,6 +68,7 @@ public class StatusAction extends BaseAction
      *
      * @return <strong>JSON</strong> signal
      */
+    @SuppressWarnings("unchecked")
     @SkipValidation
     public String toSearch() {
         try {
@@ -76,7 +77,7 @@ public class StatusAction extends BaseAction
             PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
             condition.currentPage = pageInfo.getCurrentPage();
             condition.countPerPage = RECORD_PER_PAGE;
-            List<Status> statusList = statusDAO.findAll(condition);
+            List<Status> statusList = (List<Status>) statusDAO.findAll(condition);
             List<StatusView> statusViewList = new ArrayList<>();
             for (Status status : statusList)
                 statusViewList.add(new StatusView(status));

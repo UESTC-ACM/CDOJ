@@ -135,9 +135,10 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
     /**
      * Simple test by connecting with database with DAO.
      */
+    @SuppressWarnings("unchecked")
     @Test
     public void testDataBaseConnection() throws AppException {
-        List<Tag> tags = tagDAO.findAll();
+        List<Tag> tags = (List<Tag>) tagDAO.findAll();
         for (Tag tag : tags)
             System.out.println(tag.getTagId() + " " + tag.getName());
     }

@@ -110,6 +110,7 @@ public class UserAdminAction extends BaseAction
      *
      * @return <strong>JSON</strong> signal
      */
+    @SuppressWarnings("unchecked")
     @SkipValidation
     public String toSearch() {
         try {
@@ -118,7 +119,7 @@ public class UserAdminAction extends BaseAction
             PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
             condition.currentPage = pageInfo.getCurrentPage();
             condition.countPerPage = RECORD_PER_PAGE;
-            List<User> userList = userDAO.findAll(condition);
+            List<User> userList = (List<User>) userDAO.findAll(condition);
             List<UserView> userViewList = new ArrayList<>();
             for (User user : userList)
                 userViewList.add(new UserView(user));

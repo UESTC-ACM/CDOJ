@@ -24,16 +24,12 @@ package cn.edu.uestc.acmicpc.oj.action.admin;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemListView;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemView;
 import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
-import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
@@ -56,21 +52,17 @@ import java.util.List;
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class ProblemAdminAction extends BaseAction
-        implements ProblemConditionAware, ProblemDAOAware,
-        StatusDAOAware, StatusConditionAware {
+        implements ProblemConditionAware, ProblemDAOAware {
 
     /**
      * ProblemDAO for problem search.
      */
     private IProblemDAO problemDAO;
 
-    /**
-     * StatusDAO for status queries.
-     */
-    private IStatusDAO statusDAO;
-
     private ProblemCondition problemCondition;
-    private StatusCondition statusCondition;
+
+    public ProblemAdminAction() {
+    }
 
     @Override
     public void setProblemCondition(ProblemCondition problemCondition) {
@@ -177,6 +169,7 @@ public class ProblemAdminAction extends BaseAction
      *
      * @return <strong>JSON</strong> signal
      */
+    @SuppressWarnings("unchecked")
     @SkipValidation
     public String toSearch() {
         try {
@@ -185,10 +178,11 @@ public class ProblemAdminAction extends BaseAction
             PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
             condition.currentPage = pageInfo.getCurrentPage();
             condition.countPerPage = RECORD_PER_PAGE;
-            List<Problem> problemList = problemDAO.findAll(condition);
+            List<Problem> problemList = (List<Problem>) problemDAO.findAll(condition);
             List<ProblemListView> problemListViewList = new ArrayList<>();
             for (Problem problem : problemList)
-                problemListViewList.add(new ProblemListView(problem, getCurrentUser(), statusDAO, statusCondition));
+                problemListViewList.add(new ProblemListView(problem, null,
+                        problemStatus.get(problem.getProblemId())));
             json.put("pageInfo", pageInfo.getHtmlString());
             json.put("result", "ok");
             json.put("condition", problemCondition);
@@ -263,20 +257,5 @@ public class ProblemAdminAction extends BaseAction
             json.put("error_msg", "Unknown exception occurred.");
         }
         return JSON;
-    }
-
-    @Override
-    public void setStatusDAO(IStatusDAO statusDAO) {
-        this.statusDAO = statusDAO;
-    }
-
-    @Override
-    public void setStatusCondition(StatusCondition statusCondition) {
-        this.statusCondition = statusCondition;
-    }
-
-    @Override
-    public StatusCondition getStatusCondition() {
-        return statusCondition;
     }
 }
