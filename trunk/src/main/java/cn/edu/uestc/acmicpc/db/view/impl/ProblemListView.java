@@ -22,9 +22,6 @@
 
 package cn.edu.uestc.acmicpc.db.view.impl;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
 import cn.edu.uestc.acmicpc.db.entity.User;
@@ -96,8 +93,7 @@ public class ProblemListView extends View<Problem> {
      * @throws cn.edu.uestc.acmicpc.util.exception.AppException
      *
      */
-    public ProblemListView(Problem problem, User currentUser,
-                           IStatusDAO statusDAO, StatusCondition statusCondition)
+    public ProblemListView(Problem problem, User currentUser, Global.AuthorStatusType type)
             throws AppException {
         super(problem);
         List<String> list = new LinkedList<>();
@@ -109,30 +105,7 @@ public class ProblemListView extends View<Problem> {
         if (currentUser == null) {
             setState(NONE);
         } else {
-            statusCondition.clear();
-            statusCondition.setUserId(currentUser.getUserId());
-            statusCondition.setProblemId(problemId);
-            Condition condition = statusCondition.getCondition();
-            condition.currentPage = 1L;
-            condition.countPerPage = 1L;
-            long count = statusDAO.count(condition);
-            if (count == 0) {
-                setState(NONE);
-            } else {
-                statusCondition.clear();
-                statusCondition.setUserId(currentUser.getUserId());
-                statusCondition.setProblemId(problemId);
-                List<Global.OnlineJudgeReturnType> result = new LinkedList<>();
-                result.add(Global.OnlineJudgeReturnType.OJ_AC);
-                statusCondition.setResult(result);
-                condition = statusCondition.getCondition();
-                condition.currentPage = 1L;
-                condition.countPerPage = 1L;
-                if (statusDAO.count(condition) != 0)
-                    setState(PASSED);
-                else
-                    setState(FAILED);
-            }
+            setState(type == null ? NONE : type.ordinal());
         }
     }
 

@@ -86,13 +86,14 @@ public class ConditionTest
         Assert.assertEquals(new Long(0), problemDAO.count(problemCondition.getCondition()));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @Ignore
     public void testUserCondition() throws AppException {
         userCondition.clear();
         userCondition.setDepartmentId(2);
         System.out.println("test: " + userCondition.getDepartmentId());
-        List<User> users = userDAO.findAll(userCondition.getCondition());
+        List<User> users = (List<User>) userDAO.findAll(userCondition.getCondition());
         Assert.assertEquals(1, users.size());
 //        for (User user : users) {
 //            System.out.println(user.getUserId() + " " + user.getUserName() + " "

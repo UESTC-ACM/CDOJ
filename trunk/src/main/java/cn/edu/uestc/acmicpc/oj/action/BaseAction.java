@@ -65,6 +65,7 @@ public class BaseAction extends ActionSupport
      * Global constant
      */
     private final ThreadLocal<Global> global = new ThreadLocal<>();
+    protected Map<Integer, Global.AuthorStatusType> problemStatus;
 
     @SuppressWarnings("UnusedDeclaration")
     public Global getGlobal() {
@@ -187,10 +188,16 @@ public class BaseAction extends ActionSupport
         this.session = session;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onActionExecuting(AppInterceptor.ActionInfo actionInfo) {
         checkIE6(actionInfo);
         checkAuth(actionInfo);
+        if (session.containsKey("problemStatus")) {
+            this.problemStatus = (Map<Integer, Global.AuthorStatusType>) session.get("problemStatus");
+        } else {
+            this.problemStatus = new HashMap<>();
+        }
     }
 
     @Override

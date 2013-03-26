@@ -87,7 +87,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
      * @return entity list in tables.
      * @throws AppException
      */
-    public List<Entity> findAll() throws AppException;
+    public List<?> findAll() throws AppException;
 
     /**
      * List all entities in tables by conditions.
@@ -96,7 +96,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
      * @return expected entity list
      * @throws AppException
      */
-    public List<Entity> findAll(Condition condition) throws AppException;
+    public List<?> findAll(Condition condition) throws AppException;
 
     /**
      * Count the number of records in the table.

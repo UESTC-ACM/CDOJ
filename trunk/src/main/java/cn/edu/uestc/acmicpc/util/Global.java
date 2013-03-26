@@ -73,6 +73,13 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
     }
 
     /**
+     * Problem status for author problem flag.
+     */
+    public enum AuthorStatusType {
+        NONE, PASS, FAIL
+    }
+
+    /**
      * Contest type for contest entity
      */
     @SuppressWarnings("UnusedDeclaration")
@@ -136,9 +143,10 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
     /**
      * Initializer.
      */
+    @SuppressWarnings("unchecked")
     public void init() throws AppException {
-        this.departmentList = departmentDAO.findAll();
-        this.languageList = languageDAO.findAll();
+        this.departmentList = (List<Department>) departmentDAO.findAll();
+        this.languageList = (List<Language>) languageDAO.findAll();
 
         this.authenticationTypeList = new ArrayList<>();
         Collections.addAll(authenticationTypeList, AuthenticationType.values());

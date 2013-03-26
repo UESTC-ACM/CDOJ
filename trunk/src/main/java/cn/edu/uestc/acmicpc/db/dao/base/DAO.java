@@ -110,9 +110,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public List<Entity> findAll(Condition condition) throws AppException {
+    public List<?> findAll(Condition condition) throws AppException {
         if (condition == null)
             condition = new Condition();
         try {
@@ -199,7 +198,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     }
 
     @Override
-    public List<Entity> findAll() throws AppException {
+    public List<?> findAll() throws AppException {
         return findAll(null);
     }
 

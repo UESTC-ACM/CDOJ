@@ -22,15 +22,25 @@
 
 package cn.edu.uestc.acmicpc.oj.action.user;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
+import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import com.opensymphony.xwork2.validator.annotations.*;
+import org.hibernate.criterion.Projections;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Login action for user toLogin.
@@ -38,13 +48,31 @@ import java.util.Date;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @LoginPermit(NeedLogin = false)
-public class LoginAction extends BaseAction {
+public class LoginAction extends BaseAction
+        implements StatusConditionAware, StatusDAOAware {
 
     private static final long serialVersionUID = 2034049134718450987L;
 
     private String userName;
     private String password;
+    private StatusCondition statusCondition;
+    private IStatusDAO statusDAO;
 
+    /**
+     * toLogin with {@code userName} and {@code password}.
+     * <strong>JSON output</strong>:
+     * <ul>
+     * <li>
+     * For success: {"result":"ok"}
+     * </li>
+     * <li>
+     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+     * </li>
+     * </ul>
+     *
+     * @return action signal
+     */
+    @SuppressWarnings("unchecked")
     @Validations(
             requiredStrings = {
                     @RequiredStringValidator(
@@ -83,20 +111,6 @@ public class LoginAction extends BaseAction {
                     )
             }
     )
-    /**
-     * toLogin with {@code userName} and {@code password}.
-     <strong>JSON output</strong>:
-     * <ul>
-     * <li>
-     * For success: {"result":"ok"}
-     * </li>
-     * <li>
-     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-     * </li>
-     * </ul>
-     *
-     * @return action signal
-     */
     public String toLogin() {
         try {
             User user = userDAO.getEntityByUniqueField("userName", getUserName());
@@ -108,7 +122,22 @@ public class LoginAction extends BaseAction {
             user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
             userDAO.update(user);
 
-            user = userDAO.get(user.getUserId());
+            Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
+            statusCondition.setUserId(user.getUserId());
+            statusCondition.setIResult(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+            Condition condition = statusCondition.getCondition();
+            condition.addProjection(Projections.distinct(Projections.property("problemByProblemId")));
+            List<Integer> results = (List<Integer>) statusDAO.findAll(condition);
+            for (Integer result : results)
+                problemStatus.put(result, Global.AuthorStatusType.PASS);
+            statusCondition.setIResult(null);
+            condition = statusCondition.getCondition();
+            condition.addProjection(Projections.distinct(Projections.property("problemByProblemId")));
+            results = (List<Integer>) statusDAO.findAll(condition);
+            for (Integer result : results)
+                if (!problemStatus.containsKey(result))
+                    problemStatus.put(result, Global.AuthorStatusType.FAIL);
+            session.put("problemStatus", problemStatus);
             session.put("userName", user.getUserName());
             session.put("password", user.getPassword());
             session.put("lastLogin", user.getLastLogin());
@@ -118,6 +147,7 @@ public class LoginAction extends BaseAction {
             json.put("error_msg", setError(e));
             return JSON;
         } catch (Exception e) {
+            e.printStackTrace();
             json.put("result", "error");
             json.put("error_msg", setError("Unknown exception occurred."));
             return JSON;
@@ -146,4 +176,18 @@ public class LoginAction extends BaseAction {
         this.password = password;
     }
 
+    @Override
+    public void setStatusCondition(StatusCondition statusCondition) {
+        this.statusCondition = statusCondition;
+    }
+
+    @Override
+    public StatusCondition getStatusCondition() {
+        return statusCondition;
+    }
+
+    @Override
+    public void setStatusDAO(IStatusDAO statusDAO) {
+        this.statusDAO = statusDAO;
+    }
 }
