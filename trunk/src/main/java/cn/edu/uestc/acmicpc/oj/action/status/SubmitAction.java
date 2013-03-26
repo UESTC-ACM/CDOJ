@@ -89,6 +89,8 @@ public class SubmitAction extends BaseAction
      */
     public String toSubmit() {
         try {
+            System.out.println("submit: contest = " + contestId + " language = " + languageId);
+            System.out.println("submit: problem = " + problemId + " code_content =\n" + codeContent);
             StatusDTO statusDTO = new StatusDTO();
             statusDTO.setContest(contestDAO.get(contestId));
             Language language = languageDAO.get(languageId);
@@ -98,18 +100,19 @@ public class SubmitAction extends BaseAction
             Problem problem = problemDAO.get(problemId);
             if (problem == null)
                 throw new AppException("No such problem");
+            statusDTO.setProblem(problem);
+            statusDTO.setUser(getCurrentUser());
             CodeDTO codeDTO = new CodeDTO();
             codeDTO.setContent(codeContent);
             Code code = codeDTO.getEntity();
             codeDAO.add(code);
             statusDTO.setCode(code);
+            statusDTO.setLength(codeContent.length());
             statusDAO.add(statusDTO.getEntity());
         } catch (AppException e) {
-            e.printStackTrace();
             json.put("result", "error");
             json.put("error_msg", e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
             json.put("result", "error");
             json.put("error_msg", "Unknown exception occurred.");
         }
