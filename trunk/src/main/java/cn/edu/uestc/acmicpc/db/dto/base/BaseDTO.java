@@ -77,7 +77,7 @@ public abstract class BaseDTO<Entity extends Serializable> {
                                 }
                             }
                         } catch (NoSuchMethodException | InvocationTargetException |
-                                IllegalAccessException ignored) {
+                                IllegalAccessException | IllegalArgumentException ignored) {
                         }
                     }
                 }

@@ -53,6 +53,24 @@ public class StatusDTO extends BaseDTO<Status> {
     }
 
     @Ignore
+    public Problem getProblem() {
+        return problem;
+    }
+
+    public void setProblem(Problem problem) {
+        this.problem = problem;
+    }
+
+    @Ignore
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Ignore
     public Language getLanguage() {
         return language;
     }
@@ -79,6 +97,8 @@ public class StatusDTO extends BaseDTO<Status> {
         status.setTimeCost(0);
         status.setTime(new Timestamp(new Date().getTime()));
         status.setCaseNumber(0);
+        status.setUserByUserId(user);
+        status.setProblemByProblemId(problem);
         return status;
     }
 
@@ -199,7 +219,9 @@ public class StatusDTO extends BaseDTO<Status> {
     }
 
     private Integer problemId;
+    private Problem problem;
     private Integer userId;
+    private User user;
 
     @Override
     protected Class<Status> getReferenceClass() {

@@ -109,8 +109,7 @@ public class ContestDTO extends BaseDTO<Contest> {
 
     @Override
     public Contest getEntity() throws AppException {
-        Contest contest = super.getEntity();
-        return contest;
+        return super.getEntity();
     }
 
     @Override
