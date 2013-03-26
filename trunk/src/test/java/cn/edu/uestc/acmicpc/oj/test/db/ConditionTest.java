@@ -49,7 +49,9 @@ import java.util.List;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:applicationContext-test.xml"})
-public class ConditionTest implements ProblemDAOAware, UserDAOAware, UserConditionAware, ProblemConditionAware {
+public class ConditionTest
+        implements ProblemDAOAware, UserDAOAware,
+        UserConditionAware, ProblemConditionAware {
     /**
      * DAOs for database query.
      */
@@ -114,7 +116,17 @@ public class ConditionTest implements ProblemDAOAware, UserDAOAware, UserConditi
     }
 
     @Override
+    public UserCondition getUserCondition() {
+        return userCondition;
+    }
+
+    @Override
     public void setProblemCondition(ProblemCondition problemCondition) {
         this.problemCondition = problemCondition;
+    }
+
+    @Override
+    public ProblemCondition getProblemCondition() {
+        return problemCondition;
     }
 }

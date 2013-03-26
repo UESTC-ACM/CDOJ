@@ -36,4 +36,10 @@ public interface StatusConditionAware {
      * @param statusCondition specific status condition entity
      */
     public void setStatusCondition(StatusCondition statusCondition);
+
+    /**
+     * get status condition entity.
+     * @return  specific status condition
+     */
+    public StatusCondition getStatusCondition();
 }

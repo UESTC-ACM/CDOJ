@@ -85,6 +85,11 @@ public class UserAdminAction extends BaseAction
         this.userCondition = userCondition;
     }
 
+    @Override
+    public UserCondition getUserCondition() {
+        return userCondition;
+    }
+
     /**
      * Search action.
      * <p/>

@@ -142,6 +142,11 @@ public class JudgeItem implements CompileinfoDAOAware, StatusDAOAware, UserDAOAw
     }
 
     @Override
+    public StatusCondition getStatusCondition() {
+        return statusCondition;
+    }
+
+    @Override
     public void setCompileinfoDAO(ICompileinfoDAO compileinfoDAO) {
         this.compileinfoDAO = compileinfoDAO;
     }

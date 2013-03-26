@@ -101,6 +101,11 @@ public class StatusAction extends BaseAction
     }
 
     @Override
+    public StatusCondition getStatusCondition() {
+        return statusCondition;
+    }
+
+    @Override
     public void setStatusDAO(IStatusDAO statusDAO) {
         this.statusDAO = statusDAO;
     }
