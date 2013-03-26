@@ -56,9 +56,8 @@
                 <th style="width: 60px;">Id</th>
                 <th>User</th>
                 <th style="width: 60px;">Problem</th>
-                <th style="width: 140px;">Judge's Response</th>
-                <th style="width: 65px;">Language</th>
-                <th style="width: 90px;">Code Length</th>
+                <th style="width: 260px;">Judge's Response</th>
+                <th style="width: 60px;">Length</th>
                 <th style="width: 70px;">Time</th>
                 <th style="width: 80px;">Memory</th>
                 <th style="width: 140px;">Submit Time</th>

@@ -123,7 +123,7 @@ public class LoginAction extends BaseAction
             userDAO.update(user);
 
             Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
-            statusCondition.setUserId(user.getUserId());
+            /*statusCondition.setUserId(user.getUserId());
             statusCondition.setIResult(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
             Condition condition = statusCondition.getCondition();
             condition.addProjection(Projections.distinct(Projections.property("problemByProblemId")));
@@ -136,7 +136,7 @@ public class LoginAction extends BaseAction
             results = (List<Integer>) statusDAO.findAll(condition);
             for (Integer result : results)
                 if (!problemStatus.containsKey(result))
-                    problemStatus.put(result, Global.AuthorStatusType.FAIL);
+                    problemStatus.put(result, Global.AuthorStatusType.FAIL);*/
             session.put("problemStatus", problemStatus);
             session.put("userName", user.getUserName());
             session.put("password", user.getPassword());

@@ -29,9 +29,6 @@ var statusList;
 
 function refreshStatusList(condition) {
     $.post('/status/search', condition, function (data) {
-
-        console.log(condition);
-
         if (data.result == "error") {
             alert(data.error_msg);
             return;
@@ -42,7 +39,7 @@ function refreshStatusList(condition) {
         $('#pageInfo').append(data.pageInfo);
         $('#pageInfo').find('a').click(function (e) {
             currentCondition.currentPage = $(this).attr("href");
-            refreshProblemList(currentCondition);
+            refreshStatusList(currentCondition);
             return false;
         });
 
@@ -51,30 +48,20 @@ function refreshStatusList(condition) {
         // remove old user list
         tbody.find('tr').remove();
         // put user list
+
         $.each(statusList, function (index, value) {
             var html = '<tr>' +
                 '<td>' + value.statusId + '</td>' +
                 '<td>' + value.userName + '</td>' +
                 '<td><a href="/problem/show/' + value.problemId + '">' + value.problemId + '</a></td>' +
-                '<td>' + value.returnType + '</td>' +
-                '<td>' + value.languageId + '</td>' +
+               // '<td>' + value.returnType + '</td>' +
+                '<td>Restricted Function on test $case</td>' +
                 '<td>' + value.length + '</td>'+
                 '<td>' + value.timeCost + '</td>' +
                 '<td>' + value.memoryCost + '</td>' +
                 '<td>' + value.time + '</td>' +
                 '</tr>';
             tbody.append(html);
-            /*
-             <th style="width: 60px;">Id</th>
-             <th>User</th>
-             <th style="width: 60px;">Problem</th>
-             <th style="width: 140px;">Judge's Response</th>
-             <th style="width: 65px;">Language</th>
-             <th style="width: 90px;">Code Length</th>
-             <th style="width: 70px;">Time</th>
-             <th style="width: 80px;">Memory</th>
-             <th style="width: 140px;">Submit Time</th>
-             */
         });
 
     });
@@ -83,8 +70,8 @@ function refreshStatusList(condition) {
 $(document).ready(function () {
     currentCondition = {
         "currentPage": null,
-        "statusCondition.startId": 1,
-        "statusCondition.endId": 1,
+        "statusCondition.startId": undefined,
+        "statusCondition.endId": undefined,
         "statusCondition.userId": undefined,
         "statusCondition.problemId": undefined,
         "statusCondition.languageId": undefined,

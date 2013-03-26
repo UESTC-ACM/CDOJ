@@ -84,7 +84,7 @@ public class StatusAction extends BaseAction
             json.put("pageInfo", pageInfo.getHtmlString());
             json.put("result", "ok");
             json.put("condition", statusCondition);
-            json.put("problemList", statusViewList);
+            json.put("statusList", statusViewList);
         } catch (AppException e) {
             json.put("result", "error");
             json.put("error_msg", e.getMessage());
