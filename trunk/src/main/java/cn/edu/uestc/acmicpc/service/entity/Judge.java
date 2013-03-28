@@ -96,6 +96,62 @@ public class Judge implements Runnable, SettingsAware {
         }
     }
 
+    private String buildJudgeShellCommand(int problemId, int currentTestCase, JudgeItem judgeItem) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(workPath);
+        stringBuilder.append("/");
+        stringBuilder.append(settings.JUDGE_JUDGE_CORE);
+        stringBuilder.append(" -u ");
+        stringBuilder.append(judgeItem.status.getStatusId());
+        stringBuilder.append(" -s ");
+        stringBuilder.append(judgeItem.getSourceName());
+        stringBuilder.append(" -n ");
+        stringBuilder.append(problemId);
+        stringBuilder.append(" -D ");
+        stringBuilder.append(settings.JUDGE_DATA_PATH);
+        stringBuilder.append("/").append(judgeItem.status.getProblemByProblemId()).append("/");
+        stringBuilder.append(" -d ");
+        stringBuilder.append(tempPath);
+        stringBuilder.append(" -t ");
+        stringBuilder.append(judgeItem.status.getProblemByProblemId().getTimeLimit());
+        stringBuilder.append(" -m ");
+        stringBuilder.append(judgeItem.status.getProblemByProblemId().getMemoryLimit());
+        stringBuilder.append(" -o ");
+        stringBuilder.append(judgeItem.status.getProblemByProblemId().getOutputLimit());
+        if (judgeItem.status.getProblemByProblemId().getIsSpj())
+            stringBuilder.append(" -S");
+        stringBuilder.append(" -l ");
+        stringBuilder.append(judgeItem.status.getLanguageByLanguageId());
+        stringBuilder.append(" -I ");
+        stringBuilder.append(settings.JUDGE_DATA_PATH).append("/")
+                .append(judgeItem.status.getProblemByProblemId())
+                .append("/").append(currentTestCase).append(".in");
+        stringBuilder.append(" -O ");
+        stringBuilder.append(settings.JUDGE_DATA_PATH).append("/")
+                .append(judgeItem.status.getProblemByProblemId())
+                .append("/").append(currentTestCase).append(".out");
+        if (currentTestCase == 1)
+            stringBuilder.append(" -C");
+        return stringBuilder.toString();
+    }
+
+    public String[] getCallBackString(String shellCommand) {
+        Process p;
+        String callBackString = "";
+        try {
+            p = Runtime.getRuntime().exec(shellCommand);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                callBackString += line;
+            }
+        } catch (Exception ignored) {
+        }
+        System.out.println("call back string: " + callBackString);
+        return callBackString.split(" ");
+    }
+
     /**
      * Judge judgeItem by judge core.
      *
@@ -110,95 +166,59 @@ public class Judge implements Runnable, SettingsAware {
                 FileUtil.saveToFile(judgeItem.status.getCodeByCodeId().getContent(),
                         tempPath + "/" + judgeItem.getSourceName());
                 int problemId = judgeItem.status.getProblemByProblemId().getProblemId();
-                StringBuilder stringBuilder = new StringBuilder();
-
-                stringBuilder.append(workPath);
-                stringBuilder.append("/");
-                stringBuilder.append(settings.JUDGE_JUDGE_CORE);
-                stringBuilder.append(" -u ");
-                stringBuilder.append(judgeItem.status.getStatusId());
-                stringBuilder.append(" -s ");
-                stringBuilder.append(judgeItem.getSourceName());
-                stringBuilder.append(" -n ");
-                stringBuilder.append(problemId);
-                stringBuilder.append(" -D ");
-                stringBuilder.append(settings.JUDGE_DATA_PATH);
-                stringBuilder.append("/").append(judgeItem.status.getProblemByProblemId()).append("/");
-                stringBuilder.append(" -d ");
-                stringBuilder.append(tempPath);
-                stringBuilder.append(" -t ");
-                stringBuilder.append(judgeItem.status.getProblemByProblemId().getTimeLimit());
-                stringBuilder.append(" -m ");
-                stringBuilder.append(judgeItem.status.getProblemByProblemId().getMemoryLimit());
-                stringBuilder.append(" -o ");
-                stringBuilder.append(judgeItem.status.getProblemByProblemId().getOutputLimit());
-                if (judgeItem.status.getProblemByProblemId().getIsSpj())
-                    stringBuilder.append(" -S");
-                stringBuilder.append(" -l ");
-                stringBuilder.append(judgeItem.status.getLanguageByLanguageId());
-                stringBuilder.append(" -I ");
-                stringBuilder.append(settings.JUDGE_DATA_PATH).append("/")
-                        .append(judgeItem.status.getProblemByProblemId())
-                        .append("/").append(currentTestCase).append(".in");
-                stringBuilder.append(" -O ");
-                stringBuilder.append(settings.JUDGE_DATA_PATH).append("/")
-                        .append(judgeItem.status.getProblemByProblemId())
-                        .append("/").append(currentTestCase).append(".out");
-                if (currentTestCase == 1)
-                    stringBuilder.append(" -C");
-
-                Process p;
-                String callBackString = "";
-                try {
-                    p = Runtime.getRuntime().exec(stringBuilder.toString());
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                    String line;
-                    while ((line = bufferedReader.readLine()) != null) {
-                        callBackString += line;
-                    }
-                } catch (Exception ignored) {
-                }
-                String[] ret = callBackString.split(" ");
-                if (ret != null && ret.length >= 3) {
-                    int result = Integer.parseInt(ret[0]);
-                    if (result == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
-                        result = Global.OnlineJudgeReturnType.OJ_RUNNING.ordinal();
-                    } else {
-                        isAccepted = false;
-                    }
-                    judgeItem.status.setResult(result);
-                    judgeItem.status.setMemoryCost(Integer.parseInt(ret[1]));
-                    judgeItem.status.setTimeCost(Integer.parseInt(ret[2]));
-                } else {
-                    judgeItem.status.setResult(Global.OnlineJudgeReturnType.OJ_SE.ordinal());
-                }
-
-                if (judgeItem.status.getResult() == Global.OnlineJudgeReturnType.OJ_CE.ordinal()) {
-                    StringBuilder sb = new StringBuilder();
-                    try {
-                        BufferedReader br = new BufferedReader(new FileReader(workPath + "/temp/stderr_compiler.txt"));
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            line = line.replace(workPath + "/temp/" + judgeItem.getSourceName(), "");
-                            sb.append(line).append('\n');
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    judgeItem.compileInfo = new CompileInfo();
-                    judgeItem.compileInfo.setContent(sb.toString());
-                } else judgeItem.compileInfo = null;
-
-                judgeItem.update();
+                String shellCommand = buildJudgeShellCommand(problemId, currentTestCase, judgeItem);
+                String[] callBackString = getCallBackString(shellCommand);
+                isAccepted = updateJudgeItem(callBackString, judgeItem);
             }
             if (isAccepted) {
                 judgeItem.status.setResult(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
                 judgeItem.update();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             judgeItem.status.setResult(Global.OnlineJudgeReturnType.OJ_SE.ordinal());
             judgeItem.update();
         }
+    }
+
+    private boolean updateJudgeItem(String[] callBackString, JudgeItem judgeItem) {
+        boolean isAccepted = true;
+        if (callBackString != null && callBackString.length >= 3) {
+            try {
+                int result = Integer.parseInt(callBackString[0]);
+                if (result == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
+                    result = Global.OnlineJudgeReturnType.OJ_RUNNING.ordinal();
+                } else {
+                    isAccepted = false;
+                }
+                judgeItem.status.setResult(result);
+                judgeItem.status.setMemoryCost(Integer.parseInt(callBackString[1]));
+                judgeItem.status.setTimeCost(Integer.parseInt(callBackString[2]));
+            } catch (NumberFormatException e) {
+                judgeItem.status.setResult(Global.OnlineJudgeReturnType.OJ_SE.ordinal());
+            }
+        } else {
+            judgeItem.status.setResult(Global.OnlineJudgeReturnType.OJ_SE.ordinal());
+        }
+
+        if (judgeItem.status.getResult() == Global.OnlineJudgeReturnType.OJ_CE.ordinal()) {
+            StringBuilder sb = new StringBuilder();
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(workPath + "/temp/stderr_compiler.txt"));
+                String line;
+                while ((line = br.readLine()) != null) {
+                    line = line.replace(workPath + "/temp/" + judgeItem.getSourceName(), "");
+                    sb.append(line).append('\n');
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            judgeItem.compileInfo = new CompileInfo();
+            judgeItem.compileInfo.setContent(sb.toString());
+        } else judgeItem.compileInfo = null;
+
+        judgeItem.update();
+        return isAccepted;
     }
 
     @Override

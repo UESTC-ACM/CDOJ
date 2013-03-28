@@ -7,8 +7,10 @@ import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import java.util.List;
 import java.util.Timer;
@@ -18,14 +20,15 @@ import java.util.concurrent.BlockingQueue;
 /**
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public class Scheduler implements Runnable, StatusConditionAware, StatusDAOAware {
+public class Scheduler
+        implements ApplicationContextAware, Runnable,
+        StatusConditionAware, StatusDAOAware {
 
     /**
      * StatusDAO for database operation.
      */
     private IStatusDAO statusDAO;
 
-    @SuppressWarnings("SameParameterValue")
     public void setJudgeQueue(BlockingQueue<JudgeItem> judgeQueue) {
         this.judgeQueue = judgeQueue;
     }
@@ -72,6 +75,7 @@ public class Scheduler implements Runnable, StatusConditionAware, StatusDAOAware
             statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_REJUDGING);
             List<Status> statusList = (List<Status>) statusDAO.findAll(statusCondition.getCondition());
             for (Status status : statusList) {
+                System.out.println("found: " + status.getStatusId());
                 status.setResult(Global.OnlineJudgeReturnType.OJ_JUDGING.ordinal());
                 status.setCaseNumber(0);
                 JudgeItem judgeItem = applicationContext.getBean("judgeItem", JudgeItem.class);
@@ -96,5 +100,10 @@ public class Scheduler implements Runnable, StatusConditionAware, StatusDAOAware
     @Override
     public void setStatusDAO(IStatusDAO statusDAO) {
         this.statusDAO = statusDAO;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }

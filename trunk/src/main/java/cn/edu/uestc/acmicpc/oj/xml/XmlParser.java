@@ -94,6 +94,10 @@ public class XmlParser {
      * @throws AppException
      */
     private XmlNode parseNode(Node node) throws AppException {
+        if (node.getNodeType() == Node.DOCUMENT_TYPE_NODE
+                || node.getNodeType() == Node.COMMENT_NODE
+                || node.getNodeType() == Node.TEXT_NODE)
+            return null;
         XmlNode result = new XmlNode();
         NamedNodeMap namedNodeMap = node.getAttributes();
         NodeList nodeList = node.getChildNodes();
@@ -105,10 +109,10 @@ public class XmlParser {
         }
 
         for (int i = 0; i < nodeList.getLength(); ++i) {
-            if (nodeList.item(i).getNodeType() != Node.TEXT_NODE) {
-                XmlNode child = parseNode(nodeList.item(i));
+            Node current = nodeList.item(i);
+            XmlNode child = parseNode(current);
+            if (child != null)
                 result.addChild(child);
-            }
         }
         result.setTagName(node.getNodeName());
         result.setInnerText(node.getTextContent());

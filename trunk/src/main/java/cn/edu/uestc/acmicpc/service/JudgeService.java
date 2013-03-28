@@ -79,6 +79,7 @@ public class JudgeService implements ApplicationContextAware, SettingsAware {
             judgeThreads[i] = new Thread(judges[i]);
             judgeThreads[i].start();
         }
+        schedulerThread.start();
     }
 
     /**
