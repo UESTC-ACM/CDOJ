@@ -221,4 +221,15 @@ public class StringUtil {
             }
         }
     }
+
+    /**
+     * Get status information description by case number.
+     *
+     * @param type        status type
+     * @param currentCase current case number
+     * @return target description
+     */
+    public static String getStatusDescription(Global.OnlineJudgeReturnType type, int currentCase) {
+        return type.getDescription().replace("$case", Integer.toBinaryString(currentCase));
+    }
 }
