@@ -59,8 +59,10 @@ $(document).ready(function () {
         },
         multiple: false
     }).on('complete', function(event, id, name, response) {
-            if (response.success)
+            if (response.success == 'true')
                 $('#fileUploaderAttention').replaceWith('Total data: '+response.total);
+            else
+                $('#fileUploaderAttention').replaceWith(response.error);
     });
 
     $('input#submit').click(function(){
