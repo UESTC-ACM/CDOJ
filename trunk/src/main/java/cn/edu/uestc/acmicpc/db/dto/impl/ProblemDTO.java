@@ -202,6 +202,11 @@ public class ProblemDTO extends BaseDTO<Problem> {
     public Problem getEntity() throws AppException {
         // TODO to get specific operations
         Problem problem = super.getEntity();
+        problem.setTimeLimit(1000);
+        problem.setJavaTimeLimit(3000);
+        problem.setMemoryLimit(65535);
+        problem.setJavaMemoryLimit(65535);
+        problem.setOutputLimit(8192);
         problem.setSolved(0);
         problem.setTried(0);
         problem.setDataCount(0);

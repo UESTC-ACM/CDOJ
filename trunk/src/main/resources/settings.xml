@@ -38,9 +38,9 @@
             <item name="judge" description="judge item">
                 <prop name="name" value="fish"/>
             </item>
-            <item name="judge" description="judge item">
+            <!--<item name="judge" description="judge item">
                 <prop name="name" value="mzry1992"/>
-            </item>
+            </item>-->
         </list>
     </setting>
 </cdoj-settings>
