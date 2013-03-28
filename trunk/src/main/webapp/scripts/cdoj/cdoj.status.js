@@ -54,8 +54,8 @@ function refreshStatusList(condition) {
                 '<td>' + value.statusId + '</td>' +
                 '<td>' + value.userName + '</td>' +
                 '<td><a href="/problem/show/' + value.problemId + '">' + value.problemId + '</a></td>' +
-               // '<td>' + value.returnType + '</td>' +
-                '<td>Restricted Function on test $case</td>' +
+                '<td>' + value.returnType + '</td>' +
+//                '<td>Restricted Function on test $case</td>' +
                 '<td>' + value.length + '</td>'+
                 '<td>' + value.timeCost + '</td>' +
                 '<td>' + value.memoryCost + '</td>' +
@@ -76,7 +76,6 @@ $(document).ready(function () {
         "statusCondition.problemId": undefined,
         "statusCondition.languageId": undefined,
         "statusCondition.contestId": undefined
-
     }
 
     $('input#search').setButton({
