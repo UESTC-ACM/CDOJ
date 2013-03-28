@@ -140,12 +140,9 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
             json.put("total", dataFiles.length / 2);
             json.put("success", "true");
         } catch (AppException e) {
-            e.printStackTrace();
-            json.put("success", "false");
             json.put("error", e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            json.put("success", "false");
             json.put("error", "Unknown exception occurred.");
         }
         return JSON;

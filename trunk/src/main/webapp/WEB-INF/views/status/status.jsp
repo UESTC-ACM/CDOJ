@@ -64,17 +64,6 @@
             </tr>
             </thead>
             <tbody id="statusList">
-            <tr>
-                <td>355555</td>
-                <td>mzry1992</td>
-                <td>1000</td>
-                <td>Time Limit Exceed</td>
-                <td>Java</td>
-                <td>32767 B</td>
-                <td>10000 ms</td>
-                <td>655360 kB</td>
-                <td>2013-03-20 00:52:58</td>
-            </tr>
             </tbody>
         </table>
     </div>
