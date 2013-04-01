@@ -57,6 +57,9 @@ int main(int argc, char *argv[], char *envp[])
 		{
 			// run compiler
 		    log_add_info("compiler");
+        static char buffer[1024];
+        getcwd(buffer, 1024);
+        FM_LOG_WARNING("cwd = %s", buffer);
 		    set_compile_limit();
 		    stdout = freopen(problem::stdout_file_compiler.c_str(), "w", stdout);
 		    stderr = freopen(problem::stderr_file_compiler.c_str(), "w", stderr);
@@ -73,7 +76,7 @@ int main(int argc, char *argv[], char *envp[])
 		        case judge_conf::LANG_C:
 		            FM_LOG_TRACE("start: gcc -static -w -O2 -DOJ -o %s %s",
 		                    problem::exec_file.c_str(), problem::source_file.c_str());
-		            execlp("gcc", "gcc", "-static", "-w", "-O2", "-DOJ",
+		            execlp("/usr/bin/gcc", "gcc", "-static", "-w", "-O2", "-DOJ",
 		                   "-o", problem::exec_file.c_str(),
 		                   problem::source_file.c_str(),
 		                   NULL);
@@ -82,7 +85,7 @@ int main(int argc, char *argv[], char *envp[])
 		        case judge_conf::LANG_CPP:
 		            FM_LOG_TRACE("start: g++ -static -w -O2 -DOJ -o %s %s",
 		                    problem::exec_file.c_str(), problem::source_file.c_str());
-		            execlp("g++", "g++", "-static", "-w", "-O2", "-DOJ",
+		            execlp("/usr/bin/g++", "g++", "-static", "-w", "-O2", "-DOJ",
 		                   "-o", problem::exec_file.c_str(),
 		                   problem::source_file.c_str(),
 		                   NULL);

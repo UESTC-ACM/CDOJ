@@ -14,11 +14,10 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 
-import javax.xml.bind.annotation.XmlElementDecl;
 import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * Use for return status information with json type.
@@ -138,6 +137,17 @@ public class StatusView extends View<Status> {
 
     private Integer caseNumber;
     private Integer languageId;
+    private String language;
+
+    public String getLanguage() {
+        return language;
+    }
+
+    @Ignore
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
     private Integer length;
     private Integer timeCost;
     private Integer memoryCost;
@@ -155,6 +165,8 @@ public class StatusView extends View<Status> {
         setProblemId(status.getProblemByProblemId().getProblemId());
         setLanguageId(status.getLanguageByLanguageId().getLanguageId());
         setReturnTypeId(status.getResult());
-        setReturnType(Global.OnlineJudgeReturnType.values()[status.getResult()].getDescription());
+        setReturnType(StringUtil.getStatusDescription(Global.OnlineJudgeReturnType.values()[status.getResult()],
+                status.getCaseNumber()));
+        setLanguage(status.getLanguageByLanguageId().getName());
     }
 }

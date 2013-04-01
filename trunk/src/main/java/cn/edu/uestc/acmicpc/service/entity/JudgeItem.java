@@ -117,7 +117,7 @@ public class JudgeItem implements CompileinfoDAOAware, StatusDAOAware, UserDAOAw
                 User user = status.getUserByUserId();
                 statusCondition.setUserId(user.getUserId());
                 Condition condition = statusCondition.getCondition();
-                condition.addProjection(Projections.countDistinct("problemId"));
+                condition.addProjection(Projections.countDistinct("problemByProblemId"));
                 Long count = statusDAO.customCount(condition);
                 user.setSolved((int) count.longValue());
                 userDAO.update(user);
@@ -125,7 +125,7 @@ public class JudgeItem implements CompileinfoDAOAware, StatusDAOAware, UserDAOAw
                 Problem problem = status.getProblemByProblemId();
                 statusCondition.setProblemId(problem.getProblemId());
                 condition = statusCondition.getCondition();
-                condition.addProjection(Projections.countDistinct("userId"));
+                condition.addProjection(Projections.countDistinct("userByUserId"));
                 count = statusDAO.customCount(condition);
                 problem.setSolved((int) count.longValue());
                 problemDAO.update(problem);
