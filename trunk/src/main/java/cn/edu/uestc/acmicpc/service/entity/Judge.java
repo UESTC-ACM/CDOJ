@@ -110,7 +110,7 @@ public class Judge implements Runnable, SettingsAware {
         stringBuilder.append(problemId);
         stringBuilder.append(" -D ");
         stringBuilder.append(settings.JUDGE_DATA_PATH);
-        stringBuilder.append("/").append(judgeItem.status.getProblemByProblemId()).append("/");
+        stringBuilder.append("/").append(judgeItem.status.getProblemByProblemId().getProblemId()).append("/");
         stringBuilder.append(" -d ");
         stringBuilder.append(tempPath);
         stringBuilder.append(" -t ");
@@ -122,14 +122,14 @@ public class Judge implements Runnable, SettingsAware {
         if (judgeItem.status.getProblemByProblemId().getIsSpj())
             stringBuilder.append(" -S");
         stringBuilder.append(" -l ");
-        stringBuilder.append(judgeItem.status.getLanguageByLanguageId());
+        stringBuilder.append(judgeItem.status.getLanguageByLanguageId().getLanguageId());
         stringBuilder.append(" -I ");
         stringBuilder.append(settings.JUDGE_DATA_PATH).append("/")
-                .append(judgeItem.status.getProblemByProblemId())
+                .append(judgeItem.status.getProblemByProblemId().getProblemId())
                 .append("/").append(currentTestCase).append(".in");
         stringBuilder.append(" -O ");
         stringBuilder.append(settings.JUDGE_DATA_PATH).append("/")
-                .append(judgeItem.status.getProblemByProblemId())
+                .append(judgeItem.status.getProblemByProblemId().getProblemId())
                 .append("/").append(currentTestCase).append(".out");
         if (currentTestCase == 1)
             stringBuilder.append(" -C");
@@ -167,6 +167,7 @@ public class Judge implements Runnable, SettingsAware {
                         tempPath + "/" + judgeItem.getSourceName());
                 int problemId = judgeItem.status.getProblemByProblemId().getProblemId();
                 String shellCommand = buildJudgeShellCommand(problemId, currentTestCase, judgeItem);
+                System.out.println("shell: " + shellCommand);
                 String[] callBackString = getCallBackString(shellCommand);
                 isAccepted = updateJudgeItem(callBackString, judgeItem);
             }
@@ -196,9 +197,11 @@ public class Judge implements Runnable, SettingsAware {
                 judgeItem.status.setTimeCost(Integer.parseInt(callBackString[2]));
             } catch (NumberFormatException e) {
                 judgeItem.status.setResult(Global.OnlineJudgeReturnType.OJ_SE.ordinal());
+                isAccepted = false;
             }
         } else {
             judgeItem.status.setResult(Global.OnlineJudgeReturnType.OJ_SE.ordinal());
+            isAccepted = false;
         }
 
         if (judgeItem.status.getResult() == Global.OnlineJudgeReturnType.OJ_CE.ordinal()) {
