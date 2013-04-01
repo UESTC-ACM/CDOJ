@@ -75,7 +75,6 @@ public class Scheduler
             statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_REJUDGING);
             List<Status> statusList = (List<Status>) statusDAO.findAll(statusCondition.getCondition());
             for (Status status : statusList) {
-                System.out.println("found: " + status.getStatusId());
                 status.setResult(Global.OnlineJudgeReturnType.OJ_JUDGING.ordinal());
                 status.setCaseNumber(0);
                 JudgeItem judgeItem = applicationContext.getBean("judgeItem", JudgeItem.class);

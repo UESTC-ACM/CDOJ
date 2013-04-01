@@ -1,4 +1,7 @@
 *.cc
 *.java
 *.c
+*.out
+*.class
+*.txt
 

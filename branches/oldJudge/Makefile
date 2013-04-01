@@ -18,4 +18,7 @@ objs/%.o: src/%.cc include/*.h
 clean:
 	make -C objs/ clean
 	make -C bin/ clean
+install:
+	sudo cp $(TARGET) ../../trunk/src/main/webapp/WEB-INF/work/fish/
+	sudo cp $(TARGET) ../../trunk/src/main/webapp/WEB-INF/work/mzry1992/
 

@@ -5,23 +5,23 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
 CXX	../branches/oldJudge/Makefile	/^CXX=g++$/;"	m
-CXXFLAGS	../branches/oldJudge/Makefile	/^CXXFLAGS=-I $(INCLUDE) -g -Wall -O2$/;"	m
-EXIT_BAD_PARAM	../branches/oldJudge/include/judge.h	/^    const int EXIT_BAD_PARAM        = 3;$/;"	m	namespace:judge_conf
-EXIT_COMPARE	../branches/oldJudge/include/judge.h	/^    const int EXIT_COMPARE          = 27;$/;"	m	namespace:judge_conf
-EXIT_COMPARE_SPJ	../branches/oldJudge/include/judge.h	/^    const int EXIT_COMPARE_SPJ      = 30;$/;"	m	namespace:judge_conf
-EXIT_COMPARE_SPJ_FORK	../branches/oldJudge/include/judge.h	/^    const int EXIT_COMPARE_SPJ_FORK = 31;$/;"	m	namespace:judge_conf
-EXIT_COMPILE	../branches/oldJudge/include/judge.h	/^    const int EXIT_COMPILE          = 6;$/;"	m	namespace:judge_conf
-EXIT_JUDGE	../branches/oldJudge/include/judge.h	/^    const int EXIT_JUDGE            = 21;$/;"	m	namespace:judge_conf
-EXIT_OK	../branches/oldJudge/include/judge.h	/^    const int EXIT_OK               = 0;$/;"	m	namespace:judge_conf
-EXIT_PRE_JUDGE	../branches/oldJudge/include/judge.h	/^    const int EXIT_PRE_JUDGE        = 9;$/;"	m	namespace:judge_conf
-EXIT_PRE_JUDGE_EXECLP	../branches/oldJudge/include/judge.h	/^    const int EXIT_PRE_JUDGE_EXECLP = 11;$/;"	m	namespace:judge_conf
-EXIT_PRE_JUDGE_PTRACE	../branches/oldJudge/include/judge.h	/^    const int EXIT_PRE_JUDGE_PTRACE = 10;$/;"	m	namespace:judge_conf
-EXIT_SET_LIMIT	../branches/oldJudge/include/judge.h	/^    const int EXIT_SET_LIMIT        = 15;$/;"	m	namespace:judge_conf
-EXIT_SET_SECURITY	../branches/oldJudge/include/judge.h	/^    const int EXIT_SET_SECURITY     = 17;$/;"	m	namespace:judge_conf
-EXIT_TIMEOUT	../branches/oldJudge/include/judge.h	/^    const int EXIT_TIMEOUT          = 36;$/;"	m	namespace:judge_conf
-EXIT_UNKNOWN	../branches/oldJudge/include/judge.h	/^    const int EXIT_UNKNOWN          = 127;$/;"	m	namespace:judge_conf
-EXIT_UNPRIVILEGED	../branches/oldJudge/include/judge.h	/^    const int EXIT_UNPRIVILEGED     = 1;$/;"	m	namespace:judge_conf
-EXIT_VERY_FIRST	../branches/oldJudge/include/judge.h	/^    const int EXIT_VERY_FIRST       = 4;$/;"	m	namespace:judge_conf
+CXXFLAGS	../branches/oldJudge/Makefile	/^CXXFLAGS=-I $(INCLUDE) -g -Wall -O2 #-D LOG_OFF$/;"	m
+EXIT_BAD_PARAM	../branches/oldJudge/include/judge.h	/^const int EXIT_BAD_PARAM        = 3;$/;"	m	namespace:judge_conf
+EXIT_COMPARE	../branches/oldJudge/include/judge.h	/^const int EXIT_COMPARE          = 27;$/;"	m	namespace:judge_conf
+EXIT_COMPARE_SPJ	../branches/oldJudge/include/judge.h	/^const int EXIT_COMPARE_SPJ      = 30;$/;"	m	namespace:judge_conf
+EXIT_COMPARE_SPJ_FORK	../branches/oldJudge/include/judge.h	/^const int EXIT_COMPARE_SPJ_FORK = 31;$/;"	m	namespace:judge_conf
+EXIT_COMPILE	../branches/oldJudge/include/judge.h	/^const int EXIT_COMPILE          = 6;$/;"	m	namespace:judge_conf
+EXIT_JUDGE	../branches/oldJudge/include/judge.h	/^const int EXIT_JUDGE            = 21;$/;"	m	namespace:judge_conf
+EXIT_OK	../branches/oldJudge/include/judge.h	/^const int EXIT_OK               = 0;$/;"	m	namespace:judge_conf
+EXIT_PRE_JUDGE	../branches/oldJudge/include/judge.h	/^const int EXIT_PRE_JUDGE        = 9;$/;"	m	namespace:judge_conf
+EXIT_PRE_JUDGE_EXECLP	../branches/oldJudge/include/judge.h	/^const int EXIT_PRE_JUDGE_EXECLP = 11;$/;"	m	namespace:judge_conf
+EXIT_PRE_JUDGE_PTRACE	../branches/oldJudge/include/judge.h	/^const int EXIT_PRE_JUDGE_PTRACE = 10;$/;"	m	namespace:judge_conf
+EXIT_SET_LIMIT	../branches/oldJudge/include/judge.h	/^const int EXIT_SET_LIMIT        = 15;$/;"	m	namespace:judge_conf
+EXIT_SET_SECURITY	../branches/oldJudge/include/judge.h	/^const int EXIT_SET_SECURITY     = 17;$/;"	m	namespace:judge_conf
+EXIT_TIMEOUT	../branches/oldJudge/include/judge.h	/^const int EXIT_TIMEOUT          = 36;$/;"	m	namespace:judge_conf
+EXIT_UNKNOWN	../branches/oldJudge/include/judge.h	/^const int EXIT_UNKNOWN          = 127;$/;"	m	namespace:judge_conf
+EXIT_UNPRIVILEGED	../branches/oldJudge/include/judge.h	/^const int EXIT_UNPRIVILEGED     = 1;$/;"	m	namespace:judge_conf
+EXIT_VERY_FIRST	../branches/oldJudge/include/judge.h	/^const int EXIT_VERY_FIRST       = 4;$/;"	m	namespace:judge_conf
 FM_LOG_DEBUG	../branches/oldJudge/include/logger.h	64;"	d
 FM_LOG_DEBUG	../branches/oldJudge/include/logger.h	71;"	d
 FM_LOG_FATAL	../branches/oldJudge/include/logger.h	69;"	d
@@ -34,17 +34,17 @@ FM_LOG_TRACE	../branches/oldJudge/include/logger.h	65;"	d
 FM_LOG_TRACE	../branches/oldJudge/include/logger.h	72;"	d
 FM_LOG_WARNING	../branches/oldJudge/include/logger.h	68;"	d
 FM_LOG_WARNING	../branches/oldJudge/include/logger.h	75;"	d
-GCC_COMPILE_ERROR	../branches/oldJudge/include/judge.h	/^    const int GCC_COMPILE_ERROR = 1;$/;"	m	namespace:judge_conf
-GIGA	../branches/oldJudge/include/judge.h	/^    const int GIGA              = KILO * MEGA;  \/\/ 1G$/;"	m	namespace:judge_conf
+GCC_COMPILE_ERROR	../branches/oldJudge/include/judge.h	/^const int GCC_COMPILE_ERROR = 1;$/;"	m	namespace:judge_conf
+GIGA	../branches/oldJudge/include/judge.h	/^const int GIGA              = KILO * MEGA;  \/\/ 1G$/;"	m	namespace:judge_conf
 INCLUDE	../branches/oldJudge/Makefile	/^INCLUDE=include\/$/;"	m
-KILO	../branches/oldJudge/include/judge.h	/^    const int KILO              = 1024;         \/\/ 1K$/;"	m	namespace:judge_conf
-LANG_C	../branches/oldJudge/include/judge.h	/^    const int LANG_C            = 1;$/;"	m	namespace:judge_conf
-LANG_CPP	../branches/oldJudge/include/judge.h	/^    const int LANG_CPP          = 2;$/;"	m	namespace:judge_conf
-LANG_JAVA	../branches/oldJudge/include/judge.h	/^    const int LANG_JAVA         = 3;$/;"	m	namespace:judge_conf
-LANG_PASCAL	../branches/oldJudge/include/judge.h	/^    const int LANG_PASCAL       = 4;$/;"	m	namespace:judge_conf
-LANG_UNKNOWN	../branches/oldJudge/include/judge.h	/^    const int LANG_UNKNOWN      = 0;$/;"	m	namespace:judge_conf
+KILO	../branches/oldJudge/include/judge.h	/^const int KILO              = 1024;         \/\/ 1K$/;"	m	namespace:judge_conf
+LANG_C	../branches/oldJudge/include/judge.h	/^const int LANG_C            = 1;$/;"	m	namespace:judge_conf
+LANG_CPP	../branches/oldJudge/include/judge.h	/^const int LANG_CPP          = 2;$/;"	m	namespace:judge_conf
+LANG_JAVA	../branches/oldJudge/include/judge.h	/^const int LANG_JAVA         = 3;$/;"	m	namespace:judge_conf
+LANG_PASCAL	../branches/oldJudge/include/judge.h	/^const int LANG_PASCAL       = 4;$/;"	m	namespace:judge_conf
+LANG_UNKNOWN	../branches/oldJudge/include/judge.h	/^const int LANG_UNKNOWN      = 0;$/;"	m	namespace:judge_conf
 LD	../branches/oldJudge/Makefile	/^LD=g++$/;"	m
-LDFLAGS	../branches/oldJudge/Makefile	/^LDFLAGS=$/;"	m
+LDFLAGS	../branches/oldJudge/Makefile	/^LDFLAGS= #-D LOG_OFF$/;"	m
 LOG_DEBUG	../branches/oldJudge/include/logger.h	/^const int LOG_DEBUG         = 5;$/;"	v
 LOG_FATAL	../branches/oldJudge/include/logger.h	/^const int LOG_FATAL         = 0;$/;"	v
 LOG_LEVEL_NOTE	../branches/oldJudge/include/logger.h	/^static char LOG_LEVEL_NOTE[][10] =$/;"	v
@@ -52,24 +52,24 @@ LOG_MONITOR	../branches/oldJudge/include/logger.h	/^const int LOG_MONITOR       
 LOG_NOTICE	../branches/oldJudge/include/logger.h	/^const int LOG_NOTICE        = 3;$/;"	v
 LOG_TRACE	../branches/oldJudge/include/logger.h	/^const int LOG_TRACE         = 4;$/;"	v
 LOG_WARNING	../branches/oldJudge/include/logger.h	/^const int LOG_WARNING       = 1;$/;"	v
-MEGA	../branches/oldJudge/include/judge.h	/^    const int MEGA              = KILO * KILO;  \/\/ 1M$/;"	m	namespace:judge_conf
+MEGA	../branches/oldJudge/include/judge.h	/^const int MEGA              = KILO * KILO;  \/\/ 1M$/;"	m	namespace:judge_conf
 OBJECTS	../branches/oldJudge/Makefile	/^OBJECTS=objs\/judge_all.o$/;"	m
-OJ_AC	../branches/oldJudge/include/judge.h	/^    const int OJ_AC             = 1; \/\/Accepted$/;"	m	namespace:judge_conf
-OJ_CE	../branches/oldJudge/include/judge.h	/^    const int OJ_CE             = 7; \/\/Compilation Error$/;"	m	namespace:judge_conf
-OJ_MLE	../branches/oldJudge/include/judge.h	/^    const int OJ_MLE            = 4; \/\/Memory Limit Exceeded$/;"	m	namespace:judge_conf
-OJ_OLE	../branches/oldJudge/include/judge.h	/^    const int OJ_OLE            = 6; \/\/Output Limit Exceeded$/;"	m	namespace:judge_conf
-OJ_PE	../branches/oldJudge/include/judge.h	/^    const int OJ_PE             = 2; \/\/Presentation Error$/;"	m	namespace:judge_conf
-OJ_RE_ABRT	../branches/oldJudge/include/judge.h	/^    const int OJ_RE_ABRT        = 11;\/\/Abort$/;"	m	namespace:judge_conf
-OJ_RE_BUS	../branches/oldJudge/include/judge.h	/^    const int OJ_RE_BUS         = 10;\/\/Bus Error$/;"	m	namespace:judge_conf
-OJ_RE_FPE	../branches/oldJudge/include/judge.h	/^    const int OJ_RE_FPE         = 9; \/\/FPU Error$/;"	m	namespace:judge_conf
-OJ_RE_JAVA	../branches/oldJudge/include/judge.h	/^    const int OJ_RE_JAVA        = 15;\/\/JAVA Run Time Exception$/;"	m	namespace:judge_conf
-OJ_RE_SEGV	../branches/oldJudge/include/judge.h	/^    const int OJ_RE_SEGV        = 8; \/\/Segment Violation$/;"	m	namespace:judge_conf
-OJ_RE_UNKNOWN	../branches/oldJudge/include/judge.h	/^    const int OJ_RE_UNKNOWN     = 12;\/\/Unknow$/;"	m	namespace:judge_conf
-OJ_RF	../branches/oldJudge/include/judge.h	/^    const int OJ_RF             = 13;\/\/Restricted Function$/;"	m	namespace:judge_conf
-OJ_SE	../branches/oldJudge/include/judge.h	/^    const int OJ_SE             = 14;\/\/System Error$/;"	m	namespace:judge_conf
-OJ_TLE	../branches/oldJudge/include/judge.h	/^    const int OJ_TLE            = 3; \/\/Time Limit Exceeded$/;"	m	namespace:judge_conf
-OJ_WA	../branches/oldJudge/include/judge.h	/^    const int OJ_WA             = 5; \/\/Wrong Answer$/;"	m	namespace:judge_conf
-OJ_WAIT	../branches/oldJudge/include/judge.h	/^    const int OJ_WAIT           = 0; \/\/Queue$/;"	m	namespace:judge_conf
+OJ_AC	../branches/oldJudge/include/judge.h	/^const int OJ_AC             = 1; \/\/Accepted$/;"	m	namespace:judge_conf
+OJ_CE	../branches/oldJudge/include/judge.h	/^const int OJ_CE             = 7; \/\/Compilation Error$/;"	m	namespace:judge_conf
+OJ_MLE	../branches/oldJudge/include/judge.h	/^const int OJ_MLE            = 4; \/\/Memory Limit Exceeded$/;"	m	namespace:judge_conf
+OJ_OLE	../branches/oldJudge/include/judge.h	/^const int OJ_OLE            = 6; \/\/Output Limit Exceeded$/;"	m	namespace:judge_conf
+OJ_PE	../branches/oldJudge/include/judge.h	/^const int OJ_PE             = 2; \/\/Presentation Error$/;"	m	namespace:judge_conf
+OJ_RE_ABRT	../branches/oldJudge/include/judge.h	/^const int OJ_RE_ABRT        = 11;\/\/Abort$/;"	m	namespace:judge_conf
+OJ_RE_BUS	../branches/oldJudge/include/judge.h	/^const int OJ_RE_BUS         = 10;\/\/Bus Error$/;"	m	namespace:judge_conf
+OJ_RE_FPE	../branches/oldJudge/include/judge.h	/^const int OJ_RE_FPE         = 9; \/\/FPU Error$/;"	m	namespace:judge_conf
+OJ_RE_JAVA	../branches/oldJudge/include/judge.h	/^const int OJ_RE_JAVA        = 15;\/\/JAVA Run Time Exception$/;"	m	namespace:judge_conf
+OJ_RE_SEGV	../branches/oldJudge/include/judge.h	/^const int OJ_RE_SEGV        = 8; \/\/Segment Violation$/;"	m	namespace:judge_conf
+OJ_RE_UNKNOWN	../branches/oldJudge/include/judge.h	/^const int OJ_RE_UNKNOWN     = 12;\/\/Unknow$/;"	m	namespace:judge_conf
+OJ_RF	../branches/oldJudge/include/judge.h	/^const int OJ_RF             = 13;\/\/Restricted Function$/;"	m	namespace:judge_conf
+OJ_SE	../branches/oldJudge/include/judge.h	/^const int OJ_SE             = 14;\/\/System Error$/;"	m	namespace:judge_conf
+OJ_TLE	../branches/oldJudge/include/judge.h	/^const int OJ_TLE            = 3; \/\/Time Limit Exceeded$/;"	m	namespace:judge_conf
+OJ_WA	../branches/oldJudge/include/judge.h	/^const int OJ_WA             = 5; \/\/Wrong Answer$/;"	m	namespace:judge_conf
+OJ_WAIT	../branches/oldJudge/include/judge.h	/^const int OJ_WAIT           = 0; \/\/Queue$/;"	m	namespace:judge_conf
 RF_C	../branches/oldJudge/include/rf_table.h	/^int RF_C[512] =$/;"	v
 RF_CPP	../branches/oldJudge/include/rf_table.h	/^int RF_CPP[512] =$/;"	v
 RF_JAVA	../branches/oldJudge/include/rf_table.h	/^int RF_JAVA[512] =$/;"	v
@@ -79,82 +79,82 @@ TARGET	../branches/oldJudge/Makefile	/^TARGET=bin\/pyloncore$/;"	m
 __JUDGE_H__	../branches/oldJudge/include/judge.h	2;"	d
 __LOGGER__	../branches/oldJudge/include/logger.h	32;"	d
 __RF_TABLE__	../branches/oldJudge/include/rf_table.h	2;"	d
-compile_mem_limit	../branches/oldJudge/include/judge.h	/^    int compile_mem_limit	    = 300;$/;"	m	namespace:judge_conf
-compile_time_limit	../branches/oldJudge/include/judge.h	/^    int compile_time_limit          = 5000;$/;"	m	namespace:judge_conf
-config_file	../branches/oldJudge/include/judge.h	/^    const std::string config_file   = "config.ini";$/;"	m	namespace:judge_conf
-data_dir	../branches/oldJudge/include/judge.h	/^    std::string data_dir;$/;"	m	namespace:problem
-data_filename	../branches/oldJudge/include/judge.h	/^    const std::string data_filename = "data.txt";$/;"	m	namespace:judge_conf
-dump_to_log	../branches/oldJudge/include/judge.h	/^    void dump_to_log()$/;"	f	namespace:problem	signature:()
-exec_file	../branches/oldJudge/include/judge.h	/^    std::string exec_file;$/;"	m	namespace:problem
-id	../branches/oldJudge/include/judge.h	/^    int id                  = 0;$/;"	m	namespace:problem
+compile_mem_limit	../branches/oldJudge/include/judge.h	/^int compile_mem_limit	          = 300;$/;"	m	namespace:judge_conf
+compile_time_limit	../branches/oldJudge/include/judge.h	/^int compile_time_limit          = 5000;$/;"	m	namespace:judge_conf
+config_file	../branches/oldJudge/include/judge.h	/^const std::string config_file   = "config.ini";$/;"	m	namespace:judge_conf
+data_dir	../branches/oldJudge/include/judge.h	/^std::string data_dir;$/;"	m	namespace:problem
+data_filename	../branches/oldJudge/include/judge.h	/^const std::string data_filename = "data.txt";$/;"	m	namespace:judge_conf
+dump_to_log	../branches/oldJudge/include/judge.h	/^void dump_to_log() {$/;"	f	namespace:problem	signature:()
+exec_file	../branches/oldJudge/include/judge.h	/^std::string exec_file;$/;"	m	namespace:problem
+id	../branches/oldJudge/include/judge.h	/^int id                  = 0;$/;"	m	namespace:problem
 in_syscall	../branches/oldJudge/include/judge.h	/^static bool in_syscall = true;$/;"	v
 init_RF_table	../branches/oldJudge/include/rf_table.h	/^void init_RF_table(int lang)$/;"	f	signature:(int lang)
-input_file	../branches/oldJudge/include/judge.h	/^    std::string input_file;$/;"	m	namespace:problem
+input_file	../branches/oldJudge/include/judge.h	/^std::string input_file;$/;"	m	namespace:problem
 int_ignored	../branches/oldJudge/src/judge_all.cc	/^int int_ignored;$/;"	v
-io_redirect	../branches/oldJudge/include/judge.h	/^void io_redirect()$/;"	f	signature:()
-is_space_char	../branches/oldJudge/include/judge.h	621;"	d
-is_valid_syscall	../branches/oldJudge/include/judge.h	/^bool is_valid_syscall(int lang, int syscall_id)$/;"	f	signature:(int lang, int syscall_id)
-java_memory_factor	../branches/oldJudge/include/judge.h	/^    int java_memory_factor          = 2;$/;"	m	namespace:judge_conf
-java_time_factor	../branches/oldJudge/include/judge.h	/^    int java_time_factor            = 2;$/;"	m	namespace:judge_conf
-judge_conf	../branches/oldJudge/include/judge.h	/^namespace judge_conf$/;"	n
-judge_conf::EXIT_BAD_PARAM	../branches/oldJudge/include/judge.h	/^    const int EXIT_BAD_PARAM        = 3;$/;"	m	namespace:judge_conf
-judge_conf::EXIT_COMPARE	../branches/oldJudge/include/judge.h	/^    const int EXIT_COMPARE          = 27;$/;"	m	namespace:judge_conf
-judge_conf::EXIT_COMPARE_SPJ	../branches/oldJudge/include/judge.h	/^    const int EXIT_COMPARE_SPJ      = 30;$/;"	m	namespace:judge_conf
-judge_conf::EXIT_COMPARE_SPJ_FORK	../branches/oldJudge/include/judge.h	/^    const int EXIT_COMPARE_SPJ_FORK = 31;$/;"	m	namespace:judge_conf
-judge_conf::EXIT_COMPILE	../branches/oldJudge/include/judge.h	/^    const int EXIT_COMPILE          = 6;$/;"	m	namespace:judge_conf
-judge_conf::EXIT_JUDGE	../branches/oldJudge/include/judge.h	/^    const int EXIT_JUDGE            = 21;$/;"	m	namespace:judge_conf
-judge_conf::EXIT_OK	../branches/oldJudge/include/judge.h	/^    const int EXIT_OK               = 0;$/;"	m	namespace:judge_conf
-judge_conf::EXIT_PRE_JUDGE	../branches/oldJudge/include/judge.h	/^    const int EXIT_PRE_JUDGE        = 9;$/;"	m	namespace:judge_conf
-judge_conf::EXIT_PRE_JUDGE_EXECLP	../branches/oldJudge/include/judge.h	/^    const int EXIT_PRE_JUDGE_EXECLP = 11;$/;"	m	namespace:judge_conf
-judge_conf::EXIT_PRE_JUDGE_PTRACE	../branches/oldJudge/include/judge.h	/^    const int EXIT_PRE_JUDGE_PTRACE = 10;$/;"	m	namespace:judge_conf
-judge_conf::EXIT_SET_LIMIT	../branches/oldJudge/include/judge.h	/^    const int EXIT_SET_LIMIT        = 15;$/;"	m	namespace:judge_conf
-judge_conf::EXIT_SET_SECURITY	../branches/oldJudge/include/judge.h	/^    const int EXIT_SET_SECURITY     = 17;$/;"	m	namespace:judge_conf
-judge_conf::EXIT_TIMEOUT	../branches/oldJudge/include/judge.h	/^    const int EXIT_TIMEOUT          = 36;$/;"	m	namespace:judge_conf
-judge_conf::EXIT_UNKNOWN	../branches/oldJudge/include/judge.h	/^    const int EXIT_UNKNOWN          = 127;$/;"	m	namespace:judge_conf
-judge_conf::EXIT_UNPRIVILEGED	../branches/oldJudge/include/judge.h	/^    const int EXIT_UNPRIVILEGED     = 1;$/;"	m	namespace:judge_conf
-judge_conf::EXIT_VERY_FIRST	../branches/oldJudge/include/judge.h	/^    const int EXIT_VERY_FIRST       = 4;$/;"	m	namespace:judge_conf
-judge_conf::GCC_COMPILE_ERROR	../branches/oldJudge/include/judge.h	/^    const int GCC_COMPILE_ERROR = 1;$/;"	m	namespace:judge_conf
-judge_conf::GIGA	../branches/oldJudge/include/judge.h	/^    const int GIGA              = KILO * MEGA;  \/\/ 1G$/;"	m	namespace:judge_conf
-judge_conf::KILO	../branches/oldJudge/include/judge.h	/^    const int KILO              = 1024;         \/\/ 1K$/;"	m	namespace:judge_conf
-judge_conf::LANG_C	../branches/oldJudge/include/judge.h	/^    const int LANG_C            = 1;$/;"	m	namespace:judge_conf
-judge_conf::LANG_CPP	../branches/oldJudge/include/judge.h	/^    const int LANG_CPP          = 2;$/;"	m	namespace:judge_conf
-judge_conf::LANG_JAVA	../branches/oldJudge/include/judge.h	/^    const int LANG_JAVA         = 3;$/;"	m	namespace:judge_conf
-judge_conf::LANG_PASCAL	../branches/oldJudge/include/judge.h	/^    const int LANG_PASCAL       = 4;$/;"	m	namespace:judge_conf
-judge_conf::LANG_UNKNOWN	../branches/oldJudge/include/judge.h	/^    const int LANG_UNKNOWN      = 0;$/;"	m	namespace:judge_conf
-judge_conf::MEGA	../branches/oldJudge/include/judge.h	/^    const int MEGA              = KILO * KILO;  \/\/ 1M$/;"	m	namespace:judge_conf
-judge_conf::OJ_AC	../branches/oldJudge/include/judge.h	/^    const int OJ_AC             = 1; \/\/Accepted$/;"	m	namespace:judge_conf
-judge_conf::OJ_CE	../branches/oldJudge/include/judge.h	/^    const int OJ_CE             = 7; \/\/Compilation Error$/;"	m	namespace:judge_conf
-judge_conf::OJ_MLE	../branches/oldJudge/include/judge.h	/^    const int OJ_MLE            = 4; \/\/Memory Limit Exceeded$/;"	m	namespace:judge_conf
-judge_conf::OJ_OLE	../branches/oldJudge/include/judge.h	/^    const int OJ_OLE            = 6; \/\/Output Limit Exceeded$/;"	m	namespace:judge_conf
-judge_conf::OJ_PE	../branches/oldJudge/include/judge.h	/^    const int OJ_PE             = 2; \/\/Presentation Error$/;"	m	namespace:judge_conf
-judge_conf::OJ_RE_ABRT	../branches/oldJudge/include/judge.h	/^    const int OJ_RE_ABRT        = 11;\/\/Abort$/;"	m	namespace:judge_conf
-judge_conf::OJ_RE_BUS	../branches/oldJudge/include/judge.h	/^    const int OJ_RE_BUS         = 10;\/\/Bus Error$/;"	m	namespace:judge_conf
-judge_conf::OJ_RE_FPE	../branches/oldJudge/include/judge.h	/^    const int OJ_RE_FPE         = 9; \/\/FPU Error$/;"	m	namespace:judge_conf
-judge_conf::OJ_RE_JAVA	../branches/oldJudge/include/judge.h	/^    const int OJ_RE_JAVA        = 15;\/\/JAVA Run Time Exception$/;"	m	namespace:judge_conf
-judge_conf::OJ_RE_SEGV	../branches/oldJudge/include/judge.h	/^    const int OJ_RE_SEGV        = 8; \/\/Segment Violation$/;"	m	namespace:judge_conf
-judge_conf::OJ_RE_UNKNOWN	../branches/oldJudge/include/judge.h	/^    const int OJ_RE_UNKNOWN     = 12;\/\/Unknow$/;"	m	namespace:judge_conf
-judge_conf::OJ_RF	../branches/oldJudge/include/judge.h	/^    const int OJ_RF             = 13;\/\/Restricted Function$/;"	m	namespace:judge_conf
-judge_conf::OJ_SE	../branches/oldJudge/include/judge.h	/^    const int OJ_SE             = 14;\/\/System Error$/;"	m	namespace:judge_conf
-judge_conf::OJ_TLE	../branches/oldJudge/include/judge.h	/^    const int OJ_TLE            = 3; \/\/Time Limit Exceeded$/;"	m	namespace:judge_conf
-judge_conf::OJ_WA	../branches/oldJudge/include/judge.h	/^    const int OJ_WA             = 5; \/\/Wrong Answer$/;"	m	namespace:judge_conf
-judge_conf::OJ_WAIT	../branches/oldJudge/include/judge.h	/^    const int OJ_WAIT           = 0; \/\/Queue$/;"	m	namespace:judge_conf
-judge_conf::compile_mem_limit	../branches/oldJudge/include/judge.h	/^    int compile_mem_limit	    = 300;$/;"	m	namespace:judge_conf
-judge_conf::compile_time_limit	../branches/oldJudge/include/judge.h	/^    int compile_time_limit          = 5000;$/;"	m	namespace:judge_conf
-judge_conf::config_file	../branches/oldJudge/include/judge.h	/^    const std::string config_file   = "config.ini";$/;"	m	namespace:judge_conf
-judge_conf::data_filename	../branches/oldJudge/include/judge.h	/^    const std::string data_filename = "data.txt";$/;"	m	namespace:judge_conf
-judge_conf::java_memory_factor	../branches/oldJudge/include/judge.h	/^    int java_memory_factor          = 2;$/;"	m	namespace:judge_conf
-judge_conf::java_time_factor	../branches/oldJudge/include/judge.h	/^    int java_time_factor            = 2;$/;"	m	namespace:judge_conf
-judge_conf::judge_time_limit	../branches/oldJudge/include/judge.h	/^    int judge_time_limit            = 15000;$/;"	m	namespace:judge_conf
-judge_conf::languages	../branches/oldJudge/include/judge.h	/^    const std::string languages[]    = {"unknown", "c", "c++", "java", "pascal"};$/;"	m	namespace:judge_conf
-judge_conf::load	../branches/oldJudge/include/judge.h	/^    void load()$/;"	f	namespace:judge_conf	signature:()
-judge_conf::log_file	../branches/oldJudge/include/judge.h	/^    std::string log_file;$/;"	m	namespace:judge_conf
-judge_conf::spj_time_limit	../branches/oldJudge/include/judge.h	/^    int spj_time_limit              = 5000;$/;"	m	namespace:judge_conf
-judge_conf::stack_size_limit	../branches/oldJudge/include/judge.h	/^    int stack_size_limit            = 8192;$/;"	m	namespace:judge_conf
-judge_conf::time_limit_addtion	../branches/oldJudge/include/judge.h	/^    int time_limit_addtion          = 314;$/;"	m	namespace:judge_conf
-judge_time_limit	../branches/oldJudge/include/judge.h	/^    int judge_time_limit            = 15000;$/;"	m	namespace:judge_conf
-lang	../branches/oldJudge/include/judge.h	/^    int lang                = 0;$/;"	m	namespace:problem
-languages	../branches/oldJudge/include/judge.h	/^    const std::string languages[]    = {"unknown", "c", "c++", "java", "pascal"};$/;"	m	namespace:judge_conf
-load	../branches/oldJudge/include/judge.h	/^    void load()$/;"	f	namespace:judge_conf	signature:()
+io_redirect	../branches/oldJudge/include/judge.h	/^void io_redirect() {$/;"	f	signature:()
+is_space_char	../branches/oldJudge/include/judge.h	580;"	d
+is_valid_syscall	../branches/oldJudge/include/judge.h	/^bool is_valid_syscall(int lang, int syscall_id) {$/;"	f	signature:(int lang, int syscall_id)
+java_memory_factor	../branches/oldJudge/include/judge.h	/^int java_memory_factor          = 2;$/;"	m	namespace:judge_conf
+java_time_factor	../branches/oldJudge/include/judge.h	/^int java_time_factor            = 2;$/;"	m	namespace:judge_conf
+judge_conf	../branches/oldJudge/include/judge.h	/^namespace judge_conf {$/;"	n
+judge_conf::EXIT_BAD_PARAM	../branches/oldJudge/include/judge.h	/^const int EXIT_BAD_PARAM        = 3;$/;"	m	namespace:judge_conf
+judge_conf::EXIT_COMPARE	../branches/oldJudge/include/judge.h	/^const int EXIT_COMPARE          = 27;$/;"	m	namespace:judge_conf
+judge_conf::EXIT_COMPARE_SPJ	../branches/oldJudge/include/judge.h	/^const int EXIT_COMPARE_SPJ      = 30;$/;"	m	namespace:judge_conf
+judge_conf::EXIT_COMPARE_SPJ_FORK	../branches/oldJudge/include/judge.h	/^const int EXIT_COMPARE_SPJ_FORK = 31;$/;"	m	namespace:judge_conf
+judge_conf::EXIT_COMPILE	../branches/oldJudge/include/judge.h	/^const int EXIT_COMPILE          = 6;$/;"	m	namespace:judge_conf
+judge_conf::EXIT_JUDGE	../branches/oldJudge/include/judge.h	/^const int EXIT_JUDGE            = 21;$/;"	m	namespace:judge_conf
+judge_conf::EXIT_OK	../branches/oldJudge/include/judge.h	/^const int EXIT_OK               = 0;$/;"	m	namespace:judge_conf
+judge_conf::EXIT_PRE_JUDGE	../branches/oldJudge/include/judge.h	/^const int EXIT_PRE_JUDGE        = 9;$/;"	m	namespace:judge_conf
+judge_conf::EXIT_PRE_JUDGE_EXECLP	../branches/oldJudge/include/judge.h	/^const int EXIT_PRE_JUDGE_EXECLP = 11;$/;"	m	namespace:judge_conf
+judge_conf::EXIT_PRE_JUDGE_PTRACE	../branches/oldJudge/include/judge.h	/^const int EXIT_PRE_JUDGE_PTRACE = 10;$/;"	m	namespace:judge_conf
+judge_conf::EXIT_SET_LIMIT	../branches/oldJudge/include/judge.h	/^const int EXIT_SET_LIMIT        = 15;$/;"	m	namespace:judge_conf
+judge_conf::EXIT_SET_SECURITY	../branches/oldJudge/include/judge.h	/^const int EXIT_SET_SECURITY     = 17;$/;"	m	namespace:judge_conf
+judge_conf::EXIT_TIMEOUT	../branches/oldJudge/include/judge.h	/^const int EXIT_TIMEOUT          = 36;$/;"	m	namespace:judge_conf
+judge_conf::EXIT_UNKNOWN	../branches/oldJudge/include/judge.h	/^const int EXIT_UNKNOWN          = 127;$/;"	m	namespace:judge_conf
+judge_conf::EXIT_UNPRIVILEGED	../branches/oldJudge/include/judge.h	/^const int EXIT_UNPRIVILEGED     = 1;$/;"	m	namespace:judge_conf
+judge_conf::EXIT_VERY_FIRST	../branches/oldJudge/include/judge.h	/^const int EXIT_VERY_FIRST       = 4;$/;"	m	namespace:judge_conf
+judge_conf::GCC_COMPILE_ERROR	../branches/oldJudge/include/judge.h	/^const int GCC_COMPILE_ERROR = 1;$/;"	m	namespace:judge_conf
+judge_conf::GIGA	../branches/oldJudge/include/judge.h	/^const int GIGA              = KILO * MEGA;  \/\/ 1G$/;"	m	namespace:judge_conf
+judge_conf::KILO	../branches/oldJudge/include/judge.h	/^const int KILO              = 1024;         \/\/ 1K$/;"	m	namespace:judge_conf
+judge_conf::LANG_C	../branches/oldJudge/include/judge.h	/^const int LANG_C            = 1;$/;"	m	namespace:judge_conf
+judge_conf::LANG_CPP	../branches/oldJudge/include/judge.h	/^const int LANG_CPP          = 2;$/;"	m	namespace:judge_conf
+judge_conf::LANG_JAVA	../branches/oldJudge/include/judge.h	/^const int LANG_JAVA         = 3;$/;"	m	namespace:judge_conf
+judge_conf::LANG_PASCAL	../branches/oldJudge/include/judge.h	/^const int LANG_PASCAL       = 4;$/;"	m	namespace:judge_conf
+judge_conf::LANG_UNKNOWN	../branches/oldJudge/include/judge.h	/^const int LANG_UNKNOWN      = 0;$/;"	m	namespace:judge_conf
+judge_conf::MEGA	../branches/oldJudge/include/judge.h	/^const int MEGA              = KILO * KILO;  \/\/ 1M$/;"	m	namespace:judge_conf
+judge_conf::OJ_AC	../branches/oldJudge/include/judge.h	/^const int OJ_AC             = 1; \/\/Accepted$/;"	m	namespace:judge_conf
+judge_conf::OJ_CE	../branches/oldJudge/include/judge.h	/^const int OJ_CE             = 7; \/\/Compilation Error$/;"	m	namespace:judge_conf
+judge_conf::OJ_MLE	../branches/oldJudge/include/judge.h	/^const int OJ_MLE            = 4; \/\/Memory Limit Exceeded$/;"	m	namespace:judge_conf
+judge_conf::OJ_OLE	../branches/oldJudge/include/judge.h	/^const int OJ_OLE            = 6; \/\/Output Limit Exceeded$/;"	m	namespace:judge_conf
+judge_conf::OJ_PE	../branches/oldJudge/include/judge.h	/^const int OJ_PE             = 2; \/\/Presentation Error$/;"	m	namespace:judge_conf
+judge_conf::OJ_RE_ABRT	../branches/oldJudge/include/judge.h	/^const int OJ_RE_ABRT        = 11;\/\/Abort$/;"	m	namespace:judge_conf
+judge_conf::OJ_RE_BUS	../branches/oldJudge/include/judge.h	/^const int OJ_RE_BUS         = 10;\/\/Bus Error$/;"	m	namespace:judge_conf
+judge_conf::OJ_RE_FPE	../branches/oldJudge/include/judge.h	/^const int OJ_RE_FPE         = 9; \/\/FPU Error$/;"	m	namespace:judge_conf
+judge_conf::OJ_RE_JAVA	../branches/oldJudge/include/judge.h	/^const int OJ_RE_JAVA        = 15;\/\/JAVA Run Time Exception$/;"	m	namespace:judge_conf
+judge_conf::OJ_RE_SEGV	../branches/oldJudge/include/judge.h	/^const int OJ_RE_SEGV        = 8; \/\/Segment Violation$/;"	m	namespace:judge_conf
+judge_conf::OJ_RE_UNKNOWN	../branches/oldJudge/include/judge.h	/^const int OJ_RE_UNKNOWN     = 12;\/\/Unknow$/;"	m	namespace:judge_conf
+judge_conf::OJ_RF	../branches/oldJudge/include/judge.h	/^const int OJ_RF             = 13;\/\/Restricted Function$/;"	m	namespace:judge_conf
+judge_conf::OJ_SE	../branches/oldJudge/include/judge.h	/^const int OJ_SE             = 14;\/\/System Error$/;"	m	namespace:judge_conf
+judge_conf::OJ_TLE	../branches/oldJudge/include/judge.h	/^const int OJ_TLE            = 3; \/\/Time Limit Exceeded$/;"	m	namespace:judge_conf
+judge_conf::OJ_WA	../branches/oldJudge/include/judge.h	/^const int OJ_WA             = 5; \/\/Wrong Answer$/;"	m	namespace:judge_conf
+judge_conf::OJ_WAIT	../branches/oldJudge/include/judge.h	/^const int OJ_WAIT           = 0; \/\/Queue$/;"	m	namespace:judge_conf
+judge_conf::compile_mem_limit	../branches/oldJudge/include/judge.h	/^int compile_mem_limit	          = 300;$/;"	m	namespace:judge_conf
+judge_conf::compile_time_limit	../branches/oldJudge/include/judge.h	/^int compile_time_limit          = 5000;$/;"	m	namespace:judge_conf
+judge_conf::config_file	../branches/oldJudge/include/judge.h	/^const std::string config_file   = "config.ini";$/;"	m	namespace:judge_conf
+judge_conf::data_filename	../branches/oldJudge/include/judge.h	/^const std::string data_filename = "data.txt";$/;"	m	namespace:judge_conf
+judge_conf::java_memory_factor	../branches/oldJudge/include/judge.h	/^int java_memory_factor          = 2;$/;"	m	namespace:judge_conf
+judge_conf::java_time_factor	../branches/oldJudge/include/judge.h	/^int java_time_factor            = 2;$/;"	m	namespace:judge_conf
+judge_conf::judge_time_limit	../branches/oldJudge/include/judge.h	/^int judge_time_limit            = 15000;$/;"	m	namespace:judge_conf
+judge_conf::languages	../branches/oldJudge/include/judge.h	/^const std::string languages[]    = {"unknown", "c", "c++", "java", "pascal"};$/;"	m	namespace:judge_conf
+judge_conf::load	../branches/oldJudge/include/judge.h	/^void load() {$/;"	f	namespace:judge_conf	signature:()
+judge_conf::log_file	../branches/oldJudge/include/judge.h	/^std::string log_file;$/;"	m	namespace:judge_conf
+judge_conf::spj_time_limit	../branches/oldJudge/include/judge.h	/^int spj_time_limit              = 5000;$/;"	m	namespace:judge_conf
+judge_conf::stack_size_limit	../branches/oldJudge/include/judge.h	/^int stack_size_limit            = 8192;$/;"	m	namespace:judge_conf
+judge_conf::time_limit_addtion	../branches/oldJudge/include/judge.h	/^int time_limit_addtion          = 314;$/;"	m	namespace:judge_conf
+judge_time_limit	../branches/oldJudge/include/judge.h	/^int judge_time_limit            = 15000;$/;"	m	namespace:judge_conf
+lang	../branches/oldJudge/include/judge.h	/^int lang                = 0;$/;"	m	namespace:problem
+languages	../branches/oldJudge/include/judge.h	/^const std::string languages[]    = {"unknown", "c", "c++", "java", "pascal"};$/;"	m	namespace:judge_conf
+load	../branches/oldJudge/include/judge.h	/^void load() {$/;"	f	namespace:judge_conf	signature:()
 log_add_info	../branches/oldJudge/include/logger.h	/^void log_add_info(const char *info)$/;"	f	signature:(const char *info)
 log_add_info	../branches/oldJudge/include/logger.h	/^void log_add_info(const char *info);$/;"	p	signature:(const char *info)
 log_buffer	../branches/oldJudge/include/logger.h	/^static char log_buffer[log_buffer_size];$/;"	v
@@ -162,7 +162,7 @@ log_buffer_size	../branches/oldJudge/include/logger.h	83;"	d
 log_close	../branches/oldJudge/include/logger.h	/^void log_close()$/;"	f	signature:()
 log_close	../branches/oldJudge/include/logger.h	/^void log_close();$/;"	p	signature:()
 log_extra_info	../branches/oldJudge/include/logger.h	/^static char log_extra_info[log_buffer_size];$/;"	v
-log_file	../branches/oldJudge/include/judge.h	/^    std::string log_file;$/;"	m	namespace:judge_conf
+log_file	../branches/oldJudge/include/judge.h	/^std::string log_file;$/;"	m	namespace:judge_conf
 log_filename	../branches/oldJudge/include/logger.h	/^static char *log_filename           = NULL;$/;"	v
 log_fp	../branches/oldJudge/include/logger.h	/^static FILE *log_fp                 = NULL;$/;"	v
 log_open	../branches/oldJudge/include/logger.h	/^int log_open(const char *filename);$/;"	p	signature:(const char *filename)
@@ -172,61 +172,61 @@ log_opened	../branches/oldJudge/include/logger.h	/^static int  log_opened       
 log_write	../branches/oldJudge/include/logger.h	/^static void log_write(int level, const char *file,$/;"	f	signature:(int level, const char *file, const int line, const char *fmt, ...)
 log_write	../branches/oldJudge/include/logger.h	/^static void log_write(int, const char *, const int, const char *, ...);$/;"	p	signature:(int, const char *, const int, const char *, ...)
 main	../branches/oldJudge/src/judge_all.cc	/^int main(int argc, char *argv[], char *envp[])$/;"	f	signature:(int argc, char *argv[], char *envp[])
-malarm	../branches/oldJudge/include/judge.h	/^int malarm(int which, int milliseconds)$/;"	f	signature:(int which, int milliseconds)
-memory_limit	../branches/oldJudge/include/judge.h	/^    int memory_limit        = 65536;$/;"	m	namespace:problem
-memory_usage	../branches/oldJudge/include/judge.h	/^    long memory_usage       = 0;$/;"	m	namespace:problem
-needCompile	../branches/oldJudge/include/judge.h	/^	bool needCompile		= false;$/;"	m	namespace:problem
-oj_compare_output	../branches/oldJudge/include/judge.h	/^int oj_compare_output(std::string file_std, std::string file_exec)$/;"	f	signature:(std::string file_std, std::string file_exec)
+malarm	../branches/oldJudge/include/judge.h	/^int malarm(int which, int milliseconds) {$/;"	f	signature:(int which, int milliseconds)
+memory_limit	../branches/oldJudge/include/judge.h	/^int memory_limit        = 65536;$/;"	m	namespace:problem
+memory_usage	../branches/oldJudge/include/judge.h	/^long memory_usage       = 0;$/;"	m	namespace:problem
+needCompile	../branches/oldJudge/include/judge.h	/^bool needCompile		= false;$/;"	m	namespace:problem
+oj_compare_output	../branches/oldJudge/include/judge.h	/^int oj_compare_output(std::string file_std, std::string file_exec) {$/;"	f	signature:(std::string file_std, std::string file_exec)
 oj_compare_output_spj	../branches/oldJudge/include/judge.h	/^int oj_compare_output_spj($/;"	f	signature:( std::string file_in, std::string file_std, std::string file_exec, std::string spj_exec, std::string file_spj)
-output_file_std	../branches/oldJudge/include/judge.h	/^    std::string output_file_std;$/;"	m	namespace:problem
-output_limit	../branches/oldJudge/include/judge.h	/^    int output_limit        = 8192;$/;"	m	namespace:problem
-output_result	../branches/oldJudge/include/judge.h	/^void output_result(int result, int memory_usage = 0, int time_usage = 0)$/;"	f	signature:(int result, int memory_usage = 0, int time_usage = 0)
-parse_arguments	../branches/oldJudge/include/judge.h	/^void parse_arguments(int argc, char *argv[])$/;"	f	signature:(int argc, char *argv[])
-problem	../branches/oldJudge/include/judge.h	/^namespace problem$/;"	n
-problem::data_dir	../branches/oldJudge/include/judge.h	/^    std::string data_dir;$/;"	m	namespace:problem
-problem::dump_to_log	../branches/oldJudge/include/judge.h	/^    void dump_to_log()$/;"	f	namespace:problem	signature:()
-problem::exec_file	../branches/oldJudge/include/judge.h	/^    std::string exec_file;$/;"	m	namespace:problem
-problem::id	../branches/oldJudge/include/judge.h	/^    int id                  = 0;$/;"	m	namespace:problem
-problem::input_file	../branches/oldJudge/include/judge.h	/^    std::string input_file;$/;"	m	namespace:problem
-problem::lang	../branches/oldJudge/include/judge.h	/^    int lang                = 0;$/;"	m	namespace:problem
-problem::memory_limit	../branches/oldJudge/include/judge.h	/^    int memory_limit        = 65536;$/;"	m	namespace:problem
-problem::memory_usage	../branches/oldJudge/include/judge.h	/^    long memory_usage       = 0;$/;"	m	namespace:problem
-problem::needCompile	../branches/oldJudge/include/judge.h	/^	bool needCompile		= false;$/;"	m	namespace:problem
-problem::output_file_std	../branches/oldJudge/include/judge.h	/^    std::string output_file_std;$/;"	m	namespace:problem
-problem::output_limit	../branches/oldJudge/include/judge.h	/^    int output_limit        = 8192;$/;"	m	namespace:problem
-problem::result	../branches/oldJudge/include/judge.h	/^    int result              = 0;$/;"	m	namespace:problem
-problem::source_file	../branches/oldJudge/include/judge.h	/^    std::string source_file;$/;"	m	namespace:problem
-problem::spj	../branches/oldJudge/include/judge.h	/^    bool spj                = false;$/;"	m	namespace:problem
-problem::spj_exe_file	../branches/oldJudge/include/judge.h	/^    std::string spj_exe_file;$/;"	m	namespace:problem
-problem::status	../branches/oldJudge/include/judge.h	/^    int status;$/;"	m	namespace:problem
-problem::stderr_file_compiler	../branches/oldJudge/include/judge.h	/^    std::string stderr_file_compiler;$/;"	m	namespace:problem
-problem::stderr_file_executive	../branches/oldJudge/include/judge.h	/^    std::string stderr_file_executive;$/;"	m	namespace:problem
-problem::stdout_file_compiler	../branches/oldJudge/include/judge.h	/^    std::string stdout_file_compiler;$/;"	m	namespace:problem
-problem::stdout_file_executive	../branches/oldJudge/include/judge.h	/^    std::string stdout_file_executive;$/;"	m	namespace:problem
-problem::stdout_file_spj	../branches/oldJudge/include/judge.h	/^    std::string stdout_file_spj;$/;"	m	namespace:problem
-problem::temp_dir	../branches/oldJudge/include/judge.h	/^    std::string temp_dir;$/;"	m	namespace:problem
-problem::time_limit	../branches/oldJudge/include/judge.h	/^    int time_limit          = 1000;$/;"	m	namespace:problem
-problem::time_usage	../branches/oldJudge/include/judge.h	/^    int time_usage          = 0;$/;"	m	namespace:problem
-problem::uid	../branches/oldJudge/include/judge.h	/^    std::string uid;$/;"	m	namespace:problem
-result	../branches/oldJudge/include/judge.h	/^    int result              = 0;$/;"	m	namespace:problem
-set_compile_limit	../branches/oldJudge/include/judge.h	/^void set_compile_limit()$/;"	f	signature:()
-set_limit	../branches/oldJudge/include/judge.h	/^void set_limit()$/;"	f	signature:()
-set_security_option	../branches/oldJudge/include/judge.h	/^void set_security_option()$/;"	f	signature:()
-source_file	../branches/oldJudge/include/judge.h	/^    std::string source_file;$/;"	m	namespace:problem
-spj	../branches/oldJudge/include/judge.h	/^    bool spj                = false;$/;"	m	namespace:problem
-spj_exe_file	../branches/oldJudge/include/judge.h	/^    std::string spj_exe_file;$/;"	m	namespace:problem
-spj_time_limit	../branches/oldJudge/include/judge.h	/^    int spj_time_limit              = 5000;$/;"	m	namespace:judge_conf
-stack_size_limit	../branches/oldJudge/include/judge.h	/^    int stack_size_limit            = 8192;$/;"	m	namespace:judge_conf
-status	../branches/oldJudge/include/judge.h	/^    int status;$/;"	m	namespace:problem
-stderr_file_compiler	../branches/oldJudge/include/judge.h	/^    std::string stderr_file_compiler;$/;"	m	namespace:problem
-stderr_file_executive	../branches/oldJudge/include/judge.h	/^    std::string stderr_file_executive;$/;"	m	namespace:problem
-stdout_file_compiler	../branches/oldJudge/include/judge.h	/^    std::string stdout_file_compiler;$/;"	m	namespace:problem
-stdout_file_executive	../branches/oldJudge/include/judge.h	/^    std::string stdout_file_executive;$/;"	m	namespace:problem
-stdout_file_spj	../branches/oldJudge/include/judge.h	/^    std::string stdout_file_spj;$/;"	m	namespace:problem
-strincmp	../branches/oldJudge/include/judge.h	/^int strincmp(const char *s1, const char *s2, int n)$/;"	f	signature:(const char *s1, const char *s2, int n)
-temp_dir	../branches/oldJudge/include/judge.h	/^    std::string temp_dir;$/;"	m	namespace:problem
-time_limit	../branches/oldJudge/include/judge.h	/^    int time_limit          = 1000;$/;"	m	namespace:problem
-time_limit_addtion	../branches/oldJudge/include/judge.h	/^    int time_limit_addtion          = 314;$/;"	m	namespace:judge_conf
-time_usage	../branches/oldJudge/include/judge.h	/^    int time_usage          = 0;$/;"	m	namespace:problem
-timeout	../branches/oldJudge/include/judge.h	/^void timeout(int signo)$/;"	f	signature:(int signo)
-uid	../branches/oldJudge/include/judge.h	/^    std::string uid;$/;"	m	namespace:problem
+output_file_std	../branches/oldJudge/include/judge.h	/^std::string output_file_std;$/;"	m	namespace:problem
+output_limit	../branches/oldJudge/include/judge.h	/^int output_limit        = 8192;$/;"	m	namespace:problem
+output_result	../branches/oldJudge/include/judge.h	/^void output_result(int result, int memory_usage = 0, int time_usage = 0) {$/;"	f	signature:(int result, int memory_usage = 0, int time_usage = 0)
+parse_arguments	../branches/oldJudge/include/judge.h	/^void parse_arguments(int argc, char *argv[]) {$/;"	f	signature:(int argc, char *argv[])
+problem	../branches/oldJudge/include/judge.h	/^namespace problem {$/;"	n
+problem::data_dir	../branches/oldJudge/include/judge.h	/^std::string data_dir;$/;"	m	namespace:problem
+problem::dump_to_log	../branches/oldJudge/include/judge.h	/^void dump_to_log() {$/;"	f	namespace:problem	signature:()
+problem::exec_file	../branches/oldJudge/include/judge.h	/^std::string exec_file;$/;"	m	namespace:problem
+problem::id	../branches/oldJudge/include/judge.h	/^int id                  = 0;$/;"	m	namespace:problem
+problem::input_file	../branches/oldJudge/include/judge.h	/^std::string input_file;$/;"	m	namespace:problem
+problem::lang	../branches/oldJudge/include/judge.h	/^int lang                = 0;$/;"	m	namespace:problem
+problem::memory_limit	../branches/oldJudge/include/judge.h	/^int memory_limit        = 65536;$/;"	m	namespace:problem
+problem::memory_usage	../branches/oldJudge/include/judge.h	/^long memory_usage       = 0;$/;"	m	namespace:problem
+problem::needCompile	../branches/oldJudge/include/judge.h	/^bool needCompile		= false;$/;"	m	namespace:problem
+problem::output_file_std	../branches/oldJudge/include/judge.h	/^std::string output_file_std;$/;"	m	namespace:problem
+problem::output_limit	../branches/oldJudge/include/judge.h	/^int output_limit        = 8192;$/;"	m	namespace:problem
+problem::result	../branches/oldJudge/include/judge.h	/^int result              = 0;$/;"	m	namespace:problem
+problem::source_file	../branches/oldJudge/include/judge.h	/^std::string source_file;$/;"	m	namespace:problem
+problem::spj	../branches/oldJudge/include/judge.h	/^bool spj                = false;$/;"	m	namespace:problem
+problem::spj_exe_file	../branches/oldJudge/include/judge.h	/^std::string spj_exe_file;$/;"	m	namespace:problem
+problem::status	../branches/oldJudge/include/judge.h	/^int status;$/;"	m	namespace:problem
+problem::stderr_file_compiler	../branches/oldJudge/include/judge.h	/^std::string stderr_file_compiler;$/;"	m	namespace:problem
+problem::stderr_file_executive	../branches/oldJudge/include/judge.h	/^std::string stderr_file_executive;$/;"	m	namespace:problem
+problem::stdout_file_compiler	../branches/oldJudge/include/judge.h	/^std::string stdout_file_compiler;$/;"	m	namespace:problem
+problem::stdout_file_executive	../branches/oldJudge/include/judge.h	/^std::string stdout_file_executive;$/;"	m	namespace:problem
+problem::stdout_file_spj	../branches/oldJudge/include/judge.h	/^std::string stdout_file_spj;$/;"	m	namespace:problem
+problem::temp_dir	../branches/oldJudge/include/judge.h	/^std::string temp_dir;$/;"	m	namespace:problem
+problem::time_limit	../branches/oldJudge/include/judge.h	/^int time_limit          = 1000;$/;"	m	namespace:problem
+problem::time_usage	../branches/oldJudge/include/judge.h	/^int time_usage          = 0;$/;"	m	namespace:problem
+problem::uid	../branches/oldJudge/include/judge.h	/^std::string uid;$/;"	m	namespace:problem
+result	../branches/oldJudge/include/judge.h	/^int result              = 0;$/;"	m	namespace:problem
+set_compile_limit	../branches/oldJudge/include/judge.h	/^void set_compile_limit() {$/;"	f	signature:()
+set_limit	../branches/oldJudge/include/judge.h	/^void set_limit() {$/;"	f	signature:()
+set_security_option	../branches/oldJudge/include/judge.h	/^void set_security_option() {$/;"	f	signature:()
+source_file	../branches/oldJudge/include/judge.h	/^std::string source_file;$/;"	m	namespace:problem
+spj	../branches/oldJudge/include/judge.h	/^bool spj                = false;$/;"	m	namespace:problem
+spj_exe_file	../branches/oldJudge/include/judge.h	/^std::string spj_exe_file;$/;"	m	namespace:problem
+spj_time_limit	../branches/oldJudge/include/judge.h	/^int spj_time_limit              = 5000;$/;"	m	namespace:judge_conf
+stack_size_limit	../branches/oldJudge/include/judge.h	/^int stack_size_limit            = 8192;$/;"	m	namespace:judge_conf
+status	../branches/oldJudge/include/judge.h	/^int status;$/;"	m	namespace:problem
+stderr_file_compiler	../branches/oldJudge/include/judge.h	/^std::string stderr_file_compiler;$/;"	m	namespace:problem
+stderr_file_executive	../branches/oldJudge/include/judge.h	/^std::string stderr_file_executive;$/;"	m	namespace:problem
+stdout_file_compiler	../branches/oldJudge/include/judge.h	/^std::string stdout_file_compiler;$/;"	m	namespace:problem
+stdout_file_executive	../branches/oldJudge/include/judge.h	/^std::string stdout_file_executive;$/;"	m	namespace:problem
+stdout_file_spj	../branches/oldJudge/include/judge.h	/^std::string stdout_file_spj;$/;"	m	namespace:problem
+strincmp	../branches/oldJudge/include/judge.h	/^int strincmp(const char *s1, const char *s2, int n) {$/;"	f	signature:(const char *s1, const char *s2, int n)
+temp_dir	../branches/oldJudge/include/judge.h	/^std::string temp_dir;$/;"	m	namespace:problem
+time_limit	../branches/oldJudge/include/judge.h	/^int time_limit          = 1000;$/;"	m	namespace:problem
+time_limit_addtion	../branches/oldJudge/include/judge.h	/^int time_limit_addtion          = 314;$/;"	m	namespace:judge_conf
+time_usage	../branches/oldJudge/include/judge.h	/^int time_usage          = 0;$/;"	m	namespace:problem
+timeout	../branches/oldJudge/include/judge.h	/^void timeout(int signo) {$/;"	f	signature:(int signo)
+uid	../branches/oldJudge/include/judge.h	/^std::string uid;$/;"	m	namespace:problem
