@@ -148,7 +148,6 @@ public class Judge implements Runnable, SettingsAware {
             }
         } catch (Exception ignored) {
         }
-        System.out.println("call back string: " + callBackString);
         return callBackString.split(" ");
     }
 
@@ -167,7 +166,6 @@ public class Judge implements Runnable, SettingsAware {
                         tempPath + "/" + judgeItem.getSourceName());
                 int problemId = judgeItem.status.getProblemByProblemId().getProblemId();
                 String shellCommand = buildJudgeShellCommand(problemId, currentTestCase, judgeItem);
-                System.out.println("shell: " + shellCommand);
                 String[] callBackString = getCallBackString(shellCommand);
                 isAccepted = updateJudgeItem(callBackString, judgeItem);
             }

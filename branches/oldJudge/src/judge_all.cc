@@ -223,7 +223,7 @@ int main(int argc, char *argv[], char *envp[])
         else
         {
             //execlp("java", "java", "-Xms256m", "-Xmx512m", "-Xss8m", "-Djava.security.manager", "-Djava.security.policy==../../java.policy", "Main", NULL);
-            execlp("java", "java", "-Djava.security.manager", "-Djava.security.policy=../../java.policy", "Main", NULL);
+            execlp("java", "java", "-Djava.security.manager", "-Djava.security.policy=../../java.policy", "-cp", problem::temp_dir.c_str(), "Main", NULL);
         }
 
 		// execlp error
