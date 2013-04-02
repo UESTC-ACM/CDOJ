@@ -230,6 +230,6 @@ public class StringUtil {
      * @return target description
      */
     public static String getStatusDescription(Global.OnlineJudgeReturnType type, int currentCase) {
-        return type.getDescription().replace("$case", Integer.toBinaryString(currentCase));
+        return type.getDescription().replace("$case", Integer.toString(currentCase));
     }
 }

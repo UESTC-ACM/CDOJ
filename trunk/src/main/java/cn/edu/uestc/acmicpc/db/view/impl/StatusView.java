@@ -111,19 +111,21 @@ public class StatusView extends View<Status> {
         this.length = length;
     }
 
-    public Integer getTimeCost() {
+    public String getTimeCost() {
         return timeCost;
     }
 
-    public void setTimeCost(Integer timeCost) {
+    @Ignore
+    public void setTimeCost(String timeCost) {
         this.timeCost = timeCost;
     }
 
-    public Integer getMemoryCost() {
+    public String getMemoryCost() {
         return memoryCost;
     }
 
-    public void setMemoryCost(Integer memoryCost) {
+    @Ignore
+    public void setMemoryCost(String memoryCost) {
         this.memoryCost = memoryCost;
     }
 
@@ -149,8 +151,8 @@ public class StatusView extends View<Status> {
     }
 
     private Integer length;
-    private Integer timeCost;
-    private Integer memoryCost;
+    private String timeCost;
+    private String memoryCost;
     private Timestamp time;
 
     /**
@@ -160,6 +162,13 @@ public class StatusView extends View<Status> {
      */
     public StatusView(Status status) {
         super(status);
+        if (status.getResult() == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
+            setTimeCost(Integer.toString(status.getTimeCost()));
+            setMemoryCost(Integer.toString(status.getMemoryCost()));
+        } else {
+            setTimeCost("");
+            setMemoryCost("");
+        }
         setUserId(status.getUserByUserId().getUserId());
         setUserName(status.getUserByUserId().getUserName());
         setProblemId(status.getProblemByProblemId().getProblemId());
