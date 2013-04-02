@@ -89,11 +89,6 @@ public class JudgeItem implements CompileinfoDAOAware, StatusDAOAware, UserDAOAw
     @SuppressWarnings("UnusedDeclaration")
     public String getSourceName() {
         return "Main" + status.getLanguageByLanguageId().getExtension();
-//        if (".java".equals(status.getLanguageByLanguageId().getExtension()))
-//            return "Main.java";
-//        else
-//            return Integer.toString(status.getStatusId()) + status.getLanguageByLanguageId().getExtension();
-
     }
 
     /**
