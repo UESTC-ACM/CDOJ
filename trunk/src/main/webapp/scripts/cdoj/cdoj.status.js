@@ -27,6 +27,99 @@ var currentCondition;
  */
 var statusList;
 
+function getStatusId(statusId) {
+    var html = $('<td>' + statusId + '</td>');
+    return html;
+}
+
+function getUserName(userName) {
+    var html = $('<td>' + userName + '</td>');
+    return html;
+}
+
+function getProblemId(problemId) {
+    var html = $('<td><a href="/problem/show/'+problemId+'">' + problemId + '</td>');
+    return html;
+}
+
+function getJudgeResponse(returnType, returnTypeId) {
+    var html = $('<td>' + returnType + '</td>');
+    if (returnTypeId == 0)
+        html.addClass('status-querying');
+    else if (returnTypeId == 1)
+        html.addClass('status-accept');
+    else
+        html.addClass('status-error');
+    return html;
+}
+
+function getCodeUrl(length, statusId, userName) {
+    var html = $('<span style="margin-right: 8px;"></span>');
+    if (userName == currentUser)
+        html.append($('<a id="codeHref" href="#" statusId="' + statusId + '">' + length + ' B</a>'));
+    else
+        html.append(length + ' B');
+    return html;
+}
+
+function getLength(length, language, statusId, userName) {
+    var html = $('<td style="text-align: right;"></td>');
+    html.append(getCodeUrl(length, statusId, userName));
+    html.append($('<span class="label label-success" style="width: 30px;">' + language + '</span>'));
+    return html;
+}
+
+function getTimeCost(timeCost) {
+    var html = $('<td></td>');
+    if (timeCost != '')
+        html.append($('<span>' + timeCost + ' ms</span>'));
+    return html;
+}
+
+function getMemoryCost(memoryCost) {
+    var html = $('<td></td>');
+    if (memoryCost != '')
+        html.append($('<span>' + memoryCost + ' KB</span>'));
+    return html;
+}
+
+function getTime(time) {
+    var html = $('<td>' + time + '</td>');
+    return html;
+}
+
+function getHTML(value) {
+    var html = $('<tr></tr>');
+    html.append(getStatusId(value.statusId));
+    html.append(getUserName(value.userName));
+    html.append(getProblemId(value.problemId));
+    html.append(getJudgeResponse(value.returnType, value.returnTypeId));
+    html.append(getLength(value.length, value.language, value.statusId, value.userName));
+    html.append(getTimeCost(value.timeCost));
+    html.append(getMemoryCost(value.memoryCost));
+    html.append(getTime(value.time));
+    return html;
+}
+
+function blindCodeHref() {
+    $('#codeHref').live('click', function () {
+        var id = $(this).attr('statusId');
+        $.post('/status/code/' + id, function (data) {
+            var codeModal = $('#codeModal');
+            var codeLabel = $('#codeModalLabel');
+            var codeViewer = $('#codeViewer');
+            codeLabel.empty();
+            codeLabel.append('Code ' + data.code.codeId);
+            codeViewer.empty();
+            codeViewer.append(data.code.content);
+            prettyPrint();
+            codeModal.modal();
+            console.log(id, data);
+        });
+        return false;
+    });
+}
+
 function refreshStatusList(condition) {
     $.post('/status/search', condition, function (data) {
         if (data.result == "error") {
@@ -50,20 +143,10 @@ function refreshStatusList(condition) {
         // put user list
 
         $.each(statusList, function (index, value) {
-            var html = '<tr>' +
-                '<td>' + value.statusId + '</td>' +
-                '<td>' + value.userName + '</td>' +
-                '<td><a href="/problem/show/' + value.problemId + '">' + value.problemId + '</a></td>' +
-                '<td>' + value.returnType + '</td>' +
-//                '<td>Restricted Function on test $case</td>' +
-                '<td>' + value.length + '</td>'+
-                '<td>' + value.timeCost + '</td>' +
-                '<td>' + value.memoryCost + '</td>' +
-                '<td>' + value.time + '</td>' +
-                '</tr>';
-            tbody.append(html);
+            tbody.append(getHTML(value));
         });
 
+        blindCodeHref();
     });
 }
 

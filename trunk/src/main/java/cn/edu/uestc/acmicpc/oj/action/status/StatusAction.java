@@ -13,13 +13,18 @@ package cn.edu.uestc.acmicpc.oj.action.status;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.dao.iface.ICodeDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
+import cn.edu.uestc.acmicpc.db.entity.Code;
 import cn.edu.uestc.acmicpc.db.entity.Status;
+import cn.edu.uestc.acmicpc.db.view.impl.CodeView;
 import cn.edu.uestc.acmicpc.db.view.impl.StatusView;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
+import cn.edu.uestc.acmicpc.ioc.dao.CodeDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.struts2.interceptor.validation.SkipValidation;
@@ -110,5 +115,39 @@ public class StatusAction extends BaseAction
     @Override
     public void setStatusDAO(IStatusDAO statusDAO) {
         this.statusDAO = statusDAO;
+    }
+
+    private Integer statusId;
+
+    public Integer getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
+    }
+
+    @LoginPermit(NeedLogin = true)
+    public String toCode() {
+        try {
+            if (statusId == null)
+                throw new AppException("Empty status id!");
+            Status status = statusDAO.get(statusId);
+            if (status == null)
+                throw new AppException("No such code!");
+            if (currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal() && status.getUserByUserId() != currentUser)
+                throw new AppException("You can't view others' code!");
+            Code code = status.getCodeByCodeId();
+            json.put("result", "success");
+            json.put("code", new CodeView(code));
+        } catch (AppException e) {
+            json.put("result", "error");
+            json.put("error_msg", e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            json.put("result", "error");
+            json.put("error_msg", "Unknown exception occurred.");
+        }
+        return JSON;
     }
 }

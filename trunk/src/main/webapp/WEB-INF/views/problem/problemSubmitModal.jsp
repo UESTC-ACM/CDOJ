@@ -1,7 +1,3 @@
-<%@ taglib prefix="s" uri="/struts-tags" %>
-<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
-<%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
-<%@ taglib prefix="cdoj" uri="/WEB-INF/cdoj.tld" %>
 <%--
   ~ /*
   ~  * cdoj, UESTC ACMICPC Online Judge
@@ -31,6 +27,10 @@
   Time: 下午3:24
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
+<%@ taglib prefix="cdoj" uri="/WEB-INF/cdoj.tld" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -38,7 +38,7 @@
 </head>
 <body>
 <!-- Problem submit Modal -->
-<div id="problemSubmitModal" class="modal hide fade modal-large" tabindex="-1" role="dialog" aria-labelledby="loginModal" aria-hidden="true">
+<div id="problemSubmitModal" class="modal hide fade modal-large" tabindex="-1" role="dialog" aria-labelledby="problemSubmitModal" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="loginModalLabel">Submit ${targetProblem.title}</h3>

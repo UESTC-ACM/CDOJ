@@ -93,3 +93,19 @@ body {
 .btn-group-bottom > .btn {
     margin: 0 16px;
 }
+
+.status-querying {
+    color: #3a87ad;
+}
+
+.status-accept {
+    color: #468847;
+}
+
+.status-error {
+    color: #b94a48;
+}
+
+#codeViewer {
+    font-size: 8pt;
+}
