@@ -1,7 +1,3 @@
-<%@ taglib prefix="s" uri="/struts-tags" %>
-<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
-<%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
-<%@ taglib prefix="cdoj" uri="/WEB-INF/cdoj.tld" %>
 <%--
   ~ /*
   ~  * cdoj, UESTC ACMICPC Online Judge
@@ -30,6 +26,10 @@
  @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  @version 1
 --%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
+<%@ taglib prefix="cdoj" uri="/WEB-INF/cdoj.tld" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -50,14 +50,14 @@
         <div id="pageInfo">
         </div>
 
-        <table class="table table-striped table-bordered">
+        <table class="table table-bordered">
             <thead>
             <tr>
                 <th style="width: 60px;">Id</th>
                 <th>User</th>
                 <th style="width: 60px;">Problem</th>
                 <th style="width: 260px;">Judge's Response</th>
-                <th style="width: 60px;">Length</th>
+                <th style="width: 100px;">Length</th>
                 <th style="width: 70px;">Time</th>
                 <th style="width: 80px;">Memory</th>
                 <th style="width: 140px;">Submit Time</th>
@@ -103,6 +103,8 @@
         </div>
     </div>
 </div>
+
+<page:applyDecorator name="body" page="/WEB-INF/views/status/codeModal.jsp"/>
 
 </body>
 </html>

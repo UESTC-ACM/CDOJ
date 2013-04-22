@@ -24,3 +24,10 @@
     width: 960px;
     left: 36%;
 }
+
+.modal-body-long {
+    position: relative;
+    max-height: 600px;
+    padding: 15px;
+    overflow-y: auto;
+}

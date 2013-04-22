@@ -32,7 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Description
+ * Contest view
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1

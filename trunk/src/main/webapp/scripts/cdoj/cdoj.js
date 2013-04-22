@@ -27,12 +27,18 @@
  * @version 1
  */
 
+var currentUser = null;
+
 !function ($) {
 
     $(function () {
 
+        //Get current user
+        if ($('#currentUser').length > 0)
+            currentUser = $('#currentUser')[0].innerHTML;
+
         // make code pretty
-        window.prettyPrint && prettyPrint();
+        prettify();
 
         // get avatars
         $('img#userAvatar').setAvatar({});
