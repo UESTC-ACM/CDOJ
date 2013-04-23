@@ -69,7 +69,7 @@ function getCodeUrl(length, statusId, userName) {
 function getLength(length, language, statusId, userName) {
     var html = $('<td style="text-align: right;"></td>');
     html.append(getCodeUrl(length, statusId, userName));
-    html.append($('<span class="label label-success" style="width: 30px;">' + language + '</span>'));
+    html.append($('<span class="label label-success" style="width: 30px; text-align: center;">' + language + '</span>'));
     return html;
 }
 
@@ -134,7 +134,9 @@ function blindCompileInfo() {
             compileInfoModalLabel.empty();
             compileInfoModalLabel.append('Compilation Error Information');
             compileInfoViewer.empty();
+            compileInfoViewer.removeClass('linenums');
             compileInfoViewer.append(data.CEInformation);
+            prettyPrint();
             compileInfoModal.modal();
         });
         return false;
