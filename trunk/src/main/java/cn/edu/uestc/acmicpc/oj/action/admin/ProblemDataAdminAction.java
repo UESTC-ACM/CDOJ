@@ -39,6 +39,8 @@ import com.opensymphony.xwork2.validator.annotations.Validations;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.ZipFile;
 
 /**
@@ -198,7 +200,7 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
                     )
             }
     )
-    @SuppressWarnings("UnusedDeclaration")
+    @SuppressWarnings({"UnusedDeclaration", "ResultOfMethodCallIgnored"})
     public String updateProblemData() {
         try {
             Problem problem = null;
@@ -217,10 +219,11 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
             int dataCount = 0;
             boolean foundSpj = false;
             File[] files = currentFile.listFiles();
+            Map<String, Integer> fileMap = new HashMap<>();
             if (files != null) {
                 for (File file : files) {
                     if (file.getName().endsWith(".in")) {
-                        ++dataCount;
+                        fileMap.put(FileUtil.getFileName(file), ++dataCount);
                     } else if (file.getName().equals("spj.cc")) {
                         foundSpj = true;
                     }
@@ -229,9 +232,20 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
             if (dataCount != 0) {
                 FileUtil.clearDirectory(dataPath);
                 FileUtil.moveDirectory(currentFile, targetFile);
+                for (String file : fileMap.keySet()) {
+                    File fromFile = new File(dataPath + '/' + file + ".in");
+                    File toFile = new File(dataPath + '/' + fileMap.get(file) + ".in");
+                    fromFile.renameTo(toFile);
+                    fromFile = new File(dataPath + '/' + file + ".out");
+                    toFile = new File(dataPath + '/' + fileMap.get(file) + ".out");
+                    fromFile.renameTo(toFile);
+                }
                 problem.setDataCount(dataCount);
+                FileUtil.clearDirectory(tempDirectory);
             }
 
+            // TODO SPJ command is not correct
+            // We can use a shell
             if (foundSpj) {
                 Runtime runtime = Runtime.getRuntime();
                 Process process = runtime.exec("g++ spj.cc -O2");

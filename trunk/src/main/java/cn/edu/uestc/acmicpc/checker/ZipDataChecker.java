@@ -23,9 +23,14 @@
 package cn.edu.uestc.acmicpc.checker;
 
 import cn.edu.uestc.acmicpc.checker.base.Checker;
+import cn.edu.uestc.acmicpc.util.FileUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Data checker for data.zip files.
@@ -57,38 +62,31 @@ import java.io.File;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ZipDataChecker implements Checker<File> {
+    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public void check(File file) throws AppException {
         File[] files = file.listFiles();
         if (files == null)
             throw new AppException("Data file is invalid.");
-        int minId = 0, maxId = 0, count = 0;
+        Set<String> fileSet = new HashSet<>();
+        List<String> outputFileList = new LinkedList<>();
         for (File current : files) {
             if (current.isDirectory())
                 throw new AppException("Data file contains directory.");
-            if (current.getName().endsWith(".in") || current.getName().endsWith(".out")) {
-                String prefix = current.getName().substring(0, current.getName().lastIndexOf('.'));
-                try {
-                    int currentId = Integer.parseInt(prefix);
-                    if (count == 0) {
-                        minId = maxId = currentId;
-                    } else {
-                        minId = Math.min(minId, currentId);
-                        maxId = Math.max(maxId, currentId);
-                    }
-                    ++count;
-                } catch (NumberFormatException e) {
-                    throw new AppException("Data files must begin with numbers.");
-                }
+            if (current.getName().endsWith(".in")) {
+                fileSet.add(FileUtil.getFileName(current));
+            } else if (current.getName().endsWith(".out")) {
+                outputFileList.add(FileUtil.getFileName(current));
             } else if (current.getName().equals("spj.cc")) {
                 // spj checker, ignored
             } else {
                 throw new AppException("Data file contains unknown file type.");
             }
         }
-        if (minId != 1)
-            throw new AppException("Data id must begin with 1.");
-        if (count != (maxId - minId + 1) * 2)
-            throw new AppException("Some data files has not input file or output file.");
+        for (String outputFile : outputFileList) {
+            if (!fileSet.contains(outputFile)) {
+                throw new AppException("Some data files has not input file or output file.");
+            }
+        }
     }
 }
