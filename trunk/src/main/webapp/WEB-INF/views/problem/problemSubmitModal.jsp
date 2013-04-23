@@ -60,8 +60,8 @@
             </div>
         </div>
 
-        <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
         <a href="#" class="btn btn-primary">Submit</a>
+        <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
     </div>
 </div>
 

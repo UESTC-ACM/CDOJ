@@ -104,7 +104,7 @@
     </div>
 </div>
 
-<page:applyDecorator name="body" page="/WEB-INF/views/status/codeModal.jsp"/>
+<page:applyDecorator name="body" page="/WEB-INF/views/status/modal.jsp"/>
 
 </body>
 </html>

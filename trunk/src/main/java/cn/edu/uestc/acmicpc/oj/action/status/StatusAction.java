@@ -16,6 +16,7 @@ import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ICodeDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.Code;
+import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.view.impl.CodeView;
 import cn.edu.uestc.acmicpc.db.view.impl.StatusView;
@@ -140,6 +141,32 @@ public class StatusAction extends BaseAction
             Code code = status.getCodeByCodeId();
             json.put("result", "success");
             json.put("code", new CodeView(code));
+        } catch (AppException e) {
+            json.put("result", "error");
+            json.put("error_msg", e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            json.put("result", "error");
+            json.put("error_msg", "Unknown exception occurred.");
+        }
+        return JSON;
+    }
+
+    @LoginPermit(NeedLogin = true)
+    public String toCEInformation() {
+        try {
+            if (statusId == null)
+                throw new AppException("Empty status id!");
+            Status status = statusDAO.get(statusId);
+            if (status == null)
+                throw new AppException("No such code!");
+            if (currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal() && status.getUserByUserId() != currentUser)
+                throw new AppException("You can't view others' CE information!");
+            CompileInfo compileInfo = status.getCompileInfoByCompileInfoId();
+            if (compileInfo == null)
+                throw new AppException("No CE information!");
+            json.put("result", "success");
+            json.put("CEInformation", compileInfo.getContent());
         } catch (AppException e) {
             json.put("result", "error");
             json.put("error_msg", e.getMessage());

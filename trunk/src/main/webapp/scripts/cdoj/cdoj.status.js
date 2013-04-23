@@ -42,20 +42,24 @@ function getProblemId(problemId) {
     return html;
 }
 
-function getJudgeResponse(returnType, returnTypeId) {
-    var html = $('<td>' + returnType + '</td>');
+function getJudgeResponse(returnType, returnTypeId, statusId, userName) {
+    var html = $('<td></td>');
     if (returnTypeId == 0)
         html.addClass('status-querying');
     else if (returnTypeId == 1)
         html.addClass('status-accept');
     else
         html.addClass('status-error');
+    if (returnTypeId == 7 && (currentUserType == 1 || userName == currentUser))
+        html.append($('<a id="compileInfo" href="#" statusId="' + statusId +'">' + returnType + '</a>'));
+    else
+        html.append(returnType);
     return html;
 }
 
 function getCodeUrl(length, statusId, userName) {
     var html = $('<span style="margin-right: 8px;"></span>');
-    if (userName == currentUser)
+    if (currentUserType == 1 || userName == currentUser)
         html.append($('<a id="codeHref" href="#" statusId="' + statusId + '">' + length + ' B</a>'));
     else
         html.append(length + ' B');
@@ -93,7 +97,7 @@ function getHTML(value) {
     html.append(getStatusId(value.statusId));
     html.append(getUserName(value.userName));
     html.append(getProblemId(value.problemId));
-    html.append(getJudgeResponse(value.returnType, value.returnTypeId));
+    html.append(getJudgeResponse(value.returnType, value.returnTypeId, value.statusId, value.userName));
     html.append(getLength(value.length, value.language, value.statusId, value.userName));
     html.append(getTimeCost(value.timeCost));
     html.append(getMemoryCost(value.memoryCost));
@@ -114,7 +118,24 @@ function blindCodeHref() {
             codeViewer.append(data.code.content);
             prettyPrint();
             codeModal.modal();
-            console.log(id, data);
+        });
+        return false;
+    });
+}
+
+
+function blindCompileInfo() {
+    $('#compileInfo').live('click', function () {
+        var id = $(this).attr('statusId');
+        $.post('/status/compileInfo/' + id, function (data) {
+            var compileInfoModal = $('#compileInfoModal');
+            var compileInfoModalLabel = $('#compileInfoModalLabel');
+            var compileInfoViewer = $('#compileInfoViewer');
+            compileInfoModalLabel.empty();
+            compileInfoModalLabel.append('Compilation Error Information');
+            compileInfoViewer.empty();
+            compileInfoViewer.append(data.CEInformation);
+            compileInfoModal.modal();
         });
         return false;
     });
@@ -147,6 +168,7 @@ function refreshStatusList(condition) {
         });
 
         blindCodeHref();
+        blindCompileInfo();
     });
 }
 
