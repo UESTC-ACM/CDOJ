@@ -71,7 +71,9 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <!-- TODO src missing? -->
                 <img id="userAvatar" email="<s:property value="currentUser.email"/>"/>
-                <span id="currentUser"><s:property value="currentUser.userName"/></span>
+                <span id="currentUser" type="<s:property value="currentUser.type"/>">
+                    <s:property value="currentUser.userName"/>
+                </span>
                 <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">

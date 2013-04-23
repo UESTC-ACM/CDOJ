@@ -35,5 +35,8 @@
         <action name="code/*" class="statusAction" method="toCode">
             <param name="statusId">{1}</param>
         </action>
+        <action name="compileInfo/*" class="statusAction" method="toCEInformation">
+            <param name="statusId">{1}</param>
+        </action>
     </package>
 </struts>

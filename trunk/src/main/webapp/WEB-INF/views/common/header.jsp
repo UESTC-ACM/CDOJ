@@ -54,6 +54,7 @@
     <script src="<s:url value="/scripts/bootstrap.min.js"/>"></script>
     <script src="<s:url value="/scripts/prettify.js"/>"></script>
 
+    <script src="<s:url value="/scripts/cdoj/cdoj.util.global.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.prettify.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.common.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.validate.js"/>"></script>

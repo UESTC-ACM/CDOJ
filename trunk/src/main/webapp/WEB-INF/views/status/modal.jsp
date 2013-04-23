@@ -48,5 +48,19 @@
         </div>
     </div>
 </div>
+
+<!-- Compile Info Modal -->
+<div id="compileInfoModal" class="modal hide fade modal-large" tabindex="-1" role="dialog" aria-labelledby="compileInfoModal" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="compileInfoModalLabel"></h3>
+    </div>
+    <div class="modal-body-long">
+        <div>
+            <pre id="compileInfoViewer"></pre>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

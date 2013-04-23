@@ -60,8 +60,8 @@
             </form>
         </div>
         <div class="modal-footer">
-            <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
             <a href="#" class="btn btn-primary">Login</a>
+            <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
         </div>
     </div>
 
@@ -122,8 +122,8 @@
         </div>
 
         <div class="modal-footer">
-            <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
             <a href="#" class="btn btn-primary">Register</a>
+            <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
         </div>
     </div>
 </s:if>
