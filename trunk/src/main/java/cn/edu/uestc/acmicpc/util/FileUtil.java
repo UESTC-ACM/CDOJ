@@ -134,4 +134,19 @@ public class FileUtil {
             file.delete();
         }
     }
+
+    /**
+     * Get file's name without file extension.
+     *
+     * @param file file entity
+     * @return file's name
+     */
+    public static String getFileName(File file) {
+        String fileName = file.getName();
+        int idx = fileName.lastIndexOf('.');
+        if (idx == -1)
+            return fileName;
+        else
+            return fileName.substring(0, idx);
+    }
 }
