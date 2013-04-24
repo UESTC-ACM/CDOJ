@@ -203,19 +203,20 @@ public class Judge implements Runnable, SettingsAware {
         }
 
         if (judgeItem.status.getResult() == Global.OnlineJudgeReturnType.OJ_CE.ordinal()) {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
             try {
                 BufferedReader br = new BufferedReader(new FileReader(workPath + "/temp/stderr_compiler.txt"));
                 String line;
                 while ((line = br.readLine()) != null) {
                     line = line.replace(workPath + "/temp/" + judgeItem.getSourceName(), "");
-                    sb.append(line).append('\n');
+                    stringBuilder.append(line).append('\n');
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
             judgeItem.compileInfo = new CompileInfo();
-            judgeItem.compileInfo.setContent(sb.toString());
+            judgeItem.compileInfo.setContent(
+                    stringBuilder.toString().substring(stringBuilder.toString().indexOf(':') + 1));
         } else judgeItem.compileInfo = null;
 
         judgeItem.update();
