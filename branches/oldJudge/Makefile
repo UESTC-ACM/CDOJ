@@ -9,7 +9,6 @@ all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(LD) $(OBJECTS) -o $@ $(LDFLAGS)
 	sudo chown root:root $(TARGET)
-	sudo chmod 4755 $(TARGET)
 #sudo cp pyloncore ~/pylon/work/fish/
 
 objs/%.o: src/%.cc include/*.h
@@ -21,4 +20,5 @@ clean:
 install:
 	sudo cp $(TARGET) ../../trunk/src/main/webapp/WEB-INF/work/fish/
 	sudo cp $(TARGET) ../../trunk/src/main/webapp/WEB-INF/work/mzry1992/
-
+	sudo chmod 4755 ../../trunk/src/main/webapp/WEB-INF/work/fish/pyloncore
+	sudo chmod 4755 ../../trunk/src/main/webapp/WEB-INF/work/mzry1992/pyloncore

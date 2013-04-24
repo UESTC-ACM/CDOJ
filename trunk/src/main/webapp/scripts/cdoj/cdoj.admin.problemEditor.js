@@ -93,6 +93,7 @@ $(document).ready(function () {
             editors[editorId] = new EpicEditor(epicEditorOpts).load();
         }
         else {
+            epicEditorOpts.problemId = problemId;
             epicEditorOpts.file.name = editorId+problemId;
             var oldContent = $('#'+editorId)[0].innerHTML.toString();
             oldContent = js.lang.String.decodeHtml(oldContent);
