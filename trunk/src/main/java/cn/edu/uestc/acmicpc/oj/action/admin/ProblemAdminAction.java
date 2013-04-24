@@ -25,6 +25,7 @@ package cn.edu.uestc.acmicpc.oj.action.admin;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemListView;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemView;
@@ -135,15 +136,26 @@ public class ProblemAdminAction extends BaseAction
     @SuppressWarnings("SameReturnValue")
     @SkipValidation
     public String toProblemEditor() {
-        editorFlag = "new";
-        if (targetProblemId != null) {
+        if (targetProblemId == null) {
+            try {
+                ProblemDTO problemDTO = new ProblemDTO();
+                Problem problem = problemDTO.getEntity();
+                problemDAO.add(problem);
+                targetProblemId = problem.getProblemId();
+                if (targetProblemId == null)
+                    throw new AppException("Add new problem error!");
+            } catch (AppException e) {
+                return redirect(getActionURL("/admin", "index"), e.getMessage());
+            }
+            return redirect(getActionURL("/admin", "problem/editor/" + targetProblemId));
+        } else {
             try {
                 targetProblem = new ProblemView(problemDAO.get(targetProblemId));
                 if (targetProblem.getProblemId() == null)
                     throw new AppException("Wrong problem ID!");
                 editorFlag = "edit";
             } catch (AppException e) {
-                redirect(getActionURL("/admin", "index"), e.getMessage());
+                return redirect(getActionURL("/admin", "index"), e.getMessage());
             }
         }
         return SUCCESS;
