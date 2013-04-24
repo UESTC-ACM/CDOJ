@@ -72,8 +72,10 @@ public class ProblemView extends View<Problem> {
         super(problem);
         List<String> list = new LinkedList<>();
         Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
-        for (ProblemTag problemTag : problemTags) {
-            list.add(StringEscapeUtils.escapeHtml4(problemTag.getTagByTagId().getName()));
+        if (problemTags != null) {
+            for (ProblemTag problemTag : problemTags) {
+                list.add(StringEscapeUtils.escapeHtml4(problemTag.getTagByTagId().getName()));
+            }
         }
         setTags(list);
     }

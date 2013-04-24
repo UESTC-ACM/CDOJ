@@ -68,21 +68,26 @@ function editVisible(id, value) {
     });
 }
 
-function getTitle(problemId, title, source, isSpj, isVisible) {
-    var html = '';
-
-    html += '<i id="visibleState" isVisible="' + isVisible + '"problemId="' + problemId + '" class="';
+function getTitle(problemId, title, source, isSpj, isVisible, tags) {
+    var html = $('<td></td>');
+    var titleInfo = '';
+    titleInfo += '<i id="visibleState" isVisible="' + isVisible + '"problemId="' + problemId + '" class="';
     if (isVisible == true)
-        html += visibleClass;
+        titleInfo += visibleClass;
     else
-        html += unVisibleClass;
-    html += ' pull-left tags"/>';
+        titleInfo += unVisibleClass;
+    titleInfo += ' pull-left tags"/>';
 
     if (isSpj == true)
-        html += '<span class="label label-important tags pull-right">SPJ</span>';
+        titleInfo += '<span class="label label-important tags pull-right">SPJ</span>';
 
-    html += '<a class="pull-left" href="/admin/problem/editor/' + problemId + '" title="Edit problem">'
+    titleInfo += '<a class="pull-left" href="/admin/problem/editor/' + problemId + '" title="Edit problem">'
         + title + '</a></span>';
+
+    titleInfo += getTags(tags);
+
+    html.append(titleInfo);
+
     return html;
 }
 
@@ -152,12 +157,17 @@ function refreshProblemList(condition) {
         tbody.find('tr').remove();
         // put user list
         $.each(problemList, function (index, value) {
-            var html = '<tr>' +
-                '<td>' + value.problemId + '</td>' +
-                '<td>' + getTitle(value.problemId, value.title, value.source, value.isSpj, value.isVisible) + getTags(value.tags) + '</td>' +
-                '<td class="difficult-span" problemId="' + value.problemId + '">' + getDifficulty(value.difficulty) + '</td>' +
-                '<td><a href="/admin/problem/data/' + value.problemId + '" title="Edit data"><i class="icon-cog"></i></a></td>' +
-                '</tr>';
+            var html = $('<tr></tr>');
+
+            if (value.title == '') {
+                value.title = 'Empty problem, please complete this problem first!';
+                html.addClass('alert alert-error');
+            }
+
+            html.append('<td>' + value.problemId + '</td>');
+            html.append(getTitle(value.problemId, value.title, value.source, value.isSpj, value.isVisible, value.tags));
+            html.append('<td class="difficult-span" problemId="' + value.problemId + '">' + getDifficulty(value.difficulty) + '</td>');
+            html.append('<td><a href="/admin/problem/data/' + value.problemId + '" title="Edit data"><i class="icon-cog"></i></a></td>');
             tbody.append(html);
         });
 

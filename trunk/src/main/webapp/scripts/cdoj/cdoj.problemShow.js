@@ -58,10 +58,10 @@ $(document).ready(function () {
 
     MathJax.Hub.Config({tex2jax: {inlineMath: [
         ['$', '$'],
-        ['\\(', '\\)']
+        ['$$', '$$']
     ],
         displayMath: [
-            ['\\[', '\\]'],
+            ['$', '$'],
             ['$$', '$$']
         ]}});
     MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
