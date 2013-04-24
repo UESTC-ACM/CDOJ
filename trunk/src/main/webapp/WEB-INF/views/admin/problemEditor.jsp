@@ -34,6 +34,7 @@
 <html>
 <head>
     <script src="<s:url value="/plugins/epiceditor/js/epiceditor.js"/>"></script>
+    <script src="<s:url value="/scripts/cdoj/cdoj.util.picture.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.admin.problemEditor.js"/>"></script>
     <title>Problem</title>
 </head>
@@ -122,6 +123,8 @@
         <input type="submit" id="submit" name="submit" value="Submit" class="btn btn-primary">
     </div>
 </div>
+
+<page:applyDecorator name="body" page="/WEB-INF/views/admin/pictureModal.jsp"/>
 
 </body>
 </html>
