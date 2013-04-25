@@ -23,6 +23,7 @@
 package cn.edu.uestc.acmicpc.oj.action.problem;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemView;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
@@ -84,11 +85,14 @@ public class ProblemAction extends BaseAction implements ProblemDAOAware {
     public String toProblem() {
         if (targetProblemId != null) {
             try {
-                targetProblem = new ProblemView(problemDAO.get(targetProblemId));
+                Problem problem = problemDAO.get(targetProblemId);
+                if (!problem.getIsVisible())
+                    throw new AppException("Problem doesn't exist");
+                targetProblem = new ProblemView(problem);
                 if (targetProblem.getProblemId() == null)
                     throw new AppException("Wrong problem ID!");
             } catch (AppException e) {
-                redirect(getActionURL("/problem", "index"), e.getMessage());
+                return redirect(getActionURL("/problem", "index"), e.getMessage());
             }
         }
         return SUCCESS;

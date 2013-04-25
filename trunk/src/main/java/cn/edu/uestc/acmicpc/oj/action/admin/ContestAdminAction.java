@@ -86,7 +86,7 @@ public class ContestAdminAction extends BaseAction implements ContestDAOAware {
                     throw new AppException("Wrong problem ID!");
                 editorFlag = "edit";
             } catch (AppException e) {
-                redirect(getActionURL("/admin", "index"), e.getMessage());
+                return redirect(getActionURL("/admin", "index"), e.getMessage());
             }
         }
         return SUCCESS;

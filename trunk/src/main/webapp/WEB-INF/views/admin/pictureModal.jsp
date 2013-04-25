@@ -36,17 +36,19 @@
 </head>
 <body>
 <!-- Picture Modal -->
-<div id="pictureModal" class="modal hide fade modal-large" tabindex="-1" role="dialog" aria-labelledby="pictureModal" aria-hidden="true">
+<div id="pictureModal" class="modal hide fade modal-picture-dialog" tabindex="-1" role="dialog" aria-labelledby="pictureModal" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="loginModalLabel">Insert picture.</h3>
+        <h3 id="loginModalLabel">Insert picture</h3>
     </div>
     <div class="modal-body">
-        <form class="form-horizontal" style="height: 380px;">
-            <fieldset>
-                <textarea class="submit-area" id="codeContent"></textarea>
-            </fieldset>
-        </form>
+        <div>
+            <ul id="pictureSelector" class="thumbnails">
+            </ul>
+        </div>
+        <div>
+            <pre id = "resultCode" type="no-prettify"></pre>
+        </div>
     </div>
     <div class="modal-footer">
 
