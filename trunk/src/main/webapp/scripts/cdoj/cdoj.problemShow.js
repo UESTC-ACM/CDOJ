@@ -56,13 +56,8 @@ $(document).ready(function () {
     //wired up problem submit modal
     setSubmitDialog();
 
-    MathJax.Hub.Config({tex2jax: {inlineMath: [
-        ['$', '$'],
-        ['$$', '$$']
-    ],
-        displayMath: [
-            ['$', '$'],
-            ['$$', '$$']
-        ]}});
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'],['\\[', '\\]']]}
+    });
     MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
 });
