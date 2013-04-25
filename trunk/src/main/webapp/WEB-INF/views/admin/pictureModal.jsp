@@ -46,12 +46,8 @@
             <ul id="pictureSelector" class="thumbnails">
             </ul>
         </div>
-        <div>
-            <pre id = "resultCode" type="no-prettify"></pre>
-        </div>
     </div>
     <div class="modal-footer">
-
         <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
     </div>
 </div>

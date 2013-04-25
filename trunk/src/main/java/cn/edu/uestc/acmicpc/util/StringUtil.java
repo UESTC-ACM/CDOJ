@@ -136,17 +136,19 @@ public class StringUtil {
         }
     }
 
+    private static Integer SEED = (int) 0;
+
     /**
      * generate a file name depend on current time
      *
      * @param filename basic file name
-     * @param seed     a random seed for suffix
      * @return the file name generated
      */
-    public static String generateFileName(String filename, Integer seed) {
+    public static String generateFileName(String filename) {
         DateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        SEED = (SEED + 1) & 65535;
         String formatDate = format.format(new Date())
-                + (seed == null ? "" : seed.toString());
+                + SEED.toString();
         return formatDate + getFilenameExt(filename);
     }
 

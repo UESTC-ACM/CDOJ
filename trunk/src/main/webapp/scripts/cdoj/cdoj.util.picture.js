@@ -34,13 +34,22 @@ PictureDialog = function (userOptions) {
 
     var modal = $('#pictureModal');
     var pictureSelector = $('#pictureSelector');
-    var resultCode = $('#resultCode');
 
-    function GetPictureNode() {
-        var img = $('<img class="thumbnailPicture" src="http://placehold.it/160x120" alt=""/>');
+    function GetPictureNode(picture) {
+        var img = $('<img class="thumbnail-picture" src="' + picture.url + '" alt=""/>');
         var href = $('<a href="#" class="thumbnail"></a>');
+        if (picture.selected)
+            href.addClass('alert alert-success');
         var result = $('<li class="span2"></li>');
         result.append(href.append(img));
+        return result;
+    }
+
+    function GetUploadNode() {
+        var img = $('<img class="thumbnail-picture" src="' + '/images/upload.png' + '" alt=""/>');
+        var btn = $('<div id="btnUpload" class="thumbnail"></a>');
+        var result = $('<li class="span2"></li>');
+        result.append(btn.append(img));
         return result;
     }
 
@@ -51,12 +60,67 @@ PictureDialog = function (userOptions) {
         return '![' + title + '](' + url + ')';
     }
 
-    var pictureList = null;
+    var pictureList;
+
+    function BlindUploadBtn() {
+        var uploadBtn = pictureSelector.find('#btnUpload');
+        var uploadUrl = '/admin/problem/uploadProblemPicture/' + options.problemId;
+        var uploader = new qq.FineUploaderBasic({
+            button: uploadBtn[0],
+        //uploadBtn.fineUploader({
+            request: {
+                endpoint: uploadUrl,
+                inputName: 'uploadFile'
+            },
+            validation: {
+                allowedExtensions: ['jpeg', 'jpg', 'gif', 'png']
+            },
+            callbacks: {
+                onComplete: function(id, fileName, responseJSON) {
+                    if (responseJSON.success) {
+                        pictureList.push({
+                            url: responseJSON.uploadedFileUrl,
+                            selected: false
+                        });
+                    } else {
+                        alert('Upload ' + fileName + 'failed, reason: ' + responseJSON.error);
+                    }
+                    Refresh();
+                }
+            }
+        });
+
+        uploadBtn = pictureSelector.find('#btnUpload :file');
+        uploadBtn.css('width', '152px');
+        uploadBtn.css('height', '130px');
+        console.log(uploadBtn);
+    }
+
+    function Refresh() {
+        pictureSelector.empty();
+        pictureSelector.append(GetUploadNode());
+        $.each(pictureList, function(){
+            pictureSelector.append(GetPictureNode(this));
+        });
+        BlindUploadBtn();
+    }
 
     function Init() {
-        pictureSelector.empty();
-        resultCode.empty();
-        pictureSelector.append(GetPictureNode());
+        pictureList = [];
+        var url = '/admin/problem/getUploadedPictures/' + options.problemId;
+        $.post(url, function(data){
+            if (data.success) {
+                $.each(data.pictures, function(){
+                    pictureList.push({
+                        url: this,
+                        selected: true
+                    });
+                });
+            } else {
+                alert(data.error);
+            }
+            Refresh();
+        });
     }
 
     Init();

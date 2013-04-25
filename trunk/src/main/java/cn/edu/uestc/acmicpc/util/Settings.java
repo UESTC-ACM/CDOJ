@@ -72,6 +72,11 @@ public class Settings implements ApplicationContextAware {
     public String SETTING_UPLOAD_FOLDER;
 
     /**
+     * Problems' pictures store folder
+     */
+    public String SETTING_PROBLEM_PICTURE_FOLDER;
+
+    /**
      * Judge core's name.
      */
     public String JUDGE_JUDGE_CORE;
@@ -156,6 +161,7 @@ public class Settings implements ApplicationContextAware {
         SETTING_UPLOAD_SIZE = Integer.valueOf((String) getConfig("setting", "uploadSize", "value"));
         SETTING_UPLOAD_TYPES = (String) getConfig("setting", "uploadTypes", "value");
         SETTING_UPLOAD_FOLDER = getAbsolutePath((String) getConfig("setting", "uploadFolder", "value"));
+        SETTING_PROBLEM_PICTURE_FOLDER = getAbsolutePath((String) getConfig("setting", "problemPictureFolder", "value"));
 
         JUDGE_JUDGE_CORE = (String) getConfig("judge", "judgeCore", "value");
         JUDGE_DATA_PATH = getAbsolutePath((String) getConfig("judge", "dataPath", "value"));
