@@ -206,7 +206,9 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
             Problem problem = null;
             if (problemDTO.getProblemId() != null) { //edit
                 problem = problemDAO.get(problemDTO.getProblemId());
+                System.out.println("before updated: " + problem.getTitle());
                 problemDTO.updateEntity(problem);
+                System.out.println("after updated: " + problem.getTitle());
             }
             if (problem == null)
                 throw new AppException("No such problem!");
