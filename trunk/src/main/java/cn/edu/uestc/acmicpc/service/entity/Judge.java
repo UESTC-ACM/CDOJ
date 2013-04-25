@@ -208,15 +208,16 @@ public class Judge implements Runnable, SettingsAware {
                 BufferedReader br = new BufferedReader(new FileReader(workPath + "/temp/stderr_compiler.txt"));
                 String line;
                 while ((line = br.readLine()) != null) {
-                    line = line.replace(workPath + "/temp/" + judgeItem.getSourceName(), "");
+                    if (line.trim().startsWith("/home/")) {
+                        line = line.substring(line.indexOf(judgeItem.getSourceName()));
+                    }
                     stringBuilder.append(line).append('\n');
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
             judgeItem.compileInfo = new CompileInfo();
-            judgeItem.compileInfo.setContent(
-                    stringBuilder.toString().substring(stringBuilder.toString().indexOf(':') + 1));
+            judgeItem.compileInfo.setContent(stringBuilder.toString());
         } else judgeItem.compileInfo = null;
 
         judgeItem.update();
