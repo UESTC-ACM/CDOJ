@@ -44,7 +44,7 @@ import java.util.Map;
 import java.util.zip.ZipFile;
 
 /**
- * description
+ * Action for manage problem's data and information.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */

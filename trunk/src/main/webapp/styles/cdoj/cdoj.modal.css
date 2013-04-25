@@ -25,6 +25,10 @@
     left: 36%;
 }
 
+.modal-picture-dialog {
+    width: 890px;
+    left: 42%;
+}
 .modal-body-long {
     position: relative;
     max-height: 600px;

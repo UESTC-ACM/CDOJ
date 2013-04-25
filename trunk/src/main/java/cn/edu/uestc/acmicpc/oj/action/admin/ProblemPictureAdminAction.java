@@ -19,47 +19,40 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+package cn.edu.uestc.acmicpc.oj.action.admin;
+
+import cn.edu.uestc.acmicpc.oj.action.file.FileUploadAction;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+
 /**
- * Tools for insert picture.
+ * Action for manage problem's picture.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
  */
+public class ProblemPictureAdminAction extends FileUploadAction {
 
-PictureDialog = function (userOptions) {
-    var options = mergeOptions({
-            problemId: undefined
-        },
-        userOptions);
+    private Integer targetProblemId;
 
-    var modal = $('#pictureModal');
-    var pictureSelector = $('#pictureSelector');
-    var resultCode = $('#resultCode');
-
-    function GetPictureNode() {
-        var img = $('<img class="thumbnailPicture" src="http://placehold.it/160x120" alt=""/>');
-        var href = $('<a href="#" class="thumbnail"></a>');
-        var result = $('<li class="span2"></li>');
-        result.append(href.append(img));
-        return result;
+    public Integer getTargetProblemId() {
+        return targetProblemId;
     }
 
-    /**
-     * @return {string}
-     */
-    function GetMarkDownCode(title, url) {
-        return '![' + title + '](' + url + ')';
+    public void setTargetProblemId(Integer targetProblemId) {
+        this.targetProblemId = targetProblemId;
     }
 
-    var pictureList = null;
+    public String toPictureList() {
+        try {
+            if (targetProblemId == null)
+                throw new AppException("Error, target problem id is null!");
 
-    function Init() {
-        pictureSelector.empty();
-        resultCode.empty();
-        pictureSelector.append(GetPictureNode());
+        } catch (AppException e) {
+            json.put("error", e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            json.put("error", "Unknown exception occurred.");
+        }
+        return JSON;
     }
 
-    Init();
-
-    modal.modal();
-};
+}

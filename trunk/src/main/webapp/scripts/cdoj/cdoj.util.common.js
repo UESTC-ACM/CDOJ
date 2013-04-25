@@ -30,7 +30,6 @@
 function mergeOptions(options,userOptions) {
     if (userOptions != undefined) {
         $.each(userOptions,function(index,value) {
-            if (options[index] != undefined)
                 options[index] = value;
         });
     }
