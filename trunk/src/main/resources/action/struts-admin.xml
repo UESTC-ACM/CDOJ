@@ -61,6 +61,13 @@
         <action name="updateProblemData/*" class="problemDataAdminAction" method="updateProblemData">
             <param name="targetProblemId">{1}</param>
         </action>
+
+        <action name="uploadProblemPicture/*" class="problemPictureAdminAction" method="uploadPicture">
+            <param name="targetProblemId">{1}</param>
+        </action>
+        <action name="getUploadedPictures/*" class="problemPictureAdminAction" method="toPictureList">
+            <param name="targetProblemId">{1}</param>
+        </action>
     </package>
     <package name="contestAdmin" namespace="/admin/contest" extends="admin">
         <action name="list" class="contestAdminAction" method="toContestList">

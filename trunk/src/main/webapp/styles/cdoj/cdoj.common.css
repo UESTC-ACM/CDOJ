@@ -110,7 +110,7 @@ body {
     font-size: 8pt;
 }
 
-.thumbnailPicture {
-    width: 100px;
-    height: 100px;
+.thumbnail-picture {
+    width: 160px;
+    height: 120px;
 }

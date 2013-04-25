@@ -29,6 +29,7 @@
             in;out;jpg;jpeg;png;gif;doc;docx;xls;xlsx;ppt;pptx;pdf;rar;zip;
         </item>
         <item name="uploadFolder" description="upload files store folder">/uploads/</item>
+        <item name="problemPictureFolder" description="problems' pictures store folder">/images/problem/</item>
     </setting>
     <setting name="judge">
         <item name="judgeCore" description="judge core name">pyloncore</item>

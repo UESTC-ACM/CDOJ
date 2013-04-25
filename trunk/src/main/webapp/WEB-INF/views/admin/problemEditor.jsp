@@ -33,6 +33,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <page:applyDecorator name="head" page="/WEB-INF/views/common/fileUploaderHeader.jsp"/>
     <script src="<s:url value="/plugins/epiceditor/js/epiceditor.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.picture.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.admin.problemEditor.js"/>"></script>
