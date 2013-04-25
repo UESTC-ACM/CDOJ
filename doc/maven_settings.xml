@@ -247,7 +247,7 @@ under the License.
     <profile>
     	<id>compiler</id>
 	<properties>
-		<JAVA_HOME>/opt/java</JAVA_HOME>
+		<JAVA_HOME>/lib/jvm/java-7-openjdk/</JAVA_HOME>
 	</properties>
     </profile>
   </profiles>
