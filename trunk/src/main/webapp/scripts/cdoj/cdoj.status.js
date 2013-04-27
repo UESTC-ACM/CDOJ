@@ -120,6 +120,11 @@ function blindCodeHref() {
             str = '<pre class="prettyprint linenums">' + str + '</pre>'
             codeViewer.append(str);
 
+            var mult = 0.95;
+            if (Sys.ie)
+                mult = 0.6;
+
+            codeViewer.css('max-height', Math.min(600, $(window).height() * mult));
             prettyPrint();
             codeModal.modal();
         });
