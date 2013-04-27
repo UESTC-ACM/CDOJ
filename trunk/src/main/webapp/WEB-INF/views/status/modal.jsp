@@ -42,10 +42,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="codeModalLabel"></h3>
     </div>
-    <div class="modal-body-long">
-        <div>
-            <pre id="codeViewer" class="prettyprint linenums"></pre>
-        </div>
+    <div class="modal-body-long" id="codeViewer">
     </div>
 </div>
 
