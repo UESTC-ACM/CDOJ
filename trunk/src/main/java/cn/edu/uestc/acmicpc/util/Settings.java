@@ -91,6 +91,11 @@ public class Settings implements ApplicationContextAware {
      */
     public String JUDGE_TEMP_PATH;
 
+    public String EMAIL_USERNAME;
+    public String EMAIL_PASSWORD;
+    public String EMAIL_STMP_SERVER;
+    public String EMAIL_ADDRESS;
+
     /**
      * Judge information list
      */
@@ -168,15 +173,10 @@ public class Settings implements ApplicationContextAware {
         JUDGE_TEMP_PATH = getAbsolutePath((String) getConfig("judge", "tempPath", "value"));
         JUDGE_LIST = (List<Map<String, String>>) getConfig("judge", "judges");
 
-//        System.out.println(SETTING_ENCODING);
-//        System.out.println(SETTING_UPLOAD_SIZE);
-//        System.out.println(SETTING_UPLOAD_TYPES);
-//        System.out.println(SETTING_UPLOAD_FOLDER);
-//
-//        System.out.println(JUDGE_JUDGE_CORE);
-//        System.out.println(JUDGE_TEMP_PATH);
-//        System.out.println(JUDGE_DATA_PATH);
-//        System.out.println(JUDGE_LIST);
+        EMAIL_ADDRESS = (String) getConfig("email", "address", "value");
+        EMAIL_USERNAME = (String) getConfig("email", "username", "value");
+        EMAIL_PASSWORD = (String) getConfig("email", "password", "value");
+        EMAIL_STMP_SERVER = (String) getConfig("email", "stmpServer", "value");
     }
 
     /**
