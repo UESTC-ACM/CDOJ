@@ -181,6 +181,7 @@ public class User implements Serializable {
         this.lastLogin = lastLogin;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -272,6 +273,17 @@ public class User implements Serializable {
 
     public void setStatusesByUserId(Collection<Status> statusesByUserId) {
         this.statusesByUserId = statusesByUserId;
+    }
+
+    private Collection<UserSerialKey> userSerialKeysByUserId;
+
+    @OneToMany(mappedBy = "userByUserId")
+    public Collection<UserSerialKey> getUserSerialKeysByUserId() {
+        return userSerialKeysByUserId;
+    }
+
+    public void setUserSerialKeysByUserId(Collection<UserSerialKey> userSerialKeysByUserId) {
+        this.userSerialKeysByUserId = userSerialKeysByUserId;
     }
 
     private Department departmentByDepartmentId;

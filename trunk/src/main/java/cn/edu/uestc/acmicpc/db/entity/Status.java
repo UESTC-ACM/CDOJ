@@ -128,6 +128,7 @@ public class Status implements Serializable {
         this.caseNumber = caseNumber;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

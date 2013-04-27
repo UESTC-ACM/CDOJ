@@ -154,6 +154,7 @@ public class Article implements Serializable {
         this.visible = visible;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

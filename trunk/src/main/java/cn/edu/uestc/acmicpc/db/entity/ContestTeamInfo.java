@@ -192,6 +192,7 @@ public class ContestTeamInfo implements Serializable {
         this.state = state;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

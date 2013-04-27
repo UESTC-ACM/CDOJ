@@ -89,6 +89,7 @@ public class Language implements Serializable {
         this.param = param;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

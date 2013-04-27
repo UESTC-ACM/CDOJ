@@ -299,6 +299,7 @@ public class Problem implements Serializable {
         this.difficulty = difficulty;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

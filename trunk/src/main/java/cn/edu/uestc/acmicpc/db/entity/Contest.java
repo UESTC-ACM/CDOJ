@@ -129,6 +129,7 @@ public class Contest implements Serializable {
         isVisible = visible;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
