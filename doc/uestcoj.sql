@@ -369,6 +369,24 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`contestTeamInfo` (
   UNIQUE INDEX `teamId_UNIQUE` (`teamId` ASC) )
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `uestcoj`.`userSerialKey`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `uestcoj`.`userSerialKey` (
+  `userSerialKeyId` INT NOT NULL AUTO_INCREMENT ,
+  `userId` INT NOT NULL ,
+  `serialKey` VARCHAR(128) NOT NULL ,
+  `time` DATETIME NOT NULL ,
+  PRIMARY KEY (`userSerialKeyId`) ,
+  UNIQUE INDEX `userSerialKeyId_UNIQUE` (`userSerialKeyId` ASC) ,
+  INDEX `FK_userId_on_user_idx` (`userId` ASC) ,
+  CONSTRAINT `FK_userId_on_user`
+    FOREIGN KEY (`userId` )
+    REFERENCES `uestcoj`.`user` (`userId` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
 USE `uestcst` ;
 
 -- -----------------------------------------------------
