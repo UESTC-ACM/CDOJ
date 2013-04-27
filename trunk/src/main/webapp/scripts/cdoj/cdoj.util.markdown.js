@@ -48,10 +48,13 @@ function markdown() {
         //IE7 and IE8 not support .trim() method.
         md = js.lang.String.trim(md);
 
-        //unescape all characters
-        md = js.lang.String.decodeHtml(md);
+        var markedHTML = $(marked(md));
 
-        var markedHTML = marked(md);
         $(this).empty().append(markedHTML);
+
+        $.each($(this).find('pre'), function(){
+            //unescape all characters in <pre></pre>
+            $(this)[0].innerHTML = js.lang.String.decodeHtml($(this)[0].innerHTML);
+        });
     })
 }
