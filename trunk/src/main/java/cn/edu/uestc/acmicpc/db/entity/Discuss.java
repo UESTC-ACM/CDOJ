@@ -77,6 +77,7 @@ public class Discuss implements Serializable {
         this.time = time;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

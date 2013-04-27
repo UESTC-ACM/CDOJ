@@ -102,6 +102,7 @@ public class Message implements Serializable {
         isOpened = opened;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

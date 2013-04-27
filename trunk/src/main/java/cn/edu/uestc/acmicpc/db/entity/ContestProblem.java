@@ -62,6 +62,7 @@ public class ContestProblem implements Serializable {
         this.order = order;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

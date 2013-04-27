@@ -62,6 +62,7 @@ public class ContestUser implements Serializable {
         this.status = status;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
