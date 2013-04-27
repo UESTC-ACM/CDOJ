@@ -54,7 +54,13 @@ function markdown() {
 
         $.each($(this).find('pre'), function(){
             //unescape all characters in <pre></pre>
-            $(this)[0].innerHTML = js.lang.String.decodeHtml($(this)[0].innerHTML);
+            var str = $(this)[0].innerHTML;
+            str = '<pre>' + str + '</pre>'
+            str = js.lang.String.decodeHtml(str);
+            $(this).replaceWith($('<div class="markdown-temp"></div>'));
+            var nowDiv = $('.markdown-temp');
+            $(nowDiv).append(str);
+            $(nowDiv).removeClass('markdown-temp');
         });
     })
 }

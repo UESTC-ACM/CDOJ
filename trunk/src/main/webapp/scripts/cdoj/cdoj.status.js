@@ -115,7 +115,11 @@ function blindCodeHref() {
             codeLabel.empty();
             codeLabel.append('Code ' + data.code.codeId);
             codeViewer.empty();
-            codeViewer.append(data.code.content);
+
+            var str = data.code.content;
+            str = '<pre class="prettyprint linenums">' + str + '</pre>'
+            codeViewer.append(str);
+
             prettyPrint();
             codeModal.modal();
         });
