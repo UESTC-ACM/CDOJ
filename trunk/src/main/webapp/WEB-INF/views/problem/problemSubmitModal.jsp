@@ -42,7 +42,7 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="loginModalLabel">Submit ${targetProblem.title}</h3>
-        <span style="display: none" id="submitProblemId" value="${targetProblem.problemId}"/>
+        <span style="display: none" id="submitProblemId" value="${targetProblem.problemId}"></span>
     </div>
     <div class="modal-body">
         <form class="form-horizontal" style="height: 380px;">
