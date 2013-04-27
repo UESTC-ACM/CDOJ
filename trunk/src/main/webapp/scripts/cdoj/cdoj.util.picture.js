@@ -35,11 +35,14 @@ PictureDialog = function (userOptions) {
     var modal = $('#pictureModal');
     var pictureSelector = $('#pictureSelector');
 
-    function GetPictureNode(picture) {
+    function GetPictureNode(id, picture) {
         var img = $('<img class="thumbnail-picture" src="' + picture.url + '" alt=""/>');
-        var href = $('<a href="#" class="thumbnail"></a>');
+        var href = $('<a href="#" class="thumbnail picUploaded" value="' + id + '"></a>');
         if (picture.selected)
-            href.addClass('alert alert-success');
+        {
+            var selectFlag = $('<span class="badge badge-success" style="position: absolute; margin: 10px 0 0 100px; z-index: 9999;"><i class="icon-ok"></i></span>');
+            href.append(selectFlag);
+        }
         var result = $('<li class="span2"></li>');
         result.append(href.append(img));
         return result;
@@ -67,7 +70,6 @@ PictureDialog = function (userOptions) {
         var uploadUrl = '/admin/problem/uploadProblemPicture/' + options.problemId;
         var uploader = new qq.FineUploaderBasic({
             button: uploadBtn[0],
-        //uploadBtn.fineUploader({
             request: {
                 endpoint: uploadUrl,
                 inputName: 'uploadFile'
@@ -93,16 +95,56 @@ PictureDialog = function (userOptions) {
         uploadBtn = pictureSelector.find('#btnUpload :file');
         uploadBtn.css('width', '152px');
         uploadBtn.css('height', '130px');
-        console.log(uploadBtn);
+    }
+
+    function BlindSelectBtn() {
+        var picUploaded = pictureSelector.find('.picUploaded');
+        $.each(picUploaded, function(){
+            var id = $(this).attr('value');
+            $(this).live('click', function(){
+                pictureList[id].selected = !pictureList[id].selected;
+                Refresh();
+                return false;
+            });
+        });
+    }
+
+    function BlindInsertBtn() {
+        var insertBtn = modal.find('#btnInsert');
+        $(insertBtn).on('click', function(){
+            var select = [];
+            $.each(pictureList, function(){
+                if (this.selected == true)
+                    select.push(this);
+            });
+            var message = '';
+            if (select.length == 0) {
+                message = message + 'Please select at least one picture!';
+            } else {
+                $.each(select, function(id, data){
+                    if (id != 0)
+                        message = message + '\n';
+                    message = message + GetMarkDownCode('Title', data.url);
+                });
+            }
+            var resultModal = $('#resultModal');
+            var resultArea = resultModal.find('#resultArea');
+            resultArea.empty();
+            resultArea.append(message);
+            modal.modal('hide');
+            resultModal.modal();
+            return false;
+        });
     }
 
     function Refresh() {
         pictureSelector.empty();
         pictureSelector.append(GetUploadNode());
-        $.each(pictureList, function(){
-            pictureSelector.append(GetPictureNode(this));
+        $.each(pictureList, function(id, data){
+            pictureSelector.append(GetPictureNode(id, data));
         });
         BlindUploadBtn();
+        BlindSelectBtn();
     }
 
     function Init() {
@@ -113,7 +155,7 @@ PictureDialog = function (userOptions) {
                 $.each(data.pictures, function(){
                     pictureList.push({
                         url: this,
-                        selected: true
+                        selected: false
                     });
                 });
             } else {
@@ -121,6 +163,7 @@ PictureDialog = function (userOptions) {
             }
             Refresh();
         });
+        BlindInsertBtn();
     }
 
     Init();
