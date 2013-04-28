@@ -94,7 +94,7 @@ public abstract class BaseCondition implements ApplicationContextAware {
      * Spring application context.
      */
     @Autowired
-    private ApplicationContext applicationContext;
+    protected ApplicationContext applicationContext;
 
     /**
      * Method for user to invoke special columns
