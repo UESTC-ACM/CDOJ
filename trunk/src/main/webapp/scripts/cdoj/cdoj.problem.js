@@ -91,11 +91,12 @@ function refreshProblemList(condition) {
             html.append('<td>' + value.problemId + '</td>');
             html.append('<td>' + getTitle(value.problemId, value.title, value.source, value.isSpj, value.isVisible) + getTags(value.tags) + '</td>');
             html.append('<td>' + getDifficulty(value.difficulty) + '</td>');
-            html.append('<td><i class="icon-user"/>' + value.solved + '</td>');
+            var solved = $('<td><i class="icon-user"/>' + value.solved + '</td>');
             if (value.state == 1)
-                html.addClass('problem-state-accept');
+                solved.addClass('problem-state-accept');
             else if (value.state == 2)
-                html.addClass('problem-state-error');
+                solved.addClass('problem-state-error');
+            html.append(solved);
             tbody.append(html);
         });
 
