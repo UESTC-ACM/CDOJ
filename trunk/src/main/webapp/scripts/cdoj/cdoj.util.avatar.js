@@ -47,6 +47,8 @@
         $.each(this, function() {
             var self = $(this);
             var selfId = self.attr('id');
+            if (self.attr('size') != undefined)
+                options.size = self.attr('size');
             var result = $.gravatar(self.attr('email'), options)
                 .attr('id', selfId);
             self.replaceWith(result);

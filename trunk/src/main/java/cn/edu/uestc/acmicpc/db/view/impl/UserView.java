@@ -43,6 +43,7 @@ public class UserView extends View<User> {
     private String nickName;
     private String email;
     private String school;
+    private String department;
     private Integer departmentId;
     private String studentId;
     private Integer tried;
@@ -54,6 +55,7 @@ public class UserView extends View<User> {
     public UserView(User user) {
         super(user);
         setDepartmentId(user.getDepartmentByDepartmentId().getDepartmentId());
+        setDepartment(user.getDepartmentByDepartmentId().getName());
         setTypeName(Global.AuthenticationType.values()[user.getType()].getDescription());
     }
 
@@ -125,6 +127,15 @@ public class UserView extends View<User> {
     @Ignore
     public void setDepartmentId(Integer departmentId) {
         this.departmentId = departmentId;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    @Ignore
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     @SuppressWarnings("UnusedDeclaration")

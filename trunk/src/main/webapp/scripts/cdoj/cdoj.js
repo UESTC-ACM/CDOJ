@@ -35,7 +35,7 @@
         prettify();
 
         // get avatars
-        $('img#userAvatar').setAvatar({});
+        $('img[type=avatar]').setAvatar({});
 
         $("#registerModal").setDialog({
             callback: function() {
