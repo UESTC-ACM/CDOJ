@@ -74,6 +74,10 @@ body {
 .difficult-span {
     padding: 0;
 }
+.problem-state {
+    width:14px;
+    margin-right: 6px;
+}
 
 .sample {
     border-radius: 4px;
@@ -101,9 +105,15 @@ body {
 .status-accept {
     color: #468847;
 }
-
 .status-error {
     color: #b94a48;
+}
+
+.problem-state-accept {
+    background-color: #dff0d8;
+}
+.problem-state-error {
+    background-color: #f2dede;
 }
 
 #codeViewer {

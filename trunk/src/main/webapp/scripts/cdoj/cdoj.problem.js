@@ -40,7 +40,6 @@ var problemList;
 
 function getTitle(problemId, title, source, isSpj, isVisible) {
     var html = '';
-
     if (isSpj == true)
         html += '<span class="label label-important tags pull-right">SPJ</span>';
 
@@ -61,7 +60,7 @@ function getDifficulty(difficulty) {
     difficulty = Math.max(1, Math.min(difficulty, 5));
     var html = '';
     for (var i = 1; i <= difficulty; i++)
-        html += '<i class="difficulty-level icon-star pull-left" style="margin: 0px;" value="' + i + '"></i>';
+        html += '<i class="difficulty-level icon-star pull-left" style="margin: 2px 0 0 0;" value="' + i + '"></i>';
     return html;
 }
 
@@ -88,12 +87,15 @@ function refreshProblemList(condition) {
         tbody.find('tr').remove();
         // put user list
         $.each(problemList, function (index, value) {
-            var html = '<tr>' +
-                '<td>' + value.problemId + '</td>' +
-                '<td>' + getTitle(value.problemId, value.title, value.source, value.isSpj, value.isVisible) + getTags(value.tags) + '</td>' +
-                '<td>' + getDifficulty(value.difficulty) + '</td>' +
-                '<td><i class="icon-user"/>' + value.solved + '</td>'
-                '</tr>';
+            var html = $('<tr></tr>');
+            html.append('<td>' + value.problemId + '</td>');
+            html.append('<td>' + getTitle(value.problemId, value.title, value.source, value.isSpj, value.isVisible) + getTags(value.tags) + '</td>');
+            html.append('<td>' + getDifficulty(value.difficulty) + '</td>');
+            html.append('<td><i class="icon-user"/>' + value.solved + '</td>');
+            if (value.state == 1)
+                html.addClass('problem-state-accept');
+            else if (value.state == 2)
+                html.addClass('problem-state-error');
             tbody.append(html);
         });
 
