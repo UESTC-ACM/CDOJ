@@ -23,22 +23,22 @@ package cn.edu.uestc.acmicpc.oj.test.db;
  */
 
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.ITagDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.*;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.entity.Tag;
 import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
-import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.TagDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.*;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
+import org.hibernate.criterion.Projections;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -61,7 +61,7 @@ import java.util.Random;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:applicationContext-test.xml"})
 public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAware,
-        ProblemDAOAware, UserConditionAware {
+        ProblemDAOAware, UserConditionAware, StatusConditionAware, StatusDAOAware {
 
     @Ignore
     @Before
@@ -97,6 +97,9 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
     @Autowired
     private IUserDAO userDAO;
 
+    @Autowired
+    private IStatusDAO statusDAO;
+
     /**
      * DepartmentDAO entity
      */
@@ -114,6 +117,9 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
      */
     @Autowired
     private UserCondition userCondition;
+
+    @Autowired
+    private StatusCondition statusCondition;
 
     public void setProblemDAO(IProblemDAO problemDAO) {
         this.problemDAO = problemDAO;
@@ -295,6 +301,12 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
         return userCondition;
     }
 
+    /**
+     * test single user uniquly.
+     *
+     * @throws FieldNotUniqueException
+     * @throws AppException
+     */
     @Test
     public void testSingleUser() throws FieldNotUniqueException, AppException {
         User user = new User();
@@ -313,5 +325,38 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
         User check = userDAO.getEntityByUniqueField("userName", user.getUserName());
         if (check == null)
             userDAO.add(user);
+    }
+
+    /**
+     * Testing for fetch status group by problems.
+     *
+     * @throws AppException
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testStatusDAOWithDistinctProblem() throws AppException {
+        User user = userDAO.get(1);
+        statusCondition.setUserId(user.getUserId());
+        statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+        Condition condition = statusCondition.getCondition();
+        condition.addProjection(Projections.groupProperty("problemByProblemId"));
+        List<Status> results = (List<Status>) statusDAO.findAll(condition);
+        for (Status status : results)
+            System.out.println(status);
+    }
+
+    @Override
+    public void setStatusCondition(StatusCondition statusCondition) {
+        this.statusCondition = statusCondition;
+    }
+
+    @Override
+    public StatusCondition getStatusCondition() {
+        return statusCondition;
+    }
+
+    @Override
+    public void setStatusDAO(IStatusDAO statusDAO) {
+        this.statusDAO = statusDAO;
     }
 }

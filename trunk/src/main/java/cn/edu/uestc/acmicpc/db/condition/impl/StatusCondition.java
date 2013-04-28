@@ -92,14 +92,6 @@ public class StatusCondition extends BaseCondition implements UserConditionAware
      */
     private List<Global.OnlineJudgeReturnType> result = new LinkedList<>();
 
-    public Integer getIResult() {
-        return resultId;
-    }
-
-    public void setIResult(Integer iResult) {
-        this.resultId = iResult;
-    }
-
     @Exp(MapField = "statusId", Type = ConditionType.ge)
     public Integer getStartId() {
         return startId;

@@ -41,6 +41,8 @@
         <property name="userDAO" ref="userDAO"/>
         <property name="departmentDAO" ref="departmentDAO"/>
         <property name="problemDAO" ref="problemDAO"/>
+        <property name="userCondition" ref="userCondition"/>
+        <property name="statusCondition" ref="statusCondition"/>
     </bean>
     <bean id="aopTest" class="cn.edu.uestc.acmicpc.oj.test.db.AOPTest">
         <property name="userDAO" ref="userDAO"/>

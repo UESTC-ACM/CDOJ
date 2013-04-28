@@ -25,7 +25,6 @@ package cn.edu.uestc.acmicpc.oj.action.user;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
-import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
@@ -39,7 +38,10 @@ import com.opensymphony.xwork2.validator.annotations.*;
 import org.hibernate.criterion.Projections;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Login action for user toLogin.
@@ -123,16 +125,16 @@ public class LoginAction extends BaseAction
 
             Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
             statusCondition.setUserId(user.getUserId());
-            statusCondition.setIResult(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+            statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
             Condition condition = statusCondition.getCondition();
-            //TODO condition.addProjection(Projections.distinct(Projections.property("problemByProblemId")));
+            condition.addProjection(Projections.groupProperty("problemByProblemId"));
             List<Status> results = (List<Status>) statusDAO.findAll(condition);
             for (Status result : results)
                 problemStatus.put(result.getProblemByProblemId().getProblemId(), Global.AuthorStatusType.PASS);
 
-            statusCondition.setIResult(null);
+            statusCondition.setResultId(null);
             condition = statusCondition.getCondition();
-            //TODO condition.addProjection(Projections.distinct(Projections.property("problemByProblemId")));
+            condition.addProjection(Projections.groupProperty("problemByProblemId"));
             results = (List<Status>) statusDAO.findAll(condition);
             for (Status result : results)
                 if (!problemStatus.containsKey(result.getProblemByProblemId().getProblemId()))
