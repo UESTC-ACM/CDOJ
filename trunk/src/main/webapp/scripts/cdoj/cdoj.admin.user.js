@@ -70,7 +70,7 @@ function refreshUserList(condition) {
                 '<td>' + value.nickName + '</td>' +
                 '<td>' + value.email + '</td>' +
                 '<td>' + value.typeName + '</td>' +
-                '<td>' + value.lastLogin + '</td>' +
+                '<td class="cdoj-time">' + value.lastLogin + '</td>' +
                 '<td><a href="#" onclick="return editUserDialog(' + index + ')"><i class="icon-pencil"/></a></td>' +
                 '</tr>';
             tbody.append(html);
@@ -80,6 +80,9 @@ function refreshUserList(condition) {
         $('img#usersAvatar').setAvatar({
             size: 37
         });
+
+        // format time style
+        $('.cdoj-time').formatTimeStyle();
 
     });
 }

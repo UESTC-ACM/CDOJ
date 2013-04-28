@@ -37,6 +37,9 @@
         // get avatars
         $('img[type=avatar]').setAvatar({});
 
+        // format time style
+        $('.cdoj-time').formatTimeStyle();
+
         $("#registerModal").setDialog({
             callback: function() {
                 info=$("#registerModal").find(".form-horizontal").getFormData();
