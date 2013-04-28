@@ -63,6 +63,7 @@
     <script src="<s:url value="/scripts/cdoj/cdoj.util.string.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.ui.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.system.js"/>"></script>
+    <script src="<s:url value="/scripts/cdoj/cdoj.util.time.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.js"/>"></script>
 
 </head>

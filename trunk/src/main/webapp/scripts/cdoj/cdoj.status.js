@@ -33,7 +33,7 @@ function getStatusId(statusId) {
 }
 
 function getUserName(userName) {
-    var html = $('<td>' + userName + '</td>');
+    var html = $('<td><a href="/user/center/' + userName + '">' + userName + '</a></td>');
     return html;
 }
 
@@ -88,7 +88,7 @@ function getMemoryCost(memoryCost) {
 }
 
 function getTime(time) {
-    var html = $('<td>' + time + '</td>');
+    var html = $('<td class="cdoj-time">' + time + '</td>');
     return html;
 }
 
@@ -180,6 +180,9 @@ function refreshStatusList(condition) {
 
         blindCodeHref();
         blindCompileInfo();
+
+        // format time style
+        $('.cdoj-time').formatTimeStyle();
     });
 }
 

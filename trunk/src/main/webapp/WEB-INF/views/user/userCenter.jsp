@@ -50,16 +50,22 @@
                 <dt>Email</dt>
                 <dd><s:property value="targetUser.email"/></dd>
                 <dt>Last login</dt>
-                <dd><s:property value="targetUser.lastLogin"/></dd>
-                <dt>User type</dt>
-                <dd><s:property value="global.authenticationTypeList[targetUser.type]"/></dd>
+                <dd class="cdoj-time" type="milliseconds"><s:property value="targetUser.lastLogin.time"/></dd>
             </dl>
         </div>
     </div>
     <div id="userInfoRight" class="span3">
         <div id="userInfoSummary">
-            <img id="userAvatar-large" email="<s:property value="targetUser.email"/>" type="avatar" size="200"/>
+            <img id="userAvatar-large" email="<s:property value="targetUser.email"/>" type="avatar" size="100"/>
             <span class="userName-type<s:property value="targetUser.type"/>"><h4><s:property value="targetUser.userName"/></h4></span>
+            <ul class="userStates">
+                <li>
+                    <a href="#"><strong><s:property value="targetUser.tried"/></strong>Tried</a>
+                </li>
+                <li>
+                    <a href="#"><strong><s:property value="targetUser.solved"/></strong>Solved</a>
+                </li>
+            </ul>
         </div>
     </div>
     <div class="span10">

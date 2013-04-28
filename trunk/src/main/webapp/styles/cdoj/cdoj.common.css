@@ -129,7 +129,7 @@ body {
     text-align: center;
 }
 
-#userInfo {
+#userInfo, .userStates {
     display: block;
     line-height: 1;
     border: 1px solid #ddd;
@@ -141,11 +141,48 @@ body {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 
+ul.userStates {
+    list-style-type: none;
+    display: table;
+}
+
+.userStates li:first-child {
+    border: none;
+}
+
+.userStates li {
+    padding: 6px 0;
+    float: left;
+    border-left: 1px solid #ddd;
+    width: 100px;
+}
+
+.userStates strong {
+    margin-bottom: 6px;
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+}
+
+.userStates a {
+    color: gray;
+    text-decoration: none;
+}
+
+.userStates a:hover {
+    color: #08c;
+}
+
 #userInfoLeft {
     width: 613px;
 }
 #userInfoRight {
     margin-left: 0;
+}
+
+#userInfo {
+    height: 230px;
 }
 
 .userName-type1 {
@@ -159,6 +196,7 @@ body {
 .dl-userInfo {
     text-align: left;
     font-size: 16px;
+    margin-top: 6px;
 }
 .dl-userInfo:before, .dl-userInfo:after {
     display: table;
@@ -178,9 +216,9 @@ body {
     white-space: nowrap;
 }
 .dl-userInfo dt {
-    margin-top: 10px;
+    margin-top: 13px;
 }
 .dl-userInfo dd {
     margin-left: 120px;
-    margin-top: 10px;
+    margin-top: 13px;
 }
