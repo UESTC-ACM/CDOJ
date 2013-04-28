@@ -50,7 +50,7 @@
         <div id="pageInfo">
         </div>
 
-        <table class="table table-striped table-bordered">
+        <table class="table table-bordered">
             <thead>
             <tr>
                 <th style="width: 30px;">Id</th>

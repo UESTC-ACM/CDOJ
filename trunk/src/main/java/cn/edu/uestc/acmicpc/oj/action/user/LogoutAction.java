@@ -36,6 +36,7 @@ public class LogoutAction extends BaseAction {
     private static final long serialVersionUID = -4720877248873990818L;
 
     public String toLogout() {
+        session.remove("problemStatus");
         session.remove("userName");
         session.remove("password");
         session.remove("lastLogin");

@@ -25,6 +25,8 @@ package cn.edu.uestc.acmicpc.oj.action.user;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
@@ -37,10 +39,7 @@ import com.opensymphony.xwork2.validator.annotations.*;
 import org.hibernate.criterion.Projections;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Login action for user toLogin.
@@ -123,20 +122,22 @@ public class LoginAction extends BaseAction
             userDAO.update(user);
 
             Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
-            /*statusCondition.setUserId(user.getUserId());
+            statusCondition.setUserId(user.getUserId());
             statusCondition.setIResult(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
             Condition condition = statusCondition.getCondition();
-            condition.addProjection(Projections.distinct(Projections.property("problemByProblemId")));
-            List<Integer> results = (List<Integer>) statusDAO.findAll(condition);
-            for (Integer result : results)
-                problemStatus.put(result, Global.AuthorStatusType.PASS);
+            //TODO condition.addProjection(Projections.distinct(Projections.property("problemByProblemId")));
+            List<Status> results = (List<Status>) statusDAO.findAll(condition);
+            for (Status result : results)
+                problemStatus.put(result.getProblemByProblemId().getProblemId(), Global.AuthorStatusType.PASS);
+
             statusCondition.setIResult(null);
             condition = statusCondition.getCondition();
-            condition.addProjection(Projections.distinct(Projections.property("problemByProblemId")));
-            results = (List<Integer>) statusDAO.findAll(condition);
-            for (Integer result : results)
-                if (!problemStatus.containsKey(result))
-                    problemStatus.put(result, Global.AuthorStatusType.FAIL);*/
+            //TODO condition.addProjection(Projections.distinct(Projections.property("problemByProblemId")));
+            results = (List<Status>) statusDAO.findAll(condition);
+            for (Status result : results)
+                if (!problemStatus.containsKey(result.getProblemByProblemId().getProblemId()))
+                    problemStatus.put(result.getProblemByProblemId().getProblemId(), Global.AuthorStatusType.FAIL);
+
             session.put("problemStatus", problemStatus);
             session.put("userName", user.getUserName());
             session.put("password", user.getPassword());
