@@ -28,6 +28,10 @@
         <pattern>/admin/*</pattern>
     </decorator>
 
+    <decorator name="userCenter" page="decUserCenter.jsp">
+        <pattern>/user/center/*</pattern>
+    </decorator>
+
     <decorator name="body" page="decBody.jsp"/>
     <decorator name="head" page="decHead.jsp"/>
 

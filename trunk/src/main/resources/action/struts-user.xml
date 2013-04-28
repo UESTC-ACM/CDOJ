@@ -30,5 +30,9 @@
         <action name="login" class="loginAction" method="toLogin"/>
         <action name="logout" class="logoutAction" method="toLogout"/>
         <action name="register" class="registerAction" method="toRegister"/>
+        <action name="center/*" class="userCenterAction" method="toUserCenter">
+            <param name="targetUserName">{1}</param>
+            <result>/WEB-INF/views/user/userCenter.jsp</result>
+        </action>
     </package>
 </struts>

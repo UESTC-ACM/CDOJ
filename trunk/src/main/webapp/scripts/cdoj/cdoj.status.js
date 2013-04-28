@@ -188,10 +188,11 @@ $(document).ready(function () {
         "currentPage": null,
         "statusCondition.startId": undefined,
         "statusCondition.endId": undefined,
-        "statusCondition.userId": undefined,
+        "statusCondition.userName": undefined,
         "statusCondition.problemId": undefined,
         "statusCondition.languageId": undefined,
-        "statusCondition.contestId": undefined
+        "statusCondition.contestId": undefined,
+        "statusCondition.result": undefined
     }
 
     $('input#search').setButton({

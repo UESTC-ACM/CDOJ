@@ -114,3 +114,63 @@ body {
     width: 160px;
     height: 120px;
 }
+
+#userInfoSummary {
+    text-align: center;
+}
+
+#userInfo {
+    display: block;
+    line-height: 1;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+#userInfoLeft {
+    width: 613px;
+}
+#userInfoRight {
+    margin-left: 0;
+}
+
+.userName-type1 {
+    color: #b94a48;
+}
+
+.userName-type2 {
+    color: #3a87ad;
+}
+
+.dl-userInfo {
+    text-align: left;
+    font-size: 16px;
+}
+.dl-userInfo:before, .dl-userInfo:after {
+    display: table;
+    line-height: 0;
+    content: "";
+}
+.dl-userInfo:after {
+    clear: both;
+}
+.dl-userInfo dt {
+    float: left;
+    width: 100px;
+    overflow: hidden;
+    clear: left;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.dl-userInfo dt {
+    margin-top: 10px;
+}
+.dl-userInfo dd {
+    margin-left: 120px;
+    margin-top: 10px;
+}

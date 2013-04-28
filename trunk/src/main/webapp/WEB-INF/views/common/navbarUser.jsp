@@ -70,7 +70,7 @@
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <!-- TODO src missing? -->
-                <img id="userAvatar" email="<s:property value="currentUser.email"/>"/>
+                <img id="userAvatar" email="<s:property value="currentUser.email"/>" type="avatar"/>
                 <span id="currentUser" type="<s:property value="currentUser.type"/>">
                     <s:property value="currentUser.userName"/>
                 </span>
@@ -85,12 +85,11 @@
                         </s:a>
                     </li>
                 </s:if>
-
                 <li>
-                    <a href="#">
+                    <s:a action="center/%{currentUser.userName}" namespace="/user">
                         <i class="icon-home"></i>
                         User center
-                    </a>
+                    </s:a>
                 </li>
                 <li>
                     <a href="#">
