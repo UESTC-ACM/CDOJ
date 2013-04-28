@@ -26,7 +26,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`user` (
   `studentId` VARCHAR(50) NOT NULL ,
   `departmentId` INT NOT NULL ,
   `password` VARCHAR(40) NOT NULL COMMENT 'need to validate\\nuse SHA1 encoding' ,
-  `school` VARCHAR(50) NOT NULL DEFAULT '' ,
+  `school` VARCHAR(100) NOT NULL DEFAULT '' ,
   `nickName` VARCHAR(50) NOT NULL COMMENT 'length >= 3' ,
   `email` VARCHAR(100) NOT NULL COMMENT 'need to validate' ,
   `solved` INT NOT NULL DEFAULT 0 ,
