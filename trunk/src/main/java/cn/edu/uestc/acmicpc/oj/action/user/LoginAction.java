@@ -25,7 +25,7 @@ package cn.edu.uestc.acmicpc.oj.action.user;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
-import cn.edu.uestc.acmicpc.db.entity.Status;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
@@ -128,17 +128,17 @@ public class LoginAction extends BaseAction
             statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
             Condition condition = statusCondition.getCondition();
             condition.addProjection(Projections.groupProperty("problemByProblemId"));
-            List<Status> results = (List<Status>) statusDAO.findAll(condition);
-            for (Status result : results)
-                problemStatus.put(result.getProblemByProblemId().getProblemId(), Global.AuthorStatusType.PASS);
+            List<Problem> results = (List<Problem>) statusDAO.findAll(condition);
+            for (Problem result : results)
+                problemStatus.put(result.getProblemId(), Global.AuthorStatusType.PASS);
 
             statusCondition.setResultId(null);
             condition = statusCondition.getCondition();
             condition.addProjection(Projections.groupProperty("problemByProblemId"));
-            results = (List<Status>) statusDAO.findAll(condition);
-            for (Status result : results)
-                if (!problemStatus.containsKey(result.getProblemByProblemId().getProblemId()))
-                    problemStatus.put(result.getProblemByProblemId().getProblemId(), Global.AuthorStatusType.FAIL);
+            results = (List<Problem>) statusDAO.findAll(condition);
+            for (Problem result : results)
+                if (!problemStatus.containsKey(result.getProblemId()))
+                    problemStatus.put(result.getProblemId(), Global.AuthorStatusType.FAIL);
 
             session.put("problemStatus", problemStatus);
             session.put("userName", user.getUserName());

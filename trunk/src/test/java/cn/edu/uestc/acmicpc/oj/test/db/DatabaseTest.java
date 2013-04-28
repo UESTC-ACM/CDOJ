@@ -28,13 +28,13 @@ import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.*;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.entity.Tag;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.*;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
@@ -331,18 +331,22 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
      * Testing for fetch status group by problems.
      *
      * @throws AppException
+     * @throws FieldNotUniqueException
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testStatusDAOWithDistinctProblem() throws AppException {
-        User user = userDAO.get(1);
+    public void testStatusDAOWithDistinctProblem() throws AppException, FieldNotUniqueException {
+        User user = userDAO.getEntityByUniqueField("userName", "lyhypacm");
+        if (user == null)
+            return;
+        System.out.println(ObjectUtil.toString(user));
         statusCondition.setUserId(user.getUserId());
         statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
         Condition condition = statusCondition.getCondition();
         condition.addProjection(Projections.groupProperty("problemByProblemId"));
-        List<Status> results = (List<Status>) statusDAO.findAll(condition);
-        for (Status status : results)
-            System.out.println(status);
+        List<Problem> results = (List<Problem>) statusDAO.findAll(condition);
+        for (Problem result : results)
+            System.out.println(ObjectUtil.toString(result));
     }
 
     @Override
