@@ -24,10 +24,13 @@ package cn.edu.uestc.acmicpc.db.condition.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.dao.impl.UserDAO;
 import cn.edu.uestc.acmicpc.db.entity.Language;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Restrictions;
 
@@ -40,7 +43,7 @@ import java.util.List;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @SuppressWarnings("UnusedDeclaration")
-public class StatusCondition extends BaseCondition {
+public class StatusCondition extends BaseCondition implements UserConditionAware {
     /**
      * Start status id.
      */
@@ -50,10 +53,24 @@ public class StatusCondition extends BaseCondition {
      */
     private Integer endId;
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     /**
      * User's id.
      */
+
     private Integer userId;
+
+    /**
+     * User's name
+     */
+    private String userName;
 
     /**
      * Problem's id.
@@ -76,11 +93,11 @@ public class StatusCondition extends BaseCondition {
     private List<Global.OnlineJudgeReturnType> result = new LinkedList<>();
 
     public Integer getIResult() {
-        return iResult;
+        return resultId;
     }
 
     public void setIResult(Integer iResult) {
-        this.iResult = iResult;
+        this.resultId = iResult;
     }
 
     @Exp(MapField = "statusId", Type = ConditionType.ge)
@@ -147,8 +164,19 @@ public class StatusCondition extends BaseCondition {
     /**
      * Judging result int format.
      */
-    private Integer iResult;
+    private Integer resultId;
 
+    public Integer getResultId() {
+        return resultId;
+    }
+
+    public void setResultId(Integer resultId) {
+        this.resultId = resultId;
+    }
+
+    UserCondition userCondition;
+
+    @SuppressWarnings("unchecked")
     @Override
     public void invoke(Condition condition) {
         if (contestId == null)
@@ -159,15 +187,37 @@ public class StatusCondition extends BaseCondition {
         else
             condition.addCriterion(Restrictions.eq("contestByContestId", contestId));
 
-        if (result != null && !result.isEmpty() || iResult != null) {
+        if (userName != null) {
+            UserDAO userDAO = applicationContext.getBean("userDAO", UserDAO.class);
+            userCondition.clear();
+            userCondition.setUserName(userName);
+            try {
+                List<User> users = (List<User>) userDAO.findAll(userCondition.getCondition());
+                if (users != null && !users.isEmpty())
+                    condition.addCriterion(Restrictions.eq("userByUserId", users.get(0)));
+            } catch (AppException ignored) {
+            }
+        }
+
+        if (result != null && !result.isEmpty() || resultId != null) {
             if (result != null && !result.isEmpty()) {
                 Junction junction = Restrictions.disjunction();
                 for (Global.OnlineJudgeReturnType onlineJudgeReturnType : result)
                     junction.add(Restrictions.eq("result", onlineJudgeReturnType.ordinal()));
                 condition.addCriterion(junction);
             } else {
-                condition.addCriterion(Restrictions.eq("result", iResult));
+                condition.addCriterion(Restrictions.eq("result", resultId));
             }
         }
+    }
+
+    @Override
+    public void setUserCondition(UserCondition userCondition) {
+        this.userCondition = userCondition;
+    }
+
+    @Override
+    public UserCondition getUserCondition() {
+        return userCondition;
     }
 }
