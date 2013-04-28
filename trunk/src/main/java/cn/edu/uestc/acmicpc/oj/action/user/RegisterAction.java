@@ -97,7 +97,7 @@ public class RegisterAction extends BaseAction implements DepartmentDAOAware {
                             fieldName = "userDTO.school",
                             key = "error.school.validation",
                             minLength = "1",
-                            maxLength = "50",
+                            maxLength = "100",
                             trim = false
                     ),
                     @StringLengthFieldValidator(

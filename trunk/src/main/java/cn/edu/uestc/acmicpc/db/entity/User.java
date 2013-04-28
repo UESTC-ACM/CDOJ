@@ -92,7 +92,7 @@ public class User implements Serializable {
 
     private String school;
 
-    @Column(name = "school", nullable = false, insertable = true, updatable = true, length = 50,
+    @Column(name = "school", nullable = false, insertable = true, updatable = true, length = 100,
             precision = 0)
     @Basic
     public String getSchool() {
