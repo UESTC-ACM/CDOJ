@@ -36,6 +36,18 @@ public class UserSerialKey implements Serializable {
     private static final long serialVersionUID = -129312932189312L;
     private Integer userSerialKeyId;
     private Timestamp time;
+    private String serialKey;
+
+    @Column(name = "serialKey", nullable = false, insertable = true, updatable = true,
+            length = 128, precision = 0, unique = false)
+    @Basic
+    public String getSerialKey() {
+        return serialKey;
+    }
+
+    public void setSerialKey(String serialKey) {
+        this.serialKey = serialKey;
+    }
 
     @Column(name = "userSerialKeyId", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0, unique = true)
@@ -63,7 +75,9 @@ public class UserSerialKey implements Serializable {
 
         UserSerialKey that = (UserSerialKey) o;
 
+        if (!serialKey.equals(that.serialKey)) return false;
         if (!time.equals(that.time)) return false;
+        if (!userByUserId.equals(that.userByUserId)) return false;
         if (!userSerialKeyId.equals(that.userSerialKeyId)) return false;
 
         return true;
@@ -73,6 +87,8 @@ public class UserSerialKey implements Serializable {
     public int hashCode() {
         int result = userSerialKeyId.hashCode();
         result = 31 * result + time.hashCode();
+        result = 31 * result + serialKey.hashCode();
+        result = 31 * result + userByUserId.hashCode();
         return result;
     }
 
