@@ -363,7 +363,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`contestTeamInfo` (
   `phone` VARCHAR(100) NOT NULL DEFAULT '' ,
   `size` VARCHAR(50) NOT NULL DEFAULT '' ,
   `email` VARCHAR(300) NOT NULL DEFAULT '' ,
-  `school` VARCHAR(50) NOT NULL DEFAULT '' ,
+  `school` VARCHAR(100) NOT NULL DEFAULT '' ,
   `state` TINYINT(4) NOT NULL DEFAULT 0 ,
   PRIMARY KEY (`teamId`) ,
   UNIQUE INDEX `teamId_UNIQUE` (`teamId` ASC) )
