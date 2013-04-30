@@ -22,7 +22,8 @@ package cn.edu.uestc.acmicpc.oj.test.util;
 
 import cn.edu.uestc.acmicpc.ioc.util.EMailSenderAware;
 import cn.edu.uestc.acmicpc.util.EMailSender;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
+import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,11 @@ public class EMailTest implements EMailSenderAware {
     @Override
     @Ignore
     public void setEMailSender(EMailSender sender) {
-        this.sender = sender;
+        try {
+            this.sender = sender;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail();
+        }
     }
 }

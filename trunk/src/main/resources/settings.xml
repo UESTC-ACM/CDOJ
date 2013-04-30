@@ -45,9 +45,9 @@
         </list>
     </setting>
     <setting name="email">
-        <item name="address" description="sender address">address</item>
-        <item name="username" description="sender email user name">username</item>
-        <item name="password" description="sender email password">password</item>
-        <item name="stmpServer" description="stmp server address">stmpServer</item>
+        <item name="address" description="sender address">cdoj_test@163.com</item>
+        <item name="username" description="sender email user name">cdoj_test@163.com</item>
+        <item name="password" description="sender email password">135678942570</item>
+        <item name="smtpServer" description="smtp server address">smtp.163.com</item>
     </setting>
 </cdoj-settings>

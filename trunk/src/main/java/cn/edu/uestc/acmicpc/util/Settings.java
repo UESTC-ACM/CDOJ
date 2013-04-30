@@ -93,7 +93,7 @@ public class Settings implements ApplicationContextAware {
 
     public String EMAIL_USERNAME;
     public String EMAIL_PASSWORD;
-    public String EMAIL_STMP_SERVER;
+    public String EMAIL_SMTP_SERVER;
     public String EMAIL_ADDRESS;
 
     /**
@@ -176,7 +176,7 @@ public class Settings implements ApplicationContextAware {
         EMAIL_ADDRESS = (String) getConfig("email", "address", "value");
         EMAIL_USERNAME = (String) getConfig("email", "username", "value");
         EMAIL_PASSWORD = (String) getConfig("email", "password", "value");
-        EMAIL_STMP_SERVER = (String) getConfig("email", "stmpServer", "value");
+        EMAIL_SMTP_SERVER = (String) getConfig("email", "smtpServer", "value");
     }
 
     /**
