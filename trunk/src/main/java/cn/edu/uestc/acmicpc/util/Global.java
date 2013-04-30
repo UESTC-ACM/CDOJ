@@ -43,6 +43,11 @@ import java.util.List;
  */
 public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
+    /**
+     * User serial key's length
+     */
+    public static final int USER_SERIAL_KEY_LENGTH = 128;
+
     @SuppressWarnings("UnusedDeclaration")
     public enum OnlineJudgeReturnType {
         OJ_WAIT("Queuing"), OJ_AC("Accepted"), OJ_PE("Presentation Error on test $case"),
