@@ -27,8 +27,13 @@ import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
 import cn.edu.uestc.acmicpc.ioc.dao.UserSerialKeyDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Random;
 
 /**
  * Action for user center
@@ -96,9 +101,46 @@ public class UserCenterAction extends BaseAction implements UserSerialKeyDAOAwar
     }
 
     /**
+     * Action to send user serial key.
+     *
+     * @return {@code JSON} flag
+     */
+    @LoginPermit(NeedLogin = true)
+    public String toSendSerialKey() {
+        try {
+            UserSerialKey userSerialKey = userSerialKeyDAO.getEntityByUniqueField("userId", currentUser);
+            if (userSerialKey != null) {
+                // less than 30 minutes
+                if (new Date().getTime() - userSerialKey.getTime().getTime() <= 1800000) {
+                    throw new AppException("serial key can only be generated in every 30 minutes.");
+                }
+            } else {
+                userSerialKey = new UserSerialKey();
+            }
+            StringBuilder stringBuilder = new StringBuilder();
+            Random random = new Random();
+            for (int i = 0; i < Global.USER_SERIAL_KEY_LENGTH; ++i) {
+                stringBuilder.append((char) (random.nextInt(126 - 33 + 1) + 33));
+            }
+            userSerialKey.setTime(new Timestamp(new Date().getTime()));
+            userSerialKey.setSerialKey(stringBuilder.toString());
+            userSerialKey.setUserByUserId(currentUser);
+            userSerialKeyDAO.addOrUpdate(userSerialKey);
+            json.put("result", "ok");
+        } catch (AppException e) {
+            json.put("result", "error");
+            json.put("err_msg", e.getMessage());
+        } catch (Exception e) {
+            json.put("result", "error");
+            json.put("err_msg", "Unknown exception occurred.");
+        }
+        return JSON;
+    }
+
+    /**
      * Action to activate user.
      *
-     * @return @{code JSON} flag
+     * @return {@code JSON} flag
      */
     public String toActivateUser() {
         try {
