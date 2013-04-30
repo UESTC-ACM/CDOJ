@@ -57,8 +57,8 @@ public class EMailSender implements SettingsAware {
     public boolean send(String emailAddress, String title, String content) {
         Properties properties = new Properties();
         properties.setProperty("mail.transport.protocol", "smtp");
-        properties.setProperty("mail.smtp.starttls.enable", "true");
-        properties.setProperty("mail.smtp.host", settings.EMAIL_STMP_SERVER);
+//        properties.setProperty("mail.smtp.starttls.enable", "true");
+        properties.setProperty("mail.smtp.host", settings.EMAIL_SMTP_SERVER);
         properties.setProperty("mail.smtp.auth", "true");
         Authenticator auth = new AJavaAuthenticator(settings.EMAIL_USERNAME, settings.EMAIL_PASSWORD);
         Session session = Session.getDefaultInstance(properties, auth);
