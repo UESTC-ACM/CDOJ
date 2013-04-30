@@ -68,4 +68,7 @@
     <bean id="compareSkipSpacesTest"
           class="cn.edu.uestc.acmicpc.oj.test.util.CompareSkipSpacesTest">
     </bean>
+    <bean id="emailTest"
+          class="cn.edu.uestc.acmicpc.oj.test.util.EMailTest">
+    </bean>
 </beans>

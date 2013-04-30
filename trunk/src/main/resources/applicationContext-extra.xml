@@ -43,4 +43,8 @@
         <property name="departmentDAO" ref="departmentDAO"/>
         <property name="languageDAO" ref="languageDAO"/>
     </bean>
+    <bean id="emailSender" class="cn.edu.uestc.acmicpc.util.EMailSender"
+          scope="prototype">
+        <property name="settings" ref="settings"/>
+    </bean>
 </beans>
