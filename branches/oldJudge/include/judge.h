@@ -502,7 +502,7 @@ int oj_compare_output_spj(
     if (EXIT_SUCCESS == malarm(ITIMER_REAL, judge_conf::spj_time_limit)) {
       FM_LOG_TRACE("load spj.exe");
       log_close();
-      execlp(spj_exec.c_str(), "spj.exe", file_in.c_str(), file_std.c_str(), NULL);
+      execlp(spj_exec.c_str(), spj_exec.c_str(), file_in.c_str(), file_std.c_str(), NULL);
       exit(judge_conf::EXIT_COMPARE_SPJ_FORK);
     } else {
       FM_LOG_WARNING("malarm failed");
