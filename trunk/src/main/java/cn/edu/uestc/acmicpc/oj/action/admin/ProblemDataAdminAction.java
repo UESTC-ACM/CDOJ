@@ -200,7 +200,6 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
                     )
             }
     )
-    @SuppressWarnings({"UnusedDeclaration", "ResultOfMethodCallIgnored"})
     public String updateProblemData() {
         try {
             Problem problem = null;
@@ -237,34 +236,37 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
                 for (String file : fileMap.keySet()) {
                     File fromFile = new File(dataPath + '/' + file + ".in");
                     File toFile = new File(dataPath + '/' + fileMap.get(file) + ".in");
-                    fromFile.renameTo(toFile);
+                    if (!fromFile.renameTo(toFile))
+                        throw new AppException("Cannot rename file: " + file + ".in");
                     fromFile = new File(dataPath + '/' + file + ".out");
                     toFile = new File(dataPath + '/' + fileMap.get(file) + ".out");
-                    fromFile.renameTo(toFile);
+                    if (!fromFile.renameTo(toFile))
+                        throw new AppException("Cannot rename file: " + file + ".out");
                 }
                 problem.setDataCount(dataCount);
                 FileUtil.clearDirectory(tempDirectory);
             }
 
-            // TODO SPJ command is not correct
-            // We can use a shell
             if (foundSpj) {
                 Runtime runtime = Runtime.getRuntime();
-                Process process = runtime.exec("g++ spj.cc -O2");
+                Process process = runtime.exec(String.format(
+                        "g++ %s/spj.cc -o %s/spj -O2", dataPath, dataPath));
                 process.waitFor();
-                process = runtime.exec("rm spj.cc");
-                process.waitFor();
+                File source = new File(String.format("%s/spj.cc", dataPath));
+                if (!source.delete())
+                    throw new AppException("Cannot remove spj source file");
             }
 
             problemDAO.addOrUpdate(problem);
             json.put("result", "ok");
         } catch (AppException e) {
+            e.printStackTrace();
             json.put("result", "error");
             json.put("error_msg", e.getMessage());
         } catch (Exception e) {
+            e.printStackTrace();
             json.put("result", "error");
             json.put("error_msg", "Unknown exception occurred.");
-            e.printStackTrace();
         }
         return JSON;
     }
