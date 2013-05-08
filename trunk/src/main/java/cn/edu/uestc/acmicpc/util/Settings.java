@@ -48,6 +48,12 @@ import java.util.Map;
  */
 @SuppressWarnings("UnusedDeclaration")
 public class Settings implements ApplicationContextAware {
+
+    /**
+     * Host
+     */
+    public String SETTING_HOST;
+
     /**
      * Global encoding
      */
@@ -162,6 +168,7 @@ public class Settings implements ApplicationContextAware {
             settings.put(node.getAttribute("name").trim(), map);
         }
 
+        SETTING_HOST = (String) getConfig("setting", "host", "value");
         SETTING_ENCODING = (String) getConfig("setting", "encoding", "value");
         SETTING_UPLOAD_SIZE = Integer.valueOf((String) getConfig("setting", "uploadSize", "value"));
         SETTING_UPLOAD_TYPES = (String) getConfig("setting", "uploadTypes", "value");

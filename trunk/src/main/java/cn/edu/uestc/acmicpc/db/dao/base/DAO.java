@@ -231,9 +231,13 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         Entity result = null;
         Method[] methods = getReferenceClass().getMethods();
         try {
+            System.out.println("find: " + fieldName);
             for (Method method : methods) {
                 Column column = method.getAnnotation(Column.class);
+                if (column != null)
+                    System.out.println(column.name() + " " + column.unique());
                 if (column != null && column.name().equals(fieldName)) {
+                    System.out.println(method.getName() + " " + column.unique());
                     if (column.unique()) {
                         if (value == null)
                             return null;

@@ -71,6 +71,20 @@
             blindEnterKey: true
         });
 
+        $("#activateModal").setDialog({
+            callback: function() {
+                info=$("#activateModal").find(".form-horizontal").getFormData();
+                $.post('/user/sendSerialKey/' + info.userName, function(data) {
+                    if (data.result == 'ok') {
+                        alert('We send you an Email with the url to reset your password right now, please check your mail box.');
+                        $('#activateModal').modal('hide');
+                    } else
+                    alert(data.err_msg);
+                });
+            },
+            blindEnterKey: true
+        });
+
         $("#logoutButton").setButton({
             callback: function() {
                 $.post('/user/logout',function(data) {
@@ -79,6 +93,7 @@
                 });
             }
         });
+
     })
 }(window.jQuery)
 

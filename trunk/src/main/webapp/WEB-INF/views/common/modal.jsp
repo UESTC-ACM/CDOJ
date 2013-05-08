@@ -126,6 +126,29 @@
             <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
         </div>
     </div>
+
+    <!-- User activate Modal -->
+    <div id="activateModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="activateModal" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="activateModalLabel">Forget password</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <fieldset>
+                    <s:textfield name="userName"
+                                 maxLength="24"
+                                 cssClass="span4"
+                                 label="User Name"
+                                 theme="bootstrap"/>
+                </fieldset>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-primary">Send Email</a>
+            <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+        </div>
+    </div>
 </s:if>
 </body>
 </html>
