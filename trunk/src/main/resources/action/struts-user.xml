@@ -30,6 +30,17 @@
         <action name="login" class="loginAction" method="toLogin"/>
         <action name="logout" class="logoutAction" method="toLogout"/>
         <action name="register" class="registerAction" method="toRegister"/>
+
+        <action name="sendSerialKey/*" class="userActivateAction" method="toSendSerialKey">
+            <param name="targetUserName">{1}</param>
+        </action>
+        <action name="activate/*/*" class="userActivateAction" method="toActivatePage">
+            <param name="targetUserName">{1}</param>
+            <param name="targetSerialKey">{2}</param>
+            <result>/WEB-INF/views/user/activate.jsp</result>
+        </action>
+        <action name="resetPassword" class="userActivateAction" method="toActivateUser"/>
+
         <action name="center/*" class="userCenterAction" method="toUserCenter">
             <param name="targetUserName">{1}</param>
             <result>/WEB-INF/views/user/userCenter.jsp</result>

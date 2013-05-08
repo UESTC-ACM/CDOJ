@@ -61,6 +61,12 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="#activateModal" role="button" data-toggle="modal">
+                        <i class="icon-refresh"></i>
+                        Forget password
+                    </a>
+                </li>
             </ul>
         </li>
     </ul>
