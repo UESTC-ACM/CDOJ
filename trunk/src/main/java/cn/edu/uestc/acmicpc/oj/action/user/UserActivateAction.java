@@ -98,9 +98,9 @@ public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAw
             if (targetUser == null)
                 throw new AppException("No such user!");
             System.out.println("Begin:");
-            UserSerialKey userSerialKey = userSerialKeyDAO.getEntityByUniqueField("userId", targetUser.getUserId());
-            System.out.println(userSerialKeyDAO.getEntityByUniqueField("userId", targetUser) + " "
-                    + userSerialKeyDAO.getEntityByUniqueField("userId", targetUser.getUserId()));
+            UserSerialKey userSerialKey = userSerialKeyDAO.getEntityByUniqueField("userId", targetUser.getUserId(), "userByUserId", true);
+            System.out.println(userSerialKeyDAO.getEntityByUniqueField("userId", targetUser, "userByUserId", true) + " "
+                    + userSerialKeyDAO.getEntityByUniqueField("userId", targetUser.getUserId(), "userByUserId", true));
             if (userSerialKey != null) {
                 System.out.println("Exists: " + userSerialKey.getSerialKey());
                 // less than 30 minutes
@@ -135,6 +135,7 @@ public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAw
         } catch (Exception e) {
             json.put("result", "error");
             json.put("err_msg", "Unknown exception occurred.");
+            e.printStackTrace();
         }
         return JSON;
     }

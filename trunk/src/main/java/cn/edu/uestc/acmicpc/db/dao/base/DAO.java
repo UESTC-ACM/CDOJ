@@ -226,9 +226,14 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Entity getEntityByUniqueField(String fieldName, Object value) throws FieldNotUniqueException, AppException {
+        return getEntityByUniqueField(fieldName, value, fieldName, false);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Entity getEntityByUniqueField(String fieldName, Object value, String propertyName, boolean forceUnique) throws FieldNotUniqueException, AppException {
         Entity result = null;
         Method[] methods = getReferenceClass().getMethods();
         try {
@@ -242,19 +247,21 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
                     columnName = method.getAnnotation(JoinColumn.class).name();
                     isUnique = method.getAnnotation(JoinColumn.class).unique();
                 }
+                if (forceUnique)
+                    isUnique = true;
                 if (columnName != null && columnName.equals(fieldName)) {
                     if (isUnique) {
                         if (value == null)
                             return null;
                         Criteria criteria = getSession().createCriteria(getReferenceClass());
-                        criteria.add(Restrictions.eq(fieldName, value));
+                        criteria.add(Restrictions.eq(propertyName, value));
                         List list = criteria.list();
                         if (list == null || list.isEmpty())
                             return null;
                         result = (Entity) list.get(0);
                         break;
                     } else {
-                        throw new FieldNotUniqueException("Field '" + fieldName + "' is not unique.");
+                        throw new FieldNotUniqueException("Field '" + propertyName + "' is not unique.");
                     }
                 }
             }
