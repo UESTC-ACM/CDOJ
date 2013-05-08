@@ -100,7 +100,6 @@ public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAw
                 throw new AppException("No such user!");
             UserSerialKey userSerialKey = userSerialKeyDAO.getEntityByUniqueField("userId", targetUser, "userByUserId", true);
             if (userSerialKey != null) {
-                System.out.println("Exists: " + userSerialKey.getSerialKey());
                 // less than 30 minutes
                 /*if (new Date().getTime() - userSerialKey.getTime().getTime() <= 1800000) {
                     throw new AppException("serial key can only be generated in every 30 minutes.");
@@ -121,10 +120,14 @@ public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAw
 
             String url = settings.SETTING_HOST + getActionURL("/user", "activate/" + targetUser.getUserName() + "/" + StringUtil.encodeSHA1(serialKey));
             stringBuilder = new StringBuilder();
-            stringBuilder.append("Please click: ").append(url).append(" to reset your password.");
-            eMailSender.send(targetUser.getEmail(), "FUCK", stringBuilder.toString());
+            stringBuilder.append("Dear ").append(targetUser.getUserName()).append(" :\n\n");
+            stringBuilder.append("To reset your password, simply click on the link below or paste into the url field on your favorite browser:\n\n");
+            stringBuilder.append(url).append("\n\n");
+            stringBuilder.append("The activation link will only be good for 30 minutes, after that you will have to try again from the beginning. When you visit the above page, you'll be able to set your password as you like.\n\n");
+            stringBuilder.append("If you have any questions about the system, feel free to contact us anytime at acm@uestc.edu.cn.\n\n");
+            stringBuilder.append("The UESTC OJ Team.\n");
 
-            //System.out.println(stringBuilder.toString());
+            eMailSender.send(targetUser.getEmail(), "UESTC Online Judge", stringBuilder.toString());
 
             json.put("result", "ok");
         } catch (AppException e) {
@@ -150,7 +153,6 @@ public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAw
 
     @SkipValidation
     public String toActivatePage() {
-        //System.out.println(targetUserName + " " + targetSerialKey);
         return SUCCESS;
     }
 
@@ -225,9 +227,12 @@ public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAw
                 return INPUT;
             }
 
-            System.out.println(user.getUserName());
-            UserSerialKey userSerialKey = userSerialKeyDAO.getEntityByUniqueField("userId", user.getUserId());
-            System.out.println(userSerialKey.getSerialKey() + " " + targetSerialKey);
+            UserSerialKey userSerialKey = userSerialKeyDAO.getEntityByUniqueField("userId", user, "userByUserId", true);
+
+            if (userSerialKey == null || new Date().getTime() - userSerialKey.getTime().getTime() > 1800000) {
+                addFieldError("targetSerialKey", "Serial Key exceed time limit! Please regenerate a new key.");
+                return INPUT;
+            }
             if (!StringUtil.encodeSHA1(userSerialKey.getSerialKey()).equals(targetSerialKey)) {
                 addFieldError("targetSerialKey", "Serial Key is wrong!");
                 return INPUT;
@@ -235,6 +240,7 @@ public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAw
 
             user.setPassword(StringUtil.encodeSHA1(userDTO.getPassword()));
             userDAO.update(user);
+            userSerialKeyDAO.delete(userSerialKey);
 
             json.put("result", "ok");
         } catch (AppException e) {
