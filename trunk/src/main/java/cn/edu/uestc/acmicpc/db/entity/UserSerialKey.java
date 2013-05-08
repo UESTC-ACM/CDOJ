@@ -34,7 +34,19 @@ import java.sql.Timestamp;
 @Entity
 public class UserSerialKey implements Serializable {
     private static final long serialVersionUID = -129312932189312L;
+
+    @Override
+    public String toString() {
+        return "UserSerialKey{" +
+                "serialKey='" + serialKey + '\'' +
+                ", userByUserId=" + userByUserId +
+                ", time=" + time +
+                ", userSerialKeyId=" + userSerialKeyId +
+                '}';
+    }
+
     private Integer userSerialKeyId;
+
     private Timestamp time;
     private String serialKey;
 

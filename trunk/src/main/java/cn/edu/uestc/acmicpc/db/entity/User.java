@@ -131,6 +131,23 @@ public class User implements Serializable {
 
     private Integer solved;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", studentId='" + studentId + '\'' +
+                ", password='" + password + '\'' +
+                ", school='" + school + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", email='" + email + '\'' +
+                ", solved=" + solved +
+                ", tried=" + tried +
+                ", type=" + type +
+                ", lastLogin=" + lastLogin +
+                '}';
+    }
+
     @Column(name = "solved", nullable = false, insertable = true, updatable = true, length = 10,
             precision = 0)
     @Basic
