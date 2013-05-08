@@ -45,6 +45,7 @@ import java.util.Random;
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 @LoginPermit(NeedLogin = false)
 public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAware, EMailSenderAware {
 
@@ -97,10 +98,7 @@ public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAw
             targetUser = userDAO.getEntityByUniqueField("userName", targetUserName);
             if (targetUser == null)
                 throw new AppException("No such user!");
-            System.out.println("Begin:");
-            UserSerialKey userSerialKey = userSerialKeyDAO.getEntityByUniqueField("userId", targetUser.getUserId(), "userByUserId", true);
-            System.out.println(userSerialKeyDAO.getEntityByUniqueField("userId", targetUser, "userByUserId", true) + " "
-                    + userSerialKeyDAO.getEntityByUniqueField("userId", targetUser.getUserId(), "userByUserId", true));
+            UserSerialKey userSerialKey = userSerialKeyDAO.getEntityByUniqueField("userId", targetUser, "userByUserId", true);
             if (userSerialKey != null) {
                 System.out.println("Exists: " + userSerialKey.getSerialKey());
                 // less than 30 minutes
@@ -230,7 +228,7 @@ public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAw
             System.out.println(user.getUserName());
             UserSerialKey userSerialKey = userSerialKeyDAO.getEntityByUniqueField("userId", user.getUserId());
             System.out.println(userSerialKey.getSerialKey() + " " + targetSerialKey);
-            if (userSerialKey == null || !StringUtil.encodeSHA1(userSerialKey.getSerialKey()).equals(targetSerialKey)) {
+            if (!StringUtil.encodeSHA1(userSerialKey.getSerialKey()).equals(targetSerialKey)) {
                 addFieldError("targetSerialKey", "Serial Key is wrong!");
                 return INPUT;
             }

@@ -30,6 +30,7 @@ import cn.edu.uestc.acmicpc.db.dao.iface.*;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.Tag;
 import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.*;
@@ -61,7 +62,8 @@ import java.util.Random;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:applicationContext-test.xml"})
 public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAware,
-        ProblemDAOAware, UserConditionAware, StatusConditionAware, StatusDAOAware {
+        ProblemDAOAware, UserConditionAware, StatusConditionAware, StatusDAOAware,
+        UserSerialKeyDAOAware {
 
     @Ignore
     @Before
@@ -111,6 +113,12 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
      */
     @Autowired
     private IProblemDAO problemDAO;
+
+    /**
+     * User serial key entity.
+     */
+    @Autowired
+    private IUserSerialKeyDAO userSerialKeyDAO;
 
     /**
      * Conditions for database query.
@@ -349,6 +357,19 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
             System.out.println(ObjectUtil.toString(result));
     }
 
+    /**
+     * Find userSerialKey entity by user name.
+     */
+    @Test
+    public void testFindUserSerialKeyByUserName() throws FieldNotUniqueException, AppException {
+        String userName = "administrator";
+        User user = userDAO.getEntityByUniqueField("userName", userName);
+        System.out.println(user.toString());
+        UserSerialKey userSerialKey = userSerialKeyDAO.getEntityByUniqueField(
+                "userId", user, "userByUserId", true);
+        System.out.println(userSerialKey == null ? null : userSerialKey.toString());
+    }
+
     @Override
     public void setStatusCondition(StatusCondition statusCondition) {
         this.statusCondition = statusCondition;
@@ -362,5 +383,10 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
     @Override
     public void setStatusDAO(IStatusDAO statusDAO) {
         this.statusDAO = statusDAO;
+    }
+
+    @Override
+    public void setUserSerialKeyDAO(IUserSerialKeyDAO userSerialKeyDAO) {
+        this.userSerialKeyDAO = userSerialKeyDAO;
     }
 }
