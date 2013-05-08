@@ -32,6 +32,7 @@ import org.hibernate.criterion.*;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -231,14 +232,18 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         Entity result = null;
         Method[] methods = getReferenceClass().getMethods();
         try {
-            System.out.println("find: " + fieldName);
             for (Method method : methods) {
-                Column column = method.getAnnotation(Column.class);
-                if (column != null)
-                    System.out.println(column.name() + " " + column.unique());
-                if (column != null && column.name().equals(fieldName)) {
-                    System.out.println(method.getName() + " " + column.unique());
-                    if (column.unique()) {
+                String columnName = null;
+                boolean isUnique = false;
+                if (method.getAnnotation(Column.class) != null) {
+                    columnName = method.getAnnotation(Column.class).name();
+                    isUnique = method.getAnnotation(Column.class).unique();
+                } else if (method.getAnnotation(JoinColumn.class) != null) {
+                    columnName = method.getAnnotation(JoinColumn.class).name();
+                    isUnique = method.getAnnotation(JoinColumn.class).unique();
+                }
+                if (columnName != null && columnName.equals(fieldName)) {
+                    if (isUnique) {
                         if (value == null)
                             return null;
                         Criteria criteria = getSession().createCriteria(getReferenceClass());
