@@ -35,7 +35,7 @@
 <head>
     <script src="<s:url value="/scripts/marked.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.markdown.js"/>"></script>
-    <script src="<s:url value="/scripts/cdoj/cdoj.problemShow.js"/>"></script>
+    <script src="<s:url value="/scripts/cdoj/cdoj.problem.problemShow.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.submit.js"/>"></script>
     <title>${targetProblem.title}</title>
 </head>

@@ -68,4 +68,6 @@
     </bean>
     <bean id="userDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.UserDAO" parent="BaseDAO">
     </bean>
+    <bean id="userSerialKeyDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.UserSerialKeyDAO" parent="BaseDAO">
+    </bean>
 </beans>

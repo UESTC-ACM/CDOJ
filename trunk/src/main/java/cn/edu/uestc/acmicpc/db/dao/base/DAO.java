@@ -32,6 +32,7 @@ import org.hibernate.criterion.*;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -225,27 +226,42 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Entity getEntityByUniqueField(String fieldName, Object value) throws FieldNotUniqueException, AppException {
+        return getEntityByUniqueField(fieldName, value, fieldName, false);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Entity getEntityByUniqueField(String fieldName, Object value, String propertyName, boolean forceUnique) throws FieldNotUniqueException, AppException {
         Entity result = null;
         Method[] methods = getReferenceClass().getMethods();
         try {
             for (Method method : methods) {
-                Column column = method.getAnnotation(Column.class);
-                if (column != null && column.name().equals(fieldName)) {
-                    if (column.unique()) {
+                String columnName = null;
+                boolean isUnique = false;
+                if (method.getAnnotation(Column.class) != null) {
+                    columnName = method.getAnnotation(Column.class).name();
+                    isUnique = method.getAnnotation(Column.class).unique();
+                } else if (method.getAnnotation(JoinColumn.class) != null) {
+                    columnName = method.getAnnotation(JoinColumn.class).name();
+                    isUnique = method.getAnnotation(JoinColumn.class).unique();
+                }
+                if (forceUnique)
+                    isUnique = true;
+                if (columnName != null && columnName.equals(fieldName)) {
+                    if (isUnique) {
                         if (value == null)
                             return null;
                         Criteria criteria = getSession().createCriteria(getReferenceClass());
-                        criteria.add(Restrictions.eq(fieldName, value));
+                        criteria.add(Restrictions.eq(propertyName, value));
                         List list = criteria.list();
                         if (list == null || list.isEmpty())
                             return null;
                         result = (Entity) list.get(0);
                         break;
                     } else {
-                        throw new FieldNotUniqueException("Field '" + fieldName + "' is not unique.");
+                        throw new FieldNotUniqueException("Field '" + propertyName + "' is not unique.");
                     }
                 }
             }

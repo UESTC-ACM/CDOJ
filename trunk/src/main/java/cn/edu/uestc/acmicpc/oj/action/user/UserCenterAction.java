@@ -21,19 +21,11 @@
 
 package cn.edu.uestc.acmicpc.oj.action.user;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserSerialKeyDAO;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
-import cn.edu.uestc.acmicpc.ioc.dao.UserSerialKeyDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
-import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.Random;
 
 /**
  * Action for user center
@@ -42,7 +34,7 @@ import java.util.Random;
  */
 @SuppressWarnings("UnusedDeclaration")
 @LoginPermit(NeedLogin = false)
-public class UserCenterAction extends BaseAction implements UserSerialKeyDAOAware {
+public class UserCenterAction extends BaseAction {
 
     private String targetUserName;
 
@@ -85,85 +77,4 @@ public class UserCenterAction extends BaseAction implements UserSerialKeyDAOAwar
         return SUCCESS;
     }
 
-    /**
-     * User serial key for user activation.
-     */
-    private String serialKey;
-
-    private IUserSerialKeyDAO userSerialKeyDAO;
-
-    public String getSerialKey() {
-        return serialKey;
-    }
-
-    public void setSerialKey(String serialKey) {
-        this.serialKey = serialKey;
-    }
-
-    /**
-     * Action to send user serial key.
-     *
-     * @return {@code JSON} flag
-     */
-    @LoginPermit(NeedLogin = true)
-    public String toSendSerialKey() {
-        try {
-            UserSerialKey userSerialKey = userSerialKeyDAO.getEntityByUniqueField("userId", currentUser);
-            if (userSerialKey != null) {
-                // less than 30 minutes
-                if (new Date().getTime() - userSerialKey.getTime().getTime() <= 1800000) {
-                    throw new AppException("serial key can only be generated in every 30 minutes.");
-                }
-            } else {
-                userSerialKey = new UserSerialKey();
-            }
-            StringBuilder stringBuilder = new StringBuilder();
-            Random random = new Random();
-            for (int i = 0; i < Global.USER_SERIAL_KEY_LENGTH; ++i) {
-                stringBuilder.append((char) (random.nextInt(126 - 33 + 1) + 33));
-            }
-            userSerialKey.setTime(new Timestamp(new Date().getTime()));
-            userSerialKey.setSerialKey(stringBuilder.toString());
-            userSerialKey.setUserByUserId(currentUser);
-            userSerialKeyDAO.addOrUpdate(userSerialKey);
-            json.put("result", "ok");
-        } catch (AppException e) {
-            json.put("result", "error");
-            json.put("err_msg", e.getMessage());
-        } catch (Exception e) {
-            json.put("result", "error");
-            json.put("err_msg", "Unknown exception occurred.");
-        }
-        return JSON;
-    }
-
-    /**
-     * Action to activate user.
-     *
-     * @return {@code JSON} flag
-     */
-    public String toActivateUser() {
-        try {
-            User user = userDAO.getEntityByUniqueField("userName", targetUserName);
-            if (user == null)
-                throw new AppException("No such user!");
-            UserSerialKey userSerialKey = userSerialKeyDAO.getEntityByUniqueField("userByUserId", user);
-            if (userSerialKey == null || !userSerialKey.getSerialKey().equals(serialKey)) {
-                throw new AppException("can not find user serial key information or serial key does not match.");
-            }
-            json.put("result", "ok");
-        } catch (AppException e) {
-            json.put("result", "error");
-            json.put("err_msg", e.getMessage());
-        } catch (Exception e) {
-            json.put("result", "error");
-            json.put("err_msg", "Unknown exception occurred.");
-        }
-        return JSON;
-    }
-
-    @Override
-    public void setUserSerialKeyDAO(IUserSerialKeyDAO userSerialKeyDAO) {
-        this.userSerialKeyDAO = userSerialKeyDAO;
-    }
 }
