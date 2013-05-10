@@ -120,10 +120,25 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
      * {@code AppException}.
      *
      * @param fieldName the unique field name
+     * @param value     field's value
      * @return unique result, null if not exist
      * @throws AppException
      */
     public Entity getEntityByUniqueField(String fieldName, Object value) throws FieldNotUniqueException, AppException;
+
+    /**
+     * Get unique entity by the field name, if the field is not unique field, throw
+     * {@code AppException}.
+     *
+     * @param fieldName    the unique field name
+     * @param value        field's value
+     * @param propertyName property's name for JoinColumn
+     * @param forceUnique  force the field's unique property
+     * @return unique result, null if not exist
+     * @throws FieldNotUniqueException
+     * @throws AppException
+     */
+    public Entity getEntityByUniqueField(String fieldName, Object value, String propertyName, boolean forceUnique) throws FieldNotUniqueException, AppException;
 
     Long customCount(Condition condition) throws AppException;
 }
