@@ -44,6 +44,11 @@ public class EMailTest implements EMailSenderAware {
         sender.send("lyhypacm@gmail.com", "title", "content");
     }
 
+    @Test
+    public void testMultiRecipientsSending() {
+        sender.send("muziriyun@qq.com;muziriyun@gmail.com", "title", "content");
+    }
+
     @Override
     @Ignore
     public void setEMailSender(EMailSender sender) {

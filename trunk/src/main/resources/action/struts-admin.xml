@@ -31,6 +31,7 @@
             <result>/WEB-INF/views/admin/index.jsp</result>
         </action>
     </package>
+
     <package name="userAdmin" namespace="/admin/user" extends="admin">
         <action name="list" class="userAdminAction" method="toUserList">
             <result>/WEB-INF/views/admin/user.jsp</result>
@@ -39,6 +40,7 @@
         <action name="edit" class="userAdminAction" method="toEdit"/>
         <action name="operator" class="userAdminAction" method="toOperatorUser"/>
     </package>
+
     <package name="problemAdmin" namespace="/admin/problem" extends="admin">
         <action name="list" class="problemAdminAction" method="toProblemList">
             <result>/WEB-INF/views/admin/problem.jsp</result>
@@ -69,6 +71,7 @@
             <param name="targetProblemId">{1}</param>
         </action>
     </package>
+
     <package name="contestAdmin" namespace="/admin/contest" extends="admin">
         <action name="list" class="contestAdminAction" method="toContestList">
             <result>/WEB-INF/views/admin/contest.jsp</result>
@@ -77,5 +80,6 @@
             <param name="targetContestId">{1}</param>
             <result>/WEB-INF/views/admin/contestEditor.jsp</result>
         </action>
+        <action name="edit" class="contestStatementAdminAction" method="toEdit"/>
     </package>
 </struts>

@@ -35,20 +35,12 @@ public class ContestDTO extends BaseDTO<Contest> {
         isVisible = visible;
     }
 
-    @Ignore
     public List<Integer> getProblemList() {
         return problemList;
     }
 
     public void setProblemList(List<Integer> problemList) {
         this.problemList = problemList;
-    }
-
-    public void setProblemList(String string) {
-        Integer[] arr = ArrayUtil.parseIntArray(string);
-        List<Integer> list = new LinkedList<>();
-        Collections.addAll(list, arr);
-        this.problemList = list;
     }
 
     public Integer getContestId() {

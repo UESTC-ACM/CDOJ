@@ -79,22 +79,26 @@
                             <div class="controls">
                                 <input type="text"
                                        maxlength="10"
+                                       name="contestDTO.time.days"
                                        id="contestDTO_time_days"
                                        style="width: 80px;">
                                 <input type="text"
                                        maxlength="2"
+                                       name="contestDTO.time.hours"
                                        id="contestDTO_time_hours"
                                        value="00"
                                        style="width: 20px;">
                                 <span>:</span>
                                 <input type="text"
                                        maxlength="2"
+                                       name="contestDTO.time.minutes"
                                        id="contestDTO_time_minutes"
                                        value="00"
                                        style="width: 20px;">
                                 <span>:</span>
                                 <input type="text"
                                        maxlength="2"
+                                       name="contestDTO.time.seconds"
                                        id="contestDTO_time_seconds"
                                        readonly="true"
                                        value="00"
@@ -106,23 +110,27 @@
                             <div class="controls">
                                 <input type="text"
                                        maxlength="10"
+                                       name="contestDTO.length.days"
                                        id="contestDTO_length_days"
                                        style="width: 80px;">
                                 <span>days</span>
                                 <input type="text"
                                        maxlength="2"
+                                       name="contestDTO.length.hours"
                                        id="contestDTO_length_hours"
                                        value="00"
                                        style="width: 20px;">
                                 <span>:</span>
                                 <input type="text"
                                        maxlength="2"
+                                       name="contestDTO.length.minutes"
                                        id="contestDTO_length_minutes"
                                        value="00"
                                        style="width: 20px;">
                                 <span>:</span>
                                 <input type="text"
                                        maxlength="2"
+                                       name="contestDTO.length.seconds"
                                        id="contestDTO_length_seconds"
                                        readonly="true"
                                        value="00"
