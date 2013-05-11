@@ -66,7 +66,7 @@ function updateProblem(id) {
             line.removeClass('error');
             line.find('.problem_title').empty();
             line.find('.problem_difficult').empty();
-            if (data.problemList.length == 0) {
+            if (data.problemList.length == 0 || data.problemList[0].title == '') {
                 line.addClass('error');
                 line.find('.problem_title').append('No such problem');
             }
@@ -83,7 +83,7 @@ $(document).ready(function () {
     //Date picker
     $('#contestDTO_time_days').datepicker({
         format: 'yyyy-mm-dd'
-    })
+    });
 
     //Problem list table
     problemListTable = $('#problemList');
@@ -114,5 +114,28 @@ $(document).ready(function () {
 
             return false;
         }
-    })
+    });
+
+    $('#submit').setButton({
+        callback: function(){
+            var info = $('.form-horizontal').getFormData();
+            console.log(info);
+
+
+            var data = {
+                "contestDTO.title": info["contestDTO.title"],
+                "contestDTO.description": info["contestDTO.description"],
+                "contestDTO.problemList": {
+                    0: 1,
+                    1: 2,
+                    2: 3,
+                    3: 4
+                }
+            };
+            $.post('/admin/contest/edit', data, function(data) {
+                console.log(data);
+            });
+            return false;
+        }
+    });
 });

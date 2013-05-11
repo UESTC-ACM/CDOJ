@@ -25,6 +25,7 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemListView;
 import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
@@ -47,7 +48,39 @@ public class ContestStatementAdminAction extends BaseAction implements ContestDA
     /**
      * Use for update contest info
      */
-    IContestDAO contestDAO;
+    private IContestDAO contestDAO;
+
+    private ContestDTO contestDTO;
+
+    public ContestDTO getContestDTO() {
+        return contestDTO;
+    }
+
+    public void setContestDTO(ContestDTO contestDTO) {
+        this.contestDTO = contestDTO;
+    }
+
+    public String toEdit() {
+        try {
+            System.out.println("[Title] " + contestDTO.getTitle());
+            System.out.println("[Description] " + contestDTO.getDescription());
+            System.out.println("[Time] " + contestDTO.getTime());
+            System.out.print("[List] {");
+            for (int i = 0; i < contestDTO.getProblemList().size(); i++)
+                System.out.print(contestDTO.getProblemList().get(i) + " ");
+            System.out.println("}");
+            json.put("result", "ok");
+        /*} catch (AppException e) {
+            json.put("result", "error");
+            json.put("error_msg", e.getMessage());            */
+        } catch (Exception e) {
+            e.printStackTrace();
+            json.put("result", "error");
+            json.put("error_msg", "Unknown exception occurred.");
+        }
+        return JSON;
+
+    }
 
     @Override
     public void setContestDAO(IContestDAO contestDAO) {
