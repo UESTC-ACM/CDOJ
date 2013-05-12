@@ -121,17 +121,23 @@ $(document).ready(function () {
             var info = $('.form-horizontal').getFormData();
             console.log(info);
 
-
             var data = {
                 "contestDTO.title": info["contestDTO.title"],
                 "contestDTO.description": info["contestDTO.description"],
+                "contestDTO.time": getTime(info, "contestDTO.time"),
+                "contestDTO.length": getSeconds(info, "contestDTO.length"),
                 "contestDTO.problemList": {
-                    0: 1,
-                    1: 2,
-                    2: 3,
-                    3: 4
                 }
             };
+
+            var problemList = $('#problemList td.problem_id');
+            $.each(problemList, function(index, value){
+                console.log(index, value);
+                data['contestDTO.problemList'][index] = value.innerText;
+            });
+            console.log(problemList);
+
+            console.log(data);
             $.post('/admin/contest/edit', data, function(data) {
                 console.log(data);
             });

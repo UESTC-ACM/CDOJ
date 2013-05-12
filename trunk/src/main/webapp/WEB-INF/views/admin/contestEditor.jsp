@@ -112,6 +112,7 @@
                                        maxlength="10"
                                        name="contestDTO.length.days"
                                        id="contestDTO_length_days"
+                                       value="0"
                                        style="width: 80px;">
                                 <span>days</span>
                                 <input type="text"
