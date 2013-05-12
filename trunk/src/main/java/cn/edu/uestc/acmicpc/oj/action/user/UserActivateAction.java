@@ -26,6 +26,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.ioc.dao.UserSerialKeyDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dto.UserDTOAware;
 import cn.edu.uestc.acmicpc.ioc.util.EMailSenderAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.EMailSender;
@@ -35,6 +36,7 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import com.opensymphony.xwork2.validator.annotations.*;
 import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -47,8 +49,10 @@ import java.util.Random;
  */
 @SuppressWarnings("UnusedDeclaration")
 @LoginPermit(NeedLogin = false)
-public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAware, EMailSenderAware {
+public class UserActivateAction extends BaseAction
+        implements UserSerialKeyDAOAware, EMailSenderAware, UserDTOAware {
 
+    @Autowired
     private EMailSender eMailSender;
 
     private User targetUser;
@@ -76,6 +80,7 @@ public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAw
      */
     private String serialKey;
 
+    @Autowired
     private IUserSerialKeyDAO userSerialKeyDAO;
 
     public String getSerialKey() {
@@ -156,15 +161,16 @@ public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAw
         return SUCCESS;
     }
 
-    /**
-     * user dto...
-     */
+
+    @Autowired
     private UserDTO userDTO;
 
+    @Override
     public UserDTO getUserDTO() {
         return userDTO;
     }
 
+    @Override
     public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
     }

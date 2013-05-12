@@ -40,6 +40,7 @@ import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.Projections;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Judge item for single problem.
@@ -52,23 +53,28 @@ public class JudgeItem implements CompileinfoDAOAware, StatusDAOAware, UserDAOAw
     /**
      * Status database condition.
      */
+    @Autowired
     private StatusCondition statusCondition;
 
     /**
      * Compileinfo DAO for database query.
      */
+    @Autowired
     private ICompileinfoDAO compileinfoDAO;
     /**
      * Status DAO for database query.
      */
+    @Autowired
     private IStatusDAO statusDAO;
     /**
      * User DAO for database query.
      */
+    @Autowired
     private IUserDAO userDAO;
     /**
      * Problem DAO for database query.
      */
+    @Autowired
     private IProblemDAO problemDAO;
 
     @SuppressWarnings("UnusedDeclaration")

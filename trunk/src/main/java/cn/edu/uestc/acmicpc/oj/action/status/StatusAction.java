@@ -29,6 +29,7 @@ import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,9 @@ public class StatusAction extends BaseAction
     /**
      * StatusDAO for status queries.
      */
+    @Autowired
     private IStatusDAO statusDAO;
+    @Autowired
     private StatusCondition statusCondition;
 
     /**

@@ -29,6 +29,7 @@ import cn.edu.uestc.acmicpc.db.entity.Language;
 import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.LanguageDAOAware;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -116,11 +117,13 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
     /**
      * Department DAO using for get all departments.
      */
+    @Autowired
     private IDepartmentDAO departmentDAO;
 
     /**
      * Language DAO using for get all languages.
      */
+    @Autowired
     private ILanguageDAO languageDAO;
 
     /**

@@ -35,21 +35,12 @@
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx">
     <bean id="judgeItem" class="cn.edu.uestc.acmicpc.service.entity.JudgeItem" scope="prototype">
-        <property name="statusCondition" ref="statusCondition"/>
-        <property name="compileinfoDAO" ref="compileinfoDAO"/>
-        <property name="statusDAO" ref="statusDAO"/>
-        <property name="problemDAO" ref="problemDAO"/>
-        <property name="userDAO" ref="userDAO"/>
     </bean>
     <bean id="scheduler" class="cn.edu.uestc.acmicpc.service.entity.Scheduler" scope="prototype">
-        <property name="statusDAO" ref="statusDAO"/>
-        <property name="statusCondition" ref="statusCondition"/>
     </bean>
     <bean id="judge" class="cn.edu.uestc.acmicpc.service.entity.Judge" scope="prototype">
-        <property name="settings" ref="settings"/>
     </bean>
     <bean id="judgeService" class="cn.edu.uestc.acmicpc.service.JudgeService"
           init-method="init" destroy-method="destroy" lazy-init="false" scope="singleton">
-        <property name="settings" ref="settings"/>
     </bean>
 </beans>

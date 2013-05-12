@@ -29,6 +29,7 @@ import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * action for show problem.
@@ -41,6 +42,7 @@ public class ProblemAction extends BaseAction implements ProblemDAOAware {
     /**
      * ProblemDAO for problem search.
      */
+    @Autowired
     private IProblemDAO problemDAO;
 
     /**

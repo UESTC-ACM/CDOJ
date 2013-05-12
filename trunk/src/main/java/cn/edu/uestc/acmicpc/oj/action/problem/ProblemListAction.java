@@ -34,6 +34,7 @@ import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +51,10 @@ public class ProblemListAction extends BaseAction
     /**
      * ProblemDAO for problem search.
      */
+    @Autowired
     private IProblemDAO problemDAO;
 
+    @Autowired
     private ProblemCondition problemCondition;
 
     @Override

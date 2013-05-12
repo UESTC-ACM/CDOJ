@@ -21,6 +21,7 @@
 package cn.edu.uestc.acmicpc.util;
 
 import cn.edu.uestc.acmicpc.ioc.util.SettingsAware;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -52,6 +53,7 @@ public class EMailSender implements SettingsAware {
         }
     }
 
+    @Autowired
     private Settings settings;
 
     public boolean send(String emailAddress, String title, String content) {

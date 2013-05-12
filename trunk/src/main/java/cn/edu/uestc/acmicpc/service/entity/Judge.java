@@ -27,6 +27,7 @@ import cn.edu.uestc.acmicpc.ioc.util.SettingsAware;
 import cn.edu.uestc.acmicpc.util.FileUtil;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.Settings;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -60,6 +61,7 @@ public class Judge implements Runnable, SettingsAware {
     /**
      * Global setting entity.
      */
+    @Autowired
     private Settings settings;
 
     public void setTempPath(String tempPath) {

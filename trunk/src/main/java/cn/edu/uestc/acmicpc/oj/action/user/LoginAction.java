@@ -36,6 +36,7 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import com.opensymphony.xwork2.validator.annotations.*;
 import org.hibernate.criterion.Projections;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -56,7 +57,9 @@ public class LoginAction extends BaseAction
 
     private String userName;
     private String password;
+    @Autowired
     private StatusCondition statusCondition;
+    @Autowired
     private IStatusDAO statusDAO;
 
     /**

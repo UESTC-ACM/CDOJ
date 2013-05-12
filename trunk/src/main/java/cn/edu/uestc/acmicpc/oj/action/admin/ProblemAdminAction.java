@@ -40,6 +40,7 @@ import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Column;
 import java.lang.reflect.Method;
@@ -58,8 +59,10 @@ public class ProblemAdminAction extends BaseAction
     /**
      * ProblemDAO for problem search.
      */
+    @Autowired
     private IProblemDAO problemDAO;
 
+    @Autowired
     private ProblemCondition problemCondition;
 
     public ProblemAdminAction() {
@@ -138,7 +141,7 @@ public class ProblemAdminAction extends BaseAction
     public String toProblemEditor() {
         if (targetProblemId == null) {
             try {
-                ProblemDTO problemDTO = new ProblemDTO();
+                ProblemDTO problemDTO = applicationContext.getBean("problemDTO", ProblemDTO.class);
                 Problem problem = problemDTO.getEntity();
                 problemDAO.add(problem);
                 targetProblemId = problem.getProblemId();
