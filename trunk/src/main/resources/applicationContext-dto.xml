@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ cdoj, UESTC ACMICPC Online Judge
+  ~ Copyright (c) 2012  fish <@link lyhypacm@gmail.com>,
+  ~ mzry1992 <@link muziriyun@gmail.com>
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+<!--suppress XmlUnusedNamespaceDeclaration -->
+<beans default-lazy-init="true"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-3.1.xsd"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx">
+    <bean id="baseDTO" class="cn.edu.uestc.acmicpc.db.dto.base.BaseDTO"
+          abstract="true" scope="prototype"/>
+    <bean id="codeDTO" class="cn.edu.uestc.acmicpc.db.dto.impl.CodeDTO"
+          parent="baseDTO"/>
+    <bean id="contestDTO" class="cn.edu.uestc.acmicpc.db.dto.impl.ContestDTO"
+          parent="baseDTO"/>
+    <bean id="problemDTO" class="cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO"
+          parent="baseDTO"/>
+    <bean id="statusDTO" class="cn.edu.uestc.acmicpc.db.dto.impl.StatusDTO"
+          parent="baseDTO"/>
+    <bean id="userDTO" class="cn.edu.uestc.acmicpc.db.dto.impl.UserDTO"
+          parent="baseDTO"/>
+</beans>
