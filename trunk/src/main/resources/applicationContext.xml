@@ -33,6 +33,7 @@
        http://www.springframework.org/schema/tx/spring-tx-3.1.xsd"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx">
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
     <aop:config proxy-target-class="true"/>
     <import resource="applicationContext-resources.xml"/>
     <import resource="applicationContext-jpa.xml"/>
