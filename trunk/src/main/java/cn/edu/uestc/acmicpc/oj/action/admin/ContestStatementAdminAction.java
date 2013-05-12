@@ -33,6 +33,8 @@ import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.Validations;
 
 import java.util.List;
 
@@ -60,11 +62,36 @@ public class ContestStatementAdminAction extends BaseAction implements ContestDA
         this.contestDTO = contestDTO;
     }
 
+    /**
+     * To add or edit contest entity.
+     * <p/>
+     * <strong>JSON output</strong>:
+     * <ul>
+     * <li>
+     * For success: {"result":"ok"}
+     * </li>
+     * <li>
+     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+     * </li>
+     * </ul>
+     *
+     * @return <strong>JSON</strong> signal
+     */
+    @Validations(
+            requiredStrings = {
+                    @RequiredStringValidator(
+                            fieldName = "contestDTO.title",
+                            key = "error.contestTitle.validation",
+                            trim = true
+                    )
+            }
+    )
     public String toEdit() {
         try {
             System.out.println("[Title] " + contestDTO.getTitle());
             System.out.println("[Description] " + contestDTO.getDescription());
             System.out.println("[Time] " + contestDTO.getTime());
+            System.out.println("[Length] " + contestDTO.getLength());
             System.out.print("[List] {");
             for (int i = 0; i < contestDTO.getProblemList().size(); i++)
                 System.out.print(contestDTO.getProblemList().get(i) + " ");

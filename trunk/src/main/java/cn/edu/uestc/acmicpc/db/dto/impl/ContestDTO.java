@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
+import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
@@ -35,6 +36,7 @@ public class ContestDTO extends BaseDTO<Contest> {
         isVisible = visible;
     }
 
+    @Ignore
     public List<Integer> getProblemList() {
         return problemList;
     }
@@ -79,8 +81,8 @@ public class ContestDTO extends BaseDTO<Contest> {
         return time;
     }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
+    public void setTime(long time) {
+        this.time = new Timestamp(time);
     }
 
     public Integer getLength() {
@@ -100,8 +102,15 @@ public class ContestDTO extends BaseDTO<Contest> {
     }
 
     @Override
+    @Deprecated
     public Contest getEntity() throws AppException {
-        return super.getEntity();
+        Contest contest = super.getEntity();
+        return contest;
+    }
+
+    public Contest getEntity(IDAO dao) throws AppException {
+        Contest contest = super.getEntity();
+        return contest;
     }
 
     @Override
