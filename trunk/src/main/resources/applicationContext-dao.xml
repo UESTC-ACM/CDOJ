@@ -33,41 +33,40 @@
        http://www.springframework.org/schema/tx/spring-tx-3.1.xsd"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx">
-    <bean id="BaseDAO" class="cn.edu.uestc.acmicpc.db.dao.base.BaseDAO" scope="singleton">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="baseDAO" class="cn.edu.uestc.acmicpc.db.dao.base.BaseDAO" scope="singleton">
     </bean>
-    <bean id="articleDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ArticleDAO" parent="BaseDAO">
+    <bean id="articleDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ArticleDAO" parent="baseDAO">
     </bean>
-    <bean id="codeDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.CodeDAO" parent="BaseDAO">
+    <bean id="codeDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.CodeDAO" parent="baseDAO">
     </bean>
-    <bean id="compileinfoDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.CompileinfoDAO" parent="BaseDAO">
+    <bean id="compileinfoDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.CompileinfoDAO" parent="baseDAO">
     </bean>
-    <bean id="contestDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ContestDAO" parent="BaseDAO">
+    <bean id="contestDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ContestDAO" parent="baseDAO">
     </bean>
-    <bean id="contestproblemDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ContestproblemDAO" parent="BaseDAO">
+    <bean id="contestproblemDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ContestproblemDAO" parent="baseDAO">
     </bean>
-    <bean id="contestTeamInfoDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ContestTeamInfoDAO" parent="BaseDAO">
+    <bean id="contestTeamInfoDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ContestTeamInfoDAO" parent="baseDAO">
     </bean>
-    <bean id="contestuserDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ContestuserDAO" parent="BaseDAO">
+    <bean id="contestuserDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ContestuserDAO" parent="baseDAO">
     </bean>
-    <bean id="departmentDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.DepartmentDAO" parent="BaseDAO">
+    <bean id="departmentDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.DepartmentDAO" parent="baseDAO">
     </bean>
-    <bean id="discussDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.DiscussDAO" parent="BaseDAO">
+    <bean id="discussDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.DiscussDAO" parent="baseDAO">
     </bean>
-    <bean id="languageDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.LanguageDAO" parent="BaseDAO">
+    <bean id="languageDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.LanguageDAO" parent="baseDAO">
     </bean>
-    <bean id="messageDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.MessageDAO" parent="BaseDAO">
+    <bean id="messageDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.MessageDAO" parent="baseDAO">
     </bean>
-    <bean id="problemDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ProblemDAO" parent="BaseDAO">
+    <bean id="problemDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ProblemDAO" parent="baseDAO">
     </bean>
-    <bean id="problemtagDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ProblemtagDAO" parent="BaseDAO">
+    <bean id="problemtagDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ProblemtagDAO" parent="baseDAO">
     </bean>
-    <bean id="statusDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.StatusDAO" parent="BaseDAO">
+    <bean id="statusDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.StatusDAO" parent="baseDAO">
     </bean>
-    <bean id="tagDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.TagDAO" parent="BaseDAO">
+    <bean id="tagDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.TagDAO" parent="baseDAO">
     </bean>
-    <bean id="userDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.UserDAO" parent="BaseDAO">
+    <bean id="userDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.UserDAO" parent="baseDAO">
     </bean>
-    <bean id="userSerialKeyDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.UserSerialKeyDAO" parent="BaseDAO">
+    <bean id="userSerialKeyDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.UserSerialKeyDAO" parent="baseDAO">
     </bean>
 </beans>

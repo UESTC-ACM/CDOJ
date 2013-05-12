@@ -35,6 +35,10 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.*;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +57,7 @@ import java.util.Map;
 @SuppressWarnings("UnusedDeclaration")
 public class BaseAction extends ActionSupport
         implements RequestAware, SessionAware, ApplicationAware, IActionInterceptor,
-        ServletResponseAware, ServletRequestAware, UserDAOAware {
+        ServletResponseAware, ServletRequestAware, UserDAOAware, ApplicationContextAware {
     private static final long serialVersionUID = -3221772654123596229L;
 
     /**
@@ -66,6 +70,8 @@ public class BaseAction extends ActionSupport
      */
     private final ThreadLocal<Global> global = new ThreadLocal<>();
     protected Map<Integer, Global.AuthorStatusType> problemStatus;
+    @Autowired
+    protected ApplicationContext applicationContext;
 
     @SuppressWarnings("UnusedDeclaration")
     public Global getGlobal() {
@@ -124,6 +130,7 @@ public class BaseAction extends ActionSupport
     /**
      * userDAO for user toLogin check.
      */
+    @Autowired
     protected IUserDAO userDAO = null;
 
     /**
@@ -151,6 +158,7 @@ public class BaseAction extends ActionSupport
     /**
      * Global settings for actions.
      */
+    @Autowired
     protected Settings settings;
 
     @SuppressWarnings("UnusedDeclaration")
@@ -482,5 +490,10 @@ public class BaseAction extends ActionSupport
     @SuppressWarnings("UnusedDeclaration")
     public void setJson(Map<String, Object> json) {
         this.json = json;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }

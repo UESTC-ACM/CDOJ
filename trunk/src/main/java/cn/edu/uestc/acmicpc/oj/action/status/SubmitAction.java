@@ -32,6 +32,7 @@ import cn.edu.uestc.acmicpc.ioc.dao.*;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * action for submit code.
@@ -66,10 +67,15 @@ public class SubmitAction extends BaseAction
     /**
      * DAO for database
      */
+    @Autowired
     private IStatusDAO statusDAO;
+    @Autowired
     private ICodeDAO codeDAO;
+    @Autowired
     private IContestDAO contestDAO;
+    @Autowired
     private ILanguageDAO languageDAO;
+    @Autowired
     private IProblemDAO problemDAO;
 
     /**
@@ -89,7 +95,7 @@ public class SubmitAction extends BaseAction
      */
     public String toSubmit() {
         try {
-            StatusDTO statusDTO = new StatusDTO();
+            StatusDTO statusDTO = applicationContext.getBean("statusDTO", StatusDTO.class);
             statusDTO.setContest(contestDAO.get(contestId));
             Language language = languageDAO.get(languageId);
             if (language == null)
@@ -102,7 +108,7 @@ public class SubmitAction extends BaseAction
             problemDAO.update(problem);
             statusDTO.setProblem(problem);
             statusDTO.setUser(getCurrentUser());
-            CodeDTO codeDTO = new CodeDTO();
+            CodeDTO codeDTO = applicationContext.getBean("codeDTO", CodeDTO.class);
             codeDTO.setContent(codeContent);
             Code code = codeDTO.getEntity();
             codeDAO.add(code);

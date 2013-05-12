@@ -33,7 +33,7 @@ public interface UserDTOAware {
      *
      * @param userDTO userDTO object
      */
-    public void setStatusDTO(UserDTO userDTO);
+    public void setUserDTO(UserDTO userDTO);
 
     /**
      * Get userDTO entity.

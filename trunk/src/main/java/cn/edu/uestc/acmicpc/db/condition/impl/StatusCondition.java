@@ -33,6 +33,7 @@ import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -166,6 +167,7 @@ public class StatusCondition extends BaseCondition implements UserConditionAware
         this.resultId = resultId;
     }
 
+    @Autowired
     UserCondition userCondition;
 
     @SuppressWarnings("unchecked")

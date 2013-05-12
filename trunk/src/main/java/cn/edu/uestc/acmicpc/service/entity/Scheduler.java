@@ -27,6 +27,7 @@ public class Scheduler
     /**
      * StatusDAO for database operation.
      */
+    @Autowired
     private IStatusDAO statusDAO;
 
     public void setJudgeQueue(BlockingQueue<JudgeItem> judgeQueue) {
@@ -41,6 +42,7 @@ public class Scheduler
     /**
      * Status database condition.
      */
+    @Autowired
     private StatusCondition statusCondition;
 
     /**

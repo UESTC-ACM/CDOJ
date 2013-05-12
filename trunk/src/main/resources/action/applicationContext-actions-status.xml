@@ -38,18 +38,11 @@
           class="cn.edu.uestc.acmicpc.oj.action.status.SubmitAction"
           parent="baseAction"
           scope="prototype">
-        <property name="codeDAO" ref="codeDAO"/>
-        <property name="statusDAO" ref="statusDAO"/>
-        <property name="contestDAO" ref="contestDAO"/>
-        <property name="problemDAO" ref="problemDAO"/>
-        <property name="languageDAO" ref="languageDAO"/>
     </bean>
     <bean id="statusAction"
           class="cn.edu.uestc.acmicpc.oj.action.status.StatusAction"
           parent="baseAction"
           scope="prototype">
-        <property name="statusDAO" ref="statusDAO"/>
-        <property name="statusCondition" ref="statusCondition"/>
     </bean>
 
 </beans>

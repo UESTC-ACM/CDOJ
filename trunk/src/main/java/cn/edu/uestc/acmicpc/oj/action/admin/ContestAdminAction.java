@@ -29,6 +29,7 @@ import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Contest admin main page
@@ -40,6 +41,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class ContestAdminAction extends BaseAction implements ContestDAOAware {
 
+    @Autowired
     private IContestDAO contestDAO;
 
     @SuppressWarnings("SameReturnValue")

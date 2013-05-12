@@ -27,6 +27,7 @@ import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.file.FileUploadAction;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
@@ -41,6 +42,7 @@ import java.util.Iterator;
  */
 public class ProblemPictureAdminAction extends FileUploadAction implements ProblemDAOAware {
 
+    @Autowired
     private IProblemDAO problemDAO;
 
     @Override
