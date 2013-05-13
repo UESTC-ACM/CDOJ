@@ -137,6 +137,7 @@ public class ConditionTest
      */
     @SuppressWarnings("unchecked")
     @Test
+    @Ignore
     public void testProblemConditionIsTitleEmpty() throws AppException {
         problemCondition.setIsTitleEmpty(true);
         List<Problem> problems = (List<Problem>) problemDAO.findAll(problemCondition.getCondition());

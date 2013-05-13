@@ -60,9 +60,11 @@ import java.util.Random;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:applicationContext-test.xml"})
-public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAware,
-        ProblemDAOAware, UserConditionAware, StatusConditionAware, StatusDAOAware,
-        UserSerialKeyDAOAware, ContestDAOAware, ContestDTOAware {
+public class DatabaseTest
+        implements TagDAOAware, UserDAOAware, DepartmentDAOAware,
+        ProblemDAOAware, UserConditionAware, StatusConditionAware,
+        StatusDAOAware, UserSerialKeyDAOAware, ContestDAOAware,
+        ContestDTOAware {
 
     @Ignore
     @Before
@@ -410,13 +412,20 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
         return contestDTO;
     }
 
+    /**
+     * Test cases for contest DAO.
+     */
     @Test
     public void testContestDAO() {
         try {
             Contest contest = contestDTO.getEntity();
+            contest.setTime(new Timestamp(new Date().getTime()));
+            contest.setType((byte) 0);
+//            contest.setContestId(null);
+            System.out.println(contest.toString());
             contestDAO.add(contest);
         } catch (AppException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }
