@@ -22,14 +22,22 @@
 
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestDTO;
+import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.db.view.impl.ContestView;
+import cn.edu.uestc.acmicpc.ioc.condition.ContestConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dto.ContestDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * Contest admin main page
@@ -39,10 +47,17 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @SuppressWarnings("UnusedDeclaration")
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class ContestAdminAction extends BaseAction implements ContestDAOAware {
+public class ContestAdminAction extends BaseAction
+        implements ContestDAOAware, ContestConditionAware, ContestDTOAware {
 
     @Autowired
     private IContestDAO contestDAO;
+
+    @Autowired
+    private ContestCondition contestCondition;
+
+    @Autowired
+    private ContestDTO contestDTO;
 
     @SuppressWarnings("SameReturnValue")
     public String toContestList() {
@@ -78,18 +93,42 @@ public class ContestAdminAction extends BaseAction implements ContestDAOAware {
     private Integer targetContestId;
     private ContestView targetContest;
 
-    @SuppressWarnings("SameReturnValue")
+    @SuppressWarnings({"SameReturnValue", "unchecked"})
     public String toContestEditor() {
-        editorFlag = "new";
-        if (targetContestId != null) {
-            try {
+        try {
+            if (targetContestId == null) {
+                contestCondition.clear();
+                contestCondition.setIsTitleEmpty(true);
+                Condition condition = contestCondition.getCondition();
+                Long count = contestDAO.count(condition);
+
+                if (count == 0) {
+                    Contest contest = contestDTO.getEntity();
+                    contestDAO.add(contest);
+                    targetContestId = contest.getContestId();
+                } else {
+                    List<Contest> result = (List<Contest>) contestDAO.findAll(contestCondition.getCondition());
+                    if (result == null || result.size() == 0)
+                        throw new AppException("Add new contest error!");
+                    Contest contest = result.get(0);
+                    targetContestId = contest.getContestId();
+                }
+
+                if (targetContestId == null)
+                    throw new AppException("Add new contest error!");
+
+                return redirect(getActionURL("/admin", "contest/editor/" + targetContestId));
+            } else {
                 targetContest = new ContestView(contestDAO.get(targetContestId));
                 if (targetContest.getContestId() == null)
-                    throw new AppException("Wrong problem ID!");
+                    throw new AppException("Wrong contest ID!");
                 editorFlag = "edit";
-            } catch (AppException e) {
-                return redirect(getActionURL("/admin", "index"), e.getMessage());
             }
+        } catch (AppException e) {
+            return redirect(getActionURL("/admin", "index"), e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return redirect(getActionURL("/admin", "index"), "Unknown exception occurred.");
         }
         return SUCCESS;
     }
@@ -97,5 +136,25 @@ public class ContestAdminAction extends BaseAction implements ContestDAOAware {
     @Override
     public void setContestDAO(IContestDAO contestDAO) {
         this.contestDAO = contestDAO;
+    }
+
+    @Override
+    public void setContestCondition(ContestCondition contestCondition) {
+        this.contestCondition = contestCondition;
+    }
+
+    @Override
+    public ContestCondition getContestCondition() {
+        return contestCondition;
+    }
+
+    @Override
+    public void setContestDTO(ContestDTO contestDTO) {
+        this.contestDTO = contestDTO;
+    }
+
+    @Override
+    public ContestDTO getContestDTO() {
+        return contestDTO;
     }
 }

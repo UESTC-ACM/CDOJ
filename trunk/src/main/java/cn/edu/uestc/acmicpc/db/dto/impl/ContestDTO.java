@@ -125,17 +125,6 @@ public class ContestDTO extends BaseDTO<Contest>
         contest.setIsVisible(false);
 
         Collection<ContestProblem> contestProblems = new LinkedList<>();
-        for (int index = 0; index < problemList.size(); index++) {
-            Integer id = problemList.get(index);
-
-            ContestProblem contestProblem = new ContestProblem();
-            contestProblem.setOrder(index);
-            contestProblem.setContestByContestId(contest);
-            contestProblem.setProblemByProblemId(problemDAO.get(id));
-            contestProblemDAO.addOrUpdate(contestProblem);
-
-            contestProblems.add(contestProblem);
-        }
         contest.setContestProblemsByContestId(contestProblems);
 
         Collection<ContestUser> contestUsers = new LinkedList<>();

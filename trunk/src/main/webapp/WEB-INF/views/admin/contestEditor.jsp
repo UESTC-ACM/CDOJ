@@ -44,12 +44,7 @@
         <form class="form-horizontal">
             <fieldset>
                 <legend id="editorFlag" value="${editorFlag}">
-                    <s:if test='editorFlag=="new"'>
-                        Add new contest
-                    </s:if>
-                    <s:else>
-                        Edit contest <span id="problemId">${targetContest.contestId}</span>
-                    </s:else>
+                    Edit contest <span id="problemId">${targetContest.contestId}</span>
                 </legend>
 
                 <div class="row">
