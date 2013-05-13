@@ -99,14 +99,13 @@ public class ProblemStatementAdminAction extends BaseAction
     public String toEdit() {
         try {
             Problem problem;
-            if (problemDTO.getProblemId() != null) { //edit
-                problem = problemDAO.get(problemDTO.getProblemId());
-                problemDTO.updateEntity(problem);
-            } else { //add
-                problem = problemDTO.getEntity();
-            }
+
+            problem = problemDAO.get(problemDTO.getProblemId());
             if (problem == null)
                 throw new AppException("No such problem!");
+
+            problemDTO.updateEntity(problem);
+
             problemDAO.addOrUpdate(problem);
             json.put("result", "ok");
         } catch (AppException e) {

@@ -208,13 +208,12 @@ public class ProblemDataAdminAction extends FileUploadAction
     public String updateProblemData() {
         try {
             Problem problem = null;
-            if (problemDTO.getProblemId() != null) { //edit
-                problem = problemDAO.get(problemDTO.getProblemId());
-                problemDTO.updateEntity(problem);
-            }
+
+            problem = problemDAO.get(problemDTO.getProblemId());
             if (problem == null)
                 throw new AppException("No such problem!");
 
+            problemDTO.updateEntity(problem);
             String dataPath = settings.JUDGE_DATA_PATH + "/" + targetProblemId;
             String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/" + targetProblemId;
             File targetFile = new File(dataPath);

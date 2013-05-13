@@ -23,6 +23,7 @@ package cn.edu.uestc.acmicpc.oj.action.admin;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDTO;
+import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dto.ContestDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
@@ -85,14 +86,19 @@ public class ContestStatementAdminAction extends BaseAction
     )
     public String toEdit() {
         try {
-            System.out.println("[Title] " + contestDTO.getTitle());
-            System.out.println("[Description] " + contestDTO.getDescription());
-            System.out.println("[Time] " + contestDTO.getTime());
-            System.out.println("[Length] " + contestDTO.getLength());
-            System.out.print("[List] {");
+            Contest contest = contestDTO.getEntity();
+
+            System.out.println("[Title] " + contest.getTitle());
+            System.out.println("[Description] " + contest.getDescription());
+            System.out.println("[Time] " + contest.getTime());
+            System.out.println("[Length] " + contest.getLength());
+            System.out.print("[List] " + contest.getContestProblemsByContestId() + " {");
             for (int i = 0; i < contestDTO.getProblemList().size(); i++)
                 System.out.print(contestDTO.getProblemList().get(i) + " ");
             System.out.println("}");
+
+            //contestDAO.add(contest);
+
             json.put("result", "ok");
         /*} catch (AppException e) {
             json.put("result", "error");
