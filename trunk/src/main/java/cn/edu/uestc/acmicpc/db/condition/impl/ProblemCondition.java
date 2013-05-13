@@ -166,9 +166,9 @@ public class ProblemCondition extends BaseCondition {
         }
         if (isTitleEmpty != null) {
             if (isTitleEmpty) {
-                condition.addCriterion(Restrictions.isEmpty("title"));
+                condition.addCriterion(Restrictions.like("title", ""));
             } else {
-                condition.addCriterion(Restrictions.isNotEmpty("title"));
+                condition.addCriterion(Restrictions.like("title", "_%"));
             }
         }
     }
