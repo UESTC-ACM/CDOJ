@@ -23,7 +23,7 @@
 package cn.edu.uestc.acmicpc.db.dao.impl;
 
 import cn.edu.uestc.acmicpc.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.ICompileinfoDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO;
 import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
 
 /**
@@ -31,7 +31,7 @@ import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public class CompileinfoDAO extends DAO<CompileInfo, Integer> implements ICompileinfoDAO {
+public class CompileInfoDAO extends DAO<CompileInfo, Integer> implements ICompileInfoDAO {
     @Override
     protected Class<Integer> getPKClass() {
         return Integer.class;

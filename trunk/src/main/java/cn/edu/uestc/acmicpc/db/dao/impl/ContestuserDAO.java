@@ -23,7 +23,7 @@
 package cn.edu.uestc.acmicpc.db.dao.impl;
 
 import cn.edu.uestc.acmicpc.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IContestuserDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IContestUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.ContestUser;
 
 /**
@@ -31,7 +31,7 @@ import cn.edu.uestc.acmicpc.db.entity.ContestUser;
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public class ContestuserDAO extends DAO<ContestUser, Integer> implements IContestuserDAO {
+public class ContestUserDAO extends DAO<ContestUser, Integer> implements IContestUserDAO {
     @Override
     protected Class<Integer> getPKClass() {
         return Integer.class;

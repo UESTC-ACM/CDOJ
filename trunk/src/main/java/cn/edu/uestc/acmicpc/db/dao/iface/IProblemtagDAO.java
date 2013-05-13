@@ -25,9 +25,9 @@ package cn.edu.uestc.acmicpc.db.dao.iface;
 import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
 
 /**
- * ProblemtagDAO AOP interface.
+ * ProblemTagDAO AOP interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public interface IProblemtagDAO extends IDAO<ProblemTag, Integer> {
+public interface IProblemTagDAO extends IDAO<ProblemTag, Integer> {
 }

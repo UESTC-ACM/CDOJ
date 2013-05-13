@@ -25,9 +25,9 @@ package cn.edu.uestc.acmicpc.db.dao.iface;
 import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 
 /**
- * ContestproblemDAO AOP interface.
+ * ContestProblemDAO AOP interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public interface IContestproblemDAO extends IDAO<ContestProblem, Integer> {
+public interface IContestProblemDAO extends IDAO<ContestProblem, Integer> {
 }

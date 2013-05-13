@@ -39,15 +39,15 @@
     </bean>
     <bean id="codeDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.CodeDAO" parent="baseDAO">
     </bean>
-    <bean id="compileinfoDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.CompileinfoDAO" parent="baseDAO">
+    <bean id="compileInfoDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.CompileInfoDAO" parent="baseDAO">
     </bean>
     <bean id="contestDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ContestDAO" parent="baseDAO">
     </bean>
-    <bean id="contestproblemDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ContestproblemDAO" parent="baseDAO">
+    <bean id="contestProblemDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ContestProblemDAO" parent="baseDAO">
     </bean>
     <bean id="contestTeamInfoDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ContestTeamInfoDAO" parent="baseDAO">
     </bean>
-    <bean id="contestuserDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ContestuserDAO" parent="baseDAO">
+    <bean id="contestUserDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ContestUserDAO" parent="baseDAO">
     </bean>
     <bean id="departmentDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.DepartmentDAO" parent="baseDAO">
     </bean>
@@ -59,7 +59,7 @@
     </bean>
     <bean id="problemDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ProblemDAO" parent="baseDAO">
     </bean>
-    <bean id="problemtagDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ProblemtagDAO" parent="baseDAO">
+    <bean id="problemTagDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.ProblemTagDAO" parent="baseDAO">
     </bean>
     <bean id="statusDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.StatusDAO" parent="baseDAO">
     </bean>

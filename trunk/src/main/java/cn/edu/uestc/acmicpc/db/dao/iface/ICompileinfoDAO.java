@@ -25,9 +25,9 @@ package cn.edu.uestc.acmicpc.db.dao.iface;
 import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
 
 /**
- * CompileinfoDAO AOP interface.
+ * CompileInfoDAO AOP interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public interface ICompileinfoDAO extends IDAO<CompileInfo, Integer> {
+public interface ICompileInfoDAO extends IDAO<CompileInfo, Integer> {
 }

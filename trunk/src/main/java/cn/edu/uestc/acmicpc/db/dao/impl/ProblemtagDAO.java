@@ -23,7 +23,7 @@
 package cn.edu.uestc.acmicpc.db.dao.impl;
 
 import cn.edu.uestc.acmicpc.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemtagDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemTagDAO;
 import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
 
 /**
@@ -31,7 +31,7 @@ import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public class ProblemtagDAO extends DAO<ProblemTag, Integer> implements IProblemtagDAO {
+public class ProblemTagDAO extends DAO<ProblemTag, Integer> implements IProblemTagDAO {
     @Override
     protected Class<Integer> getPKClass() {
         return Integer.class;

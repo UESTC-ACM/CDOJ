@@ -25,9 +25,9 @@ package cn.edu.uestc.acmicpc.db.dao.iface;
 import cn.edu.uestc.acmicpc.db.entity.ContestUser;
 
 /**
- * ContestuserDAO AOP interface.
+ * ContestUserDAO AOP interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public interface IContestuserDAO extends IDAO<ContestUser, Integer> {
+public interface IContestUserDAO extends IDAO<ContestUser, Integer> {
 }
