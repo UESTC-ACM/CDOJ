@@ -31,6 +31,7 @@ import cn.edu.uestc.acmicpc.db.view.impl.ProblemListView;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemView;
 import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dto.ProblemDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
@@ -54,7 +55,7 @@ import java.util.List;
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class ProblemAdminAction extends BaseAction
-        implements ProblemConditionAware, ProblemDAOAware {
+        implements ProblemConditionAware, ProblemDAOAware, ProblemDTOAware {
 
     /**
      * ProblemDAO for problem search.
@@ -64,6 +65,9 @@ public class ProblemAdminAction extends BaseAction
 
     @Autowired
     private ProblemCondition problemCondition;
+
+    @Autowired
+    private ProblemDTO problemDTO;
 
     public ProblemAdminAction() {
     }
@@ -147,7 +151,6 @@ public class ProblemAdminAction extends BaseAction
                 Long count = problemDAO.count(condition);
 
                 if (count == 0) {
-                    ProblemDTO problemDTO = applicationContext.getBean("problemDTO", ProblemDTO.class);
                     Problem problem = problemDTO.getEntity();
                     problemDAO.add(problem);
                     targetProblemId = problem.getProblemId();
@@ -159,6 +162,7 @@ public class ProblemAdminAction extends BaseAction
                     targetProblemId = problem.getProblemId();
                 }
 
+                System.out.println("Count = " + count + ", Id = " + targetProblemId);
                 if (targetProblemId == null)
                     throw new AppException("Add new problem error!");
 
@@ -287,5 +291,15 @@ public class ProblemAdminAction extends BaseAction
             json.put("error_msg", "Unknown exception occurred.");
         }
         return JSON;
+    }
+
+    @Override
+    public void setProblemDTO(ProblemDTO problemDTO) {
+        this.problemDTO = problemDTO;
+    }
+
+    @Override
+    public ProblemDTO getProblemDTO() {
+        return problemDTO;
     }
 }

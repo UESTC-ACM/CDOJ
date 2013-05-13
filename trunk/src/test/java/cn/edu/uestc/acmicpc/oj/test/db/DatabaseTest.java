@@ -27,13 +27,12 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.*;
-import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.db.entity.Tag;
-import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestDTO;
+import cn.edu.uestc.acmicpc.db.entity.*;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.*;
+import cn.edu.uestc.acmicpc.ioc.dto.ContestDTOAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.StringUtil;
@@ -63,7 +62,7 @@ import java.util.Random;
 @ContextConfiguration({"classpath:applicationContext-test.xml"})
 public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAware,
         ProblemDAOAware, UserConditionAware, StatusConditionAware, StatusDAOAware,
-        UserSerialKeyDAOAware {
+        UserSerialKeyDAOAware, ContestDAOAware, ContestDTOAware {
 
     @Ignore
     @Before
@@ -388,5 +387,36 @@ public class DatabaseTest implements TagDAOAware, UserDAOAware, DepartmentDAOAwa
     @Override
     public void setUserSerialKeyDAO(IUserSerialKeyDAO userSerialKeyDAO) {
         this.userSerialKeyDAO = userSerialKeyDAO;
+    }
+
+    @Autowired
+    private IContestDAO contestDAO;
+
+    @Override
+    public void setContestDAO(IContestDAO contestDAO) {
+        this.contestDAO = contestDAO;
+    }
+
+    @Autowired
+    private ContestDTO contestDTO;
+
+    @Override
+    public void setContestDTO(ContestDTO contestDTO) {
+        this.contestDTO = contestDTO;
+    }
+
+    @Override
+    public ContestDTO getContestDTO() {
+        return contestDTO;
+    }
+
+    @Test
+    public void testContestDAO() {
+        try {
+            Contest contest = contestDTO.getEntity();
+            contestDAO.add(contest);
+        } catch (AppException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
