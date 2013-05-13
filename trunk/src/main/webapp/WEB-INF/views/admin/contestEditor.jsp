@@ -56,6 +56,7 @@
                     <div class="span10">
                         <div class="control-group">
                             <label class="control-label">Title</label>
+
                             <div class="controls">
                                 <input type="text"
                                        name="contestDTO.title"
@@ -66,16 +67,35 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="span10">
                         <div class="control-group">
                             <label class="control-label">Type</label>
                             <div class="controls">
+                                <label for="contestDTO.type-1" class="radio inline">
+                                    <input type="radio" name="contestDTO.type" id="contestDTO.type-1" value="0">
+                                    public
+                                </label>
+                                <label for="contestDTO.type-2" class="radio inline">
+                                    <input type="radio" name="contestDTO.type" id="contestDTO.type-2" value="1">
+                                    private
+                                </label>
+                                <label for="contestDTO.type-3" class="radio inline">
+                                    <input type="radio" name="contestDTO.type" id="contestDTO.type-3" value="2">
+                                    diy
+                                </label>
+                                <label for="contestDTO.type-4" class="radio inline">
+                                    <input type="radio" name="contestDTO.type" id="contestDTO.type-4" value="3">
+                                    invited
+                                </label>
                             </div>
                         </div>
                     </div>
+
                     <div class="span10">
                         <div class="control-group">
                             <label class="control-label">Begin time</label>
+
                             <div class="controls">
                                 <input type="text"
                                        maxlength="10"
@@ -107,6 +127,7 @@
                         </div>
                         <div class="control-group">
                             <label class="control-label">Length</label>
+
                             <div class="controls">
                                 <input type="text"
                                        maxlength="10"
@@ -142,6 +163,7 @@
                     <div class="span10">
                         <div class="control-group">
                             <label class="control-label">Description</label>
+
                             <div class="controls">
                                 <textarea class="span6"
                                           rows="8"
@@ -155,13 +177,15 @@
                     <div class="span10">
                         <div class="control-group">
                             <label class="control-label">Problem list</label>
+
                             <div class="controls">
                                 <div class="row">
                                     <div class="span6">
                                         <table class="table table-striped table-bordered">
                                             <thead>
                                             <tr>
-                                                <th style="width: 14px;"><a href="#" id="add_problem"><i class="icon-plus"></i></a></th>
+                                                <th style="width: 14px;"><a href="#" id="add_problem"><i
+                                                        class="icon-plus"></i></a></th>
                                                 <th style="width: 60px;">Id</th>
                                                 <th>Title</th>
                                                 <th style="width: 70px;">Difficulty</th>

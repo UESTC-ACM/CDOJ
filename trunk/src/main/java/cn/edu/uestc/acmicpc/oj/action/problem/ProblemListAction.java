@@ -31,6 +31,7 @@ import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.struts2.interceptor.validation.SkipValidation;
@@ -111,6 +112,7 @@ public class ProblemListAction extends BaseAction
     public String toSearch() {
         try {
             problemCondition.setIsVisible(true);
+            problemCondition.setIsTitleEmpty(false);
             Condition condition = problemCondition.getCondition();
             Long count = problemDAO.count(problemCondition.getCondition());
             PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);

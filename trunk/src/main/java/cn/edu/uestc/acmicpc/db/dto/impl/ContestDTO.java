@@ -1,13 +1,22 @@
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
+import cn.edu.uestc.acmicpc.db.dao.iface.IContestProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
+import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
+import cn.edu.uestc.acmicpc.db.entity.ContestUser;
+import cn.edu.uestc.acmicpc.db.entity.Status;
+import cn.edu.uestc.acmicpc.ioc.dao.ContestProblemDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +27,15 @@ import java.util.List;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @SuppressWarnings("UnusedDeclaration")
-public class ContestDTO extends BaseDTO<Contest> {
+public class ContestDTO extends BaseDTO<Contest>
+        implements ContestProblemDAOAware, ProblemDAOAware {
+
+    @Autowired
+    private IContestProblemDAO contestProblemDAO;
+
+    @Autowired
+    private IProblemDAO problemDAO;
+
     private Integer contestId;
     private String title;
     private String description;
@@ -102,19 +119,51 @@ public class ContestDTO extends BaseDTO<Contest> {
     }
 
     @Override
-    @Deprecated
     public Contest getEntity() throws AppException {
         Contest contest = super.getEntity();
+
+        contest.setIsVisible(false);
+
+        Collection<ContestProblem> contestProblems = new LinkedList<>();
+        for (int index = 0; index < problemList.size(); index++) {
+            Integer id = problemList.get(index);
+
+            ContestProblem contestProblem = new ContestProblem();
+            contestProblem.setOrder(index);
+            contestProblem.setContestByContestId(contest);
+            contestProblem.setProblemByProblemId(problemDAO.get(id));
+            contestProblemDAO.addOrUpdate(contestProblem);
+
+            contestProblems.add(contestProblem);
+        }
+        contest.setContestProblemsByContestId(contestProblems);
+
+        Collection<ContestUser> contestUsers = new LinkedList<>();
+        contest.setContestUsersByContestId(contestUsers);
+
+        Collection<Status> contestStatus = new LinkedList<>();
+        contest.setStatusesByContestId(contestStatus);
+
         return contest;
     }
 
-    public Contest getEntity(IDAO dao) throws AppException {
-        Contest contest = super.getEntity();
-        return contest;
+    @Override
+    public void updateEntity(Contest contest) {
+        super.updateEntity(contest);
     }
 
     @Override
     protected Class<Contest> getReferenceClass() {
         return Contest.class;
+    }
+
+    @Override
+    public void setContestProblemDAO(IContestProblemDAO contestProblemDAO) {
+        this.contestProblemDAO = contestProblemDAO;
+    }
+
+    @Override
+    public void setProblemDAO(IProblemDAO problemDAO) {
+        this.problemDAO = problemDAO;
     }
 }

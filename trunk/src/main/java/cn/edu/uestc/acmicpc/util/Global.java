@@ -88,9 +88,22 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
     /**
      * Contest type for contest entity
      */
-    @SuppressWarnings("UnusedDeclaration")
     public enum ContestType {
-        PUBLIC, PRIVATE, DIY, INVITED
+        PUBLIC("public"), PRIVATE("private"), DIY("diy"), INVITED("invited");
+        private final String description;
+
+        private ContestType(String description) {
+            this.description = description;
+        }
+
+        /**
+         * Get enumerate value's description.
+         *
+         * @return description string for specific contest type
+         */
+        public String getDescription() {
+            return description;
+        }
     }
 
     /**
@@ -139,6 +152,11 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
     private List<AuthenticationType> authenticationTypeList;
 
     /**
+     * contest type list
+     */
+    private List<ContestType> contestTypeList;
+
+    /**
      * Get all languages.
      *
      * @return compile language list
@@ -158,6 +176,9 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
         this.authenticationTypeList = new ArrayList<>();
         Collections.addAll(authenticationTypeList, AuthenticationType.values());
+
+        this.contestTypeList = new ArrayList<>();
+        Collections.addAll(contestTypeList, ContestType.values());
     }
 
 
@@ -188,5 +209,15 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
     @SuppressWarnings("UnusedDeclaration")
     public List<AuthenticationType> getAuthenticationTypeList() {
         return authenticationTypeList;
+    }
+
+    /**
+     * Get all contest types.
+     *
+     * @return All contest type
+     */
+    @SuppressWarnings("UnusedDeclaration")
+    public List<ContestType> getContestTypeList() {
+        return contestTypeList;
     }
 }

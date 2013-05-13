@@ -136,30 +136,44 @@ public class ProblemAdminAction extends BaseAction
      *
      * @return <strong>SUCCESS</strong> signal
      */
-    @SuppressWarnings("SameReturnValue")
+    @SuppressWarnings("SameReturnValue unchecked")
     @SkipValidation
     public String toProblemEditor() {
-        if (targetProblemId == null) {
-            try {
-                ProblemDTO problemDTO = applicationContext.getBean("problemDTO", ProblemDTO.class);
-                Problem problem = problemDTO.getEntity();
-                problemDAO.add(problem);
-                targetProblemId = problem.getProblemId();
+        try {
+            if (targetProblemId == null) {
+                problemCondition.clear();
+                problemCondition.setIsTitleEmpty(true);
+                Condition condition = problemCondition.getCondition();
+                Long count = problemDAO.count(condition);
+
+                if (count == 0) {
+                    ProblemDTO problemDTO = applicationContext.getBean("problemDTO", ProblemDTO.class);
+                    Problem problem = problemDTO.getEntity();
+                    problemDAO.add(problem);
+                    targetProblemId = problem.getProblemId();
+                } else {
+                    List<Problem> result = (List<Problem>) problemDAO.findAll(problemCondition.getCondition());
+                    if (result == null || result.size() == 0)
+                        throw new AppException("Add new problem error!");
+                    Problem problem = result.get(0);
+                    targetProblemId = problem.getProblemId();
+                }
+
                 if (targetProblemId == null)
                     throw new AppException("Add new problem error!");
-            } catch (AppException e) {
-                return redirect(getActionURL("/admin", "index"), e.getMessage());
-            }
-            return redirect(getActionURL("/admin", "problem/editor/" + targetProblemId));
-        } else {
-            try {
+
+                return redirect(getActionURL("/admin", "problem/editor/" + targetProblemId));
+            } else {
                 targetProblem = new ProblemView(problemDAO.get(targetProblemId));
                 if (targetProblem.getProblemId() == null)
                     throw new AppException("Wrong problem ID!");
                 editorFlag = "edit";
-            } catch (AppException e) {
-                return redirect(getActionURL("/admin", "index"), e.getMessage());
             }
+        } catch (AppException e) {
+            return redirect(getActionURL("/admin", "index"), e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return redirect(getActionURL("/admin", "index"), "Unknown exception occurred.");
         }
         return SUCCESS;
     }
@@ -188,6 +202,7 @@ public class ProblemAdminAction extends BaseAction
     @SkipValidation
     public String toSearch() {
         try {
+            problemCondition.setIsTitleEmpty(false);
             Condition condition = problemCondition.getCondition();
             Long count = problemDAO.count(problemCondition.getCondition());
             PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
