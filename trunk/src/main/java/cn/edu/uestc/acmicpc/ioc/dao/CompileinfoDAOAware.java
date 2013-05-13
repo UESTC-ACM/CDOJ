@@ -22,19 +22,19 @@
 
 package cn.edu.uestc.acmicpc.ioc.dao;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.ICompileinfoDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO;
 
 /**
  * For all class which need compileinfoDAO entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @see ICompileinfoDAO
+ * @see cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO
  */
-public interface CompileinfoDAOAware {
+public interface CompileInfoDAOAware {
     /**
      * Put compileinfoDAO into class.
      *
      * @param compileinfoDAO newly compileinfoDAO entity
      */
-    public void setCompileinfoDAO(ICompileinfoDAO compileinfoDAO);
+    public void setCompileinfoDAO(ICompileInfoDAO compileinfoDAO);
 }
