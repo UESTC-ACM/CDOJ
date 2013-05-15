@@ -56,9 +56,10 @@
                                 <input type="text"
                                        name="contestDTO.title"
                                        maxlength="50"
-                                       value="${contestDTO.title}"
+                                       value="${targetContest.title}"
                                        id="contestDTO_title"
-                                       class="span6">
+                                       class="span6"
+                                       placeholder="Enter title here">
                             </div>
                         </div>
                     </div>
@@ -67,22 +68,19 @@
                         <div class="control-group">
                             <label class="control-label">Type</label>
                             <div class="controls">
-                                <label for="contestDTO.type-1" class="radio inline">
-                                    <input type="radio" name="contestDTO.type" id="contestDTO.type-1" value="0">
-                                    public
-                                </label>
-                                <label for="contestDTO.type-2" class="radio inline">
-                                    <input type="radio" name="contestDTO.type" id="contestDTO.type-2" value="1">
-                                    private
-                                </label>
-                                <label for="contestDTO.type-3" class="radio inline">
-                                    <input type="radio" name="contestDTO.type" id="contestDTO.type-3" value="2">
-                                    diy
-                                </label>
-                                <label for="contestDTO.type-4" class="radio inline">
-                                    <input type="radio" name="contestDTO.type" id="contestDTO.type-4" value="3">
-                                    invited
-                                </label>
+                                <s:iterator value="Global.contestTypeList" id="id" status="status">
+                                    <label for="contestDTO.type-<s:property value="#status.index"/>" class="radio inline">
+                                        <input type="radio"
+                                               name="contestDTO.type"
+                                               id="contestDTO.type-<s:property value="#status.index"/>"
+                                               value="<s:property value="#status.index"/>"
+                                               <s:if test="targetContest.type == #status.index">
+                                               checked=""
+                                               </s:if>
+                                               >
+                                        <s:property value="#id.description"/>
+                                    </label>
+                                </s:iterator>
                             </div>
                         </div>
                     </div>
@@ -91,14 +89,16 @@
                         <div class="control-group">
                             <label class="control-label">Begin time</label>
 
-                            <div class="controls">
+                            <div class="controls time-selector" value="<s:property value="targetContest.time.getTime()"/>">
                                 <input type="text"
                                        maxlength="10"
+                                       class="time_days"
                                        name="contestDTO.time.days"
                                        id="contestDTO_time_days"
                                        style="width: 80px;">
                                 <input type="text"
                                        maxlength="2"
+                                       class="time_hours"
                                        name="contestDTO.time.hours"
                                        id="contestDTO_time_hours"
                                        value="00"
@@ -106,6 +106,7 @@
                                 <span>:</span>
                                 <input type="text"
                                        maxlength="2"
+                                       class="time_minutes"
                                        name="contestDTO.time.minutes"
                                        id="contestDTO_time_minutes"
                                        value="00"
@@ -113,6 +114,7 @@
                                 <span>:</span>
                                 <input type="text"
                                        maxlength="2"
+                                       class="time_seconds"
                                        name="contestDTO.time.seconds"
                                        id="contestDTO_time_seconds"
                                        readonly="true"
@@ -123,9 +125,10 @@
                         <div class="control-group">
                             <label class="control-label">Length</label>
 
-                            <div class="controls">
+                            <div class="controls time-selector" value="<s:property value="targetContest.length"/>" type="timePassed">
                                 <input type="text"
                                        maxlength="10"
+                                       class="time_days"
                                        name="contestDTO.length.days"
                                        id="contestDTO_length_days"
                                        value="0"
@@ -133,6 +136,7 @@
                                 <span>days</span>
                                 <input type="text"
                                        maxlength="2"
+                                       class="time_hours"
                                        name="contestDTO.length.hours"
                                        id="contestDTO_length_hours"
                                        value="00"
@@ -140,6 +144,7 @@
                                 <span>:</span>
                                 <input type="text"
                                        maxlength="2"
+                                       class="time_minutes"
                                        name="contestDTO.length.minutes"
                                        id="contestDTO_length_minutes"
                                        value="00"
@@ -147,6 +152,7 @@
                                 <span>:</span>
                                 <input type="text"
                                        maxlength="2"
+                                       class="time_seconds"
                                        name="contestDTO.length.seconds"
                                        id="contestDTO_length_seconds"
                                        readonly="true"
@@ -164,8 +170,7 @@
                                           rows="8"
                                           name="contestDTO.description"
                                           maxlength="200"
-                                          value="${contestDTO.description}"
-                                          id="contestDTO_description"></textarea>
+                                          id="contestDTO_description">${targetContest.description}</textarea>
                             </div>
                         </div>
                     </div>
