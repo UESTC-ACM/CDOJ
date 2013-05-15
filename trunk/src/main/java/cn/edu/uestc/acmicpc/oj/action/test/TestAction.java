@@ -29,6 +29,7 @@ import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class TestAction extends BaseAction implements TagDAOAware {
     /**
      * TagDAO from IoC.
      */
+    @Autowired
     private ITagDAO tagDAO = null;
 
     /**

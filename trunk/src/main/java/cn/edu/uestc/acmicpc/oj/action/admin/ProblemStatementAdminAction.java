@@ -26,21 +26,25 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dto.ProblemDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class ProblemStatementAdminAction extends BaseAction implements ProblemDAOAware {
+public class ProblemStatementAdminAction extends BaseAction
+        implements ProblemDAOAware, ProblemDTOAware {
 
     /**
      * ProblemDAO for problem search.
      */
+    @Autowired
     private IProblemDAO problemDAO;
 
     /**
@@ -52,17 +56,12 @@ public class ProblemStatementAdminAction extends BaseAction implements ProblemDA
         this.problemDAO = problemDAO;
     }
 
-    @SuppressWarnings("UnusedDeclaration")
+    @Override
     public ProblemDTO getProblemDTO() {
         return problemDTO;
     }
 
-    /**
-     * Problem DTO setter for IoC.
-     *
-     * @param problemDTO problem data transform object
-     */
-    @SuppressWarnings("UnusedDeclaration")
+    @Override
     public void setProblemDTO(ProblemDTO problemDTO) {
         this.problemDTO = problemDTO;
     }
@@ -70,6 +69,7 @@ public class ProblemStatementAdminAction extends BaseAction implements ProblemDA
     /**
      * User database transform object entity.
      */
+    @Autowired
     private ProblemDTO problemDTO;
 
     /**
@@ -99,14 +99,13 @@ public class ProblemStatementAdminAction extends BaseAction implements ProblemDA
     public String toEdit() {
         try {
             Problem problem;
-            if (problemDTO.getProblemId() != null) { //edit
-                problem = problemDAO.get(problemDTO.getProblemId());
-                problemDTO.updateEntity(problem);
-            } else { //add
-                problem = problemDTO.getEntity();
-            }
+
+            problem = problemDAO.get(problemDTO.getProblemId());
             if (problem == null)
                 throw new AppException("No such problem!");
+
+            problemDTO.updateEntity(problem);
+
             problemDAO.addOrUpdate(problem);
             json.put("result", "ok");
         } catch (AppException e) {

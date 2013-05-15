@@ -20,25 +20,14 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.db.dao.impl;
+package cn.edu.uestc.acmicpc.db.dao.iface;
 
-import cn.edu.uestc.acmicpc.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IContestuserDAO;
-import cn.edu.uestc.acmicpc.db.entity.ContestUser;
+import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
 
 /**
- * DAO for contestuser entity.
+ * ProblemTagDAO AOP interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public class ContestuserDAO extends DAO<ContestUser, Integer> implements IContestuserDAO {
-    @Override
-    protected Class<Integer> getPKClass() {
-        return Integer.class;
-    }
-
-    @Override
-    protected Class<ContestUser> getReferenceClass() {
-        return ContestUser.class;
-    }
+public interface IProblemTagDAO extends IDAO<ProblemTag, Integer> {
 }

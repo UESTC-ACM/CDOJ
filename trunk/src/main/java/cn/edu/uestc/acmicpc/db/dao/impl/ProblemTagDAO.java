@@ -23,22 +23,22 @@
 package cn.edu.uestc.acmicpc.db.dao.impl;
 
 import cn.edu.uestc.acmicpc.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IContestproblemDAO;
-import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemTagDAO;
+import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
 
 /**
- * DAO for contestproblem entity.
+ * DAO for problemtag entity
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public class ContestproblemDAO extends DAO<ContestProblem, Integer> implements IContestproblemDAO {
+public class ProblemTagDAO extends DAO<ProblemTag, Integer> implements IProblemTagDAO {
     @Override
     protected Class<Integer> getPKClass() {
         return Integer.class;
     }
 
     @Override
-    protected Class<ContestProblem> getReferenceClass() {
-        return ContestProblem.class;
+    protected Class<ProblemTag> getReferenceClass() {
+        return ProblemTag.class;
     }
 }

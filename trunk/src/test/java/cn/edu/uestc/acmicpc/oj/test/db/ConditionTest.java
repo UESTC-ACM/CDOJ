@@ -26,6 +26,7 @@ import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
 import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
@@ -129,5 +130,18 @@ public class ConditionTest
     @Override
     public ProblemCondition getProblemCondition() {
         return problemCondition;
+    }
+
+    /**
+     * test for problem condition's {@code isTitleEmpty} property.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    @Ignore
+    public void testProblemConditionIsTitleEmpty() throws AppException {
+        problemCondition.setIsTitleEmpty(true);
+        List<Problem> problems = (List<Problem>) problemDAO.findAll(problemCondition.getCondition());
+        for (Problem problem : problems)
+            System.out.println(problem.toString());
     }
 }

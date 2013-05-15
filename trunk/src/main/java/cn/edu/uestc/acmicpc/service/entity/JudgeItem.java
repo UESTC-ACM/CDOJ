@@ -24,7 +24,7 @@ package cn.edu.uestc.acmicpc.service.entity;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.ICompileinfoDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
@@ -33,42 +33,48 @@ import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
-import cn.edu.uestc.acmicpc.ioc.dao.CompileinfoDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.CompileInfoDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.Projections;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Judge item for single problem.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public class JudgeItem implements CompileinfoDAOAware, StatusDAOAware, UserDAOAware, ProblemDAOAware, StatusConditionAware {
+public class JudgeItem implements CompileInfoDAOAware, StatusDAOAware, UserDAOAware, ProblemDAOAware, StatusConditionAware {
     public Status status;
     public CompileInfo compileInfo;
     /**
      * Status database condition.
      */
+    @Autowired
     private StatusCondition statusCondition;
 
     /**
      * Compileinfo DAO for database query.
      */
-    private ICompileinfoDAO compileinfoDAO;
+    @Autowired
+    private ICompileInfoDAO compileinfoDAO;
     /**
      * Status DAO for database query.
      */
+    @Autowired
     private IStatusDAO statusDAO;
     /**
      * User DAO for database query.
      */
+    @Autowired
     private IUserDAO userDAO;
     /**
      * Problem DAO for database query.
      */
+    @Autowired
     private IProblemDAO problemDAO;
 
     @SuppressWarnings("UnusedDeclaration")
@@ -143,7 +149,7 @@ public class JudgeItem implements CompileinfoDAOAware, StatusDAOAware, UserDAOAw
     }
 
     @Override
-    public void setCompileinfoDAO(ICompileinfoDAO compileinfoDAO) {
+    public void setCompileinfoDAO(ICompileInfoDAO compileinfoDAO) {
         this.compileinfoDAO = compileinfoDAO;
     }
 

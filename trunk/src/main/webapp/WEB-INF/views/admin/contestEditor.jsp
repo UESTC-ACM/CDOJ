@@ -44,18 +44,14 @@
         <form class="form-horizontal">
             <fieldset>
                 <legend id="editorFlag" value="${editorFlag}">
-                    <s:if test='editorFlag=="new"'>
-                        Add new contest
-                    </s:if>
-                    <s:else>
-                        Edit contest <span id="problemId">${targetContest.contestId}</span>
-                    </s:else>
+                    Edit contest <span id="problemId">${targetContest.contestId}</span>
                 </legend>
 
                 <div class="row">
                     <div class="span10">
                         <div class="control-group">
                             <label class="control-label">Title</label>
+
                             <div class="controls">
                                 <input type="text"
                                        name="contestDTO.title"
@@ -66,35 +62,58 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="span10">
                         <div class="control-group">
                             <label class="control-label">Type</label>
                             <div class="controls">
+                                <label for="contestDTO.type-1" class="radio inline">
+                                    <input type="radio" name="contestDTO.type" id="contestDTO.type-1" value="0">
+                                    public
+                                </label>
+                                <label for="contestDTO.type-2" class="radio inline">
+                                    <input type="radio" name="contestDTO.type" id="contestDTO.type-2" value="1">
+                                    private
+                                </label>
+                                <label for="contestDTO.type-3" class="radio inline">
+                                    <input type="radio" name="contestDTO.type" id="contestDTO.type-3" value="2">
+                                    diy
+                                </label>
+                                <label for="contestDTO.type-4" class="radio inline">
+                                    <input type="radio" name="contestDTO.type" id="contestDTO.type-4" value="3">
+                                    invited
+                                </label>
                             </div>
                         </div>
                     </div>
+
                     <div class="span10">
                         <div class="control-group">
                             <label class="control-label">Begin time</label>
+
                             <div class="controls">
                                 <input type="text"
                                        maxlength="10"
+                                       name="contestDTO.time.days"
                                        id="contestDTO_time_days"
                                        style="width: 80px;">
                                 <input type="text"
                                        maxlength="2"
+                                       name="contestDTO.time.hours"
                                        id="contestDTO_time_hours"
                                        value="00"
                                        style="width: 20px;">
                                 <span>:</span>
                                 <input type="text"
                                        maxlength="2"
+                                       name="contestDTO.time.minutes"
                                        id="contestDTO_time_minutes"
                                        value="00"
                                        style="width: 20px;">
                                 <span>:</span>
                                 <input type="text"
                                        maxlength="2"
+                                       name="contestDTO.time.seconds"
                                        id="contestDTO_time_seconds"
                                        readonly="true"
                                        value="00"
@@ -103,26 +122,32 @@
                         </div>
                         <div class="control-group">
                             <label class="control-label">Length</label>
+
                             <div class="controls">
                                 <input type="text"
                                        maxlength="10"
+                                       name="contestDTO.length.days"
                                        id="contestDTO_length_days"
+                                       value="0"
                                        style="width: 80px;">
                                 <span>days</span>
                                 <input type="text"
                                        maxlength="2"
+                                       name="contestDTO.length.hours"
                                        id="contestDTO_length_hours"
                                        value="00"
                                        style="width: 20px;">
                                 <span>:</span>
                                 <input type="text"
                                        maxlength="2"
+                                       name="contestDTO.length.minutes"
                                        id="contestDTO_length_minutes"
                                        value="00"
                                        style="width: 20px;">
                                 <span>:</span>
                                 <input type="text"
                                        maxlength="2"
+                                       name="contestDTO.length.seconds"
                                        id="contestDTO_length_seconds"
                                        readonly="true"
                                        value="00"
@@ -133,6 +158,7 @@
                     <div class="span10">
                         <div class="control-group">
                             <label class="control-label">Description</label>
+
                             <div class="controls">
                                 <textarea class="span6"
                                           rows="8"
@@ -146,13 +172,15 @@
                     <div class="span10">
                         <div class="control-group">
                             <label class="control-label">Problem list</label>
+
                             <div class="controls">
                                 <div class="row">
                                     <div class="span6">
                                         <table class="table table-striped table-bordered">
                                             <thead>
                                             <tr>
-                                                <th style="width: 14px;"><a href="#" id="add_problem"><i class="icon-plus"></i></a></th>
+                                                <th style="width: 14px;"><a href="#" id="add_problem"><i
+                                                        class="icon-plus"></i></a></th>
                                                 <th style="width: 60px;">Id</th>
                                                 <th>Title</th>
                                                 <th style="width: 70px;">Difficulty</th>

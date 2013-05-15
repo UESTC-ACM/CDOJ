@@ -25,6 +25,7 @@ package cn.edu.uestc.acmicpc.db.dao.base;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -34,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class BaseDAO {
+    @Autowired
     private SessionFactory sessionFactory;
 
     /**

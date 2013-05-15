@@ -20,21 +20,14 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.ioc.dao;
+package cn.edu.uestc.acmicpc.db.dao.iface;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.ICompileinfoDAO;
+import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 
 /**
- * For all class which need compileinfoDAO entity.
+ * ContestProblemDAO AOP interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
- * @see ICompileinfoDAO
  */
-public interface CompileinfoDAOAware {
-    /**
-     * Put compileinfoDAO into class.
-     *
-     * @param compileinfoDAO newly compileinfoDAO entity
-     */
-    public void setCompileinfoDAO(ICompileinfoDAO compileinfoDAO);
+public interface IContestProblemDAO extends IDAO<ContestProblem, Integer> {
 }

@@ -44,48 +44,39 @@
           class="cn.edu.uestc.acmicpc.oj.action.admin.UserAdminAction"
           parent="baseAction"
           scope="prototype">
-        <property name="departmentDAO" ref="departmentDAO"/>
-        <property name="userCondition" ref="userCondition"/>
     </bean>
 
     <bean id="problemAdminAction"
           class="cn.edu.uestc.acmicpc.oj.action.admin.ProblemAdminAction"
           parent="baseAction"
           scope="prototype">
-        <property name="problemDAO" ref="problemDAO"/>
-        <property name="problemCondition" ref="problemCondition"/>
     </bean>
     <bean id="problemStatementAdminAction"
           class="cn.edu.uestc.acmicpc.oj.action.admin.ProblemStatementAdminAction"
           parent="baseAction"
           scope="prototype">
-        <property name="problemDAO" ref="problemDAO"/>
     </bean>
     <bean id="problemDataAdminAction"
           class="cn.edu.uestc.acmicpc.oj.action.admin.ProblemDataAdminAction"
           parent="fileUploadAction"
           scope="prototype">
-        <property name="problemDAO" ref="problemDAO"/>
     </bean>
     <bean id="problemPictureAdminAction"
           class="cn.edu.uestc.acmicpc.oj.action.admin.ProblemPictureAdminAction"
           parent="fileUploadAction"
           scope="prototype">
-        <property name="problemDAO" ref="problemDAO"/>
     </bean>
 
     <bean id="contestAdminAction"
           class="cn.edu.uestc.acmicpc.oj.action.admin.ContestAdminAction"
           parent="baseAction"
           scope="prototype">
-        <property name="contestDAO" ref="contestDAO"/>
     </bean>
 
     <bean id="contestStatementAdminAction"
           class="cn.edu.uestc.acmicpc.oj.action.admin.ContestStatementAdminAction"
           parent="baseAction"
           scope="prototype">
-        <property name="contestDAO" ref="contestDAO"/>
     </bean>
 
 </beans>

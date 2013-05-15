@@ -22,12 +22,12 @@
 
 package cn.edu.uestc.acmicpc.db.dao.iface;
 
-import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
+import cn.edu.uestc.acmicpc.db.entity.ContestUser;
 
 /**
- * ContestproblemDAO AOP interface.
+ * ContestUserDAO AOP interface.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public interface IContestproblemDAO extends IDAO<ContestProblem, Integer> {
+public interface IContestUserDAO extends IDAO<ContestUser, Integer> {
 }

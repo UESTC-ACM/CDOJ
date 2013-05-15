@@ -21,19 +21,15 @@
 
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.db.view.impl.ProblemListView;
-import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestDTO;
+import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dto.ContestDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-
-import java.util.List;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.Validations;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Use for edit contest info.
@@ -42,12 +38,79 @@ import java.util.List;
  * @version 1
  */
 @SuppressWarnings({"WeakerAccess", "UnusedDeclaration"})
-public class ContestStatementAdminAction extends BaseAction implements ContestDAOAware{
+public class ContestStatementAdminAction extends BaseAction
+        implements ContestDAOAware, ContestDTOAware {
 
     /**
      * Use for update contest info
      */
-    IContestDAO contestDAO;
+    @Autowired
+    private IContestDAO contestDAO;
+
+    @Autowired
+    private ContestDTO contestDTO;
+
+    @Override
+    public ContestDTO getContestDTO() {
+        return contestDTO;
+    }
+
+    @Override
+    public void setContestDTO(ContestDTO contestDTO) {
+        this.contestDTO = contestDTO;
+    }
+
+    /**
+     * To add or edit contest entity.
+     * <p/>
+     * <strong>JSON output</strong>:
+     * <ul>
+     * <li>
+     * For success: {"result":"ok"}
+     * </li>
+     * <li>
+     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+     * </li>
+     * </ul>
+     *
+     * @return <strong>JSON</strong> signal
+     */
+    @Validations(
+            requiredStrings = {
+                    @RequiredStringValidator(
+                            fieldName = "contestDTO.title",
+                            key = "error.contestTitle.validation",
+                            trim = true
+                    )
+            }
+    )
+    public String toEdit() {
+        try {
+            Contest contest = contestDTO.getEntity();
+
+            System.out.println("[Title] " + contest.getTitle());
+            System.out.println("[Description] " + contest.getDescription());
+            System.out.println("[Time] " + contest.getTime());
+            System.out.println("[Length] " + contest.getLength());
+            System.out.print("[List] " + contest.getContestProblemsByContestId() + " {");
+            for (int i = 0; i < contestDTO.getProblemList().size(); i++)
+                System.out.print(contestDTO.getProblemList().get(i) + " ");
+            System.out.println("}");
+
+            //contestDAO.add(contest);
+
+            json.put("result", "ok");
+        /*} catch (AppException e) {
+            json.put("result", "error");
+            json.put("error_msg", e.getMessage());            */
+        } catch (Exception e) {
+            e.printStackTrace();
+            json.put("result", "error");
+            json.put("error_msg", "Unknown exception occurred.");
+        }
+        return JSON;
+
+    }
 
     @Override
     public void setContestDAO(IContestDAO contestDAO) {

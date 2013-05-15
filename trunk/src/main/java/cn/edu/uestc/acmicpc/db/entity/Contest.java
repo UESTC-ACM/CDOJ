@@ -47,6 +47,19 @@ public class Contest implements Serializable {
         return contestId;
     }
 
+    @Override
+    public String toString() {
+        return "Contest{" +
+                "isVisible=" + isVisible +
+                ", length=" + length +
+                ", time=" + time +
+                ", type=" + type +
+                ", description='" + description + '\'' +
+                ", title='" + title + '\'' +
+                ", contestId=" + contestId +
+                '}';
+    }
+
     public void setContestId(Integer contestId) {
         this.contestId = contestId;
     }

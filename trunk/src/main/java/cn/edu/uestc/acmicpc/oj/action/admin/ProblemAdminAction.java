@@ -31,6 +31,7 @@ import cn.edu.uestc.acmicpc.db.view.impl.ProblemListView;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemView;
 import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dto.ProblemDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
@@ -40,6 +41,7 @@ import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Column;
 import java.lang.reflect.Method;
@@ -53,14 +55,19 @@ import java.util.List;
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class ProblemAdminAction extends BaseAction
-        implements ProblemConditionAware, ProblemDAOAware {
+        implements ProblemConditionAware, ProblemDAOAware, ProblemDTOAware {
 
     /**
      * ProblemDAO for problem search.
      */
+    @Autowired
     private IProblemDAO problemDAO;
 
+    @Autowired
     private ProblemCondition problemCondition;
+
+    @Autowired
+    private ProblemDTO problemDTO;
 
     public ProblemAdminAction() {
     }
@@ -133,30 +140,44 @@ public class ProblemAdminAction extends BaseAction
      *
      * @return <strong>SUCCESS</strong> signal
      */
-    @SuppressWarnings("SameReturnValue")
+    @SuppressWarnings("SameReturnValue unchecked")
     @SkipValidation
     public String toProblemEditor() {
-        if (targetProblemId == null) {
-            try {
-                ProblemDTO problemDTO = new ProblemDTO();
-                Problem problem = problemDTO.getEntity();
-                problemDAO.add(problem);
-                targetProblemId = problem.getProblemId();
+        try {
+            if (targetProblemId == null) {
+                problemCondition.clear();
+                problemCondition.setIsTitleEmpty(true);
+                Condition condition = problemCondition.getCondition();
+                Long count = problemDAO.count(condition);
+
+                if (count == 0) {
+                    Problem problem = problemDTO.getEntity();
+                    problemDAO.add(problem);
+                    targetProblemId = problem.getProblemId();
+                } else {
+                    List<Problem> result = (List<Problem>) problemDAO.findAll(problemCondition.getCondition());
+                    if (result == null || result.size() == 0)
+                        throw new AppException("Add new problem error!");
+                    Problem problem = result.get(0);
+                    targetProblemId = problem.getProblemId();
+                }
+
+                System.out.println("Count = " + count + ", Id = " + targetProblemId);
                 if (targetProblemId == null)
                     throw new AppException("Add new problem error!");
-            } catch (AppException e) {
-                return redirect(getActionURL("/admin", "index"), e.getMessage());
-            }
-            return redirect(getActionURL("/admin", "problem/editor/" + targetProblemId));
-        } else {
-            try {
+
+                return redirect(getActionURL("/admin", "problem/editor/" + targetProblemId));
+            } else {
                 targetProblem = new ProblemView(problemDAO.get(targetProblemId));
                 if (targetProblem.getProblemId() == null)
                     throw new AppException("Wrong problem ID!");
                 editorFlag = "edit";
-            } catch (AppException e) {
-                return redirect(getActionURL("/admin", "index"), e.getMessage());
             }
+        } catch (AppException e) {
+            return redirect(getActionURL("/admin", "index"), e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return redirect(getActionURL("/admin", "index"), "Unknown exception occurred.");
         }
         return SUCCESS;
     }
@@ -185,6 +206,7 @@ public class ProblemAdminAction extends BaseAction
     @SkipValidation
     public String toSearch() {
         try {
+            problemCondition.setIsTitleEmpty(false);
             Condition condition = problemCondition.getCondition();
             Long count = problemDAO.count(problemCondition.getCondition());
             PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
@@ -269,5 +291,15 @@ public class ProblemAdminAction extends BaseAction
             json.put("error_msg", "Unknown exception occurred.");
         }
         return JSON;
+    }
+
+    @Override
+    public void setProblemDTO(ProblemDTO problemDTO) {
+        this.problemDTO = problemDTO;
+    }
+
+    @Override
+    public ProblemDTO getProblemDTO() {
+        return problemDTO;
     }
 }
