@@ -59,6 +59,7 @@ public class JudgeService implements ApplicationContextAware, SettingsAware {
     /**
      * Fetch global Settings for judge.
      */
+    @Autowired
     private Settings settings;
 
     /**

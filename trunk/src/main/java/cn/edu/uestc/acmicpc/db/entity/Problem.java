@@ -38,6 +38,32 @@ public class Problem implements Serializable {
     private static final long serialVersionUID = -334230877056963653L;
     private Integer problemId;
 
+    @Override
+    public String toString() {
+        return "Problem{" +
+                "problemId=" + problemId +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", input='" + input + '\'' +
+                ", output='" + output + '\'' +
+                ", sampleInput='" + sampleInput + '\'' +
+                ", sampleOutput='" + sampleOutput + '\'' +
+                ", hint='" + hint + '\'' +
+                ", source='" + source + '\'' +
+                ", timeLimit=" + timeLimit +
+                ", memoryLimit=" + memoryLimit +
+                ", solved=" + solved +
+                ", tried=" + tried +
+                ", isSpj=" + isSpj +
+                ", isVisible=" + isVisible +
+                ", outputLimit=" + outputLimit +
+                ", javaTimeLimit=" + javaTimeLimit +
+                ", javaMemoryLimit=" + javaMemoryLimit +
+                ", dataCount=" + dataCount +
+                ", difficulty=" + difficulty +
+                '}';
+    }
+
     @Column(name = "problemId", nullable = false, insertable = true,
             updatable = true, length = 10, precision = 0, unique = true)
     @Id

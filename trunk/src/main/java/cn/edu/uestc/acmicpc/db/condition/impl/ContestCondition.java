@@ -47,6 +47,16 @@ public class ContestCondition extends BaseCondition {
 
     private Byte type;
 
+    private Boolean isTitleEmpty;
+
+    public Boolean getIsTitleEmpty() {
+        return isTitleEmpty;
+    }
+
+    public void setIsTitleEmpty(Boolean isTitleEmpty) {
+        this.isTitleEmpty = isTitleEmpty;
+    }
+
     @Exp(MapField = "contestId", Type = ConditionType.ge)
     public Integer getStartId() {
         return startId;
@@ -128,6 +138,13 @@ public class ContestCondition extends BaseCondition {
     public void invoke(Condition condition) {
         if (endTime != null) {
             condition.addCriterion(Restrictions.lt("time", DateUtil.add(endTime, Calendar.DATE, 1)));
+        }
+        if (isTitleEmpty != null) {
+            if (isTitleEmpty) {
+                condition.addCriterion(Restrictions.like("title", ""));
+            } else {
+                condition.addCriterion(Restrictions.like("title", "_%"));
+            }
         }
     }
 }

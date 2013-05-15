@@ -30,6 +30,7 @@ import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
 import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dto.UserDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
@@ -41,6 +42,7 @@ import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
 import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +54,7 @@ import java.util.List;
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class UserAdminAction extends BaseAction
-        implements DepartmentDAOAware, UserConditionAware {
+        implements DepartmentDAOAware, UserConditionAware, UserDTOAware {
 
     /**
      * return the user.jsp for base view
@@ -68,11 +70,13 @@ public class UserAdminAction extends BaseAction
     /**
      * department dao, use for get a department entity by id.
      */
+    @Autowired
     private IDepartmentDAO departmentDAO;
 
     /**
      * Conditions for user search.
      */
+    @Autowired
     private UserCondition userCondition;
 
     /**
@@ -140,6 +144,7 @@ public class UserAdminAction extends BaseAction
     /**
      * User database transform object entity.
      */
+    @Autowired
     private UserDTO userDTO;
 
     /**
@@ -261,21 +266,17 @@ public class UserAdminAction extends BaseAction
         return JSON;
     }
 
-    @SuppressWarnings("UnusedDeclaration")
+    @Override
     public UserDTO getUserDTO() {
         return userDTO;
     }
 
-    /**
-     * User DTO setter for IoC.
-     *
-     * @param userDTO user data transform object
-     */
-    @SuppressWarnings("UnusedDeclaration")
+    @Override
     public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
     }
 
+    @Override
     public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
         this.departmentDAO = departmentDAO;
     }

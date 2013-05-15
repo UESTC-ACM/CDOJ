@@ -44,12 +44,7 @@
 
     <div class="span10">
         <h3 id="editorFlag" value="${editorFlag}">
-            <s:if test='editorFlag=="new"'>
-                Add new problem
-            </s:if>
-            <s:else>
-                Edit problem <span id="problemId">${targetProblem.problemId}</span>
-            </s:else>
+            Edit problem <span id="problemId">${targetProblem.problemId}</span>
         </h3>
         <div class="control-group">
             <div class="controls">

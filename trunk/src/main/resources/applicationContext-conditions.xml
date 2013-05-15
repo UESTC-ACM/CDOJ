@@ -45,6 +45,8 @@
     </bean>
     <bean id="statusCondition" class="cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition"
           parent="baseCondition">
-        <property name="userCondition" ref="userCondition"/>
+    </bean>
+    <bean id="contestCondition" class="cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition"
+          parent="baseCondition">
     </bean>
 </beans>

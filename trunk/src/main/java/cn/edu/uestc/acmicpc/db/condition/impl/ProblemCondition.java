@@ -61,6 +61,16 @@ public class ProblemCondition extends BaseCondition {
 
     private Integer startDifficulty;
 
+    private Boolean isTitleEmpty;
+
+    public Boolean getIsTitleEmpty() {
+        return isTitleEmpty;
+    }
+
+    public void setIsTitleEmpty(Boolean isTitleEmpty) {
+        this.isTitleEmpty = isTitleEmpty;
+    }
+
     @Exp(MapField = "difficulty", Type = ConditionType.le)
     public Integer getEndDifficulty() {
         return endDifficulty;
@@ -153,6 +163,13 @@ public class ProblemCondition extends BaseCondition {
                 junction.add(Restrictions.like(field, String.format("%%%s%%", keyword)));
             }
             condition.addCriterion(junction);
+        }
+        if (isTitleEmpty != null) {
+            if (isTitleEmpty) {
+                condition.addCriterion(Restrictions.like("title", ""));
+            } else {
+                condition.addCriterion(Restrictions.like("title", "_%"));
+            }
         }
     }
 }

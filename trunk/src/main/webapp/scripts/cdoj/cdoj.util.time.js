@@ -64,3 +64,25 @@
     };
 
 }(jQuery));
+
+function getTimeInfo(data, id) {
+    return {
+        days: data[id + '.days'],
+        hours: data[id + '.hours'],
+        minutes: data[id + '.minutes'],
+        seconds: data[id + '.seconds']
+    }
+}
+
+function getSeconds(data, id) {
+    var time = getTimeInfo(data, id);
+    return ((parseInt(time.days) * 24 + parseInt(time.hours)) * 60 + parseInt(time.minutes)) * 60 + parseInt(time.seconds);
+}
+
+function getTime(data, id) {
+    var time = getTimeInfo(data, id);
+    var timeString = time.days + ' ' + time.hours + ':' + time.minutes + ':' + time.seconds;
+    var result = new Date(timeString).getTime();
+    console.log(timeString, result);
+    return result;
+}

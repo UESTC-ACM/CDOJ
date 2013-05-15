@@ -31,9 +31,11 @@ import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +52,10 @@ public class ProblemListAction extends BaseAction
     /**
      * ProblemDAO for problem search.
      */
+    @Autowired
     private IProblemDAO problemDAO;
 
+    @Autowired
     private ProblemCondition problemCondition;
 
     @Override
@@ -108,6 +112,7 @@ public class ProblemListAction extends BaseAction
     public String toSearch() {
         try {
             problemCondition.setIsVisible(true);
+            problemCondition.setIsTitleEmpty(false);
             Condition condition = problemCondition.getCondition();
             Long count = problemDAO.count(problemCondition.getCondition());
             PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);

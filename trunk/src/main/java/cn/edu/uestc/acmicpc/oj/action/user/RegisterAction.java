@@ -26,9 +26,11 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dto.UserDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import com.opensymphony.xwork2.validator.annotations.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Action for register
@@ -36,18 +38,18 @@ import com.opensymphony.xwork2.validator.annotations.*;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(NeedLogin = false)
-public class RegisterAction extends BaseAction implements DepartmentDAOAware {
+public class RegisterAction extends BaseAction
+        implements DepartmentDAOAware, UserDTOAware {
 
     private static final long serialVersionUID = -2854303130010851540L;
 
-    /**
-     * user dto...
-     */
+    @Autowired
     private UserDTO userDTO;
 
     /**
      * department dao, use for get a department entity by id.
      */
+    @Autowired
     private IDepartmentDAO departmentDAO;
 
     /**
@@ -185,12 +187,12 @@ public class RegisterAction extends BaseAction implements DepartmentDAOAware {
         return JSON;
     }
 
-    @SuppressWarnings("UnusedDeclaration")
+    @Override
     public UserDTO getUserDTO() {
         return userDTO;
     }
 
-    @SuppressWarnings("UnusedDeclaration")
+    @Override
     public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
     }

@@ -28,6 +28,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemDataView;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dto.ProblemDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.file.FileUploadAction;
 import cn.edu.uestc.acmicpc.util.FileUtil;
 import cn.edu.uestc.acmicpc.util.Global;
@@ -37,6 +38,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import com.opensymphony.xwork2.validator.annotations.IntRangeFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
 import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.util.HashMap;
@@ -49,10 +51,13 @@ import java.util.zip.ZipFile;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(Global.AuthenticationType.ADMIN)
-public class ProblemDataAdminAction extends FileUploadAction implements ProblemDAOAware {
+public class ProblemDataAdminAction extends FileUploadAction
+        implements ProblemDAOAware, ProblemDTOAware {
+    @Autowired
     private IProblemDAO problemDAO;
     private Integer targetProblemId;
 
+    @Autowired
     private ProblemDTO problemDTO;
 
     private ProblemDataView problemDataView;
@@ -67,12 +72,12 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
         this.problemDataView = problemDataView;
     }
 
-    @SuppressWarnings("UnusedDeclaration")
+    @Override
     public ProblemDTO getProblemDTO() {
         return problemDTO;
     }
 
-    @SuppressWarnings("UnusedDeclaration")
+    @Override
     public void setProblemDTO(ProblemDTO problemDTO) {
         this.problemDTO = problemDTO;
     }
@@ -203,13 +208,12 @@ public class ProblemDataAdminAction extends FileUploadAction implements ProblemD
     public String updateProblemData() {
         try {
             Problem problem = null;
-            if (problemDTO.getProblemId() != null) { //edit
-                problem = problemDAO.get(problemDTO.getProblemId());
-                problemDTO.updateEntity(problem);
-            }
+
+            problem = problemDAO.get(problemDTO.getProblemId());
             if (problem == null)
                 throw new AppException("No such problem!");
 
+            problemDTO.updateEntity(problem);
             String dataPath = settings.JUDGE_DATA_PATH + "/" + targetProblemId;
             String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/" + targetProblemId;
             File targetFile = new File(dataPath);

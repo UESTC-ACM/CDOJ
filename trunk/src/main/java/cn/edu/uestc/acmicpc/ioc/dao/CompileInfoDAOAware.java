@@ -20,25 +20,21 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.db.dao.impl;
+package cn.edu.uestc.acmicpc.ioc.dao;
 
-import cn.edu.uestc.acmicpc.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.ICompileinfoDAO;
-import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
+import cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO;
 
 /**
- * DAO for compileinfo entity.
+ * For all class which need compileinfoDAO entity.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ * @see cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO
  */
-public class CompileinfoDAO extends DAO<CompileInfo, Integer> implements ICompileinfoDAO {
-    @Override
-    protected Class<Integer> getPKClass() {
-        return Integer.class;
-    }
-
-    @Override
-    protected Class<CompileInfo> getReferenceClass() {
-        return CompileInfo.class;
-    }
+public interface CompileInfoDAOAware {
+    /**
+     * Put compileinfoDAO into class.
+     *
+     * @param compileinfoDAO newly compileinfoDAO entity
+     */
+    public void setCompileinfoDAO(ICompileInfoDAO compileinfoDAO);
 }
