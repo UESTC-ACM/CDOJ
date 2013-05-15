@@ -16,10 +16,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Contest entity data transform object.
@@ -121,6 +118,9 @@ public class ContestDTO extends BaseDTO<Contest>
     @Override
     public Contest getEntity() throws AppException {
         Contest contest = super.getEntity();
+
+        contest.setTime(new Timestamp(new Date().getTime()));
+        contest.setType((byte) 0);
 
         contest.setIsVisible(false);
 

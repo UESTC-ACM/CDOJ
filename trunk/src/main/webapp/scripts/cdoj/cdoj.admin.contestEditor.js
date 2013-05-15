@@ -80,6 +80,9 @@ function updateProblem(id) {
 }
 
 $(document).ready(function () {
+    //Set time
+    $('.time-selector').setTimeSelector();
+
     //Date picker
     $('#contestDTO_time_days').datepicker({
         format: 'yyyy-mm-dd'

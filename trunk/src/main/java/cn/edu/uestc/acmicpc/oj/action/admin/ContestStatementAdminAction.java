@@ -92,11 +92,12 @@ public class ContestStatementAdminAction extends BaseAction
             System.out.println("[Description] " + contest.getDescription());
             System.out.println("[Time] " + contest.getTime());
             System.out.println("[Length] " + contest.getLength());
-            System.out.print("[List] " + contest.getContestProblemsByContestId() + " {");
-            for (int i = 0; i < contestDTO.getProblemList().size(); i++)
-                System.out.print(contestDTO.getProblemList().get(i) + " ");
-            System.out.println("}");
-
+            if (contest.getContestProblemsByContestId() != null) {
+                System.out.print("[List] " + contest.getContestProblemsByContestId() + " {");
+                for (int i = 0; i < contestDTO.getProblemList().size(); i++)
+                    System.out.print(contestDTO.getProblemList().get(i) + " ");
+                System.out.println("}");
+            }
             //contestDAO.add(contest);
 
             json.put("result", "ok");
