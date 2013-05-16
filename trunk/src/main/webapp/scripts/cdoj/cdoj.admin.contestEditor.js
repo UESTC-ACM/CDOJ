@@ -122,13 +122,14 @@ $(document).ready(function () {
     $('#submit').setButton({
         callback: function(){
             var info = $('.form-horizontal').getFormData();
-            console.log(info);
 
             var data = {
+                "contestDTO.contestId": $('#contestId')[0].innerText,
                 "contestDTO.title": info["contestDTO.title"],
                 "contestDTO.description": info["contestDTO.description"],
                 "contestDTO.time": getTime(info, "contestDTO.time"),
                 "contestDTO.length": getSeconds(info, "contestDTO.length"),
+                "contestDTO.type": info["contestDTO.type"],
                 "contestDTO.problemList": {
                 }
             };

@@ -27,6 +27,7 @@ import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dto.ContestDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,14 +87,18 @@ public class ContestStatementAdminAction extends BaseAction
     )
     public String toEdit() {
         try {
-            Contest contest = contestDTO.getEntity();
+            if (contestDTO.getContestId() == null)
+                throw new AppException("Null contest ID!");
+
+            Contest contest = contestDAO.get(contestDTO.getContestId());
+            contestDTO.updateEntity(contest);
 
             System.out.println("[Title] " + contest.getTitle());
             System.out.println("[Description] " + contest.getDescription());
             System.out.println("[Time] " + contest.getTime());
             System.out.println("[Length] " + contest.getLength());
-            if (contest.getContestProblemsByContestId() != null) {
-                System.out.print("[List] " + contest.getContestProblemsByContestId() + " {");
+            if (contestDTO.getProblemList() != null) {
+                System.out.print("[List] " + contestDTO.getProblemList() + " {");
                 for (int i = 0; i < contestDTO.getProblemList().size(); i++)
                     System.out.print(contestDTO.getProblemList().get(i) + " ");
                 System.out.println("}");
@@ -101,9 +106,9 @@ public class ContestStatementAdminAction extends BaseAction
             //contestDAO.add(contest);
 
             json.put("result", "ok");
-        /*} catch (AppException e) {
+        } catch (AppException e) {
             json.put("result", "error");
-            json.put("error_msg", e.getMessage());            */
+            json.put("error_msg", e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             json.put("result", "error");
