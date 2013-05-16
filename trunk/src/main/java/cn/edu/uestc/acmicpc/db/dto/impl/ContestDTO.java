@@ -139,6 +139,14 @@ public class ContestDTO extends BaseDTO<Contest>
     @Override
     public void updateEntity(Contest contest) {
         super.updateEntity(contest);
+
+        /*if (problemList != null) {
+            Collection<ContestProblem> contestProblems = contest.getContestProblemsByContestId();
+
+            contestProblems = new LinkedList<>();
+            for (int id = 0; id < problemList.size(); id++) {
+            }
+        }*/
     }
 
     @Override
