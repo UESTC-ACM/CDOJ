@@ -108,6 +108,7 @@ public class ProblemDataDTO extends BaseDTO<Problem> {
     }
 
     @Override
+    @Deprecated
     public Problem getEntity() throws AppException {
         // TODO to get specific operations
         Problem problem = super.getEntity();
