@@ -34,7 +34,7 @@ var currentUserType = null;
 
         //Get current user
         if ($('#currentUser').length > 0) {
-            currentUser = $('#currentUser')[0].innerHTML;
+            currentUser = $('#currentUser')[0].innerHTML.trim();
             currentUserType = $('#currentUser').attr('type');
         }
 
