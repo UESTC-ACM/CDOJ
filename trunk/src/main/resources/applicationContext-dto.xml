@@ -37,6 +37,8 @@
           parent="baseDTO"/>
     <bean id="contestDTO" class="cn.edu.uestc.acmicpc.db.dto.impl.ContestDTO"
           parent="baseDTO"/>
+    <bean id="problemDataDTO" class="cn.edu.uestc.acmicpc.db.dto.impl.ProblemDataDTO"
+          parent="baseDTO"/>
     <bean id="problemDTO" class="cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO"
           parent="baseDTO"/>
     <bean id="statusDTO" class="cn.edu.uestc.acmicpc.db.dto.impl.StatusDTO"

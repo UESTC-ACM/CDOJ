@@ -33,8 +33,8 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @SuppressWarnings("UnusedDeclaration")
-public class ProblemDTO extends BaseDTO<Problem> {
-    public ProblemDTO() {
+public class ProblemDataDTO extends BaseDTO<Problem> {
+    public ProblemDataDTO() {
         super();
     }
 
@@ -42,89 +42,62 @@ public class ProblemDTO extends BaseDTO<Problem> {
      * Input: problem id
      */
     private Integer problemId;
-    private String title;
 
-    public String getTitle() {
-        return title;
+    public Integer getTimeLimit() {
+        return timeLimit;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTimeLimit(Integer timeLimit) {
+        this.timeLimit = timeLimit;
     }
 
-    public String getDescription() {
-        return description;
+    public Integer getMemoryLimit() {
+        return memoryLimit;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getInput() {
-        return input;
-    }
-
-    public void setInput(String input) {
-        this.input = input;
-    }
-
-    public String getOutput() {
-        return output;
-    }
-
-    public void setOutput(String output) {
-        this.output = output;
-    }
-
-    public String getSampleInput() {
-        return sampleInput;
-    }
-
-    public void setSampleInput(String sampleInput) {
-        this.sampleInput = sampleInput;
-    }
-
-    public String getSampleOutput() {
-        return sampleOutput;
-    }
-
-    public void setSampleOutput(String sampleOutput) {
-        this.sampleOutput = sampleOutput;
-    }
-
-    public String getHint() {
-        return hint;
-    }
-
-    public void setHint(String hint) {
-        this.hint = hint;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
+    public void setMemoryLimit(Integer memoryLimit) {
+        this.memoryLimit = memoryLimit;
     }
 
     @Ignore
-    public Boolean getIsVisible() {
-        return isVisible;
+    public Boolean getIsSpj() {
+        return isSpj;
     }
 
-    public void setIsVisible(Boolean visible) {
-        isVisible = visible;
+    public void setIsSpj(Boolean spj) {
+        isSpj = spj;
     }
 
-    private String description;
-    private String input;
-    private String output;
-    private String sampleInput;
-    private String sampleOutput;
-    private String hint;
-    private String source;
-    private Boolean isVisible;
+    public Integer getOutputLimit() {
+        return outputLimit;
+    }
+
+    public void setOutputLimit(Integer outputLimit) {
+        this.outputLimit = outputLimit;
+    }
+
+    public Integer getJavaTimeLimit() {
+        return javaTimeLimit;
+    }
+
+    public void setJavaTimeLimit(Integer javaTimeLimit) {
+        this.javaTimeLimit = javaTimeLimit;
+    }
+
+    public Integer getJavaMemoryLimit() {
+        return javaMemoryLimit;
+    }
+
+    public void setJavaMemoryLimit(Integer javaMemoryLimit) {
+        this.javaMemoryLimit = javaMemoryLimit;
+    }
+
+    private Integer timeLimit;
+    private Integer memoryLimit;
+    private Boolean isSpj;
+    private Integer outputLimit;
+    private Integer javaTimeLimit;
+    private Integer javaMemoryLimit;
 
     public Integer getProblemId() {
         return problemId;
@@ -156,6 +129,8 @@ public class ProblemDTO extends BaseDTO<Problem> {
     public void updateEntity(Problem problem) {
         // TODO to get specific operations
         super.updateEntity(problem);
+        if (getIsSpj() != null)
+            problem.setIsSpj(getIsSpj());
     }
 
     @Override
