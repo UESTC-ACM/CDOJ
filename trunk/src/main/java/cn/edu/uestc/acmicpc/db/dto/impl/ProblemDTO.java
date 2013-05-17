@@ -43,6 +43,13 @@ public class ProblemDTO extends BaseDTO<Problem> {
      */
     private Integer problemId;
     private String title;
+    private String description;
+    private String input;
+    private String output;
+    private String sampleInput;
+    private String sampleOutput;
+    private String hint;
+    private String source;
 
     public String getTitle() {
         return title;
@@ -108,24 +115,6 @@ public class ProblemDTO extends BaseDTO<Problem> {
         this.source = source;
     }
 
-    @Ignore
-    public Boolean getIsVisible() {
-        return isVisible;
-    }
-
-    public void setIsVisible(Boolean visible) {
-        isVisible = visible;
-    }
-
-    private String description;
-    private String input;
-    private String output;
-    private String sampleInput;
-    private String sampleOutput;
-    private String hint;
-    private String source;
-    private Boolean isVisible;
-
     public Integer getProblemId() {
         return problemId;
     }
@@ -149,6 +138,7 @@ public class ProblemDTO extends BaseDTO<Problem> {
         problem.setIsSpj(false);
         problem.setIsVisible(false);
         problem.setProblemId(null);
+        problem.setDifficulty(1);
         return problem;
     }
 
