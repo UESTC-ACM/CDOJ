@@ -362,6 +362,7 @@ public class DatabaseTest
      * Find userSerialKey entity by user name.
      */
     @Test
+    @Ignore
     public void testFindUserSerialKeyByUserName() throws FieldNotUniqueException, AppException {
         String userName = "administrator";
         User user = userDAO.getEntityByUniqueField("userName", userName);
