@@ -66,10 +66,10 @@ $(document).ready(function () {
     });
 
     $('input#submit').click(function(){
-        problemDTO = $('#problemDataEditor').getFormData();
-        problemDTO["problemDTO.problemId"] = problemId;
-        console.log(problemDTO);
-        $.post(updateUrl, problemDTO, function(data) {
+        var problemDataDTO = $('#problemDataEditor').getFormData();
+        problemDataDTO["problemDataDTO.problemId"] = problemId;
+        console.log(problemDataDTO);
+        $.post(updateUrl, problemDataDTO, function(data) {
             $('#problemDataEditor').checkValidate({
                 result: data,
                 onSuccess: function(){

@@ -50,10 +50,10 @@
                             <div class="controls">
                                 <div class="input-append">
                                     <input type="text"
-                                           name="problemDTO.timeLimit"
+                                           name="problemDataDTO.timeLimit"
                                            maxlength="6"
                                            value="${problemDataView.timeLimit}"
-                                           id="problemDTO_timeLimit"
+                                           id="problemDataDTO_timeLimit"
                                            class="span1">
                                     <span class="add-on">ms</span>
                                 </div>
@@ -64,10 +64,10 @@
                             <div class="controls">
                                 <div class="input-append">
                                     <input type="text"
-                                           name="problemDTO.memoryLimit"
+                                           name="problemDataDTO.memoryLimit"
                                            maxlength="10"
                                            value="${problemDataView.memoryLimit}"
-                                           id="problemDTO_memoryLimit"
+                                           id="problemDataDTO_memoryLimit"
                                            class="span2">
                                     <span class="add-on">KB</span>
                                 </div>
@@ -78,10 +78,10 @@
                             <div class="controls">
                                 <div class="input-append">
                                     <input type="text"
-                                           name="problemDTO.outputLimit"
+                                           name="problemDataDTO.outputLimit"
                                            maxlength="10"
                                            value="${problemDataView.outputLimit}"
-                                           id="problemDTO_outputLimit"
+                                           id="problemDataDTO_outputLimit"
                                            class="span2">
                                     <span class="add-on">KB</span>
                                 </div>
@@ -92,14 +92,14 @@
                             <div class="controls">
                                 <label class="radio inline">
                                     <input type="radio"
-                                           name="problemDTO.isSpj"
+                                           name="problemDataDTO.isSpj"
                                            value="true"
                                            <s:if test="problemDataView.isSpj == true">checked="true"</s:if>>
                                     Yes
                                 </label>
                                 <label class="radio inline">
                                     <input type="radio"
-                                           name="problemDTO.isSpj"
+                                           name="problemDataDTO.isSpj"
                                            value="false"
                                            <s:if test="problemDataView.isSpj == false">checked="true"</s:if>>
                                     No
@@ -113,10 +113,10 @@
                             <div class="controls">
                                 <div class="input-append">
                                     <input type="text"
-                                           name="problemDTO.javaTimeLimit"
+                                           name="problemDataDTO.javaTimeLimit"
                                            maxlength="6"
                                            value="${problemDataView.javaTimeLimit}"
-                                           id="problemDTO_javaTimeLimit"
+                                           id="problemDataDTO_javaTimeLimit"
                                            class="span1">
                                     <span class="add-on">ms</span>
                                 </div>
@@ -127,10 +127,10 @@
                             <div class="controls">
                                 <div class="input-append">
                                     <input type="text"
-                                           name="problemDTO.javaMemoryLimit"
+                                           name="problemDataDTO.javaMemoryLimit"
                                            maxlength="6"
                                            value="${problemDataView.javaMemoryLimit}"
-                                           id="problemDTO_javaMemoryLimit"
+                                           id="problemDataDTO_javaMemoryLimit"
                                            class="span2">
                                     <span class="add-on">KB</span>
                                 </div>
@@ -145,10 +145,10 @@
                     <label class="control-label">Current data count</label>
                     <div class="controls">
                         <input type="text"
-                               name="problemDTO.dataCount"
+                               name="problemDataDTO.dataCount"
                                maxlength="6"
                                value="${problemDataView.dataCount}"
-                               id="problemDTO_dataCount"
+                               id="problemDataDTO_dataCount"
                                class="span1"
                                readonly="true">
                     </div>
