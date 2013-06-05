@@ -24,8 +24,11 @@ package cn.edu.uestc.acmicpc.db.condition.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Restrictions;
+
+import java.util.List;
 
 /**
  * Problem search condition.
@@ -155,6 +158,7 @@ public class ProblemCondition extends BaseCondition {
 
     @Override
     public void invoke(Condition condition) {
+        super.invoke(condition);
         if (keyword != null) {
             String[] fields = new String[]{"description", "input", "output",
                     "sampleInput", "sampleOutput", "hint"};

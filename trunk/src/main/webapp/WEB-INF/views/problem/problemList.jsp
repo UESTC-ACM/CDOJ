@@ -53,10 +53,10 @@
         <table class="table table-bordered">
             <thead>
             <tr>
-                <th style="width: 30px;">Id</th>
-                <th>Title</th>
-                <th style="width: 70px;">Difficulty</th>
-                <th style="width: 70px;">Solved</th>
+                <th style="width: 30px;" class="orderButton" field="id">Id</th>
+                <th class="orderButton" field="title">Title</th>
+                <th style="width: 70px;" class="orderButton" field="difficulty">Difficulty</th>
+                <th style="width: 70px;" class="orderButton" field="solved">Solved</th>
             </tr>
             </thead>
             <tbody id="problemList">

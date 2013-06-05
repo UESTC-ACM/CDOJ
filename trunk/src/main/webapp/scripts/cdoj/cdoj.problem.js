@@ -103,6 +103,16 @@ function refreshProblemList(condition) {
     });
 }
 
+function changeOrder(field) {
+    if (currentCondition["problemCondition.orderFields"] == field)
+        currentCondition["problemCondition.orderAsc"] = (currentCondition["problemCondition.orderAsc"] == "true" ? "false" : "true");
+    else {
+        currentCondition["problemCondition.orderFields"] = field;
+        currentCondition["problemCondition.orderAsc"] = "false";
+    }
+    refreshProblemList(currentCondition);
+}
+
 $(document).ready(function () {
     currentCondition = {
         "currentPage": null,
@@ -113,7 +123,9 @@ $(document).ready(function () {
         "problemCondition.isSpj": undefined,
         "problemCondition.startDifficulty": undefined,
         "problemCondition.endDifficulty": undefined,
-        "problemCondition.keyword": undefined
+        "problemCondition.keyword": undefined,
+        "problemCondition.orderFields": undefined,
+        "problemCondition.orderAsc": undefined
     }
 
     $('input#search').setButton({
@@ -129,6 +141,15 @@ $(document).ready(function () {
         callback: function () {
             $('#problemCondition').resetFormData();
         }
+    });
+
+    $.each($('.orderButton'), function(){
+        var field = $(this).attr('field');
+        $(this).setButton({
+            callback: function(){
+                changeOrder(field);
+            }
+        });
     });
 
     refreshProblemList(currentCondition);

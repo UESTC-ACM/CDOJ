@@ -55,12 +55,12 @@
             <thead>
             <tr>
                 <th style="width: 14px;"><i class="icon-th-list"></i></th>
-                <th style="width: 30px;">Id</th>
-                <th>User name</th>
-                <th>Nick name</th>
-                <th>Email</th>
-                <th style="width: 90px;">Type</th>
-                <th>Last login</th>
+                <th style="width: 30px;" class="orderButton" field="id">Id</th>
+                <th class="orderButton" field="userName">User name</th>
+                <th class="orderButton" field="nickName">Nick name</th>
+                <th class="orderButton" field="email">Email</th>
+                <th style="width: 90px;" class="orderButton" field="type">Type</th>
+                <th class="orderButton" field="lastLogin">Last login</th>
                 <th style="width: 14px;"></th>
             </tr>
             </thead>

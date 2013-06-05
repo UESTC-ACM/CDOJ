@@ -76,6 +76,7 @@
         <action name="list" class="contestAdminAction" method="toContestList">
             <result>/WEB-INF/views/admin/contest.jsp</result>
         </action>
+        <action name="search" class="contestAdminAction" method="toSearch"/>
         <action name="editor/*" class="contestAdminAction" method="toContestEditor">
             <param name="targetContestId">{1}</param>
             <result>/WEB-INF/views/admin/contestEditor.jsp</result>
