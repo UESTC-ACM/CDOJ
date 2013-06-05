@@ -39,7 +39,7 @@ public class CodeDTO extends BaseDTO<Code> {
     }
 
     @Override
-    public void updateEntity(Code code) {
+    public void updateEntity(Code code) throws AppException {
         super.updateEntity(code);    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

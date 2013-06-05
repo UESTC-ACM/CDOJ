@@ -40,12 +40,7 @@
 <div class="row">
     <div class="span12">
         <div class="alert alert-info">
-            User Name : <s:property value="currentUser.userName"/><br/>
-            Password : <s:property value="currentUser.password"/><br/>
-            Last Login : <s:property value="currentUser.lastLogin"/><br/>
-            Email : <s:property value="currentUser.email"/><br/>
-            AuthenticationType : <s:property value="global.authenticationTypeList"/><br/>
-            Language list : <s:property value="global.languageList"/><br/>
+            Now : <s:property value="java.util.Date"/>
         </div>
     </div>
 </div>

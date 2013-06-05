@@ -191,7 +191,7 @@
                                                 <th style="width: 70px;">Difficulty</th>
                                             </tr>
                                             </thead>
-                                            <tbody id="problemList">
+                                            <tbody id="problemList" init="${targetContest.problemListString}">
                                             </tbody>
                                         </table>
                                     </div>

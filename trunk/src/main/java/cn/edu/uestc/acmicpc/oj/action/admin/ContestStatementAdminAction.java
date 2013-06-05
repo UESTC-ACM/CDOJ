@@ -24,6 +24,7 @@ package cn.edu.uestc.acmicpc.oj.action.admin;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
+import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dto.ContestDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
@@ -31,6 +32,8 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * Use for edit contest info.
@@ -87,23 +90,26 @@ public class ContestStatementAdminAction extends BaseAction
     )
     public String toEdit() {
         try {
-            if (contestDTO.getContestId() == null)
-                throw new AppException("Null contest ID!");
-
             Contest contest = contestDAO.get(contestDTO.getContestId());
+
+            if (contest == null)
+                throw new AppException("No such contest!");
+
             contestDTO.updateEntity(contest);
 
+            System.out.println("[Time] " + contestDTO.getTime());
+            System.out.println("[Length] " + contest.getLength());
             System.out.println("[Title] " + contest.getTitle());
             System.out.println("[Description] " + contest.getDescription());
             System.out.println("[Time] " + contest.getTime());
-            System.out.println("[Length] " + contest.getLength());
-            if (contestDTO.getProblemList() != null) {
-                System.out.print("[List] " + contestDTO.getProblemList() + " {");
-                for (int i = 0; i < contestDTO.getProblemList().size(); i++)
-                    System.out.print(contestDTO.getProblemList().get(i) + " ");
-                System.out.println("}");
+            List<ContestProblem> problems = (List<ContestProblem>) contest.getContestProblemsByContestId();
+            if (problems != null) {
+                System.out.print("[List] ");
+                for (ContestProblem problem : problems)
+                    System.out.print(problem.getProblemByProblemId().getProblemId() + " ");
+                System.out.println();
             }
-            //contestDAO.add(contest);
+            contestDAO.addOrUpdate(contest);
 
             json.put("result", "ok");
         } catch (AppException e) {

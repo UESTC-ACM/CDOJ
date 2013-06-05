@@ -99,6 +99,7 @@ function getTitle(contestId, contestTitle, isVisible) {
  */
 function refreshContestList(condition) {
     $.post('/admin/contest/search', condition, function (data) {
+        console.log(data);
         if (data.result == "error") {
             alert(data.error_msg);
             return;

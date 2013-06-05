@@ -143,7 +143,7 @@ public class ProblemDTO extends BaseDTO<Problem> {
     }
 
     @Override
-    public void updateEntity(Problem problem) {
+    public void updateEntity(Problem problem) throws AppException {
         // TODO to get specific operations
         super.updateEntity(problem);
     }
