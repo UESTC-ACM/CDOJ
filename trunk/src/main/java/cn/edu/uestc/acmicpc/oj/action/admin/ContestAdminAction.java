@@ -34,12 +34,17 @@ import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dto.ContestDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
+import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.ReflectionUtil;
+import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.Column;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -185,6 +190,67 @@ public class ContestAdminAction extends BaseAction
             json.put("error_msg", e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
+            json.put("result", "error");
+            json.put("error_msg", "Unknown exception occurred.");
+        }
+        return JSON;
+    }
+
+    /**
+     * Action to operate multiple contests.
+     * <p/>
+     * <strong>JSON output</strong>:
+     * <ul>
+     * <li>
+     * For success: {"result":"ok", "msg":<strong>successful message</strong>}
+     * </li>
+     * <li>
+     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+     * </li>
+     * </ul>
+     *
+     * @return <strong>JSON</strong> signal.
+     */
+    @SkipValidation
+    public String toOperatorContest() {
+        try {
+            int count = 0, total = 0;
+            Integer[] ids = ArrayUtil.parseIntArray(get("id"));
+            String method = get("method");
+            for (Integer id : ids)
+                if (id != null) {
+                    ++total;
+                    try {
+                        Contest contest = contestDAO.get(id);
+                        if ("delete".equals(method)) {
+                            contestDAO.delete(contest);
+                        } else if ("edit".equals(method)) {
+                            String field = get("field");
+                            String value = get("value");
+                            Method[] methods = contest.getClass().getMethods();
+                            for (Method getter : methods) {
+                                Column column = getter.getAnnotation(Column.class);
+                                if (column != null && column.name().equals(field)) {
+                                    String setterName = StringUtil.getGetterOrSetter(StringUtil.MethodType.SETTER,
+                                            getter.getName().substring(3));
+                                    Method setter = contest.getClass().getMethod(setterName, getter.getReturnType());
+                                    setter.invoke(contest, ReflectionUtil.valueOf(value, getter.getReturnType()));
+                                }
+                            }
+                            contestDAO.update(contest);
+                        }
+                        ++count;
+                    } catch (AppException ignored) {
+                    }
+                }
+            json.put("result", "ok");
+            String message = "";
+            if ("delete".equals(method))
+                message = String.format("%d total, %d deleted.", total, count);
+            else if ("edit".equals(method))
+                message = String.format("%d total, %d changed.", total, count);
+            json.put("msg", message);
+        } catch (Exception e) {
             json.put("result", "error");
             json.put("error_msg", "Unknown exception occurred.");
         }

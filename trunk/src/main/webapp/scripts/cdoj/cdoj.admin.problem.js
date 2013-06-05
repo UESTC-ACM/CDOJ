@@ -159,11 +159,6 @@ function refreshProblemList(condition) {
         $.each(problemList, function (index, value) {
             var html = $('<tr></tr>');
 
-            if (value.title == '') {
-                value.title = 'Empty problem, please complete this problem first!';
-                html.addClass('alert alert-error');
-            }
-
             html.append('<td>' + value.problemId + '</td>');
             html.append(getTitle(value.problemId, value.title, value.source, value.isSpj, value.isVisible, value.tags));
             html.append('<td class="difficult-span" problemId="' + value.problemId + '">' + getDifficulty(value.difficulty) + '</td>');

@@ -24,6 +24,8 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.db.view.base.View;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 
 import java.sql.Timestamp;
 
@@ -38,6 +40,7 @@ public class ContestListView extends View<Contest> {
     private String title;
     private String description;
     private Byte type;
+    private String typeName;
     private Timestamp time;
     private Integer length;
     private Boolean isVisible;
@@ -118,6 +121,15 @@ public class ContestListView extends View<Contest> {
         isVisible = visible;
     }
 
+    public String getTypeName() {
+        return typeName;
+    }
+
+    @Ignore
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
     /**
      * Fetch data from entity.
      *
@@ -126,5 +138,6 @@ public class ContestListView extends View<Contest> {
     @SuppressWarnings("UnusedDeclaration")
     public ContestListView(Contest contest) {
         super(contest);
+        setTypeName(Global.ContestType.values()[getType()].getDescription());
     }
 }
