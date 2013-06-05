@@ -120,6 +120,7 @@ public class ContestDTO extends BaseDTO<Contest>
         Contest contest = super.getEntity();
 
         contest.setTime(new Timestamp(new Date().getTime()));
+        contest.setLength(5 * 60 * 60);
         contest.setType((byte) 0);
 
         contest.setIsVisible(false);
@@ -137,16 +138,30 @@ public class ContestDTO extends BaseDTO<Contest>
     }
 
     @Override
-    public void updateEntity(Contest contest) {
+    public void updateEntity(Contest contest) throws AppException {
         super.updateEntity(contest);
 
-        /*if (problemList != null) {
-            Collection<ContestProblem> contestProblems = contest.getContestProblemsByContestId();
+        Collection<ContestProblem> problems = contest.getContestProblemsByContestId();
+        if (problems != null) {
+            for (ContestProblem problem : problems)
+                contestProblemDAO.delete(problem);
+        }
 
-            contestProblems = new LinkedList<>();
-            for (int id = 0; id < problemList.size(); id++) {
+        if (problemList != null) {
+
+            problems = new LinkedList<>();
+            for (Integer id = 0; id < problemList.size(); id++) {
+                Integer problemId = problemList.get(id);
+                ContestProblem contestProblem = new ContestProblem();
+                contestProblem.setContestByContestId(contest);
+                contestProblem.setProblemByProblemId(problemDAO.get(problemId));
+                contestProblem.setOrder(id);
+                contestProblemDAO.add(contestProblem);
+                problems.add(contestProblem);
             }
-        }*/
+
+            contest.setContestProblemsByContestId(problems);
+        }
     }
 
     @Override

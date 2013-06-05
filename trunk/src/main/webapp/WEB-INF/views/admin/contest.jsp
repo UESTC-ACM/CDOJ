@@ -56,7 +56,7 @@
                 <th class="orderButton" field="title">Title</th>
                 <th style="width: 70px;" class="orderButton" field="type">Type</th>
                 <th style="width: 160px;" class="orderButton" field="time">Start time</th>
-                <th style="width: 70px;" class="orderButton" field="length">Length</th>
+                <th style="width: 100px;" class="orderButton" field="length">Length</th>
             </tr>
             </thead>
             <tbody id="contestList">

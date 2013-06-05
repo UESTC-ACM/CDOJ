@@ -92,6 +92,34 @@ $(document).ready(function () {
     problemListTable = $('#problemList');
 
     lineId = 0;
+    var initList = problemListTable.attr('init').split(',');
+    $.each(initList, function(){
+        if (this != '') {
+            var line = $(addProblemLine);
+            var nowId = lineId;
+            lineId++;
+            line.attr('value', nowId);
+            problemListTable.append(line);
+            line = problemListTable.find('tr[value="'+nowId+'"]');
+
+            line.find('.remove_problem').live('click', function(){
+                removeProblem(nowId);
+                return false;
+            });
+
+            line.find('.problem_id').live('keydown', function(){
+                if (event.keyCode == 13)
+                    return false;
+            });
+            line.find('.problem_id').live('keyup', function(){
+                updateProblem(nowId);
+            });
+
+            $('tr[value=' + nowId + ']').find('.problem_id')[0].innerText = this;
+            updateProblem(nowId);
+        }
+    });
+
     //Problem add button
     $('#add_problem').setButton({
         callback: function(){
@@ -143,7 +171,19 @@ $(document).ready(function () {
 
             console.log(data);
             $.post('/admin/contest/edit', data, function(data) {
-                console.log(data);
+                $('#contestEditor').checkValidate({
+                    result: data,
+                    onSuccess: function(){
+                        alert('Successful!');
+                        $.each(editors,function() {
+                            this.remove(this.settings.file.name);
+                        });
+                        window.location.href= '/admin/contest/list';
+                    },
+                    onFail: function(){
+                        $('html,body').animate({scrollTop: '0px'}, 400);
+                    }
+                });
             });
             return false;
         }

@@ -62,6 +62,7 @@
             var time = parseInt(self[0].innerHTML);
             if (self.attr('type') != 'milliseconds')
                 date = new Date(self[0].innerHTML);
+            date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
             self.empty();
             if (self.attr('timeStyle') == 'length') {
                 time = parseInt(time / 60);
@@ -138,6 +139,6 @@ function getTime(data, id) {
     var time = getTimeInfo(data, id);
     var timeString = time.days + ' ' + time.hours + ':' + time.minutes + ':' + time.seconds;
     var result = new Date(timeString).getTime();
-    console.log(timeString, result);
+    console.log(timeString, result, new Date(result));
     return result;
 }
