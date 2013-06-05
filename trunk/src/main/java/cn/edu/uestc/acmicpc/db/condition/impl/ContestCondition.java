@@ -136,6 +136,7 @@ public class ContestCondition extends BaseCondition {
 
     @Override
     public void invoke(Condition condition) {
+        super.invoke(condition);
         if (endTime != null) {
             condition.addCriterion(Restrictions.lt("time", DateUtil.add(endTime, Calendar.DATE, 1)));
         }

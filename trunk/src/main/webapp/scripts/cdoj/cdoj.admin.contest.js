@@ -1,27 +1,26 @@
 /*
+ * cdoj, UESTC ACMICPC Online Judge
  *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
+ * mzry1992 <@link muziriyun@gmail.com>
  *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 /**
- * All function used in problem admin list page.
+ * All function used in contest admin list page.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
@@ -176,16 +175,6 @@ function refreshProblemList(condition) {
     });
 }
 
-function changeOrder(field) {
-    if (currentCondition["problemCondition.orderFields"] == field)
-        currentCondition["problemCondition.orderAsc"] = (currentCondition["problemCondition.orderAsc"] == "true" ? "false" : "true");
-    else {
-        currentCondition["problemCondition.orderFields"] = field;
-        currentCondition["problemCondition.orderAsc"] = "false";
-    }
-    refreshProblemList(currentCondition);
-}
-
 $(document).ready(function () {
     currentCondition = {
         "currentPage": null,
@@ -197,9 +186,7 @@ $(document).ready(function () {
         "problemCondition.isSpj": undefined,
         "problemCondition.startDifficulty": undefined,
         "problemCondition.endDifficulty": undefined,
-        "problemCondition.keyword": undefined,
-        "problemCondition.orderFields": undefined,
-        "problemCondition.orderAsc": undefined
+        "problemCondition.keyword": undefined
     }
 
     $('input#search').setButton({
@@ -215,15 +202,6 @@ $(document).ready(function () {
         callback: function () {
             $('#problemCondition').resetFormData();
         }
-    });
-
-    $.each($('.orderButton'), function(){
-        var field = $(this).attr('field');
-        $(this).setButton({
-            callback: function(){
-                changeOrder(field);
-            }
-        });
     });
 
     refreshProblemList(currentCondition);

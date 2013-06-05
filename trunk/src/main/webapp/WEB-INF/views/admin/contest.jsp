@@ -1,7 +1,3 @@
-<%@ taglib prefix="s" uri="/struts-tags" %>
-<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
-<%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
-<%@ taglib prefix="cdoj" uri="/WEB-INF/cdoj.tld" %>
 <%--
   ~ cdoj, UESTC ACMICPC Online Judge
   ~
@@ -24,28 +20,32 @@
   --%>
 
 <%--
- Admin problem list page
+ Admin contest list page
 
  @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  @version 1
 --%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
+<%@ taglib prefix="cdoj" uri="/WEB-INF/cdoj.tld" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <script src="<s:url value="/scripts/cdoj/cdoj.admin.problem.js"/>"></script>
+    <script src="<s:url value="/scripts/cdoj/cdoj.admin.contest.js"/>"></script>
     <title>Contest</title>
 </head>
 <body>
 
 <ul id="TabMenu" class="nav nav-pills">
     <li class="active">
-        <a href="#tab-problem-list" data-toggle="tab">Contest list</a>
+        <a href="#tab-contest-list" data-toggle="tab">Contest list</a>
     </li>
-    <li><a href="#tab-problem-search" data-toggle="tab">Search</a></li>
+    <li><a href="#tab-contest-search" data-toggle="tab">Search</a></li>
 </ul>
 
 <div id="TabContent" class="tab-content">
-    <div class="tab-pane fade active in" id="tab-problem-list">
+    <div class="tab-pane fade active in" id="tab-contest-list">
         <div id="pageInfo">
         </div>
 
@@ -58,111 +58,48 @@
                 <th style="width: 14px;"></th>
             </tr>
             </thead>
-            <tbody id="problemList">
+            <tbody id="contestList">
             </tbody>
         </table>
     </div>
 
-    <div class="tab-pane fade" id="tab-problem-search">
-        <div id="problemCondition">
+    <div class="tab-pane fade" id="tab-contest-search">
+        <div id="contestCondition">
             <form class="form-horizontal">
                 <div class="control-group">
-                    <label class="control-label" for="problemCondition.startId">Problem ID</label>
+                    <label class="control-label" for="contestCondition.startId">Contest ID</label>
 
                     <div class="controls">
                         <div class="input-prepend inline">
                             <span class="add-on">Form</span>
-                            <s:textfield name="problemCondition.startId"
+                            <s:textfield name="contestCondition.startId"
                                          maxLength="6"
                                          cssClass="input-small"/>
                         </div>
                         <div class="input-prepend">
                             <span class="add-on">To</span>
-                            <s:textfield name="problemCondition.endId"
+                            <s:textfield name="contestCondition.endId"
                                          maxLength="6"
                                          cssClass="input-small"/>
                         </div>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="problemCondition.startDifficulty">Difficulty</label>
+                    <label class="control-label" for="contestCondition.title">Title</label>
 
                     <div class="controls">
-                        <div class="input-prepend inline">
-                            <span class="add-on">Form</span>
-                            <s:textfield name="problemCondition.startDifficulty"
-                                         maxLength="6"
-                                         cssClass="input-small"/>
-                        </div>
-                        <div class="input-prepend">
-                            <span class="add-on">To</span>
-                            <s:textfield name="problemCondition.endDifficulty"
-                                         maxLength="6"
-                                         cssClass="input-small"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="problemCondition.title">Title</label>
-
-                    <div class="controls">
-                        <s:textfield name="problemCondition.title"
+                        <s:textfield name="contestCondition.title"
                                      maxLength="100"
                                      cssClass="span6"/>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="problemCondition.keyword">Keyword</label>
+                    <label class="control-label" for="contestCondition.keyword">Keyword</label>
 
                     <div class="controls">
-                        <s:textfield name="problemCondition.keyword"
+                        <s:textfield name="contestCondition.keyword"
                                      maxLength="100"
                                      cssClass="span6"/>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="problemCondition.source">Source</label>
-
-                    <div class="controls">
-                        <s:textfield name="problemCondition.source"
-                                     maxLength="100"
-                                     cssClass="span6"/>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">Is SPJ</label>
-
-                    <div class="controls">
-                        <label class="radio inline">
-                            <input type="radio" name="problemCondition.isSpj" value="all" checked="">
-                            All
-                        </label>
-                        <label class="radio inline">
-                            <input type="radio" name="problemCondition.isSpj" value="true">
-                            Yes
-                        </label>
-                        <label class="radio inline">
-                            <input type="radio" name="problemCondition.isSpj" value="false">
-                            No
-                        </label>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">Is Visible</label>
-
-                    <div class="controls">
-                        <label class="radio inline">
-                            <input type="radio" name="problemCondition.isVisible" value="all" checked="">
-                            All
-                        </label>
-                        <label class="radio inline">
-                            <input type="radio" name="problemCondition.isVisible" value="true">
-                            Yes
-                        </label>
-                        <label class="radio inline">
-                            <input type="radio" name="problemCondition.isVisible" value="false">
-                            No
-                        </label>
                     </div>
                 </div>
                 <div class="form-actions">
