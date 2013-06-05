@@ -59,10 +59,25 @@
         $.each(this, function() {
             var self = $(this);
             var date = new Date(parseInt(self[0].innerHTML));
+            var time = parseInt(self[0].innerHTML);
             if (self.attr('type') != 'milliseconds')
                 date = new Date(self[0].innerHTML);
             self.empty();
-            self.append(date.Format('yyyy-MM-dd hh:mm:ss'));
+            if (self.attr('timeStyle') == 'length') {
+                time = parseInt(time / 60);
+                var minutes = time % 60;
+                time = parseInt(time / 60);
+                var hours = time % 60;
+                time = parseInt(time / 24);
+                var days = time;
+                var result = '';
+                if (days > 0)
+                    result = days + ' days ';
+                result = result + hours + ':' + minutes + ':00';
+                self.append(result);
+            }
+            else
+                self.append(date.Format('yyyy-MM-dd hh:mm:ss'));
         });
 
         return this;

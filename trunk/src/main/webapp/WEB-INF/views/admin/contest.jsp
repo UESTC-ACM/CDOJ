@@ -52,10 +52,11 @@
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
-                <th style="width: 30px;">Id</th>
-                <th>Title</th>
-                <th style="width: 70px;">Difficulty</th>
-                <th style="width: 14px;"></th>
+                <th style="width: 30px;" class="orderButton" field="id">Id</th>
+                <th class="orderButton" field="title">Title</th>
+                <th style="width: 70px;" class="orderButton" field="type">Type</th>
+                <th style="width: 160px;" class="orderButton" field="time">Start time</th>
+                <th style="width: 70px;" class="orderButton" field="length">Length</th>
             </tr>
             </thead>
             <tbody id="contestList">
@@ -102,6 +103,38 @@
                                      cssClass="span6"/>
                     </div>
                 </div>
+
+                <div class="control-group">
+                    <label class="control-label">Is Visible</label>
+
+                    <div class="controls">
+                        <label class="radio inline">
+                            <input type="radio" name="contestCondition.isVisible" value="all" checked="">
+                            All
+                        </label>
+                        <label class="radio inline">
+                            <input type="radio" name="contestCondition.isVisible" value="true">
+                            Yes
+                        </label>
+                        <label class="radio inline">
+                            <input type="radio" name="contestCondition.isVisible" value="false">
+                            No
+                        </label>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="contestCondition.type">Type</label>
+
+                    <div class="controls">
+                        <s:select name="contestCondition.type"
+                                  list="global.contestTypeList"
+                                  listKey="ordinal()"
+                                  listValue="description"
+                                  cssClass="span6"/>
+                    </div>
+                </div>
+
                 <div class="form-actions">
                     <s:submit name="search"
                               cssClass="btn btn-primary"
