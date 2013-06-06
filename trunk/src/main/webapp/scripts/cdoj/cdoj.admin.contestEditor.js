@@ -175,10 +175,7 @@ $(document).ready(function () {
                     result: data,
                     onSuccess: function(){
                         alert('Successful!');
-                        $.each(editors,function() {
-                            this.remove(this.settings.file.name);
-                        });
-                        window.location.href= '/admin/contest/list';
+                        //window.location.href= '/admin/contest/list';
                     },
                     onFail: function(){
                         $('html,body').animate({scrollTop: '0px'}, 400);

@@ -52,5 +52,6 @@
     <import resource="action/applicationContext-actions-admin.xml"/>
     <import resource="action/applicationContext-actions-user.xml"/>
     <import resource="action/applicationContext-actions-status.xml"/>
+    <import resource="action/applicationContext-actions-contest.xml"/>
 
 </beans>
