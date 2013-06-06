@@ -154,7 +154,8 @@ public class ContestListView extends View<Contest> {
         if (time.after(now))
             status = "Pending";
         else {
-            Timestamp endTime = new Timestamp(time.getTime() + length * 60 * 1000);
+            Timestamp endTime = new Timestamp(time.getTime() + length * 1000);
+            System.out.println(time + " " + endTime + " " + now);
             if (endTime.after(now))
                 status = "Running";
             else

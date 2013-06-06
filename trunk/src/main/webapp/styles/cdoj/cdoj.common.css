@@ -110,10 +110,20 @@ body {
 }
 
 .problem-state-accept {
-    background-color: #dff0d8;
+    background-color: #ccffcc;
 }
 .problem-state-error {
-    background-color: #f2dede;
+    background-color: #ffcccc;
+}
+
+.contest-state-running {
+    background-color: #ffcccc;
+}
+.contest-state-pending {
+    background-color: #66cccc;
+}
+.contest-state-ended {
+    background-color: #ccffcc;
 }
 
 #codeViewer {

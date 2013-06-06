@@ -63,5 +63,6 @@
     <include file="action/struts-user.xml"/>
     <include file="action/struts-test.xml"/>
     <include file="action/struts-status.xml"/>
+    <include file="action/struts-contest.xml"/>
 
 </struts>

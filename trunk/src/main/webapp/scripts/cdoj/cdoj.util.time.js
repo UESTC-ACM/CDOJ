@@ -107,7 +107,7 @@
                 time = parseInt(time / 60);
                 minutes = time % 60;
                 time = parseInt(time / 60);
-                hours = time % 60;
+                hours = time % 24;
                 time = parseInt(time / 24);
                 days = time;
             }

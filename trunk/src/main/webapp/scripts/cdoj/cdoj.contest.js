@@ -20,7 +20,7 @@
  */
 
 /**
- * All function used in contest admin list page.
+ * All function used in contest list page.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
@@ -36,56 +36,11 @@ var currentCondition;
  */
 var contestList;
 
-var visibleClass = 'icon-eye-open';
-var unVisibleClass = 'icon-eye-close';
-
-function getQueryString(field, id, value) {
-    var queryString = '/admin/contest/operator?method=edit';
-    queryString += '&id=' + id;
-    queryString += '&field=' + field;
-    queryString += '&value=' + value;
-    return queryString;
-}
-
-function editVisible(id, value) {
-    var queryString = getQueryString('isVisible', id, value);
-    $.post(queryString, function (data) {
-        if (data.result == "ok") {
-            var icon = $('#visibleState[contestId="' + id + '"]');
-            if (value == false) {
-                icon.removeClass(visibleClass);
-                icon.addClass(unVisibleClass);
-            }
-            else {
-                icon.removeClass(unVisibleClass);
-                icon.addClass(visibleClass);
-            }
-            icon.live('click', function () {
-                editVisible(id, !value)
-            });
-        }
-    });
-}
-
-function blindVisibleEdit() {
-    $('#visibleState').live('click', function () {
-        var id = $(this).attr('contestId');
-        var visible = ($(this).attr('isVisible') == 'true') ? true : false;
-        editVisible(id, !visible);
-    });
-}
-
-function getTitle(contestId, contestTitle, isVisible) {
+function getTitle(contestId, contestTitle) {
     var html = $('<td></td>');
     var titleInfo = '';
-    titleInfo += '<i id="visibleState" isVisible="' + isVisible + '"contestId="' + contestId + '" class="';
-    if (isVisible == true)
-        titleInfo += visibleClass;
-    else
-        titleInfo += unVisibleClass;
-    titleInfo += ' pull-left tags"/>';
 
-    titleInfo += '<a class="pull-left" href="/admin/contest/editor/' + contestId + '" title="Edit problem">'
+    titleInfo += '<a class="pull-left" href="/contest/view/' + contestId + '" title="Edit problem">'
         + contestTitle + '</a></span>';
 
     html.append(titleInfo);
@@ -104,13 +59,12 @@ function getLength(length, status) {
         html.addClass('contest-state-pending');
     return html;
 }
-
 /**
  * refresh the contest list
  * @param condition
  */
 function refreshContestList(condition) {
-    $.post('/admin/contest/search', condition, function (data) {
+    $.post('/contest/search', condition, function (data) {
         console.log(data);
         if (data.result == "error") {
             alert(data.error_msg);
@@ -135,14 +89,12 @@ function refreshContestList(condition) {
             var html = $('<tr></tr>');
 
             html.append('<td>' + value.contestId + '</td>');
-            html.append(getTitle(value.contestId, value.title, value.isVisible));
+            html.append(getTitle(value.contestId, value.title));
             html.append('<td>' + value.typeName + '</td>');
             html.append('<td class="cdoj-time">' + value.time + '</td>');
             html.append(getLength(value.length, value.status));
             tbody.append(html);
         });
-
-        blindVisibleEdit();
 
         // format time style
         $('.cdoj-time').formatTimeStyle();
