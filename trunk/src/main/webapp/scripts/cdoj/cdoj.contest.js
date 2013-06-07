@@ -40,7 +40,7 @@ function getTitle(contestId, contestTitle) {
     var html = $('<td></td>');
     var titleInfo = '';
 
-    titleInfo += '<a class="pull-left" href="/contest/view/' + contestId + '" title="Edit problem">'
+    titleInfo += '<a class="pull-left" href="/contest/show/' + contestId + '" title="Edit problem">'
         + contestTitle + '</a></span>';
 
     html.append(titleInfo);

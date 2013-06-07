@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!--
+<%--
   ~ cdoj, UESTC ACMICPC Online Judge
   ~
   ~ Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
@@ -19,23 +17,21 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program; if not, write to the Free Software
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-  -->
+  --%>
 
-<!DOCTYPE struts PUBLIC
-        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<%--
+  Created by IntelliJ IDEA.
+  User: mzry1992
+  Date: 13-6-7
+  Time: 下午10:01
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
 
-<struts>
-    <package name="contest" namespace="/contest" extends="default">
-        <default-action-ref name="index"/>
-        <action name="index" class="contestListAction" method="toContestList">
-            <result>/WEB-INF/views/contest/contestList.jsp</result>
-        </action>
-        <action name="search" class="contestListAction" method="toSearch"/>
-        <action name="show/*" class="contestAction" method="toContest">
-            <param name="targetContestId">{1}</param>
-            <result>/WEB-INF/views/contest/contestShow.jsp</result>
-        </action>
-    </package>
-
-</struts>
+</body>
+</html>
