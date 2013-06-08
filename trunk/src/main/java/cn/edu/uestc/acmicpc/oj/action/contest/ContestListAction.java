@@ -30,6 +30,7 @@ import cn.edu.uestc.acmicpc.ioc.condition.ContestConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.struts2.interceptor.validation.SkipValidation;
@@ -84,8 +85,9 @@ public class ContestListAction extends BaseAction implements ContestDAOAware, Co
     @SkipValidation
     public String toSearch() {
         try {
+            if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
+                contestCondition.setIsVisible(true);
             contestCondition.setIsTitleEmpty(false);
-            contestCondition.setIsVisible(true);
             Condition condition = contestCondition.getCondition();
             Long count = contestDAO.count(contestCondition.getCondition());
             PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
