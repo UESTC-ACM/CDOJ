@@ -40,6 +40,8 @@ var problemList;
 
 function getTitle(problemId, title, source, isSpj, isVisible) {
     var html = '';
+    if (isVisible == false)
+        html += '<i class = "icon-eye-close pull-left tags"/>';
     if (isSpj == true)
         html += '<span class="label label-important tags pull-right">SPJ</span>';
 
