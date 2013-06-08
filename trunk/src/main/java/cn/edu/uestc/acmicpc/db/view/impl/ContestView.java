@@ -28,8 +28,7 @@ import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 
 import java.sql.Timestamp;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Contest view
@@ -46,7 +45,18 @@ public class ContestView extends View<Contest> {
     private Timestamp time;
     private String title;
     private Byte type;
-    private List<ProblemListView> problemList;
+    private List<Integer> problemList;
+    private String problemListString;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    @Ignore
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public Boolean getVisible() {
         return isVisible;
@@ -56,12 +66,21 @@ public class ContestView extends View<Contest> {
         isVisible = visible;
     }
 
-    public List<ProblemListView> getProblemList() {
+    public String getProblemListString() {
+        return problemListString;
+    }
+
+    @Ignore
+    public void setProblemListString(String problemListString) {
+        this.problemListString = problemListString;
+    }
+
+    public List<Integer> getProblemList() {
         return problemList;
     }
 
     @Ignore
-    public void setProblemList(List<ProblemListView> problemList) {
+    public void setProblemList(List<Integer> problemList) {
         this.problemList = problemList;
     }
 
@@ -140,10 +159,30 @@ public class ContestView extends View<Contest> {
      */
     public ContestView(Contest contest) {
         super(contest);
-        List<ProblemListView> problemList = new LinkedList<>();
+        Timestamp now = new Timestamp(new Date().getTime());
+        if (time.after(now))
+            status = "Pending";
+        else {
+            Timestamp endTime = new Timestamp(time.getTime() + length * 60 * 1000);
+            if (endTime.after(now))
+                status = "Running";
+            else
+                status = "Ended";
+        }
+
+        List<ContestProblem> contestProblems = (List<ContestProblem>) contest.getContestProblemsByContestId();
+        Collections.sort(contestProblems, new Comparator<ContestProblem>() {
+            @Override
+            public int compare(ContestProblem a, ContestProblem b) {
+                return a.getOrder().compareTo(b.getOrder());
+            }
+        });
+        problemList = new LinkedList<>();
+        problemListString = "";
         for (ContestProblem contestProblem : contest.getContestProblemsByContestId()) {
             Problem problem = contestProblem.getProblemByProblemId();
-            problemList.add(new ProblemListView(problem));
+            problemList.add(problem.getProblemId());
+            problemListString = problemListString + problem.getProblemId() + ",";
         }
     }
 }

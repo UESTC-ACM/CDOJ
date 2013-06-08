@@ -112,6 +112,16 @@ function editUserDialog(index) {
     return false;
 }
 
+function changeOrder(field) {
+    if (currentCondition["userCondition.orderFields"] == field)
+        currentCondition["userCondition.orderAsc"] = (currentCondition["userCondition.orderAsc"] == "true" ? "false" : "true");
+    else {
+        currentCondition["userCondition.orderFields"] = field;
+        currentCondition["userCondition.orderAsc"] = "false";
+    }
+    refreshUserList(currentCondition);
+}
+
 $(document).ready(function () {
 
     $('#userCondition_departmentId').prepend('<option value="-1">All</option>');
@@ -126,7 +136,9 @@ $(document).ready(function () {
         "userCondition.userName": undefined,
         "userCondition.type": undefined,
         "userCondition.school": undefined,
-        "userCondition.departmentId": undefined
+        "userCondition.departmentId": undefined,
+        "userCondition.orderFields": undefined,
+        "userCondition.orderAsc": undefined
     };
 
     $('input#search').setButton({
@@ -194,6 +206,15 @@ $(document).ready(function () {
                 });
             });
         }
+    });
+
+    $.each($('.orderButton'), function(){
+        var field = $(this).attr('field');
+        $(this).setButton({
+            callback: function(){
+                changeOrder(field);
+            }
+        });
     });
 
     refreshUserList(currentCondition);

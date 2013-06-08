@@ -22,6 +22,7 @@ package cn.edu.uestc.acmicpc.db.condition.base;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.StringUtil;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.BeansException;
@@ -96,6 +97,26 @@ public abstract class BaseCondition implements ApplicationContextAware {
     @Autowired
     protected ApplicationContext applicationContext;
 
+    private String orderFields;
+    private String orderAsc;
+
+    @Ignore
+    public String getOrderFields() {
+        return orderFields;
+    }
+
+    public void setOrderFields(String orderFields) {
+        this.orderFields = orderFields;
+    }
+
+    @Ignore
+    public String getOrderAsc() {
+        return orderAsc;
+    }
+
+    public void setOrderAsc(String orderAsc) {
+        this.orderAsc = orderAsc;
+    }
     /**
      * Method for user to invoke special columns
      * <p/>
@@ -106,7 +127,16 @@ public abstract class BaseCondition implements ApplicationContextAware {
      *
      * @param condition conditions that to be considered
      */
-    protected abstract void invoke(Condition condition);
+    protected void invoke(Condition condition) {
+        if (orderFields != null) {
+            String[] fields = orderFields.split(",");
+            String[] asc = orderAsc.split(",");
+            if (fields.length == asc.length) {
+                for (int i = 0; i < fields.length; i++)
+                    condition.addOrder(fields[i], asc[i].equals("true"));
+            }
+        }
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

@@ -51,7 +51,7 @@ public class ContestProblem implements Serializable {
 
     private Integer order;
 
-    @Column(name = "order", nullable = false, insertable = true, updatable = true,
+    @Column(name = "`order`", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0)
     @Basic
     public Integer getOrder() {

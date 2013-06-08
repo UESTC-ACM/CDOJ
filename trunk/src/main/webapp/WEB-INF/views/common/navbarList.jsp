@@ -47,7 +47,7 @@
 </li>
 <li class="divider-vertical"></li>
 <li>
-    <a href="#">Contests</a>
+    <a href="<s:url action="index" namespace="/contest"/>">Contests</a>
 </li>
 <li class="divider-vertical"></li>
 <li>

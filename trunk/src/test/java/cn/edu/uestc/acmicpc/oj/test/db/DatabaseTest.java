@@ -362,6 +362,7 @@ public class DatabaseTest
      * Find userSerialKey entity by user name.
      */
     @Test
+    @Ignore
     public void testFindUserSerialKeyByUserName() throws FieldNotUniqueException, AppException {
         String userName = "administrator";
         User user = userDAO.getEntityByUniqueField("userName", userName);
@@ -419,9 +420,6 @@ public class DatabaseTest
     public void testContestDAO() {
         try {
             Contest contest = contestDTO.getEntity();
-            contest.setTime(new Timestamp(new Date().getTime()));
-            contest.setType((byte) 0);
-//            contest.setContestId(null);
             System.out.println(contest.toString());
             contestDAO.add(contest);
         } catch (AppException e) {

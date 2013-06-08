@@ -159,11 +159,6 @@ function refreshProblemList(condition) {
         $.each(problemList, function (index, value) {
             var html = $('<tr></tr>');
 
-            if (value.title == '') {
-                value.title = 'Empty problem, please complete this problem first!';
-                html.addClass('alert alert-error');
-            }
-
             html.append('<td>' + value.problemId + '</td>');
             html.append(getTitle(value.problemId, value.title, value.source, value.isSpj, value.isVisible, value.tags));
             html.append('<td class="difficult-span" problemId="' + value.problemId + '">' + getDifficulty(value.difficulty) + '</td>');
@@ -174,6 +169,16 @@ function refreshProblemList(condition) {
         blindVisibleEdit();
         blindDifficultSpan();
     });
+}
+
+function changeOrder(field) {
+    if (currentCondition["problemCondition.orderFields"] == field)
+        currentCondition["problemCondition.orderAsc"] = (currentCondition["problemCondition.orderAsc"] == "true" ? "false" : "true");
+    else {
+        currentCondition["problemCondition.orderFields"] = field;
+        currentCondition["problemCondition.orderAsc"] = "false";
+    }
+    refreshProblemList(currentCondition);
 }
 
 $(document).ready(function () {
@@ -187,7 +192,9 @@ $(document).ready(function () {
         "problemCondition.isSpj": undefined,
         "problemCondition.startDifficulty": undefined,
         "problemCondition.endDifficulty": undefined,
-        "problemCondition.keyword": undefined
+        "problemCondition.keyword": undefined,
+        "problemCondition.orderFields": undefined,
+        "problemCondition.orderAsc": undefined
     }
 
     $('input#search').setButton({
@@ -203,6 +210,15 @@ $(document).ready(function () {
         callback: function () {
             $('#problemCondition').resetFormData();
         }
+    });
+
+    $.each($('.orderButton'), function(){
+        var field = $(this).attr('field');
+        $(this).setButton({
+            callback: function(){
+                changeOrder(field);
+            }
+        });
     });
 
     refreshProblemList(currentCondition);

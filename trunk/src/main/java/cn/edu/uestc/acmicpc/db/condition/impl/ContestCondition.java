@@ -25,6 +25,7 @@ package cn.edu.uestc.acmicpc.db.condition.impl;
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.util.DateUtil;
+import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Restrictions;
 
 import java.sql.Timestamp;
@@ -134,8 +135,30 @@ public class ContestCondition extends BaseCondition {
 
     private Boolean isVisible;
 
+    /**
+     * Keyword for {@code description}, {@code title}
+     */
+    private String keyword;
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
     @Override
     public void invoke(Condition condition) {
+        super.invoke(condition);
+        if (keyword != null) {
+            String[] fields = new String[]{"description", "title"};
+            Junction junction = Restrictions.disjunction();
+            for (String field : fields) {
+                junction.add(Restrictions.like(field, String.format("%%%s%%", keyword)));
+            }
+            condition.addCriterion(junction);
+        }
         if (endTime != null) {
             condition.addCriterion(Restrictions.lt("time", DateUtil.add(endTime, Calendar.DATE, 1)));
         }

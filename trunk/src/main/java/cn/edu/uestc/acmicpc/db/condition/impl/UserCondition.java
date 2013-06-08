@@ -122,5 +122,6 @@ public class UserCondition extends BaseCondition {
 
     @Override
     public void invoke(Condition condition) {
+        super.invoke(condition);
     }
 }

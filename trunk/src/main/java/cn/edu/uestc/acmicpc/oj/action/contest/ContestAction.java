@@ -19,24 +19,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+package cn.edu.uestc.acmicpc.oj.action.contest;
+
+import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+
 /**
- * Global variables.
+ * Description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@LoginPermit(NeedLogin = false)
+public class ContestAction extends BaseAction {
 
-var currentUser = null;
-var currentUserType = null;
+    private Integer targetContestId;
 
-!function ($) {
+    public Integer getTargetContestId() {
+        return targetContestId;
+    }
 
-    $(function () {
+    public void setTargetContestId(Integer targetContestId) {
+        this.targetContestId = targetContestId;
+    }
 
-        //Get current user
-        if ($('#currentUser').length > 0) {
-            currentUser = $('#currentUser')[0].innerHTML.trim();
-            currentUserType = $('#currentUser').attr('type');
-        }
-
-    })
-}(window.jQuery)
+    public String toContest() {
+        return SUCCESS;
+    }
+}

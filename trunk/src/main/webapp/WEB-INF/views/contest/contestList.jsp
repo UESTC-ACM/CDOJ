@@ -32,7 +32,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <script src="<s:url value="/scripts/cdoj/cdoj.admin.contest.js"/>"></script>
+    <script src="<s:url value="/scripts/cdoj/cdoj.contest.js"/>"></script>
     <title>Contest</title>
 </head>
 <body>
@@ -101,25 +101,6 @@
                         <s:textfield name="contestCondition.keyword"
                                      maxLength="100"
                                      cssClass="span6"/>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label class="control-label">Is Visible</label>
-
-                    <div class="controls">
-                        <label class="radio inline">
-                            <input type="radio" name="contestCondition.isVisible" value="all" checked="">
-                            All
-                        </label>
-                        <label class="radio inline">
-                            <input type="radio" name="contestCondition.isVisible" value="true">
-                            Yes
-                        </label>
-                        <label class="radio inline">
-                            <input type="radio" name="contestCondition.isVisible" value="false">
-                            No
-                        </label>
                     </div>
                 </div>
 

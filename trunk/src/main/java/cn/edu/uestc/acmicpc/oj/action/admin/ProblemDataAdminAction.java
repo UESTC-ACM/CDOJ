@@ -24,11 +24,11 @@ package cn.edu.uestc.acmicpc.oj.action.admin;
 
 import cn.edu.uestc.acmicpc.checker.ZipDataChecker;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDataDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemDataView;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dto.ProblemDTOAware;
+import cn.edu.uestc.acmicpc.ioc.dto.ProblemDataDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.file.FileUploadAction;
 import cn.edu.uestc.acmicpc.util.FileUtil;
 import cn.edu.uestc.acmicpc.util.Global;
@@ -52,13 +52,13 @@ import java.util.zip.ZipFile;
  */
 @LoginPermit(Global.AuthenticationType.ADMIN)
 public class ProblemDataAdminAction extends FileUploadAction
-        implements ProblemDAOAware, ProblemDTOAware {
+        implements ProblemDAOAware, ProblemDataDTOAware {
     @Autowired
     private IProblemDAO problemDAO;
     private Integer targetProblemId;
 
     @Autowired
-    private ProblemDTO problemDTO;
+    private ProblemDataDTO problemDataDTO;
 
     private ProblemDataView problemDataView;
 
@@ -73,13 +73,13 @@ public class ProblemDataAdminAction extends FileUploadAction
     }
 
     @Override
-    public ProblemDTO getProblemDTO() {
-        return problemDTO;
+    public ProblemDataDTO getProblemDataDTO() {
+        return problemDataDTO;
     }
 
     @Override
-    public void setProblemDTO(ProblemDTO problemDTO) {
-        this.problemDTO = problemDTO;
+    public void setProblemDataDTO(ProblemDataDTO problemDataDTO) {
+        this.problemDataDTO = problemDataDTO;
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -174,31 +174,31 @@ public class ProblemDataAdminAction extends FileUploadAction
     @Validations(
             intRangeFields = {
                     @IntRangeFieldValidator(
-                            fieldName = "problemDTO.timeLimit",
+                            fieldName = "problemDataDTO.timeLimit",
                             min = "0",
                             max = "60000",
                             key = "error.timeLimit.validation"
                     ),
                     @IntRangeFieldValidator(
-                            fieldName = "problemDTO.javaTimeLimit",
+                            fieldName = "problemDataDTO.javaTimeLimit",
                             min = "0",
                             max = "60000",
                             key = "error.timeLimit.validation"
                     ),
                     @IntRangeFieldValidator(
-                            fieldName = "problemDTO.memoryLimit",
+                            fieldName = "problemDataDTO.memoryLimit",
                             min = "0",
                             max = "262144",
                             key = "error.memoryLimit.validation"
                     ),
                     @IntRangeFieldValidator(
-                            fieldName = "problemDTO.javaMemoryLimit",
+                            fieldName = "problemDataDTO.javaMemoryLimit",
                             min = "0",
                             max = "262144",
                             key = "error.memoryLimit.validation"
                     ),
                     @IntRangeFieldValidator(
-                            fieldName = "problemDTO.outputLimit",
+                            fieldName = "problemDataDTO.outputLimit",
                             min = "0",
                             max = "262144",
                             key = "error.outputLimit.validation"
@@ -207,13 +207,11 @@ public class ProblemDataAdminAction extends FileUploadAction
     )
     public String updateProblemData() {
         try {
-            Problem problem = null;
-
-            problem = problemDAO.get(problemDTO.getProblemId());
+            Problem problem = problemDAO.get(problemDataDTO.getProblemId());
             if (problem == null)
                 throw new AppException("No such problem!");
 
-            problemDTO.updateEntity(problem);
+            problemDataDTO.updateEntity(problem);
             String dataPath = settings.JUDGE_DATA_PATH + "/" + targetProblemId;
             String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/" + targetProblemId;
             File targetFile = new File(dataPath);
