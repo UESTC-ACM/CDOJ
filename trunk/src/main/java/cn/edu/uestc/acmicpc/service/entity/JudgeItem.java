@@ -141,7 +141,7 @@ public class JudgeItem implements CompileInfoDAOAware, StatusDAOAware, UserDAOAw
                 statusCondition.clear();
                 statusCondition.setProblemId(problem.getProblemId());
                 condition = statusCondition.getCondition();
-                count = statusDAO.customCount(condition);
+                count = statusDAO.count(condition);
                 problem.setTried((int) count.longValue());
                 problemDAO.update(problem);
             } catch (Exception e) {
