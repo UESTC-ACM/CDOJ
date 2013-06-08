@@ -23,15 +23,19 @@
 package cn.edu.uestc.acmicpc.oj.test.db;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
+import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -52,7 +56,8 @@ import java.util.List;
 @ContextConfiguration({"classpath:applicationContext-test.xml"})
 public class ConditionTest
         implements ProblemDAOAware, UserDAOAware,
-        UserConditionAware, ProblemConditionAware {
+        UserConditionAware, ProblemConditionAware,
+        StatusConditionAware {
     /**
      * DAOs for database query.
      */
@@ -70,6 +75,9 @@ public class ConditionTest
 
     @Autowired
     private ProblemCondition problemCondition;
+
+    @Autowired
+    private StatusCondition statusCondition;
 
     @Test
     public void testProblemCondition() throws AppException {
@@ -143,5 +151,29 @@ public class ConditionTest
         List<Problem> problems = (List<Problem>) problemDAO.findAll(problemCondition.getCondition());
         for (Problem problem : problems)
             System.out.println(problem.toString());
+    }
+
+    /**
+     * Test condition's {@code clear} method.
+     */
+    @Test
+    @Ignore
+    public void testConditionClear() {
+        statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+        statusCondition.setContestId(1);
+        statusCondition.setUserName("lyhypacm");
+        System.out.println(ObjectUtil.toString(statusCondition));
+        statusCondition.clear();
+        System.out.println(ObjectUtil.toString(statusCondition));
+    }
+
+    @Override
+    public void setStatusCondition(StatusCondition statusCondition) {
+        this.statusCondition = statusCondition;
+    }
+
+    @Override
+    public StatusCondition getStatusCondition() {
+        return statusCondition;
     }
 }

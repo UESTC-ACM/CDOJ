@@ -30,6 +30,7 @@ import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Restrictions;
@@ -213,6 +214,7 @@ public class StatusCondition extends BaseCondition implements UserConditionAware
     }
 
     @Override
+    @Ignore
     public void setUserCondition(UserCondition userCondition) {
         this.userCondition = userCondition;
     }
