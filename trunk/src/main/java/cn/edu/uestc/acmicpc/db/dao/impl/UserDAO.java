@@ -38,8 +38,6 @@ import java.util.List;
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@Transactional
-@Repository
 public class UserDAO extends DAO<User, Integer> implements IUserDAO {
     @Override
     protected Class<Integer> getPKClass() {

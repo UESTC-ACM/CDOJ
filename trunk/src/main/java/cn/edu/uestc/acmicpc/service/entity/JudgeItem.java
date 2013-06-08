@@ -114,27 +114,38 @@ public class JudgeItem implements CompileInfoDAOAware, StatusDAOAware, UserDAOAw
             statusDAO.update(status);
         } catch (AppException ignored) {
         }
-        if (status.getResult() == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
-            try {
-                User user = status.getUserByUserId();
-                statusCondition.setUserId(user.getUserId());
-                Condition condition = statusCondition.getCondition();
-                condition.addProjection(Projections.countDistinct("problemByProblemId"));
-                Long count = statusDAO.customCount(condition);
-                user.setSolved((int) count.longValue());
-                userDAO.update(user);
-                statusCondition = new StatusCondition();
-                Problem problem = status.getProblemByProblemId();
-                statusCondition.setProblemId(problem.getProblemId());
-                condition = statusCondition.getCondition();
-                condition.addProjection(Projections.countDistinct("userByUserId"));
-                count = statusDAO.customCount(condition);
-                problem.setSolved((int) count.longValue());
-                problemDAO.update(problem);
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
 
+        try {
+            User user = status.getUserByUserId();
+            statusCondition.setUserId(user.getUserId());
+            statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+            Condition condition = statusCondition.getCondition();
+            condition.addProjection(Projections.countDistinct("problemByProblemId"));
+            Long count = statusDAO.customCount(condition);
+            user.setSolved((int) count.longValue());
+            statusCondition.clear();
+            statusCondition.setUserId(user.getUserId());
+            condition = statusCondition.getCondition();
+            condition.addProjection(Projections.countDistinct("problemByProblemId"));
+            count = statusDAO.customCount(condition);
+            user.setTried((int) count.longValue());
+            userDAO.update(user);
+            statusCondition.clear();
+            Problem problem = status.getProblemByProblemId();
+            statusCondition.setProblemId(problem.getProblemId());
+            statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+            condition = statusCondition.getCondition();
+            condition.addProjection(Projections.countDistinct("userByUserId"));
+            count = statusDAO.customCount(condition);
+            problem.setSolved((int) count.longValue());
+            statusCondition.clear();
+            statusCondition.setProblemId(problem.getProblemId());
+            condition = statusCondition.getCondition();
+            count = statusDAO.customCount(condition);
+            problem.setTried((int) count.longValue());
+            problemDAO.update(problem);
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
     }
 

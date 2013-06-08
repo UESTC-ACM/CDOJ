@@ -177,11 +177,11 @@ public class Judge implements Runnable, SettingsAware {
         try {
             int numberOfTestCase = judgeItem.status.getProblemByProblemId().getDataCount();
             boolean isAccepted = true;
+            FileUtil.saveToFile(judgeItem.status.getCodeByCodeId().getContent(),
+                    tempPath + "/" + judgeItem.getSourceName());
+            int problemId = judgeItem.status.getProblemByProblemId().getProblemId();
             for (int currentTestCase = 1; isAccepted && currentTestCase <= numberOfTestCase; ++currentTestCase) {
                 judgeItem.status.setCaseNumber(currentTestCase);
-                FileUtil.saveToFile(judgeItem.status.getCodeByCodeId().getContent(),
-                        tempPath + "/" + judgeItem.getSourceName());
-                int problemId = judgeItem.status.getProblemByProblemId().getProblemId();
                 String shellCommand = buildJudgeShellCommand(problemId, currentTestCase, judgeItem);
                 String[] callBackString = getCallBackString(shellCommand);
                 isAccepted = updateJudgeItem(callBackString, judgeItem);
@@ -199,7 +199,7 @@ public class Judge implements Runnable, SettingsAware {
 
     private boolean updateJudgeItem(String[] callBackString, JudgeItem judgeItem) {
         boolean isAccepted = true;
-        if (callBackString != null && callBackString.length >= 3) {
+        if (callBackString != null && callBackString.length != 3) {
             try {
                 int result = Integer.parseInt(callBackString[0]);
                 if (result == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {

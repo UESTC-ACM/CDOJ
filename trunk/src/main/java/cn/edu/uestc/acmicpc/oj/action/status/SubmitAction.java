@@ -104,8 +104,6 @@ public class SubmitAction extends BaseAction
             Problem problem = problemDAO.get(problemId);
             if (problem == null)
                 throw new AppException("No such problem");
-            problem.setTried(problem.getTried() + 1);
-            problemDAO.update(problem);
             statusDTO.setProblem(problem);
             statusDTO.setUser(getCurrentUser());
             CodeDTO codeDTO = applicationContext.getBean("codeDTO", CodeDTO.class);
