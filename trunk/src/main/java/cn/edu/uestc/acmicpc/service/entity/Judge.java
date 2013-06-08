@@ -28,6 +28,7 @@ import cn.edu.uestc.acmicpc.util.FileUtil;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.Settings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -98,6 +99,14 @@ public class Judge implements Runnable, SettingsAware {
         }
     }
 
+    /**
+     * Build judge's core shell command line
+     *
+     * @param problemId       problem's id
+     * @param currentTestCase current test case number
+     * @param judgeItem       {@code judgeItem} entity
+     * @return command line we need
+     */
     private String buildJudgeShellCommand(int problemId, int currentTestCase, JudgeItem judgeItem) {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -138,7 +147,13 @@ public class Judge implements Runnable, SettingsAware {
         return stringBuilder.toString();
     }
 
-    public String[] getCallBackString(String shellCommand) {
+    /**
+     * Get process' call back string with shell command.
+     *
+     * @param shellCommand shell command line
+     * @return command's call back string
+     */
+    private String[] getCallBackString(String shellCommand) {
         Process p;
         String callBackString = "";
         try {

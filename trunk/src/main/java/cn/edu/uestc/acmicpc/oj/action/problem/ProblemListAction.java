@@ -24,21 +24,29 @@ package cn.edu.uestc.acmicpc.oj.action.problem;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemListView;
 import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
+import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.oj.interceptor.AppInterceptor;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * action for list and search problem.
@@ -47,7 +55,8 @@ import java.util.List;
  */
 @LoginPermit(NeedLogin = false)
 public class ProblemListAction extends BaseAction
-        implements ProblemConditionAware, ProblemDAOAware {
+        implements ProblemConditionAware, ProblemDAOAware,
+        StatusConditionAware, StatusDAOAware {
 
     /**
      * ProblemDAO for problem search.
@@ -56,7 +65,13 @@ public class ProblemListAction extends BaseAction
     private IProblemDAO problemDAO;
 
     @Autowired
+    private IStatusDAO statusDAO;
+
+    @Autowired
     private ProblemCondition problemCondition;
+
+    @Autowired
+    private StatusCondition statusCondition;
 
     @Override
     public void setProblemCondition(ProblemCondition problemCondition) {
@@ -137,5 +152,49 @@ public class ProblemListAction extends BaseAction
             json.put("error_msg", "Unknown exception occurred.");
         }
         return JSON;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void onActionExecuting(AppInterceptor.ActionInfo actionInfo) {
+        super.onActionExecuting(actionInfo);
+
+        Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
+        try {
+            if (currentUser != null) {
+                statusCondition.setUserId(currentUser.getUserId());
+                statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+                Condition condition = statusCondition.getCondition();
+                condition.addProjection(Projections.groupProperty("problemByProblemId"));
+                List<Problem> results = (List<Problem>) statusDAO.findAll(condition);
+                for (Problem result : results)
+                    problemStatus.put(result.getProblemId(), Global.AuthorStatusType.PASS);
+
+                statusCondition.setResultId(null);
+                condition = statusCondition.getCondition();
+                condition.addProjection(Projections.groupProperty("problemByProblemId"));
+                results = (List<Problem>) statusDAO.findAll(condition);
+                for (Problem result : results)
+                    if (!problemStatus.containsKey(result.getProblemId()))
+                        problemStatus.put(result.getProblemId(), Global.AuthorStatusType.FAIL);
+            }
+        } catch (AppException ignored) {
+        }
+        session.put("problemStatus", problemStatus);
+    }
+
+    @Override
+    public void setStatusCondition(StatusCondition statusCondition) {
+        this.statusCondition = statusCondition;
+    }
+
+    @Override
+    public StatusCondition getStatusCondition() {
+        return statusCondition;
+    }
+
+    @Override
+    public void setStatusDAO(IStatusDAO statusDAO) {
+        this.statusDAO = statusDAO;
     }
 }
