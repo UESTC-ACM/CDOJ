@@ -126,24 +126,6 @@ public class LoginAction extends BaseAction
             user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
             userDAO.update(user);
 
-            Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
-            statusCondition.setUserId(user.getUserId());
-            statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-            Condition condition = statusCondition.getCondition();
-            condition.addProjection(Projections.groupProperty("problemByProblemId"));
-            List<Problem> results = (List<Problem>) statusDAO.findAll(condition);
-            for (Problem result : results)
-                problemStatus.put(result.getProblemId(), Global.AuthorStatusType.PASS);
-
-            statusCondition.setResultId(null);
-            condition = statusCondition.getCondition();
-            condition.addProjection(Projections.groupProperty("problemByProblemId"));
-            results = (List<Problem>) statusDAO.findAll(condition);
-            for (Problem result : results)
-                if (!problemStatus.containsKey(result.getProblemId()))
-                    problemStatus.put(result.getProblemId(), Global.AuthorStatusType.FAIL);
-
-            session.put("problemStatus", problemStatus);
             session.put("userName", user.getUserName());
             session.put("password", user.getPassword());
             session.put("lastLogin", user.getLastLogin());

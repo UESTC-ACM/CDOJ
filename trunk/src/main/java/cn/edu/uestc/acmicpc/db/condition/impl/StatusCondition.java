@@ -170,18 +170,23 @@ public class StatusCondition extends BaseCondition implements UserConditionAware
     @Autowired
     UserCondition userCondition;
 
+    /**
+     * <strong>WARN</strong>: if we set {@code contestId} with {@code -1},
+     * that means we will query all records with contestId is {@code null}.
+     *
+     * @param condition conditions that to be considered
+     */
     @SuppressWarnings("unchecked")
     @Override
     public void invoke(Condition condition) {
         super.invoke(condition);
 
-        if (contestId == null)
-            contestId = -1;
-
-        if (contestId == -1)
-            condition.addCriterion(Restrictions.isNull("contestByContestId"));
-        else
-            condition.addCriterion(Restrictions.eq("contestByContestId", contestId));
+        if (contestId != null) {
+            if (contestId == -1)
+                condition.addCriterion(Restrictions.isNull("contestByContestId"));
+            else
+                condition.addCriterion(Restrictions.eq("contestByContestId", contestId));
+        }
 
         if (userName != null) {
             UserDAO userDAO = applicationContext.getBean("userDAO", UserDAO.class);
