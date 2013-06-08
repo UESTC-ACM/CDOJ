@@ -123,10 +123,11 @@ public class PageInfo {
         result += ">";
         String url;
         if (toPage == null)
-            url = "#";
-        else
+            result += String.format("<a>%s</a>", name);
+        else {
             url = String.format("%s%d", baseURL, toPage);
-        result += String.format("<a href=\"%s\">%s</a>", url, name);
+            result += String.format("<a href=\"%s\">%s</a>", url, name);
+        }
         result += "</li>\n";
         return result;
     }

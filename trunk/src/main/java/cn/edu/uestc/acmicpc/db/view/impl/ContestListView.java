@@ -24,8 +24,11 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.db.view.base.View;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Contest information view.
@@ -38,9 +41,20 @@ public class ContestListView extends View<Contest> {
     private String title;
     private String description;
     private Byte type;
+    private String typeName;
     private Timestamp time;
     private Integer length;
     private Boolean isVisible;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    @Ignore
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public Boolean getVisible() {
         return isVisible;
@@ -118,6 +132,15 @@ public class ContestListView extends View<Contest> {
         isVisible = visible;
     }
 
+    public String getTypeName() {
+        return typeName;
+    }
+
+    @Ignore
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
     /**
      * Fetch data from entity.
      *
@@ -126,5 +149,18 @@ public class ContestListView extends View<Contest> {
     @SuppressWarnings("UnusedDeclaration")
     public ContestListView(Contest contest) {
         super(contest);
+
+        Timestamp now = new Timestamp(new Date().getTime());
+        if (time.after(now))
+            status = "Pending";
+        else {
+            Timestamp endTime = new Timestamp(time.getTime() + length * 1000);
+            if (endTime.after(now))
+                status = "Running";
+            else
+                status = "Ended";
+        }
+
+        setTypeName(Global.ContestType.values()[getType()].getDescription());
     }
 }

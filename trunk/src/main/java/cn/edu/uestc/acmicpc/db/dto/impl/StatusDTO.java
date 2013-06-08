@@ -103,7 +103,7 @@ public class StatusDTO extends BaseDTO<Status> {
     }
 
     @Override
-    public void updateEntity(Status status) {
+    public void updateEntity(Status status) throws AppException {
         super.updateEntity(status);
         status.setTime(new Timestamp(new Date().getTime()));
     }

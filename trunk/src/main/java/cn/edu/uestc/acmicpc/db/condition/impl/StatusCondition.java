@@ -173,6 +173,8 @@ public class StatusCondition extends BaseCondition implements UserConditionAware
     @SuppressWarnings("unchecked")
     @Override
     public void invoke(Condition condition) {
+        super.invoke(condition);
+
         if (contestId == null)
             contestId = -1;
 

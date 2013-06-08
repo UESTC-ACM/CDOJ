@@ -80,6 +80,9 @@ function updateProblem(id) {
 }
 
 $(document).ready(function () {
+    //Set time
+    $('.time-selector').setTimeSelector();
+
     //Date picker
     $('#contestDTO_time_days').datepicker({
         format: 'yyyy-mm-dd'
@@ -89,6 +92,34 @@ $(document).ready(function () {
     problemListTable = $('#problemList');
 
     lineId = 0;
+    var initList = problemListTable.attr('init').split(',');
+    $.each(initList, function(){
+        if (this != '') {
+            var line = $(addProblemLine);
+            var nowId = lineId;
+            lineId++;
+            line.attr('value', nowId);
+            problemListTable.append(line);
+            line = problemListTable.find('tr[value="'+nowId+'"]');
+
+            line.find('.remove_problem').live('click', function(){
+                removeProblem(nowId);
+                return false;
+            });
+
+            line.find('.problem_id').live('keydown', function(){
+                if (event.keyCode == 13)
+                    return false;
+            });
+            line.find('.problem_id').live('keyup', function(){
+                updateProblem(nowId);
+            });
+
+            $('tr[value=' + nowId + ']').find('.problem_id')[0].innerText = this;
+            updateProblem(nowId);
+        }
+    });
+
     //Problem add button
     $('#add_problem').setButton({
         callback: function(){
@@ -119,13 +150,14 @@ $(document).ready(function () {
     $('#submit').setButton({
         callback: function(){
             var info = $('.form-horizontal').getFormData();
-            console.log(info);
 
             var data = {
+                "contestDTO.contestId": $('#contestId')[0].innerText,
                 "contestDTO.title": info["contestDTO.title"],
                 "contestDTO.description": info["contestDTO.description"],
                 "contestDTO.time": getTime(info, "contestDTO.time"),
                 "contestDTO.length": getSeconds(info, "contestDTO.length"),
+                "contestDTO.type": info["contestDTO.type"],
                 "contestDTO.problemList": {
                 }
             };
@@ -139,7 +171,16 @@ $(document).ready(function () {
 
             console.log(data);
             $.post('/admin/contest/edit', data, function(data) {
-                console.log(data);
+                $('#contestEditor').checkValidate({
+                    result: data,
+                    onSuccess: function(){
+                        alert('Successful!');
+                        //window.location.href= '/admin/contest/list';
+                    },
+                    onFail: function(){
+                        $('html,body').animate({scrollTop: '0px'}, 400);
+                    }
+                });
             });
             return false;
         }

@@ -49,19 +49,75 @@
         return fmt;
     };
 
+    /**
+     * Format time style
+     *
+     * @returns {*}
+     */
     $.fn.formatTimeStyle = function() {
 
         $.each(this, function() {
             var self = $(this);
             var date = new Date(parseInt(self[0].innerHTML));
+            var time = parseInt(self[0].innerHTML);
             if (self.attr('type') != 'milliseconds')
                 date = new Date(self[0].innerHTML);
+            date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
             self.empty();
-            self.append(date.Format('yyyy-MM-dd hh:mm:ss'));
+            if (self.attr('timeStyle') == 'length') {
+                time = parseInt(time / 60);
+                var minutes = time % 60;
+                time = parseInt(time / 60);
+                var hours = time % 60;
+                time = parseInt(time / 24);
+                var days = time;
+                var result = '';
+                if (days > 0)
+                    result = days + ' days ';
+                result = result + hours + ':' + minutes + ':00';
+                self.append(result);
+            }
+            else
+                self.append(date.Format('yyyy-MM-dd hh:mm:ss'));
         });
 
         return this;
     };
+
+    /**
+     * Set time selector with <div class="controls time-selector" value="1368453116000"></div>
+     * Convert value into standard time style and put it into each <input> tags.
+     *
+     * if type is timePassed then convert it into dd hh:mm:ss style.
+     *
+     * @returns {*}
+     */
+    $.fn.setTimeSelector = function() {
+
+        $.each(this, function() {
+            var self = $(this);
+            var days, hours, minutes;
+            if (self.attr('type') != 'timePassed') {
+                var date = new Date(parseInt(self.attr('value')));
+                days = date.Format('yyyy-MM-dd');
+                hours = date.Format('hh');
+                minutes = date.Format('mm');
+            } else {
+                var time = parseInt(self.attr('value'));
+                time = parseInt(time / 60);
+                minutes = time % 60;
+                time = parseInt(time / 60);
+                hours = time % 24;
+                time = parseInt(time / 24);
+                days = time;
+            }
+            self.find('.time_days').attr('value', days);
+            self.find('.time_hours').attr('value', hours);
+            self.find('.time_minutes').attr('value', minutes);
+            //self.find('.time_seconds').attr('value', seconds);
+        });
+        return this;
+    }
 
 }(jQuery));
 
@@ -83,6 +139,6 @@ function getTime(data, id) {
     var time = getTimeInfo(data, id);
     var timeString = time.days + ' ' + time.hours + ':' + time.minutes + ':' + time.seconds;
     var result = new Date(timeString).getTime();
-    console.log(timeString, result);
+    console.log(timeString, result, new Date(result));
     return result;
 }

@@ -95,7 +95,7 @@ public abstract class BaseDTO<Entity extends Serializable> {
      *
      * @param entity entity to be updated
      */
-    protected void updateEntity(Entity entity) {
+    protected void updateEntity(Entity entity) throws AppException {
         Method[] methods = getClass().getMethods();
         for (Method method : methods) {
             if (method.getName().startsWith("get")) {

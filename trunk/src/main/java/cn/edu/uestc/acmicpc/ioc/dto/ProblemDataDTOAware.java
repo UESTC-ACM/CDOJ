@@ -19,24 +19,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+package cn.edu.uestc.acmicpc.ioc.dto;
+
+import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDataDTO;
+
 /**
- * Global variables.
+ * Description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+public interface ProblemDataDTOAware {
+    /**
+     * Put problemDataDTO into class.
+     *
+     * @param problemDataDTO problemDataDTO object
+     */
+    public void setProblemDataDTO(ProblemDataDTO problemDataDTO);
 
-var currentUser = null;
-var currentUserType = null;
-
-!function ($) {
-
-    $(function () {
-
-        //Get current user
-        if ($('#currentUser').length > 0) {
-            currentUser = $('#currentUser')[0].innerHTML.trim();
-            currentUserType = $('#currentUser').attr('type');
-        }
-
-    })
-}(window.jQuery)
+    /**
+     * Get problemDTO entity.
+     *
+     * @return problemDTO entity
+     */
+    public ProblemDataDTO getProblemDataDTO();
+}

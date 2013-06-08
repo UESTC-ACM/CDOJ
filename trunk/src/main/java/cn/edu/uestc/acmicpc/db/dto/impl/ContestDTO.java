@@ -16,10 +16,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Contest entity data transform object.
@@ -122,6 +119,10 @@ public class ContestDTO extends BaseDTO<Contest>
     public Contest getEntity() throws AppException {
         Contest contest = super.getEntity();
 
+        contest.setTime(new Timestamp(new Date().getTime()));
+        contest.setLength(5 * 60 * 60);
+        contest.setType((byte) 0);
+
         contest.setIsVisible(false);
 
         Collection<ContestProblem> contestProblems = new LinkedList<>();
@@ -137,8 +138,30 @@ public class ContestDTO extends BaseDTO<Contest>
     }
 
     @Override
-    public void updateEntity(Contest contest) {
+    public void updateEntity(Contest contest) throws AppException {
         super.updateEntity(contest);
+
+        Collection<ContestProblem> problems = contest.getContestProblemsByContestId();
+        if (problems != null) {
+            for (ContestProblem problem : problems)
+                contestProblemDAO.delete(problem);
+        }
+
+        if (problemList != null) {
+
+            problems = new LinkedList<>();
+            for (Integer id = 0; id < problemList.size(); id++) {
+                Integer problemId = problemList.get(id);
+                ContestProblem contestProblem = new ContestProblem();
+                contestProblem.setContestByContestId(contest);
+                contestProblem.setProblemByProblemId(problemDAO.get(problemId));
+                contestProblem.setOrder(id);
+                contestProblemDAO.add(contestProblem);
+                problems.add(contestProblem);
+            }
+
+            contest.setContestProblemsByContestId(problems);
+        }
     }
 
     @Override
