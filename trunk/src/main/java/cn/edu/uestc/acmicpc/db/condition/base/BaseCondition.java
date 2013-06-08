@@ -20,6 +20,7 @@
 
 package cn.edu.uestc.acmicpc.db.condition.base;
 
+import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
@@ -34,6 +35,7 @@ import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -117,6 +119,7 @@ public abstract class BaseCondition implements ApplicationContextAware {
     public void setOrderAsc(String orderAsc) {
         this.orderAsc = orderAsc;
     }
+
     /**
      * Method for user to invoke special columns
      * <p/>
@@ -139,14 +142,31 @@ public abstract class BaseCondition implements ApplicationContextAware {
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    @Ignore
+    public void setApplicationContext(ApplicationContext applicationContext)
+            throws BeansException {
         this.applicationContext = applicationContext;
     }
 
     /**
      * Clear all field, and set then to {@code null}.
      */
+    @SuppressWarnings("NullArgumentToVariableArgMethod")
     public void clear() {
+        if (getClass() == UserCondition.class) return;
+        Method[] methods = getClass().getMethods();
+        for (Method method : methods) {
+            if (method.getName().startsWith("set")) {
+                try {
+                    if (method.isAnnotationPresent(Ignore.class))
+                        continue;
+                    method.invoke(this, (Object)null);
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         Field[] fields = getClass().getFields();
         for (Field field : fields) {
             try {

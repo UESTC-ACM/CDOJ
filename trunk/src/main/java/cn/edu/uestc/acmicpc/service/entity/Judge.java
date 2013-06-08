@@ -188,12 +188,12 @@ public class Judge implements Runnable, SettingsAware {
             }
             if (isAccepted) {
                 judgeItem.status.setResult(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-                judgeItem.update();
+                judgeItem.update(true);
             }
         } catch (Exception e) {
             e.printStackTrace();
             judgeItem.status.setResult(Global.OnlineJudgeReturnType.OJ_SE.ordinal());
-            judgeItem.update();
+            judgeItem.update(true);
         }
     }
 
@@ -237,7 +237,7 @@ public class Judge implements Runnable, SettingsAware {
             judgeItem.compileInfo.setContent(stringBuilder.toString());
         } else judgeItem.compileInfo = null;
 
-        judgeItem.update();
+        judgeItem.update(false);
         return isAccepted;
     }
 
