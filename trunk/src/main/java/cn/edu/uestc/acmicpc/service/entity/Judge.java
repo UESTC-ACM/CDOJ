@@ -199,7 +199,7 @@ public class Judge implements Runnable, SettingsAware {
 
     private boolean updateJudgeItem(String[] callBackString, JudgeItem judgeItem) {
         boolean isAccepted = true;
-        if (callBackString != null && callBackString.length != 3) {
+        if (callBackString != null && callBackString.length == 3) {
             try {
                 int result = Integer.parseInt(callBackString[0]);
                 if (result == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
