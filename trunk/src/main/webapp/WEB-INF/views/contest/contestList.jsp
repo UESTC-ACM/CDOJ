@@ -20,7 +20,7 @@
   --%>
 
 <%--
- Admin contest list page
+ Contest list page
 
  @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  @version 1

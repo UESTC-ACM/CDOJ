@@ -27,6 +27,7 @@ import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemView;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,8 +89,9 @@ public class ProblemAction extends BaseAction implements ProblemDAOAware {
         if (targetProblemId != null) {
             try {
                 Problem problem = problemDAO.get(targetProblemId);
-                if (!problem.getIsVisible())
-                    throw new AppException("Problem doesn't exist");
+                if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
+                    if (!problem.getIsVisible())
+                        throw new AppException("Problem doesn't exist");
                 targetProblem = new ProblemView(problem);
                 if (targetProblem.getProblemId() == null)
                     throw new AppException("Wrong problem ID!");

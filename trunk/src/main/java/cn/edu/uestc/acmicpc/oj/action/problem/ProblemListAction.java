@@ -111,7 +111,8 @@ public class ProblemListAction extends BaseAction
     @SkipValidation
     public String toSearch() {
         try {
-            problemCondition.setIsVisible(true);
+            if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
+                problemCondition.setIsVisible(true);
             problemCondition.setIsTitleEmpty(false);
             Condition condition = problemCondition.getCondition();
             Long count = problemDAO.count(problemCondition.getCondition());
