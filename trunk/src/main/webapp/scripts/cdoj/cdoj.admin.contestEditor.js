@@ -123,6 +123,13 @@ $(document).ready(function () {
     //Problem add button
     $('#add_problem').setButton({
         callback: function(){
+            var lastProblem = problemListTable.find('tr:last');
+            var nowProblemId = '';
+            if (lastProblem.length == 1) {
+                var lastProblemId = lastProblem.find('.problem_id')[0].innerText;
+                if (lastProblemId != '')
+                    nowProblemId = parseInt(lastProblemId) + 1;
+            }
             var line = $(addProblemLine);
             var nowId = lineId;
             lineId++;
@@ -143,6 +150,10 @@ $(document).ready(function () {
                 updateProblem(nowId);
             });
 
+            if (nowProblemId != '') {
+                $('tr[value=' + nowId + ']').find('.problem_id')[0].innerText = nowProblemId;
+                updateProblem(nowId);
+            }
             return false;
         }
     });
@@ -164,18 +175,15 @@ $(document).ready(function () {
 
             var problemList = $('#problemList td.problem_id');
             $.each(problemList, function(index, value){
-                console.log(index, value);
                 data['contestDTO.problemList'][index] = value.innerText;
             });
-            console.log(problemList);
 
-            console.log(data);
             $.post('/admin/contest/edit', data, function(data) {
                 $('#contestEditor').checkValidate({
                     result: data,
                     onSuccess: function(){
                         alert('Successful!');
-                        //window.location.href= '/admin/contest/list';
+                        window.location.href= '/admin/contest/list';
                     },
                     onFail: function(){
                         $('html,body').animate({scrollTop: '0px'}, 400);

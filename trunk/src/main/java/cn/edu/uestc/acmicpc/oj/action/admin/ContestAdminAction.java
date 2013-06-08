@@ -45,7 +45,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Column;
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -118,15 +120,17 @@ public class ContestAdminAction extends BaseAction
 
                 if (count == 0) {
                     Contest contest = contestDTO.getEntity();
-                contestDAO.add(contest);
-                targetContestId = contest.getContestId();
-            } else {
-                List<Contest> result = (List<Contest>) contestDAO.findAll(contestCondition.getCondition());
-                if (result == null || result.size() == 0)
-                    throw new AppException("Add new contest error!");
-                Contest contest = result.get(0);
-                targetContestId = contest.getContestId();
-            }
+                    contestDAO.add(contest);
+                    targetContestId = contest.getContestId();
+                } else {
+                    List<Contest> result = (List<Contest>) contestDAO.findAll(contestCondition.getCondition());
+                    if (result == null || result.size() == 0)
+                        throw new AppException("Add new contest error!");
+                    Contest contest = result.get(0);
+                    contest.setTime(new Timestamp(new Date().getTime()));
+                    contestDAO.addOrUpdate(contest);
+                    targetContestId = contest.getContestId();
+                }
 
                 if (targetContestId == null)
                     throw new AppException("Add new contest error!");

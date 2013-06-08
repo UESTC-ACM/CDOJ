@@ -139,6 +139,5 @@ function getTime(data, id) {
     var time = getTimeInfo(data, id);
     var timeString = time.days + ' ' + time.hours + ':' + time.minutes + ':' + time.seconds;
     var result = new Date(timeString).getTime();
-    console.log(timeString, result, new Date(result));
     return result;
 }
