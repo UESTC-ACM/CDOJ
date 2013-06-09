@@ -46,8 +46,6 @@
     <link href="<s:url value="/styles/cdoj/cdoj.textarea.css"/>" rel=stylesheet>
     <link href="<s:url value="/styles/cdoj/cdoj.modal.css"/>" rel=stylesheet>
 
-    <script src="<s:url value="/plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"/>"></script>
-
     <script src="<s:url value="/scripts/jquery.min.js"/>"></script>
     <script src="<s:url value="/scripts/jquery.gravatar.js"/>"></script>
     <script src="<s:url value="/scripts/md5.js"/>"></script>

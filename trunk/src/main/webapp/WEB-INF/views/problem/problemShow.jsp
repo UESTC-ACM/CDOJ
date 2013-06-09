@@ -37,6 +37,7 @@
     <script src="<s:url value="/scripts/cdoj/cdoj.util.markdown.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.problem.problemShow.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.submit.js"/>"></script>
+    <script src="<s:url value="/plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"/>"></script>
     <title>${targetProblem.title}</title>
 </head>
 <body>
