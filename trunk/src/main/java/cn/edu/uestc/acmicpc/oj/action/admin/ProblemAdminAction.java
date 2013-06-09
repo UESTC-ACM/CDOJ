@@ -162,7 +162,6 @@ public class ProblemAdminAction extends BaseAction
                     targetProblemId = problem.getProblemId();
                 }
 
-                System.out.println("Count = " + count + ", Id = " + targetProblemId);
                 if (targetProblemId == null)
                     throw new AppException("Add new problem error!");
 

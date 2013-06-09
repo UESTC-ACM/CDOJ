@@ -97,18 +97,6 @@ public class ContestStatementAdminAction extends BaseAction
 
             contestDTO.updateEntity(contest);
 
-            System.out.println("[Time] " + contestDTO.getTime());
-            System.out.println("[Length] " + contest.getLength());
-            System.out.println("[Title] " + contest.getTitle());
-            System.out.println("[Description] " + contest.getDescription());
-            System.out.println("[Time] " + contest.getTime());
-            List<ContestProblem> problems = (List<ContestProblem>) contest.getContestProblemsByContestId();
-            if (problems != null) {
-                System.out.print("[List] ");
-                for (ContestProblem problem : problems)
-                    System.out.print(problem.getProblemByProblemId().getProblemId() + " ");
-                System.out.println();
-            }
             contestDAO.addOrUpdate(contest);
 
             json.put("result", "ok");
