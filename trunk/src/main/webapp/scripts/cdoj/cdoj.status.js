@@ -122,7 +122,7 @@ function blindCodeHref() {
 
             var mult = 0.95;
             if (Sys.windows)
-                mult = 0.6;
+                mult = 0.65;
 
             codeViewer.css('max-height', Math.min(600, $(window).height() * mult));
             prettyPrint();
@@ -163,7 +163,9 @@ function refreshStatusList(condition) {
         $('#pageInfo').empty();
         $('#pageInfo').append(data.pageInfo);
         $('#pageInfo').find('a').click(function (e) {
-            currentCondition.currentPage = $(this).attr("href");
+            if ($(this).attr('href') == null)
+                return false;
+            currentCondition.currentPage = $(this).attr('href');
             refreshStatusList(currentCondition);
             return false;
         });

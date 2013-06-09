@@ -78,6 +78,8 @@ function refreshProblemList(condition) {
         $('#pageInfo').empty();
         $('#pageInfo').append(data.pageInfo);
         $('#pageInfo').find('a').click(function (e) {
+            if ($(this).attr('href') == null)
+                return false;
             currentCondition.currentPage = $(this).attr("href");
             refreshProblemList(currentCondition);
             return false;
