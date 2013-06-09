@@ -92,7 +92,7 @@ public class StatusCondition extends BaseCondition implements UserConditionAware
     /**
      * Judging result list(<strong>PRIMARY</strong>).
      */
-    private List<Global.OnlineJudgeReturnType> result = new LinkedList<>();
+    private List<Global.OnlineJudgeReturnType> result;
 
     @Exp(MapField = "statusId", Type = ConditionType.ge)
     public Integer getStartId() {
@@ -148,6 +148,8 @@ public class StatusCondition extends BaseCondition implements UserConditionAware
     }
 
     public List<Global.OnlineJudgeReturnType> getResult() {
+        if (result == null)
+            result = new LinkedList<>();
         return result;
     }
 
