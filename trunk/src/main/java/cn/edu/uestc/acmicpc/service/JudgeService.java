@@ -87,6 +87,7 @@ public class JudgeService implements ApplicationContextAware, SettingsAware {
      * Destroy the judge threads.
      */
     public void destroy() {
+        System.out.println("[Destroy JudgeService!]");
         try {
             if (schedulerThread.isAlive()) {
                 schedulerThread.interrupt();

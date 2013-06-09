@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -73,6 +74,7 @@ public class Scheduler
     @SuppressWarnings("unchecked")
     private void searchForJudge() {
         try {
+            System.out.println(new Date().toString() + " Start search for judge...");
             statusCondition.clear();
             statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_WAIT);
             statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_REJUDGING);
@@ -85,8 +87,10 @@ public class Scheduler
                 statusDAO.update(status);
                 judgeQueue.put(judgeItem);
             }
-        } catch (AppException | InterruptedException ignored) {
+        } catch (AppException e) {
+            e.printStackTrace();
         }
+        catch (InterruptedException ignored) {}
     }
 
     @Override

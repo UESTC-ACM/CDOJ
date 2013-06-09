@@ -71,7 +71,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="registerModalLabel">Register</h3>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" style="max-height: 450px;">
             <form class="form-horizontal">
                 <fieldset>
                     <s:textfield name="userDTO.userName"
@@ -99,6 +99,12 @@
                                  cssClass="span4"
                                  label="Email"
                                  theme="bootstrap"/>
+                    <div class="control-group ">
+                        <label class="control-label"></label>
+                        <div class="controls">
+                                Your email will be used for <a href="http://en.gravatar.com/">Gravatar</a> server and get back your password.
+                        </div>
+                    </div>
                     <s:textfield name="userDTO.school"
                                  maxLength="50"
                                  cssClass="span4"
