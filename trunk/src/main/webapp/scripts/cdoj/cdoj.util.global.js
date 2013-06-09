@@ -33,10 +33,11 @@ var currentUserType = null;
     $(function () {
 
         //Get current user
-        if ($('#currentUser').length > 0) {
-            currentUser = $('#currentUser')[0].innerHTML.trim();
-            currentUserType = $('#currentUser').attr('type');
+        var userDiv = $('#currentUser');
+        if (userDiv.length > 0) {
+            currentUser = js.lang.String.trim(userDiv[0].innerHTML);
+            currentUserType = userDiv.attr('type');
         }
 
     })
-}(window.jQuery)
+}(window.jQuery);

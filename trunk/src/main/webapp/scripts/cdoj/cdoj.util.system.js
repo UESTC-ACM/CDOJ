@@ -43,6 +43,13 @@ var Sys = {};
             Sys.opera = ua.match(/opera.([\d.]+)/)[1];
         else if (ua.indexOf('version') > 0)
             Sys.safari = ua.match(/version\/([\d.]+)/)[1];
+
+        Sys.windows = (ua.indexOf("windows",0) != -1)?1:0;
+        Sys.mac = (ua.indexOf("mac",0) != -1)?1:0;
+        Sys.linux = (ua.indexOf("Linux",0) != -1)?1:0;
+        Sys.unix = (ua.indexOf("x11",0) != -1)?1:0;
+
+        Sys.ie678 = parseFloat(Sys.ie) < 9 ? 1 : 0;
     })
 }(window.jQuery);
 
