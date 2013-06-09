@@ -24,11 +24,8 @@ package cn.edu.uestc.acmicpc.db.condition.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Restrictions;
-
-import java.util.List;
 
 /**
  * Problem search condition.

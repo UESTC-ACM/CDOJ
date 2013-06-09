@@ -73,6 +73,7 @@ public class Scheduler
     @SuppressWarnings("unchecked")
     private void searchForJudge() {
         try {
+            statusCondition.clear();
             statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_WAIT);
             statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_REJUDGING);
             List<Status> statusList = (List<Status>) statusDAO.findAll(statusCondition.getCondition());
