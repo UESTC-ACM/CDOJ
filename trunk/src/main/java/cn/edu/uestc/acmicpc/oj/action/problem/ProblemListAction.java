@@ -163,6 +163,7 @@ public class ProblemListAction extends BaseAction
         Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
         try {
             if (currentUser != null) {
+                statusCondition.clear();
                 statusCondition.setUserId(currentUser.getUserId());
                 statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
                 Condition condition = statusCondition.getCondition();
@@ -171,6 +172,8 @@ public class ProblemListAction extends BaseAction
                 for (Problem result : results)
                     problemStatus.put(result.getProblemId(), Global.AuthorStatusType.PASS);
 
+                statusCondition.clear();
+                statusCondition.setUserId(currentUser.getUserId());
                 statusCondition.setResultId(null);
                 condition = statusCondition.getCondition();
                 condition.addProjection(Projections.groupProperty("problemByProblemId"));
