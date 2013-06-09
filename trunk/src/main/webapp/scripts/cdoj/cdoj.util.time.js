@@ -50,6 +50,22 @@
     };
 
     /**
+     * Date() function for ie 6 7 8.
+     * @param dateString like YYYY-MM-DDThh:mm:ss
+     */
+    var ieDate = function(dateString) {
+        var exp;
+        exp = /^s*(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})s*$/;
+        var date = new Date(NaN);
+        var parts = exp.exec(dateString);
+        if (parts) {
+            date = new Date(parts[1], parseInt(parts[2]) - 1, parts[3], parts[4], parts[5], parts[6]);
+            date = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
+        }
+        return date;
+    }
+
+    /**
      * Format time style
      *
      * @returns {*}
@@ -60,8 +76,11 @@
             var self = $(this);
             var date = new Date(parseInt(self[0].innerHTML));
             var time = parseInt(self[0].innerHTML);
-            if (self.attr('type') != 'milliseconds')
+            if (self.attr('type') != 'milliseconds') {
                 date = new Date(self[0].innerHTML);
+                if (Sys.ie678 || Sys.firefox)
+                    date = ieDate(self[0].innerHTML);
+            }
             date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
             self.empty();
             if (self.attr('timeStyle') == 'length') {

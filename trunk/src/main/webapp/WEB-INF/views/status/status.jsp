@@ -40,27 +40,27 @@
 
 <ul id="TabMenu" class="nav nav-pills">
     <li class="active">
-        <a href="#tab-problem-list" data-toggle="tab">Status</a>
+        <a href="#tab-status-list" data-toggle="tab">Status</a>
     </li>
-    <li><a href="#tab-problem-search" data-toggle="tab">Search</a></li>
+    <li><a href="#tab-status-search" data-toggle="tab">Search</a></li>
 </ul>
 
 <div id="TabContent" class="tab-content">
-    <div class="tab-pane fade active in" id="tab-problem-list">
+    <div class="tab-pane fade active in" id="tab-status-list">
         <div id="pageInfo">
         </div>
 
         <table class="table table-bordered">
             <thead>
             <tr>
-                <th style="width: 60px;">Id</th>
+                <th style="width: 60px;" class="orderButton" field="id">Id</th>
                 <th>User</th>
-                <th style="width: 60px;">Problem</th>
-                <th style="width: 260px;">Judge's Response</th>
-                <th style="width: 100px;">Length</th>
-                <th style="width: 70px;">Time</th>
-                <th style="width: 80px;">Memory</th>
-                <th style="width: 140px;">Submit Time</th>
+                <th style="width: 60px;" class="orderButton" field="problemByProblemId">Problem</th>
+                <th style="width: 260px;" class="orderButton" field="result">Judge's Response</th>
+                <th style="width: 100px;" class="orderButton" field="length">Length</th>
+                <th style="width: 70px;" class="orderButton" field="timeCost">Time</th>
+                <th style="width: 80px;" class="orderButton" field="memoryCost">Memory</th>
+                <th style="width: 140px;" class="orderButton" field="time">Submit Time</th>
             </tr>
             </thead>
             <tbody id="statusList">
@@ -68,8 +68,8 @@
         </table>
     </div>
 
-    <div class="tab-pane fade" id="tab-problem-search">
-        <div id="problemCondition">
+    <div class="tab-pane fade" id="tab-status-search">
+        <div id="statusCondition">
             <form class="form-horizontal">
                 <div class="control-group">
                     <label class="control-label" for="statusCondition.startId">Status ID</label>
@@ -87,6 +87,24 @@
                                          maxLength="6"
                                          cssClass="input-small"/>
                         </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="statusCondition.userName">User Name</label>
+
+                    <div class="controls">
+                        <s:textfield name="statusCondition.userName"
+                                     maxLength="100"
+                                     cssClass="span6"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="statusCondition.problemId">Problem ID</label>
+
+                    <div class="controls">
+                        <s:textfield name="statusCondition.problemId"
+                                     maxLength="100"
+                                     cssClass="span6"/>
                     </div>
                 </div>
                 <div class="form-actions">

@@ -121,7 +121,7 @@ function blindCodeHref() {
             codeViewer.append(str);
 
             var mult = 0.95;
-            if (Sys.ie)
+            if (Sys.windows)
                 mult = 0.6;
 
             codeViewer.css('max-height', Math.min(600, $(window).height() * mult));
@@ -186,6 +186,16 @@ function refreshStatusList(condition) {
     });
 }
 
+function changeOrder(field) {
+    if (currentCondition["statusCondition.orderFields"] == field)
+        currentCondition["statusCondition.orderAsc"] = (currentCondition["statusCondition.orderAsc"] == "true" ? "false" : "true");
+    else {
+        currentCondition["statusCondition.orderFields"] = field;
+        currentCondition["statusCondition.orderAsc"] = "true";
+    }
+    refreshStatusList(currentCondition);
+}
+
 $(document).ready(function () {
     currentCondition = {
         "currentPage": null,
@@ -195,12 +205,16 @@ $(document).ready(function () {
         "statusCondition.problemId": undefined,
         "statusCondition.languageId": undefined,
         "statusCondition.contestId": undefined,
-        "statusCondition.result": undefined
+        "statusCondition.result": undefined,
+        "statusCondition.orderFields": undefined,
+        "statusCondition.orderAsc": undefined
     }
 
     $('input#search').setButton({
         callback: function () {
             currentCondition = $('#statusCondition').getFormData();
+            if (currentCondition["statusCondition.userName"] == '')
+                currentCondition["statusCondition.userName"] = undefined;
             currentCondition.currentPage = 1;
             refreshStatusList(currentCondition);
             $('#TabMenu a:first').tab('show');
@@ -211,6 +225,16 @@ $(document).ready(function () {
         callback: function () {
             $('#statusCondition').resetFormData();
         }
+    });
+
+    $.each($('.orderButton'), function(){
+        console.log(this);
+        var field = $(this).attr('field');
+        $(this).setButton({
+            callback: function(){
+                changeOrder(field);
+            }
+        });
     });
 
     refreshStatusList(currentCondition);

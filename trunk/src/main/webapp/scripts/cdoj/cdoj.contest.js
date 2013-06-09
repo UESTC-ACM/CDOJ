@@ -65,7 +65,6 @@ function getLength(length, status) {
  */
 function refreshContestList(condition) {
     $.post('/contest/search', condition, function (data) {
-        console.log(data);
         if (data.result == "error") {
             alert(data.error_msg);
             return;
