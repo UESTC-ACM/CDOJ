@@ -230,7 +230,6 @@ $(document).ready(function () {
     });
 
     $.each($('.orderButton'), function(){
-        console.log(this);
         var field = $(this).attr('field');
         $(this).setButton({
             callback: function(){

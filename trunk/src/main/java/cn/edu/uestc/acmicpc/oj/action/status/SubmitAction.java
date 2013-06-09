@@ -26,6 +26,7 @@ import cn.edu.uestc.acmicpc.db.dao.iface.*;
 import cn.edu.uestc.acmicpc.db.dto.impl.CodeDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.StatusDTO;
 import cn.edu.uestc.acmicpc.db.entity.Code;
+import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.db.entity.Language;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.ioc.dao.*;
@@ -93,10 +94,18 @@ public class SubmitAction extends BaseAction
      *
      * @return JSON
      */
+    @SuppressWarnings("unchecked")
     public String toSubmit() {
         try {
+            if (codeContent == null || codeContent.length() < 50 || codeContent.length() > 65536)
+                throw new AppException("Code length should at least 50B and at most 65536B");
             StatusDTO statusDTO = applicationContext.getBean("statusDTO", StatusDTO.class);
-            statusDTO.setContest(contestDAO.get(contestId));
+            if (contestId != null) {
+                Contest contest = contestDAO.get(contestId);
+                if (contest == null)
+                    throw new AppException("No such contest");
+                statusDTO.setContest(contestDAO.get(contestId));
+            }
             Language language = languageDAO.get(languageId);
             if (language == null)
                 throw new AppException("No such language");
@@ -113,6 +122,7 @@ public class SubmitAction extends BaseAction
             statusDTO.setCode(code);
             statusDTO.setLength(codeContent.length());
             statusDAO.add(statusDTO.getEntity());
+            json.put("result", "ok");
         } catch (AppException e) {
             json.put("result", "error");
             json.put("error_msg", e.getMessage());
@@ -120,7 +130,6 @@ public class SubmitAction extends BaseAction
             json.put("result", "error");
             json.put("error_msg", "Unknown exception occurred.");
         }
-        json.put("result", "ok");
         return JSON;
     }
 
