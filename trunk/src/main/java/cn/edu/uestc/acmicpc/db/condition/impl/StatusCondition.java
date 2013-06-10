@@ -24,7 +24,9 @@ package cn.edu.uestc.acmicpc.db.condition.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.db.dao.impl.UserDAO;
+import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.db.entity.Language;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.User;
@@ -187,8 +189,13 @@ public class StatusCondition extends BaseCondition implements UserConditionAware
         if (contestId != null) {
             if (contestId == -1)
                 condition.addCriterion(Restrictions.isNull("contestByContestId"));
-            else
-                condition.addCriterion(Restrictions.eq("contestByContestId", contestId));
+            else {
+                try {
+                   IDAO DAO = (IDAO) applicationContext.getBean("contestDAO");
+                   condition.addCriterion(Restrictions.eq("contestByContestId", DAO.get(contestId)));
+                } catch (AppException ignored) {
+                }
+            }
         }
 
         if (userName != null) {

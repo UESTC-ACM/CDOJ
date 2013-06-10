@@ -84,6 +84,7 @@
             date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
             self.empty();
             if (self.attr('timeStyle') == 'length') {
+                var seconds = time % 60;
                 time = parseInt(time / 60);
                 var minutes = time % 60;
                 time = parseInt(time / 60);
@@ -93,7 +94,11 @@
                 var result = '';
                 if (days > 0)
                     result = days + ' days ';
-                result = result + hours + ':' + minutes + ':00';
+                if (minutes < 10)
+                    minutes = '0' + minutes;
+                if (seconds < 10)
+                    seconds = '0' + seconds;
+                result = result + hours + ':' + minutes + ':' + seconds;
                 self.append(result);
             }
             else

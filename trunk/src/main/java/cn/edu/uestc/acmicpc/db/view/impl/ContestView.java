@@ -48,6 +48,16 @@ public class ContestView extends View<Contest> {
     private List<Integer> problemList;
     private String problemListString;
     private String status;
+    private Long timeLeft;
+
+    public Long getTimeLeft() {
+        return timeLeft;
+    }
+
+    @Ignore
+    public void setTimeLeft(Long timeLeft) {
+        this.timeLeft = timeLeft;
+    }
 
     public String getStatus() {
         return status;
@@ -163,9 +173,11 @@ public class ContestView extends View<Contest> {
         if (time.after(now))
             status = "Pending";
         else {
-            Timestamp endTime = new Timestamp(time.getTime() + length * 60 * 1000);
-            if (endTime.after(now))
+            Timestamp endTime = new Timestamp(time.getTime() + length * 1000);
+            if (endTime.after(now)) {
                 status = "Running";
+                timeLeft = (endTime.getTime() - now.getTime()) / 1000;
+            }
             else
                 status = "Ended";
         }

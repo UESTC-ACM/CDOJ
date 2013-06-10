@@ -28,6 +28,7 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.db.view.impl.ContestProblemSummaryView;
 import cn.edu.uestc.acmicpc.db.view.impl.ContestProblemView;
 import cn.edu.uestc.acmicpc.db.view.impl.ContestView;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemView;
@@ -37,11 +38,13 @@ import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -83,7 +86,85 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
         this.targetContest = targetContest;
     }
 
-    public String toContestProblemList() {
+    /**
+     * Get contest real time information.
+     * <p/>
+     * Find new Clarification or current problem summary.
+     * <p/>
+     * <strong>JSON output</strong>:
+     * <ul>
+     * <li>
+     * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>,
+     * "contestProblems", <strong>Current problem summary</strong>,
+     * "time":<strong>Server time</strong>}
+     * </li>
+     * <li>
+     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+     * </li>
+     * </ul>
+     *
+     * @return <strong>JSON</strong> signal
+     */
+    public String toContestChanges() {
+        try {
+            if (targetContestId == null)
+                throw new AppException("Contest Id is empty!");
+
+            Contest contest = contestDAO.get(targetContestId);
+            if (contest == null)
+                throw new AppException("Wrong contest ID!");
+
+            if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
+                if (!contest.getIsVisible())
+                    throw new AppException("Contest doesn't exist");
+
+            //Problem information changes.
+            Condition condition;
+            Long count;
+
+            targetContest = new ContestView(contest);
+            List<ContestProblemSummaryView> contestProblems = new LinkedList<>();
+            for (int id = 0; id < targetContest.getProblemList().size(); id++) {
+                Integer problemId = targetContest.getProblemList().get(id);
+                Problem problem = problemDAO.get(problemId);
+                ContestProblemSummaryView targetProblem = new ContestProblemSummaryView(problem);
+                targetProblem.setOrder((char)('A' + id));
+
+                //get solved
+                statusCondition.clear();
+                statusCondition.setContestId(contest.getContestId());
+                statusCondition.setProblemId(problem.getProblemId());
+                statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+                condition = statusCondition.getCondition();
+                condition.addProjection(Projections.countDistinct("userByUserId"));
+                count = statusDAO.customCount(condition);
+                targetProblem.setSolved((int) count.longValue());
+                //get tried
+                statusCondition.clear();
+                statusCondition.setContestId(contest.getContestId());
+                statusCondition.setProblemId(problem.getProblemId());
+                condition = statusCondition.getCondition();
+                count = statusDAO.count(condition);
+                targetProblem.setTried((int) count.longValue());
+
+                contestProblems.add(targetProblem);
+            }
+            json.put("contestProblems", contestProblems);
+
+            //Sync system times
+            json.put("time", new Date());
+
+            //Clarification
+
+            json.put("result", "ok");
+        } catch (AppException e) {
+            json.put("result", "error");
+            json.put("error_msg", e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            json.put("result", "error");
+            json.put("error_msg", "Unknown exception occurred.");
+        }
         return JSON;
     }
 
@@ -113,6 +194,7 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
 
                 //get solved
                 statusCondition.clear();
+                statusCondition.setContestId(contest.getContestId());
                 statusCondition.setProblemId(problem.getProblemId());
                 statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
                 condition = statusCondition.getCondition();
@@ -121,6 +203,7 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
                 targetProblem.setSolved((int) count.longValue());
                 //get tried
                 statusCondition.clear();
+                statusCondition.setContestId(contest.getContestId());
                 statusCondition.setProblemId(problem.getProblemId());
                 condition = statusCondition.getCondition();
                 count = statusDAO.count(condition);
