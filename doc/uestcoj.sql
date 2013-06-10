@@ -472,6 +472,7 @@ INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (14, 'School 
 INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (15, 'School of Electronic Engineering');
 INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (16, 'School of Physical Electronics');
 INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (17, 'School of Communication & Information Engineering');
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (18, 'Yingcai Experimental School');
 
 COMMIT;
 
