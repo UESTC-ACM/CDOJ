@@ -139,8 +139,8 @@ $(document).ready(function () {
         "userCondition.type": undefined,
         "userCondition.school": undefined,
         "userCondition.departmentId": undefined,
-        "userCondition.orderFields": undefined,
-        "userCondition.orderAsc": undefined
+        "userCondition.orderFields": "id",
+        "userCondition.orderAsc": true
     };
 
     $('input#search').setButton({

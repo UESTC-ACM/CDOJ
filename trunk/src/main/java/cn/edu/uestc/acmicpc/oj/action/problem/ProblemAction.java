@@ -86,18 +86,22 @@ public class ProblemAction extends BaseAction implements ProblemDAOAware {
      */
     @SuppressWarnings("SameReturnValue")
     public String toProblem() {
-        if (targetProblemId != null) {
-            try {
-                Problem problem = problemDAO.get(targetProblemId);
-                if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
-                    if (!problem.getIsVisible())
-                        throw new AppException("Problem doesn't exist");
-                targetProblem = new ProblemView(problem);
-                if (targetProblem.getProblemId() == null)
-                    throw new AppException("Wrong problem ID!");
-            } catch (AppException e) {
-                return redirect(getActionURL("/problem", "index"), e.getMessage());
-            }
+        try {
+            if (targetProblemId == null)
+                throw new AppException("Problem Id is empty!");
+
+            Problem problem = problemDAO.get(targetProblemId);
+            if (problem == null)
+                throw new AppException("Wrong problem ID!");
+
+            if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
+                if (!problem.getIsVisible())
+                    throw new AppException("Problem doesn't exist");
+            targetProblem = new ProblemView(problem);
+        } catch (AppException e) {
+            return redirect(getActionURL("/", "index"), e.getMessage());
+        } catch (Exception e) {
+            return redirect(getActionURL("/", "index"), "Unknown exception occurred.");
         }
         return SUCCESS;
     }
