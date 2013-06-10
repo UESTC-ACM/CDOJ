@@ -74,7 +74,6 @@ public class Scheduler
     @SuppressWarnings("unchecked")
     private void searchForJudge() {
         try {
-            System.out.println(new Date().toString() + " Start search for judge...");
             statusCondition.clear();
             statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_WAIT);
             statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_REJUDGING);
