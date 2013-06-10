@@ -9,19 +9,23 @@
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package cn.edu.uestc.acmicpc.oj.action.status;
+package cn.edu.uestc.acmicpc.oj.action.contest;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ICodeDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.Code;
 import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
+import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.view.impl.CodeView;
+import cn.edu.uestc.acmicpc.db.view.impl.ContestView;
 import cn.edu.uestc.acmicpc.db.view.impl.StatusView;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.CodeDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
@@ -35,18 +39,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Action for list and search all submit status
+ * Action for list and search all submit status in contest
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(NeedLogin = false)
-public class StatusAction extends BaseAction
-        implements StatusConditionAware, StatusDAOAware {
+public class ContestStatusAction extends BaseAction
+        implements StatusConditionAware, StatusDAOAware, ContestDAOAware {
 
-    @SuppressWarnings("SameReturnValue")
-    @SkipValidation
-    public String toStatusList() {
-        return SUCCESS;
+    private Integer targetContestId;
+
+    public Integer getTargetContestId() {
+        return targetContestId;
+    }
+
+    public void setTargetContestId(Integer targetContestId) {
+        this.targetContestId = targetContestId;
     }
 
     /**
@@ -81,7 +89,26 @@ public class StatusAction extends BaseAction
     @SkipValidation
     public String toSearch() {
         try {
-            statusCondition.setContestId(-1);
+            if (targetContestId == null)
+                throw new AppException("Contest Id is empty!");
+
+            Contest contest = contestDAO.get(targetContestId);
+            if (contest == null)
+                throw new AppException("Wrong contest ID!");
+
+            if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
+                if (!contest.getIsVisible())
+                    throw new AppException("Contest doesn't exist");
+
+            ContestView contestView = new ContestView(contest);
+
+            statusCondition.setContestId(contest.getContestId());
+            //Contest is still running
+            if (contestView.getStatus().equals("Running")) {
+                if (currentUser != null && currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
+                    statusCondition.setUserId(currentUser.getUserId());
+            }
+
             Condition condition = statusCondition.getCondition();
             Long count = statusDAO.count(statusCondition.getCondition());
             PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
@@ -122,63 +149,11 @@ public class StatusAction extends BaseAction
         this.statusDAO = statusDAO;
     }
 
-    private Integer statusId;
+    @Autowired
+    private IContestDAO contestDAO;
 
-    public Integer getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(Integer statusId) {
-        this.statusId = statusId;
-    }
-
-    @LoginPermit(NeedLogin = true)
-    public String toCode() {
-        try {
-            if (statusId == null)
-                throw new AppException("Empty status id!");
-            Status status = statusDAO.get(statusId);
-            if (status == null)
-                throw new AppException("No such code!");
-            if (currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal() && status.getUserByUserId() != currentUser)
-                throw new AppException("You can't view others' code!");
-            Code code = status.getCodeByCodeId();
-            json.put("result", "success");
-            json.put("code", new CodeView(code));
-        } catch (AppException e) {
-            json.put("result", "error");
-            json.put("error_msg", e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            json.put("result", "error");
-            json.put("error_msg", "Unknown exception occurred.");
-        }
-        return JSON;
-    }
-
-    @LoginPermit(NeedLogin = true)
-    public String toCEInformation() {
-        try {
-            if (statusId == null)
-                throw new AppException("Empty status id!");
-            Status status = statusDAO.get(statusId);
-            if (status == null)
-                throw new AppException("No such code!");
-            if (currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal() && status.getUserByUserId() != currentUser)
-                throw new AppException("You can't view others' CE information!");
-            CompileInfo compileInfo = status.getCompileInfoByCompileInfoId();
-            if (compileInfo == null)
-                throw new AppException("No CE information!");
-            json.put("result", "success");
-            json.put("CEInformation", compileInfo.getContent());
-        } catch (AppException e) {
-            json.put("result", "error");
-            json.put("error_msg", e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            json.put("result", "error");
-            json.put("error_msg", "Unknown exception occurred.");
-        }
-        return JSON;
+    @Override
+    public void setContestDAO(IContestDAO contestDAO) {
+        this.contestDAO = contestDAO;
     }
 }

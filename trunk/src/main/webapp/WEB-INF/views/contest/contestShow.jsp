@@ -40,37 +40,38 @@
 </head>
 <body>
 
-<div id="contestStatus hero-unit">
+<div id="contestStatus hero-unit" class="currentContestId" value="<s:property value="targetContest.contestId"/>">
     <h1 id="contestRunningState">
-    <s:if test="targetContest.status == 'Pending'">
-        Pending
-    </s:if>
-    <s:elseif test="targetContest.status == 'Ended'">
-        Ended
-    </s:elseif>
-    <s:else>
-        Running
+        <s:if test="targetContest.status == 'Pending'">
+            Pending
+        </s:if>
+        <s:elseif test="targetContest.status == 'Ended'">
+            Ended
+        </s:elseif>
+        <s:else>
+            Running
         <span class="pull-right" id="timeLeft"
               value="<s:property value="targetContest.timeLeft"/>"
               totTime="<s:property value="targetContest.length"/>"
               type="milliseconds"
               timeStyle="length">
         </span>
-    </s:else>
+        </s:else>
     </h1>
-    <s:if test="targetContest.status == 'Ended'">
-        <div class="progress progress-success progress-striped">
-            <div class="bar" style="width: 100%;"></div>
-        </div>
-    </s:if>
-    <s:elseif test="targetContest.status == 'Running'">
-        <div class="progress progress-striped active">
-            <div class="bar" id="timeLeftProgress" style="width: 0;"></div>
-        </div>
-    </s:elseif>
 </div>
 
-<div id="contestContent">
+<s:if test="targetContest.status == 'Ended'">
+    <div class="progress progress-success progress-striped">
+        <div class="bar" style="width: 100%;"></div>
+    </div>
+</s:if>
+<s:elseif test="targetContest.status == 'Running'">
+    <div class="progress progress-striped active">
+        <div class="bar" id="timeLeftProgress" style="width: 0;"></div>
+    </div>
+</s:elseif>
+
+<div class="subnav">
     <ul id="TabMenu" class="nav nav-tabs">
         <li class="active">
             <a href="#tab-contest-summary" data-toggle="tab">Summary</a>
@@ -108,8 +109,9 @@
             <a href="#tab-contest-rank" data-toggle="tab">Rank</a>
         </li>
     </ul>
+</div>
 
-
+<div id="contestContent" class="subnav-content">
     <div id="TabContent" class="tab-content">
         <div class="tab-pane fade active in" id="tab-contest-summary">
 
@@ -212,7 +214,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <s:if test="targetProblem.hint != ''">
+                    <s:if test="#problem.hint != ''">
                         <div class="span12">
                             <h2>Hint</h2>
 
@@ -221,7 +223,7 @@
                             </div>
                         </div>
                     </s:if>
-                    <s:if test="targetProblem.source != ''">
+                    <s:if test="#problem.source != ''">
                         <div class="span12">
                             <h2>Source</h2>
 
@@ -230,19 +232,36 @@
                             </div>
                         </div>
                     </s:if>
-
-                    <div class="span12">
-                        <div class="btn-group-bottom">
-                            <a href="#problemSubmitModal" class="btn btn-success" role="button" data-toggle="modal">Submit</a>
-                            <a class="btn btn-success">Status</a>
-                            <a class="btn btn-success">Discus</a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </s:iterator>
 
         <div class="tab-pane fade" id="tab-contest-submit">
+            <form class="form-horizontal">
+                <textarea class="contest-submit-area" id="codeContent"></textarea>
+            </form>
+
+            <div class="contest-submit-action">
+                <div id="language-selector" class="pull-left" style="margin-right: 20px;">
+                    <div class="btn-group" data-toggle="buttons-radio" id="languageSelector">
+                        <s:iterator value="global.languageList">
+                            <button class="btn btn-info <s:if test="languageId == 2">active</s:if>"
+                                    value="${languageId}">${name}</button>
+                        </s:iterator>
+                    </div>
+                </div>
+                <div id="problem-selector" class="pull-left">
+                    <select id="problemId" class="span4">
+                        <s:iterator value="contestProblems" id="problem" status="status">
+                            <option value="<s:property value="#status.index"/>">
+                                <s:property value="#problem.order"/> - <s:property value="#problem.title"/>
+                            </option>
+                        </s:iterator>
+                    </select>
+                </div>
+
+                <a href="#" id="submitCode" class="pull-right btn btn-primary">Submit</a>
+            </div>
         </div>
 
         <div class="tab-pane fade" id="tab-contest-clarification-request">
@@ -252,6 +271,24 @@
         </div>
 
         <div class="tab-pane fade" id="tab-contest-status">
+            <div id="pageInfo">
+            </div>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="width: 60px;" class="orderButton" field="id">Id</th>
+                    <th style="width: 60px;" class="orderButton" field="problemByProblemId">Problem</th>
+                    <th style="width: 260px;" class="orderButton" field="result">Judge's Response</th>
+                    <th style="width: 100px;" class="orderButton" field="length">Length</th>
+                    <th style="width: 70px;" class="orderButton" field="timeCost">Time</th>
+                    <th style="width: 80px;" class="orderButton" field="memoryCost">Memory</th>
+                    <th style="width: 140px;" class="orderButton" field="time">Submit Time</th>
+                </tr>
+                </thead>
+                <tbody id="statusList">
+                </tbody>
+            </table>
         </div>
 
         <div class="tab-pane fade" id="tab-contest-rank">

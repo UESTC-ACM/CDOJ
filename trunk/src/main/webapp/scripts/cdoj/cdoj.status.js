@@ -16,7 +16,6 @@
  * @version 1
  */
 
-
 /**
  * current search condition
  */

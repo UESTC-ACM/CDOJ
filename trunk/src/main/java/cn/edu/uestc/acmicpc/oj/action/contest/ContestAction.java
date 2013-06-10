@@ -168,6 +168,10 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
         return JSON;
     }
 
+    /**
+     * Goto contest page.
+     * @return <strong>SUCCESS Signal</strong>
+     */
     public String toContest() {
         try {
             if (targetContestId == null)
@@ -218,6 +222,7 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
         }
         return SUCCESS;
     }
+
 
     @Autowired
     private IContestDAO contestDAO;
