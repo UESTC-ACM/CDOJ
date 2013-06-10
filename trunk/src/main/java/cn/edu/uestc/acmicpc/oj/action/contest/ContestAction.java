@@ -44,6 +44,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -117,6 +118,7 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
             if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
                 if (!contest.getIsVisible())
                     throw new AppException("Contest doesn't exist");
+            Timestamp contestEndTime = new Timestamp(contest.getTime().getTime() + contest.getLength() * 1000);
 
             //Problem information changes.
             Condition condition;
@@ -132,6 +134,8 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
 
                 //get solved
                 statusCondition.clear();
+                statusCondition.setStartTime(contest.getTime());
+                statusCondition.setEndTime(contestEndTime);
                 statusCondition.setContestId(contest.getContestId());
                 statusCondition.setProblemId(problem.getProblemId());
                 statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
@@ -141,6 +145,8 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
                 targetProblem.setSolved((int) count.longValue());
                 //get tried
                 statusCondition.clear();
+                statusCondition.setStartTime(contest.getTime());
+                statusCondition.setEndTime(contestEndTime);
                 statusCondition.setContestId(contest.getContestId());
                 statusCondition.setProblemId(problem.getProblemId());
                 condition = statusCondition.getCondition();
@@ -185,6 +191,7 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
                 if (!contest.getIsVisible())
                     throw new AppException("Contest doesn't exist");
 
+            Timestamp contestEndTime = new Timestamp(contest.getTime().getTime() + contest.getLength() * 1000);
             Condition condition;
             Long count;
 
@@ -198,6 +205,8 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
 
                 //get solved
                 statusCondition.clear();
+                statusCondition.setStartTime(contest.getTime());
+                statusCondition.setEndTime(contestEndTime);
                 statusCondition.setContestId(contest.getContestId());
                 statusCondition.setProblemId(problem.getProblemId());
                 statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
@@ -207,6 +216,8 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
                 targetProblem.setSolved((int) count.longValue());
                 //get tried
                 statusCondition.clear();
+                statusCondition.setStartTime(contest.getTime());
+                statusCondition.setEndTime(contestEndTime);
                 statusCondition.setContestId(contest.getContestId());
                 statusCondition.setProblemId(problem.getProblemId());
                 condition = statusCondition.getCondition();
