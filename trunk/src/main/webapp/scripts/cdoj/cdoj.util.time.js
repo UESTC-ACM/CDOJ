@@ -26,6 +26,23 @@
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 
+/**
+ * Date() function for ie 6 7 8.
+ * @param dateString like YYYY-MM-DDThh:mm:ss
+ */
+var ieDate = function(dateString) {
+    var exp;
+    exp = /^s*(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})s*$/;
+    var date = new Date(NaN);
+    var parts = exp.exec(dateString);
+    if (parts) {
+        date = new Date(parts[1], parseInt(parts[2]) - 1, parts[3], parts[4], parts[5], parts[6]);
+        if (Sys.ie678)
+            date = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
+    }
+    return date;
+};
+
 (function($) {
     'use strict';
 
@@ -50,22 +67,6 @@
     };
 
     /**
-     * Date() function for ie 6 7 8.
-     * @param dateString like YYYY-MM-DDThh:mm:ss
-     */
-    var ieDate = function(dateString) {
-        var exp;
-        exp = /^s*(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})s*$/;
-        var date = new Date(NaN);
-        var parts = exp.exec(dateString);
-        if (parts) {
-            date = new Date(parts[1], parseInt(parts[2]) - 1, parts[3], parts[4], parts[5], parts[6]);
-            date = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
-        }
-        return date;
-    }
-
-    /**
      * Format time style
      *
      * @returns {*}
@@ -81,7 +82,8 @@
                 if (Sys.ie678 || Sys.firefox)
                     date = ieDate(self[0].innerHTML);
             }
-            date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+            if (!Sys.firefox)
+                date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
             self.empty();
             if (self.attr('timeStyle') == 'length') {
                 var seconds = time % 60;
@@ -163,5 +165,10 @@ function getTime(data, id) {
     var time = getTimeInfo(data, id);
     var timeString = time.days + ' ' + time.hours + ':' + time.minutes + ':' + time.seconds;
     var result = new Date(timeString).getTime();
+    if (Sys.ie678 || Sys.firefox) {
+        timeString = time.days + 'T' + time.hours + ':' + time.minutes + ':' + time.seconds;
+        result = ieDate(timeString).getTime();
+    }
+    console.log(result);
     return result;
 }

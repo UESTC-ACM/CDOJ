@@ -58,7 +58,7 @@ function updateProblem(id) {
         "currentPage": 1,
         "problemCondition.startId": problemId,
         "problemCondition.endId": problemId
-    }
+    };
 
     $.post('/admin/problem/search', condition, function (data) {
         var currentProblemId = line.find('.problem_id')[0].innerHTML;
@@ -80,6 +80,10 @@ function updateProblem(id) {
 }
 
 $(document).ready(function () {
+    if (Sys.firefox) {
+        alert('Contest editor can not work well under firefox...');
+        window.location.href= '/admin/contest/list';
+    }
     //Set time
     $('.time-selector').setTimeSelector();
 
@@ -115,7 +119,7 @@ $(document).ready(function () {
                 updateProblem(nowId);
             });
 
-            $('tr[value=' + nowId + ']').find('.problem_id')[0].innerText = this;
+            $('tr[value=' + nowId + ']').find('.problem_id')[0].innerHTML = this;
             updateProblem(nowId);
         }
     });
@@ -163,7 +167,7 @@ $(document).ready(function () {
             var info = $('.form-horizontal').getFormData();
 
             var data = {
-                "contestDTO.contestId": $('#contestId')[0].innerText,
+                "contestDTO.contestId": $('#contestId')[0].innerHTML,
                 "contestDTO.title": info["contestDTO.title"],
                 "contestDTO.description": info["contestDTO.description"],
                 "contestDTO.time": getTime(info, "contestDTO.time"),
@@ -178,6 +182,7 @@ $(document).ready(function () {
                 data['contestDTO.problemList'][index] = value.innerText;
             });
 
+            console.log($('#contestId'));
             $.post('/admin/contest/edit', data, function(data) {
                 $('#contestEditor').checkValidate({
                     result: data,

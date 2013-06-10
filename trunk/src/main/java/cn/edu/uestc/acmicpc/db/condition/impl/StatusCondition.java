@@ -38,6 +38,7 @@ import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,6 +57,9 @@ public class StatusCondition extends BaseCondition implements UserConditionAware
      * End status id.
      */
     private Integer endId;
+
+    private Timestamp startTime;
+    private Timestamp endTime;
 
     public String getUserName() {
         return userName;
@@ -95,6 +99,24 @@ public class StatusCondition extends BaseCondition implements UserConditionAware
      * Judging result list(<strong>PRIMARY</strong>).
      */
     private List<Global.OnlineJudgeReturnType> result;
+
+    @Exp(MapField = "time", Type = ConditionType.ge)
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    @Exp(MapField = "time", Type = ConditionType.le)
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
 
     @Exp(MapField = "statusId", Type = ConditionType.ge)
     public Integer getStartId() {
