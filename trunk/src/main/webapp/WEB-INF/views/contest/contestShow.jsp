@@ -35,6 +35,73 @@
     <title>Contest</title>
 </head>
 <body>
+<ul id="TabMenu" class="nav nav-tabs">
+    <li class="active">
+        <a href="#tab-contest-summary" data-toggle="tab">Summary</a>
+    </li>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Problems<b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <s:iterator value="contestProblems" id="problem">
+                <li>
+                    <a href="#tab-contest-problem-<s:property value="#problem.order"/>" data-toggle="tab">
+                        <s:property value="#problem.order"/> - <s:property value="#problem.title"/>
+                    </a>
+                </li>
+            </s:iterator>
+        </ul>
+    </li>
+    <li>
+        <a href="#tab-contest-submit" data-toggle="tab">Submit</a>
+    </li>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Clarification<b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li class="disabled">
+                <a href="#tab-contest-clarification-request" data-toggle="tab">Request Clarification</a>
+            </li>
+            <li class="disabled">
+                <a href="#tab-contest-clarification-view" data-toggle="tab">View Clarifications</a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <a href="#tab-contest-status" data-toggle="tab">Status</a>
+    </li>
+    <li>
+        <a href="#tab-contest-rank" data-toggle="tab">Rank</a>
+    </li>
+</ul>
+
+
+<div id="TabContent" class="tab-content">
+    <div class="tab-pane fade active in" id="tab-contest-summary">
+
+    </div>
+
+    <s:iterator value="contestProblems" id="problem">
+        <div class="tab-pane fade" id="tab-contest-problem-<s:property value="#problem.order"/>">
+            <!--TODO add passed/tried flag before problem title-->
+            <s:property value="#problem.order"/> - <s:property value="#problem.title"/>
+        </div>
+    </s:iterator>
+
+    <div class="tab-pane fade" id="tab-contest-submit">
+    </div>
+
+    <div class="tab-pane fade" id="tab-contest-clarification-request">
+    </div>
+
+    <div class="tab-pane fade" id="tab-contest-clarification-view">
+    </div>
+
+    <div class="tab-pane fade" id="tab-contest-status">
+    </div>
+
+    <div class="tab-pane fade" id="tab-contest-rank">
+    </div>
+
+</div>
 
 </body>
 </html>

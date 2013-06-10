@@ -153,6 +153,8 @@ function blindCompileInfo() {
 }
 
 function refreshStatusList(condition) {
+    if (condition == null)
+        condition = currentCondition;
     $.post('/status/search', condition, function (data) {
         if (data.result == "error") {
             alert(data.error_msg);
@@ -239,4 +241,6 @@ $(document).ready(function () {
     });
 
     refreshStatusList(currentCondition);
+
+    setInterval(refreshStatusList, 3000);
 });
