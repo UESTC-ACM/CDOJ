@@ -45,4 +45,9 @@
           scope="prototype">
     </bean>
 
+    <bean id="contestStatusAction"
+          class="cn.edu.uestc.acmicpc.oj.action.contest.ContestStatusAction"
+          parent="baseAction"
+          scope="prototype">
+    </bean>
 </beans>

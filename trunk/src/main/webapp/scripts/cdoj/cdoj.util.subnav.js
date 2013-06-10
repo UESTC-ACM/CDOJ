@@ -20,34 +20,34 @@
  *
  */
 
-.textarea-mini {
-    min-height: 120px;
-}
+/**
+ * Subnav
+ *
+ * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ * @version 1
+ */
 
-.textarea-big {
-    min-height: 240px;
-}
+$(document).ready(function () {
+    // fix sub nav on scroll
+    var $win = $(window)
+        , $nav = $('.subnav')
+        , navTop = $('.subnav').length && $('.subnav').offset().top - 40
+        , isFixed = 0;
 
-.textarea-large {
-    min-height: 320px;
-}
+    processScroll();
 
-.textarea-content {
-    position: relative;
-    padding: 4px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
+    $win.on('scroll', processScroll);
 
-.submit-area {
-    resize: none;
-    width: 915px;
-    height: 390px;
-}
-
-.contest-submit-area {
-    resize: none;
-    width: 1018px;
-    height: 390px;
-}
+    function processScroll() {
+        var scrollTop = $win.scrollTop();
+        if (scrollTop >= navTop && !isFixed) {
+            isFixed = 1;
+            $nav.addClass('subnav-fixed');
+            $('.subnav-content').css('margin-top', $nav.height());
+        } else if (scrollTop <= navTop && isFixed) {
+            isFixed = 0;
+            $nav.removeClass('subnav-fixed');
+            $('.subnav-content').css('margin-top', 0);
+        }
+    }
+});

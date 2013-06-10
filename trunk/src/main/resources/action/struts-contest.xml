@@ -39,6 +39,9 @@
         <action name="changes/*" class="contestAction" method="toContestChanges">
             <param name="targetContestId">{1}</param>
         </action>
+        <action name="status/*" class="contestStatusAction" method="toSearch">
+            <param name="targetContestId">{1}</param>
+        </action>
     </package>
 
 </struts>

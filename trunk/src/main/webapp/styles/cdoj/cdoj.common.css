@@ -24,10 +24,12 @@ body {
     min-width: 940px;
     background-color: #222;
 }
+
 #wrap {
     padding: 80px 0 0 0;
     background-color: white;
 }
+
 .mzry1992 {
     padding: 20px 0 20px 0;
     min-height: 400px;
@@ -38,6 +40,7 @@ body {
     padding: 60px 0 20px 0;
     background: #222 url(../../images/footer-top.png) top center repeat-x;
 }
+
 .credit {
     text-align: center;
 }
@@ -50,6 +53,7 @@ body {
     display: block;
     background: url(../../images/logo/banner.png) no-repeat;
 }
+
 #logo {
     width: 88px;
     height: 31px;
@@ -62,20 +66,25 @@ body {
     margin-left: auto;
     margin-right: auto;
 }
+
 .pos-center {
     text-align: center;
 }
+
 .pos-left {
     text-align: left;
 }
+
 .tags {
     margin-right: 4px;
 }
+
 .difficult-span {
     padding: 0;
 }
+
 .problem-state {
-    width:14px;
+    width: 14px;
     margin-right: 6px;
 }
 
@@ -84,9 +93,9 @@ body {
     padding: 8px;
     background-color: white;
     text-align: left;
-    word-break:break-all;
+    word-break: break-all;
     margin: 0;
-    font-family: Consolas, "Lucida Console", "Andale Mono", "Bitstream Vera Sans Mono", "Courier New", Courier,sans-serif;
+    font-family: Consolas, "Lucida Console", "Andale Mono", "Bitstream Vera Sans Mono", "Courier New", Courier, sans-serif;
 }
 
 .btn-group-bottom {
@@ -105,6 +114,7 @@ body {
 .status-accept {
     color: #468847;
 }
+
 .status-error {
     color: #b94a48;
 }
@@ -112,6 +122,7 @@ body {
 .problem-state-accept {
     background-color: #ccffcc;
 }
+
 .problem-state-error {
     background-color: #ffcccc;
 }
@@ -119,9 +130,11 @@ body {
 .contest-state-running {
     background-color: #ffcccc;
 }
+
 .contest-state-pending {
     background-color: #66cccc;
 }
+
 .contest-state-ended {
     background-color: #ccffcc;
 }
@@ -187,6 +200,7 @@ ul.userStates {
 #userInfoLeft {
     width: 613px;
 }
+
 #userInfoRight {
     margin-left: 0;
 }
@@ -208,14 +222,17 @@ ul.userStates {
     font-size: 16px;
     margin-top: 6px;
 }
+
 .dl-userInfo:before, .dl-userInfo:after {
     display: table;
     line-height: 0;
     content: "";
 }
+
 .dl-userInfo:after {
     clear: both;
 }
+
 .dl-userInfo dt {
     float: left;
     width: 100px;
@@ -225,10 +242,39 @@ ul.userStates {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
 .dl-userInfo dt {
     margin-top: 13px;
 }
+
 .dl-userInfo dd {
     margin-left: 120px;
     margin-top: 13px;
+}
+
+.subnav-fixed {
+    background-color: white; /* Old browsers */
+    margin: 0 auto 10px auto;
+    width: 1033px;
+    position: fixed;
+    top: 40px;
+    left: 0;
+    right: 0;
+    z-index: 1020; /* 10 less than .navbar-fixed to prevent any overlap */
+}
+
+.contest-submit-action {
+    padding: 17px 20px 18px;
+    margin-top: 18px;
+    margin-bottom: 18px;
+    background-color: #eeeeee;
+    border-top: 1px solid #ddd;
+}
+.contest-submit-action:before,
+.contest-submit-action:after {
+    display: table;
+    content: "";
+}
+.contest-submit-action:after {
+    clear: both;
 }
