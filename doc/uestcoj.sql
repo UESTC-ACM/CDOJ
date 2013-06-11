@@ -76,6 +76,22 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `uestcoj`.`contest`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `uestcoj`.`contest` (
+  `contestId` INT NOT NULL AUTO_INCREMENT ,
+  `title` VARCHAR(50) NOT NULL COMMENT 'length >= 3' ,
+  `description` VARCHAR(200) NOT NULL DEFAULT '' ,
+  `type` TINYINT NOT NULL DEFAULT 0 ,
+  `time` DATETIME NOT NULL ,
+  `length` INT NOT NULL ,
+  `isVisible` TINYINT(1) NOT NULL ,
+  PRIMARY KEY (`contestId`) ,
+  UNIQUE INDEX `contestId_UNIQUE` (`contestId` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `uestcoj`.`article`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`article` (
@@ -88,8 +104,36 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`article` (
   `order` INT NOT NULL DEFAULT 0 COMMENT 'set order to top and move' ,
   `isNotice` TINYINT(1) NOT NULL DEFAULT 0 ,
   `visible` TINYINT(1) NOT NULL DEFAULT 0 ,
+  `parentId` INT NULL DEFAULT NULL ,
+  `problemId` INT NULL DEFAULT NULL ,
+  `contestId` INT NULL DEFAULT NULL ,
+  `uesrId` INT NULL DEFAULT NULL ,
   PRIMARY KEY (`articleId`) ,
-  UNIQUE INDEX `noticeId_UNIQUE` (`articleId` ASC) )
+  UNIQUE INDEX `noticeId_UNIQUE` (`articleId` ASC) ,
+  INDEX `FK_parentId_on_article_idx` (`parentId` ASC) ,
+  INDEX `FK_problemId_on_problem_idx` (`problemId` ASC) ,
+  INDEX `FK_contestId_on_contest_idx` (`contestId` ASC) ,
+  INDEX `FK_userId_on_user_idx` (`uesrId` ASC) ,
+  CONSTRAINT `FK_parentId_on_article`
+    FOREIGN KEY (`parentId` )
+    REFERENCES `uestcoj`.`article` (`articleId` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_problemId_on_problem`
+    FOREIGN KEY (`problemId` )
+    REFERENCES `uestcoj`.`problem` (`problemId` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_contestId_on_contest`
+    FOREIGN KEY (`contestId` )
+    REFERENCES `uestcoj`.`contest` (`contestId` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_userId_on_user`
+    FOREIGN KEY (`uesrId` )
+    REFERENCES `uestcoj`.`user` (`userId` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -118,55 +162,6 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`message` (
     REFERENCES `uestcoj`.`user` (`userId` )
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `uestcoj`.`discuss`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `uestcoj`.`discuss` (
-  `discussId` INT NOT NULL AUTO_INCREMENT ,
-  `problemId` INT NOT NULL ,
-  `userId` INT NOT NULL ,
-  `content` TEXT NOT NULL ,
-  `time` DATETIME NOT NULL ,
-  `parentId` INT NULL DEFAULT NULL COMMENT 'parent discuss id, if not exists set NULL.' ,
-  PRIMARY KEY (`discussId`) ,
-  UNIQUE INDEX `discussId_UNIQUE` (`discussId` ASC) ,
-  INDEX `FK_problemId_on_problem_idx` (`problemId` ASC) ,
-  INDEX `FK_userId_on_user_idx` (`userId` ASC) ,
-  INDEX `FK_parentId_on_discuss_idx` (`parentId` ASC) ,
-  CONSTRAINT `FK_discuss_problemId_on_problem`
-    FOREIGN KEY (`problemId` )
-    REFERENCES `uestcoj`.`problem` (`problemId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_discuss_userId_on_user`
-    FOREIGN KEY (`userId` )
-    REFERENCES `uestcoj`.`user` (`userId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_disucss_parentId_on_discuss`
-    FOREIGN KEY (`parentId` )
-    REFERENCES `uestcoj`.`discuss` (`discussId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `uestcoj`.`contest`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `uestcoj`.`contest` (
-  `contestId` INT NOT NULL AUTO_INCREMENT ,
-  `title` VARCHAR(50) NOT NULL COMMENT 'length >= 3' ,
-  `description` VARCHAR(200) NOT NULL DEFAULT '' ,
-  `type` TINYINT NOT NULL DEFAULT 0 ,
-  `time` DATETIME NOT NULL ,
-  `length` INT NOT NULL ,
-  `isVisible` TINYINT(1) NOT NULL ,
-  PRIMARY KEY (`contestId`) ,
-  UNIQUE INDEX `contestId_UNIQUE` (`contestId` ASC) )
 ENGINE = InnoDB;
 
 
@@ -369,6 +364,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`contestTeamInfo` (
   UNIQUE INDEX `teamId_UNIQUE` (`teamId` ASC) )
 ENGINE = InnoDB;
 
+
 -- -----------------------------------------------------
 -- Table `uestcoj`.`userSerialKey`
 -- -----------------------------------------------------
@@ -490,8 +486,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uestcoj`;
-INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (1, 'C', '.c', '');
-INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (2, 'C++', '.cc', '');
-INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (3, 'JAVA', '.java', '');
+INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (1, 'c', 'c', NULL);
+INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (2, 'c++', 'cc', NULL);
+INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (3, 'java', 'java', NULL);
 
 COMMIT;
