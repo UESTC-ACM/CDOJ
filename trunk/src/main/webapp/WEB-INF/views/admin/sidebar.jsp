@@ -60,6 +60,11 @@
         <li><s:a action="list" namespace="/admin/contest">Contest list</s:a></li>
         <li><s:a action="editor/" namespace="/admin/contest">Add contest</s:a></li>
 
+        <li class="divider"></li>
+
+        <li class="nav-header"><i class="icon-refresh"></i>Status</li>
+        <li><s:a action="list" namespace="/admin/status">Status list</s:a></li>
+
     </ul>
 </div>
 </body>
