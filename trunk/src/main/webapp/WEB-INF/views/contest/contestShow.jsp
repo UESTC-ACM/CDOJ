@@ -42,7 +42,7 @@
 <body>
 
 <div id="contestStatus hero-unit" class="currentContestId" value="<s:property value="targetContest.contestId"/>">
-    <h1 id="contestRunningState">
+    <h1 id="contestRunningState" value="<s:property value="targetContest.status"/>">
         <s:if test="targetContest.status == 'Pending'">
             Pending
         </s:if>
@@ -67,7 +67,7 @@
     </div>
 </s:if>
 <s:elseif test="targetContest.status == 'Running'">
-    <div class="progress progress-striped active">
+    <div id="timeLeftProgressF" class="progress progress-striped active">
         <div class="bar" id="timeLeftProgress" style="width: 0;"></div>
     </div>
 </s:elseif>
@@ -299,7 +299,7 @@
 
 <div class="tab-pane fade" id="tab-contest-rank">
 
-    <div class="pull-right span6">
+    <div class="pull-right span6" style="clear: both;">
         <table class="table table-bordered">
             <tr>
                 <td class="firstac">First accept</td>
@@ -309,27 +309,36 @@
             </tr>
         </table>
     </div>
-    <table class="table table-bordered">
-        <thead id="rankListHead">
-        <tr>
-            <th class="orderButton" field="id">Rk</th>
-            <th style="width: 200px;">User</th>
-            <th class="orderButton" field="problemByProblemId">Slv.</th>
-            <th class="orderButton" field="result">Time</th>
 
-            <s:iterator value="contestProblems" id="problem">
-                <th class="problemSummaryInfo" value="<s:property value="#problem.order"/>">
-                    <s:property value="#problem.order"/>
-                    <br/>
-                    <span class="problemSolved"><s:property value="#problem.solved"/></span> /
-                    <span class="problemTried"><s:property value="#problem.tried"/></span>
-                </th>
-            </s:iterator>
-        </tr>
-        </thead>
-        <tbody id="rankList">
-        </tbody>
-    </table>
+    <div style="clear: both;">
+    </div>
+
+    <div>
+
+        <table class="table table-bordered">
+            <thead id="rankListHead">
+            <tr>
+                <th class="orderButton" field="id">Rk</th>
+                <th style="width: 200px;">User</th>
+                <th class="orderButton" field="problemByProblemId">Slv.</th>
+                <th class="orderButton" field="result">Time</th>
+
+                <s:iterator value="contestProblems" id="problem">
+                    <th class="problemSummaryInfo" value="<s:property value="#problem.order"/>">
+                        <a class="problemHref" href="#" target="<s:property value="#problem.order"/>">
+                            <s:property value="#problem.order"/>
+                        </a>
+                        <br/>
+                        <span class="problemSolved"><s:property value="#problem.solved"/></span> /
+                        <span class="problemTried"><s:property value="#problem.tried"/></span>
+                    </th>
+                </s:iterator>
+            </tr>
+            </thead>
+            <tbody id="rankList">
+            </tbody>
+        </table>
+    </div>
 
 </div>
 

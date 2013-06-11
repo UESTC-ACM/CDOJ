@@ -37,6 +37,10 @@ function refreshCurrentTime() {
     timeLeftDiv.append(timeLeft);
     timeLeftDiv.formatTimeStyle();
     timeLeftProgress.css('width', (1 - timeLeft / totTime) * 100 + '%');
+    if (timeLeft < 60 * 60)
+        $('#timeLeftProgressF').addClass('progress-danger');
+    if (timeLeft == 0)
+        window.location.reload();
     timeLeft--;
 }
 
@@ -183,7 +187,7 @@ function refreshStatusList(condition) {
         condition = currentCondition;
     $.post('/contest/status/' + currentContest, condition, function (data) {
         if (data.result == "error") {
-            alert(data.error_msg);
+            //alert(data.error_msg);
             clearInterval(statusTimer);
             return;
         }
@@ -265,7 +269,9 @@ function refreshRankList() {
             console.log(this);
             var html = $('<tr></tr>');
             html.append('<td>' + this.rank + '</td>');
-            html.append('<td>' + this.nickName + '</td>');
+            html.append('<td style="text-align: left;"><img id="usersAvatar" style="height: 37px;" email="' + this.email + '"/>' +
+                '<a href="/user/center/' + this.userName + '">' + this.nickName + '</a>' +
+                '</td>');
             html.append('<td>' + this.solved + '</td>');
             html.append('<td>' + this.penalty + '</td>');
             $.each(this.problemSummaryInfoList, function () {
@@ -291,6 +297,11 @@ function refreshRankList() {
             tbody.append(html);
         });
 
+        // get userList avatars
+        $('img#usersAvatar').setAvatar({
+            size: 37
+        });
+
     });
 }
 
@@ -304,12 +315,14 @@ function changeOrder(field) {
     refreshStatusList(currentCondition);
 }
 
+var contestRunningState;
 var changesTimer;
 var rankTimer;
 var statusTimer;
 var currentContest;
 
 $(document).ready(function () {
+    contestRunningState = $('#contestRunningState').attr('value');
     //Init current time left
     timeLeftDiv = $('#timeLeft');
     if (timeLeftDiv) {
@@ -399,15 +412,19 @@ $(document).ready(function () {
             clearInterval(statusTimer);
     });
 
-    //Only refresh rank list at rank tab
-    $('#TabMenu').find('a[href="#tab-contest-rank"]').on('show', function () {
+    if (contestRunningState == 'Running') {
+        //Only refresh rank list at rank tab
+        $('#TabMenu').find('a[href="#tab-contest-rank"]').on('show', function () {
+            refreshRankList();
+            rankTimer = setInterval(refreshRankList, 3000);
+        });
+        $('#TabMenu').find('a[href!="#tab-contest-rank"]').on('show', function () {
+            if (rankTimer)
+                clearInterval(rankTimer);
+        });
+    }
+    else
         refreshRankList();
-        rankTimer = setInterval(refreshRankList, 3000);
-    });
-    $('#TabMenu').find('a[href!="#tab-contest-rank"]').on('show', function () {
-        if (rankTimer)
-            clearInterval(rankTimer);
-    });
 
 
     //Blind Submit
