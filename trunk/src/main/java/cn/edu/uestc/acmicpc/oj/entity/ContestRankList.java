@@ -27,10 +27,7 @@ import cn.edu.uestc.acmicpc.db.view.impl.ContestProblemSummaryView;
 import com.opensymphony.xwork2.util.ArrayUtils;
 import org.apache.commons.collections.ListUtils;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Description
@@ -75,7 +72,7 @@ public class ContestRankList {
     public void updateRankList(Status status) {
         Boolean isNewUser = true;
         if (userRankSummaryList.size() > 0) {
-            for (UserRankSummary userRankSummary: userRankSummaryList) {
+            for (UserRankSummary userRankSummary : userRankSummaryList) {
                 if (userRankSummary.getUserId().equals(status.getUserByUserId().getUserId())) {
                     isNewUser = false;
                     break;
@@ -85,9 +82,16 @@ public class ContestRankList {
         if (isNewUser)
             userRankSummaryList.add(new UserRankSummary(status.getUserByUserId(), problemSummary));
 
-        for (UserRankSummary userRankSummary: userRankSummaryList) {
+        for (UserRankSummary userRankSummary : userRankSummaryList) {
             if (userRankSummary.getUserId().equals(status.getUserByUserId().getUserId())) {
-                userRankSummary.updateUserRank(status, contestSummary, problemSummary);
+                Boolean visible = true;
+                if (contestSummary.getLength() == 5 * 60 * 60) {
+                    //standard contest && still running
+                    if (contestSummary.getStatus().equals("Running"))
+                        if ((status.getTime().getTime() - contestSummary.getTime().getTime()) / 1000 > 4 * 60 * 60)
+                            visible = false;
+                }
+                userRankSummary.updateUserRank(status, contestSummary, problemSummary, visible);
                 break;
             }
         }

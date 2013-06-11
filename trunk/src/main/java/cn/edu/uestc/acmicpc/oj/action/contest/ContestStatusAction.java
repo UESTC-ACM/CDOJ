@@ -129,7 +129,6 @@ public class ContestStatusAction extends BaseAction
             json.put("condition", statusCondition);
             json.put("statusList", statusViewList);
         } catch (AppException e) {
-            e.printStackTrace();
             json.put("result", "error");
             json.put("error_msg", e.getMessage());
         } catch (Exception e) {
