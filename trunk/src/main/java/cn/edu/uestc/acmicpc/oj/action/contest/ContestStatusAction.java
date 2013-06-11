@@ -105,7 +105,9 @@ public class ContestStatusAction extends BaseAction
             statusCondition.setContestId(contest.getContestId());
             //Contest is still running
             if (contestView.getStatus().equals("Running")) {
-                if (currentUser != null && currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
+                if (currentUser == null)
+                    throw new AppException("Please login first!");
+                if (currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
                     statusCondition.setUserId(currentUser.getUserId());
             }
 
@@ -127,10 +129,10 @@ public class ContestStatusAction extends BaseAction
             json.put("condition", statusCondition);
             json.put("statusList", statusViewList);
         } catch (AppException e) {
+            e.printStackTrace();
             json.put("result", "error");
             json.put("error_msg", e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
             json.put("result", "error");
             json.put("error_msg", "Unknown exception occurred.");
         }

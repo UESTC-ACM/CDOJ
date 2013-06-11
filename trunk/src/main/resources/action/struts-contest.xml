@@ -42,6 +42,9 @@
         <action name="status/*" class="contestStatusAction" method="toSearch">
             <param name="targetContestId">{1}</param>
         </action>
+        <action name="rank/*" class="contestRankListAction" method="toRankList">
+            <param name="targetContestId">{1}</param>
+        </action>
     </package>
 
 </struts>

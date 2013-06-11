@@ -37,6 +37,7 @@ import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.oj.interceptor.AppInterceptor;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
@@ -45,9 +46,7 @@ import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Description
@@ -129,7 +128,8 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
             for (int id = 0; id < targetContest.getProblemList().size(); id++) {
                 Integer problemId = targetContest.getProblemList().get(id);
                 Problem problem = problemDAO.get(problemId);
-                ContestProblemSummaryView targetProblem = new ContestProblemSummaryView(problem);
+                ContestProblemSummaryView targetProblem = new ContestProblemSummaryView(problem,
+                        getCurrentUser(), problemStatus.get(problem.getProblemId()));
                 targetProblem.setOrder((char)('A' + id));
 
                 //get solved
@@ -157,8 +157,8 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
             }
             json.put("contestProblems", contestProblems);
 
-            //Sync system times
-            json.put("time", new Date());
+            //Sync time left
+            json.put("timeLeft", (contestEndTime.getTime() - new Date().getTime()) / 1000);
 
             //Clarification
 
@@ -234,6 +234,56 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
         return SUCCESS;
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public void onActionExecuting(AppInterceptor.ActionInfo actionInfo) {
+        super.onActionExecuting(actionInfo);
+
+        Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
+        try {
+            if (targetContestId == null)
+            throw new AppException("Contest Id is empty!");
+
+            Contest contest = contestDAO.get(targetContestId);
+            if (contest == null)
+                throw new AppException("Wrong contest ID!");
+
+            if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
+                if (!contest.getIsVisible())
+                    throw new AppException("Contest doesn't exist");
+
+            Timestamp contestEndTime = new Timestamp(contest.getTime().getTime() + contest.getLength() * 1000);
+
+            if (currentUser != null) {
+                statusCondition.clear();
+                statusCondition.setStartTime(contest.getTime());
+                statusCondition.setEndTime(contestEndTime);
+                statusCondition.setContestId(contest.getContestId());
+                statusCondition.setUserId(currentUser.getUserId());
+                statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+                Condition condition = statusCondition.getCondition();
+                condition.addProjection(Projections.groupProperty("problemByProblemId"));
+                List<Problem> results = (List<Problem>) statusDAO.findAll(condition);
+                for (Problem result : results)
+                    problemStatus.put(result.getProblemId(), Global.AuthorStatusType.PASS);
+
+                statusCondition.clear();
+                statusCondition.setStartTime(contest.getTime());
+                statusCondition.setEndTime(contestEndTime);
+                statusCondition.setContestId(contest.getContestId());
+                statusCondition.setUserId(currentUser.getUserId());
+                statusCondition.setResultId(null);
+                condition = statusCondition.getCondition();
+                condition.addProjection(Projections.groupProperty("problemByProblemId"));
+                results = (List<Problem>) statusDAO.findAll(condition);
+                for (Problem result : results)
+                    if (!problemStatus.containsKey(result.getProblemId()))
+                        problemStatus.put(result.getProblemId(), Global.AuthorStatusType.FAIL);
+            }
+        } catch (AppException ignored) {
+        }
+        session.put("problemStatus", problemStatus);
+    }
 
     @Autowired
     private IContestDAO contestDAO;

@@ -171,7 +171,7 @@ function blindCompileInfo() {
 }
 
 function blindProblemHref() {
-    $('.contest-problem-href').live('click', function(){
+    $('.contest-problem-href').live('click', function () {
         var target = $(this).attr('value');
         $('#TabMenu').find('a[href="#tab-contest-problem-' + target + '"]').tab('show');
         return false;
@@ -182,9 +182,9 @@ function refreshStatusList(condition) {
     if (condition == null)
         condition = currentCondition;
     $.post('/contest/status/' + currentContest, condition, function (data) {
-        console.log(data);
         if (data.result == "error") {
             alert(data.error_msg);
+            clearInterval(statusTimer);
             return;
         }
 
@@ -218,6 +218,82 @@ function refreshStatusList(condition) {
     });
 }
 
+function refreshContest() {
+    $.post('/contest/changes/' + currentContest, function (data) {
+        var contestSummary = $('#contestSummary');
+        timeLeft = data.timeLeft;
+        var problemSummary = data.contestProblems;
+        $.each(problemSummary, function () {
+            var position = contestSummary.find('.problemSummaryInfo[value="' + this.order + '"]');
+            position.find('.problemSolved').empty();
+            position.find('.problemSolved').append(this.solved);
+            position.find('.problemTried').empty();
+            position.find('.problemTried').append(this.tried);
+            position.removeClass();
+            if (this.state == 1)
+                position.addClass('problem-state-accept');
+            else if (this.state == 2)
+                position.addClass('problem-state-error');
+        });
+    });
+}
+
+function refreshRankList() {
+    $.post('/contest/rank/' + currentContest, function (data) {
+        if (data.result == "error") {
+            alert(data.error_msg);
+            clearInterval(rankTimer);
+            return;
+        }
+
+        var rankList = data.rankList;
+
+        var thead = $('#rankListHead');
+        var problemSummary = rankList.problemSummary;
+        $.each(problemSummary, function () {
+            var position = thead.find('.problemSummaryInfo[value="' + this.order + '"]');
+            position.find('.problemSolved').empty();
+            position.find('.problemSolved').append(this.solved);
+            position.find('.problemTried').empty();
+            position.find('.problemTried').append(this.tried);
+        });
+
+        var tbody = $('#rankList');
+        tbody.empty();
+        var userRankSummaryList = rankList.userRankSummaryList;
+        $.each(userRankSummaryList, function () {
+            console.log(this);
+            var html = $('<tr></tr>');
+            html.append('<td>' + this.rank + '</td>');
+            html.append('<td>' + this.nickName + '</td>');
+            html.append('<td>' + this.solved + '</td>');
+            html.append('<td>' + this.penalty + '</td>');
+            $.each(this.problemSummaryInfoList, function () {
+                var state = $('<td></td>');
+                if (this.tried > 0) {
+                    if (this.solved)
+                        state = $('<td>' + this.tried + '/' + this.penalty + '</td>');
+                    else
+                        state = $('<td>' + this.tried + '</td>');
+
+                    if (this.firstSolved)
+                        state.addClass('firstac');
+                    else if (this.solved)
+                        state.addClass('ac');
+                    else if (this.pending)
+                        state.addClass('pending');
+                    else
+                        state.addClass('fail');
+                }
+
+                html.append(state);
+            });
+            tbody.append(html);
+        });
+
+    });
+}
+
 function changeOrder(field) {
     if (currentCondition["statusCondition.orderFields"] == field)
         currentCondition["statusCondition.orderAsc"] = (currentCondition["statusCondition.orderAsc"] == "true" ? "false" : "true");
@@ -228,6 +304,9 @@ function changeOrder(field) {
     refreshStatusList(currentCondition);
 }
 
+var changesTimer;
+var rankTimer;
+var statusTimer;
 var currentContest;
 
 $(document).ready(function () {
@@ -308,16 +387,28 @@ $(document).ready(function () {
 
     currentContest = $('.currentContestId').attr('value');
 
+    refreshContest();
+    changesTimer = setInterval(refreshContest, 3000);
     //Only refresh status at status tab
-    var timer;
-    $('#TabMenu').find('a[href="#tab-contest-status"]').on('show', function(){
+    $('#TabMenu').find('a[href="#tab-contest-status"]').on('show', function () {
         refreshStatusList(currentCondition);
-        timer = setInterval(refreshStatusList, 3000);
+        statusTimer = setInterval(refreshStatusList, 3000);
     });
-    $('#TabMenu').find('a[href!="#tab-contest-status"]').on('show', function(){
-        if (timer)
-            clearInterval(timer);
+    $('#TabMenu').find('a[href!="#tab-contest-status"]').on('show', function () {
+        if (statusTimer)
+            clearInterval(statusTimer);
     });
+
+    //Only refresh rank list at rank tab
+    $('#TabMenu').find('a[href="#tab-contest-rank"]').on('show', function () {
+        refreshRankList();
+        rankTimer = setInterval(refreshRankList, 3000);
+    });
+    $('#TabMenu').find('a[href!="#tab-contest-rank"]').on('show', function () {
+        if (rankTimer)
+            clearInterval(rankTimer);
+    });
+
 
     //Blind Submit
     $('#submitCode').click(function () {

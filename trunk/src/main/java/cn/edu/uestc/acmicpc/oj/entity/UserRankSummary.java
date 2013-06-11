@@ -26,6 +26,7 @@ import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.impl.ContestListView;
 import cn.edu.uestc.acmicpc.db.view.impl.ContestProblemSummaryView;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.ObjectUtil;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -56,12 +57,17 @@ public class UserRankSummary {
         }
     }
 
-    public void updateUserRank(Status status, ContestListView contestSummary) {
-        for (ProblemSummaryInfo problemSummaryInfo : problemSummaryInfoList) {
+    public void updateUserRank(Status status, ContestListView contestSummary, List<ContestProblemSummaryView> problemSummary) {
+        for (int id = 0; id < problemSummary.size(); id++) {
+            ProblemSummaryInfo problemSummaryInfo = problemSummaryInfoList.get(id);
+            ContestProblemSummaryView contestProblemSummaryView = problemSummary.get(id);
+
             if (problemSummaryInfo.getProblemId().equals(status.getProblemByProblemId().getProblemId())) {
+                contestProblemSummaryView.setTried(contestProblemSummaryView.getTried() + 1);
                 //If this problem has passed
                 if (problemSummaryInfo.getSolved())
                     return;
+
                 //If AC
                 if (status.getResult() == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
                     problemSummaryInfo.setSolved(true);
@@ -69,14 +75,20 @@ public class UserRankSummary {
                     Long timePassed = (status.getTime().getTime() - contestSummary.getTime().getTime()) / 60 / 1000;
                     problemSummaryInfo.setSolutionTime(timePassed.intValue());
                     problemSummaryInfo.setPenalty(problemSummaryInfo.getSolutionTime() + 20 * problemSummaryInfo.getTried());
+                    problemSummaryInfo.setTried(problemSummaryInfo.getTried() + 1);
 
                     this.solved++;
                     this.penalty += problemSummaryInfo.getPenalty();
+
+                    if (contestProblemSummaryView.getSolved() == 0)
+                        problemSummaryInfo.setFirstSolved(true);
+                    contestProblemSummaryView.setSolved(contestProblemSummaryView.getSolved() + 1);
                 } //If pending
                 else if (status.getResult() == Global.OnlineJudgeReturnType.OJ_JUDGING.ordinal() ||
                         status.getResult() == Global.OnlineJudgeReturnType.OJ_WAIT.ordinal() ||
                         status.getResult() == Global.OnlineJudgeReturnType.OJ_REJUDGING.ordinal()) {
                     problemSummaryInfo.setPending(true);
+                    problemSummaryInfo.setTried(problemSummaryInfo.getTried() + 1);
                 } //WA
                 else
                     problemSummaryInfo.setTried(problemSummaryInfo.getTried() + 1);
