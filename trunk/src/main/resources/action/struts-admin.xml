@@ -84,4 +84,13 @@
         </action>
         <action name="edit" class="contestStatementAdminAction" method="toEdit"/>
     </package>
+
+    <package name="statusAdmin" namespace="/admin/status" extends="admin">
+        <action name="list" class="statusAdminAction" method="toStatusList">
+            <result>/WEB-INF/views/admin/status.jsp</result>
+        </action>
+        <action name="search" class="statusAdminAction" method="toSearch"/>
+        <action name="countRejudge" class="statusAdminAction" method="toCountRejudge"/>
+        <action name="rejudge" class="statusAdminAction" method="toRejudge"/>
+    </package>
 </struts>

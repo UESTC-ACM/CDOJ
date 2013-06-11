@@ -33,6 +33,15 @@ public class StatusView extends View<Status> {
     private String returnType;
     private Integer returnTypeId;
 
+    public Integer getContestId() {
+        return contestId;
+    }
+
+    @Ignore
+    public void setContestId(Integer contestId) {
+        this.contestId = contestId;
+    }
+
     public Integer getReturnTypeId() {
         return returnTypeId;
     }
@@ -155,6 +164,8 @@ public class StatusView extends View<Status> {
     private String memoryCost;
     private Timestamp time;
 
+    private Integer contestId;
+
     /**
      * Fetch data from status entity.
      *
@@ -172,6 +183,8 @@ public class StatusView extends View<Status> {
         setUserId(status.getUserByUserId().getUserId());
         setUserName(status.getUserByUserId().getUserName());
         setProblemId(status.getProblemByProblemId().getProblemId());
+        if (status.getContestByContestId() != null)
+            setContestId(status.getContestByContestId().getContestId());
         setLanguageId(status.getLanguageByLanguageId().getLanguageId());
         setReturnTypeId(status.getResult());
         setReturnType(StringUtil.getStatusDescription(Global.OnlineJudgeReturnType.values()[status.getResult()],
