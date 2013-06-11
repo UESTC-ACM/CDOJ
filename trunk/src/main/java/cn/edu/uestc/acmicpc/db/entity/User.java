@@ -248,17 +248,6 @@ public class User implements Serializable {
         this.contestUsersByUserId = contestUsersByUserId;
     }
 
-    private Collection<Discuss> discussesByUserId;
-
-    @OneToMany(mappedBy = "userByUserId")
-    public Collection<Discuss> getDiscussesByUserId() {
-        return discussesByUserId;
-    }
-
-    public void setDiscussesByUserId(Collection<Discuss> discussesByUserId) {
-        this.discussesByUserId = discussesByUserId;
-    }
-
     private Collection<Message> messagesByUserId;
 
     @OneToMany(mappedBy = "userByReceiverId")
@@ -313,5 +302,16 @@ public class User implements Serializable {
 
     public void setDepartmentByDepartmentId(Department departmentByDepartmentId) {
         this.departmentByDepartmentId = departmentByDepartmentId;
+    }
+
+    private Collection<Article> articlesByUserId;
+
+    @OneToMany(mappedBy = "userByUserId")
+    public Collection<Article> getArticlesByUserId() {
+        return articlesByUserId;
+    }
+
+    public void setArticlesByUserId(Collection<Article> articlesByUserId) {
+        this.articlesByUserId = articlesByUserId;
     }
 }

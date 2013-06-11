@@ -57,7 +57,6 @@
                 <value>cn.edu.uestc.acmicpc.db.entity.ContestProblem</value>
                 <value>cn.edu.uestc.acmicpc.db.entity.ContestUser</value>
                 <value>cn.edu.uestc.acmicpc.db.entity.Department</value>
-                <value>cn.edu.uestc.acmicpc.db.entity.Discuss</value>
                 <value>cn.edu.uestc.acmicpc.db.entity.Language</value>
                 <value>cn.edu.uestc.acmicpc.db.entity.Message</value>
                 <value>cn.edu.uestc.acmicpc.db.entity.Problem</value>

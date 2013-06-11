@@ -205,4 +205,15 @@ public class Contest implements Serializable {
     public void setStatusesByContestId(Collection<Status> statusesByContestId) {
         this.statusesByContestId = statusesByContestId;
     }
+
+    private Collection<Article> articlesByContestId;
+
+    @OneToMany(mappedBy = "contestByContestId")
+    public Collection<Article> getArticlesByContestId() {
+        return articlesByContestId;
+    }
+
+    public void setArticlesByContestId(Collection<Article> articlesByContestId) {
+        this.articlesByContestId = articlesByContestId;
+    }
 }
