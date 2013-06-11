@@ -22,6 +22,8 @@
 
 package cn.edu.uestc.acmicpc.oj.action.status;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.*;
 import cn.edu.uestc.acmicpc.db.dto.impl.CodeDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.StatusDTO;
@@ -29,6 +31,7 @@ import cn.edu.uestc.acmicpc.db.entity.Code;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.db.entity.Language;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.*;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
@@ -43,12 +46,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 @SuppressWarnings("UnusedDeclaration")
 @LoginPermit(NeedLogin = true)
 public class SubmitAction extends BaseAction
-        implements StatusDAOAware, CodeDAOAware, ContestDAOAware, LanguageDAOAware, ProblemDAOAware {
+        implements StatusDAOAware, CodeDAOAware,
+        ContestDAOAware, LanguageDAOAware, ProblemDAOAware, StatusConditionAware {
 
     /**
      * Code
      */
     private String codeContent;
+
+    private StatusCondition statusCondition;
 
     /**
      * Language ID
@@ -122,6 +128,18 @@ public class SubmitAction extends BaseAction
             statusDTO.setCode(code);
             statusDTO.setLength(codeContent.length());
             statusDAO.add(statusDTO.getEntity());
+            statusCondition.clear();
+            statusCondition.setUserId(currentUser.getUserId());
+            Condition condition = statusCondition.getCondition();
+            Long count = statusDAO.count(condition);
+            currentUser.setTried((int) count.longValue());
+            userDAO.update(currentUser);
+            statusCondition.clear();
+            statusCondition.setProblemId(problem.getProblemId());
+            condition = statusCondition.getCondition();
+            count = statusDAO.count(condition);
+            problem.setTried((int) count.longValue());
+            problemDAO.update(problem);
             json.put("result", "ok");
         } catch (AppException e) {
             json.put("result", "error");
@@ -188,5 +206,15 @@ public class SubmitAction extends BaseAction
     @Override
     public void setLanguageDAO(ILanguageDAO languageDAO) {
         this.languageDAO = languageDAO;
+    }
+
+    @Override
+    public void setStatusCondition(StatusCondition statusCondition) {
+        this.statusCondition = statusCondition;
+    }
+
+    @Override
+    public StatusCondition getStatusCondition() {
+        return statusCondition;
     }
 }
