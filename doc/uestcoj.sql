@@ -486,8 +486,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uestcoj`;
-INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (1, 'c', 'c', '');
-INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (2, 'c++', 'cc', '');
-INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (3, 'java', 'java', '');
+INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (1, 'c', '.c', '');
+INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (2, 'c++', '.cc', '');
+INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (3, 'java', '.java', '');
 
 COMMIT;
