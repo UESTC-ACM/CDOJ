@@ -31,6 +31,7 @@ import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
@@ -103,23 +104,29 @@ public class ContestRankListAction extends BaseAction
 
             ContestView targetContest = new ContestView(contest);
 
+            //Problem information changes.
+            Condition condition;
+
             List<ContestProblemSummaryView> contestProblems = new LinkedList<>();
             for (int id = 0; id < targetContest.getProblemList().size(); id++) {
                 Integer problemId = targetContest.getProblemList().get(id);
                 Problem problem = problemDAO.get(problemId);
-                ContestProblemSummaryView targetProblem = new ContestProblemSummaryView(problem);
+                ContestProblemSummaryView targetProblem = new ContestProblemSummaryView(problem,
+                        getCurrentUser(), problemStatus.get(problem.getProblemId()));
                 targetProblem.setTried(0);
                 targetProblem.setSolved(0);
                 targetProblem.setOrder((char)('A' + id));
+
                 contestProblems.add(targetProblem);
             }
 
             ContestRankList rankList = new ContestRankList(new ContestListView(contest), contestProblems);
 
+            statusCondition.clear();
             statusCondition.setContestId(contest.getContestId());
             statusCondition.setStartTime(contest.getTime());
             statusCondition.setEndTime(contestEndTime);
-            Condition condition = statusCondition.getCondition();
+            condition = statusCondition.getCondition();
             condition.addOrder("statusId", true);
             List<Status> statusList = (List<Status>) statusDAO.findAll(condition);
 

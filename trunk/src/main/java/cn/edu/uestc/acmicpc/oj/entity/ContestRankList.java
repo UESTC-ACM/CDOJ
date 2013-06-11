@@ -87,7 +87,7 @@ public class ContestRankList {
 
         for (UserRankSummary userRankSummary: userRankSummaryList) {
             if (userRankSummary.getUserId().equals(status.getUserByUserId().getUserId())) {
-                userRankSummary.updateUserRank(status, contestSummary);
+                userRankSummary.updateUserRank(status, contestSummary, problemSummary);
                 break;
             }
         }
@@ -104,5 +104,8 @@ public class ContestRankList {
                 return (b.getSolved().compareTo(a.getSolved()));
             }
         });
+
+        for (int i = 0; i < userRankSummaryList.size(); i++)
+            userRankSummaryList.get(i).setRank(i + 1);
     }
 }

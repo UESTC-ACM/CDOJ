@@ -38,3 +38,8 @@ td {
 .table tbody td {
     text-align: center;
 }
+
+.ac { background: #e1ffb5; }
+.firstac { background: #080; color: white !important; font-weight: bold; }
+.fail { background: #ffdada; }
+.pending { background: #c8d6fa; }

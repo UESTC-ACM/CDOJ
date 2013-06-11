@@ -33,6 +33,7 @@ public class ProblemSummaryInfo {
     private char index;
     private Boolean isPending;
     private Boolean isSolved;
+    private Boolean isFirstSolved;
     private Integer penalty;
     private Integer solutionTime;
     private Integer solutionRunId;
@@ -40,11 +41,19 @@ public class ProblemSummaryInfo {
 
     public ProblemSummaryInfo(ContestProblemSummaryView contestProblemSummaryView) {
         this.tried = 0;
-        this.isPending = this.isSolved = false;
+        this.isPending = this.isSolved = this.isFirstSolved = false;
         this.penalty = 0;
         this.solutionTime = this.solutionRunId = -1;
         this.problemId = contestProblemSummaryView.getProblemId();
         this.index = contestProblemSummaryView.getOrder();
+    }
+
+    public Boolean getFirstSolved() {
+        return isFirstSolved;
+    }
+
+    public void setFirstSolved(Boolean firstSolved) {
+        isFirstSolved = firstSolved;
     }
 
     public Integer getTried() {

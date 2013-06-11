@@ -24,7 +24,9 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
+import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.base.View;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -40,6 +42,30 @@ import java.util.List;
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ContestProblemSummaryView extends View<Problem> {
+    /**
+     * State: not submitted
+     */
+    public static final int NONE = 0;
+    /**
+     * State: submitted but failed
+     */
+    public static final int FAILED = 1;
+    /**
+     * State: submitted and passed
+     */
+    public static final int PASSED = 2;
+
+    private Integer state;
+
+    public Integer getState() {
+        return state;
+    }
+
+    @Ignore
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
     private Integer problemId;
     private Integer solved;
     private Integer tried;
@@ -60,8 +86,15 @@ public class ContestProblemSummaryView extends View<Problem> {
      * @param problem specific problem entity
      * @throws AppException
      */
-    public ContestProblemSummaryView(Problem problem) throws AppException {
+    public ContestProblemSummaryView(Problem problem,  User currentUser, Global.AuthorStatusType type)
+            throws AppException {
         super(problem);
+
+        if (currentUser == null) {
+            setState(NONE);
+        } else {
+            setState(type == null ? NONE : type.ordinal());
+        }
     }
 
     public Integer getProblemId() {
