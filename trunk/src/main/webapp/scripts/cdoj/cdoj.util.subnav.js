@@ -28,16 +28,17 @@
  */
 
 $(document).ready(function () {
-    // fix sub nav on scroll
-    var $win = $(window)
-        , $nav = $('.subnav')
-        , navTop = $('.subnav').length && $('.subnav').offset().top - 40
-        , isFixed = 0;
+    if (!Sys.ie678) {
+        // fix sub nav on scroll
+        var $win = $(window)
+            , $nav = $('.subnav')
+            , navTop = $('.subnav').length && $('.subnav').offset().top - 40
+            , isFixed = 0;
 
-    processScroll();
+        processScroll();
 
-    $win.on('scroll', processScroll);
-
+        $win.on('scroll', processScroll);
+    }
     function processScroll() {
         var scrollTop = $win.scrollTop();
         if (scrollTop >= navTop && !isFixed) {

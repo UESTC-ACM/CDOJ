@@ -254,7 +254,8 @@ ul.userStates {
 
 .subnav-fixed {
     background-color: white; /* Old browsers */
-    margin: 0 auto 10px auto;
+    margin: 0 auto;
+    padding: 10px 0;
     width: 1033px;
     position: fixed;
     top: 40px;

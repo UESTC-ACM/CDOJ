@@ -15,19 +15,17 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ICodeDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
-import cn.edu.uestc.acmicpc.db.entity.Code;
-import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
-import cn.edu.uestc.acmicpc.db.entity.Contest;
-import cn.edu.uestc.acmicpc.db.entity.Status;
-import cn.edu.uestc.acmicpc.db.view.impl.CodeView;
-import cn.edu.uestc.acmicpc.db.view.impl.ContestView;
-import cn.edu.uestc.acmicpc.db.view.impl.StatusView;
+import cn.edu.uestc.acmicpc.db.entity.*;
+import cn.edu.uestc.acmicpc.db.view.impl.*;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.CodeDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.oj.entity.ContestRankList;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
@@ -35,7 +33,9 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -44,8 +44,8 @@ import java.util.List;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(NeedLogin = false)
-public class ContestStatusAction extends BaseAction
-        implements StatusConditionAware, StatusDAOAware, ContestDAOAware {
+public class ContestRankListAction extends BaseAction
+        implements StatusConditionAware, StatusDAOAware, ContestDAOAware, ProblemDAOAware {
 
     private Integer targetContestId;
 
@@ -66,7 +66,7 @@ public class ContestStatusAction extends BaseAction
     private StatusCondition statusCondition;
 
     /**
-     * Search action.
+     * Get contest rank list action.
      * <p/>
      * Find all records by conditions and return them as a list in JSON, and the condition
      * set will set in JSON named "condition".
@@ -87,7 +87,7 @@ public class ContestStatusAction extends BaseAction
      */
     @SuppressWarnings("unchecked")
     @SkipValidation
-    public String toSearch() {
+    public String toRankList() {
         try {
             if (targetContestId == null)
                 throw new AppException("Contest Id is empty!");
@@ -99,33 +99,35 @@ public class ContestStatusAction extends BaseAction
             if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
                 if (!contest.getIsVisible())
                     throw new AppException("Contest doesn't exist");
+            Timestamp contestEndTime = new Timestamp(contest.getTime().getTime() + contest.getLength() * 1000);
 
-            ContestView contestView = new ContestView(contest);
+            ContestView targetContest = new ContestView(contest);
+
+            List<ContestProblemSummaryView> contestProblems = new LinkedList<>();
+            for (int id = 0; id < targetContest.getProblemList().size(); id++) {
+                Integer problemId = targetContest.getProblemList().get(id);
+                Problem problem = problemDAO.get(problemId);
+                ContestProblemSummaryView targetProblem = new ContestProblemSummaryView(problem);
+                targetProblem.setTried(0);
+                targetProblem.setSolved(0);
+                targetProblem.setOrder((char)('A' + id));
+                contestProblems.add(targetProblem);
+            }
+
+            ContestRankList rankList = new ContestRankList(new ContestListView(contest), contestProblems);
 
             statusCondition.setContestId(contest.getContestId());
-            //Contest is still running
-            if (contestView.getStatus().equals("Running")) {
-                if (currentUser != null && currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
-                    statusCondition.setUserId(currentUser.getUserId());
-            }
-
+            statusCondition.setStartTime(contest.getTime());
+            statusCondition.setEndTime(contestEndTime);
             Condition condition = statusCondition.getCondition();
-            Long count = statusDAO.count(statusCondition.getCondition());
-            PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
-            condition.currentPage = pageInfo.getCurrentPage();
-            condition.countPerPage = RECORD_PER_PAGE;
-            condition.addOrder("statusId", false);
+            condition.addOrder("statusId", true);
             List<Status> statusList = (List<Status>) statusDAO.findAll(condition);
-            List<StatusView> statusViewList = new ArrayList<>();
-            for (Status status : statusList) {
-                StatusView statusView = new StatusView(status);
-                statusView.setProblemId(contestView.getProblemList().indexOf(statusView.getProblemId()));
-                statusViewList.add(statusView);
-            }
-            json.put("pageInfo", pageInfo.getHtmlString());
+
+            for (Status status : statusList)
+                rankList.updateRankList(status);
+
+            json.put("rankList", rankList);
             json.put("result", "ok");
-            json.put("condition", statusCondition);
-            json.put("statusList", statusViewList);
         } catch (AppException e) {
             json.put("result", "error");
             json.put("error_msg", e.getMessage());
@@ -158,5 +160,13 @@ public class ContestStatusAction extends BaseAction
     @Override
     public void setContestDAO(IContestDAO contestDAO) {
         this.contestDAO = contestDAO;
+    }
+
+    @Autowired
+    private IProblemDAO problemDAO;
+
+    @Override
+    public void setProblemDAO(IProblemDAO problemDAO) {
+        this.problemDAO = problemDAO;
     }
 }

@@ -56,7 +56,7 @@ function getUserName(userName) {
 }
 
 function getProblemId(problemId) {
-    var html = $('<td><a href="/problem/show/' + problemId + '">' + problemId + '</td>');
+    var html = $('<td><a class="contest-problem-href" href="#" value="' + String.fromCharCode('A'.charCodeAt(0) + problemId) + '">' + String.fromCharCode('A'.charCodeAt(0) + problemId) + '</td>');
     return html;
 }
 
@@ -113,6 +113,7 @@ function getTime(time) {
 function getHTML(value) {
     var html = $('<tr></tr>');
     html.append(getStatusId(value.statusId));
+    html.append(getUserName(value.userName));
     html.append(getProblemId(value.problemId));
     html.append(getJudgeResponse(value.returnType, value.returnTypeId, value.statusId, value.userName));
     html.append(getLength(value.length, value.language, value.statusId, value.userName));
@@ -169,6 +170,14 @@ function blindCompileInfo() {
     });
 }
 
+function blindProblemHref() {
+    $('.contest-problem-href').live('click', function(){
+        var target = $(this).attr('value');
+        $('#TabMenu').find('a[href="#tab-contest-problem-' + target + '"]').tab('show');
+        return false;
+    });
+}
+
 function refreshStatusList(condition) {
     if (condition == null)
         condition = currentCondition;
@@ -202,6 +211,7 @@ function refreshStatusList(condition) {
 
         blindCodeHref();
         blindCompileInfo();
+        blindProblemHref();
 
         // format time style
         $('.cdoj-time').formatTimeStyle();

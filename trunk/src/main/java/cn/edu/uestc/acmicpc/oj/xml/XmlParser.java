@@ -32,12 +32,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
- * 简单的Xml解析器，将Xml文件的内容封装到列表中，以便其它模块调用。
- *
- * @author fish
- */
-
-/**
  * Simple xml parser in order to mapping the xml file into a {@link XmlNode} object.
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
