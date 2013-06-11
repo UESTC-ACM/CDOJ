@@ -44,6 +44,7 @@ public class UserRankSummary {
     private Integer userId;
     private String userName;
     private String nickName;
+    private String email;
     private List<ProblemSummaryInfo> problemSummaryInfoList;
 
     public UserRankSummary(User user, List<ContestProblemSummaryView> problemSummary) {
@@ -51,6 +52,7 @@ public class UserRankSummary {
         this.userId = user.getUserId();
         this.userName = user.getUserName();
         this.nickName = user.getNickName();
+        this.email = user.getEmail();
         problemSummaryInfoList = new LinkedList<>();
         for (ContestProblemSummaryView contestProblemSummaryView : problemSummary) {
             problemSummaryInfoList.add(new ProblemSummaryInfo(contestProblemSummaryView));
@@ -102,6 +104,14 @@ public class UserRankSummary {
                 return;
             }
         }
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Integer getUserId() {

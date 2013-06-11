@@ -117,20 +117,29 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
             if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
                 if (!contest.getIsVisible())
                     throw new AppException("Contest doesn't exist");
+
+            targetContest = new ContestView(contest);
             Timestamp contestEndTime = new Timestamp(contest.getTime().getTime() + contest.getLength() * 1000);
+
+            //Sync time left
+            json.put("timeLeft", (contestEndTime.getTime() - new Date().getTime()) / 1000);
+
+            if (contest.getLength() == 5 * 60 * 60) {
+                if (targetContest.getStatus().equals("Running"))
+                    contestEndTime = new Timestamp(contest.getTime().getTime() + 4 * 60 * 60 * 1000);
+            }
 
             //Problem information changes.
             Condition condition;
             Long count;
 
-            targetContest = new ContestView(contest);
             List<ContestProblemSummaryView> contestProblems = new LinkedList<>();
             for (int id = 0; id < targetContest.getProblemList().size(); id++) {
                 Integer problemId = targetContest.getProblemList().get(id);
                 Problem problem = problemDAO.get(problemId);
                 ContestProblemSummaryView targetProblem = new ContestProblemSummaryView(problem,
                         getCurrentUser(), problemStatus.get(problem.getProblemId()));
-                targetProblem.setOrder((char)('A' + id));
+                targetProblem.setOrder((char) ('A' + id));
 
                 //get solved
                 statusCondition.clear();
@@ -157,9 +166,6 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
             }
             json.put("contestProblems", contestProblems);
 
-            //Sync time left
-            json.put("timeLeft", (contestEndTime.getTime() - new Date().getTime()) / 1000);
-
             //Clarification
 
             json.put("result", "ok");
@@ -176,6 +182,7 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
 
     /**
      * Goto contest page.
+     *
      * @return <strong>SUCCESS Signal</strong>
      */
     public String toContest() {
@@ -191,17 +198,21 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
                 if (!contest.getIsVisible())
                     throw new AppException("Contest doesn't exist");
 
+            targetContest = new ContestView(contest);
             Timestamp contestEndTime = new Timestamp(contest.getTime().getTime() + contest.getLength() * 1000);
+            if (contest.getLength() == 5 * 60 * 60) {
+                if (targetContest.getStatus().equals("Running"))
+                    contestEndTime = new Timestamp(contest.getTime().getTime() + 4 * 60 * 60 * 1000);
+            }
             Condition condition;
             Long count;
 
-            targetContest = new ContestView(contest);
             contestProblems = new LinkedList<>();
             for (int id = 0; id < targetContest.getProblemList().size(); id++) {
                 Integer problemId = targetContest.getProblemList().get(id);
                 Problem problem = problemDAO.get(problemId);
                 ContestProblemView targetProblem = new ContestProblemView(problem);
-                targetProblem.setOrder((char)('A' + id));
+                targetProblem.setOrder((char) ('A' + id));
 
                 //get solved
                 statusCondition.clear();
@@ -242,7 +253,7 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
         Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
         try {
             if (targetContestId == null)
-            throw new AppException("Contest Id is empty!");
+                throw new AppException("Contest Id is empty!");
 
             Contest contest = contestDAO.get(targetContestId);
             if (contest == null)

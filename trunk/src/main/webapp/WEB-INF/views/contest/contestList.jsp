@@ -46,6 +46,20 @@
 
 <div id="TabContent" class="tab-content">
     <div class="tab-pane fade active in" id="tab-contest-list">
+
+        <div class="pull-right span6" style="clear: both;">
+            <table class="table table-bordered">
+                <tr>
+                    <td class="contest-state-running">Running</td>
+                    <td class="contest-state-ended">Ended</td>
+                    <td class="contest-state-pending">Pending</td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="clear: both;">
+        </div>
+
         <div id="pageInfo">
         </div>
 

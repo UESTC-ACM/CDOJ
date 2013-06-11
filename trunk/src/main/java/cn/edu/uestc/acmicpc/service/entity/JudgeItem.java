@@ -124,6 +124,8 @@ public class JudgeItem implements CompileInfoDAOAware, StatusDAOAware, UserDAOAw
                 condition.addProjection(Projections.countDistinct("problemByProblemId"));
                 Long count = statusDAO.customCount(condition);
                 user.setSolved((int) count.longValue());
+                userDAO.addOrUpdate(user);
+
                 statusCondition.clear();
                 Problem problem = status.getProblemByProblemId();
                 statusCondition.setProblemId(problem.getProblemId());
@@ -132,6 +134,8 @@ public class JudgeItem implements CompileInfoDAOAware, StatusDAOAware, UserDAOAw
                 condition.addProjection(Projections.countDistinct("userByUserId"));
                 count = statusDAO.customCount(condition);
                 problem.setSolved((int) count.longValue());
+                problemDAO.addOrUpdate(problem);
+
             } catch (Exception e) {
                 System.out.println(e.toString());
             }

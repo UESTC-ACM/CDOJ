@@ -45,5 +45,12 @@
             <param name="targetUserName">{1}</param>
             <result>/WEB-INF/views/user/userCenter.jsp</result>
         </action>
+
+        <action name="list" class="userListAction" method="toUserList">
+            <result>/WEB-INF/views/user/userList.jsp</result>
+        </action>
+
+        <action name="search" class="userListAction" method="toSearch"/>
     </package>
+
 </struts>
