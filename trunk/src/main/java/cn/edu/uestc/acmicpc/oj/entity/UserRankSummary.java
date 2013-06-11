@@ -57,7 +57,10 @@ public class UserRankSummary {
         }
     }
 
-    public void updateUserRank(Status status, ContestListView contestSummary, List<ContestProblemSummaryView> problemSummary) {
+    public void updateUserRank(Status status,
+                               ContestListView contestSummary,
+                               List<ContestProblemSummaryView> problemSummary,
+                               Boolean visible) {
         for (int id = 0; id < problemSummary.size(); id++) {
             ProblemSummaryInfo problemSummaryInfo = problemSummaryInfoList.get(id);
             ContestProblemSummaryView contestProblemSummaryView = problemSummary.get(id);
@@ -68,8 +71,12 @@ public class UserRankSummary {
                 if (problemSummaryInfo.getSolved())
                     return;
 
-                //If AC
-                if (status.getResult() == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
+                //After 4:00:00
+                if (visible != null && !visible) {
+                    problemSummaryInfo.setPending(true);
+                    problemSummaryInfo.setTried(problemSummaryInfo.getTried() + 1);
+                } //If AC
+                else if (status.getResult() == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
                     problemSummaryInfo.setSolved(true);
                     problemSummaryInfo.setSolutionRunId(status.getStatusId());
                     Long timePassed = (status.getTime().getTime() - contestSummary.getTime().getTime()) / 60 / 1000;
