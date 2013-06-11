@@ -51,8 +51,6 @@
     </bean>
     <bean id="departmentDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.DepartmentDAO" parent="baseDAO">
     </bean>
-    <bean id="discussDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.DiscussDAO" parent="baseDAO">
-    </bean>
     <bean id="languageDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.LanguageDAO" parent="baseDAO">
     </bean>
     <bean id="messageDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.MessageDAO" parent="baseDAO">

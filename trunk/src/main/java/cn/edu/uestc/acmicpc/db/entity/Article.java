@@ -25,6 +25,7 @@ package cn.edu.uestc.acmicpc.db.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Collection;
 
 /**
  * Article information.
@@ -187,5 +188,64 @@ public class Article implements Serializable {
         result = 31 * result + (isNotice ? 1 : 0);
         result = 31 * result + (visible ? 1 : 0);
         return result;
+    }
+
+    private User userByUserId;
+
+    @ManyToOne
+    @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = true)
+    public User getUserByUserId() {
+        return userByUserId;
+    }
+
+    public void setUserByUserId(User userByUserId) {
+        this.userByUserId = userByUserId;
+    }
+
+    private Article articleByParentId;
+
+    @ManyToOne
+    @JoinColumn(name = "parentId", referencedColumnName = "articleId", nullable = true)
+    public Article getArticleByParentId() {
+        return articleByParentId;
+    }
+
+    public void setArticleByParentId(Article articleByParentId) {
+        this.articleByParentId = articleByParentId;
+    }
+
+    private Problem problemByProblemId;
+
+    @ManyToOne
+    @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = true)
+    public Problem getProblemByProblemId() {
+        return problemByProblemId;
+    }
+
+    public void setProblemByProblemId(Problem problemByProblemId) {
+        this.problemByProblemId = problemByProblemId;
+    }
+
+    private Contest contestByContestId;
+
+    @ManyToOne
+    @JoinColumn(name = "contestId", referencedColumnName = "contestId", nullable = true)
+    public Contest getContestByContestId() {
+        return contestByContestId;
+    }
+
+    public void setContestByContestId(Contest contestByContestId) {
+        this.contestByContestId = contestByContestId;
+    }
+
+    private Collection<Article> articlesByParentId;
+
+    @OneToMany(mappedBy = "articleByParentId")
+    public Collection<Article> getArticlesByParentId() {
+        return articlesByParentId;
+    }
+
+    public void setArticlesByParentId(Collection<Article> articlesByParentId) {
+        this.articlesByParentId = articlesByParentId;
     }
 }

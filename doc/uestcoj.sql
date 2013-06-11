@@ -114,22 +114,22 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`article` (
   INDEX `FK_problemId_on_problem_idx` (`problemId` ASC) ,
   INDEX `FK_contestId_on_contest_idx` (`contestId` ASC) ,
   INDEX `FK_userId_on_user_idx` (`uesrId` ASC) ,
-  CONSTRAINT `FK_parentId_on_article`
+  CONSTRAINT `FK_article_parentId_on_article`
     FOREIGN KEY (`parentId` )
     REFERENCES `uestcoj`.`article` (`articleId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `FK_problemId_on_problem`
+  CONSTRAINT `FK_article_problemId_on_problem`
     FOREIGN KEY (`problemId` )
     REFERENCES `uestcoj`.`problem` (`problemId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `FK_contestId_on_contest`
+  CONSTRAINT `FK_article_contestId_on_contest`
     FOREIGN KEY (`contestId` )
     REFERENCES `uestcoj`.`contest` (`contestId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `FK_userId_on_user`
+  CONSTRAINT `FK_article_userId_on_user`
     FOREIGN KEY (`uesrId` )
     REFERENCES `uestcoj`.`user` (`userId` )
     ON DELETE NO ACTION
@@ -376,7 +376,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`userSerialKey` (
   PRIMARY KEY (`userSerialKeyId`) ,
   UNIQUE INDEX `userSerialKeyId_UNIQUE` (`userSerialKeyId` ASC) ,
   INDEX `FK_userId_on_user_idx` (`userId` ASC) ,
-  CONSTRAINT `FK_userId_on_user`
+  CONSTRAINT `FK_userSerialKey_userId_on_user`
     FOREIGN KEY (`userId` )
     REFERENCES `uestcoj`.`user` (`userId` )
     ON DELETE CASCADE
@@ -486,8 +486,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uestcoj`;
-INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (1, 'c', 'c', NULL);
-INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (2, 'c++', 'cc', NULL);
-INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (3, 'java', 'java', NULL);
+INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (1, 'c', 'c', '');
+INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (2, 'c++', 'cc', '');
+INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (3, 'java', 'java', '');
 
 COMMIT;
