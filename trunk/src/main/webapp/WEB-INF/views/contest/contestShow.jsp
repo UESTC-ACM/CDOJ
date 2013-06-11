@@ -35,6 +35,7 @@
     <script src="<s:url value="/scripts/marked.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.markdown.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.submit.js"/>"></script>
+    <script src="<s:url value="/scripts/cdoj/cdoj.contest.contestShow.js"/>"></script>
     <script src="<s:url value="/plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"/>"></script>
     <title>Contest</title>
 </head>
@@ -82,7 +83,7 @@
                 <s:iterator value="contestProblems" id="problem">
                     <li>
                         <a href="#tab-contest-problem-<s:property value="#problem.order"/>" data-toggle="tab">
-                            <s:property value="#problem.order"/> - <s:property value="#problem.title"/>
+                            <s:property value="#problem.order"/> - ${problem.title}
                         </a>
                     </li>
                 </s:iterator>
@@ -133,7 +134,7 @@
                                     <span class="label label-important tags pull-right">SPJ</span>
                                 </s:if>
                                 <a class="pull-left problemHref" href="#" target="<s:property value="#problem.order"/>">
-                                    <s:property value="#problem.title"/>
+                                    ${problem.title}
                                 </a>
                             </td>
                             <td><s:property value="#problem.solved"/> / <s:property value="#problem.tried"/></td>
@@ -149,7 +150,7 @@
                 <!--TODO add passed/tried flag before problem title-->
                 <div class="row problem">
                     <div class="span12" id="problem_title">
-                        <h1 class="pull-left">${problem.title}</h1>
+                        <h1 class="pull-left"><s:property value="#problem.order"/> - ${problem.title}</h1>
                         <s:if test="targetProblem.isSpj == true">
                             <span class="label label-important tags" style="margin: 12px 0 0 8px;">SPJ</span>
                         </s:if>
@@ -253,8 +254,8 @@
                 <div id="problem-selector" class="pull-left">
                     <select id="problemId" class="span4">
                         <s:iterator value="contestProblems" id="problem" status="status">
-                            <option value="<s:property value="#status.index"/>">
-                                <s:property value="#problem.order"/> - <s:property value="#problem.title"/>
+                            <option value="<s:property value="#problem.problemId"/>">
+                                <s:property value="#problem.order"/> - ${problem.title}
                             </option>
                         </s:iterator>
                     </select>
@@ -278,6 +279,7 @@
                 <thead>
                 <tr>
                     <th style="width: 60px;" class="orderButton" field="id">Id</th>
+                    <th>User</th>
                     <th style="width: 60px;" class="orderButton" field="problemByProblemId">Problem</th>
                     <th style="width: 260px;" class="orderButton" field="result">Judge's Response</th>
                     <th style="width: 100px;" class="orderButton" field="length">Length</th>
@@ -297,6 +299,6 @@
     </div>
 </div>
 
-<script src="<s:url value="/scripts/cdoj/cdoj.contest.contestShow.js"/>"></script>
+<page:applyDecorator name="body" page="/WEB-INF/views/status/modal.jsp"/>
 </body>
 </html>

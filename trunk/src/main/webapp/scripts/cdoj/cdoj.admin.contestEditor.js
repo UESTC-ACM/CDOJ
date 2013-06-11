@@ -191,6 +191,7 @@ $(document).ready(function () {
                         window.location.href= '/admin/contest/list';
                     },
                     onFail: function(){
+                        alert(data[0]);
                         $('html,body').animate({scrollTop: '0px'}, 400);
                     }
                 });
