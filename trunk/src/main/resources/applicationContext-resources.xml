@@ -51,5 +51,7 @@
         <property name="partitionCount" value="${bonecp.partitionCount}"/>
         <property name="acquireIncrement" value="${bonecp.acquireIncrement}"/>
         <property name="statementsCacheSize" value="${bonecp.statementsCacheSize}"/>
+        <property name="idleMaxAgeInSeconds" value="${bonecp.idleMaxAge}"/>
+        <property name="idleConnectionTestPeriodInSeconds" value="${bonecp.idleConnectionTestPeriod}"/>
     </bean>
 </beans>

@@ -28,7 +28,7 @@
     <packaging>war</packaging>
     <version>1.0</version>
     <name>UESTC Online Judge</name>
-    <url>http://cdoj.googlecode.com/</url>
+    <url>https://gitcafe.com/UESTC_ACM/cdoj</url>
 
     <properties>
         <!-- SSH -->
