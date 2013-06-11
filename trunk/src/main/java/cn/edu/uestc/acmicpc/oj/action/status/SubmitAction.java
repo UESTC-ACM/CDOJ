@@ -54,6 +54,7 @@ public class SubmitAction extends BaseAction
      */
     private String codeContent;
 
+    @Autowired
     private StatusCondition statusCondition;
 
     /**
