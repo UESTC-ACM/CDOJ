@@ -32,6 +32,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <script src="http://d3js.org/d3.v3.js"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.user.center.js"/>"></script>
     <title><s:property value="targetUser.userName"/></title>
 </head>
