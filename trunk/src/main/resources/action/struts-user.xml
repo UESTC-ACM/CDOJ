@@ -45,6 +45,9 @@
             <param name="targetUserName">{1}</param>
             <result>/WEB-INF/views/user/userCenter.jsp</result>
         </action>
+        <action name="problemStatus/*" class="userCenterAction" method="toUserProblemState">
+            <param name="targetUserName">{1}</param>
+        </action>
 
         <action name="list" class="userListAction" method="toUserList">
             <result>/WEB-INF/views/user/userList.jsp</result>

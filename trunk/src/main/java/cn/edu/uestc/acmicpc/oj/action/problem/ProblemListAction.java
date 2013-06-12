@@ -165,21 +165,21 @@ public class ProblemListAction extends BaseAction
             if (currentUser != null) {
                 statusCondition.clear();
                 statusCondition.setUserId(currentUser.getUserId());
-                statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+                statusCondition.setResultId(null);
                 Condition condition = statusCondition.getCondition();
                 condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
                 List<Integer> results = (List<Integer>) statusDAO.findAll(condition);
                 for (Integer result : results)
-                    problemStatus.put(result, Global.AuthorStatusType.PASS);
+                    problemStatus.put(result, Global.AuthorStatusType.FAIL);
 
                 statusCondition.clear();
                 statusCondition.setUserId(currentUser.getUserId());
-                statusCondition.setResultId(null);
+                statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
                 condition = statusCondition.getCondition();
                 condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
                 results = (List<Integer>) statusDAO.findAll(condition);
                 for (Integer result : results)
-                    problemStatus.put(result, Global.AuthorStatusType.FAIL);
+                    problemStatus.put(result, Global.AuthorStatusType.PASS);
             }
         } catch (AppException ignored) {
         }
