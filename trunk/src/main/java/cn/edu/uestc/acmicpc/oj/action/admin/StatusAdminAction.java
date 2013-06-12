@@ -125,7 +125,6 @@ public class StatusAdminAction extends BaseAction
      */
     public String toCountRejudge() {
         try {
-            Condition condition = statusCondition.getCondition();
             Long count = statusDAO.count(statusCondition.getCondition());
 
             json.put("result", "ok");

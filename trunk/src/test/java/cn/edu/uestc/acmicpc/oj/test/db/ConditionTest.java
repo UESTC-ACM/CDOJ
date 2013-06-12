@@ -22,10 +22,12 @@
 
 package cn.edu.uestc.acmicpc.oj.test.db;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.User;
@@ -33,10 +35,16 @@ import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
+import org.hibernate.mapping.Column;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -57,7 +65,7 @@ import java.util.List;
 public class ConditionTest
         implements ProblemDAOAware, UserDAOAware,
         UserConditionAware, ProblemConditionAware,
-        StatusConditionAware {
+        StatusConditionAware, StatusDAOAware {
     /**
      * DAOs for database query.
      */
@@ -175,5 +183,27 @@ public class ConditionTest
     @Override
     public StatusCondition getStatusCondition() {
         return statusCondition;
+    }
+
+    @Ignore
+    @Test
+    public void testProjections() throws AppException, FieldNotUniqueException {
+        User currentUser = userDAO.getEntityByUniqueField("userName", "UESTC_Izayoi");
+        statusCondition.clear();
+        statusCondition.setUserId(currentUser.getUserId());
+        statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+        Condition condition = statusCondition.getCondition();
+        condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
+        List<Integer> results = (List<Integer>) statusDAO.findAll(condition);
+        for (Integer result : results)
+            System.out.println(result);
+    }
+
+    @Autowired
+    private IStatusDAO statusDAO;
+
+    @Override
+    public void setStatusDAO(IStatusDAO statusDAO) {
+        this.statusDAO = statusDAO;
     }
 }

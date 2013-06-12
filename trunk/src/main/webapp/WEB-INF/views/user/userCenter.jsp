@@ -32,11 +32,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <script src="<s:url value="/scripts/cdoj/cdoj.user.center.js"/>"></script>
     <title><s:property value="targetUser.userName"/></title>
 </head>
 <body>
 <div id="userInfoWrap" class="row">
-    <div id="userInfoLeft" class="span7">
+    <div id="userInfoLeft" class="span9">
         <div id="userInfo">
             <dl class="dl-userInfo">
                 <dt>Nick name</dt>
@@ -57,7 +58,7 @@
     <div id="userInfoRight" class="span3">
         <div id="userInfoSummary">
             <img id="userAvatar-large" email="<s:property value="targetUser.email"/>" type="avatar" size="100"/>
-            <span class="userName-type<s:property value="targetUser.type"/>"><h4><s:property value="targetUser.userName"/></h4></span>
+            <span class="userName-type<s:property value="targetUser.type"/>"><h4 id="currentUser" value="<s:property value="targetUser.userName"/>"><s:property value="targetUser.userName"/></h4></span>
             <ul class="userStates">
                 <li>
                     <a href="#"><strong><s:property value="targetUser.tried"/></strong>Tried</a>
@@ -70,7 +71,8 @@
     </div>
     <div class="span10">
         <div id="userSolvedList">
-
+            <div id="chart">
+            </div>
         </div>
     </div>
 </div>
