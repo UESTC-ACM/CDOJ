@@ -21,11 +21,22 @@
 
 package cn.edu.uestc.acmicpc.oj.action.user;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
+import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
+import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.hibernate.criterion.Projections;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * Action for user center
@@ -34,7 +45,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 @SuppressWarnings("UnusedDeclaration")
 @LoginPermit(NeedLogin = false)
-public class UserCenterAction extends BaseAction {
+public class UserCenterAction extends BaseAction implements StatusDAOAware, StatusConditionAware {
 
     private String targetUserName;
 
@@ -77,4 +88,63 @@ public class UserCenterAction extends BaseAction {
         return SUCCESS;
     }
 
+    public String toUserProblemState() {
+        try {
+            if (targetUserName == null)
+                throw new AppException("User name is empty!");
+            User currentUser = userDAO.getEntityByUniqueField("userName", targetUserName);
+            if (currentUser == null)
+                throw new AppException("No such user!");
+
+            statusCondition.clear();
+            statusCondition.setUserId(currentUser.getUserId());
+            statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+            Condition condition = statusCondition.getCondition();
+            condition.addProjection(Projections.groupProperty("problemByProblemId"));
+
+            List<Problem> results = (List<Problem>) statusDAO.findAll(condition);
+            for (Problem result : results)
+                problemStatus.put(result.getProblemId(), Global.AuthorStatusType.PASS);
+
+            statusCondition.clear();
+            statusCondition.setUserId(currentUser.getUserId());
+            statusCondition.setResultId(null);
+            condition = statusCondition.getCondition();
+            condition.addProjection(Projections.groupProperty("problemByProblemId"));
+            results = (List<Problem>) statusDAO.findAll(condition);
+            for (Problem result : results)
+                if (!problemStatus.containsKey(result.getProblemId()))
+                    problemStatus.put(result.getProblemId(), Global.AuthorStatusType.FAIL);
+
+            json.put("result", "ok");
+        } catch (AppException e) {
+            json.put("result", "error");
+        } catch (Exception e) {
+            json.put("result", "error");
+            e.printStackTrace();
+            json.put("error_msg", "Unknown exception occurred.");
+        }
+        return JSON;
+
+    }
+
+    @Autowired
+    private StatusCondition statusCondition;
+    @Autowired
+    private IStatusDAO statusDAO;
+
+    @Override
+    public void setStatusCondition(StatusCondition statusCondition) {
+        this.statusCondition = statusCondition;
+    }
+
+    @Override
+    public StatusCondition getStatusCondition() {
+        return statusCondition;
+    }
+
+    @Override
+    public void setStatusDAO(IStatusDAO statusDAO) {
+        this.statusDAO = statusDAO;
+    }
 }
