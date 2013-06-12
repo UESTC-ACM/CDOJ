@@ -266,17 +266,7 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
             Timestamp contestEndTime = new Timestamp(contest.getTime().getTime() + contest.getLength() * 1000);
 
             if (currentUser != null) {
-                statusCondition.clear();
-                statusCondition.setStartTime(contest.getTime());
-                statusCondition.setEndTime(contestEndTime);
-                statusCondition.setContestId(contest.getContestId());
-                statusCondition.setUserId(currentUser.getUserId());
-                statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-                Condition condition = statusCondition.getCondition();
-                condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
-                List<Integer> results = (List<Integer>) statusDAO.findAll(condition);
-                for (Integer result : results)
-                    problemStatus.put(result, Global.AuthorStatusType.PASS);
+                problemStatus.clear();
 
                 statusCondition.clear();
                 statusCondition.setStartTime(contest.getTime());
@@ -284,11 +274,24 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
                 statusCondition.setContestId(contest.getContestId());
                 statusCondition.setUserId(currentUser.getUserId());
                 statusCondition.setResultId(null);
+                Condition condition = statusCondition.getCondition();
+                condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
+                List<Integer> results = (List<Integer>) statusDAO.findAll(condition);
+                for (Integer result : results)
+                    if (!problemStatus.containsKey(result))
+                        problemStatus.put(result, Global.AuthorStatusType.FAIL);
+
+                statusCondition.clear();
+                statusCondition.setStartTime(contest.getTime());
+                statusCondition.setEndTime(contestEndTime);
+                statusCondition.setContestId(contest.getContestId());
+                statusCondition.setUserId(currentUser.getUserId());
+                statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
                 condition = statusCondition.getCondition();
                 condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
                 results = (List<Integer>) statusDAO.findAll(condition);
                 for (Integer result : results)
-                    problemStatus.put(result, Global.AuthorStatusType.FAIL);
+                    problemStatus.put(result, Global.AuthorStatusType.PASS);
             }
         } catch (AppException ignored) {
         }

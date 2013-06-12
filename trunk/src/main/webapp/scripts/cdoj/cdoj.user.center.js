@@ -31,4 +31,7 @@ var currentUser;
 $(document).ready(function () {
     currentUser = $('#currentUser').attr('value');
 
+    $.post('/user/problemStatus/' + currentUser, function(data){
+        console.log(data);
+    })
 });

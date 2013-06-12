@@ -22,12 +22,17 @@
 package cn.edu.uestc.acmicpc.oj.action.user;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
+import cn.edu.uestc.acmicpc.db.dao.impl.ProblemDAO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
+import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
+import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.Global;
@@ -45,7 +50,9 @@ import java.util.List;
  */
 @SuppressWarnings("UnusedDeclaration")
 @LoginPermit(NeedLogin = false)
-public class UserCenterAction extends BaseAction implements StatusDAOAware, StatusConditionAware {
+public class UserCenterAction extends BaseAction
+        implements StatusDAOAware,
+        StatusConditionAware, ProblemDAOAware {
 
     private String targetUserName;
 
@@ -88,6 +95,25 @@ public class UserCenterAction extends BaseAction implements StatusDAOAware, Stat
         return SUCCESS;
     }
 
+    /**
+     * Get user's problem status list.
+     * <p/>
+     * Find all problem that target user passed or failed.
+     * <p/>
+     * <strong>JSON output</strong>:
+     * <ul>
+     * <li>
+     * For success: {"result":"ok", "problemStatus":<strong>ProblemStatus object</strong>,
+     * "problemCount":<strong>Tot problems</strong>}
+     * </li>
+     * <li>
+     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+     * </li>
+     * </ul>
+     *
+     * @return <strong>JSON</strong> signal
+     */
+    @SuppressWarnings("unchecked")
     public String toUserProblemState() {
         try {
             if (targetUserName == null)
@@ -98,25 +124,25 @@ public class UserCenterAction extends BaseAction implements StatusDAOAware, Stat
 
             statusCondition.clear();
             statusCondition.setUserId(currentUser.getUserId());
-            statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+            statusCondition.setResultId(null);
             Condition condition = statusCondition.getCondition();
-            condition.addProjection(Projections.groupProperty("problemByProblemId"));
-
-            List<Problem> results = (List<Problem>) statusDAO.findAll(condition);
-            for (Problem result : results)
-                problemStatus.put(result.getProblemId(), Global.AuthorStatusType.PASS);
+            condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
+            List<Integer> results = (List<Integer>) statusDAO.findAll(condition);
+            for (Integer result : results)
+                problemStatus.put(result, Global.AuthorStatusType.FAIL);
 
             statusCondition.clear();
             statusCondition.setUserId(currentUser.getUserId());
-            statusCondition.setResultId(null);
+            statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
             condition = statusCondition.getCondition();
-            condition.addProjection(Projections.groupProperty("problemByProblemId"));
-            results = (List<Problem>) statusDAO.findAll(condition);
-            for (Problem result : results)
-                if (!problemStatus.containsKey(result.getProblemId()))
-                    problemStatus.put(result.getProblemId(), Global.AuthorStatusType.FAIL);
+            condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
+            results = (List<Integer>) statusDAO.findAll(condition);
+            for (Integer result : results)
+                problemStatus.put(result, Global.AuthorStatusType.PASS);
 
             json.put("result", "ok");
+            json.put("problemStatus", problemStatus);
+            json.put("problemCount", problemDAO.count());
         } catch (AppException e) {
             json.put("result", "error");
         } catch (Exception e) {
@@ -146,5 +172,13 @@ public class UserCenterAction extends BaseAction implements StatusDAOAware, Stat
     @Override
     public void setStatusDAO(IStatusDAO statusDAO) {
         this.statusDAO = statusDAO;
+    }
+
+    @Autowired
+    private IProblemDAO problemDAO;
+
+    @Override
+    public void setProblemDAO(IProblemDAO problemDAO) {
+        this.problemDAO = problemDAO;
     }
 }
