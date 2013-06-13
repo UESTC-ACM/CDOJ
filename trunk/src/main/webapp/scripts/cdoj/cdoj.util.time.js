@@ -165,10 +165,9 @@ function getTime(data, id) {
     var time = getTimeInfo(data, id);
     var timeString = time.days + ' ' + time.hours + ':' + time.minutes + ':' + time.seconds;
     var result = new Date(timeString).getTime();
-    if (Sys.ie678 || Sys.firefox) {
+    if (Sys.ie678 || Sys.firefox || Sys.safari) {
         timeString = time.days + 'T' + time.hours + ':' + time.minutes + ':' + time.seconds;
         result = ieDate(timeString).getTime();
     }
-    console.log(result);
     return result;
 }
