@@ -27,7 +27,8 @@
 #usersAvatar {
     margin: -8px 6px -8px 0;
 }
-
 #userAvatar-large {
-    margin: 10px 20px 10px 20px;
+    margin: 4px;
+    width: 221px;
+    height: 220px;
 }

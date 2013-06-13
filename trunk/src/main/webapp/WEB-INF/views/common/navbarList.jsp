@@ -62,16 +62,16 @@
 <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Links<b class="caret"></b></a>
     <ul class="dropdown-menu">
-        <li><a href="#">BBS</a></li>
-        <li><a href="#">Wiki</a></li>
+        <li class="disabled"><a href="#">BBS</a></li>
+        <li class="disabled"><a href="#">Wiki</a></li>
         <li><a href="http://www.mzry1992.com/blog/">mzry1992.com</a></li>
 
         <li class="divider"></li>
         <li class="nav-header">Click</li>
-        <li><a href="#">F.A.Q</a></li>
-        <li><a href="#">Download</a></li>
-        <li><a href="#">Step-by-Step</a></li>
-        <li><a href="#">Team Honors</a></li>
+        <li class="disabled"><a href="#">F.A.Q</a></li>
+        <li class="disabled"><a href="#">Download</a></li>
+        <li class="disabled"><a href="#">Step-by-Step</a></li>
+        <li class="disabled"><a href="#">Team Honors</a></li>
     </ul>
 </li>
 <li class="divider-vertical"></li>

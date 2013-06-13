@@ -97,14 +97,14 @@
                         User center
                     </s:a>
                 </li>
-                <li>
+                <li class="disabled">
                     <a href="#">
                         <i class="icon-envelope"></i>
                         Message
                         <span class="badge badge-success">2</span>
                     </a>
                 </li>
-                <li>
+                <li class="disabled">
                     <a href="#">
                         <i class="icon-folder-open"></i>
                         Bookmark

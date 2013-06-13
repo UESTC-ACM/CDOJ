@@ -37,10 +37,7 @@ import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import com.opensymphony.xwork2.validator.annotations.FieldExpressionValidator;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
-import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
-import com.opensymphony.xwork2.validator.annotations.Validations;
+import com.opensymphony.xwork2.validator.annotations.*;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -171,6 +168,10 @@ public class UserAdminAction extends BaseAction
                     @RequiredStringValidator(
                             fieldName = "userDTO.studentId",
                             key = "error.studentId.validation"
+                    ),
+                    @RequiredStringValidator(
+                            fieldName = "userDTO.nickName",
+                            key = "error.nickName.validation"
                     )
             },
             stringLengthFields = {
@@ -187,6 +188,23 @@ public class UserAdminAction extends BaseAction
                             minLength = "1",
                             maxLength = "20",
                             trim = false
+                    )
+            },
+            customValidators = {
+                    @CustomValidator(
+                            type = "regex",
+                            fieldName = "userDTO.nickName",
+                            key = "error.nickName.validation",
+                            parameters = {
+                                    @ValidationParameter(
+                                            name = "expression",
+                                            value = "\\b^[^\\s]{2,20}$\\b"
+                                    ),
+                                    @ValidationParameter(
+                                            name = "trim",
+                                            value = "false"
+                                    )
+                            }
                     )
             },
             fieldExpressions = {

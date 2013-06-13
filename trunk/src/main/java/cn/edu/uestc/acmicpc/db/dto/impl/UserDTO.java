@@ -50,6 +50,8 @@ public class UserDTO extends BaseDTO<User> {
      */
     private String userName;
 
+    private String oldPassword;
+
     /**
      * Input: password
      */
@@ -92,6 +94,15 @@ public class UserDTO extends BaseDTO<User> {
 
     public UserDTO() {
         super();
+    }
+
+    @Ignore
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 
     public Integer getUserId() {
@@ -249,6 +260,10 @@ public class UserDTO extends BaseDTO<User> {
      */
     @Override
     public void updateEntity(User user) {
+        if (nickName != null)
+            user.setNickName(nickName);
+        if (password != null)
+            user.setPassword(StringUtil.encodeSHA1(password));
         if (school != null)
             user.setSchool(school);
         if (department != null)

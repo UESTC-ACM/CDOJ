@@ -116,6 +116,8 @@
      * @param value
      */
     function setData(input, value) {
+        if (input == null || input.length == 0)
+            return;
         var hasSet = false;
         $.each(dataSetter, function (index, setter) {
             if (index == input.attr('type') ||

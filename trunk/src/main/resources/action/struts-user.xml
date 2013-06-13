@@ -54,6 +54,8 @@
         </action>
 
         <action name="search" class="userListAction" method="toSearch"/>
+
+        <action name="edit" class="userCenterAction" method="toEdit"/>
     </package>
 
 </struts>

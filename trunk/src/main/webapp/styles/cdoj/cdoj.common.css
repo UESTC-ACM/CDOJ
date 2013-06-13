@@ -197,16 +197,13 @@ ul.userStates {
     color: #08c;
 }
 
-#userInfoLeft {
-}
-
 rect.bordered {
     stroke: white;
     stroke-width:2px;
 }
 
-#userInfoRight {
-    margin-left: 0;
+rect.bordered:hover {
+    fill-opacity:0.3
 }
 
 #userInfo {

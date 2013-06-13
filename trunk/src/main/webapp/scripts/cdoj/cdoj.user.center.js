@@ -28,12 +28,87 @@
 
 var currentUserPageUser;
 
+/**
+ * show dialog to edit user defined in userList[index]
+ *
+ * @param index
+ * @return always return false to stop url jump event.
+ */
+function editUserDialog(index) {
+
+    var currentCondition = {
+        "currentPage": null,
+        "userCondition.startId": index,
+        "userCondition.endId": index,
+        "userCondition.userName": undefined,
+        "userCondition.type": undefined,
+        "userCondition.school": undefined,
+        "userCondition.departmentId": undefined,
+        "userCondition.orderFields": "solved",
+        "userCondition.orderAsc": false
+    };
+
+    $.post('/user/search', currentCondition, function(data){
+        if (data.result == "error") {
+            alert(data.error_msg);
+            return;
+        }
+
+        user = data.userList[0];
+        userDTO = {
+            "userDTO.userId": user.userId,
+            "userDTO.nickName": user.nickName,
+            "userDTO.email": user.email,
+            "userDTO.school": user.school,
+            "userDTO.departmentId": user.departmentId,
+            "userDTO.studentId": user.studentId,
+            "userDTO.type": user.type
+        };
+        $('#userEditModal').setFormData(userDTO);
+        var dialog = $('#userEditModal');
+        dialog.find('#userEditModalLabel').empty();
+        dialog.find('#userEditModalLabel').append(user.userName);
+
+        var mult = 0.95;
+        if (Sys.windows)
+            mult = 0.65;
+
+        dialog.find('.modal-body').css('max-height', Math.min(600, $(window).height() * mult));
+
+        dialog.modal();
+    });
+    return false;
+}
+
 $(document).ready(function () {
     currentUserPageUser = $('#currentUserPageUser').attr('value');
+    if (currentUser == currentUserPageUser) {
+        $('#userAvatarWrap').tooltip({
+            placement: 'bottom'
+        });
+        $('#userAvatarWrap').attr('href', 'http://gravatar.com/emails/');
+
+        $('#userEditModal').setDialog({
+            callback: function () {
+                info = $('#userEditModal').getFormData();
+                if (info["userDTO.password"] == '')
+                    info["userDTO.password"] = undefined;
+                $.post('/user/edit', info, function (data) {
+                    $("#userEditModal .form-horizontal").checkValidate({
+                        result: data,
+                        onSuccess: function () {
+                            alert('Edit profile successful!');
+                            window.location.reload();
+                        }
+                    });
+                });
+            }
+        });
+    }
 
     $.post('/user/problemStatus/' + currentUserPageUser, function (data) {
         console.log(data);
-        var problemCount = Math.max(100, data.problemCount);
+        var problemCount = data.problemCount;
         var problemStatus = data.problemStatus;
         var status = [];
         for (var i = 1; i <= problemCount; i++)
@@ -55,37 +130,16 @@ $(document).ready(function () {
 
         var colors = ['#f2eada', '#45b97c', '#aa2116'];
         var margin = { top: 20, right: 0, bottom: 20, left: 0 };
-        var width = 1033 - margin.left - margin.right;
+        var width = 769 - margin.left - margin.right;
         var gridSize = Math.floor(width / 15);
         var gridHeight = 30;
         var height = gridHeight * Math.ceil(problemCount / 15);
 
-        console.log(height, width, gridSize, gridHeight, margin, problemCount);
         var chart = d3.select("#chart").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        var heatMap = chart.selectAll(".problemStatus")
-            .data(status)
-            .enter().append("rect")
-            .attr("x", function (d) {
-                return gridSize * (d.problemId % 15);
-            })
-            .attr("y", function (d) {
-                return gridHeight * Math.floor(d.problemId / 15);
-            })
-            .attr("rx", 4)
-            .attr("ry", 4)
-            .attr("class", "problemStatus bordered")
-            .attr("width", gridSize)
-            .attr("height", gridHeight)
-            .style("fill", colors[0])
-            .transition().duration(2000)
-            .style('fill', function (d) {
-                return colors[d.status];
-            });
 
         var problemLabel = chart.selectAll('.problemLabel')
             .data(status)
@@ -99,10 +153,39 @@ $(document).ready(function () {
             })
             .style('fill', colors[0])
             .style("text-anchor", "middle")
-            .attr('class', 'problemLabel');
+            .attr('class', 'problemLabel')
+            .attr("value", function(d) {
+                return d.problemId + 1;
+            })
+            .transition().duration(2000)
+            .style('fill', '#000000');
 
-        $('.problemLabel').click(function(){
-            alert(this);
+        var heatMap = chart.selectAll(".problemStatus")
+            .data(status)
+            .enter().append("rect")
+            .attr("x", function (d) {
+                return gridSize * (d.problemId % 15);
+            })
+            .attr("y", function (d) {
+                return gridHeight * Math.floor(d.problemId / 15);
+            })
+            .attr("rx", 4)
+            .attr("ry", 4)
+            .attr("class", "problemStatus bordered")
+            .attr("value", function(d) {
+                return d.problemId + 1;
+            })
+            .attr("width", gridSize)
+            .attr("height", gridHeight)
+            .style("fill", colors[0])
+            .transition().duration(2000)
+            .style('fill', function (d) {
+                return colors[d.status];
+            });
+
+        $('.problemStatus').click(function(){
+            var problemId = $(this).attr('value');
+            window.location.href = '/problem/show/' + problemId;
         });
     })
 });

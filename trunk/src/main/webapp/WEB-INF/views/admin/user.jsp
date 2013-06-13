@@ -174,7 +174,7 @@
                              maxLength="20"
                              cssClass="span4"
                              label="Nick name"
-                             readonly="true"
+                             readonly="false"
                              theme="bootstrap"/>
                 <s:textfield name="userDTO.email"
                              maxLength="100"
