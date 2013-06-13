@@ -182,7 +182,6 @@ $(document).ready(function () {
                 data['contestDTO.problemList'][index] = value.innerText;
             });
 
-            console.log($('#contestId'));
             $.post('/admin/contest/edit', data, function(data) {
                 $('#contestEditor').checkValidate({
                     result: data,

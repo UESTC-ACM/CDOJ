@@ -145,6 +145,7 @@ public class UserCenterAction extends BaseAction
             json.put("problemCount", problemDAO.count());
         } catch (AppException e) {
             json.put("result", "error");
+            json.put("error_msg", e.getMessage());
         } catch (Exception e) {
             json.put("result", "error");
             e.printStackTrace();

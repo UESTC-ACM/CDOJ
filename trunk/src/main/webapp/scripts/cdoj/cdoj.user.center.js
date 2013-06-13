@@ -26,12 +26,13 @@
  * @version 1
  */
 
-var currentUser;
+var currentUserPageUser;
 
 $(document).ready(function () {
-    currentUser = $('#currentUser').attr('value');
+    currentUserPageUser = $('#currentUserPageUser').attr('value');
 
-    $.post('/user/problemStatus/' + currentUser, function (data) {
+    $.post('/user/problemStatus/' + currentUserPageUser, function (data) {
+        console.log(data);
         var problemCount = Math.max(100, data.problemCount);
         var problemStatus = data.problemStatus;
         var status = [];
@@ -59,6 +60,7 @@ $(document).ready(function () {
         var gridHeight = 30;
         var height = gridHeight * Math.ceil(problemCount / 15);
 
+        console.log(height, width, gridSize, gridHeight, margin, problemCount);
         var chart = d3.select("#chart").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
