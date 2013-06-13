@@ -198,6 +198,7 @@ $(document).ready(function () {
     $('#userEditModal').setDialog({
         callback: function () {
             info = $('#userEditModal').getFormData();
+            console.log(info);
             $.post('/admin/user/edit', info, function (data) {
                 $("#userEditModal .form-horizontal").checkValidate({
                     result: data,
