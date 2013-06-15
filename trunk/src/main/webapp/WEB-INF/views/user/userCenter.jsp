@@ -61,12 +61,14 @@
                         <dd><s:property value="targetUser.school"/></dd>
                         <dt>Department</dt>
                         <dd><s:property value="targetUser.department"/></dd>
-                        <dt>Student ID</dt>
-                        <dd><s:property value="targetUser.studentId"/></dd>
-                        <dt>Email</dt>
-                        <dd><s:property value="targetUser.email"/></dd>
+                        <s:if test="currentUser.userName == targetUser.userName">
+                            <dt>Student ID</dt>
+                            <dd><s:property value="targetUser.studentId"/></dd>
+                            <dt>Email</dt>
+                            <dd><s:property value="targetUser.email"/></dd>
+                        </s:if>
                         <dt>Last login</dt>
-                        <dd class="cdoj-time" type="milliseconds"><s:property value="targetUser.lastLogin.time"/></dd>
+                        <dd class="cdoj-time" type="milliseconds" isUTC="true"><s:property value="targetUser.lastLogin.time"/></dd>
                     </dl>
                 </div>
             </div>

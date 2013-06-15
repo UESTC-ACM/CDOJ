@@ -89,7 +89,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
      * Contest type for contest entity
      */
     public enum ContestType {
-        PUBLIC("public"), PRIVATE("private"), DIY("diy"), INVITED("invited");
+        PUBLIC("public"), PRIVATE("private"), DIY("DIY"), INVITED("invited");
         private final String description;
 
         private ContestType(String description) {

@@ -71,7 +71,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="registerModalLabel">Register</h3>
         </div>
-        <div class="modal-body" style="max-height: 450px;">
+        <div class="modal-body">
             <form class="form-horizontal">
                 <fieldset>
                     <s:textfield name="userDTO.userName"

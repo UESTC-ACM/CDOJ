@@ -40,6 +40,12 @@
         // format time style
         $('.cdoj-time').formatTimeStyle();
 
+        var mult = 0.95;
+        if (Sys.windows)
+            mult = 0.65;
+
+        $('#registerModal').find('.modal-body').css('max-height', Math.min(450, $(window).height() * mult));
+
         $("#registerModal").setDialog({
             callback: function() {
                 info=$("#registerModal").find(".form-horizontal").getFormData();
