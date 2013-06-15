@@ -451,7 +451,6 @@ $(document).ready(function () {
                 //TODO change it like PC^2
             } else {
                 alert('Please login first!');
-                $("#problemSubmitModal").modal('hide');
                 $("#loginModal").modal();
             }
         });
