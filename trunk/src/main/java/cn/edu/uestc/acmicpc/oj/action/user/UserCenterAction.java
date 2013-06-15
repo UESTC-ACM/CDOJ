@@ -62,7 +62,7 @@ import java.util.Map;
 public class UserCenterAction extends BaseAction
         implements StatusDAOAware,
         StatusConditionAware, ProblemDAOAware,
-        UserDTOAware, DepartmentDAOAware{
+        UserDTOAware, DepartmentDAOAware, ProblemConditionAware {
 
     private String targetUserName;
 
@@ -136,14 +136,23 @@ public class UserCenterAction extends BaseAction
 
             Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
 
+            problemCondition.clear();
+            problemCondition.setIsVisible(true);
+            Condition condition = problemCondition.getCondition();
+            condition.addProjection(Projections.id());
+            List<Integer> results = (List<Integer>) problemDAO.findAll(condition);
+            for (Integer result : results)
+                problemStatus.put(result, Global.AuthorStatusType.NONE);
+
             statusCondition.clear();
             statusCondition.setUserId(currentUser.getUserId());
             statusCondition.setResultId(null);
-            Condition condition = statusCondition.getCondition();
+            condition = statusCondition.getCondition();
             condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
-            List<Integer> results = (List<Integer>) statusDAO.findAll(condition);
+            results = (List<Integer>) statusDAO.findAll(condition);
             for (Integer result : results)
-                problemStatus.put(result, Global.AuthorStatusType.FAIL);
+                if (problemStatus.containsKey(result))
+                    problemStatus.put(result, Global.AuthorStatusType.FAIL);
 
             statusCondition.clear();
             statusCondition.setUserId(currentUser.getUserId());
@@ -152,11 +161,11 @@ public class UserCenterAction extends BaseAction
             condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
             results = (List<Integer>) statusDAO.findAll(condition);
             for (Integer result : results)
-                problemStatus.put(result, Global.AuthorStatusType.PASS);
+                if (problemStatus.containsKey(result))
+                    problemStatus.put(result, Global.AuthorStatusType.PASS);
 
             json.put("result", "ok");
             json.put("problemStatus", problemStatus);
-            json.put("problemCount", problemDAO.count());
         } catch (AppException e) {
             json.put("result", "error");
             json.put("error_msg", e.getMessage());
@@ -319,6 +328,7 @@ public class UserCenterAction extends BaseAction
 
     @Autowired
     private UserDTO userDTO;
+
     @Override
     public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
@@ -335,5 +345,18 @@ public class UserCenterAction extends BaseAction
     @Override
     public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
         this.departmentDAO = departmentDAO;
+    }
+
+    @Autowired
+    private ProblemCondition problemCondition;
+
+    @Override
+    public void setProblemCondition(ProblemCondition problemCondition) {
+        this.problemCondition = problemCondition;
+    }
+
+    @Override
+    public ProblemCondition getProblemCondition() {
+        return problemCondition;
     }
 }

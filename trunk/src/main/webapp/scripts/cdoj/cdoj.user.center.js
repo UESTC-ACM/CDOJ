@@ -107,26 +107,27 @@ $(document).ready(function () {
     }
 
     $.post('/user/problemStatus/' + currentUserPageUser, function (data) {
-        console.log(data);
-        var problemCount = data.problemCount;
         var problemStatus = data.problemStatus;
         var status = [];
-        for (var i = 1; i <= problemCount; i++)
-            if (problemStatus[i] == 'PASS')
+        $.each(problemStatus, function(index, data) {
+            if (data == 'PASS')
                 status.push({
-                    problemId: i - 1,
+                    problemId: index - 1,
                     status: 1
                 });
-            else if (problemStatus[i] == 'FAIL')
+            else if (data == 'FAIL')
                 status.push({
-                    problemId: i - 1,
+                    problemId: index - 1,
                     status: 2
                 });
             else
                 status.push({
-                    problemId: i - 1,
+                    problemId: index - 1,
                     status: 0
                 });
+        });
+        var problemCount = status.length;
+        console.log(status, problemCount);
 
         var colors = ['#f2eada', '#45b97c', '#aa2116'];
         var margin = { top: 20, right: 0, bottom: 20, left: 0 };

@@ -82,8 +82,9 @@ var ieDate = function(dateString) {
                 if (Sys.ie678 || Sys.firefox)
                     date = ieDate(self[0].innerHTML);
             }
-            if (!Sys.firefox)
+            if (!Sys.firefox && self.attr('isutc') != 'true') {
                 date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+            }
             self.empty();
             if (self.attr('timeStyle') == 'length') {
                 var seconds = time % 60;
