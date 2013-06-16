@@ -58,7 +58,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
         OJ_RE_FPE("Runtime Error on test $case"), OJ_RE_BUS("Runtime Error on test $case"),
         OJ_RE_ABRT("Runtime Error on test $case"), OJ_RE_UNKNOWN("Runtime Error on test $case"),
         OJ_RF("Restricted Function on test $case"), OJ_SE("System Error on test $case"),
-        OJ_RE_JAVA("Runtime Error on test $case"), OJ_JUDGING("Judging..."),
+        OJ_RE_JAVA("Runtime Error on test $case"), OJ_JUDGING("Queuing"),
         OJ_RUNNING("Running on test $case"), OJ_REJUDGING("Queuing");
         private String description;
 
