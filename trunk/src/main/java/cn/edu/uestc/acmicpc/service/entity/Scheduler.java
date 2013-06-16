@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -79,7 +78,7 @@ public class Scheduler
             statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_REJUDGING);
             List<Status> statusList = (List<Status>) statusDAO.findAll(statusCondition.getCondition());
             for (Status status : statusList) {
-                status.setResult(Global.OnlineJudgeReturnType.OJ_JUDGING.ordinal());
+//                status.setResult(Global.OnlineJudgeReturnType.OJ_JUDGING.ordinal());
                 status.setCaseNumber(0);
                 JudgeItem judgeItem = applicationContext.getBean("judgeItem", JudgeItem.class);
                 judgeItem.status = status;
@@ -88,8 +87,8 @@ public class Scheduler
             }
         } catch (AppException e) {
             e.printStackTrace();
+        } catch (InterruptedException ignored) {
         }
-        catch (InterruptedException ignored) {}
     }
 
     @Override
