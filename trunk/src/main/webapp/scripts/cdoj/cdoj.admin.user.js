@@ -80,7 +80,8 @@ function refreshUserList(condition) {
 
         // get userList avatars
         $('img#usersAvatar').setAvatar({
-            size: 37
+            size: 37,
+            image: 'http://www.acm.uestc.edu.cn/images/akari_small.jpg'
         });
 
         // format time style
