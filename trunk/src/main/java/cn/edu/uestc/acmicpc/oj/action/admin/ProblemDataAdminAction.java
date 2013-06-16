@@ -257,7 +257,7 @@ public class ProblemDataAdminAction extends FileUploadAction
                     throw new AppException("Cannot remove spj source file");
             }
 
-            problemDAO.addOrUpdate(problem);
+            problemDAO.update(problem);
             json.put("result", "ok");
         } catch (AppException e) {
             e.printStackTrace();

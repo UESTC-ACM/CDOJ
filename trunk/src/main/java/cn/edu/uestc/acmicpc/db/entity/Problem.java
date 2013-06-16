@@ -38,6 +38,18 @@ public class Problem implements Serializable {
     private static final long serialVersionUID = -334230877056963653L;
     private Integer problemId;
 
+    private Integer version;
+
+    @Version
+    @Column(name = "OPTLOCK")
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     @Override
     public String toString() {
         return "Problem{" +

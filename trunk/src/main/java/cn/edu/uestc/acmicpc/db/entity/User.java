@@ -39,6 +39,18 @@ public class User implements Serializable {
     private static final long serialVersionUID = -1942419166710527006L;
     private Integer userId;
 
+    private Integer version;
+
+    @Version
+    @Column(name = "OPTLOCK")
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     @Column(name = "userId", nullable = false, insertable = true, updatable = true, length = 10,
             precision = 0, unique = true)
     @Id

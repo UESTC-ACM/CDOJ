@@ -106,7 +106,7 @@ public class ProblemStatementAdminAction extends BaseAction
 
             problemDTO.updateEntity(problem);
 
-            problemDAO.addOrUpdate(problem);
+            problemDAO.update(problem);
             json.put("result", "ok");
         } catch (AppException e) {
             json.put("result", "error");

@@ -38,6 +38,18 @@ public class Tag implements Serializable {
     private static final long serialVersionUID = 8221283073294354906L;
     private Integer tagId;
 
+    private Integer version;
+
+    @Version
+    @Column(name = "OPTLOCK")
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     @Column(name = "tagId", nullable = false, insertable = true,
             updatable = true, length = 10, precision = 0, unique = true)
     @Id

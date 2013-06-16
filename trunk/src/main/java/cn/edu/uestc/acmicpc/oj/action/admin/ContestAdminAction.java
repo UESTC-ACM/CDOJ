@@ -128,7 +128,7 @@ public class ContestAdminAction extends BaseAction
                         throw new AppException("Add new contest error!");
                     Contest contest = result.get(0);
                     contest.setTime(new Timestamp(new Date().getTime()));
-                    contestDAO.addOrUpdate(contest);
+                    contestDAO.update(contest);
                     targetContestId = contest.getContestId();
                 }
 

@@ -38,6 +38,18 @@ public class CompileInfo implements Serializable {
     private static final long serialVersionUID = 1404496264299518630L;
     private Integer compileInfoId;
 
+    private Integer version;
+
+    @Version
+    @Column(name = "OPTLOCK")
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     @Column(name = "compileInfoId", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0, unique = true)
     @Id

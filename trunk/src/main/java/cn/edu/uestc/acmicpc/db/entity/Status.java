@@ -38,6 +38,18 @@ public class Status implements Serializable {
     private static final long serialVersionUID = 4819326443036942394L;
     private Integer statusId;
 
+    private Integer version;
+
+    @Version
+    @Column(name = "OPTLOCK")
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     @Column(name = "statusId", nullable = false, insertable = true,
             updatable = true, length = 10, precision = 0, unique = true)
     @Id

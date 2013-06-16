@@ -35,6 +35,18 @@ import java.sql.Timestamp;
 public class UserSerialKey implements Serializable {
     private static final long serialVersionUID = -129312932189312L;
 
+    private Integer version;
+
+    @Version
+    @Column(name = "OPTLOCK")
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     @Override
     public String toString() {
         return "UserSerialKey{" +
