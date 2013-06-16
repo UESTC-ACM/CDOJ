@@ -190,7 +190,7 @@
             <div id="pageInfo">
             </div>
 
-            <table class="table table-bordered">
+            <table class="table table-striped table-bordered">
                 <thead>
                 <tr>
                     <th style="width: 60px;" class="orderButton" field="id">Id</th>
