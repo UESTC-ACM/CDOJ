@@ -39,7 +39,7 @@
         var options = mergeOptions({
                 method: 'append',
                 size: 40,
-                image: 'retro',
+                image: 'http://www.acm.uestc.edu.cn/images/akari.jpg',
                 rating: 'pg'
             },
             userOptions);

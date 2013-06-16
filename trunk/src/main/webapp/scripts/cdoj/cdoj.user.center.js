@@ -81,6 +81,9 @@ function editUserDialog(index) {
 }
 
 $(document).ready(function () {
+    $('img#userAvatar-large').setAvatar({
+        image: 'http://www.acm.uestc.edu.cn/images/akari.jpg'
+    });
     currentUserPageUser = $('#currentUserPageUser').attr('value');
     if (currentUser == currentUserPageUser) {
         $('#userAvatarWrap').tooltip({

@@ -22,10 +22,14 @@
 
 #userAvatar {
     margin: -10px 8px -10px 0;
+    width: 40px;
+    height: 40px;
 }
 
 #usersAvatar {
     margin: -8px 6px -8px 0;
+    width: 37px;
+    height: 37px;
 }
 #userAvatar-large {
     margin: 4px;

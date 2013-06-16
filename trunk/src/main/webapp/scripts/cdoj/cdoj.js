@@ -35,7 +35,9 @@
         prettify();
 
         // get avatars
-        $('img[type=avatar]').setAvatar({});
+        $('#userAvatar').setAvatar({
+            image: 'http://www.acm.uestc.edu.cn/images/akari_small.jpg'
+        });
 
         // format time style
         $('.cdoj-time').formatTimeStyle();
