@@ -12,6 +12,7 @@ USE `uestcoj` ;
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`department` (
   `departmentId` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(50) NOT NULL DEFAULT '' COMMENT 'department\\\'s name' ,
+  `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`departmentId`) ,
   UNIQUE INDEX `departmentId_UNIQUE` (`departmentId` ASC) )
 ENGINE = InnoDB;
@@ -33,6 +34,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`user` (
   `tried` INT NOT NULL DEFAULT 0 ,
   `type` INT NOT NULL DEFAULT 0 ,
   `lastLogin` DATETIME NOT NULL ,
+  `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`userId`) ,
   UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) ,
   UNIQUE INDEX `userName_UNIQUE` (`userName` ASC) ,
@@ -70,6 +72,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`problem` (
   `javaMemoryLimit` INT NOT NULL DEFAULT 65535 ,
   `dataCount` INT NOT NULL DEFAULT 1 ,
   `difficulty` INT NOT NULL DEFAULT 1 ,
+  `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`problemId`) ,
   UNIQUE INDEX `problemId_UNIQUE` (`problemId` ASC) )
 ENGINE = InnoDB;
@@ -86,6 +89,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`contest` (
   `time` DATETIME NOT NULL ,
   `length` INT NOT NULL ,
   `isVisible` TINYINT(1) NOT NULL ,
+  `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`contestId`) ,
   UNIQUE INDEX `contestId_UNIQUE` (`contestId` ASC) )
 ENGINE = InnoDB;
@@ -108,6 +112,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`article` (
   `problemId` INT NULL DEFAULT NULL ,
   `contestId` INT NULL DEFAULT NULL ,
   `uesrId` INT NULL DEFAULT NULL ,
+  `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`articleId`) ,
   UNIQUE INDEX `noticeId_UNIQUE` (`articleId` ASC) ,
   INDEX `FK_parentId_on_article_idx` (`parentId` ASC) ,
@@ -148,6 +153,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`message` (
   `content` TEXT NOT NULL ,
   `time` DATETIME NOT NULL ,
   `isOpened` TINYINT(1) NOT NULL DEFAULT 0 ,
+  `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`messageId`) ,
   UNIQUE INDEX `messageId_UNIQUE` (`messageId` ASC) ,
   INDEX `FK_senderId_on_user_idx` (`senderId` ASC) ,
@@ -173,6 +179,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`contestUser` (
   `contestId` INT NOT NULL ,
   `userId` INT NOT NULL ,
   `status` TINYINT(4) NOT NULL COMMENT '0 - wait for validating\\n1 - accepted\\n2 - refused' ,
+  `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`contestUserId`) ,
   UNIQUE INDEX `contestUserId_UNIQUE` (`contestUserId` ASC) ,
   INDEX `FK_contestId_on_contest_idx` (`contestId` ASC) ,
@@ -198,6 +205,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`contestProblem` (
   `contestId` INT NOT NULL ,
   `problemId` INT NOT NULL ,
   `order` INT NOT NULL ,
+  `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`contestProblemId`) ,
   UNIQUE INDEX `contestProblemId_UNIQUE` (`contestProblemId` ASC) ,
   INDEX `FK_contestId_on_contest_idx` (`contestId` ASC) ,
@@ -221,6 +229,7 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`tag` (
   `tagId` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(50) NOT NULL ,
+  `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`tagId`) ,
   UNIQUE INDEX `tagId_UNIQUE` (`tagId` ASC) ,
   UNIQUE INDEX `name_UNIQUE` (`name` ASC) )
@@ -234,6 +243,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`problemTag` (
   `problemTagId` INT NOT NULL AUTO_INCREMENT ,
   `problemId` INT NOT NULL ,
   `tagId` INT NOT NULL ,
+  `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`problemTagId`) ,
   UNIQUE INDEX `problemTagId_UNIQUE` (`problemTagId` ASC) ,
   INDEX `FK_problemId_on_problem_idx` (`problemId` ASC) ,
@@ -259,6 +269,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`language` (
   `name` VARCHAR(50) NOT NULL ,
   `extension` VARCHAR(10) NOT NULL ,
   `param` TEXT NOT NULL ,
+  `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`languageId`) ,
   UNIQUE INDEX `languageId_UNIQUE` (`languageId` ASC) )
 ENGINE = InnoDB;
@@ -270,6 +281,7 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`code` (
   `codeId` INT NOT NULL AUTO_INCREMENT ,
   `content` TEXT NOT NULL ,
+  `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`codeId`) ,
   UNIQUE INDEX `codeId_UNIQUE` (`codeId` ASC) )
 ENGINE = InnoDB;
@@ -281,6 +293,7 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`compileInfo` (
   `compileInfoId` INT NOT NULL AUTO_INCREMENT ,
   `content` TEXT NOT NULL ,
+  `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`compileInfoId`) ,
   UNIQUE INDEX `compileInfoId_UNIQUE` (`compileInfoId` ASC) )
 ENGINE = InnoDB;
@@ -303,6 +316,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`status` (
   `caseNumber` INT NOT NULL DEFAULT 0 ,
   `codeId` INT NOT NULL ,
   `compileInfoId` INT NULL DEFAULT NULL ,
+  `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`statusId`) ,
   UNIQUE INDEX `statusId_UNIQUE` (`statusId` ASC) ,
   INDEX `FK_userID_on_user_idx` (`userId` ASC) ,
@@ -360,6 +374,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`contestTeamInfo` (
   `email` VARCHAR(300) NOT NULL DEFAULT '' ,
   `school` VARCHAR(100) NOT NULL DEFAULT '' ,
   `state` TINYINT(4) NOT NULL DEFAULT 0 ,
+  `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`teamId`) ,
   UNIQUE INDEX `teamId_UNIQUE` (`teamId` ASC) )
 ENGINE = InnoDB;
@@ -373,6 +388,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`userSerialKey` (
   `userId` INT NOT NULL ,
   `serialKey` VARCHAR(128) NOT NULL ,
   `time` DATETIME NOT NULL ,
+  `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`userSerialKeyId`) ,
   UNIQUE INDEX `userSerialKeyId_UNIQUE` (`userSerialKeyId` ASC) ,
   INDEX `FK_userId_on_user_idx` (`userId` ASC) ,
@@ -451,24 +467,24 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uestcoj`;
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (1, 'Others');
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (2, 'School of Information and Software Engineering');
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (3, 'School of Mathematical Sciences');
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (4, 'School of Management and Economics');
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (5, 'School of Automation Engineering');
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (6, 'School of Mechatronics Engineering');
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (7, 'School of Optoelectronic Information');
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (8, 'School of Computer Science & Engineering');
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (9, 'School of Life Science and Technology');
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (10, 'School of Foreign Languages');
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (11, 'School of Energy Science and Engineering');
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (12, 'School of Marxism Education');
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (13, 'School of Political Science and Public Administrat');
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (14, 'School of Microelectronics and Solid-State Electro');
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (15, 'School of Electronic Engineering');
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (16, 'School of Physical Electronics');
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (17, 'School of Communication & Information Engineering');
-INSERT INTO `uestcoj`.`department` (`departmentId`, `name`) VALUES (18, 'Yingcai Experimental School');
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (1, 'Others', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (2, 'School of Information and Software Engineering', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (3, 'School of Mathematical Sciences', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (4, 'School of Management and Economics', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (5, 'School of Automation Engineering', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (6, 'School of Mechatronics Engineering', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (7, 'School of Optoelectronic Information', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (8, 'School of Computer Science & Engineering', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (9, 'School of Life Science and Technology', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (10, 'School of Foreign Languages', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (11, 'School of Energy Science and Engineering', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (12, 'School of Marxism Education', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (13, 'School of Political Science and Public Administrat', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (14, 'School of Microelectronics and Solid-State Electro', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (15, 'School of Electronic Engineering', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (16, 'School of Physical Electronics', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (17, 'School of Communication & Information Engineering', 0);
+INSERT INTO `uestcoj`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (18, 'Yingcai Experimental School', 0);
 
 COMMIT;
 
@@ -477,7 +493,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uestcoj`;
-INSERT INTO `uestcoj`.`user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`) VALUES (1, 'administrator', '2010013100008', 1, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'administrator', 'acm@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26');
+INSERT INTO `uestcoj`.`user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`) VALUES (1, 'administrator', '2010013100008', 1, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'administrator', 'acm@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0);
 
 COMMIT;
 
@@ -486,8 +502,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uestcoj`;
-INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (1, 'c', '.c', '');
-INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (2, 'c++', '.cc', '');
-INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`) VALUES (3, 'java', '.java', '');
+INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`, `OPTLOCK`) VALUES (1, 'C', '.c', '', 0);
+INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`, `OPTLOCK`) VALUES (2, 'C++', '.cc', '', 0);
+INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`, `OPTLOCK`) VALUES (3, 'Java', '.java', '', 0);
 
 COMMIT;
