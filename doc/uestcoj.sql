@@ -111,14 +111,14 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`article` (
   `parentId` INT NULL DEFAULT NULL ,
   `problemId` INT NULL DEFAULT NULL ,
   `contestId` INT NULL DEFAULT NULL ,
-  `uesrId` INT NULL DEFAULT NULL ,
+  `userId` INT NULL DEFAULT NULL ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`articleId`) ,
   UNIQUE INDEX `noticeId_UNIQUE` (`articleId` ASC) ,
   INDEX `FK_parentId_on_article_idx` (`parentId` ASC) ,
   INDEX `FK_problemId_on_problem_idx` (`problemId` ASC) ,
   INDEX `FK_contestId_on_contest_idx` (`contestId` ASC) ,
-  INDEX `FK_userId_on_user_idx` (`uesrId` ASC) ,
+  INDEX `FK_userId_on_user_idx` (`userId` ASC) ,
   CONSTRAINT `FK_article_parentId_on_article`
     FOREIGN KEY (`parentId` )
     REFERENCES `uestcoj`.`article` (`articleId` )
@@ -135,7 +135,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`article` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `FK_article_userId_on_user`
-    FOREIGN KEY (`uesrId` )
+    FOREIGN KEY (`userId` )
     REFERENCES `uestcoj`.`user` (`userId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
