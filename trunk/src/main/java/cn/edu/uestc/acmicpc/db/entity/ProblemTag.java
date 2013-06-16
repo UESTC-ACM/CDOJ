@@ -37,6 +37,18 @@ public class ProblemTag implements Serializable {
     private static final long serialVersionUID = 8758938774072713107L;
     private Integer problemTagId;
 
+    private Integer version;
+
+    @Version
+    @Column(name = "OPTLOCK")
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     @Column(name = "problemTagId", nullable = false, insertable = true,
             updatable = true, length = 10, precision = 0, unique = true)
     @Id

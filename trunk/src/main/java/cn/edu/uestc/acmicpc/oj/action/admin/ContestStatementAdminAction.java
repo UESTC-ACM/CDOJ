@@ -97,7 +97,7 @@ public class ContestStatementAdminAction extends BaseAction
 
             contestDTO.updateEntity(contest);
 
-            contestDAO.addOrUpdate(contest);
+            contestDAO.update(contest);
 
             json.put("result", "ok");
         } catch (AppException e) {

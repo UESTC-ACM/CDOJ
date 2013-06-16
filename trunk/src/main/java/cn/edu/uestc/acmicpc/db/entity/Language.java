@@ -38,6 +38,18 @@ public class Language implements Serializable {
     private static final long serialVersionUID = 6622284482431851438L;
     private Integer languageId;
 
+    private Integer version;
+
+    @Version
+    @Column(name = "OPTLOCK")
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     @Column(name = "languageId", nullable = false, insertable = true,
             updatable = true, length = 10, precision = 0, unique = true)
     @Id

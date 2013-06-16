@@ -39,6 +39,18 @@ public class Article implements Serializable {
     private static final long serialVersionUID = 8886825769658373290L;
     private Integer articleId;
 
+    private Integer version;
+
+    @Version
+    @Column(name = "OPTLOCK")
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     @Column(name = "articleId", nullable = false, insertable = true, updatable = true, length = 10,
             precision = 0, unique = true)
     @Id

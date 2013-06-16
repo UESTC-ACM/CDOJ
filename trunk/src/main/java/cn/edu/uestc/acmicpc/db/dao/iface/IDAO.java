@@ -54,6 +54,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
      * @throws AppException
      */
     @SuppressWarnings("UnusedDeclaration")
+    @Deprecated
     public void addOrUpdate(Entity entity) throws AppException;
 
     /**

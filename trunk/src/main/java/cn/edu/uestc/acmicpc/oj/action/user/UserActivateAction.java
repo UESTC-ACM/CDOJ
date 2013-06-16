@@ -121,7 +121,7 @@ public class UserActivateAction extends BaseAction
             userSerialKey.setTime(new Timestamp(new Date().getTime()));
             userSerialKey.setSerialKey(serialKey);
             userSerialKey.setUserByUserId(targetUser);
-            userSerialKeyDAO.addOrUpdate(userSerialKey);
+            userSerialKeyDAO.update(userSerialKey);
 
             String url = settings.SETTING_HOST + getActionURL("/user", "activate/" + targetUser.getUserName() + "/" + StringUtil.encodeSHA1(serialKey));
             stringBuilder = new StringBuilder();

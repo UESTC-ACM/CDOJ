@@ -37,6 +37,18 @@ public class ContestTeamInfo implements Serializable {
     private static final long serialVersionUID = -5816811480409208296L;
     private Integer teamId;
 
+    private Integer version;
+
+    @Version
+    @Column(name = "OPTLOCK")
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     @Column(name = "teamId", nullable = false, insertable = true, updatable = true,
             length = 10, precision = 0, unique = true)
     @Id

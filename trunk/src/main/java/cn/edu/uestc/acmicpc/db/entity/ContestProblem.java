@@ -37,6 +37,18 @@ public class ContestProblem implements Serializable {
     private static final long serialVersionUID = -9079259357297937419L;
     private Integer contestProblemId;
 
+    private Integer version;
+
+    @Version
+    @Column(name = "OPTLOCK")
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     @Column(name = "contestProblemId", nullable = false, insertable = true,
             updatable = true, length = 10, precision = 0, unique = true)
     @Id
