@@ -190,7 +190,6 @@ function refreshStatusList(condition) {
 
         blindCodeHref();
         blindCompileInfo();
-        blindProblemHref();
 
         // format time style
         $('.cdoj-time').formatTimeStyle();

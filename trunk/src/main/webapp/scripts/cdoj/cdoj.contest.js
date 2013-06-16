@@ -108,7 +108,7 @@ function changeOrder(field) {
         currentCondition["contestCondition.orderAsc"] = (currentCondition["contestCondition.orderAsc"] == "true" ? "false" : "true");
     else {
         currentCondition["contestCondition.orderFields"] = field;
-        currentCondition["contestCondition.orderAsc"] = "false";
+        currentCondition["contestCondition.orderAsc"] = "true";
     }
     refreshContestList(currentCondition);
 }
@@ -125,8 +125,8 @@ $(document).ready(function () {
         "contestCondition.keyword": undefined,
         "contestCondition.isVisible": undefined,
         "contestCondition.type": undefined,
-        "contestCondition.orderFields": undefined,
-        "contestCondition.orderAsc": undefined
+        "contestCondition.orderFields": "id",
+        "contestCondition.orderAsc": false
     };
 
     $('input#search').setButton({
