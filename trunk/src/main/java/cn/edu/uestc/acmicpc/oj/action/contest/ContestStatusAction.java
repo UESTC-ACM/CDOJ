@@ -126,7 +126,6 @@ public class ContestStatusAction extends BaseAction
             }
             json.put("pageInfo", pageInfo.getHtmlString());
             json.put("result", "ok");
-            json.put("condition", statusCondition);
             json.put("statusList", statusViewList);
         } catch (AppException e) {
             json.put("result", "error");

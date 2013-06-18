@@ -218,7 +218,6 @@ public class ProblemAdminAction extends BaseAction
                         problemStatus.get(problem.getProblemId())));
             json.put("pageInfo", pageInfo.getHtmlString());
             json.put("result", "ok");
-            json.put("condition", problemCondition);
             json.put("problemList", problemListViewList);
         } catch (AppException e) {
             json.put("result", "error");

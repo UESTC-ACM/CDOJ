@@ -90,7 +90,6 @@ public class StatusAdminAction extends BaseAction
                 statusViewList.add(new StatusView(status));
             json.put("pageInfo", pageInfo.getHtmlString());
             json.put("result", "ok");
-            json.put("condition", statusCondition);
             json.put("statusList", statusViewList);
         } catch (AppException e) {
             json.put("result", "error");

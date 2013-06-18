@@ -142,7 +142,6 @@ public class ProblemListAction extends BaseAction
             }
             json.put("pageInfo", pageInfo.getHtmlString());
             json.put("result", "ok");
-            json.put("condition", problemCondition);
             json.put("problemList", problemListViewList);
         } catch (AppException e) {
             json.put("result", "error");

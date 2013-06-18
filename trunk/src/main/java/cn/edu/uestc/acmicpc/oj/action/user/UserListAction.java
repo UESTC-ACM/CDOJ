@@ -86,7 +86,6 @@ public class UserListAction extends BaseAction implements UserConditionAware {
                 userViewList.add(new UserView(user));
             json.put("pageInfo", pageInfo.getHtmlString());
             json.put("result", "ok");
-            json.put("condition", userCondition);
             json.put("userList", userViewList);
         } catch (AppException e) {
             json.put("result", "error");
