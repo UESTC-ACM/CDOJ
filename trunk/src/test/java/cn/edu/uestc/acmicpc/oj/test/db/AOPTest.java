@@ -28,6 +28,7 @@ import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,7 @@ public class AOPTest {
     }
 
     @Test
+    @Ignore
     public void testDataBaseConnection() throws FieldNotUniqueException, AppException {
         User user = userDAO.getEntityByUniqueField("userName", "administrator");
         System.out.println(user.getUserName());

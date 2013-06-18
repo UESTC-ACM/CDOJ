@@ -29,6 +29,7 @@ import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ public class ViewTest implements DepartmentDAOAware {
     private IDepartmentDAO departmentDAO;
 
     @Test
+    @Ignore
     public void testUserView() throws AppException {
         User user = new User();
         user.setUserName("admin");

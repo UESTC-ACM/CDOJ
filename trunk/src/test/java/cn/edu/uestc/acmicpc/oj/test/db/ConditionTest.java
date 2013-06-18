@@ -88,6 +88,7 @@ public class ConditionTest
     private StatusCondition statusCondition;
 
     @Test
+    @Ignore
     public void testProblemCondition() throws AppException {
         problemCondition.clear();
         problemCondition.setStartId(1);

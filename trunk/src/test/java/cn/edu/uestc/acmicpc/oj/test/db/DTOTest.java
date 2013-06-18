@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.oj.test.db;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration({"classpath:applicationContext-test.xml"})
 public class DTOTest {
     @Test
+    @Ignore
     public void testUserDTO() throws AppException {
         UserDTO userDTO = new UserDTO();
         userDTO.setUserId(1);
