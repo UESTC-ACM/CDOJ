@@ -24,6 +24,7 @@ package cn.edu.uestc.acmicpc.db.dao.base;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
+import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 import org.hibernate.Criteria;
@@ -35,7 +36,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Global DAO implementation.
@@ -52,6 +55,7 @@ import java.util.List;
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         extends BaseDAO implements IDAO<Entity, PK> {
     @Override
+    @Deprecated
     public void addOrUpdate(Entity entity) throws AppException {
         try {
             getSession().saveOrUpdate(entity);
@@ -278,4 +282,32 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
      * @return the reference Class
      */
     protected abstract Class<Entity> getReferenceClass();
+
+    public String getSQLString(Condition condition) throws AppException {
+        if (condition == null)
+            return "where 1";
+        List<String> params = new LinkedList<>();
+        for (Criterion criterion : condition.getCriterionList()) {
+            String field = criterion.toString();
+            params.add(field);
+        }
+
+        if (params.isEmpty())
+            return "where 1";
+
+        return "where " + ArrayUtil.join(params.toArray(), " and ");
+    }
+
+    public void updateEntitiesByCondition(Map<String, Object> properties, Condition condition) throws AppException {
+        if (properties.isEmpty())
+            return;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("update ").append(getReferenceClass().getSimpleName()).append(" set");
+        for (String key : properties.keySet())
+            stringBuilder.append(" ").append(key).append("=").append(properties.get(key));
+        stringBuilder.append(" ").append(getSQLString(condition)).append(";");
+        String hql = stringBuilder.toString();
+//        System.out.println(hql);
+        getSession().createQuery(hql).executeUpdate();
+    }
 }

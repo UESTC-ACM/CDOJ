@@ -38,7 +38,9 @@ import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
+import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -49,9 +51,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Simple database test class.
@@ -349,6 +349,7 @@ public class DatabaseTest
         if (user == null)
             return;
         System.out.println(ObjectUtil.toString(user));
+        statusCondition.clear();
         statusCondition.setUserId(user.getUserId());
         statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
         Condition condition = statusCondition.getCondition();
@@ -425,5 +426,28 @@ public class DatabaseTest
         } catch (AppException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testSQLGenerator() throws AppException {
+        userCondition.clear();
+        userCondition.setUserName("userName");
+        userCondition.setStartId(10);
+        Condition condition = userCondition.getCondition();
+        Junction junction = Restrictions.disjunction();
+        junction.add(Restrictions.eq("userName", "userName"));
+        junction.add(Restrictions.ge("userId", 1));
+        condition.addCriterion(junction);
+        System.out.println(userDAO.getSQLString(condition));
+    }
+
+    @Test
+    @Ignore
+    public void testSQLUpdate() throws AppException {
+        userCondition.clear();
+        userCondition.setUserName("userName");
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("userName", "userNewName");
+        userDAO.updateEntitiesByCondition(properties, userCondition.getCondition());
     }
 }
