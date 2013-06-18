@@ -28,6 +28,7 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Global DAO interface.
@@ -141,5 +142,30 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
      */
     public Entity getEntityByUniqueField(String fieldName, Object value, String propertyName, boolean forceUnique) throws FieldNotUniqueException, AppException;
 
+    /**
+     * Count number of entities for custom counting.
+     *
+     * @param condition user custom condition entity
+     * @return number of records for database query result
+     * @throws AppException
+     */
     Long customCount(Condition condition) throws AppException;
+
+    /**
+     * Get SQL where clause according to condition entity.
+     *
+     * @param condition specific condition entity
+     * @return where clause we need
+     * @throws AppException
+     */
+    public String getSQLString(Condition condition) throws AppException;
+
+    /**
+     * Update all records according condition entity.
+     *
+     * @param properties properties for setting
+     * @param condition  specific condition entity
+     * @throws AppException
+     */
+    public void updateEntitiesByCondition(Map<String, Object> properties, Condition condition) throws AppException;
 }

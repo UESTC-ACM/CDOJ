@@ -52,15 +52,55 @@ public class Condition {
     /**
      * Extra criterion list.
      */
-    public List<Criterion> criterionList = null;
+    public List<Criterion> criterionList;
     /**
      * Order fields.
      */
-    public List<Order> orders = null;
+    public List<Order> orders;
     /**
      * Select projections.
      */
-    public List<Projection> projections = null;
+    public List<Projection> projections;
+
+    public Long getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(Long currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public Long getCountPerPage() {
+        return countPerPage;
+    }
+
+    public void setCountPerPage(Long countPerPage) {
+        this.countPerPage = countPerPage;
+    }
+
+    public List<Criterion> getCriterionList() {
+        return criterionList;
+    }
+
+    public void setCriterionList(List<Criterion> criterionList) {
+        this.criterionList = criterionList;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public List<Projection> getProjections() {
+        return projections;
+    }
+
+    public void setProjections(List<Projection> projections) {
+        this.projections = projections;
+    }
 
     /**
      * Default constructor.

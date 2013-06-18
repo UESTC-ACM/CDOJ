@@ -25,6 +25,10 @@ package cn.edu.uestc.acmicpc.util;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 
+import javax.persistence.Id;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 /**
  * All actions for database.
  *
@@ -44,5 +48,26 @@ public class DatabaseUtil {
             return;
         for (Criterion criterion : criterionList)
             criteria.add(criterion);
+    }
+
+    /**
+     * Get entity's key value.
+     *
+     * @param object entity object
+     * @return entity's key value.
+     */
+    public static Object getKeyValue(Object object) {
+        for (Method method : object.getClass().getMethods()) {
+            if (method.getName().startsWith("get")) {
+                if (method.isAnnotationPresent(Id.class)) {
+                    try {
+                        return method.invoke(object);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        return null;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
