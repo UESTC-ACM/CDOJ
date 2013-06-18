@@ -285,15 +285,17 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
 
     public String getSQLString(Condition condition) throws AppException {
         if (condition == null)
-            return "where 1";
+            return "";
         List<String> params = new LinkedList<>();
-        for (Criterion criterion : condition.getCriterionList()) {
-            String field = criterion.toString();
-            params.add(field);
+        if (condition.getCriterionList() != null) {
+            for (Criterion criterion : condition.getCriterionList()) {
+                String field = criterion.toString();
+                params.add(field);
+            }
         }
 
         if (params.isEmpty())
-            return "where 1";
+            return "";
 
         return "where " + ArrayUtil.join(params.toArray(), " and ");
     }
@@ -305,9 +307,19 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         stringBuilder.append("update ").append(getReferenceClass().getSimpleName()).append(" set");
         for (String key : properties.keySet())
             stringBuilder.append(" ").append(key).append("=").append(properties.get(key));
-        stringBuilder.append(" ").append(getSQLString(condition)).append(";");
+        stringBuilder.append(" ").append(getSQLString(condition));
         String hql = stringBuilder.toString();
-//        System.out.println(hql);
+        System.out.println(hql);
         getSession().createQuery(hql).executeUpdate();
+    }
+
+    @Override
+    public int executeHQL(String hql) {
+        return getSession().createQuery(hql).executeUpdate();
+    }
+
+    @Override
+    public int executeSQL(String sql) {
+        return getSession().createSQLQuery(sql).executeUpdate();
     }
 }

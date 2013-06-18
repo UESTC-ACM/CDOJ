@@ -442,7 +442,6 @@ public class DatabaseTest
     }
 
     @Test
-    @Ignore
     public void testSQLUpdate() throws AppException {
         userCondition.clear();
         userCondition.setUserName("userName");
