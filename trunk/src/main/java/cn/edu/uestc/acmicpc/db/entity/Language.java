@@ -22,6 +22,8 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
@@ -34,6 +36,7 @@ import java.util.Collection;
 @SuppressWarnings("UnusedDeclaration")
 @Table(name = "language", schema = "", catalog = "uestcoj")
 @Entity
+@KeyField("languageId")
 public class Language implements Serializable {
     private static final long serialVersionUID = 6622284482431851438L;
     private Integer languageId;

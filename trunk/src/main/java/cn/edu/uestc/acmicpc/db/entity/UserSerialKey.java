@@ -20,6 +20,8 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -32,6 +34,7 @@ import java.sql.Timestamp;
 @SuppressWarnings("UnusedDeclaration")
 @Table(name = "userSerialKey", schema = "", catalog = "uestcoj")
 @Entity
+@KeyField("userSerialKeyId")
 public class UserSerialKey implements Serializable {
     private static final long serialVersionUID = -129312932189312L;
 

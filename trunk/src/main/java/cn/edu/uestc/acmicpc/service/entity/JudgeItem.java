@@ -22,7 +22,6 @@
 
 package cn.edu.uestc.acmicpc.service.entity;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
@@ -39,7 +38,6 @@ import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -105,7 +103,7 @@ public class JudgeItem implements CompileInfoDAOAware, StatusDAOAware, UserDAOAw
             if (compileInfo.getContent().length() > 65535)
                 compileInfo.setContent(compileInfo.getContent().substring(0, 65534));
             try {
-                compileinfoDAO.add(compileInfo);
+                compileinfoDAO.addOrUpdate(compileInfo);
                 status.setCompileInfoByCompileInfoId(compileInfo);
             } catch (AppException ignored) {
             }
@@ -118,23 +116,19 @@ public class JudgeItem implements CompileInfoDAOAware, StatusDAOAware, UserDAOAw
         if (updateStatus) {
             try {
                 User user = status.getUserByUserId();
-                statusCondition.setUserId(user.getUserId());
-                statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-                Condition condition = statusCondition.getCondition();
-                condition.addProjection(Projections.countDistinct("problemByProblemId"));
-                Long count = statusDAO.customCount(condition);
-                user.setSolved((int) count.longValue());
-                userDAO.update(user);
-
-                statusCondition.clear();
                 Problem problem = status.getProblemByProblemId();
-                statusCondition.setProblemId(problem.getProblemId());
-                statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-                condition = statusCondition.getCondition();
-                condition.addProjection(Projections.countDistinct("userByUserId"));
-                count = statusDAO.customCount(condition);
-                problem.setSolved((int) count.longValue());
-                problemDAO.update(problem);
+                String hql = "update User set solved = (select count(distinct problemByProblemId.problemId)"
+                        + " from Status where userByUserId.userId = "
+                        + user.getUserId() + " and result = "
+                        + Global.OnlineJudgeReturnType.OJ_AC.ordinal()
+                        + ") where userId = " + user.getUserId();
+                problemDAO.executeHQL(hql);
+                hql = "update Problem set solved = (select count(distinct userByUserId.userId)"
+                        + " from Status where problemByProblemId.problemId = "
+                        + problem.getProblemId() + " and result="
+                        + Global.OnlineJudgeReturnType.OJ_AC.ordinal()
+                        + ") where problemId = " + problem.getProblemId();
+                problemDAO.executeHQL(hql);
 
             } catch (Exception e) {
                 System.out.println(e.toString());
