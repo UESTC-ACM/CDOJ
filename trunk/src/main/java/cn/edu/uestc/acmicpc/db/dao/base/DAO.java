@@ -313,7 +313,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
             stringBuilder.append(" ").append(key).append("=").append(properties.get(key));
         stringBuilder.append(" ").append(getSQLString(condition));
         String hql = stringBuilder.toString();
-        System.out.println(hql);
+//        System.out.println(hql);
         getSession().createQuery(hql).executeUpdate();
     }
 
