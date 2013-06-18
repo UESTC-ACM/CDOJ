@@ -82,8 +82,8 @@ function refreshUserList(condition) {
             html.append('<td>' + value.userId + '</td>');
             html.append(getUserName(value.email, value.userName));
             html.append(getNickName(value.nickName, value.type));
-            html.append('<td>' + value.email + '</td>');
             html.append('<td>' + value.school + '</td>');
+            html.append('<td class="cdoj-time">' + value.lastLogin+ '</td>');
             html.append('<td>' + value.solved + '</td>');
             html.append('<td>' + value.tried + '</td>');
             tbody.append(html);
@@ -126,8 +126,8 @@ $(document).ready(function () {
         "userCondition.type": undefined,
         "userCondition.school": undefined,
         "userCondition.departmentId": undefined,
-        "userCondition.orderFields": "solved",
-        "userCondition.orderAsc": false
+        "userCondition.orderFields": "solved,tried,id",
+        "userCondition.orderAsc": "false,false,true"
     };
 
     $('input#search').setButton({
