@@ -99,7 +99,6 @@ public class ContestListAction extends BaseAction implements ContestDAOAware, Co
                 contestListViewList.add(new ContestListView(contest));
             json.put("pageInfo", pageInfo.getHtmlString());
             json.put("result", "ok");
-            json.put("condition", contestCondition);
             json.put("contestList", contestListViewList);
         } catch (AppException e) {
             json.put("result", "error");
