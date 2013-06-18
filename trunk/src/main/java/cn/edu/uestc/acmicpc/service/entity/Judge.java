@@ -28,7 +28,6 @@ import cn.edu.uestc.acmicpc.util.FileUtil;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.Settings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -233,9 +232,13 @@ public class Judge implements Runnable, SettingsAware {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            judgeItem.compileInfo = new CompileInfo();
+            if (judgeItem.compileInfo == null)
+                judgeItem.compileInfo = new CompileInfo();
             judgeItem.compileInfo.setContent(stringBuilder.toString());
-        } else judgeItem.compileInfo = null;
+        } else {
+            if (judgeItem.compileInfo != null)
+                judgeItem.compileInfo.setContent("");
+        }
 
         judgeItem.update(false);
         return isAccepted;

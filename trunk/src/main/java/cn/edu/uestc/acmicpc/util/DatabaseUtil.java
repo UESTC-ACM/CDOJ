@@ -22,10 +22,10 @@
 
 package cn.edu.uestc.acmicpc.util;
 
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 
-import javax.persistence.Id;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -54,20 +54,18 @@ public class DatabaseUtil {
      * Get entity's key value.
      *
      * @param object entity object
-     * @return entity's key value.
+     * @return entity's key value, if object is not a entity, return {@code null}.
      */
     public static Object getKeyValue(Object object) {
-        for (Method method : object.getClass().getMethods()) {
-            if (method.getName().startsWith("get")) {
-                if (method.isAnnotationPresent(Id.class)) {
-                    try {
-                        return method.invoke(object);
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        return null;
-                    }
-                }
-            }
+        KeyField keyField = object.getClass().getAnnotation(KeyField.class);
+        if (keyField == null)
+            return null;
+        String methodName = StringUtil.getGetterOrSetter(StringUtil.MethodType.GETTER, keyField.value());
+        try {
+            Method method = object.getClass().getMethod(methodName);
+            return method.invoke(object);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            return null;
         }
-        return null;
     }
 }

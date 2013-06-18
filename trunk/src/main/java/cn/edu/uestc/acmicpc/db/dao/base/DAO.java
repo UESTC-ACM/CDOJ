@@ -25,6 +25,7 @@ package cn.edu.uestc.acmicpc.db.dao.base;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
+import cn.edu.uestc.acmicpc.util.DatabaseUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 import org.hibernate.Criteria;
@@ -55,10 +56,13 @@ import java.util.Map;
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         extends BaseDAO implements IDAO<Entity, PK> {
     @Override
-    @Deprecated
     public void addOrUpdate(Entity entity) throws AppException {
         try {
-            getSession().saveOrUpdate(entity);
+            if (DatabaseUtil.getKeyValue(entity) == null) {
+                add(entity);
+            } else {
+                update(entity);
+            }
         } catch (HibernateException e) {
             e.printStackTrace();
             throw new AppException("Invoke addOrUpdate method error.");

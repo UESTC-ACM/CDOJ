@@ -22,6 +22,8 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -33,6 +35,7 @@ import java.io.Serializable;
 @SuppressWarnings("UnusedDeclaration")
 @Table(name = "contestUser", schema = "", catalog = "uestcoj")
 @Entity
+@KeyField("contestUserId")
 public class ContestUser implements Serializable {
     private static final long serialVersionUID = -8408381521779421508L;
     private Integer contestUserId;

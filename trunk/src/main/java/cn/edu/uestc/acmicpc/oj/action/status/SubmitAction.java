@@ -22,7 +22,6 @@
 
 package cn.edu.uestc.acmicpc.oj.action.status;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.*;
 import cn.edu.uestc.acmicpc.db.dto.impl.CodeDTO;
@@ -129,18 +128,11 @@ public class SubmitAction extends BaseAction
             statusDTO.setCode(code);
             statusDTO.setLength(codeContent.length());
             statusDAO.add(statusDTO.getEntity());
-            statusCondition.clear();
-            statusCondition.setUserId(currentUser.getUserId());
-            Condition condition = statusCondition.getCondition();
-            Long count = statusDAO.count(condition);
-            currentUser.setTried((int) count.longValue());
-            userDAO.update(currentUser);
-            statusCondition.clear();
-            statusCondition.setProblemId(problem.getProblemId());
-            condition = statusCondition.getCondition();
-            count = statusDAO.count(condition);
-            problem.setTried((int) count.longValue());
-            problemDAO.update(problem);
+
+            String hql = "update User set tried=tried+1 where userId=" + currentUser.getUserId();
+            userDAO.executeHQL(hql);
+            hql = "update Problem set tried=tried+1 where problemId=" + problem.getProblemId();
+            problemDAO.executeHQL(hql);
             json.put("result", "ok");
         } catch (AppException e) {
             json.put("result", "error");

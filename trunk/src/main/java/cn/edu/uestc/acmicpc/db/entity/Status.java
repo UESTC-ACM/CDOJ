@@ -22,6 +22,8 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -34,6 +36,7 @@ import java.sql.Timestamp;
 @SuppressWarnings("UnusedDeclaration")
 @Table(name = "status", schema = "", catalog = "uestcoj")
 @Entity
+@KeyField("statusId")
 public class Status implements Serializable {
     private static final long serialVersionUID = 4819326443036942394L;
     private Integer statusId;
