@@ -13,15 +13,10 @@ package cn.edu.uestc.acmicpc.oj.action.admin;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.ICodeDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
-import cn.edu.uestc.acmicpc.db.entity.Code;
-import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
 import cn.edu.uestc.acmicpc.db.entity.Status;
-import cn.edu.uestc.acmicpc.db.view.impl.CodeView;
 import cn.edu.uestc.acmicpc.db.view.impl.StatusView;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
-import cn.edu.uestc.acmicpc.ioc.dao.CodeDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
@@ -32,7 +27,9 @@ import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Action for list and search all submit status
@@ -161,12 +158,9 @@ public class StatusAdminAction extends BaseAction
     public String toRejudge() {
         try {
             Condition condition = statusCondition.getCondition();
-            List<Status> statusList = (List<Status>)statusDAO.findAll(condition);
-            for (Status status : statusList) {
-                status.setResult(Global.OnlineJudgeReturnType.OJ_REJUDGING.ordinal());
-                statusDAO.update(status);
-            }
-
+            Map<String, Object> properties = new HashMap<>();
+            properties.put("result", Global.OnlineJudgeReturnType.OJ_REJUDGING.ordinal());
+            statusDAO.updateEntitiesByCondition(properties, condition);
             json.put("result", "ok");
         } catch (AppException e) {
             json.put("result", "error");
