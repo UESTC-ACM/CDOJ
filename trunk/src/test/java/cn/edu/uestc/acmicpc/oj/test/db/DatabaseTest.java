@@ -152,6 +152,7 @@ public class DatabaseTest
      */
     @SuppressWarnings("unchecked")
     @Test
+    @Ignore
     public void testDataBaseConnection() throws AppException {
         List<Tag> tags = (List<Tag>) tagDAO.findAll();
         for (Tag tag : tags)
@@ -190,6 +191,7 @@ public class DatabaseTest
      * @throws AppException
      */
     @Test
+    @Ignore
     public void testCount() throws AppException {
         System.out.println(tagDAO.count());
     }
@@ -200,6 +202,7 @@ public class DatabaseTest
      * @throws FieldNotUniqueException
      */
     @Test
+    @Ignore
     public void testGetEntityByUnique() throws FieldNotUniqueException, AppException {
         User user = userDAO.getEntityByUniqueField("userName", "administrator");
         Assert.assertEquals("UESTC", user.getSchool());
@@ -211,6 +214,7 @@ public class DatabaseTest
      * @throws FieldNotUniqueException
      */
     @Test(expected = FieldNotUniqueException.class)
+    @Ignore
     public void testGetEntityByUniqueWithNotUniqueField() throws FieldNotUniqueException, AppException {
         userDAO.getEntityByUniqueField("password", "123456");
     }
@@ -222,6 +226,7 @@ public class DatabaseTest
      * @throws FieldNotUniqueException
      */
     @Test
+    @Ignore
     public void testUserUpdate() throws AppException, FieldNotUniqueException {
         User user = userDAO.getEntityByUniqueField("userName", "administrator");
         user.setLastLogin(new Timestamp(new Date().getTime()));
@@ -249,6 +254,7 @@ public class DatabaseTest
      * @throws AppException
      */
     @Test
+    @Ignore
     public void testUserConditionDepartmentId() throws AppException {
         userCondition.clear();
         userCondition.setDepartmentId(1);
@@ -317,6 +323,7 @@ public class DatabaseTest
      * @throws AppException
      */
     @Test
+    @Ignore
     public void testSingleUser() throws FieldNotUniqueException, AppException {
         User user = new User();
         int id = new Random().nextInt();
@@ -344,6 +351,7 @@ public class DatabaseTest
      */
     @SuppressWarnings("unchecked")
     @Test
+    @Ignore
     public void testStatusDAOWithDistinctProblem() throws AppException, FieldNotUniqueException {
         User user = userDAO.getEntityByUniqueField("userName", "lyhypacm");
         if (user == null)
@@ -418,6 +426,7 @@ public class DatabaseTest
      * Test cases for contest DAO.
      */
     @Test
+    @Ignore
     public void testContestDAO() {
         try {
             Contest contest = contestDTO.getEntity();
@@ -429,6 +438,7 @@ public class DatabaseTest
     }
 
     @Test
+    @Ignore
     public void testSQLGenerator() throws AppException {
         userCondition.clear();
         userCondition.setUserName("userName");
