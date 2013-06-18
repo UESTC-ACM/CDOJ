@@ -79,6 +79,8 @@ public class Condition {
     }
 
     public List<Criterion> getCriterionList() {
+        if (criterionList == null)
+            criterionList = new LinkedList<>();
         return criterionList;
     }
 
@@ -87,6 +89,8 @@ public class Condition {
     }
 
     public List<Order> getOrders() {
+        if (orders == null)
+            orders = new LinkedList<>();
         return orders;
     }
 
@@ -95,6 +99,8 @@ public class Condition {
     }
 
     public List<Projection> getProjections() {
+        if (projections == null)
+            projections = new LinkedList<>();
         return projections;
     }
 
@@ -132,9 +138,7 @@ public class Condition {
      */
     @SuppressWarnings("WeakerAccess")
     public void addOrder(String field, boolean asc) {
-        if (orders == null)
-            orders = new LinkedList<>();
-        orders.add(new Order(field, asc));
+        getOrders().add(new Order(field, asc));
     }
 
     /**
@@ -143,9 +147,7 @@ public class Condition {
      * @param projection new projection object
      */
     public void addProjection(Projection projection) {
-        if (projections == null)
-            projections = new LinkedList<>();
-        projections.add(projection);
+        getProjections().add(projection);
     }
 
     /**
@@ -154,9 +156,7 @@ public class Condition {
      * @param criterion new criterion object
      */
     public void addCriterion(Criterion criterion) {
-        if (criterionList == null)
-            criterionList = new LinkedList<>();
-        criterionList.add(criterion);
+        getCriterionList().add(criterion);
     }
 
     /**

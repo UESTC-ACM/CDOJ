@@ -168,4 +168,20 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
      * @throws AppException
      */
     public void updateEntitiesByCondition(Map<String, Object> properties, Condition condition) throws AppException;
+
+    /**
+     * Crate a hibernate query.
+     *
+     * @param hql hibernate query string
+     * @return number of rows effected
+     */
+    public int executeHQL(String hql);
+
+    /**
+     * Create a basic database query.
+     *
+     * @param sql SQL string for query
+     * @return number of rows effected
+     */
+    public int executeSQL(String sql);
 }
