@@ -55,8 +55,8 @@
                 <th style="width: 30px;" class="orderButton" field="id">Id</th>
                 <th class="orderButton" field="userName">User name</th>
                 <th class="orderButton" field="nickName">Nick name</th>
-                <th class="orderButton" field="email">Email</th>
                 <th class="orderButton" field="school">School</th>
+                <th style="width: 160px;" class="orderButton" field="lastLogin">Last login</th>
                 <th style="width: 60px;" class="orderButton" field="solved">Solved</th>
                 <th style="width: 60px;" class="orderButton" field="tried">Tried</th>
             </tr>

@@ -82,8 +82,10 @@ public class UserListAction extends BaseAction implements UserConditionAware {
             condition.countPerPage = RECORD_PER_PAGE;
             List<User> userList = (List<User>) userDAO.findAll(condition);
             List<UserView> userViewList = new ArrayList<>();
-            for (User user : userList)
-                userViewList.add(new UserView(user));
+            for (User user : userList) {
+                UserView userView = new UserView(user);
+                userViewList.add(userView);
+            }
             json.put("pageInfo", pageInfo.getHtmlString());
             json.put("result", "ok");
             json.put("userList", userViewList);
