@@ -93,9 +93,10 @@ public class UserRankSummary {
                         problemSummaryInfo.setFirstSolved(true);
                     contestProblemSummaryView.setSolved(contestProblemSummaryView.getSolved() + 1);
                 } //If pending
-                else if (status.getResult() == Global.OnlineJudgeReturnType.OJ_JUDGING.ordinal() ||
+                else if (status.getResult() == Global.OnlineJudgeReturnType.OJ_REJUDGING.ordinal() ||
                         status.getResult() == Global.OnlineJudgeReturnType.OJ_WAIT.ordinal() ||
-                        status.getResult() == Global.OnlineJudgeReturnType.OJ_REJUDGING.ordinal()) {
+                        status.getResult() == Global.OnlineJudgeReturnType.OJ_JUDGING.ordinal() ||
+                        status.getResult() == Global.OnlineJudgeReturnType.OJ_RUNNING.ordinal()) {
                     problemSummaryInfo.setPending(true);
                     problemSummaryInfo.setTried(problemSummaryInfo.getTried() + 1);
                 } //WA

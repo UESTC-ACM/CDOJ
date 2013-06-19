@@ -39,7 +39,6 @@ public class ContestRankList {
     private ContestListView contestSummary;
     private List<ContestProblemSummaryView> problemSummary;
     private List<UserRankSummary> userRankSummaryList;
-    private Integer lastUpdate;
     private Timestamp lastUpdateTime;
     private Boolean lock;
 
@@ -57,14 +56,6 @@ public class ContestRankList {
 
     public void setLock(Boolean lock) {
         this.lock = lock;
-    }
-
-    public Integer getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(Integer lastUpdate) {
-        this.lastUpdate = lastUpdate;
     }
 
     public ContestListView getContestSummary() {
@@ -97,8 +88,13 @@ public class ContestRankList {
         userRankSummaryList = new LinkedList<>();
     }
 
+    public void clear(ContestListView contestSummary, List<ContestProblemSummaryView> problemSummary) {
+        this.contestSummary = contestSummary;
+        this.problemSummary = problemSummary;
+        userRankSummaryList = new LinkedList<>();
+    }
+
     public void updateRankList(Status status) {
-        lastUpdate = status.getStatusId();
         Boolean isNewUser = true;
         if (userRankSummaryList.size() > 0) {
             for (UserRankSummary userRankSummary : userRankSummaryList) {
