@@ -126,19 +126,20 @@ public class ContestRankListAction extends BaseAction
             if (rankList == null) {
                 rankList = new ContestRankList(new ContestListView(contest), contestProblems);
                 getGlobal().getContestRankListMap().put(contest.getContestId(), rankList);
-                rankList.setLastUpdate(0);
                 rankList.setLastUpdateTime(new Timestamp(0));
                 rankList.setLock(false);
             }
-            System.out.println(rankList.getLastUpdateTime() + " " + rankList.getLastUpdate() + " " + rankList.getLock());
+
             if (!rankList.getLock()) {
                 if (new Date().getTime() - rankList.getLastUpdateTime().getTime() >= 5 * 1000) {
+                    System.out.println(rankList.getLastUpdateTime() + " " + rankList.getLock());
                     //lock it!
                     rankList.setLock(true);
 
+                    rankList.clear(new ContestListView(contest), contestProblems);
+
                     statusCondition.clear();
                     statusCondition.setContestId(contest.getContestId());
-                    statusCondition.setStartId(rankList.getLastUpdate() + 1);
                     statusCondition.setStartTime(contest.getTime());
                     statusCondition.setEndTime(contestEndTime);
                     condition = statusCondition.getCondition();

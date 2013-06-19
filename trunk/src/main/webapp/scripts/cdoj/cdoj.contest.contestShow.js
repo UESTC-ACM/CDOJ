@@ -233,7 +233,8 @@ function refreshContest() {
             position.find('.problemSolved').append(this.solved);
             position.find('.problemTried').empty();
             position.find('.problemTried').append(this.tried);
-            position.removeClass();
+            position.removeClass('problem-state-accept');
+            position.removeClass('problem-state-error');
             if (this.state == 1)
                 position.addClass('problem-state-accept');
             else if (this.state == 2)
