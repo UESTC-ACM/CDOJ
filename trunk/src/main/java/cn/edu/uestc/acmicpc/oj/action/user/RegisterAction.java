@@ -32,6 +32,9 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import com.opensymphony.xwork2.validator.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Action for register
  *
@@ -108,38 +111,13 @@ public class RegisterAction extends BaseAction
                             minLength = "1",
                             maxLength = "20",
                             trim = false
-                    )
-            },
-            customValidators = {
-                    @CustomValidator(
-                            type = "regex",
-                            fieldName = "userDTO.userName",
-                            key = "error.userName.validation",
-                            parameters = {
-                                    @ValidationParameter(
-                                            name = "expression",
-                                            value = "\\b^[a-zA-Z0-9_]{4,24}$\\b"
-                                    ),
-                                    @ValidationParameter(
-                                            name = "trim",
-                                            value = "false"
-                                    )
-                            }
                     ),
-                    @CustomValidator(
-                            type = "regex",
+                    @StringLengthFieldValidator(
                             fieldName = "userDTO.nickName",
                             key = "error.nickName.validation",
-                            parameters = {
-                                    @ValidationParameter(
-                                            name = "expression",
-                                            value = "\\b^[^\\s]{2,20}$\\b"
-                                    ),
-                                    @ValidationParameter(
-                                            name = "trim",
-                                            value = "false"
-                                    )
-                            }
+                            minLength = "2",
+                            maxLength = "20",
+                            trim = false
                     )
             },
             fieldExpressions = {
@@ -171,6 +149,15 @@ public class RegisterAction extends BaseAction
                 addFieldError("userDTO.email", "Email has benn used!");
                 return INPUT;
             }
+
+            //TODO I don't know why struts2 regex validation doesn't work now.
+            Pattern pattern = Pattern.compile("\\b^[a-zA-Z0-9_]{4,24}$\\b");
+            Matcher matcher = pattern.matcher(userDTO.getUserName());
+            if (!matcher.find()) {
+                addFieldError("userDTO.userName", "Please enter 4-24 characters consist of A-Z, a-z, 0-9 and '_'.");
+                return INPUT;
+            }
+
             userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
             User user = userDTO.getEntity();
             userDAO.add(user);
