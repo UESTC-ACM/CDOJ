@@ -34,7 +34,6 @@
 <head>
     <script src="<s:url value="/scripts/marked.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.markdown.js"/>"></script>
-    <script src="<s:url value="/scripts/cdoj/cdoj.util.submit.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.contest.contestShow.js"/>"></script>
     <script src="<s:url value="/plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"/>"></script>
     <title>Contest</title>

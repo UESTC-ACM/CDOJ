@@ -28,12 +28,11 @@ import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.Language;
 import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.LanguageDAOAware;
+import cn.edu.uestc.acmicpc.oj.entity.ContestRankList;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Global enumerates and constants inside project.
@@ -157,6 +156,19 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
     private List<ContestType> contestTypeList;
 
     /**
+     * Cache used contest ranklist
+     */
+    private Map<Integer, ContestRankList> contestRankListMap;
+
+    public Map<Integer, ContestRankList> getContestRankListMap() {
+        return contestRankListMap;
+    }
+
+    public void setContestRankListMap(Map<Integer, ContestRankList> contestRankListMap) {
+        this.contestRankListMap = contestRankListMap;
+    }
+
+    /**
      * Get all languages.
      *
      * @return compile language list
@@ -171,6 +183,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
      */
     @SuppressWarnings("unchecked")
     public void init() throws AppException {
+        contestRankListMap = new HashMap<>();
         this.departmentList = (List<Department>) departmentDAO.findAll();
         this.languageList = (List<Language>) languageDAO.findAll();
 

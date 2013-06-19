@@ -36,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -100,6 +101,7 @@ public class ContestRankListAction extends BaseAction
             if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
                 if (!contest.getIsVisible())
                     throw new AppException("Contest doesn't exist");
+
             Timestamp contestEndTime = new Timestamp(contest.getTime().getTime() + contest.getLength() * 1000);
 
             ContestView targetContest = new ContestView(contest);
@@ -115,23 +117,42 @@ public class ContestRankListAction extends BaseAction
                         getCurrentUser(), problemStatus.get(problem.getProblemId()));
                 targetProblem.setTried(0);
                 targetProblem.setSolved(0);
-                targetProblem.setOrder((char)('A' + id));
+                targetProblem.setOrder((char) ('A' + id));
 
                 contestProblems.add(targetProblem);
             }
 
-            ContestRankList rankList = new ContestRankList(new ContestListView(contest), contestProblems);
+            ContestRankList rankList = getGlobal().getContestRankListMap().get(contest.getContestId());
+            if (rankList == null) {
+                rankList = new ContestRankList(new ContestListView(contest), contestProblems);
+                getGlobal().getContestRankListMap().put(contest.getContestId(), rankList);
+                rankList.setLastUpdate(0);
+                rankList.setLastUpdateTime(new Timestamp(0));
+                rankList.setLock(false);
+            }
+            System.out.println(rankList.getLastUpdateTime() + " " + rankList.getLastUpdate() + " " + rankList.getLock());
+            if (!rankList.getLock()) {
+                if (new Date().getTime() - rankList.getLastUpdateTime().getTime() >= 5 * 1000) {
+                    //lock it!
+                    rankList.setLock(true);
 
-            statusCondition.clear();
-            statusCondition.setContestId(contest.getContestId());
-            statusCondition.setStartTime(contest.getTime());
-            statusCondition.setEndTime(contestEndTime);
-            condition = statusCondition.getCondition();
-            condition.addOrder("statusId", true);
-            List<Status> statusList = (List<Status>) statusDAO.findAll(condition);
+                    statusCondition.clear();
+                    statusCondition.setContestId(contest.getContestId());
+                    statusCondition.setStartId(rankList.getLastUpdate() + 1);
+                    statusCondition.setStartTime(contest.getTime());
+                    statusCondition.setEndTime(contestEndTime);
+                    condition = statusCondition.getCondition();
+                    condition.addOrder("statusId", true);
+                    List<Status> statusList = (List<Status>) statusDAO.findAll(condition);
 
-            for (Status status : statusList)
-                rankList.updateRankList(status);
+                    for (Status status : statusList)
+                        rankList.updateRankList(status);
+
+                    System.out.println("Success update!");
+                    rankList.setLastUpdateTime(new Timestamp(new Date().getTime()));
+                    rankList.setLock(false);
+                }
+            }
 
             json.put("rankList", rankList);
             json.put("result", "ok");

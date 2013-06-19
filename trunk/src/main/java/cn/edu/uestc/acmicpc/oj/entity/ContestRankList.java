@@ -27,6 +27,7 @@ import cn.edu.uestc.acmicpc.db.view.impl.ContestProblemSummaryView;
 import com.opensymphony.xwork2.util.ArrayUtils;
 import org.apache.commons.collections.ListUtils;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -38,6 +39,33 @@ public class ContestRankList {
     private ContestListView contestSummary;
     private List<ContestProblemSummaryView> problemSummary;
     private List<UserRankSummary> userRankSummaryList;
+    private Integer lastUpdate;
+    private Timestamp lastUpdateTime;
+    private Boolean lock;
+
+    public Timestamp getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(Timestamp lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
+    }
+
+    public Boolean getLock() {
+        return lock;
+    }
+
+    public void setLock(Boolean lock) {
+        this.lock = lock;
+    }
+
+    public Integer getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Integer lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
 
     public ContestListView getContestSummary() {
         return contestSummary;
@@ -70,6 +98,7 @@ public class ContestRankList {
     }
 
     public void updateRankList(Status status) {
+        lastUpdate = status.getStatusId();
         Boolean isNewUser = true;
         if (userRankSummaryList.size() > 0) {
             for (UserRankSummary userRankSummary : userRankSummaryList) {
