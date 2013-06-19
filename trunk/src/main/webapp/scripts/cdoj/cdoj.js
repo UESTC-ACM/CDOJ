@@ -43,7 +43,7 @@
         $('.cdoj-time').formatTimeStyle();
 
         var mult = 0.95;
-        if (Sys.windows)
+        if (Sys.windows || Sys.safari)
             mult = 0.65;
 
         $('#registerModal').find('.modal-body').css('max-height', Math.min(450, $(window).height() * mult));

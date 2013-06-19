@@ -244,6 +244,7 @@ function refreshContest() {
 
 function refreshRankList() {
     $.post('/contest/rank/' + currentContest, function (data) {
+        console.log(data);
         if (data.result == "error") {
             alert(data.error_msg);
             clearInterval(rankTimer);
