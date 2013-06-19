@@ -120,7 +120,7 @@ function blindCodeHref() {
             codeViewer.append(str);
 
             var mult = 0.95;
-            if (Sys.windows)
+            if (Sys.windows || Sys.safari)
                 mult = 0.65;
 
             codeViewer.css('max-height', Math.min(600, $(window).height() * mult));
