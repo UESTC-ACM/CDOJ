@@ -51,10 +51,11 @@ import java.util.List;
 @ContextConfiguration({"classpath:applicationContext-test.xml"})
 public class TriedTest implements StatusDAOAware, ProblemDAOAware, UserDAOAware, StatusConditionAware {
 
+    @SuppressWarnings("unchecked")
     @Test
     public void syncUserTried() throws AppException {
-        List<User> userList = (List<User>)userDAO.findAll();
-        for (User user: userList) {
+        List<User> userList = (List<User>) userDAO.findAll();
+        for (User user : userList) {
             statusCondition.clear();
             statusCondition.setUserId(user.getUserId());
             Condition condition = statusCondition.getCondition();
@@ -64,10 +65,11 @@ public class TriedTest implements StatusDAOAware, ProblemDAOAware, UserDAOAware,
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void syncProblemTried() throws AppException {
-        List<Problem> problemList = (List<Problem>)problemDAO.findAll();
-        for (Problem problem: problemList) {
+        List<Problem> problemList = (List<Problem>) problemDAO.findAll();
+        for (Problem problem : problemList) {
             statusCondition.clear();
             statusCondition.setProblemId(problem.getProblemId());
             Condition condition = statusCondition.getCondition();

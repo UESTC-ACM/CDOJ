@@ -91,6 +91,7 @@ import java.lang.reflect.Method;
  *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@SuppressWarnings("UnusedDeclaration")
 public abstract class BaseCondition implements ApplicationContextAware {
 
     /**
@@ -127,8 +128,15 @@ public abstract class BaseCondition implements ApplicationContextAware {
      * <p/>
      * We can iterator all the fields which will be considered, and
      * handle the condition object according to the fields' values.
+     * <p/>
+     * <strong>WARN</strong>:
+     * <p/>
+     * When you deal with {@code joined} columns, please put then into
+     * {@code condition} entity with {@code JoinedProperty} entity.
      *
      * @param condition conditions that to be considered
+     * @see Condition
+     * @see JoinedProperty
      */
     protected void invoke(Condition condition) {
         if (orderFields != null) {
@@ -160,7 +168,7 @@ public abstract class BaseCondition implements ApplicationContextAware {
                 try {
                     if (method.isAnnotationPresent(Ignore.class))
                         continue;
-                    method.invoke(this, (Object)null);
+                    method.invoke(this, (Object) null);
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
@@ -179,9 +187,22 @@ public abstract class BaseCondition implements ApplicationContextAware {
     /**
      * Basic condition type of database handler
      */
-    @SuppressWarnings("UnusedDeclaration")
     public enum ConditionType {
-        eq, gt, lt, ge, le, like
+        eq("="), gt(">"), lt("<"), ge(">="), le("<="), like(" like ");
+        private String signal;
+
+        public String getSignal() {
+            return signal;
+        }
+
+        public void setSignal(String signal) {
+            this.signal = signal;
+        }
+
+        private ConditionType(String signal) {
+            this.signal = signal;
+
+        }
     }
 
     /**
@@ -209,7 +230,7 @@ public abstract class BaseCondition implements ApplicationContextAware {
             if (method.getName().startsWith("get")) {
                 try {
                     String fieldName = StringUtil.getFieldNameFromGetterOrSetter(method.getName());
-                    Object value;
+                    Object value, keyValue;
                     Exp exp = method.getAnnotation(Exp.class);
                     if (exp == null)
                         continue;
@@ -220,10 +241,12 @@ public abstract class BaseCondition implements ApplicationContextAware {
                     }
                     if (value == null)
                         continue;
+                    keyValue = value;
                     String mapField = exp.MapField();
                     mapField = StringUtil.isNullOrWhiteSpace(mapField) ? fieldName : mapField;
                     mapField = upperCaseFirst ? mapField.substring(0, 1).toUpperCase()
                             + mapField.substring(1) : mapField;
+                    boolean isJoinedProperty = false;
                     if (!exp.MapObject().equals(objectClass)) {
                         String name = exp.MapObject().getName()
                                 .substring(exp.MapObject().getName().lastIndexOf('.') + 1);
@@ -231,6 +254,7 @@ public abstract class BaseCondition implements ApplicationContextAware {
                                 + name.substring(1) + "DAO";
                         IDAO DAO = (IDAO) applicationContext.getBean(DAOName);
                         value = DAO.get((Serializable) value);
+                        isJoinedProperty = true;
                     }
                     if (exp.Type().name().equals("like")) {
                         value = String.format("%%%s%%", value);
@@ -238,7 +262,11 @@ public abstract class BaseCondition implements ApplicationContextAware {
                     Criterion c = (Criterion) restrictionsClass.getMethod(exp.Type().name(),
                             String.class, Object.class).invoke(null, mapField,
                             value);
-                    condition.addCriterion(c);
+                    if (isJoinedProperty) {
+                        condition.addJoinedProperty(mapField, new JoinedProperty(c, keyValue, exp.Type()));
+                    } else {
+                        condition.addCriterion(c);
+                    }
                 } catch (Exception e) {
 //                    e.printStackTrace();
                 }

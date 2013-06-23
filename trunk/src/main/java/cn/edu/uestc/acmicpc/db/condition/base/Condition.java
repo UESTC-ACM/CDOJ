@@ -25,8 +25,10 @@ package cn.edu.uestc.acmicpc.db.condition.base;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Projection;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Other conditions setting for DAO findAll method.
@@ -44,15 +46,28 @@ public class Condition {
     /**
      * Current page number.
      */
-    public Long currentPage;
+    private Long currentPage;
     /**
      * Number of records per page.
      */
-    public Long countPerPage;
+    private Long countPerPage;
     /**
      * Extra criterion list.
      */
-    public List<Criterion> criterionList;
+    private List<Criterion> criterionList;
+
+    private Map<String, JoinedProperty> joinedProperties;
+
+    public Map<String, JoinedProperty> getJoinedProperties() {
+        if (joinedProperties == null)
+            joinedProperties = new HashMap<>();
+        return joinedProperties;
+    }
+
+    public void setJoinedProperties(Map<String, JoinedProperty> joinedProperties) {
+        this.joinedProperties = joinedProperties;
+    }
+
     /**
      * Order fields.
      */
@@ -178,5 +193,9 @@ public class Condition {
          * Whether order field asc or not.
          */
         public final boolean asc;
+    }
+
+    public void addJoinedProperty(String key, JoinedProperty value) {
+        getJoinedProperties().put(key, value);
     }
 }

@@ -41,10 +41,7 @@ import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Property;
-import org.hibernate.mapping.Column;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -186,6 +183,7 @@ public class ConditionTest
         return statusCondition;
     }
 
+    @SuppressWarnings("unchecked")
     @Ignore
     @Test
     public void testProjections() throws AppException, FieldNotUniqueException {
