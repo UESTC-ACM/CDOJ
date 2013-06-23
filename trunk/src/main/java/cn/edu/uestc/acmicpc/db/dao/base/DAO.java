@@ -22,7 +22,9 @@
 
 package cn.edu.uestc.acmicpc.db.dao.base;
 
+import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.base.JoinedProperty;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.DatabaseUtil;
@@ -101,13 +103,15 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
                 criteria.addOrder(order.asc ? Order.asc(order.field) : Order.desc(order.field));
             }
         }
-        criteria.setFirstResult(condition.currentPage == null ? 0 : (int) ((condition.currentPage - 1) * condition.countPerPage));
-        if (condition.countPerPage != null)
-            criteria.setMaxResults((int) condition.countPerPage.longValue());
-        if (condition.criterionList != null) {
-            for (Criterion criterion : condition.criterionList) {
-                criteria.add(criterion);
-            }
+        criteria.setFirstResult(condition.getCurrentPage() == null ? 0
+                : (int) ((condition.getCurrentPage() - 1) * condition.getCountPerPage()));
+        if (condition.getCountPerPage() != null)
+            criteria.setMaxResults((int) condition.getCountPerPage().longValue());
+        for (Criterion criterion : condition.getCriterionList()) {
+            criteria.add(criterion);
+        }
+        for (JoinedProperty joinedProperty : condition.getJoinedProperties().values()) {
+            criteria.add(joinedProperty.getCriterion());
         }
         if (condition.projections != null) {
             ProjectionList projectionList = Projections.projectionList();
@@ -291,11 +295,23 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         if (condition == null)
             return "";
         List<String> params = new LinkedList<>();
-        if (condition.getCriterionList() != null) {
-            for (Criterion criterion : condition.getCriterionList()) {
-                String field = criterion.toString();
-                params.add(field);
+        for (Criterion criterion : condition.getCriterionList()) {
+            String field = criterion.toString();
+//            System.out.println("Criterion: " + criterion.toString());
+            params.add(field);
+        }
+        for (String key : condition.getJoinedProperties().keySet()) {
+            JoinedProperty joinedProperty = condition.getJoinedProperties().get(key);
+            String field;
+            if (joinedProperty.getConditionType() == BaseCondition.ConditionType.like) {
+                field = key + joinedProperty.getConditionType().getSignal()
+                        + "%" + joinedProperty.getKeyValue() + "%";
+            } else {
+                field = key + joinedProperty.getConditionType().getSignal()
+                        + joinedProperty.getKeyValue();
             }
+//            System.out.println("JoinedProperty: " + field);
+            params.add(field);
         }
 
         if (params.isEmpty())

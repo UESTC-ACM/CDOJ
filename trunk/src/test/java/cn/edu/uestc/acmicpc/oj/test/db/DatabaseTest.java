@@ -452,12 +452,11 @@ public class DatabaseTest
     }
 
     @Test
-    @Ignore
     public void testSQLUpdate() throws AppException {
-        userCondition.clear();
-        userCondition.setUserName("userName");
+        statusCondition.clear();
+        statusCondition.setContestId(1);
         Map<String, Object> properties = new HashMap<>();
-        properties.put("userName", "userNewName");
-        userDAO.updateEntitiesByCondition(properties, userCondition.getCondition());
+        properties.put("result", Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+        statusDAO.updateEntitiesByCondition(properties, statusCondition.getCondition());
     }
 }

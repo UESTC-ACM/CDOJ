@@ -179,8 +179,8 @@ public class ContestAdminAction extends BaseAction
             Condition condition = contestCondition.getCondition();
             Long count = contestDAO.count(contestCondition.getCondition());
             PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
-            condition.currentPage = pageInfo.getCurrentPage();
-            condition.countPerPage = RECORD_PER_PAGE;
+            condition.setCurrentPage(pageInfo.getCurrentPage());
+            condition.setCountPerPage(RECORD_PER_PAGE);
             List<Contest> contestList = (List<Contest>) contestDAO.findAll(condition);
             List<ContestListView> contestListViewList = new ArrayList<>();
             for (Contest contest : contestList)

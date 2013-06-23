@@ -81,8 +81,8 @@ public class StatusAdminAction extends BaseAction
             Condition condition = statusCondition.getCondition();
             Long count = statusDAO.count(statusCondition.getCondition());
             PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
-            condition.currentPage = pageInfo.getCurrentPage();
-            condition.countPerPage = RECORD_PER_PAGE;
+            condition.setCurrentPage(pageInfo.getCurrentPage());
+            condition.setCountPerPage(RECORD_PER_PAGE);
             condition.addOrder("statusId", false);
             List<Status> statusList = (List<Status>) statusDAO.findAll(condition);
             List<StatusView> statusViewList = new ArrayList<>();

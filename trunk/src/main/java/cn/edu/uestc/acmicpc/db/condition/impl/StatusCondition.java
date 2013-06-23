@@ -24,9 +24,9 @@ package cn.edu.uestc.acmicpc.db.condition.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.base.JoinedProperty;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.db.dao.impl.UserDAO;
-import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.db.entity.Language;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.User;
@@ -213,8 +213,11 @@ public class StatusCondition extends BaseCondition implements UserConditionAware
                 condition.addCriterion(Restrictions.isNull("contestByContestId"));
             else {
                 try {
-                   IDAO DAO = (IDAO) applicationContext.getBean("contestDAO");
-                   condition.addCriterion(Restrictions.eq("contestByContestId", DAO.get(contestId)));
+                    IDAO DAO = (IDAO) applicationContext.getBean("contestDAO");
+                    JoinedProperty joinedProperty = new JoinedProperty(
+                            Restrictions.eq("contestByContestId", DAO.get(contestId)),
+                            contestId, ConditionType.eq);
+                    condition.addJoinedProperty("contestByContestId", joinedProperty);
                 } catch (AppException ignored) {
                 }
             }
@@ -226,8 +229,12 @@ public class StatusCondition extends BaseCondition implements UserConditionAware
             userCondition.setUserName(userName);
             try {
                 List<User> users = (List<User>) userDAO.findAll(userCondition.getCondition());
-                if (users != null && !users.isEmpty())
-                    condition.addCriterion(Restrictions.eq("userByUserId", users.get(0)));
+                if (users != null && !users.isEmpty()) {
+                    JoinedProperty joinedProperty = new JoinedProperty(
+                            Restrictions.eq("userByUserId", users.get(0)), users.get(0).getUserId(),
+                            ConditionType.eq);
+                    condition.addJoinedProperty("userByUserId", joinedProperty);
+                }
             } catch (AppException ignored) {
             }
         }

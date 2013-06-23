@@ -132,8 +132,8 @@ public class ProblemListAction extends BaseAction
             Condition condition = problemCondition.getCondition();
             Long count = problemDAO.count(problemCondition.getCondition());
             PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
-            condition.currentPage = pageInfo.getCurrentPage();
-            condition.countPerPage = RECORD_PER_PAGE;
+            condition.setCurrentPage(pageInfo.getCurrentPage());
+            condition.setCountPerPage(RECORD_PER_PAGE);
             List<Problem> problemList = (List<Problem>) problemDAO.findAll(condition);
             List<ProblemListView> problemListViewList = new ArrayList<>();
             for (Problem problem : problemList) {
