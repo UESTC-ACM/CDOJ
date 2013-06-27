@@ -1,8 +1,8 @@
 LD=g++
 CXX=g++
 INCLUDE=include/
-CXXFLAGS=-I $(INCLUDE) -g -Wall -O2 #-D LOG_OFF
-LDFLAGS= #-D LOG_OFF
+CXXFLAGS=-I $(INCLUDE) -g -Wall -O2 -m32 -D LOG_OFF
+LDFLAGS= -m32 -D LOG_OFF
 TARGET=bin/pyloncore
 OBJECTS=objs/judge_all.o
 all: $(TARGET)
