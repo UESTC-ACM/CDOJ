@@ -31,7 +31,7 @@
 #ifndef __LOGGER__
 #define __LOGGER__
 
-#define LOG_OFF
+//#define LOG_OFF
 
 #include <stdio.h>
 #include <stdlib.h>
