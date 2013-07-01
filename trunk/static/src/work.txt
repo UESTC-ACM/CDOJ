@@ -1,4 +1,0 @@
-index
-problem
-problem_single
-problem_single_submit

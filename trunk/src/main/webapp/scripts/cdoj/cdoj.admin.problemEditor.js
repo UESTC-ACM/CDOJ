@@ -75,36 +75,26 @@ var problemDTO = {
 };
 
 var problemId;
-var editMode = 'new';
 
 //TODO clean the styles paste into editor
 
 $(document).ready(function () {
 
-    editMode = $('#editorFlag').attr('value');
-    if (editMode == 'edit')
-        problemId = $('#problemId')[0].innerHTML;
+    problemId = $('#problemId')[0].innerHTML;
 
     $.each(editors,function(editorId) {
         epicEditorOpts.container = editorId;
-        if (editMode == 'new') {
-            epicEditorOpts.clientSideStorage = true;
-            epicEditorOpts.file.name = editorId+'new';
-            editors[editorId] = new EpicEditor(epicEditorOpts).load();
-        }
-        else {
-            epicEditorOpts.problemId = problemId;
-            epicEditorOpts.file.name = editorId+problemId;
-            var oldContent = $('#'+editorId)[0].innerHTML.toString();
-            oldContent = js.lang.String.decodeHtml(oldContent);
-            editors[editorId] = new EpicEditor(epicEditorOpts).load();
-            editors[editorId].importFile(epicEditorOpts.file.name,oldContent);
-        }
+        epicEditorOpts.uploadUrl = '/admin/problem/uploadProblemPicture/' + problemId;
+        epicEditorOpts.pictureListUrl = '/admin/problem/getUploadedPictures/' + problemId;
+        epicEditorOpts.file.name = editorId+problemId;
+        var oldContent = $('#'+editorId)[0].innerHTML.toString();
+        oldContent = js.lang.String.decodeHtml(oldContent);
+        editors[editorId] = new EpicEditor(epicEditorOpts).load();
+        editors[editorId].importFile(epicEditorOpts.file.name,oldContent);
     });
 
     $('input#submit').click(function () {
-        if (editMode == 'edit')
-            problemDTO['problemDTO.problemId'] = problemId;
+        problemDTO['problemDTO.problemId'] = problemId;
         problemDTO['problemDTO.title'] = $('#problemDTO_title').val();
         problemDTO['problemDTO.source'] = $('#problemDTO_source').val();
         $.each(editors,function(editorId) {

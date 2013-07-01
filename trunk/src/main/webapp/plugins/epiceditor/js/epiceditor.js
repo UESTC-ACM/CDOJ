@@ -693,8 +693,9 @@
             }
             else if (targetClass.indexOf('epiceditor-picture-btn') > -1) {
                 PictureDialog({
-                    problemId : self.settings.problemId
-                })
+                    uploadUrl: self.settings.uploadUrl,
+                    pictureListUrl: self.settings.pictureListUrl
+                });
             }
         });
 
