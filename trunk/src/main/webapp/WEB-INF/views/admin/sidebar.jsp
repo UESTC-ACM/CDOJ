@@ -39,9 +39,15 @@
 <div class="well" style="padding: 8px 0;">
     <ul class="nav nav-list">
         <li class="nav-header"><i class="icon-home"></i>Dashboard</li>
-        <li><a href="#">OJ status</a></li>
-        <li><a href="#">Backup</a></li>
-        <li><a href="#">Help</a></li>
+        <li class="disabled"><a href="#">OJ status</a></li>
+        <li class="disabled"><a href="#">Backup</a></li>
+        <li class="disabled"><a href="#">Help</a></li>
+
+        <li class="divider"></li>
+
+        <li class="nav-header"><i class="icon-pencil"></i>Article</li>
+        <li class="disabled"><a href="#">Article list</a></li>
+        <li class="disabled"><a href="#">Add article</a></li>
 
         <li class="divider"></li>
 

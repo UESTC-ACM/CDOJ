@@ -28,7 +28,8 @@
 
 PictureDialog = function (userOptions) {
     var options = mergeOptions({
-            problemId: undefined
+            uploadUrl: undefined,
+            pictureListUrl: undefined
         },
         userOptions);
 
@@ -67,7 +68,7 @@ PictureDialog = function (userOptions) {
 
     function BlindUploadBtn() {
         var uploadBtn = pictureSelector.find('#btnUpload');
-        var uploadUrl = '/admin/problem/uploadProblemPicture/' + options.problemId;
+        var uploadUrl = options.uploadUrl;
         var uploader = new qq.FineUploaderBasic({
             button: uploadBtn[0],
             request: {
@@ -149,7 +150,7 @@ PictureDialog = function (userOptions) {
 
     function Init() {
         pictureList = [];
-        var url = '/admin/problem/getUploadedPictures/' + options.problemId;
+        var url = options.pictureListUrl;
         $.post(url, function(data){
             if (data.success) {
                 $.each(data.pictures, function(){
