@@ -49,4 +49,7 @@
     <bean id="contestCondition" class="cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition"
           parent="baseCondition">
     </bean>
+    <bean id="articleCondition" class="cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition"
+          parent="baseCondition">
+    </bean>
 </beans>

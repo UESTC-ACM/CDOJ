@@ -47,7 +47,7 @@
 
         <li class="nav-header"><i class="icon-pencil"></i>Article</li>
         <li class="disabled"><a href="#">Article list</a></li>
-        <li class="disabled"><a href="#">Add article</a></li>
+        <li><s:a action="editor/" namespace="/admin/article">Add article</s:a></li>
 
         <li class="divider"></li>
 

@@ -43,7 +43,7 @@
 <div class="row" id="problemEditor">
 
     <div class="span10">
-        <h3 id="editorFlag" value="${editorFlag}">
+        <h3>
             Edit problem <span id="problemId">${targetProblem.problemId}</span>
         </h3>
         <div class="control-group">
