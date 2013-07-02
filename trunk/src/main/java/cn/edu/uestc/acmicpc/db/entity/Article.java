@@ -159,7 +159,7 @@ public class Article implements Serializable {
 
     private Boolean isVisible;
 
-    @Column(name = "visible", nullable = false, insertable = true, updatable = true, length = 0,
+    @Column(name = "isVisible", nullable = false, insertable = true, updatable = true, length = 0,
             precision = 0)
     @Basic
     public Boolean getIsVisible() {

@@ -107,7 +107,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`article` (
   `clicked` INT NOT NULL DEFAULT 0 ,
   `order` INT NOT NULL DEFAULT 0 COMMENT 'set order to top and move' ,
   `isNotice` TINYINT(1) NOT NULL DEFAULT 0 ,
-  `visible` TINYINT(1) NOT NULL DEFAULT 0 ,
+  `isVisible` TINYINT(1) NOT NULL DEFAULT 0 ,
   `parentId` INT NULL DEFAULT NULL ,
   `problemId` INT NULL DEFAULT NULL ,
   `contestId` INT NULL DEFAULT NULL ,

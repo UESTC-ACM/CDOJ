@@ -33,6 +33,12 @@
     </package>
 
     <package name="articleAdmin" namespace="/admin/article" extends="admin">
+        <action name="list" class="articleAdminAction" method="toArticleList">
+            <result>/WEB-INF/views/admin/article.jsp</result>
+        </action>
+        <action name="search" class="articleAdminAction" method="toSearch"/>
+        <action name="edit" class="articleStatementAdminAction" method="toEdit"/>
+        <action name="operator" class="articleAdminAction" method="toOperatorArticle"/>
         <action name="editor/*" class="articleAdminAction" method="toArticleEditor">
             <param name="targetArticleId">{1}</param>
             <result>/WEB-INF/views/admin/articleEditor.jsp</result>
