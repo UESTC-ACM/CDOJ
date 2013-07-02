@@ -71,6 +71,7 @@
         <li><s:a action="show/1" namespace="/article">F.A.Q</s:a></li>
         <li class="disabled"><a href="#">Download</a></li>
         <li class="disabled"><a href="#">Step-by-Step</a></li>
+        <li><s:a action="show/2" namespace="/article">Markdown</s:a></li>
         <li class="disabled"><a href="#">Team Honors</a></li>
     </ul>
 </li>
