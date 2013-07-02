@@ -102,11 +102,6 @@ public class ProblemAdminAction extends BaseAction
     }
 
     /**
-     * editor mode flag
-     */
-    private String editorFlag;
-
-    /**
      * save target problem id
      */
     private Integer targetProblemId;
@@ -115,16 +110,6 @@ public class ProblemAdminAction extends BaseAction
      * save problem to edit
      */
     private ProblemView targetProblem;
-
-    @SuppressWarnings("UnusedDeclaration")
-    public String getEditorFlag() {
-        return editorFlag;
-    }
-
-    @SuppressWarnings("UnusedDeclaration")
-    public Integer getTargetProblemId() {
-        return targetProblemId;
-    }
 
     public void setTargetProblemId(Integer targetProblemId) {
         this.targetProblemId = targetProblemId;
@@ -170,7 +155,6 @@ public class ProblemAdminAction extends BaseAction
                 targetProblem = new ProblemView(problemDAO.get(targetProblemId));
                 if (targetProblem.getProblemId() == null)
                     throw new AppException("Wrong problem ID!");
-                editorFlag = "edit";
             }
         } catch (AppException e) {
             return redirect(getActionURL("/admin", "index"), e.getMessage());

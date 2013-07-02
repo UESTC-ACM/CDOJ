@@ -85,6 +85,7 @@ PictureDialog = function (userOptions) {
                             url: responseJSON.uploadedFileUrl,
                             selected: false
                         });
+                        console.log(responseJSON);
                     } else {
                         alert('Upload ' + fileName + 'failed, reason: ' + responseJSON.error);
                     }

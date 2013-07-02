@@ -25,7 +25,9 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IArticleDAO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.ioc.dao.ArticleDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.file.FileUploadAction;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.StringUtil;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -40,6 +42,7 @@ import java.util.Iterator;
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class ArticlePictureAdminAction extends FileUploadAction implements ArticleDAOAware {
 
     @Autowired

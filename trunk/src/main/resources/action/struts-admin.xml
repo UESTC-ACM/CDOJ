@@ -32,6 +32,19 @@
         </action>
     </package>
 
+    <package name="articleAdmin" namespace="/admin/article" extends="admin">
+        <action name="editor/*" class="articleAdminAction" method="toArticleEditor">
+            <param name="targetArticleId">{1}</param>
+            <result>/WEB-INF/views/admin/articleEditor.jsp</result>
+        </action>
+        <action name="uploadArticlePicture/*" class="articlePictureAdminAction" method="uploadPicture">
+            <param name="targetArticleId">{1}</param>
+        </action>
+        <action name="getUploadedPictures/*" class="articlePictureAdminAction" method="toPictureList">
+            <param name="targetArticleId">{1}</param>
+        </action>
+    </package>
+
     <package name="userAdmin" namespace="/admin/user" extends="admin">
         <action name="list" class="userAdminAction" method="toUserList">
             <result>/WEB-INF/views/admin/user.jsp</result>

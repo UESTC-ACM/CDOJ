@@ -157,17 +157,17 @@ public class Article implements Serializable {
         isNotice = notice;
     }
 
-    private Boolean visible;
+    private Boolean isVisible;
 
     @Column(name = "visible", nullable = false, insertable = true, updatable = true, length = 0,
             precision = 0)
     @Basic
-    public Boolean getVisible() {
-        return visible;
+    public Boolean getIsVisible() {
+        return isVisible;
     }
 
-    public void setVisible(Boolean visible) {
-        this.visible = visible;
+    public void setIsVisible(Boolean visible) {
+        this.isVisible = visible;
     }
 
     @SuppressWarnings("RedundantIfStatement")
@@ -182,7 +182,7 @@ public class Article implements Serializable {
         if (!clicked.equals(article.clicked)) return false;
         if (isNotice != article.isNotice) return false;
         if (!order.equals(article.order)) return false;
-        if (visible != article.visible) return false;
+        if (isVisible != article.isVisible) return false;
         if (author != null ? !author.equals(article.author) : article.author != null) return false;
         if (content != null ? !content.equals(article.content) : article.content != null) return false;
         if (time != null ? !time.equals(article.time) : article.time != null) return false;
@@ -201,7 +201,7 @@ public class Article implements Serializable {
         result = 31 * result + clicked;
         result = 31 * result + order;
         result = 31 * result + (isNotice ? 1 : 0);
-        result = 31 * result + (visible ? 1 : 0);
+        result = 31 * result + (isVisible ? 1 : 0);
         return result;
     }
 
