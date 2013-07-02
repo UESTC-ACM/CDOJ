@@ -19,26 +19,63 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package cn.edu.uestc.acmicpc.db.dto.impl;
+package cn.edu.uestc.acmicpc.db.view.impl;
 
-import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.db.view.base.View;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * Description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class ArticleDTO extends BaseDTO<Article> {
+public class ArticleListView extends View<Article> {
 
     private Integer articleId;
     private String title;
-    private String content;
     private String author;
+    private Integer clicked;
+    private Timestamp time;
+    private Boolean isVisible;
+    private String ownerName;
+    private String ownerEmail;
+
+    public Boolean getVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(Boolean visible) {
+        isVisible = visible;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    @Ignore
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
+
+    @Ignore
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
+    }
+
+    public Boolean getIsVisible() {
+        return isVisible;
+    }
+
+    public void setIsVisible(Boolean visible) {
+        isVisible = visible;
+    }
 
     public Integer getArticleId() {
         return articleId;
@@ -56,14 +93,6 @@ public class ArticleDTO extends BaseDTO<Article> {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public String getAuthor() {
         return author;
     }
@@ -72,29 +101,25 @@ public class ArticleDTO extends BaseDTO<Article> {
         this.author = author;
     }
 
-    @Override
-    public Article getEntity() throws AppException {
-        Article article = super.getEntity();
-
-        article.setClicked(0);
-        article.setIsVisible(false);
-        article.setIsNotice(false);
-        article.setOrder(0);
-        article.setArticleId(null);
-        article.setTime(new Timestamp(new Date().getTime()));
-
-        return article;
+    public Integer getClicked() {
+        return clicked;
     }
 
-    @Override
-    public void updateEntity(Article article) throws AppException {
-        // TODO to get specific operations
-        super.updateEntity(article);
-        article.setTime(new Timestamp(new Date().getTime()));
+    public void setClicked(Integer clicked) {
+        this.clicked = clicked;
     }
 
-    @Override
-    protected Class<Article> getReferenceClass() {
-        return Article.class;
+    public Timestamp getTime() {
+        return time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
+    }
+
+    public ArticleListView(Article article) {
+        super(article);
+        setOwnerName(article.getUserByUserId().getUserName());
+        setOwnerEmail(article.getUserByUserId().getEmail());
     }
 }

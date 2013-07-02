@@ -91,7 +91,7 @@ public class ProblemStatementAdminAction extends BaseAction
             requiredStrings = {
                     @RequiredStringValidator(
                             fieldName = "problemDTO.title",
-                            key = "error.problemTitle.validation",
+                            key = "error.title.validation",
                             trim = true
                     )
             }

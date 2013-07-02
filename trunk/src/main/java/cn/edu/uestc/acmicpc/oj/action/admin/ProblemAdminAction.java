@@ -69,9 +69,6 @@ public class ProblemAdminAction extends BaseAction
     @Autowired
     private ProblemDTO problemDTO;
 
-    public ProblemAdminAction() {
-    }
-
     @Override
     public void setProblemCondition(ProblemCondition problemCondition) {
         this.problemCondition = problemCondition;
