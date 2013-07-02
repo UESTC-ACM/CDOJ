@@ -68,7 +68,7 @@
 
         <li class="divider"></li>
         <li class="nav-header">Click</li>
-        <li class="disabled"><a href="#">F.A.Q</a></li>
+        <li><s:a action="show/1" namespace="/article">F.A.Q</s:a></li>
         <li class="disabled"><a href="#">Download</a></li>
         <li class="disabled"><a href="#">Step-by-Step</a></li>
         <li class="disabled"><a href="#">Team Honors</a></li>
