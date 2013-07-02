@@ -81,6 +81,13 @@ public class Settings implements ApplicationContextAware {
      * Problems' pictures store folder
      */
     public String SETTING_PROBLEM_PICTURE_FOLDER;
+    public String SETTING_PROBLEM_PICTURE_FOLDER_ABSOLUTE;
+
+    /**
+     * Article' pictures store folder
+     */
+    public String SETTING_ARTICLE_PICTURE_FOLDER;
+    public String SETTING_ARTICLE_PICTURE_FOLDER_ABSOLUTE;
 
     /**
      * Judge core's name.
@@ -173,7 +180,10 @@ public class Settings implements ApplicationContextAware {
         SETTING_UPLOAD_SIZE = Integer.valueOf((String) getConfig("setting", "uploadSize", "value"));
         SETTING_UPLOAD_TYPES = (String) getConfig("setting", "uploadTypes", "value");
         SETTING_UPLOAD_FOLDER = getAbsolutePath((String) getConfig("setting", "uploadFolder", "value"));
-        SETTING_PROBLEM_PICTURE_FOLDER = getAbsolutePath((String) getConfig("setting", "problemPictureFolder", "value"));
+        SETTING_PROBLEM_PICTURE_FOLDER = (String) getConfig("setting", "problemPictureFolder", "value");
+        SETTING_ARTICLE_PICTURE_FOLDER= (String) getConfig("setting", "articlePictureFolder", "value");
+        SETTING_PROBLEM_PICTURE_FOLDER_ABSOLUTE = getAbsolutePath((String) getConfig("setting", "problemPictureFolder", "value"));
+        SETTING_ARTICLE_PICTURE_FOLDER_ABSOLUTE = getAbsolutePath((String) getConfig("setting", "articlePictureFolder", "value"));
 
         JUDGE_JUDGE_CORE = (String) getConfig("judge", "judgeCore", "value");
         JUDGE_DATA_PATH = getAbsolutePath((String) getConfig("judge", "dataPath", "value"));

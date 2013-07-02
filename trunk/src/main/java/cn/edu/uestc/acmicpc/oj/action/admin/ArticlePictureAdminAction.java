@@ -21,9 +21,9 @@
 
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
+import cn.edu.uestc.acmicpc.db.dao.iface.IArticleDAO;
+import cn.edu.uestc.acmicpc.db.entity.Article;
+import cn.edu.uestc.acmicpc.ioc.dao.ArticleDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.file.FileUploadAction;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -40,20 +40,20 @@ import java.util.Iterator;
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class ProblemPictureAdminAction extends FileUploadAction implements ProblemDAOAware {
+public class ArticlePictureAdminAction extends FileUploadAction implements ArticleDAOAware {
 
     @Autowired
-    private IProblemDAO problemDAO;
+    private IArticleDAO articleDAO;
 
     @Override
-    public void setProblemDAO(IProblemDAO problemDAO) {
-        this.problemDAO = problemDAO;
+    public void setArticleDAO(IArticleDAO articleDAO) {
+        this.articleDAO = articleDAO;
     }
 
-    private Integer targetProblemId;
+    private Integer targetArticleId;
 
-    public void setTargetProblemId(Integer targetProblemId) {
-        this.targetProblemId = targetProblemId;
+    public void setTargetArticleId(Integer targetArticleId) {
+        this.targetArticleId = targetArticleId;
     }
 
     /**
@@ -63,12 +63,13 @@ public class ProblemPictureAdminAction extends FileUploadAction implements Probl
      */
     public String toPictureList() {
         try {
-            if (targetProblemId == null)
-                throw new AppException("Error, target problem id is null!");
-            Problem problem = problemDAO.get(targetProblemId);
-            if (problem == null)
-                throw new AppException("Error, target problem doesn't exist!");
-            File dir = new File(settings.SETTING_PROBLEM_PICTURE_FOLDER_ABSOLUTE + targetProblemId + "/");
+            if (targetArticleId == null)
+                throw new AppException("Error, target article id is null!");
+            Article article = articleDAO.get(targetArticleId);
+            if (article == null)
+                throw new AppException("Error, target article doesn't exist!");
+
+            File dir = new File(settings.SETTING_ARTICLE_PICTURE_FOLDER_ABSOLUTE + targetArticleId + "/");
             if (!dir.exists())
                 if (!dir.mkdirs())
                     throw new AppException("Error while make picture directory!");
@@ -82,7 +83,7 @@ public class ProblemPictureAdminAction extends FileUploadAction implements Probl
                 ImageInputStream iis = ImageIO.createImageInputStream(file);
                 Iterator iter = ImageIO.getImageReaders(iis);
                 if (iter.hasNext())
-                    pictures.add(settings.SETTING_PROBLEM_PICTURE_FOLDER + targetProblemId + "/" + fileName);
+                    pictures.add(settings.SETTING_ARTICLE_PICTURE_FOLDER + targetArticleId + "/" + fileName);
             }
             json.put("success", "true");
             json.put("pictures", pictures);
@@ -102,32 +103,32 @@ public class ProblemPictureAdminAction extends FileUploadAction implements Probl
      */
     public String uploadPicture() {
         try {
-            if (targetProblemId == null)
-                throw new AppException("Error, target problem id is null!");
-            Problem problem = problemDAO.get(targetProblemId);
-            if (problem == null)
-                throw new AppException("Error, target problem doesn't exist!");
+            if (targetArticleId == null)
+                throw new AppException("Error, target article id is null!");
+            Article article = articleDAO.get(targetArticleId);
+            if (article == null)
+                throw new AppException("Error, target article doesn't exist!");
 
-            setSavePath(settings.SETTING_UPLOAD_FOLDER + "problem/" + targetProblemId);
+            setSavePath(settings.SETTING_UPLOAD_FOLDER + "article/" + targetArticleId);
             String[] files = uploadFile();
             // In this case, uploaded file should contains only one element.
             if (files == null || files.length > 1)
                 throw new AppException("Fetch uploaded file error.");
-            File dir = new File(settings.SETTING_PROBLEM_PICTURE_FOLDER_ABSOLUTE + targetProblemId + "/");
+            File dir = new File(settings.SETTING_ARTICLE_PICTURE_FOLDER_ABSOLUTE + targetArticleId + "/");
             if (!dir.exists())
                 if (!dir.mkdirs())
                     throw new AppException("Error while make picture directory!");
 
             String newName = StringUtil.generateFileName(files[0]);
             File oldFile = new File(files[0]);
-            File newFile = new File(settings.SETTING_PROBLEM_PICTURE_FOLDER_ABSOLUTE + targetProblemId + "/" + newName);
+            File newFile = new File(settings.SETTING_ARTICLE_PICTURE_FOLDER_ABSOLUTE + targetArticleId + "/" + newName);
             if (!oldFile.renameTo(newFile))
                 throw new AppException("Error while rename files");
             files[0] = newName;
 
             json.put("success", "true");
             json.put("uploadedFile", files[0]);
-            json.put("uploadedFileUrl", settings.SETTING_PROBLEM_PICTURE_FOLDER + targetProblemId + "/" + newName);
+            json.put("uploadedFileUrl", settings.SETTING_ARTICLE_PICTURE_FOLDER + targetArticleId + "/" + newName);
         } catch (AppException e) {
             json.put("error", e.getMessage());
         } catch (Exception e) {
