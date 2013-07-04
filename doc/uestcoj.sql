@@ -404,7 +404,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingContest` (
   `traningContestId` INT NOT NULL AUTO_INCREMENT ,
-  `isPersonal` TINYINT(1) NOT NULL ,
+  `isPersional` TINYINT(1) NOT NULL ,
   `title` VARCHAR(150) NOT NULL DEFAULT '' ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`traningContestId`) ,
