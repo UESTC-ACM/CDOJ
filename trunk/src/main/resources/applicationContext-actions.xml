@@ -55,4 +55,6 @@
     <import resource="action-oj/applicationContext-actions-contest.xml"/>
     <import resource="action-oj/applicationContext-actions-article.xml"/>
 
+    <import resource="action-training/applicationContext-actions-index.xml"/>
+
 </beans>

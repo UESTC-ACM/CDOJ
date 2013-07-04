@@ -66,4 +66,6 @@
     <include file="action-oj/struts-contest.xml"/>
     <include file="action-oj/struts-article.xml"/>
 
+    <include file="action-training/struts-index.xml"/>
+
 </struts>
