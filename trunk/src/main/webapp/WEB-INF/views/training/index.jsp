@@ -36,8 +36,70 @@
     <title>Summer training</title>
 </head>
 <body>
-<div>
-    Hello world!
+
+<div class="subnav">
+    <ul id="TabMenu" class="nav nav-tabs">
+        <li class="active">
+            <a href="#tab-team-rating" data-toggle="tab">Team rating</a>
+        </li>
+        <li>
+            <a href="#tab-personal-rating" data-toggle="tab">Personal rating</a>
+        </li>
+    </ul>
+</div>
+
+<div id="ratingContent" class="subnav-content">
+    <div id="TabContent" class="tab-content">
+        <div class="tab-pane fade active in" id="tab-team-rating">
+            <div class="row">
+                <div class="span12">
+                    <table id="teamListTable" class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th style="width: 30px;">#</th>
+                            <th>Team name</th>
+                            <th>Rating</th>
+                            <th>Volatility</th>
+                            <th>Competitions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="teamList">
+                        <tr><td>1</td><td>lyhypacm</td><td class="rating-red">2500</td><td>322</td><td>1</td></tr>
+                        <tr><td>3</td><td>lyhypacm</td><td class="rating-yellow">1800</td><td>322</td><td>1</td></tr>
+                        <tr><td>4</td><td>lyhypacm</td><td class="rating-blue">1300</td><td>322</td><td>1</td></tr>
+                        <tr><td>5</td><td>lyhypacm</td><td class="rating-green">1100</td><td>322</td><td>1</td></tr>
+                        <tr><td>6</td><td>lyhypacm</td><td class="rating-gray">800</td><td>322</td><td>1</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-personal-rating">
+            <div class="row">
+                <div class="span12">
+                    <table id="personalListTable" class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th style="width: 30px;">#</th>
+                            <th>Team name</th>
+                            <th>Rating</th>
+                            <th>Volatility</th>
+                            <th>Competitions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="personalList">
+                        <tr><td>1</td><td>lyhypacm</td><td class="rating-red">2500</td><td>322</td><td>1</td></tr>
+                        <tr><td>3</td><td>lyhypacm</td><td class="rating-yellow">1800</td><td>322</td><td>1</td></tr>
+                        <tr><td>4</td><td>lyhypacm</td><td class="rating-blue">1300</td><td>322</td><td>1</td></tr>
+                        <tr><td>5</td><td>lyhypacm</td><td class="rating-green">1100</td><td>322</td><td>1</td></tr>
+                        <tr><td>6</td><td>lyhypacm</td><td class="rating-gray">800</td><td>322</td><td>1</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>
