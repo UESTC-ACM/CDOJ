@@ -1,5 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
+<%@ taglib prefix="cdoj" uri="/WEB-INF/cdoj.tld" %>
+<%--
   ~ /*
   ~  * cdoj, UESTC ACMICPC Online Judge
   ~  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
@@ -19,16 +22,23 @@
   ~  * along with this program; if not, write to the Free Software
   ~  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   ~  */
-  -->
-<!DOCTYPE struts PUBLIC
-        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-        "http://struts.apache.org/dtds/struts-2.0.dtd">
+  --%>
 
-<struts>
-    <package name="training" namespace="/training" extends="default">
-        <default-action-ref name="index"/>
-        <action name="index" class="trainingIndexAction" method="toIndex">
-            <result>/WEB-INF/views/training/index.jsp</result>
-        </action>
-    </package>
-</struts>
+<%--
+ Summer training home page
+
+ @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ @version 1
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Summer training</title>
+</head>
+<body>
+<div>
+    Hello world!
+</div>
+
+</body>
+</html>
