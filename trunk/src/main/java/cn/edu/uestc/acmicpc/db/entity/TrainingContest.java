@@ -23,6 +23,7 @@ package cn.edu.uestc.acmicpc.db.entity;
 import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
@@ -31,7 +32,7 @@ import javax.persistence.*;
 @Table(name = "trainingContest", schema = "", catalog = "uestcoj")
 @Entity
 @KeyField("trainingContestId")
-public class TrainingContest {
+public class TrainingContest implements Serializable {
     private Integer trainingContestId;
 
     @Column(name = "trainingContestId")
