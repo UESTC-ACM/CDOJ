@@ -45,6 +45,10 @@
                 <prop key="hibernate.current_session_context_class">
                     org.springframework.orm.hibernate4.SpringSessionContext
                 </prop>
+                <prop key="hibernate.connection.url"><![CDATA[jdbc:mysql://localhost:3306/uestcoj?useUnicode=true&characterEncoding=UTF-8]]></prop>
+                <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
+                <prop key="hibernate.connection.username">root</prop>
+                <prop key="hibernate.connection.password">root</prop>
             </props>
         </property>
         <property name="annotatedClasses">
@@ -65,6 +69,8 @@
                 <value>cn.edu.uestc.acmicpc.db.entity.Tag</value>
                 <value>cn.edu.uestc.acmicpc.db.entity.User</value>
                 <value>cn.edu.uestc.acmicpc.db.entity.UserSerialKey</value>
+                <value>cn.edu.uestc.acmicpc.db.entity.TrainingContest</value>
+                <value>cn.edu.uestc.acmicpc.db.entity.TrainingStatus</value>
             </list>
         </property>
     </bean>
