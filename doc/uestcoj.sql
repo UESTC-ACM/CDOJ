@@ -3,7 +3,6 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 CREATE SCHEMA IF NOT EXISTS `uestcoj` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin ;
-CREATE SCHEMA IF NOT EXISTS `uestcst` ;
 USE `uestcoj` ;
 
 -- -----------------------------------------------------
@@ -399,59 +398,40 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`userSerialKey` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-USE `uestcst` ;
 
 -- -----------------------------------------------------
--- Table `uestcst`.`contest`
+-- Table `uestcoj`.`trainingContest`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `uestcst`.`contest` (
-  `contestId` INT NOT NULL AUTO_INCREMENT ,
+CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingContest` (
+  `traningContestId` INT NOT NULL AUTO_INCREMENT ,
   `isPersonal` TINYINT(1) NOT NULL ,
-  `name` VARCHAR(150) NOT NULL DEFAULT '' ,
-  PRIMARY KEY (`contestId`) ,
-  UNIQUE INDEX `contestId_UNIQUE` (`contestId` ASC) )
+  `title` VARCHAR(150) NOT NULL DEFAULT '' ,
+  PRIMARY KEY (`traningContestId`) ,
+  UNIQUE INDEX `traningContestId_UNIQUE` (`traningContestId` ASC) )
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `uestcst`.`user`
+-- Table `uestcoj`.`trainingStatus`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `uestcst`.`user` (
-  `userId` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(50) NOT NULL DEFAULT '' ,
-  `studentId` VARCHAR(50) NOT NULL ,
-  `password` VARCHAR(40) NOT NULL ,
-  `topcoderId` VARCHAR(50) NOT NULL DEFAULT '' ,
-  `codeforcesId` VARCHAR(50) NOT NULL DEFAULT '' ,
-  `email` VARCHAR(100) NOT NULL DEFAULT '' ,
-  `department` VARCHAR(50) NOT NULL DEFAULT '' ,
-  `phone` VARCHAR(20) NOT NULL DEFAULT '' ,
-  PRIMARY KEY (`userId`) ,
-  UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `uestcst`.`status`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `uestcst`.`status` (
-  `statusId` INT NOT NULL AUTO_INCREMENT ,
+CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingStatus` (
+  `trainingStatusId` INT NOT NULL AUTO_INCREMENT ,
+  `trainingContestId` INT NOT NULL ,
   `userId` INT NOT NULL ,
-  `contestId` INT NOT NULL ,
   `rating` DOUBLE NOT NULL ,
   `volatility` DOUBLE NOT NULL ,
-  PRIMARY KEY (`statusId`) ,
-  UNIQUE INDEX `statusId_UNIQUE` (`statusId` ASC) ,
-  INDEX `FK_userId_on_user_idx` (`userId` ASC) ,
-  INDEX `FK_contestId_on_contest_idx` (`contestId` ASC) ,
-  CONSTRAINT `FK_status_userId_on_user`
-    FOREIGN KEY (`userId` )
-    REFERENCES `uestcst`.`user` (`userId` )
+  PRIMARY KEY (`trainingStatusId`) ,
+  UNIQUE INDEX `trainingStatusId_UNIQUE` (`trainingStatusId` ASC) ,
+  INDEX `FK_trainingStatus_trainingContestId_on_trainingContest_idx` (`trainingContestId` ASC) ,
+  INDEX `FK_trainingStatus_userId_on_user_idx` (`userId` ASC) ,
+  CONSTRAINT `FK_trainingStatus_trainingContestId_on_trainingContest`
+    FOREIGN KEY (`trainingContestId` )
+    REFERENCES `uestcoj`.`trainingContest` (`traningContestId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `FK_status_contestId_on_contest`
-    FOREIGN KEY (`contestId` )
-    REFERENCES `uestcst`.`contest` (`contestId` )
+  CONSTRAINT `FK_trainingStatus_userId_on_user`
+    FOREIGN KEY (`userId` )
+    REFERENCES `uestcoj`.`user` (`userId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
