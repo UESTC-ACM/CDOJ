@@ -403,12 +403,12 @@ ENGINE = InnoDB;
 -- Table `uestcoj`.`trainingContest`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingContest` (
-  `traningContestId` INT NOT NULL AUTO_INCREMENT ,
+  `trainingContestId` INT NOT NULL AUTO_INCREMENT ,
   `isPersonal` TINYINT(1) NOT NULL ,
   `title` VARCHAR(150) NOT NULL DEFAULT '' ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
-  PRIMARY KEY (`traningContestId`) ,
-  UNIQUE INDEX `traningContestId_UNIQUE` (`traningContestId` ASC) )
+  PRIMARY KEY (`trainingContestId`) ,
+  UNIQUE INDEX `traningContestId_UNIQUE` (`trainingContestId` ASC) )
 ENGINE = InnoDB;
 
 
@@ -428,7 +428,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingStatus` (
   INDEX `FK_trainingStatus_userId_on_user_idx` (`userId` ASC) ,
   CONSTRAINT `FK_trainingStatus_trainingContestId_on_trainingContest`
     FOREIGN KEY (`trainingContestId` )
-    REFERENCES `uestcoj`.`trainingContest` (`traningContestId` )
+    REFERENCES `uestcoj`.`trainingContest` (`trainingContestId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `FK_trainingStatus_userId_on_user`
