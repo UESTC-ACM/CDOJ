@@ -57,13 +57,13 @@
         </action>
     </package>
 
-    <include file="action/struts-problem.xml"/>
-    <include file="action/struts-admin.xml"/>
-    <include file="action/struts-index.xml"/>
-    <include file="action/struts-user.xml"/>
-    <include file="action/struts-test.xml"/>
-    <include file="action/struts-status.xml"/>
-    <include file="action/struts-contest.xml"/>
-    <include file="action/struts-article.xml"/>
+    <include file="action-oj/struts-problem.xml"/>
+    <include file="action-oj/struts-admin.xml"/>
+    <include file="action-oj/struts-index.xml"/>
+    <include file="action-oj/struts-user.xml"/>
+    <include file="action-oj/struts-test.xml"/>
+    <include file="action-oj/struts-status.xml"/>
+    <include file="action-oj/struts-contest.xml"/>
+    <include file="action-oj/struts-article.xml"/>
 
 </struts>
