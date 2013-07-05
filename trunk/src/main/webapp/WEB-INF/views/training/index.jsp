@@ -64,7 +64,7 @@
                         </tr>
                         </thead>
                         <tbody id="teamList">
-                        <tr><td>1</td><td>lyhypacm</td><td class="rating-red">2500</td><td>322</td><td>1</td></tr>
+                        <tr><td>1</td><td><s:a namespace="/training" action="team/1">lyhypacm</s:a></td><td class="rating-red">2500</td><td>322</td><td>1</td></tr>
                         <tr><td>3</td><td>lyhypacm</td><td class="rating-yellow">1800</td><td>322</td><td>1</td></tr>
                         <tr><td>4</td><td>lyhypacm</td><td class="rating-blue">1300</td><td>322</td><td>1</td></tr>
                         <tr><td>5</td><td>lyhypacm</td><td class="rating-green">1100</td><td>322</td><td>1</td></tr>

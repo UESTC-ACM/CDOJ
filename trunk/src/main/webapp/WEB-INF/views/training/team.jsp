@@ -33,6 +33,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <script src="http://d3js.org/d3.v3.js"></script>
+    <script src="<s:url value="/scripts/cdoj/cdoj.training.team.js"/>"></script>
     <title>Team information</title>
 </head>
 <body>
@@ -53,6 +55,8 @@
         <div class="tab-pane fade active in" id="tab-team-overview">
             <div class="row">
                 <div class="span12">
+                    <div id="ratingChart">
+                    </div>
                 </div>
             </div>
         </div>
@@ -60,7 +64,7 @@
         <div class="tab-pane fade" id="tab-team-history">
             <div class="row">
                 <div class="span12">
-                    <table id="personalListTable" class="table table-striped table-bordered">
+                    <table id="teamHistory" class="table table-striped table-bordered">
                         <thead>
                         <tr>
                             <th style="width: 30px;">#</th>
@@ -69,52 +73,7 @@
                             <th style="width: 80px;">Volatility</th>
                         </tr>
                         </thead>
-                        <tbody id="personalList">
-                        <tr>
-                            <td>1</td>
-                            <td>World final 2013</td>
-                            <td style="text-align: right;">
-                                <span class="rating-red label-rating">2500</span>
-                                <span class="label label-success pull-right label-diff">+1200</span>
-                            </td>
-                            <td>322(+0)</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>World final 2012</td>
-                            <td style="text-align: right;">
-                                <span class="rating-blue label-rating">1300</span>
-                                <span class="label label-important pull-right label-diff">-500</span>
-                            </td>
-                            <td>322(+0)</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>World final 2011</td>
-                            <td style="text-align: right;">
-                                <span class="label label-success pull-right label-diff">+700</span>
-                                <span class="rating-yellow label-rating">1800</span>
-                            </td>
-                            <td>322(+0)</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>World final 2010</td>
-                            <td style="text-align: right;">
-                                <span class="rating-green label-rating">1100</span>
-                                <span class="label label-success pull-right label-diff">+300</span>
-                            </td>
-                            <td>322(+0)</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>World final 2009</td>
-                            <td style="text-align: right;">
-                                <span class="rating-green label-rating">800</span>
-                                <span class="label label-info pull-right label-diff">INIT</span>
-                            </td>
-                            <td>322(+322)</td>
-                        </tr>
+                        <tbody id="teamHistoryList">
                         </tbody>
                     </table>
                 </div>
