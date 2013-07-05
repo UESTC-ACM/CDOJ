@@ -1,7 +1,13 @@
 package cn.edu.uestc.acmicpc.training.action.team;
 
+import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
+import cn.edu.uestc.acmicpc.db.view.impl.TrainingStatusTeamView;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Description
@@ -11,7 +17,50 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 @LoginPermit(NeedLogin = false)
 public class TeamAction extends BaseAction {
 
-    public String toTeamInfo() {
+    private List<TrainingStatusTeamView> trainingStatusTeamViewList;
+
+    public List<TrainingStatusTeamView> getTrainingStatusTeamViewList() {
+        return trainingStatusTeamViewList;
+    }
+
+    public void setTrainingStatusTeamViewList(List<TrainingStatusTeamView> trainingStatusTeamViewList) {
+        this.trainingStatusTeamViewList = trainingStatusTeamViewList;
+    }
+
+    public String toTeamInfoPage() {
         return SUCCESS;
+    }
+
+    public String toTeamInfoList() {
+        trainingStatusTeamViewList = new LinkedList<>();
+        Integer lastRating = 1200;
+        Integer lastVolatility = 550;
+        Integer minRating = 1200;
+        Integer maxRating = 1200;
+        for (int i = 0; i < 10; i++) {
+            TrainingStatus trainingStatus = new TrainingStatus();
+            Random random = new Random();
+            trainingStatus.setRating(lastRating.doubleValue() + Math.abs(random.nextInt()) % 200);
+            trainingStatus.setVolatility(lastVolatility.doubleValue() + Math.abs(random.nextInt()) % 10);
+
+            TrainingStatusTeamView trainingStatusTeamView = new TrainingStatusTeamView(trainingStatus);
+
+            trainingStatusTeamView.setContestId(i + 1);
+            trainingStatusTeamView.setContestName("Contest " + (i + 1));
+            trainingStatusTeamView.setRatingVary(trainingStatusTeamView.getRating() - lastRating);
+            trainingStatusTeamView.setVolatilityVary(trainingStatusTeamView.getVolatility() - lastVolatility);
+
+            trainingStatusTeamViewList.add(trainingStatusTeamView);
+            lastRating = trainingStatusTeamView.getRating();
+            lastVolatility = trainingStatusTeamView.getVolatility();
+
+            minRating = Math.min(minRating, lastRating);
+            maxRating = Math.max(maxRating, lastRating);
+        }
+        json.put("teamSummary", trainingStatusTeamViewList);
+        json.put("minRating", minRating);
+        json.put("maxRating", maxRating);
+        json.put("result", "ok");
+        return JSON;
     }
 }

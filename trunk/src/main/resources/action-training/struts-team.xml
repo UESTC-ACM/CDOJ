@@ -26,8 +26,9 @@
 
 <struts>
     <package name="trainingTeam" namespace="/training" extends="default">
-        <action name="team/*" class="trainingTeamAction" method="toTeamInfo">
+        <action name="team/*" class="trainingTeamAction" method="toTeamInfoPage">
             <result>/WEB-INF/views/training/team.jsp</result>
         </action>
+        <action name="teamSummary/*" class="trainingTeamAction" method="toTeamInfoList"/>
     </package>
 </struts>

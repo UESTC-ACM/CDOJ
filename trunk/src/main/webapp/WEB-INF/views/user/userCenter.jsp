@@ -45,7 +45,7 @@
                     <dl class="dl-userInfo">
                         <dt>Nick name</dt>
                         <dd>
-                            <s:property value="targetUser.nickName"/>
+                            <s:property escape="false" value="targetUser.nickName"/>
                             <s:if test="currentUser.userName == targetUser.userName">
                                 <div class="pull-right" style="margin-right: 20px;">
                                     <a href="#" onclick="return editUserDialog(<s:property value="targetUser.userId"/>)">
@@ -92,7 +92,7 @@
             </a>
             <span class="userName-type<s:property value="targetUser.type"/>">
                 <h4>
-                    <s:property value="targetUser.nickName"/>
+                    <s:property escape="false" value="targetUser.nickName"/>
                 </h4>
                 <h4 id="currentUserPageUser" value="<s:property value="targetUser.userName"/>">
                     <s:property value="targetUser.userName"/>

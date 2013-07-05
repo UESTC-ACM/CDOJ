@@ -46,3 +46,28 @@
 .label-rating {
     margin-right: 10px;
 }
+
+.axis .domain, .axis .tick {
+    stroke: #000;
+    fill: none;
+}
+
+.title {
+    font-size: 24px;
+}
+
+.bar {
+    fill: #fcc;
+    stroke: #444;
+}
+
+.ratingLine {
+    fill: none;
+    stroke: black;
+    stroke-width: 1.5px;
+}
+
+.ratingHrefLabel {
+    stroke: black;
+    stroke-width: 1.5px;
+}
