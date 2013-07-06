@@ -71,8 +71,8 @@ public class TrainingStatus implements Serializable {
 
     private Integer version;
 
+    @Version
     @Column(name = "OPTLOCK")
-    @Basic
     public Integer getVersion() {
         return version;
     }
