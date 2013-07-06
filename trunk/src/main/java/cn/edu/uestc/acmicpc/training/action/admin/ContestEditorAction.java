@@ -28,23 +28,5 @@ import cn.edu.uestc.acmicpc.oj.action.BaseAction;
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class IndexAction extends BaseAction {
-
-    public String toIndex() {
-        return SUCCESS;
-    }
-
-    private Integer targetTrainingContestId;
-
-    public Integer getTargetTrainingContestId() {
-        return targetTrainingContestId;
-    }
-
-    public void setTargetTrainingContestId(Integer targetTrainingContestId) {
-        this.targetTrainingContestId = targetTrainingContestId;
-    }
-
-    public String toContestEditor() {
-        return SUCCESS;
-    }
+public class ContestEditorAction extends BaseAction {
 }

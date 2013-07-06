@@ -43,9 +43,9 @@
     <div class="span10">
         <form class="form-horizontal">
             <fieldset>
-                <legend id="editorFlag" value="${editorFlag}">
+                <h3>
                     Edit contest <span id="contestId">${targetContest.contestId}</span>
-                </legend>
+                </h3>
 
                 <div class="row">
                     <div class="span10">
