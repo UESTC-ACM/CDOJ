@@ -71,6 +71,10 @@
         <li class="nav-header"><i class="icon-refresh"></i>Status</li>
         <li><s:a action="list" namespace="/admin/status">Status list</s:a></li>
 
+        <li class="divider"></li>
+        <li class="nav-header"><i class="icon-gift"></i>Training</li>
+        <li><s:a action="index" namespace="/training/admin">Summary</s:a></li>
+
     </ul>
 </div>
 </body>

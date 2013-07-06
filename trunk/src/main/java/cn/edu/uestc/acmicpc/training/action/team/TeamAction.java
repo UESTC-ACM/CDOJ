@@ -35,8 +35,6 @@ public class TeamAction extends BaseAction {
         trainingStatusTeamViewList = new LinkedList<>();
         Integer lastRating = 1200;
         Integer lastVolatility = 550;
-        Integer minRating = 1200;
-        Integer maxRating = 1200;
         for (int i = 0; i < 10; i++) {
             TrainingStatus trainingStatus = new TrainingStatus();
             Random random = new Random();
@@ -53,13 +51,8 @@ public class TeamAction extends BaseAction {
             trainingStatusTeamViewList.add(trainingStatusTeamView);
             lastRating = trainingStatusTeamView.getRating();
             lastVolatility = trainingStatusTeamView.getVolatility();
-
-            minRating = Math.min(minRating, lastRating);
-            maxRating = Math.max(maxRating, lastRating);
         }
         json.put("teamSummary", trainingStatusTeamViewList);
-        json.put("minRating", minRating);
-        json.put("maxRating", maxRating);
         json.put("result", "ok");
         return JSON;
     }

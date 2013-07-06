@@ -33,7 +33,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <script src="http://d3js.org/d3.v3.js"></script>
+    <!--[if lte IE 8]>
+    <script src="<s:url value="/scripts/r2d3.js"/>"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+    <script src="<s:url value="/scripts/d3.js"/>"></script>
+    <!--<![endif]-->
+
+    <script src="<s:url value="/scripts/cdoj/cdoj.chart.rating.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.training.team.js"/>"></script>
     <title>Team information</title>
 </head>
