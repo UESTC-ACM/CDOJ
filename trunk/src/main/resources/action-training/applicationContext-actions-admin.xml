@@ -39,4 +39,10 @@
           scope="prototype">
     </bean>
 
+    <bean id="trainingContestAdminAction"
+          class="cn.edu.uestc.acmicpc.training.action.admin.ContestEditorAction"
+          parent="fileUploadAction"
+          scope="prototype">
+    </bean>
+
 </beans>

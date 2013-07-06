@@ -29,5 +29,9 @@
         <action name="index" class="trainingAdminIndexAction" method="toIndex">
             <result>/WEB-INF/views/training/admin/index.jsp</result>
         </action>
+        <action name="contest/edit/*" class="trainingAdminIndexAction" method="toContestEditor">
+            <param name="targetTrainingContestId">{1}</param>
+            <result>/WEB-INF/views/training/admin/trainingContestEditor.jsp</result>
+        </action>
     </package>
 </struts>
