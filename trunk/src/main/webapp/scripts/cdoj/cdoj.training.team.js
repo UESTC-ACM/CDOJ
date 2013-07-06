@@ -26,9 +26,9 @@
  */
 
 function getRating(rating, color, isFirst, ratingVary) {
-    var html = $('<td></td>');
+    var html = $('<td style="text-align: right;"></td>');
     var ratingSpan = $('<span class="rating-' + color + ' label-rating">' + rating + '</span>');
-    var varySpan = $('<span class="label pull-right label-diff"></span>');
+    var varySpan = $('<span class="label label-diff"></span>');
     if (isFirst != undefined) {
         varySpan.addClass('label-info');
         varySpan.append('INIT');
@@ -82,64 +82,6 @@ $(document).ready(function () {
             tbody.prepend(getHtml(value));
         });
 
-        var minRating = data.minRating;
-        var maxRating = data.maxRating;
-        var ratingBetween = maxRating - minRating;
-        minRating = Math.max(0, minRating - ratingBetween / 6);
-        maxRating = maxRating + ratingBetween / 6;
-        var colors = {
-            gray: '#999999',
-            green: '#00A900',
-            blue: '#6666FF',
-            yellow: '#DDCC00',
-            red: '#EE0000'
-        };
-        var margin = { top: 20, right: 20, bottom: 20, left: 20 };
-        var width = 1033 - margin.left - margin.right;
-        var height = 400 - margin.top - margin.bottom;
-
-        var chart = d3.select("#ratingChart").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        // Render our axis.
-        var yAxisWidth = 50;
-        var xAxisHeight = 50;
-
-        var xScale = d3.scale.linear()
-            .domain([0, teamSummary.length + 1])
-            .range([yAxisWidth, width]);
-        var xAxis = d3.svg.axis().scale(xScale);
-        chart.append('g')
-            .attr({
-                'class': 'x axis',
-                'transform': 'translate(0,' + (height - xAxisHeight) + ')'
-            })
-            .call(xAxis);
-        var yScale = d3.scale.linear()
-            .domain([minRating, maxRating])
-            .range([height - xAxisHeight, 0]);
-        var yAxis = d3.svg.axis().scale(yScale).orient('left');
-        chart.append('g')
-            .attr({
-                'class': 'y axis',
-                'transform': 'translate(' + yAxisWidth + ',0)'
-            })
-            .call(yAxis);
-        var line = d3.svg.line()
-            .x(function(d) { return xScale(d.contestId); })
-            .y(function(d) { return yScale(d.rating); });
-        chart.append('g').attr('class', 'ratingLine').append("path")
-            .datum(teamSummary)
-            .attr("class", "ratingLine")
-            .attr("d", line);
-
-        chart.append('g').attr('class', 'ratingHrefLabel').selectAll('path')
-            .data(teamSummary)
-            .enter().append('path')
-            .attr('transform', function(d) { return "translate(" + xScale(d.contestId) + "," + yScale(d.rating) + ")"; })
-            .attr('fill', function(d) {return colors[d.ratingColor];})
-            .attr('d', d3.svg.symbol().type('square'));
+        drawRatingChart(teamSummary);
     });
 });
