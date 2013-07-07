@@ -30,5 +30,8 @@
         <action name="index" class="trainingIndexAction" method="toIndex">
             <result>/WEB-INF/views/training/index.jsp</result>
         </action>
+
+        <action name="register" class="trainingUserRegisterAction" method="toRegister"/>
+
     </package>
 </struts>

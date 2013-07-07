@@ -45,4 +45,16 @@
           scope="prototype">
     </bean>
 
+    <bean id="trainingUserAdminAction"
+          class="cn.edu.uestc.acmicpc.training.action.admin.TrainingUserAdminAction"
+          parent="baseAction"
+          scope="prototype">
+    </bean>
+
+    <bean id="trainingUserRegisterAction"
+          class="cn.edu.uestc.acmicpc.training.action.index.RegisterAction"
+          parent="baseAction"
+          scope="prototype">
+    </bean>
+
 </beans>

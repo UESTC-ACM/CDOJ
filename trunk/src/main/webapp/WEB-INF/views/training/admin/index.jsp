@@ -42,17 +42,39 @@
             <a href="#tab-contest-manage" data-toggle="tab">Contest manage</a>
         </li>
         <li>
-            <a href="#tab-team-rating" data-toggle="tab">Team rating</a>
+            <a href="#tab-team-member" data-toggle="tab">Team member</a>
         </li>
         <li>
-            <a href="#tab-personal-rating" data-toggle="tab">Personal rating</a>
+            <a href="#tab-personal-member" data-toggle="tab">Personal member</a>
+        </li>
+        <li>
+            <a href="#tab-member-register" data-toggle="tab">Member register</a>
         </li>
     </ul>
 </div>
 
 <div id="ratingContent" class="subnav-content">
     <div id="TabContent" class="tab-content">
-        <div class="tab-pane fade " id="tab-team-rating">
+
+        <div class="tab-pane fade active in" id="tab-contest-manage">
+            <div class="row">
+                <div class="span10">
+                    <table id="contestListTable" class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th style="width: 30px;">#</th>
+                            <th>Contest name</th>
+                        </tr>
+                        </thead>
+                        <tbody id="contestList">
+                        <tr><td>1</td><td>2013</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade " id="tab-team-member">
             <div class="row">
                 <div class="span10">
                     <table id="teamListTable" class="table table-striped table-bordered">
@@ -77,7 +99,7 @@
             </div>
         </div>
 
-        <div class="tab-pane fade" id="tab-personal-rating">
+        <div class="tab-pane fade" id="tab-personal-member">
             <div class="row">
                 <div class="span10">
                     <table id="personalListTable" class="table table-striped table-bordered">
@@ -102,18 +124,20 @@
             </div>
         </div>
 
-        <div class="tab-pane fade active in" id="tab-contest-manage">
+        <div class="tab-pane fade" id="tab-member-register">
             <div class="row">
                 <div class="span10">
-                    <table id="contestListTable" class="table table-striped table-bordered">
+                    <table id="memberRegisterListTable" class="table table-striped table-bordered">
                         <thead>
                         <tr>
                             <th style="width: 30px;">#</th>
-                            <th>Contest name</th>
+                            <th>Name</th>
+                            <th>User</th>
+                            <th></th>
                         </tr>
                         </thead>
-                        <tbody id="contestList">
-                        <tr><td>1</td><td>2013</td></tr>
+                        <tbody id="memberRegisterList">
+                        <tr><td>1</td><td>lyhypacm</td><td>lyhypacm</td><td>Allow</td></tr>
                         </tbody>
                     </table>
                 </div>
