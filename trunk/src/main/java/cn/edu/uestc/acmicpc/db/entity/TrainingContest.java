@@ -35,8 +35,10 @@ import java.io.Serializable;
 public class TrainingContest implements Serializable {
     private Integer trainingContestId;
 
-    @Column(name = "trainingContestId")
+    @Column(name = "trainingContestId", nullable = false, insertable = true, updatable = true, length = 10,
+            precision = 0, unique = true)
     @Id
+    @GeneratedValue
     public Integer getTrainingContestId() {
         return trainingContestId;
     }
@@ -47,7 +49,8 @@ public class TrainingContest implements Serializable {
 
     private Boolean isPersonal;
 
-    @Column(name = "isPersonal")
+    @Column(name = "isPersonal", nullable = false, insertable = true, updatable = true,
+            length = 0, precision = 0)
     @Basic
     public Boolean getIsPersonal() {
         return isPersonal;
@@ -59,7 +62,8 @@ public class TrainingContest implements Serializable {
 
     private String title;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false, insertable = true, updatable = true,
+            length = 150, precision = 0)
     @Basic
     public String getTitle() {
         return title;
@@ -81,11 +85,10 @@ public class TrainingContest implements Serializable {
         this.version = version;
     }
 
-    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof TrainingContest)) return false;
 
         TrainingContest that = (TrainingContest) o;
 

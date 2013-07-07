@@ -33,5 +33,8 @@
             <param name="targetTrainingContestId">{1}</param>
             <result>/WEB-INF/views/training/admin/trainingContestEditor.jsp</result>
         </action>
+        <action name="contest/uploadRank/*" class="trainingContestAdminAction" method="uploadTrainingRankFile">
+            <param name="targetTrainingContestId">{1}</param>
+        </action>
     </package>
 </struts>

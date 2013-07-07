@@ -67,4 +67,10 @@
     </bean>
     <bean id="userSerialKeyDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.UserSerialKeyDAO" parent="baseDAO">
     </bean>
+    <bean id="trainingUserDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.TrainingUserDAO" parent="baseDAO">
+    </bean>
+    <bean id="trainingStatusDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.TrainingStatusDAO" parent="baseDAO">
+    </bean>
+    <bean id="trainingContestDAO" class="cn.edu.uestc.acmicpc.db.dao.impl.TrainingContestDAO" parent="baseDAO">
+    </bean>
 </beans>
