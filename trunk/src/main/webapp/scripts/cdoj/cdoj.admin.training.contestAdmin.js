@@ -32,7 +32,7 @@ var updateUrl;
 
 $(document).ready(function () {
     trainingContestId = $('#trainingContestId')[0].innerHTML;
-    uploaderUrl = '/admin/problem/uploadProblemDataFile/'+trainingContestId;
+    uploaderUrl = '/training/admin/contest/uploadRank/'+trainingContestId;
     updateUrl = '/admin/problem/updateProblemData/'+trainingContestId;
 
     $('#fileUploader').fineUploader({
@@ -41,7 +41,7 @@ $(document).ready(function () {
             inputName: 'uploadFile'
         },
         validation: {
-            allowedExtensions: ['xlsx'],
+            allowedExtensions: ['xls'],
             sizeLimit: 52428800 // 50 MB = 50 * 1024 * 1024 bytes
         },
         text: {
@@ -58,25 +58,14 @@ $(document).ready(function () {
         },
         multiple: false
     }).on('complete', function(event, id, name, response) {
-            if (response.success == 'true')
-                $('#fileUploaderAttention').replaceWith('Total data: '+response.total);
+            if (response.success == 'true') {
+                console.log(response);
+            }
             else
                 $('#fileUploaderAttention').replaceWith(response.error);
         });
 
     $('input#submit').click(function(){
-        var problemDataDTO = $('#problemDataEditor').getFormData();
-        problemDataDTO["problemDataDTO.problemId"] = problemId;
-        console.log(problemDataDTO);
-        $.post(updateUrl, problemDataDTO, function(data) {
-            $('#problemDataEditor').checkValidate({
-                result: data,
-                onSuccess: function(){
-                    alert('Successful!');
-                    window.location.href= '/admin/problem/list';
-                }
-            })
-        });
         return false;
     });
 });

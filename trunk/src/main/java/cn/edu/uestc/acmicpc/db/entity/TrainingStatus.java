@@ -35,8 +35,10 @@ import java.io.Serializable;
 public class TrainingStatus implements Serializable {
     private Integer trainingStatusId;
 
-    @Column(name = "trainingStatusId")
+    @Column(name = "trainingStatusId", nullable = false, insertable = true, updatable = true, length = 10,
+            precision = 0, unique = true)
     @Id
+    @GeneratedValue
     public Integer getTrainingStatusId() {
         return trainingStatusId;
     }
@@ -47,7 +49,8 @@ public class TrainingStatus implements Serializable {
 
     private Double rating;
 
-    @Column(name = "rating")
+    @Column(name = "rating", nullable = false, insertable = true, updatable = true,
+            precision = 0)
     @Basic
     public Double getRating() {
         return rating;
@@ -59,7 +62,8 @@ public class TrainingStatus implements Serializable {
 
     private Double volatility;
 
-    @Column(name = "volatility")
+    @Column(name = "volatility", nullable = false, insertable = true, updatable = true,
+            precision = 0)
     @Basic
     public Double getVolatility() {
         return volatility;
@@ -67,6 +71,71 @@ public class TrainingStatus implements Serializable {
 
     public void setVolatility(Double volatility) {
         this.volatility = volatility;
+    }
+
+    private Integer rank;
+
+    @Column(name = "rank", nullable = false, insertable = true, updatable = true, length = 10,
+            precision = 0)
+    @Basic
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
+    }
+
+    private Integer penalty;
+
+    @Column(name = "penalty", nullable = false, insertable = true, updatable = true, length = 10,
+            precision = 0)
+    @Basic
+    public Integer getPenalty() {
+        return penalty;
+    }
+
+    public void setPenalty(Integer penalty) {
+        this.penalty = penalty;
+    }
+
+    private Integer solve;
+
+    @Column(name = "solve", nullable = false, insertable = true, updatable = true, length = 10,
+            precision = 0)
+    @Basic
+    public Integer getSolve() {
+        return solve;
+    }
+
+    public void setSolve(Integer solve) {
+        this.solve = solve;
+    }
+
+    private Double ratingVary;
+
+    @Column(name = "ratingVary", nullable = false, insertable = true, updatable = true,
+            precision = 0)
+    @Basic
+    public Double getRatingVary() {
+        return ratingVary;
+    }
+
+    public void setRatingVary(Double ratingVary) {
+        this.ratingVary = ratingVary;
+    }
+
+    private Double volatilityVary;
+
+    @Column(name = "volatilityVary", nullable = false, insertable = true, updatable = true,
+            precision = 0)
+    @Basic
+    public Double getVolatilityVary() {
+        return volatilityVary;
+    }
+
+    public void setVolatilityVary(Double volatilityVary) {
+        this.volatilityVary = volatilityVary;
     }
 
     private Integer version;
@@ -81,19 +150,28 @@ public class TrainingStatus implements Serializable {
         this.version = version;
     }
 
-    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof TrainingStatus)) return false;
 
         TrainingStatus that = (TrainingStatus) o;
 
+        if (penalty != null ? !penalty.equals(that.penalty) : that.penalty != null) return false;
+        if (rank != null ? !rank.equals(that.rank) : that.rank != null) return false;
         if (rating != null ? !rating.equals(that.rating) : that.rating != null) return false;
+        if (ratingVary != null ? !ratingVary.equals(that.ratingVary) : that.ratingVary != null) return false;
+        if (solve != null ? !solve.equals(that.solve) : that.solve != null) return false;
+        if (trainingContestByTrainingContestId != null ? !trainingContestByTrainingContestId.equals(that.trainingContestByTrainingContestId) : that.trainingContestByTrainingContestId != null)
+            return false;
         if (trainingStatusId != null ? !trainingStatusId.equals(that.trainingStatusId) : that.trainingStatusId != null)
+            return false;
+        if (trainingUserByTrainingUserId != null ? !trainingUserByTrainingUserId.equals(that.trainingUserByTrainingUserId) : that.trainingUserByTrainingUserId != null)
             return false;
         if (version != null ? !version.equals(that.version) : that.version != null) return false;
         if (volatility != null ? !volatility.equals(that.volatility) : that.volatility != null) return false;
+        if (volatilityVary != null ? !volatilityVary.equals(that.volatilityVary) : that.volatilityVary != null)
+            return false;
 
         return true;
     }
@@ -103,21 +181,28 @@ public class TrainingStatus implements Serializable {
         int result = trainingStatusId != null ? trainingStatusId.hashCode() : 0;
         result = 31 * result + (rating != null ? rating.hashCode() : 0);
         result = 31 * result + (volatility != null ? volatility.hashCode() : 0);
+        result = 31 * result + (rank != null ? rank.hashCode() : 0);
+        result = 31 * result + (penalty != null ? penalty.hashCode() : 0);
+        result = 31 * result + (solve != null ? solve.hashCode() : 0);
+        result = 31 * result + (ratingVary != null ? ratingVary.hashCode() : 0);
+        result = 31 * result + (volatilityVary != null ? volatilityVary.hashCode() : 0);
         result = 31 * result + (version != null ? version.hashCode() : 0);
+        result = 31 * result + (trainingUserByTrainingUserId != null ? trainingUserByTrainingUserId.hashCode() : 0);
+        result = 31 * result + (trainingContestByTrainingContestId != null ? trainingContestByTrainingContestId.hashCode() : 0);
         return result;
     }
 
+    private TrainingUser trainingUserByTrainingUserId;
+
     @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
-    public User getUserByUserId() {
-        return userByUserId;
+    @JoinColumn(name = "trainingUserId", referencedColumnName = "trainingUserId", nullable = false)
+    public TrainingUser getTrainingUserByTrainingUserId() {
+        return trainingUserByTrainingUserId;
     }
 
-    public void setUserByUserId(User userByUserId) {
-        this.userByUserId = userByUserId;
+    public void setTrainingUserByTrainingUserId(TrainingUser trainingUserByTrainingUserId) {
+        this.trainingUserByTrainingUserId = trainingUserByTrainingUserId;
     }
-
-    private User userByUserId;
 
     @ManyToOne
     @JoinColumn(name = "trainingContestId", referencedColumnName = "trainingContestId", nullable = false)

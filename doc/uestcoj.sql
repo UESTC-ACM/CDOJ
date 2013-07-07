@@ -10,7 +10,7 @@ USE `uestcoj` ;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`department` (
   `departmentId` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(50) NOT NULL DEFAULT '' COMMENT 'department\\\'s name' ,
+  `name` VARCHAR(50) NOT NULL DEFAULT '' COMMENT 'department\'s name' ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`departmentId`) ,
   UNIQUE INDEX `departmentId_UNIQUE` (`departmentId` ASC) )
@@ -25,7 +25,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`user` (
   `userName` VARCHAR(24) NOT NULL ,
   `studentId` VARCHAR(50) NOT NULL ,
   `departmentId` INT NOT NULL ,
-  `password` VARCHAR(40) NOT NULL COMMENT 'need to validate\\nuse SHA1 encoding' ,
+  `password` VARCHAR(40) NOT NULL COMMENT 'need to validate\nuse SHA1 encoding' ,
   `school` VARCHAR(100) NOT NULL DEFAULT '' ,
   `nickName` VARCHAR(50) NOT NULL COMMENT 'length >= 3' ,
   `email` VARCHAR(100) NOT NULL COMMENT 'need to validate' ,
@@ -177,7 +177,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`contestUser` (
   `contestUserId` INT NOT NULL AUTO_INCREMENT ,
   `contestId` INT NOT NULL ,
   `userId` INT NOT NULL ,
-  `status` TINYINT(4) NOT NULL COMMENT '0 - wait for validating\\n1 - accepted\\n2 - refused' ,
+  `status` TINYINT(4) NOT NULL COMMENT '0 - wait for validating\n1 - accepted\n2 - refused' ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`contestUserId`) ,
   UNIQUE INDEX `contestUserId_UNIQUE` (`contestUserId` ASC) ,
@@ -408,7 +408,30 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingContest` (
   `title` VARCHAR(150) NOT NULL DEFAULT '' ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`trainingContestId`) ,
-  UNIQUE INDEX `trainingContestId_UNIQUE` (`trainingContestId` ASC) )
+  UNIQUE INDEX `traningContestId_UNIQUE` (`trainingContestId` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `uestcoj`.`trainingUser`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingUser` (
+  `trainingUserId` INT NOT NULL AUTO_INCREMENT ,
+  `rating` DOUBLE NOT NULL ,
+  `volatility` DOUBLE NOT NULL ,
+  `type` INT NOT NULL ,
+  `userId` INT NOT NULL ,
+  `OPTLOCK` INT NULL ,
+  `name` VARCHAR(45) NOT NULL ,
+  PRIMARY KEY (`trainingUserId`) ,
+  UNIQUE INDEX `trainingUserId_UNIQUE` (`trainingUserId` ASC) ,
+  INDEX `FK_trainingUser_userId_on_user_idx` (`userId` ASC) ,
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) ,
+  CONSTRAINT `FK_trainingUser_userId_on_user`
+    FOREIGN KEY (`userId` )
+    REFERENCES `uestcoj`.`user` (`userId` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -418,26 +441,32 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingStatus` (
   `trainingStatusId` INT NOT NULL AUTO_INCREMENT ,
   `trainingContestId` INT NOT NULL ,
-  `userId` INT NOT NULL ,
+  `trainingUserId` INT NOT NULL ,
   `rating` DOUBLE NOT NULL ,
   `volatility` DOUBLE NOT NULL ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
+  `rank` INT NOT NULL ,
+  `solve` INT NOT NULL ,
+  `penalty` INT NOT NULL ,
+  `ratingVary` DOUBLE NOT NULL ,
+  `volatilityVary` DOUBLE NOT NULL ,
   PRIMARY KEY (`trainingStatusId`) ,
   UNIQUE INDEX `trainingStatusId_UNIQUE` (`trainingStatusId` ASC) ,
   INDEX `FK_trainingStatus_trainingContestId_on_trainingContest_idx` (`trainingContestId` ASC) ,
-  INDEX `FK_trainingStatus_userId_on_user_idx` (`userId` ASC) ,
+  INDEX `FK_trainingStatus_trainingUserId_on_user_idx` (`trainingUserId` ASC) ,
   CONSTRAINT `FK_trainingStatus_trainingContestId_on_trainingContest`
     FOREIGN KEY (`trainingContestId` )
     REFERENCES `uestcoj`.`trainingContest` (`trainingContestId` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `FK_trainingStatus_userId_on_user`
-    FOREIGN KEY (`userId` )
-    REFERENCES `uestcoj`.`user` (`userId` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `FK_trainingStatus_trainingUserId_on_trainingUser`
+    FOREIGN KEY (`trainingUserId` )
+    REFERENCES `uestcoj`.`trainingUser` (`trainingUserId` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
+USE `uestcoj` ;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

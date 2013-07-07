@@ -90,7 +90,38 @@
                         <label class="control-label">Upload rank file</label>
                         <div class="controls">
                             <div id="fileUploader"></div>
-                            <span id="fileUploaderAttention" class="help-inline">Please use xlsx.</span>
+                            <span id="fileUploaderAttention" class="help-inline">Please use xls.</span>
+                        </div>
+                    </div>
+
+                    <div class="span10">
+                        <div class="control-group">
+                            <label class="control-label">Rank list</label>
+
+                            <div class="controls">
+                                <div class="row">
+                                    <div class="span6">
+                                        <table class="table table-striped table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 30px;">Rank</th>
+                                                <th>User</th>
+                                                <th style="width: 60px;">Solve</th>
+                                                <th style="width: 100px;">Penalty/Score</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="rankList">
+                                            <tr>
+                                                <td>1</td>
+                                                <td>UESTC_Gannicus</td>
+                                                <td>8</td>
+                                                <td>24:10:52</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
