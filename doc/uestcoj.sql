@@ -423,6 +423,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingUser` (
   `userId` INT NOT NULL ,
   `OPTLOCK` INT NULL ,
   `name` VARCHAR(45) NOT NULL ,
+  `allow` TINYINT(1) NOT NULL ,
   PRIMARY KEY (`trainingUserId`) ,
   UNIQUE INDEX `trainingUserId_UNIQUE` (`trainingUserId` ASC) ,
   INDEX `FK_trainingUser_userId_on_user_idx` (`userId` ASC) ,

@@ -102,6 +102,18 @@ public class TrainingUser implements Serializable {
         this.type = type;
     }
 
+    @Column(name = "allow", nullable = false, insertable = true, updatable = true, length = 0,
+            precision = 0)
+    private Boolean allow;
+
+    public Boolean getAllow() {
+        return allow;
+    }
+
+    public void setAllow(Boolean allow) {
+        this.allow = allow;
+    }
+
     private Integer version;
 
     @Version
@@ -133,6 +145,7 @@ public class TrainingUser implements Serializable {
 
         TrainingUser that = (TrainingUser) o;
 
+        if (allow != null ? !allow.equals(that.allow) : that.allow != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (rating != null ? !rating.equals(that.rating) : that.rating != null) return false;
         if (trainingUserId != null ? !trainingUserId.equals(that.trainingUserId) : that.trainingUserId != null)
@@ -152,6 +165,7 @@ public class TrainingUser implements Serializable {
         result = 31 * result + (rating != null ? rating.hashCode() : 0);
         result = 31 * result + (volatility != null ? volatility.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (allow != null ? allow.hashCode() : 0);
         result = 31 * result + (version != null ? version.hashCode() : 0);
         result = 31 * result + (userByUserId != null ? userByUserId.hashCode() : 0);
         return result;

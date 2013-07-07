@@ -33,6 +33,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <script src="<s:url value="/scripts/cdoj/cdoj.training.index.js"/>"></script>
     <title>Summer training</title>
 </head>
 <body>
@@ -44,6 +45,9 @@
         </li>
         <li>
             <a href="#tab-personal-rating" data-toggle="tab">Personal rating</a>
+        </li>
+        <li>
+            <a href="#tab-member-register" data-toggle="tab">Register</a>
         </li>
     </ul>
 </div>
@@ -96,6 +100,61 @@
                         <tr><td>6</td><td>lyhypacm</td><td class="rating-gray">800</td><td>322</td><td>1</td></tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-member-register">
+            <div class="row" id="trainingUserRegister">
+                <div class="span12">
+                    <s:if test="currentUser == null">
+                        <h1>Please login first.</h1>
+                    </s:if>
+                    <s:else>
+                        <form class="form-horizontal">
+                            <fieldset>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="account">Account</label>
+                                    <div class="controls">
+                                        <input type="text" maxlength="24" value="<s:property value="currentUser.userName"/>" id="account" class="span4" readonly="true">
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="trainingUserDTO_name">Name</label>
+                                    <div class="controls">
+                                        <div class="input-prepend">
+                                            <span class="add-on">UESTC_</span>
+                                            <input type="text" name="trainingUserDTO.name" maxlength="12" value="" id="trainingUserDTO_name" class="span4">
+                                        </div>
+                                        <p class="help-block">如果是个人排名只需填入你的姓名，如果是组队赛请填写队伍名。<br/>请不要随便注册，后台审核很辛苦的。。</p>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label">Register as</label>
+                                    <div class="controls">
+
+                                        <label for="trainingUserDTO.type-0" class="radio inline">
+                                            <input type="radio" name="trainingUserDTO.type" id="trainingUserDTO.type-0" value="0" checked="">
+                                            Personal
+                                        </label>
+
+                                        <label for="trainingUserDTO.type-1" class="radio inline">
+                                            <input type="radio" name="trainingUserDTO.type" id="trainingUserDTO.type-1" value="1">
+                                            Team
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" id="registerTrainingUserButton" class="btn btn-primary">Register</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </s:else>
                 </div>
             </div>
         </div>

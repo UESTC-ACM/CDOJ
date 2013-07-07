@@ -29,6 +29,8 @@
         <action name="index" class="trainingAdminIndexAction" method="toIndex">
             <result>/WEB-INF/views/training/admin/index.jsp</result>
         </action>
+        <action name="member/list" class="trainingUserAdminAction" method="toMemberList"/>
+
         <action name="contest/edit/*" class="trainingAdminIndexAction" method="toContestEditor">
             <param name="targetTrainingContestId">{1}</param>
             <result>/WEB-INF/views/training/admin/trainingContestEditor.jsp</result>
@@ -36,5 +38,6 @@
         <action name="contest/uploadRank/*" class="trainingContestAdminAction" method="uploadTrainingRankFile">
             <param name="targetTrainingContestId">{1}</param>
         </action>
+
     </package>
 </struts>
