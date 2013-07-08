@@ -102,16 +102,43 @@ public class TrainingUser implements Serializable {
         this.type = type;
     }
 
-    @Column(name = "allow", nullable = false, insertable = true, updatable = true, length = 0,
-            precision = 0)
     private Boolean allow;
 
+    @Column(name = "allow", nullable = false, insertable = true, updatable = true, length = 0,
+            precision = 0)
+    @Basic
     public Boolean getAllow() {
         return allow;
     }
 
     public void setAllow(Boolean allow) {
         this.allow = allow;
+    }
+
+    private Double ratingVary;
+
+    @Column(name = "ratingVary", nullable = true, insertable = true, updatable = true,
+            precision = 0)
+    @Basic
+    public Double getRatingVary() {
+        return ratingVary;
+    }
+
+    public void setRatingVary(Double ratingVary) {
+        this.ratingVary = ratingVary;
+    }
+
+    private Double volatilityVary;
+
+    @Column(name = "volatilityVary", nullable = true, insertable = true, updatable = true,
+            precision = 0)
+    @Basic
+    public Double getVolatilityVary() {
+        return volatilityVary;
+    }
+
+    public void setVolatilityVary(Double volatilityVary) {
+        this.volatilityVary = volatilityVary;
     }
 
     private Integer version;
@@ -148,12 +175,15 @@ public class TrainingUser implements Serializable {
         if (allow != null ? !allow.equals(that.allow) : that.allow != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (rating != null ? !rating.equals(that.rating) : that.rating != null) return false;
+        if (ratingVary != null ? !ratingVary.equals(that.ratingVary) : that.ratingVary != null) return false;
         if (trainingUserId != null ? !trainingUserId.equals(that.trainingUserId) : that.trainingUserId != null)
             return false;
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
         if (userByUserId != null ? !userByUserId.equals(that.userByUserId) : that.userByUserId != null) return false;
         if (version != null ? !version.equals(that.version) : that.version != null) return false;
         if (volatility != null ? !volatility.equals(that.volatility) : that.volatility != null) return false;
+        if (volatilityVary != null ? !volatilityVary.equals(that.volatilityVary) : that.volatilityVary != null)
+            return false;
 
         return true;
     }
@@ -166,6 +196,8 @@ public class TrainingUser implements Serializable {
         result = 31 * result + (volatility != null ? volatility.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (allow != null ? allow.hashCode() : 0);
+        result = 31 * result + (ratingVary != null ? ratingVary.hashCode() : 0);
+        result = 31 * result + (volatilityVary != null ? volatilityVary.hashCode() : 0);
         result = 31 * result + (version != null ? version.hashCode() : 0);
         result = 31 * result + (userByUserId != null ? userByUserId.hashCode() : 0);
         return result;
