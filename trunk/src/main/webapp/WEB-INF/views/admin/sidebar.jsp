@@ -74,7 +74,7 @@
         <li class="divider"></li>
         <li class="nav-header">Summer Training</li>
         <li><s:a action="index" namespace="/training/admin">Summary</s:a></li>
-        <li><s:a action="contest/edit/" namespace="/training/admin">Add contest</s:a></li>
+        <li><s:a action="contest/editor/" namespace="/training/admin">Add contest</s:a></li>
 
     </ul>
 </div>

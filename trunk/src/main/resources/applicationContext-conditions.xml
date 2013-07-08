@@ -55,4 +55,7 @@
     <bean id="trainingUserCondition" class="cn.edu.uestc.acmicpc.db.condition.impl.TrainingUserCondition"
           parent="baseCondition">
     </bean>
+    <bean id="trainingContestCondition" class="cn.edu.uestc.acmicpc.db.condition.impl.TrainingContestCondition"
+          parent="baseCondition">
+    </bean>
 </beans>

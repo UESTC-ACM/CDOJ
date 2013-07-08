@@ -24,6 +24,7 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
@@ -108,5 +109,16 @@ public class TrainingContest implements Serializable {
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (version != null ? version.hashCode() : 0);
         return result;
+    }
+
+    private Collection<TrainingStatus> trainingStatusesByTrainingContestId;
+
+    @OneToMany(mappedBy = "trainingContestByTrainingContestId")
+    public Collection<TrainingStatus> getTrainingStatusesByTrainingContestId() {
+        return trainingStatusesByTrainingContestId;
+    }
+
+    public void setTrainingStatusesByTrainingContestId(Collection<TrainingStatus> trainingStatusesByTrainingContestId) {
+        this.trainingStatusesByTrainingContestId = trainingStatusesByTrainingContestId;
     }
 }

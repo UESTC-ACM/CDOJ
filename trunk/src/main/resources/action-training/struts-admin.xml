@@ -32,7 +32,7 @@
         <action name="user/search" class="trainingUserAdminAction" method="toMemberList"/>
         <action name="user/operator" class="trainingUserAdminAction" method="toOperatorTrainingUser"/>
 
-        <action name="contest/edit/*" class="trainingAdminIndexAction" method="toContestEditor">
+        <action name="contest/editor/*" class="trainingAdminIndexAction" method="toContestEditor">
             <param name="targetTrainingContestId">{1}</param>
             <result>/WEB-INF/views/training/admin/trainingContestEditor.jsp</result>
         </action>
