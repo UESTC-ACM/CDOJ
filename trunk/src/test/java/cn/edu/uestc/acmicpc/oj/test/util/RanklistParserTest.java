@@ -44,10 +44,8 @@ import java.util.List;
 public class RanklistParserTest {
 
     @Test
+    @Ignore
     public void testXlsParser() throws IOException, BiffException {
-        File file = new File("/Users/mzry1992/Documents/test.xls");
-        System.out.println(file.exists());
-        List<String[]> result = RanklistParser.parse(file);
         System.out.println("Fuck");
     }
 }

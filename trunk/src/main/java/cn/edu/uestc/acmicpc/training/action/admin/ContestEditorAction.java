@@ -63,6 +63,7 @@ public class ContestEditorAction extends FileUploadAction {
             if (!tempFile.renameTo(targetFile))
                 throw new AppException("Internal exception: can not move file.");
 
+
             json.put("success", "true");
         } catch (AppException e) {
             json.put("error", e.getMessage());

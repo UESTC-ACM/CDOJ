@@ -24,6 +24,7 @@ package cn.edu.uestc.acmicpc.oj.test.util;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.util.Global;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Util class test
@@ -48,6 +51,7 @@ public class UtilTest {
     }
 
     @Test
+    @Ignore
     public void testGlobal() {
         Assert.assertNotNull("Constructor global instance is null.", global);
         List<Department> departments = global.getDepartmentList();
@@ -55,5 +59,65 @@ public class UtilTest {
             System.out.println(department.getDepartmentId()
                     + "\t" + department.getName());
         }
+    }
+
+    private static String VJ_1Y = "^(\\d{1,2}):(\\d{2}):(\\d{2})$";
+    private static String VJ_NORMAL = "^(\\d{1,2}):(\\d{2}):(\\d{2})\\(-(\\d+)\\)$";
+    private static String VJ_FAIL = "^\\(-(\\d+)\\)$";
+    private static String PC_NORMAL = "^(\\d+)/(\\d+)$";
+    private static String PC_FAIL = "^(\\d+)/--$";
+
+    @Test
+    public void regexTest() {
+        Pattern pattern;
+        Matcher matcher;
+        String result;
+        String query;
+
+        pattern = Pattern.compile(VJ_1Y);
+        query = "4:28:00";
+        matcher = pattern.matcher(query);
+        if (matcher.find()) {
+            result = matcher.group(1) + ":" + matcher.group(2) + ":" + matcher.group(3);
+            assert result.equals(query);
+        } else
+            assert false;
+
+        pattern = Pattern.compile(VJ_NORMAL);
+        query = "4:35:00(-2)";
+        matcher = pattern.matcher(query);
+        if (matcher.find()) {
+            result = matcher.group(1) + ":" + matcher.group(2) + ":" + matcher.group(3) + "(-" + matcher.group(4) + ")";
+            assert result.equals(query);
+        } else
+            assert false;
+
+        pattern = Pattern.compile(VJ_FAIL);
+        query = "(-5)";
+        matcher = pattern.matcher(query);
+        if (matcher.find()) {
+            result = "(-" + matcher.group(1) + ")";
+            assert result.equals(query);
+        } else
+            assert false;
+
+        pattern = Pattern.compile(PC_NORMAL);
+        query = "14/294";
+        matcher = pattern.matcher(query);
+        if (matcher.find()) {
+            result = matcher.group(1) + "/" + matcher.group(2);
+            assert result.equals(query);
+        } else
+            assert false;
+
+        pattern = Pattern.compile(PC_FAIL);
+        query = "16/--";
+        matcher = pattern.matcher(query);
+        if (matcher.find()) {
+            result = matcher.group(1) + "/--";
+            System.out.print(result);
+            assert result.equals(query);
+        } else
+            assert false;
     }
 }

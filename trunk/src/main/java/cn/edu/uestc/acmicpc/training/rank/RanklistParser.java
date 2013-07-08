@@ -21,6 +21,7 @@
 
 package cn.edu.uestc.acmicpc.training.rank;
 
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
@@ -37,7 +38,27 @@ import java.util.List;
  */
 public class RanklistParser {
 
-    public static List<String[]> parse(File file) throws BiffException, IOException {
+    public ContestRankList parse(File file) throws IOException, BiffException, AppException {
+        List<String[]> excelValueList = parseXls(file);
+        if (excelValueList == null || excelValueList.size() == 0)
+            throw new AppException("Error while parse xls document, Please check it!");
+        String[] header = excelValueList.get(0);
+        AppException headerFormatException = new AppException("Xls format error! First line should be (rank) (name|team|id) (solved) (penalty)");
+        if (header == null || header.length < 4)
+            throw headerFormatException;
+        if (header[0].compareToIgnoreCase("rank") != 0)
+            throw headerFormatException;
+        if (header[1].compareToIgnoreCase("name") != 0 || header[1].compareToIgnoreCase("team") != 0 || header[1].compareToIgnoreCase("id") != 0)
+            throw headerFormatException;
+        if (header[2].compareToIgnoreCase("solved") != 0)
+            throw headerFormatException;
+        if (header[3].compareToIgnoreCase("penalty") != 0)
+            throw headerFormatException;
+        ContestRankList ranklist = new ContestRankList(excelValueList);
+        return ranklist;
+    }
+
+    public List<String[]> parseXls(File file) throws BiffException, IOException {
         List<String[]> excelValueList = new LinkedList<String[]>();
         if (file.exists() && file.canRead()
                 && (file.getName().lastIndexOf(".xls") >= 1)) {
@@ -64,11 +85,6 @@ public class RanklistParser {
                     workbook.close();
                 }
             }
-        }
-        for (String[] row : excelValueList) {
-            for (String col : row)
-                System.out.print(col + "|");
-            System.out.println();
         }
         return excelValueList;
     }
