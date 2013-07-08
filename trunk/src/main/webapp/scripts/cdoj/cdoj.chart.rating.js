@@ -34,7 +34,11 @@ function drawRatingChart(teamSummary) {
     var maxRating = d3.max(teamSummary, function(data) {
         return data.rating;
     });
-    var ratingBetween = maxRating - minRating;
+    var maxContestId = d3.max(teamSummary, function(data) {
+        return data.contestId;
+    });
+    var ratingBetween = Math.max(500.0, maxRating - minRating);
+
     minRating = Math.max(0, minRating - ratingBetween / 6);
     maxRating = maxRating + ratingBetween / 6;
     var colors = {
@@ -77,9 +81,14 @@ function drawRatingChart(teamSummary) {
     var yAxisWidth = 50;
     var xAxisHeight = 50;
 
+    var xScale = d3.scale.ordinal()
+        .domain(d3.range(maxContestId + 1))
+        .rangePoints([yAxisWidth, width]);
+    /*
     var xScale = d3.scale.linear()
-        .domain([0, teamSummary.length + 1])
+        .domain([0, maxContestId + 1])
         .range([yAxisWidth, width]);
+        */
     var xAxis = d3.svg.axis().scale(xScale).tickSize(1.5);
     chart.append('g')
         .attr({
@@ -122,7 +131,7 @@ function drawRatingChart(teamSummary) {
             'stroke': 'black',
             'stroke-width': '1.5px'
         })
-        .attr('transform', function(d) { return "translate(" + xScale(d.contestId) + "," + yScale(d.rating) + ")"; })
-        .attr('fill', function(d) {return colors[d.ratingColor];})
+        .attr('transform', function(d) { console.log(xScale(d.contestId)); return "translate(" + xScale(d.contestId) + "," + yScale(d.rating) + ")"; })
+        .attr('fill', function(d) {return getRatingColor(d.rating);})
         .attr('d', d3.svg.symbol().type('square'));
 }

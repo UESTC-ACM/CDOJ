@@ -33,6 +33,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Ignore;
  */
 public class TrainingUserView extends View<TrainingUser> {
 
+    private Integer rank;
     private Integer trainingUserId;
     private String name;
     private Boolean allow;
@@ -44,6 +45,24 @@ public class TrainingUserView extends View<TrainingUser> {
     private String userEmail;
     private Double ratingVary;
     private Double volatilityVary;
+    private Integer competitions;
+
+    public Integer getRank() {
+        return rank;
+    }
+
+    @Ignore
+    public void setRank(Integer rank) {
+        this.rank = rank;
+    }
+
+    public Integer getCompetitions() {
+        return competitions;
+    }
+
+    public void setCompetitions(Integer competitions) {
+        this.competitions = competitions;
+    }
 
     public Double getVolatilityVary() {
         return volatilityVary;

@@ -40,9 +40,10 @@
     <script src="<s:url value="/scripts/d3.js"/>"></script>
     <!--<![endif]-->
 
+    <script src="<s:url value="/scripts/cdoj/cdoj.training.rating.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.chart.rating.js"/>"></script>
-    <script src="<s:url value="/scripts/cdoj/cdoj.training.team.js"/>"></script>
-    <title>Team information</title>
+    <script src="<s:url value="/scripts/cdoj/cdoj.training.user.js"/>"></script>
+    <title>${targetTrainingUasr.name} history</title>
 </head>
 <body>
 
@@ -61,6 +62,17 @@
     <div id="TabContent" class="tab-content">
         <div class="tab-pane fade active in" id="tab-team-overview">
             <div class="row">
+                <div class="span12">
+                    <div id="name" value="${targetTrainingUser.trainingUserId}">${targetTrainingUser.name}</div><br/>
+                    ${targetTrainingUser.rating}<br/>
+                    ${targetTrainingUser.volatility}<br/>
+                    ${targetTrainingUser.typeName}<br/>
+                    ${targetTrainingUser.userName}<br/>
+                    ${targetTrainingUser.userEmail}<br/>
+                    ${targetTrainingUser.ratingVary}<br/>
+                    ${targetTrainingUser.volatilityVary}<br/>
+                    ${targetTrainingUser.competitions}
+                </div>
                 <div class="span12">
                     <div id="ratingChart">
                     </div>

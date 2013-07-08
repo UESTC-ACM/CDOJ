@@ -44,6 +44,16 @@ public class TrainingUserCondition extends BaseCondition implements UserConditio
     private String name;
     private String userName;
     private Integer type;
+    private Boolean allow;
+
+    @Exp(MapField = "allow", Type = ConditionType.eq)
+    public Boolean getAllow() {
+        return allow;
+    }
+
+    public void setAllow(Boolean allow) {
+        this.allow = allow;
+    }
 
     @Exp(MapField = "trainingUserId", Type = ConditionType.ge)
     public Integer getStartId() {

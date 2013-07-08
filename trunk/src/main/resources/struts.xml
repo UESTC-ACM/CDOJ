@@ -67,7 +67,6 @@
     <include file="action-oj/struts-article.xml"/>
 
     <include file="action-training/struts-index.xml"/>
-    <include file="action-training/struts-team.xml"/>
     <include file="action-training/struts-admin.xml"/>
 
 </struts>

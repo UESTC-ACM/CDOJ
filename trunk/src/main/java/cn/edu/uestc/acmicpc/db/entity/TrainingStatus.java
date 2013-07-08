@@ -24,6 +24,7 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
@@ -215,4 +216,5 @@ public class TrainingStatus implements Serializable {
     }
 
     private TrainingContest trainingContestByTrainingContestId;
+
 }

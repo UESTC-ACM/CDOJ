@@ -25,6 +25,7 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * Description
@@ -141,6 +142,18 @@ public class TrainingUser implements Serializable {
         this.volatilityVary = volatilityVary;
     }
 
+    private Integer competitions;
+
+    @Column(name = "competitions", nullable = false, insertable = true, updatable = true,
+            precision = 0)
+    public Integer getCompetitions() {
+        return competitions;
+    }
+
+    public void setCompetitions(Integer competitions) {
+        this.competitions = competitions;
+    }
+
     private Integer version;
 
     @Version
@@ -173,6 +186,7 @@ public class TrainingUser implements Serializable {
         TrainingUser that = (TrainingUser) o;
 
         if (allow != null ? !allow.equals(that.allow) : that.allow != null) return false;
+        if (competitions != null ? !competitions.equals(that.competitions) : that.competitions != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (rating != null ? !rating.equals(that.rating) : that.rating != null) return false;
         if (ratingVary != null ? !ratingVary.equals(that.ratingVary) : that.ratingVary != null) return false;
@@ -198,8 +212,20 @@ public class TrainingUser implements Serializable {
         result = 31 * result + (allow != null ? allow.hashCode() : 0);
         result = 31 * result + (ratingVary != null ? ratingVary.hashCode() : 0);
         result = 31 * result + (volatilityVary != null ? volatilityVary.hashCode() : 0);
+        result = 31 * result + (competitions != null ? competitions.hashCode() : 0);
         result = 31 * result + (version != null ? version.hashCode() : 0);
         result = 31 * result + (userByUserId != null ? userByUserId.hashCode() : 0);
         return result;
+    }
+
+    private Collection<TrainingStatus> trainingStatusesByTrainingUserId;
+
+    @OneToMany(mappedBy = "trainingUserByTrainingUserId")
+    public Collection<TrainingStatus> getTrainingStatusesByTrainingUserId() {
+        return trainingStatusesByTrainingUserId;
+    }
+
+    public void setTrainingStatusesByTrainingUserId(Collection<TrainingStatus> trainingStatusesByTrainingUserId) {
+        this.trainingStatusesByTrainingUserId = trainingStatusesByTrainingUserId;
     }
 }

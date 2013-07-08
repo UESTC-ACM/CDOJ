@@ -39,5 +39,10 @@
           parent="baseAction"
           scope="prototype">
     </bean>
+    <bean id="trainingUserAction"
+          class="cn.edu.uestc.acmicpc.training.action.index.TrainingUserAction"
+          parent="baseAction"
+          scope="prototype">
+    </bean>
 
 </beans>
