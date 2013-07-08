@@ -29,7 +29,8 @@
         <action name="index" class="trainingAdminIndexAction" method="toIndex">
             <result>/WEB-INF/views/training/admin/index.jsp</result>
         </action>
-        <action name="member/list" class="trainingUserAdminAction" method="toMemberList"/>
+        <action name="user/search" class="trainingUserAdminAction" method="toMemberList"/>
+        <action name="user/operator" class="trainingUserAdminAction" method="toOperatorTrainingUser"/>
 
         <action name="contest/edit/*" class="trainingAdminIndexAction" method="toContestEditor">
             <param name="targetTrainingContestId">{1}</param>

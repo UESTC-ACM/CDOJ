@@ -105,6 +105,17 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
         }
     }
 
+    public enum TrainingUserType {
+        PERSONAL("Personal"), TEAM("Team");
+        private final String description;
+
+        private TrainingUserType(String description) {
+            this.description = description;
+        }
+        public String getDescription() {
+            return description;
+        }
+    }
     /**
      * User's authentication type(`type` column in user entity).
      */

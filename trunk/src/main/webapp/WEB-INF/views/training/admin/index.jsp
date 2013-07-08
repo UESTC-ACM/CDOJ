@@ -32,6 +32,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <script src="<s:url value="/scripts/cdoj/cdoj.admin.training.js"/>"></script>
     <title>Summer training</title>
 </head>
 <body>
@@ -48,7 +49,7 @@
             <a href="#tab-personal-member" data-toggle="tab">Personal member</a>
         </li>
         <li>
-            <a href="#tab-member-register" data-toggle="tab">Member register</a>
+            <a href="#tab-training-user" data-toggle="tab">Training users</a>
         </li>
     </ul>
 </div>
@@ -124,20 +125,25 @@
             </div>
         </div>
 
-        <div class="tab-pane fade" id="tab-member-register">
+        <div class="tab-pane fade" id="tab-training-user">
             <div class="row">
                 <div class="span10">
-                    <table id="memberRegisterListTable" class="table table-striped table-bordered">
+                    <div id="pageInfo">
+                    </div>
+
+                    <table id="trainingUserListTable" class="table table-striped table-bordered">
                         <thead>
                         <tr>
-                            <th style="width: 30px;">#</th>
-                            <th>Name</th>
-                            <th>User</th>
-                            <th></th>
+                            <th style="width: 30px;" class="orderButton" field="id">#</th>
+                            <th class="orderButton" field="name">Name</th>
+                            <th class="orderButton" field="userByUserId">User</th>
+                            <th style="width: 90px;" class="orderButton" field="rating">Rating</th>
+                            <th style="width: 80px;" class="orderButton" field="volatility">Volatility</th>
+                            <th style="width: 60px;" class="orderButton" field="type">Type</th>
+                            <th style="width: 120px;" class="orderButton" field="allow">Allow</th>
                         </tr>
                         </thead>
-                        <tbody id="memberRegisterList">
-                        <tr><td>1</td><td>lyhypacm</td><td>lyhypacm</td><td>Allow</td></tr>
+                        <tbody id="trainingUserList">
                         </tbody>
                     </table>
                 </div>
