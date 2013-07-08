@@ -56,7 +56,6 @@
     <import resource="action-oj/applicationContext-actions-article.xml"/>
 
     <import resource="action-training/applicationContext-actions-index.xml"/>
-    <import resource="action-training/applicationContext-actions-team.xml"/>
     <import resource="action-training/applicationContext-actions-admin.xml"/>
 
 </beans>

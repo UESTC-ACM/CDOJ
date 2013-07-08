@@ -47,40 +47,6 @@ function getAllowButton(trainingUserId, allow) {
     return html;
 }
 
-function getRatingColor(rating) {
-    var ratingColor;
-    if (rating < 900)   ratingColor = "gray";
-    else if (rating < 1200) ratingColor = "green";
-    else if (rating < 1500) ratingColor = "blue";
-    else if (rating < 2200) ratingColor = "yellow";
-    else    ratingColor = "red";
-    return ratingColor;
-}
-
-function getRating(rating, ratingVary) {
-    var color = getRatingColor(rating);
-    var html = $('<td style="text-align: right;"></td>');
-    var ratingSpan = $('<span class="rating-' + color + ' label-rating">' + rating + '</span>');
-    var varySpan = $('<span class="label label-diff"></span>');
-    var isFirst = (ratingVary == null);
-    if (isFirst != undefined) {
-        varySpan.addClass('label-info');
-        varySpan.append('INIT');
-    } else {
-        if (ratingVary >= 0) {
-            varySpan.addClass('label-success');
-            varySpan.append('+' + ratingVary);
-        } else {
-            varySpan.addClass('label-important');
-            varySpan.append(ratingVary);
-        }
-    }
-    html.append(ratingSpan);
-    html.append(varySpan);
-    return html;
-}
-
-
 function getQueryString(field, id, value) {
     var queryString = '/training/admin/user/operator?method=edit';
     queryString += '&id=' + id;
@@ -131,6 +97,7 @@ function refreshTrainingUserList(condition) {
                 '(' + (value.volatilityVary >= 0 ? '+' : '') + value.volatilityVary +
                 ')</td>');
 
+            html.append('<td>' + value.competitions + '</td>')
             html.append($('<td>' + value.typeName + '</td>'));
             html.append(getAllowButton(value.trainingUserId, value.allow));
             tbody.append(html);

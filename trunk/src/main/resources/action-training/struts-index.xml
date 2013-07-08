@@ -31,7 +31,15 @@
             <result>/WEB-INF/views/training/index.jsp</result>
         </action>
 
+        <action name="user/search" class="trainingUserAction" method="toMemberList"/>
         <action name="register" class="trainingUserRegisterAction" method="toRegister"/>
 
+        <action name="user/show/*" class="trainingUserAction" method="toMemberPage">
+            <param name="targetTrainingUserId">{1}</param>
+            <result>/WEB-INF/views/training/userPage.jsp</result>
+        </action>
+        <action name="user/history/*" class="trainingUserAction" method="toMemberHistory">
+            <param name="targetTrainingUserId">{1}</param>
+        </action>
     </package>
 </struts>

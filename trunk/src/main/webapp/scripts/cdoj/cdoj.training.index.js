@@ -50,4 +50,34 @@ $(document).ready(function () {
             return false;
         }
     });
+
+    $.post('/training/user/search', function(data) {
+        if (data.result == "error") {
+            alert(data.error_msg);
+            return;
+        }
+        console.log(data);
+
+        var trainingUserList = data.trainingUserList;
+        var teamList = $('#teamList');
+        var personalList = $('#personalList');
+        teamList.find('tr').remove();
+        personalList.find('tr').remove();
+        $.each(trainingUserList, function(index, value) {
+            var html = $('<tr></tr>');
+            html.append($('<td>' + value.rank + '</td>'));
+            html.append($('<td><a href="/training/user/show/' + value.trainingUserId + '">' + value.name + '</a></td>'));
+
+            html.append(getRating(value.rating, value.ratingVary));
+            html.append(getVolatility(value.volatility, value.volatilityVary));
+
+            html.append('<td>' + value.competitions + '</td>');
+
+            if (value.type == 0)
+                personalList.append(html);
+            else
+                teamList.append(html);
+        });
+    });
+
 });

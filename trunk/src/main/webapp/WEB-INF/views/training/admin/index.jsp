@@ -32,6 +32,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <script src="<s:url value="/scripts/cdoj/cdoj.training.rating.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.admin.training.js"/>"></script>
     <title>Summer training</title>
 </head>
@@ -41,12 +42,6 @@
     <ul id="TabMenu" class="nav nav-tabs">
         <li class="active">
             <a href="#tab-contest-manage" data-toggle="tab">Contest manage</a>
-        </li>
-        <li>
-            <a href="#tab-team-member" data-toggle="tab">Team member</a>
-        </li>
-        <li>
-            <a href="#tab-personal-member" data-toggle="tab">Personal member</a>
         </li>
         <li>
             <a href="#tab-training-user" data-toggle="tab">Training users</a>
@@ -75,56 +70,6 @@
             </div>
         </div>
 
-        <div class="tab-pane fade " id="tab-team-member">
-            <div class="row">
-                <div class="span10">
-                    <table id="teamListTable" class="table table-striped table-bordered">
-                        <thead>
-                        <tr>
-                            <th style="width: 30px;">#</th>
-                            <th>Team name</th>
-                            <th>Rating</th>
-                            <th>Volatility</th>
-                            <th>Competitions</th>
-                        </tr>
-                        </thead>
-                        <tbody id="teamList">
-                        <tr><td>1</td><td><s:a namespace="/training" action="team/1">lyhypacm</s:a></td><td class="rating-red">2500</td><td>322</td><td>1</td></tr>
-                        <tr><td>3</td><td>lyhypacm</td><td class="rating-yellow">1800</td><td>322</td><td>1</td></tr>
-                        <tr><td>4</td><td>lyhypacm</td><td class="rating-blue">1300</td><td>322</td><td>1</td></tr>
-                        <tr><td>5</td><td>lyhypacm</td><td class="rating-green">1100</td><td>322</td><td>1</td></tr>
-                        <tr><td>6</td><td>lyhypacm</td><td class="rating-gray">800</td><td>322</td><td>1</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="tab-pane fade" id="tab-personal-member">
-            <div class="row">
-                <div class="span10">
-                    <table id="personalListTable" class="table table-striped table-bordered">
-                        <thead>
-                        <tr>
-                            <th style="width: 30px;">#</th>
-                            <th>Team name</th>
-                            <th>Rating</th>
-                            <th>Volatility</th>
-                            <th>Competitions</th>
-                        </tr>
-                        </thead>
-                        <tbody id="personalList">
-                        <tr><td>1</td><td>lyhypacm</td><td class="rating-red">2500</td><td>322</td><td>1</td></tr>
-                        <tr><td>3</td><td>lyhypacm</td><td class="rating-yellow">1800</td><td>322</td><td>1</td></tr>
-                        <tr><td>4</td><td>lyhypacm</td><td class="rating-blue">1300</td><td>322</td><td>1</td></tr>
-                        <tr><td>5</td><td>lyhypacm</td><td class="rating-green">1100</td><td>322</td><td>1</td></tr>
-                        <tr><td>6</td><td>lyhypacm</td><td class="rating-gray">800</td><td>322</td><td>1</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
         <div class="tab-pane fade" id="tab-training-user">
             <div class="row">
                 <div class="span10">
@@ -137,8 +82,9 @@
                             <th style="width: 30px;" class="orderButton" field="id">#</th>
                             <th class="orderButton" field="name">Name</th>
                             <th class="orderButton" field="userByUserId">User</th>
-                            <th style="width: 90px;" class="orderButton" field="rating">Rating</th>
-                            <th style="width: 80px;" class="orderButton" field="volatility">Volatility</th>
+                            <th style="width: 80px;" class="orderButton" field="rating">Rating</th>
+                            <th style="width: 70px;" class="orderButton" field="volatility">Volatility</th>
+                            <th style="width: 40px;" class="orderButton" field="competitions">Comp</th>
                             <th style="width: 60px;" class="orderButton" field="type">Type</th>
                             <th style="width: 120px;" class="orderButton" field="allow">Allow</th>
                         </tr>

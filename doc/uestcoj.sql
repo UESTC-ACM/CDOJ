@@ -426,6 +426,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingUser` (
   `allow` TINYINT(1) NOT NULL ,
   `ratingVary` DOUBLE NULL ,
   `volatilityVary` DOUBLE NULL ,
+  `competitions` INT NOT NULL ,
   PRIMARY KEY (`trainingUserId`) ,
   UNIQUE INDEX `trainingUserId_UNIQUE` (`trainingUserId` ASC) ,
   INDEX `FK_trainingUser_userId_on_user_idx` (`userId` ASC) ,

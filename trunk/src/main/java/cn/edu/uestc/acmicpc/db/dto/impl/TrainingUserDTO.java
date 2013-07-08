@@ -71,6 +71,7 @@ public class TrainingUserDTO extends BaseDTO<TrainingUser> {
         trainingUser.setRating(1200.0);
         trainingUser.setVolatility(550.0);
         trainingUser.setAllow(false);
+        trainingUser.setCompetitions(0);
         return trainingUser;
     }
 

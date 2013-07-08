@@ -33,6 +33,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <script src="<s:url value="/scripts/cdoj/cdoj.training.rating.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.training.index.js"/>"></script>
     <title>Summer training</title>
 </head>
@@ -62,17 +63,12 @@
                         <tr>
                             <th style="width: 30px;">#</th>
                             <th>Team name</th>
-                            <th>Rating</th>
-                            <th>Volatility</th>
-                            <th>Competitions</th>
+                            <th style="width: 80px;">Rating</th>
+                            <th style="width: 70px;">Volatility</th>
+                            <th style="width: 40px;">Comp</th>
                         </tr>
                         </thead>
                         <tbody id="teamList">
-                        <tr><td>1</td><td><s:a namespace="/training" action="team/1">lyhypacm</s:a></td><td class="rating-red">2500</td><td>322</td><td>1</td></tr>
-                        <tr><td>3</td><td>lyhypacm</td><td class="rating-yellow">1800</td><td>322</td><td>1</td></tr>
-                        <tr><td>4</td><td>lyhypacm</td><td class="rating-blue">1300</td><td>322</td><td>1</td></tr>
-                        <tr><td>5</td><td>lyhypacm</td><td class="rating-green">1100</td><td>322</td><td>1</td></tr>
-                        <tr><td>6</td><td>lyhypacm</td><td class="rating-gray">800</td><td>322</td><td>1</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -87,17 +83,12 @@
                         <tr>
                             <th style="width: 30px;">#</th>
                             <th>Team name</th>
-                            <th>Rating</th>
-                            <th>Volatility</th>
-                            <th>Competitions</th>
+                            <th style="width: 80px;">Rating</th>
+                            <th style="width: 70px;">Volatility</th>
+                            <th style="width: 40px;">Comp</th>
                         </tr>
                         </thead>
                         <tbody id="personalList">
-                        <tr><td>1</td><td>lyhypacm</td><td class="rating-red">2500</td><td>322</td><td>1</td></tr>
-                        <tr><td>3</td><td>lyhypacm</td><td class="rating-yellow">1800</td><td>322</td><td>1</td></tr>
-                        <tr><td>4</td><td>lyhypacm</td><td class="rating-blue">1300</td><td>322</td><td>1</td></tr>
-                        <tr><td>5</td><td>lyhypacm</td><td class="rating-green">1100</td><td>322</td><td>1</td></tr>
-                        <tr><td>6</td><td>lyhypacm</td><td class="rating-gray">800</td><td>322</td><td>1</td></tr>
                         </tbody>
                     </table>
                 </div>

@@ -70,4 +70,7 @@ public class View<Entity extends Serializable> {
             }
         }
     }
+
+    protected View() {
+    }
 }
