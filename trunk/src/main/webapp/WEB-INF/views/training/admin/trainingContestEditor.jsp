@@ -32,9 +32,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head
-    <page:applyDecorator name="head" page="/WEB-INF/views/common/fileUploaderHeader.jsp"/>
-    <script src="<s:url value="/scripts/cdoj/cdoj.admin.training.contestAdmin.js"/>"></script>
-    <title>Summer training contest</title>
+<page:applyDecorator name="head" page="/WEB-INF/views/common/fileUploaderHeader.jsp"/>
+<script src="<s:url value="/scripts/cdoj/cdoj.admin.training.contestAdmin.js"/>"></script>
+<title>Summer training contest</title>
 </head>
 <body>
 <div class="row" id="contestEditor">
@@ -42,7 +42,8 @@
         <form class="form-horizontal">
             <fieldset>
                 <h3>
-                    Edit summery training contest <span id="trainingContestId">1</span>
+                    Edit summery training contest <span
+                        id="trainingContestId">${targetTrainingContest.trainingContestId}</span>
                 </h3>
 
                 <div class="row">
@@ -54,7 +55,7 @@
                                 <input type="text"
                                        name="contestDTO.title"
                                        maxlength="50"
-                                       value="${targetContest.title}"
+                                       value="${targetTrainingContest.title}"
                                        id="contestDTO_title"
                                        class="span6"
                                        placeholder="Enter title here">
@@ -65,29 +66,51 @@
                     <div class="span10">
                         <div class="control-group">
                             <label class="control-label">Is personal</label>
-                            <div class="controls">
-                                <label for="contestDTO.type-false" class="radio inline">
-                                    <input type="radio"
-                                           name="contestDTO.type"
-                                           id="contestDTO.type-false"
-                                           value="false"
-                                           checked="">
-                                    No
-                                </label>
 
-                                <label for="contestDTO.type-true" class="radio inline">
-                                    <input type="radio"
-                                           name="contestDTO.type"
-                                           id="contestDTO.type-true"
-                                           value="false">
-                                    Yes
-                                </label>
+                            <div class="controls">
+                                <s:if test="targetTrainingContest.isPersonal == true">
+                                    <label for="contestDTO.type-false" class="radio inline">
+                                        <input type="radio"
+                                               name="contestDTO.type"
+                                               id="contestDTO.type-false"
+                                               value="false">
+                                        No
+                                    </label>
+
+                                    <label for="contestDTO.type-true" class="radio inline">
+                                        <input type="radio"
+                                               name="contestDTO.type"
+                                               id="contestDTO.type-true"
+                                               value="false"
+                                               checked="">
+                                        Yes
+                                    </label>
+                                </s:if>
+                                <s:else>
+                                    <label for="contestDTO.type-false" class="radio inline">
+                                        <input type="radio"
+                                               name="contestDTO.type"
+                                               id="contestDTO.type-false"
+                                               value="false"
+                                               checked="">
+                                        No
+                                    </label>
+
+                                    <label for="contestDTO.type-true" class="radio inline">
+                                        <input type="radio"
+                                               name="contestDTO.type"
+                                               id="contestDTO.type-true"
+                                               value="false">
+                                        Yes
+                                    </label>
+                                </s:else>
                             </div>
                         </div>
                     </div>
 
                     <div class="control-group">
                         <label class="control-label">Upload rank file</label>
+
                         <div class="controls">
                             <div id="fileUploader"></div>
                             <span id="fileUploaderAttention" class="help-inline">Please use xls.</span>
@@ -111,12 +134,14 @@
                                             </tr>
                                             </thead>
                                             <tbody id="rankList">
-                                            <tr>
-                                                <td>1</td>
-                                                <td>UESTC_Gannicus</td>
-                                                <td>8</td>
-                                                <td>24:10:52</td>
-                                            </tr>
+                                            <s:iterator value="targetTrainingContest.trainingStatusViewList" id="trainingStatus">
+                                                <tr>
+                                                    <td><s:property value="#trainingStatus.rank"/></td>
+                                                    <td><s:property value="#trainingStatus.name"/></td>
+                                                    <td><s:property value="#trainingStatus.solve"/></td>
+                                                    <td><s:property value="#trainingStatus.penalty"/></td>
+                                                </tr>
+                                            </s:iterator>
                                             </tbody>
                                         </table>
                                     </div>

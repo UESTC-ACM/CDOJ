@@ -48,7 +48,7 @@ function drawRatingChart(teamSummary) {
         yellow: '#DDCC00',
         red: '#EE0000'
     };
-    var margin = { top: 30, right: 20, bottom: 20, left: 20 };
+    var margin = { top: 10, right: 20, bottom: 20, left: 20 };
     var width = 1033 - margin.left - margin.right;
     var height = 400 - margin.top - margin.bottom;
 
@@ -57,19 +57,11 @@ function drawRatingChart(teamSummary) {
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    //Title
-    chart.append('text')
-        .attr('x', (width / 2))
-        .attr('y', 0 - (margin.top / 2))
-        .attr('text-anchor', 'middle')
-        .style('font-size', '16px')
-        .style('text-decoration', 'underline')
-        .text('Team');
     //Warning under IE 7 8
     if (Sys.ie678) {
         chart.append('text')
             .attr('x', (width / 2))
-            .attr('y', 20 - (margin.top / 2))
+            .attr('y', 0 - (margin.top / 2))
             .attr('text-anchor', 'middle')
             .style('font-size', '16px')
             .style('fill', 'red')
