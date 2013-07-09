@@ -50,7 +50,7 @@ public class RankListParserTest implements TrainingRankListParserAware {
     @Test
     public void testXlsParser() throws IOException, BiffException {
         try {
-            File file = new File("/Users/mzry1992/Downloads/ranklist.xls");
+            File file = new File("/Users/mzry1992/Downloads/ranklist2.xls");
             System.out.println(file.exists());
             List<String[]> result = trainingRankListParser.parseXls(file);
             for (String[] strings : result) {

@@ -64,12 +64,13 @@ public class ContestEditorAction extends FileUploadAction implements TrainingCon
             if (trainingContest == null)
                 throw new AppException("No such contest!");
 
-            setSavePath(settings.SETTING_UPLOAD_FOLDER);
+            setSavePath(settings.SETTING_UPLOAD_FOLDER + "/temp");
             String[] files = uploadFile();
             // In this case, uploaded file should only contains one element.
             if (files == null || files.length != 1)
                 throw new AppException("Fetch uploaded file error.");
             File tempFile = new File(files[0]);
+            System.out.println(tempFile.getName());
             File targetFile = new File(getTrainingRankFileName());
             if (targetFile.exists() && !targetFile.delete())
                 throw new AppException("Internal exception: target file exists and can not be deleted.");
