@@ -21,9 +21,16 @@
 
 package cn.edu.uestc.acmicpc.training.action.admin;
 
-import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
+import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
+import cn.edu.uestc.acmicpc.ioc.dao.TrainingContestDAOAware;
+import cn.edu.uestc.acmicpc.ioc.util.TrainingRankListParserAware;
 import cn.edu.uestc.acmicpc.oj.action.file.FileUploadAction;
+import cn.edu.uestc.acmicpc.training.entity.TrainingContestRankList;
+import cn.edu.uestc.acmicpc.util.TrainingRankListParser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.ParserException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 
@@ -32,7 +39,7 @@ import java.io.File;
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class ContestEditorAction extends FileUploadAction {
+public class ContestEditorAction extends FileUploadAction implements TrainingContestDAOAware, TrainingRankListParserAware {
 
     private Integer targetTrainingContestId;
 
@@ -51,6 +58,12 @@ public class ContestEditorAction extends FileUploadAction {
      */
     public String uploadTrainingRankFile() {
         try {
+            if (targetTrainingContestId == null)
+                throw new AppException("No such contest!");
+            TrainingContest trainingContest = trainingContestDAO.get(targetTrainingContestId);
+            if (trainingContest == null)
+                throw new AppException("No such contest!");
+
             setSavePath(settings.SETTING_UPLOAD_FOLDER);
             String[] files = uploadFile();
             // In this case, uploaded file should only contains one element.
@@ -63,9 +76,10 @@ public class ContestEditorAction extends FileUploadAction {
             if (!tempFile.renameTo(targetFile))
                 throw new AppException("Internal exception: can not move file.");
 
-
+            TrainingContestRankList trainingContestRankList = trainingRankListParser.parse(targetFile, trainingContest.getIsPersonal());
+            json.put("trainingContestRankList", trainingContestRankList);
             json.put("success", "true");
-        } catch (AppException e) {
+        } catch (AppException | ParserException e) {
             json.put("error", e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,5 +90,19 @@ public class ContestEditorAction extends FileUploadAction {
 
     private String getTrainingRankFileName() {
         return settings.SETTING_UPLOAD_FOLDER + "/summer_training_contest_" + targetTrainingContestId + ".xls";
+    }
+
+    @Autowired
+    private ITrainingContestDAO trainingContestDAO;
+    @Override
+    public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
+        this.trainingContestDAO = trainingContestDAO;
+    }
+
+    @Autowired
+    private TrainingRankListParser trainingRankListParser;
+    @Override
+    public void setTrainingRankListParserAware(TrainingRankListParser trainingRankListParser) {
+        this.trainingRankListParser = trainingRankListParser;
     }
 }

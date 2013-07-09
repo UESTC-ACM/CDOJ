@@ -21,11 +21,16 @@
 
 package cn.edu.uestc.acmicpc.oj.test.util;
 
-import cn.edu.uestc.acmicpc.training.rank.RanklistParser;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
+import cn.edu.uestc.acmicpc.ioc.util.TrainingRankListParserAware;
+import cn.edu.uestc.acmicpc.training.entity.TrainingContestRankList;
+import cn.edu.uestc.acmicpc.util.TrainingRankListParser;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
+import cn.edu.uestc.acmicpc.util.exception.ParserException;
 import jxl.read.biff.BiffException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -37,15 +42,35 @@ import java.util.List;
  * Description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:applicationContext-test.xml"})
-public class RanklistParserTest {
+public class RankListParserTest implements TrainingRankListParserAware {
 
     @Test
-    @Ignore
     public void testXlsParser() throws IOException, BiffException {
-        System.out.println("Fuck");
+        try {
+            File file = new File("/Users/mzry1992/Downloads/ranklist.xls");
+            System.out.println(file.exists());
+            List<String[]> result = trainingRankListParser.parseXls(file);
+            for (String[] strings : result) {
+                System.out.print("Size = " + strings.length + " --> |");
+                for (String grid : strings)
+                    System.out.print(grid + "|");
+                System.out.println();
+            }
+            TrainingContestRankList trainingContestRankList = trainingRankListParser.parse(file, false);
+        } catch (ParserException e) {
+            System.out.println(e.getMessage());
+        } catch (FieldNotUniqueException | AppException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Autowired
+    private TrainingRankListParser trainingRankListParser;
+    @Override
+    public void setTrainingRankListParserAware(TrainingRankListParser trainingRankListParser) {
+        this.trainingRankListParser = trainingRankListParser;
     }
 }

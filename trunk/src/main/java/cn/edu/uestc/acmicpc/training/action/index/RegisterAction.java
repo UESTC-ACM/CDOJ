@@ -63,7 +63,7 @@ public class RegisterAction extends BaseAction implements TrainingUserDAOAware, 
             if (currentUser == null)
                 throw new AppException("Please login first!");
 
-            TrainingUser trainingUser = trainingUserDAO.getEntityByUniqueField("name", "UESTC_" + trainingUserDTO.getName());
+            TrainingUser trainingUser = trainingUserDAO.getEntityByUniqueField("name", trainingUserDTO.getName());
             if (trainingUser != null) {
                 addFieldError("trainingUserDTO.name", "Name has been used!");
                 return INPUT;
