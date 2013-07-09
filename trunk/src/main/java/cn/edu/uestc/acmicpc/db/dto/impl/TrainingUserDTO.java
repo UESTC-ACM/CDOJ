@@ -67,7 +67,7 @@ public class TrainingUserDTO extends BaseDTO<TrainingUser> {
 
     public TrainingUser getEntity() throws AppException {
         TrainingUser trainingUser = super.getEntity();
-        trainingUser.setName("UESTC_" + getName());
+        trainingUser.setName(getName());
         trainingUser.setRating(1200.0);
         trainingUser.setVolatility(550.0);
         trainingUser.setAllow(false);

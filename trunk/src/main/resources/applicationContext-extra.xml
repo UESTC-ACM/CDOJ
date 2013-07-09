@@ -44,4 +44,8 @@
     <bean id="emailSender" class="cn.edu.uestc.acmicpc.util.EMailSender"
           scope="prototype">
     </bean>
+    <bean id="trainingRankListParser" class="cn.edu.uestc.acmicpc.util.TrainingRankListParser"
+          scope="prototype">
+    </bean>
+
 </beans>

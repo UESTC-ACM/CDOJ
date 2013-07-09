@@ -1,16 +1,16 @@
-package cn.edu.uestc.acmicpc.training.rank;
+package cn.edu.uestc.acmicpc.training.entity;
 
 /**
  * Description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class ContestProblemSummaryView {
+public class TrainingContestProblemSummaryView {
     private Integer problemId;
     private Integer solved;
     private Integer tried;
 
-    public ContestProblemSummaryView(Integer problemId) {
+    public TrainingContestProblemSummaryView(Integer problemId) {
         solved = 0;
         tried = 0;
         this.problemId = problemId;

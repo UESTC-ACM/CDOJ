@@ -115,10 +115,7 @@
                                 <div class="control-group">
                                     <label class="control-label" for="trainingUserDTO_name">Name</label>
                                     <div class="controls">
-                                        <div class="input-prepend">
-                                            <span class="add-on">UESTC_</span>
-                                            <input type="text" name="trainingUserDTO.name" maxlength="12" value="" id="trainingUserDTO_name" class="span4">
-                                        </div>
+                                        <input type="text" name="trainingUserDTO.name" maxlength="12" value="" id="trainingUserDTO_name" class="span4">
                                         <p class="help-block">如果是个人排名只需填入你的姓名，如果是组队赛请填写队伍名。<br/>请不要随便注册，后台审核很辛苦的。。</p>
                                     </div>
                                 </div>

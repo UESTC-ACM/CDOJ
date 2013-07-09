@@ -1,18 +1,18 @@
-package cn.edu.uestc.acmicpc.training.rank;
+package cn.edu.uestc.acmicpc.training.entity;
 
 /**
  * Description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class ProblemSummaryInfo {
+public class TrainingProblemSummaryInfo {
     private Integer tried;
     private Boolean isSolved;
     private Boolean isFirstSolved;
     private Integer penalty;
     private Integer solutionTime;
 
-    public ProblemSummaryInfo() {
+    public TrainingProblemSummaryInfo() {
         isSolved = isFirstSolved = false;
         penalty = solutionTime = tried = 0;
     }
