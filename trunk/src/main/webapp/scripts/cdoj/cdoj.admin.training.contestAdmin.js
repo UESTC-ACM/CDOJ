@@ -59,10 +59,31 @@ $(document).ready(function () {
         multiple: false
     }).on('complete', function(event, id, name, response) {
             if (response.success == 'true') {
+                $('#fileUploaderAttention').empty();
                 console.log(response);
+                var summary = response.trainingContestRankList.trainingUserRankSummaryList;
+                var tbody = $('#rankList');
+                tbody.find('tr').remove();
+                $.each(summary, function(index, data) {
+                    var html = $('<tr></tr>');
+                    html.append($('<td>' + data.rank + '</td>'));
+                    html.append($('<td>' + data.nickName + '</td>'));
+                    html.append($('<td style="text-align: left;"><img id="usersAvatar" email="' + data.user.userEmail + '"/>' + data.user.userName + '</td>'));
+                    html.append($('<td>' + data.solved + '</td>'));
+                    html.append($('<td>' + data.penalty + '</td>'));
+                    tbody.append(html);
+                });
+
+                // get userList avatars
+                $('img#usersAvatar').setAvatar({
+                    size: 37,
+                    image: 'http://www.acm.uestc.edu.cn/images/akari_small.jpg'
+                });
             }
-            else
-                $('#fileUploaderAttention').replaceWith(response.error);
+            else {
+                $('#fileUploaderAttention').empty();
+                $('#fileUploaderAttention').append(response.error);
+            }
         });
 
     $('input#submit').click(function(){

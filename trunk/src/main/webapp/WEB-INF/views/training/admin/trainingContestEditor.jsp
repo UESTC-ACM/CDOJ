@@ -108,12 +108,14 @@
                         </div>
                     </div>
 
-                    <div class="control-group">
-                        <label class="control-label">Upload rank file</label>
+                    <div class="span10">
+                        <div class="control-group">
+                            <label class="control-label">Upload rank file</label>
 
-                        <div class="controls">
-                            <div id="fileUploader"></div>
-                            <span id="fileUploaderAttention" class="help-inline">Please use xls.</span>
+                            <div class="controls">
+                                <div id="fileUploader"></div>
+                                <span id="fileUploaderAttention" class="help-inline">Please use xls.</span>
+                            </div>
                         </div>
                     </div>
 
@@ -123,11 +125,12 @@
 
                             <div class="controls">
                                 <div class="row">
-                                    <div class="span6">
+                                    <div class="span7">
                                         <table class="table table-striped table-bordered">
                                             <thead>
                                             <tr>
                                                 <th style="width: 30px;">Rank</th>
+                                                <th>Name</th>
                                                 <th>User</th>
                                                 <th style="width: 60px;">Solve</th>
                                                 <th style="width: 100px;">Penalty/Score</th>

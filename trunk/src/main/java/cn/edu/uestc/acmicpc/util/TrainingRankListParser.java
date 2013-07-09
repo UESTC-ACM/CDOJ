@@ -62,13 +62,17 @@ public class TrainingRankListParser implements TrainingUserDAOAware{
         Map<String, Integer> headerMap = new HashMap<>();
         Set<Integer> referencedColumns = new HashSet<>();
         for (int i = 0; i < header.length; i++) {
+            header[i] = header[i].trim();
             if (header[i].compareToIgnoreCase("rank") == 0) {
                 if (headerMap.containsKey("rank"))
                     throw new ParserException("There are multiple columns reference to rank");
                 headerMap.put("rank", i);
                 referencedColumns.add(i);
             }
-            if (header[i].compareToIgnoreCase("name") == 0 || header[i].compareToIgnoreCase("team") == 0 || header[i].compareToIgnoreCase("id") == 0) {
+            if (header[i].compareToIgnoreCase("name") == 0 ||
+                    header[i].compareToIgnoreCase("team") == 0 ||
+                    header[i].compareToIgnoreCase("id") == 0 ||
+                    header[i].compareToIgnoreCase("nick name") == 0) {
                 System.out.println(header[i]);
                 if (headerMap.containsKey("name"))
                     throw new ParserException("There are multiple columns reference to name");
