@@ -22,14 +22,20 @@
 package cn.edu.uestc.acmicpc.training.action.admin;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDTO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.ioc.dao.TrainingContestDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dto.TrainingContestDTOAware;
 import cn.edu.uestc.acmicpc.ioc.util.TrainingRankListParserAware;
 import cn.edu.uestc.acmicpc.oj.action.file.FileUploadAction;
 import cn.edu.uestc.acmicpc.training.entity.TrainingContestRankList;
 import cn.edu.uestc.acmicpc.util.TrainingRankListParser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.ParserException;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.Validations;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
@@ -39,7 +45,8 @@ import java.io.File;
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class ContestEditorAction extends FileUploadAction implements TrainingContestDAOAware, TrainingRankListParserAware {
+public class TrainingContestEditorAction extends FileUploadAction implements TrainingContestDAOAware, TrainingRankListParserAware,
+        TrainingContestDTOAware {
 
     private Integer targetTrainingContestId;
 
@@ -51,11 +58,51 @@ public class ContestEditorAction extends FileUploadAction implements TrainingCon
         this.targetTrainingContestId = targetTrainingContestId;
     }
 
+    @Autowired
+    private TrainingContestDTO trainingContestDTO;
+    @Validations(
+            requiredStrings = {
+                    @RequiredStringValidator(
+                            fieldName = "trainingContestDTO.title",
+                            key = "error.title.validation"
+                    )
+            }
+    )
+    public String toEditContest() {
+        try {
+            if (targetTrainingContestId == null)
+                throw new AppException("No such contest!");
+            TrainingContest trainingContest = trainingContestDAO.get(targetTrainingContestId);
+            if (trainingContest == null)
+                throw new AppException("No such contest!");
+
+            trainingContestDTO.updateEntity(trainingContest);
+            trainingContestDAO.update(trainingContest);
+
+            File targetFile = new File(getTrainingRankFileName());
+            if (targetFile.exists()) {
+
+                //Update ranklist
+            }
+
+            json.put("result", "ok");
+        } catch (AppException e) {
+            json.put("result", "error");
+            json.put("error_msg", e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            json.put("result", "error");
+            json.put("error_msg", "Unknown exception occurred.");
+        }
+        return JSON;
+    }
+
     /**
      * Upload rank file, and return content.
      *
      * @return <strong>JSON</strong> signal.
      */
+    @SkipValidation
     public String uploadTrainingRankFile() {
         try {
             if (targetTrainingContestId == null)
@@ -90,7 +137,7 @@ public class ContestEditorAction extends FileUploadAction implements TrainingCon
     }
 
     private String getTrainingRankFileName() {
-        return settings.SETTING_UPLOAD_FOLDER + "/summer_training_contest_" + targetTrainingContestId + ".xls";
+        return settings.SETTING_UPLOAD_FOLDER + "/training_contest_" + targetTrainingContestId + ".xls";
     }
 
     @Autowired
@@ -105,5 +152,15 @@ public class ContestEditorAction extends FileUploadAction implements TrainingCon
     @Override
     public void setTrainingRankListParserAware(TrainingRankListParser trainingRankListParser) {
         this.trainingRankListParser = trainingRankListParser;
+    }
+
+    @Override
+    public void setTrainingContestDTO(TrainingContestDTO trainingContestDTO) {
+        this.trainingContestDTO = trainingContestDTO;
+    }
+
+    @Override
+    public TrainingContestDTO getTrainingContestDTO() {
+        return trainingContestDTO;
     }
 }

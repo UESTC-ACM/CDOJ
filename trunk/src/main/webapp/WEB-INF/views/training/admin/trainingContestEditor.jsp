@@ -33,16 +33,16 @@
 <html>
 <head
 <page:applyDecorator name="head" page="/WEB-INF/views/common/fileUploaderHeader.jsp"/>
-<script src="<s:url value="/scripts/cdoj/cdoj.admin.training.contestAdmin.js"/>"></script>
-<title>Summer training contest</title>
+<script src="<s:url value="/scripts/cdoj/cdoj.admin.training.trainingContestEditor.js"/>"></script>
+<title>Training contest editor</title>
 </head>
 <body>
-<div class="row" id="contestEditor">
+<div class="row" id="trainingContestEditor">
     <div class="span10">
         <form class="form-horizontal">
             <fieldset>
                 <h3>
-                    Edit summery training contest <span
+                    Edit training contest <span
                         id="trainingContestId">${targetTrainingContest.trainingContestId}</span>
                 </h3>
 
@@ -53,7 +53,7 @@
 
                             <div class="controls">
                                 <input type="text"
-                                       name="contestDTO.title"
+                                       name="trainingContestDTO.title"
                                        maxlength="50"
                                        value="${targetTrainingContest.title}"
                                        id="contestDTO_title"
@@ -69,38 +69,38 @@
 
                             <div class="controls">
                                 <s:if test="targetTrainingContest.isPersonal == true">
-                                    <label for="contestDTO.type-false" class="radio inline">
+                                    <label for="trainingContestDTO.isPersonal-false" class="radio inline">
                                         <input type="radio"
-                                               name="contestDTO.type"
-                                               id="contestDTO.type-false"
+                                               name="trainingContestDTO.isPersonal"
+                                               id="trainingContestDTO.isPersonal-false"
                                                value="false">
                                         No
                                     </label>
 
-                                    <label for="contestDTO.type-true" class="radio inline">
+                                    <label for="trainingContestDTO.isPersonal-true" class="radio inline">
                                         <input type="radio"
-                                               name="contestDTO.type"
-                                               id="contestDTO.type-true"
-                                               value="false"
+                                               name="trainingContestDTO.isPersonal"
+                                               id="trainingContestDTO.isPersonal-true"
+                                               value="true"
                                                checked="">
                                         Yes
                                     </label>
                                 </s:if>
                                 <s:else>
-                                    <label for="contestDTO.type-false" class="radio inline">
+                                    <label for="trainingContestDTO.isPersonal-false" class="radio inline">
                                         <input type="radio"
-                                               name="contestDTO.type"
-                                               id="contestDTO.type-false"
+                                               name="trainingContestDTO.isPersonal"
+                                               id="trainingContestDTO.isPersonal-false"
                                                value="false"
                                                checked="">
                                         No
                                     </label>
 
-                                    <label for="contestDTO.type-true" class="radio inline">
+                                    <label for="trainingContestDTO.isPersonal-true" class="radio inline">
                                         <input type="radio"
-                                               name="contestDTO.type"
-                                               id="contestDTO.type-true"
-                                               value="false">
+                                               name="trainingContestDTO.isPersonal"
+                                               id="trainingContestDTO.isPersonal-true"
+                                               value="true">
                                         Yes
                                     </label>
                                 </s:else>
@@ -126,6 +126,7 @@
                             <div class="controls">
                                 <div class="row">
                                     <div class="span7">
+                                        <h3>Only show related user</h3>
                                         <table class="table table-striped table-bordered">
                                             <thead>
                                             <tr>
@@ -141,6 +142,7 @@
                                                 <tr>
                                                     <td><s:property value="#trainingStatus.rank"/></td>
                                                     <td><s:property value="#trainingStatus.name"/></td>
+                                                    <td><s:property value="#trainingStatus.userName"/></td>
                                                     <td><s:property value="#trainingStatus.solve"/></td>
                                                     <td><s:property value="#trainingStatus.penalty"/></td>
                                                 </tr>

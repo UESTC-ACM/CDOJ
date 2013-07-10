@@ -28,6 +28,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 import cn.edu.uestc.acmicpc.util.exception.ParserException;
 import jxl.read.biff.BiffException;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,7 @@ import java.util.List;
 public class RankListParserTest implements TrainingRankListParserAware {
 
     @Test
+    @Ignore
     public void testXlsParser() throws IOException, BiffException {
         try {
             File file = new File("/Users/mzry1992/Downloads/ranklist2.xls");
