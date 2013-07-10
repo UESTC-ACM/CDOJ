@@ -14,6 +14,8 @@ public class TrainingStatusView extends View<TrainingStatus> {
     private Integer contestId;
     private String contestName;
     private String name;
+    private String userName;
+    private String userEmail;
     private Double rating;
     private Double volatility;
     private Double ratingVary;
@@ -21,6 +23,24 @@ public class TrainingStatusView extends View<TrainingStatus> {
     private Integer rank;
     private Integer solve;
     private Integer penalty;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    @Ignore
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    @Ignore
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
 
     public Integer getRank() {
         return rank;
@@ -98,11 +118,14 @@ public class TrainingStatusView extends View<TrainingStatus> {
         this.contestName = contestName;
     }
 
+
     public TrainingStatusView(TrainingStatus trainingStatus) {
         super(trainingStatus);
         setContestId(trainingStatus.getTrainingContestByTrainingContestId().getTrainingContestId());
         setContestName(trainingStatus.getTrainingContestByTrainingContestId().getTitle());
         setName(trainingStatus.getTrainingUserByTrainingUserId().getName());
+        setUserName(trainingStatus.getTrainingUserByTrainingUserId().getUserByUserId().getUserName());
+        setUserEmail(trainingStatus.getTrainingUserByTrainingUserId().getUserByUserId().getEmail());
     }
 
     public String getName() {

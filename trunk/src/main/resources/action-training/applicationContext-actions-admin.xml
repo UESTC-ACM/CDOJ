@@ -34,13 +34,18 @@
        xmlns:tx="http://www.springframework.org/schema/tx">
 
     <bean id="trainingAdminIndexAction"
-          class="cn.edu.uestc.acmicpc.training.action.admin.IndexAction"
+          class="cn.edu.uestc.acmicpc.training.action.admin.TrainingIndexAction"
           parent="baseAction"
           scope="prototype">
     </bean>
 
     <bean id="trainingContestAdminAction"
-          class="cn.edu.uestc.acmicpc.training.action.admin.ContestEditorAction"
+          class="cn.edu.uestc.acmicpc.training.action.admin.TrainingContestAdminAction"
+          parent="baseAction"
+          scope="prototype">
+    </bean>
+    <bean id="trainingContestEditorAction"
+          class="cn.edu.uestc.acmicpc.training.action.admin.TrainingContestEditorAction"
           parent="fileUploadAction"
           scope="prototype">
     </bean>

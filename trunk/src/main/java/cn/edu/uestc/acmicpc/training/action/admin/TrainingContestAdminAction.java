@@ -25,16 +25,19 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TrainingContestCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDTO;
-import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
+import cn.edu.uestc.acmicpc.db.view.impl.TrainingContestListView;
 import cn.edu.uestc.acmicpc.db.view.impl.TrainingContestView;
 import cn.edu.uestc.acmicpc.ioc.condition.TrainingContestConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.TrainingContestDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dto.TrainingContestDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -42,11 +45,37 @@ import java.util.List;
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class IndexAction extends BaseAction implements TrainingContestConditionAware,
+public class TrainingContestAdminAction extends BaseAction implements TrainingContestConditionAware,
         TrainingContestDAOAware, TrainingContestDTOAware {
 
     public String toIndex() {
         return SUCCESS;
+    }
+
+    public String toSearchTrainingContest() {
+        try {
+            trainingContestCondition.setIsTitleEmpty(false);
+            Condition condition = trainingContestCondition.getCondition();
+            Long count = trainingContestDAO.count(trainingContestCondition.getCondition());
+            PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
+            condition.setCurrentPage(pageInfo.getCurrentPage());
+            condition.setCountPerPage(RECORD_PER_PAGE);
+            List<TrainingContest> trainingContestList = (List<TrainingContest>) trainingContestDAO.findAll(condition);
+            List<TrainingContestListView> trainingContestListViewList = new LinkedList<>();
+            for (TrainingContest trainingContest: trainingContestList)
+                trainingContestListViewList.add(new TrainingContestListView(trainingContest));
+            json.put("pageInfo", pageInfo.getHtmlString());
+            json.put("result", "ok");
+            json.put("trainingContestList", trainingContestListViewList);
+        } catch (AppException e) {
+            json.put("result", "error");
+            json.put("error_msg", e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            json.put("result", "error");
+            json.put("error_msg", "Unknown exception occurred.");
+        }
+        return JSON;
     }
 
     private Integer targetTrainingContestId;
@@ -95,6 +124,9 @@ public class IndexAction extends BaseAction implements TrainingContestConditionA
                 return redirect(getActionURL("/training/admin", "contest/editor/" + targetTrainingContestId));
             } else {
                 targetTrainingContest = new TrainingContestView(trainingContestDAO.get(targetTrainingContestId));
+                File targetFile = new File(getTrainingRankFileName());
+                if (targetFile.exists() && !targetFile.delete())
+                    throw new AppException("Internal exception: target file exists and can not be deleted.");
                 if (targetTrainingContest.getTrainingContestId() == null)
                     throw new AppException("Wrong training contest ID!");
             }
@@ -105,6 +137,10 @@ public class IndexAction extends BaseAction implements TrainingContestConditionA
             return redirect(getActionURL("/training/admin", "index"), "Unknown exception occurred.");
         }
         return SUCCESS;
+    }
+
+    private String getTrainingRankFileName() {
+        return settings.SETTING_UPLOAD_FOLDER + "/training_contest_" + targetTrainingContestId + ".xls";
     }
 
     @Autowired

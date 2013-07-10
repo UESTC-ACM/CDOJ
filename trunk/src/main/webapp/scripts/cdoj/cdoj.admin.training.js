@@ -66,8 +66,7 @@ function refreshTrainingUserList(condition) {
             return;
         }
 
-        var userListContent = $('#tab-training-user');
-        var pagination = userListContent.find('#pageInfo');
+        var pagination = $('#pageInfo');
         //pagination
         pagination.empty();
         pagination.append(data.pageInfo);

@@ -32,9 +32,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <script src="<s:url value="/scripts/cdoj/cdoj.training.rating.js"/>"></script>
-    <script src="<s:url value="/scripts/cdoj/cdoj.admin.training.js"/>"></script>
-    <title>Training</title>
+    <script src="<s:url value="/scripts/cdoj/cdoj.admin.training.trainingContest.js"/>"></script>
+    <title>Training contest</title>
 </head>
 <body>
 
@@ -43,20 +42,15 @@
         <div id="pageInfo">
         </div>
 
-        <table id="trainingUserListTable" class="table table-striped table-bordered">
+        <table id="trainingContestListTable" class="table table-striped table-bordered">
             <thead>
             <tr>
                 <th style="width: 30px;" class="orderButton" field="id">#</th>
-                <th class="orderButton" field="name">Name</th>
-                <th class="orderButton" field="userByUserId">User</th>
-                <th style="width: 80px;" class="orderButton" field="rating">Rating</th>
-                <th style="width: 70px;" class="orderButton" field="volatility">Volatility</th>
-                <th style="width: 40px;" class="orderButton" field="competitions">Comp</th>
-                <th style="width: 60px;" class="orderButton" field="type">Type</th>
-                <th style="width: 120px;" class="orderButton" field="allow">Allow</th>
+                <th class="orderButton" field="title">Contest title</th>
+                <th style="width: 60px;" class="orderButton" field="isPersonal">Type</th>
             </tr>
             </thead>
-            <tbody id="trainingUserList">
+            <tbody id="trainingContestList">
             </tbody>
         </table>
     </div>

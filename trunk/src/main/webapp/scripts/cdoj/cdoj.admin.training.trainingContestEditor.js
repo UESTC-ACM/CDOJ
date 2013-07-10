@@ -33,7 +33,7 @@ var updateUrl;
 $(document).ready(function () {
     trainingContestId = $('#trainingContestId')[0].innerHTML;
     uploaderUrl = '/training/admin/contest/uploadRank/'+trainingContestId;
-    updateUrl = '/admin/problem/updateProblemData/'+trainingContestId;
+    updateUrl = '/training/admin/contest/edit/'+trainingContestId;
 
     $('#fileUploader').fineUploader({
         request: {
@@ -87,6 +87,19 @@ $(document).ready(function () {
         });
 
     $('input#submit').click(function(){
+        var trainingContestDTO = $('#trainingContestEditor').getFormData();
+        trainingContestDTO["trainingContestDTO.trainingContestId"] = trainingContestId;
+        console.log(trainingContestDTO);
+
+        $.post(updateUrl, trainingContestDTO, function(data) {
+            $('#trainingContestEditor').checkValidate({
+                result: data,
+                onSuccess: function(){
+                    alert('Successful!');
+                    window.location.href= '/training/admin/contest/index';
+                }
+            })
+        });
         return false;
     });
 });

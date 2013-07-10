@@ -50,4 +50,9 @@ public class TrainingContestDTO extends BaseDTO<TrainingContest> {
         trainingContest.setIsPersonal(true);
         return trainingContest;
     }
+
+    @Override
+    public void updateEntity(TrainingContest trainingContest) throws AppException {
+        super.updateEntity(trainingContest);
+    }
 }

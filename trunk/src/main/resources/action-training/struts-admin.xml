@@ -32,11 +32,18 @@
         <action name="user/search" class="trainingUserAdminAction" method="toMemberList"/>
         <action name="user/operator" class="trainingUserAdminAction" method="toOperatorTrainingUser"/>
 
-        <action name="contest/editor/*" class="trainingAdminIndexAction" method="toContestEditor">
+        <action name="contest/index" class="trainingContestAdminAction" method="toIndex">
+            <result>/WEB-INF/views/training/admin/trainingContest.jsp</result>
+        </action>
+        <action name="contest/search" class="trainingContestAdminAction" method="toSearchTrainingContest"/>
+        <action name="contest/editor/*" class="trainingContestAdminAction" method="toContestEditor">
             <param name="targetTrainingContestId">{1}</param>
             <result>/WEB-INF/views/training/admin/trainingContestEditor.jsp</result>
         </action>
-        <action name="contest/uploadRank/*" class="trainingContestAdminAction" method="uploadTrainingRankFile">
+        <action name="contest/edit/*" class="trainingContestEditorAction" method="toEditContest">
+            <param name="targetTrainingContestId">{1}</param>
+        </action>
+        <action name="contest/uploadRank/*" class="trainingContestEditorAction" method="uploadTrainingRankFile">
             <param name="targetTrainingContestId">{1}</param>
         </action>
 
