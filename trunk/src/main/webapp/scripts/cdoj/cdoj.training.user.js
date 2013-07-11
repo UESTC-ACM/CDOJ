@@ -42,7 +42,10 @@ $(document).ready(function () {
         $.each(teamHistory, function(index, value) {
             var html = $('<tr></tr>');
             html.append($('<td>' + value.contestId + '</td>'));
-            html.append($('<td>' + value.contestName + '</td>'));
+            if (value.contestId > 0)
+                html.append($('<td><a href="/training/contest/show/' + value.contestId + '">' + value.contestName + '</a></td>'));
+            else
+                html.append($('<td>' + value.contestName + '</td>'));
             html.append(getRating(value.rating, value.ratingVary));
             html.append(getVolatility(value.volatility, value.volatilityVary));
             tbody.prepend(html);

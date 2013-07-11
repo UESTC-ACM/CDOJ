@@ -106,6 +106,7 @@ function drawRatingChart(teamSummary) {
     var line = d3.svg.line()
         .x(function(d) { return xScale(d.contestId); })
         .y(function(d) { return yScale(d.rating); });
+
     chart.append('g').attr('class', 'ratingLine').append("path")
         .datum(teamSummary)
         .attr("class", "ratingLine")

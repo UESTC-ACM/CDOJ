@@ -48,6 +48,9 @@
             <a href="#tab-personal-rating" data-toggle="tab">Personal rating</a>
         </li>
         <li>
+            <a href="#tab-trainingContest-list" data-toggle="tab">Contest list</a>
+        </li>
+        <li>
             <a href="#tab-member-register" data-toggle="tab">Register</a>
         </li>
     </ul>
@@ -89,6 +92,24 @@
                         </tr>
                         </thead>
                         <tbody id="personalList">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-trainingContest-list">
+            <div class="row">
+                <div class="span12">
+                    <table id="trainingContestListTable" class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th style="width: 30px;">#</th>
+                            <th>Title</th>
+                            <th style="width: 80px;">Type</th>
+                        </tr>
+                        </thead>
+                        <tbody id="trainingContestList">
                         </tbody>
                     </table>
                 </div>

@@ -86,7 +86,6 @@ public class TrainingStatusView extends View<TrainingStatus> {
         return ratingVary;
     }
 
-    @Ignore
     public void setRatingVary(Double ratingVary) {
         this.ratingVary = ratingVary;
     }
@@ -95,7 +94,6 @@ public class TrainingStatusView extends View<TrainingStatus> {
         return volatilityVary;
     }
 
-    @Ignore
     public void setVolatilityVary(Double volatilityVary) {
         this.volatilityVary = volatilityVary;
     }
