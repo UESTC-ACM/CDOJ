@@ -90,11 +90,7 @@ function refreshTrainingUserList(condition) {
             html.append($('<td style="text-align: left;"><img id="usersAvatar" email="' + value.userEmail + '"/>' + value.userName + '</td>'));
 
             html.append(getRating(value.rating, value.ratingVary));
-            if (value.volatilityVary == null)
-                value.volatilityVary = 0;
-            html.append('<td>' + value.volatility +
-                '(' + (value.volatilityVary >= 0 ? '+' : '') + value.volatilityVary +
-                ')</td>');
+            html.append(getVolatility(value.volatility, value.volatilityVary));
 
             html.append('<td>' + value.competitions + '</td>')
             html.append($('<td>' + value.typeName + '</td>'));

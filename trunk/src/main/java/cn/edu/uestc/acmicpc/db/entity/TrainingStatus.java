@@ -139,6 +139,19 @@ public class TrainingStatus implements Serializable {
         this.volatilityVary = volatilityVary;
     }
 
+    private String summary;
+
+    @Column(name = "summary", nullable = false, insertable = true, updatable = true, length = 1024,
+        precision = 0)
+    @Basic
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
     private Integer version;
 
     @Version
@@ -163,6 +176,7 @@ public class TrainingStatus implements Serializable {
         if (rating != null ? !rating.equals(that.rating) : that.rating != null) return false;
         if (ratingVary != null ? !ratingVary.equals(that.ratingVary) : that.ratingVary != null) return false;
         if (solve != null ? !solve.equals(that.solve) : that.solve != null) return false;
+        if (summary != null ? !summary.equals(that.summary) : that.summary != null) return false;
         if (trainingContestByTrainingContestId != null ? !trainingContestByTrainingContestId.equals(that.trainingContestByTrainingContestId) : that.trainingContestByTrainingContestId != null)
             return false;
         if (trainingStatusId != null ? !trainingStatusId.equals(that.trainingStatusId) : that.trainingStatusId != null)
@@ -187,6 +201,7 @@ public class TrainingStatus implements Serializable {
         result = 31 * result + (solve != null ? solve.hashCode() : 0);
         result = 31 * result + (ratingVary != null ? ratingVary.hashCode() : 0);
         result = 31 * result + (volatilityVary != null ? volatilityVary.hashCode() : 0);
+        result = 31 * result + (summary != null ? summary.hashCode() : 0);
         result = 31 * result + (version != null ? version.hashCode() : 0);
         result = 31 * result + (trainingUserByTrainingUserId != null ? trainingUserByTrainingUserId.hashCode() : 0);
         result = 31 * result + (trainingContestByTrainingContestId != null ? trainingContestByTrainingContestId.hashCode() : 0);

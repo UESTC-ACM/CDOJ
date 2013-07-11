@@ -454,6 +454,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingStatus` (
   `penalty` INT NOT NULL ,
   `ratingVary` DOUBLE NOT NULL ,
   `volatilityVary` DOUBLE NOT NULL ,
+  `summary` TEXT NOT NULL ,
   PRIMARY KEY (`trainingStatusId`) ,
   UNIQUE INDEX `trainingStatusId_UNIQUE` (`trainingStatusId` ASC) ,
   INDEX `FK_trainingStatus_trainingContestId_on_trainingContest_idx` (`trainingContestId` ASC) ,

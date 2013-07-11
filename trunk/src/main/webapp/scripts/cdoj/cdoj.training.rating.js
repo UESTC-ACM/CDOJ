@@ -18,14 +18,16 @@ function getRatingColor(rating) {
 
 function getRating(rating, ratingVary) {
     var color = getRatingColor(rating);
+    rating = Math.floor(rating);
     var html = $('<td style="text-align: right;"></td>');
     var ratingSpan = $('<span class="rating-' + color + ' label-rating">' + rating + '</span>');
     var varySpan = $('<span class="label label-diff"></span>');
     var isFirst = (ratingVary == null);
-    if (isFirst != undefined) {
+    if (isFirst) {
         varySpan.addClass('label-info');
         varySpan.append('INIT');
     } else {
+        ratingVary = Math.floor(ratingVary);
         if (ratingVary >= 0) {
             varySpan.addClass('label-success');
             varySpan.append('+' + ratingVary);
@@ -40,10 +42,16 @@ function getRating(rating, ratingVary) {
 }
 
 function getVolatility(volatility, volatilityVary) {
-    if (volatilityVary == null)
-        volatilityVary = 0;
-    return '<td>' + volatility +
-        '(' + (volatilityVary >= 0 ? '+' : '') + volatilityVary +
-        ')</td>';
+    volatility = Math.floor(volatility);
+
+    if (volatilityVary != null) {
+        volatilityVary = Math.floor(volatilityVary);
+        return '<td>' + volatility +
+            '(' + (volatilityVary >= 0 ? '+' : '') + volatilityVary +
+            ')</td>';
+    } else {
+        return '<td>' + volatility +
+            '(INIT)</td>';
+    }
 }
 

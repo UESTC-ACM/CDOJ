@@ -21,14 +21,32 @@
 
 package cn.edu.uestc.acmicpc.training.action.admin;
 
+import cn.edu.uestc.acmicpc.db.condition.impl.TrainingContestCondition;
+import cn.edu.uestc.acmicpc.db.condition.impl.TrainingStatusCondition;
+import cn.edu.uestc.acmicpc.db.condition.impl.TrainingUserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.TrainingStatusDTO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
+import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
+import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
+import cn.edu.uestc.acmicpc.ioc.condition.TrainingContestConditionAware;
+import cn.edu.uestc.acmicpc.ioc.condition.TrainingStatusConditionAware;
+import cn.edu.uestc.acmicpc.ioc.condition.TrainingUserConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.TrainingContestDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.TrainingStatusDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.TrainingUserDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dto.TrainingContestDTOAware;
+import cn.edu.uestc.acmicpc.ioc.dto.TrainingStatusDTOAware;
+import cn.edu.uestc.acmicpc.ioc.util.RatingUtilAware;
 import cn.edu.uestc.acmicpc.ioc.util.TrainingRankListParserAware;
 import cn.edu.uestc.acmicpc.oj.action.file.FileUploadAction;
 import cn.edu.uestc.acmicpc.training.entity.TrainingContestRankList;
+import cn.edu.uestc.acmicpc.training.entity.TrainingUserRankSummary;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.RatingUtil;
 import cn.edu.uestc.acmicpc.util.TrainingRankListParser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.ParserException;
@@ -39,14 +57,20 @@ import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class TrainingContestEditorAction extends FileUploadAction implements TrainingContestDAOAware, TrainingRankListParserAware,
-        TrainingContestDTOAware {
+public class TrainingContestEditorAction extends FileUploadAction
+        implements TrainingContestDAOAware, TrainingRankListParserAware,
+        TrainingContestDTOAware, TrainingStatusDAOAware, TrainingStatusConditionAware,
+        TrainingStatusDTOAware, TrainingUserDAOAware, TrainingUserConditionAware,
+        TrainingContestConditionAware, RatingUtilAware {
 
     private Integer targetTrainingContestId;
 
@@ -79,10 +103,57 @@ public class TrainingContestEditorAction extends FileUploadAction implements Tra
             trainingContestDTO.updateEntity(trainingContest);
             trainingContestDAO.update(trainingContest);
 
-            File targetFile = new File(getTrainingRankFileName());
-            if (targetFile.exists()) {
+            File rankFile = new File(getTrainingRankFileName());
+            if (rankFile.exists()) {
+                //Update rank list
+                TrainingContestRankList trainingContestRankList = trainingRankListParser.parse(rankFile, trainingContest.getIsPersonal());
+                //Delete old records
+                trainingStatusCondition.clear();
+                trainingStatusCondition.setTrainingContestId(trainingContest.getTrainingContestId());
+                trainingStatusDAO.deleteEntitiesByCondition(trainingStatusCondition.getCondition());
+                //Add new records
+                for (TrainingUserRankSummary trainingUserRankSummary: trainingContestRankList.getTrainingUserRankSummaryList()) {
+                    TrainingStatus trainingStatus = trainingStatusDTO.getEntity();
 
-                //Update ranklist
+                    trainingStatus.setRank(trainingUserRankSummary.getRank());
+                    trainingStatus.setSolve(trainingUserRankSummary.getSolved());
+                    trainingStatus.setPenalty(trainingUserRankSummary.getPenalty());
+                    trainingStatus.setSummary(trainingRankListParser
+                            .encodeTariningUserSummary(trainingUserRankSummary.getTrainingProblemSummaryInfoList()));
+
+                    trainingStatus.setTrainingUserByTrainingUserId(
+                            trainingUserDAO.get(trainingUserRankSummary.getUserId()));
+                    trainingStatus.setTrainingContestByTrainingContestId(trainingContest);
+
+                    trainingStatusDAO.add(trainingStatus);
+                }
+                //Recovery records
+                trainingUserCondition.clear();
+                if (trainingContest.getIsPersonal())
+                    trainingUserCondition.setType(Global.TrainingUserType.PERSONAL.ordinal());
+                else
+                    trainingUserCondition.setType(Global.TrainingUserType.TEAM.ordinal());
+
+                List<TrainingUser> trainingUserList = (List<TrainingUser>)trainingUserDAO.findAll(trainingUserCondition.getCondition());
+                for (TrainingUser trainingUser: trainingUserList) {
+                    trainingUser.setCompetitions(0);
+                    trainingUser.setRating(1200.0);
+                    trainingUser.setVolatility(550.0);
+                    trainingUser.setRatingVary(null);
+                    trainingUser.setVolatilityVary(null);
+                    trainingUserDAO.update(trainingUser);
+                }
+
+                //Update rating
+                trainingContestCondition.clear();
+                trainingContestCondition.setIsPersonal(trainingContest.getIsPersonal());
+                trainingContestCondition.setOrderFields("trainingContestId");
+                trainingContestCondition.setOrderAsc("true");
+                List<TrainingContest> trainingContests = (List<TrainingContest>)trainingContestDAO.findAll(trainingContestCondition.getCondition());
+                for (TrainingContest trainingContest1 : trainingContests) {
+                    System.out.println(trainingContest1.getTitle());
+                    ratingUtil.updateRating(trainingContest1);
+                }
             }
 
             json.put("result", "ok");
@@ -162,5 +233,75 @@ public class TrainingContestEditorAction extends FileUploadAction implements Tra
     @Override
     public TrainingContestDTO getTrainingContestDTO() {
         return trainingContestDTO;
+    }
+
+    @Autowired
+    private ITrainingStatusDAO trainingStatusDAO;
+
+    @Override
+    public void setTrainingStatusDAO(ITrainingStatusDAO trainingStatusDAO) {
+        this.trainingStatusDAO = trainingStatusDAO;
+    }
+
+    @Autowired
+    private TrainingStatusCondition trainingStatusCondition;
+    @Override
+    public void setTrainingStatusCondition(TrainingStatusCondition trainingStatusCondition) {
+        this.trainingStatusCondition = trainingStatusCondition;
+    }
+
+    @Override
+    public TrainingStatusCondition getTrainingStatusCondition() {
+        return trainingStatusCondition;
+    }
+
+    @Autowired
+    private TrainingStatusDTO trainingStatusDTO;
+    @Override
+    public void setTrainingStatusDTO(TrainingStatusDTO trainingStatusDTO) {
+        this.trainingStatusDTO = trainingStatusDTO;
+    }
+
+    @Override
+    public TrainingStatusDTO getTrainingStatusDTO() {
+        return trainingStatusDTO;
+    }
+
+    @Autowired
+    private ITrainingUserDAO trainingUserDAO;
+    @Override
+    public void setTrainingUserDAO(ITrainingUserDAO trainingUserDAO) {
+        this.trainingUserDAO = trainingUserDAO;
+    }
+
+    @Autowired
+    private TrainingUserCondition trainingUserCondition;
+    @Override
+    public void setTrainingUserCondition(TrainingUserCondition trainingUserCondition) {
+        this.trainingUserCondition = trainingUserCondition;
+    }
+
+    @Override
+    public TrainingUserCondition getTrainingUserCondition() {
+        return this.trainingUserCondition;
+    }
+
+    @Autowired
+    private TrainingContestCondition trainingContestCondition;
+    @Override
+    public void setTrainingContestCondition(TrainingContestCondition trainingContestCondition) {
+        this.trainingContestCondition = trainingContestCondition;
+    }
+
+    @Override
+    public TrainingContestCondition getTrainingContestCondition() {
+        return trainingContestCondition;
+    }
+
+    @Autowired
+    private RatingUtil ratingUtil;
+    @Override
+    public void setRatingUtil(RatingUtil ratingUtil) {
+        this.ratingUtil = ratingUtil;
     }
 }

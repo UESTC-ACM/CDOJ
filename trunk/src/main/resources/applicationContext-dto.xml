@@ -51,4 +51,6 @@
           parent="baseDTO"/>
     <bean id="trainingContestDTO" class="cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDTO"
           parent="baseDTO"/>
+    <bean id="trainingStatusDTO" class="cn.edu.uestc.acmicpc.db.dto.impl.TrainingStatusDTO"
+          parent="baseDTO"/>
 </beans>

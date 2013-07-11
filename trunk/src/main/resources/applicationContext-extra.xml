@@ -47,5 +47,8 @@
     <bean id="trainingRankListParser" class="cn.edu.uestc.acmicpc.util.TrainingRankListParser"
           scope="prototype">
     </bean>
+    <bean id="ratingUtil" class="cn.edu.uestc.acmicpc.util.RatingUtil"
+          scope="prototype">
+    </bean>
 
 </beans>
