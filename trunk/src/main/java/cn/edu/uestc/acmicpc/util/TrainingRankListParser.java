@@ -189,7 +189,7 @@ public class TrainingRankListParser implements TrainingUserDAOAware{
     }
 
     public String[] parseTrainingUserSummary(String summary) {
-        Integer columnCount = 0;
+        Integer columnCount = 1;
         for (int i = 0; i < summary.length(); i++)
             if (summary.charAt(i) == '|')
                 columnCount++;

@@ -61,10 +61,10 @@
             <table class="table table-bordered">
                 <thead id="rankListHead">
                 <tr>
-                    <th class="orderButton" field="id">Rk</th>
-                    <th style="width: 200px;">User</th>
-                    <th class="orderButton" field="problemByProblemId">Slv.</th>
-                    <th class="orderButton" field="result">Time</th>
+                    <th style="width: 20px;">Rk</th>
+                    <th style="width: 180px;">User</th>
+                    <th style="width: 30px;">Slv.</th>
+                    <th style="width: 40px;">Time</th>
 
                     <s:iterator value="targetTrainingContestRankList.problemSummary" id="problem">
                         <th class="problemSummaryInfo" value="<s:property value="#problem.order"/>">
