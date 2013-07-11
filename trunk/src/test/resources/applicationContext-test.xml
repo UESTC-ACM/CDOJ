@@ -71,4 +71,7 @@
     <bean id="emailTest"
           class="cn.edu.uestc.acmicpc.oj.test.util.EMailTest">
     </bean>
+    <bean id="trainingContestUtilsTest"
+          class="cn.edu.uestc.acmicpc.oj.test.db.TrainingContestUtilsTest">
+    </bean>
 </beans>

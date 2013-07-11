@@ -52,8 +52,8 @@ public class TrainingUserAction extends BaseAction
     public String toMemberList() {
         try {
             trainingUserCondition.setAllow(true);
-            trainingUserCondition.setOrderFields("rating,volatility");
-            trainingUserCondition.setOrderAsc("false,true");
+            trainingUserCondition.setOrderFields("rating,volatility,name");
+            trainingUserCondition.setOrderAsc("false,true,true");
             List<TrainingUser> trainingUserList = (List<TrainingUser>) trainingUserDAO.findAll(trainingUserCondition.getCondition());
             List<TrainingUserView> trainingUserViewList = new LinkedList<>();
             Integer teamRank = 0, personalRank = 0;
@@ -134,6 +134,7 @@ public class TrainingUserAction extends BaseAction
                 TrainingStatusView trainingStatusView = new TrainingStatusView(trainingStatus);
                 trainingStatusView.setRatingVary(trainingStatus.getRating() - prevRating);
                 trainingStatusView.setVolatilityVary(trainingStatus.getVolatility() - prevVolatility);
+                trainingStatusViewList.add(trainingStatusView);
 
                 prevRating = trainingStatus.getRating();
                 prevVolatility = trainingStatus.getVolatility();

@@ -21,6 +21,12 @@
 
 package cn.edu.uestc.acmicpc.oj.test.util;
 
+import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
+import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
+import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
+import cn.edu.uestc.acmicpc.ioc.dao.TrainingContestDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.TrainingStatusDAOAware;
 import cn.edu.uestc.acmicpc.ioc.util.TrainingRankListParserAware;
 import cn.edu.uestc.acmicpc.training.entity.TrainingContestRankList;
 import cn.edu.uestc.acmicpc.util.TrainingRankListParser;
@@ -46,7 +52,7 @@ import java.util.List;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:applicationContext-test.xml"})
-public class RankListParserTest implements TrainingRankListParserAware {
+public class RankListParserTest implements TrainingRankListParserAware, TrainingContestDAOAware, TrainingStatusDAOAware {
 
     @Test
     @Ignore
@@ -69,10 +75,35 @@ public class RankListParserTest implements TrainingRankListParserAware {
         }
     }
 
+    @Test
+    @Ignore
+    public void testDatabaseParser() throws AppException, ParserException {
+        TrainingStatus trainingStatus = trainingStatusDAO.get(11);
+        String[] strings = trainingRankListParser.parseTrainingUserSummary(trainingStatus.getSummary());
+            System.out.print("Size = " + strings.length + " --> |");
+            for (String grid : strings)
+                System.out.print(grid + "|");
+            System.out.println();
+    }
+
     @Autowired
     private TrainingRankListParser trainingRankListParser;
     @Override
     public void setTrainingRankListParserAware(TrainingRankListParser trainingRankListParser) {
         this.trainingRankListParser = trainingRankListParser;
+    }
+
+    @Autowired
+    private ITrainingContestDAO trainingContestDAO;
+    @Override
+    public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
+        this.trainingContestDAO = trainingContestDAO;
+    }
+
+    @Autowired
+    private ITrainingStatusDAO trainingStatusDAO;
+    @Override
+    public void setTrainingStatusDAO(ITrainingStatusDAO trainingStatusDAO) {
+        this.trainingStatusDAO = trainingStatusDAO;
     }
 }

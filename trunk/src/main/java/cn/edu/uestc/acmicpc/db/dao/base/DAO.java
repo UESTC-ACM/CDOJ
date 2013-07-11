@@ -297,7 +297,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         List<String> params = new LinkedList<>();
         for (Criterion criterion : condition.getCriterionList()) {
             String field = criterion.toString();
-//            System.out.println("Criterion: " + criterion.toString());
+            System.out.println("Criterion: " + criterion.toString());
             params.add(field);
         }
         for (String key : condition.getJoinedProperties().keySet()) {
@@ -310,7 +310,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
                 field = key + joinedProperty.getConditionType().getSignal()
                         + joinedProperty.getKeyValue();
             }
-//            System.out.println("JoinedProperty: " + field);
+            System.out.println("JoinedProperty: " + field);
             params.add(field);
         }
 
@@ -325,12 +325,30 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
             return;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("update ").append(getReferenceClass().getSimpleName()).append(" set");
-        for (String key : properties.keySet())
+        Boolean first = true;
+        for (String key : properties.keySet()) {
+            if (!first)
+                stringBuilder.append(",");
+            first = false;
             stringBuilder.append(" ").append(key).append("=").append(properties.get(key));
+        }
         stringBuilder.append(" ").append(getSQLString(condition));
         String hql = stringBuilder.toString();
-//        System.out.println(hql);
+        System.out.println(hql);
         getSession().createQuery(hql).executeUpdate();
+    }
+
+    public void deleteEntitiesByCondition(Condition condition) throws AppException {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("delete ").append(getReferenceClass().getSimpleName());
+        stringBuilder.append(" ").append(getSQLString(condition));
+        String hql = stringBuilder.toString();
+        System.out.println(hql);
+        getSession().createQuery(hql).executeUpdate();
+    }
+
+    public void flush() {
+        getSession().flush();
     }
 
     @Override

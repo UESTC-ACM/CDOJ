@@ -19,12 +19,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package cn.edu.uestc.acmicpc.training.rating;
+package cn.edu.uestc.acmicpc.ioc.condition;
+
+import cn.edu.uestc.acmicpc.db.condition.impl.TrainingStatusCondition;
 
 /**
  * Description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class RatingSystem {
+public interface TrainingStatusConditionAware {
+    public void setTrainingStatusCondition(TrainingStatusCondition trainingStatusCondition);
+    public TrainingStatusCondition getTrainingStatusCondition();
 }

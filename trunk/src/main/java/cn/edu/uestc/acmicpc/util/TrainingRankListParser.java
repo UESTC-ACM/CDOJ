@@ -22,8 +22,12 @@
 package cn.edu.uestc.acmicpc.util;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
+import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
+import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
+import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.ioc.dao.TrainingUserDAOAware;
 import cn.edu.uestc.acmicpc.training.entity.TrainingContestRankList;
+import cn.edu.uestc.acmicpc.training.entity.TrainingProblemSummaryInfo;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 import cn.edu.uestc.acmicpc.util.exception.ParserException;
@@ -146,6 +150,48 @@ public class TrainingRankListParser implements TrainingUserDAOAware{
             }
         }
         return excelValueList;
+    }
+
+    public List<String[]> parseDatabase(TrainingContest trainingContest) throws ParserException {
+        List<String[]> valueList = new LinkedList<>();
+        Integer summaryLength = -1;
+        for (TrainingStatus trainingStatus: trainingContest.getTrainingStatusesByTrainingContestId()) {
+            String[] summary = parseTrainingUserSummary(trainingStatus.getSummary());
+            String[] result = new String[summary.length + 1];
+            result[0] = trainingStatus.getTrainingUserByTrainingUserId().getName();
+            for (int i = 0; i < summary.length; i++)
+                result[i + 1] = summary[i];
+            if (summaryLength == -1)
+                summaryLength = result.length;
+            else if (summaryLength != result.length)
+                throw new ParserException("Summary in database length different error");
+        }
+        String[] header = new String[summaryLength];
+        header[0] = "name";
+        for (int i = 1; i < header.length; i++)
+            header[i] = String.valueOf(i);
+        valueList.add(0, header);
+        return valueList;
+    }
+
+    public String[] parseTrainingUserSummary(String summary) {
+        return summary.split("\\|");
+    }
+
+    public String encodeTariningUserSummary(TrainingProblemSummaryInfo[] trainingProblemSummaryInfos) {
+        StringBuilder stringBuilder = new StringBuilder();
+        Boolean first = true;
+        for (TrainingProblemSummaryInfo trainingProblemSummaryInfo: trainingProblemSummaryInfos) {
+            if (!first)
+                stringBuilder.append("|");
+            first = false;
+            if (!trainingProblemSummaryInfo.getSolved()) {
+                if (trainingProblemSummaryInfo.getTried() > 0)
+                    stringBuilder.append(trainingProblemSummaryInfo.getTried()).append("/--");
+            } else
+                stringBuilder.append(trainingProblemSummaryInfo.getTried()).append("/").append(trainingProblemSummaryInfo.getSolutionTime());
+        }
+        return stringBuilder.toString();
     }
 
     @Autowired
