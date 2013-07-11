@@ -56,7 +56,6 @@ $(document).ready(function () {
             alert(data.error_msg);
             return;
         }
-        console.log(data);
 
         var trainingUserList = data.trainingUserList;
         var teamList = $('#teamList');
@@ -80,4 +79,27 @@ $(document).ready(function () {
         });
     });
 
+    $.post('/training/contest/search', function(data) {
+        if (data.result == "error") {
+            alert(data.error_msg);
+            return;
+        }
+        console.log(data);
+
+        trainingContestList = data.trainingContestList;
+        var tbody = $('#trainingContestList');
+        // remove old user list
+        tbody.find('tr').remove();
+        // put user list
+        $.each(trainingContestList, function (index, value) {
+            var html = $('<tr></tr>');
+            html.append($('<td>' + value.trainingContestId + '</td>'));
+            html.append($('<td><a href="/training/contest/show/' + value.trainingContestId + '">' + value.title + '</a></td>'));
+            if (value.isPersonal)
+                html.append($('<td>Personal</td>'));
+            else
+                html.append($('<td>Team</td>'));
+            tbody.append(html);
+        });
+    });
 });

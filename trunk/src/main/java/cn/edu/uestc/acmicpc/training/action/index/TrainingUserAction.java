@@ -38,6 +38,8 @@ import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -126,18 +128,19 @@ public class TrainingUserAction extends BaseAction
                 throw new AppException("No such training user!");
 
             List<TrainingStatus> trainingStatusList = (List<TrainingStatus>) trainingUser.getTrainingStatusesByTrainingUserId();
+            Collections.sort(trainingStatusList, new Comparator<TrainingStatus>() {
+                @Override
+                public int compare(TrainingStatus a, TrainingStatus b) {
+                    return a.getTrainingContestByTrainingContestId()
+                            .getTrainingContestId()
+                            .compareTo(b.getTrainingContestByTrainingContestId().getTrainingContestId());
+                }
+            });
             List<TrainingStatusView> trainingStatusViewList = new LinkedList<>();
             trainingStatusViewList.add(new TrainingStatusView());
-            Double prevRating = 1200.0;
-            Double prevVolatility = 550.0;
             for (TrainingStatus trainingStatus : trainingStatusList) {
                 TrainingStatusView trainingStatusView = new TrainingStatusView(trainingStatus);
-                trainingStatusView.setRatingVary(trainingStatus.getRating() - prevRating);
-                trainingStatusView.setVolatilityVary(trainingStatus.getVolatility() - prevVolatility);
                 trainingStatusViewList.add(trainingStatusView);
-
-                prevRating = trainingStatus.getRating();
-                prevVolatility = trainingStatus.getVolatility();
             }
             json.put("result", "ok");
             json.put("teamHistory", trainingStatusViewList);

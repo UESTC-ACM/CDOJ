@@ -47,9 +47,18 @@ import java.util.*;
  */
 public class TrainingRankListParser implements TrainingUserDAOAware{
 
+    public TrainingContestRankList parse(TrainingContest trainingContest) throws ParserException, BiffException, AppException, FieldNotUniqueException, IOException {
+        List<String[]> valueList = parseDatabase(trainingContest);
+        return parse(valueList, trainingContest.getIsPersonal());
+    }
+
+    public TrainingContestRankList parse(File file, Boolean isPersonal) throws IOException, BiffException, FieldNotUniqueException, ParserException, AppException {
+        List<String[]> excelValueList = parseXls(file);
+        return parse(excelValueList, isPersonal);
+    }
     /**
      * Parse xls file to TrainingContestRankList entity
-     * @param file xls file entity
+     * @param excelValueList parsed excel value list
      * @param isPersonal contest type
      * @return TrainingContestRankList
      * @throws IOException
@@ -58,8 +67,7 @@ public class TrainingRankListParser implements TrainingUserDAOAware{
      * @throws FieldNotUniqueException
      * @throws AppException
      */
-    public TrainingContestRankList parse(File file, Boolean isPersonal) throws IOException, BiffException, ParserException, FieldNotUniqueException, AppException {
-        List<String[]> excelValueList = parseXls(file);
+    public TrainingContestRankList parse(List<String[]> excelValueList, Boolean isPersonal) throws IOException, BiffException, ParserException, FieldNotUniqueException, AppException {
         if (excelValueList == null || excelValueList.size() == 0)
             throw new ParserException("Error while parse xls document, Please check it!");
         String[] header = excelValueList.get(0);
@@ -77,7 +85,6 @@ public class TrainingRankListParser implements TrainingUserDAOAware{
                     header[i].compareToIgnoreCase("team") == 0 ||
                     header[i].compareToIgnoreCase("id") == 0 ||
                     header[i].compareToIgnoreCase("nick name") == 0) {
-                System.out.println(header[i]);
                 if (headerMap.containsKey("name"))
                     throw new ParserException("There are multiple columns reference to name");
                 headerMap.put("name", i);
@@ -99,7 +106,13 @@ public class TrainingRankListParser implements TrainingUserDAOAware{
         if (!headerMap.containsKey("name"))
             throw new ParserException("There are no columns reference to name");
         Integer problemCount = header.length - referencedColumns.size();
+
         System.out.println(problemCount + " " + headerMap.get("rank") + " " + headerMap.get("name") + " " + headerMap.get("solved") + " " + headerMap.get("penalty"));
+        for (String[] strings: excelValueList) {
+            for (String s: strings)
+                System.out.print(s + " | ");
+            System.out.println();
+        }
 
         List<String[]> excelRankList = new LinkedList<>();
         for (int i = 1; i < excelValueList.size(); i++) {
@@ -159,8 +172,9 @@ public class TrainingRankListParser implements TrainingUserDAOAware{
             String[] summary = parseTrainingUserSummary(trainingStatus.getSummary());
             String[] result = new String[summary.length + 1];
             result[0] = trainingStatus.getTrainingUserByTrainingUserId().getName();
-            for (int i = 0; i < summary.length; i++)
-                result[i + 1] = summary[i];
+            System.arraycopy(summary, 0, result, 1, summary.length);
+            valueList.add(result);
+
             if (summaryLength == -1)
                 summaryLength = result.length;
             else if (summaryLength != result.length)
@@ -175,7 +189,16 @@ public class TrainingRankListParser implements TrainingUserDAOAware{
     }
 
     public String[] parseTrainingUserSummary(String summary) {
-        return summary.split("\\|");
+        Integer columnCount = 0;
+        for (int i = 0; i < summary.length(); i++)
+            if (summary.charAt(i) == '|')
+                columnCount++;
+        String[] splitList = summary.split("\\|");
+        String[] result = new String[columnCount];
+        System.arraycopy(splitList, 0, result, 0, splitList.length);
+        for (int i = splitList.length; i < columnCount; i++)
+            result[i] = "";
+        return result;
     }
 
     public String encodeTariningUserSummary(TrainingProblemSummaryInfo[] trainingProblemSummaryInfos) {
