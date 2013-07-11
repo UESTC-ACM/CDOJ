@@ -74,18 +74,18 @@ int main(int argc, char *argv[], char *envp[])
 		    switch (problem::lang)
 		    {
 		        case judge_conf::LANG_C:
-		            FM_LOG_TRACE("start: gcc -static -w -O2 -DOJ -o %s %s",
+		            FM_LOG_TRACE("start: gcc -static -w -O2 -DONLINE_JUDGE -o %s %s",
 		                    problem::exec_file.c_str(), problem::source_file.c_str());
-		            execlp("/usr/bin/gcc", "gcc", "-static", "-w", "-O2", "-DOJ",
+		            execlp("/usr/bin/gcc", "gcc", "-static", "-w", "-O2", "-DONLINE_JUDGE",
 		                   "-o", problem::exec_file.c_str(),
 		                   problem::source_file.c_str(),
 		                   NULL);
 		            break;
 
 		        case judge_conf::LANG_CPP:
-		            FM_LOG_TRACE("start: g++ -static -w -O2 -DOJ -o %s %s",
+		            FM_LOG_TRACE("start: g++ -static -w -O2 -DONLINE_JUDGE -o %s %s",
 		                    problem::exec_file.c_str(), problem::source_file.c_str());
-		            execlp("/usr/bin/g++", "g++", "-static", "-w", "-O2", "-DOJ",
+		            execlp("/usr/bin/g++", "g++", "-static", "-w", "-O2", "-DONLINE_JUDGE",
 		                   "-o", problem::exec_file.c_str(),
 		                   problem::source_file.c_str(),
 		                   NULL);
