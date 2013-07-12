@@ -86,7 +86,7 @@ $(document).ready(function () {
         }
         console.log(data);
 
-        trainingContestList = data.trainingContestList;
+        var trainingContestList = data.trainingContestList;
         var tbody = $('#trainingContestList');
         // remove old user list
         tbody.find('tr').remove();

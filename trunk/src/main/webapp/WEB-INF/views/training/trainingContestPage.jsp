@@ -68,9 +68,7 @@
 
                     <s:iterator value="targetTrainingContestRankList.problemSummary" id="problem">
                         <th class="problemSummaryInfo" value="<s:property value="#problem.order"/>">
-                            <a class="problemHref" href="#" target="<s:property value="#problem.order"/>">
-                                <s:property value="#problem.order"/>
-                            </a>
+                            <s:property value="#problem.order"/>
                             <br/>
                             <span class="problemSolved"><s:property value="#problem.solved"/></span> /
                             <span class="problemTried"><s:property value="#problem.tried"/></span>
@@ -82,16 +80,19 @@
                 <s:iterator value="targetTrainingContestRankList.trainingUserRankSummaryList" id="summary">
                     <tr>
                         <td><s:property value="#summary.rank"/></td>
-                        <td><a href="/training/user/show/<s:property value="#summary.userId"/>"><s:property value="#summary.nickName"/></a></td>
+                        <td><a href="/training/user/show/<s:property value="#summary.userId"/>"><s:property
+                                value="#summary.nickName"/></a></td>
                         <td><s:property value="#summary.solved"/></td>
                         <td><s:property value="#summary.penalty"/></td>
                         <s:iterator value="#summary.trainingProblemSummaryInfoList" id="problem">
                             <s:if test="#problem.solved == true">
                                 <s:if test="#problem.firstSolved == true">
-                                    <td class="firstac"><s:property value="#problem.tried"/>/<s:property value="#problem.solutionTime"/></td>
+                                    <td class="firstac"><s:property value="#problem.tried"/>/<s:property
+                                            value="#problem.solutionTime"/></td>
                                 </s:if>
                                 <s:else>
-                                    <td class="ac"><s:property value="#problem.tried"/>/<s:property value="#problem.solutionTime"/></td>
+                                    <td class="ac"><s:property value="#problem.tried"/>/<s:property
+                                            value="#problem.solutionTime"/></td>
                                 </s:else>
                             </s:if>
                             <s:else>
