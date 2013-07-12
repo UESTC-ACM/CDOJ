@@ -680,7 +680,7 @@
      */
 
     InlineLexer.prototype.outputLink = function(cap, link) {
-        if (cap[0][0] !== '!') {
+        if (cap[0].charAt(0) !== '!') {
             return '<a href="'
                 + escape(link.href)
                 + '"'

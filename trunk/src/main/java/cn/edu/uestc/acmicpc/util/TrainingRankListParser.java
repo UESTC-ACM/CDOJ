@@ -107,13 +107,6 @@ public class TrainingRankListParser implements TrainingUserDAOAware{
             throw new ParserException("There are no columns reference to name");
         Integer problemCount = header.length - referencedColumns.size();
 
-        System.out.println(problemCount + " " + headerMap.get("rank") + " " + headerMap.get("name") + " " + headerMap.get("solved") + " " + headerMap.get("penalty"));
-        for (String[] strings: excelValueList) {
-            for (String s: strings)
-                System.out.print(s + " | ");
-            System.out.println();
-        }
-
         List<String[]> excelRankList = new LinkedList<>();
         for (int i = 1; i < excelValueList.size(); i++) {
             String[] oldLine = excelValueList.get(i);
