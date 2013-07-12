@@ -35,8 +35,10 @@ $(document).ready(function () {
 
             var data = {
                 "trainingUserDTO.name": info["trainingUserDTO.name"],
-                "trainingUserDTO.type": info["trainingUserDTO.type"]
+                "trainingUserDTO.type": info["trainingUserDTO.type"],
+                "trainingUserDTO.member": info["trainingUserDTO.member"]
             };
+            console.log(data);
             $.post('/training/register', data, function(data) {
                 content.checkValidate({
                     result: data,
@@ -84,7 +86,6 @@ $(document).ready(function () {
             alert(data.error_msg);
             return;
         }
-        console.log(data);
 
         var trainingContestList = data.trainingContestList;
         var tbody = $('#trainingContestList');
@@ -101,5 +102,17 @@ $(document).ready(function () {
                 html.append($('<td>Team</td>'));
             tbody.append(html);
         });
+    });
+
+    $.post('/training/userHistory/0', function(data) {
+        if (data.teamHistory.length == 0)
+            return;
+        drawAllUsersRatingChart("#personalChart", data.teamHistory, data.teamSummary);
+    });
+
+    $.post('/training/userHistory/1', function(data) {
+        if (data.teamHistory.length == 0)
+            return;
+        drawAllUsersRatingChart("#teamChart", data.teamHistory, data.teamSummary);
     });
 });

@@ -22,14 +22,18 @@
 package cn.edu.uestc.acmicpc.training.action.index;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.impl.TrainingContestCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TrainingUserCondition;
+import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.db.view.impl.TrainingStatusView;
 import cn.edu.uestc.acmicpc.db.view.impl.TrainingUserView;
+import cn.edu.uestc.acmicpc.ioc.condition.TrainingContestConditionAware;
 import cn.edu.uestc.acmicpc.ioc.condition.TrainingUserConditionAware;
+import cn.edu.uestc.acmicpc.ioc.dao.TrainingContestDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.TrainingStatusDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.TrainingUserDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
@@ -38,10 +42,7 @@ import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Description
@@ -49,7 +50,8 @@ import java.util.List;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class TrainingUserAction extends BaseAction
-        implements TrainingUserConditionAware, TrainingUserDAOAware {
+        implements TrainingUserConditionAware, TrainingUserDAOAware,
+        TrainingContestConditionAware, TrainingContestDAOAware {
 
     public String toMemberList() {
         try {
@@ -136,13 +138,33 @@ public class TrainingUserAction extends BaseAction
                             .compareTo(b.getTrainingContestByTrainingContestId().getTrainingContestId());
                 }
             });
+
+            trainingUserCondition.clear();
+            trainingUserCondition.setType(trainingUser.getType());
+            Long totUsers = trainingUserDAO.count(trainingUserCondition.getCondition());
+
+            Integer[] rankStatus = new Integer[(int) (totUsers + 1)];
+            Arrays.fill(rankStatus, 0);
             List<TrainingStatusView> trainingStatusViewList = new LinkedList<>();
             trainingStatusViewList.add(new TrainingStatusView());
             for (TrainingStatus trainingStatus : trainingStatusList) {
                 TrainingStatusView trainingStatusView = new TrainingStatusView(trainingStatus);
                 trainingStatusViewList.add(trainingStatusView);
+
+                rankStatus[((int) Math.max(1, Math.min(totUsers, trainingStatusView.getRank())))]++;
             }
+
+            trainingContestCondition.clear();
+            if (trainingUser.getType() == Global.TrainingUserType.PERSONAL.ordinal())
+                trainingContestCondition.setIsPersonal(true);
+            else
+                trainingContestCondition.setIsPersonal(false);
+            Long totContests = trainingContestDAO.count(trainingContestCondition.getCondition());
+
             json.put("result", "ok");
+            json.put("rankStatus", rankStatus);
+            json.put("totUsers", totUsers);
+            json.put("totContests", totContests);
             json.put("teamHistory", trainingStatusViewList);
         } catch (AppException e) {
             json.put("result", "error");
@@ -174,5 +196,24 @@ public class TrainingUserAction extends BaseAction
     @Override
     public void setTrainingUserDAO(ITrainingUserDAO trainingUserDAO) {
         this.trainingUserDAO = trainingUserDAO;
+    }
+
+    @Autowired
+    private TrainingContestCondition trainingContestCondition;
+    @Autowired
+    private ITrainingContestDAO trainingContestDAO;
+    @Override
+    public void setTrainingContestCondition(TrainingContestCondition trainingContestCondition) {
+        this.trainingContestCondition = trainingContestCondition;
+    }
+
+    @Override
+    public TrainingContestCondition getTrainingContestCondition() {
+        return trainingContestCondition;
+    }
+
+    @Override
+    public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
+        this.trainingContestDAO = trainingContestDAO;
     }
 }

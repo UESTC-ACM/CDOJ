@@ -63,18 +63,56 @@
         <div class="tab-pane fade active in" id="tab-team-overview">
             <div class="row">
                 <div class="span12">
-                    <div id="name" value="${targetTrainingUser.trainingUserId}">${targetTrainingUser.name}</div><br/>
-                    ${targetTrainingUser.rating}<br/>
-                    ${targetTrainingUser.volatility}<br/>
-                    ${targetTrainingUser.typeName}<br/>
-                    ${targetTrainingUser.userName}<br/>
-                    ${targetTrainingUser.userEmail}<br/>
-                    ${targetTrainingUser.ratingVary}<br/>
-                    ${targetTrainingUser.volatilityVary}<br/>
-                    ${targetTrainingUser.competitions}
-                </div>
-                <div class="span12">
-                    <div id="ratingChart">
+                    <div id="name" value="${targetTrainingUser.trainingUserId}">
+                        <h1 style="text-align: center;">${targetTrainingUser.name}</h1>
+                    </div>
+                    <div class="row">
+                        <div class="span3">
+                            <table class="table table-condensed" id="trainingUserInfo">
+                                <thead>
+                                <tr>
+                                    <td><h4 style="color: #ffffff;">Rating</h4></td>
+                                    <td id="ratingSpan" value="${targetTrainingUser.rating}"></td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        Account
+                                    </td>
+                                    <td>
+                                        <span>${targetTrainingUser.userName}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Member
+                                    </td>
+                                    <td>
+                                        <span>${targetTrainingUser.member}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Volatility</td>
+                                    <td id="volatilitySpan" value="${targetTrainingUser.volatility}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Type</td>
+                                    <td><span>${targetTrainingUser.typeName}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Competitions</td>
+                                    <td><a href="#" id="historyHref">${targetTrainingUser.competitions}</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div id="statusChart">
+                            </div>
+                        </div>
+                        <div class="span9">
+                            <div id="ratingChart">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

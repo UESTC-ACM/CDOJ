@@ -38,7 +38,16 @@ public class TrainingUserDTO extends BaseDTO<TrainingUser> {
 
     private Integer trainingUserId;
     private String name;
+    private String member;
     private Integer type;
+
+    public String getMember() {
+        return member;
+    }
+
+    public void setMember(String member) {
+        this.member = member;
+    }
 
     public Integer getTrainingUserId() {
         return trainingUserId;
@@ -48,7 +57,6 @@ public class TrainingUserDTO extends BaseDTO<TrainingUser> {
         this.trainingUserId = trainingUserId;
     }
 
-    @Ignore
     public String getName() {
         return name;
     }
@@ -67,7 +75,6 @@ public class TrainingUserDTO extends BaseDTO<TrainingUser> {
 
     public TrainingUser getEntity() throws AppException {
         TrainingUser trainingUser = super.getEntity();
-        trainingUser.setName(getName());
         trainingUser.setRating(1200.0);
         trainingUser.setVolatility(550.0);
         trainingUser.setAllow(false);
