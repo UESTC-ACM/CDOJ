@@ -154,6 +154,19 @@ public class TrainingUser implements Serializable {
         this.competitions = competitions;
     }
 
+    private String member;
+
+    @Column(name = "member", nullable = false, insertable = true, updatable = true, length = 128,
+            precision = 0)
+    @Basic
+    public String getMember() {
+        return member;
+    }
+
+    public void setMember(String member) {
+        this.member = member;
+    }
+
     private Integer version;
 
     @Version
@@ -187,9 +200,12 @@ public class TrainingUser implements Serializable {
 
         if (allow != null ? !allow.equals(that.allow) : that.allow != null) return false;
         if (competitions != null ? !competitions.equals(that.competitions) : that.competitions != null) return false;
+        if (member != null ? !member.equals(that.member) : that.member != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (rating != null ? !rating.equals(that.rating) : that.rating != null) return false;
         if (ratingVary != null ? !ratingVary.equals(that.ratingVary) : that.ratingVary != null) return false;
+        if (trainingStatusesByTrainingUserId != null ? !trainingStatusesByTrainingUserId.equals(that.trainingStatusesByTrainingUserId) : that.trainingStatusesByTrainingUserId != null)
+            return false;
         if (trainingUserId != null ? !trainingUserId.equals(that.trainingUserId) : that.trainingUserId != null)
             return false;
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
@@ -213,8 +229,10 @@ public class TrainingUser implements Serializable {
         result = 31 * result + (ratingVary != null ? ratingVary.hashCode() : 0);
         result = 31 * result + (volatilityVary != null ? volatilityVary.hashCode() : 0);
         result = 31 * result + (competitions != null ? competitions.hashCode() : 0);
+        result = 31 * result + (member != null ? member.hashCode() : 0);
         result = 31 * result + (version != null ? version.hashCode() : 0);
         result = 31 * result + (userByUserId != null ? userByUserId.hashCode() : 0);
+        result = 31 * result + (trainingStatusesByTrainingUserId != null ? trainingStatusesByTrainingUserId.hashCode() : 0);
         return result;
     }
 

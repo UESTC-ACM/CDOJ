@@ -30,6 +30,9 @@
         <action name="index" class="trainingIndexAction" method="toIndex">
             <result>/WEB-INF/views/training/index.jsp</result>
         </action>
+        <action name="userHistory/*" class="trainingIndexAction" method="toAllMemberHistory">
+            <param name="userType">{1}</param>
+        </action>
 
         <action name="user/search" class="trainingUserAction" method="toMemberList"/>
         <action name="register" class="trainingUserRegisterAction" method="toRegister"/>

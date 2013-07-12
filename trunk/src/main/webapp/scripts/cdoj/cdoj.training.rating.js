@@ -16,6 +16,13 @@ function getRatingColor(rating) {
     return ratingColor;
 }
 
+function getRatingSpan(rating) {
+    var color = getRatingColor(rating);
+    rating = Math.floor(rating);
+    var ratingSpan = $('<h4 class="rating-' + color + ' label-rating">' + rating + '</h4>');
+    return ratingSpan;
+}
+
 function getRating(rating, ratingVary) {
     var color = getRatingColor(rating);
     rating = Math.floor(rating);

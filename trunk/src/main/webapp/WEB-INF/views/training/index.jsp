@@ -33,9 +33,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <!--[if lte IE 8]>
+    <script src="<s:url value="/scripts/r2d3.js"/>"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+    <script src="<s:url value="/scripts/d3.js"/>"></script>
+    <!--<![endif]-->
+
     <script src="<s:url value="/scripts/cdoj/cdoj.training.rating.js"/>"></script>
+    <script src="<s:url value="/scripts/cdoj/cdoj.chart.rating.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.training.index.js"/>"></script>
-    <title>Summer training</title>
+    <title>Training</title>
 </head>
 <body>
 
@@ -61,6 +69,10 @@
         <div class="tab-pane fade active in" id="tab-team-rating">
             <div class="row">
                 <div class="span12">
+                    <div id="teamChart">
+                    </div>
+                </div>
+                <div class="span12">
                     <table id="teamListTable" class="table table-striped table-bordered">
                         <thead>
                         <tr>
@@ -80,6 +92,10 @@
 
         <div class="tab-pane fade" id="tab-personal-rating">
             <div class="row">
+                <div class="span12">
+                    <div id="personalChart">
+                    </div>
+                </div>
                 <div class="span12">
                     <table id="personalListTable" class="table table-striped table-bordered">
                         <thead>
@@ -136,8 +152,15 @@
                                 <div class="control-group">
                                     <label class="control-label" for="trainingUserDTO_name">Name</label>
                                     <div class="controls">
-                                        <input type="text" name="trainingUserDTO.name" maxlength="12" value="" id="trainingUserDTO_name" class="span4">
-                                        <p class="help-block">如果是个人排名只需填入你的姓名，如果是组队赛请填写队伍名。<br/>请不要随便注册，后台审核很辛苦的。。</p>
+                                        <input type="text" name="trainingUserDTO.name" maxlength="12" value="" id="trainingUserDTO_name" class="span4"/>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="trainingUserDTO_member">Member</label>
+                                    <div class="controls">
+                                        <input type="text" name="trainingUserDTO.member" maxlength="30" value="" id="trainingUserDTO_member" class="span4"/>
+                                        <p class="help-block">如果是个人排名只需填入你的姓名，如果是组队赛请填写队伍三人的姓名。</p>
                                     </div>
                                 </div>
 

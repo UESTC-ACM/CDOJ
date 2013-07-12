@@ -54,6 +54,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
+
 /**
  * Description
  *
@@ -105,10 +107,21 @@ public class TrainingContestUtilsTest
     }
 
     @Test
+    @Ignore
     public void testDeleteByCondition() throws AppException {
         trainingStatusCondition.clear();
         trainingStatusCondition.setTrainingContestId(5);
         trainingStatusDAO.deleteEntitiesByCondition(trainingStatusCondition.getCondition());
+    }
+
+    @Test
+    @Ignore
+    public void updateUser() throws AppException {
+        List<TrainingUser> trainingUserList = (List<TrainingUser>)trainingUserDAO.findAll();
+        for (TrainingUser trainingUser: trainingUserList) {
+            trainingUser.setMember(trainingUser.getName());
+            trainingUserDAO.update(trainingUser);
+        }
     }
 
     @Autowired

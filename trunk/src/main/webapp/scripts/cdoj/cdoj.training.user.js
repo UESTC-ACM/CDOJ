@@ -28,14 +28,31 @@
 var trainingUserId;
 
 $(document).ready(function () {
+    var ratingSpan = $('#ratingSpan');
+    var rating = ratingSpan.attr('value');
+    ratingSpan.append(getRatingSpan(rating));
+    var volatilitySpan = $('#volatilitySpan');
+    var volatility = volatilitySpan.attr('value');
+    volatilitySpan.append('<span>' + Math.floor(volatility) + '</span>');
+
     trainingUserId = $('#name').attr('value');
-    console.log(trainingUserId);
+    var nameSpan = $('#name').find('h1');
+    var color = getRatingColor(rating);
+    nameSpan.attr('class', 'rating-' + color);
+
+    $('#historyHref').setButton({
+        callback: function() {
+            $('#TabMenu a:last').tab('show');
+            return false;
+        }
+    });
+
     $.post('/training/user/history/' + trainingUserId, function(data) {
-        console.log(data);
         if (data.result == "error") {
             alert(data.error_msg);
             return;
         }
+
         var tbody = $('#teamHistoryList');
         tbody.find('tr').remove();
         var teamHistory = data.teamHistory;
@@ -50,6 +67,14 @@ $(document).ready(function () {
             html.append(getVolatility(value.volatility, value.volatilityVary));
             tbody.prepend(html);
         });
+
         drawRatingChart(teamHistory);
+
+        var teamStatus = data.rankStatus;
+        var totUsers = data.totUsers;
+        var totContests = data.totContests;
+        drawStatusChart(teamStatus, totUsers, totContests);
     });
+
+
 });
