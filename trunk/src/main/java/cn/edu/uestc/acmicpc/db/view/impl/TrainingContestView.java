@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 import cn.edu.uestc.acmicpc.db.view.base.View;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 
 import java.util.Collections;
@@ -21,6 +22,25 @@ public class TrainingContestView extends View<TrainingContest> {
     private String title;
     private Boolean isPersonal;
     private List<TrainingStatusView> trainingStatusViewList;
+    private Integer type;
+    private String typeName;
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    @Ignore
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 
     public Integer getTrainingContestId() {
         return trainingContestId;
@@ -67,5 +87,6 @@ public class TrainingContestView extends View<TrainingContest> {
         trainingStatusViewList = new LinkedList<>();
         for (TrainingStatus trainingStatus: trainingStatusList)
             trainingStatusViewList.add(new TrainingStatusView(trainingStatus));
+        setTypeName(Global.TrainingContestType.values()[trainingContest.getType()].getDescription());
     }
 }

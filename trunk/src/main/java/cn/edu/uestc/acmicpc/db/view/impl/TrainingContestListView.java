@@ -2,6 +2,8 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.db.view.base.View;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,6 +16,25 @@ public class TrainingContestListView extends View<TrainingContest> {
     private Integer trainingContestId;
     private String title;
     private Boolean isPersonal;
+    private Integer type;
+    private String typeName;
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    @Ignore
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 
     public Integer getTrainingContestId() {
         return trainingContestId;
@@ -41,5 +62,6 @@ public class TrainingContestListView extends View<TrainingContest> {
 
     public TrainingContestListView(TrainingContest trainingContest) {
         super(trainingContest);
+        setTypeName(Global.TrainingContestType.values()[trainingContest.getType()].getDescription());
     }
 }

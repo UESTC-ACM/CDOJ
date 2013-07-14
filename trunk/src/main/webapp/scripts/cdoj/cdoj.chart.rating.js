@@ -186,8 +186,8 @@ function drawAllUsersRatingChart(chartId, usersSummary, userRank) {
             'x': xScale(data.lastContestId),
             'y': yScale(data.rating)
         }, {
-            'x': width + 90,
-            'y': labelHeight * (data.rank - 0.65)
+            'x': width + 30,
+            'y': labelHeight * (data.rank - 0.5) - 4
         }];
         var lineFunction = d3.svg.line()
             .x(function(d) { return d.x; })
@@ -206,10 +206,10 @@ function drawAllUsersRatingChart(chartId, usersSummary, userRank) {
     chart.append('g').attr('class', 'trainingUserHrefLabel').selectAll('text')
         .data(userRank)
         .enter().append('text')
-        .attr('x', width + 100)
+        .attr('x', width + 40)
         .attr('y', function(d) {return labelHeight * (d.rank - 0.5);})
         .attr('text-anchor', 'left')
-        .style('font-size', '16px')
+        .style('font-size', '12px')
         .style('fill', function(d) {return colors[getRatingColor(d.rating)];})
         .text(function(d) {return d.name;});
 
@@ -220,7 +220,7 @@ function drawAllUsersRatingChart(chartId, usersSummary, userRank) {
             'stroke': 'steelblue',
             'stroke-width': '3px'
         })
-        .attr('transform', function(d) { return "translate(" + (width + 90) + "," + (labelHeight * (d.rank - 0.65)) + ")"; })
+        .attr('transform', function(d) { return "translate(" + (width + 30) + "," + (labelHeight * (d.rank - 0.5) - 4) + ")"; })
         .attr('d', d3.svg.symbol().type('circle').size(64))
         .attr('fill', 'white');
 

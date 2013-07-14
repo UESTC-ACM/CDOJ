@@ -45,21 +45,23 @@ import java.util.*;
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class TrainingRankListParser implements TrainingUserDAOAware{
+public class TrainingRankListParser implements TrainingUserDAOAware {
 
     public TrainingContestRankList parse(TrainingContest trainingContest) throws ParserException, BiffException, AppException, FieldNotUniqueException, IOException {
         List<String[]> valueList = parseDatabase(trainingContest);
-        return parse(valueList, trainingContest.getIsPersonal());
+        return parse(valueList, trainingContest.getIsPersonal(), trainingContest.getType());
     }
 
-    public TrainingContestRankList parse(File file, Boolean isPersonal) throws IOException, BiffException, FieldNotUniqueException, ParserException, AppException {
+    public TrainingContestRankList parse(File file, Boolean isPersonal, Integer type) throws IOException, BiffException, FieldNotUniqueException, ParserException, AppException {
         List<String[]> excelValueList = parseXls(file);
-        return parse(excelValueList, isPersonal);
+        return parse(excelValueList, isPersonal, type);
     }
+
     /**
      * Parse xls file to TrainingContestRankList entity
+     *
      * @param excelValueList parsed excel value list
-     * @param isPersonal contest type
+     * @param isPersonal     contest type
      * @return TrainingContestRankList
      * @throws IOException
      * @throws BiffException
@@ -67,7 +69,7 @@ public class TrainingRankListParser implements TrainingUserDAOAware{
      * @throws FieldNotUniqueException
      * @throws AppException
      */
-    public TrainingContestRankList parse(List<String[]> excelValueList, Boolean isPersonal) throws IOException, BiffException, ParserException, FieldNotUniqueException, AppException {
+    public TrainingContestRankList parse(List<String[]> excelValueList, Boolean isPersonal, Integer type) throws IOException, BiffException, ParserException, FieldNotUniqueException, AppException {
         if (excelValueList == null || excelValueList.size() == 0)
             throw new ParserException("Error while parse xls document, Please check it!");
         String[] header = excelValueList.get(0);
@@ -90,7 +92,8 @@ public class TrainingRankListParser implements TrainingUserDAOAware{
                 headerMap.put("name", i);
                 referencedColumns.add(i);
             }
-            if (header[i].compareToIgnoreCase("solved") == 0) {
+            if (header[i].compareToIgnoreCase("solved") == 0 ||
+                    header[i].compareToIgnoreCase("solve") == 0) {
                 if (headerMap.containsKey("solved"))
                     throw new ParserException("There are multiple columns reference to solved");
                 headerMap.put("solved", i);
@@ -105,27 +108,45 @@ public class TrainingRankListParser implements TrainingUserDAOAware{
         }
         if (!headerMap.containsKey("name"))
             throw new ParserException("There are no columns reference to name");
-        Integer problemCount = header.length - referencedColumns.size();
 
-        List<String[]> excelRankList = new LinkedList<>();
-        for (int i = 1; i < excelValueList.size(); i++) {
-            String[] oldLine = excelValueList.get(i);
-            String[] newLine = new String[problemCount + 1];
-            newLine[0] = oldLine[headerMap.get("name")];
-            Integer problemIterator = 0;
-            for (int j = 0; j < oldLine.length; j++)
-                if (!referencedColumns.contains(j))
-                    newLine[++problemIterator] = oldLine[j];
-            if (!problemIterator.equals(problemCount))
-                throw new ParserException("Rank list format error, Row " + i + " contains " + problemIterator + " problems but there are " + problemCount + " problem in total");
-            excelRankList.add(newLine);
+        if (type == Global.TrainingContestType.ADJUST.ordinal()) {
+            if (!headerMap.containsKey("penalty"))
+                throw new ParserException("There are no columns reference to penalty");
+
+            List<String[]> excelRankList = new LinkedList<>();
+            for (int i = 1; i < excelValueList.size(); i++) {
+                String[] oldLine = excelValueList.get(i);
+                String[] newLine = new String[2];
+                newLine[0] = oldLine[headerMap.get("name")];
+                newLine[1] = oldLine[headerMap.get("penalty")];
+
+                excelRankList.add(newLine);
+                System.out.println(newLine[0] + " --> " + newLine[1]);
+            }
+            return new TrainingContestRankList(excelRankList, isPersonal, trainingUserDAO, type);
+        } else {
+            Integer problemCount = header.length - referencedColumns.size();
+
+            List<String[]> excelRankList = new LinkedList<>();
+            for (int i = 1; i < excelValueList.size(); i++) {
+                String[] oldLine = excelValueList.get(i);
+                String[] newLine = new String[problemCount + 1];
+                newLine[0] = oldLine[headerMap.get("name")];
+                Integer problemIterator = 0;
+                for (int j = 0; j < oldLine.length; j++)
+                    if (!referencedColumns.contains(j))
+                        newLine[++problemIterator] = oldLine[j];
+                if (!problemIterator.equals(problemCount))
+                    throw new ParserException("Rank list format error, Row " + i + " contains " + problemIterator + " problems but there are " + problemCount + " problem in total");
+                excelRankList.add(newLine);
+            }
+            return new TrainingContestRankList(excelRankList, isPersonal, trainingUserDAO, type);
         }
-
-        return new TrainingContestRankList(excelRankList, isPersonal, trainingUserDAO);
     }
 
     /**
      * Parse xls file
+     *
      * @param file xls file entity
      * @return A list of String[]
      * @throws BiffException
@@ -161,23 +182,38 @@ public class TrainingRankListParser implements TrainingUserDAOAware{
     public List<String[]> parseDatabase(TrainingContest trainingContest) throws ParserException {
         List<String[]> valueList = new LinkedList<>();
         Integer summaryLength = -1;
-        for (TrainingStatus trainingStatus: trainingContest.getTrainingStatusesByTrainingContestId()) {
-            String[] summary = parseTrainingUserSummary(trainingStatus.getSummary());
-            String[] result = new String[summary.length + 1];
-            result[0] = trainingStatus.getTrainingUserByTrainingUserId().getName();
-            System.arraycopy(summary, 0, result, 1, summary.length);
-            valueList.add(result);
+        for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
 
-            if (summaryLength == -1)
-                summaryLength = result.length;
-            else if (summaryLength != result.length)
-                throw new ParserException("Summary in database length different error");
+            if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal()) {
+                String[] result = new String[2];
+                result[0] = trainingStatus.getTrainingUserByTrainingUserId().getName();
+                result[1] = trainingStatus.getPenalty().toString();
+                valueList.add(result);
+            } else {
+                String[] summary = parseTrainingUserSummary(trainingStatus.getSummary());
+                String[] result = new String[summary.length + 1];
+                result[0] = trainingStatus.getTrainingUserByTrainingUserId().getName();
+                System.arraycopy(summary, 0, result, 1, summary.length);
+                valueList.add(result);
+
+                if (summaryLength == -1)
+                    summaryLength = result.length;
+                else if (summaryLength != result.length)
+                    throw new ParserException("Summary in database length different error");
+            }
         }
-        String[] header = new String[summaryLength];
-        header[0] = "name";
-        for (int i = 1; i < header.length; i++)
-            header[i] = String.valueOf(i);
-        valueList.add(0, header);
+        if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal()) {
+            String[] header = new String[2];
+            header[0] = "name";
+            header[1] = "penalty";
+            valueList.add(0, header);
+        } else {
+            String[] header = new String[summaryLength];
+            header[0] = "name";
+            for (int i = 1; i < header.length; i++)
+                header[i] = String.valueOf(i);
+            valueList.add(0, header);
+        }
         return valueList;
     }
 
@@ -194,10 +230,10 @@ public class TrainingRankListParser implements TrainingUserDAOAware{
         return result;
     }
 
-    public String encodeTariningUserSummary(TrainingProblemSummaryInfo[] trainingProblemSummaryInfos) {
+    public String encodeTariningUserSummary(TrainingProblemSummaryInfo[] trainingProblemSummaryInfos, Integer type) {
         StringBuilder stringBuilder = new StringBuilder();
         Boolean first = true;
-        for (TrainingProblemSummaryInfo trainingProblemSummaryInfo: trainingProblemSummaryInfos) {
+        for (TrainingProblemSummaryInfo trainingProblemSummaryInfo : trainingProblemSummaryInfos) {
             if (!first)
                 stringBuilder.append("|");
             first = false;
@@ -212,6 +248,7 @@ public class TrainingRankListParser implements TrainingUserDAOAware{
 
     @Autowired
     private ITrainingUserDAO trainingUserDAO;
+
     @Override
     public void setTrainingUserDAO(ITrainingUserDAO trainingUserDAO) {
         this.trainingUserDAO = trainingUserDAO;

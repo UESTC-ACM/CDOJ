@@ -55,11 +55,9 @@ import java.util.List;
 public class RankListParserTest implements TrainingRankListParserAware, TrainingContestDAOAware, TrainingStatusDAOAware {
 
     @Test
-    @Ignore
     public void testXlsParser() throws IOException, BiffException {
         try {
-            File file = new File("/Users/mzry1992/Downloads/ranklist2.xls");
-            System.out.println(file.exists());
+            File file = new File("/Users/mzry1992/Downloads/4.xls");
             List<String[]> result = trainingRankListParser.parseXls(file);
             for (String[] strings : result) {
                 System.out.print("Size = " + strings.length + " --> |");
@@ -67,7 +65,7 @@ public class RankListParserTest implements TrainingRankListParserAware, Training
                     System.out.print(grid + "|");
                 System.out.println();
             }
-            TrainingContestRankList trainingContestRankList = trainingRankListParser.parse(file, false);
+            TrainingContestRankList trainingContestRankList = trainingRankListParser.parse(file, true, 1);
         } catch (ParserException e) {
             System.out.println(e.getMessage());
         } catch (FieldNotUniqueException | AppException e) {

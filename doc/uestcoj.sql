@@ -407,6 +407,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingContest` (
   `isPersonal` TINYINT(1) NOT NULL ,
   `title` VARCHAR(150) NOT NULL DEFAULT '' ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
+  `type` VARCHAR(45) NOT NULL DEFAULT 0 ,
   PRIMARY KEY (`trainingContestId`) ,
   UNIQUE INDEX `traningContestId_UNIQUE` (`trainingContestId` ASC) )
 ENGINE = InnoDB;

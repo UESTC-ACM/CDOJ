@@ -62,7 +62,7 @@
                 <thead id="rankListHead">
                 <tr>
                     <th style="width: 20px;">Rk</th>
-                    <th style="width: 180px;">User</th>
+                    <th style="width: 150px;">User</th>
                     <th style="width: 30px;">Slv.</th>
                     <th style="width: 40px;">Time</th>
 

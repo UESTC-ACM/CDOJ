@@ -16,6 +16,16 @@ public class TrainingContestCondition extends BaseCondition {
     private Integer endId;
     private String title;
     private Boolean isPersonal;
+    private Integer type;
+
+    @Exp(MapField = "type", Type = ConditionType.eq)
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
     private Boolean isTitleEmpty;
 

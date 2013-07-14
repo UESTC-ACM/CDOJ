@@ -22,34 +22,54 @@ public class TrainingContestRankList {
     private List<TrainingUserRankSummary> trainingUserRankSummaryList;
     private Integer problemCount;
 
-    public TrainingContestRankList(List<String[]> rankList, Boolean isPersonal, ITrainingUserDAO trainingUserDAO) throws FieldNotUniqueException, AppException, ParserException {
+    public TrainingContestRankList(List<String[]> rankList, Boolean isPersonal, ITrainingUserDAO trainingUserDAO, Integer type) throws FieldNotUniqueException, AppException, ParserException {
         problemSummary = new LinkedList<>();
         trainingUserRankSummaryList = new LinkedList<>();
 
-        problemCount = rankList.get(0).length - 1;
-        for (int i = 0; i < problemCount; i++) {
-            TrainingContestProblemSummaryView trainingContestProblemSummaryView = new TrainingContestProblemSummaryView(i);
-            problemSummary.add(trainingContestProblemSummaryView);
+        if (type == Global.TrainingContestType.ADJUST.ordinal()) {
+            for (String[] userInfo : rankList) {
+                String name = userInfo[0];
+                TrainingUser trainingUser = trainingUserDAO.getEntityByUniqueField("name", name);
+                //If there are no such user or it's not allowed, just continue
+                if (trainingUser == null || !trainingUser.getAllow())
+                    continue;
+                //If user type is wrong
+                if (trainingUser.getType() == Global.TrainingUserType.PERSONAL.ordinal() && !isPersonal)
+                    continue;
+                if (trainingUser.getType() == Global.TrainingUserType.TEAM.ordinal() && isPersonal)
+                    continue;
+
+                System.out.println("Fuck");
+                TrainingUserRankSummary trainingUserRankSummary = new TrainingUserRankSummary(trainingUser, userInfo, type);
+                trainingUserRankSummaryList.add(trainingUserRankSummary);
+            }
+            sortRankList();
+        } else {
+            problemCount = rankList.get(0).length - 1;
+            for (int i = 0; i < problemCount; i++) {
+                TrainingContestProblemSummaryView trainingContestProblemSummaryView = new TrainingContestProblemSummaryView(i);
+                problemSummary.add(trainingContestProblemSummaryView);
+            }
+
+            for (String[] userInfo : rankList) {
+                String name = userInfo[0];
+                TrainingUser trainingUser = trainingUserDAO.getEntityByUniqueField("name", name);
+                //If there are no such user or it's not allowed, just continue
+                if (trainingUser == null || !trainingUser.getAllow())
+                    continue;
+                //If user type is wrong
+                if (trainingUser.getType() == Global.TrainingUserType.PERSONAL.ordinal() && !isPersonal)
+                    continue;
+                if (trainingUser.getType() == Global.TrainingUserType.TEAM.ordinal() && isPersonal)
+                    continue;
+
+                TrainingUserRankSummary trainingUserRankSummary = new TrainingUserRankSummary(trainingUser, userInfo, type);
+                trainingUserRankSummaryList.add(trainingUserRankSummary);
+            }
+
+            calcProblemSummary();
+            sortRankList();
         }
-
-        for (String[] userInfo : rankList) {
-            String name = userInfo[0];
-            TrainingUser trainingUser = trainingUserDAO.getEntityByUniqueField("name", name);
-            //If there are no such user or it's not allowed, just continue
-            if (trainingUser == null || !trainingUser.getAllow())
-                continue;
-            //If user type is wrong
-            if (trainingUser.getType() == Global.TrainingUserType.PERSONAL.ordinal() && !isPersonal)
-                continue;
-            if (trainingUser.getType() == Global.TrainingUserType.TEAM.ordinal() && isPersonal)
-                continue;
-
-            TrainingUserRankSummary trainingUserRankSummary = new TrainingUserRankSummary(trainingUser, userInfo);
-            trainingUserRankSummaryList.add(trainingUserRankSummary);
-        }
-
-        calcProblemSummary();
-        sortRankList();
     }
 
     public void calcProblemSummary() {
@@ -75,6 +95,7 @@ public class TrainingContestRankList {
                     anTrainingUserRankSummaryList.getTrainingProblemSummaryInfoList()[i].setFirstSolved(true);
         }
     }
+
     public void sortRankList() {
         //Sort
         Collections.sort(trainingUserRankSummaryList, new Comparator<TrainingUserRankSummary>() {
@@ -94,6 +115,7 @@ public class TrainingContestRankList {
         for (int i = 0; i < trainingUserRankSummaryList.size(); i++)
             trainingUserRankSummaryList.get(i).setRank(i + 1);
     }
+
     public List<TrainingContestProblemSummaryView> getProblemSummary() {
         return problemSummary;
     }

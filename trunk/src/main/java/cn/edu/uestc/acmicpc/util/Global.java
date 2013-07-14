@@ -105,6 +105,18 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
         }
     }
 
+    public enum TrainingContestType {
+        NORMAL("normal"), ADJUST("adjust"), CF("cf"), TC("tc");
+        private final String description;
+
+        private TrainingContestType(String description) {
+            this.description = description;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+    }
     public enum TrainingUserType {
         PERSONAL("Personal"), TEAM("Team");
         private final String description;
@@ -167,6 +179,10 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
     private List<ContestType> contestTypeList;
 
     /**
+     * training contest type list
+     */
+    private List<TrainingContestType> trainingContestTypeList;
+    /**
      * Cache used contest ranklist
      */
     private Map<Integer, ContestRankList> contestRankListMap;
@@ -203,6 +219,9 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
         this.contestTypeList = new ArrayList<>();
         Collections.addAll(contestTypeList, ContestType.values());
+
+        this.trainingContestTypeList = new ArrayList<>();
+        Collections.addAll(trainingContestTypeList, TrainingContestType.values());
     }
 
 
@@ -243,5 +262,9 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
     @SuppressWarnings("UnusedDeclaration")
     public List<ContestType> getContestTypeList() {
         return contestTypeList;
+    }
+
+    public List<TrainingContestType> getTrainingContestTypeList() {
+        return trainingContestTypeList;
     }
 }
