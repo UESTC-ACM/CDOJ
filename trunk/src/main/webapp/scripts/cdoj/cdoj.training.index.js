@@ -68,6 +68,7 @@ $(document).ready(function () {
             var html = $('<tr></tr>');
             html.append($('<td>' + value.rank + '</td>'));
             html.append($('<td><a href="/training/user/show/' + value.trainingUserId + '">' + value.name + '</a></td>'));
+            html.append($('<td>' + value.member + '</td>'));
 
             html.append(getRating(value.rating, value.ratingVary));
             html.append(getVolatility(value.volatility, value.volatilityVary));

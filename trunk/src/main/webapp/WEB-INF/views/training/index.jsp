@@ -78,6 +78,7 @@
                         <tr>
                             <th style="width: 30px;">#</th>
                             <th>Team name</th>
+                            <th>Member</th>
                             <th style="width: 80px;">Rating</th>
                             <th style="width: 70px;">Volatility</th>
                             <th style="width: 40px;">Comp</th>
@@ -102,6 +103,7 @@
                         <tr>
                             <th style="width: 30px;">#</th>
                             <th>Team name</th>
+                            <th>Member</th>
                             <th style="width: 80px;">Rating</th>
                             <th style="width: 70px;">Volatility</th>
                             <th style="width: 40px;">Comp</th>
@@ -152,7 +154,10 @@
                                 <div class="control-group">
                                     <label class="control-label" for="trainingUserDTO_name">Name</label>
                                     <div class="controls">
-                                        <input type="text" name="trainingUserDTO.name" maxlength="12" value="" id="trainingUserDTO_name" class="span4"/>
+                                        <input type="text" name="trainingUserDTO.name" maxlength="24" value="" id="trainingUserDTO_name" class="span4"/>
+                                        <p class="help-block">组队赛名字需以UESTC_开头，其它学校请以自己学校名字开头，参考UESTC_HeavensFeel</p>
+                                        <p class="help-block">个人赛请用自己的真实姓名</p>
+                                        <p class="help-block">注意今后除了特殊通知的比赛，别的比赛中自己注册的用户的<strong>昵称</strong>均要和你注册的名称相同</p>
                                     </div>
                                 </div>
 

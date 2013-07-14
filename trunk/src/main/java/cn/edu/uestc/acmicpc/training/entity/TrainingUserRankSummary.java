@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.training.entity;
 
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.db.view.impl.TrainingUserView;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.TrainingRankListFormatParser;
 import cn.edu.uestc.acmicpc.util.exception.ParserException;
 
@@ -17,24 +18,31 @@ public class TrainingUserRankSummary {
     private Integer rank;
     private TrainingUserView user;
     private Integer userId;
-    private String nickName ;
+    private String nickName;
     private TrainingProblemSummaryInfo[] trainingProblemSummaryInfoList;
 
-    public TrainingUserRankSummary(TrainingUser user, String[] userInfo) throws ParserException {
+    public TrainingUserRankSummary(TrainingUser user, String[] userInfo, Integer type) throws ParserException {
         setUser(new TrainingUserView(user));
         userId = user.getTrainingUserId();
         nickName = user.getName();
         penalty = solved = 0;
-        Integer problemCount = userInfo.length - 1;
 
-        trainingProblemSummaryInfoList = new TrainingProblemSummaryInfo[problemCount];
-        for (int i = 0; i < problemCount; i++) {
-            TrainingProblemSummaryInfo trainingProblemSummaryInfo = TrainingRankListFormatParser.getProblemSummaryInfo(userInfo[i + 1]);
-            if (trainingProblemSummaryInfo.getSolved()) {
-                solved++;
-                penalty += trainingProblemSummaryInfo.getPenalty();
+        if (type == Global.TrainingContestType.ADJUST.ordinal()) {
+            trainingProblemSummaryInfoList = new TrainingProblemSummaryInfo[0];
+            penalty = Integer.parseInt(userInfo[1]);
+            System.out.println(penalty + " " + userInfo[0] + " " + userInfo[1]);
+        } else {
+            Integer problemCount = userInfo.length - 1;
+
+            trainingProblemSummaryInfoList = new TrainingProblemSummaryInfo[problemCount];
+            for (int i = 0; i < problemCount; i++) {
+                TrainingProblemSummaryInfo trainingProblemSummaryInfo = TrainingRankListFormatParser.getProblemSummaryInfo(userInfo[i + 1]);
+                if (trainingProblemSummaryInfo.getSolved()) {
+                    solved++;
+                    penalty += trainingProblemSummaryInfo.getPenalty();
+                }
+                trainingProblemSummaryInfoList[i] = trainingProblemSummaryInfo;
             }
-            trainingProblemSummaryInfoList[i] = trainingProblemSummaryInfo;
         }
     }
 

@@ -33,6 +33,8 @@ import cn.edu.uestc.acmicpc.ioc.dao.TrainingContestDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dto.TrainingContestDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -45,6 +47,7 @@ import java.util.List;
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class TrainingContestAdminAction extends BaseAction implements TrainingContestConditionAware,
         TrainingContestDAOAware, TrainingContestDTOAware {
 

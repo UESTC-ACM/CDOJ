@@ -48,6 +48,7 @@ import cn.edu.uestc.acmicpc.training.entity.TrainingUserRankSummary;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.RatingUtil;
 import cn.edu.uestc.acmicpc.util.TrainingRankListParser;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.ParserException;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
@@ -66,6 +67,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class TrainingContestEditorAction extends FileUploadAction
         implements TrainingContestDAOAware, TrainingRankListParserAware,
         TrainingContestDTOAware, TrainingStatusDAOAware, TrainingStatusConditionAware,
@@ -106,7 +108,7 @@ public class TrainingContestEditorAction extends FileUploadAction
             File rankFile = new File(getTrainingRankFileName());
             if (rankFile.exists()) {
                 //Update rank list
-                TrainingContestRankList trainingContestRankList = trainingRankListParser.parse(rankFile, trainingContest.getIsPersonal());
+                TrainingContestRankList trainingContestRankList = trainingRankListParser.parse(rankFile, trainingContest.getIsPersonal(), trainingContest.getType());
                 //Delete old records
                 trainingStatusCondition.clear();
                 trainingStatusCondition.setTrainingContestId(trainingContest.getTrainingContestId());
@@ -119,7 +121,8 @@ public class TrainingContestEditorAction extends FileUploadAction
                     trainingStatus.setSolve(trainingUserRankSummary.getSolved());
                     trainingStatus.setPenalty(trainingUserRankSummary.getPenalty());
                     trainingStatus.setSummary(trainingRankListParser
-                            .encodeTariningUserSummary(trainingUserRankSummary.getTrainingProblemSummaryInfoList()));
+                            .encodeTariningUserSummary(trainingUserRankSummary.getTrainingProblemSummaryInfoList(),
+                                    trainingContest.getType()));
 
                     trainingStatus.setTrainingUserByTrainingUserId(
                             trainingUserDAO.get(trainingUserRankSummary.getUserId()));
@@ -195,7 +198,7 @@ public class TrainingContestEditorAction extends FileUploadAction
             if (!tempFile.renameTo(targetFile))
                 throw new AppException("Internal exception: can not move file.");
 
-            TrainingContestRankList trainingContestRankList = trainingRankListParser.parse(targetFile, trainingContest.getIsPersonal());
+            TrainingContestRankList trainingContestRankList = trainingRankListParser.parse(targetFile, trainingContest.getIsPersonal(), trainingContest.getType());
             json.put("trainingContestRankList", trainingContestRankList);
             json.put("success", "true");
         } catch (AppException | ParserException e) {

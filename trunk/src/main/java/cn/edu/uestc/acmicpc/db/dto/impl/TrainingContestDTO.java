@@ -14,6 +14,15 @@ public class TrainingContestDTO extends BaseDTO<TrainingContest> {
     private Integer trainingContestId;
     private Boolean isPersonal;
     private String title;
+    private Integer type;
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
     public Integer getTrainingContestId() {
         return trainingContestId;
