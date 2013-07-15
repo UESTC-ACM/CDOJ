@@ -26,13 +26,14 @@ public class TrainingContestRankList {
         problemSummary = new LinkedList<>();
         trainingUserRankSummaryList = new LinkedList<>();
 
-        if (type == Global.TrainingContestType.ADJUST.ordinal()) {
+        if (type != Global.TrainingContestType.NORMAL.ordinal()) {
             for (String[] userInfo : rankList) {
                 String name = userInfo[0];
                 TrainingUser trainingUser = trainingUserDAO.getEntityByUniqueField("name", name);
                 //If there are no such user or it's not allowed, just continue
                 if (trainingUser == null || !trainingUser.getAllow())
                     continue;
+                System.out.println(trainingUser.getName());
                 //If user type is wrong
                 if (trainingUser.getType() == Global.TrainingUserType.PERSONAL.ordinal() && !isPersonal)
                     continue;
@@ -43,7 +44,10 @@ public class TrainingContestRankList {
                 TrainingUserRankSummary trainingUserRankSummary = new TrainingUserRankSummary(trainingUser, userInfo, type);
                 trainingUserRankSummaryList.add(trainingUserRankSummary);
             }
-            sortRankList();
+            if (type == Global.TrainingContestType.ADJUST.ordinal())
+                sortRankList();
+            else
+                sortRankListReverse();
         } else {
             problemCount = rankList.get(0).length - 1;
             for (int i = 0; i < problemCount; i++) {
@@ -72,6 +76,7 @@ public class TrainingContestRankList {
         }
     }
 
+
     public void calcProblemSummary() {
         for (int i = 0; i < problemCount; i++) {
             //Get basic information
@@ -94,6 +99,26 @@ public class TrainingContestRankList {
                         anTrainingUserRankSummaryList.getTrainingProblemSummaryInfoList()[i].getSolutionTime().equals(firstSolvedTime))
                     anTrainingUserRankSummaryList.getTrainingProblemSummaryInfoList()[i].setFirstSolved(true);
         }
+    }
+
+    public void sortRankListReverse() {
+        //Sort
+        Collections.sort(trainingUserRankSummaryList, new Comparator<TrainingUserRankSummary>() {
+            @Override
+            public int compare(TrainingUserRankSummary a, TrainingUserRankSummary b) {
+                if (a.getSolved().equals(b.getSolved())) {
+                    if (a.getPenalty().equals(b.getPenalty())) {
+                        return a.getNickName().compareTo(b.getNickName());
+                    }
+                    return b.getPenalty().compareTo(a.getPenalty());
+                }
+                return (b.getSolved().compareTo(a.getSolved()));
+            }
+        });
+
+        //Rank
+        for (int i = 0; i < trainingUserRankSummaryList.size(); i++)
+            trainingUserRankSummaryList.get(i).setRank(i + 1);
     }
 
     public void sortRankList() {

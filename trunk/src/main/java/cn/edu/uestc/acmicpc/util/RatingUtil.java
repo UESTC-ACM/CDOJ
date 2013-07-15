@@ -41,7 +41,7 @@ import java.util.List;
  */
 public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware {
     public void updateRating(TrainingContest trainingContest) throws AppException {
-        if (trainingContest.getTitle().equals("扣分")) {
+        if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal()) {
             for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
                 TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
 

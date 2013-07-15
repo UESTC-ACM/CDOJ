@@ -27,7 +27,7 @@ public class TrainingUserRankSummary {
         nickName = user.getName();
         penalty = solved = 0;
 
-        if (type == Global.TrainingContestType.ADJUST.ordinal()) {
+        if (type != Global.TrainingContestType.NORMAL.ordinal()) {
             trainingProblemSummaryInfoList = new TrainingProblemSummaryInfo[0];
             penalty = Integer.parseInt(userInfo[1]);
             System.out.println(penalty + " " + userInfo[0] + " " + userInfo[1]);

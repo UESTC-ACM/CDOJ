@@ -33,6 +33,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <script src="<s:url value="/scripts/cdoj/cdoj.training.trainingContest.js"/>"></script>
     <title>${targetTrainingContest.title}</title>
 </head>
 <body>
@@ -64,7 +65,15 @@
                     <th style="width: 20px;">Rk</th>
                     <th style="width: 150px;">User</th>
                     <th style="width: 30px;">Slv.</th>
-                    <th style="width: 40px;">Time</th>
+                    <s:if test="targetTrainingContestRankList.type == 0">
+                        <th style="width: 40px;">Time</th>
+                    </s:if>
+                    <s:elseif test="targetTrainingContestRankList.type == 1">
+                        <th style="width: 40px;">Deduction</th>
+                    </s:elseif>
+                    <s:else>
+                        <th style="width: 40px;">Score</th>
+                    </s:else>
 
                     <s:iterator value="targetTrainingContestRankList.problemSummary" id="problem">
                         <th class="problemSummaryInfo" value="<s:property value="#problem.order"/>">
