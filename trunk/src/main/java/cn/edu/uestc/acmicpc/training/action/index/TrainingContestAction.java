@@ -57,7 +57,7 @@ public class TrainingContestAction extends BaseAction implements TrainingContest
             trainingContestCondition.setOrderAsc("false");
             List<TrainingContest> trainingContestList = (List<TrainingContest>) trainingContestDAO.findAll(trainingContestCondition.getCondition());
             List<TrainingContestListView> trainingContestListViewList = new LinkedList<>();
-            for (TrainingContest trainingContest: trainingContestList)
+            for (TrainingContest trainingContest : trainingContestList)
                 trainingContestListViewList.add(new TrainingContestListView(trainingContest));
             json.put("result", "ok");
             json.put("trainingContestList", trainingContestListViewList);
@@ -80,8 +80,9 @@ public class TrainingContestAction extends BaseAction implements TrainingContest
             if (trainingContest == null)
                 throw new AppException("No such training contest!");
             targetTrainingContest = new TrainingContestView(trainingContest);
-            targetTrainingContestRankList = trainingRankListParser.parse(trainingContest);
-            System.out.println(targetTrainingContestRankList.getProblemSummary().size());
+            if (trainingContest.getTrainingStatusesByTrainingContestId().size() > 0) {
+                targetTrainingContestRankList = trainingRankListParser.parse(trainingContest);
+            }
         } catch (AppException e) {
             e.printStackTrace();
             return redirect(getActionURL("/training/", "index"), e.getMessage());
@@ -141,6 +142,7 @@ public class TrainingContestAction extends BaseAction implements TrainingContest
 
     @Autowired
     private ITrainingContestDAO trainingContestDAO;
+
     @Override
     public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
         this.trainingContestDAO = trainingContestDAO;
@@ -148,6 +150,7 @@ public class TrainingContestAction extends BaseAction implements TrainingContest
 
     @Autowired
     private TrainingContestDTO trainingContestDTO;
+
     @Override
     public void setTrainingContestDTO(TrainingContestDTO trainingContestDTO) {
         this.trainingContestDTO = trainingContestDTO;
@@ -160,6 +163,7 @@ public class TrainingContestAction extends BaseAction implements TrainingContest
 
     @Autowired
     private TrainingRankListParser trainingRankListParser;
+
     @Override
     public void setTrainingRankListParserAware(TrainingRankListParser trainingRankListParser) {
         this.trainingRankListParser = trainingRankListParser;
