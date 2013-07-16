@@ -154,7 +154,6 @@ public class TrainingContestEditorAction extends FileUploadAction
                 trainingContestCondition.setOrderAsc("true");
                 List<TrainingContest> trainingContests = (List<TrainingContest>)trainingContestDAO.findAll(trainingContestCondition.getCondition());
                 for (TrainingContest trainingContest1 : trainingContests) {
-                    System.out.println(trainingContest1.getTitle());
                     ratingUtil.updateRating(trainingContest1);
                 }
             }
@@ -191,7 +190,6 @@ public class TrainingContestEditorAction extends FileUploadAction
             if (files == null || files.length != 1)
                 throw new AppException("Fetch uploaded file error.");
             File tempFile = new File(files[0]);
-            System.out.println(tempFile.getName());
             File targetFile = new File(getTrainingRankFileName());
             if (targetFile.exists() && !targetFile.delete())
                 throw new AppException("Internal exception: target file exists and can not be deleted.");
