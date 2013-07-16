@@ -121,7 +121,6 @@ public class TrainingRankListParser implements TrainingUserDAOAware {
                 newLine[1] = oldLine[headerMap.get("penalty")];
 
                 excelRankList.add(newLine);
-                System.out.println(newLine[0] + " --> " + newLine[1]);
             }
             return new TrainingContestRankList(excelRankList, isPersonal, trainingUserDAO, type);
         } else {

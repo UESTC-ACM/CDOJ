@@ -69,7 +69,6 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
                     oldTrainingUsers.add(trainingUser);
                     oldTrainingUserRank.add(trainingStatus.getRank());
                 }
-                System.out.println(trainingUser.getName() + " " + trainingUser.getRating());
             }
 
             updateNewTrainingUser(newTrainingUsers, newTrainingUserRank, oldTrainingUsers, oldTrainingUserRank);
@@ -169,7 +168,6 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
                         / (weight + 1.0));
                 newRating = Math.max(newRating, 1.0);
                 newVolatility = Math.max(newVolatility, 101.0);
-                System.out.println("New : " + newRating + " " + newVolatility);
                 trainingUser.setRatingVary(newRating - trainingUser.getRating());
                 trainingUser.setVolatilityVary(newVolatility - trainingUser.getVolatility());
                 trainingUser.setRating(newRating);
@@ -243,7 +241,6 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
                         / (weight + 1.0));
                 newRating = Math.max(newRating, 1.0);
                 newVolatility = Math.max(newVolatility, 101.0);
-                System.out.println("Old : " + newRating + " " + newVolatility);
                 trainingUser.setRatingVary(newRating - trainingUser.getRating());
                 trainingUser.setVolatilityVary(newVolatility - trainingUser.getVolatility());
                 trainingUser.setRating(newRating);
