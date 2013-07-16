@@ -71,9 +71,13 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
                 }
             }
 
-            updateNewTrainingUser(newTrainingUsers, newTrainingUserRank, oldTrainingUsers, oldTrainingUserRank);
-            updateOldTrainingUser(oldTrainingUsers, oldTrainingUserRank);
-
+            if (trainingContest.getType() == Global.TrainingContestType.TEAM.ordinal()) {
+                updateNewTrainingUser(newTrainingUsers, newTrainingUserRank, oldTrainingUsers, oldTrainingUserRank, 0.5);
+                updateOldTrainingUser(oldTrainingUsers, oldTrainingUserRank, 0.5);
+            } else {
+                updateNewTrainingUser(newTrainingUsers, newTrainingUserRank, oldTrainingUsers, oldTrainingUserRank, 1.0);
+                updateOldTrainingUser(oldTrainingUsers, oldTrainingUserRank, 1.0);
+            }
             for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
                 TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
                 trainingStatus.setRating(trainingUser.getRating());
@@ -87,7 +91,7 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
         }
     }
 
-    private void updateNewTrainingUser(List<TrainingUser> trainingUsers, List<Integer> rank, List<TrainingUser> oldUsers, List<Integer> oldRank) {
+    private void updateNewTrainingUser(List<TrainingUser> trainingUsers, List<Integer> rank, List<TrainingUser> oldUsers, List<Integer> oldRank, Double contestWeight) {
         if (trainingUsers.size() <= 1) {
             for (TrainingUser trainingUser : trainingUsers) {
                 trainingUser.setRatingVary(0.0);
@@ -158,6 +162,7 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
                     weight *= 0.9;
                 else if (trainingUser.getRating() > 2500)
                     weight *= 0.8;
+                weight *= contestWeight;
                 Double cap = 150.0 + 1500.0 / (trainingUser.getCompetitions() + 2.0);
                 Double newRating = (trainingUser.getRating() + weight * perfAs[i]) / (1.0 + weight);
                 newRating = Math.min(newRating, trainingUser.getRating() + cap);
@@ -177,7 +182,7 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
         }
     }
 
-    private void updateOldTrainingUser(List<TrainingUser> trainingUsers, List<Integer> rank) {
+    private void updateOldTrainingUser(List<TrainingUser> trainingUsers, List<Integer> rank, Double contestWeight) {
         if (trainingUsers.size() <= 1) {
             for (TrainingUser trainingUser : trainingUsers) {
                 trainingUser.setRatingVary(0.0);
@@ -231,6 +236,7 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
                     weight *= 0.9;
                 else if (trainingUser.getRating() > 2500)
                     weight *= 0.8;
+                weight *= contestWeight;
                 Double cap = 150.0 + 1500.0 / (trainingUser.getCompetitions() + 2.0);
                 Double newRating = (trainingUser.getRating() + weight * perfAs[i]) / (1.0 + weight);
                 newRating = Math.min(newRating, trainingUser.getRating() + cap);
