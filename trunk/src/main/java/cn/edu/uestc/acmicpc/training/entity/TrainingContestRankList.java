@@ -26,21 +26,46 @@ public class TrainingContestRankList {
         problemSummary = new LinkedList<>();
         trainingUserRankSummaryList = new LinkedList<>();
 
-        if (type != Global.TrainingContestType.NORMAL.ordinal()) {
+        if (type == Global.TrainingContestType.TEAM.ordinal()) {
+            problemCount = rankList.get(0).length - 1;
+            for (int i = 0; i < problemCount; i++) {
+                TrainingContestProblemSummaryView trainingContestProblemSummaryView = new TrainingContestProblemSummaryView(i);
+                problemSummary.add(trainingContestProblemSummaryView);
+            }
+
+            for (String[] userInfo : rankList) {
+                String names[] = userInfo[0].split(",");
+                for (String name : names) {
+                    TrainingUser trainingUser = trainingUserDAO.getEntityByUniqueField("name", name);
+                    //If there are no such user or it's not allowed, just continue
+                    if (trainingUser == null || !trainingUser.getAllow())
+                        continue;
+                    //If user type is wrong
+                    if (trainingUser.getType() == Global.TrainingUserType.PERSONAL.ordinal() && !isPersonal)
+                        continue;
+                    if (trainingUser.getType() == Global.TrainingUserType.TEAM.ordinal() && isPersonal)
+                        continue;
+
+                    TrainingUserRankSummary trainingUserRankSummary = new TrainingUserRankSummary(trainingUser, userInfo, type);
+                    trainingUserRankSummaryList.add(trainingUserRankSummary);
+                }
+            }
+
+            calcProblemSummary();
+            sortRankList();
+        } else if (type != Global.TrainingContestType.NORMAL.ordinal()) {
             for (String[] userInfo : rankList) {
                 String name = userInfo[0];
                 TrainingUser trainingUser = trainingUserDAO.getEntityByUniqueField("name", name);
                 //If there are no such user or it's not allowed, just continue
                 if (trainingUser == null || !trainingUser.getAllow())
                     continue;
-                System.out.println(trainingUser.getName());
                 //If user type is wrong
                 if (trainingUser.getType() == Global.TrainingUserType.PERSONAL.ordinal() && !isPersonal)
                     continue;
                 if (trainingUser.getType() == Global.TrainingUserType.TEAM.ordinal() && isPersonal)
                     continue;
 
-                System.out.println("Fuck");
                 TrainingUserRankSummary trainingUserRankSummary = new TrainingUserRankSummary(trainingUser, userInfo, type);
                 trainingUserRankSummaryList.add(trainingUserRankSummary);
             }
@@ -74,6 +99,14 @@ public class TrainingContestRankList {
             calcProblemSummary();
             sortRankList();
         }
+
+        //Rank
+        for (int i = 0; i < trainingUserRankSummaryList.size(); i++) {
+            if (i > 0 && samePosition(trainingUserRankSummaryList.get(i), trainingUserRankSummaryList.get(i - 1)))
+                trainingUserRankSummaryList.get(i).setRank(trainingUserRankSummaryList.get(i - 1).getRank());
+            else
+                trainingUserRankSummaryList.get(i).setRank(i + 1);
+        }
     }
 
 
@@ -101,6 +134,10 @@ public class TrainingContestRankList {
         }
     }
 
+    public Boolean samePosition(TrainingUserRankSummary userA, TrainingUserRankSummary userB) {
+        return userA.getSolved().equals(userB.getSolved()) && userA.getPenalty().equals(userB.getPenalty());
+    }
+
     public void sortRankListReverse() {
         //Sort
         Collections.sort(trainingUserRankSummaryList, new Comparator<TrainingUserRankSummary>() {
@@ -115,10 +152,6 @@ public class TrainingContestRankList {
                 return (b.getSolved().compareTo(a.getSolved()));
             }
         });
-
-        //Rank
-        for (int i = 0; i < trainingUserRankSummaryList.size(); i++)
-            trainingUserRankSummaryList.get(i).setRank(i + 1);
     }
 
     public void sortRankList() {
@@ -135,10 +168,6 @@ public class TrainingContestRankList {
                 return (b.getSolved().compareTo(a.getSolved()));
             }
         });
-
-        //Rank
-        for (int i = 0; i < trainingUserRankSummaryList.size(); i++)
-            trainingUserRankSummaryList.get(i).setRank(i + 1);
     }
 
     public List<TrainingContestProblemSummaryView> getProblemSummary() {

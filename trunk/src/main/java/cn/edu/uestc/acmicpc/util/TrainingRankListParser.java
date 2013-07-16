@@ -109,7 +109,8 @@ public class TrainingRankListParser implements TrainingUserDAOAware {
         if (!headerMap.containsKey("name"))
             throw new ParserException("There are no columns reference to name");
 
-        if (type != Global.TrainingContestType.NORMAL.ordinal()) {
+        if (type != Global.TrainingContestType.NORMAL.ordinal() &&
+                type != Global.TrainingContestType.TEAM.ordinal()) {
             if (!headerMap.containsKey("penalty"))
                 throw new ParserException("There are no columns reference to penalty");
 
@@ -183,7 +184,8 @@ public class TrainingRankListParser implements TrainingUserDAOAware {
         Integer summaryLength = -1;
         for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
 
-            if (trainingContest.getType() != Global.TrainingContestType.NORMAL.ordinal()) {
+            if (trainingContest.getType()  != Global.TrainingContestType.NORMAL.ordinal() &&
+                    trainingContest.getType()  != Global.TrainingContestType.TEAM.ordinal()) {
                 String[] result = new String[2];
                 result[0] = trainingStatus.getTrainingUserByTrainingUserId().getName();
                 result[1] = trainingStatus.getPenalty().toString();
@@ -201,7 +203,8 @@ public class TrainingRankListParser implements TrainingUserDAOAware {
                     throw new ParserException("Summary in database length different error");
             }
         }
-        if (trainingContest.getType() != Global.TrainingContestType.NORMAL.ordinal()) {
+        if (trainingContest.getType()  != Global.TrainingContestType.NORMAL.ordinal() &&
+                trainingContest.getType()  != Global.TrainingContestType.TEAM.ordinal()) {
             String[] header = new String[2];
             header[0] = "name";
             header[1] = "penalty";
