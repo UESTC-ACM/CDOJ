@@ -26,15 +26,16 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 
 /**
  * For all class which need userDAO entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @see IUserDAO
  */
 public interface UserDAOAware {
-    /**
-     * Put userDAO into class.
-     *
-     * @param userDAO userDAO object
-     */
-    public void setUserDAO(IUserDAO userDAO);
+	/**
+	 * Put userDAO into class.
+	 * 
+	 * @param userDAO
+	 *            userDAO object
+	 */
+	public void setUserDAO(IUserDAO userDAO);
 }

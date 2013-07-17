@@ -30,14 +30,15 @@ import java.io.File;
 
 /**
  * Test cases for file utils.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class FileTest {
-    @Test
-    @Ignore
-    public void testDeleteContents() {
-        File file = new File("E:\\project\\cdoj\\trunk\\target\\trunk\\WEB-INF\\data\\1");
-        FileUtil.deleteContents(file);
-    }
+	@Test
+	@Ignore
+	public void testDeleteContents() {
+		File file = new File(
+				"E:\\project\\cdoj\\trunk\\target\\trunk\\WEB-INF\\data\\1");
+		FileUtil.deleteContents(file);
+	}
 }

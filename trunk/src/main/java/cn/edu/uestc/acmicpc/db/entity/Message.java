@@ -30,141 +30,143 @@ import java.sql.Timestamp;
 
 /**
  * Message information.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 @Table(name = "message", schema = "", catalog = "uestcoj")
 @Entity
 @KeyField("messageId")
 public class Message implements Serializable {
-    private static final long serialVersionUID = -5394211914105594037L;
-    private Integer messageId;
+	private static final long serialVersionUID = -5394211914105594037L;
+	private Integer messageId;
 
-    private Integer version;
+	private Integer version;
 
-    @Version
-    @Column(name = "OPTLOCK")
-    public Integer getVersion() {
-        return version;
-    }
+	@Version
+	@Column(name = "OPTLOCK")
+	public Integer getVersion() {
+		return version;
+	}
 
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
 
-    @Column(name = "messageId", nullable = false, insertable = true,
-            updatable = true, length = 10, precision = 0, unique = true)
-    @Id
-    @GeneratedValue
-    public Integer getMessageId() {
-        return messageId;
-    }
+	@Column(name = "messageId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
+	@Id
+	@GeneratedValue
+	public Integer getMessageId() {
+		return messageId;
+	}
 
-    public void setMessageId(Integer messageId) {
-        this.messageId = messageId;
-    }
+	public void setMessageId(Integer messageId) {
+		this.messageId = messageId;
+	}
 
-    private String title;
+	private String title;
 
-    @Column(name = "title", nullable = false, insertable = true, updatable = true,
-            length = 50, precision = 0)
-    @Basic
-    public String getTitle() {
-        return title;
-    }
+	@Column(name = "title", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+	@Basic
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    private String content;
+	private String content;
 
-    @Column(name = "content", nullable = false, insertable = true, updatable = true,
-            length = 65535, precision = 0)
-    @Basic
-    public String getContent() {
-        return content;
-    }
+	@Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
+	@Basic
+	public String getContent() {
+		return content;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    private Timestamp time;
+	private Timestamp time;
 
-    @Column(name = "time", nullable = false, insertable = true, updatable = true,
-            length = 19, precision = 0)
-    @Basic
-    public Timestamp getTime() {
-        return time;
-    }
+	@Column(name = "time", nullable = false, insertable = true, updatable = true, length = 19, precision = 0)
+	@Basic
+	public Timestamp getTime() {
+		return time;
+	}
 
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
+	public void setTime(Timestamp time) {
+		this.time = time;
+	}
 
-    private Boolean isOpened;
+	private Boolean isOpened;
 
-    @Column(name = "isOpened", nullable = false, insertable = true, updatable = true,
-            length = 0, precision = 0)
-    @Basic
-    public Boolean getIsOpened() {
-        return isOpened;
-    }
+	@Column(name = "isOpened", nullable = false, insertable = true, updatable = true, length = 0, precision = 0)
+	@Basic
+	public Boolean getIsOpened() {
+		return isOpened;
+	}
 
-    public void setIsOpened(Boolean opened) {
-        isOpened = opened;
-    }
+	public void setIsOpened(Boolean opened) {
+		isOpened = opened;
+	}
 
-    @SuppressWarnings("RedundantIfStatement")
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
-        Message message = (Message) o;
+		Message message = (Message) o;
 
-        if (isOpened != message.isOpened) return false;
-        if (!messageId.equals(message.messageId)) return false;
-        if (content != null ? !content.equals(message.content) : message.content != null) return false;
-        if (time != null ? !time.equals(message.time) : message.time != null) return false;
-        if (title != null ? !title.equals(message.title) : message.title != null) return false;
+		if (isOpened != message.isOpened)
+			return false;
+		if (!messageId.equals(message.messageId))
+			return false;
+		if (content != null ? !content.equals(message.content)
+				: message.content != null)
+			return false;
+		if (time != null ? !time.equals(message.time) : message.time != null)
+			return false;
+		if (title != null ? !title.equals(message.title)
+				: message.title != null)
+			return false;
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = messageId;
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (content != null ? content.hashCode() : 0);
-        result = 31 * result + (time != null ? time.hashCode() : 0);
-        result = 31 * result + (isOpened ? 1 : 0);
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		int result = messageId;
+		result = 31 * result + (title != null ? title.hashCode() : 0);
+		result = 31 * result + (content != null ? content.hashCode() : 0);
+		result = 31 * result + (time != null ? time.hashCode() : 0);
+		result = 31 * result + (isOpened ? 1 : 0);
+		return result;
+	}
 
-    private User userByReceiverId;
+	private User userByReceiverId;
 
-    @ManyToOne
-    @JoinColumn(name = "receiverId", referencedColumnName = "userId", nullable = false)
-    public User getUserByReceiverId() {
-        return userByReceiverId;
-    }
+	@ManyToOne
+	@JoinColumn(name = "receiverId", referencedColumnName = "userId", nullable = false)
+	public User getUserByReceiverId() {
+		return userByReceiverId;
+	}
 
-    public void setUserByReceiverId(User userByReceiverId) {
-        this.userByReceiverId = userByReceiverId;
-    }
+	public void setUserByReceiverId(User userByReceiverId) {
+		this.userByReceiverId = userByReceiverId;
+	}
 
-    private User userBySenderId;
+	private User userBySenderId;
 
-    @ManyToOne
-    @JoinColumn(name = "senderId", referencedColumnName = "userId", nullable = false)
-    public User getUserBySenderId() {
-        return userBySenderId;
-    }
+	@ManyToOne
+	@JoinColumn(name = "senderId", referencedColumnName = "userId", nullable = false)
+	public User getUserBySenderId() {
+		return userBySenderId;
+	}
 
-    public void setUserBySenderId(User userBySenderId) {
-        this.userBySenderId = userBySenderId;
-    }
+	public void setUserBySenderId(User userBySenderId) {
+		this.userBySenderId = userBySenderId;
+	}
 }

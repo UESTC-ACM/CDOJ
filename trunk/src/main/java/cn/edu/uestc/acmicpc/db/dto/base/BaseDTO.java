@@ -34,83 +34,93 @@ import java.lang.reflect.Method;
 /**
  * Base DTO entity, use reflection to update entity.
  * <p/>
- * <strong>USAGE</strong>:
- * extends the class from this class, and set the getter with {@code Ignore} if
- * you do not set value in get/update method.
+ * <strong>USAGE</strong>: extends the class from this class, and set the getter
+ * with {@code Ignore} if you do not set value in get/update method.
  * <p/>
  * If set the field to {@code null}, this field will not be updated in
  * {@code updateEntity} method.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public abstract class BaseDTO<Entity extends Serializable> {
-    protected abstract Class<Entity> getReferenceClass();
+	protected abstract Class<Entity> getReferenceClass();
 
-    /**
-     * Get entity by DTO fields.
-     *
-     * @return new entity instance
-     * @throws AppException
-     */
-    protected Entity getEntity() throws AppException {
-        try {
-            Constructor<Entity> constructor = getReferenceClass().getConstructor();
-            Entity entity = constructor.newInstance();
-            Method[] methods = getClass().getMethods();
-            for (Method method : methods) {
-                if (method.getName().startsWith("get")) {
-                    String name = StringUtil.getGetterOrSetter(StringUtil.MethodType.SETTER,
-                            method.getName().substring(3));
-                    Ignore ignore = method.getAnnotation(Ignore.class);
-                    if (ignore == null || !ignore.value()) {
-                        try {
-                            Method setter = entity.getClass().getMethod(name, method.getReturnType());
-                            Method getter = entity.getClass().getMethod(method.getName());
-                            if (method.invoke(this) != null)
-                                setter.invoke(entity, method.invoke(this));
-                            if (getter.invoke(entity) == null) {
-                                // If entity's field is null, we must initialize the value of this field
-                                if (getter.getReturnType().equals(String.class)) {
-                                    setter.invoke(entity, "");
-                                } else {
-                                    setter.invoke(entity, 0);
-                                }
-                            }
-                        } catch (NoSuchMethodException | InvocationTargetException |
-                                IllegalAccessException | IllegalArgumentException ignored) {
-                        }
-                    }
-                }
-            }
-            return entity;
-        } catch (NoSuchMethodException | InvocationTargetException |
-                InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-            throw new AppException("Invoke getEntity method error.");
-        }
-    }
+	/**
+	 * Get entity by DTO fields.
+	 * 
+	 * @return new entity instance
+	 * @throws AppException
+	 */
+	protected Entity getEntity() throws AppException {
+		try {
+			Constructor<Entity> constructor = getReferenceClass()
+					.getConstructor();
+			Entity entity = constructor.newInstance();
+			Method[] methods = getClass().getMethods();
+			for (Method method : methods) {
+				if (method.getName().startsWith("get")) {
+					String name = StringUtil.getGetterOrSetter(
+							StringUtil.MethodType.SETTER, method.getName()
+									.substring(3));
+					Ignore ignore = method.getAnnotation(Ignore.class);
+					if (ignore == null || !ignore.value()) {
+						try {
+							Method setter = entity.getClass().getMethod(name,
+									method.getReturnType());
+							Method getter = entity.getClass().getMethod(
+									method.getName());
+							if (method.invoke(this) != null)
+								setter.invoke(entity, method.invoke(this));
+							if (getter.invoke(entity) == null) {
+								// If entity's field is null, we must initialize
+								// the value of this field
+								if (getter.getReturnType().equals(String.class)) {
+									setter.invoke(entity, "");
+								} else {
+									setter.invoke(entity, 0);
+								}
+							}
+						} catch (NoSuchMethodException
+								| InvocationTargetException
+								| IllegalAccessException
+								| IllegalArgumentException ignored) {
+						}
+					}
+				}
+			}
+			return entity;
+		} catch (NoSuchMethodException | InvocationTargetException
+				| InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+			throw new AppException("Invoke getEntity method error.");
+		}
+	}
 
-    /**
-     * Update entity by DTO fields.
-     *
-     * @param entity entity to be updated
-     */
-    protected void updateEntity(Entity entity) throws AppException {
-        Method[] methods = getClass().getMethods();
-        for (Method method : methods) {
-            if (method.getName().startsWith("get")) {
-                String name = StringUtil.getGetterOrSetter(StringUtil.MethodType.SETTER,
-                        method.getName().substring(3));
-                Ignore ignore = method.getAnnotation(Ignore.class);
-                if (ignore == null || !ignore.value()) {
-                    try {
-                        Method setter = entity.getClass().getMethod(name, method.getReturnType());
-                        if (method.invoke(this) != null)
-                            setter.invoke(entity, method.invoke(this));
-                    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
-                    }
-                }
-            }
-        }
-    }
+	/**
+	 * Update entity by DTO fields.
+	 * 
+	 * @param entity
+	 *            entity to be updated
+	 */
+	protected void updateEntity(Entity entity) throws AppException {
+		Method[] methods = getClass().getMethods();
+		for (Method method : methods) {
+			if (method.getName().startsWith("get")) {
+				String name = StringUtil.getGetterOrSetter(
+						StringUtil.MethodType.SETTER, method.getName()
+								.substring(3));
+				Ignore ignore = method.getAnnotation(Ignore.class);
+				if (ignore == null || !ignore.value()) {
+					try {
+						Method setter = entity.getClass().getMethod(name,
+								method.getReturnType());
+						if (method.invoke(this) != null)
+							setter.invoke(entity, method.invoke(this));
+					} catch (NoSuchMethodException | InvocationTargetException
+							| IllegalAccessException ignored) {
+					}
+				}
+			}
+		}
+	}
 }

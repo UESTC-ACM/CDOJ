@@ -29,96 +29,96 @@ import java.io.Serializable;
 
 /**
  * Mappings between contest and problems.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 @Table(name = "contestProblem", schema = "", catalog = "uestcoj")
 @Entity
 @KeyField("contestProblemId")
 public class ContestProblem implements Serializable {
-    private static final long serialVersionUID = -9079259357297937419L;
-    private Integer contestProblemId;
+	private static final long serialVersionUID = -9079259357297937419L;
+	private Integer contestProblemId;
 
-    private Integer version;
+	private Integer version;
 
-    @Version
-    @Column(name = "OPTLOCK")
-    public Integer getVersion() {
-        return version;
-    }
+	@Version
+	@Column(name = "OPTLOCK")
+	public Integer getVersion() {
+		return version;
+	}
 
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
 
-    @Column(name = "contestProblemId", nullable = false, insertable = true,
-            updatable = true, length = 10, precision = 0, unique = true)
-    @Id
-    @GeneratedValue
-    public Integer getContestProblemId() {
-        return contestProblemId;
-    }
+	@Column(name = "contestProblemId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
+	@Id
+	@GeneratedValue
+	public Integer getContestProblemId() {
+		return contestProblemId;
+	}
 
-    public void setContestProblemId(Integer contestProblemId) {
-        this.contestProblemId = contestProblemId;
-    }
+	public void setContestProblemId(Integer contestProblemId) {
+		this.contestProblemId = contestProblemId;
+	}
 
-    private Integer order;
+	private Integer order;
 
-    @Column(name = "`order`", nullable = false, insertable = true, updatable = true,
-            length = 10, precision = 0)
-    @Basic
-    public Integer getOrder() {
-        return order;
-    }
+	@Column(name = "`order`", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+	@Basic
+	public Integer getOrder() {
+		return order;
+	}
 
-    public void setOrder(Integer order) {
-        this.order = order;
-    }
+	public void setOrder(Integer order) {
+		this.order = order;
+	}
 
-    @SuppressWarnings("RedundantIfStatement")
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
-        ContestProblem that = (ContestProblem) o;
+		ContestProblem that = (ContestProblem) o;
 
-        if (!contestProblemId.equals(that.contestProblemId)) return false;
-        if (!order.equals(that.order)) return false;
+		if (!contestProblemId.equals(that.contestProblemId))
+			return false;
+		if (!order.equals(that.order))
+			return false;
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = contestProblemId;
-        result = 31 * result + order;
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		int result = contestProblemId;
+		result = 31 * result + order;
+		return result;
+	}
 
-    private Contest contestByContestId;
+	private Contest contestByContestId;
 
-    @ManyToOne
-    @JoinColumn(name = "contestId", referencedColumnName = "contestId", nullable = false)
-    public Contest getContestByContestId() {
-        return contestByContestId;
-    }
+	@ManyToOne
+	@JoinColumn(name = "contestId", referencedColumnName = "contestId", nullable = false)
+	public Contest getContestByContestId() {
+		return contestByContestId;
+	}
 
-    public void setContestByContestId(Contest contestByContestId) {
-        this.contestByContestId = contestByContestId;
-    }
+	public void setContestByContestId(Contest contestByContestId) {
+		this.contestByContestId = contestByContestId;
+	}
 
-    private Problem problemByProblemId;
+	private Problem problemByProblemId;
 
-    @ManyToOne
-    @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = false)
-    public Problem getProblemByProblemId() {
-        return problemByProblemId;
-    }
+	@ManyToOne
+	@JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = false)
+	public Problem getProblemByProblemId() {
+		return problemByProblemId;
+	}
 
-    public void setProblemByProblemId(Problem problemByProblemId) {
-        this.problemByProblemId = problemByProblemId;
-    }
+	public void setProblemByProblemId(Problem problemByProblemId) {
+		this.problemByProblemId = problemByProblemId;
+	}
 }

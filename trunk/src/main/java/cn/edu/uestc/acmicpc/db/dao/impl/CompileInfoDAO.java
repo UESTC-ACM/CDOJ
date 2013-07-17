@@ -28,17 +28,18 @@ import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
 
 /**
  * DAO for compileinfo entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public class CompileInfoDAO extends DAO<CompileInfo, Integer> implements ICompileInfoDAO {
-    @Override
-    protected Class<Integer> getPKClass() {
-        return Integer.class;
-    }
+public class CompileInfoDAO extends DAO<CompileInfo, Integer> implements
+		ICompileInfoDAO {
+	@Override
+	protected Class<Integer> getPKClass() {
+		return Integer.class;
+	}
 
-    @Override
-    protected Class<CompileInfo> getReferenceClass() {
-        return CompileInfo.class;
-    }
+	@Override
+	protected Class<CompileInfo> getReferenceClass() {
+		return CompileInfo.class;
+	}
 }

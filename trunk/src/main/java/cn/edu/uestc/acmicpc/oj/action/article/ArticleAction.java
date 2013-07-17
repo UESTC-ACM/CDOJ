@@ -32,57 +32,65 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class ArticleAction extends BaseAction implements ArticleDAOAware {
 
-    private Integer targetArticleId;
-    private ArticleView targetArticle;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8704573553875022341L;
+	private Integer targetArticleId;
+	private ArticleView targetArticle;
 
-    public Integer getTargetArticleId() {
-        return targetArticleId;
-    }
+	public Integer getTargetArticleId() {
+		return targetArticleId;
+	}
 
-    public void setTargetArticleId(Integer targetArticleId) {
-        this.targetArticleId = targetArticleId;
-    }
+	public void setTargetArticleId(Integer targetArticleId) {
+		this.targetArticleId = targetArticleId;
+	}
 
-    public ArticleView getTargetArticle() {
-        return targetArticle;
-    }
+	public ArticleView getTargetArticle() {
+		return targetArticle;
+	}
 
-    public void setTargetArticle(ArticleView targetArticle) {
-        this.targetArticle = targetArticle;
-    }
+	public void setTargetArticle(ArticleView targetArticle) {
+		this.targetArticle = targetArticle;
+	}
 
-    public String toArticle() {
-        try {
-            if (targetArticleId == null)
-                throw new AppException("Article Id is empty!");
+	public String toArticle() {
+		try {
+			if (targetArticleId == null)
+				throw new AppException("Article Id is empty!");
 
-            Article article = articleDAO.get(targetArticleId);
-            if (article == null)
-                throw new AppException("Wrong article ID!");
+			Article article = articleDAO.get(targetArticleId);
+			if (article == null)
+				throw new AppException("Wrong article ID!");
 
-            if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
-                if (!article.getIsVisible())
-                    throw new AppException("Article doesn't exist");
-            targetArticle = new ArticleView(article);
-        } catch (AppException e) {
-            System.out.println(e.getMessage());
-            return redirect(getActionURL("/", "index"), e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return redirect(getActionURL("/", "index"), "Unknown exception occurred.");
-        }
-        return SUCCESS;
-    }
+			if (currentUser == null
+					|| currentUser.getType() != Global.AuthenticationType.ADMIN
+							.ordinal())
+				if (!article.getIsVisible())
+					throw new AppException("Article doesn't exist");
+			targetArticle = new ArticleView(article);
+		} catch (AppException e) {
+			System.out.println(e.getMessage());
+			return redirect(getActionURL("/", "index"), e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return redirect(getActionURL("/", "index"),
+					"Unknown exception occurred.");
+		}
+		return SUCCESS;
+	}
 
-    @Autowired
-    private IArticleDAO articleDAO;
-    @Override
-    public void setArticleDAO(IArticleDAO articleDAO) {
-        this.articleDAO = articleDAO;
-    }
+	@Autowired
+	private IArticleDAO articleDAO;
+
+	@Override
+	public void setArticleDAO(IArticleDAO articleDAO) {
+		this.articleDAO = articleDAO;
+	}
 }

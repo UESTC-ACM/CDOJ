@@ -21,69 +21,65 @@
 
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
-import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class TrainingUserDTO extends BaseDTO<TrainingUser> {
 
-    private Integer trainingUserId;
-    private String name;
-    private String member;
-    private Integer type;
+	private Integer trainingUserId;
+	private String name;
+	private String member;
+	private Integer type;
 
-    public String getMember() {
-        return member;
-    }
+	public String getMember() {
+		return member;
+	}
 
-    public void setMember(String member) {
-        this.member = member;
-    }
+	public void setMember(String member) {
+		this.member = member;
+	}
 
-    public Integer getTrainingUserId() {
-        return trainingUserId;
-    }
+	public Integer getTrainingUserId() {
+		return trainingUserId;
+	}
 
-    public void setTrainingUserId(Integer trainingUserId) {
-        this.trainingUserId = trainingUserId;
-    }
+	public void setTrainingUserId(Integer trainingUserId) {
+		this.trainingUserId = trainingUserId;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public Integer getType() {
-        return type;
-    }
+	public Integer getType() {
+		return type;
+	}
 
-    public void setType(Integer type) {
-        this.type = type;
-    }
+	public void setType(Integer type) {
+		this.type = type;
+	}
 
-    public TrainingUser getEntity() throws AppException {
-        TrainingUser trainingUser = super.getEntity();
-        trainingUser.setRating(1200.0);
-        trainingUser.setVolatility(550.0);
-        trainingUser.setAllow(false);
-        trainingUser.setCompetitions(0);
-        return trainingUser;
-    }
+	public TrainingUser getEntity() throws AppException {
+		TrainingUser trainingUser = super.getEntity();
+		trainingUser.setRating(1200.0);
+		trainingUser.setVolatility(550.0);
+		trainingUser.setAllow(false);
+		trainingUser.setCompetitions(0);
+		return trainingUser;
+	}
 
-    @Override
-    protected Class<TrainingUser> getReferenceClass() {
-        return TrainingUser.class;
-    }
+	@Override
+	protected Class<TrainingUser> getReferenceClass() {
+		return TrainingUser.class;
+	}
 }

@@ -25,10 +25,22 @@ import cn.edu.uestc.acmicpc.db.dto.impl.TrainingStatusDTO;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public interface TrainingStatusDTOAware {
-    public void setTrainingStatusDTO(TrainingStatusDTO trainingStatusDTO);
-    public TrainingStatusDTO getTrainingStatusDTO();
+	/**
+	 * Put trainingStatusDTO into class.
+	 * 
+	 * @param trainingStatusDTO
+	 *            trainingStatusDTO object
+	 */
+	public void setTrainingStatusDTO(TrainingStatusDTO trainingStatusDTO);
+
+	/**
+	 * Get trainingStatusDTO entity.
+	 * 
+	 * @return trainingStatusDTO entity
+	 */
+	public TrainingStatusDTO getTrainingStatusDTO();
 }

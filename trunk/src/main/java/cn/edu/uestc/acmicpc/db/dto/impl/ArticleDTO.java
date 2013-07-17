@@ -30,71 +30,71 @@ import java.util.Date;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class ArticleDTO extends BaseDTO<Article> {
 
-    private Integer articleId;
-    private String title;
-    private String content;
-    private String author;
+	private Integer articleId;
+	private String title;
+	private String content;
+	private String author;
 
-    public Integer getArticleId() {
-        return articleId;
-    }
+	public Integer getArticleId() {
+		return articleId;
+	}
 
-    public void setArticleId(Integer articleId) {
-        this.articleId = articleId;
-    }
+	public void setArticleId(Integer articleId) {
+		this.articleId = articleId;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public String getContent() {
+		return content;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    public String getAuthor() {
-        return author;
-    }
+	public String getAuthor() {
+		return author;
+	}
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
+	public void setAuthor(String author) {
+		this.author = author;
+	}
 
-    @Override
-    public Article getEntity() throws AppException {
-        Article article = super.getEntity();
+	@Override
+	public Article getEntity() throws AppException {
+		Article article = super.getEntity();
 
-        article.setClicked(0);
-        article.setIsVisible(false);
-        article.setIsNotice(false);
-        article.setOrder(0);
-        article.setArticleId(null);
-        article.setTime(new Timestamp(new Date().getTime()));
+		article.setClicked(0);
+		article.setIsVisible(false);
+		article.setIsNotice(false);
+		article.setOrder(0);
+		article.setArticleId(null);
+		article.setTime(new Timestamp(new Date().getTime()));
 
-        return article;
-    }
+		return article;
+	}
 
-    @Override
-    public void updateEntity(Article article) throws AppException {
-        // TODO to get specific operations
-        super.updateEntity(article);
-        article.setTime(new Timestamp(new Date().getTime()));
-    }
+	@Override
+	public void updateEntity(Article article) throws AppException {
+		// TODO to get specific operations
+		super.updateEntity(article);
+		article.setTime(new Timestamp(new Date().getTime()));
+	}
 
-    @Override
-    protected Class<Article> getReferenceClass() {
-        return Article.class;
-    }
+	@Override
+	protected Class<Article> getReferenceClass() {
+		return Article.class;
+	}
 }

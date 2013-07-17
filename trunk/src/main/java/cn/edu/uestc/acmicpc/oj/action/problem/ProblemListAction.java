@@ -50,153 +50,165 @@ import java.util.Map;
 
 /**
  * action for list and search problem.
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(NeedLogin = false)
-public class ProblemListAction extends BaseAction
-        implements ProblemConditionAware, ProblemDAOAware,
-        StatusConditionAware, StatusDAOAware {
+public class ProblemListAction extends BaseAction implements
+		ProblemConditionAware, ProblemDAOAware, StatusConditionAware,
+		StatusDAOAware {
 
-    /**
-     * ProblemDAO for problem search.
-     */
-    @Autowired
-    private IProblemDAO problemDAO;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7044416211736660200L;
 
-    @Autowired
-    private IStatusDAO statusDAO;
+	/**
+	 * ProblemDAO for problem search.
+	 */
+	@Autowired
+	private IProblemDAO problemDAO;
 
-    @Autowired
-    private ProblemCondition problemCondition;
+	@Autowired
+	private IStatusDAO statusDAO;
 
-    @Autowired
-    private StatusCondition statusCondition;
+	@Autowired
+	private ProblemCondition problemCondition;
 
-    @Override
-    public void setProblemCondition(ProblemCondition problemCondition) {
-        this.problemCondition = problemCondition;
-    }
+	@Autowired
+	private StatusCondition statusCondition;
 
-    public ProblemCondition getProblemCondition() {
-        return problemCondition;
-    }
+	@Override
+	public void setProblemCondition(ProblemCondition problemCondition) {
+		this.problemCondition = problemCondition;
+	}
 
-    /**
-     * Setter of ProblemDAO for Ioc.
-     *
-     * @param problemDAO newly problemDAO
-     */
-    public void setProblemDAO(IProblemDAO problemDAO) {
-        this.problemDAO = problemDAO;
-    }
+	public ProblemCondition getProblemCondition() {
+		return problemCondition;
+	}
 
-    /**
-     * return the problem.jsp for base view
-     *
-     * @return <strong>SUCCESS</strong> signal
-     */
-    @SuppressWarnings("SameReturnValue")
-    @SkipValidation
-    public String toProblemList() {
-        return SUCCESS;
-    }
+	/**
+	 * Setter of ProblemDAO for Ioc.
+	 * 
+	 * @param problemDAO
+	 *            newly problemDAO
+	 */
+	public void setProblemDAO(IProblemDAO problemDAO) {
+		this.problemDAO = problemDAO;
+	}
 
-    /**
-     * Search action.
-     * <p/>
-     * Find all records by conditions and return them as a list in JSON, and the condition
-     * set will set in JSON named "condition".
-     * <p/>
-     * <strong>JSON output</strong>:
-     * <ul>
-     * <li>
-     * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>,
-     * "condition", <strong>ProblemCondition entity</strong>,
-     * "problemList":<strong>query result</strong>}
-     * </li>
-     * <li>
-     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-     * </li>
-     * </ul>
-     *
-     * @return <strong>JSON</strong> signal
-     */
-    @SuppressWarnings("unchecked")
-    @SkipValidation
-    public String toSearch() {
-        try {
-            if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
-                problemCondition.setIsVisible(true);
-            problemCondition.setIsTitleEmpty(false);
-            Condition condition = problemCondition.getCondition();
-            Long count = problemDAO.count(problemCondition.getCondition());
-            PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
-            condition.setCurrentPage(pageInfo.getCurrentPage());
-            condition.setCountPerPage(RECORD_PER_PAGE);
-            List<Problem> problemList = (List<Problem>) problemDAO.findAll(condition);
-            List<ProblemListView> problemListViewList = new ArrayList<>();
-            for (Problem problem : problemList) {
-                problemListViewList.add(new ProblemListView(problem,
-                        getCurrentUser(), problemStatus.get(problem.getProblemId())));
-            }
-            json.put("pageInfo", pageInfo.getHtmlString());
-            json.put("result", "ok");
-            json.put("problemList", problemListViewList);
-        } catch (AppException e) {
-            json.put("result", "error");
-            json.put("error_msg", e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            json.put("result", "error");
-            json.put("error_msg", "Unknown exception occurred.");
-        }
-        return JSON;
-    }
+	/**
+	 * return the problem.jsp for base view
+	 * 
+	 * @return <strong>SUCCESS</strong> signal
+	 */
+	@SkipValidation
+	public String toProblemList() {
+		return SUCCESS;
+	}
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public void onActionExecuting(AppInterceptor.ActionInfo actionInfo) {
-        super.onActionExecuting(actionInfo);
+	/**
+	 * Search action.
+	 * <p/>
+	 * Find all records by conditions and return them as a list in JSON, and the
+	 * condition set will set in JSON named "condition".
+	 * <p/>
+	 * <strong>JSON output</strong>:
+	 * <ul>
+	 * <li>
+	 * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>,
+	 * "condition", <strong>ProblemCondition entity</strong>,
+	 * "problemList":<strong>query result</strong>}</li>
+	 * <li>
+	 * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+	 * </li>
+	 * </ul>
+	 * 
+	 * @return <strong>JSON</strong> signal
+	 */
+	@SuppressWarnings("unchecked")
+	@SkipValidation
+	public String toSearch() {
+		try {
+			if (currentUser == null
+					|| currentUser.getType() != Global.AuthenticationType.ADMIN
+							.ordinal())
+				problemCondition.setIsVisible(true);
+			problemCondition.setIsTitleEmpty(false);
+			Condition condition = problemCondition.getCondition();
+			Long count = problemDAO.count(problemCondition.getCondition());
+			PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
+			condition.setCurrentPage(pageInfo.getCurrentPage());
+			condition.setCountPerPage(RECORD_PER_PAGE);
+			List<Problem> problemList = (List<Problem>) problemDAO
+					.findAll(condition);
+			List<ProblemListView> problemListViewList = new ArrayList<>();
+			for (Problem problem : problemList) {
+				problemListViewList.add(new ProblemListView(problem,
+						getCurrentUser(), problemStatus.get(problem
+								.getProblemId())));
+			}
+			json.put("pageInfo", pageInfo.getHtmlString());
+			json.put("result", "ok");
+			json.put("problemList", problemListViewList);
+		} catch (AppException e) {
+			json.put("result", "error");
+			json.put("error_msg", e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("result", "error");
+			json.put("error_msg", "Unknown exception occurred.");
+		}
+		return JSON;
+	}
 
-        Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
-        try {
-            if (currentUser != null) {
-                statusCondition.clear();
-                statusCondition.setUserId(currentUser.getUserId());
-                statusCondition.setResultId(null);
-                Condition condition = statusCondition.getCondition();
-                condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
-                List<Integer> results = (List<Integer>) statusDAO.findAll(condition);
-                for (Integer result : results)
-                    problemStatus.put(result, Global.AuthorStatusType.FAIL);
+	@SuppressWarnings("unchecked")
+	@Override
+	public void onActionExecuting(AppInterceptor.ActionInfo actionInfo) {
+		super.onActionExecuting(actionInfo);
 
-                statusCondition.clear();
-                statusCondition.setUserId(currentUser.getUserId());
-                statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-                condition = statusCondition.getCondition();
-                condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
-                results = (List<Integer>) statusDAO.findAll(condition);
-                for (Integer result : results)
-                    problemStatus.put(result, Global.AuthorStatusType.PASS);
-            }
-        } catch (AppException ignored) {
-        }
-        session.put("problemStatus", problemStatus);
-    }
+		Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
+		try {
+			if (currentUser != null) {
+				statusCondition.clear();
+				statusCondition.setUserId(currentUser.getUserId());
+				statusCondition.setResultId(null);
+				Condition condition = statusCondition.getCondition();
+				condition.addProjection(Projections
+						.groupProperty("problemByProblemId.problemId"));
+				List<Integer> results = (List<Integer>) statusDAO
+						.findAll(condition);
+				for (Integer result : results)
+					problemStatus.put(result, Global.AuthorStatusType.FAIL);
 
-    @Override
-    public void setStatusCondition(StatusCondition statusCondition) {
-        this.statusCondition = statusCondition;
-    }
+				statusCondition.clear();
+				statusCondition.setUserId(currentUser.getUserId());
+				statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC
+						.ordinal());
+				condition = statusCondition.getCondition();
+				condition.addProjection(Projections
+						.groupProperty("problemByProblemId.problemId"));
+				results = (List<Integer>) statusDAO.findAll(condition);
+				for (Integer result : results)
+					problemStatus.put(result, Global.AuthorStatusType.PASS);
+			}
+		} catch (AppException ignored) {
+		}
+		session.put("problemStatus", problemStatus);
+	}
 
-    @Override
-    public StatusCondition getStatusCondition() {
-        return statusCondition;
-    }
+	@Override
+	public void setStatusCondition(StatusCondition statusCondition) {
+		this.statusCondition = statusCondition;
+	}
 
-    @Override
-    public void setStatusDAO(IStatusDAO statusDAO) {
-        this.statusDAO = statusDAO;
-    }
+	@Override
+	public StatusCondition getStatusCondition() {
+		return statusCondition;
+	}
+
+	@Override
+	public void setStatusDAO(IStatusDAO statusDAO) {
+		this.statusDAO = statusDAO;
+	}
 }

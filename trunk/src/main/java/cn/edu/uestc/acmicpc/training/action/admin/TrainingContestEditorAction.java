@@ -51,258 +51,292 @@ import cn.edu.uestc.acmicpc.util.TrainingRankListParser;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.ParserException;
+
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
-import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
+
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class TrainingContestEditorAction extends FileUploadAction
-        implements TrainingContestDAOAware, TrainingRankListParserAware,
-        TrainingContestDTOAware, TrainingStatusDAOAware, TrainingStatusConditionAware,
-        TrainingStatusDTOAware, TrainingUserDAOAware, TrainingUserConditionAware,
-        TrainingContestConditionAware, RatingUtilAware {
+public class TrainingContestEditorAction extends FileUploadAction implements
+		TrainingContestDAOAware, TrainingRankListParserAware,
+		TrainingContestDTOAware, TrainingStatusDAOAware,
+		TrainingStatusConditionAware, TrainingStatusDTOAware,
+		TrainingUserDAOAware, TrainingUserConditionAware,
+		TrainingContestConditionAware, RatingUtilAware {
 
-    private Integer targetTrainingContestId;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5827621472522483158L;
+	private Integer targetTrainingContestId;
 
-    public Integer getTargetTrainingContestId() {
-        return targetTrainingContestId;
-    }
+	public Integer getTargetTrainingContestId() {
+		return targetTrainingContestId;
+	}
 
-    public void setTargetTrainingContestId(Integer targetTrainingContestId) {
-        this.targetTrainingContestId = targetTrainingContestId;
-    }
+	public void setTargetTrainingContestId(Integer targetTrainingContestId) {
+		this.targetTrainingContestId = targetTrainingContestId;
+	}
 
-    @Autowired
-    private TrainingContestDTO trainingContestDTO;
-    @Validations(
-            requiredStrings = {
-                    @RequiredStringValidator(
-                            fieldName = "trainingContestDTO.title",
-                            key = "error.title.validation"
-                    )
-            }
-    )
-    public String toEditContest() {
-        try {
-            if (targetTrainingContestId == null)
-                throw new AppException("No such contest!");
-            TrainingContest trainingContest = trainingContestDAO.get(targetTrainingContestId);
-            if (trainingContest == null)
-                throw new AppException("No such contest!");
+	@Autowired
+	private TrainingContestDTO trainingContestDTO;
 
-            trainingContestDTO.updateEntity(trainingContest);
-            trainingContestDAO.update(trainingContest);
+	@SuppressWarnings("unchecked")
+	@Validations(requiredStrings = { @RequiredStringValidator(fieldName = "trainingContestDTO.title", key = "error.title.validation") })
+	public String toEditContest() {
+		try {
+			if (targetTrainingContestId == null)
+				throw new AppException("No such contest!");
+			TrainingContest trainingContest = trainingContestDAO
+					.get(targetTrainingContestId);
+			if (trainingContest == null)
+				throw new AppException("No such contest!");
 
-            File rankFile = new File(getTrainingRankFileName());
-            if (rankFile.exists()) {
-                //Update rank list
-                TrainingContestRankList trainingContestRankList = trainingRankListParser.parse(rankFile, trainingContest.getIsPersonal(), trainingContest.getType());
-                //Delete old records
-                trainingStatusCondition.clear();
-                trainingStatusCondition.setTrainingContestId(trainingContest.getTrainingContestId());
-                trainingStatusDAO.deleteEntitiesByCondition(trainingStatusCondition.getCondition());
-                //Add new records
-                for (TrainingUserRankSummary trainingUserRankSummary: trainingContestRankList.getTrainingUserRankSummaryList()) {
-                    TrainingStatus trainingStatus = trainingStatusDTO.getEntity();
+			trainingContestDTO.updateEntity(trainingContest);
+			trainingContestDAO.update(trainingContest);
 
-                    trainingStatus.setRank(trainingUserRankSummary.getRank());
-                    trainingStatus.setSolve(trainingUserRankSummary.getSolved());
-                    trainingStatus.setPenalty(trainingUserRankSummary.getPenalty());
-                    trainingStatus.setSummary(trainingRankListParser
-                            .encodeTariningUserSummary(trainingUserRankSummary.getTrainingProblemSummaryInfoList(),
-                                    trainingContest.getType()));
+			File rankFile = new File(getTrainingRankFileName());
+			if (rankFile.exists()) {
+				// Update rank list
+				TrainingContestRankList trainingContestRankList = trainingRankListParser
+						.parse(rankFile, trainingContest.getIsPersonal(),
+								trainingContest.getType());
+				// Delete old records
+				trainingStatusCondition.clear();
+				trainingStatusCondition.setTrainingContestId(trainingContest
+						.getTrainingContestId());
+				trainingStatusDAO
+						.deleteEntitiesByCondition(trainingStatusCondition
+								.getCondition());
+				// Add new records
+				for (TrainingUserRankSummary trainingUserRankSummary : trainingContestRankList
+						.getTrainingUserRankSummaryList()) {
+					TrainingStatus trainingStatus = trainingStatusDTO
+							.getEntity();
 
-                    trainingStatus.setTrainingUserByTrainingUserId(
-                            trainingUserDAO.get(trainingUserRankSummary.getUserId()));
-                    trainingStatus.setTrainingContestByTrainingContestId(trainingContest);
+					trainingStatus.setRank(trainingUserRankSummary.getRank());
+					trainingStatus
+							.setSolve(trainingUserRankSummary.getSolved());
+					trainingStatus.setPenalty(trainingUserRankSummary
+							.getPenalty());
+					trainingStatus.setSummary(trainingRankListParser
+							.encodeTariningUserSummary(trainingUserRankSummary
+									.getTrainingProblemSummaryInfoList(),
+									trainingContest.getType()));
 
-                    trainingStatusDAO.add(trainingStatus);
-                }
-                //Recovery records
-                trainingUserCondition.clear();
-                if (trainingContest.getIsPersonal())
-                    trainingUserCondition.setType(Global.TrainingUserType.PERSONAL.ordinal());
-                else
-                    trainingUserCondition.setType(Global.TrainingUserType.TEAM.ordinal());
+					trainingStatus
+							.setTrainingUserByTrainingUserId(trainingUserDAO
+									.get(trainingUserRankSummary.getUserId()));
+					trainingStatus
+							.setTrainingContestByTrainingContestId(trainingContest);
 
-                List<TrainingUser> trainingUserList = (List<TrainingUser>)trainingUserDAO.findAll(trainingUserCondition.getCondition());
-                for (TrainingUser trainingUser: trainingUserList) {
-                    trainingUser.setCompetitions(0);
-                    trainingUser.setRating(1200.0);
-                    trainingUser.setVolatility(550.0);
-                    trainingUser.setRatingVary(null);
-                    trainingUser.setVolatilityVary(null);
-                    trainingUserDAO.update(trainingUser);
-                }
+					trainingStatusDAO.add(trainingStatus);
+				}
+				// Recovery records
+				trainingUserCondition.clear();
+				if (trainingContest.getIsPersonal())
+					trainingUserCondition
+							.setType(Global.TrainingUserType.PERSONAL.ordinal());
+				else
+					trainingUserCondition.setType(Global.TrainingUserType.TEAM
+							.ordinal());
 
-                //Update rating
-                trainingContestCondition.clear();
-                trainingContestCondition.setIsPersonal(trainingContest.getIsPersonal());
-                trainingContestCondition.setOrderFields("trainingContestId");
-                trainingContestCondition.setOrderAsc("true");
-                List<TrainingContest> trainingContests = (List<TrainingContest>)trainingContestDAO.findAll(trainingContestCondition.getCondition());
-                for (TrainingContest trainingContest1 : trainingContests) {
-                    ratingUtil.updateRating(trainingContest1);
-                }
-            }
+				List<TrainingUser> trainingUserList = (List<TrainingUser>) trainingUserDAO
+						.findAll(trainingUserCondition.getCondition());
+				for (TrainingUser trainingUser : trainingUserList) {
+					trainingUser.setCompetitions(0);
+					trainingUser.setRating(1200.0);
+					trainingUser.setVolatility(550.0);
+					trainingUser.setRatingVary(null);
+					trainingUser.setVolatilityVary(null);
+					trainingUserDAO.update(trainingUser);
+				}
 
-            json.put("result", "ok");
-        } catch (AppException e) {
-            json.put("result", "error");
-            json.put("error_msg", e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            json.put("result", "error");
-            json.put("error_msg", "Unknown exception occurred.");
-        }
-        return JSON;
-    }
+				// Update rating
+				trainingContestCondition.clear();
+				trainingContestCondition.setIsPersonal(trainingContest
+						.getIsPersonal());
+				trainingContestCondition.setOrderFields("trainingContestId");
+				trainingContestCondition.setOrderAsc("true");
+				List<TrainingContest> trainingContests = (List<TrainingContest>) trainingContestDAO
+						.findAll(trainingContestCondition.getCondition());
+				for (TrainingContest trainingContest1 : trainingContests) {
+					ratingUtil.updateRating(trainingContest1);
+				}
+			}
 
-    /**
-     * Upload rank file, and return content.
-     *
-     * @return <strong>JSON</strong> signal.
-     */
-    @SkipValidation
-    public String uploadTrainingRankFile() {
-        try {
-            if (targetTrainingContestId == null)
-                throw new AppException("No such contest!");
-            TrainingContest trainingContest = trainingContestDAO.get(targetTrainingContestId);
-            if (trainingContest == null)
-                throw new AppException("No such contest!");
+			json.put("result", "ok");
+		} catch (AppException e) {
+			json.put("result", "error");
+			json.put("error_msg", e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("result", "error");
+			json.put("error_msg", "Unknown exception occurred.");
+		}
+		return JSON;
+	}
 
-            setSavePath(settings.SETTING_UPLOAD_FOLDER + "/temp");
-            String[] files = uploadFile();
-            // In this case, uploaded file should only contains one element.
-            if (files == null || files.length != 1)
-                throw new AppException("Fetch uploaded file error.");
-            File tempFile = new File(files[0]);
-            File targetFile = new File(getTrainingRankFileName());
-            if (targetFile.exists() && !targetFile.delete())
-                throw new AppException("Internal exception: target file exists and can not be deleted.");
-            if (!tempFile.renameTo(targetFile))
-                throw new AppException("Internal exception: can not move file.");
+	/**
+	 * Upload rank file, and return content.
+	 * 
+	 * @return <strong>JSON</strong> signal.
+	 */
+	@SkipValidation
+	public String uploadTrainingRankFile() {
+		try {
+			if (targetTrainingContestId == null)
+				throw new AppException("No such contest!");
+			TrainingContest trainingContest = trainingContestDAO
+					.get(targetTrainingContestId);
+			if (trainingContest == null)
+				throw new AppException("No such contest!");
 
-            TrainingContestRankList trainingContestRankList = trainingRankListParser.parse(targetFile, trainingContest.getIsPersonal(), trainingContest.getType());
-            json.put("trainingContestRankList", trainingContestRankList);
-            json.put("success", "true");
-        } catch (AppException | ParserException e) {
-            json.put("error", e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            json.put("error", "Unknown exception occurred.");
-        }
-        return JSON;
-    }
+			setSavePath(settings.SETTING_UPLOAD_FOLDER + "/temp");
+			String[] files = uploadFile();
+			// In this case, uploaded file should only contains one element.
+			if (files == null || files.length != 1)
+				throw new AppException("Fetch uploaded file error.");
+			File tempFile = new File(files[0]);
+			File targetFile = new File(getTrainingRankFileName());
+			if (targetFile.exists() && !targetFile.delete())
+				throw new AppException(
+						"Internal exception: target file exists and can not be deleted.");
+			if (!tempFile.renameTo(targetFile))
+				throw new AppException("Internal exception: can not move file.");
 
-    private String getTrainingRankFileName() {
-        return settings.SETTING_UPLOAD_FOLDER + "/training_contest_" + targetTrainingContestId + ".xls";
-    }
+			TrainingContestRankList trainingContestRankList = trainingRankListParser
+					.parse(targetFile, trainingContest.getIsPersonal(),
+							trainingContest.getType());
+			json.put("trainingContestRankList", trainingContestRankList);
+			json.put("success", "true");
+		} catch (AppException | ParserException e) {
+			json.put("error", e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("error", "Unknown exception occurred.");
+		}
+		return JSON;
+	}
 
-    @Autowired
-    private ITrainingContestDAO trainingContestDAO;
-    @Override
-    public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
-        this.trainingContestDAO = trainingContestDAO;
-    }
+	private String getTrainingRankFileName() {
+		return settings.SETTING_UPLOAD_FOLDER + "/training_contest_"
+				+ targetTrainingContestId + ".xls";
+	}
 
-    @Autowired
-    private TrainingRankListParser trainingRankListParser;
-    @Override
-    public void setTrainingRankListParserAware(TrainingRankListParser trainingRankListParser) {
-        this.trainingRankListParser = trainingRankListParser;
-    }
+	@Autowired
+	private ITrainingContestDAO trainingContestDAO;
 
-    @Override
-    public void setTrainingContestDTO(TrainingContestDTO trainingContestDTO) {
-        this.trainingContestDTO = trainingContestDTO;
-    }
+	@Override
+	public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
+		this.trainingContestDAO = trainingContestDAO;
+	}
 
-    @Override
-    public TrainingContestDTO getTrainingContestDTO() {
-        return trainingContestDTO;
-    }
+	@Autowired
+	private TrainingRankListParser trainingRankListParser;
 
-    @Autowired
-    private ITrainingStatusDAO trainingStatusDAO;
+	@Override
+	public void setTrainingRankListParserAware(
+			TrainingRankListParser trainingRankListParser) {
+		this.trainingRankListParser = trainingRankListParser;
+	}
 
-    @Override
-    public void setTrainingStatusDAO(ITrainingStatusDAO trainingStatusDAO) {
-        this.trainingStatusDAO = trainingStatusDAO;
-    }
+	@Override
+	public void setTrainingContestDTO(TrainingContestDTO trainingContestDTO) {
+		this.trainingContestDTO = trainingContestDTO;
+	}
 
-    @Autowired
-    private TrainingStatusCondition trainingStatusCondition;
-    @Override
-    public void setTrainingStatusCondition(TrainingStatusCondition trainingStatusCondition) {
-        this.trainingStatusCondition = trainingStatusCondition;
-    }
+	@Override
+	public TrainingContestDTO getTrainingContestDTO() {
+		return trainingContestDTO;
+	}
 
-    @Override
-    public TrainingStatusCondition getTrainingStatusCondition() {
-        return trainingStatusCondition;
-    }
+	@Autowired
+	private ITrainingStatusDAO trainingStatusDAO;
 
-    @Autowired
-    private TrainingStatusDTO trainingStatusDTO;
-    @Override
-    public void setTrainingStatusDTO(TrainingStatusDTO trainingStatusDTO) {
-        this.trainingStatusDTO = trainingStatusDTO;
-    }
+	@Override
+	public void setTrainingStatusDAO(ITrainingStatusDAO trainingStatusDAO) {
+		this.trainingStatusDAO = trainingStatusDAO;
+	}
 
-    @Override
-    public TrainingStatusDTO getTrainingStatusDTO() {
-        return trainingStatusDTO;
-    }
+	@Autowired
+	private TrainingStatusCondition trainingStatusCondition;
 
-    @Autowired
-    private ITrainingUserDAO trainingUserDAO;
-    @Override
-    public void setTrainingUserDAO(ITrainingUserDAO trainingUserDAO) {
-        this.trainingUserDAO = trainingUserDAO;
-    }
+	@Override
+	public void setTrainingStatusCondition(
+			TrainingStatusCondition trainingStatusCondition) {
+		this.trainingStatusCondition = trainingStatusCondition;
+	}
 
-    @Autowired
-    private TrainingUserCondition trainingUserCondition;
-    @Override
-    public void setTrainingUserCondition(TrainingUserCondition trainingUserCondition) {
-        this.trainingUserCondition = trainingUserCondition;
-    }
+	@Override
+	public TrainingStatusCondition getTrainingStatusCondition() {
+		return trainingStatusCondition;
+	}
 
-    @Override
-    public TrainingUserCondition getTrainingUserCondition() {
-        return this.trainingUserCondition;
-    }
+	@Autowired
+	private TrainingStatusDTO trainingStatusDTO;
 
-    @Autowired
-    private TrainingContestCondition trainingContestCondition;
-    @Override
-    public void setTrainingContestCondition(TrainingContestCondition trainingContestCondition) {
-        this.trainingContestCondition = trainingContestCondition;
-    }
+	@Override
+	public void setTrainingStatusDTO(TrainingStatusDTO trainingStatusDTO) {
+		this.trainingStatusDTO = trainingStatusDTO;
+	}
 
-    @Override
-    public TrainingContestCondition getTrainingContestCondition() {
-        return trainingContestCondition;
-    }
+	@Override
+	public TrainingStatusDTO getTrainingStatusDTO() {
+		return trainingStatusDTO;
+	}
 
-    @Autowired
-    private RatingUtil ratingUtil;
-    @Override
-    public void setRatingUtil(RatingUtil ratingUtil) {
-        this.ratingUtil = ratingUtil;
-    }
+	@Autowired
+	private ITrainingUserDAO trainingUserDAO;
+
+	@Override
+	public void setTrainingUserDAO(ITrainingUserDAO trainingUserDAO) {
+		this.trainingUserDAO = trainingUserDAO;
+	}
+
+	@Autowired
+	private TrainingUserCondition trainingUserCondition;
+
+	@Override
+	public void setTrainingUserCondition(
+			TrainingUserCondition trainingUserCondition) {
+		this.trainingUserCondition = trainingUserCondition;
+	}
+
+	@Override
+	public TrainingUserCondition getTrainingUserCondition() {
+		return this.trainingUserCondition;
+	}
+
+	@Autowired
+	private TrainingContestCondition trainingContestCondition;
+
+	@Override
+	public void setTrainingContestCondition(
+			TrainingContestCondition trainingContestCondition) {
+		this.trainingContestCondition = trainingContestCondition;
+	}
+
+	@Override
+	public TrainingContestCondition getTrainingContestCondition() {
+		return trainingContestCondition;
+	}
+
+	@Autowired
+	private RatingUtil ratingUtil;
+
+	@Override
+	public void setRatingUtil(RatingUtil ratingUtil) {
+		this.ratingUtil = ratingUtil;
+	}
 }

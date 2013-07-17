@@ -30,83 +30,84 @@ import java.util.Collection;
 
 /**
  * Code information.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 @Table(name = "code", schema = "", catalog = "uestcoj")
 @Entity
 @KeyField("codeId")
 public class Code implements Serializable {
-    private static final long serialVersionUID = 6092881044668152921L;
-    private Integer codeId;
+	private static final long serialVersionUID = 6092881044668152921L;
+	private Integer codeId;
 
-    private Integer version;
+	private Integer version;
 
-    @Version
-    @Column(name = "OPTLOCK")
-    public Integer getVersion() {
-        return version;
-    }
+	@Version
+	@Column(name = "OPTLOCK")
+	public Integer getVersion() {
+		return version;
+	}
 
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
 
-    @Column(name = "codeId", nullable = false, insertable = true, updatable = true, length = 10,
-            precision = 0, unique = true)
-    @Id
-    @GeneratedValue
-    public Integer getCodeId() {
-        return codeId;
-    }
+	@Column(name = "codeId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
+	@Id
+	@GeneratedValue
+	public Integer getCodeId() {
+		return codeId;
+	}
 
-    public void setCodeId(Integer codeId) {
-        this.codeId = codeId;
-    }
+	public void setCodeId(Integer codeId) {
+		this.codeId = codeId;
+	}
 
-    private String content;
+	private String content;
 
-    @Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535,
-            precision = 0)
-    @Basic
-    public String getContent() {
-        return content;
-    }
+	@Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
+	@Basic
+	public String getContent() {
+		return content;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    @SuppressWarnings("RedundantIfStatement")
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
-        Code code = (Code) o;
+		Code code = (Code) o;
 
-        if (!codeId.equals(code.codeId)) return false;
-        if (content != null ? !content.equals(code.content) : code.content != null) return false;
+		if (!codeId.equals(code.codeId))
+			return false;
+		if (content != null ? !content.equals(code.content)
+				: code.content != null)
+			return false;
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = codeId;
-        result = 31 * result + (content != null ? content.hashCode() : 0);
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		int result = codeId;
+		result = 31 * result + (content != null ? content.hashCode() : 0);
+		return result;
+	}
 
-    private Collection<Status> statusesByCodeId;
+	private Collection<Status> statusesByCodeId;
 
-    @OneToMany(mappedBy = "codeByCodeId")
-    public Collection<Status> getStatusesByCodeId() {
-        return statusesByCodeId;
-    }
+	@OneToMany(mappedBy = "codeByCodeId")
+	public Collection<Status> getStatusesByCodeId() {
+		return statusesByCodeId;
+	}
 
-    public void setStatusesByCodeId(Collection<Status> statusesByCodeId) {
-        this.statusesByCodeId = statusesByCodeId;
-    }
+	public void setStatusesByCodeId(Collection<Status> statusesByCodeId) {
+		this.statusesByCodeId = statusesByCodeId;
+	}
 }

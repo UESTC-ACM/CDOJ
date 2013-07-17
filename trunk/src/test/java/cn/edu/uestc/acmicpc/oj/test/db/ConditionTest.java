@@ -54,155 +54,161 @@ import java.util.List;
 
 /**
  * Test cases for conditions entities.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:applicationContext-test.xml"})
-public class ConditionTest
-        implements ProblemDAOAware, UserDAOAware,
-        UserConditionAware, ProblemConditionAware,
-        StatusConditionAware, StatusDAOAware {
-    /**
-     * DAOs for database query.
-     */
-    @Autowired
-    private IProblemDAO problemDAO;
+@ContextConfiguration({ "classpath:applicationContext-test.xml" })
+public class ConditionTest implements ProblemDAOAware, UserDAOAware,
+		UserConditionAware, ProblemConditionAware, StatusConditionAware,
+		StatusDAOAware {
+	/**
+	 * DAOs for database query.
+	 */
+	@Autowired
+	private IProblemDAO problemDAO;
 
-    @Autowired
-    private IUserDAO userDAO;
+	@Autowired
+	private IUserDAO userDAO;
 
-    /**
-     * Conditions for database query.
-     */
-    @Autowired
-    private UserCondition userCondition;
+	/**
+	 * Conditions for database query.
+	 */
+	@Autowired
+	private UserCondition userCondition;
 
-    @Autowired
-    private ProblemCondition problemCondition;
+	@Autowired
+	private ProblemCondition problemCondition;
 
-    @Autowired
-    private StatusCondition statusCondition;
+	@Autowired
+	private StatusCondition statusCondition;
 
-    @Test
-    @Ignore
-    public void testProblemCondition() throws AppException {
-        problemCondition.clear();
-        problemCondition.setStartId(1);
-        problemCondition.setEndId(100);
-        problemCondition.setIsSpj(null);
-        System.out.println(problemDAO.count(problemCondition.getCondition()));
-        problemCondition.setIsSpj(false);
-        System.out.println(problemDAO.count(problemCondition.getCondition()));
-        Assert.assertTrue(problemDAO.count(problemCondition.getCondition()) > 0);
-        problemCondition.clear();
-        problemCondition.setStartId(2);
-        problemCondition.setEndId(1);
-        Assert.assertEquals(new Long(0), problemDAO.count(problemCondition.getCondition()));
-    }
+	@Test
+	@Ignore
+	public void testProblemCondition() throws AppException {
+		problemCondition.clear();
+		problemCondition.setStartId(1);
+		problemCondition.setEndId(100);
+		problemCondition.setIsSpj(null);
+		System.out.println(problemDAO.count(problemCondition.getCondition()));
+		problemCondition.setIsSpj(false);
+		System.out.println(problemDAO.count(problemCondition.getCondition()));
+		Assert.assertTrue(problemDAO.count(problemCondition.getCondition()) > 0);
+		problemCondition.clear();
+		problemCondition.setStartId(2);
+		problemCondition.setEndId(1);
+		Assert.assertEquals(new Long(0),
+				problemDAO.count(problemCondition.getCondition()));
+	}
 
-    @SuppressWarnings("unchecked")
-    @Test
-    @Ignore
-    public void testUserCondition() throws AppException {
-        userCondition.clear();
-        userCondition.setDepartmentId(2);
-        System.out.println("test: " + userCondition.getDepartmentId());
-        List<User> users = (List<User>) userDAO.findAll(userCondition.getCondition());
-        Assert.assertEquals(1, users.size());
-//        for (User user : users) {
-//            System.out.println(user.getUserId() + " " + user.getUserName() + " "
-//                    + user.getDepartmentByDepartmentId().getName());
-//        }
-    }
+	@SuppressWarnings("unchecked")
+	@Test
+	@Ignore
+	public void testUserCondition() throws AppException {
+		userCondition.clear();
+		userCondition.setDepartmentId(2);
+		System.out.println("test: " + userCondition.getDepartmentId());
+		List<User> users = (List<User>) userDAO.findAll(userCondition
+				.getCondition());
+		Assert.assertEquals(1, users.size());
+		// for (User user : users) {
+		// System.out.println(user.getUserId() + " " + user.getUserName() + " "
+		// + user.getDepartmentByDepartmentId().getName());
+		// }
+	}
 
-    @Override
-    public void setProblemDAO(IProblemDAO problemDAO) {
-        this.problemDAO = problemDAO;
-    }
+	@Override
+	public void setProblemDAO(IProblemDAO problemDAO) {
+		this.problemDAO = problemDAO;
+	}
 
-    @Override
-    public void setUserDAO(IUserDAO userDAO) {
-        this.userDAO = userDAO;
-    }
+	@Override
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
 
-    @Override
-    public void setUserCondition(UserCondition userCondition) {
-        this.userCondition = userCondition;
-    }
+	@Override
+	public void setUserCondition(UserCondition userCondition) {
+		this.userCondition = userCondition;
+	}
 
-    @Override
-    public UserCondition getUserCondition() {
-        return userCondition;
-    }
+	@Override
+	public UserCondition getUserCondition() {
+		return userCondition;
+	}
 
-    @Override
-    public void setProblemCondition(ProblemCondition problemCondition) {
-        this.problemCondition = problemCondition;
-    }
+	@Override
+	public void setProblemCondition(ProblemCondition problemCondition) {
+		this.problemCondition = problemCondition;
+	}
 
-    @Override
-    public ProblemCondition getProblemCondition() {
-        return problemCondition;
-    }
+	@Override
+	public ProblemCondition getProblemCondition() {
+		return problemCondition;
+	}
 
-    /**
-     * test for problem condition's {@code isTitleEmpty} property.
-     */
-    @SuppressWarnings("unchecked")
-    @Test
-    @Ignore
-    public void testProblemConditionIsTitleEmpty() throws AppException {
-        problemCondition.setIsTitleEmpty(true);
-        List<Problem> problems = (List<Problem>) problemDAO.findAll(problemCondition.getCondition());
-        for (Problem problem : problems)
-            System.out.println(problem.toString());
-    }
+	/**
+	 * test for problem condition's {@code isTitleEmpty} property.
+	 */
+	@SuppressWarnings("unchecked")
+	@Test
+	@Ignore
+	public void testProblemConditionIsTitleEmpty() throws AppException {
+		problemCondition.setIsTitleEmpty(true);
+		List<Problem> problems = (List<Problem>) problemDAO
+				.findAll(problemCondition.getCondition());
+		for (Problem problem : problems)
+			System.out.println(problem.toString());
+	}
 
-    /**
-     * Test condition's {@code clear} method.
-     */
-    @Test
-    @Ignore
-    public void testConditionClear() {
-        statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-        statusCondition.setContestId(1);
-        statusCondition.setUserName("lyhypacm");
-        System.out.println(ObjectUtil.toString(statusCondition));
-        statusCondition.clear();
-        System.out.println(ObjectUtil.toString(statusCondition));
-    }
+	/**
+	 * Test condition's {@code clear} method.
+	 */
+	@Test
+	@Ignore
+	public void testConditionClear() {
+		statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC
+				.ordinal());
+		statusCondition.setContestId(1);
+		statusCondition.setUserName("lyhypacm");
+		System.out.println(ObjectUtil.toString(statusCondition));
+		statusCondition.clear();
+		System.out.println(ObjectUtil.toString(statusCondition));
+	}
 
-    @Override
-    public void setStatusCondition(StatusCondition statusCondition) {
-        this.statusCondition = statusCondition;
-    }
+	@Override
+	public void setStatusCondition(StatusCondition statusCondition) {
+		this.statusCondition = statusCondition;
+	}
 
-    @Override
-    public StatusCondition getStatusCondition() {
-        return statusCondition;
-    }
+	@Override
+	public StatusCondition getStatusCondition() {
+		return statusCondition;
+	}
 
-    @SuppressWarnings("unchecked")
-    @Ignore
-    @Test
-    public void testProjections() throws AppException, FieldNotUniqueException {
-        User currentUser = userDAO.getEntityByUniqueField("userName", "UESTC_Izayoi");
-        statusCondition.clear();
-        statusCondition.setUserId(currentUser.getUserId());
-        statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-        Condition condition = statusCondition.getCondition();
-        condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
-        List<Integer> results = (List<Integer>) statusDAO.findAll(condition);
-        for (Integer result : results)
-            System.out.println(result);
-    }
+	@SuppressWarnings("unchecked")
+	@Ignore
+	@Test
+	public void testProjections() throws AppException, FieldNotUniqueException {
+		User currentUser = userDAO.getEntityByUniqueField("userName",
+				"UESTC_Izayoi");
+		statusCondition.clear();
+		statusCondition.setUserId(currentUser.getUserId());
+		statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC
+				.ordinal());
+		Condition condition = statusCondition.getCondition();
+		condition.addProjection(Projections
+				.groupProperty("problemByProblemId.problemId"));
+		List<Integer> results = (List<Integer>) statusDAO.findAll(condition);
+		for (Integer result : results)
+			System.out.println(result);
+	}
 
-    @Autowired
-    private IStatusDAO statusDAO;
+	@Autowired
+	private IStatusDAO statusDAO;
 
-    @Override
-    public void setStatusDAO(IStatusDAO statusDAO) {
-        this.statusDAO = statusDAO;
-    }
+	@Override
+	public void setStatusDAO(IStatusDAO statusDAO) {
+		this.statusDAO = statusDAO;
+	}
 }

@@ -26,15 +26,16 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ITagDAO;
 
 /**
  * For all class which need ITagDAO entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @see ITagDAO
  */
 public interface TagDAOAware {
-    /**
-     * Put tagDAO into class.
-     *
-     * @param tagDAO tagDAO object
-     */
-    public void setTagDAO(ITagDAO tagDAO);
+	/**
+	 * Put tagDAO into class.
+	 * 
+	 * @param tagDAO
+	 *            tagDAO object
+	 */
+	public void setTagDAO(ITagDAO tagDAO);
 }

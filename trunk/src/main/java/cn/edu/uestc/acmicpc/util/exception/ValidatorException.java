@@ -27,30 +27,34 @@ import java.util.Map;
 
 /**
  * A simple exception implement for JSON inside.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 public class ValidatorException extends Exception {
-    private Map<String, String> json;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2653305329765940347L;
+	private Map<String, String> json;
 
-    /**
-     * Constructor for multiple keys and values
-     *
-     * @param json JSON Mapping
-     */
-    public ValidatorException(Map<String, String> json) {
-        super();
-        this.json = json;
-    }
+	/**
+	 * Constructor for multiple keys and values
+	 * 
+	 * @param json
+	 *            JSON Mapping
+	 */
+	public ValidatorException(Map<String, String> json) {
+		super();
+		this.json = json;
+	}
 
-    public ValidatorException(String key, String value) {
-        super();
-        json = new HashMap<>();
-        json.put(key, value);
-    }
+	public ValidatorException(String key, String value) {
+		super();
+		json = new HashMap<>();
+		json.put(key, value);
+	}
 
-    public Map<String, String> getJson() {
-        return json;
-    }
+	public Map<String, String> getJson() {
+		return json;
+	}
 }

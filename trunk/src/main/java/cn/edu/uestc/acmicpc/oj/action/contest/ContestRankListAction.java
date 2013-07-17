@@ -13,189 +13,199 @@ package cn.edu.uestc.acmicpc.oj.action.contest;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.ICodeDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.*;
 import cn.edu.uestc.acmicpc.db.view.impl.*;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
-import cn.edu.uestc.acmicpc.ioc.dao.CodeDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.entity.ContestRankList;
-import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.struts2.interceptor.validation.SkipValidation;
-import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Action for list and search all submit status in contest
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(NeedLogin = false)
-public class ContestRankListAction extends BaseAction
-        implements StatusConditionAware, StatusDAOAware, ContestDAOAware, ProblemDAOAware {
+public class ContestRankListAction extends BaseAction implements
+		StatusConditionAware, StatusDAOAware, ContestDAOAware, ProblemDAOAware {
 
-    private Integer targetContestId;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7500495190888115907L;
+	private Integer targetContestId;
 
-    public Integer getTargetContestId() {
-        return targetContestId;
-    }
+	public Integer getTargetContestId() {
+		return targetContestId;
+	}
 
-    public void setTargetContestId(Integer targetContestId) {
-        this.targetContestId = targetContestId;
-    }
+	public void setTargetContestId(Integer targetContestId) {
+		this.targetContestId = targetContestId;
+	}
 
-    /**
-     * StatusDAO for status queries.
-     */
-    @Autowired
-    private IStatusDAO statusDAO;
-    @Autowired
-    private StatusCondition statusCondition;
+	/**
+	 * StatusDAO for status queries.
+	 */
+	@Autowired
+	private IStatusDAO statusDAO;
+	@Autowired
+	private StatusCondition statusCondition;
 
-    /**
-     * Get contest rank list action.
-     * <p/>
-     * Find all records by conditions and return them as a list in JSON, and the condition
-     * set will set in JSON named "condition".
-     * <p/>
-     * <strong>JSON output</strong>:
-     * <ul>
-     * <li>
-     * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>,
-     * "condition", <strong>ProblemCondition entity</strong>,
-     * "problemList":<strong>query result</strong>}
-     * </li>
-     * <li>
-     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-     * </li>
-     * </ul>
-     *
-     * @return <strong>JSON</strong> signal
-     */
-    @SuppressWarnings("unchecked")
-    @SkipValidation
-    public String toRankList() {
-        try {
-            if (targetContestId == null)
-                throw new AppException("Contest Id is empty!");
+	/**
+	 * Get contest rank list action.
+	 * <p/>
+	 * Find all records by conditions and return them as a list in JSON, and the
+	 * condition set will set in JSON named "condition".
+	 * <p/>
+	 * <strong>JSON output</strong>:
+	 * <ul>
+	 * <li>
+	 * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>,
+	 * "condition", <strong>ProblemCondition entity</strong>,
+	 * "problemList":<strong>query result</strong>}</li>
+	 * <li>
+	 * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+	 * </li>
+	 * </ul>
+	 * 
+	 * @return <strong>JSON</strong> signal
+	 */
+	@SuppressWarnings("unchecked")
+	@SkipValidation
+	public String toRankList() {
+		try {
+			if (targetContestId == null)
+				throw new AppException("Contest Id is empty!");
 
-            Contest contest = contestDAO.get(targetContestId);
-            if (contest == null)
-                throw new AppException("Wrong contest ID!");
+			Contest contest = contestDAO.get(targetContestId);
+			if (contest == null)
+				throw new AppException("Wrong contest ID!");
 
-            if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
-                if (!contest.getIsVisible())
-                    throw new AppException("Contest doesn't exist");
+			if (currentUser == null
+					|| currentUser.getType() != Global.AuthenticationType.ADMIN
+							.ordinal())
+				if (!contest.getIsVisible())
+					throw new AppException("Contest doesn't exist");
 
-            Timestamp contestEndTime = new Timestamp(contest.getTime().getTime() + contest.getLength() * 1000);
+			Timestamp contestEndTime = new Timestamp(contest.getTime()
+					.getTime() + contest.getLength() * 1000);
 
-            ContestView targetContest = new ContestView(contest);
+			ContestView targetContest = new ContestView(contest);
 
-            //Problem information changes.
-            Condition condition;
+			// Problem information changes.
+			Condition condition;
 
-            List<ContestProblemSummaryView> contestProblems = new LinkedList<>();
-            for (int id = 0; id < targetContest.getProblemList().size(); id++) {
-                Integer problemId = targetContest.getProblemList().get(id);
-                Problem problem = problemDAO.get(problemId);
-                ContestProblemSummaryView targetProblem = new ContestProblemSummaryView(problem,
-                        getCurrentUser(), problemStatus.get(problem.getProblemId()));
-                targetProblem.setTried(0);
-                targetProblem.setSolved(0);
-                targetProblem.setOrder((char) ('A' + id));
+			List<ContestProblemSummaryView> contestProblems = new LinkedList<>();
+			for (int id = 0; id < targetContest.getProblemList().size(); id++) {
+				Integer problemId = targetContest.getProblemList().get(id);
+				Problem problem = problemDAO.get(problemId);
+				ContestProblemSummaryView targetProblem = new ContestProblemSummaryView(
+						problem, getCurrentUser(), problemStatus.get(problem
+								.getProblemId()));
+				targetProblem.setTried(0);
+				targetProblem.setSolved(0);
+				targetProblem.setOrder((char) ('A' + id));
 
-                contestProblems.add(targetProblem);
-            }
+				contestProblems.add(targetProblem);
+			}
 
-            ContestRankList rankList = getGlobal().getContestRankListMap().get(contest.getContestId());
-            if (rankList == null) {
-                rankList = new ContestRankList(new ContestListView(contest), contestProblems);
-                getGlobal().getContestRankListMap().put(contest.getContestId(), rankList);
-                rankList.setLastUpdateTime(new Timestamp(0));
-                rankList.setLock(false);
-            }
+			ContestRankList rankList = getGlobal().getContestRankListMap().get(
+					contest.getContestId());
+			if (rankList == null) {
+				rankList = new ContestRankList(new ContestListView(contest),
+						contestProblems);
+				getGlobal().getContestRankListMap().put(contest.getContestId(),
+						rankList);
+				rankList.setLastUpdateTime(new Timestamp(0));
+				rankList.setLock(false);
+			}
 
-            if (!rankList.getLock()) {
-                if (new Date().getTime() - rankList.getLastUpdateTime().getTime() >= 5 * 1000) {
-                    System.out.println(rankList.getLastUpdateTime() + " " + rankList.getLock());
-                    //lock it!
-                    rankList.setLock(true);
+			if (!rankList.getLock()) {
+				if (new Date().getTime()
+						- rankList.getLastUpdateTime().getTime() >= 5 * 1000) {
+					System.out.println(rankList.getLastUpdateTime() + " "
+							+ rankList.getLock());
+					// lock it!
+					rankList.setLock(true);
 
-                    rankList.clear(new ContestListView(contest), contestProblems);
+					rankList.clear(new ContestListView(contest),
+							contestProblems);
 
-                    statusCondition.clear();
-                    statusCondition.setContestId(contest.getContestId());
-                    statusCondition.setStartTime(contest.getTime());
-                    statusCondition.setEndTime(contestEndTime);
-                    condition = statusCondition.getCondition();
-                    condition.addOrder("statusId", true);
-                    List<Status> statusList = (List<Status>) statusDAO.findAll(condition);
+					statusCondition.clear();
+					statusCondition.setContestId(contest.getContestId());
+					statusCondition.setStartTime(contest.getTime());
+					statusCondition.setEndTime(contestEndTime);
+					condition = statusCondition.getCondition();
+					condition.addOrder("statusId", true);
+					List<Status> statusList = (List<Status>) statusDAO
+							.findAll(condition);
 
-                    for (Status status : statusList)
-                        rankList.updateRankList(status);
+					for (Status status : statusList)
+						rankList.updateRankList(status);
 
-                    System.out.println("Success update!");
-                    rankList.setLastUpdateTime(new Timestamp(new Date().getTime()));
-                    rankList.setLock(false);
-                }
-            }
+					System.out.println("Success update!");
+					rankList.setLastUpdateTime(new Timestamp(new Date()
+							.getTime()));
+					rankList.setLock(false);
+				}
+			}
 
-            json.put("rankList", rankList);
-            json.put("result", "ok");
-        } catch (AppException e) {
-            json.put("result", "error");
-            json.put("error_msg", e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            json.put("result", "error");
-            json.put("error_msg", "Unknown exception occurred.");
-        }
-        return JSON;
-    }
+			json.put("rankList", rankList);
+			json.put("result", "ok");
+		} catch (AppException e) {
+			json.put("result", "error");
+			json.put("error_msg", e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("result", "error");
+			json.put("error_msg", "Unknown exception occurred.");
+		}
+		return JSON;
+	}
 
-    @Override
-    public void setStatusCondition(StatusCondition statusCondition) {
-        this.statusCondition = statusCondition;
-    }
+	@Override
+	public void setStatusCondition(StatusCondition statusCondition) {
+		this.statusCondition = statusCondition;
+	}
 
-    @Override
-    public StatusCondition getStatusCondition() {
-        return statusCondition;
-    }
+	@Override
+	public StatusCondition getStatusCondition() {
+		return statusCondition;
+	}
 
-    @Override
-    public void setStatusDAO(IStatusDAO statusDAO) {
-        this.statusDAO = statusDAO;
-    }
+	@Override
+	public void setStatusDAO(IStatusDAO statusDAO) {
+		this.statusDAO = statusDAO;
+	}
 
-    @Autowired
-    private IContestDAO contestDAO;
+	@Autowired
+	private IContestDAO contestDAO;
 
-    @Override
-    public void setContestDAO(IContestDAO contestDAO) {
-        this.contestDAO = contestDAO;
-    }
+	@Override
+	public void setContestDAO(IContestDAO contestDAO) {
+		this.contestDAO = contestDAO;
+	}
 
-    @Autowired
-    private IProblemDAO problemDAO;
+	@Autowired
+	private IProblemDAO problemDAO;
 
-    @Override
-    public void setProblemDAO(IProblemDAO problemDAO) {
-        this.problemDAO = problemDAO;
-    }
+	@Override
+	public void setProblemDAO(IProblemDAO problemDAO) {
+		this.problemDAO = problemDAO;
+	}
 }

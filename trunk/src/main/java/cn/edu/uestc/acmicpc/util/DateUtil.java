@@ -29,35 +29,37 @@ import java.util.Date;
 
 /**
  * Global method for date operations.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class DateUtil {
-    /**
-     * Parse date string.
-     *
-     * @param string date string to parse
-     * @return Date object for the string
-     * @throws ParseException
-     */
-    @SuppressWarnings("UnusedDeclaration")
-    public static Date valueOf(String string) throws ParseException {
-        return new SimpleDateFormat("yyyy/MM/dd").parse(string);
-    }
+	/**
+	 * Parse date string.
+	 * 
+	 * @param string
+	 *            date string to parse
+	 * @return Date object for the string
+	 * @throws ParseException
+	 */
+	public static Date valueOf(String string) throws ParseException {
+		return new SimpleDateFormat("yyyy/MM/dd").parse(string);
+	}
 
-    /**
-     * Date add operation.
-     *
-     * @param date   date we want to add
-     * @param field  add field name
-     * @param offset add offset
-     * @return new date after add operation
-     */
-    @SuppressWarnings("SameParameterValue")
-    public static Date add(Date date, int field, int offset) {
-        Calendar cd = Calendar.getInstance();
-        cd.setTime(date);
-        cd.add(field, offset);
-        return cd.getTime();
-    }
+	/**
+	 * Date add operation.
+	 * 
+	 * @param date
+	 *            date we want to add
+	 * @param field
+	 *            add field name
+	 * @param offset
+	 *            add offset
+	 * @return new date after add operation
+	 */
+	public static Date add(Date date, int field, int offset) {
+		Calendar cd = Calendar.getInstance();
+		cd.setTime(date);
+		cd.add(field, offset);
+		return cd.getTime();
+	}
 }

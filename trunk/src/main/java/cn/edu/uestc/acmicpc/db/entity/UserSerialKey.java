@@ -28,110 +28,109 @@ import java.sql.Timestamp;
 
 /**
  * User serial keys for password.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 @Table(name = "userSerialKey", schema = "", catalog = "uestcoj")
 @Entity
 @KeyField("userSerialKeyId")
 public class UserSerialKey implements Serializable {
-    private static final long serialVersionUID = -129312932189312L;
+	private static final long serialVersionUID = -129312932189312L;
 
-    private Integer version;
+	private Integer version;
 
-    @Version
-    @Column(name = "OPTLOCK")
-    public Integer getVersion() {
-        return version;
-    }
+	@Version
+	@Column(name = "OPTLOCK")
+	public Integer getVersion() {
+		return version;
+	}
 
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
 
-    @Override
-    public String toString() {
-        return "UserSerialKey{" +
-                "serialKey='" + serialKey + '\'' +
-                ", userByUserId=" + userByUserId +
-                ", time=" + time +
-                ", userSerialKeyId=" + userSerialKeyId +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "UserSerialKey{" + "serialKey='" + serialKey + '\''
+				+ ", userByUserId=" + userByUserId + ", time=" + time
+				+ ", userSerialKeyId=" + userSerialKeyId + '}';
+	}
 
-    private Integer userSerialKeyId;
+	private Integer userSerialKeyId;
 
-    private Timestamp time;
-    private String serialKey;
+	private Timestamp time;
+	private String serialKey;
 
-    @Column(name = "serialKey", nullable = false, insertable = true, updatable = true,
-            length = 128, precision = 0, unique = false)
-    @Basic
-    public String getSerialKey() {
-        return serialKey;
-    }
+	@Column(name = "serialKey", nullable = false, insertable = true, updatable = true, length = 128, precision = 0, unique = false)
+	@Basic
+	public String getSerialKey() {
+		return serialKey;
+	}
 
-    public void setSerialKey(String serialKey) {
-        this.serialKey = serialKey;
-    }
+	public void setSerialKey(String serialKey) {
+		this.serialKey = serialKey;
+	}
 
-    @Column(name = "userSerialKeyId", nullable = false, insertable = true, updatable = true,
-            length = 10, precision = 0, unique = true)
-    @Id
-    @GeneratedValue
-    public Integer getUserSerialKeyId() {
-        return userSerialKeyId;
-    }
+	@Column(name = "userSerialKeyId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
+	@Id
+	@GeneratedValue
+	public Integer getUserSerialKeyId() {
+		return userSerialKeyId;
+	}
 
-    public void setUserSerialKeyId(Integer userSerialKeyId) {
-        this.userSerialKeyId = userSerialKeyId;
-    }
+	public void setUserSerialKeyId(Integer userSerialKeyId) {
+		this.userSerialKeyId = userSerialKeyId;
+	}
 
-    @Column(name = "time", nullable = false, insertable = true, updatable = true, length = 19, precision = 0)
-    @Basic
-    public Timestamp getTime() {
-        return time;
-    }
+	@Column(name = "time", nullable = false, insertable = true, updatable = true, length = 19, precision = 0)
+	@Basic
+	public Timestamp getTime() {
+		return time;
+	}
 
-    @SuppressWarnings("RedundantIfStatement")
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
-        UserSerialKey that = (UserSerialKey) o;
+		UserSerialKey that = (UserSerialKey) o;
 
-        if (!serialKey.equals(that.serialKey)) return false;
-        if (!time.equals(that.time)) return false;
-        if (!userByUserId.equals(that.userByUserId)) return false;
-        if (!userSerialKeyId.equals(that.userSerialKeyId)) return false;
+		if (!serialKey.equals(that.serialKey))
+			return false;
+		if (!time.equals(that.time))
+			return false;
+		if (!userByUserId.equals(that.userByUserId))
+			return false;
+		if (!userSerialKeyId.equals(that.userSerialKeyId))
+			return false;
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = userSerialKeyId.hashCode();
-        result = 31 * result + time.hashCode();
-        result = 31 * result + serialKey.hashCode();
-        result = 31 * result + userByUserId.hashCode();
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		int result = userSerialKeyId.hashCode();
+		result = 31 * result + time.hashCode();
+		result = 31 * result + serialKey.hashCode();
+		result = 31 * result + userByUserId.hashCode();
+		return result;
+	}
 
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
+	public void setTime(Timestamp time) {
+		this.time = time;
+	}
 
-    private User userByUserId;
+	private User userByUserId;
 
-    @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
-    public User getUserByUserId() {
-        return userByUserId;
-    }
+	@ManyToOne
+	@JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
+	public User getUserByUserId() {
+		return userByUserId;
+	}
 
-    public void setUserByUserId(User userByUserId) {
-        this.userByUserId = userByUserId;
-    }
+	public void setUserByUserId(User userByUserId) {
+		this.userByUserId = userByUserId;
+	}
 }

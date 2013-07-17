@@ -25,7 +25,7 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public interface ITrainingStatusDAO extends IDAO<TrainingStatus, Integer> {

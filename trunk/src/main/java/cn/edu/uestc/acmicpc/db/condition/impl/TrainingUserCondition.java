@@ -28,6 +28,7 @@ import cn.edu.uestc.acmicpc.db.dao.impl.UserDAO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,101 +36,105 @@ import java.util.List;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class TrainingUserCondition extends BaseCondition implements UserConditionAware {
-    private Integer startId;
-    private Integer endId;
-    private String name;
-    private String userName;
-    private Integer type;
-    private Boolean allow;
+public class TrainingUserCondition extends BaseCondition implements
+		UserConditionAware {
+	private Integer startId;
+	private Integer endId;
+	private String name;
+	private String userName;
+	private Integer type;
+	private Boolean allow;
 
-    @Exp(MapField = "allow", Type = ConditionType.eq)
-    public Boolean getAllow() {
-        return allow;
-    }
+	@Exp(MapField = "allow", Type = ConditionType.eq)
+	public Boolean getAllow() {
+		return allow;
+	}
 
-    public void setAllow(Boolean allow) {
-        this.allow = allow;
-    }
+	public void setAllow(Boolean allow) {
+		this.allow = allow;
+	}
 
-    @Exp(MapField = "trainingUserId", Type = ConditionType.ge)
-    public Integer getStartId() {
-        return startId;
-    }
+	@Exp(MapField = "trainingUserId", Type = ConditionType.ge)
+	public Integer getStartId() {
+		return startId;
+	}
 
-    public void setStartId(Integer startId) {
-        this.startId = startId;
-    }
+	public void setStartId(Integer startId) {
+		this.startId = startId;
+	}
 
-    @Exp(MapField = "trainingUserId", Type = ConditionType.le)
-    public Integer getEndId() {
-        return endId;
-    }
+	@Exp(MapField = "trainingUserId", Type = ConditionType.le)
+	public Integer getEndId() {
+		return endId;
+	}
 
-    public void setEndId(Integer endId) {
-        this.endId = endId;
-    }
+	public void setEndId(Integer endId) {
+		this.endId = endId;
+	}
 
-    @Exp(Type = ConditionType.like)
-    public String getName() {
-        return name;
-    }
+	@Exp(Type = ConditionType.like)
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getUserName() {
-        return userName;
-    }
+	public String getUserName() {
+		return userName;
+	}
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
-    @Exp(Type = ConditionType.eq)
-    public Integer getType() {
-        return type;
-    }
+	@Exp(Type = ConditionType.eq)
+	public Integer getType() {
+		return type;
+	}
 
-    public void setType(Integer type) {
-        this.type = type;
-    }
+	public void setType(Integer type) {
+		this.type = type;
+	}
 
-    @Override
-    public void invoke(Condition condition) {
-        super.invoke(condition);
+	@SuppressWarnings("unchecked")
+	@Override
+	public void invoke(Condition condition) {
+		super.invoke(condition);
 
-        if (userName != null) {
-            UserDAO userDAO = applicationContext.getBean("userDAO", UserDAO.class);
-            userCondition.clear();
-            userCondition.setUserName(userName);
-            try {
-                List<User> users = (List<User>) userDAO.findAll(userCondition.getCondition());
-                if (users != null && !users.isEmpty()) {
-                    JoinedProperty joinedProperty = new JoinedProperty(
-                            Restrictions.eq("userByUserId", users.get(0)), users.get(0).getUserId(),
-                            ConditionType.eq);
-                    condition.addJoinedProperty("userByUserId", joinedProperty);
-                }
-            } catch (AppException ignored) {
-            }
-        }
-    }
+		if (userName != null) {
+			UserDAO userDAO = applicationContext.getBean("userDAO",
+					UserDAO.class);
+			userCondition.clear();
+			userCondition.setUserName(userName);
+			try {
+				List<User> users = (List<User>) userDAO.findAll(userCondition
+						.getCondition());
+				if (users != null && !users.isEmpty()) {
+					JoinedProperty joinedProperty = new JoinedProperty(
+							Restrictions.eq("userByUserId", users.get(0)),
+							users.get(0).getUserId(), ConditionType.eq);
+					condition.addJoinedProperty("userByUserId", joinedProperty);
+				}
+			} catch (AppException ignored) {
+			}
+		}
+	}
 
-    @Autowired
-    private UserCondition userCondition;
+	@Autowired
+	private UserCondition userCondition;
 
-    @Override
-    public void setUserCondition(UserCondition userCondition) {
-        this.userCondition = userCondition;
-    }
+	@Override
+	public void setUserCondition(UserCondition userCondition) {
+		this.userCondition = userCondition;
+	}
 
-    @Override
-    public UserCondition getUserCondition() {
-        return userCondition;
-    }
+	@Override
+	public UserCondition getUserCondition() {
+		return userCondition;
+	}
 }

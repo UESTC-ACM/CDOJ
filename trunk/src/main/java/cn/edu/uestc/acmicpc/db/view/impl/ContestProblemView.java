@@ -23,196 +23,190 @@
 package cn.edu.uestc.acmicpc.db.view.impl;
 
 import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
 import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.apache.commons.lang3.StringEscapeUtils;
-
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Use for return problem information with json type in contest.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 public class ContestProblemView extends View<Problem> {
-    private Integer problemId;
-    private String title;
-    private String description;
-    private String input;
-    private String output;
-    private String sampleInput;
-    private String sampleOutput;
-    private String hint;
-    private String source;
-    private Integer timeLimit;
-    private Integer memoryLimit;
-    private Integer solved;
-    private Integer tried;
-    private Boolean isSpj;
-    private Integer outputLimit;
-    private Integer javaTimeLimit;
-    private Integer javaMemoryLimit;
-    private char order;
+	private Integer problemId;
+	private String title;
+	private String description;
+	private String input;
+	private String output;
+	private String sampleInput;
+	private String sampleOutput;
+	private String hint;
+	private String source;
+	private Integer timeLimit;
+	private Integer memoryLimit;
+	private Integer solved;
+	private Integer tried;
+	private Boolean isSpj;
+	private Integer outputLimit;
+	private Integer javaTimeLimit;
+	private Integer javaMemoryLimit;
+	private char order;
 
-    public char getOrder() {
-        return order;
-    }
+	public char getOrder() {
+		return order;
+	}
 
-    @Ignore
-    public void setOrder(char order) {
-        this.order = order;
-    }
+	@Ignore
+	public void setOrder(char order) {
+		this.order = order;
+	}
 
-    /**
-     * Get ProblemView entity by problem entity.
-     *
-     * @param problem specific problem entity
-     * @throws AppException
-     */
-    public ContestProblemView(Problem problem) throws AppException {
-        super(problem);
-    }
+	/**
+	 * Get ProblemView entity by problem entity.
+	 * 
+	 * @param problem
+	 *            specific problem entity
+	 * @throws AppException
+	 */
+	public ContestProblemView(Problem problem) throws AppException {
+		super(problem);
+	}
 
-    public Integer getProblemId() {
-        return problemId;
-    }
+	public Integer getProblemId() {
+		return problemId;
+	}
 
-    public void setProblemId(Integer problemId) {
-        this.problemId = problemId;
-    }
+	public void setProblemId(Integer problemId) {
+		this.problemId = problemId;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public String getInput() {
-        return input;
-    }
+	public String getInput() {
+		return input;
+	}
 
-    public void setInput(String input) {
-        this.input = input;
-    }
+	public void setInput(String input) {
+		this.input = input;
+	}
 
-    public String getOutput() {
-        return output;
-    }
+	public String getOutput() {
+		return output;
+	}
 
-    public void setOutput(String output) {
-        this.output = output;
-    }
+	public void setOutput(String output) {
+		this.output = output;
+	}
 
-    public String getSampleInput() {
-        return sampleInput;
-    }
+	public String getSampleInput() {
+		return sampleInput;
+	}
 
-    public void setSampleInput(String sampleInput) {
-        this.sampleInput = sampleInput;
-    }
+	public void setSampleInput(String sampleInput) {
+		this.sampleInput = sampleInput;
+	}
 
-    public String getSampleOutput() {
-        return sampleOutput;
-    }
+	public String getSampleOutput() {
+		return sampleOutput;
+	}
 
-    public void setSampleOutput(String sampleOutput) {
-        this.sampleOutput = sampleOutput;
-    }
+	public void setSampleOutput(String sampleOutput) {
+		this.sampleOutput = sampleOutput;
+	}
 
-    public String getHint() {
-        return hint;
-    }
+	public String getHint() {
+		return hint;
+	}
 
-    public void setHint(String hint) {
-        this.hint = hint;
-    }
+	public void setHint(String hint) {
+		this.hint = hint;
+	}
 
-    public String getSource() {
-        return source;
-    }
+	public String getSource() {
+		return source;
+	}
 
-    public void setSource(String source) {
-        this.source = source;
-    }
+	public void setSource(String source) {
+		this.source = source;
+	}
 
-    public Integer getTimeLimit() {
-        return timeLimit;
-    }
+	public Integer getTimeLimit() {
+		return timeLimit;
+	}
 
-    public void setTimeLimit(Integer timeLimit) {
-        this.timeLimit = timeLimit;
-    }
+	public void setTimeLimit(Integer timeLimit) {
+		this.timeLimit = timeLimit;
+	}
 
-    public Integer getMemoryLimit() {
-        return memoryLimit;
-    }
+	public Integer getMemoryLimit() {
+		return memoryLimit;
+	}
 
-    public void setMemoryLimit(Integer memoryLimit) {
-        this.memoryLimit = memoryLimit;
-    }
+	public void setMemoryLimit(Integer memoryLimit) {
+		this.memoryLimit = memoryLimit;
+	}
 
-    public Integer getSolved() {
-        return solved;
-    }
+	public Integer getSolved() {
+		return solved;
+	}
 
-    @Ignore
-    public void setSolved(Integer solved) {
-        this.solved = solved;
-    }
+	@Ignore
+	public void setSolved(Integer solved) {
+		this.solved = solved;
+	}
 
-    public Integer getTried() {
-        return tried;
-    }
+	public Integer getTried() {
+		return tried;
+	}
 
-    @Ignore
-    public void setTried(Integer tried) {
-        this.tried = tried;
-    }
+	@Ignore
+	public void setTried(Integer tried) {
+		this.tried = tried;
+	}
 
-    public Boolean getIsSpj() {
-        return isSpj;
-    }
+	public Boolean getIsSpj() {
+		return isSpj;
+	}
 
-    public void setIsSpj(Boolean isSPJ) {
-        this.isSpj = isSPJ;
-    }
+	public void setIsSpj(Boolean isSPJ) {
+		this.isSpj = isSPJ;
+	}
 
-    public Integer getOutputLimit() {
-        return outputLimit;
-    }
+	public Integer getOutputLimit() {
+		return outputLimit;
+	}
 
-    public void setOutputLimit(Integer outputLimit) {
-        this.outputLimit = outputLimit;
-    }
+	public void setOutputLimit(Integer outputLimit) {
+		this.outputLimit = outputLimit;
+	}
 
-    public Integer getJavaTimeLimit() {
-        return javaTimeLimit;
-    }
+	public Integer getJavaTimeLimit() {
+		return javaTimeLimit;
+	}
 
-    public void setJavaTimeLimit(Integer javaTimeLimit) {
-        this.javaTimeLimit = javaTimeLimit;
-    }
+	public void setJavaTimeLimit(Integer javaTimeLimit) {
+		this.javaTimeLimit = javaTimeLimit;
+	}
 
-    public Integer getJavaMemoryLimit() {
-        return javaMemoryLimit;
-    }
+	public Integer getJavaMemoryLimit() {
+		return javaMemoryLimit;
+	}
 
-    public void setJavaMemoryLimit(Integer javaMemoryLimit) {
-        this.javaMemoryLimit = javaMemoryLimit;
-    }
+	public void setJavaMemoryLimit(Integer javaMemoryLimit) {
+		this.javaMemoryLimit = javaMemoryLimit;
+	}
 }

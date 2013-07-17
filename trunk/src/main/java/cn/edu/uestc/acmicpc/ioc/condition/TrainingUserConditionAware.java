@@ -25,10 +25,12 @@ import cn.edu.uestc.acmicpc.db.condition.impl.TrainingUserCondition;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public interface TrainingUserConditionAware {
-    public void setTrainingUserCondition(TrainingUserCondition trainingUserCondition);
-    public TrainingUserCondition getTrainingUserCondition();
+	public void setTrainingUserCondition(
+			TrainingUserCondition trainingUserCondition);
+
+	public TrainingUserCondition getTrainingUserCondition();
 }

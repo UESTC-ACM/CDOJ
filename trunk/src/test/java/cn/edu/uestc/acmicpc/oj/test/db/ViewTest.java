@@ -41,34 +41,34 @@ import java.util.Date;
 
 /**
  * Test cases for view.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:applicationContext-test.xml"})
+@ContextConfiguration({ "classpath:applicationContext-test.xml" })
 public class ViewTest implements DepartmentDAOAware {
-    @Autowired
-    private IDepartmentDAO departmentDAO;
+	@Autowired
+	private IDepartmentDAO departmentDAO;
 
-    @Test
-    @Ignore
-    public void testUserView() throws AppException {
-        User user = new User();
-        user.setUserName("admin");
-        user.setPassword(StringUtil.encodeSHA1("admin"));
-        user.setNickName("admin");
-        user.setEmail("acm@uestc.edu.cn");
-        user.setSchool("UESTC");
-        user.setDepartmentByDepartmentId(departmentDAO.get(1));
-        user.setStudentId("2010013100008");
-        user.setLastLogin(new Timestamp(new Date().getTime()));
-        user.setType(0);
-        UserView userView = new UserView(user);
-        Assert.assertEquals("admin", userView.getUserName());
-    }
+	@Test
+	@Ignore
+	public void testUserView() throws AppException {
+		User user = new User();
+		user.setUserName("admin");
+		user.setPassword(StringUtil.encodeSHA1("admin"));
+		user.setNickName("admin");
+		user.setEmail("acm@uestc.edu.cn");
+		user.setSchool("UESTC");
+		user.setDepartmentByDepartmentId(departmentDAO.get(1));
+		user.setStudentId("2010013100008");
+		user.setLastLogin(new Timestamp(new Date().getTime()));
+		user.setType(0);
+		UserView userView = new UserView(user);
+		Assert.assertEquals("admin", userView.getUserName());
+	}
 
-    @Override
-    public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
-        this.departmentDAO = departmentDAO;
-    }
+	@Override
+	public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
+		this.departmentDAO = departmentDAO;
+	}
 }

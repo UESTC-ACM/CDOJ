@@ -28,17 +28,17 @@ import cn.edu.uestc.acmicpc.db.entity.Tag;
 
 /**
  * DAO for tag entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class TagDAO extends DAO<Tag, Integer> implements ITagDAO {
-    @Override
-    protected Class<Integer> getPKClass() {
-        return Integer.class;
-    }
+	@Override
+	protected Class<Integer> getPKClass() {
+		return Integer.class;
+	}
 
-    @Override
-    protected Class<Tag> getReferenceClass() {
-        return Tag.class;
-    }
+	@Override
+	protected Class<Tag> getReferenceClass() {
+		return Tag.class;
+	}
 }

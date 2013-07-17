@@ -31,38 +31,41 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class FormatTag extends Tag {
 
-    /**
-     * String need to replace
-     */
-    private String value;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1994982101713480831L;
+	/**
+	 * String need to replace
+	 */
+	private String value;
 
-    @Override
-    public Component getBean(ValueStack valueStack, HttpServletRequest request, HttpServletResponse response) {
-        return new FormatTagService(valueStack);
-    }
+	@Override
+	public Component getBean(ValueStack valueStack, HttpServletRequest request,
+			HttpServletResponse response) {
+		return new FormatTagService(valueStack);
+	}
 
-    /**
-     * put params into paginationTagService
-     */
-    @Override
-    protected void populateParams() {
-        super.populateParams();
-        FormatTagService formatTagService = (FormatTagService) getComponent();
-        formatTagService.setValue(getValue());
-    }
+	/**
+	 * put params into paginationTagService
+	 */
+	@Override
+	protected void populateParams() {
+		super.populateParams();
+		FormatTagService formatTagService = (FormatTagService) getComponent();
+		formatTagService.setValue(getValue());
+	}
 
-    @SuppressWarnings("WeakerAccess")
-    public String getValue() {
-        return value;
-    }
+	public String getValue() {
+		return value;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public void setValue(String value) {
+		this.value = value;
+	}
 }

@@ -26,15 +26,16 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 
 /**
  * For all class which need statusDAO entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @see IStatusDAO
  */
 public interface StatusDAOAware {
-    /**
-     * Put statusDAO into class.
-     *
-     * @param statusDAO statusDAO object
-     */
-    public void setStatusDAO(IStatusDAO statusDAO);
+	/**
+	 * Put statusDAO into class.
+	 * 
+	 * @param statusDAO
+	 *            statusDAO object
+	 */
+	public void setStatusDAO(IStatusDAO statusDAO);
 }

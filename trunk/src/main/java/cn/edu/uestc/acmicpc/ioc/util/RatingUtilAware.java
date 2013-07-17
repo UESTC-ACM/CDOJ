@@ -24,10 +24,17 @@ package cn.edu.uestc.acmicpc.ioc.util;
 import cn.edu.uestc.acmicpc.util.RatingUtil;
 
 /**
- * Description
- *
+ * For all class which need ratingUtil entity.
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ * @see RatingUtil
  */
 public interface RatingUtilAware {
-    public void setRatingUtil(RatingUtil ratingUtil);
+	/**
+	 * Put RatingUtil entity into class.
+	 * 
+	 * @param ratingUtil
+	 *            ratingUtil entity
+	 */
+	public void setRatingUtil(RatingUtil ratingUtil);
 }

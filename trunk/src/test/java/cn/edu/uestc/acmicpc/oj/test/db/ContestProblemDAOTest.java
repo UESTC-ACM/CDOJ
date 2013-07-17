@@ -38,44 +38,45 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:applicationContext-test.xml"})
-public class ContestProblemDAOTest implements ProblemDAOAware, ContestDAOAware, ContestProblemDAOAware {
+@ContextConfiguration({ "classpath:applicationContext-test.xml" })
+public class ContestProblemDAOTest implements ProblemDAOAware, ContestDAOAware,
+		ContestProblemDAOAware {
 
-    @Autowired
-    private IProblemDAO problemDAO;
+	@Autowired
+	private IProblemDAO problemDAO;
 
-    @Autowired
-    private IContestDAO contestDAO;
+	@Autowired
+	private IContestDAO contestDAO;
 
-    @Autowired
-    private IContestProblemDAO contestProblemDAO;
+	@Autowired
+	private IContestProblemDAO contestProblemDAO;
 
-    @Override
-    public void setContestDAO(IContestDAO contestDAO) {
-        this.contestDAO = contestDAO;
-    }
+	@Override
+	public void setContestDAO(IContestDAO contestDAO) {
+		this.contestDAO = contestDAO;
+	}
 
-    @Override
-    public void setContestProblemDAO(IContestProblemDAO contestProblemDAO) {
-        this.contestProblemDAO = contestProblemDAO;
-    }
+	@Override
+	public void setContestProblemDAO(IContestProblemDAO contestProblemDAO) {
+		this.contestProblemDAO = contestProblemDAO;
+	}
 
-    @Override
-    public void setProblemDAO(IProblemDAO problemDAO) {
-        this.problemDAO = problemDAO;
-    }
+	@Override
+	public void setProblemDAO(IProblemDAO problemDAO) {
+		this.problemDAO = problemDAO;
+	}
 
-    @Test
-    @Ignore
-    public void testAddContestProblem() throws AppException {
-        ContestProblem contestProblem = new ContestProblem();
-        contestProblem.setContestByContestId(contestDAO.get(1));
-        contestProblem.setProblemByProblemId(problemDAO.get(1));
-        contestProblem.setOrder(0);
-        contestProblemDAO.add(contestProblem);
-    }
+	@Test
+	@Ignore
+	public void testAddContestProblem() throws AppException {
+		ContestProblem contestProblem = new ContestProblem();
+		contestProblem.setContestByContestId(contestDAO.get(1));
+		contestProblem.setProblemByProblemId(problemDAO.get(1));
+		contestProblem.setOrder(0);
+		contestProblemDAO.add(contestProblem);
+	}
 }

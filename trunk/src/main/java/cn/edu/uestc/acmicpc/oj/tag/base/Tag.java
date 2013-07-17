@@ -26,8 +26,13 @@ import org.apache.struts2.views.jsp.ContextBeanTag;
 
 /**
  * Customize JSP Tag Interface
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public abstract class Tag extends ContextBeanTag {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6569639999832244337L;
 }

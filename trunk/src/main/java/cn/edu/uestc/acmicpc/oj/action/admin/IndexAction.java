@@ -28,17 +28,16 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 
 /**
  * description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class IndexAction extends BaseAction {
 
-    private static final long serialVersionUID = -754990150765691696L;
+	private static final long serialVersionUID = -754990150765691696L;
 
-    @SuppressWarnings("SameReturnValue")
-    public String toIndex() {
-        return SUCCESS;
-    }
+	public String toIndex() {
+		return SUCCESS;
+	}
 
 }

@@ -27,81 +27,81 @@ import cn.edu.uestc.acmicpc.db.view.base.View;
 
 /**
  * Contest information view.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 public class ProblemDataView extends View<Problem> {
-    private Integer timeLimit;
-    private Integer memoryLimit;
-    private Integer outputLimit;
-    private Integer javaTimeLimit;
-    private Integer javaMemoryLimit;
-    private Integer dataCount;
-    private Boolean isSpj;
+	private Integer timeLimit;
+	private Integer memoryLimit;
+	private Integer outputLimit;
+	private Integer javaTimeLimit;
+	private Integer javaMemoryLimit;
+	private Integer dataCount;
+	private Boolean isSpj;
 
-    public Integer getTimeLimit() {
-        return timeLimit;
-    }
+	public Integer getTimeLimit() {
+		return timeLimit;
+	}
 
-    public void setTimeLimit(Integer timeLimit) {
-        this.timeLimit = timeLimit;
-    }
+	public void setTimeLimit(Integer timeLimit) {
+		this.timeLimit = timeLimit;
+	}
 
-    public Integer getMemoryLimit() {
-        return memoryLimit;
-    }
+	public Integer getMemoryLimit() {
+		return memoryLimit;
+	}
 
-    public void setMemoryLimit(Integer memoryLimit) {
-        this.memoryLimit = memoryLimit;
-    }
+	public void setMemoryLimit(Integer memoryLimit) {
+		this.memoryLimit = memoryLimit;
+	}
 
-    public Integer getOutputLimit() {
-        return outputLimit;
-    }
+	public Integer getOutputLimit() {
+		return outputLimit;
+	}
 
-    public void setOutputLimit(Integer outputLimit) {
-        this.outputLimit = outputLimit;
-    }
+	public void setOutputLimit(Integer outputLimit) {
+		this.outputLimit = outputLimit;
+	}
 
-    public Integer getJavaTimeLimit() {
-        return javaTimeLimit;
-    }
+	public Integer getJavaTimeLimit() {
+		return javaTimeLimit;
+	}
 
-    public void setJavaTimeLimit(Integer javaTimeLimit) {
-        this.javaTimeLimit = javaTimeLimit;
-    }
+	public void setJavaTimeLimit(Integer javaTimeLimit) {
+		this.javaTimeLimit = javaTimeLimit;
+	}
 
-    public Integer getJavaMemoryLimit() {
-        return javaMemoryLimit;
-    }
+	public Integer getJavaMemoryLimit() {
+		return javaMemoryLimit;
+	}
 
-    public void setJavaMemoryLimit(Integer javaMemoryLimit) {
-        this.javaMemoryLimit = javaMemoryLimit;
-    }
+	public void setJavaMemoryLimit(Integer javaMemoryLimit) {
+		this.javaMemoryLimit = javaMemoryLimit;
+	}
 
-    public Integer getDataCount() {
-        return dataCount;
-    }
+	public Integer getDataCount() {
+		return dataCount;
+	}
 
-    public void setDataCount(Integer dataCount) {
-        this.dataCount = dataCount;
-    }
+	public void setDataCount(Integer dataCount) {
+		this.dataCount = dataCount;
+	}
 
-    public Boolean getIsSpj() {
-        return isSpj;
-    }
+	public Boolean getIsSpj() {
+		return isSpj;
+	}
 
-    public void setIsSpj(Boolean isSpj) {
-        this.isSpj = isSpj;
-    }
+	public void setIsSpj(Boolean isSpj) {
+		this.isSpj = isSpj;
+	}
 
-    /**
-     * Fetch data from problem entity.
-     *
-     * @param problem specific entity
-     */
-    public ProblemDataView(Problem problem) {
-        super(problem);
-    }
+	/**
+	 * Fetch data from problem entity.
+	 * 
+	 * @param problem
+	 *            specific entity
+	 */
+	public ProblemDataView(Problem problem) {
+		super(problem);
+	}
 }

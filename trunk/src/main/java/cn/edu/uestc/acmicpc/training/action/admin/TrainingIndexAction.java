@@ -21,37 +21,24 @@
 
 package cn.edu.uestc.acmicpc.training.action.admin;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.impl.TrainingContestCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDTO;
-import cn.edu.uestc.acmicpc.db.entity.Contest;
-import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
-import cn.edu.uestc.acmicpc.db.view.impl.TrainingContestListView;
-import cn.edu.uestc.acmicpc.db.view.impl.TrainingContestView;
-import cn.edu.uestc.acmicpc.ioc.condition.TrainingContestConditionAware;
-import cn.edu.uestc.acmicpc.ioc.dao.TrainingContestDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dto.TrainingContestDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
-import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class TrainingIndexAction extends BaseAction {
 
-    public String toIndex() {
-        return SUCCESS;
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1551050786444888901L;
+
+	public String toIndex() {
+		return SUCCESS;
+	}
 }

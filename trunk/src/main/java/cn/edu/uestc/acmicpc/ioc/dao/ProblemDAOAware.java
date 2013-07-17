@@ -26,15 +26,16 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 
 /**
  * For all class which need problem dao entity.
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @see IProblemDAO
  */
 public interface ProblemDAOAware {
-    /**
-     * put problemDAO into class
-     *
-     * @param problemDAO specific problem DAO entity
-     */
-    public void setProblemDAO(IProblemDAO problemDAO);
+	/**
+	 * put problemDAO into class
+	 * 
+	 * @param problemDAO
+	 *            specific problem DAO entity
+	 */
+	public void setProblemDAO(IProblemDAO problemDAO);
 }

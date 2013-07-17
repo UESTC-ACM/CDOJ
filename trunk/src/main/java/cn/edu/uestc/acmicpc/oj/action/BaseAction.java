@@ -51,449 +51,456 @@ import java.util.Map;
 
 /**
  * Base action support, add specified common elements in here.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
-public class BaseAction extends ActionSupport
-        implements RequestAware, SessionAware, ApplicationAware, IActionInterceptor,
-        ServletResponseAware, ServletRequestAware, UserDAOAware, ApplicationContextAware {
-    private static final long serialVersionUID = -3221772654123596229L;
+public class BaseAction extends ActionSupport implements RequestAware,
+		SessionAware, ApplicationAware, IActionInterceptor,
+		ServletResponseAware, ServletRequestAware, UserDAOAware,
+		ApplicationContextAware {
+	private static final long serialVersionUID = -3221772654123596229L;
 
-    /**
-     * Number of records per page
-     */
-    protected static final Long RECORD_PER_PAGE = 50L;
+	/**
+	 * Number of records per page
+	 */
+	protected static final Long RECORD_PER_PAGE = 50L;
 
-    /**
-     * Global constant
-     */
-    private final ThreadLocal<Global> global = new ThreadLocal<>();
-    protected Map<Integer, Global.AuthorStatusType> problemStatus;
-    @Autowired
-    protected ApplicationContext applicationContext;
+	/**
+	 * Global constant
+	 */
+	private final ThreadLocal<Global> global = new ThreadLocal<>();
+	protected Map<Integer, Global.AuthorStatusType> problemStatus;
+	@Autowired
+	protected ApplicationContext applicationContext;
 
-    @SuppressWarnings("UnusedDeclaration")
-    public Global getGlobal() {
-        return global.get();
-    }
+	public Global getGlobal() {
+		return global.get();
+	}
 
-    public void setGlobal(Global global) {
-        this.global.set(global);
-    }
+	public void setGlobal(Global global) {
+		this.global.set(global);
+	}
 
-    /**
-     * Request attribute map.
-     */
-    protected Map<String, Object> request;
+	/**
+	 * Request attribute map.
+	 */
+	protected Map<String, Object> request;
 
-    /**
-     * Session attribute map.
-     */
-    protected Map<String, Object> session;
+	/**
+	 * Session attribute map.
+	 */
+	protected Map<String, Object> session;
 
-    /**
-     * Application attribute map.
-     */
-    @SuppressWarnings("WeakerAccess")
-    protected Map<String, Object> application;
+	/**
+	 * Application attribute map.
+	 */
+	protected Map<String, Object> application;
 
-    /**
-     * Http Servlet Request.
-     */
-    @SuppressWarnings("WeakerAccess")
-    protected HttpServletRequest httpServletRequest;
+	/**
+	 * Http Servlet Request.
+	 */
+	protected HttpServletRequest httpServletRequest;
 
-    /**
-     * Http Servlet Response.
-     */
-    @SuppressWarnings("WeakerAccess")
-    protected HttpServletResponse httpServletResponse;
+	/**
+	 * Http Servlet Response.
+	 */
+	protected HttpServletResponse httpServletResponse;
 
-    /**
-     * Http Session.
-     */
-    @SuppressWarnings("WeakerAccess")
-    protected HttpSession httpSession;
+	/**
+	 * Http Session.
+	 */
+	protected HttpSession httpSession;
 
-    /**
-     * Servlet Context.
-     */
-    protected ServletContext servletContext;
+	/**
+	 * Servlet Context.
+	 */
+	protected ServletContext servletContext;
 
-    /**
-     * Current toLogin user.
-     */
-    @SuppressWarnings("WeakerAccess")
-    protected User currentUser;
+	/**
+	 * Current toLogin user.
+	 */
+	protected User currentUser;
 
-    /**
-     * userDAO for user toLogin check.
-     */
-    @Autowired
-    protected IUserDAO userDAO = null;
+	/**
+	 * userDAO for user toLogin check.
+	 */
+	@Autowired
+	protected IUserDAO userDAO = null;
 
-    /**
-     * redirect flag.
-     */
-    @SuppressWarnings("WeakerAccess")
-    protected final String REDIRECT = "redirect";
+	/**
+	 * redirect flag.
+	 */
+	protected final String REDIRECT = "redirect";
 
-    /**
-     * to index flag.
-     */
-    @SuppressWarnings("UnusedDeclaration")
-    protected final String TOINDEX = "toIndex";
+	/**
+	 * to index flag.
+	 */
+	protected final String TOINDEX = "toIndex";
 
-    /**
-     * JSON flag.
-     */
-    protected final String JSON = "json";
+	/**
+	 * JSON flag.
+	 */
+	protected final String JSON = "json";
 
-    /**
-     * JSON result.
-     */
-    protected Map<String, Object> json = new HashMap<>();
+	/**
+	 * JSON result.
+	 */
+	protected Map<String, Object> json = new HashMap<>();
 
-    /**
-     * Global settings for actions.
-     */
-    @Autowired
-    protected Settings settings;
+	/**
+	 * Global settings for actions.
+	 */
+	@Autowired
+	protected Settings settings;
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setSettings(Settings settings) {
-        this.settings = settings;
-    }
+	public void setSettings(Settings settings) {
+		this.settings = settings;
+	}
 
-    /**
-     * Implement {@link ApplicationAware} interface, with Ioc.
-     *
-     * @param application application attribute
-     */
-    @Override
-    public void setApplication(Map<String, Object> application) {
-        this.application = application;
-    }
+	/**
+	 * Implement {@link ApplicationAware} interface, with Ioc.
+	 * 
+	 * @param application
+	 *            application attribute
+	 */
+	@Override
+	public void setApplication(Map<String, Object> application) {
+		this.application = application;
+	}
 
-    /**
-     * Implement {@link RequestAware} interface, with Ioc.
-     *
-     * @param request request attribute
-     */
-    @Override
-    public void setRequest(Map<String, Object> request) {
-        this.request = request;
-    }
+	/**
+	 * Implement {@link RequestAware} interface, with Ioc.
+	 * 
+	 * @param request
+	 *            request attribute
+	 */
+	@Override
+	public void setRequest(Map<String, Object> request) {
+		this.request = request;
+	}
 
-    /**
-     * Implement {@link SessionAware} interface, with Ioc.
-     *
-     * @param session session attribute
-     */
-    @Override
-    public void setSession(Map<String, Object> session) {
-        this.session = session;
-    }
+	/**
+	 * Implement {@link SessionAware} interface, with Ioc.
+	 * 
+	 * @param session
+	 *            session attribute
+	 */
+	@Override
+	public void setSession(Map<String, Object> session) {
+		this.session = session;
+	}
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public void onActionExecuting(AppInterceptor.ActionInfo actionInfo) {
-        checkIE6(actionInfo);
-        checkAuth(actionInfo);
-        if (session.containsKey("problemStatus")) {
-            this.problemStatus = (Map<Integer, Global.AuthorStatusType>) session.get("problemStatus");
-        } else {
-            this.problemStatus = new HashMap<>();
-        }
-    }
+	@SuppressWarnings("unchecked")
+	@Override
+	public void onActionExecuting(AppInterceptor.ActionInfo actionInfo) {
+		checkIE6(actionInfo);
+		checkAuth(actionInfo);
+		if (session.containsKey("problemStatus")) {
+			this.problemStatus = (Map<Integer, Global.AuthorStatusType>) session
+					.get("problemStatus");
+		} else {
+			this.problemStatus = new HashMap<>();
+		}
+	}
 
-    @Override
-    public void onActionExecuted() {
-    }
+	@Override
+	public void onActionExecuted() {
+	}
 
-    /**
-     * Check <strong>IE6</strong> browser.
-     *
-     * @param actionInfo action information entity
-     */
-    private void checkIE6(AppInterceptor.ActionInfo actionInfo) {
-        String user_agent = httpServletRequest.getHeader("User-Agent");
-        if (user_agent != null && user_agent.contains("MSIE 6")) {
-            try {
-                // TODO "/WEB-INF/views/shared/ie6.jsp" is error page, fixed it.
-                httpServletRequest.getRequestDispatcher("/WEB-INF/views/shared/ie6.jsp").forward(
-                        httpServletRequest, httpServletResponse);
-            } catch (Exception ignored) {
-            }
-            actionInfo.setCancel(true);
-        }
-    }
+	/**
+	 * Check <strong>IE6</strong> browser.
+	 * 
+	 * @param actionInfo
+	 *            action information entity
+	 */
+	private void checkIE6(AppInterceptor.ActionInfo actionInfo) {
+		String user_agent = httpServletRequest.getHeader("User-Agent");
+		if (user_agent != null && user_agent.contains("MSIE 6")) {
+			try {
+				// TODO "/WEB-INF/views/shared/ie6.jsp" is error page, fixed it.
+				httpServletRequest.getRequestDispatcher(
+						"/WEB-INF/views/shared/ie6.jsp").forward(
+						httpServletRequest, httpServletResponse);
+			} catch (Exception ignored) {
+			}
+			actionInfo.setCancel(true);
+		}
+	}
 
-    /**
-     * Get http request parameter.
-     *
-     * @param param parameter name
-     * @return parameter value
-     */
-    protected String get(String param) {
-        return httpServletRequest.getParameter(param);
-    }
+	/**
+	 * Get http request parameter.
+	 * 
+	 * @param param
+	 *            parameter name
+	 * @return parameter value
+	 */
+	protected String get(String param) {
+		return httpServletRequest.getParameter(param);
+	}
 
-    /**
-     * Redirect to specific url with no message.
-     *
-     * @param url expected url
-     * @return <strong>REDIRECT</strong> signal
-     */
-    protected String redirect(String url) {
-        return redirect(url, null);
-    }
+	/**
+	 * Redirect to specific url with no message.
+	 * 
+	 * @param url
+	 *            expected url
+	 * @return <strong>REDIRECT</strong> signal
+	 */
+	protected String redirect(String url) {
+		return redirect(url, null);
+	}
 
-    /**
-     * Redirect to specific url and popup a message.
-     *
-     * @param url expected url
-     * @param msg information message
-     * @return <strong>REDIRECT</strong> signal
-     */
-    protected String redirect(String url, String msg) {
-        request.put("msg", msg == null ? "" : msg);
-        request.put("url", url == null ? "" : url);
-        return REDIRECT;
-    }
+	/**
+	 * Redirect to specific url and popup a message.
+	 * 
+	 * @param url
+	 *            expected url
+	 * @param msg
+	 *            information message
+	 * @return <strong>REDIRECT</strong> signal
+	 */
+	protected String redirect(String url, String msg) {
+		request.put("msg", msg == null ? "" : msg);
+		request.put("url", url == null ? "" : url);
+		return REDIRECT;
+	}
 
-    /**
-     * Get current toLogin user, if no user had toLogin, return {@code null}.
-     *
-     * @return current toLogin user entity
-     */
-    User getCurrentUserEntity() {
-        try {
-            String userName = (String) session.get("userName");
-            String password = (String) session.get("password");
-            Timestamp lastLogin = (Timestamp) session.get("lastLogin");
-            User user = userDAO.getEntityByUniqueField("userName", userName);
-            if (user == null || !user.getPassword().equals(password)
-                    || !user.getLastLogin().equals(lastLogin))
-                return null;
-            return user;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+	/**
+	 * Get current toLogin user, if no user had toLogin, return {@code null}.
+	 * 
+	 * @return current toLogin user entity
+	 */
+	User getCurrentUserEntity() {
+		try {
+			String userName = (String) session.get("userName");
+			String password = (String) session.get("password");
+			Timestamp lastLogin = (Timestamp) session.get("lastLogin");
+			User user = userDAO.getEntityByUniqueField("userName", userName);
+			if (user == null || !user.getPassword().equals(password)
+					|| !user.getLastLogin().equals(lastLogin))
+				return null;
+			return user;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public User getCurrentUser() {
-        return currentUser;
-    }
+	public User getCurrentUser() {
+		return currentUser;
+	}
 
-    /**
-     * Get actual absolute path of a virtual path.
-     *
-     * @param path path which we want to transform
-     * @return actual path
-     */
-    String getContextPath(String path) {
-        String result = StringUtil.choose(httpServletRequest.getContextPath(), "") + "/";
-        result += path != null && path.startsWith("/") ? path.substring(1) : "";
-        return result;
-    }
+	/**
+	 * Get actual absolute path of a virtual path.
+	 * 
+	 * @param path
+	 *            path which we want to transform
+	 * @return actual path
+	 */
+	String getContextPath(String path) {
+		String result = StringUtil.choose(httpServletRequest.getContextPath(),
+				"") + "/";
+		result += path != null && path.startsWith("/") ? path.substring(1) : "";
+		return result;
+	}
 
-    /**
-     * Get action url by namespace, action name and parameter.
-     * <p/>
-     * <strong>Example</strong>
-     * getActionURL("/problem","page","/1") return acm.uestc.edu.cn/problem/page/1
-     * getActionURL("/problem","page","?id=1") return acm.uestc.edu.cn/problem/page?id=1
-     *
-     * @param namespace       action's namespace
-     * @param name            action name
-     * @param parameterString parameter list for action
-     * @return action url
-     */
-    @SuppressWarnings("SameParameterValue")
-    String getActionURL(String namespace, String name, String parameterString) {
-        String result = namespace.equals("/") ? "" : namespace;
-        result = result + "/" + name;
-        if (parameterString != null)
-            result = result + parameterString;
-        return getContextPath(result);
-    }
+	/**
+	 * Get action url by namespace, action name and parameter.
+	 * <p/>
+	 * <strong>Example</strong> getActionURL("/problem","page","/1") return
+	 * acm.uestc.edu.cn/problem/page/1 getActionURL("/problem","page","?id=1")
+	 * return acm.uestc.edu.cn/problem/page?id=1
+	 * 
+	 * @param namespace
+	 *            action's namespace
+	 * @param name
+	 *            action name
+	 * @param parameterString
+	 *            parameter list for action
+	 * @return action url
+	 */
+	String getActionURL(String namespace, String name, String parameterString) {
+		String result = namespace.equals("/") ? "" : namespace;
+		result = result + "/" + name;
+		if (parameterString != null)
+			result = result + parameterString;
+		return getContextPath(result);
+	}
 
-    /**
-     * Get action url by namespace and action name
-     *
-     * @param namespace action's namespace
-     * @param name      action name
-     * @return action url
-     */
-    @SuppressWarnings("SameParameterValue")
-    protected String getActionURL(String namespace, String name) {
-        return getActionURL(namespace, name, null);
-    }
+	/**
+	 * Get action url by namespace and action name
+	 * 
+	 * @param namespace
+	 *            action's namespace
+	 * @param name
+	 *            action name
+	 * @return action url
+	 */
+	protected String getActionURL(String namespace, String name) {
+		return getActionURL(namespace, name, null);
+	}
 
-    /**
-     * Check user type.
-     *
-     * @param actionInfo action information object
-     */
-    private void checkAuth(AppInterceptor.ActionInfo actionInfo) {
+	/**
+	 * Check user type.
+	 * 
+	 * @param actionInfo
+	 *            action information object
+	 */
+	private void checkAuth(AppInterceptor.ActionInfo actionInfo) {
 
-        LoginPermit permit = actionInfo.getController().getAnnotation(
-                LoginPermit.class);
-        try {
-            LoginPermit p2 = actionInfo.getController()
-                    .getMethod(actionInfo.getAction().getName())
-                    .getAnnotation(LoginPermit.class);
-            permit = p2 != null ? p2 : permit;
-        } catch (Exception ignored) {
-        }
-        User user = getCurrentUserEntity();
-        try {
-            if (permit == null || !permit.NeedLogin()) {
-                currentUser = user;
-                request.put("currentUser", user);
-                return;
-            }
-            if (user == null) {
-                redirect(getActionURL("/", "index"), "Fuck!");
-                actionInfo.setCancel(true);
-                actionInfo.setActionResult(REDIRECT);
-                return;
-            } else if (permit.value() != Global.AuthenticationType.NORMAL) {
-                if (user.getType() != permit.value().ordinal()) {
-                    throw new AppException("This user is not "
-                            + permit.value().getDescription() + ".");
-                }
-                // TODO add extra option here
-            }
-        } catch (AppException e) {
-            actionInfo.setCancel(true);
-            actionInfo.setActionResult(setError(e.getMessage()));
-        }
-        currentUser = user;
-        request.put("currentUser", currentUser);
-    }
+		LoginPermit permit = actionInfo.getController().getAnnotation(
+				LoginPermit.class);
+		try {
+			LoginPermit p2 = actionInfo.getController()
+					.getMethod(actionInfo.getAction().getName())
+					.getAnnotation(LoginPermit.class);
+			permit = p2 != null ? p2 : permit;
+		} catch (Exception ignored) {
+		}
+		User user = getCurrentUserEntity();
+		try {
+			if (permit == null || !permit.NeedLogin()) {
+				currentUser = user;
+				request.put("currentUser", user);
+				return;
+			}
+			if (user == null) {
+				redirect(getActionURL("/", "index"), "Fuck!");
+				actionInfo.setCancel(true);
+				actionInfo.setActionResult(REDIRECT);
+				return;
+			} else if (permit.value() != Global.AuthenticationType.NORMAL) {
+				if (user.getType() != permit.value().ordinal()) {
+					throw new AppException("This user is not "
+							+ permit.value().getDescription() + ".");
+				}
+				// TODO add extra option here
+			}
+		} catch (AppException e) {
+			actionInfo.setCancel(true);
+			actionInfo.setActionResult(setError(e.getMessage()));
+		}
+		currentUser = user;
+		request.put("currentUser", currentUser);
+	}
 
-    /**
-     * Put error message into request and return error signal.
-     *
-     * @param message error message
-     * @return error signal
-     */
-    @SuppressWarnings("SameReturnValue")
-    protected String setError(String message) {
-        request.put("errorMsg", message);
-        return ERROR;
-    }
+	/**
+	 * Put error message into request and return error signal.
+	 * 
+	 * @param message
+	 *            error message
+	 * @return error signal
+	 */
+	protected String setError(String message) {
+		request.put("errorMsg", message);
+		return ERROR;
+	}
 
-    /**
-     * Put exception's error message into request and return error signal.
-     *
-     * @param e application exception
-     * @return error signal
-     */
-    protected String setError(AppException e) {
-        return setError(e.getMessage());
-    }
+	/**
+	 * Put exception's error message into request and return error signal.
+	 * 
+	 * @param e
+	 *            application exception
+	 * @return error signal
+	 */
+	protected String setError(AppException e) {
+		return setError(e.getMessage());
+	}
 
+	@Override
+	public void setServletRequest(HttpServletRequest request) {
+		httpServletRequest = request;
+		httpSession = httpServletRequest.getSession();
+		servletContext = httpSession.getServletContext();
+	}
 
-    @Override
-    public void setServletRequest(HttpServletRequest request) {
-        httpServletRequest = request;
-        httpSession = httpServletRequest.getSession();
-        servletContext = httpSession.getServletContext();
-    }
+	@Override
+	public void setServletResponse(HttpServletResponse response) {
+		httpServletResponse = response;
+	}
 
-    @Override
-    public void setServletResponse(HttpServletResponse response) {
-        httpServletResponse = response;
-    }
+	@Override
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
 
-    @Override
-    public void setUserDAO(IUserDAO userDAO) {
-        this.userDAO = userDAO;
-    }
+	/**
+	 * Redirect to reference page with specific message.
+	 * 
+	 * @param msg
+	 *            message content
+	 * @return redirect signal
+	 */
+	String redirectToRefer(String msg) {
+		return redirect(httpServletRequest.getHeader("Referer"), msg);
+	}
 
-    /**
-     * Redirect to reference page with specific message.
-     *
-     * @param msg message content
-     * @return redirect signal
-     */
-    @SuppressWarnings("SameParameterValue")
-    String redirectToRefer(String msg) {
-        return redirect(httpServletRequest.getHeader("Referer"), msg);
-    }
+	/**
+	 * Redirect to reference page with no message.
+	 * 
+	 * @return redirect signal
+	 */
+	protected String redirectToRefer() {
+		return redirectToRefer(null);
+	}
 
-    /**
-     * Redirect to reference page with no message.
-     *
-     * @return redirect signal
-     */
-    @SuppressWarnings("UnusedDeclaration")
-    protected String redirectToRefer() {
-        return redirectToRefer(null);
-    }
+	/**
+	 * save current page information from post.
+	 */
+	private Long currentPage;
 
-    /**
-     * save current page information from post.
-     */
-    private Long currentPage;
+	public void setCurrentPage(Long currentPage) {
+		this.currentPage = currentPage;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setCurrentPage(Long currentPage) {
-        this.currentPage = currentPage;
-    }
+	/**
+	 * Build a page html content according to number of records, records per
+	 * page, base URL and display distance.
+	 * <p/>
+	 * <strong>Example:</strong> Get total and set it into {@code buildPageInfo}
+	 * method: <br />
+	 * {@code PageInfo pageInfo = buildPageInfo(articleDAO.count(), RECORD_PER_PAGE,
+	 * getContextPath("") + "/Problem", null);}
+	 * 
+	 * @param count
+	 *            total number of records
+	 * @param countPerPage
+	 *            number of records per page
+	 * @param baseURL
+	 *            base URL
+	 * @param displayDistance
+	 *            display distance for page numbers
+	 * @return return a PageInfo object and put the HTML content into request
+	 *         attribute list.
+	 */
+	protected PageInfo buildPageInfo(Long count, Long countPerPage,
+			String baseURL, Integer displayDistance) {
+		PageInfo pageInfo = PageInfo.create(count, countPerPage, baseURL,
+				displayDistance == null ? 4 : displayDistance, currentPage);
+		request.put("pageInfo", pageInfo.getHtmlString());
+		return pageInfo;
+	}
 
-    /**
-     * Build a page html content according to number of records, records per page,
-     * base URL and display distance.
-     * <p/>
-     * <strong>Example:</strong>
-     * Get total and set it into {@code buildPageInfo} method: <br />
-     * {@code PageInfo pageInfo = buildPageInfo(articleDAO.count(), RECORD_PER_PAGE,
-     * getContextPath("") + "/Problem", null);}
-     *
-     * @param count           total number of records
-     * @param countPerPage    number of records per page
-     * @param baseURL         base URL
-     * @param displayDistance display distance for page numbers
-     * @return return a PageInfo object and put the HTML content into request attribute list.
-     */
-    @SuppressWarnings("SameParameterValue")
-    protected PageInfo buildPageInfo(Long count, Long countPerPage,
-                                     String baseURL, Integer displayDistance) {
-        PageInfo pageInfo = PageInfo.create(count, countPerPage,
-                baseURL, displayDistance == null ? 4 : displayDistance,
-                currentPage);
-        request.put("pageInfo", pageInfo.getHtmlString());
-        return pageInfo;
-    }
+	/**
+	 * Write string content into web page.
+	 * 
+	 * @param content
+	 *            content
+	 */
+	protected void out(String content) throws IOException {
+		httpServletResponse.getWriter().write(content);
+	}
 
-    /**
-     * Write string content into web page.
-     *
-     * @param content content
-     */
-    protected void out(String content) throws IOException {
-        httpServletResponse.getWriter().write(content);
-    }
+	public Map<String, Object> getJson() {
+		return json;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public Map<String, Object> getJson() {
-        return json;
-    }
+	public void setJson(Map<String, Object> json) {
+		this.json = json;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setJson(Map<String, Object> json) {
-        this.json = json;
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext)
+			throws BeansException {
+		this.applicationContext = applicationContext;
+	}
 }

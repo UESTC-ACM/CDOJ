@@ -24,14 +24,16 @@ import cn.edu.uestc.acmicpc.util.EMailSender;
 
 /**
  * For all class which need email sender entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ * @see EMailSender
  */
 public interface EMailSenderAware {
-    /**
-     * Put email sender into class.
-     *
-     * @param sender email sender entity
-     */
-    public void setEMailSender(EMailSender sender);
+	/**
+	 * Put email sender into class.
+	 * 
+	 * @param sender
+	 *            email sender entity
+	 */
+	public void setEMailSender(EMailSender sender);
 }

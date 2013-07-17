@@ -43,73 +43,74 @@ import java.util.List;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:applicationContext-test.xml"})
-public class TriedTest implements StatusDAOAware, ProblemDAOAware, UserDAOAware, StatusConditionAware {
+@ContextConfiguration({ "classpath:applicationContext-test.xml" })
+public class TriedTest implements StatusDAOAware, ProblemDAOAware,
+		UserDAOAware, StatusConditionAware {
 
-    @SuppressWarnings("unchecked")
-    @Test
-    public void syncUserTried() throws AppException {
-        List<User> userList = (List<User>) userDAO.findAll();
-        for (User user : userList) {
-            statusCondition.clear();
-            statusCondition.setUserId(user.getUserId());
-            Condition condition = statusCondition.getCondition();
-            Long count = statusDAO.count(condition);
-            user.setTried(count.intValue());
-            userDAO.update(user);
-        }
-    }
+	@SuppressWarnings("unchecked")
+	@Test
+	public void syncUserTried() throws AppException {
+		List<User> userList = (List<User>) userDAO.findAll();
+		for (User user : userList) {
+			statusCondition.clear();
+			statusCondition.setUserId(user.getUserId());
+			Condition condition = statusCondition.getCondition();
+			Long count = statusDAO.count(condition);
+			user.setTried(count.intValue());
+			userDAO.update(user);
+		}
+	}
 
-    @SuppressWarnings("unchecked")
-    @Test
-    public void syncProblemTried() throws AppException {
-        List<Problem> problemList = (List<Problem>) problemDAO.findAll();
-        for (Problem problem : problemList) {
-            statusCondition.clear();
-            statusCondition.setProblemId(problem.getProblemId());
-            Condition condition = statusCondition.getCondition();
-            Long count = statusDAO.count(condition);
-            problem.setTried(count.intValue());
-            problemDAO.update(problem);
-        }
-    }
+	@SuppressWarnings("unchecked")
+	@Test
+	public void syncProblemTried() throws AppException {
+		List<Problem> problemList = (List<Problem>) problemDAO.findAll();
+		for (Problem problem : problemList) {
+			statusCondition.clear();
+			statusCondition.setProblemId(problem.getProblemId());
+			Condition condition = statusCondition.getCondition();
+			Long count = statusDAO.count(condition);
+			problem.setTried(count.intValue());
+			problemDAO.update(problem);
+		}
+	}
 
-    @Autowired
-    private IStatusDAO statusDAO;
-    @Autowired
-    private IProblemDAO problemDAO;
-    @Autowired
-    private IUserDAO userDAO;
-    @Autowired
-    private StatusCondition statusCondition;
+	@Autowired
+	private IStatusDAO statusDAO;
+	@Autowired
+	private IProblemDAO problemDAO;
+	@Autowired
+	private IUserDAO userDAO;
+	@Autowired
+	private StatusCondition statusCondition;
 
-    @Override
-    public void setProblemDAO(IProblemDAO problemDAO) {
-        this.problemDAO = problemDAO;
-    }
+	@Override
+	public void setProblemDAO(IProblemDAO problemDAO) {
+		this.problemDAO = problemDAO;
+	}
 
-    @Override
-    public void setStatusDAO(IStatusDAO statusDAO) {
-        this.statusDAO = statusDAO;
-    }
+	@Override
+	public void setStatusDAO(IStatusDAO statusDAO) {
+		this.statusDAO = statusDAO;
+	}
 
-    @Override
-    public void setUserDAO(IUserDAO userDAO) {
-        this.userDAO = userDAO;
-    }
+	@Override
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
 
-    @Override
-    public void setStatusCondition(StatusCondition statusCondition) {
-        this.statusCondition = statusCondition;
-    }
+	@Override
+	public void setStatusCondition(StatusCondition statusCondition) {
+		this.statusCondition = statusCondition;
+	}
 
-    @Override
-    public StatusCondition getStatusCondition() {
-        return statusCondition;
-    }
+	@Override
+	public StatusCondition getStatusCondition() {
+		return statusCondition;
+	}
 }

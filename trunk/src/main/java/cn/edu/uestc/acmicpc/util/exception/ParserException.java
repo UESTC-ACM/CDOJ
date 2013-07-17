@@ -25,14 +25,20 @@ import java.io.Serializable;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class ParserException extends Exception implements Serializable {
-    public ParserException() {
-        super();
-    }
-    public ParserException(String message) {
-        super(message);
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7175100990197608823L;
+
+	public ParserException() {
+		super();
+	}
+
+	public ParserException(String message) {
+		super(message);
+	}
 }

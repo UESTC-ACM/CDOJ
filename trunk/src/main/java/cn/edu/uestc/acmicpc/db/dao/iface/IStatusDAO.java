@@ -26,7 +26,7 @@ import cn.edu.uestc.acmicpc.db.entity.Status;
 
 /**
  * StatusDAO AOP interface.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public interface IStatusDAO extends IDAO<Status, Integer> {

@@ -28,100 +28,99 @@ import cn.edu.uestc.acmicpc.db.entity.Department;
 
 /**
  * User search condition.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 public class UserCondition extends BaseCondition {
-    /**
-     * Start user id.
-     */
-    private Integer startId;
-    /**
-     * End user id.
-     */
-    private Integer endId;
+	/**
+	 * Start user id.
+	 */
+	private Integer startId;
+	/**
+	 * End user id.
+	 */
+	private Integer endId;
 
-    /**
-     * User name (partly matches).
-     */
-    private String userName;
+	/**
+	 * User name (partly matches).
+	 */
+	private String userName;
 
-    /**
-     * User's type.
-     *
-     * @see cn.edu.uestc.acmicpc.util.Global.AuthenticationType
-     */
-    private Integer type;
+	/**
+	 * User's type.
+	 * 
+	 * @see cn.edu.uestc.acmicpc.util.Global.AuthenticationType
+	 */
+	private Integer type;
 
-    /**
-     * User's department's id.
-     *
-     * @see Department
-     */
-    private Integer departmentId;
+	/**
+	 * User's department's id.
+	 * 
+	 * @see Department
+	 */
+	private Integer departmentId;
 
-    public String getSchool() {
-        return school;
-    }
+	public String getSchool() {
+		return school;
+	}
 
-    public void setSchool(String school) {
-        this.school = school;
-    }
+	public void setSchool(String school) {
+		this.school = school;
+	}
 
-    @Exp(MapField = "departmentByDepartmentId", Type = ConditionType.eq, MapObject = Department.class)
-    public Integer getDepartmentId() {
-        return departmentId;
-    }
+	@Exp(MapField = "departmentByDepartmentId", Type = ConditionType.eq, MapObject = Department.class)
+	public Integer getDepartmentId() {
+		return departmentId;
+	}
 
-    public void setDepartmentId(Integer departmentId) {
-        this.departmentId = departmentId;
-    }
+	public void setDepartmentId(Integer departmentId) {
+		this.departmentId = departmentId;
+	}
 
-    @Exp(Type = ConditionType.eq)
-    public Integer getType() {
-        return type;
-    }
+	@Exp(Type = ConditionType.eq)
+	public Integer getType() {
+		return type;
+	}
 
-    public void setType(Integer type) {
-        this.type = type;
-    }
+	public void setType(Integer type) {
+		this.type = type;
+	}
 
-    @Exp(Type = ConditionType.like)
-    public String getUserName() {
-        return userName;
-    }
+	@Exp(Type = ConditionType.like)
+	public String getUserName() {
+		return userName;
+	}
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
-    @Exp(MapField = "userId", Type = ConditionType.le)
-    public Integer getEndId() {
-        return endId;
-    }
+	@Exp(MapField = "userId", Type = ConditionType.le)
+	public Integer getEndId() {
+		return endId;
+	}
 
-    public void setEndId(Integer endId) {
-        this.endId = endId;
-    }
+	public void setEndId(Integer endId) {
+		this.endId = endId;
+	}
 
-    @Exp(MapField = "userId", Type = ConditionType.ge)
-    public Integer getStartId() {
-        return startId;
-    }
+	@Exp(MapField = "userId", Type = ConditionType.ge)
+	public Integer getStartId() {
+		return startId;
+	}
 
-    public void setStartId(Integer startId) {
-        this.startId = startId;
-    }
+	public void setStartId(Integer startId) {
+		this.startId = startId;
+	}
 
-    /**
-     * User's school(partly matches).
-     */
-    @Exp(Type = ConditionType.like)
-    private String school;
+	/**
+	 * User's school(partly matches).
+	 */
+	@Exp(Type = ConditionType.like)
+	private String school;
 
-    @Override
-    public void invoke(Condition condition) {
-        super.invoke(condition);
-    }
+	@Override
+	public void invoke(Condition condition) {
+		super.invoke(condition);
+	}
 }

@@ -22,14 +22,25 @@
 package cn.edu.uestc.acmicpc.ioc.dto;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDTO;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public interface TrainingContestDTOAware {
-    public void setTrainingContestDTO(TrainingContestDTO trainingContestDTO);
-    public TrainingContestDTO getTrainingContestDTO();
+	/**
+	 * Put trainingContestDTO into class.
+	 * 
+	 * @param trainingContestDTO
+	 *            trainingContestDTO object
+	 */
+	public void setTrainingContestDTO(TrainingContestDTO trainingContestDTO);
+
+	/**
+	 * Get trainingContestDTO entity.
+	 * 
+	 * @return trainingContestDTO entity
+	 */
+	public TrainingContestDTO getTrainingContestDTO();
 }
