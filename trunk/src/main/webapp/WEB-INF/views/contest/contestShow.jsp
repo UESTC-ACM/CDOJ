@@ -317,10 +317,10 @@
                 <table class="table table-bordered">
                     <thead id="rankListHead">
                     <tr>
-                        <th class="orderButton" field="id">Rk</th>
-                        <th style="width: 200px;">User</th>
-                        <th class="orderButton" field="problemByProblemId">Slv.</th>
-                        <th class="orderButton" field="result">Time</th>
+                        <th style="width: 20px;" class="orderButton" field="id">Rk</th>
+                        <th style="width: 180px;">User</th>
+                        <th style="width: 30px;" class="orderButton" field="problemByProblemId">Slv.</th>
+                        <th style="width: 40px;" class="orderButton" field="result">Time</th>
 
                         <s:iterator value="contestProblems" id="problem">
                             <th class="problemSummaryInfo" value="<s:property value="#problem.order"/>">

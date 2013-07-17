@@ -74,6 +74,18 @@ public class TrainingContest implements Serializable {
         this.title = title;
     }
 
+    private Integer type;
+
+    @Column(name = "type", nullable = false, insertable = true, updatable = true,
+            length = 11, precision = 0)
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     private Integer version;
 
     @Version

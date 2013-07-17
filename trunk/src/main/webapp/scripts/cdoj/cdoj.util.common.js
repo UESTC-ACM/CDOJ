@@ -35,3 +35,11 @@ function mergeOptions(options,userOptions) {
     }
     return options;
 }
+
+function subSum(array, op, ed) {
+    var res = 0;
+    ed = Math.min(ed, array.length - 1);
+    for (var i = op; i <= ed; i++)
+        res += array[i];
+    return res;
+}

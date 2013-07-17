@@ -7,6 +7,7 @@ package cn.edu.uestc.acmicpc.training.entity;
  */
 public class TrainingContestProblemSummaryView {
     private Integer problemId;
+    private char order;
     private Integer solved;
     private Integer tried;
 
@@ -14,7 +15,17 @@ public class TrainingContestProblemSummaryView {
         solved = 0;
         tried = 0;
         this.problemId = problemId;
+        order = (char)('A' + problemId);
     }
+
+    public char getOrder() {
+        return order;
+    }
+
+    public void setOrder(char order) {
+        this.order = order;
+    }
+
     public Integer getProblemId() {
         return problemId;
     }

@@ -41,40 +41,57 @@ import java.util.List;
  */
 public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware {
     public void updateRating(TrainingContest trainingContest) throws AppException {
-        List<TrainingUser> oldTrainingUsers = new LinkedList<>();
-        List<TrainingUser> newTrainingUsers = new LinkedList<>();
-        List<Integer> oldTrainingUserRank = new LinkedList<>();
-        List<Integer> newTrainingUserRank = new LinkedList<>();
-        for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
-            TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
-            if (trainingUser.getCompetitions() == 0) {
-                newTrainingUsers.add(trainingUser);
-                newTrainingUserRank.add(trainingStatus.getRank());
-            } else {
-                oldTrainingUsers.add(trainingUser);
-                oldTrainingUserRank.add(trainingStatus.getRank());
+        if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal()) {
+            for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
+                TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
+
+                trainingUser.setRating(trainingUser.getRating() - trainingStatus.getPenalty());
+                trainingUser.setRatingVary(-1.0 * trainingStatus.getPenalty());
+                trainingUser.setCompetitions(trainingUser.getCompetitions() + 1);
+
+                trainingStatus.setRating(trainingUser.getRating());
+                trainingStatus.setRatingVary(trainingUser.getRatingVary());
+
+                trainingUserDAO.update(trainingUser);
+                trainingStatusDAO.update(trainingStatus);
             }
-            System.out.println(trainingUser.getName() + " " + trainingUser.getRating());
+        } else {
+            List<TrainingUser> oldTrainingUsers = new LinkedList<>();
+            List<TrainingUser> newTrainingUsers = new LinkedList<>();
+            List<Integer> oldTrainingUserRank = new LinkedList<>();
+            List<Integer> newTrainingUserRank = new LinkedList<>();
+            for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
+                TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
+                if (trainingUser.getCompetitions() == 0) {
+                    newTrainingUsers.add(trainingUser);
+                    newTrainingUserRank.add(trainingStatus.getRank());
+                } else {
+                    oldTrainingUsers.add(trainingUser);
+                    oldTrainingUserRank.add(trainingStatus.getRank());
+                }
+            }
+
+            if (trainingContest.getType() == Global.TrainingContestType.TEAM.ordinal()) {
+                updateNewTrainingUser(newTrainingUsers, newTrainingUserRank, oldTrainingUsers, oldTrainingUserRank, 0.5);
+                updateOldTrainingUser(oldTrainingUsers, oldTrainingUserRank, 0.5);
+            } else {
+                updateNewTrainingUser(newTrainingUsers, newTrainingUserRank, oldTrainingUsers, oldTrainingUserRank, 1.0);
+                updateOldTrainingUser(oldTrainingUsers, oldTrainingUserRank, 1.0);
+            }
+            for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
+                TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
+                trainingStatus.setRating(trainingUser.getRating());
+                trainingStatus.setRatingVary(trainingUser.getRatingVary());
+                trainingStatus.setVolatility(trainingUser.getVolatility());
+                trainingStatus.setVolatilityVary(trainingUser.getVolatilityVary());
+
+                trainingUserDAO.update(trainingUser);
+                trainingStatusDAO.update(trainingStatus);
+            }
         }
-
-        updateNewTrainingUser(newTrainingUsers, newTrainingUserRank, oldTrainingUsers, oldTrainingUserRank);
-        updateOldTrainingUser(oldTrainingUsers, oldTrainingUserRank);
-
-        for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
-            TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
-            trainingStatus.setRating(trainingUser.getRating());
-            trainingStatus.setRatingVary(trainingUser.getRatingVary());
-            trainingStatus.setVolatility(trainingUser.getVolatility());
-            trainingStatus.setVolatilityVary(trainingUser.getVolatilityVary());
-
-            trainingUserDAO.update(trainingUser);
-            trainingStatusDAO.update(trainingStatus);
-        }
-        trainingUserDAO.flush();
-        trainingStatusDAO.flush();
     }
 
-    private void updateNewTrainingUser(List<TrainingUser> trainingUsers, List<Integer> rank, List<TrainingUser> oldUsers, List<Integer> oldRank) {
+    private void updateNewTrainingUser(List<TrainingUser> trainingUsers, List<Integer> rank, List<TrainingUser> oldUsers, List<Integer> oldRank, Double contestWeight) {
         if (trainingUsers.size() <= 1) {
             for (TrainingUser trainingUser : trainingUsers) {
                 trainingUser.setRatingVary(0.0);
@@ -145,6 +162,7 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
                     weight *= 0.9;
                 else if (trainingUser.getRating() > 2500)
                     weight *= 0.8;
+                weight *= contestWeight;
                 Double cap = 150.0 + 1500.0 / (trainingUser.getCompetitions() + 2.0);
                 Double newRating = (trainingUser.getRating() + weight * perfAs[i]) / (1.0 + weight);
                 newRating = Math.min(newRating, trainingUser.getRating() + cap);
@@ -155,7 +173,6 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
                         / (weight + 1.0));
                 newRating = Math.max(newRating, 1.0);
                 newVolatility = Math.max(newVolatility, 101.0);
-                System.out.println("New : " + newRating + " " + newVolatility);
                 trainingUser.setRatingVary(newRating - trainingUser.getRating());
                 trainingUser.setVolatilityVary(newVolatility - trainingUser.getVolatility());
                 trainingUser.setRating(newRating);
@@ -165,7 +182,7 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
         }
     }
 
-    private void updateOldTrainingUser(List<TrainingUser> trainingUsers, List<Integer> rank) {
+    private void updateOldTrainingUser(List<TrainingUser> trainingUsers, List<Integer> rank, Double contestWeight) {
         if (trainingUsers.size() <= 1) {
             for (TrainingUser trainingUser : trainingUsers) {
                 trainingUser.setRatingVary(0.0);
@@ -219,6 +236,7 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
                     weight *= 0.9;
                 else if (trainingUser.getRating() > 2500)
                     weight *= 0.8;
+                weight *= contestWeight;
                 Double cap = 150.0 + 1500.0 / (trainingUser.getCompetitions() + 2.0);
                 Double newRating = (trainingUser.getRating() + weight * perfAs[i]) / (1.0 + weight);
                 newRating = Math.min(newRating, trainingUser.getRating() + cap);
@@ -229,7 +247,6 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
                         / (weight + 1.0));
                 newRating = Math.max(newRating, 1.0);
                 newVolatility = Math.max(newVolatility, 101.0);
-                System.out.println("Old : " + newRating + " " + newVolatility);
                 trainingUser.setRatingVary(newRating - trainingUser.getRating());
                 trainingUser.setVolatilityVary(newVolatility - trainingUser.getVolatility());
                 trainingUser.setRating(newRating);
@@ -369,6 +386,7 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
     private ITrainingStatusDAO trainingStatusDAO;
     @Autowired
     private ITrainingUserDAO trainingUserDAO;
+
     @Override
     public void setTrainingStatusDAO(ITrainingStatusDAO trainingStatusDAO) {
         this.trainingStatusDAO = trainingStatusDAO;
