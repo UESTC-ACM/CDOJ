@@ -169,6 +169,18 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
     public void updateEntitiesByCondition(Map<String, Object> properties, Condition condition) throws AppException;
 
     /**
+     * Delete all records according condition entity.
+     *
+     * @param condition specific condition entity
+     * @throws AppException
+     */
+    public void deleteEntitiesByCondition(Condition condition) throws AppException;
+
+    /**
+     * Execute SQL immediately
+     */
+    public void flush();
+    /**
      * Crate a hibernate query.
      *
      * @param hql hibernate query string

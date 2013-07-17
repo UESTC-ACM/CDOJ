@@ -32,7 +32,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <script src="http://d3js.org/d3.v3.js"></script>
+    <!--[if lte IE 8]>
+    <script src="<s:url value="/scripts/r2d3.js"/>"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+    <script src="<s:url value="/scripts/d3.js"/>"></script>
+    <!--<![endif]-->
+
     <script src="<s:url value="/scripts/cdoj/cdoj.user.center.js"/>"></script>
     <title><s:property value="targetUser.userName"/></title>
 </head>
@@ -45,7 +51,7 @@
                     <dl class="dl-userInfo">
                         <dt>Nick name</dt>
                         <dd>
-                            <s:property value="targetUser.nickName"/>
+                            <s:property escape="false" value="targetUser.nickName"/>
                             <s:if test="currentUser.userName == targetUser.userName">
                                 <div class="pull-right" style="margin-right: 20px;">
                                     <a href="#" onclick="return editUserDialog(<s:property value="targetUser.userId"/>)">
@@ -92,7 +98,7 @@
             </a>
             <span class="userName-type<s:property value="targetUser.type"/>">
                 <h4>
-                    <s:property value="targetUser.nickName"/>
+                    <s:property escape="false" value="targetUser.nickName"/>
                 </h4>
                 <h4 id="currentUserPageUser" value="<s:property value="targetUser.userName"/>">
                     <s:property value="targetUser.userName"/>

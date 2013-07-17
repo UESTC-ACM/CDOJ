@@ -39,18 +39,21 @@
 
     <link href="<s:url value="/styles/bootstrap.min.css"/>" rel="stylesheet">
     <link href="<s:url value="/styles/prettify.css"/>" rel="stylesheet">
+    <link href="<s:url value="/plugins/bootstrapSwitch/stylesheets/bootstrapSwitch.css"/>" rel="stylesheet">
 
     <link href="<s:url value="/styles/cdoj/cdoj.common.css"/>" rel=stylesheet>
     <link href="<s:url value="/styles/cdoj/cdoj.avatar.css"/>" rel=stylesheet>
     <link href="<s:url value="/styles/cdoj/cdoj.table.css"/>" rel=stylesheet>
     <link href="<s:url value="/styles/cdoj/cdoj.textarea.css"/>" rel=stylesheet>
     <link href="<s:url value="/styles/cdoj/cdoj.modal.css"/>" rel=stylesheet>
+    <link href="<s:url value="/styles/cdoj/cdoj.rating.css"/>" rel="stylesheet">
 
     <script src="<s:url value="/scripts/jquery.min.js"/>"></script>
     <script src="<s:url value="/scripts/jquery.gravatar.js"/>"></script>
     <script src="<s:url value="/scripts/md5.js"/>"></script>
     <script src="<s:url value="/scripts/bootstrap.min.js"/>"></script>
     <script src="<s:url value="/scripts/prettify.js"/>"></script>
+    <script src="<s:url value="/plugins/bootstrapSwitch/js/bootstrapSwitch.js"/>"></script>
 
     <script src="<s:url value="/scripts/cdoj/cdoj.util.global.js"/>"></script>
     <script src="<s:url value="/scripts/cdoj/cdoj.util.prettify.js"/>"></script>

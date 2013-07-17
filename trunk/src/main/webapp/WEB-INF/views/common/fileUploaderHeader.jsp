@@ -33,7 +33,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <link href="<s:url value="/plugins/file-uploader-master/client/fineuploader.css"/>" rel="stylesheet">
     <script src="<s:url value="/plugins/file-uploader-master/client/js/header.js"/>"></script>
     <script src="<s:url value="/plugins/file-uploader-master/client/js/util.js"/>"></script>
     <script src="<s:url value="/plugins/file-uploader-master/client/js/button.js"/>"></script>
@@ -42,8 +41,10 @@
     <script src="<s:url value="/plugins/file-uploader-master/client/js/handler.xhr.js"/>"></script>
     <script src="<s:url value="/plugins/file-uploader-master/client/js/uploader.basic.js"/>"></script>
     <script src="<s:url value="/plugins/file-uploader-master/client/js/dnd.js"/>"></script>
-    <script src="<s:url value="/plugins/file-uploader-master/client/js/uploader.js"/>"></script>
     <script src="<s:url value="/plugins/file-uploader-master/client/js/jquery-plugin.js"/>"></script>
+    <script src="<s:url value="/plugins/file-uploader-master/client/js/uploader.js"/>"></script>
+
+    <link href="<s:url value="/plugins/file-uploader-master/client/fineuploader.css"/>" rel="stylesheet">
 </head>
 <body>
 </body>

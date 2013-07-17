@@ -46,13 +46,16 @@
           scope="prototype">
     </bean>
 
-    <import resource="action/applicationContext-actions-problem.xml"/>
-    <import resource="action/applicationContext-actions-index.xml"/>
-    <import resource="action/applicationContext-actions-test.xml"/>
-    <import resource="action/applicationContext-actions-admin.xml"/>
-    <import resource="action/applicationContext-actions-user.xml"/>
-    <import resource="action/applicationContext-actions-status.xml"/>
-    <import resource="action/applicationContext-actions-contest.xml"/>
-    <import resource="action/applicationContext-actions-article.xml"/>
+    <import resource="action-oj/applicationContext-actions-problem.xml"/>
+    <import resource="action-oj/applicationContext-actions-index.xml"/>
+    <import resource="action-oj/applicationContext-actions-test.xml"/>
+    <import resource="action-oj/applicationContext-actions-admin.xml"/>
+    <import resource="action-oj/applicationContext-actions-user.xml"/>
+    <import resource="action-oj/applicationContext-actions-status.xml"/>
+    <import resource="action-oj/applicationContext-actions-contest.xml"/>
+    <import resource="action-oj/applicationContext-actions-article.xml"/>
+
+    <import resource="action-training/applicationContext-actions-index.xml"/>
+    <import resource="action-training/applicationContext-actions-admin.xml"/>
 
 </beans>

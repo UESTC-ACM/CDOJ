@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ cdoj, UESTC ACMICPC Online Judge
+  ~
+  ~ Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
+  ~ mzry1992 <@link muziriyun@gmail.com>
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="trainingAdmin" namespace="/training/admin" extends="default">
+        <default-action-ref name="index"/>
+        <action name="index" class="trainingAdminIndexAction" method="toIndex">
+            <result>/WEB-INF/views/training/admin/index.jsp</result>
+        </action>
+        <action name="user/search" class="trainingUserAdminAction" method="toMemberList"/>
+        <action name="user/operator" class="trainingUserAdminAction" method="toOperatorTrainingUser"/>
+
+        <action name="contest/index" class="trainingContestAdminAction" method="toIndex">
+            <result>/WEB-INF/views/training/admin/trainingContest.jsp</result>
+        </action>
+        <action name="contest/search" class="trainingContestAdminAction" method="toSearchTrainingContest"/>
+        <action name="contest/editor/*" class="trainingContestAdminAction" method="toContestEditor">
+            <param name="targetTrainingContestId">{1}</param>
+            <result>/WEB-INF/views/training/admin/trainingContestEditor.jsp</result>
+        </action>
+        <action name="contest/edit/*" class="trainingContestEditorAction" method="toEditContest">
+            <param name="targetTrainingContestId">{1}</param>
+        </action>
+        <action name="contest/uploadRank/*" class="trainingContestEditorAction" method="uploadTrainingRankFile">
+            <param name="targetTrainingContestId">{1}</param>
+        </action>
+
+    </package>
+</struts>

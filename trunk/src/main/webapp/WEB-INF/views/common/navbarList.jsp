@@ -64,6 +64,7 @@
     <ul class="dropdown-menu">
         <li class="disabled"><a href="#">BBS</a></li>
         <li class="disabled"><a href="#">Wiki</a></li>
+        <li><s:a action="index" namespace="/training">Summer training</s:a></li>
         <li><a href="http://www.mzry1992.com/blog/">mzry1992.com</a></li>
 
         <li class="divider"></li>
