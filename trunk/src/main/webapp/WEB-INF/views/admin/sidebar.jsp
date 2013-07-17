@@ -71,6 +71,12 @@
         <li class="nav-header"><i class="icon-refresh"></i>Status</li>
         <li><s:a action="list" namespace="/admin/status">Status list</s:a></li>
 
+        <li class="divider"></li>
+        <li class="nav-header"><i class="icon-cog"></i>Training</li>
+        <li><s:a action="index" namespace="/training/admin">Summary</s:a></li>
+        <li><s:a action="contest/index" namespace="/training/admin">Contest list</s:a> </li>
+        <li><s:a action="contest/editor/" namespace="/training/admin">Add contest</s:a></li>
+
     </ul>
 </div>
 </body>

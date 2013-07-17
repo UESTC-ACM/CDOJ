@@ -65,6 +65,9 @@
                 <value>cn.edu.uestc.acmicpc.db.entity.Tag</value>
                 <value>cn.edu.uestc.acmicpc.db.entity.User</value>
                 <value>cn.edu.uestc.acmicpc.db.entity.UserSerialKey</value>
+                <value>cn.edu.uestc.acmicpc.db.entity.TrainingContest</value>
+                <value>cn.edu.uestc.acmicpc.db.entity.TrainingStatus</value>
+                <value>cn.edu.uestc.acmicpc.db.entity.TrainingUser</value>
             </list>
         </property>
     </bean>
