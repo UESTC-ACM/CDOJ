@@ -31,7 +31,6 @@ import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.impl.ContestProblemSummaryView;
 import cn.edu.uestc.acmicpc.db.view.impl.ContestProblemView;
 import cn.edu.uestc.acmicpc.db.view.impl.ContestView;
-import cn.edu.uestc.acmicpc.db.view.impl.ProblemView;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
@@ -39,7 +38,6 @@ import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.interceptor.AppInterceptor;
 import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.Projections;
@@ -50,286 +48,314 @@ import java.util.*;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(NeedLogin = false)
-public class ContestAction extends BaseAction implements ContestDAOAware, ProblemDAOAware, StatusDAOAware, StatusConditionAware {
+public class ContestAction extends BaseAction implements ContestDAOAware,
+		ProblemDAOAware, StatusDAOAware, StatusConditionAware {
 
-    private Integer targetContestId;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8675313474670269408L;
 
-    public Integer getTargetContestId() {
-        return targetContestId;
-    }
+	private Integer targetContestId;
 
-    public void setTargetContestId(Integer targetContestId) {
-        this.targetContestId = targetContestId;
-    }
+	public Integer getTargetContestId() {
+		return targetContestId;
+	}
 
-    private ContestView targetContest;
+	public void setTargetContestId(Integer targetContestId) {
+		this.targetContestId = targetContestId;
+	}
 
-    private List<ContestProblemView> contestProblems;
+	private ContestView targetContest;
 
-    public List<ContestProblemView> getContestProblems() {
-        return contestProblems;
-    }
+	private List<ContestProblemView> contestProblems;
 
-    public void setContestProblems(List<ContestProblemView> contestProblems) {
-        this.contestProblems = contestProblems;
-    }
+	public List<ContestProblemView> getContestProblems() {
+		return contestProblems;
+	}
 
-    public ContestView getTargetContest() {
-        return targetContest;
-    }
+	public void setContestProblems(List<ContestProblemView> contestProblems) {
+		this.contestProblems = contestProblems;
+	}
 
-    public void setTargetContest(ContestView targetContest) {
-        this.targetContest = targetContest;
-    }
+	public ContestView getTargetContest() {
+		return targetContest;
+	}
 
-    /**
-     * Get contest real time information.
-     * <p/>
-     * Find new Clarification or current problem summary.
-     * <p/>
-     * <strong>JSON output</strong>:
-     * <ul>
-     * <li>
-     * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>,
-     * "contestProblems", <strong>Current problem summary</strong>,
-     * "time":<strong>Server time</strong>}
-     * </li>
-     * <li>
-     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-     * </li>
-     * </ul>
-     *
-     * @return <strong>JSON</strong> signal
-     */
-    public String toContestChanges() {
-        try {
-            if (targetContestId == null)
-                throw new AppException("Contest Id is empty!");
+	public void setTargetContest(ContestView targetContest) {
+		this.targetContest = targetContest;
+	}
 
-            Contest contest = contestDAO.get(targetContestId);
-            if (contest == null)
-                throw new AppException("Wrong contest ID!");
+	/**
+	 * Get contest real time information.
+	 * <p/>
+	 * Find new Clarification or current problem summary.
+	 * <p/>
+	 * <strong>JSON output</strong>:
+	 * <ul>
+	 * <li>
+	 * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>,
+	 * "contestProblems", <strong>Current problem summary</strong>,
+	 * "time":<strong>Server time</strong>}</li>
+	 * <li>
+	 * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+	 * </li>
+	 * </ul>
+	 * 
+	 * @return <strong>JSON</strong> signal
+	 */
+	public String toContestChanges() {
+		try {
+			if (targetContestId == null)
+				throw new AppException("Contest Id is empty!");
 
-            if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
-                if (!contest.getIsVisible())
-                    throw new AppException("Contest doesn't exist");
+			Contest contest = contestDAO.get(targetContestId);
+			if (contest == null)
+				throw new AppException("Wrong contest ID!");
 
-            targetContest = new ContestView(contest);
-            Timestamp contestEndTime = new Timestamp(contest.getTime().getTime() + contest.getLength() * 1000);
+			if (currentUser == null
+					|| currentUser.getType() != Global.AuthenticationType.ADMIN
+							.ordinal())
+				if (!contest.getIsVisible())
+					throw new AppException("Contest doesn't exist");
 
-            //Sync time left
-            json.put("timeLeft", (contestEndTime.getTime() - new Date().getTime()) / 1000);
+			targetContest = new ContestView(contest);
+			Timestamp contestEndTime = new Timestamp(contest.getTime()
+					.getTime() + contest.getLength() * 1000);
 
-            if (contest.getLength() == 5 * 60 * 60) {
-                if (targetContest.getStatus().equals("Running"))
-                    contestEndTime = new Timestamp(contest.getTime().getTime() + 4 * 60 * 60 * 1000);
-            }
+			// Sync time left
+			json.put("timeLeft",
+					(contestEndTime.getTime() - new Date().getTime()) / 1000);
 
-            //Problem information changes.
-            Condition condition;
-            Long count;
+			if (contest.getLength() == 5 * 60 * 60) {
+				if (targetContest.getStatus().equals("Running"))
+					contestEndTime = new Timestamp(contest.getTime().getTime()
+							+ 4 * 60 * 60 * 1000);
+			}
 
-            List<ContestProblemSummaryView> contestProblems = new LinkedList<>();
-            for (int id = 0; id < targetContest.getProblemList().size(); id++) {
-                Integer problemId = targetContest.getProblemList().get(id);
-                Problem problem = problemDAO.get(problemId);
-                ContestProblemSummaryView targetProblem = new ContestProblemSummaryView(problem,
-                        getCurrentUser(), problemStatus.get(problem.getProblemId()));
-                targetProblem.setOrder((char) ('A' + id));
+			// Problem information changes.
+			Condition condition;
+			Long count;
 
-                //get solved
-                statusCondition.clear();
-                statusCondition.setStartTime(contest.getTime());
-                statusCondition.setEndTime(contestEndTime);
-                statusCondition.setContestId(contest.getContestId());
-                statusCondition.setProblemId(problem.getProblemId());
-                statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-                condition = statusCondition.getCondition();
-                condition.addProjection(Projections.countDistinct("userByUserId"));
-                count = statusDAO.customCount(condition);
-                targetProblem.setSolved((int) count.longValue());
-                //get tried
-                statusCondition.clear();
-                statusCondition.setStartTime(contest.getTime());
-                statusCondition.setEndTime(contestEndTime);
-                statusCondition.setContestId(contest.getContestId());
-                statusCondition.setProblemId(problem.getProblemId());
-                condition = statusCondition.getCondition();
-                count = statusDAO.count(condition);
-                targetProblem.setTried((int) count.longValue());
+			List<ContestProblemSummaryView> contestProblems = new LinkedList<>();
+			for (int id = 0; id < targetContest.getProblemList().size(); id++) {
+				Integer problemId = targetContest.getProblemList().get(id);
+				Problem problem = problemDAO.get(problemId);
+				ContestProblemSummaryView targetProblem = new ContestProblemSummaryView(
+						problem, getCurrentUser(), problemStatus.get(problem
+								.getProblemId()));
+				targetProblem.setOrder((char) ('A' + id));
 
-                contestProblems.add(targetProblem);
-            }
-            json.put("contestProblems", contestProblems);
+				// get solved
+				statusCondition.clear();
+				statusCondition.setStartTime(contest.getTime());
+				statusCondition.setEndTime(contestEndTime);
+				statusCondition.setContestId(contest.getContestId());
+				statusCondition.setProblemId(problem.getProblemId());
+				statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC
+						.ordinal());
+				condition = statusCondition.getCondition();
+				condition.addProjection(Projections
+						.countDistinct("userByUserId"));
+				count = statusDAO.customCount(condition);
+				targetProblem.setSolved((int) count.longValue());
+				// get tried
+				statusCondition.clear();
+				statusCondition.setStartTime(contest.getTime());
+				statusCondition.setEndTime(contestEndTime);
+				statusCondition.setContestId(contest.getContestId());
+				statusCondition.setProblemId(problem.getProblemId());
+				condition = statusCondition.getCondition();
+				count = statusDAO.count(condition);
+				targetProblem.setTried((int) count.longValue());
 
-            //Clarification
+				contestProblems.add(targetProblem);
+			}
+			json.put("contestProblems", contestProblems);
 
-            json.put("result", "ok");
-        } catch (AppException e) {
-            json.put("result", "error");
-            json.put("error_msg", e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            json.put("result", "error");
-            json.put("error_msg", "Unknown exception occurred.");
-        }
-        return JSON;
-    }
+			// Clarification
 
-    /**
-     * Goto contest page.
-     *
-     * @return <strong>SUCCESS Signal</strong>
-     */
-    public String toContest() {
-        try {
-            if (targetContestId == null)
-                throw new AppException("Contest Id is empty!");
+			json.put("result", "ok");
+		} catch (AppException e) {
+			json.put("result", "error");
+			json.put("error_msg", e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("result", "error");
+			json.put("error_msg", "Unknown exception occurred.");
+		}
+		return JSON;
+	}
 
-            Contest contest = contestDAO.get(targetContestId);
-            if (contest == null)
-                throw new AppException("Wrong contest ID!");
+	/**
+	 * Goto contest page.
+	 * 
+	 * @return <strong>SUCCESS Signal</strong>
+	 */
+	public String toContest() {
+		try {
+			if (targetContestId == null)
+				throw new AppException("Contest Id is empty!");
 
-            if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
-                if (!contest.getIsVisible())
-                    throw new AppException("Contest doesn't exist");
+			Contest contest = contestDAO.get(targetContestId);
+			if (contest == null)
+				throw new AppException("Wrong contest ID!");
 
-            targetContest = new ContestView(contest);
-            Timestamp contestEndTime = new Timestamp(contest.getTime().getTime() + contest.getLength() * 1000);
-            if (contest.getLength() == 5 * 60 * 60) {
-                if (targetContest.getStatus().equals("Running"))
-                    contestEndTime = new Timestamp(contest.getTime().getTime() + 4 * 60 * 60 * 1000);
-            }
-            Condition condition;
-            Long count;
+			if (currentUser == null
+					|| currentUser.getType() != Global.AuthenticationType.ADMIN
+							.ordinal())
+				if (!contest.getIsVisible())
+					throw new AppException("Contest doesn't exist");
 
-            contestProblems = new LinkedList<>();
-            for (int id = 0; id < targetContest.getProblemList().size(); id++) {
-                Integer problemId = targetContest.getProblemList().get(id);
-                Problem problem = problemDAO.get(problemId);
-                ContestProblemView targetProblem = new ContestProblemView(problem);
-                targetProblem.setOrder((char) ('A' + id));
+			targetContest = new ContestView(contest);
+			Timestamp contestEndTime = new Timestamp(contest.getTime()
+					.getTime() + contest.getLength() * 1000);
+			if (contest.getLength() == 5 * 60 * 60) {
+				if (targetContest.getStatus().equals("Running"))
+					contestEndTime = new Timestamp(contest.getTime().getTime()
+							+ 4 * 60 * 60 * 1000);
+			}
+			Condition condition;
+			Long count;
 
-                //get solved
-                statusCondition.clear();
-                statusCondition.setStartTime(contest.getTime());
-                statusCondition.setEndTime(contestEndTime);
-                statusCondition.setContestId(contest.getContestId());
-                statusCondition.setProblemId(problem.getProblemId());
-                statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-                condition = statusCondition.getCondition();
-                condition.addProjection(Projections.countDistinct("userByUserId"));
-                count = statusDAO.customCount(condition);
-                targetProblem.setSolved((int) count.longValue());
-                //get tried
-                statusCondition.clear();
-                statusCondition.setStartTime(contest.getTime());
-                statusCondition.setEndTime(contestEndTime);
-                statusCondition.setContestId(contest.getContestId());
-                statusCondition.setProblemId(problem.getProblemId());
-                condition = statusCondition.getCondition();
-                count = statusDAO.count(condition);
-                targetProblem.setTried((int) count.longValue());
+			contestProblems = new LinkedList<>();
+			for (int id = 0; id < targetContest.getProblemList().size(); id++) {
+				Integer problemId = targetContest.getProblemList().get(id);
+				Problem problem = problemDAO.get(problemId);
+				ContestProblemView targetProblem = new ContestProblemView(
+						problem);
+				targetProblem.setOrder((char) ('A' + id));
 
-                contestProblems.add(targetProblem);
-            }
-        } catch (AppException e) {
-            return redirect(getActionURL("/", "index"), e.getMessage());
-        } catch (Exception e) {
-            return redirect(getActionURL("/", "index"), "Unknown exception occurred.");
-        }
-        return SUCCESS;
-    }
+				// get solved
+				statusCondition.clear();
+				statusCondition.setStartTime(contest.getTime());
+				statusCondition.setEndTime(contestEndTime);
+				statusCondition.setContestId(contest.getContestId());
+				statusCondition.setProblemId(problem.getProblemId());
+				statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC
+						.ordinal());
+				condition = statusCondition.getCondition();
+				condition.addProjection(Projections
+						.countDistinct("userByUserId"));
+				count = statusDAO.customCount(condition);
+				targetProblem.setSolved((int) count.longValue());
+				// get tried
+				statusCondition.clear();
+				statusCondition.setStartTime(contest.getTime());
+				statusCondition.setEndTime(contestEndTime);
+				statusCondition.setContestId(contest.getContestId());
+				statusCondition.setProblemId(problem.getProblemId());
+				condition = statusCondition.getCondition();
+				count = statusDAO.count(condition);
+				targetProblem.setTried((int) count.longValue());
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public void onActionExecuting(AppInterceptor.ActionInfo actionInfo) {
-        super.onActionExecuting(actionInfo);
+				contestProblems.add(targetProblem);
+			}
+		} catch (AppException e) {
+			return redirect(getActionURL("/", "index"), e.getMessage());
+		} catch (Exception e) {
+			return redirect(getActionURL("/", "index"),
+					"Unknown exception occurred.");
+		}
+		return SUCCESS;
+	}
 
-        Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
-        try {
-            if (targetContestId == null)
-                throw new AppException("Contest Id is empty!");
+	@SuppressWarnings("unchecked")
+	@Override
+	public void onActionExecuting(AppInterceptor.ActionInfo actionInfo) {
+		super.onActionExecuting(actionInfo);
 
-            Contest contest = contestDAO.get(targetContestId);
-            if (contest == null)
-                throw new AppException("Wrong contest ID!");
+		Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
+		try {
+			if (targetContestId == null)
+				throw new AppException("Contest Id is empty!");
 
-            if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
-                if (!contest.getIsVisible())
-                    throw new AppException("Contest doesn't exist");
+			Contest contest = contestDAO.get(targetContestId);
+			if (contest == null)
+				throw new AppException("Wrong contest ID!");
 
-            Timestamp contestEndTime = new Timestamp(contest.getTime().getTime() + contest.getLength() * 1000);
+			if (currentUser == null
+					|| currentUser.getType() != Global.AuthenticationType.ADMIN
+							.ordinal())
+				if (!contest.getIsVisible())
+					throw new AppException("Contest doesn't exist");
 
-            if (currentUser != null) {
-                problemStatus.clear();
+			Timestamp contestEndTime = new Timestamp(contest.getTime()
+					.getTime() + contest.getLength() * 1000);
 
-                statusCondition.clear();
-                statusCondition.setStartTime(contest.getTime());
-                statusCondition.setEndTime(contestEndTime);
-                statusCondition.setContestId(contest.getContestId());
-                statusCondition.setUserId(currentUser.getUserId());
-                statusCondition.setResultId(null);
-                Condition condition = statusCondition.getCondition();
-                condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
-                List<Integer> results = (List<Integer>) statusDAO.findAll(condition);
-                for (Integer result : results)
-                    if (!problemStatus.containsKey(result))
-                        problemStatus.put(result, Global.AuthorStatusType.FAIL);
+			if (currentUser != null) {
+				problemStatus.clear();
 
-                statusCondition.clear();
-                statusCondition.setStartTime(contest.getTime());
-                statusCondition.setEndTime(contestEndTime);
-                statusCondition.setContestId(contest.getContestId());
-                statusCondition.setUserId(currentUser.getUserId());
-                statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-                condition = statusCondition.getCondition();
-                condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
-                results = (List<Integer>) statusDAO.findAll(condition);
-                for (Integer result : results)
-                    problemStatus.put(result, Global.AuthorStatusType.PASS);
-            }
-        } catch (AppException ignored) {
-        }
-        session.put("problemStatus", problemStatus);
-    }
+				statusCondition.clear();
+				statusCondition.setStartTime(contest.getTime());
+				statusCondition.setEndTime(contestEndTime);
+				statusCondition.setContestId(contest.getContestId());
+				statusCondition.setUserId(currentUser.getUserId());
+				statusCondition.setResultId(null);
+				Condition condition = statusCondition.getCondition();
+				condition.addProjection(Projections
+						.groupProperty("problemByProblemId.problemId"));
+				List<Integer> results = (List<Integer>) statusDAO
+						.findAll(condition);
+				for (Integer result : results)
+					if (!problemStatus.containsKey(result))
+						problemStatus.put(result, Global.AuthorStatusType.FAIL);
 
-    @Autowired
-    private IContestDAO contestDAO;
-    @Autowired
-    private IProblemDAO problemDAO;
-    @Autowired
-    private IStatusDAO statusDAO;
+				statusCondition.clear();
+				statusCondition.setStartTime(contest.getTime());
+				statusCondition.setEndTime(contestEndTime);
+				statusCondition.setContestId(contest.getContestId());
+				statusCondition.setUserId(currentUser.getUserId());
+				statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC
+						.ordinal());
+				condition = statusCondition.getCondition();
+				condition.addProjection(Projections
+						.groupProperty("problemByProblemId.problemId"));
+				results = (List<Integer>) statusDAO.findAll(condition);
+				for (Integer result : results)
+					problemStatus.put(result, Global.AuthorStatusType.PASS);
+			}
+		} catch (AppException ignored) {
+		}
+		session.put("problemStatus", problemStatus);
+	}
 
-    @Override
-    public void setContestDAO(IContestDAO contestDAO) {
-        this.contestDAO = contestDAO;
-    }
+	@Autowired
+	private IContestDAO contestDAO;
+	@Autowired
+	private IProblemDAO problemDAO;
+	@Autowired
+	private IStatusDAO statusDAO;
 
-    @Override
-    public void setProblemDAO(IProblemDAO problemDAO) {
-        this.problemDAO = problemDAO;
-    }
+	@Override
+	public void setContestDAO(IContestDAO contestDAO) {
+		this.contestDAO = contestDAO;
+	}
 
-    @Autowired
-    private StatusCondition statusCondition;
+	@Override
+	public void setProblemDAO(IProblemDAO problemDAO) {
+		this.problemDAO = problemDAO;
+	}
 
-    @Override
-    public void setStatusCondition(StatusCondition statusCondition) {
-        this.statusCondition = statusCondition;
-    }
+	@Autowired
+	private StatusCondition statusCondition;
 
-    @Override
-    public StatusCondition getStatusCondition() {
-        return statusCondition;
-    }
+	@Override
+	public void setStatusCondition(StatusCondition statusCondition) {
+		this.statusCondition = statusCondition;
+	}
 
-    @Override
-    public void setStatusDAO(IStatusDAO statusDAO) {
-        this.statusDAO = statusDAO;
-    }
+	@Override
+	public StatusCondition getStatusCondition() {
+		return statusCondition;
+	}
+
+	@Override
+	public void setStatusDAO(IStatusDAO statusDAO) {
+		this.statusDAO = statusDAO;
+	}
 }

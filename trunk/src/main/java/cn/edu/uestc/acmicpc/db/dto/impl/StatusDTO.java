@@ -12,219 +12,218 @@ import java.util.Date;
 /**
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 public class StatusDTO extends BaseDTO<Status> {
-    private Integer statusId;
-    private Integer result;
-    private Integer memoryCost;
-    private Integer timeCost;
-    private Integer length;
-    private Timestamp time;
-    private Integer caseNumber;
-    private Integer codeId;
-    private Code code;
-    private Integer compileInfoId;
+	private Integer statusId;
+	private Integer result;
+	private Integer memoryCost;
+	private Integer timeCost;
+	private Integer length;
+	private Timestamp time;
+	private Integer caseNumber;
+	private Integer codeId;
+	private Code code;
+	private Integer compileInfoId;
 
-    @Ignore
-    public Code getCode() {
-        return code;
-    }
+	@Ignore
+	public Code getCode() {
+		return code;
+	}
 
-    public void setCode(Code code) {
-        this.code = code;
-    }
+	public void setCode(Code code) {
+		this.code = code;
+	}
 
-    @Ignore
-    public CompileInfo getCompileInfo() {
-        return compileInfo;
-    }
+	@Ignore
+	public CompileInfo getCompileInfo() {
+		return compileInfo;
+	}
 
-    public void setCompileInfo(CompileInfo compileInfo) {
-        this.compileInfo = compileInfo;
-    }
+	public void setCompileInfo(CompileInfo compileInfo) {
+		this.compileInfo = compileInfo;
+	}
 
-    @Ignore
-    public Contest getContest() {
-        return contest;
-    }
+	@Ignore
+	public Contest getContest() {
+		return contest;
+	}
 
-    public void setContest(Contest contest) {
-        this.contest = contest;
-    }
+	public void setContest(Contest contest) {
+		this.contest = contest;
+	}
 
-    @Ignore
-    public Problem getProblem() {
-        return problem;
-    }
+	@Ignore
+	public Problem getProblem() {
+		return problem;
+	}
 
-    public void setProblem(Problem problem) {
-        this.problem = problem;
-    }
+	public void setProblem(Problem problem) {
+		this.problem = problem;
+	}
 
-    @Ignore
-    public User getUser() {
-        return user;
-    }
+	@Ignore
+	public User getUser() {
+		return user;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    @Ignore
-    public Language getLanguage() {
-        return language;
-    }
+	@Ignore
+	public Language getLanguage() {
+		return language;
+	}
 
-    public void setLanguage(Language language) {
-        this.language = language;
-    }
+	public void setLanguage(Language language) {
+		this.language = language;
+	}
 
-    private CompileInfo compileInfo;
-    private Integer contestId;
-    private Contest contest;
-    private Integer languageId;
-    private Language language;
+	private CompileInfo compileInfo;
+	private Integer contestId;
+	private Contest contest;
+	private Integer languageId;
+	private Language language;
 
-    @Override
-    public Status getEntity() throws AppException {
-        Status status = super.getEntity();
-        status.setCodeByCodeId(code);
-        status.setCompileInfoByCompileInfoId(null);
-        status.setContestByContestId(contest);
-        status.setLanguageByLanguageId(language);
-        status.setResult(Global.OnlineJudgeReturnType.OJ_WAIT.ordinal());
-        status.setMemoryCost(0);
-        status.setTimeCost(0);
-        status.setTime(new Timestamp(new Date().getTime()));
-        status.setCaseNumber(0);
-        status.setUserByUserId(user);
-        status.setProblemByProblemId(problem);
-        return status;
-    }
+	@Override
+	public Status getEntity() throws AppException {
+		Status status = super.getEntity();
+		status.setCodeByCodeId(code);
+		status.setCompileInfoByCompileInfoId(null);
+		status.setContestByContestId(contest);
+		status.setLanguageByLanguageId(language);
+		status.setResult(Global.OnlineJudgeReturnType.OJ_WAIT.ordinal());
+		status.setMemoryCost(0);
+		status.setTimeCost(0);
+		status.setTime(new Timestamp(new Date().getTime()));
+		status.setCaseNumber(0);
+		status.setUserByUserId(user);
+		status.setProblemByProblemId(problem);
+		return status;
+	}
 
-    @Override
-    public void updateEntity(Status status) throws AppException {
-        super.updateEntity(status);
-        status.setTime(new Timestamp(new Date().getTime()));
-    }
+	@Override
+	public void updateEntity(Status status) throws AppException {
+		super.updateEntity(status);
+		status.setTime(new Timestamp(new Date().getTime()));
+	}
 
-    public Integer getStatusId() {
-        return statusId;
-    }
+	public Integer getStatusId() {
+		return statusId;
+	}
 
-    public void setStatusId(Integer statusId) {
-        this.statusId = statusId;
-    }
+	public void setStatusId(Integer statusId) {
+		this.statusId = statusId;
+	}
 
-    public Integer getResult() {
-        return result;
-    }
+	public Integer getResult() {
+		return result;
+	}
 
-    public void setResult(Integer result) {
-        this.result = result;
-    }
+	public void setResult(Integer result) {
+		this.result = result;
+	}
 
-    public Integer getMemoryCost() {
-        return memoryCost;
-    }
+	public Integer getMemoryCost() {
+		return memoryCost;
+	}
 
-    public void setMemoryCost(Integer memoryCost) {
-        this.memoryCost = memoryCost;
-    }
+	public void setMemoryCost(Integer memoryCost) {
+		this.memoryCost = memoryCost;
+	}
 
-    public Integer getTimeCost() {
-        return timeCost;
-    }
+	public Integer getTimeCost() {
+		return timeCost;
+	}
 
-    public void setTimeCost(Integer timeCost) {
-        this.timeCost = timeCost;
-    }
+	public void setTimeCost(Integer timeCost) {
+		this.timeCost = timeCost;
+	}
 
-    public Integer getLength() {
-        return length;
-    }
+	public Integer getLength() {
+		return length;
+	}
 
-    public void setLength(Integer length) {
-        this.length = length;
-    }
+	public void setLength(Integer length) {
+		this.length = length;
+	}
 
-    public Timestamp getTime() {
-        return time;
-    }
+	public Timestamp getTime() {
+		return time;
+	}
 
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
+	public void setTime(Timestamp time) {
+		this.time = time;
+	}
 
-    public Integer getCaseNumber() {
-        return caseNumber;
-    }
+	public Integer getCaseNumber() {
+		return caseNumber;
+	}
 
-    public void setCaseNumber(Integer caseNumber) {
-        this.caseNumber = caseNumber;
-    }
+	public void setCaseNumber(Integer caseNumber) {
+		this.caseNumber = caseNumber;
+	}
 
-    @Ignore
-    public Integer getCodeId() {
-        return codeId;
-    }
+	@Ignore
+	public Integer getCodeId() {
+		return codeId;
+	}
 
-    public void setCodeId(Integer codeId) {
-        this.codeId = codeId;
-    }
+	public void setCodeId(Integer codeId) {
+		this.codeId = codeId;
+	}
 
-    @Ignore
-    public Integer getCompileInfoId() {
-        return compileInfoId;
-    }
+	@Ignore
+	public Integer getCompileInfoId() {
+		return compileInfoId;
+	}
 
-    public void setCompileInfoId(Integer compileInfoId) {
-        this.compileInfoId = compileInfoId;
-    }
+	public void setCompileInfoId(Integer compileInfoId) {
+		this.compileInfoId = compileInfoId;
+	}
 
-    @Ignore
-    public Integer getContestId() {
-        return contestId;
-    }
+	@Ignore
+	public Integer getContestId() {
+		return contestId;
+	}
 
-    public void setContestId(Integer contestId) {
-        this.contestId = contestId;
-    }
+	public void setContestId(Integer contestId) {
+		this.contestId = contestId;
+	}
 
-    @Ignore
-    public Integer getLanguageId() {
-        return languageId;
-    }
+	@Ignore
+	public Integer getLanguageId() {
+		return languageId;
+	}
 
-    public void setLanguageId(Integer languageId) {
-        this.languageId = languageId;
-    }
+	public void setLanguageId(Integer languageId) {
+		this.languageId = languageId;
+	}
 
-    @Ignore
-    public Integer getProblemId() {
-        return problemId;
-    }
+	@Ignore
+	public Integer getProblemId() {
+		return problemId;
+	}
 
-    public void setProblemId(Integer problemId) {
-        this.problemId = problemId;
-    }
+	public void setProblemId(Integer problemId) {
+		this.problemId = problemId;
+	}
 
-    @Ignore
-    public Integer getUserId() {
-        return userId;
-    }
+	@Ignore
+	public Integer getUserId() {
+		return userId;
+	}
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 
-    private Integer problemId;
-    private Problem problem;
-    private Integer userId;
-    private User user;
+	private Integer problemId;
+	private Problem problem;
+	private Integer userId;
+	private User user;
 
-    @Override
-    protected Class<Status> getReferenceClass() {
-        return Status.class;
-    }
+	@Override
+	protected Class<Status> getReferenceClass() {
+		return Status.class;
+	}
 }

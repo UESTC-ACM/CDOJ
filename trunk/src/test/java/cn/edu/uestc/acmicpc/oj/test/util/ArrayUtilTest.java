@@ -31,21 +31,25 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Test case for array util methods.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:applicationContext-test.xml"})
+@ContextConfiguration({ "classpath:applicationContext-test.xml" })
 public class ArrayUtilTest {
-    @Test
-    public void testParseIntArray() {
-        Assert.assertArrayEquals(new Integer[]{null}, ArrayUtil.parseIntArray(""));
-        Assert.assertArrayEquals(new Integer[]{1}, ArrayUtil.parseIntArray("1"));
-        Assert.assertArrayEquals(new Integer[]{1, 2, 31424, null, 1231},
-                ArrayUtil.parseIntArray("1, 2, 31424 , 123154153151541234 , 1231"));
-        Assert.assertArrayEquals(new Integer[]{1, 2, 31424, null, 1231},
-                ArrayUtil.parseIntArray("1,2,31424,123154153151541234,1231"));
-        Assert.assertArrayEquals(new Integer[]{null, null},
-                ArrayUtil.parseIntArray("1s, error"));
-    }
+	@Test
+	public void testParseIntArray() {
+		Assert.assertArrayEquals(new Integer[] { null },
+				ArrayUtil.parseIntArray(""));
+		Assert.assertArrayEquals(new Integer[] { 1 },
+				ArrayUtil.parseIntArray("1"));
+		Assert.assertArrayEquals(
+				new Integer[] { 1, 2, 31424, null, 1231 },
+				ArrayUtil
+						.parseIntArray("1, 2, 31424 , 123154153151541234 , 1231"));
+		Assert.assertArrayEquals(new Integer[] { 1, 2, 31424, null, 1231 },
+				ArrayUtil.parseIntArray("1,2,31424,123154153151541234,1231"));
+		Assert.assertArrayEquals(new Integer[] { null, null },
+				ArrayUtil.parseIntArray("1s, error"));
+	}
 }

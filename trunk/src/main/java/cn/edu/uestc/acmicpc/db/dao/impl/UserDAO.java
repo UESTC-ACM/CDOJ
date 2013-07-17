@@ -28,39 +28,36 @@ import cn.edu.uestc.acmicpc.db.entity.User;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
  * DAO for user entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class UserDAO extends DAO<User, Integer> implements IUserDAO {
-    @Override
-    protected Class<Integer> getPKClass() {
-        return Integer.class;
-    }
+	@Override
+	protected Class<Integer> getPKClass() {
+		return Integer.class;
+	}
 
-    @Override
-    protected Class<User> getReferenceClass() {
-        return User.class;
-    }
+	@Override
+	protected Class<User> getReferenceClass() {
+		return User.class;
+	}
 
-
-    @Override
-    @Deprecated
-    public User getUserByName(String name) {
-        if (name == null)
-            return null;
-        Session session = getSession();
-        Criteria criteria = session.createCriteria(User.class);
-        criteria.add(Restrictions.eq("userName", name));
-        List list = criteria.list();
-        if (list == null || list.isEmpty())
-            return null;
-        return (User) list.get(0);
-    }
+	@Override
+	@Deprecated
+	public User getUserByName(String name) {
+		if (name == null)
+			return null;
+		Session session = getSession();
+		Criteria criteria = session.createCriteria(User.class);
+		criteria.add(Restrictions.eq("userName", name));
+		List<?> list = criteria.list();
+		if (list == null || list.isEmpty())
+			return null;
+		return (User) list.get(0);
+	}
 }

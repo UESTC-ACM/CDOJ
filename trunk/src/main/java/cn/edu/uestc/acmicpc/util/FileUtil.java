@@ -26,127 +26,142 @@ import java.io.*;
 
 /**
  * File util methods.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class FileUtil {
-    private static final int BUFFER_SIZE = 2048;
+	private static final int BUFFER_SIZE = 2048;
 
-    /**
-     * Save string into the specific file.
-     *
-     * @param content  string content
-     * @param filePath file's path
-     */
-    public static void saveToFile(String content, String filePath) {
-        try {
-            OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(filePath));
-            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-            bufferedOutputStream.write(content.getBytes());
-            bufferedOutputStream.close();
-        } catch (IOException ignored) {
-        }
-    }
+	/**
+	 * Save string into the specific file.
+	 * 
+	 * @param content
+	 *            string content
+	 * @param filePath
+	 *            file's path
+	 */
+	public static void saveToFile(String content, String filePath) {
+		try {
+			OutputStream outputStream = new BufferedOutputStream(
+					new FileOutputStream(filePath));
+			BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(
+					outputStream);
+			bufferedOutputStream.write(content.getBytes());
+			bufferedOutputStream.close();
+		} catch (IOException ignored) {
+		}
+	}
 
-    /**
-     * Save inputStream's content into outputStream.
-     *
-     * @param inputStream  input stream to read
-     * @param outputStream output stream to write
-     * @throws IOException
-     */
-    public static void saveToFile(InputStream inputStream, OutputStream outputStream) throws IOException {
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, BUFFER_SIZE);
-        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream, BUFFER_SIZE);
-        byte[] buffer = new byte[BUFFER_SIZE];
-        int len;
-        while ((len = bufferedInputStream.read(buffer)) != -1) {
-            bufferedOutputStream.write(buffer, 0, len);
-        }
-        bufferedOutputStream.flush();
-        bufferedOutputStream.close();
-        bufferedInputStream.close();
-    }
+	/**
+	 * Save inputStream's content into outputStream.
+	 * 
+	 * @param inputStream
+	 *            input stream to read
+	 * @param outputStream
+	 *            output stream to write
+	 * @throws IOException
+	 */
+	public static void saveToFile(InputStream inputStream,
+			OutputStream outputStream) throws IOException {
+		BufferedInputStream bufferedInputStream = new BufferedInputStream(
+				inputStream, BUFFER_SIZE);
+		BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(
+				outputStream, BUFFER_SIZE);
+		byte[] buffer = new byte[BUFFER_SIZE];
+		int len;
+		while ((len = bufferedInputStream.read(buffer)) != -1) {
+			bufferedOutputStream.write(buffer, 0, len);
+		}
+		bufferedOutputStream.flush();
+		bufferedOutputStream.close();
+		bufferedInputStream.close();
+	}
 
-    /**
-     * Recursively delete the contents of {@code targetFile}, but not the {@code targetFile} itself.
-     * <p/>
-     * If the {@code targetFile}  does not exist or it is not a directory, return {@code 0}.
-     *
-     * @return the total number of files deleted
-     */
-    @SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
-    public static int deleteContents(File targetFile) {
-        if (targetFile.exists() && targetFile.isDirectory())
-            return org.aspectj.util.FileUtil.deleteContents(targetFile);
-        else
-            return 0;
-    }
+	/**
+	 * Recursively delete the contents of {@code targetFile}, but not the
+	 * {@code targetFile} itself.
+	 * <p/>
+	 * If the {@code targetFile} does not exist or it is not a directory, return
+	 * {@code 0}.
+	 * 
+	 * @return the total number of files deleted
+	 */
+	public static int deleteContents(File targetFile) {
+		if (targetFile.exists() && targetFile.isDirectory())
+			return org.aspectj.util.FileUtil.deleteContents(targetFile);
+		else
+			return 0;
+	}
 
-    /**
-     * Clear all the files under the path and delete the directory.
-     * <p/>
-     * <strong>WARN</strong>: this operation cannot be reverted.
-     *
-     * @param path absolute path value
-     */
-    public static void clearDirectory(String path) {
-        clearDirectory(new File(path));
-    }
+	/**
+	 * Clear all the files under the path and delete the directory.
+	 * <p/>
+	 * <strong>WARN</strong>: this operation cannot be reverted.
+	 * 
+	 * @param path
+	 *            absolute path value
+	 */
+	public static void clearDirectory(String path) {
+		clearDirectory(new File(path));
+	}
 
-    /**
-     * Move a directory into specific location.
-     *
-     * @param fromDir origin directory location
-     * @param toDir   destination location
-     * @throws IOException
-     */
-    public static void moveDirectory(File fromDir, File toDir) throws IOException {
-        org.aspectj.util.FileUtil.copyDir(fromDir, toDir);
-        clearDirectory(fromDir);
-    }
+	/**
+	 * Move a directory into specific location.
+	 * 
+	 * @param fromDir
+	 *            origin directory location
+	 * @param toDir
+	 *            destination location
+	 * @throws IOException
+	 */
+	public static void moveDirectory(File fromDir, File toDir)
+			throws IOException {
+		org.aspectj.util.FileUtil.copyDir(fromDir, toDir);
+		clearDirectory(fromDir);
+	}
 
-    /**
-     * Count number of files in the folder.
-     *
-     * @param file file pointer
-     * @return number of files in the folder
-     */
-    @SuppressWarnings("UnusedDeclaration")
-    public static int countFiles(File file) {
-        if (!file.exists())
-            return 0;
-        File[] files = file.listFiles();
-        if (files == null)
-            return 0;
-        return files.length;
-    }
+	/**
+	 * Count number of files in the folder.
+	 * 
+	 * @param file
+	 *            file pointer
+	 * @return number of files in the folder
+	 */
+	public static int countFiles(File file) {
+		if (!file.exists())
+			return 0;
+		File[] files = file.listFiles();
+		if (files == null)
+			return 0;
+		return files.length;
+	}
 
-    /**
-     * Delete specific directory.
-     *
-     * @param file directory file pointer
-     */
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private static void clearDirectory(File file) {
-        if (file.exists()) {
-            deleteContents(file);
-            file.delete();
-        }
-    }
+	/**
+	 * Delete specific directory.
+	 * 
+	 * @param file
+	 *            directory file pointer
+	 */
+	private static void clearDirectory(File file) {
+		if (file.exists()) {
+			deleteContents(file);
+			file.delete();
+		}
+	}
 
-    /**
-     * Get file's name without file extension.
-     *
-     * @param file file entity
-     * @return file's name
-     */
-    public static String getFileName(File file) {
-        String fileName = file.getName();
-        int idx = fileName.lastIndexOf('.');
-        if (idx == -1)
-            return fileName;
-        else
-            return fileName.substring(0, idx);
-    }
+	/**
+	 * Get file's name without file extension.
+	 * 
+	 * @param file
+	 *            file entity
+	 * @return file's name
+	 */
+	public static String getFileName(File file) {
+		String fileName = file.getName();
+		int idx = fileName.lastIndexOf('.');
+		if (idx == -1)
+			return fileName;
+		else
+			return fileName.substring(0, idx);
+	}
 }

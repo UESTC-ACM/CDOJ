@@ -26,20 +26,22 @@ import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 
 /**
  * For all class need status condition entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public interface StatusConditionAware {
-    /**
-     * Put status condition entity into class.
-     *
-     * @param statusCondition specific status condition entity
-     */
-    public void setStatusCondition(StatusCondition statusCondition);
+	/**
+	 * Put status condition entity into class.
+	 * 
+	 * @param statusCondition
+	 *            specific status condition entity
+	 */
+	public void setStatusCondition(StatusCondition statusCondition);
 
-    /**
-     * get status condition entity.
-     * @return  specific status condition
-     */
-    public StatusCondition getStatusCondition();
+	/**
+	 * get status condition entity.
+	 * 
+	 * @return specific status condition
+	 */
+	public StatusCondition getStatusCondition();
 }

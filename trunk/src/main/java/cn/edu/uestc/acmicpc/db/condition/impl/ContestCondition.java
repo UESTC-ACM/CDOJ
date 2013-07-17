@@ -33,141 +33,142 @@ import java.util.Calendar;
 
 /**
  * Contest database condition entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 public class ContestCondition extends BaseCondition {
-    private Integer startId;
+	private Integer startId;
 
-    private Integer endId;
+	private Integer endId;
 
-    private String title;
+	private String title;
 
-    private String description;
+	private String description;
 
-    private Byte type;
+	private Byte type;
 
-    private Boolean isTitleEmpty;
+	private Boolean isTitleEmpty;
 
-    public Boolean getIsTitleEmpty() {
-        return isTitleEmpty;
-    }
+	public Boolean getIsTitleEmpty() {
+		return isTitleEmpty;
+	}
 
-    public void setIsTitleEmpty(Boolean isTitleEmpty) {
-        this.isTitleEmpty = isTitleEmpty;
-    }
+	public void setIsTitleEmpty(Boolean isTitleEmpty) {
+		this.isTitleEmpty = isTitleEmpty;
+	}
 
-    @Exp(MapField = "contestId", Type = ConditionType.ge)
-    public Integer getStartId() {
-        return startId;
-    }
+	@Exp(MapField = "contestId", Type = ConditionType.ge)
+	public Integer getStartId() {
+		return startId;
+	}
 
-    public void setStartId(Integer startId) {
-        this.startId = startId;
-    }
+	public void setStartId(Integer startId) {
+		this.startId = startId;
+	}
 
-    @Exp(MapField = "contestId", Type = ConditionType.le)
-    public Integer getEndId() {
-        return endId;
-    }
+	@Exp(MapField = "contestId", Type = ConditionType.le)
+	public Integer getEndId() {
+		return endId;
+	}
 
-    public void setEndId(Integer endId) {
-        this.endId = endId;
-    }
+	public void setEndId(Integer endId) {
+		this.endId = endId;
+	}
 
-    @Exp(Type = ConditionType.like)
-    public String getTitle() {
-        return title;
-    }
+	@Exp(Type = ConditionType.like)
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    @Exp(Type = ConditionType.like)
-    public String getDescription() {
-        return description;
-    }
+	@Exp(Type = ConditionType.like)
+	public String getDescription() {
+		return description;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    @Exp(Type = ConditionType.eq)
-    public Byte getType() {
-        return type;
-    }
+	@Exp(Type = ConditionType.eq)
+	public Byte getType() {
+		return type;
+	}
 
-    public void setType(Byte type) {
-        this.type = type;
-    }
+	public void setType(Byte type) {
+		this.type = type;
+	}
 
-    @Exp(MapField = "time", Type = ConditionType.ge)
-    public Timestamp getStartTime() {
-        return startTime;
-    }
+	@Exp(MapField = "time", Type = ConditionType.ge)
+	public Timestamp getStartTime() {
+		return startTime;
+	}
 
-    public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
-    }
+	public void setStartTime(Timestamp startTime) {
+		this.startTime = startTime;
+	}
 
-    public Timestamp getEndTime() {
-        return endTime;
-    }
+	public Timestamp getEndTime() {
+		return endTime;
+	}
 
-    public void setEndTime(Timestamp endTime) {
-        this.endTime = endTime;
-    }
+	public void setEndTime(Timestamp endTime) {
+		this.endTime = endTime;
+	}
 
-    @Exp(Type = ConditionType.eq)
-    public Boolean getIsVisible() {
-        return isVisible;
-    }
+	@Exp(Type = ConditionType.eq)
+	public Boolean getIsVisible() {
+		return isVisible;
+	}
 
-    public void setIsVisible(Boolean visible) {
-        isVisible = visible;
-    }
+	public void setIsVisible(Boolean visible) {
+		isVisible = visible;
+	}
 
-    private Timestamp startTime;
+	private Timestamp startTime;
 
-    private Timestamp endTime;
+	private Timestamp endTime;
 
-    private Boolean isVisible;
+	private Boolean isVisible;
 
-    /**
-     * Keyword for {@code description}, {@code title}
-     */
-    private String keyword;
+	/**
+	 * Keyword for {@code description}, {@code title}
+	 */
+	private String keyword;
 
-    public String getKeyword() {
-        return keyword;
-    }
+	public String getKeyword() {
+		return keyword;
+	}
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
 
-    @Override
-    public void invoke(Condition condition) {
-        super.invoke(condition);
-        if (keyword != null) {
-            String[] fields = new String[]{"description", "title"};
-            Junction junction = Restrictions.disjunction();
-            for (String field : fields) {
-                junction.add(Restrictions.like(field, String.format("%%%s%%", keyword)));
-            }
-            condition.addCriterion(junction);
-        }
-        if (endTime != null) {
-            condition.addCriterion(Restrictions.lt("time", DateUtil.add(endTime, Calendar.DATE, 1)));
-        }
-        if (isTitleEmpty != null) {
-            if (isTitleEmpty) {
-                condition.addCriterion(Restrictions.like("title", ""));
-            } else {
-                condition.addCriterion(Restrictions.like("title", "_%"));
-            }
-        }
-    }
+	@Override
+	public void invoke(Condition condition) {
+		super.invoke(condition);
+		if (keyword != null) {
+			String[] fields = new String[] { "description", "title" };
+			Junction junction = Restrictions.disjunction();
+			for (String field : fields) {
+				junction.add(Restrictions.like(field,
+						String.format("%%%s%%", keyword)));
+			}
+			condition.addCriterion(junction);
+		}
+		if (endTime != null) {
+			condition.addCriterion(Restrictions.lt("time",
+					DateUtil.add(endTime, Calendar.DATE, 1)));
+		}
+		if (isTitleEmpty != null) {
+			if (isTitleEmpty) {
+				condition.addCriterion(Restrictions.like("title", ""));
+			} else {
+				condition.addCriterion(Restrictions.like("title", "_%"));
+			}
+		}
+	}
 }

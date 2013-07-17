@@ -26,16 +26,16 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ICodeDAO;
 
 /**
  * For all class which need codeDAO entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @see ICodeDAO
  */
-@SuppressWarnings("UnusedDeclaration")
 public interface CodeDAOAware {
-    /**
-     * Put codeDAO into class.
-     *
-     * @param codeDAO codeDAO object
-     */
-    public void setCodeDAO(ICodeDAO codeDAO);
+	/**
+	 * Put codeDAO into class.
+	 * 
+	 * @param codeDAO
+	 *            codeDAO object
+	 */
+	public void setCodeDAO(ICodeDAO codeDAO);
 }

@@ -29,96 +29,96 @@ import java.io.Serializable;
 
 /**
  * Mappings between contests and users.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 @Table(name = "contestUser", schema = "", catalog = "uestcoj")
 @Entity
 @KeyField("contestUserId")
 public class ContestUser implements Serializable {
-    private static final long serialVersionUID = -8408381521779421508L;
-    private Integer contestUserId;
+	private static final long serialVersionUID = -8408381521779421508L;
+	private Integer contestUserId;
 
-    private Integer version;
+	private Integer version;
 
-    @Version
-    @Column(name = "OPTLOCK")
-    public Integer getVersion() {
-        return version;
-    }
+	@Version
+	@Column(name = "OPTLOCK")
+	public Integer getVersion() {
+		return version;
+	}
 
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
 
-    @Column(name = "contestUserId", nullable = false, insertable = true,
-            updatable = true, length = 10, precision = 0, unique = true)
-    @Id
-    @GeneratedValue
-    public Integer getContestUserId() {
-        return contestUserId;
-    }
+	@Column(name = "contestUserId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
+	@Id
+	@GeneratedValue
+	public Integer getContestUserId() {
+		return contestUserId;
+	}
 
-    public void setContestUserId(Integer contestUserId) {
-        this.contestUserId = contestUserId;
-    }
+	public void setContestUserId(Integer contestUserId) {
+		this.contestUserId = contestUserId;
+	}
 
-    private Byte status;
+	private Byte status;
 
-    @Column(name = "status", nullable = false, insertable = true, updatable = true,
-            length = 3, precision = 0)
-    @Basic
-    public Byte getStatus() {
-        return status;
-    }
+	@Column(name = "status", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
+	@Basic
+	public Byte getStatus() {
+		return status;
+	}
 
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
+	public void setStatus(Byte status) {
+		this.status = status;
+	}
 
-    @SuppressWarnings("RedundantIfStatement")
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
-        ContestUser that = (ContestUser) o;
+		ContestUser that = (ContestUser) o;
 
-        if (!contestUserId.equals(that.contestUserId)) return false;
-        if (!status.equals(that.status)) return false;
+		if (!contestUserId.equals(that.contestUserId))
+			return false;
+		if (!status.equals(that.status))
+			return false;
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = contestUserId;
-        result = 31 * result + (int) status;
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		int result = contestUserId;
+		result = 31 * result + (int) status;
+		return result;
+	}
 
-    private Contest contestByContestId;
+	private Contest contestByContestId;
 
-    @ManyToOne
-    @JoinColumn(name = "contestId", referencedColumnName = "contestId", nullable = false)
-    public Contest getContestByContestId() {
-        return contestByContestId;
-    }
+	@ManyToOne
+	@JoinColumn(name = "contestId", referencedColumnName = "contestId", nullable = false)
+	public Contest getContestByContestId() {
+		return contestByContestId;
+	}
 
-    public void setContestByContestId(Contest contestByContestId) {
-        this.contestByContestId = contestByContestId;
-    }
+	public void setContestByContestId(Contest contestByContestId) {
+		this.contestByContestId = contestByContestId;
+	}
 
-    private User userByUserId;
+	private User userByUserId;
 
-    @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
-    public User getUserByUserId() {
-        return userByUserId;
-    }
+	@ManyToOne
+	@JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
+	public User getUserByUserId() {
+		return userByUserId;
+	}
 
-    public void setUserByUserId(User userByUserId) {
-        this.userByUserId = userByUserId;
-    }
+	public void setUserByUserId(User userByUserId) {
+		this.userByUserId = userByUserId;
+	}
 }

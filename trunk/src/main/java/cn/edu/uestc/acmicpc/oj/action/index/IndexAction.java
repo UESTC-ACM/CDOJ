@@ -27,21 +27,20 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 
 /**
  * action for index page
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(NeedLogin = false)
 public class IndexAction extends BaseAction {
 
-    private static final long serialVersionUID = 5952440824378350944L;
+	private static final long serialVersionUID = 5952440824378350944L;
 
-    /**
-     * method of index action
-     *
-     * @return <strong>SUCCESS</strong> signal
-     */
-    @SuppressWarnings("SameReturnValue")
-    public String toIndex() {
-        return SUCCESS;
-    }
+	/**
+	 * method of index action
+	 * 
+	 * @return <strong>SUCCESS</strong> signal
+	 */
+	public String toIndex() {
+		return SUCCESS;
+	}
 }

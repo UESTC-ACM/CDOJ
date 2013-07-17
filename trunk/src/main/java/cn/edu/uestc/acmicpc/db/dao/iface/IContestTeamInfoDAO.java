@@ -26,7 +26,7 @@ import cn.edu.uestc.acmicpc.db.entity.ContestTeamInfo;
 
 /**
  * ContestTeamInfoDAO AOP interface.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public interface IContestTeamInfoDAO extends IDAO<ContestTeamInfo, Integer> {

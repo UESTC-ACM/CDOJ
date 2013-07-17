@@ -35,88 +35,84 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class ProblemStatementAdminAction extends BaseAction
-        implements ProblemDAOAware, ProblemDTOAware {
+public class ProblemStatementAdminAction extends BaseAction implements
+		ProblemDAOAware, ProblemDTOAware {
 
-    /**
-     * ProblemDAO for problem search.
-     */
-    @Autowired
-    private IProblemDAO problemDAO;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8385029063046939825L;
+	/**
+	 * ProblemDAO for problem search.
+	 */
+	@Autowired
+	private IProblemDAO problemDAO;
 
-    /**
-     * Setter of ProblemDAO for Ioc.
-     *
-     * @param problemDAO newly problemDAO
-     */
-    public void setProblemDAO(IProblemDAO problemDAO) {
-        this.problemDAO = problemDAO;
-    }
+	/**
+	 * Setter of ProblemDAO for Ioc.
+	 * 
+	 * @param problemDAO
+	 *            newly problemDAO
+	 */
+	public void setProblemDAO(IProblemDAO problemDAO) {
+		this.problemDAO = problemDAO;
+	}
 
-    @Override
-    public ProblemDTO getProblemDTO() {
-        return problemDTO;
-    }
+	@Override
+	public ProblemDTO getProblemDTO() {
+		return problemDTO;
+	}
 
-    @Override
-    public void setProblemDTO(ProblemDTO problemDTO) {
-        this.problemDTO = problemDTO;
-    }
+	@Override
+	public void setProblemDTO(ProblemDTO problemDTO) {
+		this.problemDTO = problemDTO;
+	}
 
-    /**
-     * User database transform object entity.
-     */
-    @Autowired
-    private ProblemDTO problemDTO;
+	/**
+	 * User database transform object entity.
+	 */
+	@Autowired
+	private ProblemDTO problemDTO;
 
-    /**
-     * To add or edit user entity.
-     * <p/>
-     * <strong>JSON output</strong>:
-     * <ul>
-     * <li>
-     * For success: {"result":"ok"}
-     * </li>
-     * <li>
-     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-     * </li>
-     * </ul>
-     *
-     * @return <strong>JSON</strong> signal
-     */
-    @Validations(
-            requiredStrings = {
-                    @RequiredStringValidator(
-                            fieldName = "problemDTO.title",
-                            key = "error.title.validation",
-                            trim = true
-                    )
-            }
-    )
-    public String toEdit() {
-        try {
-            Problem problem;
+	/**
+	 * To add or edit user entity.
+	 * <p/>
+	 * <strong>JSON output</strong>:
+	 * <ul>
+	 * <li>
+	 * For success: {"result":"ok"}</li>
+	 * <li>
+	 * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+	 * </li>
+	 * </ul>
+	 * 
+	 * @return <strong>JSON</strong> signal
+	 */
+	@Validations(requiredStrings = { @RequiredStringValidator(fieldName = "problemDTO.title", key = "error.title.validation", trim = true) })
+	public String toEdit() {
+		try {
+			Problem problem;
 
-            problem = problemDAO.get(problemDTO.getProblemId());
-            if (problem == null)
-                throw new AppException("No such problem!");
+			problem = problemDAO.get(problemDTO.getProblemId());
+			if (problem == null)
+				throw new AppException("No such problem!");
 
-            problemDTO.updateEntity(problem);
+			problemDTO.updateEntity(problem);
 
-            problemDAO.update(problem);
-            json.put("result", "ok");
-        } catch (AppException e) {
-            json.put("result", "error");
-            json.put("error_msg", e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            json.put("result", "error");
-            json.put("error_msg", "Unknown exception occurred.");
-        }
-        return JSON;
-    }
+			problemDAO.update(problem);
+			json.put("result", "ok");
+		} catch (AppException e) {
+			json.put("result", "error");
+			json.put("error_msg", e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("result", "error");
+			json.put("error_msg", "Unknown exception occurred.");
+		}
+		return JSON;
+	}
 
 }

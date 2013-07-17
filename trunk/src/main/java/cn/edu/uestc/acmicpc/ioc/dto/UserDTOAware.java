@@ -24,21 +24,22 @@ import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 
 /**
  * For all class which need user dto entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public interface UserDTOAware {
-    /**
-     * Put userDTO into class.
-     *
-     * @param userDTO userDTO object
-     */
-    public void setUserDTO(UserDTO userDTO);
+	/**
+	 * Put userDTO into class.
+	 * 
+	 * @param userDTO
+	 *            userDTO object
+	 */
+	public void setUserDTO(UserDTO userDTO);
 
-    /**
-     * Get userDTO entity.
-     *
-     * @return userDTO entity
-     */
-    public UserDTO getUserDTO();
+	/**
+	 * Get userDTO entity.
+	 * 
+	 * @return userDTO entity
+	 */
+	public UserDTO getUserDTO();
 }

@@ -28,41 +28,44 @@ import java.util.ArrayList;
 
 /**
  * Object global methods.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 public class ObjectUtil {
-    /**
-     * Output object's fields and methods.
-     *
-     * @param obj object to be printed
-     * @return information about the object
-     */
-    public static String toString(Object obj) {
-        if (obj == null)
-            return "null";
-        ArrayList<String> list = new ArrayList<>();
-        Class<?> cls = obj.getClass();
-        for (Field f : cls.getFields()) {
-            try {
-                list.add(String.format("%s : %s", f.getName(), f.get(obj).toString()));
-            } catch (Exception ignored) {
-            }
-        }
-        for (Method m : cls.getMethods()) {
-            try {
-                String name = m.getName();
-                if (!name.startsWith("get"))
-                    continue;
-                name = name.substring(3);
-                list.add(String.format("%s : %s", name, m.invoke(obj).toString()));
-            } catch (Exception ignored) {
-            }
-        }
-        if (obj instanceof Iterable)
-            for (Object object : (Iterable) obj)
-                list.add(toString(object));
-        return String.format("{ %s }", ArrayUtil.join(list.toArray(), " , "));
-    }
+	/**
+	 * Output object's fields and methods.
+	 * 
+	 * @param obj
+	 *            object to be printed
+	 * @return information about the object
+	 */
+	@SuppressWarnings("rawtypes")
+	public static String toString(Object obj) {
+		if (obj == null)
+			return "null";
+		ArrayList<String> list = new ArrayList<>();
+		Class<?> cls = obj.getClass();
+		for (Field f : cls.getFields()) {
+			try {
+				list.add(String.format("%s : %s", f.getName(), f.get(obj)
+						.toString()));
+			} catch (Exception ignored) {
+			}
+		}
+		for (Method m : cls.getMethods()) {
+			try {
+				String name = m.getName();
+				if (!name.startsWith("get"))
+					continue;
+				name = name.substring(3);
+				list.add(String.format("%s : %s", name, m.invoke(obj)
+						.toString()));
+			} catch (Exception ignored) {
+			}
+		}
+		if (obj instanceof Iterable)
+			for (Object object : (Iterable) obj)
+				list.add(toString(object));
+		return String.format("{ %s }", ArrayUtil.join(list.toArray(), " , "));
+	}
 }

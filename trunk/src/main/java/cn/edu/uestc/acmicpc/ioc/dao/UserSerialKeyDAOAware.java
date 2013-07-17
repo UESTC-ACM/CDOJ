@@ -26,10 +26,11 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IUserSerialKeyDAO;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public interface UserSerialKeyDAOAware {
-    /**
-     * Put userSerialKeyDAO into class.
-     *
-     * @param userSerialKeyDAO userDAO object
-     */
-    public void setUserSerialKeyDAO(IUserSerialKeyDAO userSerialKeyDAO);
+	/**
+	 * Put userSerialKeyDAO into class.
+	 * 
+	 * @param userSerialKeyDAO
+	 *            userDAO object
+	 */
+	public void setUserSerialKeyDAO(IUserSerialKeyDAO userSerialKeyDAO);
 }

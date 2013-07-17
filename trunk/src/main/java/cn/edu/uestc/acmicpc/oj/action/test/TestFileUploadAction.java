@@ -33,74 +33,77 @@ import java.util.List;
 
 /**
  * Test how to upload file with struts2.
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 @LoginPermit(value = Global.AuthenticationType.NORMAL)
 public class TestFileUploadAction extends BaseAction {
 
-    private List<File> uploadFile;
-    private List<String> uploadFileContentType;
-    private List<String> uploadFileFileName;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5257268689971460560L;
+	private List<File> uploadFile;
+	private List<String> uploadFileContentType;
+	private List<String> uploadFileFileName;
 
-    @SuppressWarnings("WeakerAccess")
-    public List<File> getUploadFile() {
-        return uploadFile;
-    }
+	public List<File> getUploadFile() {
+		return uploadFile;
+	}
 
-    public void setUploadFile(List<File> uploadFile) {
-        this.uploadFile = uploadFile;
-    }
+	public void setUploadFile(List<File> uploadFile) {
+		this.uploadFile = uploadFile;
+	}
 
-    public List<String> getUploadFileContentType() {
-        return uploadFileContentType;
-    }
+	public List<String> getUploadFileContentType() {
+		return uploadFileContentType;
+	}
 
-    public void setUploadFileContentType(List<String> uploadFileContentType) {
-        this.uploadFileContentType = uploadFileContentType;
-    }
+	public void setUploadFileContentType(List<String> uploadFileContentType) {
+		this.uploadFileContentType = uploadFileContentType;
+	}
 
-    @SuppressWarnings("WeakerAccess")
-    public List<String> getUploadFileFileName() {
-        return uploadFileFileName;
-    }
+	public List<String> getUploadFileFileName() {
+		return uploadFileFileName;
+	}
 
-    public void setUploadFileFileName(List<String> uploadFileFileName) {
-        this.uploadFileFileName = uploadFileFileName;
-    }
+	public void setUploadFileFileName(List<String> uploadFileFileName) {
+		this.uploadFileFileName = uploadFileFileName;
+	}
 
-    @SuppressWarnings("WeakerAccess")
-    public String getSavePath() {
-        return servletContext.getRealPath("/uploads/temp");
-    }
+	public String getSavePath() {
+		return servletContext.getRealPath("/uploads/temp");
+	}
 
-    @SuppressWarnings("SameReturnValue")
-    public String onUploadFile() {
-        try {
-            System.out.println(getSavePath());
-            File dir = new File(getSavePath());
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-            List<File> files = getUploadFile();
-            for (int i = 0; i < files.size(); i++) {
-                FileOutputStream fos = new FileOutputStream(getSavePath() + "//" + getUploadFileFileName().get(i));
-                FileInputStream fis = new FileInputStream(getUploadFile().get(i));
-                byte[] buffers = new byte[1024];
-                int len;
-                while ((len = fis.read(buffers)) != -1) {
-                    fos.write(buffers, 0, len);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return SUCCESS;
-    }
+	public String onUploadFile() {
+		try {
+			System.out.println(getSavePath());
+			File dir = new File(getSavePath());
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
+			List<File> files = getUploadFile();
+			for (int i = 0; i < files.size(); i++) {
+				FileOutputStream fos = new FileOutputStream(getSavePath()
+						+ "//" + getUploadFileFileName().get(i));
+				FileInputStream fis = new FileInputStream(getUploadFile()
+						.get(i));
+				byte[] buffers = new byte[1024];
+				int len;
+				while ((len = fis.read(buffers)) != -1) {
+					fos.write(buffers, 0, len);
+				}
+				fos.close();
+				fis.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
 
-    public String execute() throws Exception {
-        return SUCCESS;
-    }
+	public String execute() throws Exception {
+		return SUCCESS;
+	}
 
 }

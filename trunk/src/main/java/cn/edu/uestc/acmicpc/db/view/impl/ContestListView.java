@@ -32,135 +32,122 @@ import java.util.Date;
 
 /**
  * Contest information view.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 public class ContestListView extends View<Contest> {
-    private Integer contestId;
-    private String title;
-    private String description;
-    private Byte type;
-    private String typeName;
-    private Timestamp time;
-    private Integer length;
-    private Boolean isVisible;
-    private String status;
+	private Integer contestId;
+	private String title;
+	private String description;
+	private Byte type;
+	private String typeName;
+	private Timestamp time;
+	private Integer length;
+	private Boolean isVisible;
+	private String status;
 
-    public String getStatus() {
-        return status;
-    }
+	public String getStatus() {
+		return status;
+	}
 
-    @Ignore
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	@Ignore
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-    public Boolean getVisible() {
-        return isVisible;
-    }
+	public Boolean getVisible() {
+		return isVisible;
+	}
 
-    public void setVisible(Boolean visible) {
-        isVisible = visible;
-    }
+	public void setVisible(Boolean visible) {
+		isVisible = visible;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public Integer getContestId() {
-        return contestId;
-    }
+	public Integer getContestId() {
+		return contestId;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setContestId(Integer contestId) {
-        this.contestId = contestId;
-    }
+	public void setContestId(Integer contestId) {
+		this.contestId = contestId;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public String getDescription() {
-        return description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public Byte getType() {
-        return type;
-    }
+	public Byte getType() {
+		return type;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setType(Byte type) {
-        this.type = type;
-    }
+	public void setType(Byte type) {
+		this.type = type;
+	}
 
-    public Timestamp getTime() {
-        return time;
-    }
+	public Timestamp getTime() {
+		return time;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
+	public void setTime(Timestamp time) {
+		this.time = time;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public Integer getLength() {
-        return length;
-    }
+	public Integer getLength() {
+		return length;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setLength(Integer length) {
-        this.length = length;
-    }
+	public void setLength(Integer length) {
+		this.length = length;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public Boolean getIsVisible() {
-        return isVisible;
-    }
+	public Boolean getIsVisible() {
+		return isVisible;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setIsVisible(Boolean visible) {
-        isVisible = visible;
-    }
+	public void setIsVisible(Boolean visible) {
+		isVisible = visible;
+	}
 
-    public String getTypeName() {
-        return typeName;
-    }
+	public String getTypeName() {
+		return typeName;
+	}
 
-    @Ignore
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
+	@Ignore
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
 
-    /**
-     * Fetch data from entity.
-     *
-     * @param contest specific entity
-     */
-    @SuppressWarnings("UnusedDeclaration")
-    public ContestListView(Contest contest) {
-        super(contest);
+	/**
+	 * Fetch data from entity.
+	 * 
+	 * @param contest
+	 *            specific entity
+	 */
+	public ContestListView(Contest contest) {
+		super(contest);
 
-        Timestamp now = new Timestamp(new Date().getTime());
-        if (time.after(now))
-            status = "Pending";
-        else {
-            Timestamp endTime = new Timestamp(time.getTime() + length * 1000);
-            if (endTime.after(now))
-                status = "Running";
-            else
-                status = "Ended";
-        }
+		Timestamp now = new Timestamp(new Date().getTime());
+		if (time.after(now))
+			status = "Pending";
+		else {
+			Timestamp endTime = new Timestamp(time.getTime() + length * 1000);
+			if (endTime.after(now))
+				status = "Running";
+			else
+				status = "Ended";
+		}
 
-        setTypeName(Global.ContestType.values()[getType()].getDescription());
-    }
+		setTypeName(Global.ContestType.values()[getType()].getDescription());
+	}
 }

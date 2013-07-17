@@ -30,113 +30,115 @@ import java.util.Collection;
 
 /**
  * Languages for compiler.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 @Table(name = "language", schema = "", catalog = "uestcoj")
 @Entity
 @KeyField("languageId")
 public class Language implements Serializable {
-    private static final long serialVersionUID = 6622284482431851438L;
-    private Integer languageId;
+	private static final long serialVersionUID = 6622284482431851438L;
+	private Integer languageId;
 
-    private Integer version;
+	private Integer version;
 
-    @Version
-    @Column(name = "OPTLOCK")
-    public Integer getVersion() {
-        return version;
-    }
+	@Version
+	@Column(name = "OPTLOCK")
+	public Integer getVersion() {
+		return version;
+	}
 
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
 
-    @Column(name = "languageId", nullable = false, insertable = true,
-            updatable = true, length = 10, precision = 0, unique = true)
-    @Id
-    @GeneratedValue
-    public Integer getLanguageId() {
-        return languageId;
-    }
+	@Column(name = "languageId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
+	@Id
+	@GeneratedValue
+	public Integer getLanguageId() {
+		return languageId;
+	}
 
-    public void setLanguageId(Integer languageId) {
-        this.languageId = languageId;
-    }
+	public void setLanguageId(Integer languageId) {
+		this.languageId = languageId;
+	}
 
-    private String name;
+	private String name;
 
-    @Column(name = "name", nullable = false, insertable = true, updatable = true,
-            length = 50, precision = 0)
-    @Basic
-    public String getName() {
-        return name;
-    }
+	@Column(name = "name", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
+	@Basic
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    private String extension;
+	private String extension;
 
-    @Column(name = "extension", nullable = false, insertable = true, updatable = true,
-            length = 10, precision = 0)
-    @Basic
-    public String getExtension() {
-        return extension;
-    }
+	@Column(name = "extension", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+	@Basic
+	public String getExtension() {
+		return extension;
+	}
 
-    public void setExtension(String extension) {
-        this.extension = extension;
-    }
+	public void setExtension(String extension) {
+		this.extension = extension;
+	}
 
-    private String param;
+	private String param;
 
-    @Column(name = "param", nullable = false, insertable = true, updatable = true,
-            length = 65535, precision = 0)
-    @Basic
-    public String getParam() {
-        return param;
-    }
+	@Column(name = "param", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
+	@Basic
+	public String getParam() {
+		return param;
+	}
 
-    public void setParam(String param) {
-        this.param = param;
-    }
+	public void setParam(String param) {
+		this.param = param;
+	}
 
-    @SuppressWarnings("RedundantIfStatement")
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
-        Language language = (Language) o;
+		Language language = (Language) o;
 
-        if (!languageId.equals(language.languageId)) return false;
-        if (extension != null ? !extension.equals(language.extension) : language.extension != null) return false;
-        if (name != null ? !name.equals(language.name) : language.name != null) return false;
-        if (param != null ? !param.equals(language.param) : language.param != null) return false;
+		if (!languageId.equals(language.languageId))
+			return false;
+		if (extension != null ? !extension.equals(language.extension)
+				: language.extension != null)
+			return false;
+		if (name != null ? !name.equals(language.name) : language.name != null)
+			return false;
+		if (param != null ? !param.equals(language.param)
+				: language.param != null)
+			return false;
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = languageId;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (extension != null ? extension.hashCode() : 0);
-        result = 31 * result + (param != null ? param.hashCode() : 0);
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		int result = languageId;
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		result = 31 * result + (extension != null ? extension.hashCode() : 0);
+		result = 31 * result + (param != null ? param.hashCode() : 0);
+		return result;
+	}
 
-    private Collection<Status> statusesByLanguageId;
+	private Collection<Status> statusesByLanguageId;
 
-    @OneToMany(mappedBy = "languageByLanguageId")
-    public Collection<Status> getStatusesByLanguageId() {
-        return statusesByLanguageId;
-    }
+	@OneToMany(mappedBy = "languageByLanguageId")
+	public Collection<Status> getStatusesByLanguageId() {
+		return statusesByLanguageId;
+	}
 
-    public void setStatusesByLanguageId(Collection<Status> statusesByLanguageId) {
-        this.statusesByLanguageId = statusesByLanguageId;
-    }
+	public void setStatusesByLanguageId(Collection<Status> statusesByLanguageId) {
+		this.statusesByLanguageId = statusesByLanguageId;
+	}
 }

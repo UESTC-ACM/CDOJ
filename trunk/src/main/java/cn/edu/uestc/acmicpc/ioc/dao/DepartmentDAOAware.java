@@ -26,15 +26,16 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 
 /**
  * For all class which need department dao entity.
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @see IDepartmentDAO
  */
 public interface DepartmentDAOAware {
-    /**
-     * put departmentDAO into class
-     *
-     * @param departmentDAO specific department DAO entity
-     */
-    public void setDepartmentDAO(IDepartmentDAO departmentDAO);
+	/**
+	 * put departmentDAO into class
+	 * 
+	 * @param departmentDAO
+	 *            specific department DAO entity
+	 */
+	public void setDepartmentDAO(IDepartmentDAO departmentDAO);
 }

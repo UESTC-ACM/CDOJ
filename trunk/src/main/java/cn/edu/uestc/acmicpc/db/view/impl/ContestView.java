@@ -32,169 +32,159 @@ import java.util.*;
 
 /**
  * Contest view
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
-@SuppressWarnings("UnusedDeclaration")
 public class ContestView extends View<Contest> {
-    private Integer contestId;
-    private String description;
-    private Boolean isVisible;
-    private Integer length;
-    private Timestamp time;
-    private String title;
-    private Byte type;
-    private List<Integer> problemList;
-    private String problemListString;
-    private String status;
-    private Long timeLeft;
+	private Integer contestId;
+	private String description;
+	private Boolean isVisible;
+	private Integer length;
+	private Timestamp time;
+	private String title;
+	private Byte type;
+	private List<Integer> problemList;
+	private String problemListString;
+	private String status;
+	private Long timeLeft;
 
-    public Long getTimeLeft() {
-        return timeLeft;
-    }
+	public Long getTimeLeft() {
+		return timeLeft;
+	}
 
-    @Ignore
-    public void setTimeLeft(Long timeLeft) {
-        this.timeLeft = timeLeft;
-    }
+	@Ignore
+	public void setTimeLeft(Long timeLeft) {
+		this.timeLeft = timeLeft;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public String getStatus() {
+		return status;
+	}
 
-    @Ignore
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	@Ignore
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-    public Boolean getVisible() {
-        return isVisible;
-    }
+	public Boolean getVisible() {
+		return isVisible;
+	}
 
-    public void setVisible(Boolean visible) {
-        isVisible = visible;
-    }
+	public void setVisible(Boolean visible) {
+		isVisible = visible;
+	}
 
-    public String getProblemListString() {
-        return problemListString;
-    }
+	public String getProblemListString() {
+		return problemListString;
+	}
 
-    @Ignore
-    public void setProblemListString(String problemListString) {
-        this.problemListString = problemListString;
-    }
+	@Ignore
+	public void setProblemListString(String problemListString) {
+		this.problemListString = problemListString;
+	}
 
-    public List<Integer> getProblemList() {
-        return problemList;
-    }
+	public List<Integer> getProblemList() {
+		return problemList;
+	}
 
-    @Ignore
-    public void setProblemList(List<Integer> problemList) {
-        this.problemList = problemList;
-    }
+	@Ignore
+	public void setProblemList(List<Integer> problemList) {
+		this.problemList = problemList;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public Integer getContestId() {
-        return contestId;
-    }
+	public Integer getContestId() {
+		return contestId;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setContestId(Integer contestId) {
-        this.contestId = contestId;
-    }
+	public void setContestId(Integer contestId) {
+		this.contestId = contestId;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public String getDescription() {
-        return description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public Byte getType() {
-        return type;
-    }
+	public Byte getType() {
+		return type;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setType(Byte type) {
-        this.type = type;
-    }
+	public void setType(Byte type) {
+		this.type = type;
+	}
 
-    public Timestamp getTime() {
-        return time;
-    }
+	public Timestamp getTime() {
+		return time;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
+	public void setTime(Timestamp time) {
+		this.time = time;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public Integer getLength() {
-        return length;
-    }
+	public Integer getLength() {
+		return length;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setLength(Integer length) {
-        this.length = length;
-    }
+	public void setLength(Integer length) {
+		this.length = length;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public Boolean getIsVisible() {
-        return isVisible;
-    }
+	public Boolean getIsVisible() {
+		return isVisible;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setIsVisible(Boolean visible) {
-        isVisible = visible;
-    }
+	public void setIsVisible(Boolean visible) {
+		isVisible = visible;
+	}
 
-    /**
-     * Fetch data from entity.
-     *
-     * @param contest specific entity
-     */
-    public ContestView(Contest contest) {
-        super(contest);
-        Timestamp now = new Timestamp(new Date().getTime());
-        if (time.after(now))
-            status = "Pending";
-        else {
-            Timestamp endTime = new Timestamp(time.getTime() + length * 1000);
-            if (endTime.after(now)) {
-                status = "Running";
-                timeLeft = (endTime.getTime() - now.getTime()) / 1000;
-            }
-            else
-                status = "Ended";
-        }
+	/**
+	 * Fetch data from entity.
+	 * 
+	 * @param contest
+	 *            specific entity
+	 */
+	public ContestView(Contest contest) {
+		super(contest);
+		Timestamp now = new Timestamp(new Date().getTime());
+		if (time.after(now))
+			status = "Pending";
+		else {
+			Timestamp endTime = new Timestamp(time.getTime() + length * 1000);
+			if (endTime.after(now)) {
+				status = "Running";
+				timeLeft = (endTime.getTime() - now.getTime()) / 1000;
+			} else
+				status = "Ended";
+		}
 
-        List<ContestProblem> contestProblems = (List<ContestProblem>) contest.getContestProblemsByContestId();
-        Collections.sort(contestProblems, new Comparator<ContestProblem>() {
-            @Override
-            public int compare(ContestProblem a, ContestProblem b) {
-                return a.getOrder().compareTo(b.getOrder());
-            }
-        });
-        problemList = new LinkedList<>();
-        problemListString = "";
-        for (ContestProblem contestProblem : contest.getContestProblemsByContestId()) {
-            Problem problem = contestProblem.getProblemByProblemId();
-            problemList.add(problem.getProblemId());
-            problemListString = problemListString + problem.getProblemId() + ",";
-        }
-    }
+		List<ContestProblem> contestProblems = (List<ContestProblem>) contest
+				.getContestProblemsByContestId();
+		Collections.sort(contestProblems, new Comparator<ContestProblem>() {
+			@Override
+			public int compare(ContestProblem a, ContestProblem b) {
+				return a.getOrder().compareTo(b.getOrder());
+			}
+		});
+		problemList = new LinkedList<>();
+		problemListString = "";
+		for (ContestProblem contestProblem : contest
+				.getContestProblemsByContestId()) {
+			Problem problem = contestProblem.getProblemByProblemId();
+			problemList.add(problem.getProblemId());
+			problemListString = problemListString + problem.getProblemId()
+					+ ",";
+		}
+	}
 }

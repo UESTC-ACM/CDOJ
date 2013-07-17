@@ -34,65 +34,71 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class TrainingStatusCondition extends BaseCondition implements TrainingContestDAOAware {
-    private Integer startId;
-    private Integer endId;
-    private Integer trainingContestId;
+public class TrainingStatusCondition extends BaseCondition implements
+		TrainingContestDAOAware {
+	private Integer startId;
+	private Integer endId;
+	private Integer trainingContestId;
 
-    @Exp(MapField = "trainingStatusId", Type = ConditionType.ge)
-    public Integer getStartId() {
-        return startId;
-    }
+	@Exp(MapField = "trainingStatusId", Type = ConditionType.ge)
+	public Integer getStartId() {
+		return startId;
+	}
 
-    public void setStartId(Integer startId) {
-        this.startId = startId;
-    }
+	public void setStartId(Integer startId) {
+		this.startId = startId;
+	}
 
-    @Exp(MapField = "trainingStatusId", Type = ConditionType.le)
-    public Integer getEndId() {
-        return endId;
-    }
+	@Exp(MapField = "trainingStatusId", Type = ConditionType.le)
+	public Integer getEndId() {
+		return endId;
+	}
 
-    public void setEndId(Integer endId) {
-        this.endId = endId;
-    }
+	public void setEndId(Integer endId) {
+		this.endId = endId;
+	}
 
-    public Integer getTrainingContestId() {
-        return trainingContestId;
-    }
+	public Integer getTrainingContestId() {
+		return trainingContestId;
+	}
 
-    public void setTrainingContestId(Integer trainingContestId) {
-        this.trainingContestId = trainingContestId;
-    }
+	public void setTrainingContestId(Integer trainingContestId) {
+		this.trainingContestId = trainingContestId;
+	}
 
-    @Override
-    public void invoke(Condition condition) {
-        super.invoke(condition);
+	@Override
+	public void invoke(Condition condition) {
+		super.invoke(condition);
 
-        if (trainingContestId != null) {
-            try {
-                TrainingContest trainingContest = trainingContestDAO.get(trainingContestId);
-                if (trainingContest == null)
-                    return;
-                JoinedProperty joinedProperty = new JoinedProperty(
-                        Restrictions.eq("trainingContestByTrainingContestId", trainingContest), trainingContest.getTrainingContestId(),
-                        ConditionType.eq);
-                condition.addJoinedProperty("trainingContestByTrainingContestId", joinedProperty);
-            } catch (AppException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-        }
-    }
+		if (trainingContestId != null) {
+			try {
+				TrainingContest trainingContest = trainingContestDAO
+						.get(trainingContestId);
+				if (trainingContest == null)
+					return;
+				JoinedProperty joinedProperty = new JoinedProperty(
+						Restrictions.eq("trainingContestByTrainingContestId",
+								trainingContest),
+						trainingContest.getTrainingContestId(),
+						ConditionType.eq);
+				condition.addJoinedProperty(
+						"trainingContestByTrainingContestId", joinedProperty);
+			} catch (AppException e) {
+				e.printStackTrace(); // To change body of catch statement use
+										// File | Settings | File Templates.
+			}
+		}
+	}
 
-    @Autowired
-    private ITrainingContestDAO trainingContestDAO;
+	@Autowired
+	private ITrainingContestDAO trainingContestDAO;
 
-    @Override
-    @Ignore
-    public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
-        this.trainingContestDAO = trainingContestDAO;
-    }
+	@Override
+	@Ignore
+	public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
+		this.trainingContestDAO = trainingContestDAO;
+	}
 }

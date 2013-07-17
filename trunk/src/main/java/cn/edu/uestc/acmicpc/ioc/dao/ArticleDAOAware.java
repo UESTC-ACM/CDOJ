@@ -25,15 +25,16 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IArticleDAO;
 
 /**
  * For all class which need userDAO entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @see cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO
  */
 public interface ArticleDAOAware {
-    /**
-     * Put articleDAO into class.
-     *
-     * @param articleDAO articleDAO object
-     */
-    public void setArticleDAO(IArticleDAO articleDAO);
+	/**
+	 * Put articleDAO into class.
+	 * 
+	 * @param articleDAO
+	 *            articleDAO object
+	 */
+	public void setArticleDAO(IArticleDAO articleDAO);
 }

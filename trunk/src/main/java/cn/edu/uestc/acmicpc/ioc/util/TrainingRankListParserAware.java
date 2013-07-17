@@ -24,10 +24,18 @@ package cn.edu.uestc.acmicpc.ioc.util;
 import cn.edu.uestc.acmicpc.util.TrainingRankListParser;
 
 /**
- * Description
- *
+ * For all class which need trainingRankListParser entity.
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ * @see TrainingRankListParser
  */
 public interface TrainingRankListParserAware {
-    public void setTrainingRankListParserAware(TrainingRankListParser trainingRankListParser);
+	/**
+	 * Put trainingRankListParser into class.
+	 * 
+	 * @param trainingRankListParser
+	 *            trainingRankListParser entity
+	 */
+	public void setTrainingRankListParserAware(
+			TrainingRankListParser trainingRankListParser);
 }

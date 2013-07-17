@@ -24,132 +24,128 @@ package cn.edu.uestc.acmicpc.db.dto.impl;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Problem entity data transform object.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 public class ProblemDTO extends BaseDTO<Problem> {
-    public ProblemDTO() {
-        super();
-    }
+	public ProblemDTO() {
+		super();
+	}
 
-    /**
-     * Input: problem id
-     */
-    private Integer problemId;
-    private String title;
-    private String description;
-    private String input;
-    private String output;
-    private String sampleInput;
-    private String sampleOutput;
-    private String hint;
-    private String source;
+	/**
+	 * Input: problem id
+	 */
+	private Integer problemId;
+	private String title;
+	private String description;
+	private String input;
+	private String output;
+	private String sampleInput;
+	private String sampleOutput;
+	private String hint;
+	private String source;
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public String getInput() {
-        return input;
-    }
+	public String getInput() {
+		return input;
+	}
 
-    public void setInput(String input) {
-        this.input = input;
-    }
+	public void setInput(String input) {
+		this.input = input;
+	}
 
-    public String getOutput() {
-        return output;
-    }
+	public String getOutput() {
+		return output;
+	}
 
-    public void setOutput(String output) {
-        this.output = output;
-    }
+	public void setOutput(String output) {
+		this.output = output;
+	}
 
-    public String getSampleInput() {
-        return sampleInput;
-    }
+	public String getSampleInput() {
+		return sampleInput;
+	}
 
-    public void setSampleInput(String sampleInput) {
-        this.sampleInput = sampleInput;
-    }
+	public void setSampleInput(String sampleInput) {
+		this.sampleInput = sampleInput;
+	}
 
-    public String getSampleOutput() {
-        return sampleOutput;
-    }
+	public String getSampleOutput() {
+		return sampleOutput;
+	}
 
-    public void setSampleOutput(String sampleOutput) {
-        this.sampleOutput = sampleOutput;
-    }
+	public void setSampleOutput(String sampleOutput) {
+		this.sampleOutput = sampleOutput;
+	}
 
-    public String getHint() {
-        return hint;
-    }
+	public String getHint() {
+		return hint;
+	}
 
-    public void setHint(String hint) {
-        this.hint = hint;
-    }
+	public void setHint(String hint) {
+		this.hint = hint;
+	}
 
-    public String getSource() {
-        return source;
-    }
+	public String getSource() {
+		return source;
+	}
 
-    public void setSource(String source) {
-        this.source = source;
-    }
+	public void setSource(String source) {
+		this.source = source;
+	}
 
-    public Integer getProblemId() {
-        return problemId;
-    }
+	public Integer getProblemId() {
+		return problemId;
+	}
 
-    public void setProblemId(Integer problemId) {
-        this.problemId = problemId;
-    }
+	public void setProblemId(Integer problemId) {
+		this.problemId = problemId;
+	}
 
-    @Override
-    public Problem getEntity() throws AppException {
-        // TODO to get specific operations
-        Problem problem = super.getEntity();
-        problem.setTimeLimit(1000);
-        problem.setJavaTimeLimit(3000);
-        problem.setMemoryLimit(65535);
-        problem.setJavaMemoryLimit(65535);
-        problem.setOutputLimit(8192);
-        problem.setSolved(0);
-        problem.setTried(0);
-        problem.setDataCount(0);
-        problem.setIsSpj(false);
-        problem.setIsVisible(false);
-        problem.setProblemId(null);
-        problem.setDifficulty(1);
-        return problem;
-    }
+	@Override
+	public Problem getEntity() throws AppException {
+		Problem problem = super.getEntity();
+		problem.setTimeLimit(1000);
+		problem.setJavaTimeLimit(3000);
+		problem.setMemoryLimit(65535);
+		problem.setJavaMemoryLimit(65535);
+		problem.setOutputLimit(8192);
+		problem.setSolved(0);
+		problem.setTried(0);
+		problem.setDataCount(0);
+		problem.setIsSpj(false);
+		problem.setIsVisible(false);
+		problem.setProblemId(null);
+		problem.setDifficulty(1);
+		return problem;
+	}
 
-    @Override
-    public void updateEntity(Problem problem) throws AppException {
-        // TODO to get specific operations
-        super.updateEntity(problem);
-    }
+	@Override
+	public void updateEntity(Problem problem) throws AppException {
+		super.updateEntity(problem);
+	}
 
-    @Override
-    protected Class<Problem> getReferenceClass() {
-        return Problem.class;
-    }
+	@Override
+	protected Class<Problem> getReferenceClass() {
+		return Problem.class;
+	}
 }

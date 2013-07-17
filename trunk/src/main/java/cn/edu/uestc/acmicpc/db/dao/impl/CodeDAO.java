@@ -28,17 +28,17 @@ import cn.edu.uestc.acmicpc.db.entity.Code;
 
 /**
  * DAO for code entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class CodeDAO extends DAO<Code, Integer> implements ICodeDAO {
-    @Override
-    protected Class<Integer> getPKClass() {
-        return Integer.class;
-    }
+	@Override
+	protected Class<Integer> getPKClass() {
+		return Integer.class;
+	}
 
-    @Override
-    protected Class<Code> getReferenceClass() {
-        return Code.class;
-    }
+	@Override
+	protected Class<Code> getReferenceClass() {
+		return Code.class;
+	}
 }

@@ -25,21 +25,22 @@ import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDTO;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public interface ArticleDTOAware {
-    /**
-     * Put articleDTO into class.
-     *
-     * @param articleDTO articleDTO object
-     */
-    public void setArticleDTO(ArticleDTO articleDTO);
+	/**
+	 * Put articleDTO into class.
+	 * 
+	 * @param articleDTO
+	 *            articleDTO object
+	 */
+	public void setArticleDTO(ArticleDTO articleDTO);
 
-    /**
-     * Get articleDTO entity.
-     *
-     * @return articleDTO entity
-     */
-    public ArticleDTO getArticleDTO();
+	/**
+	 * Get articleDTO entity.
+	 * 
+	 * @return articleDTO entity
+	 */
+	public ArticleDTO getArticleDTO();
 }

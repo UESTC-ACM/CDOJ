@@ -25,14 +25,15 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public interface TrainingStatusDAOAware {
-    /**
-     * Put trainingStatusDAO into class.
-     *
-     * @param trainingStatusDAO trainingStatusDAO object
-     */
-    public void setTrainingStatusDAO(ITrainingStatusDAO trainingStatusDAO);
+	/**
+	 * Put trainingStatusDAO into class.
+	 * 
+	 * @param trainingStatusDAO
+	 *            trainingStatusDAO object
+	 */
+	public void setTrainingStatusDAO(ITrainingStatusDAO trainingStatusDAO);
 }

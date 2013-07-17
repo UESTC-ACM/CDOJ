@@ -26,7 +26,7 @@ import cn.edu.uestc.acmicpc.db.entity.Tag;
 
 /**
  * TagDAO AOP interface.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public interface ITagDAO extends IDAO<Tag, Integer> {

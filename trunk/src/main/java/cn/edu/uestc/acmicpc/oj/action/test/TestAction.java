@@ -35,35 +35,35 @@ import java.util.List;
 
 /**
  * Test Action for cdoj.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @LoginPermit(value = Global.AuthenticationType.NORMAL)
 public class TestAction extends BaseAction implements TagDAOAware {
-    private static final long serialVersionUID = 3513904272112800586L;
-    /**
-     * TagDAO from IoC.
-     */
-    @Autowired
-    private ITagDAO tagDAO = null;
+	private static final long serialVersionUID = 3513904272112800586L;
+	/**
+	 * TagDAO from IoC.
+	 */
+	@Autowired
+	private ITagDAO tagDAO = null;
 
-    /**
-     * Go to test index page
-     *
-     * @return <strong>SUCCESS</strong> signal
-     */
-    @SuppressWarnings({"SameReturnValue", "UnusedDeclaration", "unchecked"})
-    public String toTest() {
-        try {
-            List<Tag> tags = (List<Tag>) tagDAO.findAll();
-            request.put("tags", tags);
-        } catch (AppException ignored) {
-        }
-        return SUCCESS;
-    }
+	/**
+	 * Go to test index page
+	 * 
+	 * @return <strong>SUCCESS</strong> signal
+	 */
+	@SuppressWarnings("unchecked")
+	public String toTest() {
+		try {
+			List<Tag> tags = (List<Tag>) tagDAO.findAll();
+			request.put("tags", tags);
+		} catch (AppException ignored) {
+		}
+		return SUCCESS;
+	}
 
-    @Override
-    public void setTagDAO(ITagDAO tagDAO) {
-        this.tagDAO = tagDAO;
-    }
+	@Override
+	public void setTagDAO(ITagDAO tagDAO) {
+		this.tagDAO = tagDAO;
+	}
 }

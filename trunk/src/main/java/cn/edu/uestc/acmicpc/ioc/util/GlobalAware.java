@@ -26,16 +26,16 @@ import cn.edu.uestc.acmicpc.util.Global;
 
 /**
  * For all class which need global entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @see Global
  */
-@SuppressWarnings("UnusedDeclaration")
 public interface GlobalAware {
-    /**
-     * Put Settings entity into class.
-     *
-     * @param global global entity object
-     */
-    public void setGlobal(Global global);
+	/**
+	 * Put Global entity into class.
+	 * 
+	 * @param global
+	 *            global entity object
+	 */
+	public void setGlobal(Global global);
 }

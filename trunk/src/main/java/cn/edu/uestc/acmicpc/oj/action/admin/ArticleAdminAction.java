@@ -39,231 +39,250 @@ import cn.edu.uestc.acmicpc.util.ReflectionUtil;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Column;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * action for list, search, edit, add article.
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class ArticleAdminAction extends BaseAction implements ArticleDAOAware, ArticleDTOAware, ArticleConditionAware {
+public class ArticleAdminAction extends BaseAction implements ArticleDAOAware,
+		ArticleDTOAware, ArticleConditionAware {
 
-    @Autowired
-    private IArticleDAO articleDAO;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 499943521076814016L;
+	@Autowired
+	private IArticleDAO articleDAO;
 
-    @Override
-    public void setArticleDAO(IArticleDAO articleDAO) {
-        this.articleDAO = articleDAO;
-    }
+	@Override
+	public void setArticleDAO(IArticleDAO articleDAO) {
+		this.articleDAO = articleDAO;
+	}
 
-    private Integer targetArticleId;
+	private Integer targetArticleId;
 
-    public Integer getTargetArticleId() {
-        return targetArticleId;
-    }
+	public Integer getTargetArticleId() {
+		return targetArticleId;
+	}
 
-    public void setTargetArticleId(Integer targetArticleId) {
-        this.targetArticleId = targetArticleId;
-    }
+	public void setTargetArticleId(Integer targetArticleId) {
+		this.targetArticleId = targetArticleId;
+	}
 
-    private ArticleView targetArticle;
+	private ArticleView targetArticle;
 
-    public ArticleView getTargetArticle() {
-        return targetArticle;
-    }
+	public ArticleView getTargetArticle() {
+		return targetArticle;
+	}
 
-    public void setTargetArticle(ArticleView targetArticle) {
-        this.targetArticle = targetArticle;
-    }
+	public void setTargetArticle(ArticleView targetArticle) {
+		this.targetArticle = targetArticle;
+	}
 
-    /**
-     * Go to article editor view!
-     *
-     * @return <strong>SUCCESS</strong> signal
-     */
-    public String toArticleEditor() {
-        try {
-            if (targetArticleId == null) {
-                articleCondition.clear();
-                articleCondition.setIsTitleEmpty(true);
-                Condition condition = articleCondition.getCondition();
-                Long count = articleDAO.count(condition);
+	/**
+	 * Go to article editor view!
+	 * 
+	 * @return <strong>SUCCESS</strong> signal
+	 */
+	@SuppressWarnings("unchecked")
+	public String toArticleEditor() {
+		try {
+			if (targetArticleId == null) {
+				articleCondition.clear();
+				articleCondition.setIsTitleEmpty(true);
+				Condition condition = articleCondition.getCondition();
+				Long count = articleDAO.count(condition);
 
-                if (count == 0) {
-                    Article article = articleDTO.getEntity();
-                    articleDAO.add(article);
-                    targetArticleId = article.getArticleId();
-                } else {
-                    List<Article> result = (List<Article>) articleDAO.findAll(articleCondition.getCondition());
-                    if (result == null || result.size() == 0)
-                        throw new AppException("Add new article error!");
-                    Article article = result.get(0);
-                    targetArticleId = article.getArticleId();
-                }
+				if (count == 0) {
+					Article article = articleDTO.getEntity();
+					articleDAO.add(article);
+					targetArticleId = article.getArticleId();
+				} else {
+					List<Article> result = (List<Article>) articleDAO
+							.findAll(articleCondition.getCondition());
+					if (result == null || result.size() == 0)
+						throw new AppException("Add new article error!");
+					Article article = result.get(0);
+					targetArticleId = article.getArticleId();
+				}
 
-                if (targetArticleId == null)
-                    throw new AppException("Add new article error!");
+				if (targetArticleId == null)
+					throw new AppException("Add new article error!");
 
-                return redirect(getActionURL("/admin", "article/editor/" + targetArticleId));
-            } else {
-                targetArticle = new ArticleView(articleDAO.get(targetArticleId));
-                if (targetArticle.getArticleId() == null)
-                    throw new AppException("Wrong article ID!");
-            }
-        } catch (AppException e) {
-            return redirect(getActionURL("/admin", "index"), e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return redirect(getActionURL("/admin", "index"), "Unknown exception occurred.");
-        }
-        return SUCCESS;
-    }
+				return redirect(getActionURL("/admin", "article/editor/"
+						+ targetArticleId));
+			} else {
+				targetArticle = new ArticleView(articleDAO.get(targetArticleId));
+				if (targetArticle.getArticleId() == null)
+					throw new AppException("Wrong article ID!");
+			}
+		} catch (AppException e) {
+			return redirect(getActionURL("/admin", "index"), e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return redirect(getActionURL("/admin", "index"),
+					"Unknown exception occurred.");
+		}
+		return SUCCESS;
+	}
 
-    @Autowired
-    private ArticleDTO articleDTO;
+	@Autowired
+	private ArticleDTO articleDTO;
 
-    @Override
-    public void setArticleDTO(ArticleDTO articleDTO) {
-        this.articleDTO = articleDTO;
-    }
+	@Override
+	public void setArticleDTO(ArticleDTO articleDTO) {
+		this.articleDTO = articleDTO;
+	}
 
-    @Override
-    public ArticleDTO getArticleDTO() {
-        return articleDTO;
-    }
+	@Override
+	public ArticleDTO getArticleDTO() {
+		return articleDTO;
+	}
 
-    @Autowired
-    private ArticleCondition articleCondition;
+	@Autowired
+	private ArticleCondition articleCondition;
 
-    @Override
-    public void setArticleCondition(ArticleCondition articleCondition) {
-        this.articleCondition = articleCondition;
-    }
+	@Override
+	public void setArticleCondition(ArticleCondition articleCondition) {
+		this.articleCondition = articleCondition;
+	}
 
-    @Override
-    public ArticleCondition getArticleCondition() {
-        return articleCondition;
-    }
+	@Override
+	public ArticleCondition getArticleCondition() {
+		return articleCondition;
+	}
 
-    /**
-     * return the article.jsp for base view
-     *
-     * @return <strong>SUCCESS</strong> signal
-     */
-    @SuppressWarnings("SameReturnValue")
-    public String toArticleList() {
-        return SUCCESS;
-    }
+	/**
+	 * return the article.jsp for base view
+	 * 
+	 * @return <strong>SUCCESS</strong> signal
+	 */
+	public String toArticleList() {
+		return SUCCESS;
+	}
 
-    /**
-     * Search action.
-     * <p/>
-     * Find all records by conditions and return them as a list in JSON, and the condition
-     * set will set in JSON named "condition".
-     * <p/>
-     * <strong>JSON output</strong>:
-     * <ul>
-     * <li>
-     * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>,
-     * "articleList":<strong>query result</strong>}
-     * </li>
-     * <li>
-     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-     * </li>
-     * </ul>
-     *
-     * @return <strong>JSON</strong> signal
-     */
-    public String toSearch() {
-        try {
-            articleCondition.setIsTitleEmpty(false);
-            Condition condition = articleCondition.getCondition();
-            Long count = articleDAO.count(articleCondition.getCondition());
-            PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
-            condition.setCurrentPage(pageInfo.getCurrentPage());
-            condition.setCountPerPage(RECORD_PER_PAGE);
-            List<Article> articleList = (List<Article>) articleDAO.findAll(condition);
-            List<ArticleListView> articleListViewList = new ArrayList<>();
-            for (Article article : articleList)
-                articleListViewList.add(new ArticleListView(article));
-            json.put("pageInfo", pageInfo.getHtmlString());
-            json.put("result", "ok");
-            json.put("articleList", articleListViewList);
-        } catch (AppException e) {
-            json.put("result", "error");
-            json.put("error_msg", e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            json.put("result", "error");
-            json.put("error_msg", "Unknown exception occurred.");
-        }
-        return JSON;
-    }
+	/**
+	 * Search action.
+	 * <p/>
+	 * Find all records by conditions and return them as a list in JSON, and the
+	 * condition set will set in JSON named "condition".
+	 * <p/>
+	 * <strong>JSON output</strong>:
+	 * <ul>
+	 * <li>
+	 * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>,
+	 * "articleList":<strong>query result</strong>}</li>
+	 * <li>
+	 * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+	 * </li>
+	 * </ul>
+	 * 
+	 * @return <strong>JSON</strong> signal
+	 */
+	@SuppressWarnings("unchecked")
+	public String toSearch() {
+		try {
+			articleCondition.setIsTitleEmpty(false);
+			Condition condition = articleCondition.getCondition();
+			Long count = articleDAO.count(articleCondition.getCondition());
+			PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
+			condition.setCurrentPage(pageInfo.getCurrentPage());
+			condition.setCountPerPage(RECORD_PER_PAGE);
+			List<Article> articleList = (List<Article>) articleDAO
+					.findAll(condition);
+			List<ArticleListView> articleListViewList = new ArrayList<>();
+			for (Article article : articleList)
+				articleListViewList.add(new ArticleListView(article));
+			json.put("pageInfo", pageInfo.getHtmlString());
+			json.put("result", "ok");
+			json.put("articleList", articleListViewList);
+		} catch (AppException e) {
+			json.put("result", "error");
+			json.put("error_msg", e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("result", "error");
+			json.put("error_msg", "Unknown exception occurred.");
+		}
+		return JSON;
+	}
 
-    /**
-     * Action to operate multiple articles.
-     * <p/>
-     * <strong>JSON output</strong>:
-     * <ul>
-     * <li>
-     * For success: {"result":"ok", "msg":<strong>successful message</strong>}
-     * </li>
-     * <li>
-     * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-     * </li>
-     * </ul>
-     *
-     * @return <strong>JSON</strong> signal.
-     */
-    public String toOperatorArticle() {
-        try {
-            int count = 0, total = 0;
-            Integer[] ids = ArrayUtil.parseIntArray(get("id"));
-            String method = get("method");
-            for (Integer id : ids)
-                if (id != null) {
-                    ++total;
-                    try {
-                        Article article = articleDAO.get(id);
-                        if ("delete".equals(method)) {
-                            articleDAO.delete(article);
-                        } else if ("edit".equals(method)) {
-                            String field = get("field");
-                            String value = get("value");
-                            Method[] methods = article.getClass().getMethods();
-                            for (Method getter : methods) {
-                                Column column = getter.getAnnotation(Column.class);
-                                if (column != null && column.name().equals(field)) {
-                                    String setterName = StringUtil.getGetterOrSetter(StringUtil.MethodType.SETTER,
-                                            getter.getName().substring(3));
-                                    Method setter = article.getClass().getMethod(setterName, getter.getReturnType());
-                                    setter.invoke(article, ReflectionUtil.valueOf(value, getter.getReturnType()));
-                                }
-                            }
-                            articleDAO.update(article);
-                        }
-                        ++count;
-                    } catch (AppException ignored) {
-                    }
-                }
-            json.put("result", "ok");
-            String message = "";
-            if ("delete".equals(method))
-                message = String.format("%d total, %d deleted.", total, count);
-            else if ("edit".equals(method))
-                message = String.format("%d total, %d changed.", total, count);
-            json.put("msg", message);
-        } catch (Exception e) {
-            e.printStackTrace();
-            json.put("result", "error");
-            json.put("error_msg", "Unknown exception occurred.");
-        }
-        return JSON;
-    }
+	/**
+	 * Action to operate multiple articles.
+	 * <p/>
+	 * <strong>JSON output</strong>:
+	 * <ul>
+	 * <li>
+	 * For success: {"result":"ok", "msg":<strong>successful message</strong>}</li>
+	 * <li>
+	 * For error: {"result":"error", "error_msg":<strong>error message</strong>}
+	 * </li>
+	 * </ul>
+	 * 
+	 * @return <strong>JSON</strong> signal.
+	 */
+	public String toOperatorArticle() {
+		try {
+			int count = 0, total = 0;
+			Integer[] ids = ArrayUtil.parseIntArray(get("id"));
+			String method = get("method");
+			for (Integer id : ids)
+				if (id != null) {
+					++total;
+					try {
+						Article article = articleDAO.get(id);
+						if ("delete".equals(method)) {
+							articleDAO.delete(article);
+						} else if ("edit".equals(method)) {
+							String field = get("field");
+							String value = get("value");
+							Method[] methods = article.getClass().getMethods();
+							for (Method getter : methods) {
+								Column column = getter
+										.getAnnotation(Column.class);
+								if (column != null
+										&& column.name().equals(field)) {
+									String setterName = StringUtil
+											.getGetterOrSetter(
+													StringUtil.MethodType.SETTER,
+													getter.getName().substring(
+															3));
+									Method setter = article.getClass()
+											.getMethod(setterName,
+													getter.getReturnType());
+									setter.invoke(article, ReflectionUtil
+											.valueOf(value,
+													getter.getReturnType()));
+								}
+							}
+							articleDAO.update(article);
+						}
+						++count;
+					} catch (AppException ignored) {
+					}
+				}
+			json.put("result", "ok");
+			String message = "";
+			if ("delete".equals(method))
+				message = String.format("%d total, %d deleted.", total, count);
+			else if ("edit".equals(method))
+				message = String.format("%d total, %d changed.", total, count);
+			json.put("msg", message);
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("result", "error");
+			json.put("error_msg", "Unknown exception occurred.");
+		}
+		return JSON;
+	}
 }

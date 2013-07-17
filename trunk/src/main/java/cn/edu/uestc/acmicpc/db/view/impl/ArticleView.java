@@ -23,73 +23,71 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.db.view.base.View;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
-
 import java.sql.Timestamp;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class ArticleView extends View<Article> {
 
-    private Integer articleId;
-    private String title;
-    private String content;
-    private String author;
-    private Integer clicked;
-    private Timestamp time;
+	private Integer articleId;
+	private String title;
+	private String content;
+	private String author;
+	private Integer clicked;
+	private Timestamp time;
 
-    public Integer getArticleId() {
-        return articleId;
-    }
+	public Integer getArticleId() {
+		return articleId;
+	}
 
-    public void setArticleId(Integer articleId) {
-        this.articleId = articleId;
-    }
+	public void setArticleId(Integer articleId) {
+		this.articleId = articleId;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public String getContent() {
+		return content;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    public String getAuthor() {
-        return author;
-    }
+	public String getAuthor() {
+		return author;
+	}
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
+	public void setAuthor(String author) {
+		this.author = author;
+	}
 
-    public Integer getClicked() {
-        return clicked;
-    }
+	public Integer getClicked() {
+		return clicked;
+	}
 
-    public void setClicked(Integer clicked) {
-        this.clicked = clicked;
-    }
+	public void setClicked(Integer clicked) {
+		this.clicked = clicked;
+	}
 
-    public Timestamp getTime() {
-        return time;
-    }
+	public Timestamp getTime() {
+		return time;
+	}
 
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
+	public void setTime(Timestamp time) {
+		this.time = time;
+	}
 
-    public ArticleView(Article article) {
-        super(article);
-    }
+	public ArticleView(Article article) {
+		super(article);
+	}
 }

@@ -30,219 +30,220 @@ import java.sql.Timestamp;
 
 /**
  * Status information.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 @Table(name = "status", schema = "", catalog = "uestcoj")
 @Entity
 @KeyField("statusId")
 public class Status implements Serializable {
-    private static final long serialVersionUID = 4819326443036942394L;
-    private Integer statusId;
+	private static final long serialVersionUID = 4819326443036942394L;
+	private Integer statusId;
 
-    private Integer version;
+	private Integer version;
 
-    @Version
-    @Column(name = "OPTLOCK")
-    public Integer getVersion() {
-        return version;
-    }
+	@Version
+	@Column(name = "OPTLOCK")
+	public Integer getVersion() {
+		return version;
+	}
 
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
 
-    @Column(name = "statusId", nullable = false, insertable = true,
-            updatable = true, length = 10, precision = 0, unique = true)
-    @Id
-    @GeneratedValue
-    public Integer getStatusId() {
-        return statusId;
-    }
+	@Column(name = "statusId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
+	@Id
+	@GeneratedValue
+	public Integer getStatusId() {
+		return statusId;
+	}
 
-    public void setStatusId(Integer statusId) {
-        this.statusId = statusId;
-    }
+	public void setStatusId(Integer statusId) {
+		this.statusId = statusId;
+	}
 
-    private Integer result;
+	private Integer result;
 
-    @Column(name = "result", nullable = false, insertable = true, updatable = true,
-            length = 10, precision = 0)
-    @Basic
-    public Integer getResult() {
-        return result;
-    }
+	@Column(name = "result", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+	@Basic
+	public Integer getResult() {
+		return result;
+	}
 
-    public void setResult(Integer result) {
-        this.result = result;
-    }
+	public void setResult(Integer result) {
+		this.result = result;
+	}
 
-    private Integer memoryCost;
+	private Integer memoryCost;
 
-    @Column(name = "memoryCost", nullable = false, insertable = true, updatable = true,
-            length = 10, precision = 0)
-    @Basic
-    public Integer getMemoryCost() {
-        return memoryCost;
-    }
+	@Column(name = "memoryCost", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+	@Basic
+	public Integer getMemoryCost() {
+		return memoryCost;
+	}
 
-    public void setMemoryCost(Integer memoryCost) {
-        this.memoryCost = memoryCost;
-    }
+	public void setMemoryCost(Integer memoryCost) {
+		this.memoryCost = memoryCost;
+	}
 
-    private Integer timeCost;
+	private Integer timeCost;
 
-    @Column(name = "timeCost", nullable = false, insertable = true, updatable = true,
-            length = 10, precision = 0)
-    @Basic
-    public Integer getTimeCost() {
-        return timeCost;
-    }
+	@Column(name = "timeCost", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+	@Basic
+	public Integer getTimeCost() {
+		return timeCost;
+	}
 
-    public void setTimeCost(Integer timeCost) {
-        this.timeCost = timeCost;
-    }
+	public void setTimeCost(Integer timeCost) {
+		this.timeCost = timeCost;
+	}
 
-    private Integer length;
+	private Integer length;
 
-    @Column(name = "length", nullable = false, insertable = true, updatable = true,
-            length = 10, precision = 0)
-    @Basic
-    public Integer getLength() {
-        return length;
-    }
+	@Column(name = "length", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+	@Basic
+	public Integer getLength() {
+		return length;
+	}
 
-    public void setLength(Integer length) {
-        this.length = length;
-    }
+	public void setLength(Integer length) {
+		this.length = length;
+	}
 
-    private Timestamp time;
+	private Timestamp time;
 
-    @Column(name = "time", nullable = false, insertable = true, updatable = true,
-            length = 19, precision = 0)
-    @Basic
-    public Timestamp getTime() {
-        return time;
-    }
+	@Column(name = "time", nullable = false, insertable = true, updatable = true, length = 19, precision = 0)
+	@Basic
+	public Timestamp getTime() {
+		return time;
+	}
 
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
+	public void setTime(Timestamp time) {
+		this.time = time;
+	}
 
-    private Integer caseNumber;
+	private Integer caseNumber;
 
-    @Column(name = "caseNumber", nullable = false, insertable = true, updatable = true,
-            length = 10, precision = 0)
-    @Basic
-    public Integer getCaseNumber() {
-        return caseNumber;
-    }
+	@Column(name = "caseNumber", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+	@Basic
+	public Integer getCaseNumber() {
+		return caseNumber;
+	}
 
-    public void setCaseNumber(Integer caseNumber) {
-        this.caseNumber = caseNumber;
-    }
+	public void setCaseNumber(Integer caseNumber) {
+		this.caseNumber = caseNumber;
+	}
 
-    @SuppressWarnings("RedundantIfStatement")
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
-        Status status = (Status) o;
+		Status status = (Status) o;
 
-        if (!caseNumber.equals(status.caseNumber)) return false;
-        if (!length.equals(status.length)) return false;
-        if (!memoryCost.equals(status.memoryCost)) return false;
-        if (!result.equals(status.result)) return false;
-        if (!statusId.equals(status.statusId)) return false;
-        if (!timeCost.equals(status.timeCost)) return false;
-        if (time != null ? !time.equals(status.time) : status.time != null) return false;
+		if (!caseNumber.equals(status.caseNumber))
+			return false;
+		if (!length.equals(status.length))
+			return false;
+		if (!memoryCost.equals(status.memoryCost))
+			return false;
+		if (!result.equals(status.result))
+			return false;
+		if (!statusId.equals(status.statusId))
+			return false;
+		if (!timeCost.equals(status.timeCost))
+			return false;
+		if (time != null ? !time.equals(status.time) : status.time != null)
+			return false;
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        int result1 = statusId;
-        result1 = 31 * result1 + result;
-        result1 = 31 * result1 + memoryCost;
-        result1 = 31 * result1 + timeCost;
-        result1 = 31 * result1 + length;
-        result1 = 31 * result1 + (time != null ? time.hashCode() : 0);
-        result1 = 31 * result1 + caseNumber;
-        return result1;
-    }
+	@Override
+	public int hashCode() {
+		int result1 = statusId;
+		result1 = 31 * result1 + result;
+		result1 = 31 * result1 + memoryCost;
+		result1 = 31 * result1 + timeCost;
+		result1 = 31 * result1 + length;
+		result1 = 31 * result1 + (time != null ? time.hashCode() : 0);
+		result1 = 31 * result1 + caseNumber;
+		return result1;
+	}
 
-    private Code codeByCodeId;
+	private Code codeByCodeId;
 
-    @ManyToOne
-    @JoinColumn(name = "codeId", referencedColumnName = "codeId", nullable = false)
-    public Code getCodeByCodeId() {
-        return codeByCodeId;
-    }
+	@ManyToOne
+	@JoinColumn(name = "codeId", referencedColumnName = "codeId", nullable = false)
+	public Code getCodeByCodeId() {
+		return codeByCodeId;
+	}
 
-    public void setCodeByCodeId(Code codeByCodeId) {
-        this.codeByCodeId = codeByCodeId;
-    }
+	public void setCodeByCodeId(Code codeByCodeId) {
+		this.codeByCodeId = codeByCodeId;
+	}
 
-    private CompileInfo compileInfoByCompileInfoId;
+	private CompileInfo compileInfoByCompileInfoId;
 
-    @ManyToOne
-    @JoinColumn(name = "compileInfoId", referencedColumnName = "compileInfoId")
-    public CompileInfo getCompileInfoByCompileInfoId() {
-        return compileInfoByCompileInfoId;
-    }
+	@ManyToOne
+	@JoinColumn(name = "compileInfoId", referencedColumnName = "compileInfoId")
+	public CompileInfo getCompileInfoByCompileInfoId() {
+		return compileInfoByCompileInfoId;
+	}
 
-    public void setCompileInfoByCompileInfoId(CompileInfo compileInfoByCompileInfoId) {
-        this.compileInfoByCompileInfoId = compileInfoByCompileInfoId;
-    }
+	public void setCompileInfoByCompileInfoId(
+			CompileInfo compileInfoByCompileInfoId) {
+		this.compileInfoByCompileInfoId = compileInfoByCompileInfoId;
+	}
 
-    private Contest contestByContestId;
+	private Contest contestByContestId;
 
-    @ManyToOne
-    @JoinColumn(name = "contestId", referencedColumnName = "contestId")
-    public Contest getContestByContestId() {
-        return contestByContestId;
-    }
+	@ManyToOne
+	@JoinColumn(name = "contestId", referencedColumnName = "contestId")
+	public Contest getContestByContestId() {
+		return contestByContestId;
+	}
 
-    public void setContestByContestId(Contest contestByContestId) {
-        this.contestByContestId = contestByContestId;
-    }
+	public void setContestByContestId(Contest contestByContestId) {
+		this.contestByContestId = contestByContestId;
+	}
 
-    private Language languageByLanguageId;
+	private Language languageByLanguageId;
 
-    @ManyToOne
-    @JoinColumn(name = "languageId", referencedColumnName = "languageId", nullable = false)
-    public Language getLanguageByLanguageId() {
-        return languageByLanguageId;
-    }
+	@ManyToOne
+	@JoinColumn(name = "languageId", referencedColumnName = "languageId", nullable = false)
+	public Language getLanguageByLanguageId() {
+		return languageByLanguageId;
+	}
 
-    public void setLanguageByLanguageId(Language languageByLanguageId) {
-        this.languageByLanguageId = languageByLanguageId;
-    }
+	public void setLanguageByLanguageId(Language languageByLanguageId) {
+		this.languageByLanguageId = languageByLanguageId;
+	}
 
-    private Problem problemByProblemId;
+	private Problem problemByProblemId;
 
-    @ManyToOne
-    @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = false)
-    public Problem getProblemByProblemId() {
-        return problemByProblemId;
-    }
+	@ManyToOne
+	@JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = false)
+	public Problem getProblemByProblemId() {
+		return problemByProblemId;
+	}
 
-    public void setProblemByProblemId(Problem problemByProblemId) {
-        this.problemByProblemId = problemByProblemId;
-    }
+	public void setProblemByProblemId(Problem problemByProblemId) {
+		this.problemByProblemId = problemByProblemId;
+	}
 
-    private User userByUserId;
+	private User userByUserId;
 
-    @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
-    public User getUserByUserId() {
-        return userByUserId;
-    }
+	@ManyToOne
+	@JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
+	public User getUserByUserId() {
+		return userByUserId;
+	}
 
-    public void setUserByUserId(User userByUserId) {
-        this.userByUserId = userByUserId;
-    }
+	public void setUserByUserId(User userByUserId) {
+		this.userByUserId = userByUserId;
+	}
 }

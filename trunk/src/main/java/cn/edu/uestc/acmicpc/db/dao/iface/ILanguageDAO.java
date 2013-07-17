@@ -26,7 +26,7 @@ import cn.edu.uestc.acmicpc.db.entity.Language;
 
 /**
  * LanguageDAO AOP interface.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public interface ILanguageDAO extends IDAO<Language, Integer> {

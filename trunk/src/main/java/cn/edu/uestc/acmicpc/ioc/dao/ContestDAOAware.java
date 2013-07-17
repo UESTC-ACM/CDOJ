@@ -25,15 +25,16 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
 
 /**
  * For all class which need contest dao entity.
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @see IContestDAO
  */
 public interface ContestDAOAware {
-    /**
-     * put problemDAO into class
-     *
-     * @param contestDAO specific contest DAO entity
-     */
-    public void setContestDAO(IContestDAO contestDAO);
+	/**
+	 * put problemDAO into class
+	 * 
+	 * @param contestDAO
+	 *            specific contest DAO entity
+	 */
+	public void setContestDAO(IContestDAO contestDAO);
 }

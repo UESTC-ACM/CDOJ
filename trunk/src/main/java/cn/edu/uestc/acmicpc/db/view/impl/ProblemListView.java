@@ -37,148 +37,151 @@ import java.util.List;
 
 /**
  * description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 public class ProblemListView extends View<Problem> {
 
-    /**
-     * State: not submitted
-     */
-    public static final int NONE = 0;
-    /**
-     * State: submitted but failed
-     */
-    public static final int FAILED = 1;
-    /**
-     * State: submitted and passed
-     */
-    public static final int PASSED = 2;
+	/**
+	 * State: not submitted
+	 */
+	public static final int NONE = 0;
+	/**
+	 * State: submitted but failed
+	 */
+	public static final int FAILED = 1;
+	/**
+	 * State: submitted and passed
+	 */
+	public static final int PASSED = 2;
 
-    private Integer state;
+	private Integer state;
 
-    public Integer getState() {
-        return state;
-    }
+	public Integer getState() {
+		return state;
+	}
 
-    @Ignore
-    public void setState(Integer state) {
-        this.state = state;
-    }
+	@Ignore
+	public void setState(Integer state) {
+		this.state = state;
+	}
 
-    private Integer problemId;
-    private String title;
-    private String source;
-    private Integer solved;
-    private Integer tried;
-    private Boolean isSPJ;
-    private Boolean isVisible;
-    private Integer difficulty;
-    private List<String> tags;
+	private Integer problemId;
+	private String title;
+	private String source;
+	private Integer solved;
+	private Integer tried;
+	private Boolean isSPJ;
+	private Boolean isVisible;
+	private Integer difficulty;
+	private List<String> tags;
 
-    /**
-     * Get a simple problem list view use for contest list.
-     *
-     * @param problem specific problem entity
-     */
-    public ProblemListView(Problem problem) {
-        super(problem);
-    }
+	/**
+	 * Get a simple problem list view use for contest list.
+	 * 
+	 * @param problem
+	 *            specific problem entity
+	 */
+	public ProblemListView(Problem problem) {
+		super(problem);
+	}
 
-    /**
-     * Get ProblemListView entity by problem entity.
-     *
-     * @param problem specific problem entity
-     * @throws cn.edu.uestc.acmicpc.util.exception.AppException
-     *
-     */
-    public ProblemListView(Problem problem, User currentUser, Global.AuthorStatusType type)
-            throws AppException {
-        super(problem);
-        List<String> list = new LinkedList<>();
-        Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
-        for (ProblemTag problemTag : problemTags) {
-            list.add(StringEscapeUtils.escapeHtml4(problemTag.getTagByTagId().getName()));
-        }
-        setTags(list);
-        if (currentUser == null) {
-            setState(NONE);
-        } else {
-            setState(type == null ? NONE : type.ordinal());
-        }
-    }
+	/**
+	 * Get ProblemListView entity by problem entity.
+	 * 
+	 * @param problem
+	 *            specific problem entity
+	 * @throws cn.edu.uestc.acmicpc.util.exception.AppException
+	 * 
+	 */
+	public ProblemListView(Problem problem, User currentUser,
+			Global.AuthorStatusType type) throws AppException {
+		super(problem);
+		List<String> list = new LinkedList<>();
+		Collection<ProblemTag> problemTags = problem
+				.getProblemtagsByProblemId();
+		for (ProblemTag problemTag : problemTags) {
+			list.add(StringEscapeUtils.escapeHtml4(problemTag.getTagByTagId()
+					.getName()));
+		}
+		setTags(list);
+		if (currentUser == null) {
+			setState(NONE);
+		} else {
+			setState(type == null ? NONE : type.ordinal());
+		}
+	}
 
-    public Integer getProblemId() {
-        return problemId;
-    }
+	public Integer getProblemId() {
+		return problemId;
+	}
 
-    public void setProblemId(Integer problemId) {
-        this.problemId = problemId;
-    }
+	public void setProblemId(Integer problemId) {
+		this.problemId = problemId;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public String getSource() {
-        return source;
-    }
+	public String getSource() {
+		return source;
+	}
 
-    public void setSource(String source) {
-        this.source = source;
-    }
+	public void setSource(String source) {
+		this.source = source;
+	}
 
-    public Integer getSolved() {
-        return solved;
-    }
+	public Integer getSolved() {
+		return solved;
+	}
 
-    public void setSolved(Integer solved) {
-        this.solved = solved;
-    }
+	public void setSolved(Integer solved) {
+		this.solved = solved;
+	}
 
-    public Integer getTried() {
-        return tried;
-    }
+	public Integer getTried() {
+		return tried;
+	}
 
-    public void setTried(Integer tried) {
-        this.tried = tried;
-    }
+	public void setTried(Integer tried) {
+		this.tried = tried;
+	}
 
-    public Boolean getIsSpj() {
-        return isSPJ;
-    }
+	public Boolean getIsSpj() {
+		return isSPJ;
+	}
 
-    public void setIsSpj(Boolean SPJ) {
-        isSPJ = SPJ;
-    }
+	public void setIsSpj(Boolean SPJ) {
+		isSPJ = SPJ;
+	}
 
-    public Boolean getIsVisible() {
-        return isVisible;
-    }
+	public Boolean getIsVisible() {
+		return isVisible;
+	}
 
-    public void setIsVisible(Boolean isVisible) {
-        this.isVisible = isVisible;
-    }
+	public void setIsVisible(Boolean isVisible) {
+		this.isVisible = isVisible;
+	}
 
-    public Integer getDifficulty() {
-        return difficulty;
-    }
+	public Integer getDifficulty() {
+		return difficulty;
+	}
 
-    public void setDifficulty(Integer difficulty) {
-        this.difficulty = difficulty;
-    }
+	public void setDifficulty(Integer difficulty) {
+		this.difficulty = difficulty;
+	}
 
-    public List<String> getTags() {
-        return tags;
-    }
+	public List<String> getTags() {
+		return tags;
+	}
 
-    @Ignore
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
+	@Ignore
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
 }

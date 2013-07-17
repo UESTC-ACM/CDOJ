@@ -37,160 +37,98 @@ import java.util.regex.Pattern;
 
 /**
  * Action for register
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(NeedLogin = false)
-public class RegisterAction extends BaseAction
-        implements DepartmentDAOAware, UserDTOAware {
+public class RegisterAction extends BaseAction implements DepartmentDAOAware,
+		UserDTOAware {
 
-    private static final long serialVersionUID = -2854303130010851540L;
+	private static final long serialVersionUID = -2854303130010851540L;
 
-    @Autowired
-    private UserDTO userDTO;
+	@Autowired
+	private UserDTO userDTO;
 
-    /**
-     * department dao, use for get a department entity by id.
-     */
-    @Autowired
-    private IDepartmentDAO departmentDAO;
+	/**
+	 * department dao, use for get a department entity by id.
+	 */
+	@Autowired
+	private IDepartmentDAO departmentDAO;
 
-    /**
-     * Register action.
-     * <p/>
-     * Check register information and pass then to validator, if the information is correct, write
-     * the user's information into database.
-     *
-     * @return <strong>JSON</strong> signal, process in front
-     */
-    @Validations(
-            requiredStrings = {
-                    @RequiredStringValidator(
-                            fieldName = "userDTO.userName",
-                            key = "error.userName.validation"
-                    ),
-                    @RequiredStringValidator(
-                            fieldName = "userDTO.password",
-                            key = "error.password.validation"
-                    ),
-                    @RequiredStringValidator(
-                            fieldName = "userDTO.nickName",
-                            key = "error.nickName.validation"
-                    ),
-                    @RequiredStringValidator(
-                            fieldName = "userDTO.email",
-                            key = "error.email.validation"
-                    ),
-                    @RequiredStringValidator(
-                            fieldName = "userDTO.school",
-                            key = "error.school.validation"
-                    ),
-                    @RequiredStringValidator(
-                            fieldName = "userDTO.studentId",
-                            key = "error.studentId.validation"
-                    )
-            },
-            stringLengthFields = {
-                    @StringLengthFieldValidator(
-                            fieldName = "userDTO.password",
-                            key = "error.password.validation",
-                            minLength = "6",
-                            maxLength = "20",
-                            trim = false
-                    ),
-                    @StringLengthFieldValidator(
-                            fieldName = "userDTO.school",
-                            key = "error.school.validation",
-                            minLength = "1",
-                            maxLength = "100",
-                            trim = false
-                    ),
-                    @StringLengthFieldValidator(
-                            fieldName = "userDTO.studentId",
-                            key = "error.studentId.validation",
-                            minLength = "1",
-                            maxLength = "20",
-                            trim = false
-                    ),
-                    @StringLengthFieldValidator(
-                            fieldName = "userDTO.nickName",
-                            key = "error.nickName.validation",
-                            minLength = "2",
-                            maxLength = "20",
-                            trim = false
-                    )
-            },
-            fieldExpressions = {
-                    @FieldExpressionValidator(
-                            fieldName = "userDTO.passwordRepeat",
-                            expression = "userDTO.password == userDTO.passwordRepeat",
-                            key = "error.passwordRepeat.validation"
-                    ),
-                    @FieldExpressionValidator(
-                            fieldName = "userDTO.departmentId",
-                            expression = "userDTO.departmentId in global.departmentList.{departmentId}",
-                            key = "error.department.validation"
-                    )
-            },
-            emails = {
-                    @EmailValidator(
-                            fieldName = "userDTO.email",
-                            key = "error.email.validation"
-                    )
-            }
-    )
-    public String toRegister() {
-        try {
-            if (userDAO.getEntityByUniqueField("userName", userDTO.getUserName()) != null) {
-                addFieldError("userDTO.userName", "User name has been used!");
-                return INPUT;
-            }
-            if (userDAO.getEntityByUniqueField("email", userDTO.getEmail()) != null) {
-                addFieldError("userDTO.email", "Email has benn used!");
-                return INPUT;
-            }
+	/**
+	 * Register action.
+	 * <p/>
+	 * Check register information and pass then to validator, if the information
+	 * is correct, write the user's information into database.
+	 * 
+	 * @return <strong>JSON</strong> signal, process in front
+	 */
+	@Validations(requiredStrings = {
+			@RequiredStringValidator(fieldName = "userDTO.userName", key = "error.userName.validation"),
+			@RequiredStringValidator(fieldName = "userDTO.password", key = "error.password.validation"),
+			@RequiredStringValidator(fieldName = "userDTO.nickName", key = "error.nickName.validation"),
+			@RequiredStringValidator(fieldName = "userDTO.email", key = "error.email.validation"),
+			@RequiredStringValidator(fieldName = "userDTO.school", key = "error.school.validation"),
+			@RequiredStringValidator(fieldName = "userDTO.studentId", key = "error.studentId.validation") }, stringLengthFields = {
+			@StringLengthFieldValidator(fieldName = "userDTO.password", key = "error.password.validation", minLength = "6", maxLength = "20", trim = false),
+			@StringLengthFieldValidator(fieldName = "userDTO.school", key = "error.school.validation", minLength = "1", maxLength = "100", trim = false),
+			@StringLengthFieldValidator(fieldName = "userDTO.studentId", key = "error.studentId.validation", minLength = "1", maxLength = "20", trim = false),
+			@StringLengthFieldValidator(fieldName = "userDTO.nickName", key = "error.nickName.validation", minLength = "2", maxLength = "20", trim = false) }, fieldExpressions = {
+			@FieldExpressionValidator(fieldName = "userDTO.passwordRepeat", expression = "userDTO.password == userDTO.passwordRepeat", key = "error.passwordRepeat.validation"),
+			@FieldExpressionValidator(fieldName = "userDTO.departmentId", expression = "userDTO.departmentId in global.departmentList.{departmentId}", key = "error.department.validation") }, emails = { @EmailValidator(fieldName = "userDTO.email", key = "error.email.validation") })
+	public String toRegister() {
+		try {
+			if (userDAO.getEntityByUniqueField("userName",
+					userDTO.getUserName()) != null) {
+				addFieldError("userDTO.userName", "User name has been used!");
+				return INPUT;
+			}
+			if (userDAO.getEntityByUniqueField("email", userDTO.getEmail()) != null) {
+				addFieldError("userDTO.email", "Email has benn used!");
+				return INPUT;
+			}
 
-            //TODO I don't know why struts2 regex validation doesn't work now.
-            Pattern pattern = Pattern.compile("\\b^[a-zA-Z0-9_]{4,24}$\\b");
-            Matcher matcher = pattern.matcher(userDTO.getUserName());
-            if (!matcher.find()) {
-                addFieldError("userDTO.userName", "Please enter 4-24 characters consist of A-Z, a-z, 0-9 and '_'.");
-                return INPUT;
-            }
+			// TODO I don't know why struts2 regex validation doesn't work now.
+			Pattern pattern = Pattern.compile("\\b^[a-zA-Z0-9_]{4,24}$\\b");
+			Matcher matcher = pattern.matcher(userDTO.getUserName());
+			if (!matcher.find()) {
+				addFieldError("userDTO.userName",
+						"Please enter 4-24 characters consist of A-Z, a-z, 0-9 and '_'.");
+				return INPUT;
+			}
 
-            userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
-            User user = userDTO.getEntity();
-            userDAO.add(user);
-            session.put("userName", user.getUserName());
-            session.put("password", user.getPassword());
-            session.put("lastLogin", user.getLastLogin());
-            session.put("userType", user.getType());
-            json.put("result", "ok");
-        } catch (Exception e) {
-            e.printStackTrace();
-            json.put("result", "error");
-            json.put("error_msg", "Unknown exception occurred.");
-        }
-        return JSON;
-    }
+			userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
+			User user = userDTO.getEntity();
+			userDAO.add(user);
+			session.put("userName", user.getUserName());
+			session.put("password", user.getPassword());
+			session.put("lastLogin", user.getLastLogin());
+			session.put("userType", user.getType());
+			json.put("result", "ok");
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("result", "error");
+			json.put("error_msg", "Unknown exception occurred.");
+		}
+		return JSON;
+	}
 
-    @Override
-    public UserDTO getUserDTO() {
-        return userDTO;
-    }
+	@Override
+	public UserDTO getUserDTO() {
+		return userDTO;
+	}
 
-    @Override
-    public void setUserDTO(UserDTO userDTO) {
-        this.userDTO = userDTO;
-    }
+	@Override
+	public void setUserDTO(UserDTO userDTO) {
+		this.userDTO = userDTO;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public IDepartmentDAO getDepartmentDAO() {
-        return departmentDAO;
-    }
+	public IDepartmentDAO getDepartmentDAO() {
+		return departmentDAO;
+	}
 
-    public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
-        this.departmentDAO = departmentDAO;
-    }
+	public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
+		this.departmentDAO = departmentDAO;
+	}
 
 }

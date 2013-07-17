@@ -39,106 +39,122 @@ import java.util.Iterator;
 
 /**
  * Action for manage problem's picture.
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class ArticlePictureAdminAction extends FileUploadAction implements ArticleDAOAware {
+public class ArticlePictureAdminAction extends FileUploadAction implements
+		ArticleDAOAware {
 
-    @Autowired
-    private IArticleDAO articleDAO;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3203649930692423356L;
+	@Autowired
+	private IArticleDAO articleDAO;
 
-    @Override
-    public void setArticleDAO(IArticleDAO articleDAO) {
-        this.articleDAO = articleDAO;
-    }
+	@Override
+	public void setArticleDAO(IArticleDAO articleDAO) {
+		this.articleDAO = articleDAO;
+	}
 
-    private Integer targetArticleId;
+	private Integer targetArticleId;
 
-    public void setTargetArticleId(Integer targetArticleId) {
-        this.targetArticleId = targetArticleId;
-    }
+	public void setTargetArticleId(Integer targetArticleId) {
+		this.targetArticleId = targetArticleId;
+	}
 
-    /**
-     * Get all uploaded pictures of target problem.
-     *
-     * @return <strong>JSON</strong> signal.
-     */
-    public String toPictureList() {
-        try {
-            if (targetArticleId == null)
-                throw new AppException("Error, target article id is null!");
-            Article article = articleDAO.get(targetArticleId);
-            if (article == null)
-                throw new AppException("Error, target article doesn't exist!");
+	/**
+	 * Get all uploaded pictures of target problem.
+	 * 
+	 * @return <strong>JSON</strong> signal.
+	 */
+	public String toPictureList() {
+		try {
+			if (targetArticleId == null)
+				throw new AppException("Error, target article id is null!");
+			Article article = articleDAO.get(targetArticleId);
+			if (article == null)
+				throw new AppException("Error, target article doesn't exist!");
 
-            File dir = new File(settings.SETTING_ARTICLE_PICTURE_FOLDER_ABSOLUTE + targetArticleId + "/");
-            if (!dir.exists())
-                if (!dir.mkdirs())
-                    throw new AppException("Error while make picture directory!");
-            File files[] = dir.listFiles();
-            if (files == null)
-                throw new AppException("Error while list pictures!");
-            ArrayList<String> pictures = new ArrayList<>();
-            pictures.clear();
-            for (File file : files) {
-                String fileName = file.getName();
-                ImageInputStream iis = ImageIO.createImageInputStream(file);
-                Iterator iter = ImageIO.getImageReaders(iis);
-                if (iter.hasNext())
-                    pictures.add(settings.SETTING_ARTICLE_PICTURE_FOLDER + targetArticleId + "/" + fileName);
-            }
-            json.put("success", "true");
-            json.put("pictures", pictures);
-        } catch (AppException e) {
-            json.put("error", e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            json.put("error", "Unknown exception occurred.");
-        }
-        return JSON;
-    }
+			File dir = new File(
+					settings.SETTING_ARTICLE_PICTURE_FOLDER_ABSOLUTE
+							+ targetArticleId + "/");
+			if (!dir.exists())
+				if (!dir.mkdirs())
+					throw new AppException(
+							"Error while make picture directory!");
+			File files[] = dir.listFiles();
+			if (files == null)
+				throw new AppException("Error while list pictures!");
+			ArrayList<String> pictures = new ArrayList<>();
+			pictures.clear();
+			for (File file : files) {
+				String fileName = file.getName();
+				ImageInputStream iis = ImageIO.createImageInputStream(file);
+				Iterator<?> iter = ImageIO.getImageReaders(iis);
+				if (iter.hasNext())
+					pictures.add(settings.SETTING_ARTICLE_PICTURE_FOLDER
+							+ targetArticleId + "/" + fileName);
+			}
+			json.put("success", "true");
+			json.put("pictures", pictures);
+		} catch (AppException e) {
+			json.put("error", e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("error", "Unknown exception occurred.");
+		}
+		return JSON;
+	}
 
-    /**
-     * Upload pictures
-     *
-     * @return <strong>JSON</strong> signal.
-     */
-    public String uploadPicture() {
-        try {
-            if (targetArticleId == null)
-                throw new AppException("Error, target article id is null!");
-            Article article = articleDAO.get(targetArticleId);
-            if (article == null)
-                throw new AppException("Error, target article doesn't exist!");
+	/**
+	 * Upload pictures
+	 * 
+	 * @return <strong>JSON</strong> signal.
+	 */
+	public String uploadPicture() {
+		try {
+			if (targetArticleId == null)
+				throw new AppException("Error, target article id is null!");
+			Article article = articleDAO.get(targetArticleId);
+			if (article == null)
+				throw new AppException("Error, target article doesn't exist!");
 
-            setSavePath(settings.SETTING_UPLOAD_FOLDER + "article/" + targetArticleId);
-            String[] files = uploadFile();
-            // In this case, uploaded file should contains only one element.
-            if (files == null || files.length > 1)
-                throw new AppException("Fetch uploaded file error.");
-            File dir = new File(settings.SETTING_ARTICLE_PICTURE_FOLDER_ABSOLUTE + targetArticleId + "/");
-            if (!dir.exists())
-                if (!dir.mkdirs())
-                    throw new AppException("Error while make picture directory!");
+			setSavePath(settings.SETTING_UPLOAD_FOLDER + "article/"
+					+ targetArticleId);
+			String[] files = uploadFile();
+			// In this case, uploaded file should contains only one element.
+			if (files == null || files.length > 1)
+				throw new AppException("Fetch uploaded file error.");
+			File dir = new File(
+					settings.SETTING_ARTICLE_PICTURE_FOLDER_ABSOLUTE
+							+ targetArticleId + "/");
+			if (!dir.exists())
+				if (!dir.mkdirs())
+					throw new AppException(
+							"Error while make picture directory!");
 
-            String newName = StringUtil.generateFileName(files[0]);
-            File oldFile = new File(files[0]);
-            File newFile = new File(settings.SETTING_ARTICLE_PICTURE_FOLDER_ABSOLUTE + targetArticleId + "/" + newName);
-            if (!oldFile.renameTo(newFile))
-                throw new AppException("Error while rename files");
-            files[0] = newName;
+			String newName = StringUtil.generateFileName(files[0]);
+			File oldFile = new File(files[0]);
+			File newFile = new File(
+					settings.SETTING_ARTICLE_PICTURE_FOLDER_ABSOLUTE
+							+ targetArticleId + "/" + newName);
+			if (!oldFile.renameTo(newFile))
+				throw new AppException("Error while rename files");
+			files[0] = newName;
 
-            json.put("success", "true");
-            json.put("uploadedFile", files[0]);
-            json.put("uploadedFileUrl", settings.SETTING_ARTICLE_PICTURE_FOLDER + targetArticleId + "/" + newName);
-        } catch (AppException e) {
-            json.put("error", e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            json.put("error", "Unknown exception occurred.");
-        }
-        return JSON;
-    }
+			json.put("success", "true");
+			json.put("uploadedFile", files[0]);
+			json.put("uploadedFileUrl", settings.SETTING_ARTICLE_PICTURE_FOLDER
+					+ targetArticleId + "/" + newName);
+		} catch (AppException e) {
+			json.put("error", e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("error", "Unknown exception occurred.");
+		}
+		return JSON;
+	}
 
 }

@@ -27,28 +27,27 @@ import cn.edu.uestc.acmicpc.oj.interceptor.AppInterceptor;
 /**
  * Interceptor for all actions.
  * <p/>
- * Implement <strong>onActionExecuting</strong> method to
- * execute codes before action is invoked.
+ * Implement <strong>onActionExecuting</strong> method to execute codes before
+ * action is invoked.
  * <p/>
- * Implement <strong>onActionExecuted</strong> method to
- * execute codes after action is invoke.
- *
+ * Implement <strong>onActionExecuted</strong> method to execute codes after
+ * action is invoke.
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @see AppInterceptor.ActionInfo
  */
 public interface IActionInterceptor {
-    /**
-     * This method will be invoked before action is executed.
-     *
-     * @param actionInfo action's basic information
-     */
-    public void onActionExecuting(AppInterceptor.ActionInfo actionInfo);
+	/**
+	 * This method will be invoked before action is executed.
+	 * 
+	 * @param actionInfo
+	 *            action's basic information
+	 */
+	public void onActionExecuting(AppInterceptor.ActionInfo actionInfo);
 
-    /**
-     * This method will be invoked after action is executed.
-     */
-    @SuppressWarnings("EmptyMethod")
-    public void onActionExecuted();
-
+	/**
+	 * This method will be invoked after action is executed.
+	 */
+	public void onActionExecuted();
 
 }

@@ -29,20 +29,23 @@ import javax.servlet.ServletContext;
 
 /**
  * Manage methods for Spring Beans.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 public class BeanUtil {
-    /**
-     * Get specific bean by bean name and servletContext.
-     *
-     * @param beanName bean's name
-     * @param sc       servlet application
-     * @return specific bean
-     */
-    public static Object getBeanByServletContext(String beanName, ServletContext sc) {
-        WebApplicationContext wc = WebApplicationContextUtils.getWebApplicationContext(sc);
-        return wc.getBean(beanName);
-    }
+	/**
+	 * Get specific bean by bean name and servletContext.
+	 * 
+	 * @param beanName
+	 *            bean's name
+	 * @param servletContext
+	 *            servlet application
+	 * @return specific bean
+	 */
+	public static Object getBeanByServletContext(String beanName,
+			ServletContext servletContext) {
+		WebApplicationContext wc = WebApplicationContextUtils
+				.getWebApplicationContext(servletContext);
+		return wc.getBean(beanName);
+	}
 }

@@ -30,83 +30,85 @@ import java.util.Collection;
 
 /**
  * Compile information which compiler returns.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 @Table(name = "compileInfo", schema = "", catalog = "uestcoj")
 @Entity
 @KeyField("compileInfoId")
 public class CompileInfo implements Serializable {
-    private static final long serialVersionUID = 1404496264299518630L;
-    private Integer compileInfoId;
+	private static final long serialVersionUID = 1404496264299518630L;
+	private Integer compileInfoId;
 
-    private Integer version;
+	private Integer version;
 
-    @Version
-    @Column(name = "OPTLOCK")
-    public Integer getVersion() {
-        return version;
-    }
+	@Version
+	@Column(name = "OPTLOCK")
+	public Integer getVersion() {
+		return version;
+	}
 
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
 
-    @Column(name = "compileInfoId", nullable = false, insertable = true, updatable = true,
-            length = 10, precision = 0, unique = true)
-    @Id
-    @GeneratedValue
-    public Integer getCompileInfoId() {
-        return compileInfoId;
-    }
+	@Column(name = "compileInfoId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
+	@Id
+	@GeneratedValue
+	public Integer getCompileInfoId() {
+		return compileInfoId;
+	}
 
-    public void setCompileInfoId(Integer compileInfoId) {
-        this.compileInfoId = compileInfoId;
-    }
+	public void setCompileInfoId(Integer compileInfoId) {
+		this.compileInfoId = compileInfoId;
+	}
 
-    private String content;
+	private String content;
 
-    @Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535,
-            precision = 0)
-    @Basic
-    public String getContent() {
-        return content;
-    }
+	@Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
+	@Basic
+	public String getContent() {
+		return content;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    @SuppressWarnings("RedundantIfStatement")
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
-        CompileInfo that = (CompileInfo) o;
+		CompileInfo that = (CompileInfo) o;
 
-        if (!compileInfoId.equals(that.compileInfoId)) return false;
-        if (content != null ? !content.equals(that.content) : that.content != null) return false;
+		if (!compileInfoId.equals(that.compileInfoId))
+			return false;
+		if (content != null ? !content.equals(that.content)
+				: that.content != null)
+			return false;
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = compileInfoId;
-        result = 31 * result + (content != null ? content.hashCode() : 0);
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		int result = compileInfoId;
+		result = 31 * result + (content != null ? content.hashCode() : 0);
+		return result;
+	}
 
-    private Collection<Status> statusesByCompileInfoId;
+	private Collection<Status> statusesByCompileInfoId;
 
-    @OneToMany(mappedBy = "compileInfoByCompileInfoId")
-    public Collection<Status> getStatusesByCompileInfoId() {
-        return statusesByCompileInfoId;
-    }
+	@OneToMany(mappedBy = "compileInfoByCompileInfoId")
+	public Collection<Status> getStatusesByCompileInfoId() {
+		return statusesByCompileInfoId;
+	}
 
-    public void setStatusesByCompileInfoId(Collection<Status> statusesByCompileInfoId) {
-        this.statusesByCompileInfoId = statusesByCompileInfoId;
-    }
+	public void setStatusesByCompileInfoId(
+			Collection<Status> statusesByCompileInfoId) {
+		this.statusesByCompileInfoId = statusesByCompileInfoId;
+	}
 }

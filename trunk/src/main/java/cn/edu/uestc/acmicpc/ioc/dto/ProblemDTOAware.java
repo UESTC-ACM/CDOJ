@@ -24,21 +24,22 @@ import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
 
 /**
  * For all class which need problem dto entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public interface ProblemDTOAware {
-    /**
-     * Put problemDTO into class.
-     *
-     * @param problemDTO problemDTO object
-     */
-    public void setProblemDTO(ProblemDTO problemDTO);
+	/**
+	 * Put problemDTO into class.
+	 * 
+	 * @param problemDTO
+	 *            problemDTO object
+	 */
+	public void setProblemDTO(ProblemDTO problemDTO);
 
-    /**
-     * Get problemDTO entity.
-     *
-     * @return problemDTO entity
-     */
-    public ProblemDTO getProblemDTO();
+	/**
+	 * Get problemDTO entity.
+	 * 
+	 * @return problemDTO entity
+	 */
+	public ProblemDTO getProblemDTO();
 }

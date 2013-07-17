@@ -29,148 +29,148 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  * Problem search condition.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@SuppressWarnings("UnusedDeclaration")
 public class ProblemCondition extends BaseCondition {
-    /**
-     * Start user id.
-     */
-    private Integer startId;
-    /**
-     * End user id.
-     */
-    private Integer endId;
+	/**
+	 * Start user id.
+	 */
+	private Integer startId;
+	/**
+	 * End user id.
+	 */
+	private Integer endId;
 
-    /**
-     * Title.
-     */
-    private String title;
-    private String source;
+	/**
+	 * Title.
+	 */
+	private String title;
+	private String source;
 
-    /**
-     * Keyword for {@code description}, {@code input}, {@code output},
-     * {@code sampleInput}, {@code sampleOutput} and {@code hint}.
-     */
-    private String keyword;
+	/**
+	 * Keyword for {@code description}, {@code input}, {@code output},
+	 * {@code sampleInput}, {@code sampleOutput} and {@code hint}.
+	 */
+	private String keyword;
 
-    private Boolean isSpj;
+	private Boolean isSpj;
 
-    private Boolean isVisible;
+	private Boolean isVisible;
 
-    private Integer startDifficulty;
+	private Integer startDifficulty;
 
-    private Boolean isTitleEmpty;
+	private Boolean isTitleEmpty;
 
-    public Boolean getIsTitleEmpty() {
-        return isTitleEmpty;
-    }
+	public Boolean getIsTitleEmpty() {
+		return isTitleEmpty;
+	}
 
-    public void setIsTitleEmpty(Boolean isTitleEmpty) {
-        this.isTitleEmpty = isTitleEmpty;
-    }
+	public void setIsTitleEmpty(Boolean isTitleEmpty) {
+		this.isTitleEmpty = isTitleEmpty;
+	}
 
-    @Exp(MapField = "difficulty", Type = ConditionType.le)
-    public Integer getEndDifficulty() {
-        return endDifficulty;
-    }
+	@Exp(MapField = "difficulty", Type = ConditionType.le)
+	public Integer getEndDifficulty() {
+		return endDifficulty;
+	}
 
-    public void setEndDifficulty(Integer endDifficulty) {
-        this.endDifficulty = endDifficulty;
-    }
+	public void setEndDifficulty(Integer endDifficulty) {
+		this.endDifficulty = endDifficulty;
+	}
 
-    @Exp(MapField = "difficulty", Type = ConditionType.ge)
-    public Integer getStartDifficulty() {
-        return startDifficulty;
-    }
+	@Exp(MapField = "difficulty", Type = ConditionType.ge)
+	public Integer getStartDifficulty() {
+		return startDifficulty;
+	}
 
-    public void setStartDifficulty(Integer startDifficulty) {
-        this.startDifficulty = startDifficulty;
-    }
+	public void setStartDifficulty(Integer startDifficulty) {
+		this.startDifficulty = startDifficulty;
+	}
 
-    @Exp(Type = ConditionType.eq)
-    public Boolean getIsVisible() {
-        return isVisible;
-    }
+	@Exp(Type = ConditionType.eq)
+	public Boolean getIsVisible() {
+		return isVisible;
+	}
 
-    public void setIsVisible(Boolean visible) {
-        isVisible = visible;
-    }
+	public void setIsVisible(Boolean visible) {
+		isVisible = visible;
+	}
 
-    @Exp(Type = ConditionType.eq)
-    public Boolean getIsSpj() {
-        return isSpj;
-    }
+	@Exp(Type = ConditionType.eq)
+	public Boolean getIsSpj() {
+		return isSpj;
+	}
 
-    public void setIsSpj(Boolean spj) {
-        isSpj = spj;
-    }
+	public void setIsSpj(Boolean spj) {
+		isSpj = spj;
+	}
 
-    public String getKeyword() {
-        return keyword;
-    }
+	public String getKeyword() {
+		return keyword;
+	}
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
 
-    @Exp(Type = ConditionType.like)
-    public String getSource() {
-        return source;
-    }
+	@Exp(Type = ConditionType.like)
+	public String getSource() {
+		return source;
+	}
 
-    public void setSource(String source) {
-        this.source = source;
-    }
+	public void setSource(String source) {
+		this.source = source;
+	}
 
-    @Exp(Type = ConditionType.like)
-    public String getTitle() {
-        return title;
-    }
+	@Exp(Type = ConditionType.like)
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    @Exp(MapField = "problemId", Type = ConditionType.le)
-    public Integer getEndId() {
-        return endId;
-    }
+	@Exp(MapField = "problemId", Type = ConditionType.le)
+	public Integer getEndId() {
+		return endId;
+	}
 
-    public void setEndId(Integer endId) {
-        this.endId = endId;
-    }
+	public void setEndId(Integer endId) {
+		this.endId = endId;
+	}
 
-    @Exp(MapField = "problemId", Type = ConditionType.ge)
-    public Integer getStartId() {
-        return startId;
-    }
+	@Exp(MapField = "problemId", Type = ConditionType.ge)
+	public Integer getStartId() {
+		return startId;
+	}
 
-    public void setStartId(Integer startId) {
-        this.startId = startId;
-    }
+	public void setStartId(Integer startId) {
+		this.startId = startId;
+	}
 
-    private Integer endDifficulty;
+	private Integer endDifficulty;
 
-    @Override
-    public void invoke(Condition condition) {
-        super.invoke(condition);
-        if (keyword != null) {
-            String[] fields = new String[]{"description", "input", "output",
-                    "sampleInput", "sampleOutput", "hint"};
-            Junction junction = Restrictions.disjunction();
-            for (String field : fields) {
-                junction.add(Restrictions.like(field, String.format("%%%s%%", keyword)));
-            }
-            condition.addCriterion(junction);
-        }
-        if (isTitleEmpty != null) {
-            if (isTitleEmpty) {
-                condition.addCriterion(Restrictions.like("title", ""));
-            } else {
-                condition.addCriterion(Restrictions.like("title", "_%"));
-            }
-        }
-    }
+	@Override
+	public void invoke(Condition condition) {
+		super.invoke(condition);
+		if (keyword != null) {
+			String[] fields = new String[] { "description", "input", "output",
+					"sampleInput", "sampleOutput", "hint" };
+			Junction junction = Restrictions.disjunction();
+			for (String field : fields) {
+				junction.add(Restrictions.like(field,
+						String.format("%%%s%%", keyword)));
+			}
+			condition.addCriterion(junction);
+		}
+		if (isTitleEmpty != null) {
+			if (isTitleEmpty) {
+				condition.addCriterion(Restrictions.like("title", ""));
+			} else {
+				condition.addCriterion(Restrictions.like("title", "_%"));
+			}
+		}
+	}
 }

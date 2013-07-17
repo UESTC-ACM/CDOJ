@@ -26,15 +26,16 @@ import cn.edu.uestc.acmicpc.util.Settings;
 
 /**
  * For all class which need Settings entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @see Settings
  */
 public interface SettingsAware {
-    /**
-     * Put Settings entity into class.
-     *
-     * @param settings settings entity object
-     */
-    public void setSettings(Settings settings);
+	/**
+	 * Put Settings entity into class.
+	 * 
+	 * @param settings
+	 *            settings entity object
+	 */
+	public void setSettings(Settings settings);
 }

@@ -26,15 +26,16 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO;
 
 /**
  * For all class which need compileinfoDAO entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @see cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO
  */
 public interface CompileInfoDAOAware {
-    /**
-     * Put compileinfoDAO into class.
-     *
-     * @param compileinfoDAO newly compileinfoDAO entity
-     */
-    public void setCompileinfoDAO(ICompileInfoDAO compileinfoDAO);
+	/**
+	 * Put compileinfoDAO into class.
+	 * 
+	 * @param compileinfoDAO
+	 *            newly compileinfoDAO entity
+	 */
+	public void setCompileinfoDAO(ICompileInfoDAO compileinfoDAO);
 }

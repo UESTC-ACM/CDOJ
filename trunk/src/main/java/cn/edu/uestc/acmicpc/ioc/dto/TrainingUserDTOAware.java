@@ -25,10 +25,22 @@ import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDTO;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public interface TrainingUserDTOAware {
-    public void setTrainingUserDTO(TrainingUserDTO trainingUserDTO);
-    public TrainingUserDTO getTrainingUserDTO();
+	/**
+	 * Put trainingUserDTO into class.
+	 * 
+	 * @param trainingUserDTO
+	 *            trainingUserDTO object
+	 */
+	public void setTrainingUserDTO(TrainingUserDTO trainingUserDTO);
+
+	/**
+	 * Get trainingUserDTO entity.
+	 * 
+	 * @return trainingUserDTO entity
+	 */
+	public TrainingUserDTO getTrainingUserDTO();
 }

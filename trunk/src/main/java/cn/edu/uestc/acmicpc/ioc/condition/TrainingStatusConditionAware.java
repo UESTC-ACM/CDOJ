@@ -25,10 +25,12 @@ import cn.edu.uestc.acmicpc.db.condition.impl.TrainingStatusCondition;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public interface TrainingStatusConditionAware {
-    public void setTrainingStatusCondition(TrainingStatusCondition trainingStatusCondition);
-    public TrainingStatusCondition getTrainingStatusCondition();
+	public void setTrainingStatusCondition(
+			TrainingStatusCondition trainingStatusCondition);
+
+	public TrainingStatusCondition getTrainingStatusCondition();
 }

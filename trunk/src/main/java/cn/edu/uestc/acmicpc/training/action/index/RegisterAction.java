@@ -25,7 +25,6 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDTO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.ioc.dao.TrainingUserDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dto.TrainingUserDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -36,75 +35,66 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Description
- *
+ * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class RegisterAction extends BaseAction implements TrainingUserDAOAware, TrainingUserDTOAware {
+public class RegisterAction extends BaseAction implements TrainingUserDAOAware,
+		TrainingUserDTOAware {
 
-    @Validations(
-            requiredStrings = {
-                    @RequiredStringValidator(
-                            fieldName = "trainingUserDTO.name",
-                            key = "error.trainingUserName.validation"
-                    )
-            },
-            stringLengthFields = {
-                    @StringLengthFieldValidator(
-                            fieldName = "trainingUserDTO.name",
-                            key = "error.trainingUserName.validation",
-                            minLength = "2",
-                            maxLength = "24",
-                            trim = false
-                    )
-            }
-    )
-    public String toRegister() {
-        try {
-            if (currentUser == null)
-                throw new AppException("Please login first!");
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5698607812788337007L;
 
-            TrainingUser trainingUser = trainingUserDAO.getEntityByUniqueField("name", trainingUserDTO.getName());
-            if (trainingUser != null) {
-                addFieldError("trainingUserDTO.name", "Name has been used!");
-                return INPUT;
-            }
+	@Validations(requiredStrings = { @RequiredStringValidator(fieldName = "trainingUserDTO.name", key = "error.trainingUserName.validation") }, stringLengthFields = { @StringLengthFieldValidator(fieldName = "trainingUserDTO.name", key = "error.trainingUserName.validation", minLength = "2", maxLength = "24", trim = false) })
+	public String toRegister() {
+		try {
+			if (currentUser == null)
+				throw new AppException("Please login first!");
 
-            trainingUser = trainingUserDTO.getEntity();
-            trainingUser.setUserByUserId(currentUser);
+			TrainingUser trainingUser = trainingUserDAO.getEntityByUniqueField(
+					"name", trainingUserDTO.getName());
+			if (trainingUser != null) {
+				addFieldError("trainingUserDTO.name", "Name has been used!");
+				return INPUT;
+			}
 
-            trainingUserDAO.add(trainingUser);
+			trainingUser = trainingUserDTO.getEntity();
+			trainingUser.setUserByUserId(currentUser);
 
-            json.put("result", "ok");
-        } catch (AppException e) {
-            json.put("result", "error");
-            json.put("error_msg", e.getMessage());
-            return JSON;
-        } catch (Exception e) {
-            e.printStackTrace();
-            json.put("result", "error");
-            json.put("error_msg", "Unknown exception occurred.");
-        }
-        return JSON;
-    }
+			trainingUserDAO.add(trainingUser);
 
-    @Autowired
-    private ITrainingUserDAO trainingUserDAO;
+			json.put("result", "ok");
+		} catch (AppException e) {
+			json.put("result", "error");
+			json.put("error_msg", e.getMessage());
+			return JSON;
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("result", "error");
+			json.put("error_msg", "Unknown exception occurred.");
+		}
+		return JSON;
+	}
 
-    @Autowired
-    private TrainingUserDTO trainingUserDTO;
+	@Autowired
+	private ITrainingUserDAO trainingUserDAO;
 
-    @Override
-    public void setTrainingUserDAO(ITrainingUserDAO trainingUserDAO) {
-        this.trainingUserDAO = trainingUserDAO;
-    }
+	@Autowired
+	private TrainingUserDTO trainingUserDTO;
 
-    @Override
-    public void setTrainingUserDTO(TrainingUserDTO trainingUserDTO) {
-        this.trainingUserDTO = trainingUserDTO;
-    }
+	@Override
+	public void setTrainingUserDAO(ITrainingUserDAO trainingUserDAO) {
+		this.trainingUserDAO = trainingUserDAO;
+	}
 
-    @Override
-    public TrainingUserDTO getTrainingUserDTO() {
-        return trainingUserDTO;
-    }
+	@Override
+	public void setTrainingUserDTO(TrainingUserDTO trainingUserDTO) {
+		this.trainingUserDTO = trainingUserDTO;
+	}
+
+	@Override
+	public TrainingUserDTO getTrainingUserDTO() {
+		return trainingUserDTO;
+	}
 }

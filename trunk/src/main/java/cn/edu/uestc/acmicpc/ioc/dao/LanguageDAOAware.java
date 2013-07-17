@@ -26,15 +26,16 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
 
 /**
  * For all class which need languageDAO entity.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  * @see ILanguageDAO
  */
 public interface LanguageDAOAware {
-    /**
-     * Put languageDAO into class.
-     *
-     * @param languageDAO languageDAO object
-     */
-    public void setLanguageDAO(ILanguageDAO languageDAO);
+	/**
+	 * Put languageDAO into class.
+	 * 
+	 * @param languageDAO
+	 *            languageDAO object
+	 */
+	public void setLanguageDAO(ILanguageDAO languageDAO);
 }

@@ -27,10 +27,10 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Ignore flag for reflection class.
- *
+ * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Ignore {
-    public boolean value() default true;
+	public boolean value() default true;
 }
