@@ -43,3 +43,20 @@ td {
 .firstac { background: #080; color: white !important; font-weight: bold; }
 .fail { background: #ffdada; }
 .pending { background: #c8d6fa; }
+
+#trainingUserInfo thead tr {
+    background-color: #1B1B1B;
+}
+
+#trainingUserInfo thead td {
+    text-align: center;
+}
+
+#ratingSpan h4 {
+    text-align: right;
+}
+
+#trainingUserInfo tbody tr :last-child {
+    text-align: right;
+    margin-right: 10px;
+}

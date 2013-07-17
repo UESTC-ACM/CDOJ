@@ -35,8 +35,10 @@ $(document).ready(function () {
 
             var data = {
                 "trainingUserDTO.name": info["trainingUserDTO.name"],
-                "trainingUserDTO.type": info["trainingUserDTO.type"]
+                "trainingUserDTO.type": info["trainingUserDTO.type"],
+                "trainingUserDTO.member": info["trainingUserDTO.member"]
             };
+            console.log(data);
             $.post('/training/register', data, function(data) {
                 content.checkValidate({
                     result: data,
@@ -56,7 +58,6 @@ $(document).ready(function () {
             alert(data.error_msg);
             return;
         }
-        console.log(data);
 
         var trainingUserList = data.trainingUserList;
         var teamList = $('#teamList');
@@ -67,6 +68,7 @@ $(document).ready(function () {
             var html = $('<tr></tr>');
             html.append($('<td>' + value.rank + '</td>'));
             html.append($('<td><a href="/training/user/show/' + value.trainingUserId + '">' + value.name + '</a></td>'));
+            html.append($('<td>' + value.member + '</td>'));
 
             html.append(getRating(value.rating, value.ratingVary));
             html.append(getVolatility(value.volatility, value.volatilityVary));
@@ -80,4 +82,38 @@ $(document).ready(function () {
         });
     });
 
+    $.post('/training/contest/search', function(data) {
+        if (data.result == "error") {
+            alert(data.error_msg);
+            return;
+        }
+
+        var trainingContestList = data.trainingContestList;
+        var tbody = $('#trainingContestList');
+        // remove old user list
+        tbody.find('tr').remove();
+        // put user list
+        $.each(trainingContestList, function (index, value) {
+            var html = $('<tr></tr>');
+            html.append($('<td>' + value.trainingContestId + '</td>'));
+            html.append($('<td><a href="/training/contest/show/' + value.trainingContestId + '">' + value.title + '</a></td>'));
+            if (value.isPersonal)
+                html.append($('<td>Personal</td>'));
+            else
+                html.append($('<td>Team</td>'));
+            tbody.append(html);
+        });
+    });
+
+    $.post('/training/userHistory/0', function(data) {
+        if (data.teamHistory.length == 0)
+            return;
+        drawAllUsersRatingChart("#personalChart", data.teamHistory, data.teamSummary);
+    });
+
+    $.post('/training/userHistory/1', function(data) {
+        if (data.teamHistory.length == 0)
+            return;
+        drawAllUsersRatingChart("#teamChart", data.teamHistory, data.teamSummary);
+    });
 });

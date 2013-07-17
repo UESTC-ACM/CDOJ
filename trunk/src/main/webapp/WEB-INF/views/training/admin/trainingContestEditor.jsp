@@ -110,11 +110,55 @@
 
                     <div class="span10">
                         <div class="control-group">
+                            <label class="control-label">Type</label>
+                            <div class="controls">
+                                <s:iterator value="Global.trainingContestTypeList" id="id" status="status">
+                                    <label for="trainingContestDTO.type-<s:property value="#status.index"/>" class="radio inline">
+                                        <input type="radio"
+                                               name="trainingContestDTO.type"
+                                               id="trainingContestDTO.type-<s:property value="#status.index"/>"
+                                               value="<s:property value="#status.index"/>"
+                                        <s:if test="targetTrainingContest.type == #status.index">
+                                               checked=""
+                                        </s:if>
+                                                >
+                                        <s:property value="#id.description"/>
+                                    </label>
+                                </s:iterator>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="span10">
+                        <div class="control-group">
                             <label class="control-label">Upload rank file</label>
 
                             <div class="controls">
                                 <div id="fileUploader"></div>
                                 <span id="fileUploaderAttention" class="help-inline">Please use xls.</span>
+                                <p class="help-block">修改了比赛类型之后请先submit一次</p>
+                                <p class="help-block">VJ和HDU上直接导出排名即可（注意导出的排名可能有中文空格，需要批量替换掉）</p>
+                                <p class="help-block">扣分的话类型请选择adjust，xls文档格式如下：
+                                <table class="table table-striped table-condensed">
+                                <thead>
+                                <tr>
+                                    <th>name</th>
+                                    <th>penalty</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>李昀</td>
+                                    <td>100</td>
+                                </tr>
+                                <tr>
+                                    <td>何云鹏</td>
+                                    <td>200</td>
+                                </tr>
+                                </tbody>
+                                </table>
+                                数字是扣分幅度，负数的话就是加分。
+                                </p>
                             </div>
                         </div>
                     </div>

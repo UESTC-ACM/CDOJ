@@ -49,9 +49,7 @@
                 <th style="width: 30px;" class="orderButton" field="id">#</th>
                 <th class="orderButton" field="name">Name</th>
                 <th class="orderButton" field="userByUserId">User</th>
-                <th style="width: 80px;" class="orderButton" field="rating">Rating</th>
-                <th style="width: 70px;" class="orderButton" field="volatility">Volatility</th>
-                <th style="width: 40px;" class="orderButton" field="competitions">Comp</th>
+                <th style="width: 190px;">Member</th>
                 <th style="width: 60px;" class="orderButton" field="type">Type</th>
                 <th style="width: 120px;" class="orderButton" field="allow">Allow</th>
             </tr>

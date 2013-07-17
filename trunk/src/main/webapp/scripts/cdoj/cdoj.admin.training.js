@@ -86,13 +86,10 @@ function refreshTrainingUserList(condition) {
         $.each(trainingUserList, function (index, value) {
             var html = $('<tr></tr>');
             html.append($('<td>' + value.trainingUserId + '</td>'));
-            html.append($('<td>' + value.name + '</td>'));
+            html.append($('<td><a href="/training/user/show/' + value.trainingUserId + '">' + value.name + '</a></td>'));
             html.append($('<td style="text-align: left;"><img id="usersAvatar" email="' + value.userEmail + '"/>' + value.userName + '</td>'));
 
-            html.append(getRating(value.rating, value.ratingVary));
-            html.append(getVolatility(value.volatility, value.volatilityVary));
-
-            html.append('<td>' + value.competitions + '</td>')
+            html.append($('<td>' + value.member + '</td>'));
             html.append($('<td>' + value.typeName + '</td>'));
             html.append(getAllowButton(value.trainingUserId, value.allow));
             tbody.append(html);

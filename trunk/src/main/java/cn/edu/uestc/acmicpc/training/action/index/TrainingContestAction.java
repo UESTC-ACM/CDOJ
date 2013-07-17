@@ -19,7 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package cn.edu.uestc.acmicpc.training.action.admin;
+package cn.edu.uestc.acmicpc.training.action.index;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TrainingContestCondition;
@@ -31,14 +31,17 @@ import cn.edu.uestc.acmicpc.db.view.impl.TrainingContestView;
 import cn.edu.uestc.acmicpc.ioc.condition.TrainingContestConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.TrainingContestDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dto.TrainingContestDTOAware;
+import cn.edu.uestc.acmicpc.ioc.util.TrainingRankListParserAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.oj.entity.ProblemSummaryInfo;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
+import cn.edu.uestc.acmicpc.training.entity.TrainingContestProblemSummaryView;
+import cn.edu.uestc.acmicpc.training.entity.TrainingContestRankList;
 import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.TrainingRankListParser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,27 +50,18 @@ import java.util.List;
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-@LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class TrainingContestAdminAction extends BaseAction implements TrainingContestConditionAware,
-        TrainingContestDAOAware, TrainingContestDTOAware {
-
-    public String toIndex() {
-        return SUCCESS;
-    }
+public class TrainingContestAction extends BaseAction implements TrainingContestConditionAware,
+        TrainingContestDAOAware, TrainingContestDTOAware, TrainingRankListParserAware {
 
     public String toSearchTrainingContest() {
         try {
             trainingContestCondition.setIsTitleEmpty(false);
-            Condition condition = trainingContestCondition.getCondition();
-            Long count = trainingContestDAO.count(trainingContestCondition.getCondition());
-            PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
-            condition.setCurrentPage(pageInfo.getCurrentPage());
-            condition.setCountPerPage(RECORD_PER_PAGE);
-            List<TrainingContest> trainingContestList = (List<TrainingContest>) trainingContestDAO.findAll(condition);
+            trainingContestCondition.setOrderFields("id");
+            trainingContestCondition.setOrderAsc("false");
+            List<TrainingContest> trainingContestList = (List<TrainingContest>) trainingContestDAO.findAll(trainingContestCondition.getCondition());
             List<TrainingContestListView> trainingContestListViewList = new LinkedList<>();
-            for (TrainingContest trainingContest: trainingContestList)
+            for (TrainingContest trainingContest : trainingContestList)
                 trainingContestListViewList.add(new TrainingContestListView(trainingContest));
-            json.put("pageInfo", pageInfo.getHtmlString());
             json.put("result", "ok");
             json.put("trainingContestList", trainingContestListViewList);
         } catch (AppException e) {
@@ -79,6 +73,37 @@ public class TrainingContestAdminAction extends BaseAction implements TrainingCo
             json.put("error_msg", "Unknown exception occurred.");
         }
         return JSON;
+    }
+
+    public String toTrainingContest() {
+        try {
+            if (targetTrainingContestId == null)
+                throw new AppException("No such training contest!");
+            TrainingContest trainingContest = trainingContestDAO.get(targetTrainingContestId);
+            if (trainingContest == null)
+                throw new AppException("No such training contest!");
+            targetTrainingContest = new TrainingContestView(trainingContest);
+            if (trainingContest.getTrainingStatusesByTrainingContestId().size() > 0) {
+                targetTrainingContestRankList = trainingRankListParser.parse(trainingContest);
+            }
+        } catch (AppException e) {
+            e.printStackTrace();
+            return redirect(getActionURL("/training/", "index"), e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return redirect(getActionURL("/training/", "index"), "Unknown exception occurred.");
+        }
+        return SUCCESS;
+    }
+
+    private TrainingContestRankList targetTrainingContestRankList;
+
+    public TrainingContestRankList getTargetTrainingContestRankList() {
+        return targetTrainingContestRankList;
+    }
+
+    public void setTargetTrainingContestRankList(TrainingContestRankList targetTrainingContestRankList) {
+        this.targetTrainingContestRankList = targetTrainingContestRankList;
     }
 
     private Integer targetTrainingContestId;
@@ -101,47 +126,6 @@ public class TrainingContestAdminAction extends BaseAction implements TrainingCo
         this.targetTrainingContest = targetTrainingContest;
     }
 
-    public String toContestEditor() {
-        try {
-            if (targetTrainingContestId == null) {
-                trainingContestCondition.clear();
-                trainingContestCondition.setIsTitleEmpty(true);
-                Condition condition = trainingContestCondition.getCondition();
-                Long count = trainingContestDAO.count(condition);
-
-                if (count == 0) {
-                    TrainingContest trainingContest = trainingContestDTO.getEntity();
-                    trainingContestDAO.add(trainingContest);
-                    targetTrainingContestId = trainingContest.getTrainingContestId();
-                } else {
-                    List<TrainingContest> result = (List<TrainingContest>) trainingContestDAO.findAll(trainingContestCondition.getCondition());
-                    if (result == null || result.size() == 0)
-                        throw new AppException("Add new contest error!");
-                    TrainingContest trainingContest = result.get(0);
-                    targetTrainingContestId = trainingContest.getTrainingContestId();
-                }
-
-                if (targetTrainingContestId == null)
-                    throw new AppException("Add new training contest error!");
-
-                return redirect(getActionURL("/training/admin", "contest/editor/" + targetTrainingContestId));
-            } else {
-                targetTrainingContest = new TrainingContestView(trainingContestDAO.get(targetTrainingContestId));
-                File targetFile = new File(getTrainingRankFileName());
-                if (targetFile.exists() && !targetFile.delete())
-                    throw new AppException("Internal exception: target file exists and can not be deleted.");
-                if (targetTrainingContest.getTrainingContestId() == null)
-                    throw new AppException("Wrong training contest ID!");
-            }
-        } catch (AppException e) {
-            return redirect(getActionURL("/training/admin", "index"), e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return redirect(getActionURL("/training/admin", "index"), "Unknown exception occurred.");
-        }
-        return SUCCESS;
-    }
-
     private String getTrainingRankFileName() {
         return settings.SETTING_UPLOAD_FOLDER + "/training_contest_" + targetTrainingContestId + ".xls";
     }
@@ -161,6 +145,7 @@ public class TrainingContestAdminAction extends BaseAction implements TrainingCo
 
     @Autowired
     private ITrainingContestDAO trainingContestDAO;
+
     @Override
     public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
         this.trainingContestDAO = trainingContestDAO;
@@ -168,6 +153,7 @@ public class TrainingContestAdminAction extends BaseAction implements TrainingCo
 
     @Autowired
     private TrainingContestDTO trainingContestDTO;
+
     @Override
     public void setTrainingContestDTO(TrainingContestDTO trainingContestDTO) {
         this.trainingContestDTO = trainingContestDTO;
@@ -176,5 +162,13 @@ public class TrainingContestAdminAction extends BaseAction implements TrainingCo
     @Override
     public TrainingContestDTO getTrainingContestDTO() {
         return trainingContestDTO;
+    }
+
+    @Autowired
+    private TrainingRankListParser trainingRankListParser;
+
+    @Override
+    public void setTrainingRankListParserAware(TrainingRankListParser trainingRankListParser) {
+        this.trainingRankListParser = trainingRankListParser;
     }
 }

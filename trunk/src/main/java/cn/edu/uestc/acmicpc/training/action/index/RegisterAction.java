@@ -53,7 +53,7 @@ public class RegisterAction extends BaseAction implements TrainingUserDAOAware, 
                             fieldName = "trainingUserDTO.name",
                             key = "error.trainingUserName.validation",
                             minLength = "2",
-                            maxLength = "14",
+                            maxLength = "24",
                             trim = false
                     )
             }

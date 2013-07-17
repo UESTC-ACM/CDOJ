@@ -407,6 +407,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingContest` (
   `isPersonal` TINYINT(1) NOT NULL ,
   `title` VARCHAR(150) NOT NULL DEFAULT '' ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
+  `type` VARCHAR(45) NOT NULL DEFAULT 0 ,
   PRIMARY KEY (`trainingContestId`) ,
   UNIQUE INDEX `traningContestId_UNIQUE` (`trainingContestId` ASC) )
 ENGINE = InnoDB;
@@ -427,6 +428,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingUser` (
   `ratingVary` DOUBLE NULL ,
   `volatilityVary` DOUBLE NULL ,
   `competitions` INT NOT NULL ,
+  `member` VARCHAR(128) NOT NULL ,
   PRIMARY KEY (`trainingUserId`) ,
   UNIQUE INDEX `trainingUserId_UNIQUE` (`trainingUserId` ASC) ,
   INDEX `FK_trainingUser_userId_on_user_idx` (`userId` ASC) ,
