@@ -6,4 +6,7 @@
 /target
 /trunk.iml
 *.log
+.project
+.settings
+.classpath
 

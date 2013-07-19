@@ -40,6 +40,7 @@ public class EMailTest implements EMailSenderAware {
 	private EMailSender sender;
 
 	@Test
+	@Ignore
 	public void testEmailSending() {
 		sender.send("lyhypacm@gmail.com", "title", "content");
 	}
