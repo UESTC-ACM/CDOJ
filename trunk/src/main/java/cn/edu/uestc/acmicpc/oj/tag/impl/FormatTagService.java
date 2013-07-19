@@ -34,29 +34,29 @@ import java.io.Writer;
  */
 class FormatTagService extends TagService {
 
-	/**
-	 * String need to replace
-	 */
-	private String value;
+  /**
+   * String need to replace
+   */
+  private String value;
 
-	public FormatTagService(ValueStack valueStack) {
-		super(valueStack);
-	}
+  public FormatTagService(ValueStack valueStack) {
+    super(valueStack);
+  }
 
-	@Override
-	public boolean start(Writer writer) {
-		try {
-			writer.write(value.replace("\n", "<br/>"));
-		} catch (Exception e) {
-		}
-		return super.start(writer);
-	}
+  @Override
+  public boolean start(Writer writer) {
+    try {
+      writer.write(value.replace("\n", "<br/>"));
+    } catch (Exception e) {
+    }
+    return super.start(writer);
+  }
 
-	public String getValue() {
-		return value;
-	}
+  public String getValue() {
+    return value;
+  }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+  public void setValue(String value) {
+    this.value = value;
+  }
 }

@@ -37,78 +37,79 @@ import java.util.Collection;
 @Entity
 @KeyField("compileInfoId")
 public class CompileInfo implements Serializable {
-	private static final long serialVersionUID = 1404496264299518630L;
-	private Integer compileInfoId;
 
-	private Integer version;
+  private static final long serialVersionUID = 1404496264299518630L;
+  private Integer compileInfoId;
 
-	@Version
-	@Column(name = "OPTLOCK")
-	public Integer getVersion() {
-		return version;
-	}
+  private Integer version;
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+  @Version
+  @Column(name = "OPTLOCK")
+  public Integer getVersion() {
+    return version;
+  }
 
-	@Column(name = "compileInfoId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
-	@Id
-	@GeneratedValue
-	public Integer getCompileInfoId() {
-		return compileInfoId;
-	}
+  public void setVersion(Integer version) {
+    this.version = version;
+  }
 
-	public void setCompileInfoId(Integer compileInfoId) {
-		this.compileInfoId = compileInfoId;
-	}
+  @Column(name = "compileInfoId", nullable = false, insertable = true, updatable = true,
+      length = 10, precision = 0, unique = true)
+  @Id
+  @GeneratedValue
+  public Integer getCompileInfoId() {
+    return compileInfoId;
+  }
 
-	private String content;
+  public void setCompileInfoId(Integer compileInfoId) {
+    this.compileInfoId = compileInfoId;
+  }
 
-	@Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
-	@Basic
-	public String getContent() {
-		return content;
-	}
+  private String content;
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+  @Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535,
+      precision = 0)
+  @Basic
+  public String getContent() {
+    return content;
+  }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+  public void setContent(String content) {
+    this.content = content;
+  }
 
-		CompileInfo that = (CompileInfo) o;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
 
-		if (!compileInfoId.equals(that.compileInfoId))
-			return false;
-		if (content != null ? !content.equals(that.content)
-				: that.content != null)
-			return false;
+    CompileInfo that = (CompileInfo) o;
 
-		return true;
-	}
+    if (!compileInfoId.equals(that.compileInfoId))
+      return false;
+    if (content != null ? !content.equals(that.content) : that.content != null)
+      return false;
 
-	@Override
-	public int hashCode() {
-		int result = compileInfoId;
-		result = 31 * result + (content != null ? content.hashCode() : 0);
-		return result;
-	}
+    return true;
+  }
 
-	private Collection<Status> statusesByCompileInfoId;
+  @Override
+  public int hashCode() {
+    int result = compileInfoId;
+    result = 31 * result + (content != null ? content.hashCode() : 0);
+    return result;
+  }
 
-	@OneToMany(mappedBy = "compileInfoByCompileInfoId")
-	public Collection<Status> getStatusesByCompileInfoId() {
-		return statusesByCompileInfoId;
-	}
+  private Collection<Status> statusesByCompileInfoId;
 
-	public void setStatusesByCompileInfoId(
-			Collection<Status> statusesByCompileInfoId) {
-		this.statusesByCompileInfoId = statusesByCompileInfoId;
-	}
+  @OneToMany(mappedBy = "compileInfoByCompileInfoId")
+  public Collection<Status> getStatusesByCompileInfoId() {
+    return statusesByCompileInfoId;
+  }
+
+  public void setStatusesByCompileInfoId(Collection<Status> statusesByCompileInfoId) {
+    this.statusesByCompileInfoId = statusesByCompileInfoId;
+  }
 }

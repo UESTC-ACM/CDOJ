@@ -38,296 +38,299 @@ import java.util.Collection;
 @Entity
 @KeyField("userId")
 public class User implements Serializable {
-	private static final long serialVersionUID = -1942419166710527006L;
-	private Integer userId;
 
-	private Integer version;
+  private static final long serialVersionUID = -1942419166710527006L;
+  private Integer userId;
 
-	@Version
-	@Column(name = "OPTLOCK")
-	public Integer getVersion() {
-		return version;
-	}
+  private Integer version;
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+  @Version
+  @Column(name = "OPTLOCK")
+  public Integer getVersion() {
+    return version;
+  }
 
-	@Column(name = "userId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
-	@Id
-	@GeneratedValue
-	public Integer getUserId() {
-		return userId;
-	}
+  public void setVersion(Integer version) {
+    this.version = version;
+  }
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+  @Column(name = "userId", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0, unique = true)
+  @Id
+  @GeneratedValue
+  public Integer getUserId() {
+    return userId;
+  }
 
-	private String userName;
+  public void setUserId(Integer userId) {
+    this.userId = userId;
+  }
 
-	@Column(name = "userName", nullable = false, insertable = true, updatable = true, length = 24, precision = 0, unique = true)
-	@Basic
-	public String getUserName() {
-		return userName;
-	}
+  private String userName;
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+  @Column(name = "userName", nullable = false, insertable = true, updatable = true, length = 24,
+      precision = 0, unique = true)
+  @Basic
+  public String getUserName() {
+    return userName;
+  }
 
-	private String studentId;
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
 
-	@Column(name = "studentId", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
-	@Basic
-	public String getStudentId() {
-		return studentId;
-	}
+  private String studentId;
 
-	public void setStudentId(String studentId) {
-		this.studentId = studentId;
-	}
+  @Column(name = "studentId", nullable = false, insertable = true, updatable = true, length = 50,
+      precision = 0)
+  @Basic
+  public String getStudentId() {
+    return studentId;
+  }
 
-	private String password;
+  public void setStudentId(String studentId) {
+    this.studentId = studentId;
+  }
 
-	@Column(name = "password", nullable = false, insertable = true, updatable = true, length = 40, precision = 0)
-	@Basic
-	public String getPassword() {
-		return password;
-	}
+  private String password;
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+  @Column(name = "password", nullable = false, insertable = true, updatable = true, length = 40,
+      precision = 0)
+  @Basic
+  public String getPassword() {
+    return password;
+  }
 
-	private String school;
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-	@Column(name = "school", nullable = false, insertable = true, updatable = true, length = 100, precision = 0)
-	@Basic
-	public String getSchool() {
-		return school;
-	}
+  private String school;
 
-	public void setSchool(String school) {
-		this.school = school;
-	}
+  @Column(name = "school", nullable = false, insertable = true, updatable = true, length = 100,
+      precision = 0)
+  @Basic
+  public String getSchool() {
+    return school;
+  }
 
-	private String nickName;
+  public void setSchool(String school) {
+    this.school = school;
+  }
 
-	@Column(name = "nickName", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
-	@Basic
-	public String getNickName() {
-		return nickName;
-	}
+  private String nickName;
 
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
+  @Column(name = "nickName", nullable = false, insertable = true, updatable = true, length = 50,
+      precision = 0)
+  @Basic
+  public String getNickName() {
+    return nickName;
+  }
 
-	private String email;
+  public void setNickName(String nickName) {
+    this.nickName = nickName;
+  }
 
-	@Column(name = "email", nullable = false, insertable = true, updatable = true, length = 100, precision = 0, unique = true)
-	@Basic
-	public String getEmail() {
-		return email;
-	}
+  private String email;
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+  @Column(name = "email", nullable = false, insertable = true, updatable = true, length = 100,
+      precision = 0, unique = true)
+  @Basic
+  public String getEmail() {
+    return email;
+  }
 
-	private Integer solved;
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-	@Override
-	public String toString() {
-		return "User{" + "userId=" + userId + ", userName='" + userName + '\''
-				+ ", studentId='" + studentId + '\'' + ", password='"
-				+ password + '\'' + ", school='" + school + '\''
-				+ ", nickName='" + nickName + '\'' + ", email='" + email + '\''
-				+ ", solved=" + solved + ", tried=" + tried + ", type=" + type
-				+ ", lastLogin=" + lastLogin + '}';
-	}
+  private Integer solved;
 
-	@Column(name = "solved", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
-	@Basic
-	public Integer getSolved() {
-		return solved;
-	}
+  @Override
+  public String toString() {
+    return "User{" + "userId=" + userId + ", userName='" + userName + '\'' + ", studentId='"
+        + studentId + '\'' + ", password='" + password + '\'' + ", school='" + school + '\''
+        + ", nickName='" + nickName + '\'' + ", email='" + email + '\'' + ", solved=" + solved
+        + ", tried=" + tried + ", type=" + type + ", lastLogin=" + lastLogin + '}';
+  }
 
-	public void setSolved(Integer solved) {
-		this.solved = solved;
-	}
+  @Column(name = "solved", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  @Basic
+  public Integer getSolved() {
+    return solved;
+  }
 
-	private Integer tried;
+  public void setSolved(Integer solved) {
+    this.solved = solved;
+  }
 
-	@Column(name = "tried", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
-	@Basic
-	public Integer getTried() {
-		return tried;
-	}
+  private Integer tried;
 
-	public void setTried(Integer tried) {
-		this.tried = tried;
-	}
+  @Column(name = "tried", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  @Basic
+  public Integer getTried() {
+    return tried;
+  }
 
-	private Integer type;
+  public void setTried(Integer tried) {
+    this.tried = tried;
+  }
 
-	@Column(name = "type", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
-	@Basic
-	public Integer getType() {
-		return type;
-	}
+  private Integer type;
 
-	public void setType(Integer type) {
-		this.type = type;
-	}
+  @Column(name = "type", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  @Basic
+  public Integer getType() {
+    return type;
+  }
 
-	private Timestamp lastLogin;
+  public void setType(Integer type) {
+    this.type = type;
+  }
 
-	@Column(name = "lastLogin", nullable = false, insertable = true, updatable = true, length = 19, precision = 0)
-	@Basic
-	public Timestamp getLastLogin() {
-		return lastLogin;
-	}
+  private Timestamp lastLogin;
 
-	public void setLastLogin(Timestamp lastLogin) {
-		this.lastLogin = lastLogin;
-	}
+  @Column(name = "lastLogin", nullable = false, insertable = true, updatable = true, length = 19,
+      precision = 0)
+  @Basic
+  public Timestamp getLastLogin() {
+    return lastLogin;
+  }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+  public void setLastLogin(Timestamp lastLogin) {
+    this.lastLogin = lastLogin;
+  }
 
-		User user = (User) o;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
 
-		if (!solved.equals(user.solved))
-			return false;
-		if (!tried.equals(user.tried))
-			return false;
-		if (!type.equals(user.type))
-			return false;
-		if (!userId.equals(user.userId))
-			return false;
-		if (email != null ? !email.equals(user.email) : user.email != null)
-			return false;
-		if (lastLogin != null ? !lastLogin.equals(user.lastLogin)
-				: user.lastLogin != null)
-			return false;
-		if (nickName != null ? !nickName.equals(user.nickName)
-				: user.nickName != null)
-			return false;
-		if (password != null ? !password.equals(user.password)
-				: user.password != null)
-			return false;
-		if (school != null ? !school.equals(user.school) : user.school != null)
-			return false;
-		if (studentId != null ? !studentId.equals(user.studentId)
-				: user.studentId != null)
-			return false;
-		if (!(userName != null ? !userName.equals(user.userName)
-				: user.userName != null))
-			return true;
-		else
-			return false;
+    User user = (User) o;
 
-	}
+    if (!solved.equals(user.solved))
+      return false;
+    if (!tried.equals(user.tried))
+      return false;
+    if (!type.equals(user.type))
+      return false;
+    if (!userId.equals(user.userId))
+      return false;
+    if (email != null ? !email.equals(user.email) : user.email != null)
+      return false;
+    if (lastLogin != null ? !lastLogin.equals(user.lastLogin) : user.lastLogin != null)
+      return false;
+    if (nickName != null ? !nickName.equals(user.nickName) : user.nickName != null)
+      return false;
+    if (password != null ? !password.equals(user.password) : user.password != null)
+      return false;
+    if (school != null ? !school.equals(user.school) : user.school != null)
+      return false;
+    if (studentId != null ? !studentId.equals(user.studentId) : user.studentId != null)
+      return false;
+    if (!(userName != null ? !userName.equals(user.userName) : user.userName != null))
+      return true;
+    else
+      return false;
 
-	@Override
-	public int hashCode() {
-		int result = userId;
-		result = 31 * result + (userName != null ? userName.hashCode() : 0);
-		result = 31 * result + (studentId != null ? studentId.hashCode() : 0);
-		result = 31 * result + (password != null ? password.hashCode() : 0);
-		result = 31 * result + (school != null ? school.hashCode() : 0);
-		result = 31 * result + (nickName != null ? nickName.hashCode() : 0);
-		result = 31 * result + (email != null ? email.hashCode() : 0);
-		result = 31 * result + solved;
-		result = 31 * result + tried;
-		result = 31 * result + type;
-		result = 31 * result + (lastLogin != null ? lastLogin.hashCode() : 0);
-		return result;
-	}
+  }
 
-	private Collection<ContestUser> contestUsersByUserId;
+  @Override
+  public int hashCode() {
+    int result = userId;
+    result = 31 * result + (userName != null ? userName.hashCode() : 0);
+    result = 31 * result + (studentId != null ? studentId.hashCode() : 0);
+    result = 31 * result + (password != null ? password.hashCode() : 0);
+    result = 31 * result + (school != null ? school.hashCode() : 0);
+    result = 31 * result + (nickName != null ? nickName.hashCode() : 0);
+    result = 31 * result + (email != null ? email.hashCode() : 0);
+    result = 31 * result + solved;
+    result = 31 * result + tried;
+    result = 31 * result + type;
+    result = 31 * result + (lastLogin != null ? lastLogin.hashCode() : 0);
+    return result;
+  }
 
-	@OneToMany(mappedBy = "userByUserId")
-	public Collection<ContestUser> getContestUsersByUserId() {
-		return contestUsersByUserId;
-	}
+  private Collection<ContestUser> contestUsersByUserId;
 
-	public void setContestUsersByUserId(
-			Collection<ContestUser> contestUsersByUserId) {
-		this.contestUsersByUserId = contestUsersByUserId;
-	}
+  @OneToMany(mappedBy = "userByUserId")
+  public Collection<ContestUser> getContestUsersByUserId() {
+    return contestUsersByUserId;
+  }
 
-	private Collection<Message> messagesByUserId;
+  public void setContestUsersByUserId(Collection<ContestUser> contestUsersByUserId) {
+    this.contestUsersByUserId = contestUsersByUserId;
+  }
 
-	@OneToMany(mappedBy = "userByReceiverId")
-	public Collection<Message> getMessagesByUserId() {
-		return messagesByUserId;
-	}
+  private Collection<Message> messagesByUserId;
 
-	public void setMessagesByUserId(Collection<Message> messagesByUserId) {
-		this.messagesByUserId = messagesByUserId;
-	}
+  @OneToMany(mappedBy = "userByReceiverId")
+  public Collection<Message> getMessagesByUserId() {
+    return messagesByUserId;
+  }
 
-	private Collection<Message> messagesByUserId_0;
+  public void setMessagesByUserId(Collection<Message> messagesByUserId) {
+    this.messagesByUserId = messagesByUserId;
+  }
 
-	@OneToMany(mappedBy = "userBySenderId")
-	public Collection<Message> getMessagesByUserId_0() {
-		return messagesByUserId_0;
-	}
+  private Collection<Message> messagesByUserId_0;
 
-	public void setMessagesByUserId_0(Collection<Message> messagesByUserId_0) {
-		this.messagesByUserId_0 = messagesByUserId_0;
-	}
+  @OneToMany(mappedBy = "userBySenderId")
+  public Collection<Message> getMessagesByUserId_0() {
+    return messagesByUserId_0;
+  }
 
-	private Collection<Status> statusesByUserId;
+  public void setMessagesByUserId_0(Collection<Message> messagesByUserId_0) {
+    this.messagesByUserId_0 = messagesByUserId_0;
+  }
 
-	@OneToMany(mappedBy = "userByUserId")
-	public Collection<Status> getStatusesByUserId() {
-		return statusesByUserId;
-	}
+  private Collection<Status> statusesByUserId;
 
-	public void setStatusesByUserId(Collection<Status> statusesByUserId) {
-		this.statusesByUserId = statusesByUserId;
-	}
+  @OneToMany(mappedBy = "userByUserId")
+  public Collection<Status> getStatusesByUserId() {
+    return statusesByUserId;
+  }
 
-	private Collection<UserSerialKey> userSerialKeysByUserId;
+  public void setStatusesByUserId(Collection<Status> statusesByUserId) {
+    this.statusesByUserId = statusesByUserId;
+  }
 
-	@OneToMany(mappedBy = "userByUserId")
-	public Collection<UserSerialKey> getUserSerialKeysByUserId() {
-		return userSerialKeysByUserId;
-	}
+  private Collection<UserSerialKey> userSerialKeysByUserId;
 
-	public void setUserSerialKeysByUserId(
-			Collection<UserSerialKey> userSerialKeysByUserId) {
-		this.userSerialKeysByUserId = userSerialKeysByUserId;
-	}
+  @OneToMany(mappedBy = "userByUserId")
+  public Collection<UserSerialKey> getUserSerialKeysByUserId() {
+    return userSerialKeysByUserId;
+  }
 
-	private Department departmentByDepartmentId;
+  public void setUserSerialKeysByUserId(Collection<UserSerialKey> userSerialKeysByUserId) {
+    this.userSerialKeysByUserId = userSerialKeysByUserId;
+  }
 
-	@ManyToOne
-	@JoinColumn(name = "departmentId", referencedColumnName = "departmentId", nullable = false)
-	public Department getDepartmentByDepartmentId() {
-		return departmentByDepartmentId;
-	}
+  private Department departmentByDepartmentId;
 
-	public void setDepartmentByDepartmentId(Department departmentByDepartmentId) {
-		this.departmentByDepartmentId = departmentByDepartmentId;
-	}
+  @ManyToOne
+  @JoinColumn(name = "departmentId", referencedColumnName = "departmentId", nullable = false)
+  public Department getDepartmentByDepartmentId() {
+    return departmentByDepartmentId;
+  }
 
-	private Collection<Article> articlesByUserId;
+  public void setDepartmentByDepartmentId(Department departmentByDepartmentId) {
+    this.departmentByDepartmentId = departmentByDepartmentId;
+  }
 
-	@OneToMany(mappedBy = "userByUserId")
-	public Collection<Article> getArticlesByUserId() {
-		return articlesByUserId;
-	}
+  private Collection<Article> articlesByUserId;
 
-	public void setArticlesByUserId(Collection<Article> articlesByUserId) {
-		this.articlesByUserId = articlesByUserId;
-	}
+  @OneToMany(mappedBy = "userByUserId")
+  public Collection<Article> getArticlesByUserId() {
+    return articlesByUserId;
+  }
+
+  public void setArticlesByUserId(Collection<Article> articlesByUserId) {
+    this.articlesByUserId = articlesByUserId;
+  }
 }

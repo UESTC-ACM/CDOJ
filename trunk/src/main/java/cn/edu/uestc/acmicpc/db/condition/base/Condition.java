@@ -35,174 +35,166 @@ import java.util.Map;
  * <p/>
  * <strong>For Developers</strong>:
  * <p/>
- * {@code currentPage} and {@code countPerPage} can be {@code null}, if the
- * fields is {@code null} we ignore this restriction, otherwise we consider the
- * record range by this two fields.
+ * {@code currentPage} and {@code countPerPage} can be {@code null}, if the fields is {@code null}
+ * we ignore this restriction, otherwise we consider the record range by this two fields.
  * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class Condition {
-	/**
-	 * Current page number.
-	 */
-	private Long currentPage;
-	/**
-	 * Number of records per page.
-	 */
-	private Long countPerPage;
-	/**
-	 * Extra criterion list.
-	 */
-	private List<Criterion> criterionList;
 
-	private Map<String, JoinedProperty> joinedProperties;
+  /**
+   * Current page number.
+   */
+  private Long currentPage;
+  /**
+   * Number of records per page.
+   */
+  private Long countPerPage;
+  /**
+   * Extra criterion list.
+   */
+  private List<Criterion> criterionList;
 
-	public Map<String, JoinedProperty> getJoinedProperties() {
-		if (joinedProperties == null)
-			joinedProperties = new HashMap<>();
-		return joinedProperties;
-	}
+  private Map<String, JoinedProperty> joinedProperties;
 
-	public void setJoinedProperties(Map<String, JoinedProperty> joinedProperties) {
-		this.joinedProperties = joinedProperties;
-	}
+  public Map<String, JoinedProperty> getJoinedProperties() {
+    if (joinedProperties == null)
+      joinedProperties = new HashMap<>();
+    return joinedProperties;
+  }
 
-	/**
-	 * Order fields.
-	 */
-	public List<Order> orders;
-	/**
-	 * Select projections.
-	 */
-	public List<Projection> projections;
+  public void setJoinedProperties(Map<String, JoinedProperty> joinedProperties) {
+    this.joinedProperties = joinedProperties;
+  }
 
-	public Long getCurrentPage() {
-		return currentPage;
-	}
+  /**
+   * Order fields.
+   */
+  public List<Order> orders;
+  /**
+   * Select projections.
+   */
+  public List<Projection> projections;
 
-	public void setCurrentPage(Long currentPage) {
-		this.currentPage = currentPage;
-	}
+  public Long getCurrentPage() {
+    return currentPage;
+  }
 
-	public Long getCountPerPage() {
-		return countPerPage;
-	}
+  public void setCurrentPage(Long currentPage) {
+    this.currentPage = currentPage;
+  }
 
-	public void setCountPerPage(Long countPerPage) {
-		this.countPerPage = countPerPage;
-	}
+  public Long getCountPerPage() {
+    return countPerPage;
+  }
 
-	public List<Criterion> getCriterionList() {
-		if (criterionList == null)
-			criterionList = new LinkedList<>();
-		return criterionList;
-	}
+  public void setCountPerPage(Long countPerPage) {
+    this.countPerPage = countPerPage;
+  }
 
-	public void setCriterionList(List<Criterion> criterionList) {
-		this.criterionList = criterionList;
-	}
+  public List<Criterion> getCriterionList() {
+    if (criterionList == null)
+      criterionList = new LinkedList<>();
+    return criterionList;
+  }
 
-	public List<Order> getOrders() {
-		if (orders == null)
-			orders = new LinkedList<>();
-		return orders;
-	}
+  public void setCriterionList(List<Criterion> criterionList) {
+    this.criterionList = criterionList;
+  }
 
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
-	}
+  public List<Order> getOrders() {
+    if (orders == null)
+      orders = new LinkedList<>();
+    return orders;
+  }
 
-	public List<Projection> getProjections() {
-		if (projections == null)
-			projections = new LinkedList<>();
-		return projections;
-	}
+  public void setOrders(List<Order> orders) {
+    this.orders = orders;
+  }
 
-	public void setProjections(List<Projection> projections) {
-		this.projections = projections;
-	}
+  public List<Projection> getProjections() {
+    if (projections == null)
+      projections = new LinkedList<>();
+    return projections;
+  }
 
-	/**
-	 * Default constructor.
-	 */
-	public Condition() {
-	}
+  public void setProjections(List<Projection> projections) {
+    this.projections = projections;
+  }
 
-	/**
-	 * Constructor for currentPage, countPerPage and single order field.
-	 * 
-	 * @param currentPage
-	 *            current page number
-	 * @param countPerPage
-	 *            number of records per page
-	 * @param field
-	 *            order field name
-	 * @param asc
-	 *            whether the order field is asc or not
-	 */
-	public Condition(Long currentPage, Long countPerPage, String field,
-			Boolean asc) {
-		this.currentPage = currentPage;
-		this.countPerPage = countPerPage;
-		if (field != null && asc != null)
-			addOrder(field, asc);
+  /**
+   * Default constructor.
+   */
+  public Condition() {
+  }
 
-	}
+  /**
+   * Constructor for currentPage, countPerPage and single order field.
+   * 
+   * @param currentPage current page number
+   * @param countPerPage number of records per page
+   * @param field order field name
+   * @param asc whether the order field is asc or not
+   */
+  public Condition(Long currentPage, Long countPerPage, String field, Boolean asc) {
+    this.currentPage = currentPage;
+    this.countPerPage = countPerPage;
+    if (field != null && asc != null)
+      addOrder(field, asc);
 
-	/**
-	 * Add new order field into the order list.
-	 * 
-	 * @param field
-	 *            new order field name
-	 * @param asc
-	 *            whether new order field asc or not
-	 */
-	public void addOrder(String field, boolean asc) {
-		getOrders().add(new Order(field, asc));
-	}
+  }
 
-	/**
-	 * Add new projection into the projection list.
-	 * 
-	 * @param projection
-	 *            new projection object
-	 */
-	public void addProjection(Projection projection) {
-		getProjections().add(projection);
-	}
+  /**
+   * Add new order field into the order list.
+   * 
+   * @param field new order field name
+   * @param asc whether new order field asc or not
+   */
+  public void addOrder(String field, boolean asc) {
+    getOrders().add(new Order(field, asc));
+  }
 
-	/**
-	 * Add new criterion into the criterion list.
-	 * 
-	 * @param criterion
-	 *            new criterion object
-	 */
-	public void addCriterion(Criterion criterion) {
-		getCriterionList().add(criterion);
-	}
+  /**
+   * Add new projection into the projection list.
+   * 
+   * @param projection new projection object
+   */
+  public void addProjection(Projection projection) {
+    getProjections().add(projection);
+  }
 
-	/**
-	 * Order conditions.
-	 * 
-	 * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
-	 */
-	public class Order {
-		public Order(String field, boolean asc) {
-			this.field = field;
-			this.asc = asc;
-		}
+  /**
+   * Add new criterion into the criterion list.
+   * 
+   * @param criterion new criterion object
+   */
+  public void addCriterion(Criterion criterion) {
+    getCriterionList().add(criterion);
+  }
 
-		/**
-		 * Order field name.
-		 */
-		public final String field;
-		/**
-		 * Whether order field asc or not.
-		 */
-		public final boolean asc;
-	}
+  /**
+   * Order conditions.
+   * 
+   * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+   */
+  public class Order {
 
-	public void addJoinedProperty(String key, JoinedProperty value) {
-		getJoinedProperties().put(key, value);
-	}
+    public Order(String field, boolean asc) {
+      this.field = field;
+      this.asc = asc;
+    }
+
+    /**
+     * Order field name.
+     */
+    public final String field;
+    /**
+     * Whether order field asc or not.
+     */
+    public final boolean asc;
+  }
+
+  public void addJoinedProperty(String key, JoinedProperty value) {
+    getJoinedProperties().put(key, value);
+  }
 }

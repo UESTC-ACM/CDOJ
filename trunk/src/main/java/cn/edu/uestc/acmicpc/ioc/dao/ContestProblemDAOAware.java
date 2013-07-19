@@ -29,11 +29,11 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IContestProblemDAO;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public interface ContestProblemDAOAware {
-	/**
-	 * put contestProblemDAO into class
-	 * 
-	 * @param contestProblemDAO
-	 *            specific contest DAO entity
-	 */
-	public void setContestProblemDAO(IContestProblemDAO contestProblemDAO);
+
+  /**
+   * put contestProblemDAO into class
+   * 
+   * @param contestProblemDAO specific contest DAO entity
+   */
+  public void setContestProblemDAO(IContestProblemDAO contestProblemDAO);
 }

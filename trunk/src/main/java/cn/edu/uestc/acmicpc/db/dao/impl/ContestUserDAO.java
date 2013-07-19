@@ -31,15 +31,15 @@ import cn.edu.uestc.acmicpc.db.entity.ContestUser;
  * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public class ContestUserDAO extends DAO<ContestUser, Integer> implements
-		IContestUserDAO {
-	@Override
-	protected Class<Integer> getPKClass() {
-		return Integer.class;
-	}
+public class ContestUserDAO extends DAO<ContestUser, Integer> implements IContestUserDAO {
 
-	@Override
-	protected Class<ContestUser> getReferenceClass() {
-		return ContestUser.class;
-	}
+  @Override
+  protected Class<Integer> getPKClass() {
+    return Integer.class;
+  }
+
+  @Override
+  protected Class<ContestUser> getReferenceClass() {
+    return ContestUser.class;
+  }
 }

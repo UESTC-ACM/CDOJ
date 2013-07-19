@@ -31,15 +31,15 @@ import cn.edu.uestc.acmicpc.db.entity.Department;
  * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public class DepartmentDAO extends DAO<Department, Integer> implements
-		IDepartmentDAO {
-	@Override
-	protected Class<Integer> getPKClass() {
-		return Integer.class;
-	}
+public class DepartmentDAO extends DAO<Department, Integer> implements IDepartmentDAO {
 
-	@Override
-	protected Class<Department> getReferenceClass() {
-		return Department.class;
-	}
+  @Override
+  protected Class<Integer> getPKClass() {
+    return Integer.class;
+  }
+
+  @Override
+  protected Class<Department> getReferenceClass() {
+    return Department.class;
+  }
 }

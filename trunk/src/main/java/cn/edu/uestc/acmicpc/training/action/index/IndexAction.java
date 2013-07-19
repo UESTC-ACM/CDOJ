@@ -23,111 +23,104 @@ import java.util.*;
  */
 @LoginPermit(NeedLogin = false)
 public class IndexAction extends BaseAction implements TrainingUserDAOAware,
-		TrainingUserConditionAware {
+    TrainingUserConditionAware {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = 8112513177334421456L;
+  private static final long serialVersionUID = 8112513177334421456L;
 
-	public String toIndex() {
-		return SUCCESS;
-	}
+  public String toIndex() {
+    return SUCCESS;
+  }
 
-	private Integer userType;
+  private Integer userType;
 
-	public Integer getUserType() {
-		return userType;
-	}
+  public Integer getUserType() {
+    return userType;
+  }
 
-	public void setUserType(Integer userType) {
-		this.userType = userType;
-	}
+  public void setUserType(Integer userType) {
+    this.userType = userType;
+  }
 
-	@SuppressWarnings("unchecked")
-	public String toAllMemberHistory() {
-		try {
-			if (userType == null)
-				userType = 0;
-			trainingUserCondition.clear();
-			trainingUserCondition.setAllow(true);
-			trainingUserCondition.setType(userType);
-			trainingUserCondition.setOrderFields("rating,volatility,name");
-			trainingUserCondition.setOrderAsc("false,true,true");
-			List<TrainingUser> trainingUserList = (List<TrainingUser>) trainingUserDAO
-					.findAll(trainingUserCondition.getCondition());
+  @SuppressWarnings("unchecked")
+  public String toAllMemberHistory() {
+    try {
+      if (userType == null)
+        userType = 0;
+      trainingUserCondition.clear();
+      trainingUserCondition.setAllow(true);
+      trainingUserCondition.setType(userType);
+      trainingUserCondition.setOrderFields("rating,volatility,name");
+      trainingUserCondition.setOrderAsc("false,true,true");
+      List<TrainingUser> trainingUserList =
+          (List<TrainingUser>) trainingUserDAO.findAll(trainingUserCondition.getCondition());
 
-			List<List<TrainingStatusView>> teamHistory = new LinkedList<>();
-			List<TrainingUserView> trainingUserViewList = new LinkedList<>();
-			Integer rank = 0;
-			for (TrainingUser trainingUser : trainingUserList) {
-				List<TrainingStatus> trainingStatusList = (List<TrainingStatus>) trainingUser
-						.getTrainingStatusesByTrainingUserId();
-				Collections.sort(trainingStatusList,
-						new Comparator<TrainingStatus>() {
-							@Override
-							public int compare(TrainingStatus a,
-									TrainingStatus b) {
-								return a.getTrainingContestByTrainingContestId()
-										.getTrainingContestId()
-										.compareTo(
-												b.getTrainingContestByTrainingContestId()
-														.getTrainingContestId());
-							}
-						});
+      List<List<TrainingStatusView>> teamHistory = new LinkedList<>();
+      List<TrainingUserView> trainingUserViewList = new LinkedList<>();
+      Integer rank = 0;
+      for (TrainingUser trainingUser : trainingUserList) {
+        List<TrainingStatus> trainingStatusList =
+            (List<TrainingStatus>) trainingUser.getTrainingStatusesByTrainingUserId();
+        Collections.sort(trainingStatusList, new Comparator<TrainingStatus>() {
 
-				List<TrainingStatusView> trainingStatusViewList = new LinkedList<>();
-				TrainingStatusView trainingStatusViewEmpty = new TrainingStatusView();
-				trainingStatusViewEmpty.setName(trainingUser.getName());
-				trainingStatusViewList.add(trainingStatusViewEmpty);
-				for (TrainingStatus trainingStatus : trainingStatusList) {
-					TrainingStatusView trainingStatusView = new TrainingStatusView(
-							trainingStatus);
-					trainingStatusViewList.add(trainingStatusView);
-				}
+          @Override
+          public int compare(TrainingStatus a, TrainingStatus b) {
+            return a.getTrainingContestByTrainingContestId().getTrainingContestId()
+                .compareTo(b.getTrainingContestByTrainingContestId().getTrainingContestId());
+          }
+        });
 
-				teamHistory.add(trainingStatusViewList);
+        List<TrainingStatusView> trainingStatusViewList = new LinkedList<>();
+        TrainingStatusView trainingStatusViewEmpty = new TrainingStatusView();
+        trainingStatusViewEmpty.setName(trainingUser.getName());
+        trainingStatusViewList.add(trainingStatusViewEmpty);
+        for (TrainingStatus trainingStatus : trainingStatusList) {
+          TrainingStatusView trainingStatusView = new TrainingStatusView(trainingStatus);
+          trainingStatusViewList.add(trainingStatusView);
+        }
 
-				TrainingUserView trainingUserView = new TrainingUserView(
-						trainingUser);
-				rank++;
-				trainingUserView.setRank(rank);
-				trainingUserViewList.add(trainingUserView);
-			}
+        teamHistory.add(trainingStatusViewList);
 
-			json.put("result", "ok");
-			json.put("teamHistory", teamHistory);
-			json.put("teamSummary", trainingUserViewList);
-		} catch (AppException e) {
-			json.put("result", "error");
-			json.put("err_msg", e.getMessage());
-		} catch (Exception e) {
-			json.put("result", "error");
-			e.printStackTrace();
-			json.put("error_msg", "Unknown exception occurred.");
-		}
-		return JSON;
-	}
+        TrainingUserView trainingUserView = new TrainingUserView(trainingUser);
+        rank++;
+        trainingUserView.setRank(rank);
+        trainingUserViewList.add(trainingUserView);
+      }
 
-	@Autowired
-	private ITrainingUserDAO trainingUserDAO;
+      json.put("result", "ok");
+      json.put("teamHistory", teamHistory);
+      json.put("teamSummary", trainingUserViewList);
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("err_msg", e.getMessage());
+    } catch (Exception e) {
+      json.put("result", "error");
+      e.printStackTrace();
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return JSON;
+  }
 
-	@Override
-	public void setTrainingUserDAO(ITrainingUserDAO trainingUserDAO) {
-		this.trainingUserDAO = trainingUserDAO;
-	}
+  @Autowired
+  private ITrainingUserDAO trainingUserDAO;
 
-	@Autowired
-	private TrainingUserCondition trainingUserCondition;
+  @Override
+  public void setTrainingUserDAO(ITrainingUserDAO trainingUserDAO) {
+    this.trainingUserDAO = trainingUserDAO;
+  }
 
-	@Override
-	public void setTrainingUserCondition(
-			TrainingUserCondition trainingUserCondition) {
-		this.trainingUserCondition = trainingUserCondition;
-	}
+  @Autowired
+  private TrainingUserCondition trainingUserCondition;
 
-	@Override
-	public TrainingUserCondition getTrainingUserCondition() {
-		return trainingUserCondition;
-	}
+  @Override
+  public void setTrainingUserCondition(TrainingUserCondition trainingUserCondition) {
+    this.trainingUserCondition = trainingUserCondition;
+  }
+
+  @Override
+  public TrainingUserCondition getTrainingUserCondition() {
+    return trainingUserCondition;
+  }
 }

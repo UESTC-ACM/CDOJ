@@ -38,74 +38,72 @@ import java.util.List;
  */
 public class FileUploadAction extends BaseAction {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = 8954368803487410069L;
-	private List<File> uploadFile;
-	private List<String> uploadFileContentType;
-	private List<String> uploadFileFileName;
+  private static final long serialVersionUID = 8954368803487410069L;
+  private List<File> uploadFile;
+  private List<String> uploadFileContentType;
+  private List<String> uploadFileFileName;
 
-	private String savePath;
+  private String savePath;
 
-	protected List<File> getUploadFile() {
-		return uploadFile;
-	}
+  protected List<File> getUploadFile() {
+    return uploadFile;
+  }
 
-	public void setUploadFile(List<File> uploadFile) {
-		this.uploadFile = uploadFile;
-	}
+  public void setUploadFile(List<File> uploadFile) {
+    this.uploadFile = uploadFile;
+  }
 
-	public List<String> getUploadFileContentType() {
-		return uploadFileContentType;
-	}
+  public List<String> getUploadFileContentType() {
+    return uploadFileContentType;
+  }
 
-	public void setUploadFileContentType(List<String> uploadFileContentType) {
-		this.uploadFileContentType = uploadFileContentType;
-	}
+  public void setUploadFileContentType(List<String> uploadFileContentType) {
+    this.uploadFileContentType = uploadFileContentType;
+  }
 
-	protected List<String> getUploadFileFileName() {
-		return uploadFileFileName;
-	}
+  protected List<String> getUploadFileFileName() {
+    return uploadFileFileName;
+  }
 
-	public void setUploadFileFileName(List<String> uploadFileFileName) {
-		this.uploadFileFileName = uploadFileFileName;
-	}
+  public void setUploadFileFileName(List<String> uploadFileFileName) {
+    this.uploadFileFileName = uploadFileFileName;
+  }
 
-	protected String getSavePath() {
-		return savePath;
-	}
+  protected String getSavePath() {
+    return savePath;
+  }
 
-	protected void setSavePath(String savePath) {
-		this.savePath = savePath;
-	}
+  protected void setSavePath(String savePath) {
+    this.savePath = savePath;
+  }
 
-	/**
-	 * Upload files and return all uploaded files' absolute path.
-	 * <p/>
-	 * We should set ourselves' type filter for this upload action.
-	 */
-	protected String[] uploadFile() {
-		// TODO check type and size
-		File dir = new File(getSavePath());
-		if (!dir.exists()) {
-			dir.mkdirs();
-		}
-		List<File> files = getUploadFile();
-		String[] result = new String[files.size()];
-		for (int i = 0; i < files.size(); i++) {
-			try {
-				result[i] = getSavePath() + "/"
-						+ getUploadFileFileName().get(i);
-				FileUtil.saveToFile(
-						new FileInputStream(getUploadFile().get(i)),
-						new FileOutputStream(result[i]));
-			} catch (IOException e) {
-				// this file cannot be uploaded.
-				e.printStackTrace();
-				result[i] = null;
-			}
-		}
-		return result;
-	}
+  /**
+   * Upload files and return all uploaded files' absolute path.
+   * <p/>
+   * We should set ourselves' type filter for this upload action.
+   */
+  protected String[] uploadFile() {
+    // TODO check type and size
+    File dir = new File(getSavePath());
+    if (!dir.exists()) {
+      dir.mkdirs();
+    }
+    List<File> files = getUploadFile();
+    String[] result = new String[files.size()];
+    for (int i = 0; i < files.size(); i++) {
+      try {
+        result[i] = getSavePath() + "/" + getUploadFileFileName().get(i);
+        FileUtil.saveToFile(new FileInputStream(getUploadFile().get(i)), new FileOutputStream(
+            result[i]));
+      } catch (IOException e) {
+        // this file cannot be uploaded.
+        e.printStackTrace();
+        result[i] = null;
+      }
+    }
+    return result;
+  }
 }

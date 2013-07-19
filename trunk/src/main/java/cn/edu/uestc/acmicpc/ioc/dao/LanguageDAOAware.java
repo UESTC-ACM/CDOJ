@@ -31,11 +31,11 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
  * @see ILanguageDAO
  */
 public interface LanguageDAOAware {
-	/**
-	 * Put languageDAO into class.
-	 * 
-	 * @param languageDAO
-	 *            languageDAO object
-	 */
-	public void setLanguageDAO(ILanguageDAO languageDAO);
+
+  /**
+   * Put languageDAO into class.
+   * 
+   * @param languageDAO languageDAO object
+   */
+  public void setLanguageDAO(ILanguageDAO languageDAO);
 }

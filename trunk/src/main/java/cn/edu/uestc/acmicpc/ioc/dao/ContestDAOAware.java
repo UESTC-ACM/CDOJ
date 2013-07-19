@@ -30,11 +30,11 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
  * @see IContestDAO
  */
 public interface ContestDAOAware {
-	/**
-	 * put problemDAO into class
-	 * 
-	 * @param contestDAO
-	 *            specific contest DAO entity
-	 */
-	public void setContestDAO(IContestDAO contestDAO);
+
+  /**
+   * put problemDAO into class
+   * 
+   * @param contestDAO specific contest DAO entity
+   */
+  public void setContestDAO(IContestDAO contestDAO);
 }

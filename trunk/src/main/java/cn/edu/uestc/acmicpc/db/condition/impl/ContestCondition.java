@@ -37,138 +37,137 @@ import java.util.Calendar;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ContestCondition extends BaseCondition {
-	private Integer startId;
 
-	private Integer endId;
+  private Integer startId;
 
-	private String title;
+  private Integer endId;
 
-	private String description;
+  private String title;
 
-	private Byte type;
+  private String description;
 
-	private Boolean isTitleEmpty;
+  private Byte type;
 
-	public Boolean getIsTitleEmpty() {
-		return isTitleEmpty;
-	}
+  private Boolean isTitleEmpty;
 
-	public void setIsTitleEmpty(Boolean isTitleEmpty) {
-		this.isTitleEmpty = isTitleEmpty;
-	}
+  public Boolean getIsTitleEmpty() {
+    return isTitleEmpty;
+  }
 
-	@Exp(MapField = "contestId", Type = ConditionType.ge)
-	public Integer getStartId() {
-		return startId;
-	}
+  public void setIsTitleEmpty(Boolean isTitleEmpty) {
+    this.isTitleEmpty = isTitleEmpty;
+  }
 
-	public void setStartId(Integer startId) {
-		this.startId = startId;
-	}
+  @Exp(MapField = "contestId", Type = ConditionType.ge)
+  public Integer getStartId() {
+    return startId;
+  }
 
-	@Exp(MapField = "contestId", Type = ConditionType.le)
-	public Integer getEndId() {
-		return endId;
-	}
+  public void setStartId(Integer startId) {
+    this.startId = startId;
+  }
 
-	public void setEndId(Integer endId) {
-		this.endId = endId;
-	}
+  @Exp(MapField = "contestId", Type = ConditionType.le)
+  public Integer getEndId() {
+    return endId;
+  }
 
-	@Exp(Type = ConditionType.like)
-	public String getTitle() {
-		return title;
-	}
+  public void setEndId(Integer endId) {
+    this.endId = endId;
+  }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+  @Exp(Type = ConditionType.like)
+  public String getTitle() {
+    return title;
+  }
 
-	@Exp(Type = ConditionType.like)
-	public String getDescription() {
-		return description;
-	}
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+  @Exp(Type = ConditionType.like)
+  public String getDescription() {
+    return description;
+  }
 
-	@Exp(Type = ConditionType.eq)
-	public Byte getType() {
-		return type;
-	}
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-	public void setType(Byte type) {
-		this.type = type;
-	}
+  @Exp(Type = ConditionType.eq)
+  public Byte getType() {
+    return type;
+  }
 
-	@Exp(MapField = "time", Type = ConditionType.ge)
-	public Timestamp getStartTime() {
-		return startTime;
-	}
+  public void setType(Byte type) {
+    this.type = type;
+  }
 
-	public void setStartTime(Timestamp startTime) {
-		this.startTime = startTime;
-	}
+  @Exp(MapField = "time", Type = ConditionType.ge)
+  public Timestamp getStartTime() {
+    return startTime;
+  }
 
-	public Timestamp getEndTime() {
-		return endTime;
-	}
+  public void setStartTime(Timestamp startTime) {
+    this.startTime = startTime;
+  }
 
-	public void setEndTime(Timestamp endTime) {
-		this.endTime = endTime;
-	}
+  public Timestamp getEndTime() {
+    return endTime;
+  }
 
-	@Exp(Type = ConditionType.eq)
-	public Boolean getIsVisible() {
-		return isVisible;
-	}
+  public void setEndTime(Timestamp endTime) {
+    this.endTime = endTime;
+  }
 
-	public void setIsVisible(Boolean visible) {
-		isVisible = visible;
-	}
+  @Exp(Type = ConditionType.eq)
+  public Boolean getIsVisible() {
+    return isVisible;
+  }
 
-	private Timestamp startTime;
+  public void setIsVisible(Boolean visible) {
+    isVisible = visible;
+  }
 
-	private Timestamp endTime;
+  private Timestamp startTime;
 
-	private Boolean isVisible;
+  private Timestamp endTime;
 
-	/**
-	 * Keyword for {@code description}, {@code title}
-	 */
-	private String keyword;
+  private Boolean isVisible;
 
-	public String getKeyword() {
-		return keyword;
-	}
+  /**
+   * Keyword for {@code description}, {@code title}
+   */
+  private String keyword;
 
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
-	}
+  public String getKeyword() {
+    return keyword;
+  }
 
-	@Override
-	public void invoke(Condition condition) {
-		super.invoke(condition);
-		if (keyword != null) {
-			String[] fields = new String[] { "description", "title" };
-			Junction junction = Restrictions.disjunction();
-			for (String field : fields) {
-				junction.add(Restrictions.like(field,
-						String.format("%%%s%%", keyword)));
-			}
-			condition.addCriterion(junction);
-		}
-		if (endTime != null) {
-			condition.addCriterion(Restrictions.lt("time",
-					DateUtil.add(endTime, Calendar.DATE, 1)));
-		}
-		if (isTitleEmpty != null) {
-			if (isTitleEmpty) {
-				condition.addCriterion(Restrictions.like("title", ""));
-			} else {
-				condition.addCriterion(Restrictions.like("title", "_%"));
-			}
-		}
-	}
+  public void setKeyword(String keyword) {
+    this.keyword = keyword;
+  }
+
+  @Override
+  public void invoke(Condition condition) {
+    super.invoke(condition);
+    if (keyword != null) {
+      String[] fields = new String[] { "description", "title" };
+      Junction junction = Restrictions.disjunction();
+      for (String field : fields) {
+        junction.add(Restrictions.like(field, String.format("%%%s%%", keyword)));
+      }
+      condition.addCriterion(junction);
+    }
+    if (endTime != null) {
+      condition.addCriterion(Restrictions.lt("time", DateUtil.add(endTime, Calendar.DATE, 1)));
+    }
+    if (isTitleEmpty != null) {
+      if (isTitleEmpty) {
+        condition.addCriterion(Restrictions.like("title", ""));
+      } else {
+        condition.addCriterion(Restrictions.like("title", "_%"));
+      }
+    }
+  }
 }

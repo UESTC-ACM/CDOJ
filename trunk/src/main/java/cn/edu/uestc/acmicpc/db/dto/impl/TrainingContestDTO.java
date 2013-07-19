@@ -11,58 +11,57 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 public class TrainingContestDTO extends BaseDTO<TrainingContest> {
 
-	private Integer trainingContestId;
-	private Boolean isPersonal;
-	private String title;
-	private Integer type;
+  private Integer trainingContestId;
+  private Boolean isPersonal;
+  private String title;
+  private Integer type;
 
-	public Integer getType() {
-		return type;
-	}
+  public Integer getType() {
+    return type;
+  }
 
-	public void setType(Integer type) {
-		this.type = type;
-	}
+  public void setType(Integer type) {
+    this.type = type;
+  }
 
-	public Integer getTrainingContestId() {
-		return trainingContestId;
-	}
+  public Integer getTrainingContestId() {
+    return trainingContestId;
+  }
 
-	public void setTrainingContestId(Integer trainingContestId) {
-		this.trainingContestId = trainingContestId;
-	}
+  public void setTrainingContestId(Integer trainingContestId) {
+    this.trainingContestId = trainingContestId;
+  }
 
-	public Boolean getIsPersonal() {
-		return isPersonal;
-	}
+  public Boolean getIsPersonal() {
+    return isPersonal;
+  }
 
-	public void setIsPersonal(Boolean personal) {
-		isPersonal = personal;
-	}
+  public void setIsPersonal(Boolean personal) {
+    isPersonal = personal;
+  }
 
-	public String getTitle() {
-		return title;
-	}
+  public String getTitle() {
+    return title;
+  }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-	@Override
-	protected Class<TrainingContest> getReferenceClass() {
-		return TrainingContest.class;
-	}
+  @Override
+  protected Class<TrainingContest> getReferenceClass() {
+    return TrainingContest.class;
+  }
 
-	@Override
-	public TrainingContest getEntity() throws AppException {
-		TrainingContest trainingContest = super.getEntity();
-		trainingContest.setIsPersonal(true);
-		return trainingContest;
-	}
+  @Override
+  public TrainingContest getEntity() throws AppException {
+    TrainingContest trainingContest = super.getEntity();
+    trainingContest.setIsPersonal(true);
+    return trainingContest;
+  }
 
-	@Override
-	public void updateEntity(TrainingContest trainingContest)
-			throws AppException {
-		super.updateEntity(trainingContest);
-	}
+  @Override
+  public void updateEntity(TrainingContest trainingContest) throws AppException {
+    super.updateEntity(trainingContest);
+  }
 }

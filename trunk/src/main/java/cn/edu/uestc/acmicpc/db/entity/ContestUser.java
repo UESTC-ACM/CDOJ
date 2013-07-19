@@ -36,89 +36,92 @@ import java.io.Serializable;
 @Entity
 @KeyField("contestUserId")
 public class ContestUser implements Serializable {
-	private static final long serialVersionUID = -8408381521779421508L;
-	private Integer contestUserId;
 
-	private Integer version;
+  private static final long serialVersionUID = -8408381521779421508L;
+  private Integer contestUserId;
 
-	@Version
-	@Column(name = "OPTLOCK")
-	public Integer getVersion() {
-		return version;
-	}
+  private Integer version;
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+  @Version
+  @Column(name = "OPTLOCK")
+  public Integer getVersion() {
+    return version;
+  }
 
-	@Column(name = "contestUserId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
-	@Id
-	@GeneratedValue
-	public Integer getContestUserId() {
-		return contestUserId;
-	}
+  public void setVersion(Integer version) {
+    this.version = version;
+  }
 
-	public void setContestUserId(Integer contestUserId) {
-		this.contestUserId = contestUserId;
-	}
+  @Column(name = "contestUserId", nullable = false, insertable = true, updatable = true,
+      length = 10, precision = 0, unique = true)
+  @Id
+  @GeneratedValue
+  public Integer getContestUserId() {
+    return contestUserId;
+  }
 
-	private Byte status;
+  public void setContestUserId(Integer contestUserId) {
+    this.contestUserId = contestUserId;
+  }
 
-	@Column(name = "status", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
-	@Basic
-	public Byte getStatus() {
-		return status;
-	}
+  private Byte status;
 
-	public void setStatus(Byte status) {
-		this.status = status;
-	}
+  @Column(name = "status", nullable = false, insertable = true, updatable = true, length = 3,
+      precision = 0)
+  @Basic
+  public Byte getStatus() {
+    return status;
+  }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+  public void setStatus(Byte status) {
+    this.status = status;
+  }
 
-		ContestUser that = (ContestUser) o;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
 
-		if (!contestUserId.equals(that.contestUserId))
-			return false;
-		if (!status.equals(that.status))
-			return false;
+    ContestUser that = (ContestUser) o;
 
-		return true;
-	}
+    if (!contestUserId.equals(that.contestUserId))
+      return false;
+    if (!status.equals(that.status))
+      return false;
 
-	@Override
-	public int hashCode() {
-		int result = contestUserId;
-		result = 31 * result + (int) status;
-		return result;
-	}
+    return true;
+  }
 
-	private Contest contestByContestId;
+  @Override
+  public int hashCode() {
+    int result = contestUserId;
+    result = 31 * result + (int) status;
+    return result;
+  }
 
-	@ManyToOne
-	@JoinColumn(name = "contestId", referencedColumnName = "contestId", nullable = false)
-	public Contest getContestByContestId() {
-		return contestByContestId;
-	}
+  private Contest contestByContestId;
 
-	public void setContestByContestId(Contest contestByContestId) {
-		this.contestByContestId = contestByContestId;
-	}
+  @ManyToOne
+  @JoinColumn(name = "contestId", referencedColumnName = "contestId", nullable = false)
+  public Contest getContestByContestId() {
+    return contestByContestId;
+  }
 
-	private User userByUserId;
+  public void setContestByContestId(Contest contestByContestId) {
+    this.contestByContestId = contestByContestId;
+  }
 
-	@ManyToOne
-	@JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
-	public User getUserByUserId() {
-		return userByUserId;
-	}
+  private User userByUserId;
 
-	public void setUserByUserId(User userByUserId) {
-		this.userByUserId = userByUserId;
-	}
+  @ManyToOne
+  @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
+  public User getUserByUserId() {
+    return userByUserId;
+  }
+
+  public void setUserByUserId(User userByUserId) {
+    this.userByUserId = userByUserId;
+  }
 }

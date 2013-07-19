@@ -33,114 +33,115 @@ import java.util.Collection;
 @Entity
 @KeyField("trainingContestId")
 public class TrainingContest implements Serializable {
-	/**
+
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = -3563641835123515967L;
-	private Integer trainingContestId;
+  private static final long serialVersionUID = -3563641835123515967L;
+  private Integer trainingContestId;
 
-	@Column(name = "trainingContestId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
-	@Id
-	@GeneratedValue
-	public Integer getTrainingContestId() {
-		return trainingContestId;
-	}
+  @Column(name = "trainingContestId", nullable = false, insertable = true, updatable = true,
+      length = 10, precision = 0, unique = true)
+  @Id
+  @GeneratedValue
+  public Integer getTrainingContestId() {
+    return trainingContestId;
+  }
 
-	public void setTrainingContestId(Integer trainingContestId) {
-		this.trainingContestId = trainingContestId;
-	}
+  public void setTrainingContestId(Integer trainingContestId) {
+    this.trainingContestId = trainingContestId;
+  }
 
-	private Boolean isPersonal;
+  private Boolean isPersonal;
 
-	@Column(name = "isPersonal", nullable = false, insertable = true, updatable = true, length = 0, precision = 0)
-	@Basic
-	public Boolean getIsPersonal() {
-		return isPersonal;
-	}
+  @Column(name = "isPersonal", nullable = false, insertable = true, updatable = true, length = 0,
+      precision = 0)
+  @Basic
+  public Boolean getIsPersonal() {
+    return isPersonal;
+  }
 
-	public void setIsPersonal(Boolean isPersonal) {
-		this.isPersonal = isPersonal;
-	}
+  public void setIsPersonal(Boolean isPersonal) {
+    this.isPersonal = isPersonal;
+  }
 
-	private String title;
+  private String title;
 
-	@Column(name = "title", nullable = false, insertable = true, updatable = true, length = 150, precision = 0)
-	@Basic
-	public String getTitle() {
-		return title;
-	}
+  @Column(name = "title", nullable = false, insertable = true, updatable = true, length = 150,
+      precision = 0)
+  @Basic
+  public String getTitle() {
+    return title;
+  }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-	private Integer type;
+  private Integer type;
 
-	@Column(name = "type", nullable = false, insertable = true, updatable = true, length = 11, precision = 0)
-	public Integer getType() {
-		return type;
-	}
+  @Column(name = "type", nullable = false, insertable = true, updatable = true, length = 11,
+      precision = 0)
+  public Integer getType() {
+    return type;
+  }
 
-	public void setType(Integer type) {
-		this.type = type;
-	}
+  public void setType(Integer type) {
+    this.type = type;
+  }
 
-	private Integer version;
+  private Integer version;
 
-	@Version
-	@Column(name = "OPTLOCK")
-	public Integer getVersion() {
-		return version;
-	}
+  @Version
+  @Column(name = "OPTLOCK")
+  public Integer getVersion() {
+    return version;
+  }
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+  public void setVersion(Integer version) {
+    this.version = version;
+  }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof TrainingContest))
-			return false;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (!(o instanceof TrainingContest))
+      return false;
 
-		TrainingContest that = (TrainingContest) o;
+    TrainingContest that = (TrainingContest) o;
 
-		if (isPersonal != null ? !isPersonal.equals(that.isPersonal)
-				: that.isPersonal != null)
-			return false;
-		if (title != null ? !title.equals(that.title) : that.title != null)
-			return false;
-		if (trainingContestId != null ? !trainingContestId
-				.equals(that.trainingContestId)
-				: that.trainingContestId != null)
-			return false;
-		if (version != null ? !version.equals(that.version)
-				: that.version != null)
-			return false;
+    if (isPersonal != null ? !isPersonal.equals(that.isPersonal) : that.isPersonal != null)
+      return false;
+    if (title != null ? !title.equals(that.title) : that.title != null)
+      return false;
+    if (trainingContestId != null ? !trainingContestId.equals(that.trainingContestId)
+        : that.trainingContestId != null)
+      return false;
+    if (version != null ? !version.equals(that.version) : that.version != null)
+      return false;
 
-		return true;
-	}
+    return true;
+  }
 
-	@Override
-	public int hashCode() {
-		int result = trainingContestId != null ? trainingContestId.hashCode()
-				: 0;
-		result = 31 * result + (isPersonal != null ? isPersonal.hashCode() : 0);
-		result = 31 * result + (title != null ? title.hashCode() : 0);
-		result = 31 * result + (version != null ? version.hashCode() : 0);
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    int result = trainingContestId != null ? trainingContestId.hashCode() : 0;
+    result = 31 * result + (isPersonal != null ? isPersonal.hashCode() : 0);
+    result = 31 * result + (title != null ? title.hashCode() : 0);
+    result = 31 * result + (version != null ? version.hashCode() : 0);
+    return result;
+  }
 
-	private Collection<TrainingStatus> trainingStatusesByTrainingContestId;
+  private Collection<TrainingStatus> trainingStatusesByTrainingContestId;
 
-	@OneToMany(mappedBy = "trainingContestByTrainingContestId")
-	public Collection<TrainingStatus> getTrainingStatusesByTrainingContestId() {
-		return trainingStatusesByTrainingContestId;
-	}
+  @OneToMany(mappedBy = "trainingContestByTrainingContestId")
+  public Collection<TrainingStatus> getTrainingStatusesByTrainingContestId() {
+    return trainingStatusesByTrainingContestId;
+  }
 
-	public void setTrainingStatusesByTrainingContestId(
-			Collection<TrainingStatus> trainingStatusesByTrainingContestId) {
-		this.trainingStatusesByTrainingContestId = trainingStatusesByTrainingContestId;
-	}
+  public void setTrainingStatusesByTrainingContestId(
+      Collection<TrainingStatus> trainingStatusesByTrainingContestId) {
+    this.trainingStatusesByTrainingContestId = trainingStatusesByTrainingContestId;
+  }
 }

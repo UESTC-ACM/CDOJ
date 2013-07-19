@@ -37,76 +37,79 @@ import java.util.Collection;
 @Entity
 @KeyField("tagId")
 public class Tag implements Serializable {
-	private static final long serialVersionUID = 8221283073294354906L;
-	private Integer tagId;
 
-	private Integer version;
+  private static final long serialVersionUID = 8221283073294354906L;
+  private Integer tagId;
 
-	@Version
-	@Column(name = "OPTLOCK")
-	public Integer getVersion() {
-		return version;
-	}
+  private Integer version;
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+  @Version
+  @Column(name = "OPTLOCK")
+  public Integer getVersion() {
+    return version;
+  }
 
-	@Column(name = "tagId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
-	@Id
-	@GeneratedValue
-	public Integer getTagId() {
-		return tagId;
-	}
+  public void setVersion(Integer version) {
+    this.version = version;
+  }
 
-	public void setTagId(Integer tagId) {
-		this.tagId = tagId;
-	}
+  @Column(name = "tagId", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0, unique = true)
+  @Id
+  @GeneratedValue
+  public Integer getTagId() {
+    return tagId;
+  }
 
-	private String name;
+  public void setTagId(Integer tagId) {
+    this.tagId = tagId;
+  }
 
-	@Column(name = "name", nullable = false, insertable = true, updatable = true, length = 50, precision = 0, unique = true)
-	@Basic
-	public String getName() {
-		return name;
-	}
+  private String name;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  @Column(name = "name", nullable = false, insertable = true, updatable = true, length = 50,
+      precision = 0, unique = true)
+  @Basic
+  public String getName() {
+    return name;
+  }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+  public void setName(String name) {
+    this.name = name;
+  }
 
-		Tag tag = (Tag) o;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
 
-		if (!tagId.equals(tag.tagId))
-			return false;
-		if (name != null ? !name.equals(tag.name) : tag.name != null)
-			return false;
+    Tag tag = (Tag) o;
 
-		return true;
-	}
+    if (!tagId.equals(tag.tagId))
+      return false;
+    if (name != null ? !name.equals(tag.name) : tag.name != null)
+      return false;
 
-	@Override
-	public int hashCode() {
-		int result = tagId;
-		result = 31 * result + (name != null ? name.hashCode() : 0);
-		return result;
-	}
+    return true;
+  }
 
-	private Collection<ProblemTag> problemTagsByTagId;
+  @Override
+  public int hashCode() {
+    int result = tagId;
+    result = 31 * result + (name != null ? name.hashCode() : 0);
+    return result;
+  }
 
-	@OneToMany(mappedBy = "tagByTagId")
-	public Collection<ProblemTag> getProblemTagsByTagId() {
-		return problemTagsByTagId;
-	}
+  private Collection<ProblemTag> problemTagsByTagId;
 
-	public void setProblemTagsByTagId(Collection<ProblemTag> problemTagsByTagId) {
-		this.problemTagsByTagId = problemTagsByTagId;
-	}
+  @OneToMany(mappedBy = "tagByTagId")
+  public Collection<ProblemTag> getProblemTagsByTagId() {
+    return problemTagsByTagId;
+  }
+
+  public void setProblemTagsByTagId(Collection<ProblemTag> problemTagsByTagId) {
+    this.problemTagsByTagId = problemTagsByTagId;
+  }
 }

@@ -30,18 +30,18 @@ import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public interface UserConditionAware {
-	/**
-	 * Put user condition entity into class.
-	 * 
-	 * @param userCondition
-	 *            specific user condition entity
-	 */
-	public void setUserCondition(UserCondition userCondition);
 
-	/**
-	 * get user condition entity.
-	 * 
-	 * @return specific user condition
-	 */
-	public UserCondition getUserCondition();
+  /**
+   * Put user condition entity into class.
+   * 
+   * @param userCondition specific user condition entity
+   */
+  public void setUserCondition(UserCondition userCondition);
+
+  /**
+   * get user condition entity.
+   * 
+   * @return specific user condition
+   */
+  public UserCondition getUserCondition();
 }

@@ -39,127 +39,120 @@ import java.util.List;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(NeedLogin = false)
-public class ContestStatusAction extends BaseAction implements
-		StatusConditionAware, StatusDAOAware, ContestDAOAware {
+public class ContestStatusAction extends BaseAction implements StatusConditionAware,
+    StatusDAOAware, ContestDAOAware {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = 6027954896332985762L;
-	private Integer targetContestId;
+  private static final long serialVersionUID = 6027954896332985762L;
+  private Integer targetContestId;
 
-	public Integer getTargetContestId() {
-		return targetContestId;
-	}
+  public Integer getTargetContestId() {
+    return targetContestId;
+  }
 
-	public void setTargetContestId(Integer targetContestId) {
-		this.targetContestId = targetContestId;
-	}
+  public void setTargetContestId(Integer targetContestId) {
+    this.targetContestId = targetContestId;
+  }
 
-	/**
-	 * StatusDAO for status queries.
-	 */
-	@Autowired
-	private IStatusDAO statusDAO;
-	@Autowired
-	private StatusCondition statusCondition;
+  /**
+   * StatusDAO for status queries.
+   */
+  @Autowired
+  private IStatusDAO statusDAO;
+  @Autowired
+  private StatusCondition statusCondition;
 
-	/**
-	 * Search action.
-	 * <p/>
-	 * Find all records by conditions and return them as a list in JSON, and the
-	 * condition set will set in JSON named "condition".
-	 * <p/>
-	 * <strong>JSON output</strong>:
-	 * <ul>
-	 * <li>
-	 * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>,
-	 * "condition", <strong>ProblemCondition entity</strong>,
-	 * "problemList":<strong>query result</strong>}</li>
-	 * <li>
-	 * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-	 * </li>
-	 * </ul>
-	 * 
-	 * @return <strong>JSON</strong> signal
-	 */
-	@SuppressWarnings("unchecked")
-	@SkipValidation
-	public String toSearch() {
-		try {
-			if (targetContestId == null)
-				throw new AppException("Contest Id is empty!");
+  /**
+   * Search action.
+   * <p/>
+   * Find all records by conditions and return them as a list in JSON, and the condition set will
+   * set in JSON named "condition".
+   * <p/>
+   * <strong>JSON output</strong>:
+   * <ul>
+   * <li>
+   * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>, "condition",
+   * <strong>ProblemCondition entity</strong>, "problemList":<strong>query result</strong>}</li>
+   * <li>
+   * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
+   * </ul>
+   * 
+   * @return <strong>JSON</strong> signal
+   */
+  @SuppressWarnings("unchecked")
+  @SkipValidation
+  public String toSearch() {
+    try {
+      if (targetContestId == null)
+        throw new AppException("Contest Id is empty!");
 
-			Contest contest = contestDAO.get(targetContestId);
-			if (contest == null)
-				throw new AppException("Wrong contest ID!");
+      Contest contest = contestDAO.get(targetContestId);
+      if (contest == null)
+        throw new AppException("Wrong contest ID!");
 
-			if (currentUser == null
-					|| currentUser.getType() != Global.AuthenticationType.ADMIN
-							.ordinal())
-				if (!contest.getIsVisible())
-					throw new AppException("Contest doesn't exist");
+      if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
+        if (!contest.getIsVisible())
+          throw new AppException("Contest doesn't exist");
 
-			ContestView contestView = new ContestView(contest);
+      ContestView contestView = new ContestView(contest);
 
-			statusCondition.setContestId(contest.getContestId());
-			// Contest is still running
-			if (contestView.getStatus().equals("Running")) {
-				if (currentUser == null)
-					throw new AppException("Please login first!");
-				if (currentUser.getType() != Global.AuthenticationType.ADMIN
-						.ordinal())
-					statusCondition.setUserId(currentUser.getUserId());
-			}
+      statusCondition.setContestId(contest.getContestId());
+      // Contest is still running
+      if (contestView.getStatus().equals("Running")) {
+        if (currentUser == null)
+          throw new AppException("Please login first!");
+        if (currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
+          statusCondition.setUserId(currentUser.getUserId());
+      }
 
-			Condition condition = statusCondition.getCondition();
-			Long count = statusDAO.count(statusCondition.getCondition());
-			PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
-			condition.setCurrentPage(pageInfo.getCurrentPage());
-			condition.setCountPerPage(RECORD_PER_PAGE);
-			condition.addOrder("statusId", false);
-			List<Status> statusList = (List<Status>) statusDAO
-					.findAll(condition);
-			List<StatusView> statusViewList = new ArrayList<>();
-			for (Status status : statusList) {
-				StatusView statusView = new StatusView(status);
-				statusView.setProblemId(contestView.getProblemList().indexOf(
-						statusView.getProblemId()));
-				statusViewList.add(statusView);
-			}
-			json.put("pageInfo", pageInfo.getHtmlString());
-			json.put("result", "ok");
-			json.put("statusList", statusViewList);
-		} catch (AppException e) {
-			json.put("result", "error");
-			json.put("error_msg", e.getMessage());
-		} catch (Exception e) {
-			json.put("result", "error");
-			json.put("error_msg", "Unknown exception occurred.");
-		}
-		return JSON;
-	}
+      Condition condition = statusCondition.getCondition();
+      Long count = statusDAO.count(statusCondition.getCondition());
+      PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
+      condition.setCurrentPage(pageInfo.getCurrentPage());
+      condition.setCountPerPage(RECORD_PER_PAGE);
+      condition.addOrder("statusId", false);
+      List<Status> statusList = (List<Status>) statusDAO.findAll(condition);
+      List<StatusView> statusViewList = new ArrayList<>();
+      for (Status status : statusList) {
+        StatusView statusView = new StatusView(status);
+        statusView.setProblemId(contestView.getProblemList().indexOf(statusView.getProblemId()));
+        statusViewList.add(statusView);
+      }
+      json.put("pageInfo", pageInfo.getHtmlString());
+      json.put("result", "ok");
+      json.put("statusList", statusViewList);
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return JSON;
+  }
 
-	@Override
-	public void setStatusCondition(StatusCondition statusCondition) {
-		this.statusCondition = statusCondition;
-	}
+  @Override
+  public void setStatusCondition(StatusCondition statusCondition) {
+    this.statusCondition = statusCondition;
+  }
 
-	@Override
-	public StatusCondition getStatusCondition() {
-		return statusCondition;
-	}
+  @Override
+  public StatusCondition getStatusCondition() {
+    return statusCondition;
+  }
 
-	@Override
-	public void setStatusDAO(IStatusDAO statusDAO) {
-		this.statusDAO = statusDAO;
-	}
+  @Override
+  public void setStatusDAO(IStatusDAO statusDAO) {
+    this.statusDAO = statusDAO;
+  }
 
-	@Autowired
-	private IContestDAO contestDAO;
+  @Autowired
+  private IContestDAO contestDAO;
 
-	@Override
-	public void setContestDAO(IContestDAO contestDAO) {
-		this.contestDAO = contestDAO;
-	}
+  @Override
+  public void setContestDAO(IContestDAO contestDAO) {
+    this.contestDAO = contestDAO;
+  }
 }

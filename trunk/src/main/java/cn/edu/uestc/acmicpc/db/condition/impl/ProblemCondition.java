@@ -33,144 +33,144 @@ import org.hibernate.criterion.Restrictions;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ProblemCondition extends BaseCondition {
-	/**
-	 * Start user id.
-	 */
-	private Integer startId;
-	/**
-	 * End user id.
-	 */
-	private Integer endId;
 
-	/**
-	 * Title.
-	 */
-	private String title;
-	private String source;
+  /**
+   * Start user id.
+   */
+  private Integer startId;
+  /**
+   * End user id.
+   */
+  private Integer endId;
 
-	/**
-	 * Keyword for {@code description}, {@code input}, {@code output},
-	 * {@code sampleInput}, {@code sampleOutput} and {@code hint}.
-	 */
-	private String keyword;
+  /**
+   * Title.
+   */
+  private String title;
+  private String source;
 
-	private Boolean isSpj;
+  /**
+   * Keyword for {@code description}, {@code input}, {@code output}, {@code sampleInput},
+   * {@code sampleOutput} and {@code hint}.
+   */
+  private String keyword;
 
-	private Boolean isVisible;
+  private Boolean isSpj;
 
-	private Integer startDifficulty;
+  private Boolean isVisible;
 
-	private Boolean isTitleEmpty;
+  private Integer startDifficulty;
 
-	public Boolean getIsTitleEmpty() {
-		return isTitleEmpty;
-	}
+  private Boolean isTitleEmpty;
 
-	public void setIsTitleEmpty(Boolean isTitleEmpty) {
-		this.isTitleEmpty = isTitleEmpty;
-	}
+  public Boolean getIsTitleEmpty() {
+    return isTitleEmpty;
+  }
 
-	@Exp(MapField = "difficulty", Type = ConditionType.le)
-	public Integer getEndDifficulty() {
-		return endDifficulty;
-	}
+  public void setIsTitleEmpty(Boolean isTitleEmpty) {
+    this.isTitleEmpty = isTitleEmpty;
+  }
 
-	public void setEndDifficulty(Integer endDifficulty) {
-		this.endDifficulty = endDifficulty;
-	}
+  @Exp(MapField = "difficulty", Type = ConditionType.le)
+  public Integer getEndDifficulty() {
+    return endDifficulty;
+  }
 
-	@Exp(MapField = "difficulty", Type = ConditionType.ge)
-	public Integer getStartDifficulty() {
-		return startDifficulty;
-	}
+  public void setEndDifficulty(Integer endDifficulty) {
+    this.endDifficulty = endDifficulty;
+  }
 
-	public void setStartDifficulty(Integer startDifficulty) {
-		this.startDifficulty = startDifficulty;
-	}
+  @Exp(MapField = "difficulty", Type = ConditionType.ge)
+  public Integer getStartDifficulty() {
+    return startDifficulty;
+  }
 
-	@Exp(Type = ConditionType.eq)
-	public Boolean getIsVisible() {
-		return isVisible;
-	}
+  public void setStartDifficulty(Integer startDifficulty) {
+    this.startDifficulty = startDifficulty;
+  }
 
-	public void setIsVisible(Boolean visible) {
-		isVisible = visible;
-	}
+  @Exp(Type = ConditionType.eq)
+  public Boolean getIsVisible() {
+    return isVisible;
+  }
 
-	@Exp(Type = ConditionType.eq)
-	public Boolean getIsSpj() {
-		return isSpj;
-	}
+  public void setIsVisible(Boolean visible) {
+    isVisible = visible;
+  }
 
-	public void setIsSpj(Boolean spj) {
-		isSpj = spj;
-	}
+  @Exp(Type = ConditionType.eq)
+  public Boolean getIsSpj() {
+    return isSpj;
+  }
 
-	public String getKeyword() {
-		return keyword;
-	}
+  public void setIsSpj(Boolean spj) {
+    isSpj = spj;
+  }
 
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
-	}
+  public String getKeyword() {
+    return keyword;
+  }
 
-	@Exp(Type = ConditionType.like)
-	public String getSource() {
-		return source;
-	}
+  public void setKeyword(String keyword) {
+    this.keyword = keyword;
+  }
 
-	public void setSource(String source) {
-		this.source = source;
-	}
+  @Exp(Type = ConditionType.like)
+  public String getSource() {
+    return source;
+  }
 
-	@Exp(Type = ConditionType.like)
-	public String getTitle() {
-		return title;
-	}
+  public void setSource(String source) {
+    this.source = source;
+  }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+  @Exp(Type = ConditionType.like)
+  public String getTitle() {
+    return title;
+  }
 
-	@Exp(MapField = "problemId", Type = ConditionType.le)
-	public Integer getEndId() {
-		return endId;
-	}
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-	public void setEndId(Integer endId) {
-		this.endId = endId;
-	}
+  @Exp(MapField = "problemId", Type = ConditionType.le)
+  public Integer getEndId() {
+    return endId;
+  }
 
-	@Exp(MapField = "problemId", Type = ConditionType.ge)
-	public Integer getStartId() {
-		return startId;
-	}
+  public void setEndId(Integer endId) {
+    this.endId = endId;
+  }
 
-	public void setStartId(Integer startId) {
-		this.startId = startId;
-	}
+  @Exp(MapField = "problemId", Type = ConditionType.ge)
+  public Integer getStartId() {
+    return startId;
+  }
 
-	private Integer endDifficulty;
+  public void setStartId(Integer startId) {
+    this.startId = startId;
+  }
 
-	@Override
-	public void invoke(Condition condition) {
-		super.invoke(condition);
-		if (keyword != null) {
-			String[] fields = new String[] { "description", "input", "output",
-					"sampleInput", "sampleOutput", "hint" };
-			Junction junction = Restrictions.disjunction();
-			for (String field : fields) {
-				junction.add(Restrictions.like(field,
-						String.format("%%%s%%", keyword)));
-			}
-			condition.addCriterion(junction);
-		}
-		if (isTitleEmpty != null) {
-			if (isTitleEmpty) {
-				condition.addCriterion(Restrictions.like("title", ""));
-			} else {
-				condition.addCriterion(Restrictions.like("title", "_%"));
-			}
-		}
-	}
+  private Integer endDifficulty;
+
+  @Override
+  public void invoke(Condition condition) {
+    super.invoke(condition);
+    if (keyword != null) {
+      String[] fields =
+          new String[] { "description", "input", "output", "sampleInput", "sampleOutput", "hint" };
+      Junction junction = Restrictions.disjunction();
+      for (String field : fields) {
+        junction.add(Restrictions.like(field, String.format("%%%s%%", keyword)));
+      }
+      condition.addCriterion(junction);
+    }
+    if (isTitleEmpty != null) {
+      if (isTitleEmpty) {
+        condition.addCriterion(Restrictions.like("title", ""));
+      } else {
+        condition.addCriterion(Restrictions.like("title", "_%"));
+      }
+    }
+  }
 }

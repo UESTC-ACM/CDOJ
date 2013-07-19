@@ -36,29 +36,30 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
 public class EMailTest implements EMailSenderAware {
-	@Autowired
-	private EMailSender sender;
 
-	@Test
-	@Ignore
-	public void testEmailSending() {
-		sender.send("lyhypacm@gmail.com", "title", "content");
-	}
+  @Autowired
+  private EMailSender sender;
 
-	@Test
-	@Ignore
-	public void testMultiRecipientsSending() {
-		sender.send("muziriyun@qq.com;muziriyun@gmail.com", "title", "content");
-	}
+  @Test
+  @Ignore
+  public void testEmailSending() {
+    sender.send("lyhypacm@gmail.com", "title", "content");
+  }
 
-	@Override
-	@Ignore
-	public void setEMailSender(EMailSender sender) {
-		try {
-			this.sender = sender;
-		} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail();
-		}
-	}
+  @Test
+  @Ignore
+  public void testMultiRecipientsSending() {
+    sender.send("muziriyun@qq.com;muziriyun@gmail.com", "title", "content");
+  }
+
+  @Override
+  @Ignore
+  public void setEMailSender(EMailSender sender) {
+    try {
+      this.sender = sender;
+    } catch (Exception e) {
+      e.printStackTrace();
+      Assert.fail();
+    }
+  }
 }

@@ -31,11 +31,11 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO;
  * @see cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO
  */
 public interface CompileInfoDAOAware {
-	/**
-	 * Put compileinfoDAO into class.
-	 * 
-	 * @param compileinfoDAO
-	 *            newly compileinfoDAO entity
-	 */
-	public void setCompileinfoDAO(ICompileInfoDAO compileinfoDAO);
+
+  /**
+   * Put compileinfoDAO into class.
+   * 
+   * @param compileinfoDAO newly compileinfoDAO entity
+   */
+  public void setCompileinfoDAO(ICompileInfoDAO compileinfoDAO);
 }

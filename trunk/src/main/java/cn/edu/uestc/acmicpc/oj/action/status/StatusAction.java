@@ -38,150 +38,146 @@ import java.util.List;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(NeedLogin = false)
-public class StatusAction extends BaseAction implements StatusConditionAware,
-		StatusDAOAware {
+public class StatusAction extends BaseAction implements StatusConditionAware, StatusDAOAware {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = 8258180610533072271L;
+  private static final long serialVersionUID = 8258180610533072271L;
 
-	@SkipValidation
-	public String toStatusList() {
-		return SUCCESS;
-	}
+  @SkipValidation
+  public String toStatusList() {
+    return SUCCESS;
+  }
 
-	/**
-	 * StatusDAO for status queries.
-	 */
-	@Autowired
-	private IStatusDAO statusDAO;
-	@Autowired
-	private StatusCondition statusCondition;
+  /**
+   * StatusDAO for status queries.
+   */
+  @Autowired
+  private IStatusDAO statusDAO;
+  @Autowired
+  private StatusCondition statusCondition;
 
-	/**
-	 * Search action.
-	 * <p/>
-	 * Find all records by conditions and return them as a list in JSON, and the
-	 * condition set will set in JSON named "condition".
-	 * <p/>
-	 * <strong>JSON output</strong>:
-	 * <ul>
-	 * <li>
-	 * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>,
-	 * "condition", <strong>ProblemCondition entity</strong>,
-	 * "problemList":<strong>query result</strong>}</li>
-	 * <li>
-	 * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-	 * </li>
-	 * </ul>
-	 * 
-	 * @return <strong>JSON</strong> signal
-	 */
-	@SuppressWarnings("unchecked")
-	@SkipValidation
-	public String toSearch() {
-		try {
-			statusCondition.setContestId(-1);
-			Condition condition = statusCondition.getCondition();
-			Long count = statusDAO.count(statusCondition.getCondition());
-			PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
-			condition.setCurrentPage(pageInfo.getCurrentPage());
-			condition.setCountPerPage(RECORD_PER_PAGE);
-			condition.addOrder("statusId", false);
-			List<Status> statusList = (List<Status>) statusDAO
-					.findAll(condition);
-			List<StatusView> statusViewList = new ArrayList<>();
-			for (Status status : statusList)
-				statusViewList.add(new StatusView(status));
-			json.put("pageInfo", pageInfo.getHtmlString());
-			json.put("result", "ok");
-			json.put("statusList", statusViewList);
-		} catch (AppException e) {
-			json.put("result", "error");
-			json.put("error_msg", e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			json.put("result", "error");
-			json.put("error_msg", "Unknown exception occurred.");
-		}
-		return JSON;
-	}
+  /**
+   * Search action.
+   * <p/>
+   * Find all records by conditions and return them as a list in JSON, and the condition set will
+   * set in JSON named "condition".
+   * <p/>
+   * <strong>JSON output</strong>:
+   * <ul>
+   * <li>
+   * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>, "condition",
+   * <strong>ProblemCondition entity</strong>, "problemList":<strong>query result</strong>}</li>
+   * <li>
+   * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
+   * </ul>
+   * 
+   * @return <strong>JSON</strong> signal
+   */
+  @SuppressWarnings("unchecked")
+  @SkipValidation
+  public String toSearch() {
+    try {
+      statusCondition.setContestId(-1);
+      Condition condition = statusCondition.getCondition();
+      Long count = statusDAO.count(statusCondition.getCondition());
+      PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
+      condition.setCurrentPage(pageInfo.getCurrentPage());
+      condition.setCountPerPage(RECORD_PER_PAGE);
+      condition.addOrder("statusId", false);
+      List<Status> statusList = (List<Status>) statusDAO.findAll(condition);
+      List<StatusView> statusViewList = new ArrayList<>();
+      for (Status status : statusList)
+        statusViewList.add(new StatusView(status));
+      json.put("pageInfo", pageInfo.getHtmlString());
+      json.put("result", "ok");
+      json.put("statusList", statusViewList);
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return JSON;
+  }
 
-	@Override
-	public void setStatusCondition(StatusCondition statusCondition) {
-		this.statusCondition = statusCondition;
-	}
+  @Override
+  public void setStatusCondition(StatusCondition statusCondition) {
+    this.statusCondition = statusCondition;
+  }
 
-	@Override
-	public StatusCondition getStatusCondition() {
-		return statusCondition;
-	}
+  @Override
+  public StatusCondition getStatusCondition() {
+    return statusCondition;
+  }
 
-	@Override
-	public void setStatusDAO(IStatusDAO statusDAO) {
-		this.statusDAO = statusDAO;
-	}
+  @Override
+  public void setStatusDAO(IStatusDAO statusDAO) {
+    this.statusDAO = statusDAO;
+  }
 
-	private Integer statusId;
+  private Integer statusId;
 
-	public Integer getStatusId() {
-		return statusId;
-	}
+  public Integer getStatusId() {
+    return statusId;
+  }
 
-	public void setStatusId(Integer statusId) {
-		this.statusId = statusId;
-	}
+  public void setStatusId(Integer statusId) {
+    this.statusId = statusId;
+  }
 
-	@LoginPermit(NeedLogin = true)
-	public String toCode() {
-		try {
-			if (statusId == null)
-				throw new AppException("Empty status id!");
-			Status status = statusDAO.get(statusId);
-			if (status == null)
-				throw new AppException("No such code!");
-			if (currentUser.getType() != Global.AuthenticationType.ADMIN
-					.ordinal() && status.getUserByUserId() != currentUser)
-				throw new AppException("You can't view others' code!");
-			Code code = status.getCodeByCodeId();
-			json.put("result", "success");
-			json.put("code", new CodeView(code));
-		} catch (AppException e) {
-			json.put("result", "error");
-			json.put("error_msg", e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			json.put("result", "error");
-			json.put("error_msg", "Unknown exception occurred.");
-		}
-		return JSON;
-	}
+  @LoginPermit(NeedLogin = true)
+  public String toCode() {
+    try {
+      if (statusId == null)
+        throw new AppException("Empty status id!");
+      Status status = statusDAO.get(statusId);
+      if (status == null)
+        throw new AppException("No such code!");
+      if (currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()
+          && status.getUserByUserId() != currentUser)
+        throw new AppException("You can't view others' code!");
+      Code code = status.getCodeByCodeId();
+      json.put("result", "success");
+      json.put("code", new CodeView(code));
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return JSON;
+  }
 
-	@LoginPermit(NeedLogin = true)
-	public String toCEInformation() {
-		try {
-			if (statusId == null)
-				throw new AppException("Empty status id!");
-			Status status = statusDAO.get(statusId);
-			if (status == null)
-				throw new AppException("No such code!");
-			if (currentUser.getType() != Global.AuthenticationType.ADMIN
-					.ordinal() && status.getUserByUserId() != currentUser)
-				throw new AppException("You can't view others' CE information!");
-			CompileInfo compileInfo = status.getCompileInfoByCompileInfoId();
-			if (compileInfo == null)
-				throw new AppException("No CE information!");
-			json.put("result", "success");
-			json.put("CEInformation", compileInfo.getContent());
-		} catch (AppException e) {
-			json.put("result", "error");
-			json.put("error_msg", e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			json.put("result", "error");
-			json.put("error_msg", "Unknown exception occurred.");
-		}
-		return JSON;
-	}
+  @LoginPermit(NeedLogin = true)
+  public String toCEInformation() {
+    try {
+      if (statusId == null)
+        throw new AppException("Empty status id!");
+      Status status = statusDAO.get(statusId);
+      if (status == null)
+        throw new AppException("No such code!");
+      if (currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()
+          && status.getUserByUserId() != currentUser)
+        throw new AppException("You can't view others' CE information!");
+      CompileInfo compileInfo = status.getCompileInfoByCompileInfoId();
+      if (compileInfo == null)
+        throw new AppException("No CE information!");
+      json.put("result", "success");
+      json.put("CEInformation", compileInfo.getContent());
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return JSON;
+  }
 }

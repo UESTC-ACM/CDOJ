@@ -30,11 +30,11 @@ import cn.edu.uestc.acmicpc.util.RatingUtil;
  * @see RatingUtil
  */
 public interface RatingUtilAware {
-	/**
-	 * Put RatingUtil entity into class.
-	 * 
-	 * @param ratingUtil
-	 *            ratingUtil entity
-	 */
-	public void setRatingUtil(RatingUtil ratingUtil);
+
+  /**
+   * Put RatingUtil entity into class.
+   * 
+   * @param ratingUtil ratingUtil entity
+   */
+  public void setRatingUtil(RatingUtil ratingUtil);
 }

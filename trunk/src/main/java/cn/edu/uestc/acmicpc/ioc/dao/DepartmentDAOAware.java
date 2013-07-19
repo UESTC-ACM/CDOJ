@@ -31,11 +31,11 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
  * @see IDepartmentDAO
  */
 public interface DepartmentDAOAware {
-	/**
-	 * put departmentDAO into class
-	 * 
-	 * @param departmentDAO
-	 *            specific department DAO entity
-	 */
-	public void setDepartmentDAO(IDepartmentDAO departmentDAO);
+
+  /**
+   * put departmentDAO into class
+   * 
+   * @param departmentDAO specific department DAO entity
+   */
+  public void setDepartmentDAO(IDepartmentDAO departmentDAO);
 }

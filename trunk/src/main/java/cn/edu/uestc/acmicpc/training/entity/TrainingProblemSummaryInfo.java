@@ -6,54 +6,55 @@ package cn.edu.uestc.acmicpc.training.entity;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class TrainingProblemSummaryInfo {
-	private Integer tried;
-	private Boolean isSolved;
-	private Boolean isFirstSolved;
-	private Integer penalty;
-	private Integer solutionTime;
 
-	public TrainingProblemSummaryInfo() {
-		isSolved = isFirstSolved = false;
-		penalty = solutionTime = tried = 0;
-	}
+  private Integer tried;
+  private Boolean isSolved;
+  private Boolean isFirstSolved;
+  private Integer penalty;
+  private Integer solutionTime;
 
-	public Integer getTried() {
-		return tried;
-	}
+  public TrainingProblemSummaryInfo() {
+    isSolved = isFirstSolved = false;
+    penalty = solutionTime = tried = 0;
+  }
 
-	public void setTried(Integer tried) {
-		this.tried = tried;
-	}
+  public Integer getTried() {
+    return tried;
+  }
 
-	public Boolean getSolved() {
-		return isSolved;
-	}
+  public void setTried(Integer tried) {
+    this.tried = tried;
+  }
 
-	public void setSolved(Boolean solved) {
-		isSolved = solved;
-	}
+  public Boolean getSolved() {
+    return isSolved;
+  }
 
-	public Boolean getFirstSolved() {
-		return isFirstSolved;
-	}
+  public void setSolved(Boolean solved) {
+    isSolved = solved;
+  }
 
-	public void setFirstSolved(Boolean firstSolved) {
-		isFirstSolved = firstSolved;
-	}
+  public Boolean getFirstSolved() {
+    return isFirstSolved;
+  }
 
-	public Integer getPenalty() {
-		return penalty;
-	}
+  public void setFirstSolved(Boolean firstSolved) {
+    isFirstSolved = firstSolved;
+  }
 
-	public void setPenalty(Integer penalty) {
-		this.penalty = penalty;
-	}
+  public Integer getPenalty() {
+    return penalty;
+  }
 
-	public Integer getSolutionTime() {
-		return solutionTime;
-	}
+  public void setPenalty(Integer penalty) {
+    this.penalty = penalty;
+  }
 
-	public void setSolutionTime(Integer solutionTime) {
-		this.solutionTime = solutionTime;
-	}
+  public Integer getSolutionTime() {
+    return solutionTime;
+  }
+
+  public void setSolutionTime(Integer solutionTime) {
+    this.solutionTime = solutionTime;
+  }
 }

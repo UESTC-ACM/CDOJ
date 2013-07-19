@@ -52,64 +52,61 @@ import java.util.List;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
-public class RankListParserTest implements TrainingRankListParserAware,
-		TrainingContestDAOAware, TrainingStatusDAOAware {
+public class RankListParserTest implements TrainingRankListParserAware, TrainingContestDAOAware,
+    TrainingStatusDAOAware {
 
-	@SuppressWarnings("unused")
-	@Test
-	public void testXlsParser() throws IOException, BiffException {
-		try {
-			File file = new File("/Users/mzry1992/Downloads/4.xls");
-			List<String[]> result = trainingRankListParser.parseXls(file);
-			for (String[] strings : result) {
-				System.out.print("Size = " + strings.length + " --> |");
-				for (String grid : strings)
-					System.out.print(grid + "|");
-				System.out.println();
-			}
-			TrainingContestRankList trainingContestRankList = trainingRankListParser
-					.parse(file, true, 1);
-		} catch (ParserException e) {
-			System.out.println(e.getMessage());
-		} catch (FieldNotUniqueException | AppException e) {
-			e.printStackTrace();
-		}
-	}
+  @SuppressWarnings("unused")
+  @Test
+  public void testXlsParser() throws IOException, BiffException {
+    try {
+      File file = new File("/Users/mzry1992/Downloads/4.xls");
+      List<String[]> result = trainingRankListParser.parseXls(file);
+      for (String[] strings : result) {
+        System.out.print("Size = " + strings.length + " --> |");
+        for (String grid : strings)
+          System.out.print(grid + "|");
+        System.out.println();
+      }
+      TrainingContestRankList trainingContestRankList = trainingRankListParser.parse(file, true, 1);
+    } catch (ParserException e) {
+      System.out.println(e.getMessage());
+    } catch (FieldNotUniqueException | AppException e) {
+      e.printStackTrace();
+    }
+  }
 
-	@Test
-	@Ignore
-	public void testDatabaseParser() throws AppException, ParserException {
-		TrainingStatus trainingStatus = trainingStatusDAO.get(11);
-		String[] strings = trainingRankListParser
-				.parseTrainingUserSummary(trainingStatus.getSummary());
-		System.out.print("Size = " + strings.length + " --> |");
-		for (String grid : strings)
-			System.out.print(grid + "|");
-		System.out.println();
-	}
+  @Test
+  @Ignore
+  public void testDatabaseParser() throws AppException, ParserException {
+    TrainingStatus trainingStatus = trainingStatusDAO.get(11);
+    String[] strings = trainingRankListParser.parseTrainingUserSummary(trainingStatus.getSummary());
+    System.out.print("Size = " + strings.length + " --> |");
+    for (String grid : strings)
+      System.out.print(grid + "|");
+    System.out.println();
+  }
 
-	@Autowired
-	private TrainingRankListParser trainingRankListParser;
+  @Autowired
+  private TrainingRankListParser trainingRankListParser;
 
-	@Override
-	public void setTrainingRankListParserAware(
-			TrainingRankListParser trainingRankListParser) {
-		this.trainingRankListParser = trainingRankListParser;
-	}
+  @Override
+  public void setTrainingRankListParserAware(TrainingRankListParser trainingRankListParser) {
+    this.trainingRankListParser = trainingRankListParser;
+  }
 
-	@Autowired
-	private ITrainingContestDAO trainingContestDAO;
+  @Autowired
+  private ITrainingContestDAO trainingContestDAO;
 
-	@Override
-	public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
-		this.trainingContestDAO = trainingContestDAO;
-	}
+  @Override
+  public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
+    this.trainingContestDAO = trainingContestDAO;
+  }
 
-	@Autowired
-	private ITrainingStatusDAO trainingStatusDAO;
+  @Autowired
+  private ITrainingStatusDAO trainingStatusDAO;
 
-	@Override
-	public void setTrainingStatusDAO(ITrainingStatusDAO trainingStatusDAO) {
-		this.trainingStatusDAO = trainingStatusDAO;
-	}
+  @Override
+  public void setTrainingStatusDAO(ITrainingStatusDAO trainingStatusDAO) {
+    this.trainingStatusDAO = trainingStatusDAO;
+  }
 }

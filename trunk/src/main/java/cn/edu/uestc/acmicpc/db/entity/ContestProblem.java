@@ -36,89 +36,92 @@ import java.io.Serializable;
 @Entity
 @KeyField("contestProblemId")
 public class ContestProblem implements Serializable {
-	private static final long serialVersionUID = -9079259357297937419L;
-	private Integer contestProblemId;
 
-	private Integer version;
+  private static final long serialVersionUID = -9079259357297937419L;
+  private Integer contestProblemId;
 
-	@Version
-	@Column(name = "OPTLOCK")
-	public Integer getVersion() {
-		return version;
-	}
+  private Integer version;
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+  @Version
+  @Column(name = "OPTLOCK")
+  public Integer getVersion() {
+    return version;
+  }
 
-	@Column(name = "contestProblemId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
-	@Id
-	@GeneratedValue
-	public Integer getContestProblemId() {
-		return contestProblemId;
-	}
+  public void setVersion(Integer version) {
+    this.version = version;
+  }
 
-	public void setContestProblemId(Integer contestProblemId) {
-		this.contestProblemId = contestProblemId;
-	}
+  @Column(name = "contestProblemId", nullable = false, insertable = true, updatable = true,
+      length = 10, precision = 0, unique = true)
+  @Id
+  @GeneratedValue
+  public Integer getContestProblemId() {
+    return contestProblemId;
+  }
 
-	private Integer order;
+  public void setContestProblemId(Integer contestProblemId) {
+    this.contestProblemId = contestProblemId;
+  }
 
-	@Column(name = "`order`", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
-	@Basic
-	public Integer getOrder() {
-		return order;
-	}
+  private Integer order;
 
-	public void setOrder(Integer order) {
-		this.order = order;
-	}
+  @Column(name = "`order`", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  @Basic
+  public Integer getOrder() {
+    return order;
+  }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+  public void setOrder(Integer order) {
+    this.order = order;
+  }
 
-		ContestProblem that = (ContestProblem) o;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
 
-		if (!contestProblemId.equals(that.contestProblemId))
-			return false;
-		if (!order.equals(that.order))
-			return false;
+    ContestProblem that = (ContestProblem) o;
 
-		return true;
-	}
+    if (!contestProblemId.equals(that.contestProblemId))
+      return false;
+    if (!order.equals(that.order))
+      return false;
 
-	@Override
-	public int hashCode() {
-		int result = contestProblemId;
-		result = 31 * result + order;
-		return result;
-	}
+    return true;
+  }
 
-	private Contest contestByContestId;
+  @Override
+  public int hashCode() {
+    int result = contestProblemId;
+    result = 31 * result + order;
+    return result;
+  }
 
-	@ManyToOne
-	@JoinColumn(name = "contestId", referencedColumnName = "contestId", nullable = false)
-	public Contest getContestByContestId() {
-		return contestByContestId;
-	}
+  private Contest contestByContestId;
 
-	public void setContestByContestId(Contest contestByContestId) {
-		this.contestByContestId = contestByContestId;
-	}
+  @ManyToOne
+  @JoinColumn(name = "contestId", referencedColumnName = "contestId", nullable = false)
+  public Contest getContestByContestId() {
+    return contestByContestId;
+  }
 
-	private Problem problemByProblemId;
+  public void setContestByContestId(Contest contestByContestId) {
+    this.contestByContestId = contestByContestId;
+  }
 
-	@ManyToOne
-	@JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = false)
-	public Problem getProblemByProblemId() {
-		return problemByProblemId;
-	}
+  private Problem problemByProblemId;
 
-	public void setProblemByProblemId(Problem problemByProblemId) {
-		this.problemByProblemId = problemByProblemId;
-	}
+  @ManyToOne
+  @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = false)
+  public Problem getProblemByProblemId() {
+    return problemByProblemId;
+  }
+
+  public void setProblemByProblemId(Problem problemByProblemId) {
+    this.problemByProblemId = problemByProblemId;
+  }
 }

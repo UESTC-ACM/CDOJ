@@ -43,75 +43,74 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 @Transactional
 public class JudgeService implements ApplicationContextAware, SettingsAware {
-	private Thread schedulerThread;
-	private static Thread[] judgeThreads;
-	/**
-	 * Judging Queue.
-	 */
-	private static final BlockingQueue<JudgeItem> judgeQueue = new LinkedBlockingQueue<>();
 
-	/**
-	 * Spring application context
-	 */
-	@Autowired
-	private ApplicationContext applicationContext;
+  private Thread schedulerThread;
+  private static Thread[] judgeThreads;
+  /**
+   * Judging Queue.
+   */
+  private static final BlockingQueue<JudgeItem> judgeQueue = new LinkedBlockingQueue<>();
 
-	/**
-	 * Fetch global Settings for judge.
-	 */
-	@Autowired
-	private Settings settings;
+  /**
+   * Spring application context
+   */
+  @Autowired
+  private ApplicationContext applicationContext;
 
-	/**
-	 * Initialize the judge threads.
-	 */
-	public void init() {
-		Scheduler scheduler = applicationContext.getBean("scheduler",
-				Scheduler.class);
-		scheduler.setJudgeQueue(judgeQueue);
-		schedulerThread = new Thread(scheduler);
-		judgeThreads = new Thread[settings.JUDGE_LIST.size()];
-		Judge[] judges = new Judge[settings.JUDGE_LIST.size()];
-		for (int i = 0; i < judgeThreads.length; ++i) {
-			judges[i] = applicationContext.getBean("judge", Judge.class);
-			judges[i].setJudgeQueue(judgeQueue);
-			judges[i].setWorkPath(settings.JUDGE_TEMP_PATH + "/"
-					+ settings.JUDGE_LIST.get(i).get("name") + "/");
-			judges[i].setTempPath(settings.JUDGE_TEMP_PATH + "/"
-					+ settings.JUDGE_LIST.get(i).get("name") + "/temp/");
-			judges[i].setJudgeName(settings.JUDGE_LIST.get(i).get("name"));
-			judgeThreads[i] = new Thread(judges[i]);
-			judgeThreads[i].start();
-		}
-		schedulerThread.start();
-	}
+  /**
+   * Fetch global Settings for judge.
+   */
+  @Autowired
+  private Settings settings;
 
-	/**
-	 * Destroy the judge threads.
-	 */
-	public void destroy() {
-		System.out.println("[Destroy JudgeService!]");
-		try {
-			if (schedulerThread.isAlive()) {
-				schedulerThread.interrupt();
-			}
-			for (Thread judgeThread : judgeThreads) {
-				if (judgeThread.isAlive()) {
-					judgeThread.interrupt();
-				}
-			}
-		} catch (SecurityException ignored) {
-		}
-	}
+  /**
+   * Initialize the judge threads.
+   */
+  public void init() {
+    Scheduler scheduler = applicationContext.getBean("scheduler", Scheduler.class);
+    scheduler.setJudgeQueue(judgeQueue);
+    schedulerThread = new Thread(scheduler);
+    judgeThreads = new Thread[settings.JUDGE_LIST.size()];
+    Judge[] judges = new Judge[settings.JUDGE_LIST.size()];
+    for (int i = 0; i < judgeThreads.length; ++i) {
+      judges[i] = applicationContext.getBean("judge", Judge.class);
+      judges[i].setJudgeQueue(judgeQueue);
+      judges[i].setWorkPath(settings.JUDGE_TEMP_PATH + "/" + settings.JUDGE_LIST.get(i).get("name")
+          + "/");
+      judges[i].setTempPath(settings.JUDGE_TEMP_PATH + "/" + settings.JUDGE_LIST.get(i).get("name")
+          + "/temp/");
+      judges[i].setJudgeName(settings.JUDGE_LIST.get(i).get("name"));
+      judgeThreads[i] = new Thread(judges[i]);
+      judgeThreads[i].start();
+    }
+    schedulerThread.start();
+  }
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext)
-			throws BeansException {
-		this.applicationContext = applicationContext;
-	}
+  /**
+   * Destroy the judge threads.
+   */
+  public void destroy() {
+    System.out.println("[Destroy JudgeService!]");
+    try {
+      if (schedulerThread.isAlive()) {
+        schedulerThread.interrupt();
+      }
+      for (Thread judgeThread : judgeThreads) {
+        if (judgeThread.isAlive()) {
+          judgeThread.interrupt();
+        }
+      }
+    } catch (SecurityException ignored) {
+    }
+  }
 
-	@Override
-	public void setSettings(Settings settings) {
-		this.settings = settings;
-	}
+  @Override
+  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    this.applicationContext = applicationContext;
+  }
+
+  @Override
+  public void setSettings(Settings settings) {
+    this.settings = settings;
+  }
 }

@@ -31,11 +31,11 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
  * @see IProblemDAO
  */
 public interface ProblemDAOAware {
-	/**
-	 * put problemDAO into class
-	 * 
-	 * @param problemDAO
-	 *            specific problem DAO entity
-	 */
-	public void setProblemDAO(IProblemDAO problemDAO);
+
+  /**
+   * put problemDAO into class
+   * 
+   * @param problemDAO specific problem DAO entity
+   */
+  public void setProblemDAO(IProblemDAO problemDAO);
 }

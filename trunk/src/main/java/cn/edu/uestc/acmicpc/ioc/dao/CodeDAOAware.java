@@ -31,11 +31,11 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ICodeDAO;
  * @see ICodeDAO
  */
 public interface CodeDAOAware {
-	/**
-	 * Put codeDAO into class.
-	 * 
-	 * @param codeDAO
-	 *            codeDAO object
-	 */
-	public void setCodeDAO(ICodeDAO codeDAO);
+
+  /**
+   * Put codeDAO into class.
+   * 
+   * @param codeDAO codeDAO object
+   */
+  public void setCodeDAO(ICodeDAO codeDAO);
 }

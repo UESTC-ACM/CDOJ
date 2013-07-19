@@ -37,77 +37,79 @@ import java.util.Collection;
 @Entity
 @KeyField("codeId")
 public class Code implements Serializable {
-	private static final long serialVersionUID = 6092881044668152921L;
-	private Integer codeId;
 
-	private Integer version;
+  private static final long serialVersionUID = 6092881044668152921L;
+  private Integer codeId;
 
-	@Version
-	@Column(name = "OPTLOCK")
-	public Integer getVersion() {
-		return version;
-	}
+  private Integer version;
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+  @Version
+  @Column(name = "OPTLOCK")
+  public Integer getVersion() {
+    return version;
+  }
 
-	@Column(name = "codeId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
-	@Id
-	@GeneratedValue
-	public Integer getCodeId() {
-		return codeId;
-	}
+  public void setVersion(Integer version) {
+    this.version = version;
+  }
 
-	public void setCodeId(Integer codeId) {
-		this.codeId = codeId;
-	}
+  @Column(name = "codeId", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0, unique = true)
+  @Id
+  @GeneratedValue
+  public Integer getCodeId() {
+    return codeId;
+  }
 
-	private String content;
+  public void setCodeId(Integer codeId) {
+    this.codeId = codeId;
+  }
 
-	@Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
-	@Basic
-	public String getContent() {
-		return content;
-	}
+  private String content;
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+  @Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535,
+      precision = 0)
+  @Basic
+  public String getContent() {
+    return content;
+  }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+  public void setContent(String content) {
+    this.content = content;
+  }
 
-		Code code = (Code) o;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
 
-		if (!codeId.equals(code.codeId))
-			return false;
-		if (content != null ? !content.equals(code.content)
-				: code.content != null)
-			return false;
+    Code code = (Code) o;
 
-		return true;
-	}
+    if (!codeId.equals(code.codeId))
+      return false;
+    if (content != null ? !content.equals(code.content) : code.content != null)
+      return false;
 
-	@Override
-	public int hashCode() {
-		int result = codeId;
-		result = 31 * result + (content != null ? content.hashCode() : 0);
-		return result;
-	}
+    return true;
+  }
 
-	private Collection<Status> statusesByCodeId;
+  @Override
+  public int hashCode() {
+    int result = codeId;
+    result = 31 * result + (content != null ? content.hashCode() : 0);
+    return result;
+  }
 
-	@OneToMany(mappedBy = "codeByCodeId")
-	public Collection<Status> getStatusesByCodeId() {
-		return statusesByCodeId;
-	}
+  private Collection<Status> statusesByCodeId;
 
-	public void setStatusesByCodeId(Collection<Status> statusesByCodeId) {
-		this.statusesByCodeId = statusesByCodeId;
-	}
+  @OneToMany(mappedBy = "codeByCodeId")
+  public Collection<Status> getStatusesByCodeId() {
+    return statusesByCodeId;
+  }
+
+  public void setStatusesByCodeId(Collection<Status> statusesByCodeId) {
+    this.statusesByCodeId = statusesByCodeId;
+  }
 }

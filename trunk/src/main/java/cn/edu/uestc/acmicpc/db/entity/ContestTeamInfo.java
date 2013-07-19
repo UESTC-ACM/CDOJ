@@ -36,217 +36,228 @@ import java.io.Serializable;
 @Entity
 @KeyField("teamId")
 public class ContestTeamInfo implements Serializable {
-	private static final long serialVersionUID = -5816811480409208296L;
-	private Integer teamId;
 
-	private Integer version;
+  private static final long serialVersionUID = -5816811480409208296L;
+  private Integer teamId;
 
-	@Version
-	@Column(name = "OPTLOCK")
-	public Integer getVersion() {
-		return version;
-	}
+  private Integer version;
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+  @Version
+  @Column(name = "OPTLOCK")
+  public Integer getVersion() {
+    return version;
+  }
 
-	@Column(name = "teamId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
-	@Id
-	@GeneratedValue
-	public Integer getTeamId() {
-		return teamId;
-	}
+  public void setVersion(Integer version) {
+    this.version = version;
+  }
 
-	public void setTeamId(Integer teamId) {
-		this.teamId = teamId;
-	}
+  @Column(name = "teamId", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0, unique = true)
+  @Id
+  @GeneratedValue
+  public Integer getTeamId() {
+    return teamId;
+  }
 
-	private Integer userId;
+  public void setTeamId(Integer teamId) {
+    this.teamId = teamId;
+  }
 
-	@Column(name = "userId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
-	@Basic
-	public Integer getUserId() {
-		return userId;
-	}
+  private Integer userId;
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+  @Column(name = "userId", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  @Basic
+  public Integer getUserId() {
+    return userId;
+  }
 
-	private String name;
+  public void setUserId(Integer userId) {
+    this.userId = userId;
+  }
 
-	@Column(name = "name", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
-	@Basic
-	public String getName() {
-		return name;
-	}
+  private String name;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  @Column(name = "name", nullable = false, insertable = true, updatable = true, length = 50,
+      precision = 0)
+  @Basic
+  public String getName() {
+    return name;
+  }
 
-	private String coderName;
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	@Column(name = "coderName", nullable = false, insertable = true, updatable = true, length = 150, precision = 0)
-	@Basic
-	public String getCoderName() {
-		return coderName;
-	}
+  private String coderName;
 
-	public void setCoderName(String coderName) {
-		this.coderName = coderName;
-	}
+  @Column(name = "coderName", nullable = false, insertable = true, updatable = true, length = 150,
+      precision = 0)
+  @Basic
+  public String getCoderName() {
+    return coderName;
+  }
 
-	private String sex;
+  public void setCoderName(String coderName) {
+    this.coderName = coderName;
+  }
 
-	@Column(name = "sex", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
-	@Basic
-	public String getSex() {
-		return sex;
-	}
+  private String sex;
 
-	public void setSex(String sex) {
-		this.sex = sex;
-	}
+  @Column(name = "sex", nullable = false, insertable = true, updatable = true, length = 3,
+      precision = 0)
+  @Basic
+  public String getSex() {
+    return sex;
+  }
 
-	private String department;
+  public void setSex(String sex) {
+    this.sex = sex;
+  }
 
-	@Column(name = "department", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
-	@Basic
-	public String getDepartment() {
-		return department;
-	}
+  private String department;
 
-	public void setDepartment(String department) {
-		this.department = department;
-	}
+  @Column(name = "department", nullable = false, insertable = true, updatable = true, length = 50,
+      precision = 0)
+  @Basic
+  public String getDepartment() {
+    return department;
+  }
 
-	private String grade;
+  public void setDepartment(String department) {
+    this.department = department;
+  }
 
-	@Column(name = "grade", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
-	@Basic
-	public String getGrade() {
-		return grade;
-	}
+  private String grade;
 
-	public void setGrade(String grade) {
-		this.grade = grade;
-	}
+  @Column(name = "grade", nullable = false, insertable = true, updatable = true, length = 50,
+      precision = 0)
+  @Basic
+  public String getGrade() {
+    return grade;
+  }
 
-	private String phone;
+  public void setGrade(String grade) {
+    this.grade = grade;
+  }
 
-	@Column(name = "phone", nullable = false, insertable = true, updatable = true, length = 100, precision = 0)
-	@Basic
-	public String getPhone() {
-		return phone;
-	}
+  private String phone;
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+  @Column(name = "phone", nullable = false, insertable = true, updatable = true, length = 100,
+      precision = 0)
+  @Basic
+  public String getPhone() {
+    return phone;
+  }
 
-	private String size;
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
 
-	@Column(name = "size", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
-	@Basic
-	public String getSize() {
-		return size;
-	}
+  private String size;
 
-	public void setSize(String size) {
-		this.size = size;
-	}
+  @Column(name = "size", nullable = false, insertable = true, updatable = true, length = 50,
+      precision = 0)
+  @Basic
+  public String getSize() {
+    return size;
+  }
 
-	private String email;
+  public void setSize(String size) {
+    this.size = size;
+  }
 
-	@Column(name = "email", nullable = false, insertable = true, updatable = true, length = 300, precision = 0)
-	@Basic
-	public String getEmail() {
-		return email;
-	}
+  private String email;
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+  @Column(name = "email", nullable = false, insertable = true, updatable = true, length = 300,
+      precision = 0)
+  @Basic
+  public String getEmail() {
+    return email;
+  }
 
-	private String school;
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-	@Column(name = "school", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
-	@Basic
-	public String getSchool() {
-		return school;
-	}
+  private String school;
 
-	public void setSchool(String school) {
-		this.school = school;
-	}
+  @Column(name = "school", nullable = false, insertable = true, updatable = true, length = 50,
+      precision = 0)
+  @Basic
+  public String getSchool() {
+    return school;
+  }
 
-	private Byte state;
+  public void setSchool(String school) {
+    this.school = school;
+  }
 
-	@Column(name = "state", nullable = false, insertable = true, updatable = true, length = 3, precision = 0)
-	@Basic
-	public Byte getState() {
-		return state;
-	}
+  private Byte state;
 
-	public void setState(Byte state) {
-		this.state = state;
-	}
+  @Column(name = "state", nullable = false, insertable = true, updatable = true, length = 3,
+      precision = 0)
+  @Basic
+  public Byte getState() {
+    return state;
+  }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+  public void setState(Byte state) {
+    this.state = state;
+  }
 
-		ContestTeamInfo that = (ContestTeamInfo) o;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
 
-		if (!state.equals(that.state))
-			return false;
-		if (!teamId.equals(that.teamId))
-			return false;
-		if (!userId.equals(that.userId))
-			return false;
-		if (coderName != null ? !coderName.equals(that.coderName)
-				: that.coderName != null)
-			return false;
-		if (department != null ? !department.equals(that.department)
-				: that.department != null)
-			return false;
-		if (email != null ? !email.equals(that.email) : that.email != null)
-			return false;
-		if (grade != null ? !grade.equals(that.grade) : that.grade != null)
-			return false;
-		if (name != null ? !name.equals(that.name) : that.name != null)
-			return false;
-		if (phone != null ? !phone.equals(that.phone) : that.phone != null)
-			return false;
-		if (school != null ? !school.equals(that.school) : that.school != null)
-			return false;
-		if (sex != null ? !sex.equals(that.sex) : that.sex != null)
-			return false;
-		if (size != null ? !size.equals(that.size) : that.size != null)
-			return false;
+    ContestTeamInfo that = (ContestTeamInfo) o;
 
-		return true;
-	}
+    if (!state.equals(that.state))
+      return false;
+    if (!teamId.equals(that.teamId))
+      return false;
+    if (!userId.equals(that.userId))
+      return false;
+    if (coderName != null ? !coderName.equals(that.coderName) : that.coderName != null)
+      return false;
+    if (department != null ? !department.equals(that.department) : that.department != null)
+      return false;
+    if (email != null ? !email.equals(that.email) : that.email != null)
+      return false;
+    if (grade != null ? !grade.equals(that.grade) : that.grade != null)
+      return false;
+    if (name != null ? !name.equals(that.name) : that.name != null)
+      return false;
+    if (phone != null ? !phone.equals(that.phone) : that.phone != null)
+      return false;
+    if (school != null ? !school.equals(that.school) : that.school != null)
+      return false;
+    if (sex != null ? !sex.equals(that.sex) : that.sex != null)
+      return false;
+    if (size != null ? !size.equals(that.size) : that.size != null)
+      return false;
 
-	@Override
-	public int hashCode() {
-		int result = teamId;
-		result = 31 * result + userId;
-		result = 31 * result + (name != null ? name.hashCode() : 0);
-		result = 31 * result + (coderName != null ? coderName.hashCode() : 0);
-		result = 31 * result + (sex != null ? sex.hashCode() : 0);
-		result = 31 * result + (department != null ? department.hashCode() : 0);
-		result = 31 * result + (grade != null ? grade.hashCode() : 0);
-		result = 31 * result + (phone != null ? phone.hashCode() : 0);
-		result = 31 * result + (size != null ? size.hashCode() : 0);
-		result = 31 * result + (email != null ? email.hashCode() : 0);
-		result = 31 * result + (school != null ? school.hashCode() : 0);
-		result = 31 * result + (int) state;
-		return result;
-	}
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = teamId;
+    result = 31 * result + userId;
+    result = 31 * result + (name != null ? name.hashCode() : 0);
+    result = 31 * result + (coderName != null ? coderName.hashCode() : 0);
+    result = 31 * result + (sex != null ? sex.hashCode() : 0);
+    result = 31 * result + (department != null ? department.hashCode() : 0);
+    result = 31 * result + (grade != null ? grade.hashCode() : 0);
+    result = 31 * result + (phone != null ? phone.hashCode() : 0);
+    result = 31 * result + (size != null ? size.hashCode() : 0);
+    result = 31 * result + (email != null ? email.hashCode() : 0);
+    result = 31 * result + (school != null ? school.hashCode() : 0);
+    result = 31 * result + (int) state;
+    return result;
+  }
 }

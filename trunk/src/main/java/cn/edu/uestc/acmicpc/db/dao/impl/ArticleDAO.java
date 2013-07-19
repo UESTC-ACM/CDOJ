@@ -32,13 +32,14 @@ import cn.edu.uestc.acmicpc.db.entity.Article;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ArticleDAO extends DAO<Article, Integer> implements IArticleDAO {
-	@Override
-	protected Class<Integer> getPKClass() {
-		return Integer.class;
-	}
 
-	@Override
-	protected Class<Article> getReferenceClass() {
-		return Article.class;
-	}
+  @Override
+  protected Class<Integer> getPKClass() {
+    return Integer.class;
+  }
+
+  @Override
+  protected Class<Article> getReferenceClass() {
+    return Article.class;
+  }
 }

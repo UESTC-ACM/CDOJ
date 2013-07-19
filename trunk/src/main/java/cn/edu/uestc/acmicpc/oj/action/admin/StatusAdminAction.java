@@ -37,157 +37,149 @@ import java.util.Map;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class StatusAdminAction extends BaseAction implements
-		StatusConditionAware, StatusDAOAware {
+public class StatusAdminAction extends BaseAction implements StatusConditionAware, StatusDAOAware {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = 6378799941605291392L;
+  private static final long serialVersionUID = 6378799941605291392L;
 
-	@SkipValidation
-	public String toStatusList() {
-		return SUCCESS;
-	}
+  @SkipValidation
+  public String toStatusList() {
+    return SUCCESS;
+  }
 
-	/**
-	 * StatusDAO for status queries.
-	 */
-	@Autowired
-	private IStatusDAO statusDAO;
-	@Autowired
-	private StatusCondition statusCondition;
+  /**
+   * StatusDAO for status queries.
+   */
+  @Autowired
+  private IStatusDAO statusDAO;
+  @Autowired
+  private StatusCondition statusCondition;
 
-	/**
-	 * Search action.
-	 * <p/>
-	 * Find all records by conditions and return them as a list in JSON, and the
-	 * condition set will set in JSON named "condition".
-	 * <p/>
-	 * <strong>JSON output</strong>:
-	 * <ul>
-	 * <li>
-	 * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>,
-	 * "condition", <strong>ProblemCondition entity</strong>,
-	 * "problemList":<strong>query result</strong>}</li>
-	 * <li>
-	 * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-	 * </li>
-	 * </ul>
-	 * 
-	 * @return <strong>JSON</strong> signal
-	 */
-	@SuppressWarnings("unchecked")
-	@SkipValidation
-	public String toSearch() {
-		try {
-			Condition condition = statusCondition.getCondition();
-			Long count = statusDAO.count(statusCondition.getCondition());
-			PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
-			condition.setCurrentPage(pageInfo.getCurrentPage());
-			condition.setCountPerPage(RECORD_PER_PAGE);
-			condition.addOrder("statusId", false);
-			List<Status> statusList = (List<Status>) statusDAO
-					.findAll(condition);
-			List<StatusView> statusViewList = new ArrayList<>();
-			for (Status status : statusList)
-				statusViewList.add(new StatusView(status));
-			json.put("pageInfo", pageInfo.getHtmlString());
-			json.put("result", "ok");
-			json.put("statusList", statusViewList);
-		} catch (AppException e) {
-			json.put("result", "error");
-			json.put("error_msg", e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			json.put("result", "error");
-			json.put("error_msg", "Unknown exception occurred.");
-		}
-		return JSON;
-	}
+  /**
+   * Search action.
+   * <p/>
+   * Find all records by conditions and return them as a list in JSON, and the condition set will
+   * set in JSON named "condition".
+   * <p/>
+   * <strong>JSON output</strong>:
+   * <ul>
+   * <li>
+   * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>, "condition",
+   * <strong>ProblemCondition entity</strong>, "problemList":<strong>query result</strong>}</li>
+   * <li>
+   * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
+   * </ul>
+   * 
+   * @return <strong>JSON</strong> signal
+   */
+  @SuppressWarnings("unchecked")
+  @SkipValidation
+  public String toSearch() {
+    try {
+      Condition condition = statusCondition.getCondition();
+      Long count = statusDAO.count(statusCondition.getCondition());
+      PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
+      condition.setCurrentPage(pageInfo.getCurrentPage());
+      condition.setCountPerPage(RECORD_PER_PAGE);
+      condition.addOrder("statusId", false);
+      List<Status> statusList = (List<Status>) statusDAO.findAll(condition);
+      List<StatusView> statusViewList = new ArrayList<>();
+      for (Status status : statusList)
+        statusViewList.add(new StatusView(status));
+      json.put("pageInfo", pageInfo.getHtmlString());
+      json.put("result", "ok");
+      json.put("statusList", statusViewList);
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return JSON;
+  }
 
-	/**
-	 * Count rejudge operator will influence how many status.
-	 * <p/>
-	 * Find all records by conditions and return them as a list in JSON
-	 * <p/>
-	 * <strong>JSON output</strong>:
-	 * <ul>
-	 * <li>
-	 * For success: {"result":"ok", "count":<strong>Tot status will
-	 * influence</strong>}</li>
-	 * <li>
-	 * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-	 * </li>
-	 * </ul>
-	 * 
-	 * @return <strong>JSON</strong> signal
-	 */
-	public String toCountRejudge() {
-		try {
-			Long count = statusDAO.count(statusCondition.getCondition());
+  /**
+   * Count rejudge operator will influence how many status.
+   * <p/>
+   * Find all records by conditions and return them as a list in JSON
+   * <p/>
+   * <strong>JSON output</strong>:
+   * <ul>
+   * <li>
+   * For success: {"result":"ok", "count":<strong>Tot status will influence</strong>}</li>
+   * <li>
+   * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
+   * </ul>
+   * 
+   * @return <strong>JSON</strong> signal
+   */
+  public String toCountRejudge() {
+    try {
+      Long count = statusDAO.count(statusCondition.getCondition());
 
-			json.put("result", "ok");
-			json.put("count", count);
-		} catch (AppException e) {
-			json.put("result", "error");
-			json.put("error_msg", e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			json.put("result", "error");
-			json.put("error_msg", "Unknown exception occurred.");
-		}
-		return JSON;
-	}
+      json.put("result", "ok");
+      json.put("count", count);
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return JSON;
+  }
 
-	/**
-	 * Rejudge action.
-	 * <p/>
-	 * Find all records by conditions and return them as a list in JSON
-	 * <p/>
-	 * <strong>JSON output</strong>:
-	 * <ul>
-	 * <li>
-	 * For success: {"result":"ok"}</li>
-	 * <li>
-	 * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-	 * </li>
-	 * </ul>
-	 * 
-	 * @return <strong>JSON</strong> signal
-	 */
-	public String toRejudge() {
-		try {
-			Condition condition = statusCondition.getCondition();
-			Map<String, Object> properties = new HashMap<>();
-			properties.put("result",
-					Global.OnlineJudgeReturnType.OJ_REJUDGING.ordinal());
-			statusDAO.updateEntitiesByCondition(properties, condition);
-			json.put("result", "ok");
-		} catch (AppException e) {
-			json.put("result", "error");
-			json.put("error_msg", e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			json.put("result", "error");
-			json.put("error_msg", "Unknown exception occurred.");
-		}
-		return JSON;
-	}
+  /**
+   * Rejudge action.
+   * <p/>
+   * Find all records by conditions and return them as a list in JSON
+   * <p/>
+   * <strong>JSON output</strong>:
+   * <ul>
+   * <li>
+   * For success: {"result":"ok"}</li>
+   * <li>
+   * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
+   * </ul>
+   * 
+   * @return <strong>JSON</strong> signal
+   */
+  public String toRejudge() {
+    try {
+      Condition condition = statusCondition.getCondition();
+      Map<String, Object> properties = new HashMap<>();
+      properties.put("result", Global.OnlineJudgeReturnType.OJ_REJUDGING.ordinal());
+      statusDAO.updateEntitiesByCondition(properties, condition);
+      json.put("result", "ok");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return JSON;
+  }
 
-	@Override
-	public void setStatusCondition(StatusCondition statusCondition) {
-		this.statusCondition = statusCondition;
-	}
+  @Override
+  public void setStatusCondition(StatusCondition statusCondition) {
+    this.statusCondition = statusCondition;
+  }
 
-	@Override
-	public StatusCondition getStatusCondition() {
-		return statusCondition;
-	}
+  @Override
+  public StatusCondition getStatusCondition() {
+    return statusCondition;
+  }
 
-	@Override
-	public void setStatusDAO(IStatusDAO statusDAO) {
-		this.statusDAO = statusDAO;
-	}
+  @Override
+  public void setStatusDAO(IStatusDAO statusDAO) {
+    this.statusDAO = statusDAO;
+  }
 
 }

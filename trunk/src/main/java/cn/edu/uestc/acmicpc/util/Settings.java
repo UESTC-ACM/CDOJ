@@ -41,217 +41,201 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Global static class to get configuration parameters from
- * <strong>settings.xml</strong>.
+ * Global static class to get configuration parameters from <strong>settings.xml</strong>.
  * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class Settings implements ApplicationContextAware {
 
-	/**
-	 * Host
-	 */
-	public String SETTING_HOST;
+  /**
+   * Host
+   */
+  public String SETTING_HOST;
 
-	/**
-	 * Global encoding
-	 */
-	public String SETTING_ENCODING;
+  /**
+   * Global encoding
+   */
+  public String SETTING_ENCODING;
 
-	/**
-	 * Upload file size limit(in MB)
-	 */
-	public Integer SETTING_UPLOAD_SIZE;
+  /**
+   * Upload file size limit(in MB)
+   */
+  public Integer SETTING_UPLOAD_SIZE;
 
-	/**
-	 * Upload file's types
-	 */
-	public String SETTING_UPLOAD_TYPES;
+  /**
+   * Upload file's types
+   */
+  public String SETTING_UPLOAD_TYPES;
 
-	/**
-	 * Upload files store folder
-	 */
-	public String SETTING_UPLOAD_FOLDER;
+  /**
+   * Upload files store folder
+   */
+  public String SETTING_UPLOAD_FOLDER;
 
-	/**
-	 * Problems' pictures store folder
-	 */
-	public String SETTING_PROBLEM_PICTURE_FOLDER;
-	public String SETTING_PROBLEM_PICTURE_FOLDER_ABSOLUTE;
+  /**
+   * Problems' pictures store folder
+   */
+  public String SETTING_PROBLEM_PICTURE_FOLDER;
+  public String SETTING_PROBLEM_PICTURE_FOLDER_ABSOLUTE;
 
-	/**
-	 * Article' pictures store folder
-	 */
-	public String SETTING_ARTICLE_PICTURE_FOLDER;
-	public String SETTING_ARTICLE_PICTURE_FOLDER_ABSOLUTE;
+  /**
+   * Article' pictures store folder
+   */
+  public String SETTING_ARTICLE_PICTURE_FOLDER;
+  public String SETTING_ARTICLE_PICTURE_FOLDER_ABSOLUTE;
 
-	/**
-	 * Judge core's name.
-	 */
-	public String JUDGE_JUDGE_CORE;
+  /**
+   * Judge core's name.
+   */
+  public String JUDGE_JUDGE_CORE;
 
-	/**
-	 * Data path name
-	 */
-	public String JUDGE_DATA_PATH;
+  /**
+   * Data path name
+   */
+  public String JUDGE_DATA_PATH;
 
-	/**
-	 * Work path name
-	 */
-	public String JUDGE_TEMP_PATH;
+  /**
+   * Work path name
+   */
+  public String JUDGE_TEMP_PATH;
 
-	public String EMAIL_USERNAME;
-	public String EMAIL_PASSWORD;
-	public String EMAIL_SMTP_SERVER;
-	public String EMAIL_ADDRESS;
+  public String EMAIL_USERNAME;
+  public String EMAIL_PASSWORD;
+  public String EMAIL_SMTP_SERVER;
+  public String EMAIL_ADDRESS;
 
-	/**
-	 * Judge information list
-	 */
-	public List<Map<String, String>> JUDGE_LIST;
+  /**
+   * Judge information list
+   */
+  public List<Map<String, String>> JUDGE_LIST;
 
-	/**
-	 * setting map from configuration file.
-	 */
-	private static Map<String, Object> settings;
+  /**
+   * setting map from configuration file.
+   */
+  private static Map<String, Object> settings;
 
-	/**
-	 * location of <strong>settings.xml</strong>.
-	 */
-	private static final String SETTINGS_XML_PATH = "classpath:settings.xml";
+  /**
+   * location of <strong>settings.xml</strong>.
+   */
+  private static final String SETTINGS_XML_PATH = "classpath:settings.xml";
 
-	/**
-	 * Spring application context
-	 */
-	@Autowired
-	private ApplicationContext applicationContext;
+  /**
+   * Spring application context
+   */
+  @Autowired
+  private ApplicationContext applicationContext;
 
-	private String getAbsolutePath(String path) throws IOException {
-		return applicationContext.getResource("").getFile().getAbsolutePath()
-				+ "/" + path;
-	}
+  private String getAbsolutePath(String path) throws IOException {
+    return applicationContext.getResource("").getFile().getAbsolutePath() + "/" + path;
+  }
 
-	/**
-	 * initialize configuration mappings from configuration file.
-	 * 
-	 * @throws cn.edu.uestc.acmicpc.util.exception.AppException
-	 * 
-	 */
-	@SuppressWarnings({ "unchecked", "unused" })
-	private void init() throws AppException, IOException {
-		settings = new HashMap<>();
-		String path;
-		ResourceLoader loader = new DefaultResourceLoader();
-		Resource resource = loader.getResource(SETTINGS_XML_PATH);
-		try {
-			path = resource.getFile().getPath();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
-		}
-		XmlParser xmlParser = new XmlParser(path);
-		XmlNode root;
-		try {
-			root = xmlParser.parse().getChildList().get(0);
-		} catch (IndexOutOfBoundsException e) {
-			throw new AppException("there no root node in the settings file.");
-		}
-		for (XmlNode node : root.getChildList()) { // settings
-			Map<String, Object> map = new HashMap<>();
-			for (XmlNode childNode : node.getChildList()) { // item or list
-				if (childNode.getTagName().trim().equals("list")) {
-					List<Map<String, String>> list = new LinkedList<>();
-					for (XmlNode childNode2 : childNode.getChildList()) { // item
-						list.add(parseItem(childNode2));
-					}
-					map.put(childNode.getAttribute("name").trim(), list);
-				} else { // item
-					map.put(childNode.getAttribute("name").trim(),
-							parseItem(childNode));
-				}
-			}
-			settings.put(node.getAttribute("name").trim(), map);
-		}
+  /**
+   * initialize configuration mappings from configuration file.
+   * 
+   * @throws cn.edu.uestc.acmicpc.util.exception.AppException
+   * 
+   */
+  @SuppressWarnings({ "unchecked", "unused" })
+  private void init() throws AppException, IOException {
+    settings = new HashMap<>();
+    String path;
+    ResourceLoader loader = new DefaultResourceLoader();
+    Resource resource = loader.getResource(SETTINGS_XML_PATH);
+    try {
+      path = resource.getFile().getPath();
+    } catch (IOException e) {
+      e.printStackTrace();
+      return;
+    }
+    XmlParser xmlParser = new XmlParser(path);
+    XmlNode root;
+    try {
+      root = xmlParser.parse().getChildList().get(0);
+    } catch (IndexOutOfBoundsException e) {
+      throw new AppException("there no root node in the settings file.");
+    }
+    for (XmlNode node : root.getChildList()) { // settings
+      Map<String, Object> map = new HashMap<>();
+      for (XmlNode childNode : node.getChildList()) { // item or list
+        if (childNode.getTagName().trim().equals("list")) {
+          List<Map<String, String>> list = new LinkedList<>();
+          for (XmlNode childNode2 : childNode.getChildList()) { // item
+            list.add(parseItem(childNode2));
+          }
+          map.put(childNode.getAttribute("name").trim(), list);
+        } else { // item
+          map.put(childNode.getAttribute("name").trim(), parseItem(childNode));
+        }
+      }
+      settings.put(node.getAttribute("name").trim(), map);
+    }
 
-		SETTING_HOST = (String) getConfig("setting", "host", "value");
-		SETTING_ENCODING = (String) getConfig("setting", "encoding", "value");
-		SETTING_UPLOAD_SIZE = Integer.valueOf((String) getConfig("setting",
-				"uploadSize", "value"));
-		SETTING_UPLOAD_TYPES = (String) getConfig("setting", "uploadTypes",
-				"value");
-		SETTING_UPLOAD_FOLDER = getAbsolutePath((String) getConfig("setting",
-				"uploadFolder", "value"));
-		SETTING_PROBLEM_PICTURE_FOLDER = (String) getConfig("setting",
-				"problemPictureFolder", "value");
-		SETTING_ARTICLE_PICTURE_FOLDER = (String) getConfig("setting",
-				"articlePictureFolder", "value");
-		SETTING_PROBLEM_PICTURE_FOLDER_ABSOLUTE = getAbsolutePath((String) getConfig(
-				"setting", "problemPictureFolder", "value"));
-		SETTING_ARTICLE_PICTURE_FOLDER_ABSOLUTE = getAbsolutePath((String) getConfig(
-				"setting", "articlePictureFolder", "value"));
+    SETTING_HOST = (String) getConfig("setting", "host", "value");
+    SETTING_ENCODING = (String) getConfig("setting", "encoding", "value");
+    SETTING_UPLOAD_SIZE = Integer.valueOf((String) getConfig("setting", "uploadSize", "value"));
+    SETTING_UPLOAD_TYPES = (String) getConfig("setting", "uploadTypes", "value");
+    SETTING_UPLOAD_FOLDER = getAbsolutePath((String) getConfig("setting", "uploadFolder", "value"));
+    SETTING_PROBLEM_PICTURE_FOLDER = (String) getConfig("setting", "problemPictureFolder", "value");
+    SETTING_ARTICLE_PICTURE_FOLDER = (String) getConfig("setting", "articlePictureFolder", "value");
+    SETTING_PROBLEM_PICTURE_FOLDER_ABSOLUTE =
+        getAbsolutePath((String) getConfig("setting", "problemPictureFolder", "value"));
+    SETTING_ARTICLE_PICTURE_FOLDER_ABSOLUTE =
+        getAbsolutePath((String) getConfig("setting", "articlePictureFolder", "value"));
 
-		JUDGE_JUDGE_CORE = (String) getConfig("judge", "judgeCore", "value");
-		JUDGE_DATA_PATH = getAbsolutePath((String) getConfig("judge",
-				"dataPath", "value"));
-		JUDGE_TEMP_PATH = getAbsolutePath((String) getConfig("judge",
-				"tempPath", "value"));
-		JUDGE_LIST = (List<Map<String, String>>) getConfig("judge", "judges");
+    JUDGE_JUDGE_CORE = (String) getConfig("judge", "judgeCore", "value");
+    JUDGE_DATA_PATH = getAbsolutePath((String) getConfig("judge", "dataPath", "value"));
+    JUDGE_TEMP_PATH = getAbsolutePath((String) getConfig("judge", "tempPath", "value"));
+    JUDGE_LIST = (List<Map<String, String>>) getConfig("judge", "judges");
 
-		EMAIL_ADDRESS = (String) getConfig("email", "address", "value");
-		EMAIL_USERNAME = (String) getConfig("email", "username", "value");
-		EMAIL_PASSWORD = (String) getConfig("email", "password", "value");
-		EMAIL_SMTP_SERVER = (String) getConfig("email", "smtpServer", "value");
-	}
+    EMAIL_ADDRESS = (String) getConfig("email", "address", "value");
+    EMAIL_USERNAME = (String) getConfig("email", "username", "value");
+    EMAIL_PASSWORD = (String) getConfig("email", "password", "value");
+    EMAIL_SMTP_SERVER = (String) getConfig("email", "smtpServer", "value");
+  }
 
-	/**
-	 * parse item's information
-	 * 
-	 * @param node
-	 *            item node
-	 * @return item map
-	 * @throws AppException
-	 */
-	private Map<String, String> parseItem(XmlNode node) throws AppException {
-		Map<String, String> result = new HashMap<>();
-		if (node.getInnerText() != null
-				&& !StringUtil.isNullOrWhiteSpace(node.getInnerText()))
-			result.put("value", node.getInnerText().trim());
-		for (XmlNode childNode : node.getChildList()) {
-			result.put(childNode.getAttribute("name"),
-					childNode.getAttribute("value").trim());
-		}
-		return result;
-	}
+  /**
+   * parse item's information
+   * 
+   * @param node item node
+   * @return item map
+   * @throws AppException
+   */
+  private Map<String, String> parseItem(XmlNode node) throws AppException {
+    Map<String, String> result = new HashMap<>();
+    if (node.getInnerText() != null && !StringUtil.isNullOrWhiteSpace(node.getInnerText()))
+      result.put("value", node.getInnerText().trim());
+    for (XmlNode childNode : node.getChildList()) {
+      result.put(childNode.getAttribute("name"), childNode.getAttribute("value").trim());
+    }
+    return result;
+  }
 
-	/**
-	 * Get configuration value from <strong>settings.xml</strong>.
-	 * 
-	 * @param path
-	 *            setting path
-	 * @return item value
-	 */
-	private Object getConfig(String... path) {
-		try {
-			Object current = settings;
-			for (String aPath : path) {
-				Method method = current.getClass().getMethod("get",
-						Object.class);
-				current = method.invoke(current, aPath);
-			}
-			if (current instanceof String) {
-				return ((String) current).trim();
-			} else {
-				return current;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+  /**
+   * Get configuration value from <strong>settings.xml</strong>.
+   * 
+   * @param path setting path
+   * @return item value
+   */
+  private Object getConfig(String... path) {
+    try {
+      Object current = settings;
+      for (String aPath : path) {
+        Method method = current.getClass().getMethod("get", Object.class);
+        current = method.invoke(current, aPath);
+      }
+      if (current instanceof String) {
+        return ((String) current).trim();
+      } else {
+        return current;
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext)
-			throws BeansException {
-		this.applicationContext = applicationContext;
-	}
+  @Override
+  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    this.applicationContext = applicationContext;
+  }
 }

@@ -33,19 +33,16 @@ import javax.servlet.ServletContext;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class BeanUtil {
-	/**
-	 * Get specific bean by bean name and servletContext.
-	 * 
-	 * @param beanName
-	 *            bean's name
-	 * @param servletContext
-	 *            servlet application
-	 * @return specific bean
-	 */
-	public static Object getBeanByServletContext(String beanName,
-			ServletContext servletContext) {
-		WebApplicationContext wc = WebApplicationContextUtils
-				.getWebApplicationContext(servletContext);
-		return wc.getBean(beanName);
-	}
+
+  /**
+   * Get specific bean by bean name and servletContext.
+   * 
+   * @param beanName bean's name
+   * @param servletContext servlet application
+   * @return specific bean
+   */
+  public static Object getBeanByServletContext(String beanName, ServletContext servletContext) {
+    WebApplicationContext wc = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+    return wc.getBean(beanName);
+  }
 }

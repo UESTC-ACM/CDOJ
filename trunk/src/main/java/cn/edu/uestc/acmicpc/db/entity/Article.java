@@ -38,232 +38,239 @@ import java.util.Collection;
 @Entity
 @KeyField("articleId")
 public class Article implements Serializable {
-	private static final long serialVersionUID = 8886825769658373290L;
-	private Integer articleId;
 
-	private Integer version;
+  private static final long serialVersionUID = 8886825769658373290L;
+  private Integer articleId;
 
-	@Version
-	@Column(name = "OPTLOCK")
-	public Integer getVersion() {
-		return version;
-	}
+  private Integer version;
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+  @Version
+  @Column(name = "OPTLOCK")
+  public Integer getVersion() {
+    return version;
+  }
 
-	@Column(name = "articleId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
-	@Id
-	@GeneratedValue
-	public Integer getArticleId() {
-		return articleId;
-	}
+  public void setVersion(Integer version) {
+    this.version = version;
+  }
 
-	public void setArticleId(Integer articleId) {
-		this.articleId = articleId;
-	}
+  @Column(name = "articleId", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0, unique = true)
+  @Id
+  @GeneratedValue
+  public Integer getArticleId() {
+    return articleId;
+  }
 
-	private String title;
+  public void setArticleId(Integer articleId) {
+    this.articleId = articleId;
+  }
 
-	@Column(name = "title", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
-	@Basic
-	public String getTitle() {
-		return title;
-	}
+  private String title;
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+  @Column(name = "title", nullable = false, insertable = true, updatable = true, length = 50,
+      precision = 0)
+  @Basic
+  public String getTitle() {
+    return title;
+  }
 
-	private String content;
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-	@Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535, precision = 0)
-	@Basic
-	public String getContent() {
-		return content;
-	}
+  private String content;
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+  @Column(name = "content", nullable = false, insertable = true, updatable = true, length = 65535,
+      precision = 0)
+  @Basic
+  public String getContent() {
+    return content;
+  }
 
-	private String author;
+  public void setContent(String content) {
+    this.content = content;
+  }
 
-	@Column(name = "author", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
-	@Basic
-	public String getAuthor() {
-		return author;
-	}
+  private String author;
 
-	public void setAuthor(String author) {
-		this.author = author;
-	}
+  @Column(name = "author", nullable = false, insertable = true, updatable = true, length = 50,
+      precision = 0)
+  @Basic
+  public String getAuthor() {
+    return author;
+  }
 
-	private Timestamp time;
+  public void setAuthor(String author) {
+    this.author = author;
+  }
 
-	@Column(name = "time", nullable = false, insertable = true, updatable = true, length = 19, precision = 0)
-	@Basic
-	public Timestamp getTime() {
-		return time;
-	}
+  private Timestamp time;
 
-	public void setTime(Timestamp time) {
-		this.time = time;
-	}
+  @Column(name = "time", nullable = false, insertable = true, updatable = true, length = 19,
+      precision = 0)
+  @Basic
+  public Timestamp getTime() {
+    return time;
+  }
 
-	private Integer clicked;
+  public void setTime(Timestamp time) {
+    this.time = time;
+  }
 
-	@Column(name = "clicked", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
-	@Basic
-	public Integer getClicked() {
-		return clicked;
-	}
+  private Integer clicked;
 
-	public void setClicked(Integer clicked) {
-		this.clicked = clicked;
-	}
+  @Column(name = "clicked", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  @Basic
+  public Integer getClicked() {
+    return clicked;
+  }
 
-	private Integer order;
+  public void setClicked(Integer clicked) {
+    this.clicked = clicked;
+  }
 
-	@Column(name = "`order`", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
-	@Basic
-	public Integer getOrder() {
-		return order;
-	}
+  private Integer order;
 
-	public void setOrder(Integer order) {
-		this.order = order;
-	}
+  @Column(name = "`order`", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  @Basic
+  public Integer getOrder() {
+    return order;
+  }
 
-	private Boolean isNotice;
+  public void setOrder(Integer order) {
+    this.order = order;
+  }
 
-	@Column(name = "isNotice", nullable = false, insertable = true, updatable = true, length = 0, precision = 0)
-	@Basic
-	public Boolean getIsNotice() {
-		return isNotice;
-	}
+  private Boolean isNotice;
 
-	public void setIsNotice(Boolean notice) {
-		isNotice = notice;
-	}
+  @Column(name = "isNotice", nullable = false, insertable = true, updatable = true, length = 0,
+      precision = 0)
+  @Basic
+  public Boolean getIsNotice() {
+    return isNotice;
+  }
 
-	private Boolean isVisible;
+  public void setIsNotice(Boolean notice) {
+    isNotice = notice;
+  }
 
-	@Column(name = "isVisible", nullable = false, insertable = true, updatable = true, length = 0, precision = 0)
-	@Basic
-	public Boolean getIsVisible() {
-		return isVisible;
-	}
+  private Boolean isVisible;
 
-	public void setIsVisible(Boolean visible) {
-		this.isVisible = visible;
-	}
+  @Column(name = "isVisible", nullable = false, insertable = true, updatable = true, length = 0,
+      precision = 0)
+  @Basic
+  public Boolean getIsVisible() {
+    return isVisible;
+  }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+  public void setIsVisible(Boolean visible) {
+    this.isVisible = visible;
+  }
 
-		Article article = (Article) o;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
 
-		if (!articleId.equals(article.articleId))
-			return false;
-		if (!clicked.equals(article.clicked))
-			return false;
-		if (isNotice != article.isNotice)
-			return false;
-		if (!order.equals(article.order))
-			return false;
-		if (isVisible != article.isVisible)
-			return false;
-		if (author != null ? !author.equals(article.author)
-				: article.author != null)
-			return false;
-		if (content != null ? !content.equals(article.content)
-				: article.content != null)
-			return false;
-		if (time != null ? !time.equals(article.time) : article.time != null)
-			return false;
-		if (title != null ? !title.equals(article.title)
-				: article.title != null)
-			return false;
+    Article article = (Article) o;
 
-		return true;
-	}
+    if (!articleId.equals(article.articleId))
+      return false;
+    if (!clicked.equals(article.clicked))
+      return false;
+    if (isNotice != article.isNotice)
+      return false;
+    if (!order.equals(article.order))
+      return false;
+    if (isVisible != article.isVisible)
+      return false;
+    if (author != null ? !author.equals(article.author) : article.author != null)
+      return false;
+    if (content != null ? !content.equals(article.content) : article.content != null)
+      return false;
+    if (time != null ? !time.equals(article.time) : article.time != null)
+      return false;
+    if (title != null ? !title.equals(article.title) : article.title != null)
+      return false;
 
-	@Override
-	public int hashCode() {
-		int result = articleId;
-		result = 31 * result + (title != null ? title.hashCode() : 0);
-		result = 31 * result + (content != null ? content.hashCode() : 0);
-		result = 31 * result + (author != null ? author.hashCode() : 0);
-		result = 31 * result + (time != null ? time.hashCode() : 0);
-		result = 31 * result + clicked;
-		result = 31 * result + order;
-		result = 31 * result + (isNotice ? 1 : 0);
-		result = 31 * result + (isVisible ? 1 : 0);
-		return result;
-	}
+    return true;
+  }
 
-	private User userByUserId;
+  @Override
+  public int hashCode() {
+    int result = articleId;
+    result = 31 * result + (title != null ? title.hashCode() : 0);
+    result = 31 * result + (content != null ? content.hashCode() : 0);
+    result = 31 * result + (author != null ? author.hashCode() : 0);
+    result = 31 * result + (time != null ? time.hashCode() : 0);
+    result = 31 * result + clicked;
+    result = 31 * result + order;
+    result = 31 * result + (isNotice ? 1 : 0);
+    result = 31 * result + (isVisible ? 1 : 0);
+    return result;
+  }
 
-	@ManyToOne
-	@JoinColumn(name = "userId", referencedColumnName = "userId", nullable = true)
-	public User getUserByUserId() {
-		return userByUserId;
-	}
+  private User userByUserId;
 
-	public void setUserByUserId(User userByUserId) {
-		this.userByUserId = userByUserId;
-	}
+  @ManyToOne
+  @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = true)
+  public User getUserByUserId() {
+    return userByUserId;
+  }
 
-	private Article articleByParentId;
+  public void setUserByUserId(User userByUserId) {
+    this.userByUserId = userByUserId;
+  }
 
-	@ManyToOne
-	@JoinColumn(name = "parentId", referencedColumnName = "articleId", nullable = true)
-	public Article getArticleByParentId() {
-		return articleByParentId;
-	}
+  private Article articleByParentId;
 
-	public void setArticleByParentId(Article articleByParentId) {
-		this.articleByParentId = articleByParentId;
-	}
+  @ManyToOne
+  @JoinColumn(name = "parentId", referencedColumnName = "articleId", nullable = true)
+  public Article getArticleByParentId() {
+    return articleByParentId;
+  }
 
-	private Problem problemByProblemId;
+  public void setArticleByParentId(Article articleByParentId) {
+    this.articleByParentId = articleByParentId;
+  }
 
-	@ManyToOne
-	@JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = true)
-	public Problem getProblemByProblemId() {
-		return problemByProblemId;
-	}
+  private Problem problemByProblemId;
 
-	public void setProblemByProblemId(Problem problemByProblemId) {
-		this.problemByProblemId = problemByProblemId;
-	}
+  @ManyToOne
+  @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = true)
+  public Problem getProblemByProblemId() {
+    return problemByProblemId;
+  }
 
-	private Contest contestByContestId;
+  public void setProblemByProblemId(Problem problemByProblemId) {
+    this.problemByProblemId = problemByProblemId;
+  }
 
-	@ManyToOne
-	@JoinColumn(name = "contestId", referencedColumnName = "contestId", nullable = true)
-	public Contest getContestByContestId() {
-		return contestByContestId;
-	}
+  private Contest contestByContestId;
 
-	public void setContestByContestId(Contest contestByContestId) {
-		this.contestByContestId = contestByContestId;
-	}
+  @ManyToOne
+  @JoinColumn(name = "contestId", referencedColumnName = "contestId", nullable = true)
+  public Contest getContestByContestId() {
+    return contestByContestId;
+  }
 
-	private Collection<Article> articlesByParentId;
+  public void setContestByContestId(Contest contestByContestId) {
+    this.contestByContestId = contestByContestId;
+  }
 
-	@OneToMany(mappedBy = "articleByParentId")
-	public Collection<Article> getArticlesByParentId() {
-		return articlesByParentId;
-	}
+  private Collection<Article> articlesByParentId;
 
-	public void setArticlesByParentId(Collection<Article> articlesByParentId) {
-		this.articlesByParentId = articlesByParentId;
-	}
+  @OneToMany(mappedBy = "articleByParentId")
+  public Collection<Article> getArticlesByParentId() {
+    return articlesByParentId;
+  }
+
+  public void setArticlesByParentId(Collection<Article> articlesByParentId) {
+    this.articlesByParentId = articlesByParentId;
+  }
 }

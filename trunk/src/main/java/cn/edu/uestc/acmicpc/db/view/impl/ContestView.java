@@ -37,154 +37,153 @@ import java.util.*;
  * @version 1
  */
 public class ContestView extends View<Contest> {
-	private Integer contestId;
-	private String description;
-	private Boolean isVisible;
-	private Integer length;
-	private Timestamp time;
-	private String title;
-	private Byte type;
-	private List<Integer> problemList;
-	private String problemListString;
-	private String status;
-	private Long timeLeft;
 
-	public Long getTimeLeft() {
-		return timeLeft;
-	}
+  private Integer contestId;
+  private String description;
+  private Boolean isVisible;
+  private Integer length;
+  private Timestamp time;
+  private String title;
+  private Byte type;
+  private List<Integer> problemList;
+  private String problemListString;
+  private String status;
+  private Long timeLeft;
 
-	@Ignore
-	public void setTimeLeft(Long timeLeft) {
-		this.timeLeft = timeLeft;
-	}
+  public Long getTimeLeft() {
+    return timeLeft;
+  }
 
-	public String getStatus() {
-		return status;
-	}
+  @Ignore
+  public void setTimeLeft(Long timeLeft) {
+    this.timeLeft = timeLeft;
+  }
 
-	@Ignore
-	public void setStatus(String status) {
-		this.status = status;
-	}
+  public String getStatus() {
+    return status;
+  }
 
-	public Boolean getVisible() {
-		return isVisible;
-	}
+  @Ignore
+  public void setStatus(String status) {
+    this.status = status;
+  }
 
-	public void setVisible(Boolean visible) {
-		isVisible = visible;
-	}
+  public Boolean getVisible() {
+    return isVisible;
+  }
 
-	public String getProblemListString() {
-		return problemListString;
-	}
+  public void setVisible(Boolean visible) {
+    isVisible = visible;
+  }
 
-	@Ignore
-	public void setProblemListString(String problemListString) {
-		this.problemListString = problemListString;
-	}
+  public String getProblemListString() {
+    return problemListString;
+  }
 
-	public List<Integer> getProblemList() {
-		return problemList;
-	}
+  @Ignore
+  public void setProblemListString(String problemListString) {
+    this.problemListString = problemListString;
+  }
 
-	@Ignore
-	public void setProblemList(List<Integer> problemList) {
-		this.problemList = problemList;
-	}
+  public List<Integer> getProblemList() {
+    return problemList;
+  }
 
-	public Integer getContestId() {
-		return contestId;
-	}
+  @Ignore
+  public void setProblemList(List<Integer> problemList) {
+    this.problemList = problemList;
+  }
 
-	public void setContestId(Integer contestId) {
-		this.contestId = contestId;
-	}
+  public Integer getContestId() {
+    return contestId;
+  }
 
-	public String getTitle() {
-		return title;
-	}
+  public void setContestId(Integer contestId) {
+    this.contestId = contestId;
+  }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+  public String getTitle() {
+    return title;
+  }
 
-	public String getDescription() {
-		return description;
-	}
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+  public String getDescription() {
+    return description;
+  }
 
-	public Byte getType() {
-		return type;
-	}
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-	public void setType(Byte type) {
-		this.type = type;
-	}
+  public Byte getType() {
+    return type;
+  }
 
-	public Timestamp getTime() {
-		return time;
-	}
+  public void setType(Byte type) {
+    this.type = type;
+  }
 
-	public void setTime(Timestamp time) {
-		this.time = time;
-	}
+  public Timestamp getTime() {
+    return time;
+  }
 
-	public Integer getLength() {
-		return length;
-	}
+  public void setTime(Timestamp time) {
+    this.time = time;
+  }
 
-	public void setLength(Integer length) {
-		this.length = length;
-	}
+  public Integer getLength() {
+    return length;
+  }
 
-	public Boolean getIsVisible() {
-		return isVisible;
-	}
+  public void setLength(Integer length) {
+    this.length = length;
+  }
 
-	public void setIsVisible(Boolean visible) {
-		isVisible = visible;
-	}
+  public Boolean getIsVisible() {
+    return isVisible;
+  }
 
-	/**
-	 * Fetch data from entity.
-	 * 
-	 * @param contest
-	 *            specific entity
-	 */
-	public ContestView(Contest contest) {
-		super(contest);
-		Timestamp now = new Timestamp(new Date().getTime());
-		if (time.after(now))
-			status = "Pending";
-		else {
-			Timestamp endTime = new Timestamp(time.getTime() + length * 1000);
-			if (endTime.after(now)) {
-				status = "Running";
-				timeLeft = (endTime.getTime() - now.getTime()) / 1000;
-			} else
-				status = "Ended";
-		}
+  public void setIsVisible(Boolean visible) {
+    isVisible = visible;
+  }
 
-		List<ContestProblem> contestProblems = (List<ContestProblem>) contest
-				.getContestProblemsByContestId();
-		Collections.sort(contestProblems, new Comparator<ContestProblem>() {
-			@Override
-			public int compare(ContestProblem a, ContestProblem b) {
-				return a.getOrder().compareTo(b.getOrder());
-			}
-		});
-		problemList = new LinkedList<>();
-		problemListString = "";
-		for (ContestProblem contestProblem : contest
-				.getContestProblemsByContestId()) {
-			Problem problem = contestProblem.getProblemByProblemId();
-			problemList.add(problem.getProblemId());
-			problemListString = problemListString + problem.getProblemId()
-					+ ",";
-		}
-	}
+  /**
+   * Fetch data from entity.
+   * 
+   * @param contest specific entity
+   */
+  public ContestView(Contest contest) {
+    super(contest);
+    Timestamp now = new Timestamp(new Date().getTime());
+    if (time.after(now))
+      status = "Pending";
+    else {
+      Timestamp endTime = new Timestamp(time.getTime() + length * 1000);
+      if (endTime.after(now)) {
+        status = "Running";
+        timeLeft = (endTime.getTime() - now.getTime()) / 1000;
+      } else
+        status = "Ended";
+    }
+
+    List<ContestProblem> contestProblems =
+        (List<ContestProblem>) contest.getContestProblemsByContestId();
+    Collections.sort(contestProblems, new Comparator<ContestProblem>() {
+
+      @Override
+      public int compare(ContestProblem a, ContestProblem b) {
+        return a.getOrder().compareTo(b.getOrder());
+      }
+    });
+    problemList = new LinkedList<>();
+    problemListString = "";
+    for (ContestProblem contestProblem : contest.getContestProblemsByContestId()) {
+      Problem problem = contestProblem.getProblemByProblemId();
+      problemList.add(problem.getProblemId());
+      problemListString = problemListString + problem.getProblemId() + ",";
+    }
+  }
 }

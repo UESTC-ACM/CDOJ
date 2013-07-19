@@ -31,32 +31,31 @@ import cn.edu.uestc.acmicpc.db.view.base.View;
  */
 public class CodeView extends View<Code> {
 
-	private Integer codeId;
-	private String content;
+  private Integer codeId;
+  private String content;
 
-	public Integer getCodeId() {
-		return codeId;
-	}
+  public Integer getCodeId() {
+    return codeId;
+  }
 
-	public void setCodeId(Integer codeId) {
-		this.codeId = codeId;
-	}
+  public void setCodeId(Integer codeId) {
+    this.codeId = codeId;
+  }
 
-	public String getContent() {
-		return content;
-	}
+  public String getContent() {
+    return content;
+  }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+  public void setContent(String content) {
+    this.content = content;
+  }
 
-	/**
-	 * Fetch data from entity.
-	 * 
-	 * @param code
-	 *            specific entity
-	 */
-	public CodeView(Code code) {
-		super(code);
-	}
+  /**
+   * Fetch data from entity.
+   * 
+   * @param code specific entity
+   */
+  public CodeView(Code code) {
+    super(code);
+  }
 }

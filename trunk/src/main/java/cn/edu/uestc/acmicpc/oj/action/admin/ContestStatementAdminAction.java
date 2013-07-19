@@ -38,75 +38,75 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
-public class ContestStatementAdminAction extends BaseAction implements
-		ContestDAOAware, ContestDTOAware {
+public class ContestStatementAdminAction extends BaseAction implements ContestDAOAware,
+    ContestDTOAware {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = 7615764585918581076L;
+  private static final long serialVersionUID = 7615764585918581076L;
 
-	/**
-	 * Use for update contest info
-	 */
-	@Autowired
-	private IContestDAO contestDAO;
+  /**
+   * Use for update contest info
+   */
+  @Autowired
+  private IContestDAO contestDAO;
 
-	@Autowired
-	private ContestDTO contestDTO;
+  @Autowired
+  private ContestDTO contestDTO;
 
-	@Override
-	public ContestDTO getContestDTO() {
-		return contestDTO;
-	}
+  @Override
+  public ContestDTO getContestDTO() {
+    return contestDTO;
+  }
 
-	@Override
-	public void setContestDTO(ContestDTO contestDTO) {
-		this.contestDTO = contestDTO;
-	}
+  @Override
+  public void setContestDTO(ContestDTO contestDTO) {
+    this.contestDTO = contestDTO;
+  }
 
-	/**
-	 * To add or edit contest entity.
-	 * <p/>
-	 * <strong>JSON output</strong>:
-	 * <ul>
-	 * <li>
-	 * For success: {"result":"ok"}</li>
-	 * <li>
-	 * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-	 * </li>
-	 * </ul>
-	 * 
-	 * @return <strong>JSON</strong> signal
-	 */
-	@Validations(requiredStrings = { @RequiredStringValidator(fieldName = "contestDTO.title", key = "error.contestTitle.validation", trim = true) })
-	public String toEdit() {
-		try {
-			Contest contest = contestDAO.get(contestDTO.getContestId());
+  /**
+   * To add or edit contest entity.
+   * <p/>
+   * <strong>JSON output</strong>:
+   * <ul>
+   * <li>
+   * For success: {"result":"ok"}</li>
+   * <li>
+   * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
+   * </ul>
+   * 
+   * @return <strong>JSON</strong> signal
+   */
+  @Validations(requiredStrings = { @RequiredStringValidator(fieldName = "contestDTO.title",
+      key = "error.contestTitle.validation", trim = true) })
+  public String toEdit() {
+    try {
+      Contest contest = contestDAO.get(contestDTO.getContestId());
 
-			if (contest == null)
-				throw new AppException("No such contest!");
+      if (contest == null)
+        throw new AppException("No such contest!");
 
-			contestDTO.updateEntity(contest);
+      contestDTO.updateEntity(contest);
 
-			contestDAO.update(contest);
+      contestDAO.update(contest);
 
-			json.put("result", "ok");
-		} catch (AppException e) {
-			json.put("result", "error");
-			json.put("error_msg", e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			json.put("result", "error");
-			json.put("error_msg", "Unknown exception occurred.");
-		}
-		return JSON;
+      json.put("result", "ok");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return JSON;
 
-	}
+  }
 
-	@Override
-	public void setContestDAO(IContestDAO contestDAO) {
-		this.contestDAO = contestDAO;
-	}
+  @Override
+  public void setContestDAO(IContestDAO contestDAO) {
+    this.contestDAO = contestDAO;
+  }
 
 }

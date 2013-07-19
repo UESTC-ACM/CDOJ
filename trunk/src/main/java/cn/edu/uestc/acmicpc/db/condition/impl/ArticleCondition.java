@@ -19,210 +19,201 @@ import java.util.List;
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class ArticleCondition extends BaseCondition implements
-		UserConditionAware {
-	private Integer startId;
-	private Integer endId;
+public class ArticleCondition extends BaseCondition implements UserConditionAware {
 
-	private String title;
-	private String keyword;
+  private Integer startId;
+  private Integer endId;
 
-	private Boolean isVisible;
-	private Boolean isNotice;
+  private String title;
+  private String keyword;
 
-	private Boolean isTitleEmpty;
+  private Boolean isVisible;
+  private Boolean isNotice;
 
-	public Boolean getIsTitleEmpty() {
-		return isTitleEmpty;
-	}
+  private Boolean isTitleEmpty;
 
-	public void setIsTitleEmpty(Boolean isTitleEmpty) {
-		this.isTitleEmpty = isTitleEmpty;
-	}
+  public Boolean getIsTitleEmpty() {
+    return isTitleEmpty;
+  }
 
-	@Exp(Type = ConditionType.eq)
-	public Boolean getIsVisible() {
-		return isVisible;
-	}
+  public void setIsTitleEmpty(Boolean isTitleEmpty) {
+    this.isTitleEmpty = isTitleEmpty;
+  }
 
-	public void setIsVisible(Boolean visible) {
-		isVisible = visible;
-	}
+  @Exp(Type = ConditionType.eq)
+  public Boolean getIsVisible() {
+    return isVisible;
+  }
 
-	public String getKeyword() {
-		return keyword;
-	}
+  public void setIsVisible(Boolean visible) {
+    isVisible = visible;
+  }
 
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
-	}
+  public String getKeyword() {
+    return keyword;
+  }
 
-	@Exp(Type = ConditionType.like)
-	public String getTitle() {
-		return title;
-	}
+  public void setKeyword(String keyword) {
+    this.keyword = keyword;
+  }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+  @Exp(Type = ConditionType.like)
+  public String getTitle() {
+    return title;
+  }
 
-	@Exp(MapField = "articleId", Type = ConditionType.le)
-	public Integer getEndId() {
-		return endId;
-	}
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-	public void setEndId(Integer endId) {
-		this.endId = endId;
-	}
+  @Exp(MapField = "articleId", Type = ConditionType.le)
+  public Integer getEndId() {
+    return endId;
+  }
 
-	@Exp(MapField = "articleId", Type = ConditionType.ge)
-	public Integer getStartId() {
-		return startId;
-	}
+  public void setEndId(Integer endId) {
+    this.endId = endId;
+  }
 
-	public void setStartId(Integer startId) {
-		this.startId = startId;
-	}
+  @Exp(MapField = "articleId", Type = ConditionType.ge)
+  public Integer getStartId() {
+    return startId;
+  }
 
-	/**
-	 * User's id.
-	 */
-	private Integer userId;
+  public void setStartId(Integer startId) {
+    this.startId = startId;
+  }
 
-	/**
-	 * User's name
-	 */
-	private String userName;
+  /**
+   * User's id.
+   */
+  private Integer userId;
 
-	/**
-	 * Problem's id.
-	 */
-	private Integer problemId;
+  /**
+   * User's name
+   */
+  private String userName;
 
-	/**
-	 * Contest's id.
-	 */
-	private Integer contestId;
+  /**
+   * Problem's id.
+   */
+  private Integer problemId;
 
-	@Exp(MapField = "userByUserId", Type = ConditionType.eq, MapObject = User.class)
-	public Integer getUserId() {
-		return userId;
-	}
+  /**
+   * Contest's id.
+   */
+  private Integer contestId;
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+  @Exp(MapField = "userByUserId", Type = ConditionType.eq, MapObject = User.class)
+  public Integer getUserId() {
+    return userId;
+  }
 
-	public Integer getProblemId() {
-		return problemId;
-	}
+  public void setUserId(Integer userId) {
+    this.userId = userId;
+  }
 
-	public void setProblemId(Integer problemId) {
-		this.problemId = problemId;
-	}
+  public Integer getProblemId() {
+    return problemId;
+  }
 
-	public Integer getContestId() {
-		return contestId;
-	}
+  public void setProblemId(Integer problemId) {
+    this.problemId = problemId;
+  }
 
-	public void setContestId(Integer contestId) {
-		this.contestId = contestId;
-	}
+  public Integer getContestId() {
+    return contestId;
+  }
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void invoke(Condition condition) {
-		super.invoke(condition);
+  public void setContestId(Integer contestId) {
+    this.contestId = contestId;
+  }
 
-		if (contestId != null) {
-			if (contestId == -1)
-				condition.addCriterion(Restrictions
-						.isNull("contestByContestId"));
-			else {
-				try {
-					IDAO DAO = (IDAO) applicationContext.getBean("contestDAO");
-					JoinedProperty joinedProperty = new JoinedProperty(
-							Restrictions.eq("contestByContestId",
-									DAO.get(contestId)), contestId,
-							ConditionType.eq);
-					condition.addJoinedProperty("contestByContestId",
-							joinedProperty);
-				} catch (AppException ignored) {
-				}
-			}
-		}
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+  @Override
+  public void invoke(Condition condition) {
+    super.invoke(condition);
 
-		if (problemId != null) {
-			if (problemId == -1)
-				condition.addCriterion(Restrictions
-						.isNull("problemByProblemId"));
-			else {
-				try {
-					IDAO DAO = (IDAO) applicationContext.getBean("problemDAO");
-					JoinedProperty joinedProperty = new JoinedProperty(
-							Restrictions.eq("problemByProblemId",
-									DAO.get(problemId)), contestId,
-							ConditionType.eq);
-					condition.addJoinedProperty("problemByProblemId",
-							joinedProperty);
-				} catch (AppException ignored) {
-				}
-			}
-		}
+    if (contestId != null) {
+      if (contestId == -1)
+        condition.addCriterion(Restrictions.isNull("contestByContestId"));
+      else {
+        try {
+          IDAO DAO = (IDAO) applicationContext.getBean("contestDAO");
+          JoinedProperty joinedProperty =
+              new JoinedProperty(Restrictions.eq("contestByContestId", DAO.get(contestId)),
+                  contestId, ConditionType.eq);
+          condition.addJoinedProperty("contestByContestId", joinedProperty);
+        } catch (AppException ignored) {
+        }
+      }
+    }
 
-		if (userName != null) {
-			UserDAO userDAO = applicationContext.getBean("userDAO",
-					UserDAO.class);
-			userCondition.clear();
-			userCondition.setUserName(userName);
-			try {
-				List<User> users = (List<User>) userDAO.findAll(userCondition
-						.getCondition());
-				if (users != null && !users.isEmpty()) {
-					JoinedProperty joinedProperty = new JoinedProperty(
-							Restrictions.eq("userByUserId", users.get(0)),
-							users.get(0).getUserId(), ConditionType.eq);
-					condition.addJoinedProperty("userByUserId", joinedProperty);
-				}
-			} catch (AppException ignored) {
-			}
-		}
+    if (problemId != null) {
+      if (problemId == -1)
+        condition.addCriterion(Restrictions.isNull("problemByProblemId"));
+      else {
+        try {
+          IDAO DAO = (IDAO) applicationContext.getBean("problemDAO");
+          JoinedProperty joinedProperty =
+              new JoinedProperty(Restrictions.eq("problemByProblemId", DAO.get(problemId)),
+                  contestId, ConditionType.eq);
+          condition.addJoinedProperty("problemByProblemId", joinedProperty);
+        } catch (AppException ignored) {
+        }
+      }
+    }
 
-		if (keyword != null) {
-			String[] fields = new String[] { "title", "content", "author" };
-			Junction junction = Restrictions.disjunction();
-			for (String field : fields) {
-				junction.add(Restrictions.like(field,
-						String.format("%%%s%%", keyword)));
-			}
-			condition.addCriterion(junction);
-		}
-		if (isTitleEmpty != null) {
-			if (isTitleEmpty) {
-				condition.addCriterion(Restrictions.like("title", ""));
-			} else {
-				condition.addCriterion(Restrictions.like("title", "_%"));
-			}
-		}
-	}
+    if (userName != null) {
+      UserDAO userDAO = applicationContext.getBean("userDAO", UserDAO.class);
+      userCondition.clear();
+      userCondition.setUserName(userName);
+      try {
+        List<User> users = (List<User>) userDAO.findAll(userCondition.getCondition());
+        if (users != null && !users.isEmpty()) {
+          JoinedProperty joinedProperty =
+              new JoinedProperty(Restrictions.eq("userByUserId", users.get(0)), users.get(0)
+                  .getUserId(), ConditionType.eq);
+          condition.addJoinedProperty("userByUserId", joinedProperty);
+        }
+      } catch (AppException ignored) {
+      }
+    }
 
-	private UserCondition userCondition;
+    if (keyword != null) {
+      String[] fields = new String[] { "title", "content", "author" };
+      Junction junction = Restrictions.disjunction();
+      for (String field : fields) {
+        junction.add(Restrictions.like(field, String.format("%%%s%%", keyword)));
+      }
+      condition.addCriterion(junction);
+    }
+    if (isTitleEmpty != null) {
+      if (isTitleEmpty) {
+        condition.addCriterion(Restrictions.like("title", ""));
+      } else {
+        condition.addCriterion(Restrictions.like("title", "_%"));
+      }
+    }
+  }
 
-	@Override
-	public void setUserCondition(UserCondition userCondition) {
-		this.userCondition = userCondition;
-	}
+  private UserCondition userCondition;
 
-	@Override
-	public UserCondition getUserCondition() {
-		return userCondition;
-	}
+  @Override
+  public void setUserCondition(UserCondition userCondition) {
+    this.userCondition = userCondition;
+  }
 
-	public Boolean getIsNotice() {
-		return isNotice;
-	}
+  @Override
+  public UserCondition getUserCondition() {
+    return userCondition;
+  }
 
-	public void setIsNotice(Boolean isNotice) {
-		this.isNotice = isNotice;
-	}
+  public Boolean getIsNotice() {
+    return isNotice;
+  }
+
+  public void setIsNotice(Boolean isNotice) {
+    this.isNotice = isNotice;
+  }
 }

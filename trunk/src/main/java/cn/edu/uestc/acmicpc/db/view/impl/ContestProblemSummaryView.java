@@ -35,86 +35,86 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ContestProblemSummaryView extends View<Problem> {
-	/**
-	 * State: not submitted
-	 */
-	public static final int NONE = 0;
-	/**
-	 * State: submitted but failed
-	 */
-	public static final int FAILED = 1;
-	/**
-	 * State: submitted and passed
-	 */
-	public static final int PASSED = 2;
 
-	private Integer state;
+  /**
+   * State: not submitted
+   */
+  public static final int NONE = 0;
+  /**
+   * State: submitted but failed
+   */
+  public static final int FAILED = 1;
+  /**
+   * State: submitted and passed
+   */
+  public static final int PASSED = 2;
 
-	public Integer getState() {
-		return state;
-	}
+  private Integer state;
 
-	@Ignore
-	public void setState(Integer state) {
-		this.state = state;
-	}
+  public Integer getState() {
+    return state;
+  }
 
-	private Integer problemId;
-	private Integer solved;
-	private Integer tried;
-	private char order;
+  @Ignore
+  public void setState(Integer state) {
+    this.state = state;
+  }
 
-	public char getOrder() {
-		return order;
-	}
+  private Integer problemId;
+  private Integer solved;
+  private Integer tried;
+  private char order;
 
-	@Ignore
-	public void setOrder(char order) {
-		this.order = order;
-	}
+  public char getOrder() {
+    return order;
+  }
 
-	/**
-	 * Get ProblemView entity by problem entity.
-	 * 
-	 * @param problem
-	 *            specific problem entity
-	 * @throws AppException
-	 */
-	public ContestProblemSummaryView(Problem problem, User currentUser,
-			Global.AuthorStatusType type) throws AppException {
-		super(problem);
+  @Ignore
+  public void setOrder(char order) {
+    this.order = order;
+  }
 
-		if (currentUser == null) {
-			setState(NONE);
-		} else {
-			setState(type == null ? NONE : type.ordinal());
-		}
-	}
+  /**
+   * Get ProblemView entity by problem entity.
+   * 
+   * @param problem specific problem entity
+   * @throws AppException
+   */
+  public ContestProblemSummaryView(Problem problem, User currentUser, Global.AuthorStatusType type)
+      throws AppException {
+    super(problem);
 
-	public Integer getProblemId() {
-		return problemId;
-	}
+    if (currentUser == null) {
+      setState(NONE);
+    } else {
+      setState(type == null ? NONE : type.ordinal());
+    }
+  }
 
-	public void setProblemId(Integer problemId) {
-		this.problemId = problemId;
-	}
+  public Integer getProblemId() {
+    return problemId;
+  }
 
-	public Integer getSolved() {
-		return solved;
-	}
+  public void setProblemId(Integer problemId) {
+    this.problemId = problemId;
+  }
 
-	@Ignore
-	public void setSolved(Integer solved) {
-		this.solved = solved;
-	}
+  public Integer getSolved() {
+    return solved;
+  }
 
-	public Integer getTried() {
-		return tried;
-	}
+  @Ignore
+  public void setSolved(Integer solved) {
+    this.solved = solved;
+  }
 
-	@Ignore
-	public void setTried(Integer tried) {
-		this.tried = tried;
-	}
+  public Integer getTried() {
+    return tried;
+  }
+
+  @Ignore
+  public void setTried(Integer tried) {
+    this.tried = tried;
+  }
 
 }

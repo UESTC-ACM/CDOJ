@@ -31,11 +31,11 @@ import cn.edu.uestc.acmicpc.util.Settings;
  * @see Settings
  */
 public interface SettingsAware {
-	/**
-	 * Put Settings entity into class.
-	 * 
-	 * @param settings
-	 *            settings entity object
-	 */
-	public void setSettings(Settings settings);
+
+  /**
+   * Put Settings entity into class.
+   * 
+   * @param settings settings entity object
+   */
+  public void setSettings(Settings settings);
 }

@@ -11,56 +11,56 @@ import cn.edu.uestc.acmicpc.util.annotation.Ignore;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class TrainingContestListView extends View<TrainingContest> {
-	private Integer trainingContestId;
-	private String title;
-	private Boolean isPersonal;
-	private Integer type;
-	private String typeName;
 
-	public Integer getType() {
-		return type;
-	}
+  private Integer trainingContestId;
+  private String title;
+  private Boolean isPersonal;
+  private Integer type;
+  private String typeName;
 
-	public void setType(Integer type) {
-		this.type = type;
-	}
+  public Integer getType() {
+    return type;
+  }
 
-	public String getTypeName() {
-		return typeName;
-	}
+  public void setType(Integer type) {
+    this.type = type;
+  }
 
-	@Ignore
-	public void setTypeName(String typeName) {
-		this.typeName = typeName;
-	}
+  public String getTypeName() {
+    return typeName;
+  }
 
-	public Integer getTrainingContestId() {
-		return trainingContestId;
-	}
+  @Ignore
+  public void setTypeName(String typeName) {
+    this.typeName = typeName;
+  }
 
-	public void setTrainingContestId(Integer trainingContestId) {
-		this.trainingContestId = trainingContestId;
-	}
+  public Integer getTrainingContestId() {
+    return trainingContestId;
+  }
 
-	public String getTitle() {
-		return title;
-	}
+  public void setTrainingContestId(Integer trainingContestId) {
+    this.trainingContestId = trainingContestId;
+  }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+  public String getTitle() {
+    return title;
+  }
 
-	public Boolean getIsPersonal() {
-		return isPersonal;
-	}
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-	public void setIsPersonal(Boolean personal) {
-		isPersonal = personal;
-	}
+  public Boolean getIsPersonal() {
+    return isPersonal;
+  }
 
-	public TrainingContestListView(TrainingContest trainingContest) {
-		super(trainingContest);
-		setTypeName(Global.TrainingContestType.values()[trainingContest
-				.getType()].getDescription());
-	}
+  public void setIsPersonal(Boolean personal) {
+    isPersonal = personal;
+  }
+
+  public TrainingContestListView(TrainingContest trainingContest) {
+    super(trainingContest);
+    setTypeName(Global.TrainingContestType.values()[trainingContest.getType()].getDescription());
+  }
 }

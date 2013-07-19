@@ -43,233 +43,230 @@ import java.util.*;
  */
 public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
-	/**
-	 * User serial key's length
-	 */
-	public static final int USER_SERIAL_KEY_LENGTH = 128;
+  /**
+   * User serial key's length
+   */
+  public static final int USER_SERIAL_KEY_LENGTH = 128;
 
-	public enum OnlineJudgeReturnType {
-		OJ_WAIT("Queuing"), OJ_AC("Accepted"), OJ_PE(
-				"Presentation Error on test $case"), OJ_TLE(
-				"Time Limit Exceeded on test $case"), OJ_MLE(
-				"Memory Limit Exceeded on test $case"), OJ_WA(
-				"Wrong Answer on test $case"), OJ_OLE(
-				"Output Limit Exceeded on test $case"), OJ_CE(
-				"Compilation Error"), OJ_RE_SEGV("Runtime Error on test $case"), OJ_RE_FPE(
-				"Runtime Error on test $case"), OJ_RE_BUS(
-				"Runtime Error on test $case"), OJ_RE_ABRT(
-				"Runtime Error on test $case"), OJ_RE_UNKNOWN(
-				"Runtime Error on test $case"), OJ_RF(
-				"Restricted Function on test $case"), OJ_SE(
-				"System Error on test $case"), OJ_RE_JAVA(
-				"Runtime Error on test $case"), OJ_JUDGING("Queuing"), OJ_RUNNING(
-				"Running on test $case"), OJ_REJUDGING("Queuing");
-		private String description;
+  public enum OnlineJudgeReturnType {
+    OJ_WAIT("Queuing"), OJ_AC("Accepted"), OJ_PE("Presentation Error on test $case"), OJ_TLE(
+        "Time Limit Exceeded on test $case"), OJ_MLE("Memory Limit Exceeded on test $case"), OJ_WA(
+        "Wrong Answer on test $case"), OJ_OLE("Output Limit Exceeded on test $case"), OJ_CE(
+        "Compilation Error"), OJ_RE_SEGV("Runtime Error on test $case"), OJ_RE_FPE(
+        "Runtime Error on test $case"), OJ_RE_BUS("Runtime Error on test $case"), OJ_RE_ABRT(
+        "Runtime Error on test $case"), OJ_RE_UNKNOWN("Runtime Error on test $case"), OJ_RF(
+        "Restricted Function on test $case"), OJ_SE("System Error on test $case"), OJ_RE_JAVA(
+        "Runtime Error on test $case"), OJ_JUDGING("Queuing"), OJ_RUNNING("Running on test $case"),
+    OJ_REJUDGING("Queuing");
 
-		/**
-		 * Get enumerate value's description.
-		 * 
-		 * @return description string for specific online judge return type
-		 */
-		public String getDescription() {
-			return description;
-		}
+    private String description;
 
-		private OnlineJudgeReturnType(String description) {
-			this.description = description;
+    /**
+     * Get enumerate value's description.
+     * 
+     * @return description string for specific online judge return type
+     */
+    public String getDescription() {
+      return description;
+    }
 
-		}
-	}
+    private OnlineJudgeReturnType(String description) {
+      this.description = description;
 
-	/**
-	 * Problem status for author problem flag.
-	 */
-	public enum AuthorStatusType {
-		NONE, PASS, FAIL
-	}
+    }
+  }
 
-	/**
-	 * Contest type for contest entity
-	 */
-	public enum ContestType {
-		PUBLIC("public"), PRIVATE("private"), DIY("DIY"), INVITED("invited");
-		private final String description;
+  /**
+   * Problem status for author problem flag.
+   */
+  public enum AuthorStatusType {
+    NONE, PASS, FAIL
+  }
 
-		private ContestType(String description) {
-			this.description = description;
-		}
+  /**
+   * Contest type for contest entity
+   */
+  public enum ContestType {
+    PUBLIC("public"), PRIVATE("private"), DIY("DIY"), INVITED("invited");
 
-		/**
-		 * Get enumerate value's description.
-		 * 
-		 * @return description string for specific contest type
-		 */
-		public String getDescription() {
-			return description;
-		}
-	}
+    private final String description;
 
-	public enum TrainingContestType {
-		NORMAL("normal"), ADJUST("adjust"), CF("cf"), TC("tc"), TEAM("team");
-		private final String description;
+    private ContestType(String description) {
+      this.description = description;
+    }
 
-		private TrainingContestType(String description) {
-			this.description = description;
-		}
+    /**
+     * Get enumerate value's description.
+     * 
+     * @return description string for specific contest type
+     */
+    public String getDescription() {
+      return description;
+    }
+  }
 
-		public String getDescription() {
-			return description;
-		}
-	}
+  public enum TrainingContestType {
+    NORMAL("normal"), ADJUST("adjust"), CF("cf"), TC("tc"), TEAM("team");
 
-	public enum TrainingUserType {
-		PERSONAL("Personal"), TEAM("Team");
-		private final String description;
+    private final String description;
 
-		private TrainingUserType(String description) {
-			this.description = description;
-		}
+    private TrainingContestType(String description) {
+      this.description = description;
+    }
 
-		public String getDescription() {
-			return description;
-		}
-	}
+    public String getDescription() {
+      return description;
+    }
+  }
 
-	/**
-	 * User's authentication type(`type` column in user entity).
-	 */
-	public enum AuthenticationType {
-		NORMAL("normal user"), ADMIN("administrator"), CONSTANT("constant user");
-		private final String description;
+  public enum TrainingUserType {
+    PERSONAL("Personal"), TEAM("Team");
 
-		private AuthenticationType(String description) {
-			this.description = description;
-		}
+    private final String description;
 
-		/**
-		 * Get enumerate value's description.
-		 * 
-		 * @return description string for specific authentication type
-		 */
-		public String getDescription() {
-			return description;
-		}
-	}
+    private TrainingUserType(String description) {
+      this.description = description;
+    }
 
-	/**
-	 * Department DAO using for get all departments.
-	 */
-	@Autowired
-	private IDepartmentDAO departmentDAO;
+    public String getDescription() {
+      return description;
+    }
+  }
 
-	/**
-	 * Language DAO using for get all languages.
-	 */
-	@Autowired
-	private ILanguageDAO languageDAO;
+  /**
+   * User's authentication type(`type` column in user entity).
+   */
+  public enum AuthenticationType {
+    NORMAL("normal user"), ADMIN("administrator"), CONSTANT("constant user");
 
-	/**
-	 * Department list.
-	 */
-	private List<Department> departmentList;
+    private final String description;
 
-	private List<Language> languageList;
+    private AuthenticationType(String description) {
+      this.description = description;
+    }
 
-	/**
-	 * authentication type list
-	 */
-	private List<AuthenticationType> authenticationTypeList;
+    /**
+     * Get enumerate value's description.
+     * 
+     * @return description string for specific authentication type
+     */
+    public String getDescription() {
+      return description;
+    }
+  }
 
-	/**
-	 * contest type list
-	 */
-	private List<ContestType> contestTypeList;
+  /**
+   * Department DAO using for get all departments.
+   */
+  @Autowired
+  private IDepartmentDAO departmentDAO;
 
-	/**
-	 * training contest type list
-	 */
-	private List<TrainingContestType> trainingContestTypeList;
-	/**
-	 * Cache used contest ranklist
-	 */
-	private Map<Integer, ContestRankList> contestRankListMap;
+  /**
+   * Language DAO using for get all languages.
+   */
+  @Autowired
+  private ILanguageDAO languageDAO;
 
-	public Map<Integer, ContestRankList> getContestRankListMap() {
-		return contestRankListMap;
-	}
+  /**
+   * Department list.
+   */
+  private List<Department> departmentList;
 
-	public void setContestRankListMap(
-			Map<Integer, ContestRankList> contestRankListMap) {
-		this.contestRankListMap = contestRankListMap;
-	}
+  private List<Language> languageList;
 
-	/**
-	 * Get all languages.
-	 * 
-	 * @return compile language list
-	 */
-	public List<Language> getLanguageList() {
-		return languageList;
-	}
+  /**
+   * authentication type list
+   */
+  private List<AuthenticationType> authenticationTypeList;
 
-	/**
-	 * Initializer.
-	 */
-	@SuppressWarnings("unchecked")
-	public void init() throws AppException {
-		contestRankListMap = new HashMap<>();
-		this.departmentList = (List<Department>) departmentDAO.findAll();
-		this.languageList = (List<Language>) languageDAO.findAll();
+  /**
+   * contest type list
+   */
+  private List<ContestType> contestTypeList;
 
-		this.authenticationTypeList = new ArrayList<>();
-		Collections.addAll(authenticationTypeList, AuthenticationType.values());
+  /**
+   * training contest type list
+   */
+  private List<TrainingContestType> trainingContestTypeList;
+  /**
+   * Cache used contest ranklist
+   */
+  private Map<Integer, ContestRankList> contestRankListMap;
 
-		this.contestTypeList = new ArrayList<>();
-		Collections.addAll(contestTypeList, ContestType.values());
+  public Map<Integer, ContestRankList> getContestRankListMap() {
+    return contestRankListMap;
+  }
 
-		this.trainingContestTypeList = new ArrayList<>();
-		Collections.addAll(trainingContestTypeList,
-				TrainingContestType.values());
-	}
+  public void setContestRankListMap(Map<Integer, ContestRankList> contestRankListMap) {
+    this.contestRankListMap = contestRankListMap;
+  }
 
-	@Override
-	public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
-		this.departmentDAO = departmentDAO;
-	}
+  /**
+   * Get all languages.
+   * 
+   * @return compile language list
+   */
+  public List<Language> getLanguageList() {
+    return languageList;
+  }
 
-	@Override
-	public void setLanguageDAO(ILanguageDAO languageDAO) {
-		this.languageDAO = languageDAO;
-	}
+  /**
+   * Initializer.
+   */
+  @SuppressWarnings("unchecked")
+  public void init() throws AppException {
+    contestRankListMap = new HashMap<>();
+    this.departmentList = (List<Department>) departmentDAO.findAll();
+    this.languageList = (List<Language>) languageDAO.findAll();
 
-	/**
-	 * Get all departments in database.
-	 * 
-	 * @return All departments
-	 */
-	public List<Department> getDepartmentList() {
-		return departmentList;
-	}
+    this.authenticationTypeList = new ArrayList<>();
+    Collections.addAll(authenticationTypeList, AuthenticationType.values());
 
-	/**
-	 * Get all authentications.
-	 * 
-	 * @return All authentication type
-	 */
-	public List<AuthenticationType> getAuthenticationTypeList() {
-		return authenticationTypeList;
-	}
+    this.contestTypeList = new ArrayList<>();
+    Collections.addAll(contestTypeList, ContestType.values());
 
-	/**
-	 * Get all contest types.
-	 * 
-	 * @return All contest type
-	 */
-	public List<ContestType> getContestTypeList() {
-		return contestTypeList;
-	}
+    this.trainingContestTypeList = new ArrayList<>();
+    Collections.addAll(trainingContestTypeList, TrainingContestType.values());
+  }
 
-	public List<TrainingContestType> getTrainingContestTypeList() {
-		return trainingContestTypeList;
-	}
+  @Override
+  public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
+    this.departmentDAO = departmentDAO;
+  }
+
+  @Override
+  public void setLanguageDAO(ILanguageDAO languageDAO) {
+    this.languageDAO = languageDAO;
+  }
+
+  /**
+   * Get all departments in database.
+   * 
+   * @return All departments
+   */
+  public List<Department> getDepartmentList() {
+    return departmentList;
+  }
+
+  /**
+   * Get all authentications.
+   * 
+   * @return All authentication type
+   */
+  public List<AuthenticationType> getAuthenticationTypeList() {
+    return authenticationTypeList;
+  }
+
+  /**
+   * Get all contest types.
+   * 
+   * @return All contest type
+   */
+  public List<ContestType> getContestTypeList() {
+    return contestTypeList;
+  }
+
+  public List<TrainingContestType> getTrainingContestTypeList() {
+    return trainingContestTypeList;
+  }
 }

@@ -29,95 +29,95 @@ import cn.edu.uestc.acmicpc.db.view.impl.ContestProblemSummaryView;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class ProblemSummaryInfo {
-	private Integer tried;
-	private char index;
-	private Boolean isPending;
-	private Boolean isSolved;
-	private Boolean isFirstSolved;
-	private Integer penalty;
-	private Integer solutionTime;
-	private Integer solutionRunId;
-	private Integer problemId;
 
-	public ProblemSummaryInfo(
-			ContestProblemSummaryView contestProblemSummaryView) {
-		this.tried = 0;
-		this.isPending = this.isSolved = this.isFirstSolved = false;
-		this.penalty = 0;
-		this.solutionTime = this.solutionRunId = -1;
-		this.problemId = contestProblemSummaryView.getProblemId();
-		this.index = contestProblemSummaryView.getOrder();
-	}
+  private Integer tried;
+  private char index;
+  private Boolean isPending;
+  private Boolean isSolved;
+  private Boolean isFirstSolved;
+  private Integer penalty;
+  private Integer solutionTime;
+  private Integer solutionRunId;
+  private Integer problemId;
 
-	public Boolean getFirstSolved() {
-		return isFirstSolved;
-	}
+  public ProblemSummaryInfo(ContestProblemSummaryView contestProblemSummaryView) {
+    this.tried = 0;
+    this.isPending = this.isSolved = this.isFirstSolved = false;
+    this.penalty = 0;
+    this.solutionTime = this.solutionRunId = -1;
+    this.problemId = contestProblemSummaryView.getProblemId();
+    this.index = contestProblemSummaryView.getOrder();
+  }
 
-	public void setFirstSolved(Boolean firstSolved) {
-		isFirstSolved = firstSolved;
-	}
+  public Boolean getFirstSolved() {
+    return isFirstSolved;
+  }
 
-	public Integer getTried() {
-		return tried;
-	}
+  public void setFirstSolved(Boolean firstSolved) {
+    isFirstSolved = firstSolved;
+  }
 
-	public void setTried(Integer tried) {
-		this.tried = tried;
-	}
+  public Integer getTried() {
+    return tried;
+  }
 
-	public char getIndex() {
-		return index;
-	}
+  public void setTried(Integer tried) {
+    this.tried = tried;
+  }
 
-	public void setIndex(char index) {
-		this.index = index;
-	}
+  public char getIndex() {
+    return index;
+  }
 
-	public Boolean getPending() {
-		return isPending;
-	}
+  public void setIndex(char index) {
+    this.index = index;
+  }
 
-	public void setPending(Boolean pending) {
-		isPending = pending;
-	}
+  public Boolean getPending() {
+    return isPending;
+  }
 
-	public Boolean getSolved() {
-		return isSolved;
-	}
+  public void setPending(Boolean pending) {
+    isPending = pending;
+  }
 
-	public void setSolved(Boolean solved) {
-		isSolved = solved;
-	}
+  public Boolean getSolved() {
+    return isSolved;
+  }
 
-	public Integer getPenalty() {
-		return penalty;
-	}
+  public void setSolved(Boolean solved) {
+    isSolved = solved;
+  }
 
-	public void setPenalty(Integer penalty) {
-		this.penalty = penalty;
-	}
+  public Integer getPenalty() {
+    return penalty;
+  }
 
-	public Integer getSolutionTime() {
-		return solutionTime;
-	}
+  public void setPenalty(Integer penalty) {
+    this.penalty = penalty;
+  }
 
-	public void setSolutionTime(Integer solutionTime) {
-		this.solutionTime = solutionTime;
-	}
+  public Integer getSolutionTime() {
+    return solutionTime;
+  }
 
-	public Integer getProblemId() {
-		return problemId;
-	}
+  public void setSolutionTime(Integer solutionTime) {
+    this.solutionTime = solutionTime;
+  }
 
-	public void setProblemId(Integer problemId) {
-		this.problemId = problemId;
-	}
+  public Integer getProblemId() {
+    return problemId;
+  }
 
-	public Integer getSolutionRunId() {
-		return solutionRunId;
-	}
+  public void setProblemId(Integer problemId) {
+    this.problemId = problemId;
+  }
 
-	public void setSolutionRunId(Integer solutionRunId) {
-		this.solutionRunId = solutionRunId;
-	}
+  public Integer getSolutionRunId() {
+    return solutionRunId;
+  }
+
+  public void setSolutionRunId(Integer solutionRunId) {
+    this.solutionRunId = solutionRunId;
+  }
 }
