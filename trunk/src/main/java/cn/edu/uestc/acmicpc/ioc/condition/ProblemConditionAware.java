@@ -30,18 +30,18 @@ import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public interface ProblemConditionAware {
-	/**
-	 * Put problem condition entity into class.
-	 * 
-	 * @param problemCondition
-	 *            specific problem condition entity
-	 */
-	public void setProblemCondition(ProblemCondition problemCondition);
 
-	/**
-	 * get problem condition entity.
-	 * 
-	 * @return specific problem condition
-	 */
-	public ProblemCondition getProblemCondition();
+  /**
+   * Put problem condition entity into class.
+   * 
+   * @param problemCondition specific problem condition entity
+   */
+  public void setProblemCondition(ProblemCondition problemCondition);
+
+  /**
+   * get problem condition entity.
+   * 
+   * @return specific problem condition
+   */
+  public ProblemCondition getProblemCondition();
 }

@@ -36,73 +36,75 @@ import java.io.Serializable;
 @Entity
 @KeyField("problemTagId")
 public class ProblemTag implements Serializable {
-	private static final long serialVersionUID = 8758938774072713107L;
-	private Integer problemTagId;
 
-	private Integer version;
+  private static final long serialVersionUID = 8758938774072713107L;
+  private Integer problemTagId;
 
-	@Version
-	@Column(name = "OPTLOCK")
-	public Integer getVersion() {
-		return version;
-	}
+  private Integer version;
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+  @Version
+  @Column(name = "OPTLOCK")
+  public Integer getVersion() {
+    return version;
+  }
 
-	@Column(name = "problemTagId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
-	@Id
-	@GeneratedValue
-	public Integer getProblemTagId() {
-		return problemTagId;
-	}
+  public void setVersion(Integer version) {
+    this.version = version;
+  }
 
-	public void setProblemTagId(Integer problemTagId) {
-		this.problemTagId = problemTagId;
-	}
+  @Column(name = "problemTagId", nullable = false, insertable = true, updatable = true,
+      length = 10, precision = 0, unique = true)
+  @Id
+  @GeneratedValue
+  public Integer getProblemTagId() {
+    return problemTagId;
+  }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+  public void setProblemTagId(Integer problemTagId) {
+    this.problemTagId = problemTagId;
+  }
 
-		ProblemTag that = (ProblemTag) o;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
 
-		if (!problemTagId.equals(that.problemTagId))
-			return false;
+    ProblemTag that = (ProblemTag) o;
 
-		return true;
-	}
+    if (!problemTagId.equals(that.problemTagId))
+      return false;
 
-	@Override
-	public int hashCode() {
-		return problemTagId;
-	}
+    return true;
+  }
 
-	private Problem problemByProblemId;
+  @Override
+  public int hashCode() {
+    return problemTagId;
+  }
 
-	@ManyToOne
-	@JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = false)
-	public Problem getProblemByProblemId() {
-		return problemByProblemId;
-	}
+  private Problem problemByProblemId;
 
-	public void setProblemByProblemId(Problem problemByProblemId) {
-		this.problemByProblemId = problemByProblemId;
-	}
+  @ManyToOne
+  @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = false)
+  public Problem getProblemByProblemId() {
+    return problemByProblemId;
+  }
 
-	private Tag tagByTagId;
+  public void setProblemByProblemId(Problem problemByProblemId) {
+    this.problemByProblemId = problemByProblemId;
+  }
 
-	@ManyToOne
-	@JoinColumn(name = "tagId", referencedColumnName = "tagId", nullable = false)
-	public Tag getTagByTagId() {
-		return tagByTagId;
-	}
+  private Tag tagByTagId;
 
-	public void setTagByTagId(Tag tagByTagId) {
-		this.tagByTagId = tagByTagId;
-	}
+  @ManyToOne
+  @JoinColumn(name = "tagId", referencedColumnName = "tagId", nullable = false)
+  public Tag getTagByTagId() {
+    return tagByTagId;
+  }
+
+  public void setTagByTagId(Tag tagByTagId) {
+    this.tagByTagId = tagByTagId;
+  }
 }

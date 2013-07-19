@@ -10,5 +10,6 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface KeyField {
-	public String value();
+
+  public String value();
 }

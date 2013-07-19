@@ -40,76 +40,72 @@ import org.springframework.beans.factory.annotation.Autowired;
 @LoginPermit(NeedLogin = false)
 public class ProblemAction extends BaseAction implements ProblemDAOAware {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = -3845919834024848825L;
+  private static final long serialVersionUID = -3845919834024848825L;
 
-	/**
-	 * ProblemDAO for problem search.
-	 */
-	@Autowired
-	private IProblemDAO problemDAO;
+  /**
+   * ProblemDAO for problem search.
+   */
+  @Autowired
+  private IProblemDAO problemDAO;
 
-	/**
-	 * Setter of ProblemDAO for Ioc.
-	 * 
-	 * @param problemDAO
-	 *            newly problemDAO
-	 */
-	public void setProblemDAO(IProblemDAO problemDAO) {
-		this.problemDAO = problemDAO;
-	}
+  /**
+   * Setter of ProblemDAO for Ioc.
+   * 
+   * @param problemDAO newly problemDAO
+   */
+  public void setProblemDAO(IProblemDAO problemDAO) {
+    this.problemDAO = problemDAO;
+  }
 
-	/**
-	 * save target problem id
-	 */
-	private Integer targetProblemId;
+  /**
+   * save target problem id
+   */
+  private Integer targetProblemId;
 
-	/**
-	 * save problem to edit
-	 */
-	private ProblemView targetProblem;
+  /**
+   * save problem to edit
+   */
+  private ProblemView targetProblem;
 
-	public Integer getTargetProblemId() {
-		return targetProblemId;
-	}
+  public Integer getTargetProblemId() {
+    return targetProblemId;
+  }
 
-	public void setTargetProblemId(Integer targetProblemId) {
-		this.targetProblemId = targetProblemId;
-	}
+  public void setTargetProblemId(Integer targetProblemId) {
+    this.targetProblemId = targetProblemId;
+  }
 
-	public ProblemView getTargetProblem() {
-		return targetProblem;
-	}
+  public ProblemView getTargetProblem() {
+    return targetProblem;
+  }
 
-	/**
-	 * Go to problem editor view!
-	 * 
-	 * @return <strong>SUCCESS</strong> signal
-	 */
-	public String toProblem() {
-		try {
-			if (targetProblemId == null)
-				throw new AppException("Problem Id is empty!");
+  /**
+   * Go to problem editor view!
+   * 
+   * @return <strong>SUCCESS</strong> signal
+   */
+  public String toProblem() {
+    try {
+      if (targetProblemId == null)
+        throw new AppException("Problem Id is empty!");
 
-			Problem problem = problemDAO.get(targetProblemId);
-			if (problem == null)
-				throw new AppException("Wrong problem ID!");
+      Problem problem = problemDAO.get(targetProblemId);
+      if (problem == null)
+        throw new AppException("Wrong problem ID!");
 
-			if (currentUser == null
-					|| currentUser.getType() != Global.AuthenticationType.ADMIN
-							.ordinal())
-				if (!problem.getIsVisible())
-					throw new AppException("Problem doesn't exist");
-			targetProblem = new ProblemView(problem);
-		} catch (AppException e) {
-			return redirect(getActionURL("/", "index"), e.getMessage());
-		} catch (Exception e) {
-			return redirect(getActionURL("/", "index"),
-					"Unknown exception occurred.");
-		}
-		return SUCCESS;
-	}
+      if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
+        if (!problem.getIsVisible())
+          throw new AppException("Problem doesn't exist");
+      targetProblem = new ProblemView(problem);
+    } catch (AppException e) {
+      return redirect(getActionURL("/", "index"), e.getMessage());
+    } catch (Exception e) {
+      return redirect(getActionURL("/", "index"), "Unknown exception occurred.");
+    }
+    return SUCCESS;
+  }
 
 }

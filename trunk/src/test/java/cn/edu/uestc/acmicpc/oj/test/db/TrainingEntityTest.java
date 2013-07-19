@@ -47,76 +47,75 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
-public class TrainingEntityTest implements TrainingContestDAOAware,
-		TrainingStatusDAOAware, TrainingUserDAOAware, UserDAOAware {
+public class TrainingEntityTest implements TrainingContestDAOAware, TrainingStatusDAOAware,
+    TrainingUserDAOAware, UserDAOAware {
 
-	@Test
-	@Ignore
-	public void testTrainingUser() throws AppException {
-		System.out.println("Hello");
-		TrainingUser trainingUser = new TrainingUser();
-		trainingUser.setRating(1200.0);
-		trainingUser.setVolatility(550.0);
-		trainingUser.setUserByUserId(userDAO.get(1));
-		trainingUser.setName("01李昀");
-		trainingUser.setType(0);
-		trainingUserDAO.add(trainingUser);
-	}
+  @Test
+  @Ignore
+  public void testTrainingUser() throws AppException {
+    System.out.println("Hello");
+    TrainingUser trainingUser = new TrainingUser();
+    trainingUser.setRating(1200.0);
+    trainingUser.setVolatility(550.0);
+    trainingUser.setUserByUserId(userDAO.get(1));
+    trainingUser.setName("01李昀");
+    trainingUser.setType(0);
+    trainingUserDAO.add(trainingUser);
+  }
 
-	@Test
-	@Ignore
-	public void testTrainingContest() throws AppException {
-		TrainingContest trainingContest = new TrainingContest();
-		trainingContest.setTitle("World final 2013");
-		trainingContest.setIsPersonal(false);
-		trainingContestDAO.add(trainingContest);
-	}
+  @Test
+  @Ignore
+  public void testTrainingContest() throws AppException {
+    TrainingContest trainingContest = new TrainingContest();
+    trainingContest.setTitle("World final 2013");
+    trainingContest.setIsPersonal(false);
+    trainingContestDAO.add(trainingContest);
+  }
 
-	@Test
-	@Ignore
-	public void testTrainingStatus() throws AppException {
-		TrainingStatus trainingStatus = new TrainingStatus();
-		trainingStatus.setRating(1000.0);
-		trainingStatus.setVolatility(500.0);
-		trainingStatus.setRank(1);
-		trainingStatus.setPenalty(100);
-		trainingStatus.setSolve(1);
-		trainingStatus.setRatingVary(-200.0);
-		trainingStatus.setVolatilityVary(-50.0);
-		trainingStatus.setTrainingUserByTrainingUserId(trainingUserDAO.get(1));
-		trainingStatus.setTrainingContestByTrainingContestId(trainingContestDAO
-				.get(1));
+  @Test
+  @Ignore
+  public void testTrainingStatus() throws AppException {
+    TrainingStatus trainingStatus = new TrainingStatus();
+    trainingStatus.setRating(1000.0);
+    trainingStatus.setVolatility(500.0);
+    trainingStatus.setRank(1);
+    trainingStatus.setPenalty(100);
+    trainingStatus.setSolve(1);
+    trainingStatus.setRatingVary(-200.0);
+    trainingStatus.setVolatilityVary(-50.0);
+    trainingStatus.setTrainingUserByTrainingUserId(trainingUserDAO.get(1));
+    trainingStatus.setTrainingContestByTrainingContestId(trainingContestDAO.get(1));
 
-		trainingStatusDAO.add(trainingStatus);
-	}
+    trainingStatusDAO.add(trainingStatus);
+  }
 
-	@Autowired
-	private ITrainingContestDAO trainingContestDAO;
-	@Autowired
-	private ITrainingUserDAO trainingUserDAO;
-	@Autowired
-	private ITrainingStatusDAO trainingStatusDAO;
+  @Autowired
+  private ITrainingContestDAO trainingContestDAO;
+  @Autowired
+  private ITrainingUserDAO trainingUserDAO;
+  @Autowired
+  private ITrainingStatusDAO trainingStatusDAO;
 
-	@Override
-	public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
-		this.trainingContestDAO = trainingContestDAO;
-	}
+  @Override
+  public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
+    this.trainingContestDAO = trainingContestDAO;
+  }
 
-	@Override
-	public void setTrainingStatusDAO(ITrainingStatusDAO trainingStatusDAO) {
-		this.trainingStatusDAO = trainingStatusDAO;
-	}
+  @Override
+  public void setTrainingStatusDAO(ITrainingStatusDAO trainingStatusDAO) {
+    this.trainingStatusDAO = trainingStatusDAO;
+  }
 
-	@Override
-	public void setTrainingUserDAO(ITrainingUserDAO trainingUserDAO) {
-		this.trainingUserDAO = trainingUserDAO;
-	}
+  @Override
+  public void setTrainingUserDAO(ITrainingUserDAO trainingUserDAO) {
+    this.trainingUserDAO = trainingUserDAO;
+  }
 
-	@Autowired
-	private IUserDAO userDAO;
+  @Autowired
+  private IUserDAO userDAO;
 
-	@Override
-	public void setUserDAO(IUserDAO userDAO) {
-		this.userDAO = userDAO;
-	}
+  @Override
+  public void setUserDAO(IUserDAO userDAO) {
+    this.userDAO = userDAO;
+  }
 }

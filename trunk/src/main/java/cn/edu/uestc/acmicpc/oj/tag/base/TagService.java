@@ -27,32 +27,30 @@ import com.opensymphony.xwork2.util.ValueStack;
 import org.apache.struts2.components.ContextBean;
 
 /**
- * Base Tag Service, we can process tag service in the method
- * <strong>start</strong> and <strong>end</strong>
+ * Base Tag Service, we can process tag service in the method <strong>start</strong> and
+ * <strong>end</strong>
  * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class TagService extends ContextBean {
-	/**
-	 * default constructor
-	 * 
-	 * @param valueStack
-	 *            valueStack object of the java bean
-	 */
-	public TagService(ValueStack valueStack) {
-		super(valueStack);
-	}
 
-	/**
-	 * put var into the <strong>context stack</strong>.
-	 * 
-	 * @param var
-	 *            key name
-	 * @param value
-	 *            the mapping value of var
-	 */
-	protected void putInContext(String var, Object value) {
-		if (!StringUtil.isNullOrWhiteSpace(var))
-			stack.getContext().put(var, value);
-	}
+  /**
+   * default constructor
+   * 
+   * @param valueStack valueStack object of the java bean
+   */
+  public TagService(ValueStack valueStack) {
+    super(valueStack);
+  }
+
+  /**
+   * put var into the <strong>context stack</strong>.
+   * 
+   * @param var key name
+   * @param value the mapping value of var
+   */
+  protected void putInContext(String var, Object value) {
+    if (!StringUtil.isNullOrWhiteSpace(var))
+      stack.getContext().put(var, value);
+  }
 }

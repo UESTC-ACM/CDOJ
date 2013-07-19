@@ -31,11 +31,11 @@ import cn.edu.uestc.acmicpc.util.Global;
  * @see Global
  */
 public interface GlobalAware {
-	/**
-	 * Put Global entity into class.
-	 * 
-	 * @param global
-	 *            global entity object
-	 */
-	public void setGlobal(Global global);
+
+  /**
+   * Put Global entity into class.
+   * 
+   * @param global global entity object
+   */
+  public void setGlobal(Global global);
 }

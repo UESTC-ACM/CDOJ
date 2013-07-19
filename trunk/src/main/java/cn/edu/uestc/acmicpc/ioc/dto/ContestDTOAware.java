@@ -28,18 +28,18 @@ import cn.edu.uestc.acmicpc.db.dto.impl.ContestDTO;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public interface ContestDTOAware {
-	/**
-	 * Put contestDTO into class.
-	 * 
-	 * @param contestDTO
-	 *            contestDTO object
-	 */
-	public void setContestDTO(ContestDTO contestDTO);
 
-	/**
-	 * Get contestDTO entity.
-	 * 
-	 * @return contestDTO entity
-	 */
-	public ContestDTO getContestDTO();
+  /**
+   * Put contestDTO into class.
+   * 
+   * @param contestDTO contestDTO object
+   */
+  public void setContestDTO(ContestDTO contestDTO);
+
+  /**
+   * Get contestDTO entity.
+   * 
+   * @return contestDTO entity
+   */
+  public ContestDTO getContestDTO();
 }

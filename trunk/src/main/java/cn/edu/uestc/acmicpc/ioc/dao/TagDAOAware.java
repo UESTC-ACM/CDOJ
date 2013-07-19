@@ -31,11 +31,11 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ITagDAO;
  * @see ITagDAO
  */
 public interface TagDAOAware {
-	/**
-	 * Put tagDAO into class.
-	 * 
-	 * @param tagDAO
-	 *            tagDAO object
-	 */
-	public void setTagDAO(ITagDAO tagDAO);
+
+  /**
+   * Put tagDAO into class.
+   * 
+   * @param tagDAO tagDAO object
+   */
+  public void setTagDAO(ITagDAO tagDAO);
 }

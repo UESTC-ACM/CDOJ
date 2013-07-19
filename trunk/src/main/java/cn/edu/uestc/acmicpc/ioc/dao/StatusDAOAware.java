@@ -31,11 +31,11 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
  * @see IStatusDAO
  */
 public interface StatusDAOAware {
-	/**
-	 * Put statusDAO into class.
-	 * 
-	 * @param statusDAO
-	 *            statusDAO object
-	 */
-	public void setStatusDAO(IStatusDAO statusDAO);
+
+  /**
+   * Put statusDAO into class.
+   * 
+   * @param statusDAO statusDAO object
+   */
+  public void setStatusDAO(IStatusDAO statusDAO);
 }

@@ -35,33 +35,32 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class BaseDAO {
-	@Autowired
-	private SessionFactory sessionFactory;
 
-	/**
-	 * Set session factory from IoC.
-	 * 
-	 * @param sessionFactory
-	 *            sessionFactory from bean settings
-	 */
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
+  @Autowired
+  private SessionFactory sessionFactory;
 
-	/**
-	 * Get current database session
-	 * 
-	 * @return if the IoC works, return current session, otherwise open a new
-	 *         session
-	 */
-	protected Session getSession() {
-		Session session;
-		try {
-			session = sessionFactory.getCurrentSession();
-		} catch (HibernateException e) {
-			e.printStackTrace();
-			session = sessionFactory.openSession();
-		}
-		return session;
-	}
+  /**
+   * Set session factory from IoC.
+   * 
+   * @param sessionFactory sessionFactory from bean settings
+   */
+  public void setSessionFactory(SessionFactory sessionFactory) {
+    this.sessionFactory = sessionFactory;
+  }
+
+  /**
+   * Get current database session
+   * 
+   * @return if the IoC works, return current session, otherwise open a new session
+   */
+  protected Session getSession() {
+    Session session;
+    try {
+      session = sessionFactory.getCurrentSession();
+    } catch (HibernateException e) {
+      e.printStackTrace();
+      session = sessionFactory.openSession();
+    }
+    return session;
+  }
 }

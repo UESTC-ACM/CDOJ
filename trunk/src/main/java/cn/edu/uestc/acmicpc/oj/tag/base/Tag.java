@@ -31,8 +31,8 @@ import org.apache.struts2.views.jsp.ContextBeanTag;
  */
 public abstract class Tag extends ContextBeanTag {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = 6569639999832244337L;
+  private static final long serialVersionUID = 6569639999832244337L;
 }

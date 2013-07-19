@@ -29,18 +29,18 @@ import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public interface ContestConditionAware {
-	/**
-	 * Put contest condition entity into class.
-	 * 
-	 * @param contestCondition
-	 *            specific contest condition entity
-	 */
-	public void setContestCondition(ContestCondition contestCondition);
 
-	/**
-	 * get contest condition entity.
-	 * 
-	 * @return specific contest condition
-	 */
-	public ContestCondition getContestCondition();
+  /**
+   * Put contest condition entity into class.
+   * 
+   * @param contestCondition specific contest condition entity
+   */
+  public void setContestCondition(ContestCondition contestCondition);
+
+  /**
+   * get contest condition entity.
+   * 
+   * @return specific contest condition
+   */
+  public ContestCondition getContestCondition();
 }

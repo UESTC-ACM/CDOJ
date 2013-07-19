@@ -47,45 +47,44 @@ import java.util.Date;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
 public class AOPTest {
-	@Before
-	public void init() {
-		try {
-			User user = new User();
-			user.setUserName("admin");
-			user.setPassword(StringUtil.encodeSHA1("admin"));
-			user.setNickName("admin");
-			user.setEmail("acm@uestc.edu.cn");
-			user.setSchool("UESTC");
-			user.setDepartmentByDepartmentId(departmentDAO.get(1));
-			user.setStudentId("2010013100008");
-			user.setLastLogin(new Timestamp(new Date().getTime()));
-			User check = userDAO.getEntityByUniqueField("userName",
-					user.getUserName());
-			if (check == null)
-				userDAO.add(user);
-		} catch (Exception e) {
-		}
-	}
 
-	@Autowired
-	IUserDAO userDAO = null;
+  @Before
+  public void init() {
+    try {
+      User user = new User();
+      user.setUserName("admin");
+      user.setPassword(StringUtil.encodeSHA1("admin"));
+      user.setNickName("admin");
+      user.setEmail("acm@uestc.edu.cn");
+      user.setSchool("UESTC");
+      user.setDepartmentByDepartmentId(departmentDAO.get(1));
+      user.setStudentId("2010013100008");
+      user.setLastLogin(new Timestamp(new Date().getTime()));
+      User check = userDAO.getEntityByUniqueField("userName", user.getUserName());
+      if (check == null)
+        userDAO.add(user);
+    } catch (Exception e) {
+    }
+  }
 
-	@Autowired
-	IDepartmentDAO departmentDAO = null;
+  @Autowired
+  IUserDAO userDAO = null;
 
-	public void setUserDAO(IUserDAO userDAO) {
-		this.userDAO = userDAO;
-	}
+  @Autowired
+  IDepartmentDAO departmentDAO = null;
 
-	public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
-		this.departmentDAO = departmentDAO;
-	}
+  public void setUserDAO(IUserDAO userDAO) {
+    this.userDAO = userDAO;
+  }
 
-	@Test
-	@Ignore
-	public void testDataBaseConnection() throws FieldNotUniqueException,
-			AppException {
-		User user = userDAO.getEntityByUniqueField("userName", "administrator");
-		System.out.println(user.getUserName());
-	}
+  public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
+    this.departmentDAO = departmentDAO;
+  }
+
+  @Test
+  @Ignore
+  public void testDataBaseConnection() throws FieldNotUniqueException, AppException {
+    User user = userDAO.getEntityByUniqueField("userName", "administrator");
+    System.out.println(user.getUserName());
+  }
 }

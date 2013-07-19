@@ -45,93 +45,87 @@ import java.util.List;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(NeedLogin = false)
-public class ContestListAction extends BaseAction implements ContestDAOAware,
-		ContestConditionAware {
+public class ContestListAction extends BaseAction implements ContestDAOAware, ContestConditionAware {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1252221057813325960L;
+  private static final long serialVersionUID = 1252221057813325960L;
 
-	@Autowired
-	private IContestDAO contestDAO;
+  @Autowired
+  private IContestDAO contestDAO;
 
-	@Autowired
-	private ContestCondition contestCondition;
+  @Autowired
+  private ContestCondition contestCondition;
 
-	/**
-	 * Refer to contest list page.
-	 * 
-	 * @return <strong>SUCCESS</strong> signal
-	 */
-	public String toContestList() {
-		return SUCCESS;
-	}
+  /**
+   * Refer to contest list page.
+   * 
+   * @return <strong>SUCCESS</strong> signal
+   */
+  public String toContestList() {
+    return SUCCESS;
+  }
 
-	/**
-	 * Search action.
-	 * <p/>
-	 * Find all records by conditions and return them as a list in JSON, and the
-	 * condition set will set in JSON named "condition".
-	 * <p/>
-	 * <strong>JSON output</strong>:
-	 * <ul>
-	 * <li>
-	 * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>,
-	 * "condition", <strong>ContestCondition entity</strong>,
-	 * "contestList":<strong>query result</strong>}</li>
-	 * <li>
-	 * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-	 * </li>
-	 * </ul>
-	 * 
-	 * @return <strong>JSON</strong> signal
-	 */
-	@SuppressWarnings("unchecked")
-	@SkipValidation
-	public String toSearch() {
-		try {
-			if (currentUser == null
-					|| currentUser.getType() != Global.AuthenticationType.ADMIN
-							.ordinal())
-				contestCondition.setIsVisible(true);
-			contestCondition.setIsTitleEmpty(false);
-			Condition condition = contestCondition.getCondition();
-			Long count = contestDAO.count(contestCondition.getCondition());
-			PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
-			condition.setCurrentPage(pageInfo.getCurrentPage());
-			condition.setCountPerPage(RECORD_PER_PAGE);
-			List<Contest> contestList = (List<Contest>) contestDAO
-					.findAll(condition);
-			List<ContestListView> contestListViewList = new ArrayList<>();
-			for (Contest contest : contestList)
-				contestListViewList.add(new ContestListView(contest));
-			json.put("pageInfo", pageInfo.getHtmlString());
-			json.put("result", "ok");
-			json.put("contestList", contestListViewList);
-		} catch (AppException e) {
-			json.put("result", "error");
-			json.put("error_msg", e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			json.put("result", "error");
-			json.put("error_msg", "Unknown exception occurred.");
-		}
-		return JSON;
-	}
+  /**
+   * Search action.
+   * <p/>
+   * Find all records by conditions and return them as a list in JSON, and the condition set will
+   * set in JSON named "condition".
+   * <p/>
+   * <strong>JSON output</strong>:
+   * <ul>
+   * <li>
+   * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>, "condition",
+   * <strong>ContestCondition entity</strong>, "contestList":<strong>query result</strong>}</li>
+   * <li>
+   * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
+   * </ul>
+   * 
+   * @return <strong>JSON</strong> signal
+   */
+  @SuppressWarnings("unchecked")
+  @SkipValidation
+  public String toSearch() {
+    try {
+      if (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal())
+        contestCondition.setIsVisible(true);
+      contestCondition.setIsTitleEmpty(false);
+      Condition condition = contestCondition.getCondition();
+      Long count = contestDAO.count(contestCondition.getCondition());
+      PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
+      condition.setCurrentPage(pageInfo.getCurrentPage());
+      condition.setCountPerPage(RECORD_PER_PAGE);
+      List<Contest> contestList = (List<Contest>) contestDAO.findAll(condition);
+      List<ContestListView> contestListViewList = new ArrayList<>();
+      for (Contest contest : contestList)
+        contestListViewList.add(new ContestListView(contest));
+      json.put("pageInfo", pageInfo.getHtmlString());
+      json.put("result", "ok");
+      json.put("contestList", contestListViewList);
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return JSON;
+  }
 
-	@Override
-	public void setContestCondition(ContestCondition contestCondition) {
-		this.contestCondition = contestCondition;
-	}
+  @Override
+  public void setContestCondition(ContestCondition contestCondition) {
+    this.contestCondition = contestCondition;
+  }
 
-	@Override
-	public ContestCondition getContestCondition() {
-		return contestCondition;
-	}
+  @Override
+  public ContestCondition getContestCondition() {
+    return contestCondition;
+  }
 
-	@Override
-	public void setContestDAO(IContestDAO contestDAO) {
-		this.contestDAO = contestDAO;
-	}
+  @Override
+  public void setContestDAO(IContestDAO contestDAO) {
+    this.contestDAO = contestDAO;
+  }
 }

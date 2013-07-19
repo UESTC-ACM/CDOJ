@@ -48,208 +48,209 @@ import java.util.Random;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(NeedLogin = false)
-public class UserActivateAction extends BaseAction implements
-		UserSerialKeyDAOAware, EMailSenderAware, UserDTOAware {
+public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAware,
+    EMailSenderAware, UserDTOAware {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = -7795250262388594969L;
+  private static final long serialVersionUID = -7795250262388594969L;
 
-	@Autowired
-	private EMailSender eMailSender;
+  @Autowired
+  private EMailSender eMailSender;
 
-	private User targetUser;
+  private User targetUser;
 
-	public User getTargetUser() {
-		return targetUser;
-	}
+  public User getTargetUser() {
+    return targetUser;
+  }
 
-	public void setTargetUser(User targetUser) {
-		this.targetUser = targetUser;
-	}
+  public void setTargetUser(User targetUser) {
+    this.targetUser = targetUser;
+  }
 
-	private String targetUserName;
+  private String targetUserName;
 
-	public String getTargetUserName() {
-		return targetUserName;
-	}
+  public String getTargetUserName() {
+    return targetUserName;
+  }
 
-	public void setTargetUserName(String targetUserName) {
-		this.targetUserName = targetUserName;
-	}
+  public void setTargetUserName(String targetUserName) {
+    this.targetUserName = targetUserName;
+  }
 
-	/**
-	 * User serial key for user activation.
-	 */
-	private String serialKey;
+  /**
+   * User serial key for user activation.
+   */
+  private String serialKey;
 
-	@Autowired
-	private IUserSerialKeyDAO userSerialKeyDAO;
+  @Autowired
+  private IUserSerialKeyDAO userSerialKeyDAO;
 
-	public String getSerialKey() {
-		return serialKey;
-	}
+  public String getSerialKey() {
+    return serialKey;
+  }
 
-	public void setSerialKey(String serialKey) {
-		this.serialKey = serialKey;
-	}
+  public void setSerialKey(String serialKey) {
+    this.serialKey = serialKey;
+  }
 
-	/**
-	 * Action to send user serial key.
-	 * 
-	 * @return {@code JSON} flag
-	 */
-	@LoginPermit(NeedLogin = true)
-	@SkipValidation
-	public String toSendSerialKey() {
-		try {
-			targetUser = userDAO.getEntityByUniqueField("userName",
-					targetUserName);
-			if (targetUser == null)
-				throw new AppException("No such user!");
-			UserSerialKey userSerialKey = userSerialKeyDAO
-					.getEntityByUniqueField("userId", targetUser,
-							"userByUserId", true);
-			if (userSerialKey != null) {
-				// less than 30 minutes
-				/*
-				 * if (new Date().getTime() - userSerialKey.getTime().getTime()
-				 * <= 1800000) { throw new AppException(
-				 * "serial key can only be generated in every 30 minutes."); }
-				 */
-			} else {
-				userSerialKey = new UserSerialKey();
-			}
-			StringBuilder stringBuilder = new StringBuilder();
-			Random random = new Random();
-			for (int i = 0; i < Global.USER_SERIAL_KEY_LENGTH; ++i) {
-				stringBuilder
-						.append((char) (random.nextInt(126 - 33 + 1) + 33));
-			}
-			String serialKey = stringBuilder.toString();
-			userSerialKey.setTime(new Timestamp(new Date().getTime()));
-			userSerialKey.setSerialKey(serialKey);
-			userSerialKey.setUserByUserId(targetUser);
-			userSerialKeyDAO.update(userSerialKey);
+  /**
+   * Action to send user serial key.
+   * 
+   * @return {@code JSON} flag
+   */
+  @LoginPermit(NeedLogin = true)
+  @SkipValidation
+  public String toSendSerialKey() {
+    try {
+      targetUser = userDAO.getEntityByUniqueField("userName", targetUserName);
+      if (targetUser == null)
+        throw new AppException("No such user!");
+      UserSerialKey userSerialKey =
+          userSerialKeyDAO.getEntityByUniqueField("userId", targetUser, "userByUserId", true);
+      if (userSerialKey != null) {
+        // less than 30 minutes
+        /*
+         * if (new Date().getTime() - userSerialKey.getTime().getTime() <= 1800000) { throw new
+         * AppException( "serial key can only be generated in every 30 minutes."); }
+         */
+      } else {
+        userSerialKey = new UserSerialKey();
+      }
+      StringBuilder stringBuilder = new StringBuilder();
+      Random random = new Random();
+      for (int i = 0; i < Global.USER_SERIAL_KEY_LENGTH; ++i) {
+        stringBuilder.append((char) (random.nextInt(126 - 33 + 1) + 33));
+      }
+      String serialKey = stringBuilder.toString();
+      userSerialKey.setTime(new Timestamp(new Date().getTime()));
+      userSerialKey.setSerialKey(serialKey);
+      userSerialKey.setUserByUserId(targetUser);
+      userSerialKeyDAO.update(userSerialKey);
 
-			String url = settings.SETTING_HOST
-					+ getActionURL("/user",
-							"activate/" + targetUser.getUserName() + "/"
-									+ StringUtil.encodeSHA1(serialKey));
-			stringBuilder = new StringBuilder();
-			stringBuilder.append("Dear ").append(targetUser.getUserName())
-					.append(" :\n\n");
-			stringBuilder
-					.append("To reset your password, simply click on the link below or paste into the url field on your favorite browser:\n\n");
-			stringBuilder.append(url).append("\n\n");
-			stringBuilder
-					.append("The activation link will only be good for 30 minutes, after that you will have to try again from the beginning. When you visit the above page, you'll be able to set your password as you like.\n\n");
-			stringBuilder
-					.append("If you have any questions about the system, feel free to contact us anytime at acm@uestc.edu.cn.\n\n");
-			stringBuilder.append("The UESTC OJ Team.\n");
+      String url =
+          settings.SETTING_HOST
+              + getActionURL("/user",
+                  "activate/" + targetUser.getUserName() + "/" + StringUtil.encodeSHA1(serialKey));
+      stringBuilder = new StringBuilder();
+      stringBuilder.append("Dear ").append(targetUser.getUserName()).append(" :\n\n");
+      stringBuilder
+          .append("To reset your password, simply click on the link below or paste into the url field on your favorite browser:\n\n");
+      stringBuilder.append(url).append("\n\n");
+      stringBuilder
+          .append("The activation link will only be good for 30 minutes, after that you will have to try again from the beginning. When you visit the above page, you'll be able to set your password as you like.\n\n");
+      stringBuilder
+          .append("If you have any questions about the system, feel free to contact us anytime at acm@uestc.edu.cn.\n\n");
+      stringBuilder.append("The UESTC OJ Team.\n");
 
-			eMailSender.send(targetUser.getEmail(), "UESTC Online Judge",
-					stringBuilder.toString());
+      eMailSender.send(targetUser.getEmail(), "UESTC Online Judge", stringBuilder.toString());
 
-			json.put("result", "ok");
-		} catch (AppException e) {
-			json.put("result", "error");
-			json.put("err_msg", e.getMessage());
-		} catch (Exception e) {
-			json.put("result", "error");
-			json.put("err_msg", "Unknown exception occurred.");
-			e.printStackTrace();
-		}
-		return JSON;
-	}
+      json.put("result", "ok");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("err_msg", e.getMessage());
+    } catch (Exception e) {
+      json.put("result", "error");
+      json.put("err_msg", "Unknown exception occurred.");
+      e.printStackTrace();
+    }
+    return JSON;
+  }
 
-	private String targetSerialKey;
+  private String targetSerialKey;
 
-	public String getTargetSerialKey() {
-		return targetSerialKey;
-	}
+  public String getTargetSerialKey() {
+    return targetSerialKey;
+  }
 
-	public void setTargetSerialKey(String targetSerialKey) {
-		this.targetSerialKey = targetSerialKey;
-	}
+  public void setTargetSerialKey(String targetSerialKey) {
+    this.targetSerialKey = targetSerialKey;
+  }
 
-	@SkipValidation
-	public String toActivatePage() {
-		return SUCCESS;
-	}
+  @SkipValidation
+  public String toActivatePage() {
+    return SUCCESS;
+  }
 
-	@Autowired
-	private UserDTO userDTO;
+  @Autowired
+  private UserDTO userDTO;
 
-	@Override
-	public UserDTO getUserDTO() {
-		return userDTO;
-	}
+  @Override
+  public UserDTO getUserDTO() {
+    return userDTO;
+  }
 
-	@Override
-	public void setUserDTO(UserDTO userDTO) {
-		this.userDTO = userDTO;
-	}
+  @Override
+  public void setUserDTO(UserDTO userDTO) {
+    this.userDTO = userDTO;
+  }
 
-	/**
-	 * Action to activate user.
-	 * 
-	 * @return {@code JSON} flag
-	 */
-	@Validations(requiredStrings = {
-			@RequiredStringValidator(fieldName = "userDTO.userName", key = "error.userName.validation"),
-			@RequiredStringValidator(fieldName = "userDTO.password", key = "error.password.validation") }, stringLengthFields = { @StringLengthFieldValidator(fieldName = "userDTO.password", key = "error.password.validation", minLength = "6", maxLength = "20", trim = false) }, customValidators = { @CustomValidator(type = "regex", fieldName = "userDTO.userName", key = "error.userName.validation", parameters = {
-			@ValidationParameter(name = "expression", value = "\\b^[a-zA-Z0-9_]{4,24}$\\b"),
-			@ValidationParameter(name = "trim", value = "false") }) }, fieldExpressions = { @FieldExpressionValidator(fieldName = "userDTO.passwordRepeat", expression = "userDTO.password == userDTO.passwordRepeat", key = "error.passwordRepeat.validation") })
-	public String toActivateUser() {
-		try {
-			User user = userDAO.getEntityByUniqueField("userName",
-					userDTO.getUserName());
-			if (user == null) {
-				addFieldError("userDTO.userName", "No such user!");
-				return INPUT;
-			}
+  /**
+   * Action to activate user.
+   * 
+   * @return {@code JSON} flag
+   */
+  @Validations(
+      requiredStrings = {
+          @RequiredStringValidator(fieldName = "userDTO.userName",
+              key = "error.userName.validation"),
+          @RequiredStringValidator(fieldName = "userDTO.password",
+              key = "error.password.validation") },
+      stringLengthFields = { @StringLengthFieldValidator(fieldName = "userDTO.password",
+          key = "error.password.validation", minLength = "6", maxLength = "20", trim = false) },
+      customValidators = { @CustomValidator(type = "regex", fieldName = "userDTO.userName",
+          key = "error.userName.validation", parameters = {
+              @ValidationParameter(name = "expression", value = "\\b^[a-zA-Z0-9_]{4,24}$\\b"),
+              @ValidationParameter(name = "trim", value = "false") }) },
+      fieldExpressions = { @FieldExpressionValidator(fieldName = "userDTO.passwordRepeat",
+          expression = "userDTO.password == userDTO.passwordRepeat",
+          key = "error.passwordRepeat.validation") })
+  public String toActivateUser() {
+    try {
+      User user = userDAO.getEntityByUniqueField("userName", userDTO.getUserName());
+      if (user == null) {
+        addFieldError("userDTO.userName", "No such user!");
+        return INPUT;
+      }
 
-			UserSerialKey userSerialKey = userSerialKeyDAO
-					.getEntityByUniqueField("userId", user, "userByUserId",
-							true);
+      UserSerialKey userSerialKey =
+          userSerialKeyDAO.getEntityByUniqueField("userId", user, "userByUserId", true);
 
-			if (userSerialKey == null
-					|| new Date().getTime() - userSerialKey.getTime().getTime() > 1800000) {
-				addFieldError("targetSerialKey",
-						"Serial Key exceed time limit! Please regenerate a new key.");
-				return INPUT;
-			}
-			if (!StringUtil.encodeSHA1(userSerialKey.getSerialKey()).equals(
-					targetSerialKey)) {
-				addFieldError("targetSerialKey", "Serial Key is wrong!");
-				return INPUT;
-			}
+      if (userSerialKey == null
+          || new Date().getTime() - userSerialKey.getTime().getTime() > 1800000) {
+        addFieldError("targetSerialKey",
+            "Serial Key exceed time limit! Please regenerate a new key.");
+        return INPUT;
+      }
+      if (!StringUtil.encodeSHA1(userSerialKey.getSerialKey()).equals(targetSerialKey)) {
+        addFieldError("targetSerialKey", "Serial Key is wrong!");
+        return INPUT;
+      }
 
-			user.setPassword(StringUtil.encodeSHA1(userDTO.getPassword()));
-			userDAO.update(user);
-			userSerialKeyDAO.delete(userSerialKey);
+      user.setPassword(StringUtil.encodeSHA1(userDTO.getPassword()));
+      userDAO.update(user);
+      userSerialKeyDAO.delete(userSerialKey);
 
-			json.put("result", "ok");
-		} catch (AppException e) {
-			json.put("result", "error");
-			json.put("err_msg", e.getMessage());
-		} catch (Exception e) {
-			json.put("result", "error");
-			json.put("err_msg", "Unknown exception occurred.");
-			e.printStackTrace();
-		}
-		return JSON;
-	}
+      json.put("result", "ok");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("err_msg", e.getMessage());
+    } catch (Exception e) {
+      json.put("result", "error");
+      json.put("err_msg", "Unknown exception occurred.");
+      e.printStackTrace();
+    }
+    return JSON;
+  }
 
-	@Override
-	public void setUserSerialKeyDAO(IUserSerialKeyDAO userSerialKeyDAO) {
-		this.userSerialKeyDAO = userSerialKeyDAO;
-	}
+  @Override
+  public void setUserSerialKeyDAO(IUserSerialKeyDAO userSerialKeyDAO) {
+    this.userSerialKeyDAO = userSerialKeyDAO;
+  }
 
-	@Override
-	public void setEMailSender(EMailSender eMailSender) {
-		this.eMailSender = eMailSender;
-	}
+  @Override
+  public void setEMailSender(EMailSender eMailSender) {
+    this.eMailSender = eMailSender;
+  }
 }

@@ -37,71 +37,71 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class ArticleStatementAdminAction extends BaseAction implements
-		ArticleDAOAware, ArticleDTOAware {
+public class ArticleStatementAdminAction extends BaseAction implements ArticleDAOAware,
+    ArticleDTOAware {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = -5371516340656472206L;
+  private static final long serialVersionUID = -5371516340656472206L;
 
-	@Autowired
-	private IArticleDAO articleDAO;
+  @Autowired
+  private IArticleDAO articleDAO;
 
-	@Autowired
-	private ArticleDTO articleDTO;
+  @Autowired
+  private ArticleDTO articleDTO;
 
-	@Override
-	public void setArticleDAO(IArticleDAO articleDAO) {
-		this.articleDAO = articleDAO;
-	}
+  @Override
+  public void setArticleDAO(IArticleDAO articleDAO) {
+    this.articleDAO = articleDAO;
+  }
 
-	@Override
-	public void setArticleDTO(ArticleDTO articleDTO) {
-		this.articleDTO = articleDTO;
-	}
+  @Override
+  public void setArticleDTO(ArticleDTO articleDTO) {
+    this.articleDTO = articleDTO;
+  }
 
-	@Override
-	public ArticleDTO getArticleDTO() {
-		return articleDTO;
-	}
+  @Override
+  public ArticleDTO getArticleDTO() {
+    return articleDTO;
+  }
 
-	/**
-	 * To add or edit user entity.
-	 * <p/>
-	 * <strong>JSON output</strong>:
-	 * <ul>
-	 * <li>
-	 * For success: {"result":"ok"}</li>
-	 * <li>
-	 * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-	 * </li>
-	 * </ul>
-	 * 
-	 * @return <strong>JSON</strong> signal
-	 */
-	@Validations(requiredStrings = { @RequiredStringValidator(fieldName = "articleDTO.title", key = "error.title.validation", trim = true) })
-	public String toEdit() {
-		try {
-			Article article;
+  /**
+   * To add or edit user entity.
+   * <p/>
+   * <strong>JSON output</strong>:
+   * <ul>
+   * <li>
+   * For success: {"result":"ok"}</li>
+   * <li>
+   * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
+   * </ul>
+   * 
+   * @return <strong>JSON</strong> signal
+   */
+  @Validations(requiredStrings = { @RequiredStringValidator(fieldName = "articleDTO.title",
+      key = "error.title.validation", trim = true) })
+  public String toEdit() {
+    try {
+      Article article;
 
-			article = articleDAO.get(articleDTO.getArticleId());
-			if (article == null)
-				throw new AppException("No such article!");
+      article = articleDAO.get(articleDTO.getArticleId());
+      if (article == null)
+        throw new AppException("No such article!");
 
-			articleDTO.updateEntity(article);
-			article.setUserByUserId(currentUser);
+      articleDTO.updateEntity(article);
+      article.setUserByUserId(currentUser);
 
-			articleDAO.update(article);
-			json.put("result", "ok");
-		} catch (AppException e) {
-			json.put("result", "error");
-			json.put("error_msg", e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			json.put("result", "error");
-			json.put("error_msg", "Unknown exception occurred.");
-		}
-		return JSON;
-	}
+      articleDAO.update(article);
+      json.put("result", "ok");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return JSON;
+  }
 }

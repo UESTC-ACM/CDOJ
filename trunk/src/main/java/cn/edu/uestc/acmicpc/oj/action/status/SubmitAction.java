@@ -43,179 +43,171 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(NeedLogin = true)
-public class SubmitAction extends BaseAction implements StatusDAOAware,
-		CodeDAOAware, ContestDAOAware, LanguageDAOAware, ProblemDAOAware,
-		StatusConditionAware {
+public class SubmitAction extends BaseAction implements StatusDAOAware, CodeDAOAware,
+    ContestDAOAware, LanguageDAOAware, ProblemDAOAware, StatusConditionAware {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = -4600945935804778289L;
+  private static final long serialVersionUID = -4600945935804778289L;
 
-	/**
-	 * Code
-	 */
-	private String codeContent;
+  /**
+   * Code
+   */
+  private String codeContent;
 
-	@Autowired
-	private StatusCondition statusCondition;
+  @Autowired
+  private StatusCondition statusCondition;
 
-	/**
-	 * Language ID
-	 */
-	private Integer languageId;
+  /**
+   * Language ID
+   */
+  private Integer languageId;
 
-	/**
-	 * Contest ID, null if it's not submit in contest
-	 */
-	private Integer contestId;
+  /**
+   * Contest ID, null if it's not submit in contest
+   */
+  private Integer contestId;
 
-	/**
-	 * Problem ID
-	 */
-	private Integer problemId;
+  /**
+   * Problem ID
+   */
+  private Integer problemId;
 
-	/**
-	 * DAO for database
-	 */
-	@Autowired
-	private IStatusDAO statusDAO;
-	@Autowired
-	private ICodeDAO codeDAO;
-	@Autowired
-	private IContestDAO contestDAO;
-	@Autowired
-	private ILanguageDAO languageDAO;
-	@Autowired
-	private IProblemDAO problemDAO;
+  /**
+   * DAO for database
+   */
+  @Autowired
+  private IStatusDAO statusDAO;
+  @Autowired
+  private ICodeDAO codeDAO;
+  @Autowired
+  private IContestDAO contestDAO;
+  @Autowired
+  private ILanguageDAO languageDAO;
+  @Autowired
+  private IProblemDAO problemDAO;
 
-	/**
-	 * Submit code to judge core.
-	 * <p/>
-	 * <strong>JSON output</strong>:
-	 * <ul>
-	 * <li>
-	 * For success: {"result":"ok"}</li>
-	 * <li>
-	 * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-	 * </li>
-	 * </ul>
-	 * 
-	 * @return JSON
-	 */
-	public String toSubmit() {
-		try {
-			if (codeContent == null || codeContent.length() < 50
-					|| codeContent.length() > 65536)
-				throw new AppException(
-						"Code length should at least 50B and at most 65536B");
-			StatusDTO statusDTO = applicationContext.getBean("statusDTO",
-					StatusDTO.class);
-			if (contestId != null) {
-				Contest contest = contestDAO.get(contestId);
-				if (contest == null)
-					throw new AppException("No such contest");
-				statusDTO.setContest(contestDAO.get(contestId));
-			}
-			Language language = languageDAO.get(languageId);
-			if (language == null)
-				throw new AppException("No such language");
-			statusDTO.setLanguage(language);
-			Problem problem = problemDAO.get(problemId);
-			if (problem == null)
-				throw new AppException("No such problem");
-			statusDTO.setProblem(problem);
-			statusDTO.setUser(getCurrentUser());
-			CodeDTO codeDTO = applicationContext.getBean("codeDTO",
-					CodeDTO.class);
-			codeDTO.setContent(codeContent);
-			Code code = codeDTO.getEntity();
-			codeDAO.add(code);
-			statusDTO.setCode(code);
-			statusDTO.setLength(codeContent.length());
-			statusDAO.add(statusDTO.getEntity());
+  /**
+   * Submit code to judge core.
+   * <p/>
+   * <strong>JSON output</strong>:
+   * <ul>
+   * <li>
+   * For success: {"result":"ok"}</li>
+   * <li>
+   * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
+   * </ul>
+   * 
+   * @return JSON
+   */
+  public String toSubmit() {
+    try {
+      if (codeContent == null || codeContent.length() < 50 || codeContent.length() > 65536)
+        throw new AppException("Code length should at least 50B and at most 65536B");
+      StatusDTO statusDTO = applicationContext.getBean("statusDTO", StatusDTO.class);
+      if (contestId != null) {
+        Contest contest = contestDAO.get(contestId);
+        if (contest == null)
+          throw new AppException("No such contest");
+        statusDTO.setContest(contestDAO.get(contestId));
+      }
+      Language language = languageDAO.get(languageId);
+      if (language == null)
+        throw new AppException("No such language");
+      statusDTO.setLanguage(language);
+      Problem problem = problemDAO.get(problemId);
+      if (problem == null)
+        throw new AppException("No such problem");
+      statusDTO.setProblem(problem);
+      statusDTO.setUser(getCurrentUser());
+      CodeDTO codeDTO = applicationContext.getBean("codeDTO", CodeDTO.class);
+      codeDTO.setContent(codeContent);
+      Code code = codeDTO.getEntity();
+      codeDAO.add(code);
+      statusDTO.setCode(code);
+      statusDTO.setLength(codeContent.length());
+      statusDAO.add(statusDTO.getEntity());
 
-			String hql = "update User set tried=tried+1 where userId="
-					+ currentUser.getUserId();
-			userDAO.executeHQL(hql);
-			hql = "update Problem set tried=tried+1 where problemId="
-					+ problem.getProblemId();
-			problemDAO.executeHQL(hql);
-			json.put("result", "ok");
-		} catch (AppException e) {
-			json.put("result", "error");
-			json.put("error_msg", e.getMessage());
-		} catch (Exception e) {
-			json.put("result", "error");
-			json.put("error_msg", "Unknown exception occurred.");
-		}
-		return JSON;
-	}
+      String hql = "update User set tried=tried+1 where userId=" + currentUser.getUserId();
+      userDAO.executeHQL(hql);
+      hql = "update Problem set tried=tried+1 where problemId=" + problem.getProblemId();
+      problemDAO.executeHQL(hql);
+      json.put("result", "ok");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return JSON;
+  }
 
-	public String getCodeContent() {
-		return codeContent;
-	}
+  public String getCodeContent() {
+    return codeContent;
+  }
 
-	public void setCodeContent(String codeContent) {
-		this.codeContent = codeContent;
-	}
+  public void setCodeContent(String codeContent) {
+    this.codeContent = codeContent;
+  }
 
-	public Integer getLanguageId() {
-		return languageId;
-	}
+  public Integer getLanguageId() {
+    return languageId;
+  }
 
-	public void setLanguageId(Integer languageId) {
-		this.languageId = languageId;
-	}
+  public void setLanguageId(Integer languageId) {
+    this.languageId = languageId;
+  }
 
-	public Integer getContestId() {
-		return contestId;
-	}
+  public Integer getContestId() {
+    return contestId;
+  }
 
-	public void setContestId(Integer contestId) {
-		this.contestId = contestId;
-	}
+  public void setContestId(Integer contestId) {
+    this.contestId = contestId;
+  }
 
-	public Integer getProblemId() {
-		return problemId;
-	}
+  public Integer getProblemId() {
+    return problemId;
+  }
 
-	public void setProblemId(Integer problemId) {
-		this.problemId = problemId;
-	}
+  public void setProblemId(Integer problemId) {
+    this.problemId = problemId;
+  }
 
-	@Override
-	public void setCodeDAO(ICodeDAO codeDAO) {
-		this.codeDAO = codeDAO;
-	}
+  @Override
+  public void setCodeDAO(ICodeDAO codeDAO) {
+    this.codeDAO = codeDAO;
+  }
 
-	@Override
-	public void setStatusDAO(IStatusDAO statusDAO) {
-		this.statusDAO = statusDAO;
-	}
+  @Override
+  public void setStatusDAO(IStatusDAO statusDAO) {
+    this.statusDAO = statusDAO;
+  }
 
-	@Override
-	public void setContestDAO(IContestDAO contestDAO) {
-		this.contestDAO = contestDAO;
-	}
+  @Override
+  public void setContestDAO(IContestDAO contestDAO) {
+    this.contestDAO = contestDAO;
+  }
 
-	@Override
-	public void setProblemDAO(IProblemDAO problemDAO) {
-		this.problemDAO = problemDAO;
-	}
+  @Override
+  public void setProblemDAO(IProblemDAO problemDAO) {
+    this.problemDAO = problemDAO;
+  }
 
-	@Override
-	public void setLanguageDAO(ILanguageDAO languageDAO) {
-		this.languageDAO = languageDAO;
-	}
+  @Override
+  public void setLanguageDAO(ILanguageDAO languageDAO) {
+    this.languageDAO = languageDAO;
+  }
 
-	@Override
-	public void setStatusCondition(StatusCondition statusCondition) {
-		this.statusCondition = statusCondition;
-	}
+  @Override
+  public void setStatusCondition(StatusCondition statusCondition) {
+    this.statusCondition = statusCondition;
+  }
 
-	@Override
-	public StatusCondition getStatusCondition() {
-		return statusCondition;
-	}
+  @Override
+  public StatusCondition getStatusCondition() {
+    return statusCondition;
+  }
 }

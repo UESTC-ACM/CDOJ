@@ -33,12 +33,12 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class TrainingIndexAction extends BaseAction {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = -1551050786444888901L;
+  private static final long serialVersionUID = -1551050786444888901L;
 
-	public String toIndex() {
-		return SUCCESS;
-	}
+  public String toIndex() {
+    return SUCCESS;
+  }
 }

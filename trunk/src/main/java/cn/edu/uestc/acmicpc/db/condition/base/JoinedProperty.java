@@ -10,39 +10,39 @@ import static cn.edu.uestc.acmicpc.db.condition.base.BaseCondition.ConditionType
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class JoinedProperty {
-	private Criterion criterion;
-	private Object keyValue;
-	private ConditionType conditionType;
 
-	public JoinedProperty(Criterion criterion, Object keyValue,
-			ConditionType conditionType) {
-		this.criterion = criterion;
-		this.keyValue = keyValue;
-		this.conditionType = conditionType;
-	}
+  private Criterion criterion;
+  private Object keyValue;
+  private ConditionType conditionType;
 
-	public ConditionType getConditionType() {
-		return conditionType;
-	}
+  public JoinedProperty(Criterion criterion, Object keyValue, ConditionType conditionType) {
+    this.criterion = criterion;
+    this.keyValue = keyValue;
+    this.conditionType = conditionType;
+  }
 
-	public void setConditionType(ConditionType conditionType) {
-		this.conditionType = conditionType;
-	}
+  public ConditionType getConditionType() {
+    return conditionType;
+  }
 
-	public Criterion getCriterion() {
+  public void setConditionType(ConditionType conditionType) {
+    this.conditionType = conditionType;
+  }
 
-		return criterion;
-	}
+  public Criterion getCriterion() {
 
-	public void setCriterion(Criterion criterion) {
-		this.criterion = criterion;
-	}
+    return criterion;
+  }
 
-	public Object getKeyValue() {
-		return keyValue;
-	}
+  public void setCriterion(Criterion criterion) {
+    this.criterion = criterion;
+  }
 
-	public void setKeyValue(Object keyValue) {
-		this.keyValue = keyValue;
-	}
+  public Object getKeyValue() {
+    return keyValue;
+  }
+
+  public void setKeyValue(Object keyValue) {
+    this.keyValue = keyValue;
+  }
 }

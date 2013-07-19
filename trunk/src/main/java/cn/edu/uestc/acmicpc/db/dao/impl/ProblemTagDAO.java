@@ -31,15 +31,15 @@ import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
  * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public class ProblemTagDAO extends DAO<ProblemTag, Integer> implements
-		IProblemTagDAO {
-	@Override
-	protected Class<Integer> getPKClass() {
-		return Integer.class;
-	}
+public class ProblemTagDAO extends DAO<ProblemTag, Integer> implements IProblemTagDAO {
 
-	@Override
-	protected Class<ProblemTag> getReferenceClass() {
-		return ProblemTag.class;
-	}
+  @Override
+  protected Class<Integer> getPKClass() {
+    return Integer.class;
+  }
+
+  @Override
+  protected Class<ProblemTag> getReferenceClass() {
+    return ProblemTag.class;
+  }
 }

@@ -28,18 +28,18 @@ import cn.edu.uestc.acmicpc.db.dto.impl.StatusDTO;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public interface StatusDTOAware {
-	/**
-	 * Put statusDTO into class.
-	 * 
-	 * @param statusDTO
-	 *            statusDTO object
-	 */
-	public void setStatusDTO(StatusDTO statusDTO);
 
-	/**
-	 * Get statusDTO entity.
-	 * 
-	 * @return statusDTO entity
-	 */
-	public StatusDTO getStatusDTO();
+  /**
+   * Put statusDTO into class.
+   * 
+   * @param statusDTO statusDTO object
+   */
+  public void setStatusDTO(StatusDTO statusDTO);
+
+  /**
+   * Get statusDTO entity.
+   * 
+   * @return statusDTO entity
+   */
+  public StatusDTO getStatusDTO();
 }

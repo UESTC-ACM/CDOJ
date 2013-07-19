@@ -32,5 +32,6 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Ignore {
-	public boolean value() default true;
+
+  public boolean value() default true;
 }

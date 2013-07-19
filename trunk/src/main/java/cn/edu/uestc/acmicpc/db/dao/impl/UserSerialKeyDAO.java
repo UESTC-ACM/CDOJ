@@ -27,15 +27,15 @@ import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 /**
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public class UserSerialKeyDAO extends DAO<UserSerialKey, Integer> implements
-		IUserSerialKeyDAO {
-	@Override
-	protected Class<Integer> getPKClass() {
-		return Integer.class;
-	}
+public class UserSerialKeyDAO extends DAO<UserSerialKey, Integer> implements IUserSerialKeyDAO {
 
-	@Override
-	protected Class<UserSerialKey> getReferenceClass() {
-		return UserSerialKey.class;
-	}
+  @Override
+  protected Class<Integer> getPKClass() {
+    return Integer.class;
+  }
+
+  @Override
+  protected Class<UserSerialKey> getReferenceClass() {
+    return UserSerialKey.class;
+  }
 }

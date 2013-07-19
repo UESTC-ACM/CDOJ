@@ -46,143 +46,135 @@ import java.util.List;
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class TrainingContestAction extends BaseAction implements
-		TrainingContestConditionAware, TrainingContestDAOAware,
-		TrainingContestDTOAware, TrainingRankListParserAware {
+public class TrainingContestAction extends BaseAction implements TrainingContestConditionAware,
+    TrainingContestDAOAware, TrainingContestDTOAware, TrainingRankListParserAware {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = 2230337792377511101L;
+  private static final long serialVersionUID = 2230337792377511101L;
 
-	@SuppressWarnings("unchecked")
-	public String toSearchTrainingContest() {
-		try {
-			trainingContestCondition.setIsTitleEmpty(false);
-			trainingContestCondition.setOrderFields("id");
-			trainingContestCondition.setOrderAsc("false");
-			List<TrainingContest> trainingContestList = (List<TrainingContest>) trainingContestDAO
-					.findAll(trainingContestCondition.getCondition());
-			List<TrainingContestListView> trainingContestListViewList = new LinkedList<>();
-			for (TrainingContest trainingContest : trainingContestList)
-				trainingContestListViewList.add(new TrainingContestListView(
-						trainingContest));
-			json.put("result", "ok");
-			json.put("trainingContestList", trainingContestListViewList);
-		} catch (AppException e) {
-			json.put("result", "error");
-			json.put("error_msg", e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			json.put("result", "error");
-			json.put("error_msg", "Unknown exception occurred.");
-		}
-		return JSON;
-	}
+  @SuppressWarnings("unchecked")
+  public String toSearchTrainingContest() {
+    try {
+      trainingContestCondition.setIsTitleEmpty(false);
+      trainingContestCondition.setOrderFields("id");
+      trainingContestCondition.setOrderAsc("false");
+      List<TrainingContest> trainingContestList =
+          (List<TrainingContest>) trainingContestDAO.findAll(trainingContestCondition
+              .getCondition());
+      List<TrainingContestListView> trainingContestListViewList = new LinkedList<>();
+      for (TrainingContest trainingContest : trainingContestList)
+        trainingContestListViewList.add(new TrainingContestListView(trainingContest));
+      json.put("result", "ok");
+      json.put("trainingContestList", trainingContestListViewList);
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return JSON;
+  }
 
-	public String toTrainingContest() {
-		try {
-			if (targetTrainingContestId == null)
-				throw new AppException("No such training contest!");
-			TrainingContest trainingContest = trainingContestDAO
-					.get(targetTrainingContestId);
-			if (trainingContest == null)
-				throw new AppException("No such training contest!");
-			targetTrainingContest = new TrainingContestView(trainingContest);
-			if (trainingContest.getTrainingStatusesByTrainingContestId().size() > 0) {
-				targetTrainingContestRankList = trainingRankListParser
-						.parse(trainingContest);
-			}
-		} catch (AppException e) {
-			e.printStackTrace();
-			return redirect(getActionURL("/training/", "index"), e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return redirect(getActionURL("/training/", "index"),
-					"Unknown exception occurred.");
-		}
-		return SUCCESS;
-	}
+  public String toTrainingContest() {
+    try {
+      if (targetTrainingContestId == null)
+        throw new AppException("No such training contest!");
+      TrainingContest trainingContest = trainingContestDAO.get(targetTrainingContestId);
+      if (trainingContest == null)
+        throw new AppException("No such training contest!");
+      targetTrainingContest = new TrainingContestView(trainingContest);
+      if (trainingContest.getTrainingStatusesByTrainingContestId().size() > 0) {
+        targetTrainingContestRankList = trainingRankListParser.parse(trainingContest);
+      }
+    } catch (AppException e) {
+      e.printStackTrace();
+      return redirect(getActionURL("/training/", "index"), e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      return redirect(getActionURL("/training/", "index"), "Unknown exception occurred.");
+    }
+    return SUCCESS;
+  }
 
-	private TrainingContestRankList targetTrainingContestRankList;
+  private TrainingContestRankList targetTrainingContestRankList;
 
-	public TrainingContestRankList getTargetTrainingContestRankList() {
-		return targetTrainingContestRankList;
-	}
+  public TrainingContestRankList getTargetTrainingContestRankList() {
+    return targetTrainingContestRankList;
+  }
 
-	public void setTargetTrainingContestRankList(
-			TrainingContestRankList targetTrainingContestRankList) {
-		this.targetTrainingContestRankList = targetTrainingContestRankList;
-	}
+  public void
+      setTargetTrainingContestRankList(TrainingContestRankList targetTrainingContestRankList) {
+    this.targetTrainingContestRankList = targetTrainingContestRankList;
+  }
 
-	private Integer targetTrainingContestId;
+  private Integer targetTrainingContestId;
 
-	public Integer getTargetTrainingContestId() {
-		return targetTrainingContestId;
-	}
+  public Integer getTargetTrainingContestId() {
+    return targetTrainingContestId;
+  }
 
-	public void setTargetTrainingContestId(Integer targetTrainingContestId) {
-		this.targetTrainingContestId = targetTrainingContestId;
-	}
+  public void setTargetTrainingContestId(Integer targetTrainingContestId) {
+    this.targetTrainingContestId = targetTrainingContestId;
+  }
 
-	private TrainingContestView targetTrainingContest;
+  private TrainingContestView targetTrainingContest;
 
-	public TrainingContestView getTargetTrainingContest() {
-		return targetTrainingContest;
-	}
+  public TrainingContestView getTargetTrainingContest() {
+    return targetTrainingContest;
+  }
 
-	public void setTargetTrainingContest(
-			TrainingContestView targetTrainingContest) {
-		this.targetTrainingContest = targetTrainingContest;
-	}
+  public void setTargetTrainingContest(TrainingContestView targetTrainingContest) {
+    this.targetTrainingContest = targetTrainingContest;
+  }
 
-	@SuppressWarnings("unused")
-	private String getTrainingRankFileName() {
-		return settings.SETTING_UPLOAD_FOLDER + "/training_contest_"
-				+ targetTrainingContestId + ".xls";
-	}
+  @SuppressWarnings("unused")
+  private String getTrainingRankFileName() {
+    return settings.SETTING_UPLOAD_FOLDER + "/training_contest_" + targetTrainingContestId + ".xls";
+  }
 
-	@Autowired
-	private TrainingContestCondition trainingContestCondition;
+  @Autowired
+  private TrainingContestCondition trainingContestCondition;
 
-	@Override
-	public void setTrainingContestCondition(
-			TrainingContestCondition trainingContestCondition) {
-		this.trainingContestCondition = trainingContestCondition;
-	}
+  @Override
+  public void setTrainingContestCondition(TrainingContestCondition trainingContestCondition) {
+    this.trainingContestCondition = trainingContestCondition;
+  }
 
-	@Override
-	public TrainingContestCondition getTrainingContestCondition() {
-		return trainingContestCondition;
-	}
+  @Override
+  public TrainingContestCondition getTrainingContestCondition() {
+    return trainingContestCondition;
+  }
 
-	@Autowired
-	private ITrainingContestDAO trainingContestDAO;
+  @Autowired
+  private ITrainingContestDAO trainingContestDAO;
 
-	@Override
-	public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
-		this.trainingContestDAO = trainingContestDAO;
-	}
+  @Override
+  public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
+    this.trainingContestDAO = trainingContestDAO;
+  }
 
-	@Autowired
-	private TrainingContestDTO trainingContestDTO;
+  @Autowired
+  private TrainingContestDTO trainingContestDTO;
 
-	@Override
-	public void setTrainingContestDTO(TrainingContestDTO trainingContestDTO) {
-		this.trainingContestDTO = trainingContestDTO;
-	}
+  @Override
+  public void setTrainingContestDTO(TrainingContestDTO trainingContestDTO) {
+    this.trainingContestDTO = trainingContestDTO;
+  }
 
-	@Override
-	public TrainingContestDTO getTrainingContestDTO() {
-		return trainingContestDTO;
-	}
+  @Override
+  public TrainingContestDTO getTrainingContestDTO() {
+    return trainingContestDTO;
+  }
 
-	@Autowired
-	private TrainingRankListParser trainingRankListParser;
+  @Autowired
+  private TrainingRankListParser trainingRankListParser;
 
-	@Override
-	public void setTrainingRankListParserAware(
-			TrainingRankListParser trainingRankListParser) {
-		this.trainingRankListParser = trainingRankListParser;
-	}
+  @Override
+  public void setTrainingRankListParserAware(TrainingRankListParser trainingRankListParser) {
+    this.trainingRankListParser = trainingRankListParser;
+  }
 }

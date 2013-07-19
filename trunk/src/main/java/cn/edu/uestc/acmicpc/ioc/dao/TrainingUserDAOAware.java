@@ -29,11 +29,11 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public interface TrainingUserDAOAware {
-	/**
-	 * Put trainingUserDAO into class.
-	 * 
-	 * @param trainingUserDAO
-	 *            trainingUserDAO object
-	 */
-	public void setTrainingUserDAO(ITrainingUserDAO trainingUserDAO);
+
+  /**
+   * Put trainingUserDAO into class.
+   * 
+   * @param trainingUserDAO trainingUserDAO object
+   */
+  public void setTrainingUserDAO(ITrainingUserDAO trainingUserDAO);
 }

@@ -25,171 +25,170 @@ import java.sql.Timestamp;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class StatusView extends View<Status> {
-	private Integer statusId;
-	private Integer userId;
-	private String userName;
-	private Integer problemId;
-	private String returnType;
-	private Integer returnTypeId;
 
-	public Integer getContestId() {
-		return contestId;
-	}
+  private Integer statusId;
+  private Integer userId;
+  private String userName;
+  private Integer problemId;
+  private String returnType;
+  private Integer returnTypeId;
 
-	@Ignore
-	public void setContestId(Integer contestId) {
-		this.contestId = contestId;
-	}
+  public Integer getContestId() {
+    return contestId;
+  }
 
-	public Integer getReturnTypeId() {
-		return returnTypeId;
-	}
+  @Ignore
+  public void setContestId(Integer contestId) {
+    this.contestId = contestId;
+  }
 
-	@Ignore
-	public void setReturnTypeId(Integer returnTypeId) {
-		this.returnTypeId = returnTypeId;
-	}
+  public Integer getReturnTypeId() {
+    return returnTypeId;
+  }
 
-	public Integer getStatusId() {
-		return statusId;
-	}
+  @Ignore
+  public void setReturnTypeId(Integer returnTypeId) {
+    this.returnTypeId = returnTypeId;
+  }
 
-	public void setStatusId(Integer statusId) {
-		this.statusId = statusId;
-	}
+  public Integer getStatusId() {
+    return statusId;
+  }
 
-	public Integer getUserId() {
-		return userId;
-	}
+  public void setStatusId(Integer statusId) {
+    this.statusId = statusId;
+  }
 
-	@Ignore
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+  public Integer getUserId() {
+    return userId;
+  }
 
-	public String getUserName() {
-		return userName;
-	}
+  @Ignore
+  public void setUserId(Integer userId) {
+    this.userId = userId;
+  }
 
-	@Ignore
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+  public String getUserName() {
+    return userName;
+  }
 
-	public Integer getProblemId() {
-		return problemId;
-	}
+  @Ignore
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
 
-	@Ignore
-	public void setProblemId(Integer problemId) {
-		this.problemId = problemId;
-	}
+  public Integer getProblemId() {
+    return problemId;
+  }
 
-	public String getReturnType() {
-		return returnType;
-	}
+  @Ignore
+  public void setProblemId(Integer problemId) {
+    this.problemId = problemId;
+  }
 
-	@Ignore
-	public void setReturnType(String returnType) {
-		this.returnType = returnType;
-	}
+  public String getReturnType() {
+    return returnType;
+  }
 
-	public Integer getCaseNumber() {
-		return caseNumber;
-	}
+  @Ignore
+  public void setReturnType(String returnType) {
+    this.returnType = returnType;
+  }
 
-	public void setCaseNumber(Integer caseNumber) {
-		this.caseNumber = caseNumber;
-	}
+  public Integer getCaseNumber() {
+    return caseNumber;
+  }
 
-	public Integer getLanguageId() {
-		return languageId;
-	}
+  public void setCaseNumber(Integer caseNumber) {
+    this.caseNumber = caseNumber;
+  }
 
-	@Ignore
-	public void setLanguageId(Integer languageId) {
-		this.languageId = languageId;
-	}
+  public Integer getLanguageId() {
+    return languageId;
+  }
 
-	public Integer getLength() {
-		return length;
-	}
+  @Ignore
+  public void setLanguageId(Integer languageId) {
+    this.languageId = languageId;
+  }
 
-	public void setLength(Integer length) {
-		this.length = length;
-	}
+  public Integer getLength() {
+    return length;
+  }
 
-	public String getTimeCost() {
-		return timeCost;
-	}
+  public void setLength(Integer length) {
+    this.length = length;
+  }
 
-	@Ignore
-	public void setTimeCost(String timeCost) {
-		this.timeCost = timeCost;
-	}
+  public String getTimeCost() {
+    return timeCost;
+  }
 
-	public String getMemoryCost() {
-		return memoryCost;
-	}
+  @Ignore
+  public void setTimeCost(String timeCost) {
+    this.timeCost = timeCost;
+  }
 
-	@Ignore
-	public void setMemoryCost(String memoryCost) {
-		this.memoryCost = memoryCost;
-	}
+  public String getMemoryCost() {
+    return memoryCost;
+  }
 
-	public Timestamp getTime() {
-		return time;
-	}
+  @Ignore
+  public void setMemoryCost(String memoryCost) {
+    this.memoryCost = memoryCost;
+  }
 
-	public void setTime(Timestamp time) {
-		this.time = time;
-	}
+  public Timestamp getTime() {
+    return time;
+  }
 
-	private Integer caseNumber;
-	private Integer languageId;
-	private String language;
+  public void setTime(Timestamp time) {
+    this.time = time;
+  }
 
-	public String getLanguage() {
-		return language;
-	}
+  private Integer caseNumber;
+  private Integer languageId;
+  private String language;
 
-	@Ignore
-	public void setLanguage(String language) {
-		this.language = language;
-	}
+  public String getLanguage() {
+    return language;
+  }
 
-	private Integer length;
-	private String timeCost;
-	private String memoryCost;
-	private Timestamp time;
+  @Ignore
+  public void setLanguage(String language) {
+    this.language = language;
+  }
 
-	private Integer contestId;
+  private Integer length;
+  private String timeCost;
+  private String memoryCost;
+  private Timestamp time;
 
-	/**
-	 * Fetch data from status entity.
-	 * 
-	 * @param status
-	 *            specific status entity
-	 */
-	public StatusView(Status status) {
-		super(status);
-		if (status.getResult() == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
-			setTimeCost(Integer.toString(status.getTimeCost()));
-			setMemoryCost(Integer.toString(status.getMemoryCost()));
-		} else {
-			setTimeCost("");
-			setMemoryCost("");
-		}
-		setUserId(status.getUserByUserId().getUserId());
-		setUserName(status.getUserByUserId().getUserName());
-		setProblemId(status.getProblemByProblemId().getProblemId());
-		if (status.getContestByContestId() != null)
-			setContestId(status.getContestByContestId().getContestId());
-		setLanguageId(status.getLanguageByLanguageId().getLanguageId());
-		setReturnTypeId(status.getResult());
-		setReturnType(StringUtil.getStatusDescription(
-				Global.OnlineJudgeReturnType.values()[status.getResult()],
-				status.getCaseNumber()));
-		setLanguage(status.getLanguageByLanguageId().getName());
-	}
+  private Integer contestId;
+
+  /**
+   * Fetch data from status entity.
+   * 
+   * @param status specific status entity
+   */
+  public StatusView(Status status) {
+    super(status);
+    if (status.getResult() == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
+      setTimeCost(Integer.toString(status.getTimeCost()));
+      setMemoryCost(Integer.toString(status.getMemoryCost()));
+    } else {
+      setTimeCost("");
+      setMemoryCost("");
+    }
+    setUserId(status.getUserByUserId().getUserId());
+    setUserName(status.getUserByUserId().getUserName());
+    setProblemId(status.getProblemByProblemId().getProblemId());
+    if (status.getContestByContestId() != null)
+      setContestId(status.getContestByContestId().getContestId());
+    setLanguageId(status.getLanguageByLanguageId().getLanguageId());
+    setReturnTypeId(status.getResult());
+    setReturnType(StringUtil.getStatusDescription(
+        Global.OnlineJudgeReturnType.values()[status.getResult()], status.getCaseNumber()));
+    setLanguage(status.getLanguageByLanguageId().getName());
+  }
 }

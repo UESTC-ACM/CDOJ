@@ -33,180 +33,180 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ContestProblemView extends View<Problem> {
-	private Integer problemId;
-	private String title;
-	private String description;
-	private String input;
-	private String output;
-	private String sampleInput;
-	private String sampleOutput;
-	private String hint;
-	private String source;
-	private Integer timeLimit;
-	private Integer memoryLimit;
-	private Integer solved;
-	private Integer tried;
-	private Boolean isSpj;
-	private Integer outputLimit;
-	private Integer javaTimeLimit;
-	private Integer javaMemoryLimit;
-	private char order;
 
-	public char getOrder() {
-		return order;
-	}
+  private Integer problemId;
+  private String title;
+  private String description;
+  private String input;
+  private String output;
+  private String sampleInput;
+  private String sampleOutput;
+  private String hint;
+  private String source;
+  private Integer timeLimit;
+  private Integer memoryLimit;
+  private Integer solved;
+  private Integer tried;
+  private Boolean isSpj;
+  private Integer outputLimit;
+  private Integer javaTimeLimit;
+  private Integer javaMemoryLimit;
+  private char order;
 
-	@Ignore
-	public void setOrder(char order) {
-		this.order = order;
-	}
+  public char getOrder() {
+    return order;
+  }
 
-	/**
-	 * Get ProblemView entity by problem entity.
-	 * 
-	 * @param problem
-	 *            specific problem entity
-	 * @throws AppException
-	 */
-	public ContestProblemView(Problem problem) throws AppException {
-		super(problem);
-	}
+  @Ignore
+  public void setOrder(char order) {
+    this.order = order;
+  }
 
-	public Integer getProblemId() {
-		return problemId;
-	}
+  /**
+   * Get ProblemView entity by problem entity.
+   * 
+   * @param problem specific problem entity
+   * @throws AppException
+   */
+  public ContestProblemView(Problem problem) throws AppException {
+    super(problem);
+  }
 
-	public void setProblemId(Integer problemId) {
-		this.problemId = problemId;
-	}
+  public Integer getProblemId() {
+    return problemId;
+  }
 
-	public String getTitle() {
-		return title;
-	}
+  public void setProblemId(Integer problemId) {
+    this.problemId = problemId;
+  }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+  public String getTitle() {
+    return title;
+  }
 
-	public String getDescription() {
-		return description;
-	}
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+  public String getDescription() {
+    return description;
+  }
 
-	public String getInput() {
-		return input;
-	}
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-	public void setInput(String input) {
-		this.input = input;
-	}
+  public String getInput() {
+    return input;
+  }
 
-	public String getOutput() {
-		return output;
-	}
+  public void setInput(String input) {
+    this.input = input;
+  }
 
-	public void setOutput(String output) {
-		this.output = output;
-	}
+  public String getOutput() {
+    return output;
+  }
 
-	public String getSampleInput() {
-		return sampleInput;
-	}
+  public void setOutput(String output) {
+    this.output = output;
+  }
 
-	public void setSampleInput(String sampleInput) {
-		this.sampleInput = sampleInput;
-	}
+  public String getSampleInput() {
+    return sampleInput;
+  }
 
-	public String getSampleOutput() {
-		return sampleOutput;
-	}
+  public void setSampleInput(String sampleInput) {
+    this.sampleInput = sampleInput;
+  }
 
-	public void setSampleOutput(String sampleOutput) {
-		this.sampleOutput = sampleOutput;
-	}
+  public String getSampleOutput() {
+    return sampleOutput;
+  }
 
-	public String getHint() {
-		return hint;
-	}
+  public void setSampleOutput(String sampleOutput) {
+    this.sampleOutput = sampleOutput;
+  }
 
-	public void setHint(String hint) {
-		this.hint = hint;
-	}
+  public String getHint() {
+    return hint;
+  }
 
-	public String getSource() {
-		return source;
-	}
+  public void setHint(String hint) {
+    this.hint = hint;
+  }
 
-	public void setSource(String source) {
-		this.source = source;
-	}
+  public String getSource() {
+    return source;
+  }
 
-	public Integer getTimeLimit() {
-		return timeLimit;
-	}
+  public void setSource(String source) {
+    this.source = source;
+  }
 
-	public void setTimeLimit(Integer timeLimit) {
-		this.timeLimit = timeLimit;
-	}
+  public Integer getTimeLimit() {
+    return timeLimit;
+  }
 
-	public Integer getMemoryLimit() {
-		return memoryLimit;
-	}
+  public void setTimeLimit(Integer timeLimit) {
+    this.timeLimit = timeLimit;
+  }
 
-	public void setMemoryLimit(Integer memoryLimit) {
-		this.memoryLimit = memoryLimit;
-	}
+  public Integer getMemoryLimit() {
+    return memoryLimit;
+  }
 
-	public Integer getSolved() {
-		return solved;
-	}
+  public void setMemoryLimit(Integer memoryLimit) {
+    this.memoryLimit = memoryLimit;
+  }
 
-	@Ignore
-	public void setSolved(Integer solved) {
-		this.solved = solved;
-	}
+  public Integer getSolved() {
+    return solved;
+  }
 
-	public Integer getTried() {
-		return tried;
-	}
+  @Ignore
+  public void setSolved(Integer solved) {
+    this.solved = solved;
+  }
 
-	@Ignore
-	public void setTried(Integer tried) {
-		this.tried = tried;
-	}
+  public Integer getTried() {
+    return tried;
+  }
 
-	public Boolean getIsSpj() {
-		return isSpj;
-	}
+  @Ignore
+  public void setTried(Integer tried) {
+    this.tried = tried;
+  }
 
-	public void setIsSpj(Boolean isSPJ) {
-		this.isSpj = isSPJ;
-	}
+  public Boolean getIsSpj() {
+    return isSpj;
+  }
 
-	public Integer getOutputLimit() {
-		return outputLimit;
-	}
+  public void setIsSpj(Boolean isSPJ) {
+    this.isSpj = isSPJ;
+  }
 
-	public void setOutputLimit(Integer outputLimit) {
-		this.outputLimit = outputLimit;
-	}
+  public Integer getOutputLimit() {
+    return outputLimit;
+  }
 
-	public Integer getJavaTimeLimit() {
-		return javaTimeLimit;
-	}
+  public void setOutputLimit(Integer outputLimit) {
+    this.outputLimit = outputLimit;
+  }
 
-	public void setJavaTimeLimit(Integer javaTimeLimit) {
-		this.javaTimeLimit = javaTimeLimit;
-	}
+  public Integer getJavaTimeLimit() {
+    return javaTimeLimit;
+  }
 
-	public Integer getJavaMemoryLimit() {
-		return javaMemoryLimit;
-	}
+  public void setJavaTimeLimit(Integer javaTimeLimit) {
+    this.javaTimeLimit = javaTimeLimit;
+  }
 
-	public void setJavaMemoryLimit(Integer javaMemoryLimit) {
-		this.javaMemoryLimit = javaMemoryLimit;
-	}
+  public Integer getJavaMemoryLimit() {
+    return javaMemoryLimit;
+  }
+
+  public void setJavaMemoryLimit(Integer javaMemoryLimit) {
+    this.javaMemoryLimit = javaMemoryLimit;
+  }
 }

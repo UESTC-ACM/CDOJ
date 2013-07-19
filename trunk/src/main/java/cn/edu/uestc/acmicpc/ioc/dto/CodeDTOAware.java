@@ -28,18 +28,18 @@ import cn.edu.uestc.acmicpc.db.dto.impl.CodeDTO;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public interface CodeDTOAware {
-	/**
-	 * Put codeDTO into class.
-	 * 
-	 * @param codeDTO
-	 *            codeDTO object
-	 */
-	public void setCodeDTO(CodeDTO codeDTO);
 
-	/**
-	 * Get codeDTO entity.
-	 * 
-	 * @return codeDTO entity
-	 */
-	public CodeDTO getCodeDTO();
+  /**
+   * Put codeDTO into class.
+   * 
+   * @param codeDTO codeDTO object
+   */
+  public void setCodeDTO(CodeDTO codeDTO);
+
+  /**
+   * Get codeDTO entity.
+   * 
+   * @return codeDTO entity
+   */
+  public CodeDTO getCodeDTO();
 }

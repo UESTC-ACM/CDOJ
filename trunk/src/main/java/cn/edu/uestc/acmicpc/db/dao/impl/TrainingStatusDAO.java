@@ -30,16 +30,15 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class TrainingStatusDAO extends DAO<TrainingStatus, Integer> implements
-		ITrainingStatusDAO {
+public class TrainingStatusDAO extends DAO<TrainingStatus, Integer> implements ITrainingStatusDAO {
 
-	@Override
-	protected Class<Integer> getPKClass() {
-		return Integer.class;
-	}
+  @Override
+  protected Class<Integer> getPKClass() {
+    return Integer.class;
+  }
 
-	@Override
-	protected Class<TrainingStatus> getReferenceClass() {
-		return TrainingStatus.class;
-	}
+  @Override
+  protected Class<TrainingStatus> getReferenceClass() {
+    return TrainingStatus.class;
+  }
 }

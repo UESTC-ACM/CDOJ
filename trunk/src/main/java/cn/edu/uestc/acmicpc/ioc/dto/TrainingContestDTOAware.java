@@ -29,18 +29,18 @@ import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDTO;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public interface TrainingContestDTOAware {
-	/**
-	 * Put trainingContestDTO into class.
-	 * 
-	 * @param trainingContestDTO
-	 *            trainingContestDTO object
-	 */
-	public void setTrainingContestDTO(TrainingContestDTO trainingContestDTO);
 
-	/**
-	 * Get trainingContestDTO entity.
-	 * 
-	 * @return trainingContestDTO entity
-	 */
-	public TrainingContestDTO getTrainingContestDTO();
+  /**
+   * Put trainingContestDTO into class.
+   * 
+   * @param trainingContestDTO trainingContestDTO object
+   */
+  public void setTrainingContestDTO(TrainingContestDTO trainingContestDTO);
+
+  /**
+   * Get trainingContestDTO entity.
+   * 
+   * @return trainingContestDTO entity
+   */
+  public TrainingContestDTO getTrainingContestDTO();
 }

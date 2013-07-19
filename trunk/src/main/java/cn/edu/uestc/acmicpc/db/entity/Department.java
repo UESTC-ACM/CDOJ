@@ -37,76 +37,79 @@ import java.util.Collection;
 @Entity
 @KeyField("departmentId")
 public class Department implements Serializable {
-	private static final long serialVersionUID = -2249534733683595360L;
-	private Integer departmentId;
 
-	private Integer version;
+  private static final long serialVersionUID = -2249534733683595360L;
+  private Integer departmentId;
 
-	@Version
-	@Column(name = "OPTLOCK")
-	public Integer getVersion() {
-		return version;
-	}
+  private Integer version;
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+  @Version
+  @Column(name = "OPTLOCK")
+  public Integer getVersion() {
+    return version;
+  }
 
-	@Column(name = "departmentId", nullable = false, insertable = true, updatable = true, length = 10, precision = 0, unique = true)
-	@Id
-	@GeneratedValue
-	public Integer getDepartmentId() {
-		return departmentId;
-	}
+  public void setVersion(Integer version) {
+    this.version = version;
+  }
 
-	public void setDepartmentId(Integer departmentId) {
-		this.departmentId = departmentId;
-	}
+  @Column(name = "departmentId", nullable = false, insertable = true, updatable = true,
+      length = 10, precision = 0, unique = true)
+  @Id
+  @GeneratedValue
+  public Integer getDepartmentId() {
+    return departmentId;
+  }
 
-	private String name;
+  public void setDepartmentId(Integer departmentId) {
+    this.departmentId = departmentId;
+  }
 
-	@Column(name = "name", nullable = false, insertable = true, updatable = true, length = 50, precision = 0)
-	@Basic
-	public String getName() {
-		return name;
-	}
+  private String name;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  @Column(name = "name", nullable = false, insertable = true, updatable = true, length = 50,
+      precision = 0)
+  @Basic
+  public String getName() {
+    return name;
+  }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+  public void setName(String name) {
+    this.name = name;
+  }
 
-		Department that = (Department) o;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
 
-		if (!departmentId.equals(that.departmentId))
-			return false;
-		if (name != null ? !name.equals(that.name) : that.name != null)
-			return false;
+    Department that = (Department) o;
 
-		return true;
-	}
+    if (!departmentId.equals(that.departmentId))
+      return false;
+    if (name != null ? !name.equals(that.name) : that.name != null)
+      return false;
 
-	@Override
-	public int hashCode() {
-		int result = departmentId;
-		result = 31 * result + (name != null ? name.hashCode() : 0);
-		return result;
-	}
+    return true;
+  }
 
-	private Collection<User> usersByDepartmentId;
+  @Override
+  public int hashCode() {
+    int result = departmentId;
+    result = 31 * result + (name != null ? name.hashCode() : 0);
+    return result;
+  }
 
-	@OneToMany(mappedBy = "departmentByDepartmentId")
-	public Collection<User> getUsersByDepartmentId() {
-		return usersByDepartmentId;
-	}
+  private Collection<User> usersByDepartmentId;
 
-	public void setUsersByDepartmentId(Collection<User> usersByDepartmentId) {
-		this.usersByDepartmentId = usersByDepartmentId;
-	}
+  @OneToMany(mappedBy = "departmentByDepartmentId")
+  public Collection<User> getUsersByDepartmentId() {
+    return usersByDepartmentId;
+  }
+
+  public void setUsersByDepartmentId(Collection<User> usersByDepartmentId) {
+    this.usersByDepartmentId = usersByDepartmentId;
+  }
 }

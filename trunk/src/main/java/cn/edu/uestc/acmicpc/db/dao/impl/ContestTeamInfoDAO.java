@@ -32,14 +32,15 @@ import cn.edu.uestc.acmicpc.db.entity.ContestTeamInfo;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ContestTeamInfoDAO extends DAO<ContestTeamInfo, Integer> implements
-		IContestTeamInfoDAO {
-	@Override
-	protected Class<Integer> getPKClass() {
-		return Integer.class;
-	}
+    IContestTeamInfoDAO {
 
-	@Override
-	protected Class<ContestTeamInfo> getReferenceClass() {
-		return ContestTeamInfo.class;
-	}
+  @Override
+  protected Class<Integer> getPKClass() {
+    return Integer.class;
+  }
+
+  @Override
+  protected Class<ContestTeamInfo> getReferenceClass() {
+    return ContestTeamInfo.class;
+  }
 }

@@ -1,30 +1,30 @@
 /*
  *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *  cdoj, UESTC ACMICPC Online Judge
+ *  Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
+ *  	mzry1992 <@link muziriyun@gmail.com>
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  */
 
 package cn.edu.uestc.acmicpc.checker;
 
 import cn.edu.uestc.acmicpc.checker.base.Checker;
-import cn.edu.uestc.acmicpc.util.FileUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.FileUtil;
 
 import java.io.File;
 import java.util.HashSet;
@@ -47,46 +47,48 @@ import java.util.Set;
  * <p/>
  * <strong>For developers</strong>:
  * <p/>
- * This checker will not consider the folders in the zip file, that means if the
- * zip file only contains a folder and the folder contains a valid file
- * structure, this checker will not check the files in the folder. <strong>For
- * administrators</strong>:
+ * This checker will not consider the folders in the zip file, that means if the zip file only
+ * contains a folder and the folder contains a valid file structure, this checker will not check the
+ * files in the folder. <strong>For administrators</strong>:
  * <p/>
- * Please put all data files in the zip file's root, rather than a specific
- * folder.
+ * Please put all data files in the zip file's root, rather than a specific folder.
  * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ZipDataChecker implements Checker<File> {
-	@Override
-	public void check(File file) throws AppException {
-		File[] files = file.listFiles();
-		if (files == null)
-			throw new AppException("Data file is invalid.");
-		Set<String> fileSet = new HashSet<>();
-		List<String> outputFileList = new LinkedList<>();
-		for (File current : files) {
-			if (current.isDirectory())
-				throw new AppException("Data file contains directory.");
-			if (current.getName().endsWith(".in")) {
-				fileSet.add(FileUtil.getFileName(current));
-			} else if (current.getName().endsWith(".out")) {
-				outputFileList.add(FileUtil.getFileName(current));
-			} else if (current.getName().equals("spj.cc")) {
-				// spj checker, ignored
-			} else {
-				throw new AppException("Data file contains unknown file type.");
-			}
-		}
-		if (outputFileList.size() != fileSet.size()) {
-			throw new AppException(
-					"Some data files has not input file or output file.");
-		}
-		for (String outputFile : outputFileList) {
-			if (!fileSet.contains(outputFile)) {
-				throw new AppException(
-						"Some data files has not input file or output file.");
-			}
-		}
-	}
+
+  @Override
+  public void check(File file) throws AppException {
+    File[] files = file.listFiles();
+    if (files == null) {
+      throw new AppException("Data file is invalid.");
+    }
+
+    Set<String> fileSet = new HashSet<>();
+    List<String> outputFileList = new LinkedList<>();
+    for (File current : files) {
+      if (current.isDirectory()) {
+        throw new AppException("Data file contains directory.");
+      }
+      if (current.getName().endsWith(".in")) {
+        fileSet.add(FileUtil.getFileName(current));
+      } else if (current.getName().endsWith(".out")) {
+        outputFileList.add(FileUtil.getFileName(current));
+      } else if (current.getName().equals("spj.cc")) {
+        // spj checker, ignored
+      } else {
+        throw new AppException("Data file contains unknown file type.");
+      }
+    }
+
+    if (outputFileList.size() != fileSet.size()) {
+      throw new AppException("Some data files has not input file or output file.");
+    }
+
+    for (String outputFile : outputFileList) {
+      if (!fileSet.contains(outputFile)) {
+        throw new AppException("Some data files has not input file or output file.");
+      }
+    }
+  }
 }

@@ -33,106 +33,107 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ProblemDataDTO extends BaseDTO<Problem> {
-	public ProblemDataDTO() {
-		super();
-	}
 
-	/**
-	 * Input: problem id
-	 */
-	private Integer problemId;
+  public ProblemDataDTO() {
+    super();
+  }
 
-	public Integer getTimeLimit() {
-		return timeLimit;
-	}
+  /**
+   * Input: problem id
+   */
+  private Integer problemId;
 
-	public void setTimeLimit(Integer timeLimit) {
-		this.timeLimit = timeLimit;
-	}
+  public Integer getTimeLimit() {
+    return timeLimit;
+  }
 
-	public Integer getMemoryLimit() {
-		return memoryLimit;
-	}
+  public void setTimeLimit(Integer timeLimit) {
+    this.timeLimit = timeLimit;
+  }
 
-	public void setMemoryLimit(Integer memoryLimit) {
-		this.memoryLimit = memoryLimit;
-	}
+  public Integer getMemoryLimit() {
+    return memoryLimit;
+  }
 
-	@Ignore
-	public Boolean getIsSpj() {
-		return isSpj;
-	}
+  public void setMemoryLimit(Integer memoryLimit) {
+    this.memoryLimit = memoryLimit;
+  }
 
-	public void setIsSpj(Boolean spj) {
-		isSpj = spj;
-	}
+  @Ignore
+  public Boolean getIsSpj() {
+    return isSpj;
+  }
 
-	public Integer getOutputLimit() {
-		return outputLimit;
-	}
+  public void setIsSpj(Boolean spj) {
+    isSpj = spj;
+  }
 
-	public void setOutputLimit(Integer outputLimit) {
-		this.outputLimit = outputLimit;
-	}
+  public Integer getOutputLimit() {
+    return outputLimit;
+  }
 
-	public Integer getJavaTimeLimit() {
-		return javaTimeLimit;
-	}
+  public void setOutputLimit(Integer outputLimit) {
+    this.outputLimit = outputLimit;
+  }
 
-	public void setJavaTimeLimit(Integer javaTimeLimit) {
-		this.javaTimeLimit = javaTimeLimit;
-	}
+  public Integer getJavaTimeLimit() {
+    return javaTimeLimit;
+  }
 
-	public Integer getJavaMemoryLimit() {
-		return javaMemoryLimit;
-	}
+  public void setJavaTimeLimit(Integer javaTimeLimit) {
+    this.javaTimeLimit = javaTimeLimit;
+  }
 
-	public void setJavaMemoryLimit(Integer javaMemoryLimit) {
-		this.javaMemoryLimit = javaMemoryLimit;
-	}
+  public Integer getJavaMemoryLimit() {
+    return javaMemoryLimit;
+  }
 
-	private Integer timeLimit;
-	private Integer memoryLimit;
-	private Boolean isSpj;
-	private Integer outputLimit;
-	private Integer javaTimeLimit;
-	private Integer javaMemoryLimit;
+  public void setJavaMemoryLimit(Integer javaMemoryLimit) {
+    this.javaMemoryLimit = javaMemoryLimit;
+  }
 
-	public Integer getProblemId() {
-		return problemId;
-	}
+  private Integer timeLimit;
+  private Integer memoryLimit;
+  private Boolean isSpj;
+  private Integer outputLimit;
+  private Integer javaTimeLimit;
+  private Integer javaMemoryLimit;
 
-	public void setProblemId(Integer problemId) {
-		this.problemId = problemId;
-	}
+  public Integer getProblemId() {
+    return problemId;
+  }
 
-	@Override
-	@Deprecated
-	public Problem getEntity() throws AppException {
-		Problem problem = super.getEntity();
-		problem.setTimeLimit(1000);
-		problem.setJavaTimeLimit(3000);
-		problem.setMemoryLimit(65535);
-		problem.setJavaMemoryLimit(65535);
-		problem.setOutputLimit(8192);
-		problem.setSolved(0);
-		problem.setTried(0);
-		problem.setDataCount(0);
-		problem.setIsSpj(false);
-		problem.setIsVisible(false);
-		problem.setProblemId(null);
-		return problem;
-	}
+  public void setProblemId(Integer problemId) {
+    this.problemId = problemId;
+  }
 
-	@Override
-	public void updateEntity(Problem problem) throws AppException {
-		super.updateEntity(problem);
-		if (getIsSpj() != null)
-			problem.setIsSpj(getIsSpj());
-	}
+  @Override
+  @Deprecated
+  public Problem getEntity() throws AppException {
+    Problem problem = super.getEntity();
+    problem.setTimeLimit(1000);
+    problem.setJavaTimeLimit(3000);
+    problem.setMemoryLimit(65535);
+    problem.setJavaMemoryLimit(65535);
+    problem.setOutputLimit(8192);
+    problem.setSolved(0);
+    problem.setTried(0);
+    problem.setDataCount(0);
+    problem.setIsSpj(false);
+    problem.setIsVisible(false);
+    problem.setProblemId(null);
+    return problem;
+  }
 
-	@Override
-	protected Class<Problem> getReferenceClass() {
-		return Problem.class;
-	}
+  @Override
+  public void updateEntity(Problem problem) throws AppException {
+    super.updateEntity(problem);
+    if (getIsSpj() != null)
+      problem.setIsSpj(getIsSpj());
+  }
+
+  @Override
+  protected Class<Problem> getReferenceClass() {
+    return Problem.class;
+  }
 }

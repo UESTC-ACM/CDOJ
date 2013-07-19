@@ -29,18 +29,18 @@ import cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public interface ArticleConditionAware {
-	/**
-	 * Put article condition entity into class.
-	 * 
-	 * @param articleCondition
-	 *            specific article condition entity
-	 */
-	public void setArticleCondition(ArticleCondition articleCondition);
 
-	/**
-	 * get article condition entity.
-	 * 
-	 * @return specific article condition
-	 */
-	public ArticleCondition getArticleCondition();
+  /**
+   * Put article condition entity into class.
+   * 
+   * @param articleCondition specific article condition entity
+   */
+  public void setArticleCondition(ArticleCondition articleCondition);
+
+  /**
+   * get article condition entity.
+   * 
+   * @return specific article condition
+   */
+  public ArticleCondition getArticleCondition();
 }

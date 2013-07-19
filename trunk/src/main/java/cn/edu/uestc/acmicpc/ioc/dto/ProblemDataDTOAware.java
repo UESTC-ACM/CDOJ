@@ -29,18 +29,18 @@ import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDataDTO;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public interface ProblemDataDTOAware {
-	/**
-	 * Put problemDataDTO into class.
-	 * 
-	 * @param problemDataDTO
-	 *            problemDataDTO object
-	 */
-	public void setProblemDataDTO(ProblemDataDTO problemDataDTO);
 
-	/**
-	 * Get problemDTO entity.
-	 * 
-	 * @return problemDTO entity
-	 */
-	public ProblemDataDTO getProblemDataDTO();
+  /**
+   * Put problemDataDTO into class.
+   * 
+   * @param problemDataDTO problemDataDTO object
+   */
+  public void setProblemDataDTO(ProblemDataDTO problemDataDTO);
+
+  /**
+   * Get problemDTO entity.
+   * 
+   * @return problemDTO entity
+   */
+  public ProblemDataDTO getProblemDataDTO();
 }

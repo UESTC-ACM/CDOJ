@@ -30,15 +30,15 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class TrainingUserDAO extends DAO<TrainingUser, Integer> implements
-		ITrainingUserDAO {
-	@Override
-	protected Class<Integer> getPKClass() {
-		return Integer.class;
-	}
+public class TrainingUserDAO extends DAO<TrainingUser, Integer> implements ITrainingUserDAO {
 
-	@Override
-	protected Class<TrainingUser> getReferenceClass() {
-		return TrainingUser.class;
-	}
+  @Override
+  protected Class<Integer> getPKClass() {
+    return Integer.class;
+  }
+
+  @Override
+  protected Class<TrainingUser> getReferenceClass() {
+    return TrainingUser.class;
+  }
 }

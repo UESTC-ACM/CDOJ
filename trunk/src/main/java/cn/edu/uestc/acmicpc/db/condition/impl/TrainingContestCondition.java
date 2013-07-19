@@ -10,76 +10,77 @@ import org.hibernate.criterion.Restrictions;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class TrainingContestCondition extends BaseCondition {
-	private Integer startId;
-	private Integer endId;
-	private String title;
-	private Boolean isPersonal;
-	private Integer type;
 
-	@Exp(MapField = "type", Type = ConditionType.eq)
-	public Integer getType() {
-		return type;
-	}
+  private Integer startId;
+  private Integer endId;
+  private String title;
+  private Boolean isPersonal;
+  private Integer type;
 
-	public void setType(Integer type) {
-		this.type = type;
-	}
+  @Exp(MapField = "type", Type = ConditionType.eq)
+  public Integer getType() {
+    return type;
+  }
 
-	private Boolean isTitleEmpty;
+  public void setType(Integer type) {
+    this.type = type;
+  }
 
-	public Boolean getIsTitleEmpty() {
-		return isTitleEmpty;
-	}
+  private Boolean isTitleEmpty;
 
-	public void setIsTitleEmpty(Boolean isTitleEmpty) {
-		this.isTitleEmpty = isTitleEmpty;
-	}
+  public Boolean getIsTitleEmpty() {
+    return isTitleEmpty;
+  }
 
-	@Exp(MapField = "trainingContestId", Type = ConditionType.ge)
-	public Integer getStartId() {
-		return startId;
-	}
+  public void setIsTitleEmpty(Boolean isTitleEmpty) {
+    this.isTitleEmpty = isTitleEmpty;
+  }
 
-	public void setStartId(Integer startId) {
-		this.startId = startId;
-	}
+  @Exp(MapField = "trainingContestId", Type = ConditionType.ge)
+  public Integer getStartId() {
+    return startId;
+  }
 
-	@Exp(MapField = "trainingContestId", Type = ConditionType.le)
-	public Integer getEndId() {
-		return endId;
-	}
+  public void setStartId(Integer startId) {
+    this.startId = startId;
+  }
 
-	public void setEndId(Integer endId) {
-		this.endId = endId;
-	}
+  @Exp(MapField = "trainingContestId", Type = ConditionType.le)
+  public Integer getEndId() {
+    return endId;
+  }
 
-	@Exp(Type = ConditionType.like)
-	public String getTitle() {
-		return title;
-	}
+  public void setEndId(Integer endId) {
+    this.endId = endId;
+  }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+  @Exp(Type = ConditionType.like)
+  public String getTitle() {
+    return title;
+  }
 
-	@Exp(Type = ConditionType.eq)
-	public Boolean getIsPersonal() {
-		return isPersonal;
-	}
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-	public void setIsPersonal(Boolean personal) {
-		isPersonal = personal;
-	}
+  @Exp(Type = ConditionType.eq)
+  public Boolean getIsPersonal() {
+    return isPersonal;
+  }
 
-	@Override
-	public void invoke(Condition condition) {
-		super.invoke(condition);
-		if (isTitleEmpty != null) {
-			if (isTitleEmpty) {
-				condition.addCriterion(Restrictions.like("title", ""));
-			} else {
-				condition.addCriterion(Restrictions.like("title", "_%"));
-			}
-		}
-	}
+  public void setIsPersonal(Boolean personal) {
+    isPersonal = personal;
+  }
+
+  @Override
+  public void invoke(Condition condition) {
+    super.invoke(condition);
+    if (isTitleEmpty != null) {
+      if (isTitleEmpty) {
+        condition.addCriterion(Restrictions.like("title", ""));
+      } else {
+        condition.addCriterion(Restrictions.like("title", "_%"));
+      }
+    }
+  }
 }

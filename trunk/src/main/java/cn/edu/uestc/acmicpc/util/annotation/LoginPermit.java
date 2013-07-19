@@ -37,19 +37,19 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LoginPermit {
 
-	/**
-	 * Set user type needed. The user type can refer to
-	 * {@link cn.edu.uestc.acmicpc.util.Global.AuthenticationType}.
-	 * 
-	 * @return User type needed.
-	 * @see cn.edu.uestc.acmicpc.util.Global.AuthenticationType
-	 */
-	public Global.AuthenticationType value() default Global.AuthenticationType.NORMAL;
+  /**
+   * Set user type needed. The user type can refer to
+   * {@link cn.edu.uestc.acmicpc.util.Global.AuthenticationType}.
+   * 
+   * @return User type needed.
+   * @see cn.edu.uestc.acmicpc.util.Global.AuthenticationType
+   */
+  public Global.AuthenticationType value() default Global.AuthenticationType.NORMAL;
 
-	/**
-	 * Need user toLogin or not
-	 * 
-	 * @return if this action will need user toLogin, set it true.
-	 */
-	public boolean NeedLogin() default true;
+  /**
+   * Need user toLogin or not
+   * 
+   * @return if this action will need user toLogin, set it true.
+   */
+  public boolean NeedLogin() default true;
 }

@@ -35,157 +35,139 @@ import java.util.List;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class UserRankSummary {
-	private Integer penalty;
-	private Integer solved;
 
-	private Integer rank;
-	private Integer userId;
-	private String userName;
-	private String nickName;
-	private String email;
-	private List<ProblemSummaryInfo> problemSummaryInfoList;
+  private Integer penalty;
+  private Integer solved;
 
-	public UserRankSummary(User user,
-			List<ContestProblemSummaryView> problemSummary) {
-		this.solved = this.penalty = 0;
-		this.userId = user.getUserId();
-		this.userName = user.getUserName();
-		this.nickName = user.getNickName();
-		this.email = user.getEmail();
-		problemSummaryInfoList = new LinkedList<>();
-		for (ContestProblemSummaryView contestProblemSummaryView : problemSummary) {
-			problemSummaryInfoList.add(new ProblemSummaryInfo(
-					contestProblemSummaryView));
-		}
-	}
+  private Integer rank;
+  private Integer userId;
+  private String userName;
+  private String nickName;
+  private String email;
+  private List<ProblemSummaryInfo> problemSummaryInfoList;
 
-	public void updateUserRank(Status status, ContestListView contestSummary,
-			List<ContestProblemSummaryView> problemSummary, Boolean visible) {
-		for (int id = 0; id < problemSummary.size(); id++) {
-			ProblemSummaryInfo problemSummaryInfo = problemSummaryInfoList
-					.get(id);
-			ContestProblemSummaryView contestProblemSummaryView = problemSummary
-					.get(id);
+  public UserRankSummary(User user, List<ContestProblemSummaryView> problemSummary) {
+    this.solved = this.penalty = 0;
+    this.userId = user.getUserId();
+    this.userName = user.getUserName();
+    this.nickName = user.getNickName();
+    this.email = user.getEmail();
+    problemSummaryInfoList = new LinkedList<>();
+    for (ContestProblemSummaryView contestProblemSummaryView : problemSummary) {
+      problemSummaryInfoList.add(new ProblemSummaryInfo(contestProblemSummaryView));
+    }
+  }
 
-			if (problemSummaryInfo.getProblemId().equals(
-					status.getProblemByProblemId().getProblemId())) {
-				contestProblemSummaryView.setTried(contestProblemSummaryView
-						.getTried() + 1);
-				// If this problem has passed
-				if (problemSummaryInfo.getSolved())
-					return;
+  public void updateUserRank(Status status, ContestListView contestSummary,
+      List<ContestProblemSummaryView> problemSummary, Boolean visible) {
+    for (int id = 0; id < problemSummary.size(); id++) {
+      ProblemSummaryInfo problemSummaryInfo = problemSummaryInfoList.get(id);
+      ContestProblemSummaryView contestProblemSummaryView = problemSummary.get(id);
 
-				// After 4:00:00
-				if (visible != null && !visible) {
-					problemSummaryInfo.setPending(true);
-					problemSummaryInfo
-							.setTried(problemSummaryInfo.getTried() + 1);
-				} // If AC
-				else if (status.getResult() == Global.OnlineJudgeReturnType.OJ_AC
-						.ordinal()) {
-					problemSummaryInfo.setSolved(true);
-					problemSummaryInfo.setSolutionRunId(status.getStatusId());
-					Long timePassed = (status.getTime().getTime() - contestSummary
-							.getTime().getTime()) / 60 / 1000;
-					problemSummaryInfo.setSolutionTime(timePassed.intValue());
-					problemSummaryInfo.setPenalty(problemSummaryInfo
-							.getSolutionTime()
-							+ 20
-							* problemSummaryInfo.getTried());
-					problemSummaryInfo
-							.setTried(problemSummaryInfo.getTried() + 1);
+      if (problemSummaryInfo.getProblemId().equals(status.getProblemByProblemId().getProblemId())) {
+        contestProblemSummaryView.setTried(contestProblemSummaryView.getTried() + 1);
+        // If this problem has passed
+        if (problemSummaryInfo.getSolved())
+          return;
 
-					this.solved++;
-					this.penalty += problemSummaryInfo.getPenalty();
+        // After 4:00:00
+        if (visible != null && !visible) {
+          problemSummaryInfo.setPending(true);
+          problemSummaryInfo.setTried(problemSummaryInfo.getTried() + 1);
+        } // If AC
+        else if (status.getResult() == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
+          problemSummaryInfo.setSolved(true);
+          problemSummaryInfo.setSolutionRunId(status.getStatusId());
+          Long timePassed =
+              (status.getTime().getTime() - contestSummary.getTime().getTime()) / 60 / 1000;
+          problemSummaryInfo.setSolutionTime(timePassed.intValue());
+          problemSummaryInfo.setPenalty(problemSummaryInfo.getSolutionTime() + 20
+              * problemSummaryInfo.getTried());
+          problemSummaryInfo.setTried(problemSummaryInfo.getTried() + 1);
 
-					if (contestProblemSummaryView.getSolved() == 0)
-						problemSummaryInfo.setFirstSolved(true);
-					contestProblemSummaryView
-							.setSolved(contestProblemSummaryView.getSolved() + 1);
-				} // If pending
-				else if (status.getResult() == Global.OnlineJudgeReturnType.OJ_REJUDGING
-						.ordinal()
-						|| status.getResult() == Global.OnlineJudgeReturnType.OJ_WAIT
-								.ordinal()
-						|| status.getResult() == Global.OnlineJudgeReturnType.OJ_JUDGING
-								.ordinal()
-						|| status.getResult() == Global.OnlineJudgeReturnType.OJ_RUNNING
-								.ordinal()) {
-					problemSummaryInfo.setPending(true);
-					problemSummaryInfo
-							.setTried(problemSummaryInfo.getTried() + 1);
-				} // WA
-				else
-					problemSummaryInfo
-							.setTried(problemSummaryInfo.getTried() + 1);
-				return;
-			}
-		}
-	}
+          this.solved++;
+          this.penalty += problemSummaryInfo.getPenalty();
 
-	public String getEmail() {
-		return email;
-	}
+          if (contestProblemSummaryView.getSolved() == 0)
+            problemSummaryInfo.setFirstSolved(true);
+          contestProblemSummaryView.setSolved(contestProblemSummaryView.getSolved() + 1);
+        } // If pending
+        else if (status.getResult() == Global.OnlineJudgeReturnType.OJ_REJUDGING.ordinal()
+            || status.getResult() == Global.OnlineJudgeReturnType.OJ_WAIT.ordinal()
+            || status.getResult() == Global.OnlineJudgeReturnType.OJ_JUDGING.ordinal()
+            || status.getResult() == Global.OnlineJudgeReturnType.OJ_RUNNING.ordinal()) {
+          problemSummaryInfo.setPending(true);
+          problemSummaryInfo.setTried(problemSummaryInfo.getTried() + 1);
+        } // WA
+        else
+          problemSummaryInfo.setTried(problemSummaryInfo.getTried() + 1);
+        return;
+      }
+    }
+  }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+  public String getEmail() {
+    return email;
+  }
 
-	public Integer getUserId() {
-		return userId;
-	}
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+  public Integer getUserId() {
+    return userId;
+  }
 
-	public Integer getPenalty() {
-		return penalty;
-	}
+  public void setUserId(Integer userId) {
+    this.userId = userId;
+  }
 
-	public void setPenalty(Integer penalty) {
-		this.penalty = penalty;
-	}
+  public Integer getPenalty() {
+    return penalty;
+  }
 
-	public Integer getSolved() {
-		return solved;
-	}
+  public void setPenalty(Integer penalty) {
+    this.penalty = penalty;
+  }
 
-	public void setSolved(Integer solved) {
-		this.solved = solved;
-	}
+  public Integer getSolved() {
+    return solved;
+  }
 
-	public Integer getRank() {
-		return rank;
-	}
+  public void setSolved(Integer solved) {
+    this.solved = solved;
+  }
 
-	public void setRank(Integer rank) {
-		this.rank = rank;
-	}
+  public Integer getRank() {
+    return rank;
+  }
 
-	public String getUserName() {
-		return userName;
-	}
+  public void setRank(Integer rank) {
+    this.rank = rank;
+  }
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+  public String getUserName() {
+    return userName;
+  }
 
-	public String getNickName() {
-		return nickName;
-	}
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
 
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
+  public String getNickName() {
+    return nickName;
+  }
 
-	public List<ProblemSummaryInfo> getProblemSummaryInfoList() {
-		return problemSummaryInfoList;
-	}
+  public void setNickName(String nickName) {
+    this.nickName = nickName;
+  }
 
-	public void setProblemSummaryInfoList(
-			List<ProblemSummaryInfo> problemSummaryInfoList) {
-		this.problemSummaryInfoList = problemSummaryInfoList;
-	}
+  public List<ProblemSummaryInfo> getProblemSummaryInfoList() {
+    return problemSummaryInfoList;
+  }
+
+  public void setProblemSummaryInfoList(List<ProblemSummaryInfo> problemSummaryInfoList) {
+    this.problemSummaryInfoList = problemSummaryInfoList;
+  }
 
 }

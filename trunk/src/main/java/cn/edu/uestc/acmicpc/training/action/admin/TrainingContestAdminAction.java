@@ -50,157 +50,145 @@ import java.util.List;
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class TrainingContestAdminAction extends BaseAction implements
-		TrainingContestConditionAware, TrainingContestDAOAware,
-		TrainingContestDTOAware {
+    TrainingContestConditionAware, TrainingContestDAOAware, TrainingContestDTOAware {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1966182891443679832L;
+  private static final long serialVersionUID = 1966182891443679832L;
 
-	public String toIndex() {
-		return SUCCESS;
-	}
+  public String toIndex() {
+    return SUCCESS;
+  }
 
-	@SuppressWarnings("unchecked")
-	public String toSearchTrainingContest() {
-		try {
-			trainingContestCondition.setIsTitleEmpty(false);
-			Condition condition = trainingContestCondition.getCondition();
-			Long count = trainingContestDAO.count(trainingContestCondition
-					.getCondition());
-			PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
-			condition.setCurrentPage(pageInfo.getCurrentPage());
-			condition.setCountPerPage(RECORD_PER_PAGE);
-			List<TrainingContest> trainingContestList = (List<TrainingContest>) trainingContestDAO
-					.findAll(condition);
-			List<TrainingContestListView> trainingContestListViewList = new LinkedList<>();
-			for (TrainingContest trainingContest : trainingContestList)
-				trainingContestListViewList.add(new TrainingContestListView(
-						trainingContest));
-			json.put("pageInfo", pageInfo.getHtmlString());
-			json.put("result", "ok");
-			json.put("trainingContestList", trainingContestListViewList);
-		} catch (AppException e) {
-			json.put("result", "error");
-			json.put("error_msg", e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			json.put("result", "error");
-			json.put("error_msg", "Unknown exception occurred.");
-		}
-		return JSON;
-	}
+  @SuppressWarnings("unchecked")
+  public String toSearchTrainingContest() {
+    try {
+      trainingContestCondition.setIsTitleEmpty(false);
+      Condition condition = trainingContestCondition.getCondition();
+      Long count = trainingContestDAO.count(trainingContestCondition.getCondition());
+      PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
+      condition.setCurrentPage(pageInfo.getCurrentPage());
+      condition.setCountPerPage(RECORD_PER_PAGE);
+      List<TrainingContest> trainingContestList =
+          (List<TrainingContest>) trainingContestDAO.findAll(condition);
+      List<TrainingContestListView> trainingContestListViewList = new LinkedList<>();
+      for (TrainingContest trainingContest : trainingContestList)
+        trainingContestListViewList.add(new TrainingContestListView(trainingContest));
+      json.put("pageInfo", pageInfo.getHtmlString());
+      json.put("result", "ok");
+      json.put("trainingContestList", trainingContestListViewList);
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return JSON;
+  }
 
-	private Integer targetTrainingContestId;
+  private Integer targetTrainingContestId;
 
-	public Integer getTargetTrainingContestId() {
-		return targetTrainingContestId;
-	}
+  public Integer getTargetTrainingContestId() {
+    return targetTrainingContestId;
+  }
 
-	public void setTargetTrainingContestId(Integer targetTrainingContestId) {
-		this.targetTrainingContestId = targetTrainingContestId;
-	}
+  public void setTargetTrainingContestId(Integer targetTrainingContestId) {
+    this.targetTrainingContestId = targetTrainingContestId;
+  }
 
-	private TrainingContestView targetTrainingContest;
+  private TrainingContestView targetTrainingContest;
 
-	public TrainingContestView getTargetTrainingContest() {
-		return targetTrainingContest;
-	}
+  public TrainingContestView getTargetTrainingContest() {
+    return targetTrainingContest;
+  }
 
-	public void setTargetTrainingContest(
-			TrainingContestView targetTrainingContest) {
-		this.targetTrainingContest = targetTrainingContest;
-	}
+  public void setTargetTrainingContest(TrainingContestView targetTrainingContest) {
+    this.targetTrainingContest = targetTrainingContest;
+  }
 
-	@SuppressWarnings("unchecked")
-	public String toContestEditor() {
-		try {
-			if (targetTrainingContestId == null) {
-				trainingContestCondition.clear();
-				trainingContestCondition.setIsTitleEmpty(true);
-				Condition condition = trainingContestCondition.getCondition();
-				Long count = trainingContestDAO.count(condition);
+  @SuppressWarnings("unchecked")
+  public String toContestEditor() {
+    try {
+      if (targetTrainingContestId == null) {
+        trainingContestCondition.clear();
+        trainingContestCondition.setIsTitleEmpty(true);
+        Condition condition = trainingContestCondition.getCondition();
+        Long count = trainingContestDAO.count(condition);
 
-				if (count == 0) {
-					TrainingContest trainingContest = trainingContestDTO
-							.getEntity();
-					trainingContestDAO.add(trainingContest);
-					targetTrainingContestId = trainingContest
-							.getTrainingContestId();
-				} else {
-					List<TrainingContest> result = (List<TrainingContest>) trainingContestDAO
-							.findAll(trainingContestCondition.getCondition());
-					if (result == null || result.size() == 0)
-						throw new AppException("Add new contest error!");
-					TrainingContest trainingContest = result.get(0);
-					targetTrainingContestId = trainingContest
-							.getTrainingContestId();
-				}
+        if (count == 0) {
+          TrainingContest trainingContest = trainingContestDTO.getEntity();
+          trainingContestDAO.add(trainingContest);
+          targetTrainingContestId = trainingContest.getTrainingContestId();
+        } else {
+          List<TrainingContest> result =
+              (List<TrainingContest>) trainingContestDAO.findAll(trainingContestCondition
+                  .getCondition());
+          if (result == null || result.size() == 0)
+            throw new AppException("Add new contest error!");
+          TrainingContest trainingContest = result.get(0);
+          targetTrainingContestId = trainingContest.getTrainingContestId();
+        }
 
-				if (targetTrainingContestId == null)
-					throw new AppException("Add new training contest error!");
+        if (targetTrainingContestId == null)
+          throw new AppException("Add new training contest error!");
 
-				return redirect(getActionURL("/training/admin",
-						"contest/editor/" + targetTrainingContestId));
-			} else {
-				targetTrainingContest = new TrainingContestView(
-						trainingContestDAO.get(targetTrainingContestId));
-				File targetFile = new File(getTrainingRankFileName());
-				if (targetFile.exists() && !targetFile.delete())
-					throw new AppException(
-							"Internal exception: target file exists and can not be deleted.");
-				if (targetTrainingContest.getTrainingContestId() == null)
-					throw new AppException("Wrong training contest ID!");
-			}
-		} catch (AppException e) {
-			return redirect(getActionURL("/training/admin", "index"),
-					e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return redirect(getActionURL("/training/admin", "index"),
-					"Unknown exception occurred.");
-		}
-		return SUCCESS;
-	}
+        return redirect(getActionURL("/training/admin", "contest/editor/" + targetTrainingContestId));
+      } else {
+        targetTrainingContest =
+            new TrainingContestView(trainingContestDAO.get(targetTrainingContestId));
+        File targetFile = new File(getTrainingRankFileName());
+        if (targetFile.exists() && !targetFile.delete())
+          throw new AppException("Internal exception: target file exists and can not be deleted.");
+        if (targetTrainingContest.getTrainingContestId() == null)
+          throw new AppException("Wrong training contest ID!");
+      }
+    } catch (AppException e) {
+      return redirect(getActionURL("/training/admin", "index"), e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      return redirect(getActionURL("/training/admin", "index"), "Unknown exception occurred.");
+    }
+    return SUCCESS;
+  }
 
-	private String getTrainingRankFileName() {
-		return settings.SETTING_UPLOAD_FOLDER + "/training_contest_"
-				+ targetTrainingContestId + ".xls";
-	}
+  private String getTrainingRankFileName() {
+    return settings.SETTING_UPLOAD_FOLDER + "/training_contest_" + targetTrainingContestId + ".xls";
+  }
 
-	@Autowired
-	private TrainingContestCondition trainingContestCondition;
+  @Autowired
+  private TrainingContestCondition trainingContestCondition;
 
-	@Override
-	public void setTrainingContestCondition(
-			TrainingContestCondition trainingContestCondition) {
-		this.trainingContestCondition = trainingContestCondition;
-	}
+  @Override
+  public void setTrainingContestCondition(TrainingContestCondition trainingContestCondition) {
+    this.trainingContestCondition = trainingContestCondition;
+  }
 
-	@Override
-	public TrainingContestCondition getTrainingContestCondition() {
-		return trainingContestCondition;
-	}
+  @Override
+  public TrainingContestCondition getTrainingContestCondition() {
+    return trainingContestCondition;
+  }
 
-	@Autowired
-	private ITrainingContestDAO trainingContestDAO;
+  @Autowired
+  private ITrainingContestDAO trainingContestDAO;
 
-	@Override
-	public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
-		this.trainingContestDAO = trainingContestDAO;
-	}
+  @Override
+  public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
+    this.trainingContestDAO = trainingContestDAO;
+  }
 
-	@Autowired
-	private TrainingContestDTO trainingContestDTO;
+  @Autowired
+  private TrainingContestDTO trainingContestDTO;
 
-	@Override
-	public void setTrainingContestDTO(TrainingContestDTO trainingContestDTO) {
-		this.trainingContestDTO = trainingContestDTO;
-	}
+  @Override
+  public void setTrainingContestDTO(TrainingContestDTO trainingContestDTO) {
+    this.trainingContestDTO = trainingContestDTO;
+  }
 
-	@Override
-	public TrainingContestDTO getTrainingContestDTO() {
-		return trainingContestDTO;
-	}
+  @Override
+  public TrainingContestDTO getTrainingContestDTO() {
+    return trainingContestDTO;
+  }
 }

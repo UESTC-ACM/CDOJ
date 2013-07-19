@@ -30,12 +30,11 @@ import cn.edu.uestc.acmicpc.util.TrainingRankListParser;
  * @see TrainingRankListParser
  */
 public interface TrainingRankListParserAware {
-	/**
-	 * Put trainingRankListParser into class.
-	 * 
-	 * @param trainingRankListParser
-	 *            trainingRankListParser entity
-	 */
-	public void setTrainingRankListParserAware(
-			TrainingRankListParser trainingRankListParser);
+
+  /**
+   * Put trainingRankListParser into class.
+   * 
+   * @param trainingRankListParser trainingRankListParser entity
+   */
+  public void setTrainingRankListParserAware(TrainingRankListParser trainingRankListParser);
 }

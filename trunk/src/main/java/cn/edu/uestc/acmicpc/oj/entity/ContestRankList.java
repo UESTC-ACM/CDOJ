@@ -33,114 +33,108 @@ import java.util.*;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class ContestRankList {
-	private ContestListView contestSummary;
-	private List<ContestProblemSummaryView> problemSummary;
-	private List<UserRankSummary> userRankSummaryList;
-	private Timestamp lastUpdateTime;
-	private Boolean lock;
 
-	public Timestamp getLastUpdateTime() {
-		return lastUpdateTime;
-	}
+  private ContestListView contestSummary;
+  private List<ContestProblemSummaryView> problemSummary;
+  private List<UserRankSummary> userRankSummaryList;
+  private Timestamp lastUpdateTime;
+  private Boolean lock;
 
-	public void setLastUpdateTime(Timestamp lastUpdateTime) {
-		this.lastUpdateTime = lastUpdateTime;
-	}
+  public Timestamp getLastUpdateTime() {
+    return lastUpdateTime;
+  }
 
-	public Boolean getLock() {
-		return lock;
-	}
+  public void setLastUpdateTime(Timestamp lastUpdateTime) {
+    this.lastUpdateTime = lastUpdateTime;
+  }
 
-	public void setLock(Boolean lock) {
-		this.lock = lock;
-	}
+  public Boolean getLock() {
+    return lock;
+  }
 
-	public ContestListView getContestSummary() {
-		return contestSummary;
-	}
+  public void setLock(Boolean lock) {
+    this.lock = lock;
+  }
 
-	public void setContestSummary(ContestListView contestSummary) {
-		this.contestSummary = contestSummary;
-	}
+  public ContestListView getContestSummary() {
+    return contestSummary;
+  }
 
-	public List<ContestProblemSummaryView> getProblemSummary() {
-		return problemSummary;
-	}
+  public void setContestSummary(ContestListView contestSummary) {
+    this.contestSummary = contestSummary;
+  }
 
-	public void setProblemSummary(List<ContestProblemSummaryView> problemSummary) {
-		this.problemSummary = problemSummary;
-	}
+  public List<ContestProblemSummaryView> getProblemSummary() {
+    return problemSummary;
+  }
 
-	public List<UserRankSummary> getUserRankSummaryList() {
-		return userRankSummaryList;
-	}
+  public void setProblemSummary(List<ContestProblemSummaryView> problemSummary) {
+    this.problemSummary = problemSummary;
+  }
 
-	public void setUserRankSummaryList(List<UserRankSummary> userRankSummaryList) {
-		this.userRankSummaryList = userRankSummaryList;
-	}
+  public List<UserRankSummary> getUserRankSummaryList() {
+    return userRankSummaryList;
+  }
 
-	public ContestRankList(ContestListView contestSummary,
-			List<ContestProblemSummaryView> problemSummary) {
-		this.contestSummary = contestSummary;
-		this.problemSummary = problemSummary;
-		userRankSummaryList = new LinkedList<>();
-	}
+  public void setUserRankSummaryList(List<UserRankSummary> userRankSummaryList) {
+    this.userRankSummaryList = userRankSummaryList;
+  }
 
-	public void clear(ContestListView contestSummary,
-			List<ContestProblemSummaryView> problemSummary) {
-		this.contestSummary = contestSummary;
-		this.problemSummary = problemSummary;
-		userRankSummaryList = new LinkedList<>();
-	}
+  public ContestRankList(ContestListView contestSummary,
+      List<ContestProblemSummaryView> problemSummary) {
+    this.contestSummary = contestSummary;
+    this.problemSummary = problemSummary;
+    userRankSummaryList = new LinkedList<>();
+  }
 
-	public void updateRankList(Status status) {
-		Boolean isNewUser = true;
-		if (userRankSummaryList.size() > 0) {
-			for (UserRankSummary userRankSummary : userRankSummaryList) {
-				if (userRankSummary.getUserId().equals(
-						status.getUserByUserId().getUserId())) {
-					isNewUser = false;
-					break;
-				}
-			}
-		}
-		if (isNewUser)
-			userRankSummaryList.add(new UserRankSummary(status
-					.getUserByUserId(), problemSummary));
+  public void clear(ContestListView contestSummary, List<ContestProblemSummaryView> problemSummary) {
+    this.contestSummary = contestSummary;
+    this.problemSummary = problemSummary;
+    userRankSummaryList = new LinkedList<>();
+  }
 
-		for (UserRankSummary userRankSummary : userRankSummaryList) {
-			if (userRankSummary.getUserId().equals(
-					status.getUserByUserId().getUserId())) {
-				Boolean visible = true;
-				if (contestSummary.getLength() == 5 * 60 * 60) {
-					// standard contest && still running
-					if (contestSummary.getStatus().equals("Running"))
-						if ((status.getTime().getTime() - contestSummary
-								.getTime().getTime()) / 1000 > 4 * 60 * 60)
-							visible = false;
-				}
-				userRankSummary.updateUserRank(status, contestSummary,
-						problemSummary, visible);
-				break;
-			}
-		}
+  public void updateRankList(Status status) {
+    Boolean isNewUser = true;
+    if (userRankSummaryList.size() > 0) {
+      for (UserRankSummary userRankSummary : userRankSummaryList) {
+        if (userRankSummary.getUserId().equals(status.getUserByUserId().getUserId())) {
+          isNewUser = false;
+          break;
+        }
+      }
+    }
+    if (isNewUser)
+      userRankSummaryList.add(new UserRankSummary(status.getUserByUserId(), problemSummary));
 
-		Collections.sort(userRankSummaryList,
-				new Comparator<UserRankSummary>() {
-					@Override
-					public int compare(UserRankSummary a, UserRankSummary b) {
-						if (a.getSolved().equals(b.getSolved())) {
-							if (a.getPenalty().equals(b.getPenalty())) {
-								return a.getNickName().compareTo(
-										b.getNickName());
-							}
-							return a.getPenalty().compareTo(b.getPenalty());
-						}
-						return (b.getSolved().compareTo(a.getSolved()));
-					}
-				});
+    for (UserRankSummary userRankSummary : userRankSummaryList) {
+      if (userRankSummary.getUserId().equals(status.getUserByUserId().getUserId())) {
+        Boolean visible = true;
+        if (contestSummary.getLength() == 5 * 60 * 60) {
+          // standard contest && still running
+          if (contestSummary.getStatus().equals("Running"))
+            if ((status.getTime().getTime() - contestSummary.getTime().getTime()) / 1000 > 4 * 60 * 60)
+              visible = false;
+        }
+        userRankSummary.updateUserRank(status, contestSummary, problemSummary, visible);
+        break;
+      }
+    }
 
-		for (int i = 0; i < userRankSummaryList.size(); i++)
-			userRankSummaryList.get(i).setRank(i + 1);
-	}
+    Collections.sort(userRankSummaryList, new Comparator<UserRankSummary>() {
+
+      @Override
+      public int compare(UserRankSummary a, UserRankSummary b) {
+        if (a.getSolved().equals(b.getSolved())) {
+          if (a.getPenalty().equals(b.getPenalty())) {
+            return a.getNickName().compareTo(b.getNickName());
+          }
+          return a.getPenalty().compareTo(b.getPenalty());
+        }
+        return (b.getSolved().compareTo(a.getSolved()));
+      }
+    });
+
+    for (int i = 0; i < userRankSummaryList.size(); i++)
+      userRankSummaryList.get(i).setRank(i + 1);
+  }
 }

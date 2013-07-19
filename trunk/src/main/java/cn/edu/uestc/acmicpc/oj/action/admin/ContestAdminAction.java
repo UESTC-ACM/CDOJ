@@ -58,244 +58,230 @@ import java.util.List;
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class ContestAdminAction extends BaseAction implements ContestDAOAware,
-		ContestConditionAware, ContestDTOAware {
+    ContestConditionAware, ContestDTOAware {
 
-	/**
+  /**
 	 * 
 	 */
-	private static final long serialVersionUID = -8303828012061242917L;
+  private static final long serialVersionUID = -8303828012061242917L;
 
-	@Autowired
-	private IContestDAO contestDAO;
+  @Autowired
+  private IContestDAO contestDAO;
 
-	@Autowired
-	private ContestCondition contestCondition;
+  @Autowired
+  private ContestCondition contestCondition;
 
-	@Autowired
-	private ContestDTO contestDTO;
+  @Autowired
+  private ContestDTO contestDTO;
 
-	public String toContestList() {
-		return SUCCESS;
-	}
+  public String toContestList() {
+    return SUCCESS;
+  }
 
-	private String editorFlag;
+  private String editorFlag;
 
-	public String getEditorFlag() {
-		return editorFlag;
-	}
+  public String getEditorFlag() {
+    return editorFlag;
+  }
 
-	public void setEditorFlag(String editorFlag) {
-		this.editorFlag = editorFlag;
-	}
+  public void setEditorFlag(String editorFlag) {
+    this.editorFlag = editorFlag;
+  }
 
-	public Integer getTargetContestId() {
-		return targetContestId;
-	}
+  public Integer getTargetContestId() {
+    return targetContestId;
+  }
 
-	public void setTargetContestId(Integer targetContestId) {
-		this.targetContestId = targetContestId;
-	}
+  public void setTargetContestId(Integer targetContestId) {
+    this.targetContestId = targetContestId;
+  }
 
-	public ContestView getTargetContest() {
-		return targetContest;
-	}
+  public ContestView getTargetContest() {
+    return targetContest;
+  }
 
-	public void setTargetContest(ContestView targetContest) {
-		this.targetContest = targetContest;
-	}
+  public void setTargetContest(ContestView targetContest) {
+    this.targetContest = targetContest;
+  }
 
-	private Integer targetContestId;
-	private ContestView targetContest;
+  private Integer targetContestId;
+  private ContestView targetContest;
 
-	/**
-	 * Go to contest editor view!
-	 * 
-	 * @return <strong>SUCCESS</strong> signal
-	 */
-	@SuppressWarnings("unchecked")
-	public String toContestEditor() {
-		try {
-			if (targetContestId == null) {
-				contestCondition.clear();
-				contestCondition.setIsTitleEmpty(true);
-				Condition condition = contestCondition.getCondition();
-				Long count = contestDAO.count(condition);
+  /**
+   * Go to contest editor view!
+   * 
+   * @return <strong>SUCCESS</strong> signal
+   */
+  @SuppressWarnings("unchecked")
+  public String toContestEditor() {
+    try {
+      if (targetContestId == null) {
+        contestCondition.clear();
+        contestCondition.setIsTitleEmpty(true);
+        Condition condition = contestCondition.getCondition();
+        Long count = contestDAO.count(condition);
 
-				if (count == 0) {
-					Contest contest = contestDTO.getEntity();
-					contestDAO.add(contest);
-					targetContestId = contest.getContestId();
-				} else {
-					List<Contest> result = (List<Contest>) contestDAO
-							.findAll(contestCondition.getCondition());
-					if (result == null || result.size() == 0)
-						throw new AppException("Add new contest error!");
-					Contest contest = result.get(0);
-					contest.setTime(new Timestamp(new Date().getTime()));
-					contestDAO.update(contest);
-					targetContestId = contest.getContestId();
-				}
+        if (count == 0) {
+          Contest contest = contestDTO.getEntity();
+          contestDAO.add(contest);
+          targetContestId = contest.getContestId();
+        } else {
+          List<Contest> result =
+              (List<Contest>) contestDAO.findAll(contestCondition.getCondition());
+          if (result == null || result.size() == 0)
+            throw new AppException("Add new contest error!");
+          Contest contest = result.get(0);
+          contest.setTime(new Timestamp(new Date().getTime()));
+          contestDAO.update(contest);
+          targetContestId = contest.getContestId();
+        }
 
-				if (targetContestId == null)
-					throw new AppException("Add new contest error!");
+        if (targetContestId == null)
+          throw new AppException("Add new contest error!");
 
-				return redirect(getActionURL("/admin", "contest/editor/"
-						+ targetContestId));
-			} else {
-				targetContest = new ContestView(contestDAO.get(targetContestId));
-				if (targetContest.getContestId() == null)
-					throw new AppException("Wrong contest ID!");
-				editorFlag = "edit";
-			}
-		} catch (AppException e) {
-			return redirect(getActionURL("/admin", "index"), e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return redirect(getActionURL("/admin", "index"),
-					"Unknown exception occurred.");
-		}
-		return SUCCESS;
-	}
+        return redirect(getActionURL("/admin", "contest/editor/" + targetContestId));
+      } else {
+        targetContest = new ContestView(contestDAO.get(targetContestId));
+        if (targetContest.getContestId() == null)
+          throw new AppException("Wrong contest ID!");
+        editorFlag = "edit";
+      }
+    } catch (AppException e) {
+      return redirect(getActionURL("/admin", "index"), e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      return redirect(getActionURL("/admin", "index"), "Unknown exception occurred.");
+    }
+    return SUCCESS;
+  }
 
-	/**
-	 * Search action.
-	 * <p/>
-	 * Find all records by conditions and return them as a list in JSON, and the
-	 * condition set will set in JSON named "condition".
-	 * <p/>
-	 * <strong>JSON output</strong>:
-	 * <ul>
-	 * <li>
-	 * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>,
-	 * "condition", <strong>ContestCondition entity</strong>,
-	 * "contestList":<strong>query result</strong>}</li>
-	 * <li>
-	 * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-	 * </li>
-	 * </ul>
-	 * 
-	 * @return <strong>JSON</strong> signal
-	 */
-	@SuppressWarnings("unchecked")
-	@SkipValidation
-	public String toSearch() {
-		try {
-			contestCondition.setIsTitleEmpty(false);
-			Condition condition = contestCondition.getCondition();
-			Long count = contestDAO.count(contestCondition.getCondition());
-			PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
-			condition.setCurrentPage(pageInfo.getCurrentPage());
-			condition.setCountPerPage(RECORD_PER_PAGE);
-			List<Contest> contestList = (List<Contest>) contestDAO
-					.findAll(condition);
-			List<ContestListView> contestListViewList = new ArrayList<>();
-			for (Contest contest : contestList)
-				contestListViewList.add(new ContestListView(contest));
-			json.put("pageInfo", pageInfo.getHtmlString());
-			json.put("result", "ok");
-			json.put("contestList", contestListViewList);
-		} catch (AppException e) {
-			json.put("result", "error");
-			json.put("error_msg", e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			json.put("result", "error");
-			json.put("error_msg", "Unknown exception occurred.");
-		}
-		return JSON;
-	}
+  /**
+   * Search action.
+   * <p/>
+   * Find all records by conditions and return them as a list in JSON, and the condition set will
+   * set in JSON named "condition".
+   * <p/>
+   * <strong>JSON output</strong>:
+   * <ul>
+   * <li>
+   * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>, "condition",
+   * <strong>ContestCondition entity</strong>, "contestList":<strong>query result</strong>}</li>
+   * <li>
+   * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
+   * </ul>
+   * 
+   * @return <strong>JSON</strong> signal
+   */
+  @SuppressWarnings("unchecked")
+  @SkipValidation
+  public String toSearch() {
+    try {
+      contestCondition.setIsTitleEmpty(false);
+      Condition condition = contestCondition.getCondition();
+      Long count = contestDAO.count(contestCondition.getCondition());
+      PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
+      condition.setCurrentPage(pageInfo.getCurrentPage());
+      condition.setCountPerPage(RECORD_PER_PAGE);
+      List<Contest> contestList = (List<Contest>) contestDAO.findAll(condition);
+      List<ContestListView> contestListViewList = new ArrayList<>();
+      for (Contest contest : contestList)
+        contestListViewList.add(new ContestListView(contest));
+      json.put("pageInfo", pageInfo.getHtmlString());
+      json.put("result", "ok");
+      json.put("contestList", contestListViewList);
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return JSON;
+  }
 
-	/**
-	 * Action to operate multiple contests.
-	 * <p/>
-	 * <strong>JSON output</strong>:
-	 * <ul>
-	 * <li>
-	 * For success: {"result":"ok", "msg":<strong>successful message</strong>}</li>
-	 * <li>
-	 * For error: {"result":"error", "error_msg":<strong>error message</strong>}
-	 * </li>
-	 * </ul>
-	 * 
-	 * @return <strong>JSON</strong> signal.
-	 */
-	@SkipValidation
-	public String toOperatorContest() {
-		try {
-			int count = 0, total = 0;
-			Integer[] ids = ArrayUtil.parseIntArray(get("id"));
-			String method = get("method");
-			for (Integer id : ids)
-				if (id != null) {
-					++total;
-					try {
-						Contest contest = contestDAO.get(id);
-						if ("delete".equals(method)) {
-							contestDAO.delete(contest);
-						} else if ("edit".equals(method)) {
-							String field = get("field");
-							String value = get("value");
-							Method[] methods = contest.getClass().getMethods();
-							for (Method getter : methods) {
-								Column column = getter
-										.getAnnotation(Column.class);
-								if (column != null
-										&& column.name().equals(field)) {
-									String setterName = StringUtil
-											.getGetterOrSetter(
-													StringUtil.MethodType.SETTER,
-													getter.getName().substring(
-															3));
-									Method setter = contest.getClass()
-											.getMethod(setterName,
-													getter.getReturnType());
-									setter.invoke(contest, ReflectionUtil
-											.valueOf(value,
-													getter.getReturnType()));
-								}
-							}
-							contestDAO.update(contest);
-						}
-						++count;
-					} catch (AppException ignored) {
-					}
-				}
-			json.put("result", "ok");
-			String message = "";
-			if ("delete".equals(method))
-				message = String.format("%d total, %d deleted.", total, count);
-			else if ("edit".equals(method))
-				message = String.format("%d total, %d changed.", total, count);
-			json.put("msg", message);
-		} catch (Exception e) {
-			json.put("result", "error");
-			json.put("error_msg", "Unknown exception occurred.");
-		}
-		return JSON;
-	}
+  /**
+   * Action to operate multiple contests.
+   * <p/>
+   * <strong>JSON output</strong>:
+   * <ul>
+   * <li>
+   * For success: {"result":"ok", "msg":<strong>successful message</strong>}</li>
+   * <li>
+   * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
+   * </ul>
+   * 
+   * @return <strong>JSON</strong> signal.
+   */
+  @SkipValidation
+  public String toOperatorContest() {
+    try {
+      int count = 0, total = 0;
+      Integer[] ids = ArrayUtil.parseIntArray(get("id"));
+      String method = get("method");
+      for (Integer id : ids)
+        if (id != null) {
+          ++total;
+          try {
+            Contest contest = contestDAO.get(id);
+            if ("delete".equals(method)) {
+              contestDAO.delete(contest);
+            } else if ("edit".equals(method)) {
+              String field = get("field");
+              String value = get("value");
+              Method[] methods = contest.getClass().getMethods();
+              for (Method getter : methods) {
+                Column column = getter.getAnnotation(Column.class);
+                if (column != null && column.name().equals(field)) {
+                  String setterName =
+                      StringUtil.getGetterOrSetter(StringUtil.MethodType.SETTER, getter.getName()
+                          .substring(3));
+                  Method setter = contest.getClass().getMethod(setterName, getter.getReturnType());
+                  setter.invoke(contest, ReflectionUtil.valueOf(value, getter.getReturnType()));
+                }
+              }
+              contestDAO.update(contest);
+            }
+            ++count;
+          } catch (AppException ignored) {
+          }
+        }
+      json.put("result", "ok");
+      String message = "";
+      if ("delete".equals(method))
+        message = String.format("%d total, %d deleted.", total, count);
+      else if ("edit".equals(method))
+        message = String.format("%d total, %d changed.", total, count);
+      json.put("msg", message);
+    } catch (Exception e) {
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return JSON;
+  }
 
-	@Override
-	public void setContestDAO(IContestDAO contestDAO) {
-		this.contestDAO = contestDAO;
-	}
+  @Override
+  public void setContestDAO(IContestDAO contestDAO) {
+    this.contestDAO = contestDAO;
+  }
 
-	@Override
-	public void setContestCondition(ContestCondition contestCondition) {
-		this.contestCondition = contestCondition;
-	}
+  @Override
+  public void setContestCondition(ContestCondition contestCondition) {
+    this.contestCondition = contestCondition;
+  }
 
-	@Override
-	public ContestCondition getContestCondition() {
-		return contestCondition;
-	}
+  @Override
+  public ContestCondition getContestCondition() {
+    return contestCondition;
+  }
 
-	@Override
-	public void setContestDTO(ContestDTO contestDTO) {
-		this.contestDTO = contestDTO;
-	}
+  @Override
+  public void setContestDTO(ContestDTO contestDTO) {
+    this.contestDTO = contestDTO;
+  }
 
-	@Override
-	public ContestDTO getContestDTO() {
-		return contestDTO;
-	}
+  @Override
+  public ContestDTO getContestDTO() {
+    return contestDTO;
+  }
 }
