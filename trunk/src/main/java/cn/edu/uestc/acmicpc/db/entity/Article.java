@@ -1,22 +1,22 @@
 /*
  *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *  cdoj, UESTC ACMICPC Online Judge
+ *  Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
+ *  	mzry1992 <@link muziriyun@gmail.com>
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  */
 
@@ -172,32 +172,43 @@ public class Article implements Serializable {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
-    if (o == null || getClass() != o.getClass())
+    }
+    if (o == null || getClass() != o.getClass()) {
       return false;
+    }
 
     Article article = (Article) o;
 
-    if (!articleId.equals(article.articleId))
+    if (!articleId.equals(article.articleId)) {
       return false;
-    if (!clicked.equals(article.clicked))
+    }
+    if (!clicked.equals(article.clicked)) {
       return false;
-    if (isNotice != article.isNotice)
+    }
+    if (isNotice != article.isNotice) {
       return false;
-    if (!order.equals(article.order))
+    }
+    if (!order.equals(article.order)) {
       return false;
-    if (isVisible != article.isVisible)
+    }
+    if (isVisible != article.isVisible) {
       return false;
-    if (author != null ? !author.equals(article.author) : article.author != null)
+    }
+    if (author != null ? !author.equals(article.author) : article.author != null) {
       return false;
-    if (content != null ? !content.equals(article.content) : article.content != null)
+    }
+    if (content != null ? !content.equals(article.content) : article.content != null) {
       return false;
-    if (time != null ? !time.equals(article.time) : article.time != null)
+    }
+    if (time != null ? !time.equals(article.time) : article.time != null) {
       return false;
-    if (title != null ? !title.equals(article.title) : article.title != null)
+    }
+    if (title != null ? !title.equals(article.title) : article.title != null) {
       return false;
-
+    }
+    
     return true;
   }
 

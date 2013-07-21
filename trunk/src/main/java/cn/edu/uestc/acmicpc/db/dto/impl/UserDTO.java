@@ -1,22 +1,22 @@
 /*
  *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *  cdoj, UESTC ACMICPC Online Judge
+ *  Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
+ *  	mzry1992 <@link muziriyun@gmail.com>
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  */
 
@@ -259,18 +259,24 @@ public class UserDTO extends BaseDTO<User> {
    */
   @Override
   public void updateEntity(User user) {
-    if (nickName != null)
+    if (nickName != null) {
       user.setNickName(nickName);
-    if (password != null)
+    }
+    if (password != null) {
       user.setPassword(StringUtil.encodeSHA1(password));
-    if (school != null)
+    }
+    if (school != null) {
       user.setSchool(school);
-    if (department != null)
+    }
+    if (department != null) {
       user.setDepartmentByDepartmentId(department);
-    if (studentId != null)
+    }
+    if (studentId != null) {
       user.setStudentId(studentId);
-    if (type != null)
+    }
+    if (type != null) {
       user.setType(type);
+    }
   }
 
   @Override

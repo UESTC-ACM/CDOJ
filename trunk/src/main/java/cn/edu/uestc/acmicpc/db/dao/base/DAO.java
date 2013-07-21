@@ -1,22 +1,22 @@
 /*
  *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *  cdoj, UESTC ACMICPC Online Judge
+ *  Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
+ *  	mzry1992 <@link muziriyun@gmail.com>
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  */
 
@@ -65,7 +65,6 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
         update(entity);
       }
     } catch (HibernateException e) {
-      e.printStackTrace();
       throw new AppException("Invoke addOrUpdate method error.");
     }
   }
@@ -104,8 +103,9 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
     }
     criteria.setFirstResult(condition.getCurrentPage() == null ? 0 : (int) ((condition
         .getCurrentPage() - 1) * condition.getCountPerPage()));
-    if (condition.getCountPerPage() != null)
+    if (condition.getCountPerPage() != null) {
       criteria.setMaxResults((int) condition.getCountPerPage().longValue());
+    }
     for (Criterion criterion : condition.getCriterionList()) {
       criteria.add(criterion);
     }
@@ -123,36 +123,37 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
 
   @Override
   public List<?> findAll(Condition condition) throws AppException {
-    if (condition == null)
+    if (condition == null) {
       condition = new Condition();
+    }
     try {
       Criteria criteria = createCriteria();
       updateCriteria(criteria, condition);
       return criteria.list();
     } catch (HibernateException e) {
-      e.printStackTrace();
       throw new AppException("Invoke findAll method error.");
     }
   }
 
   @Override
   public Long customCount(Condition condition) throws AppException {
-    if (condition == null)
+    if (condition == null) {
       return count();
+    }
     try {
       Criteria criteria = createCriteria();
       updateCriteria(criteria, condition);
       return (Long) criteria.uniqueResult();
     } catch (HibernateException e) {
-      e.printStackTrace();
       throw new AppException("Invoke customCount method error.");
     }
   }
 
   @Override
   public Long count(Condition condition) throws AppException {
-    if (condition == null)
+    if (condition == null) {
       condition = new Condition();
+    }
     try {
       Criteria criteria = createCriteria();
       condition.projections = null;
@@ -160,7 +161,6 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
       updateCriteria(criteria, condition);
       return (Long) criteria.uniqueResult();
     } catch (HibernateException e) {
-      e.printStackTrace();
       throw new AppException("Invoke count method error.");
     }
   }
@@ -170,7 +170,6 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
     try {
       return getSession().save(entity);
     } catch (HibernateException e) {
-      e.printStackTrace();
       throw new AppException("Invoke add method error.");
     }
   }
@@ -179,8 +178,9 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
   @Override
   public Entity get(PK key) throws AppException {
     try {
-      if (key == null)
+      if (key == null) {
         return null;
+      }
       return (Entity) getSession().get(getReferenceClass(), key);
     } catch (HibernateException e) {
       throw new AppException("Invoke get method error.");
@@ -200,10 +200,10 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
   @Override
   public void delete(Entity entity) throws AppException {
     try {
-      if (entity != null)
+      if (entity != null) {
         getSession().delete(entity);
+      }
     } catch (HibernateException e) {
-      e.printStackTrace();
       throw new AppException("Invoke delete method error.");
     }
   }
@@ -228,8 +228,9 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
     for (Method method : methods) {
       if (method.getAnnotation(Id.class) != null) {
         Column column = method.getAnnotation(Column.class);
-        if (column == null)
+        if (column == null) {
           return null;
+        }
         return column.name();
       }
     }
@@ -259,17 +260,20 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
           columnName = method.getAnnotation(JoinColumn.class).name();
           isUnique = method.getAnnotation(JoinColumn.class).unique();
         }
-        if (forceUnique)
+        if (forceUnique) {
           isUnique = true;
+        }
         if (columnName != null && columnName.equals(fieldName)) {
           if (isUnique) {
-            if (value == null)
+            if (value == null) {
               return null;
+            }
             Criteria criteria = getSession().createCriteria(getReferenceClass());
             criteria.add(Restrictions.eq(propertyName, value));
             List<?> list = criteria.list();
-            if (list == null || list.isEmpty())
+            if (list == null || list.isEmpty()) {
               return null;
+            }
             result = (Entity) list.get(0);
             break;
           } else {
@@ -278,7 +282,6 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
         }
       }
     } catch (HibernateException e) {
-      e.printStackTrace();
       throw new AppException("Invoke getEntityByUniqueField method error.");
     }
     return result;
@@ -293,44 +296,45 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
   protected abstract Class<Entity> getReferenceClass();
 
   public String getSQLString(Condition condition) throws AppException {
-    if (condition == null)
+    if (condition == null) {
       return "";
+    }
     List<String> params = new LinkedList<>();
     for (Criterion criterion : condition.getCriterionList()) {
       String field = criterion.toString();
-      System.out.println("Criterion: " + criterion.toString());
       params.add(field);
     }
     for (String key : condition.getJoinedProperties().keySet()) {
       JoinedProperty joinedProperty = condition.getJoinedProperties().get(key);
       String field;
       if (joinedProperty.getConditionType() == BaseCondition.ConditionType.like) {
-        field =
-            key + joinedProperty.getConditionType().getSignal() + "%"
-                + joinedProperty.getKeyValue() + "%";
+        field = key + joinedProperty.getConditionType().getSignal() + "%"
+            + joinedProperty.getKeyValue() + "%";
       } else {
         field = key + joinedProperty.getConditionType().getSignal() + joinedProperty.getKeyValue();
       }
-      System.out.println("JoinedProperty: " + field);
       params.add(field);
     }
 
-    if (params.isEmpty())
+    if (params.isEmpty()) {
       return "";
+    }
 
     return "where " + ArrayUtil.join(params.toArray(), " and ");
   }
 
   public void updateEntitiesByCondition(Map<String, Object> properties, Condition condition)
       throws AppException {
-    if (properties.isEmpty())
+    if (properties.isEmpty()) {
       return;
+    }
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("update ").append(getReferenceClass().getSimpleName()).append(" set");
     Boolean first = true;
     for (String key : properties.keySet()) {
-      if (!first)
+      if (!first) {
         stringBuilder.append(",");
+      }
       first = false;
       stringBuilder.append(" ").append(key).append("=").append(properties.get(key));
     }
