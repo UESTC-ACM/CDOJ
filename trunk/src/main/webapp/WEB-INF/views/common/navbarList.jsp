@@ -65,16 +65,19 @@
         <li class="disabled"><a href="#">BBS</a></li>
         <li class="disabled"><a href="#">Wiki</a></li>
         <li><s:a action="index" namespace="/training">Training</s:a></li>
-
-        <li class="divider"></li>
-        <li class="nav-header">Click</li>
-        <li><s:a action="show/1" namespace="/article">F.A.Q</s:a></li>
         <li class="disabled"><a href="#">Download</a></li>
         <li class="disabled"><a href="#">Step-by-Step</a></li>
-        <li><s:a action="show/2" namespace="/article">Markdown</s:a></li>
         <li class="disabled"><a href="#">Team Honors</a></li>
+
+        <li class="divider"></li>
+        <li class="nav-header">About</li>
+        <li><s:a action="show/1" namespace="/article">F.A.Q</s:a></li>
+        <li><s:a action="show/2" namespace="/article">Markdown</s:a></li>
+        <li><s:a action="show/3" namespace="/article">Training system</s:a></li>
+        <li><s:a action="show/4" namespace="/article">About</s:a></li>
     </ul>
 </li>
 <li class="divider-vertical"></li>
+
 </body>
 </html>
