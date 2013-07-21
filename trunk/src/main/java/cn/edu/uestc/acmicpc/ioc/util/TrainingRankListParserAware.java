@@ -21,7 +21,7 @@
 
 package cn.edu.uestc.acmicpc.ioc.util;
 
-import cn.edu.uestc.acmicpc.util.TrainingRankListParser;
+import cn.edu.uestc.acmicpc.training.parser.TrainingRankListParser;
 
 /**
  * For all class which need trainingRankListParser entity.

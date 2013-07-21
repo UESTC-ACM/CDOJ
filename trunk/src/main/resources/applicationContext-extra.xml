@@ -44,10 +44,13 @@
     <bean id="emailSender" class="cn.edu.uestc.acmicpc.util.EMailSender"
           scope="prototype">
     </bean>
-    <bean id="trainingRankListParser" class="cn.edu.uestc.acmicpc.util.TrainingRankListParser"
+    <bean id="trainingRankListParser" class="cn.edu.uestc.acmicpc.training.parser.TrainingRankListParser"
           scope="prototype">
     </bean>
     <bean id="ratingUtil" class="cn.edu.uestc.acmicpc.util.RatingUtil"
+          scope="prototype">
+    </bean>
+    <bean id="trainingContestRankList" class="cn.edu.uestc.acmicpc.training.entity.TrainingContestRankList"
           scope="prototype">
     </bean>
 

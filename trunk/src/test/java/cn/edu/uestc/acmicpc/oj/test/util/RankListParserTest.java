@@ -28,7 +28,7 @@ import cn.edu.uestc.acmicpc.ioc.dao.TrainingContestDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.TrainingStatusDAOAware;
 import cn.edu.uestc.acmicpc.ioc.util.TrainingRankListParserAware;
 import cn.edu.uestc.acmicpc.training.entity.TrainingContestRankList;
-import cn.edu.uestc.acmicpc.util.TrainingRankListParser;
+import cn.edu.uestc.acmicpc.training.parser.TrainingRankListParser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 import cn.edu.uestc.acmicpc.util.exception.ParserException;
