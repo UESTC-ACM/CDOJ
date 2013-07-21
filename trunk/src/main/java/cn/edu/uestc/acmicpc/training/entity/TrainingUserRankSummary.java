@@ -3,7 +3,7 @@ package cn.edu.uestc.acmicpc.training.entity;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.db.view.impl.TrainingUserView;
 import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.TrainingRankListFormatParser;
+import cn.edu.uestc.acmicpc.training.parser.TrainingRankListFormatParser;
 import cn.edu.uestc.acmicpc.util.exception.ParserException;
 
 /**
@@ -29,14 +29,9 @@ public class TrainingUserRankSummary {
     nickName = user.getName();
     penalty = solved = 0;
 
-    if (type != Global.TrainingContestType.NORMAL.ordinal()
-        && type != Global.TrainingContestType.TEAM.ordinal()) {
-      trainingProblemSummaryInfoList = new TrainingProblemSummaryInfo[0];
-      penalty = Integer.parseInt(userInfo[1]);
-      System.out.println(penalty + " " + userInfo[0] + " " + userInfo[1]);
-    } else {
+    if (type == Global.TrainingContestType.NORMAL.ordinal()
+        || type == Global.TrainingContestType.TEAM.ordinal()) {
       Integer problemCount = userInfo.length - 1;
-
       trainingProblemSummaryInfoList = new TrainingProblemSummaryInfo[problemCount];
       for (int i = 0; i < problemCount; i++) {
         TrainingProblemSummaryInfo trainingProblemSummaryInfo =
@@ -47,6 +42,26 @@ public class TrainingUserRankSummary {
         }
         trainingProblemSummaryInfoList[i] = trainingProblemSummaryInfo;
       }
+    } else if (type == Global.TrainingContestType.ADJUST.ordinal()) {
+      trainingProblemSummaryInfoList = new TrainingProblemSummaryInfo[0];
+      penalty = Integer.parseInt(userInfo[1]);
+    } else {
+      Integer problemCount = userInfo.length - 3;
+      trainingProblemSummaryInfoList = new TrainingProblemSummaryInfo[problemCount];
+      for (int i = 0; i < problemCount; i++) {
+        TrainingProblemSummaryInfo trainingProblemSummaryInfo =
+            TrainingRankListFormatParser.getProblemScore(userInfo[i + 3]);
+        if (trainingProblemSummaryInfo.getSolved())
+          solved++;
+        trainingProblemSummaryInfoList[i] = trainingProblemSummaryInfo;
+      }
+      if (userInfo[1].equals(""))
+        penalty = 0;
+      else
+        penalty = (int)Math.floor(Double.parseDouble(userInfo[1]));
+      //*3 ?
+      if (userInfo[2].equals("div1"))
+        penalty *= 3;
     }
   }
 

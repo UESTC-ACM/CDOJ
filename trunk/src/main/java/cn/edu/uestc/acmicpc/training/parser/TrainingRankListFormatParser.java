@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.util;
+package cn.edu.uestc.acmicpc.training.parser;
 
 import cn.edu.uestc.acmicpc.training.entity.TrainingProblemSummaryInfo;
 import cn.edu.uestc.acmicpc.util.exception.ParserException;
@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 /**
  * Description
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class TrainingRankListFormatParser {
@@ -19,6 +19,21 @@ public class TrainingRankListFormatParser {
   private static String VJ_FAIL = "^\\(\\s*-\\s*(\\d+)\\s*\\)$";
   private static String PC_NORMAL = "^(\\d+)\\s*/\\s*(\\d+)$";
   private static String PC_FAIL = "^(\\d+)\\s*/\\s*-\\s*-$";
+
+  public static TrainingProblemSummaryInfo getProblemScore(String grid) {
+    TrainingProblemSummaryInfo trainingProblemSummaryInfo = new TrainingProblemSummaryInfo();
+    grid = grid.trim();
+    // ""
+    if (grid.equals(""))
+      return trainingProblemSummaryInfo;
+    trainingProblemSummaryInfo.setPenalty((int) Math.floor(Double.parseDouble(grid)));
+    if (trainingProblemSummaryInfo.getPenalty() > 0) {
+      trainingProblemSummaryInfo.setSolved(true);
+      trainingProblemSummaryInfo.setTried(1);
+      trainingProblemSummaryInfo.setSolutionTime(trainingProblemSummaryInfo.getPenalty());
+    }
+    return trainingProblemSummaryInfo;
+  }
 
   public static TrainingProblemSummaryInfo getProblemSummaryInfo(String grid)
       throws ParserException {

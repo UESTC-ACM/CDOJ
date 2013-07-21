@@ -47,7 +47,7 @@ import cn.edu.uestc.acmicpc.training.entity.TrainingContestRankList;
 import cn.edu.uestc.acmicpc.training.entity.TrainingUserRankSummary;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.RatingUtil;
-import cn.edu.uestc.acmicpc.util.TrainingRankListParser;
+import cn.edu.uestc.acmicpc.training.parser.TrainingRankListParser;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.ParserException;
@@ -122,7 +122,7 @@ public class TrainingContestEditorAction extends FileUploadAction implements
           trainingStatus.setRank(trainingUserRankSummary.getRank());
           trainingStatus.setSolve(trainingUserRankSummary.getSolved());
           trainingStatus.setPenalty(trainingUserRankSummary.getPenalty());
-          trainingStatus.setSummary(trainingRankListParser.encodeTariningUserSummary(
+          trainingStatus.setSummary(trainingRankListParser.encodeTrainingUserSummary(
               trainingUserRankSummary.getTrainingProblemSummaryInfoList(),
               trainingContest.getType()));
 

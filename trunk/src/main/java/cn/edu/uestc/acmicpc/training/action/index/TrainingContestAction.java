@@ -33,7 +33,8 @@ import cn.edu.uestc.acmicpc.ioc.dto.TrainingContestDTOAware;
 import cn.edu.uestc.acmicpc.ioc.util.TrainingRankListParserAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.training.entity.TrainingContestRankList;
-import cn.edu.uestc.acmicpc.util.TrainingRankListParser;
+import cn.edu.uestc.acmicpc.training.parser.TrainingRankListParser;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,9 @@ public class TrainingContestAction extends BaseAction implements TrainingContest
       if (trainingContest == null)
         throw new AppException("No such training contest!");
       targetTrainingContest = new TrainingContestView(trainingContest);
+      //TODO fix others parser
+      if (trainingContest.getType() != Global.TrainingContestType.NORMAL.ordinal() ||
+          trainingContest.getType() != Global.TrainingContestType.TEAM.ordinal())
       if (trainingContest.getTrainingStatusesByTrainingContestId().size() > 0) {
         targetTrainingContestRankList = trainingRankListParser.parse(trainingContest);
       }
