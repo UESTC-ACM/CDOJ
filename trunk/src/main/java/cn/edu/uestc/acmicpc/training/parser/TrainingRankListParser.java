@@ -26,6 +26,7 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 import cn.edu.uestc.acmicpc.ioc.entity.TrainingContestRankListAware;
 import cn.edu.uestc.acmicpc.training.entity.TrainingContestRankList;
 import cn.edu.uestc.acmicpc.training.entity.TrainingProblemSummaryInfo;
+import cn.edu.uestc.acmicpc.training.entity.TrainingUserRankSummary;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
@@ -252,25 +253,16 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
     List<String[]> valueList = new LinkedList<>();
     Integer summaryLength = -1;
     for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
+      String[] summary = parseTrainingUserSummary(trainingStatus.getSummary());
+      String[] result = new String[summary.length + 1];
+      result[0] = trainingStatus.getTrainingUserByTrainingUserId().getName();
+      System.arraycopy(summary, 0, result, 1, summary.length);
+      valueList.add(result);
 
-      if (trainingContest.getType() != Global.TrainingContestType.NORMAL.ordinal()
-          && trainingContest.getType() != Global.TrainingContestType.TEAM.ordinal()) {
-        String[] result = new String[2];
-        result[0] = trainingStatus.getTrainingUserByTrainingUserId().getName();
-        result[1] = trainingStatus.getPenalty().toString();
-        valueList.add(result);
-      } else {
-        String[] summary = parseTrainingUserSummary(trainingStatus.getSummary());
-        String[] result = new String[summary.length + 1];
-        result[0] = trainingStatus.getTrainingUserByTrainingUserId().getName();
-        System.arraycopy(summary, 0, result, 1, summary.length);
-        valueList.add(result);
-
-        if (summaryLength == -1)
-          summaryLength = result.length;
-        else if (summaryLength != result.length)
-          throw new ParserException("Summary in database length different error");
-      }
+      if (summaryLength == -1)
+        summaryLength = result.length;
+      else if (summaryLength != result.length)
+        throw new ParserException("Summary in database length different error");
     }
 
     if (trainingContest.getType() == Global.TrainingContestType.NORMAL.ordinal()
@@ -282,7 +274,9 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
     } else {
       String[] header = new String[summaryLength];
       header[0] = "name";
-      for (int i = 1; i < header.length; i++)
+      header[1] = "score";
+      header[2] = "type";
+      for (int i = 3; i < header.length; i++)
         header[i] = String.valueOf(i);
       valueList.add(0, header);
     }
@@ -313,24 +307,18 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
    * Encode training user summary
    * Use PC^2 style, split by '|'
    *
-   * @param trainingProblemSummaryInfos training problem summary info entity
-   * @param type                        contest type
+   * @param trainingUserRankSummary training user rank summary entity
+   * @param type                    contest type
    * @return encoded training user summary
    */
-  public String encodeTrainingUserSummary(TrainingProblemSummaryInfo[] trainingProblemSummaryInfos,
+  public String encodeTrainingUserSummary(TrainingUserRankSummary trainingUserRankSummary,
                                           Integer type) {
+    TrainingProblemSummaryInfo[] trainingProblemSummaryInfos = trainingUserRankSummary.getTrainingProblemSummaryInfoList();
     StringBuilder stringBuilder = new StringBuilder();
     if (type == Global.TrainingContestType.TC.ordinal()
         || type == Global.TrainingContestType.CF.ordinal()) {
-      Boolean first = true;
-      for (TrainingProblemSummaryInfo trainingProblemSummaryInfo : trainingProblemSummaryInfos) {
-        if (!first)
-          stringBuilder.append("|");
-        first = false;
-        if (trainingProblemSummaryInfo.getSolved()) {
-            stringBuilder.append(trainingProblemSummaryInfo.getPenalty());
-        }
-      }
+      stringBuilder.append(trainingUserRankSummary.getPenalty());
+      stringBuilder.append("|");
     } else {
       Boolean first = true;
       for (TrainingProblemSummaryInfo trainingProblemSummaryInfo : trainingProblemSummaryInfos) {

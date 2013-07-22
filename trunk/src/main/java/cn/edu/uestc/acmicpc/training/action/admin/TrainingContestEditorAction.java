@@ -123,7 +123,7 @@ public class TrainingContestEditorAction extends FileUploadAction implements
           trainingStatus.setSolve(trainingUserRankSummary.getSolved());
           trainingStatus.setPenalty(trainingUserRankSummary.getPenalty());
           trainingStatus.setSummary(trainingRankListParser.encodeTrainingUserSummary(
-              trainingUserRankSummary.getTrainingProblemSummaryInfoList(),
+              trainingUserRankSummary,
               trainingContest.getType()));
 
           trainingStatus.setTrainingUserByTrainingUserId(trainingUserDAO
