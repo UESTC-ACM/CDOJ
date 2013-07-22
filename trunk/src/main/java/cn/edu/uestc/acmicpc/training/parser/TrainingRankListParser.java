@@ -178,7 +178,8 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
 
         excelRankList.add(newLine);
       }
-    } else {
+    } else if (type == Global.TrainingContestType.CF.ordinal()
+    || type == Global.TrainingContestType.TC.ordinal()) {
       if (!headerMap.containsKey("score"))
         throw new ParserException("There are no columns reference to score");
       if (!headerMap.containsKey("type"))
@@ -199,8 +200,21 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
           throw new ParserException("Rank list format error, Row " + i + " contains "
               + problemIterator + " problems but there are " + problemCount + " problem in total");
 
-        //for (String aNewLine : newLine) System.out.print(aNewLine + "|");
-        //System.out.println();
+        excelRankList.add(newLine);
+      }
+    } else {
+      if (!headerMap.containsKey("solved"))
+        throw new ParserException("There are no columns reference to solved");
+      if (!headerMap.containsKey("penalty"))
+        throw new ParserException("There are no columns reference to penalty");
+
+      for (int i = 1; i < excelValueList.size(); i++) {
+        String[] oldLine = excelValueList.get(i);
+        String[] newLine = new String[3];
+        newLine[0] = oldLine[headerMap.get("name")];
+        newLine[1] = oldLine[headerMap.get("solved")];
+        newLine[2] = oldLine[headerMap.get("penalty")];
+
         excelRankList.add(newLine);
       }
     }
@@ -265,12 +279,18 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
         throw new ParserException("Summary in database length different error");
     }
 
-    if (trainingContest.getType() != Global.TrainingContestType.NORMAL.ordinal()
-        && trainingContest.getType() != Global.TrainingContestType.TEAM.ordinal()) {
+    if (trainingContest.getType() == Global.TrainingContestType.CF.ordinal()
+        || trainingContest.getType() == Global.TrainingContestType.TC.ordinal()) {
       String[] header = new String[3];
       header[0] = "name";
       header[1] = "score";
       header[2] = "type";
+      valueList.add(0, header);
+    } else if (trainingContest.getType() == Global.TrainingContestType.OTHERS.ordinal()) {
+      String[] header = new String[3];
+      header[0] = "name";
+      header[1] = "solved";
+      header[2] = "penalty";
       valueList.add(0, header);
     } else {
       String[] header = new String[summaryLength];
@@ -318,20 +338,24 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
         || type == Global.TrainingContestType.CF.ordinal()) {
       stringBuilder.append(trainingUserRankSummary.getPenalty());
       stringBuilder.append("|");
+    } else if (type == Global.TrainingContestType.OTHERS.ordinal()) {
+      stringBuilder.append(trainingUserRankSummary.getSolved());
+      stringBuilder.append("|");
+      stringBuilder.append(trainingUserRankSummary.getPenalty());
     } else {
-      Boolean first = true;
-      for (TrainingProblemSummaryInfo trainingProblemSummaryInfo : trainingProblemSummaryInfos) {
-        if (!first)
-          stringBuilder.append("|");
-        first = false;
-        if (!trainingProblemSummaryInfo.getSolved()) {
-          if (trainingProblemSummaryInfo.getTried() > 0)
-            stringBuilder.append(trainingProblemSummaryInfo.getTried()).append("/--");
-        } else
-          stringBuilder.append(trainingProblemSummaryInfo.getTried()).append("/")
-              .append(trainingProblemSummaryInfo.getSolutionTime());
+        Boolean first = true;
+        for (TrainingProblemSummaryInfo trainingProblemSummaryInfo : trainingProblemSummaryInfos) {
+          if (!first)
+            stringBuilder.append("|");
+          first = false;
+          if (!trainingProblemSummaryInfo.getSolved()) {
+            if (trainingProblemSummaryInfo.getTried() > 0)
+              stringBuilder.append(trainingProblemSummaryInfo.getTried()).append("/--");
+          } else
+            stringBuilder.append(trainingProblemSummaryInfo.getTried()).append("/")
+                .append(trainingProblemSummaryInfo.getSolutionTime());
+        }
       }
-    }
     return stringBuilder.toString();
   }
 

@@ -8,7 +8,7 @@ import cn.edu.uestc.acmicpc.util.exception.ParserException;
 
 /**
  * Description
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class TrainingUserRankSummary {
@@ -45,7 +45,8 @@ public class TrainingUserRankSummary {
     } else if (type == Global.TrainingContestType.ADJUST.ordinal()) {
       trainingProblemSummaryInfoList = new TrainingProblemSummaryInfo[0];
       penalty = Integer.parseInt(userInfo[1]);
-    } else {
+    } else if (type == Global.TrainingContestType.TC.ordinal()
+        || type == Global.TrainingContestType.CF.ordinal()) {
       Integer problemCount = userInfo.length - 3;
       trainingProblemSummaryInfoList = new TrainingProblemSummaryInfo[problemCount];
       for (int i = 0; i < problemCount; i++) {
@@ -58,10 +59,19 @@ public class TrainingUserRankSummary {
       if (userInfo[1].equals(""))
         penalty = 0;
       else
-        penalty = (int)Math.floor(Double.parseDouble(userInfo[1]));
+        penalty = (int) Math.floor(Double.parseDouble(userInfo[1]));
       //*3 ?
       if (userInfo[2].equals("div1"))
         penalty *= 3;
+    } else {
+      if (userInfo[1].equals(""))
+        solved = 0;
+      else
+        solved = (int) Math.floor(Double.parseDouble(userInfo[1]));
+      if (userInfo[2].equals(""))
+        penalty = 0;
+      else
+        penalty = (int) Math.floor(Double.parseDouble(userInfo[2]));
     }
   }
 
