@@ -70,9 +70,12 @@ public class TrainingContestRankList implements TrainingUserDAOAware {
       sortRankList();
     } else if (type == Global.TrainingContestType.ADJUST.ordinal()) {
       sortRankList();
-    } else {
+    } else if (type == Global.TrainingContestType.TC.ordinal()
+        || type == Global.TrainingContestType.CF.ordinal()) {
       calcProblemSummary();
       sortRankListByScore();
+    } else {
+      sortRankList();
     }
 
     //Rank
