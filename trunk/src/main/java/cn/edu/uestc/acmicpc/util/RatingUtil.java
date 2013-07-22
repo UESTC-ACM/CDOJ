@@ -57,29 +57,18 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
         trainingStatusDAO.update(trainingStatus);
       }
     } else {
-      List<TrainingUser> oldTrainingUsers = new LinkedList<>();
-      List<TrainingUser> newTrainingUsers = new LinkedList<>();
-      List<Integer> oldTrainingUserRank = new LinkedList<>();
-      List<Integer> newTrainingUserRank = new LinkedList<>();
+      List<TrainingUser> trainingUsers = new LinkedList<>();
+      List<Integer> trainingUserRank = new LinkedList<>();
       for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
         TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
-        if (trainingUser.getCompetitions() == 0) {
-          newTrainingUsers.add(trainingUser);
-          newTrainingUserRank.add(trainingStatus.getRank());
-        } else {
-          oldTrainingUsers.add(trainingUser);
-          oldTrainingUserRank.add(trainingStatus.getRank());
-        }
+          trainingUsers.add(trainingUser);
+          trainingUserRank.add(trainingStatus.getRank());
       }
 
       if (trainingContest.getType() == Global.TrainingContestType.TEAM.ordinal()) {
-        updateNewTrainingUser(newTrainingUsers, newTrainingUserRank, oldTrainingUsers,
-            oldTrainingUserRank, 0.5);
-        updateOldTrainingUser(oldTrainingUsers, oldTrainingUserRank, 0.5);
+        updateTrainingUser(trainingUsers, trainingUserRank, 0.5);
       } else {
-        updateNewTrainingUser(newTrainingUsers, newTrainingUserRank, oldTrainingUsers,
-            oldTrainingUserRank, 1.0);
-        updateOldTrainingUser(oldTrainingUsers, oldTrainingUserRank, 1.0);
+        updateTrainingUser(trainingUsers, trainingUserRank, 1.0);
       }
       for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
         TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
@@ -94,99 +83,7 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
     }
   }
 
-  private void updateNewTrainingUser(List<TrainingUser> trainingUsers, List<Integer> rank,
-      List<TrainingUser> oldUsers, List<Integer> oldRank, Double contestWeight) {
-    if (trainingUsers.size() <= 1) {
-      for (TrainingUser trainingUser : trainingUsers) {
-        trainingUser.setRatingVary(0.0);
-        trainingUser.setVolatilityVary(0.0);
-        trainingUser.setCompetitions(trainingUser.getCompetitions() + 1);
-      }
-    } else {
-      Double aveRating = 1200.0 * trainingUsers.size();
-      for (TrainingUser trainingUser : oldUsers)
-        aveRating += trainingUser.getRating();
-      aveRating /= trainingUsers.size() + oldUsers.size();
-      Double a = 0.0, b = 0.0;
-      for (TrainingUser trainingUser : trainingUsers) {
-        a += square(trainingUser.getVolatility());
-        b += square(trainingUser.getRating() - aveRating);
-      }
-      for (TrainingUser trainingUser : oldUsers) {
-        a += square(trainingUser.getVolatility());
-        b += square(trainingUser.getRating() - aveRating);
-      }
-      Double cf =
-          Math.sqrt(a / (trainingUsers.size() + oldUsers.size()) + b
-              / (trainingUsers.size() + oldUsers.size() - 1));
-      Double[] aRank = new Double[trainingUsers.size()];
-      for (int i = 0; i < trainingUsers.size(); i++) {
-        int lose = 0, tie = 0;
-        for (int j = 0; j < trainingUsers.size(); j++)
-          if (rank.get(i) > rank.get(j))
-            lose++;
-          else if (rank.get(i).equals(rank.get(j)))
-            tie++;
-        for (int j = 0; j < oldUsers.size(); j++)
-          if (rank.get(i) > oldRank.get(j))
-            lose++;
-          else if (rank.get(i).equals(oldRank.get(j)))
-            tie++;
-        aRank[i] = lose + (1.0 + tie) / 2.0;
-      }
-      Double[] eRank = new Double[trainingUsers.size()];
-      for (int i = 0; i < trainingUsers.size(); i++) {
-        eRank[i] = 0.5;
-        for (TrainingUser trainingUser : trainingUsers) {
-          TrainingUser trainingUserA = trainingUsers.get(i);
-          eRank[i] +=
-              0.5 * erf((trainingUser.getRating() - trainingUserA.getRating())
-                  / Math.sqrt(2.0 * (square(trainingUserA.getVolatility()) + square(trainingUser
-                      .getVolatility())))) + 0.5;
-        }
-        for (TrainingUser oldUser : oldUsers) {
-          TrainingUser trainingUserA = trainingUsers.get(i);
-          eRank[i] +=
-              0.5 * erf((oldUser.getRating() - trainingUserA.getRating())
-                  / Math.sqrt(2.0 * (square(trainingUserA.getVolatility()) + square(oldUser
-                      .getVolatility())))) + 0.5;
-        }
-      }
-      Double[] aPerf = new Double[trainingUsers.size()];
-      Double[] ePerf = new Double[trainingUsers.size()];
-      Double[] perfAs = new Double[trainingUsers.size()];
-      for (int i = 0; i < trainingUsers.size(); i++) {
-        aPerf[i] = -inv_norm((aRank[i] - 0.5) / (trainingUsers.size() + oldUsers.size()));
-        ePerf[i] = -inv_norm((eRank[i] - 0.5) / (trainingUsers.size() + oldUsers.size()));
-      }
-      for (int i = 0; i < trainingUsers.size(); i++) {
-        TrainingUser trainingUser = trainingUsers.get(i);
-        perfAs[i] = trainingUser.getRating() + cf * (aPerf[i] - ePerf[i]);
-        Double weight = 1.0 / (1 - (0.42 / (trainingUser.getCompetitions() + 1) + 0.18)) - 1.0;
-        if (trainingUser.getRating() >= 2000 && trainingUser.getRating() <= 2500)
-          weight *= 0.9;
-        else if (trainingUser.getRating() > 2500)
-          weight *= 0.8;
-        weight *= contestWeight;
-        Double cap = 150.0 + 1500.0 / (trainingUser.getCompetitions() + 2.0);
-        Double newRating = (trainingUser.getRating() + weight * perfAs[i]) / (1.0 + weight);
-        newRating = Math.min(newRating, trainingUser.getRating() + cap);
-        newRating = Math.max(newRating, trainingUser.getRating() - cap);
-        Double newVolatility =
-            Math.sqrt(square(newRating - trainingUser.getRating()) / weight
-                + square(trainingUser.getVolatility()) / (weight + 1.0));
-        newRating = Math.max(newRating, 1.0);
-        newVolatility = Math.max(newVolatility, 101.0);
-        trainingUser.setRatingVary(newRating - trainingUser.getRating());
-        trainingUser.setVolatilityVary(newVolatility - trainingUser.getVolatility());
-        trainingUser.setRating(newRating);
-        trainingUser.setVolatility(newVolatility);
-        trainingUser.setCompetitions(trainingUser.getCompetitions() + 1);
-      }
-    }
-  }
-
-  private void updateOldTrainingUser(List<TrainingUser> trainingUsers, List<Integer> rank,
+  private void updateTrainingUser(List<TrainingUser> trainingUsers, List<Integer> rank,
       Double contestWeight) {
     if (trainingUsers.size() <= 1) {
       for (TrainingUser trainingUser : trainingUsers) {

@@ -265,18 +265,17 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
         throw new ParserException("Summary in database length different error");
     }
 
-    if (trainingContest.getType() == Global.TrainingContestType.NORMAL.ordinal()
-        && trainingContest.getType() == Global.TrainingContestType.TEAM.ordinal()) {
-      String[] header = new String[2];
+    if (trainingContest.getType() != Global.TrainingContestType.NORMAL.ordinal()
+        && trainingContest.getType() != Global.TrainingContestType.TEAM.ordinal()) {
+      String[] header = new String[3];
       header[0] = "name";
-      header[1] = "penalty";
+      header[1] = "score";
+      header[2] = "type";
       valueList.add(0, header);
     } else {
       String[] header = new String[summaryLength];
       header[0] = "name";
-      header[1] = "score";
-      header[2] = "type";
-      for (int i = 3; i < header.length; i++)
+      for (int i = 1; i < header.length; i++)
         header[i] = String.valueOf(i);
       valueList.add(0, header);
     }
