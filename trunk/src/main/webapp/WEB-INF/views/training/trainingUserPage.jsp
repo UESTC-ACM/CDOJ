@@ -77,18 +77,12 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>
-                                        Account
-                                    </td>
-                                    <td>
+                                    <td colspan="2">
                                         <span>${targetTrainingUser.userName}</span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        Member
-                                    </td>
-                                    <td>
+                                    <td colspan="2">
                                         <span>${targetTrainingUser.member}</span>
                                     </td>
                                 </tr>

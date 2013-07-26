@@ -106,7 +106,8 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
   }
 
   public enum TrainingContestType {
-    NORMAL("normal"), ADJUST("adjust"), CF("cf"), TC("tc"), TEAM("team"), OTHERS("others");
+    NORMAL("normal"), ADJUST("adjust"), CF("cf"), TC("tc"), TEAM("team"), OTHERS("others"),
+      UNRATED("unrated");
 
     private final String description;
 

@@ -30,7 +30,8 @@ public class TrainingUserRankSummary {
     penalty = solved = 0;
 
     if (type == Global.TrainingContestType.NORMAL.ordinal()
-        || type == Global.TrainingContestType.TEAM.ordinal()) {
+        || type == Global.TrainingContestType.TEAM.ordinal()
+        || type == Global.TrainingContestType.UNRATED.ordinal()) {
       Integer problemCount = userInfo.length - 1;
       trainingProblemSummaryInfoList = new TrainingProblemSummaryInfo[problemCount];
       for (int i = 0; i < problemCount; i++) {

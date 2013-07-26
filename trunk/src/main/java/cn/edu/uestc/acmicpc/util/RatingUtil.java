@@ -42,16 +42,38 @@ import java.util.List;
 public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware {
 
   public void updateRating(TrainingContest trainingContest) throws AppException {
-    if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal()) {
+    if (trainingContest.getType() == Global.TrainingContestType.UNRATED.ordinal()) {
+        for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
+            TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
+
+            trainingUser.setRating(trainingUser.getRating());
+            trainingUser.setRatingVary(0.0);
+            trainingUser.setVolatility(trainingUser.getVolatility());
+            trainingUser.setVolatilityVary(0.0);
+            trainingUser.setCompetitions(trainingUser.getCompetitions() + 1);
+
+            trainingStatus.setRating(trainingUser.getRating());
+            trainingStatus.setRatingVary(trainingUser.getRatingVary());
+            trainingStatus.setVolatility(trainingUser.getVolatility());
+            trainingStatus.setVolatilityVary(trainingUser.getVolatilityVary());
+
+            trainingUserDAO.update(trainingUser);
+            trainingStatusDAO.update(trainingStatus);
+        }
+    } else if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal()) {
       for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
         TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
 
         trainingUser.setRating(trainingUser.getRating() - trainingStatus.getPenalty());
         trainingUser.setRatingVary(-1.0 * trainingStatus.getPenalty());
+        trainingUser.setVolatility(trainingUser.getVolatility());
+        trainingUser.setVolatilityVary(0.0);
         trainingUser.setCompetitions(trainingUser.getCompetitions() + 1);
 
         trainingStatus.setRating(trainingUser.getRating());
         trainingStatus.setRatingVary(trainingUser.getRatingVary());
+        trainingStatus.setVolatility(trainingUser.getVolatility());
+        trainingStatus.setVolatilityVary(trainingUser.getVolatilityVary());
 
         trainingUserDAO.update(trainingUser);
         trainingStatusDAO.update(trainingStatus);
