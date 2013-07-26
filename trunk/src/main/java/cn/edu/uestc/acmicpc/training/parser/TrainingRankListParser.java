@@ -153,7 +153,8 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
     Integer problemCount = header.length - referencedColumns.size();
     List<String[]> excelRankList = new LinkedList<>();
     if (type == Global.TrainingContestType.NORMAL.ordinal()
-        || type == Global.TrainingContestType.TEAM.ordinal()) {
+        || type == Global.TrainingContestType.TEAM.ordinal()
+        || type == Global.TrainingContestType.UNRATED.ordinal()) {
       for (int i = 1; i < excelValueList.size(); i++) {
         String[] oldLine = excelValueList.get(i);
         String[] newLine = new String[problemCount + 1];
