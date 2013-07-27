@@ -46,7 +46,6 @@
             <h3>或者导航菜单的Links转Training</h3>
             <h3>在208机房的同学，请使用360浏览器的急速模式或者自行从<a href="http://acm.uestc.edu.cn/download.php">这里</a>下载chrome。</h3>
             <h3>部分网页在Windows系统下显示会有异常，请谅解，后期会慢慢修复。</h3>
-            <h3>在IE7 8下的异常请不要找我，我已经尽力了。。。</h3>
             <img src="/images/underconstruct.jpg"/>
         </div>
     </div>

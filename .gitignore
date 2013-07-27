@@ -1,4 +1,5 @@
 *.bak
 *.swp
 .DS_Store
+nohup.out
 
