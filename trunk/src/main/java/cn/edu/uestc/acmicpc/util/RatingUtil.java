@@ -66,8 +66,8 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
 
         trainingUser.setRating(trainingUser.getRating() - trainingStatus.getPenalty());
         trainingUser.setRatingVary(-1.0 * trainingStatus.getPenalty());
-        trainingUser.setVolatility(trainingUser.getVolatility());
-        trainingUser.setVolatilityVary(0.0);
+        trainingUser.setVolatilityVary(trainingUser.getVolatility() - 550.0);
+        trainingUser.setVolatility(550.0);
         trainingUser.setCompetitions(trainingUser.getCompetitions() + 1);
 
         trainingStatus.setRating(trainingUser.getRating());
