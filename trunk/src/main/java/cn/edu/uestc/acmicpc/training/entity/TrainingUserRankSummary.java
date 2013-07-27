@@ -43,7 +43,8 @@ public class TrainingUserRankSummary {
         }
         trainingProblemSummaryInfoList[i] = trainingProblemSummaryInfo;
       }
-    } else if (type == Global.TrainingContestType.ADJUST.ordinal()) {
+    } else if (type == Global.TrainingContestType.ADJUST.ordinal() ||
+        type == Global.TrainingContestType.ABSENT.ordinal()) {
       trainingProblemSummaryInfoList = new TrainingProblemSummaryInfo[0];
       penalty = Integer.parseInt(userInfo[1]);
     } else if (type == Global.TrainingContestType.TC.ordinal()
