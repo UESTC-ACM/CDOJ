@@ -60,14 +60,19 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
             trainingUserDAO.update(trainingUser);
             trainingStatusDAO.update(trainingStatus);
         }
-    } else if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal()) {
+    } else if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal() ||
+        trainingContest.getType() == Global.TrainingContestType.ABSENT.ordinal()) {
       for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
         TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
 
         trainingUser.setRating(trainingUser.getRating() - trainingStatus.getPenalty());
         trainingUser.setRatingVary(-1.0 * trainingStatus.getPenalty());
-        trainingUser.setVolatilityVary(trainingUser.getVolatility() - 550.0);
-        trainingUser.setVolatility(550.0);
+        if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal()) {
+          trainingUser.setVolatilityVary(trainingUser.getVolatility() - 550.0);
+          trainingUser.setVolatility(550.0);
+        } else {
+          trainingUser.setVolatilityVary(0.0);
+        }
         trainingUser.setCompetitions(trainingUser.getCompetitions() + 1);
 
         trainingStatus.setRating(trainingUser.getRating());

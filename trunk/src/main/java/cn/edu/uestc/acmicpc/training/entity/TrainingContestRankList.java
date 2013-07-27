@@ -69,7 +69,8 @@ public class TrainingContestRankList implements TrainingUserDAOAware {
         || type == Global.TrainingContestType.UNRATED.ordinal()) {
       calcProblemSummary();
       sortRankList();
-    } else if (type == Global.TrainingContestType.ADJUST.ordinal()) {
+    } else if (type == Global.TrainingContestType.ADJUST.ordinal() ||
+        type == Global.TrainingContestType.ABSENT.ordinal()) {
       sortRankList();
     } else if (type == Global.TrainingContestType.TC.ordinal()
         || type == Global.TrainingContestType.CF.ordinal()) {

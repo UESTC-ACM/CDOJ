@@ -168,7 +168,8 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
               + problemIterator + " problems but there are " + problemCount + " problem in total");
         excelRankList.add(newLine);
       }
-    } else if (type == Global.TrainingContestType.ADJUST.ordinal()) {
+    } else if (type == Global.TrainingContestType.ADJUST.ordinal() ||
+        type == Global.TrainingContestType.ABSENT.ordinal()) {
       if (!headerMap.containsKey("penalty"))
         throw new ParserException("There are no columns reference to penalty");
       for (int i = 1; i < excelValueList.size(); i++) {
@@ -293,7 +294,8 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
       header[1] = "solved";
       header[2] = "penalty";
       valueList.add(0, header);
-    } else if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal()) {
+    } else if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal() ||
+        trainingContest.getType() == Global.TrainingContestType.ABSENT.ordinal()) {
       String[] header = new String[2];
       header[0] = "name";
       header[1] = "penalty";
@@ -348,7 +350,8 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
       stringBuilder.append(trainingUserRankSummary.getSolved());
       stringBuilder.append("|");
       stringBuilder.append(trainingUserRankSummary.getPenalty());
-    } else if (type == Global.TrainingContestType.ADJUST.ordinal()) {
+    } else if (type == Global.TrainingContestType.ADJUST.ordinal() ||
+        type == Global.TrainingContestType.ABSENT.ordinal()) {
       stringBuilder.append(trainingUserRankSummary.getPenalty());
       stringBuilder.append("|");
     } else {
