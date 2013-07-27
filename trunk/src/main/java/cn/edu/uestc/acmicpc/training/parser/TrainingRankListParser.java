@@ -180,7 +180,7 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
         excelRankList.add(newLine);
       }
     } else if (type == Global.TrainingContestType.CF.ordinal()
-    || type == Global.TrainingContestType.TC.ordinal()) {
+        || type == Global.TrainingContestType.TC.ordinal()) {
       if (!headerMap.containsKey("score"))
         throw new ParserException("There are no columns reference to score");
       if (!headerMap.containsKey("type"))
@@ -293,6 +293,11 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
       header[1] = "solved";
       header[2] = "penalty";
       valueList.add(0, header);
+    } else if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal()) {
+      String[] header = new String[2];
+      header[0] = "name";
+      header[1] = "penalty";
+      valueList.add(0, header);
     } else {
       String[] header = new String[summaryLength];
       header[0] = "name";
@@ -343,20 +348,23 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
       stringBuilder.append(trainingUserRankSummary.getSolved());
       stringBuilder.append("|");
       stringBuilder.append(trainingUserRankSummary.getPenalty());
+    } else if (type == Global.TrainingContestType.ADJUST.ordinal()) {
+      stringBuilder.append(trainingUserRankSummary.getPenalty());
+      stringBuilder.append("|");
     } else {
-        Boolean first = true;
-        for (TrainingProblemSummaryInfo trainingProblemSummaryInfo : trainingProblemSummaryInfos) {
-          if (!first)
-            stringBuilder.append("|");
-          first = false;
-          if (!trainingProblemSummaryInfo.getSolved()) {
-            if (trainingProblemSummaryInfo.getTried() > 0)
-              stringBuilder.append(trainingProblemSummaryInfo.getTried()).append("/--");
-          } else
-            stringBuilder.append(trainingProblemSummaryInfo.getTried()).append("/")
-                .append(trainingProblemSummaryInfo.getSolutionTime());
-        }
+      Boolean first = true;
+      for (TrainingProblemSummaryInfo trainingProblemSummaryInfo : trainingProblemSummaryInfos) {
+        if (!first)
+          stringBuilder.append("|");
+        first = false;
+        if (!trainingProblemSummaryInfo.getSolved()) {
+          if (trainingProblemSummaryInfo.getTried() > 0)
+            stringBuilder.append(trainingProblemSummaryInfo.getTried()).append("/--");
+        } else
+          stringBuilder.append(trainingProblemSummaryInfo.getTried()).append("/")
+              .append(trainingProblemSummaryInfo.getSolutionTime());
       }
+    }
     return stringBuilder.toString();
   }
 
