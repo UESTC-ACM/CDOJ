@@ -89,7 +89,8 @@ public class StatusAction extends BaseAction implements StatusConditionAware, St
       List<Status> statusList = (List<Status>) statusDAO.findAll(condition);
       List<StatusView> statusViewList = new ArrayList<>();
       for (Status status : statusList)
-        statusViewList.add(new StatusView(status));
+        if (status.getProblemByProblemId().getIsVisible() || (currentUser != null && currentUser.getType() == Global.AuthenticationType.ADMIN.ordinal()))
+          statusViewList.add(new StatusView(status));
       json.put("pageInfo", pageInfo.getHtmlString());
       json.put("result", "ok");
       json.put("statusList", statusViewList);
