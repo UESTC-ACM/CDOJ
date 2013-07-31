@@ -209,8 +209,19 @@ public class Judge implements Runnable, SettingsAware {
           isAccepted = false;
         }
         judgeItem.status.setResult(result);
-        judgeItem.status.setMemoryCost(Integer.parseInt(callBackString[1]));
-        judgeItem.status.setTimeCost(Integer.parseInt(callBackString[2]));
+        Integer oldMemoryCost = judgeItem.status.getMemoryCost();
+        Integer currentMemoryCost = Integer.parseInt(callBackString[1]);
+        if (currentMemoryCost == null)
+          judgeItem.status.setMemoryCost(currentMemoryCost);
+        else
+          judgeItem.status.setMemoryCost(Math.max(currentMemoryCost, oldMemoryCost));
+
+        Integer oldTimeCost = judgeItem.status.getTimeCost();
+        Integer currentTimeCost = Integer.parseInt(callBackString[2]);
+        if (oldTimeCost == null)
+          judgeItem.status.setTimeCost(currentTimeCost);
+        else
+          judgeItem.status.setTimeCost(Math.max(currentTimeCost, oldTimeCost));
       } catch (NumberFormatException e) {
         judgeItem.status.setResult(Global.OnlineJudgeReturnType.OJ_SE.ordinal());
         isAccepted = false;
