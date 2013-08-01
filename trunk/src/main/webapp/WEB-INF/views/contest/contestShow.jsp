@@ -154,7 +154,7 @@
                 <div class="row problem">
                     <div class="span12" id="problem_title">
                         <h1 class="pull-left"><s:property value="#problem.order"/> - ${problem.title}</h1>
-                        <s:if test="targetProblem.isSpj == true">
+                        <s:if test="#problem.isSpj == true">
                             <span class="label label-important tags" style="margin: 12px 0 0 8px;">SPJ</span>
                         </s:if>
                     </div>

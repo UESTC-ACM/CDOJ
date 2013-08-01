@@ -99,6 +99,8 @@ public class ContestStatusAction extends BaseAction implements StatusConditionAw
       ContestView contestView = new ContestView(contest);
 
       statusCondition.setContestId(contest.getContestId());
+      if (contestView.getStatus().equals("Pending") && (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()))
+        throw new AppException("Contest doesn't start yet!");
       // Contest is still running
       if (contestView.getStatus().equals("Running")) {
         if (currentUser == null)
@@ -118,7 +120,8 @@ public class ContestStatusAction extends BaseAction implements StatusConditionAw
       for (Status status : statusList) {
         StatusView statusView = new StatusView(status);
         statusView.setProblemId(contestView.getProblemList().indexOf(statusView.getProblemId()));
-        statusViewList.add(statusView);
+        if (statusView.getProblemId() != -1)
+          statusViewList.add(statusView);
       }
       json.put("pageInfo", pageInfo.getHtmlString());
       json.put("result", "ok");
