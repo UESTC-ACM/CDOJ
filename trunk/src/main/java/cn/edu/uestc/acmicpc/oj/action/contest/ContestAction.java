@@ -136,36 +136,38 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
       Long count;
 
       List<ContestProblemSummaryView> contestProblems = new LinkedList<>();
-      for (int id = 0; id < targetContest.getProblemList().size(); id++) {
-        Integer problemId = targetContest.getProblemList().get(id);
-        Problem problem = problemDAO.get(problemId);
-        ContestProblemSummaryView targetProblem =
-            new ContestProblemSummaryView(problem, getCurrentUser(), problemStatus.get(problem
-                .getProblemId()));
-        targetProblem.setOrder((char) ('A' + id));
+      if (!targetContest.getStatus().equals("Pending") || (currentUser != null && currentUser.getType() == Global.AuthenticationType.ADMIN.ordinal())) {
+        for (int id = 0; id < targetContest.getProblemList().size(); id++) {
+          Integer problemId = targetContest.getProblemList().get(id);
+          Problem problem = problemDAO.get(problemId);
+          ContestProblemSummaryView targetProblem =
+              new ContestProblemSummaryView(problem, getCurrentUser(), problemStatus.get(problem
+                  .getProblemId()));
+          targetProblem.setOrder((char) ('A' + id));
 
-        // get solved
-        statusCondition.clear();
-        statusCondition.setStartTime(contest.getTime());
-        statusCondition.setEndTime(contestEndTime);
-        statusCondition.setContestId(contest.getContestId());
-        statusCondition.setProblemId(problem.getProblemId());
-        statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-        condition = statusCondition.getCondition();
-        condition.addProjection(Projections.countDistinct("userByUserId"));
-        count = statusDAO.customCount(condition);
-        targetProblem.setSolved((int) count.longValue());
-        // get tried
-        statusCondition.clear();
-        statusCondition.setStartTime(contest.getTime());
-        statusCondition.setEndTime(contestEndTime);
-        statusCondition.setContestId(contest.getContestId());
-        statusCondition.setProblemId(problem.getProblemId());
-        condition = statusCondition.getCondition();
-        count = statusDAO.count(condition);
-        targetProblem.setTried((int) count.longValue());
+          // get solved
+          statusCondition.clear();
+          statusCondition.setStartTime(contest.getTime());
+          statusCondition.setEndTime(contestEndTime);
+          statusCondition.setContestId(contest.getContestId());
+          statusCondition.setProblemId(problem.getProblemId());
+          statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+          condition = statusCondition.getCondition();
+          condition.addProjection(Projections.countDistinct("userByUserId"));
+          count = statusDAO.customCount(condition);
+          targetProblem.setSolved((int) count.longValue());
+          // get tried
+          statusCondition.clear();
+          statusCondition.setStartTime(contest.getTime());
+          statusCondition.setEndTime(contestEndTime);
+          statusCondition.setContestId(contest.getContestId());
+          statusCondition.setProblemId(problem.getProblemId());
+          condition = statusCondition.getCondition();
+          count = statusDAO.count(condition);
+          targetProblem.setTried((int) count.longValue());
 
-        contestProblems.add(targetProblem);
+          contestProblems.add(targetProblem);
+        }
       }
       json.put("contestProblems", contestProblems);
 
@@ -212,6 +214,8 @@ public class ContestAction extends BaseAction implements ContestDAOAware, Proble
       Long count;
 
       contestProblems = new LinkedList<>();
+      if (targetContest.getStatus().equals("Pending") && (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()))
+        return SUCCESS;
       for (int id = 0; id < targetContest.getProblemList().size(); id++) {
         Integer problemId = targetContest.getProblemList().get(id);
         Problem problem = problemDAO.get(problemId);
