@@ -280,7 +280,7 @@ function refreshRankList() {
                 var state = $('<td></td>');
                 if (this.tried > 0) {
                     if (this.solved)
-                        state = $('<td>' + this.tried + '/' + this.penalty + '</td>');
+                        state = $('<td>' + this.tried + '/' + this.solutionTime + '</td>');
                     else
                         state = $('<td>' + this.tried + '</td>');
 
