@@ -1,12 +1,22 @@
 /*
  * cdoj, UESTC ACMICPC Online Judge
- * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,mzry1992 <@link muziriyun@gmail.com>
  *
- * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+ * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
+ * mzry1992 <@link muziriyun@gmail.com>
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 package cn.edu.uestc.acmicpc.oj.action.contest;
@@ -16,40 +26,38 @@ import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
-import cn.edu.uestc.acmicpc.db.entity.*;
-import cn.edu.uestc.acmicpc.db.view.impl.*;
+import cn.edu.uestc.acmicpc.db.entity.Contest;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.db.entity.Status;
+import cn.edu.uestc.acmicpc.db.view.impl.ContestListView;
+import cn.edu.uestc.acmicpc.db.view.impl.ContestProblemSummaryView;
+import cn.edu.uestc.acmicpc.db.view.impl.ContestView;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
-import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.action.file.ExcelExportAction;
 import cn.edu.uestc.acmicpc.oj.entity.ContestRankList;
+import cn.edu.uestc.acmicpc.oj.entity.ProblemSummaryInfo;
+import cn.edu.uestc.acmicpc.oj.entity.UserRankSummary;
 import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Action for list and search all submit status in contest
- * 
+ * Export rank list
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-@LoginPermit(NeedLogin = false)
-public class ContestRankListAction extends BaseAction implements StatusConditionAware,
+public class ContestRankListExportAction extends ExcelExportAction implements StatusConditionAware,
     StatusDAOAware, ContestDAOAware, ProblemDAOAware {
-
-  /**
-	 * 
-	 */
-  private static final long serialVersionUID = -7500495190888115907L;
-  private Integer targetContestId;
+  private InputStream excelStream;
 
   public Integer getTargetContestId() {
     return targetContestId;
@@ -59,34 +67,10 @@ public class ContestRankListAction extends BaseAction implements StatusCondition
     this.targetContestId = targetContestId;
   }
 
-  /**
-   * StatusDAO for status queries.
-   */
-  @Autowired
-  private IStatusDAO statusDAO;
-  @Autowired
-  private StatusCondition statusCondition;
+  private Integer targetContestId;
 
-  /**
-   * Get contest rank list action.
-   * <p/>
-   * Find all records by conditions and return them as a list in JSON, and the condition set will
-   * set in JSON named "condition".
-   * <p/>
-   * <strong>JSON output</strong>:
-   * <ul>
-   * <li>
-   * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>, "condition",
-   * <strong>ProblemCondition entity</strong>, "problemList":<strong>query result</strong>}</li>
-   * <li>
-   * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
-   * </ul>
-   * 
-   * @return <strong>JSON</strong> signal
-   */
-  @SuppressWarnings("unchecked")
-  @SkipValidation
-  public String toRankList() {
+  public String toExportRankList() {
+    List<String[]> table = new LinkedList<>();
     try {
       if (targetContestId == null)
         throw new AppException("Contest Id is empty!");
@@ -154,18 +138,48 @@ public class ContestRankListAction extends BaseAction implements StatusCondition
         }
       }
 
-      json.put("rankList", rankList);
-      json.put("result", "ok");
+      String[] header = {"rank", "user", "solved", "penalty"};
+      table.add(header);
+      for (UserRankSummary userRankSummary : rankList.getUserRankSummaryList()) {
+        String[] row = new String[4 + contestProblems.size()];
+        row[0] = userRankSummary.getRank().toString();
+        row[1] = userRankSummary.getNickName();
+        row[2] = userRankSummary.getSolved().toString();
+        row[3] = userRankSummary.getPenalty().toString();
+        for (int i = 0; i < userRankSummary.getProblemSummaryInfoList().size(); i++) {
+          ProblemSummaryInfo problemSummaryInfo = userRankSummary.getProblemSummaryInfoList().get(i);
+          if (problemSummaryInfo.getSolved()) {
+            row[i + 4] = problemSummaryInfo.getTried() + "/" + problemSummaryInfo.getSolutionTime();
+          } else if (problemSummaryInfo.getTried() > 0) {
+            row[i + 4] = problemSummaryInfo.getTried().toString();
+          } else
+            row[i + 4] = "";
+        }
+        table.add(row);
+      }
     } catch (AppException e) {
-      json.put("result", "error");
-      json.put("error_msg", e.getMessage());
-    } catch (Exception e) {
       e.printStackTrace();
-      json.put("result", "error");
-      json.put("error_msg", "Unknown exception occurred.");
+      table.add(new String[]{e.getMessage()});
     }
-    return JSON;
+    excelStream = getExcelInputStream(table);
+    return "excel";
   }
+
+  public InputStream getExcelStream() {
+    return excelStream;
+  }
+
+  public void setExcelStream(InputStream excelStream) {
+    this.excelStream = excelStream;
+  }
+
+  /**
+   * StatusDAO for status queries.
+   */
+  @Autowired
+  private IStatusDAO statusDAO;
+  @Autowired
+  private StatusCondition statusCondition;
 
   @Override
   public void setStatusCondition(StatusCondition statusCondition) {

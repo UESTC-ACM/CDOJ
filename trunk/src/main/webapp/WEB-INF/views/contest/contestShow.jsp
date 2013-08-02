@@ -313,7 +313,6 @@
             </div>
 
             <div>
-
                 <table class="table table-bordered">
                     <thead id="rankListHead">
                     <tr>
@@ -339,6 +338,9 @@
                 </table>
             </div>
 
+            <div class="pull-right">
+                <a class="btn btn-info" href="/contest/export/<s:property value="targetContest.contestId"/>">Export rank list</a>
+            </div>
         </div>
 
     </div>

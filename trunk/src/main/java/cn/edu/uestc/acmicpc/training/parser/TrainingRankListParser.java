@@ -115,7 +115,8 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
           || header[i].compareToIgnoreCase("team") == 0
           || header[i].compareToIgnoreCase("id") == 0
           || header[i].compareToIgnoreCase("nick name") == 0
-          || header[i].compareToIgnoreCase("姓名") == 0) {
+          || header[i].compareToIgnoreCase("姓名") == 0
+          || header[i].compareToIgnoreCase("user") == 0) {
         if (headerMap.containsKey("name"))
           throw new ParserException("There are multiple columns reference to name");
         headerMap.put("name", i);
