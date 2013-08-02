@@ -282,7 +282,7 @@ function refreshRankList() {
                     if (this.solved)
                         state = $('<td>' + this.tried + '/' + this.solutionTime + '</td>');
                     else
-                        state = $('<td>' + this.tried + '</td>');
+                        state = $('<td>' + this.tried + '/--</td>');
 
                     if (this.firstSolved)
                         state.addClass('firstac');
