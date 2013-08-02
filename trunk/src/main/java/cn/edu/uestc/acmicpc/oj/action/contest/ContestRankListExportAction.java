@@ -151,7 +151,7 @@ public class ContestRankListExportAction extends ExcelExportAction implements St
           if (problemSummaryInfo.getSolved()) {
             row[i + 4] = problemSummaryInfo.getTried() + "/" + problemSummaryInfo.getSolutionTime();
           } else if (problemSummaryInfo.getTried() > 0) {
-            row[i + 4] = problemSummaryInfo.getTried().toString();
+            row[i + 4] = problemSummaryInfo.getTried() + "/--";
           } else
             row[i + 4] = "";
         }
