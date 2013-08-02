@@ -46,6 +46,11 @@
           scope="prototype">
     </bean>
 
+    <bean id="excelExportAction"
+          class="cn.edu.uestc.acmicpc.oj.action.file.ExcelExportAction"
+          parent="baseAction"
+          scope="prototype">
+    </bean>
     <import resource="action-oj/applicationContext-actions-problem.xml"/>
     <import resource="action-oj/applicationContext-actions-index.xml"/>
     <import resource="action-oj/applicationContext-actions-test.xml"/>
