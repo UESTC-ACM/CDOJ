@@ -225,6 +225,7 @@ function drawAllUsersRatingChart(chartId, usersSummary, userRank) {
         .attr('fill', 'white');
 
     $.each(usersSummary, function(index, teamSummary) {
+        teamSummary = teamSummary.splice(1);
         chart.append('g').attr('class', 'ratingLine').append("path")
             .datum(teamSummary)
             .attr("class", "ratingLine")
