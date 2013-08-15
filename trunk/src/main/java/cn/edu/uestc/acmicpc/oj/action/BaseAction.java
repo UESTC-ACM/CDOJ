@@ -345,7 +345,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
         return;
       }
       if (user == null) {
-        redirect(getActionURL("/", "index"), "Fuck!");
+        redirect(getActionURL("/", "index"));
         actionInfo.setCancel(true);
         actionInfo.setActionResult(REDIRECT);
         return;
