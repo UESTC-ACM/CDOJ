@@ -45,6 +45,7 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
     if (trainingContest.getType() == Global.TrainingContestType.UNRATED.ordinal()) {
         for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
             TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
+            if (!trainingUser.getAllow()) continue;
 
             trainingUser.setRating(trainingUser.getRating());
             trainingUser.setRatingVary(0.0);
@@ -64,6 +65,7 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
         trainingContest.getType() == Global.TrainingContestType.ABSENT.ordinal()) {
       for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
         TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
+        if (!trainingUser.getAllow()) continue;
 
         trainingUser.setRating(trainingUser.getRating() - trainingStatus.getPenalty());
         trainingUser.setRatingVary(-1.0 * trainingStatus.getPenalty());
@@ -88,6 +90,7 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
       List<Integer> trainingUserRank = new LinkedList<>();
       for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
         TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
+        if (!trainingUser.getAllow()) continue;
           trainingUsers.add(trainingUser);
           trainingUserRank.add(trainingStatus.getRank());
       }
@@ -99,6 +102,8 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
       }
       for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
         TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
+        if (!trainingUser.getAllow()) continue;
+
         trainingStatus.setRating(trainingUser.getRating());
         trainingStatus.setRatingVary(trainingUser.getRatingVary());
         trainingStatus.setVolatility(trainingUser.getVolatility());
