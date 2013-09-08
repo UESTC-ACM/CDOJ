@@ -57,6 +57,7 @@ public class RankListParserTest implements TrainingRankListParserAware, Training
 
   @SuppressWarnings("unused")
   @Test
+  @Ignore
   public void testXlsParser() throws IOException, BiffException {
     try {
       File file = new File("/Users/mzry1992/Downloads/4.xls");
