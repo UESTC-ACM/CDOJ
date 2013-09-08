@@ -22,17 +22,27 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-
-import javax.persistence.*;
 import java.io.Serializable;
+
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Mappings between contest and problems.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@Table(name = "contestProblem", schema = "", catalog = "uestcoj")
+@Table(name = "contestProblem")
 @Entity
 @KeyField("contestProblemId")
 public class ContestProblem implements Serializable {
@@ -103,7 +113,7 @@ public class ContestProblem implements Serializable {
 
   private Contest contestByContestId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "contestId", referencedColumnName = "contestId", nullable = false)
   public Contest getContestByContestId() {
     return contestByContestId;
@@ -115,7 +125,7 @@ public class ContestProblem implements Serializable {
 
   private Problem problemByProblemId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = false)
   public Problem getProblemByProblemId() {
     return problemByProblemId;

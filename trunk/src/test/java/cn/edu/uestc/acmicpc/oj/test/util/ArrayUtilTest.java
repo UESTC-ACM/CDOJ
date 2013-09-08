@@ -22,17 +22,16 @@
 
 package cn.edu.uestc.acmicpc.oj.test.util;
 
-import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import cn.edu.uestc.acmicpc.util.ArrayUtil;
+
 /**
- * Test case for array util methods.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ * Test cases for {@link ArrayUtil}.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })

@@ -21,7 +21,6 @@
 
 package cn.edu.uestc.acmicpc.db;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,20 +32,14 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IContestProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.impl.ContestProblemDAO;
 import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
-import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.ContestProblemDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Test case for {@link ContestProblemDAO}.
- *
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
-public class ContestProblemDAOTest implements ProblemDAOAware, ContestDAOAware,
-    ContestProblemDAOAware {
+public class ContestProblemDAOTest {
 
   @Autowired
   private IProblemDAO problemDAO;
@@ -57,23 +50,7 @@ public class ContestProblemDAOTest implements ProblemDAOAware, ContestDAOAware,
   @Autowired
   private IContestProblemDAO contestProblemDAO;
 
-  @Override
-  public void setContestDAO(IContestDAO contestDAO) {
-    this.contestDAO = contestDAO;
-  }
-
-  @Override
-  public void setContestProblemDAO(IContestProblemDAO contestProblemDAO) {
-    this.contestProblemDAO = contestProblemDAO;
-  }
-
-  @Override
-  public void setProblemDAO(IProblemDAO problemDAO) {
-    this.problemDAO = problemDAO;
-  }
-
   @Test
-  @Ignore
   public void testAddContestProblem() throws AppException {
     ContestProblem contestProblem = new ContestProblem();
     contestProblem.setContestByContestId(contestDAO.get(1));

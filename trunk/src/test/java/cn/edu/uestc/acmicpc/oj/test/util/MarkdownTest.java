@@ -1,6 +1,5 @@
 package cn.edu.uestc.acmicpc.oj.test.util;
 
-import cn.edu.uestc.acmicpc.util.StringUtil;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -9,21 +8,19 @@ import org.pegdown.PegDownProcessor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import cn.edu.uestc.acmicpc.util.StringUtil;
+
 /**
  * Test cases for markdown.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
 public class MarkdownTest {
 
-  /**
-   * Test for amps and angle encoding
-   */
   @Test
   @Ignore
-  public void test1() {
+  public void testAmpsAndangleEncoding() {
+    // FIXME broken test
     PegDownProcessor pegDownProcessor = new PegDownProcessor();
     String resource =
         "AT&T has an ampersand in their name.\n" + "\n" + "AT&amp;T is another way to write it.\n"
@@ -50,9 +47,6 @@ public class MarkdownTest {
             + "\n" + "<p>Here's an inline <a href=\"/script?foo=1&amp;bar=2\">link</a>.</p>\n"
             + "\n" + "<p>Here's an inline <a href=\"/script?foo=1&amp;bar=2\">link</a>.</p>\n";
     String actual = pegDownProcessor.markdownToHtml(resource);
-    System.out.println(expected);
-    System.out.println("==============================================");
-    System.out.println(actual);
     Assert.assertEquals(0, StringUtil.compareSkipSpaces(expected, actual));
   }
 }

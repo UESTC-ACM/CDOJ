@@ -22,18 +22,27 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+
 /**
  * Code information.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@Table(name = "code", schema = "", catalog = "uestcoj")
+@Table(name = "code")
 @Entity
 @KeyField("codeId")
 public class Code implements Serializable {
@@ -104,7 +113,7 @@ public class Code implements Serializable {
 
   private Collection<Status> statusesByCodeId;
 
-  @OneToMany(mappedBy = "codeByCodeId")
+  @OneToMany(mappedBy = "codeByCodeId", cascade = CascadeType.ALL)
   public Collection<Status> getStatusesByCodeId() {
     return statusesByCodeId;
   }

@@ -20,13 +20,11 @@ import com.opensymphony.xwork2.interceptor.annotations.Before;
 
 
 /**
- * Test cases for {@link ProblemCondition} and {@link IProblemDAO}.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ * Test cases for {@link Problem}.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
-public class ProblemConditionAndDAOTest implements ProblemConditionAware, ProblemDAOAware {
+public class ProblemDatabaseTest implements ProblemConditionAware, ProblemDAOAware {
 
   @Autowired
   private IProblemDAO problemDAO;

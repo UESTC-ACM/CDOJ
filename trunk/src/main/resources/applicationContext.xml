@@ -36,5 +36,10 @@
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
     <aop:config proxy-target-class="true"/>
     <import resource="applicationContext-resources.xml"/>
-    <import resource="applicationContext-main.xml" />
+    <import resource="applicationContext-jpa.xml"/>
+    <import resource="applicationContext-dto.xml"/>
+    <import resource="applicationContext-actions.xml"/>
+    <import resource="applicationContext-extra.xml"/>
+    <import resource="applicationContext-service.xml"/>
+    <import resource="applicationContext-conditions.xml"/>
 </beans>

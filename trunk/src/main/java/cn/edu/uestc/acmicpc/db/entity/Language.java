@@ -22,18 +22,27 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+
 /**
  * Languages for compiler.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@Table(name = "language", schema = "", catalog = "uestcoj")
+@Table(name = "language")
 @Entity
 @KeyField("languageId")
 public class Language implements Serializable {
@@ -136,7 +145,7 @@ public class Language implements Serializable {
 
   private Collection<Status> statusesByLanguageId;
 
-  @OneToMany(mappedBy = "languageByLanguageId")
+  @OneToMany(mappedBy = "languageByLanguageId", cascade = CascadeType.ALL)
   public Collection<Status> getStatusesByLanguageId() {
     return statusesByLanguageId;
   }

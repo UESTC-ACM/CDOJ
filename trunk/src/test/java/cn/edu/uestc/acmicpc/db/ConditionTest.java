@@ -40,25 +40,16 @@ import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
-import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
-import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
-import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 /**
  * Test cases for conditions entities.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
-public class ConditionTest implements ProblemDAOAware, UserDAOAware, UserConditionAware,
-    ProblemConditionAware, StatusConditionAware, StatusDAOAware {
+public class ConditionTest {
 
   @Before
   public void init() {
@@ -88,53 +79,13 @@ public class ConditionTest implements ProblemDAOAware, UserDAOAware, UserConditi
   @Autowired
   private StatusCondition statusCondition;
 
-  @Override
-  public void setProblemDAO(IProblemDAO problemDAO) {
-    this.problemDAO = problemDAO;
-  }
-
-  @Override
-  public void setUserDAO(IUserDAO userDAO) {
-    this.userDAO = userDAO;
-  }
-
-  @Override
-  public void setUserCondition(UserCondition userCondition) {
-    this.userCondition = userCondition;
-  }
-
-  @Override
-  public UserCondition getUserCondition() {
-    return userCondition;
-  }
-
-  @Override
-  public void setProblemCondition(ProblemCondition problemCondition) {
-    this.problemCondition = problemCondition;
-  }
-
-  @Override
-  public ProblemCondition getProblemCondition() {
-    return problemCondition;
-  }
-
   @Test
-  public void testConditionClear() throws AppException {
+  public void testClear() throws AppException {
     problemCondition.setStartId(2);
     problemCondition.setTitle("a+b problem");
     Assert.assertEquals(Long.valueOf(3), problemDAO.count(problemCondition.getCondition()));
     problemCondition.clear();
     Assert.assertEquals(Long.valueOf(5), problemDAO.count(problemCondition.getCondition()));
-  }
-
-  @Override
-  public void setStatusCondition(StatusCondition statusCondition) {
-    this.statusCondition = statusCondition;
-  }
-
-  @Override
-  public StatusCondition getStatusCondition() {
-    return statusCondition;
   }
 
   @SuppressWarnings("unchecked")
@@ -151,9 +102,4 @@ public class ConditionTest implements ProblemDAOAware, UserDAOAware, UserConditi
 
   @Autowired
   private IStatusDAO statusDAO;
-
-  @Override
-  public void setStatusDAO(IStatusDAO statusDAO) {
-    this.statusDAO = statusDAO;
-  }
 }
