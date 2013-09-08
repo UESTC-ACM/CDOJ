@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.oj.test.db;
+package cn.edu.uestc.acmicpc.db;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;

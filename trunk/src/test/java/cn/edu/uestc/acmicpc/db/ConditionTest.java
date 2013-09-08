@@ -20,7 +20,18 @@
  *
  */
 
-package cn.edu.uestc.acmicpc.oj.test.db;
+package cn.edu.uestc.acmicpc.db;
+
+import java.util.List;
+
+import org.hibernate.criterion.Projections;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
@@ -29,8 +40,6 @@ import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
 import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
@@ -38,29 +47,25 @@ import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
-import org.hibernate.criterion.Projections;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.List;
 
 /**
  * Test cases for conditions entities.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
 public class ConditionTest implements ProblemDAOAware, UserDAOAware, UserConditionAware,
     ProblemConditionAware, StatusConditionAware, StatusDAOAware {
+
+  @Before
+  public void init() {
+    problemCondition.clear();
+    statusCondition.clear();
+    userCondition.clear();
+  }
 
   /**
    * DAOs for database query.
@@ -82,38 +87,6 @@ public class ConditionTest implements ProblemDAOAware, UserDAOAware, UserConditi
 
   @Autowired
   private StatusCondition statusCondition;
-
-  @Test
-  @Ignore
-  public void testProblemCondition() throws AppException {
-    problemCondition.clear();
-    problemCondition.setStartId(1);
-    problemCondition.setEndId(100);
-    problemCondition.setIsSpj(null);
-    System.out.println(problemDAO.count(problemCondition.getCondition()));
-    problemCondition.setIsSpj(false);
-    System.out.println(problemDAO.count(problemCondition.getCondition()));
-    Assert.assertTrue(problemDAO.count(problemCondition.getCondition()) > 0);
-    problemCondition.clear();
-    problemCondition.setStartId(2);
-    problemCondition.setEndId(1);
-    Assert.assertEquals(new Long(0), problemDAO.count(problemCondition.getCondition()));
-  }
-
-  @SuppressWarnings("unchecked")
-  @Test
-  @Ignore
-  public void testUserCondition() throws AppException {
-    userCondition.clear();
-    userCondition.setDepartmentId(2);
-    System.out.println("test: " + userCondition.getDepartmentId());
-    List<User> users = (List<User>) userDAO.findAll(userCondition.getCondition());
-    Assert.assertEquals(1, users.size());
-    // for (User user : users) {
-    // System.out.println(user.getUserId() + " " + user.getUserName() + " "
-    // + user.getDepartmentByDepartmentId().getName());
-    // }
-  }
 
   @Override
   public void setProblemDAO(IProblemDAO problemDAO) {
@@ -145,31 +118,13 @@ public class ConditionTest implements ProblemDAOAware, UserDAOAware, UserConditi
     return problemCondition;
   }
 
-  /**
-   * test for problem condition's {@code isTitleEmpty} property.
-   */
-  @SuppressWarnings("unchecked")
   @Test
-  @Ignore
-  public void testProblemConditionIsTitleEmpty() throws AppException {
-    problemCondition.setIsTitleEmpty(true);
-    List<Problem> problems = (List<Problem>) problemDAO.findAll(problemCondition.getCondition());
-    for (Problem problem : problems)
-      System.out.println(problem.toString());
-  }
-
-  /**
-   * Test condition's {@code clear} method.
-   */
-  @Test
-  @Ignore
-  public void testConditionClear() {
-    statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-    statusCondition.setContestId(1);
-    statusCondition.setUserName("lyhypacm");
-    System.out.println(ObjectUtil.toString(statusCondition));
-    statusCondition.clear();
-    System.out.println(ObjectUtil.toString(statusCondition));
+  public void testConditionClear() throws AppException {
+    problemCondition.setStartId(2);
+    problemCondition.setTitle("a+b problem");
+    Assert.assertEquals(Long.valueOf(3), problemDAO.count(problemCondition.getCondition()));
+    problemCondition.clear();
+    Assert.assertEquals(Long.valueOf(5), problemDAO.count(problemCondition.getCondition()));
   }
 
   @Override
@@ -183,18 +138,15 @@ public class ConditionTest implements ProblemDAOAware, UserDAOAware, UserConditi
   }
 
   @SuppressWarnings("unchecked")
-  @Ignore
   @Test
   public void testProjections() throws AppException, FieldNotUniqueException {
-    User currentUser = userDAO.getEntityByUniqueField("userName", "UESTC_Izayoi");
-    statusCondition.clear();
-    statusCondition.setUserId(currentUser.getUserId());
+    statusCondition.setUserId(1);
     statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
     Condition condition = statusCondition.getCondition();
     condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
     List<Integer> results = (List<Integer>) statusDAO.findAll(condition);
-    for (Integer result : results)
-      System.out.println(result);
+    Assert.assertEquals(1, results.size());
+    Assert.assertEquals(Integer.valueOf(1), results.get(0));
   }
 
   @Autowired

@@ -22,6 +22,25 @@
 
 package cn.edu.uestc.acmicpc.db.dao.base;
 
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.JoinedProperty;
@@ -30,25 +49,13 @@ import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.DatabaseUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.criterion.*;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Global DAO implementation.
  * <p/>
  * <strong>WARN</strong>: This class is only a abstract class, please create subclass by overriding
  * {@code getReference} method.
- * 
+ *
  * @param <Entity> Entity's type
  * @param <PK> Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
@@ -71,14 +78,14 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
 
   /**
    * Get primary key's type.
-   * 
+   *
    * @return primary key's type
    */
   protected abstract Class<PK> getPKClass();
 
   /**
    * Create a criteria object from session.
-   * 
+   *
    * @return expected criteria entity
    */
   private Criteria createCriteria() throws AppException {
@@ -91,7 +98,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
 
   /**
    * Update criteria entity according to specific conditions.
-   * 
+   *
    * @param criteria Criteria object to update
    * @param condition conditions for criteria query
    */
@@ -161,6 +168,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
       updateCriteria(criteria, condition);
       return (Long) criteria.uniqueResult();
     } catch (HibernateException e) {
+      e.printStackTrace();
       throw new AppException("Invoke count method error.");
     }
   }
@@ -220,7 +228,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
 
   /**
    * Get reference entity's id field name.
-   * 
+   *
    * @return id field name
    */
   String getKeyFieldName() {
@@ -290,11 +298,12 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
   /**
    * Return the specific Object class that will be used for class-specific implementation of this
    * DAO.
-   * 
+   *
    * @return the reference Class
    */
   protected abstract Class<Entity> getReferenceClass();
 
+  @Override
   public String getSQLString(Condition condition) throws AppException {
     if (condition == null) {
       return "";
@@ -323,6 +332,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
     return "where " + ArrayUtil.join(params.toArray(), " and ");
   }
 
+  @Override
   public void updateEntitiesByCondition(Map<String, Object> properties, Condition condition)
       throws AppException {
     if (properties.isEmpty()) {
@@ -344,6 +354,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
     getSession().createQuery(hql).executeUpdate();
   }
 
+  @Override
   public void deleteEntitiesByCondition(Condition condition) throws AppException {
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("delete ").append(getReferenceClass().getSimpleName());
@@ -353,6 +364,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
     getSession().createQuery(hql).executeUpdate();
   }
 
+  @Override
   public void flush() {
     getSession().flush();
   }

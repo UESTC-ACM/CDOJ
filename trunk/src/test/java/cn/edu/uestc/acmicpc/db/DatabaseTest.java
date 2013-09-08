@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.oj.test.db;
+package cn.edu.uestc.acmicpc.db;
 
 /*
  *
