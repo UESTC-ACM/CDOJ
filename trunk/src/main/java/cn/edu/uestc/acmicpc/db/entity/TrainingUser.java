@@ -21,24 +21,35 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+
 /**
  * Description
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-@Table(name = "trainingUser", schema = "", catalog = "uestcoj")
+@Table(name = "trainingUser")
 @Entity
 @KeyField("trainingUserId")
 public class TrainingUser implements Serializable {
 
   /**
-	 * 
+	 *
 	 */
   private static final long serialVersionUID = 3763485382044474929L;
   private Integer trainingUserId;
@@ -260,7 +271,7 @@ public class TrainingUser implements Serializable {
 
   private Collection<TrainingStatus> trainingStatusesByTrainingUserId;
 
-  @OneToMany(mappedBy = "trainingUserByTrainingUserId")
+  @OneToMany(mappedBy = "trainingUserByTrainingUserId", cascade = CascadeType.ALL)
   public Collection<TrainingStatus> getTrainingStatusesByTrainingUserId() {
     return trainingStatusesByTrainingUserId;
   }

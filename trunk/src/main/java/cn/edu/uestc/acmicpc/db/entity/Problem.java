@@ -22,18 +22,27 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+
 /**
  * Problem information.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@Table(name = "problem", schema = "", catalog = "uestcoj")
+@Table(name = "problem")
 @Entity
 @KeyField("problemId")
 public class Problem implements Serializable {
@@ -407,7 +416,7 @@ public class Problem implements Serializable {
 
   private Collection<ContestProblem> contestproblemsByProblemId;
 
-  @OneToMany(mappedBy = "problemByProblemId")
+  @OneToMany(mappedBy = "problemByProblemId", cascade = CascadeType.ALL)
   public Collection<ContestProblem> getContestproblemsByProblemId() {
     return contestproblemsByProblemId;
   }
@@ -418,7 +427,7 @@ public class Problem implements Serializable {
 
   private Collection<ProblemTag> problemtagsByProblemId;
 
-  @OneToMany(mappedBy = "problemByProblemId")
+  @OneToMany(mappedBy = "problemByProblemId", cascade = CascadeType.ALL)
   public Collection<ProblemTag> getProblemtagsByProblemId() {
     return problemtagsByProblemId;
   }
@@ -429,7 +438,7 @@ public class Problem implements Serializable {
 
   private Collection<Status> statusesByProblemId;
 
-  @OneToMany(mappedBy = "problemByProblemId")
+  @OneToMany(mappedBy = "problemByProblemId", cascade = CascadeType.ALL)
   public Collection<Status> getStatusesByProblemId() {
     return statusesByProblemId;
   }
@@ -440,7 +449,7 @@ public class Problem implements Serializable {
 
   private Collection<Article> articlesByProblemId;
 
-  @OneToMany(mappedBy = "problemByProblemId")
+  @OneToMany(mappedBy = "problemByProblemId", cascade = CascadeType.ALL)
   public Collection<Article> getArticlesByProblemId() {
     return articlesByProblemId;
   }

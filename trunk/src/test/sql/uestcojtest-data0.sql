@@ -1,8 +1,5 @@
 USE `uestcojtest` ;
 
--- -----------------------------------------------------
--- Data for table `uestcojtest`.`department`
--- -----------------------------------------------------
 START TRANSACTION;
 USE `uestcojtest`;
 INSERT INTO `uestcojtest`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUES (1, 'Others', 0);
@@ -26,9 +23,6 @@ INSERT INTO `uestcojtest`.`department` (`departmentId`, `name`, `OPTLOCK`) VALUE
 
 COMMIT;
 
--- -----------------------------------------------------
--- Data for table `uestcojtest`.`user`
--- -----------------------------------------------------
 START TRANSACTION;
 USE `uestcojtest`;
 INSERT INTO `uestcojtest`.`user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`) VALUES (1, 'administrator', '2010013100008', 1, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'administrator', 'acm@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0);
@@ -36,9 +30,6 @@ INSERT INTO `uestcojtest`.`user` (`userId`, `userName`, `studentId`, `department
 
 COMMIT;
 
--- -----------------------------------------------------
--- Data for table `uestcojtest`.`language`
--- -----------------------------------------------------
 START TRANSACTION;
 USE `uestcojtest`;
 INSERT INTO `uestcojtest`.`language` (`languageId`, `name`, `extension`, `param`, `OPTLOCK`) VALUES (1, 'C', '.c', '', 0);
@@ -81,4 +72,19 @@ INSERT INTO `uestcojtest`.`status` (`statusId`, `userId`, `problemId`, `result`,
 INSERT INTO `uestcojtest`.`status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) VALUES (4, 2, 1, 4, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 4, NULL, NULL);
 INSERT INTO `uestcojtest`.`status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) VALUES (5, 2, 1, 7, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 5, 1, NULL);
 
+COMMIT;
+
+START TRANSACTION;
+USE `uestcojtest`;
+INSERT INTO `uestcojtest`.`contest` (`contestId`, `title`, `description`, `type`, `time`, `length`, `isVisible`, `OPTLOCK`) VALUES (1, 'title', 'descrip', 1, '2013-01-01 00:00:00', 300, 1, NULL);
+
+COMMIT;
+
+START TRANSACTION;
+USE `uestcojtest`;
+INSERT INTO `uestcojtest`.`tag` (`tagId`, `name`, `OPTLOCK`) VALUES (1, 'tag1', NULL);
+INSERT INTO `uestcojtest`.`tag` (`tagId`, `name`, `OPTLOCK`) VALUES (2, 'tag2', NULL);
+INSERT INTO `uestcojtest`.`tag` (`tagId`, `name`, `OPTLOCK`) VALUES (3, 'tag3', NULL);
+INSERT INTO `uestcojtest`.`tag` (`tagId`, `name`, `OPTLOCK`) VALUES (4, 'tag4', NULL);
+INSERT INTO `uestcojtest`.`tag` (`tagId`, `name`, `OPTLOCK`) VALUES (5, 'tag5', NULL);
 COMMIT;

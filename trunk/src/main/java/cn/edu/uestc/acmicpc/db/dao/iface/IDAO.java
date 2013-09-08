@@ -22,17 +22,17 @@
 
 package cn.edu.uestc.acmicpc.db.dao.iface;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
+
 /**
  * Global DAO interface.
- * 
+ *
  * @param <Entity> Entity's type
  * @param <PK> Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
@@ -41,7 +41,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * Add entity into database, and return number of Row changed.
-   * 
+   *
    * @param entity entity to be added.
    * @return number of rows changed.
    * @throws AppException
@@ -50,7 +50,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * Add entity or update entity, according to key value of the entity.
-   * 
+   *
    * @param entity entity to be added or updated
    * @throws AppException
    */
@@ -58,7 +58,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * Get entity by key value.
-   * 
+   *
    * @param key key value
    * @return entity which key value matches
    * @throws AppException
@@ -67,7 +67,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * Update an entity object.
-   * 
+   *
    * @param entity entity to be updated
    * @throws AppException
    */
@@ -75,7 +75,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * Delete entity from database.
-   * 
+   *
    * @param entity entity to be deleted
    * @throws AppException
    */
@@ -83,7 +83,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * List all entities in tables.
-   * 
+   *
    * @return entity list in tables.
    * @throws AppException
    */
@@ -91,7 +91,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * List all entities in tables by conditions.
-   * 
+   *
    * @param condition extra conditions for query
    * @return expected entity list
    * @throws AppException
@@ -100,7 +100,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * Count the number of records in the table.
-   * 
+   *
    * @return number of records we query
    * @throws AppException
    */
@@ -108,7 +108,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * Count the number of records in the table by conditions.
-   * 
+   *
    * @param condition condition object
    * @return number of records we query
    * @throws AppException
@@ -118,7 +118,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   /**
    * Get unique entity by the field name, if the field is not unique field, throw
    * {@code AppException}.
-   * 
+   *
    * @param fieldName the unique field name
    * @param value field's value
    * @return unique result, null if not exist
@@ -130,7 +130,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   /**
    * Get unique entity by the field name, if the field is not unique field, throw
    * {@code AppException}.
-   * 
+   *
    * @param fieldName the unique field name
    * @param value field's value
    * @param propertyName property's name for JoinColumn
@@ -144,7 +144,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * Count number of entities for custom counting.
-   * 
+   *
    * @param condition user custom condition entity
    * @return number of records for database query result
    * @throws AppException
@@ -153,7 +153,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * Get SQL where clause according to condition entity.
-   * 
+   *
    * @param condition specific condition entity
    * @return where clause we need
    * @throws AppException
@@ -162,7 +162,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * Update all records according condition entity.
-   * 
+   *
    * @param properties properties for setting
    * @param condition specific condition entity
    * @throws AppException
@@ -172,7 +172,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * Delete all records according condition entity.
-   * 
+   *
    * @param condition specific condition entity
    * @throws AppException
    */
@@ -185,7 +185,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * Crate a hibernate query.
-   * 
+   *
    * @param hql hibernate query string
    * @return number of rows effected
    */
@@ -193,7 +193,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * Create a basic database query.
-   * 
+   *
    * @param sql SQL string for query
    * @return number of rows effected
    */

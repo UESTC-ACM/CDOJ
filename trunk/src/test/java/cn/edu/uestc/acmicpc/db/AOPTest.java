@@ -33,20 +33,30 @@ import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
+import com.jolbox.bonecp.BoneCPDataSource;
+
 /**
  * Test cases for AOP framework
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
 public class AOPTest {
 
   @Autowired
-  IUserDAO userDAO = null;
+  IUserDAO userDAO;
 
   public void setUserDAO(IUserDAO userDAO) {
     this.userDAO = userDAO;
+  }
+
+  @Autowired
+  BoneCPDataSource dataSource;
+
+  @Test
+  public void testFetchDataSource() {
+    Assert.assertEquals(
+        "jdbc:mysql://localhost:3306/uestcojtest?useUnicode=true&characterEncoding=UTF-8",
+        dataSource.getJdbcUrl());
   }
 
   @Test

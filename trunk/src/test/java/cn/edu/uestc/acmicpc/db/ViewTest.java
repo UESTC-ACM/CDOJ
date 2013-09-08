@@ -22,37 +22,33 @@
 
 package cn.edu.uestc.acmicpc.db;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.db.view.impl.UserView;
-import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
-import cn.edu.uestc.acmicpc.util.StringUtil;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
+import java.sql.Timestamp;
+import java.util.Date;
+
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
+import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.db.view.impl.UserView;
+import cn.edu.uestc.acmicpc.util.StringUtil;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
- * Test cases for view.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ * Test cases for views.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
-public class ViewTest implements DepartmentDAOAware {
+public class ViewTest {
 
   @Autowired
   private IDepartmentDAO departmentDAO;
 
   @Test
-  @Ignore
   public void testUserView() throws AppException {
     User user = new User();
     user.setUserName("admin");
@@ -66,10 +62,5 @@ public class ViewTest implements DepartmentDAOAware {
     user.setType(0);
     UserView userView = new UserView(user);
     Assert.assertEquals("admin", userView.getUserName());
-  }
-
-  @Override
-  public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
-    this.departmentDAO = departmentDAO;
   }
 }

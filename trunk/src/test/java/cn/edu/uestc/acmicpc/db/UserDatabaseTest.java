@@ -1,9 +1,12 @@
 package cn.edu.uestc.acmicpc.db;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +19,15 @@ import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 
 /**
- * Test cases for {@link UserCondition} and {@link IUserDAO}.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ * Test cases for {@link User}.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
-public class UserConditionAndDAOTest implements UserConditionAware, UserDAOAware {
+public class UserDatabaseTest implements UserConditionAware, UserDAOAware {
 
   @Before
   public void init() {
@@ -61,6 +63,34 @@ public class UserConditionAndDAOTest implements UserConditionAware, UserDAOAware
     Assert.assertEquals("administrator", users.get(0).getUserName());
     Assert.assertEquals("admin", users.get(1).getUserName());
   }
+
+  @Test
+  public void testUpdate() throws AppException, FieldNotUniqueException {
+    User user = userDAO.getEntityByUniqueField("userName", "administrator");
+    user.setLastLogin(new Timestamp(new Date().getTime()));
+    userDAO.update(user);
+  }
+
+  @Test
+  @Ignore
+  public void testDelete() throws AppException, FieldNotUniqueException {
+    // TODO add some test data for this test case
+    // big id: do not break other test cases
+    User user = userDAO.getEntityByUniqueField("userName", "admin");
+    Long oldCount = userDAO.count();
+    userDAO.delete(user);
+    Long newCount = userDAO.count();
+    Assert.assertEquals(oldCount - 1, newCount.longValue());
+  }
+
+  @Test
+  public void testUserCondition_byStartIdAndEndId() throws AppException {
+    userCondition.clear();
+    userCondition.setStartId(2);
+    userCondition.setEndId(4);
+    Assert.assertEquals(Long.valueOf(1), userDAO.count(userCondition.getCondition()));
+  }
+
 
   @Override
   public void setUserCondition(UserCondition userCondition) {

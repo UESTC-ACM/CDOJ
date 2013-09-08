@@ -20,9 +20,6 @@
 
 package cn.edu.uestc.acmicpc.oj.test.util;
 
-import cn.edu.uestc.acmicpc.ioc.util.EMailSenderAware;
-import cn.edu.uestc.acmicpc.util.EMailSender;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,12 +27,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import cn.edu.uestc.acmicpc.util.EMailSender;
+
 /**
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ * Test cases for {@link EMailSender}.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
-public class EMailTest implements EMailSenderAware {
+public class EMailTest {
 
   @Autowired
   private EMailSender sender;
@@ -50,16 +49,5 @@ public class EMailTest implements EMailSenderAware {
   @Ignore
   public void testMultiRecipientsSending() {
     sender.send("muziriyun@qq.com;muziriyun@gmail.com", "title", "content");
-  }
-
-  @Override
-  @Ignore
-  public void setEMailSender(EMailSender sender) {
-    try {
-      this.sender = sender;
-    } catch (Exception e) {
-      e.printStackTrace();
-      Assert.fail();
-    }
   }
 }

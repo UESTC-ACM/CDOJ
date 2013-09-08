@@ -22,16 +22,14 @@
 
 package cn.edu.uestc.acmicpc.oj.test.util;
 
+import java.io.File;
+
 import org.aspectj.util.FileUtil;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.File;
-
 /**
- * Test cases for file utils.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ * Test cases for {@link FileUtil}.
  */
 public class FileTest {
 

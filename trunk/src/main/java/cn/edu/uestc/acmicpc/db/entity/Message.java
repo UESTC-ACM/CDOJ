@@ -22,18 +22,28 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+
 /**
  * Message information.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@Table(name = "message", schema = "", catalog = "uestcoj")
+@Table(name = "message")
 @Entity
 @KeyField("messageId")
 public class Message implements Serializable {
@@ -152,7 +162,7 @@ public class Message implements Serializable {
 
   private User userByReceiverId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "receiverId", referencedColumnName = "userId", nullable = false)
   public User getUserByReceiverId() {
     return userByReceiverId;
@@ -164,7 +174,7 @@ public class Message implements Serializable {
 
   private User userBySenderId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "senderId", referencedColumnName = "userId", nullable = false)
   public User getUserBySenderId() {
     return userBySenderId;

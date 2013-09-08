@@ -21,18 +21,6 @@
 
 package cn.edu.uestc.acmicpc.db;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
-import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
-import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
-import cn.edu.uestc.acmicpc.ioc.dao.TrainingContestDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.TrainingStatusDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.TrainingUserDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,15 +28,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
+import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
+import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+
 /**
- * Description
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ * Test cases for training entity.
+ *
+ * TODO remove ignore tags.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
-public class TrainingEntityTest implements TrainingContestDAOAware, TrainingStatusDAOAware,
-    TrainingUserDAOAware, UserDAOAware {
+public class TrainingEntityTest {
 
   @Test
   @Ignore
@@ -96,26 +92,6 @@ public class TrainingEntityTest implements TrainingContestDAOAware, TrainingStat
   @Autowired
   private ITrainingStatusDAO trainingStatusDAO;
 
-  @Override
-  public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
-    this.trainingContestDAO = trainingContestDAO;
-  }
-
-  @Override
-  public void setTrainingStatusDAO(ITrainingStatusDAO trainingStatusDAO) {
-    this.trainingStatusDAO = trainingStatusDAO;
-  }
-
-  @Override
-  public void setTrainingUserDAO(ITrainingUserDAO trainingUserDAO) {
-    this.trainingUserDAO = trainingUserDAO;
-  }
-
   @Autowired
   private IUserDAO userDAO;
-
-  @Override
-  public void setUserDAO(IUserDAO userDAO) {
-    this.userDAO = userDAO;
-  }
 }
