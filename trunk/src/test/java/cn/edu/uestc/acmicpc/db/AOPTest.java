@@ -2,7 +2,7 @@
  *
  *  * cdoj, UESTC ACMICPC Online Judge
  *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
+ *  *   mzry1992 <@link muziriyun@gmail.com>
  *  *
  *  * This program is free software; you can redistribute it and/or
  *  * modify it under the terms of the GNU General Public License
@@ -19,57 +19,39 @@
  *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  */
+package cn.edu.uestc.acmicpc.db;
 
-package cn.edu.uestc.acmicpc.oj.test.db;
-
-import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.db.view.impl.UserView;
-import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
-import cn.edu.uestc.acmicpc.util.StringUtil;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 /**
- * Test cases for view.
- * 
+ * Test cases for AOP framework
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
-public class ViewTest implements DepartmentDAOAware {
+public class AOPTest {
 
   @Autowired
-  private IDepartmentDAO departmentDAO;
+  IUserDAO userDAO = null;
 
-  @Test
-  @Ignore
-  public void testUserView() throws AppException {
-    User user = new User();
-    user.setUserName("admin");
-    user.setPassword(StringUtil.encodeSHA1("admin"));
-    user.setNickName("admin");
-    user.setEmail("acm@uestc.edu.cn");
-    user.setSchool("UESTC");
-    user.setDepartmentByDepartmentId(departmentDAO.get(1));
-    user.setStudentId("2010013100008");
-    user.setLastLogin(new Timestamp(new Date().getTime()));
-    user.setType(0);
-    UserView userView = new UserView(user);
-    Assert.assertEquals("admin", userView.getUserName());
+  public void setUserDAO(IUserDAO userDAO) {
+    this.userDAO = userDAO;
   }
 
-  @Override
-  public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
-    this.departmentDAO = departmentDAO;
+  @Test
+  public void testDataBaseConnection() throws FieldNotUniqueException, AppException {
+    User user = userDAO.getEntityByUniqueField("userName", "admin");
+    Assert.assertEquals("admin", user.getUserName());
   }
 }

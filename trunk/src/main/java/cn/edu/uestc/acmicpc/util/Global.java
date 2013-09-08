@@ -22,6 +22,14 @@
 
 package cn.edu.uestc.acmicpc.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
@@ -30,15 +38,12 @@ import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.LanguageDAOAware;
 import cn.edu.uestc.acmicpc.oj.entity.ContestRankList;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.*;
 
 /**
  * Global enumerates and constants inside project.
  * <p/>
  * <strong>WARN:</strong> this file may be rewritten carefully.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class Global implements DepartmentDAOAware, LanguageDAOAware {
@@ -63,7 +68,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
     /**
      * Get enumerate value's description.
-     * 
+     *
      * @return description string for specific online judge return type
      */
     public String getDescription() {
@@ -97,7 +102,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
     /**
      * Get enumerate value's description.
-     * 
+     *
      * @return description string for specific contest type
      */
     public String getDescription() {
@@ -107,7 +112,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
   public enum TrainingContestType {
     NORMAL("normal"), ADJUST("adjust"), CF("cf"), TC("tc"), TEAM("team"), OTHERS("others"),
-      UNRATED("unrated"), ABSENT("absent");
+    UNRATED("unrated"), ABSENT("absent");
 
     private final String description;
 
@@ -148,7 +153,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
     /**
      * Get enumerate value's description.
-     * 
+     *
      * @return description string for specific authentication type
      */
     public String getDescription() {
@@ -204,7 +209,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
   /**
    * Get all languages.
-   * 
+   *
    * @return compile language list
    */
   public List<Language> getLanguageList() {
@@ -242,7 +247,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
   /**
    * Get all departments in database.
-   * 
+   *
    * @return All departments
    */
   public List<Department> getDepartmentList() {
@@ -251,7 +256,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
   /**
    * Get all authentications.
-   * 
+   *
    * @return All authentication type
    */
   public List<AuthenticationType> getAuthenticationTypeList() {
@@ -260,7 +265,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
   /**
    * Get all contest types.
-   * 
+   *
    * @return All contest type
    */
   public List<ContestType> getContestTypeList() {

@@ -19,7 +19,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package cn.edu.uestc.acmicpc.oj.test.db;
+package cn.edu.uestc.acmicpc.db;
+
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
@@ -33,17 +43,10 @@ import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.List;
 
 /**
  * Description
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 
@@ -52,9 +55,15 @@ import java.util.List;
 public class TriedTest implements StatusDAOAware, ProblemDAOAware, UserDAOAware,
     StatusConditionAware {
 
+  @Before
+  public void init() {
+    Assert.assertNotNull(statusCondition);
+    statusCondition.clear();
+  }
+
   @SuppressWarnings("unchecked")
   @Test
-  public void syncUserTried() throws AppException {
+  public void testSyncUserTried() throws AppException {
     List<User> userList = (List<User>) userDAO.findAll();
     for (User user : userList) {
       statusCondition.clear();
@@ -68,7 +77,7 @@ public class TriedTest implements StatusDAOAware, ProblemDAOAware, UserDAOAware,
 
   @SuppressWarnings("unchecked")
   @Test
-  public void syncProblemTried() throws AppException {
+  public void testSyncProblemTried() throws AppException {
     List<Problem> problemList = (List<Problem>) problemDAO.findAll();
     for (Problem problem : problemList) {
       statusCondition.clear();
