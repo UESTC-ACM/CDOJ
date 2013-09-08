@@ -21,7 +21,11 @@
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx-3.1.xsd"
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx">
-	<import resource="applicationContext.xml" />
+	<bean
+		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+	<aop:config proxy-target-class="true" />
+	<import resource="applicationContext-test-resources.xml" />
+	<import resource="applicationContext-main.xml" />
 	<bean id="utilTest" class="cn.edu.uestc.acmicpc.oj.test.util.UtilTest">
 	</bean>
 	<bean id="databaseTest" class="cn.edu.uestc.acmicpc.db.DatabaseTest">
@@ -48,8 +52,8 @@
 	</bean>
 	<bean id="problemConditionAndDAOTest" class="cn.edu.uestc.acmicpc.db.ProblemConditionAndDAOTest">
 	</bean>
-  <bean id="userConditionAndDAOTest" class="cn.edu.uestc.acmicpc.db.UserConditionAndDAOTest">
-  </bean>
-  <bean id="triedTest" class="cn.edu.uestc.acmicpc.db.TriedTest">
-  </bean>
+	<bean id="userConditionAndDAOTest" class="cn.edu.uestc.acmicpc.db.UserConditionAndDAOTest">
+	</bean>
+	<bean id="triedTest" class="cn.edu.uestc.acmicpc.db.TriedTest">
+	</bean>
 </beans>
