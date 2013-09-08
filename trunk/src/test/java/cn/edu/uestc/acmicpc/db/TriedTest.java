@@ -23,7 +23,6 @@ package cn.edu.uestc.acmicpc.db;
 
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,7 +56,6 @@ public class TriedTest implements StatusDAOAware, ProblemDAOAware, UserDAOAware,
 
   @Before
   public void init() {
-    Assert.assertNotNull(statusCondition);
     statusCondition.clear();
   }
 
@@ -115,6 +113,7 @@ public class TriedTest implements StatusDAOAware, ProblemDAOAware, UserDAOAware,
 
   @Override
   public void setStatusCondition(StatusCondition statusCondition) {
+    System.out.println("\n\n\n\n" + statusCondition + "\n\n\n\n");
     this.statusCondition = statusCondition;
   }
 
