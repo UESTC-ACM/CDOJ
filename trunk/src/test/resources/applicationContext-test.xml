@@ -23,30 +23,16 @@
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx">
 	<import resource="applicationContext.xml" />
 	<bean id="utilTest" class="cn.edu.uestc.acmicpc.oj.test.util.UtilTest">
-		<property name="global" ref="global" />
 	</bean>
 	<bean id="databaseTest" class="cn.edu.uestc.acmicpc.db.DatabaseTest">
-		<property name="tagDAO" ref="tagDAO" />
-		<property name="userDAO" ref="userDAO" />
-		<property name="departmentDAO" ref="departmentDAO" />
-		<property name="problemDAO" ref="problemDAO" />
-		<property name="userCondition" ref="userCondition" />
-		<property name="statusCondition" ref="statusCondition" />
 	</bean>
 	<bean id="aopTest" class="cn.edu.uestc.acmicpc.db.AOPTest">
-		<property name="userDAO" ref="userDAO" />
-		<property name="departmentDAO" ref="departmentDAO" />
 	</bean>
 	<bean id="arrayUtilTest" class="cn.edu.uestc.acmicpc.oj.test.util.ArrayUtilTest">
 	</bean>
 	<bean id="viewTest" class="cn.edu.uestc.acmicpc.db.ViewTest">
-		<property name="departmentDAO" ref="departmentDAO" />
 	</bean>
 	<bean id="conditionTest" class="cn.edu.uestc.acmicpc.db.ConditionTest">
-		<property name="problemDAO" ref="problemDAO" />
-		<property name="userDAO" ref="userDAO" />
-		<property name="userCondition" ref="userCondition" />
-		<property name="problemCondition" ref="problemCondition" />
 	</bean>
 	<bean scope="singleton" id="judgeService"
 		class="cn.edu.uestc.acmicpc.service.JudgeService" />
