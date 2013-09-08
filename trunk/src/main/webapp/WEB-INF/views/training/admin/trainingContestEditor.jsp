@@ -31,7 +31,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head
+<head>
 <page:applyDecorator name="head" page="/WEB-INF/views/common/fileUploaderHeader.jsp"/>
 <script src="<s:url value="/scripts/cdoj/cdoj.admin.training.trainingContestEditor.js"/>"></script>
 <title>Training contest editor</title>
