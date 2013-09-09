@@ -22,19 +22,30 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+
 /**
  * User information.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@Table(name = "user", schema = "", catalog = "uestcoj")
+@Table(name = "user")
 @Entity
 @KeyField("userId")
 public class User implements Serializable {
@@ -258,7 +269,7 @@ public class User implements Serializable {
 
   private Collection<ContestUser> contestUsersByUserId;
 
-  @OneToMany(mappedBy = "userByUserId")
+  @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
   public Collection<ContestUser> getContestUsersByUserId() {
     return contestUsersByUserId;
   }
@@ -269,7 +280,7 @@ public class User implements Serializable {
 
   private Collection<Message> messagesByUserId;
 
-  @OneToMany(mappedBy = "userByReceiverId")
+  @OneToMany(mappedBy = "userByReceiverId", cascade = CascadeType.ALL)
   public Collection<Message> getMessagesByUserId() {
     return messagesByUserId;
   }
@@ -280,7 +291,7 @@ public class User implements Serializable {
 
   private Collection<Message> messagesByUserId_0;
 
-  @OneToMany(mappedBy = "userBySenderId")
+  @OneToMany(mappedBy = "userBySenderId", cascade = CascadeType.ALL)
   public Collection<Message> getMessagesByUserId_0() {
     return messagesByUserId_0;
   }
@@ -291,7 +302,7 @@ public class User implements Serializable {
 
   private Collection<Status> statusesByUserId;
 
-  @OneToMany(mappedBy = "userByUserId")
+  @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
   public Collection<Status> getStatusesByUserId() {
     return statusesByUserId;
   }
@@ -302,7 +313,7 @@ public class User implements Serializable {
 
   private Collection<UserSerialKey> userSerialKeysByUserId;
 
-  @OneToMany(mappedBy = "userByUserId")
+  @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
   public Collection<UserSerialKey> getUserSerialKeysByUserId() {
     return userSerialKeysByUserId;
   }
@@ -313,7 +324,7 @@ public class User implements Serializable {
 
   private Department departmentByDepartmentId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "departmentId", referencedColumnName = "departmentId", nullable = false)
   public Department getDepartmentByDepartmentId() {
     return departmentByDepartmentId;
@@ -325,7 +336,7 @@ public class User implements Serializable {
 
   private Collection<Article> articlesByUserId;
 
-  @OneToMany(mappedBy = "userByUserId")
+  @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
   public Collection<Article> getArticlesByUserId() {
     return articlesByUserId;
   }

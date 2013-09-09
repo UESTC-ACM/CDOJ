@@ -19,7 +19,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package cn.edu.uestc.acmicpc.oj.test.db;
+package cn.edu.uestc.acmicpc.db;
+
+import java.util.List;
+
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.TrainingContestCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TrainingStatusCondition;
@@ -34,40 +43,18 @@ import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDTO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
-import cn.edu.uestc.acmicpc.ioc.condition.TrainingContestConditionAware;
-import cn.edu.uestc.acmicpc.ioc.condition.TrainingStatusConditionAware;
-import cn.edu.uestc.acmicpc.ioc.condition.TrainingUserConditionAware;
-import cn.edu.uestc.acmicpc.ioc.dao.TrainingContestDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.TrainingStatusDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.TrainingUserDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dto.TrainingContestDTOAware;
-import cn.edu.uestc.acmicpc.ioc.dto.TrainingStatusDTOAware;
-import cn.edu.uestc.acmicpc.ioc.dto.TrainingUserDTOAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.List;
-
 /**
- * Description
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ * Test cases for {@link TrainingContest}
+ *
+ * TODO remove ignore tags.
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
-public class TrainingContestUtilsTest implements TrainingStatusConditionAware,
-    TrainingContestConditionAware, TrainingUserConditionAware, TrainingUserDAOAware,
-    TrainingStatusDAOAware, TrainingContestDAOAware, TrainingUserDTOAware, TrainingContestDTOAware,
-    TrainingStatusDTOAware, UserDAOAware {
+public class TrainingContestUtilsTest {
 
   @Test
   @Ignore
@@ -125,105 +112,32 @@ public class TrainingContestUtilsTest implements TrainingStatusConditionAware,
   }
 
   @Autowired
+  private IUserDAO userDAO;
+
+  @Autowired
   private TrainingStatusCondition trainingStatusCondition;
+
   @Autowired
   private TrainingContestCondition trainingContestCondition;
+
   @Autowired
   private TrainingUserCondition trainingUserCondition;
+
   @Autowired
   private ITrainingUserDAO trainingUserDAO;
+
   @Autowired
   private ITrainingStatusDAO trainingStatusDAO;
+
   @Autowired
   private ITrainingContestDAO trainingContestDAO;
+
   @Autowired
   private TrainingUserDTO trainingUserDTO;
+
   @Autowired
   private TrainingContestDTO trainingContestDTO;
 
-  @Override
-  public void setTrainingContestCondition(TrainingContestCondition trainingContestCondition) {
-    this.trainingContestCondition = trainingContestCondition;
-  }
-
-  @Override
-  public TrainingContestCondition getTrainingContestCondition() {
-    return trainingContestCondition;
-  }
-
-  @Override
-  public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
-    this.trainingContestDAO = trainingContestDAO;
-  }
-
-  @Override
-  public void setTrainingContestDTO(TrainingContestDTO trainingContestDTO) {
-    this.trainingContestDTO = trainingContestDTO;
-  }
-
-  @Override
-  public TrainingContestDTO getTrainingContestDTO() {
-    return trainingContestDTO;
-  }
-
-  @Override
-  public void setTrainingStatusCondition(TrainingStatusCondition trainingStatusCondition) {
-    this.trainingStatusCondition = trainingStatusCondition;
-  }
-
-  @Override
-  public TrainingStatusCondition getTrainingStatusCondition() {
-    return trainingStatusCondition;
-  }
-
-  @Override
-  public void setTrainingStatusDAO(ITrainingStatusDAO trainingStatusDAO) {
-    this.trainingStatusDAO = trainingStatusDAO;
-  }
-
-  @Override
-  public void setTrainingUserCondition(TrainingUserCondition trainingUserCondition) {
-    this.trainingUserCondition = trainingUserCondition;
-  }
-
-  @Override
-  public TrainingUserCondition getTrainingUserCondition() {
-    return trainingUserCondition;
-  }
-
-  @Override
-  public void setTrainingUserDAO(ITrainingUserDAO trainingUserDAO) {
-    this.trainingUserDAO = trainingUserDAO;
-  }
-
-  @Override
-  public void setTrainingUserDTO(TrainingUserDTO trainingUserDTO) {
-    this.trainingUserDTO = trainingUserDTO;
-  }
-
-  @Override
-  public TrainingUserDTO getTrainingUserDTO() {
-    return trainingUserDTO;
-  }
-
   @Autowired
   private TrainingStatusDTO trainingStatusDTO;
-
-  @Override
-  public void setTrainingStatusDTO(TrainingStatusDTO trainingStatusDTO) {
-    this.trainingStatusDTO = trainingStatusDTO;
-  }
-
-  @Override
-  public TrainingStatusDTO getTrainingStatusDTO() {
-    return trainingStatusDTO;
-  }
-
-  @Autowired
-  private IUserDAO userDAO;
-
-  @Override
-  public void setUserDAO(IUserDAO userDAO) {
-    this.userDAO = userDAO;
-  }
 }

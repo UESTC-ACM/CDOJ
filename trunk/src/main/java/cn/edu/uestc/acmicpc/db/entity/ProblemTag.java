@@ -22,17 +22,26 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-
-import javax.persistence.*;
 import java.io.Serializable;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Mappings between problems and tags.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@Table(name = "problemTag", schema = "", catalog = "uestcoj")
+@Table(name = "problemTag")
 @Entity
 @KeyField("problemTagId")
 public class ProblemTag implements Serializable {
@@ -86,7 +95,7 @@ public class ProblemTag implements Serializable {
 
   private Problem problemByProblemId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = false)
   public Problem getProblemByProblemId() {
     return problemByProblemId;
@@ -98,7 +107,7 @@ public class ProblemTag implements Serializable {
 
   private Tag tagByTagId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "tagId", referencedColumnName = "tagId", nullable = false)
   public Tag getTagByTagId() {
     return tagByTagId;
