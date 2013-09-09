@@ -22,18 +22,19 @@
 
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
+import org.springframework.stereotype.Controller;
+
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 /**
- * // TODO(mzry1992) Description
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ * Data transfer object for {@link Article}.
  */
+@Controller
 public class ArticleDTO extends BaseDTO<Article> {
 
   private Integer articleId;

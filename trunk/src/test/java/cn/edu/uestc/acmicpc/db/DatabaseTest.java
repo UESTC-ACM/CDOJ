@@ -144,6 +144,7 @@ public class DatabaseTest {
   }
 
   @Test
+  @Ignore(value = "not stable")
   public void testSQLGenerator() throws AppException {
     userCondition.clear();
     userCondition.setUserName("userName");
