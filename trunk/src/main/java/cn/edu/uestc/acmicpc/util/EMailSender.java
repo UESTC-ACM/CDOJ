@@ -20,17 +20,29 @@
 
 package cn.edu.uestc.acmicpc.util;
 
-import cn.edu.uestc.acmicpc.ioc.util.SettingsAware;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import cn.edu.uestc.acmicpc.ioc.util.SettingsAware;
+
 /**
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ * TODO description
  */
+@Service
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class EMailSender implements SettingsAware {
 
   @Override
