@@ -22,19 +22,28 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+
 /**
  * Contest information.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@Table(name = "contest", schema = "", catalog = "uestcoj")
+@Table(name = "contest")
 @Entity
 @KeyField("contestId")
 public class Contest implements Serializable {
@@ -193,7 +202,7 @@ public class Contest implements Serializable {
 
   private Collection<ContestProblem> contestProblemsByContestId;
 
-  @OneToMany(mappedBy = "contestByContestId")
+  @OneToMany(mappedBy = "contestByContestId", cascade = CascadeType.ALL)
   public Collection<ContestProblem> getContestProblemsByContestId() {
     return contestProblemsByContestId;
   }
@@ -204,7 +213,7 @@ public class Contest implements Serializable {
 
   private Collection<ContestUser> contestUsersByContestId;
 
-  @OneToMany(mappedBy = "contestByContestId")
+  @OneToMany(mappedBy = "contestByContestId", cascade = CascadeType.ALL)
   public Collection<ContestUser> getContestUsersByContestId() {
     return contestUsersByContestId;
   }
@@ -215,7 +224,7 @@ public class Contest implements Serializable {
 
   private Collection<Status> statusesByContestId;
 
-  @OneToMany(mappedBy = "contestByContestId")
+  @OneToMany(mappedBy = "contestByContestId", cascade = CascadeType.ALL)
   public Collection<Status> getStatusesByContestId() {
     return statusesByContestId;
   }
@@ -226,7 +235,7 @@ public class Contest implements Serializable {
 
   private Collection<Article> articlesByContestId;
 
-  @OneToMany(mappedBy = "contestByContestId")
+  @OneToMany(mappedBy = "contestByContestId", cascade = CascadeType.ALL)
   public Collection<Article> getArticlesByContestId() {
     return articlesByContestId;
   }

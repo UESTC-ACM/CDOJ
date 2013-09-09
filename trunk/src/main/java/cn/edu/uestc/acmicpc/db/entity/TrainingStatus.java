@@ -20,21 +20,31 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-
-import javax.persistence.*;
 import java.io.Serializable;
+
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@Table(name = "trainingStatus", schema = "", catalog = "uestcoj")
+@Table(name = "trainingStatus")
 @Entity
 @KeyField("trainingStatusId")
 public class TrainingStatus implements Serializable {
 
   /**
-	 * 
+	 *
 	 */
   private static final long serialVersionUID = 61887986969087053L;
   private Integer trainingStatusId;
@@ -233,7 +243,7 @@ public class TrainingStatus implements Serializable {
 
   private TrainingUser trainingUserByTrainingUserId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "trainingUserId", referencedColumnName = "trainingUserId", nullable = false)
   public TrainingUser getTrainingUserByTrainingUserId() {
     return trainingUserByTrainingUserId;
@@ -243,7 +253,7 @@ public class TrainingStatus implements Serializable {
     this.trainingUserByTrainingUserId = trainingUserByTrainingUserId;
   }
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "trainingContestId", referencedColumnName = "trainingContestId",
       nullable = false)
   public TrainingContest getTrainingContestByTrainingContestId() {
@@ -256,5 +266,4 @@ public class TrainingStatus implements Serializable {
   }
 
   private TrainingContest trainingContestByTrainingContestId;
-
 }

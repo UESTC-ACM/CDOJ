@@ -22,18 +22,28 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+
 /**
  * Status information.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@Table(name = "status", schema = "", catalog = "uestcoj")
+@Table(name = "status")
 @Entity
 @KeyField("statusId")
 public class Status implements Serializable {
@@ -184,7 +194,7 @@ public class Status implements Serializable {
 
   private Code codeByCodeId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "codeId", referencedColumnName = "codeId", nullable = false)
   public Code getCodeByCodeId() {
     return codeByCodeId;
@@ -196,7 +206,7 @@ public class Status implements Serializable {
 
   private CompileInfo compileInfoByCompileInfoId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "compileInfoId", referencedColumnName = "compileInfoId")
   public CompileInfo getCompileInfoByCompileInfoId() {
     return compileInfoByCompileInfoId;
@@ -208,7 +218,7 @@ public class Status implements Serializable {
 
   private Contest contestByContestId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "contestId", referencedColumnName = "contestId")
   public Contest getContestByContestId() {
     return contestByContestId;
@@ -220,7 +230,7 @@ public class Status implements Serializable {
 
   private Language languageByLanguageId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "languageId", referencedColumnName = "languageId", nullable = false)
   public Language getLanguageByLanguageId() {
     return languageByLanguageId;
@@ -232,7 +242,7 @@ public class Status implements Serializable {
 
   private Problem problemByProblemId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = false)
   public Problem getProblemByProblemId() {
     return problemByProblemId;
@@ -244,7 +254,7 @@ public class Status implements Serializable {
 
   private User userByUserId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
   public User getUserByUserId() {
     return userByUserId;

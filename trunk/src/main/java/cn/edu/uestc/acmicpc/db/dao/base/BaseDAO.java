@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Base DAO Implementation for <strong>Hibernate 4</strong>.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Transactional
@@ -40,17 +40,8 @@ public class BaseDAO {
   private SessionFactory sessionFactory;
 
   /**
-   * Set session factory from IoC.
-   * 
-   * @param sessionFactory sessionFactory from bean settings
-   */
-  public void setSessionFactory(SessionFactory sessionFactory) {
-    this.sessionFactory = sessionFactory;
-  }
-
-  /**
    * Get current database session
-   * 
+   *
    * @return if the IoC works, return current session, otherwise open a new session
    */
   protected Session getSession() {

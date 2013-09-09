@@ -22,92 +22,60 @@
 
 package cn.edu.uestc.acmicpc.oj.test.util;
 
-import cn.edu.uestc.acmicpc.util.StringUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import cn.edu.uestc.acmicpc.util.StringUtil;
+
 /**
  * All test cases for {@code StringUtil.compareSkipSpaces} methods.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
 public class CompareSkipSpacesTest {
 
-  /**
-   * Custom equal, first and second string are same.
-   */
   @Test
   public void testSame() {
     Assert.assertEquals(0, StringUtil.compareSkipSpaces("cat", "cat"));
   }
 
-  /**
-   * First string has some white space({@code ' '} in it, and they are same by deleting all the
-   * white spaces.
-   */
   @Test
-  public void testSameByDeletingWhiteSpace() {
+  public void testSame_deletingWhiteSpace() {
     Assert.assertEquals(0, StringUtil.compareSkipSpaces("c a t", "cat"));
   }
 
-  /**
-   * The string has some white space({@code ' '} in it,and the some at the end of the string.
-   */
-
   @Test
-  public void testSameAboutEndingSpaces() {
+  public void testSame_endingSpaces() {
     Assert.assertEquals(0, StringUtil.compareSkipSpaces("c a t    ", " c a t"));
   }
 
-  /**
-   * base test of the different string with white space.
-   */
-
   @Test
-  public void testDifferentAboutEndingSpaces() {
+  public void testDifferent_endingSpaces() {
     Assert
         .assertEquals("cat".compareTo("dog"), StringUtil.compareSkipSpaces("c a t    ", " d o g"));
   }
 
-  /**
-   * The string has some Tab character in it,I think they are also white and space.
-   */
-
   @Test
-  public void testAboutTabSpaces() {
+  public void testSame_tabSpaces() {
     Assert.assertEquals(0, StringUtil.compareSkipSpaces("\tc\ta\tt\t", "\tc\ta\tt\t"));
   }
 
-  /**
-   * The string has some Tab character in it,And this time the two string is not the same
-   */
-
   @Test
-  public void testAboutTabSpacesWithDifferentString() {
+  public void testDifferent_tabSpacesWithDifferentString() {
     Assert.assertEquals("cat".compareTo("catt"),
         StringUtil.compareSkipSpaces("\tc\ta\tt\t", "\tc\ta\tt\tt"));
   }
 
-  /**
-   * string with special character and they are the same
-   */
-
   @Test
-  public void testSameAboutSpecialCharacter() {
+  public void testSame_specialCharacter() {
     Assert.assertEquals(0, StringUtil.compareSkipSpaces("\t\012\ta\tt\t", "\t\012\ta\tt\t"));
   }
 
-  /**
-   * string with special character and they are the same
-   */
-
   @Test
-  public void testDifferentAboutSpecialCharacter() {
+  public void testDifferent_specialCharacter() {
     Assert.assertEquals(1, StringUtil.compareSkipSpaces("\t\012\ta\tt\t", "\t\012\t\001a\tt\t"));
   }
 }

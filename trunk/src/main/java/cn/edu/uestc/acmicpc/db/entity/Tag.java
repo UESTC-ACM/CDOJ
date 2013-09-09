@@ -22,18 +22,27 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+
 /**
  * Problem tag information.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@Table(name = "tag", schema = "", catalog = "uestcoj")
+@Table(name = "tag")
 @Entity
 @KeyField("tagId")
 public class Tag implements Serializable {
@@ -104,7 +113,7 @@ public class Tag implements Serializable {
 
   private Collection<ProblemTag> problemTagsByTagId;
 
-  @OneToMany(mappedBy = "tagByTagId")
+  @OneToMany(mappedBy = "tagByTagId", cascade = CascadeType.ALL)
   public Collection<ProblemTag> getProblemTagsByTagId() {
     return problemTagsByTagId;
   }

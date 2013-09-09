@@ -22,19 +22,30 @@
 
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+
 /**
  * Article information.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-@Table(name = "article", schema = "", catalog = "uestcoj")
+@Table(name = "article")
 @Entity
 @KeyField("articleId")
 public class Article implements Serializable {
@@ -208,7 +219,7 @@ public class Article implements Serializable {
     if (title != null ? !title.equals(article.title) : article.title != null) {
       return false;
     }
-    
+
     return true;
   }
 
@@ -228,7 +239,7 @@ public class Article implements Serializable {
 
   private User userByUserId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = true)
   public User getUserByUserId() {
     return userByUserId;
@@ -240,7 +251,7 @@ public class Article implements Serializable {
 
   private Article articleByParentId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "parentId", referencedColumnName = "articleId", nullable = true)
   public Article getArticleByParentId() {
     return articleByParentId;
@@ -252,7 +263,7 @@ public class Article implements Serializable {
 
   private Problem problemByProblemId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = true)
   public Problem getProblemByProblemId() {
     return problemByProblemId;
@@ -264,7 +275,7 @@ public class Article implements Serializable {
 
   private Contest contestByContestId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "contestId", referencedColumnName = "contestId", nullable = true)
   public Contest getContestByContestId() {
     return contestByContestId;
@@ -276,7 +287,7 @@ public class Article implements Serializable {
 
   private Collection<Article> articlesByParentId;
 
-  @OneToMany(mappedBy = "articleByParentId")
+  @OneToMany(mappedBy = "articleByParentId", cascade = CascadeType.ALL)
   public Collection<Article> getArticlesByParentId() {
     return articlesByParentId;
   }
