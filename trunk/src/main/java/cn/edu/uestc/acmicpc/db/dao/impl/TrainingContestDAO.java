@@ -22,15 +22,16 @@
 
 package cn.edu.uestc.acmicpc.db.dao.impl;
 
+import org.springframework.stereotype.Repository;
+
 import cn.edu.uestc.acmicpc.db.dao.base.DAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 
 /**
  * // TODO(mzry1992) Description
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Repository
 public class TrainingContestDAO extends DAO<TrainingContest, Integer> implements
     ITrainingContestDAO {
 

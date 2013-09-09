@@ -22,15 +22,16 @@
 
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
+import org.springframework.stereotype.Controller;
+
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
- * // TODO(mzry1992) Description
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ * Data transfer object for {@link TrainingUser}.
  */
+@Controller
 public class TrainingUserDTO extends BaseDTO<TrainingUser> {
 
   private Integer trainingUserId;
@@ -70,6 +71,7 @@ public class TrainingUserDTO extends BaseDTO<TrainingUser> {
     this.type = type;
   }
 
+  @Override
   public TrainingUser getEntity() throws AppException {
     TrainingUser trainingUser = super.getEntity();
     trainingUser.setRating(1200.0);

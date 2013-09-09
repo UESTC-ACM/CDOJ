@@ -22,14 +22,18 @@
 
 package cn.edu.uestc.acmicpc.db.dto.base;
 
-import cn.edu.uestc.acmicpc.util.StringUtil;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import cn.edu.uestc.acmicpc.util.StringUtil;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Base DTO entity, use reflection to update entity.
@@ -38,16 +42,16 @@ import java.lang.reflect.Method;
  * if you do not set value in get/update method.
  * <p/>
  * If set the field to {@code null}, this field will not be updated in {@code updateEntity} method.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@Controller
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public abstract class BaseDTO<Entity extends Serializable> {
 
   protected abstract Class<Entity> getReferenceClass();
 
   /**
    * Get entity by DTO fields.
-   * 
+   *
    * @return new entity instance
    * @throws AppException
    */
@@ -93,7 +97,7 @@ public abstract class BaseDTO<Entity extends Serializable> {
 
   /**
    * Update entity by DTO fields.
-   * 
+   *
    * @param entity entity to be updated
    */
   protected void updateEntity(Entity entity) throws AppException {

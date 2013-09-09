@@ -22,19 +22,27 @@
 
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
+import org.springframework.stereotype.Controller;
+
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
-import cn.edu.uestc.acmicpc.db.entity.*;
+import cn.edu.uestc.acmicpc.db.entity.Code;
+import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
+import cn.edu.uestc.acmicpc.db.entity.Contest;
+import cn.edu.uestc.acmicpc.db.entity.Language;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.db.entity.Status;
+import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 /**
- * // TODO(fish) Description
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ * Data transfer object for {@link Status}.
  */
+@Controller
 public class StatusDTO extends BaseDTO<Status> {
 
   private Integer statusId;

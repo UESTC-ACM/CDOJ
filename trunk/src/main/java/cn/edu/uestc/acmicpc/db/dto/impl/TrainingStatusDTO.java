@@ -22,15 +22,16 @@
 
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
+import org.springframework.stereotype.Controller;
+
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
- * // TODO(mzry1992) Description
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ * Data transfer object for {@link TrainingStatus}.
  */
+@Controller
 public class TrainingStatusDTO extends BaseDTO<TrainingStatus> {
 
   @Override

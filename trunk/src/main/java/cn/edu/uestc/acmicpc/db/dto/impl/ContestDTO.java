@@ -22,6 +22,15 @@
 
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
@@ -33,16 +42,11 @@ import cn.edu.uestc.acmicpc.ioc.dao.ContestProblemDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.sql.Timestamp;
-import java.util.*;
 
 /**
- * Contest entity data transform object.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ * Data transfer object for {@link Contest}.
  */
+@Controller
 public class ContestDTO extends BaseDTO<Contest> implements ContestProblemDAOAware, ProblemDAOAware {
 
   @Autowired

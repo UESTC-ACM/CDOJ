@@ -22,6 +22,11 @@
 
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
+import org.springframework.stereotype.Controller;
+
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.User;
@@ -29,14 +34,10 @@ import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 /**
- * collect information from register action and generate a User class.
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ * Data transfer object for {@link User}.
  */
+@Controller
 public class UserDTO extends BaseDTO<User> {
 
   /**
@@ -254,7 +255,7 @@ public class UserDTO extends BaseDTO<User> {
 
   /**
    * User is very special, the user name and password etc can not be changed in this method.
-   * 
+   *
    * @param user user entity to be updated
    */
   @Override

@@ -22,15 +22,16 @@
 
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
+import org.springframework.stereotype.Controller;
+
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
- * Problem entity data transform object.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ * Data transfer object for {@link Problem}.
  */
+@Controller
 public class ProblemDTO extends BaseDTO<Problem> {
 
   public ProblemDTO() {
