@@ -22,6 +22,12 @@
 
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
+import java.util.List;
+
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.JoinedProperty;
@@ -30,16 +36,10 @@ import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-
 /**
  * // TODO(mzry1992) Description
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Repository
 public class TrainingUserCondition extends BaseCondition implements UserConditionAware {
 
   private Integer startId;
