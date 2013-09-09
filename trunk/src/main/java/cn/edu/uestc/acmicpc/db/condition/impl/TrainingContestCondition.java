@@ -22,15 +22,16 @@
 
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
+import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
+
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import org.hibernate.criterion.Restrictions;
 
 /**
  * // TODO(mzry1992) Description
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Repository
 public class TrainingContestCondition extends BaseCondition {
 
   private Integer startId;

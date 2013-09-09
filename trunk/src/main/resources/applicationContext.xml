@@ -34,5 +34,4 @@
 	<import resource="applicationContext-jpa.xml" />
   <import resource="applicationContext-actions.xml" />
 	<import resource="applicationContext-service.xml" />
-	<import resource="applicationContext-conditions.xml" />
 </beans>
