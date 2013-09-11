@@ -39,7 +39,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
@@ -160,10 +159,6 @@ public abstract class BaseCondition implements ApplicationContextAware {
    * Clear all field, and set then to {@code null}.
    */
   public void clear() {
-    if (getClass() == UserCondition.class) {
-      return;
-    }
-
     Method[] methods = getClass().getMethods();
     for (Method method : methods) {
       if (method.getName().startsWith("set")) {
