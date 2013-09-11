@@ -21,6 +21,11 @@
 
 package cn.edu.uestc.acmicpc.training.action.index;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import cn.edu.uestc.acmicpc.db.condition.impl.TrainingContestCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDTO;
@@ -34,24 +39,18 @@ import cn.edu.uestc.acmicpc.ioc.util.TrainingRankListParserAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.training.entity.TrainingContestRankList;
 import cn.edu.uestc.acmicpc.training.parser.TrainingRankListParser;
-import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Description
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class TrainingContestAction extends BaseAction implements TrainingContestConditionAware,
     TrainingContestDAOAware, TrainingContestDTOAware, TrainingRankListParserAware {
 
   /**
-	 * 
+	 *
 	 */
   private static final long serialVersionUID = 2230337792377511101L;
 
