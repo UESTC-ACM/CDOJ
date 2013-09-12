@@ -32,6 +32,8 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.Criterion;
@@ -64,6 +66,8 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 @Repository
 public abstract class DAO<Entity extends Serializable, PK extends Serializable> extends BaseDAO
     implements IDAO<Entity, PK> {
+
+  private static final Logger LOGGER = LogManager.getLogger(DAO.class);
 
   @Override
   public void addOrUpdate(Entity entity) throws AppException {
@@ -170,7 +174,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
       updateCriteria(criteria, condition);
       return (Long) criteria.uniqueResult();
     } catch (HibernateException e) {
-      e.printStackTrace();
+      LOGGER.error(e);
       throw new AppException("Invoke count method error.");
     }
   }
@@ -202,7 +206,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
     try {
       getSession().update(entity);
     } catch (HibernateException e) {
-      e.printStackTrace();
+      LOGGER.error(e);
       throw new AppException("Invoke update method error.");
     }
   }

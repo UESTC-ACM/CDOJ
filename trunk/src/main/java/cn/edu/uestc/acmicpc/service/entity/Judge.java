@@ -22,25 +22,28 @@
 
 package cn.edu.uestc.acmicpc.service.entity;
 
-import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
-import cn.edu.uestc.acmicpc.ioc.util.SettingsAware;
-import cn.edu.uestc.acmicpc.util.FileUtil;
-import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.Settings;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.concurrent.BlockingQueue;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
+import cn.edu.uestc.acmicpc.ioc.util.SettingsAware;
+import cn.edu.uestc.acmicpc.util.FileUtil;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.Settings;
+
 /**
  * Problem judge component.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@Service
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class Judge implements Runnable, SettingsAware {
 
   public void setJudgeName(String judgeName) {
@@ -101,7 +104,7 @@ public class Judge implements Runnable, SettingsAware {
 
   /**
    * Build judge's core shell command line
-   * 
+   *
    * @param problemId problem's id
    * @param currentTestCase current test case number
    * @param judgeItem {@code judgeItem} entity
@@ -150,7 +153,7 @@ public class Judge implements Runnable, SettingsAware {
 
   /**
    * Get process' call back string with shell command.
-   * 
+   *
    * @param shellCommand shell command line
    * @return command's call back string
    */
@@ -171,7 +174,7 @@ public class Judge implements Runnable, SettingsAware {
 
   /**
    * Judge judgeItem by judge core.
-   * 
+   *
    * @param judgeItem judge item to be judged
    */
   void judge(JudgeItem judgeItem) {

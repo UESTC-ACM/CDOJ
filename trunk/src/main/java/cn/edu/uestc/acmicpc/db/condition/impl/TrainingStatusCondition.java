@@ -22,6 +22,8 @@
 
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -40,6 +42,8 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 @Repository
 public class TrainingStatusCondition extends BaseCondition implements TrainingContestDAOAware {
+
+  private static final Logger LOGGER = LogManager.getLogger(TrainingStatusCondition.class);
 
   private Integer startId;
   private Integer endId;
@@ -86,7 +90,7 @@ public class TrainingStatusCondition extends BaseCondition implements TrainingCo
                 trainingContest), trainingContest.getTrainingContestId(), ConditionType.eq);
         condition.addJoinedProperty("trainingContestByTrainingContestId", joinedProperty);
       } catch (AppException e) {
-        e.printStackTrace();
+        LOGGER.error(e);
       }
     }
   }
