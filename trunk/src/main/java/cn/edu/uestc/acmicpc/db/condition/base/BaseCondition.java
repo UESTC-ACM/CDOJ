@@ -29,6 +29,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.BeansException;
@@ -92,6 +94,8 @@ import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 @Repository
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public abstract class BaseCondition implements ApplicationContextAware {
+
+  private static final Logger LOGGER = LogManager.getLogger(BaseCondition.class);
 
   /**
    * Spring application context.
@@ -168,7 +172,7 @@ public abstract class BaseCondition implements ApplicationContextAware {
           }
           method.invoke(this, (Object) null);
         } catch (IllegalAccessException | InvocationTargetException e) {
-          e.printStackTrace();
+          LOGGER.error(e);
         }
       }
     }
@@ -245,8 +249,9 @@ public abstract class BaseCondition implements ApplicationContextAware {
           keyValue = value;
           String mapField = exp.MapField();
           mapField = StringUtil.isNullOrWhiteSpace(mapField) ? fieldName : mapField;
-          mapField = upperCaseFirst ?
-              mapField.substring(0, 1).toUpperCase() + mapField.substring(1) : mapField;
+          mapField =
+              upperCaseFirst ? mapField.substring(0, 1).toUpperCase() + mapField.substring(1)
+                  : mapField;
           boolean isJoinedProperty = false;
           if (!exp.MapObject().equals(objectClass)) {
             String name =
@@ -259,16 +264,16 @@ public abstract class BaseCondition implements ApplicationContextAware {
           if (exp.Type().name().equals("like")) {
             value = String.format("%%%s%%", value);
           }
-          Criterion c = (Criterion) restrictionsClass
-              .getMethod(exp.Type().name(), String.class, Object.class)
-                  .invoke(null, mapField, value);
+          Criterion c =
+              (Criterion) restrictionsClass
+                  .getMethod(exp.Type().name(), String.class, Object.class).invoke(null, mapField,
+                      value);
           if (isJoinedProperty) {
             condition.addJoinedProperty(mapField, new JoinedProperty(c, keyValue, exp.Type()));
           } else {
             condition.addCriterion(c);
           }
         } catch (Exception e) {
-          // e.printStackTrace();
         }
       }
     }

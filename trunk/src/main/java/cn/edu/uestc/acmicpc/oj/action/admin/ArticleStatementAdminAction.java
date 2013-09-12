@@ -21,6 +21,10 @@
 
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import cn.edu.uestc.acmicpc.db.dao.iface.IArticleDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDTO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
@@ -28,20 +32,22 @@ import cn.edu.uestc.acmicpc.ioc.dao.ArticleDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dto.ArticleDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Description
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class ArticleStatementAdminAction extends BaseAction implements ArticleDAOAware,
     ArticleDTOAware {
 
+  private static final Logger LOGGER = LogManager.getLogger(ArticleStatementAdminAction.class);
+
   /**
-	 * 
+	 *
 	 */
   private static final long serialVersionUID = -5371516340656472206L;
 
@@ -76,7 +82,7 @@ public class ArticleStatementAdminAction extends BaseAction implements ArticleDA
    * <li>
    * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
    * </ul>
-   * 
+   *
    * @return <strong>JSON</strong> signal
    */
   @Validations(requiredStrings = { @RequiredStringValidator(fieldName = "articleDTO.title",
@@ -98,7 +104,7 @@ public class ArticleStatementAdminAction extends BaseAction implements ArticleDA
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.warn(e);
       json.put("result", "error");
       json.put("error_msg", "Unknown exception occurred.");
     }

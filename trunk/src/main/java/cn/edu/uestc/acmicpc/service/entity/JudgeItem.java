@@ -22,6 +22,11 @@
 
 package cn.edu.uestc.acmicpc.service.entity;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
@@ -38,13 +43,12 @@ import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Judge item for single problem.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@Service
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class JudgeItem implements CompileInfoDAOAware, StatusDAOAware, UserDAOAware,
     ProblemDAOAware, StatusConditionAware {
 

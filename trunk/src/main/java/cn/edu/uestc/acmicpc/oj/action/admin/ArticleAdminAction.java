@@ -21,6 +21,16 @@
 
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Column;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IArticleDAO;
@@ -40,25 +50,18 @@ import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.persistence.Column;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * action for list, search, edit, add article.
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
 public class ArticleAdminAction extends BaseAction implements ArticleDAOAware, ArticleDTOAware,
     ArticleConditionAware {
 
+  private static final Logger LOGGER = LogManager.getLogger(ArticleAdminAction.class);
   /**
-	 * 
+	 *
 	 */
   private static final long serialVersionUID = 499943521076814016L;
   @Autowired
@@ -91,7 +94,7 @@ public class ArticleAdminAction extends BaseAction implements ArticleDAOAware, A
 
   /**
    * Go to article editor view!
-   * 
+   *
    * @return <strong>SUCCESS</strong> signal
    */
   @SuppressWarnings("unchecked")
@@ -128,7 +131,7 @@ public class ArticleAdminAction extends BaseAction implements ArticleDAOAware, A
     } catch (AppException e) {
       return redirect(getActionURL("/admin", "index"), e.getMessage());
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.warn(e);
       return redirect(getActionURL("/admin", "index"), "Unknown exception occurred.");
     }
     return SUCCESS;
@@ -162,7 +165,7 @@ public class ArticleAdminAction extends BaseAction implements ArticleDAOAware, A
 
   /**
    * return the article.jsp for base view
-   * 
+   *
    * @return <strong>SUCCESS</strong> signal
    */
   public String toArticleList() {
@@ -183,7 +186,7 @@ public class ArticleAdminAction extends BaseAction implements ArticleDAOAware, A
    * <li>
    * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
    * </ul>
-   * 
+   *
    * @return <strong>JSON</strong> signal
    */
   @SuppressWarnings("unchecked")
@@ -206,7 +209,7 @@ public class ArticleAdminAction extends BaseAction implements ArticleDAOAware, A
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.warn(e);
       json.put("result", "error");
       json.put("error_msg", "Unknown exception occurred.");
     }
@@ -223,7 +226,7 @@ public class ArticleAdminAction extends BaseAction implements ArticleDAOAware, A
    * <li>
    * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
    * </ul>
-   * 
+   *
    * @return <strong>JSON</strong> signal.
    */
   public String toOperatorArticle() {
@@ -266,7 +269,7 @@ public class ArticleAdminAction extends BaseAction implements ArticleDAOAware, A
         message = String.format("%d total, %d changed.", total, count);
       json.put("msg", message);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.warn(e);
       json.put("result", "error");
       json.put("error_msg", "Unknown exception occurred.");
     }
