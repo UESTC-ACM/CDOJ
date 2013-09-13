@@ -25,6 +25,7 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,8 +37,9 @@ import java.util.Map;
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Controller
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class StatusAdminAction extends BaseAction implements StatusConditionAware, StatusDAOAware {
+public class AdminStatusAction extends BaseAction implements StatusConditionAware, StatusDAOAware {
 
   /**
 	 * 

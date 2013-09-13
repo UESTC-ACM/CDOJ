@@ -37,8 +37,13 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.*;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -54,6 +59,10 @@ import java.util.Map;
  * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@Controller
+@Scope(WebApplicationContext.SCOPE_SESSION)
+//@Scope("session")
+//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class BaseAction extends ActionSupport implements RequestAware, SessionAware,
     ApplicationAware, IActionInterceptor, ServletResponseAware, ServletRequestAware, UserDAOAware,
     ApplicationContextAware {
@@ -68,18 +77,25 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
   /**
    * Global constant
    */
-  private final ThreadLocal<Global> global = new ThreadLocal<>();
-  protected Map<Integer, Global.AuthorStatusType> problemStatus;
   @Autowired
-  protected ApplicationContext applicationContext;
+  private Global global;
+  //private final ThreadLocal<Global> global = new ThreadLocal<>();
 
   public Global getGlobal() {
-    return global.get();
+    //return global.get();
+    return global;
   }
 
   public void setGlobal(Global global) {
-    this.global.set(global);
+    this.global = global;
+    //this.global.set(global);
   }
+
+  protected Map<Integer, Global.AuthorStatusType> problemStatus;
+
+  @Autowired
+  protected ApplicationContext applicationContext;
+
 
   /**
    * Request attribute map.

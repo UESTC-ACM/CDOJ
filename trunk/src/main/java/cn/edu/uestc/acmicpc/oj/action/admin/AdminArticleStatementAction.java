@@ -35,16 +35,18 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
+import org.springframework.stereotype.Controller;
 
 /**
  * Description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class ArticleStatementAdminAction extends BaseAction implements ArticleDAOAware,
+@Controller
+public class AdminArticleStatementAction extends BaseAction implements ArticleDAOAware,
     ArticleDTOAware {
 
-  private static final Logger LOGGER = LogManager.getLogger(ArticleStatementAdminAction.class);
+  private static final Logger LOGGER = LogManager.getLogger(AdminArticleStatementAction.class);
 
   /**
 	 *

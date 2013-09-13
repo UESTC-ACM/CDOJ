@@ -31,6 +31,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 /**
  * Use for edit contest info.
@@ -38,7 +39,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
-public class ContestStatementAdminAction extends BaseAction implements ContestDAOAware,
+@Controller
+public class AdminContestStatementAction extends BaseAction implements ContestDAOAware,
     ContestDTOAware {
 
   /**

@@ -36,12 +36,14 @@ import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 /**
  * action for submit code.
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Controller
 @LoginPermit(NeedLogin = true)
 public class SubmitAction extends BaseAction implements StatusDAOAware, CodeDAOAware,
     ContestDAOAware, LanguageDAOAware, ProblemDAOAware, StatusConditionAware {

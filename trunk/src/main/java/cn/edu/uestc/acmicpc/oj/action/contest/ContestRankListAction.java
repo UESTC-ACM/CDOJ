@@ -39,12 +39,14 @@ import cn.edu.uestc.acmicpc.oj.entity.ContestRankList;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.springframework.stereotype.Controller;
 
 /**
  * Action for list and search all submit status in contest
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Controller
 @LoginPermit(NeedLogin = false)
 public class ContestRankListAction extends BaseAction implements StatusConditionAware,
     StatusDAOAware, ContestDAOAware, ProblemDAOAware {

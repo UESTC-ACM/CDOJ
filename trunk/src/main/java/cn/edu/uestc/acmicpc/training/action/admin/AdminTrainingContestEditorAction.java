@@ -57,6 +57,7 @@ import com.opensymphony.xwork2.validator.annotations.Validations;
 
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.io.File;
 import java.util.List;
@@ -66,8 +67,9 @@ import java.util.List;
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Controller
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class TrainingContestEditorAction extends FileUploadAction implements
+public class AdminTrainingContestEditorAction extends FileUploadAction implements
     TrainingContestDAOAware, TrainingRankListParserAware, TrainingContestDTOAware,
     TrainingStatusDAOAware, TrainingStatusConditionAware, TrainingStatusDTOAware,
     TrainingUserDAOAware, TrainingUserConditionAware, TrainingContestConditionAware,

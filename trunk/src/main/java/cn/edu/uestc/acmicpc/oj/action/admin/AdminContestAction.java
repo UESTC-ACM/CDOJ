@@ -42,6 +42,7 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.persistence.Column;
 import java.lang.reflect.Method;
@@ -56,8 +57,9 @@ import java.util.List;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
+@Controller
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class ContestAdminAction extends BaseAction implements ContestDAOAware,
+public class AdminContestAction extends BaseAction implements ContestDAOAware,
     ContestConditionAware, ContestDTOAware {
 
   /**

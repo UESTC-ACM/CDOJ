@@ -24,6 +24,7 @@ package cn.edu.uestc.acmicpc.training.action.index;
 import java.util.LinkedList;
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.TrainingContestCondition;
@@ -40,12 +41,15 @@ import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.training.entity.TrainingContestRankList;
 import cn.edu.uestc.acmicpc.training.parser.TrainingRankListParser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.springframework.stereotype.Controller;
 
 /**
  * Description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Controller
+@LoginPermit(NeedLogin = false)
 public class TrainingContestAction extends BaseAction implements TrainingContestConditionAware,
     TrainingContestDAOAware, TrainingContestDTOAware, TrainingRankListParserAware {
 
