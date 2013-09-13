@@ -21,6 +21,14 @@
 
 package cn.edu.uestc.acmicpc.oj.action.contest;
 
+import java.io.InputStream;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
@@ -42,19 +50,11 @@ import cn.edu.uestc.acmicpc.oj.entity.ProblemSummaryInfo;
 import cn.edu.uestc.acmicpc.oj.entity.UserRankSummary;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.InputStream;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Export rank list
- *
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@SuppressWarnings("serial")
 public class ContestRankListExportAction extends ExcelExportAction implements StatusConditionAware,
     StatusDAOAware, ContestDAOAware, ProblemDAOAware {
   private InputStream excelStream;
@@ -69,6 +69,7 @@ public class ContestRankListExportAction extends ExcelExportAction implements St
 
   private Integer targetContestId;
 
+  @SuppressWarnings("unchecked")
   public String toExportRankList() {
     List<String[]> table = new LinkedList<>();
     try {

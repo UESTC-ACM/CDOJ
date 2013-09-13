@@ -29,6 +29,8 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
 public class UserDatabaseTest implements UserConditionAware, UserDAOAware {
 
+  // FIXME broken test
+
   @Before
   public void init() {
     userCondition.clear();
@@ -85,7 +87,6 @@ public class UserDatabaseTest implements UserConditionAware, UserDAOAware {
 
   @Test
   public void testUserCondition_byStartIdAndEndId() throws AppException {
-    userCondition.clear();
     userCondition.setStartId(2);
     userCondition.setEndId(4);
     Assert.assertEquals(Long.valueOf(1), userDAO.count(userCondition.getCondition()));

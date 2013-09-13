@@ -22,20 +22,21 @@
 
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
-import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.util.DateUtil;
-import org.hibernate.criterion.Junction;
-import org.hibernate.criterion.Restrictions;
-
 import java.sql.Timestamp;
 import java.util.Calendar;
 
+import org.hibernate.criterion.Junction;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
+
+import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.util.DateUtil;
+
 /**
  * Contest database condition entity.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@Repository
 public class ContestCondition extends BaseCondition {
 
   private Integer startId;

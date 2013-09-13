@@ -22,6 +22,15 @@
 
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
+import java.sql.Timestamp;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.hibernate.criterion.Junction;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.JoinedProperty;
@@ -34,19 +43,11 @@ import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.hibernate.criterion.Junction;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.sql.Timestamp;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Status search condition.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@Repository
 public class StatusCondition extends BaseCondition implements UserConditionAware {
 
   /**
@@ -201,7 +202,7 @@ public class StatusCondition extends BaseCondition implements UserConditionAware
   /**
    * <strong>WARN</strong>: if we set {@code contestId} with {@code -1}, that means we will query
    * all records with contestId is {@code null}.
-   * 
+   *
    * @param condition conditions that to be considered
    */
   @SuppressWarnings({ "unchecked", "rawtypes" })

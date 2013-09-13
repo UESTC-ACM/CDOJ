@@ -22,16 +22,17 @@
 
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
-import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
+
+import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 
 /**
  * Problem search condition.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@Repository
 public class ProblemCondition extends BaseCondition {
 
   /**

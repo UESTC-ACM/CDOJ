@@ -21,22 +21,23 @@
 
 package cn.edu.uestc.acmicpc.oj.action.file;
 
-import cn.edu.uestc.acmicpc.oj.action.BaseAction;
-import jxl.Workbook;
-import jxl.write.Label;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
+
+import jxl.Workbook;
+import jxl.write.Label;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 
 /**
  * Description
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@SuppressWarnings("serial")
 public class ExcelExportAction extends BaseAction {
 
   public InputStream getExcelInputStream(List<String[]> table) {

@@ -28,7 +28,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
@@ -43,9 +48,9 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * Global enumerates and constants inside project.
  * <p/>
  * <strong>WARN:</strong> this file may be rewritten carefully.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@Repository
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
   /**
@@ -220,6 +225,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
    * Initializer.
    */
   @SuppressWarnings("unchecked")
+  @PostConstruct
   public void init() throws AppException {
     contestRankListMap = new HashMap<>();
     this.departmentList = (List<Department>) departmentDAO.findAll();

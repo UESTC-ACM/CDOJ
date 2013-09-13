@@ -11,34 +11,38 @@
 
 package cn.edu.uestc.acmicpc.oj.action.contest;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
-import cn.edu.uestc.acmicpc.db.entity.*;
-import cn.edu.uestc.acmicpc.db.view.impl.*;
-import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
-import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
-import cn.edu.uestc.acmicpc.oj.action.BaseAction;
-import cn.edu.uestc.acmicpc.oj.action.file.ExcelExportAction;
-import cn.edu.uestc.acmicpc.oj.entity.ContestRankList;
-import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.apache.struts2.interceptor.validation.SkipValidation;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
+import cn.edu.uestc.acmicpc.db.entity.Contest;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.db.entity.Status;
+import cn.edu.uestc.acmicpc.db.view.impl.ContestListView;
+import cn.edu.uestc.acmicpc.db.view.impl.ContestProblemSummaryView;
+import cn.edu.uestc.acmicpc.db.view.impl.ContestView;
+import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
+import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
+import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.oj.entity.ContestRankList;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+
 /**
  * Action for list and search all submit status in contest
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @LoginPermit(NeedLogin = false)
@@ -46,7 +50,7 @@ public class ContestRankListAction extends BaseAction implements StatusCondition
     StatusDAOAware, ContestDAOAware, ProblemDAOAware {
 
   /**
-	 * 
+	 *
 	 */
   private static final long serialVersionUID = -7500495190888115907L;
   private Integer targetContestId;
@@ -81,7 +85,7 @@ public class ContestRankListAction extends BaseAction implements StatusCondition
    * <li>
    * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
    * </ul>
-   * 
+   *
    * @return <strong>JSON</strong> signal
    */
   @SuppressWarnings("unchecked")
