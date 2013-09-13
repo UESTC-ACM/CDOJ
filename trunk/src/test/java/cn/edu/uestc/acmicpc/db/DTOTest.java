@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.db;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -18,9 +19,11 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
 public class DTOTest {
 
+  @Autowired
+  private UserDTO userDTO;
+
   @Test
   public void testUserDTO() throws AppException {
-    UserDTO userDTO = new UserDTO();
     userDTO.setUserId(1);
     userDTO.setUserName("userName");
     userDTO.setDepartmentId(1);

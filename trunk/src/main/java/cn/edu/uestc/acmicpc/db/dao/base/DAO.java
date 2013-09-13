@@ -40,6 +40,7 @@ import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
@@ -60,6 +61,7 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
  * @param <PK> Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@Repository
 public abstract class DAO<Entity extends Serializable, PK extends Serializable> extends BaseDAO
     implements IDAO<Entity, PK> {
 

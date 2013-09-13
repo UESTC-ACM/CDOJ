@@ -22,6 +22,10 @@
 
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.JoinedProperty;
@@ -30,14 +34,11 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.ioc.dao.TrainingContestDAOAware;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * // TODO(mzry1992) Description
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Repository
 public class TrainingStatusCondition extends BaseCondition implements TrainingContestDAOAware {
 
   private Integer startId;

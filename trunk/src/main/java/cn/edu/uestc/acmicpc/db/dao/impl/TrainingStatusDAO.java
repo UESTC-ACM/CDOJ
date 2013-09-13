@@ -22,15 +22,16 @@
 
 package cn.edu.uestc.acmicpc.db.dao.impl;
 
+import org.springframework.stereotype.Repository;
+
 import cn.edu.uestc.acmicpc.db.dao.base.DAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 
 /**
  * // TODO(mzry1992) Description
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Repository
 public class TrainingStatusDAO extends DAO<TrainingStatus, Integer> implements ITrainingStatusDAO {
 
   @Override

@@ -22,14 +22,16 @@
 
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
+import org.springframework.stereotype.Controller;
+
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Code;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
- * // TODO(fish) Description
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ * Data transfer object for {@link Code}.
  */
+@Controller
 public class CodeDTO extends BaseDTO<Code> {
 
   private Integer codeId;

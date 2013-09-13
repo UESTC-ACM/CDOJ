@@ -22,15 +22,16 @@
 
 package cn.edu.uestc.acmicpc.db.dao.impl;
 
+import org.springframework.stereotype.Repository;
+
 import cn.edu.uestc.acmicpc.db.dao.base.DAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.ContestUser;
 
 /**
  * DAO for contestuser entity.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@Repository
 public class ContestUserDAO extends DAO<ContestUser, Integer> implements IContestUserDAO {
 
   @Override

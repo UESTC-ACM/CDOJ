@@ -22,17 +22,6 @@
 
 package cn.edu.uestc.acmicpc.util;
 
-import cn.edu.uestc.acmicpc.oj.xml.XmlNode;
-import cn.edu.uestc.acmicpc.oj.xml.XmlParser;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -40,11 +29,32 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.stereotype.Repository;
+
+import cn.edu.uestc.acmicpc.oj.xml.XmlNode;
+import cn.edu.uestc.acmicpc.oj.xml.XmlParser;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+
 /**
  * Global static class to get configuration parameters from <strong>settings.xml</strong>.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@Repository
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
+@Lazy(false)
 public class Settings implements ApplicationContextAware {
 
   /**
@@ -131,11 +141,12 @@ public class Settings implements ApplicationContextAware {
 
   /**
    * initialize configuration mappings from configuration file.
-   * 
+   *
    * @throws cn.edu.uestc.acmicpc.util.exception.AppException
-   * 
+   *
    */
-  @SuppressWarnings({ "unchecked", "unused" })
+  @SuppressWarnings("unchecked")
+  @PostConstruct
   private void init() throws AppException, IOException {
     settings = new HashMap<>();
     String path;
@@ -195,7 +206,7 @@ public class Settings implements ApplicationContextAware {
 
   /**
    * parse item's information
-   * 
+   *
    * @param node item node
    * @return item map
    * @throws AppException
@@ -212,7 +223,7 @@ public class Settings implements ApplicationContextAware {
 
   /**
    * Get configuration value from <strong>settings.xml</strong>.
-   * 
+   *
    * @param path setting path
    * @return item value
    */

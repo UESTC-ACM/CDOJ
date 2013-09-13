@@ -22,11 +22,6 @@
 
 package cn.edu.uestc.acmicpc.db.condition.base;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
-import cn.edu.uestc.acmicpc.util.StringUtil;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
-
 import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -38,8 +33,15 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
+
+import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
+import cn.edu.uestc.acmicpc.util.StringUtil;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 
 /**
  * We can use this class to transform conditions to database's Criterion list
@@ -86,9 +88,9 @@ import org.springframework.context.ApplicationContextAware;
  * }
  * </code></li>
  * </ul>
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@Repository
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public abstract class BaseCondition implements ApplicationContextAware {
 
   /**
@@ -130,7 +132,7 @@ public abstract class BaseCondition implements ApplicationContextAware {
    * <p/>
    * When you deal with {@code joined} columns, please put then into {@code condition} entity with
    * {@code JoinedProperty} entity.
-   * 
+   *
    * @param condition conditions that to be considered
    * @see Condition
    * @see JoinedProperty
@@ -157,10 +159,6 @@ public abstract class BaseCondition implements ApplicationContextAware {
    * Clear all field, and set then to {@code null}.
    */
   public void clear() {
-    if (getClass() == UserCondition.class) {
-      return;
-    }
-
     Method[] methods = getClass().getMethods();
     for (Method method : methods) {
       if (method.getName().startsWith("set")) {
@@ -208,7 +206,7 @@ public abstract class BaseCondition implements ApplicationContextAware {
 
   /**
    * Get {@code Condition} objects from conditions
-   * 
+   *
    * @return condition object we need
    */
   public Condition getCondition() {
@@ -217,7 +215,7 @@ public abstract class BaseCondition implements ApplicationContextAware {
 
   /**
    * Get Condition objects from conditions
-   * 
+   *
    * @param upperCaseFirst whether columns' name begin uppercase letter first
    * @return condition object we need
    */
@@ -286,21 +284,21 @@ public abstract class BaseCondition implements ApplicationContextAware {
 
     /**
      * Mapping field name.
-     * 
+     *
      * @return mapping field name
      */
     public String MapField() default "";
 
     /**
      * Mapping object's class, we will get the persistence entity by specific DAO object.
-     * 
+     *
      * @return mapping object class
      */
     public Class<?> MapObject() default Object.class;
 
     /**
      * Condition compare type, generate the condition clause by the compare type.
-     * 
+     *
      * @return condition compare type
      */
     public ConditionType Type();

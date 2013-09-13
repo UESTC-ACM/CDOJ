@@ -22,15 +22,16 @@
 
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
+import org.springframework.stereotype.Repository;
+
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 
 /**
  * User search condition.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@Repository
 public class UserCondition extends BaseCondition {
 
   /**
@@ -49,14 +50,14 @@ public class UserCondition extends BaseCondition {
 
   /**
    * User's type.
-   * 
+   *
    * @see cn.edu.uestc.acmicpc.util.Global.AuthenticationType
    */
   private Integer type;
 
   /**
    * User's department's id.
-   * 
+   *
    * @see Department
    */
   private Integer departmentId;

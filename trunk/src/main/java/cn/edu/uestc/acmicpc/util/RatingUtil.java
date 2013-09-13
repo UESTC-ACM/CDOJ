@@ -21,6 +21,14 @@
 
 package cn.edu.uestc.acmicpc.util;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
@@ -29,16 +37,12 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.ioc.dao.TrainingStatusDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.TrainingUserDAOAware;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
- * Description
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ * TODO Description
  */
+@Service
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware {
 
   public void updateRating(TrainingContest trainingContest) throws AppException {
@@ -201,7 +205,7 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
 
   /**
    * double signal number with Common.EPS
-   * 
+   *
    * @param value the double value to be evaluated
    * @return double signal number of value
    */
@@ -250,7 +254,7 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
 
   /**
    * standard error function of x
-   * 
+   *
    * @param x the variable's value
    * @return the function value of x
    */
@@ -268,7 +272,7 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
 
   /**
    * the inversion of normal function of x
-   * 
+   *
    * @param x the variable's value
    * @return the function value of x
    */

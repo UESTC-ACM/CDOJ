@@ -26,14 +26,17 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Base DAO Implementation for <strong>Hibernate 4</strong>.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Transactional
+@Repository
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class BaseDAO {
 
   @Autowired
