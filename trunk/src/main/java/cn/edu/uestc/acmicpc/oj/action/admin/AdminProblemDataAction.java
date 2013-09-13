@@ -39,6 +39,7 @@ import com.opensymphony.xwork2.validator.annotations.IntRangeFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.io.File;
 import java.util.HashMap;
@@ -50,8 +51,9 @@ import java.util.zip.ZipFile;
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Controller
 @LoginPermit(Global.AuthenticationType.ADMIN)
-public class ProblemDataAdminAction extends FileUploadAction implements ProblemDAOAware,
+public class AdminProblemDataAction extends FileUploadAction implements ProblemDAOAware,
     ProblemDataDTOAware {
 
   /**

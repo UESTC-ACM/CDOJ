@@ -5,6 +5,9 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.sun.security.auth.module.LdapLoginModule;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -31,7 +34,11 @@ public class TrainingContestRankList implements TrainingUserDAOAware {
   private Boolean isPersonal;
   private Integer type;
 
+  private static final Logger LOGGER = LogManager.getLogger(TrainingContestRankList.class);
+
+  //TODO Fix me! SCOPE error(maybe)
   public TrainingContestRankList() {
+    LOGGER.info("Clear old data");
     problemSummary = new LinkedList<>();
     trainingUserRankSummaryList = new LinkedList<>();
   }
@@ -48,6 +55,8 @@ public class TrainingContestRankList implements TrainingUserDAOAware {
    */
   public void setRankList(List<String[]> rankList, Boolean isPersonal, Integer type)
       throws FieldNotUniqueException, AppException, ParserException {
+    problemSummary = new LinkedList<>();
+    trainingUserRankSummaryList = new LinkedList<>();
     this.isPersonal = isPersonal;
     this.type = type;
 

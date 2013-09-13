@@ -24,6 +24,8 @@ package cn.edu.uestc.acmicpc.oj.action.file;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.FileUtil;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import org.springframework.stereotype.Controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,6 +38,8 @@ import java.util.List;
  * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@Controller
+@LoginPermit(NeedLogin = false)
 public class FileUploadAction extends BaseAction {
 
   /**

@@ -49,17 +49,19 @@ import cn.edu.uestc.acmicpc.util.ReflectionUtil;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.springframework.stereotype.Controller;
 
 /**
  * action for list, search, edit, add article.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Controller
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class ArticleAdminAction extends BaseAction implements ArticleDAOAware, ArticleDTOAware,
+public class AdminArticleAction extends BaseAction implements ArticleDAOAware, ArticleDTOAware,
     ArticleConditionAware {
 
-  private static final Logger LOGGER = LogManager.getLogger(ArticleAdminAction.class);
+  private static final Logger LOGGER = LogManager.getLogger(AdminArticleAction.class);
   /**
 	 *
 	 */

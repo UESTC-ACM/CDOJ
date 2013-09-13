@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
@@ -50,13 +51,19 @@ import cn.edu.uestc.acmicpc.oj.entity.ProblemSummaryInfo;
 import cn.edu.uestc.acmicpc.oj.entity.UserRankSummary;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.springframework.stereotype.Controller;
 
 /**
  * Export rank list
  */
 @SuppressWarnings("serial")
+@Controller
+@LoginPermit(NeedLogin = false)
 public class ContestRankListExportAction extends ExcelExportAction implements StatusConditionAware,
     StatusDAOAware, ContestDAOAware, ProblemDAOAware {
+
+  //TODO lyhypacm Please set serialVersionUID to this class
+
   private InputStream excelStream;
 
   public Integer getTargetContestId() {

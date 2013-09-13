@@ -28,17 +28,22 @@ import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dto.ProblemDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 /**
  * description
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class ProblemStatementAdminAction extends BaseAction implements ProblemDAOAware,
+@Controller
+@LoginPermit(value = Global.AuthenticationType.ADMIN)
+public class AdminProblemStatementAction extends BaseAction implements ProblemDAOAware,
     ProblemDTOAware {
 
   /**

@@ -30,7 +30,6 @@
 	<!-- <aop:aspectj-autoproxy /> -->
 	<import resource="applicationContext-resources.xml" />
 	<import resource="applicationContext-jpa.xml" />
-	<import resource="applicationContext-actions.xml" />
 	<bean id="judgeService" class="cn.edu.uestc.acmicpc.service.JudgeService"
 		init-method="init" destroy-method="destroy" lazy-init="false" scope="singleton">
 	</bean>

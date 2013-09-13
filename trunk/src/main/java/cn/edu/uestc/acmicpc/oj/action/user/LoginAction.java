@@ -33,6 +33,7 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import com.opensymphony.xwork2.validator.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -42,6 +43,7 @@ import java.util.Date;
  * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@Controller
 @LoginPermit(NeedLogin = false)
 public class LoginAction extends BaseAction implements StatusConditionAware, StatusDAOAware {
 
