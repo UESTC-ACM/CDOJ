@@ -47,7 +47,7 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 import cn.edu.uestc.acmicpc.util.exception.ParserException;
 
 /**
- * Description
+ * Test cases for {@link TrainingRankListParser}.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
