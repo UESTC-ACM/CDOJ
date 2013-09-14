@@ -4,17 +4,15 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.BlockJUnit4ClassRunner;
 import org.pegdown.PegDownProcessor;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.edu.uestc.acmicpc.util.StringUtil;
 
 /**
  * Test cases for markdown.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({ "classpath:applicationContext-test.xml" })
+@RunWith(BlockJUnit4ClassRunner.class)
 public class MarkdownTest {
 
   @Test

@@ -22,16 +22,17 @@
 
 package cn.edu.uestc.acmicpc.util;
 
+
+
+
 /**
  * Array util functions.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ArrayUtil {
 
   /**
    * Join all objects into a string, splitting with {@code flag}.
-   * 
+   *
    * @param objects object array
    * @param flag splitting flag
    * @return expected string
@@ -48,7 +49,7 @@ public class ArrayUtil {
 
   /**
    * Joins all strings into a string, splitting with {@code flag}.
-   * 
+   *
    * @param objects string array
    * @param flag splitting flag
    * @return expected string
@@ -59,7 +60,7 @@ public class ArrayUtil {
 
   /**
    * Transform any array into {@code Object} array.
-   * 
+   *
    * @param array array parameter
    * @param <T> element type
    * @return expected array
@@ -76,7 +77,7 @@ public class ArrayUtil {
    * Transform string array into integer array.
    * <p/>
    * Set element null if it can not be parsed to integer.
-   * 
+   *
    * @param s integer list splitting with ','
    * @return expected integer array
    */

@@ -22,15 +22,15 @@
 
 package cn.edu.uestc.acmicpc.checker;
 
-import cn.edu.uestc.acmicpc.checker.base.Checker;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.FileUtil;
-
 import java.io.File;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import cn.edu.uestc.acmicpc.checker.base.Checker;
+import cn.edu.uestc.acmicpc.util.FileUtil;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Data checker for data.zip files.
@@ -52,8 +52,6 @@ import java.util.Set;
  * files in the folder. <strong>For administrators</strong>:
  * <p/>
  * Please put all data files in the zip file's root, rather than a specific folder.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ZipDataChecker implements Checker<File> {
 
