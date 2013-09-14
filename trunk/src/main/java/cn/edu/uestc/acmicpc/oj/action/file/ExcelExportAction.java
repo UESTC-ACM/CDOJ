@@ -26,11 +26,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import org.springframework.stereotype.Controller;
 
 /**
  * Description
@@ -38,7 +40,11 @@ import cn.edu.uestc.acmicpc.oj.action.BaseAction;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @SuppressWarnings("serial")
+@Controller
+@LoginPermit(NeedLogin = false)
 public class ExcelExportAction extends BaseAction {
+
+  //TODO lyhypacm Please set serialVersionUID to this class
 
   public InputStream getExcelInputStream(List<String[]> table) {
     Label label;

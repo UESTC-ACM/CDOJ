@@ -40,6 +40,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import com.opensymphony.xwork2.validator.annotations.*;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +50,9 @@ import java.util.List;
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Controller
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class UserAdminAction extends BaseAction implements DepartmentDAOAware, UserConditionAware,
+public class AdminUserAction extends BaseAction implements DepartmentDAOAware, UserConditionAware,
     UserDTOAware {
 
   /**

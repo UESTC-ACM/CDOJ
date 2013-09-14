@@ -25,6 +25,7 @@ package cn.edu.uestc.acmicpc.oj.action.test;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import org.springframework.stereotype.Controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,6 +37,7 @@ import java.util.List;
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Controller
 @LoginPermit(value = Global.AuthenticationType.NORMAL)
 public class TestFileUploadAction extends BaseAction {
 

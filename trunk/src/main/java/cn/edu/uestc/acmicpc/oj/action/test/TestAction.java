@@ -30,6 +30,7 @@ import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ import java.util.List;
  * 
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@Controller
 @LoginPermit(value = Global.AuthenticationType.NORMAL)
 public class TestAction extends BaseAction implements TagDAOAware {
 

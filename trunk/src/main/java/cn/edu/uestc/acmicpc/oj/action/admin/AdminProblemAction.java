@@ -42,6 +42,7 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.persistence.Column;
 import java.lang.reflect.Method;
@@ -53,8 +54,9 @@ import java.util.List;
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Controller
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class ProblemAdminAction extends BaseAction implements ProblemConditionAware,
+public class AdminProblemAction extends BaseAction implements ProblemConditionAware,
     ProblemDAOAware, ProblemDTOAware {
 
   /**

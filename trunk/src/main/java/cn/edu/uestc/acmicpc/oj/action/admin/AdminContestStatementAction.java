@@ -21,53 +21,54 @@
 
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IArticleDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDTO;
-import cn.edu.uestc.acmicpc.db.entity.Article;
-import cn.edu.uestc.acmicpc.ioc.dao.ArticleDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dto.ArticleDTOAware;
+import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestDTO;
+import cn.edu.uestc.acmicpc.db.entity.Contest;
+import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dto.ContestDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 /**
- * Description
+ * Use for edit contest info.
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+ * @version 1
  */
-public class ArticleStatementAdminAction extends BaseAction implements ArticleDAOAware,
-    ArticleDTOAware {
+@Controller
+public class AdminContestStatementAction extends BaseAction implements ContestDAOAware,
+    ContestDTOAware {
 
   /**
 	 * 
 	 */
-  private static final long serialVersionUID = -5371516340656472206L;
+  private static final long serialVersionUID = 7615764585918581076L;
+
+  /**
+   * Use for update contest info
+   */
+  @Autowired
+  private IContestDAO contestDAO;
 
   @Autowired
-  private IArticleDAO articleDAO;
-
-  @Autowired
-  private ArticleDTO articleDTO;
+  private ContestDTO contestDTO;
 
   @Override
-  public void setArticleDAO(IArticleDAO articleDAO) {
-    this.articleDAO = articleDAO;
+  public ContestDTO getContestDTO() {
+    return contestDTO;
   }
 
   @Override
-  public void setArticleDTO(ArticleDTO articleDTO) {
-    this.articleDTO = articleDTO;
-  }
-
-  @Override
-  public ArticleDTO getArticleDTO() {
-    return articleDTO;
+  public void setContestDTO(ContestDTO contestDTO) {
+    this.contestDTO = contestDTO;
   }
 
   /**
-   * To add or edit user entity.
+   * To add or edit contest entity.
    * <p/>
    * <strong>JSON output</strong>:
    * <ul>
@@ -79,20 +80,19 @@ public class ArticleStatementAdminAction extends BaseAction implements ArticleDA
    * 
    * @return <strong>JSON</strong> signal
    */
-  @Validations(requiredStrings = { @RequiredStringValidator(fieldName = "articleDTO.title",
-      key = "error.title.validation", trim = true) })
+  @Validations(requiredStrings = { @RequiredStringValidator(fieldName = "contestDTO.title",
+      key = "error.contestTitle.validation", trim = true) })
   public String toEdit() {
     try {
-      Article article;
+      Contest contest = contestDAO.get(contestDTO.getContestId());
 
-      article = articleDAO.get(articleDTO.getArticleId());
-      if (article == null)
-        throw new AppException("No such article!");
+      if (contest == null)
+        throw new AppException("No such contest!");
 
-      articleDTO.updateEntity(article);
-      article.setUserByUserId(currentUser);
+      contestDTO.updateEntity(contest);
 
-      articleDAO.update(article);
+      contestDAO.update(contest);
+
       json.put("result", "ok");
     } catch (AppException e) {
       json.put("result", "error");
@@ -103,5 +103,12 @@ public class ArticleStatementAdminAction extends BaseAction implements ArticleDA
       json.put("error_msg", "Unknown exception occurred.");
     }
     return JSON;
+
   }
+
+  @Override
+  public void setContestDAO(IContestDAO contestDAO) {
+    this.contestDAO = contestDAO;
+  }
+
 }

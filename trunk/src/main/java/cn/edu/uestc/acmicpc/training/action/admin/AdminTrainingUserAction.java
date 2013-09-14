@@ -38,6 +38,7 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.persistence.Column;
 
@@ -50,8 +51,9 @@ import java.util.List;
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Controller
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class TrainingUserAdminAction extends BaseAction implements TrainingUserConditionAware,
+public class AdminTrainingUserAction extends BaseAction implements TrainingUserConditionAware,
     TrainingUserDAOAware {
 
   /**
