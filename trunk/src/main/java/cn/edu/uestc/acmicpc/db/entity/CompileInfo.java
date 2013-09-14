@@ -39,8 +39,6 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Compile information which compiler returns.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Table(name = "compileInfo")
 @Entity
@@ -50,7 +48,7 @@ public class CompileInfo implements Serializable {
   private static final long serialVersionUID = 1404496264299518630L;
   private Integer compileInfoId;
 
-  private Integer version;
+  private Integer version = 0;
 
   @Version
   @Column(name = "OPTLOCK")

@@ -40,8 +40,6 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Status information.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Table(name = "status")
 @Entity
@@ -51,7 +49,7 @@ public class Status implements Serializable {
   private static final long serialVersionUID = 4819326443036942394L;
   private Integer statusId;
 
-  private Integer version;
+  private Integer version = 0;
 
   @Version
   @Column(name = "OPTLOCK")
@@ -140,7 +138,7 @@ public class Status implements Serializable {
     this.time = time;
   }
 
-  private Integer caseNumber;
+  private Integer caseNumber = 0;
 
   @Column(name = "caseNumber", nullable = false, insertable = true, updatable = true, length = 10,
       precision = 0)

@@ -65,7 +65,7 @@ CREATE  TABLE IF NOT EXISTS `uestcojtest`.`problem` (
   `outputLimit` INT NOT NULL DEFAULT 8000 ,
   `javaTimeLimit` INT NOT NULL DEFAULT 3000 ,
   `javaMemoryLimit` INT NOT NULL DEFAULT 65535 ,
-  `dataCount` INT NOT NULL DEFAULT 1 ,
+  `dataCount` INT NOT NULL DEFAULT 0 ,
   `difficulty` INT NOT NULL DEFAULT 1 ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`problemId`) ,

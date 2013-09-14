@@ -224,13 +224,18 @@
 		</dependency>
 		<!-- JUnit -->
 
-		<!-- log4j -->
+		<!-- log -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
-		<!-- log4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+		<!-- log -->
 
 		<!-- markdown -->
 		<dependency>
@@ -374,7 +379,7 @@
 							<url>jdbc:mysql://localhost:3306/uestcoj</url>
 							<autocommit>true</autocommit>
 							<srcFiles>
-								<srcFile>src/main/sql/uestcojtest.sql</srcFile>
+								<srcFile>src/test/sql/uestcojtest.sql</srcFile>
 							</srcFiles>
 						</configuration>
 					</execution>

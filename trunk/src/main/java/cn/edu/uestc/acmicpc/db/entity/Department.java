@@ -39,8 +39,6 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Department information.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Table(name = "department")
 @Entity
@@ -50,7 +48,7 @@ public class Department implements Serializable {
   private static final long serialVersionUID = -2249534733683595360L;
   private Integer departmentId;
 
-  private Integer version;
+  private Integer version = 0;
 
   @Version
   @Column(name = "OPTLOCK")
@@ -74,7 +72,7 @@ public class Department implements Serializable {
     this.departmentId = departmentId;
   }
 
-  private String name;
+  private String name = "";
 
   @Column(name = "name", nullable = false, insertable = true, updatable = true, length = 50,
       precision = 0)

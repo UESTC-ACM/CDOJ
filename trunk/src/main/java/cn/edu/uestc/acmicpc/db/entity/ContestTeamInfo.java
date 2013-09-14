@@ -36,8 +36,6 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Contest team information, for school programming contest.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Table(name = "contestTeamInfo")
 @Entity
@@ -47,7 +45,7 @@ public class ContestTeamInfo implements Serializable {
   private static final long serialVersionUID = -5816811480409208296L;
   private Integer teamId;
 
-  private Integer version;
+  private Integer version = 0;
 
   @Version
   @Column(name = "OPTLOCK")
@@ -84,7 +82,7 @@ public class ContestTeamInfo implements Serializable {
     this.userId = userId;
   }
 
-  private String name;
+  private String name = "";
 
   @Column(name = "name", nullable = false, insertable = true, updatable = true, length = 50,
       precision = 0)
@@ -97,7 +95,7 @@ public class ContestTeamInfo implements Serializable {
     this.name = name;
   }
 
-  private String coderName;
+  private String coderName = "";
 
   @Column(name = "coderName", nullable = false, insertable = true, updatable = true, length = 150,
       precision = 0)
@@ -110,7 +108,7 @@ public class ContestTeamInfo implements Serializable {
     this.coderName = coderName;
   }
 
-  private String sex;
+  private String sex = "";
 
   @Column(name = "sex", nullable = false, insertable = true, updatable = true, length = 3,
       precision = 0)
@@ -123,7 +121,7 @@ public class ContestTeamInfo implements Serializable {
     this.sex = sex;
   }
 
-  private String department;
+  private String department = "";
 
   @Column(name = "department", nullable = false, insertable = true, updatable = true, length = 50,
       precision = 0)
@@ -136,7 +134,7 @@ public class ContestTeamInfo implements Serializable {
     this.department = department;
   }
 
-  private String grade;
+  private String grade = "";
 
   @Column(name = "grade", nullable = false, insertable = true, updatable = true, length = 50,
       precision = 0)
@@ -149,7 +147,7 @@ public class ContestTeamInfo implements Serializable {
     this.grade = grade;
   }
 
-  private String phone;
+  private String phone = "";
 
   @Column(name = "phone", nullable = false, insertable = true, updatable = true, length = 100,
       precision = 0)
@@ -162,7 +160,7 @@ public class ContestTeamInfo implements Serializable {
     this.phone = phone;
   }
 
-  private String size;
+  private String size = "";
 
   @Column(name = "size", nullable = false, insertable = true, updatable = true, length = 50,
       precision = 0)
@@ -175,7 +173,7 @@ public class ContestTeamInfo implements Serializable {
     this.size = size;
   }
 
-  private String email;
+  private String email = "";
 
   @Column(name = "email", nullable = false, insertable = true, updatable = true, length = 300,
       precision = 0)
@@ -188,7 +186,7 @@ public class ContestTeamInfo implements Serializable {
     this.email = email;
   }
 
-  private String school;
+  private String school = "";
 
   @Column(name = "school", nullable = false, insertable = true, updatable = true, length = 50,
       precision = 0)
@@ -201,7 +199,7 @@ public class ContestTeamInfo implements Serializable {
     this.school = school;
   }
 
-  private Byte state;
+  private Byte state = 0;
 
   @Column(name = "state", nullable = false, insertable = true, updatable = true, length = 3,
       precision = 0)

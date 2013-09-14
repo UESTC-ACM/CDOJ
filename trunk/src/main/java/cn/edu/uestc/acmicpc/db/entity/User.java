@@ -42,8 +42,6 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * User information.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Table(name = "user")
 @Entity
@@ -53,7 +51,7 @@ public class User implements Serializable {
   private static final long serialVersionUID = -1942419166710527006L;
   private Integer userId;
 
-  private Integer version;
+  private Integer version = 0;
 
   @Version
   @Column(name = "OPTLOCK")
@@ -116,7 +114,7 @@ public class User implements Serializable {
     this.password = password;
   }
 
-  private String school;
+  private String school = "";
 
   @Column(name = "school", nullable = false, insertable = true, updatable = true, length = 100,
       precision = 0)
@@ -155,7 +153,7 @@ public class User implements Serializable {
     this.email = email;
   }
 
-  private Integer solved;
+  private Integer solved = 0;
 
   @Override
   public String toString() {
@@ -176,7 +174,7 @@ public class User implements Serializable {
     this.solved = solved;
   }
 
-  private Integer tried;
+  private Integer tried = 0;
 
   @Column(name = "tried", nullable = false, insertable = true, updatable = true, length = 10,
       precision = 0)
@@ -189,7 +187,7 @@ public class User implements Serializable {
     this.tried = tried;
   }
 
-  private Integer type;
+  private Integer type = 0;
 
   @Column(name = "type", nullable = false, insertable = true, updatable = true, length = 10,
       precision = 0)

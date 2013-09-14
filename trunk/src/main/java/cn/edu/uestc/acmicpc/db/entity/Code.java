@@ -39,8 +39,6 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Code information.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Table(name = "code")
 @Entity
@@ -50,7 +48,7 @@ public class Code implements Serializable {
   private static final long serialVersionUID = 6092881044668152921L;
   private Integer codeId;
 
-  private Integer version;
+  private Integer version = 0;
 
   @Version
   @Column(name = "OPTLOCK")
