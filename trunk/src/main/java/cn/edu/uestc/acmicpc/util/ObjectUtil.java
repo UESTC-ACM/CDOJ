@@ -28,14 +28,14 @@ import java.util.ArrayList;
 
 /**
  * Object global methods.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ObjectUtil {
 
   /**
    * Output object's fields and methods.
-   * 
+   *
    * @param obj object to be printed
    * @return information about the object
    */
@@ -65,5 +65,15 @@ public class ObjectUtil {
       for (Object object : (Iterable) obj)
         list.add(toString(object));
     return String.format("{ %s }", ArrayUtil.join(list.toArray(), " , "));
+  }
+
+  public static boolean euqals(Object first, Object second) {
+    if (first == second) {
+      return true;
+    }
+    if (first == null || second == null) {
+      return false;
+    }
+    return first.equals(second);
   }
 }

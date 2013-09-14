@@ -21,6 +21,19 @@
 
 package cn.edu.uestc.acmicpc.oj.test.util;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import jxl.read.biff.BiffException;
+
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
@@ -32,23 +45,9 @@ import cn.edu.uestc.acmicpc.training.parser.TrainingRankListParser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 import cn.edu.uestc.acmicpc.util.exception.ParserException;
-import jxl.read.biff.BiffException;
-
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Description
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })

@@ -36,15 +36,10 @@ public class ProblemDatabaseTest implements ProblemConditionAware, ProblemDAOAwa
     problemCondition.clear();
   }
 
-  @SuppressWarnings("unchecked")
   @Test
   public void testStartIdAndEndId() throws AppException {
     problemCondition.setStartId(1);
     problemCondition.setEndId(5);
-    List<Problem> problems = (List<Problem>) problemDAO.findAll(problemCondition.getCondition());
-    for (Problem problem : problems) {
-      System.err.println(problem.getProblemId());
-    }
     Assert.assertEquals(Long.valueOf(5), problemDAO.count(problemCondition.getCondition()));
   }
 

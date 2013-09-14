@@ -25,16 +25,14 @@ package cn.edu.uestc.acmicpc.oj.test.util;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.runners.BlockJUnit4ClassRunner;
 
 import cn.edu.uestc.acmicpc.util.StringUtil;
 
 /**
  * All test cases for {@code StringUtil.compareSkipSpaces} methods.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({ "classpath:applicationContext-test.xml" })
+@RunWith(BlockJUnit4ClassRunner.class)
 public class CompareSkipSpacesTest {
 
   @Test

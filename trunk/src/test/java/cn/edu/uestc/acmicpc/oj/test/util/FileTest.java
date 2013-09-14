@@ -27,10 +27,13 @@ import java.io.File;
 import org.aspectj.util.FileUtil;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.BlockJUnit4ClassRunner;
 
 /**
  * Test cases for {@link FileUtil}.
  */
+@RunWith(BlockJUnit4ClassRunner.class)
 public class FileTest {
 
   @Test
