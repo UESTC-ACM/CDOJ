@@ -22,6 +22,8 @@
 
 package cn.edu.uestc.acmicpc.db.dao.base;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -39,6 +41,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class BaseDAO {
 
+  private static final Logger LOGGER = LogManager.getLogger(BaseDAO.class);
+
   @Autowired
   private SessionFactory sessionFactory;
 
@@ -52,7 +56,7 @@ public class BaseDAO {
     try {
       session = sessionFactory.getCurrentSession();
     } catch (HibernateException e) {
-      e.printStackTrace();
+      LOGGER.error(e);
       session = sessionFactory.openSession();
     }
     return session;

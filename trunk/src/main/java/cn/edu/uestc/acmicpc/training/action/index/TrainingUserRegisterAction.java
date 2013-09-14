@@ -27,18 +27,22 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.ioc.dao.TrainingUserDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dto.TrainingUserDTOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.Validations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 /**
  * Description
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class RegisterAction extends BaseAction implements TrainingUserDAOAware,
+@Controller
+@LoginPermit(NeedLogin = false)
+public class TrainingUserRegisterAction extends BaseAction implements TrainingUserDAOAware,
     TrainingUserDTOAware {
 
   /**

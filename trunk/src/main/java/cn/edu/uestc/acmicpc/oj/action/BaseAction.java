@@ -22,6 +22,29 @@
 
 package cn.edu.uestc.acmicpc.oj.action;
 
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.struts2.interceptor.ApplicationAware;
+import org.apache.struts2.interceptor.RequestAware;
+import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.interceptor.ServletResponseAware;
+import org.apache.struts2.interceptor.SessionAware;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.WebApplicationContext;
+
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
@@ -33,27 +56,18 @@ import cn.edu.uestc.acmicpc.util.Settings;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import com.opensymphony.xwork2.ActionSupport;
-import org.apache.struts2.interceptor.*;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * Base action support, add specified common elements in here.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
+@Controller
+@Scope(WebApplicationContext.SCOPE_SESSION)
+//@Scope("session")
+//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class BaseAction extends ActionSupport implements RequestAware, SessionAware,
     ApplicationAware, IActionInterceptor, ServletResponseAware, ServletRequestAware, UserDAOAware,
     ApplicationContextAware {
@@ -68,18 +82,25 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
   /**
    * Global constant
    */
-  private final ThreadLocal<Global> global = new ThreadLocal<>();
-  protected Map<Integer, Global.AuthorStatusType> problemStatus;
   @Autowired
-  protected ApplicationContext applicationContext;
+  private Global global;
+  //private final ThreadLocal<Global> global = new ThreadLocal<>();
 
   public Global getGlobal() {
-    return global.get();
+    //return global.get();
+    return global;
   }
 
   public void setGlobal(Global global) {
-    this.global.set(global);
+    this.global = global;
+    //this.global.set(global);
   }
+
+  protected Map<Integer, Global.AuthorStatusType> problemStatus;
+
+  @Autowired
+  protected ApplicationContext applicationContext;
+
 
   /**
    * Request attribute map.
@@ -159,7 +180,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
 
   /**
    * Implement {@link ApplicationAware} interface, with Ioc.
-   * 
+   *
    * @param application application attribute
    */
   @Override
@@ -169,7 +190,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
 
   /**
    * Implement {@link RequestAware} interface, with Ioc.
-   * 
+   *
    * @param request request attribute
    */
   @Override
@@ -179,7 +200,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
 
   /**
    * Implement {@link SessionAware} interface, with Ioc.
-   * 
+   *
    * @param session session attribute
    */
   @Override
@@ -205,7 +226,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
 
   /**
    * Check <strong>IE6</strong> browser.
-   * 
+   *
    * @param actionInfo action information entity
    */
   private void checkIE6(AppInterceptor.ActionInfo actionInfo) {
@@ -223,7 +244,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
 
   /**
    * Get http request parameter.
-   * 
+   *
    * @param param parameter name
    * @return parameter value
    */
@@ -233,7 +254,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
 
   /**
    * Redirect to specific url with no message.
-   * 
+   *
    * @param url expected url
    * @return <strong>REDIRECT</strong> signal
    */
@@ -243,7 +264,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
 
   /**
    * Redirect to specific url and popup a message.
-   * 
+   *
    * @param url expected url
    * @param msg information message
    * @return <strong>REDIRECT</strong> signal
@@ -256,7 +277,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
 
   /**
    * Get current toLogin user, if no user had toLogin, return {@code null}.
-   * 
+   *
    * @return current toLogin user entity
    */
   User getCurrentUserEntity() {
@@ -281,7 +302,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
 
   /**
    * Get actual absolute path of a virtual path.
-   * 
+   *
    * @param path path which we want to transform
    * @return actual path
    */
@@ -297,7 +318,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
    * <strong>Example</strong> getActionURL("/problem","page","/1") return
    * acm.uestc.edu.cn/problem/page/1 getActionURL("/problem","page","?id=1") return
    * acm.uestc.edu.cn/problem/page?id=1
-   * 
+   *
    * @param namespace action's namespace
    * @param name action name
    * @param parameterString parameter list for action
@@ -313,7 +334,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
 
   /**
    * Get action url by namespace and action name
-   * 
+   *
    * @param namespace action's namespace
    * @param name action name
    * @return action url
@@ -324,7 +345,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
 
   /**
    * Check user type.
-   * 
+   *
    * @param actionInfo action information object
    */
   private void checkAuth(AppInterceptor.ActionInfo actionInfo) {
@@ -365,7 +386,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
 
   /**
    * Put error message into request and return error signal.
-   * 
+   *
    * @param message error message
    * @return error signal
    */
@@ -376,7 +397,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
 
   /**
    * Put exception's error message into request and return error signal.
-   * 
+   *
    * @param e application exception
    * @return error signal
    */
@@ -403,7 +424,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
 
   /**
    * Redirect to reference page with specific message.
-   * 
+   *
    * @param msg message content
    * @return redirect signal
    */
@@ -413,7 +434,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
 
   /**
    * Redirect to reference page with no message.
-   * 
+   *
    * @return redirect signal
    */
   protected String redirectToRefer() {
@@ -436,7 +457,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
    * <strong>Example:</strong> Get total and set it into {@code buildPageInfo} method: <br />
    * {@code PageInfo pageInfo = buildPageInfo(articleDAO.count(), RECORD_PER_PAGE,
    * getContextPath("") + "/Problem", null);}
-   * 
+   *
    * @param count total number of records
    * @param countPerPage number of records per page
    * @param baseURL base URL
@@ -454,7 +475,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
 
   /**
    * Write string content into web page.
-   * 
+   *
    * @param content content
    */
   protected void out(String content) throws IOException {

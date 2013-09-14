@@ -30,6 +30,7 @@ import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
@@ -42,8 +43,9 @@ import java.util.Iterator;
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Controller
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class ArticlePictureAdminAction extends FileUploadAction implements ArticleDAOAware {
+public class AdminArticlePictureAction extends FileUploadAction implements ArticleDAOAware {
 
   /**
 	 * 

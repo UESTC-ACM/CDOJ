@@ -24,12 +24,14 @@ package cn.edu.uestc.acmicpc.oj.action.index;
 
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import org.springframework.stereotype.Controller;
 
 /**
  * action for index page
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Controller
 @LoginPermit(NeedLogin = false)
 public class IndexAction extends BaseAction {
 

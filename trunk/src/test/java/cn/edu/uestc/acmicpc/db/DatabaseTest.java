@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Restrictions;
 import org.junit.Assert;
@@ -58,6 +60,8 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
 public class DatabaseTest {
+
+  private static final Logger LOGGER = LogManager.getLogger(DatabaseTest.class);
 
   /**
    * UserDAO entity
@@ -139,7 +143,7 @@ public class DatabaseTest {
       System.out.println(contest.toString());
       contestDAO.add(contest);
     } catch (AppException e) {
-      e.printStackTrace();
+      LOGGER.error(e);
     }
   }
 

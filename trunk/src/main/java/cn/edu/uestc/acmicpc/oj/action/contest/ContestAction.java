@@ -42,6 +42,7 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -51,6 +52,7 @@ import java.util.*;
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Controller
 @LoginPermit(NeedLogin = false)
 public class ContestAction extends BaseAction implements ContestDAOAware, ProblemDAOAware,
     StatusDAOAware, StatusConditionAware {

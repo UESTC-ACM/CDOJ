@@ -45,6 +45,7 @@ import com.opensymphony.xwork2.validator.annotations.*;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +56,7 @@ import java.util.Map;
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Controller
 @LoginPermit(NeedLogin = false)
 public class UserCenterAction extends BaseAction implements StatusDAOAware, StatusConditionAware,
     ProblemDAOAware, UserDTOAware, DepartmentDAOAware, ProblemConditionAware {

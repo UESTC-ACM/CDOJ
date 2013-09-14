@@ -25,14 +25,16 @@ package cn.edu.uestc.acmicpc.oj.action.admin;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import org.springframework.stereotype.Controller;
 
 /**
  * description
  * 
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+@Controller
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class IndexAction extends BaseAction {
+public class AdminIndexAction extends BaseAction {
 
   private static final long serialVersionUID = -754990150765691696L;
 

@@ -27,10 +27,10 @@
 <struts>
     <package name="training" namespace="/training" extends="default">
         <default-action-ref name="index"/>
-        <action name="index" class="trainingIndexAction" method="toIndex">
+        <action name="index" class="trainingSystemIndexAction" method="toIndex">
             <result>/WEB-INF/views/training/index.jsp</result>
         </action>
-        <action name="userHistory/*" class="trainingIndexAction" method="toAllMemberHistory">
+        <action name="userHistory/*" class="trainingSystemIndexAction" method="toAllMemberHistory">
             <param name="userType">{1}</param>
         </action>
 

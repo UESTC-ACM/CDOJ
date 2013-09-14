@@ -26,24 +26,24 @@
 <struts>
     <package name="trainingAdmin" namespace="/training/admin" extends="default">
         <default-action-ref name="index"/>
-        <action name="index" class="trainingAdminIndexAction" method="toIndex">
+        <action name="index" class="adminTrainingSystemIndexAction" method="toIndex">
             <result>/WEB-INF/views/training/admin/index.jsp</result>
         </action>
-        <action name="user/search" class="trainingUserAdminAction" method="toMemberList"/>
-        <action name="user/operator" class="trainingUserAdminAction" method="toOperatorTrainingUser"/>
+        <action name="user/search" class="adminTrainingUserAction" method="toMemberList"/>
+        <action name="user/operator" class="adminTrainingUserAction" method="toOperatorTrainingUser"/>
 
-        <action name="contest/index" class="trainingContestAdminAction" method="toIndex">
+        <action name="contest/index" class="adminTrainingContestAction" method="toIndex">
             <result>/WEB-INF/views/training/admin/trainingContest.jsp</result>
         </action>
-        <action name="contest/search" class="trainingContestAdminAction" method="toSearchTrainingContest"/>
-        <action name="contest/editor/*" class="trainingContestAdminAction" method="toContestEditor">
+        <action name="contest/search" class="adminTrainingContestAction" method="toSearchTrainingContest"/>
+        <action name="contest/editor/*" class="adminTrainingContestAction" method="toContestEditor">
             <param name="targetTrainingContestId">{1}</param>
             <result>/WEB-INF/views/training/admin/trainingContestEditor.jsp</result>
         </action>
-        <action name="contest/edit/*" class="trainingContestEditorAction" method="toEditContest">
+        <action name="contest/edit/*" class="adminTrainingContestEditorAction" method="toEditContest">
             <param name="targetTrainingContestId">{1}</param>
         </action>
-        <action name="contest/uploadRank/*" class="trainingContestEditorAction" method="uploadTrainingRankFile">
+        <action name="contest/uploadRank/*" class="adminTrainingContestEditorAction" method="uploadTrainingRankFile">
             <param name="targetTrainingContestId">{1}</param>
         </action>
 
