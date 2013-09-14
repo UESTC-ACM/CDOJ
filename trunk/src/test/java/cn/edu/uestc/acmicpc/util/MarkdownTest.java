@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.oj.test.util;
+package cn.edu.uestc.acmicpc.util;
 
 import org.junit.Assert;
 import org.junit.Ignore;
