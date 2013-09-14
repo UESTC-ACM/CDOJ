@@ -21,15 +21,12 @@ import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
-
 /**
  * Test cases for {@link User}.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
 public class UserDatabaseTest implements UserConditionAware, UserDAOAware {
-
-  // FIXME broken test
 
   @Before
   public void init() {
@@ -59,6 +56,7 @@ public class UserDatabaseTest implements UserConditionAware, UserDAOAware {
   @Test
   public void testQuery_byDepartmentId() throws AppException {
     userCondition.setDepartmentId(1);
+    userCondition.setEndId(5);
     Assert.assertEquals(Integer.valueOf(1), userCondition.getDepartmentId());
     List<User> users = (List<User>) userDAO.findAll(userCondition.getCondition());
     Assert.assertEquals(2, users.size());
@@ -74,11 +72,9 @@ public class UserDatabaseTest implements UserConditionAware, UserDAOAware {
   }
 
   @Test
-  @Ignore
+  @Ignore("borken test for design-in problem")
   public void testDelete() throws AppException, FieldNotUniqueException {
-    // TODO add some test data for this test case
-    // big id: do not break other test cases
-    User user = userDAO.getEntityByUniqueField("userName", "admin");
+    User user = userDAO.getEntityByUniqueField("userName", "testDeleted");
     Long oldCount = userDAO.count();
     userDAO.delete(user);
     Long newCount = userDAO.count();
@@ -88,10 +84,9 @@ public class UserDatabaseTest implements UserConditionAware, UserDAOAware {
   @Test
   public void testUserCondition_byStartIdAndEndId() throws AppException {
     userCondition.setStartId(2);
-    userCondition.setEndId(4);
-    Assert.assertEquals(Long.valueOf(1), userDAO.count(userCondition.getCondition()));
+    userCondition.setEndId(10);
+    Assert.assertEquals(Long.valueOf(2), userDAO.count(userCondition.getCondition()));
   }
-
 
   @Override
   public void setUserCondition(UserCondition userCondition) {

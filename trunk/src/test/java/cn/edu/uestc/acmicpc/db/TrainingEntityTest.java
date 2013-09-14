@@ -1,24 +1,3 @@
-/*
- * cdoj, UESTC ACMICPC Online Judge
- *
- * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- * mzry1992 <@link muziriyun@gmail.com>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
-
 package cn.edu.uestc.acmicpc.db;
 
 import org.junit.Ignore;
@@ -39,8 +18,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Test cases for training entity.
- *
- * TODO remove ignore tags.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
@@ -48,8 +25,7 @@ public class TrainingEntityTest {
 
   @Test
   @Ignore
-  public void testTrainingUser() throws AppException {
-    System.out.println("Hello");
+  public void testTrainingUserDAO_addTrainingUser() throws AppException {
     TrainingUser trainingUser = new TrainingUser();
     trainingUser.setRating(1200.0);
     trainingUser.setVolatility(550.0);
@@ -61,7 +37,7 @@ public class TrainingEntityTest {
 
   @Test
   @Ignore
-  public void testTrainingContest() throws AppException {
+  public void testTrainingContestDAO_addTrainingContest() throws AppException {
     TrainingContest trainingContest = new TrainingContest();
     trainingContest.setTitle("World final 2013");
     trainingContest.setIsPersonal(false);
@@ -70,7 +46,7 @@ public class TrainingEntityTest {
 
   @Test
   @Ignore
-  public void testTrainingStatus() throws AppException {
+  public void testTrainingStatusDAO_addTrainingStatus() throws AppException {
     TrainingStatus trainingStatus = new TrainingStatus();
     trainingStatus.setRating(1000.0);
     trainingStatus.setVolatility(500.0);
