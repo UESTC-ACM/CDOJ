@@ -1,6 +1,7 @@
 package cn.edu.uestc.acmicpc.db;
 
 import java.util.List;
+import java.util.Random;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,7 +17,6 @@ import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
 import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 
 /**
  * Test cases for {@link Problem}.
@@ -73,6 +73,24 @@ public class ProblemDatabaseTest implements ProblemConditionAware, ProblemDAOAwa
     List<Problem> problems = (List<Problem>) problemDAO.findAll(problemCondition.getCondition());
     Assert.assertEquals(1, problems.size());
     Assert.assertEquals(Integer.valueOf(5), problems.get(0).getProblemId());
+  }
+
+  @Test
+  public void testAddProblem() throws AppException {
+    Problem problem = new Problem();
+    Integer randomId = new Random().nextInt();
+    problem.setTitle("Problem " + randomId.toString());
+    problem.setDescription("Description " + randomId.toString());
+    problem.setInput("Input " + randomId.toString());
+    problem.setOutput("Output " + randomId.toString());
+    problem.setSampleInput("Sample input " + randomId.toString());
+    problem.setSampleOutput("Sample output " + randomId.toString());
+    problem.setHint("Hint " + randomId.toString());
+    problem.setSource("Source " + randomId.toString());
+    problem.setIsSpj(new Random().nextBoolean());
+    problem.setIsVisible(new Random().nextBoolean());
+    problemDAO.add(problem);
+    Assert.assertNotNull(problem.getProblemId());
   }
 
   @Override

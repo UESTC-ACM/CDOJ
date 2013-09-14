@@ -40,8 +40,6 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Contest information.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Table(name = "contest")
 @Entity
@@ -51,7 +49,7 @@ public class Contest implements Serializable {
   private static final long serialVersionUID = -3631561809657861853L;
   private Integer contestId;
 
-  private Integer version;
+  private Integer version = 0;
 
   @Version
   @Column(name = "OPTLOCK")
@@ -95,7 +93,7 @@ public class Contest implements Serializable {
     this.title = title;
   }
 
-  private String description;
+  private String description = "";
 
   @Column(name = "description", nullable = false, insertable = true, updatable = true,
       length = 200, precision = 0)
@@ -108,7 +106,7 @@ public class Contest implements Serializable {
     this.description = description;
   }
 
-  private Byte type;
+  private Byte type = 0;
 
   @Column(name = "type", nullable = false, insertable = true, updatable = true, length = 3,
       precision = 0)

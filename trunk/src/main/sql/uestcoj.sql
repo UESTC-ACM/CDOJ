@@ -10,7 +10,7 @@ USE `uestcoj` ;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`department` (
   `departmentId` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(50) NOT NULL DEFAULT '' COMMENT 'department\'s name' ,
+  `name` VARCHAR(50) NOT NULL DEFAULT '',
   `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`departmentId`) ,
   UNIQUE INDEX `departmentId_UNIQUE` (`departmentId` ASC) )
@@ -25,10 +25,10 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`user` (
   `userName` VARCHAR(24) NOT NULL ,
   `studentId` VARCHAR(50) NOT NULL ,
   `departmentId` INT NOT NULL ,
-  `password` VARCHAR(40) NOT NULL COMMENT 'need to validate\nuse SHA1 encoding' ,
+  `password` VARCHAR(40) NOT NULL ,
   `school` VARCHAR(100) NOT NULL DEFAULT '' ,
-  `nickName` VARCHAR(50) NOT NULL COMMENT 'length >= 3' ,
-  `email` VARCHAR(100) NOT NULL COMMENT 'need to validate' ,
+  `nickName` VARCHAR(50) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
   `solved` INT NOT NULL DEFAULT 0 ,
   `tried` INT NOT NULL DEFAULT 0 ,
   `type` INT NOT NULL DEFAULT 0 ,
@@ -69,7 +69,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`problem` (
   `outputLimit` INT NOT NULL DEFAULT 8000 ,
   `javaTimeLimit` INT NOT NULL DEFAULT 3000 ,
   `javaMemoryLimit` INT NOT NULL DEFAULT 65535 ,
-  `dataCount` INT NOT NULL DEFAULT 1 ,
+  `dataCount` INT NOT NULL DEFAULT 0 ,
   `difficulty` INT NOT NULL DEFAULT 1 ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`problemId`) ,
@@ -82,7 +82,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`contest` (
   `contestId` INT NOT NULL AUTO_INCREMENT ,
-  `title` VARCHAR(50) NOT NULL COMMENT 'length >= 3' ,
+  `title` VARCHAR(50) NOT NULL,
   `description` VARCHAR(200) NOT NULL DEFAULT '' ,
   `type` TINYINT NOT NULL DEFAULT 0 ,
   `time` DATETIME NOT NULL ,
@@ -104,7 +104,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`article` (
   `author` VARCHAR(50) NOT NULL DEFAULT '' ,
   `time` DATETIME NOT NULL ,
   `clicked` INT NOT NULL DEFAULT 0 ,
-  `order` INT NOT NULL DEFAULT 0 COMMENT 'set order to top and move' ,
+  `order` INT NOT NULL DEFAULT 0,
   `isNotice` TINYINT(1) NOT NULL DEFAULT 0 ,
   `isVisible` TINYINT(1) NOT NULL DEFAULT 0 ,
   `parentId` INT NULL DEFAULT NULL ,
@@ -177,7 +177,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`contestUser` (
   `contestUserId` INT NOT NULL AUTO_INCREMENT ,
   `contestId` INT NOT NULL ,
   `userId` INT NOT NULL ,
-  `status` TINYINT(4) NOT NULL COMMENT '0 - wait for validating\n1 - accepted\n2 - refused' ,
+  `status` TINYINT(4) NOT NULL,
   `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`contestUserId`) ,
   UNIQUE INDEX `contestUserId_UNIQUE` (`contestUserId` ASC) ,

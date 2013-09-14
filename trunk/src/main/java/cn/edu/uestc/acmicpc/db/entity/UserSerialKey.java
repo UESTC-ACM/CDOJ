@@ -38,8 +38,6 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * User serial keys for password.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Table(name = "userSerialKey")
 @Entity
@@ -48,7 +46,7 @@ public class UserSerialKey implements Serializable {
 
   private static final long serialVersionUID = -129312932189312L;
 
-  private Integer version;
+  private Integer version = 0;
 
   @Version
   @Column(name = "OPTLOCK")

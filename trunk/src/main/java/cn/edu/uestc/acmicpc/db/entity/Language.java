@@ -39,8 +39,6 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Languages for compiler.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Table(name = "language")
 @Entity
@@ -50,7 +48,7 @@ public class Language implements Serializable {
   private static final long serialVersionUID = 6622284482431851438L;
   private Integer languageId;
 
-  private Integer version;
+  private Integer version = 0;
 
   @Version
   @Column(name = "OPTLOCK")

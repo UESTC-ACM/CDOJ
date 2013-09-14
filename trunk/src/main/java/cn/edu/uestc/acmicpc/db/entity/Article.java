@@ -42,8 +42,6 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Article information.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Table(name = "article")
 @Entity
@@ -53,7 +51,7 @@ public class Article implements Serializable {
   private static final long serialVersionUID = 8886825769658373290L;
   private Integer articleId;
 
-  private Integer version;
+  private Integer version = 0;
 
   @Version
   @Column(name = "OPTLOCK")
@@ -103,7 +101,7 @@ public class Article implements Serializable {
     this.content = content;
   }
 
-  private String author;
+  private String author = "";
 
   @Column(name = "author", nullable = false, insertable = true, updatable = true, length = 50,
       precision = 0)
@@ -129,7 +127,7 @@ public class Article implements Serializable {
     this.time = time;
   }
 
-  private Integer clicked;
+  private Integer clicked = 0;
 
   @Column(name = "clicked", nullable = false, insertable = true, updatable = true, length = 10,
       precision = 0)
@@ -142,7 +140,7 @@ public class Article implements Serializable {
     this.clicked = clicked;
   }
 
-  private Integer order;
+  private Integer order = 0;
 
   @Column(name = "`order`", nullable = false, insertable = true, updatable = true, length = 10,
       precision = 0)
@@ -155,7 +153,7 @@ public class Article implements Serializable {
     this.order = order;
   }
 
-  private Boolean isNotice;
+  private Boolean isNotice = false;
 
   @Column(name = "isNotice", nullable = false, insertable = true, updatable = true, length = 0,
       precision = 0)
@@ -168,7 +166,7 @@ public class Article implements Serializable {
     isNotice = notice;
   }
 
-  private Boolean isVisible;
+  private Boolean isVisible = false;
 
   @Column(name = "isVisible", nullable = false, insertable = true, updatable = true, length = 0,
       precision = 0)

@@ -39,8 +39,6 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Problem information.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Table(name = "problem")
 @Entity
@@ -50,7 +48,7 @@ public class Problem implements Serializable {
   private static final long serialVersionUID = -334230877056963653L;
   private Integer problemId;
 
-  private Integer version;
+  private Integer version = 0;
 
   @Version
   @Column(name = "OPTLOCK")
@@ -177,7 +175,7 @@ public class Problem implements Serializable {
     this.hint = hint;
   }
 
-  private String source;
+  private String source = "";
 
   @Column(name = "source", nullable = false, insertable = true, updatable = true, length = 100,
       precision = 0)
@@ -190,7 +188,7 @@ public class Problem implements Serializable {
     this.source = source;
   }
 
-  private Integer timeLimit;
+  private Integer timeLimit = 1000;
 
   @Column(name = "timeLimit", nullable = false, insertable = true, updatable = true, length = 10,
       precision = 0)
@@ -203,7 +201,7 @@ public class Problem implements Serializable {
     this.timeLimit = timeLimit;
   }
 
-  private Integer memoryLimit;
+  private Integer memoryLimit = 65535;
 
   @Column(name = "memoryLimit", nullable = false, insertable = true, updatable = true, length = 10,
       precision = 0)
@@ -216,7 +214,7 @@ public class Problem implements Serializable {
     this.memoryLimit = memoryLimit;
   }
 
-  private Integer solved;
+  private Integer solved = 0;
 
   @Column(name = "solved", nullable = false, insertable = true, updatable = true, length = 10,
       precision = 0)
@@ -229,7 +227,7 @@ public class Problem implements Serializable {
     this.solved = solved;
   }
 
-  private Integer tried;
+  private Integer tried = 0;
 
   @Column(name = "tried", nullable = false, insertable = true, updatable = true, length = 10,
       precision = 0)
@@ -268,7 +266,7 @@ public class Problem implements Serializable {
     isVisible = visible;
   }
 
-  private Integer outputLimit;
+  private Integer outputLimit = 8000;
 
   @Column(name = "outputLimit", nullable = false, insertable = true, updatable = true, length = 10,
       precision = 0)
@@ -281,7 +279,7 @@ public class Problem implements Serializable {
     this.outputLimit = outputLimit;
   }
 
-  private Integer javaTimeLimit;
+  private Integer javaTimeLimit = 3000;
 
   @Column(name = "javaTimeLimit", nullable = false, insertable = true, updatable = true,
       length = 10, precision = 0)
@@ -294,7 +292,7 @@ public class Problem implements Serializable {
     this.javaTimeLimit = javaTimeLimit;
   }
 
-  private Integer javaMemoryLimit;
+  private Integer javaMemoryLimit = 65535;
 
   @Column(name = "javaMemoryLimit", nullable = false, insertable = true, updatable = true,
       length = 10, precision = 0)
@@ -307,7 +305,7 @@ public class Problem implements Serializable {
     this.javaMemoryLimit = javaMemoryLimit;
   }
 
-  private Integer dataCount;
+  private Integer dataCount = 0;
 
   @Column(name = "dataCount", nullable = false, insertable = true, updatable = true, length = 10,
       precision = 0)
@@ -320,7 +318,7 @@ public class Problem implements Serializable {
     this.dataCount = dataCount;
   }
 
-  private Integer difficulty;
+  private Integer difficulty = 1;
 
   @Column(name = "difficulty", nullable = false, insertable = true, updatable = true, length = 10,
       precision = 0)

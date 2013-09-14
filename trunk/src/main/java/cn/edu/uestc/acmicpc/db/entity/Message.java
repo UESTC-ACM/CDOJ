@@ -40,8 +40,6 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Message information.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Table(name = "message")
 @Entity
@@ -51,7 +49,7 @@ public class Message implements Serializable {
   private static final long serialVersionUID = -5394211914105594037L;
   private Integer messageId;
 
-  private Integer version;
+  private Integer version = 0;
 
   @Version
   @Column(name = "OPTLOCK")
@@ -75,7 +73,7 @@ public class Message implements Serializable {
     this.messageId = messageId;
   }
 
-  private String title;
+  private String title = "";
 
   @Column(name = "title", nullable = false, insertable = true, updatable = true, length = 50,
       precision = 0)
@@ -114,7 +112,7 @@ public class Message implements Serializable {
     this.time = time;
   }
 
-  private Boolean isOpened;
+  private Boolean isOpened = false;
 
   @Column(name = "isOpened", nullable = false, insertable = true, updatable = true, length = 0,
       precision = 0)

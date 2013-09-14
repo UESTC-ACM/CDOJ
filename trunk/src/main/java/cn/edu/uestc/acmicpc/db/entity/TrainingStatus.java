@@ -36,16 +36,13 @@ import javax.persistence.Version;
 import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ * Entity for training status.
  */
 @Table(name = "trainingStatus")
 @Entity
 @KeyField("trainingStatusId")
 public class TrainingStatus implements Serializable {
 
-  /**
-	 *
-	 */
   private static final long serialVersionUID = 61887986969087053L;
   private Integer trainingStatusId;
 
@@ -164,7 +161,7 @@ public class TrainingStatus implements Serializable {
     this.summary = summary;
   }
 
-  private Integer version;
+  private Integer version = 0;
 
   @Version
   @Column(name = "OPTLOCK")

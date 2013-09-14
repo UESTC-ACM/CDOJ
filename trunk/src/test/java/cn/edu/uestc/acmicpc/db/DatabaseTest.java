@@ -1,30 +1,9 @@
 package cn.edu.uestc.acmicpc.db;
 
-/*
- *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -43,12 +22,10 @@ import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
-import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -63,9 +40,6 @@ public class DatabaseTest {
 
   private static final Logger LOGGER = LogManager.getLogger(DatabaseTest.class);
 
-  /**
-   * UserDAO entity
-   */
   @Autowired
   private IUserDAO userDAO;
 
@@ -74,9 +48,6 @@ public class DatabaseTest {
 
   @Autowired
   private IDepartmentDAO departmentDAO;
-
-  @Autowired
-  private IProblemDAO problemDAO;
 
   @Autowired
   private UserCondition userCondition;
@@ -96,49 +67,20 @@ public class DatabaseTest {
     userDAO.getEntityByUniqueField("password", "123456");
   }
 
-  /**
-   * Test for add new problem
-   */
-  @Test
-  @Ignore
-  public void testAddProblem() throws Exception {
-    for (int i = 1; i <= 200; i++) {
-      Problem problem = new Problem();
-      Integer randomId = new Random().nextInt();
-      problem.setTitle("Problem " + randomId.toString());
-      problem.setDescription("Description " + randomId.toString());
-      problem.setInput("Input " + randomId.toString());
-      problem.setOutput("Output " + randomId.toString());
-      problem.setSampleInput("Sample input " + randomId.toString());
-      problem.setSampleOutput("Sample output " + randomId.toString());
-      problem.setHint("Hint " + randomId.toString());
-      problem.setSource("Source " + randomId.toString());
-      problem.setTimeLimit(Math.abs(new Random().nextInt()));
-      problem.setMemoryLimit(Math.abs(new Random().nextInt()));
-      problem.setIsSpj(new Random().nextBoolean());
-      problem.setIsVisible(new Random().nextBoolean());
-      problem.setOutputLimit(Math.abs(new Random().nextInt()));
-      problem.setJavaMemoryLimit(Math.abs(new Random().nextInt()));
-      problem.setJavaTimeLimit(Math.abs(new Random().nextInt()));
-      problem.setDataCount(Math.abs(new Random().nextInt()));
-      problem.setDifficulty(Math.abs(new Random().nextInt()) % 5 + 1);
-      problemDAO.add(problem);
-    }
-  }
-
   @Autowired
   private IContestDAO contestDAO;
 
   @Autowired
   private ContestDTO contestDTO;
 
-  /**
-   * Test cases for contest DAO.
-   */
   @Test
-  @Ignore
   public void testContestDAO() {
     try {
+      contestDTO.setIsVisible(true);
+      contestDTO.setLength(300);
+      contestDTO.setProblemList(new ArrayList<Integer>());
+      contestDTO.setTime(new Date().getTime());
+      contestDTO.setTitle("test title");
       Contest contest = contestDTO.getEntity();
       System.out.println(contest.toString());
       contestDAO.add(contest);

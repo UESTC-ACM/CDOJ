@@ -39,8 +39,6 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Problem tag information.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Table(name = "tag")
 @Entity
@@ -50,7 +48,7 @@ public class Tag implements Serializable {
   private static final long serialVersionUID = 8221283073294354906L;
   private Integer tagId;
 
-  private Integer version;
+  private Integer version = 0;
 
   @Version
   @Column(name = "OPTLOCK")

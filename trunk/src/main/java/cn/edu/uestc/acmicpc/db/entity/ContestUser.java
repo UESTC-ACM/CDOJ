@@ -39,8 +39,6 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Mappings between contests and users.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Table(name = "contestUser")
 @Entity
@@ -50,7 +48,7 @@ public class ContestUser implements Serializable {
   private static final long serialVersionUID = -8408381521779421508L;
   private Integer contestUserId;
 
-  private Integer version;
+  private Integer version = 0;
 
   @Version
   @Column(name = "OPTLOCK")
