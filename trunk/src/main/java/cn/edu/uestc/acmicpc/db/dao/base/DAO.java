@@ -184,6 +184,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
     try {
       return getSession().save(entity);
     } catch (HibernateException e) {
+      LOGGER.error(e);
       throw new AppException("Invoke add method error.");
     }
   }
@@ -197,6 +198,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
       }
       return (Entity) getSession().get(getReferenceClass(), key);
     } catch (HibernateException e) {
+      LOGGER.error(e);
       throw new AppException("Invoke get method error.");
     }
   }
@@ -323,8 +325,9 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
       JoinedProperty joinedProperty = condition.getJoinedProperties().get(key);
       String field;
       if (joinedProperty.getConditionType() == BaseCondition.ConditionType.like) {
-        field = key + joinedProperty.getConditionType().getSignal() + "%"
-            + joinedProperty.getKeyValue() + "%";
+        field =
+            key + joinedProperty.getConditionType().getSignal() + "%"
+                + joinedProperty.getKeyValue() + "%";
       } else {
         field = key + joinedProperty.getConditionType().getSignal() + joinedProperty.getKeyValue();
       }
@@ -356,7 +359,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
     }
     stringBuilder.append(" ").append(getSQLString(condition));
     String hql = stringBuilder.toString();
-    System.out.println(hql);
+    LOGGER.info(hql);
     getSession().createQuery(hql).executeUpdate();
   }
 
@@ -366,7 +369,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
     stringBuilder.append("delete ").append(getReferenceClass().getSimpleName());
     stringBuilder.append(" ").append(getSQLString(condition));
     String hql = stringBuilder.toString();
-    System.out.println(hql);
+    LOGGER.info(hql);
     getSession().createQuery(hql).executeUpdate();
   }
 
