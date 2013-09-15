@@ -231,8 +231,8 @@ public class AdminProblemAction extends BaseAction implements ProblemConditionAw
   public String toOperatorProblem() {
     try {
       int count = 0, total = 0;
-      Integer[] ids = ArrayUtil.parseIntArray(get("id"));
-      String method = get("method");
+      Integer[] ids = ArrayUtil.parseIntArray(getHttpParameter("id"));
+      String method = getHttpParameter("method");
       for (Integer id : ids)
         if (id != null) {
           ++total;
@@ -241,8 +241,8 @@ public class AdminProblemAction extends BaseAction implements ProblemConditionAw
             if ("delete".equals(method)) {
               problemDAO.delete(problem);
             } else if ("edit".equals(method)) {
-              String field = get("field");
-              String value = get("value");
+              String field = getHttpParameter("field");
+              String value = getHttpParameter("value");
               Method[] methods = problem.getClass().getMethods();
               for (Method getter : methods) {
                 Column column = getter.getAnnotation(Column.class);

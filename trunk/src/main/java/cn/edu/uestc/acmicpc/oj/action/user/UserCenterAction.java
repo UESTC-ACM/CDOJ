@@ -21,48 +21,45 @@
 
 package cn.edu.uestc.acmicpc.oj.action.user;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
-import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.db.view.impl.UserView;
-import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
-import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
-import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dto.UserDTOAware;
-import cn.edu.uestc.acmicpc.oj.action.BaseAction;
-import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.StringUtil;
-import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import com.opensymphony.xwork2.validator.annotations.*;
-import org.apache.struts2.interceptor.validation.SkipValidation;
-import org.hibernate.criterion.Projections;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
+import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.db.view.impl.UserView;
+import cn.edu.uestc.acmicpc.ioc.dto.UserDTOAware;
+import cn.edu.uestc.acmicpc.ioc.service.ProblemServiceAware;
+import cn.edu.uestc.acmicpc.ioc.service.StatusServiceAware;
+import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.oj.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.StringUtil;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
+import com.opensymphony.xwork2.validator.annotations.FieldExpressionValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.ValidationParameter;
+import com.opensymphony.xwork2.validator.annotations.Validations;
+
 /**
  * Action for user center
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @Controller
 @LoginPermit(NeedLogin = false)
-public class UserCenterAction extends BaseAction implements StatusDAOAware, StatusConditionAware,
-    ProblemDAOAware, UserDTOAware, DepartmentDAOAware, ProblemConditionAware {
+public class UserCenterAction extends BaseAction implements StatusServiceAware, UserDTOAware,
+    ProblemServiceAware {
 
   /**
-	 * 
+	 *
 	 */
   private static final long serialVersionUID = 3041678335489314037L;
 
@@ -88,7 +85,7 @@ public class UserCenterAction extends BaseAction implements StatusDAOAware, Stat
 
   /**
    * To enter user center.
-   * 
+   *
    * @return {@code SUCCESS} flag
    */
   @SkipValidation
@@ -96,9 +93,10 @@ public class UserCenterAction extends BaseAction implements StatusDAOAware, Stat
     try {
       if (targetUserName == null)
         throw new AppException("User name is empty!");
-      User user = userDAO.getEntityByUniqueField("userName", targetUserName);
-      if (user == null)
+      User user = userService.getUserByUserName(targetUserName);
+      if (user == null) {
         throw new AppException("No such user!");
+      }
       targetUser = new UserView(user);
     } catch (AppException e) {
       return redirect(getActionURL("/", "index"), e.getMessage());
@@ -121,45 +119,31 @@ public class UserCenterAction extends BaseAction implements StatusDAOAware, Stat
    * <li>
    * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
    * </ul>
-   * 
+   *
    * @return <strong>JSON</strong> signal
    */
   @SkipValidation
-  @SuppressWarnings("unchecked")
   public String toUserProblemState() {
     try {
-      if (targetUserName == null)
+      if (targetUserName == null) {
         throw new AppException("User name is empty!");
-      User currentUser = userDAO.getEntityByUniqueField("userName", targetUserName);
+      }
+      User currentUser = userService.getUserByUserName(targetUserName);
       if (currentUser == null)
         throw new AppException("No such user!");
 
       Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
 
-      problemCondition.clear();
-      problemCondition.setIsVisible(true);
-      Condition condition = problemCondition.getCondition();
-      condition.addProjection(Projections.id());
-      List<Integer> results = (List<Integer>) problemDAO.findAll(condition);
+      List<Integer> results = problemService.getAllVisibleProblemIds();
       for (Integer result : results)
         problemStatus.put(result, Global.AuthorStatusType.NONE);
 
-      statusCondition.clear();
-      statusCondition.setUserId(currentUser.getUserId());
-      statusCondition.setResultId(null);
-      condition = statusCondition.getCondition();
-      condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
-      results = (List<Integer>) statusDAO.findAll(condition);
+      results = statusService.findAllUserTriedProblemIds(currentUser.getUserId());
       for (Integer result : results)
         if (problemStatus.containsKey(result))
           problemStatus.put(result, Global.AuthorStatusType.FAIL);
 
-      statusCondition.clear();
-      statusCondition.setUserId(currentUser.getUserId());
-      statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-      condition = statusCondition.getCondition();
-      condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
-      results = (List<Integer>) statusDAO.findAll(condition);
+      results = statusService.findAllUserAcceptedProblemIds(currentUser.getUserId());
       for (Integer result : results)
         if (problemStatus.containsKey(result))
           problemStatus.put(result, Global.AuthorStatusType.PASS);
@@ -188,7 +172,7 @@ public class UserCenterAction extends BaseAction implements StatusDAOAware, Stat
    * <li>
    * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
    * </ul>
-   * 
+   *
    * @return <strong>JSON</strong> signal
    */
   @Validations(
@@ -220,7 +204,7 @@ public class UserCenterAction extends BaseAction implements StatusDAOAware, Stat
     try {
       if (userDTO.getUserId() == null || !userDTO.getUserId().equals(currentUser.getUserId()))
         throw new AppException("You can only change your profile!");
-      User user = userDAO.get(userDTO.getUserId());
+      User user = userService.getUserByUserId(userDTO.getUserId());
       if (user == null)
         throw new AppException("No such user!");
       if (!StringUtil.encodeSHA1(userDTO.getOldPassword()).equals(user.getPassword())) {
@@ -238,9 +222,9 @@ public class UserCenterAction extends BaseAction implements StatusDAOAware, Stat
         }
       }
       userDTO.setType(null);
-      userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
+      userDTO.setDepartmentId(userDTO.getDepartmentId());
       userDTO.updateEntity(user);
-      userDAO.update(user);
+      userService.updateUser(user);
       json.put("result", "ok");
     } catch (AppException e) {
       json.put("result", "error");
@@ -251,34 +235,6 @@ public class UserCenterAction extends BaseAction implements StatusDAOAware, Stat
       json.put("error_msg", "Unknown exception occurred.");
     }
     return JSON;
-  }
-
-  @Autowired
-  private StatusCondition statusCondition;
-  @Autowired
-  private IStatusDAO statusDAO;
-
-  @Override
-  public void setStatusCondition(StatusCondition statusCondition) {
-    this.statusCondition = statusCondition;
-  }
-
-  @Override
-  public StatusCondition getStatusCondition() {
-    return statusCondition;
-  }
-
-  @Override
-  public void setStatusDAO(IStatusDAO statusDAO) {
-    this.statusDAO = statusDAO;
-  }
-
-  @Autowired
-  private IProblemDAO problemDAO;
-
-  @Override
-  public void setProblemDAO(IProblemDAO problemDAO) {
-    this.problemDAO = problemDAO;
   }
 
   @Autowired
@@ -294,24 +250,17 @@ public class UserCenterAction extends BaseAction implements StatusDAOAware, Stat
     return userDTO;
   }
 
-  @Autowired
-  private IDepartmentDAO departmentDAO;
+  private ProblemService problemService;
 
   @Override
-  public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
-    this.departmentDAO = departmentDAO;
+  public void setProblemUProblemService(ProblemService problemService) {
+    this.problemService = problemService;
   }
 
-  @Autowired
-  private ProblemCondition problemCondition;
+  private StatusService statusService;
 
   @Override
-  public void setProblemCondition(ProblemCondition problemCondition) {
-    this.problemCondition = problemCondition;
-  }
-
-  @Override
-  public ProblemCondition getProblemCondition() {
-    return problemCondition;
+  public void setStatusService(StatusService statusService) {
+    this.statusService = statusService;
   }
 }

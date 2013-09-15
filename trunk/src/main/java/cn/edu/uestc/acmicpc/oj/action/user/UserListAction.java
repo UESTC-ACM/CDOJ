@@ -21,6 +21,12 @@
 
 package cn.edu.uestc.acmicpc.oj.action.user;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.entity.User;
@@ -30,29 +36,19 @@ import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Description
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @Controller
 @LoginPermit(NeedLogin = false)
 public class UserListAction extends BaseAction implements UserConditionAware {
 
-  /**
-	 * 
-	 */
   private static final long serialVersionUID = -504622730264428149L;
 
   /**
    * return the user.jsp for base view
-   * 
+   *
    * @return SUCCESS
    */
   public String toUserList() {
@@ -73,18 +69,18 @@ public class UserListAction extends BaseAction implements UserConditionAware {
    * <li>
    * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
    * </ul>
-   * 
+   *
    * @return <strong>JSON</strong> signal
    */
   @SuppressWarnings("unchecked")
   public String toSearch() {
     try {
       Condition condition = userCondition.getCondition();
-      Long count = userDAO.count(userCondition.getCondition());
+      Long count = userService.getDAO().count(userCondition.getCondition());
       PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
       condition.setCurrentPage(pageInfo.getCurrentPage());
       condition.setCountPerPage(RECORD_PER_PAGE);
-      List<User> userList = (List<User>) userDAO.findAll(condition);
+      List<User> userList = (List<User>) userService.getDAO().findAll(condition);
       List<UserView> userViewList = new ArrayList<>();
       for (User user : userList) {
         UserView userView = new UserView(user);
