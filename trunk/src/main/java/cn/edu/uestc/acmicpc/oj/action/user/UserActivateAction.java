@@ -21,6 +21,14 @@
 
 package cn.edu.uestc.acmicpc.oj.action.user;
 
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Random;
+
+import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserSerialKeyDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
@@ -34,28 +42,22 @@ import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import com.opensymphony.xwork2.validator.annotations.*;
-import org.apache.struts2.interceptor.validation.SkipValidation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.Random;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
+import com.opensymphony.xwork2.validator.annotations.FieldExpressionValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.ValidationParameter;
+import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
  * Action use for reset password.
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @Controller
 @LoginPermit(NeedLogin = false)
 public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAware,
     EMailSenderAware, UserDTOAware {
 
-  /**
-	 * 
-	 */
   private static final long serialVersionUID = -7795250262388594969L;
 
   @Autowired
@@ -99,24 +101,24 @@ public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAw
 
   /**
    * Action to send user serial key.
-   * 
+   *
    * @return {@code JSON} flag
    */
   @LoginPermit(NeedLogin = true)
   @SkipValidation
   public String toSendSerialKey() {
     try {
-      targetUser = userDAO.getEntityByUniqueField("userName", targetUserName);
-      if (targetUser == null)
+      targetUser = userService.getUserByUserName(targetUserName);
+      if (targetUser == null) {
         throw new AppException("No such user!");
+      }
       UserSerialKey userSerialKey =
           userSerialKeyDAO.getEntityByUniqueField("userId", targetUser, "userByUserId", true);
       if (userSerialKey != null) {
         // less than 30 minutes
-        /*
-         * if (new Date().getTime() - userSerialKey.getTime().getTime() <= 1800000) { throw new
-         * AppException( "serial key can only be generated in every 30 minutes."); }
-         */
+        if (new Date().getTime() - userSerialKey.getTime().getTime() <= 1800000) {
+          throw new AppException("serial key can only be generated in every 30 minutes.");
+        }
       } else {
         userSerialKey = new UserSerialKey();
       }
@@ -190,7 +192,7 @@ public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAw
 
   /**
    * Action to activate user.
-   * 
+   *
    * @return {@code JSON} flag
    */
   @Validations(
@@ -210,7 +212,7 @@ public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAw
           key = "error.passwordRepeat.validation") })
   public String toActivateUser() {
     try {
-      User user = userDAO.getEntityByUniqueField("userName", userDTO.getUserName());
+      User user = userService.getUserByUserName(userDTO.getUserName());
       if (user == null) {
         addFieldError("userDTO.userName", "No such user!");
         return INPUT;
@@ -231,7 +233,7 @@ public class UserActivateAction extends BaseAction implements UserSerialKeyDAOAw
       }
 
       user.setPassword(StringUtil.encodeSHA1(userDTO.getPassword()));
-      userDAO.update(user);
+      userService.updateUser(user);
       userSerialKeyDAO.delete(userSerialKey);
 
       json.put("result", "ok");

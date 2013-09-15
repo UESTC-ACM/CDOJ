@@ -22,14 +22,13 @@
 
 package cn.edu.uestc.acmicpc.oj.action.user;
 
+import org.springframework.stereotype.Controller;
+
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
-import org.springframework.stereotype.Controller;
 
 /**
  * Logout action, remove session about user information.
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @Controller
 @LoginPermit(NeedLogin = true)

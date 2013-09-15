@@ -219,8 +219,8 @@ public class AdminContestAction extends BaseAction implements ContestDAOAware,
   public String toOperatorContest() {
     try {
       int count = 0, total = 0;
-      Integer[] ids = ArrayUtil.parseIntArray(get("id"));
-      String method = get("method");
+      Integer[] ids = ArrayUtil.parseIntArray(getHttpParameter("id"));
+      String method = getHttpParameter("method");
       for (Integer id : ids)
         if (id != null) {
           ++total;
@@ -229,8 +229,8 @@ public class AdminContestAction extends BaseAction implements ContestDAOAware,
             if ("delete".equals(method)) {
               contestDAO.delete(contest);
             } else if ("edit".equals(method)) {
-              String field = get("field");
-              String value = get("value");
+              String field = getHttpParameter("field");
+              String value = getHttpParameter("value");
               Method[] methods = contest.getClass().getMethods();
               for (Method getter : methods) {
                 Column column = getter.getAnnotation(Column.class);

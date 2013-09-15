@@ -22,6 +22,13 @@
 
 package cn.edu.uestc.acmicpc.oj.action.admin;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
@@ -37,18 +44,16 @@ import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import com.opensymphony.xwork2.validator.annotations.*;
-import org.apache.struts2.interceptor.validation.SkipValidation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
+import com.opensymphony.xwork2.validator.annotations.FieldExpressionValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.ValidationParameter;
+import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
  * action for edit user information.
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @Controller
 @LoginPermit(value = Global.AuthenticationType.ADMIN)
@@ -56,13 +61,13 @@ public class AdminUserAction extends BaseAction implements DepartmentDAOAware, U
     UserDTOAware {
 
   /**
-	 * 
+	 *
 	 */
   private static final long serialVersionUID = -5440622655890452651L;
 
   /**
    * return the user.jsp for base view
-   * 
+   *
    * @return SUCCESS
    */
   @SkipValidation
@@ -84,7 +89,7 @@ public class AdminUserAction extends BaseAction implements DepartmentDAOAware, U
 
   /**
    * Setter of userCondition for Ioc.
-   * 
+   *
    * @param userCondition newly userCondition
    */
   @Override
@@ -111,7 +116,7 @@ public class AdminUserAction extends BaseAction implements DepartmentDAOAware, U
    * <li>
    * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
    * </ul>
-   * 
+   *
    * @return <strong>JSON</strong> signal
    */
   @SuppressWarnings("unchecked")
@@ -119,11 +124,11 @@ public class AdminUserAction extends BaseAction implements DepartmentDAOAware, U
   public String toSearch() {
     try {
       Condition condition = userCondition.getCondition();
-      Long count = userDAO.count(userCondition.getCondition());
+      Long count = userService.getDAO().count(userCondition.getCondition());
       PageInfo pageInfo = buildPageInfo(count, RECORD_PER_PAGE, "", null);
       condition.setCurrentPage(pageInfo.getCurrentPage());
       condition.setCountPerPage(RECORD_PER_PAGE);
-      List<User> userList = (List<User>) userDAO.findAll(condition);
+      List<User> userList = (List<User>) userService.getDAO().findAll(condition);
       List<UserView> userViewList = new ArrayList<>();
       for (User user : userList)
         userViewList.add(new UserView(user));
@@ -156,7 +161,7 @@ public class AdminUserAction extends BaseAction implements DepartmentDAOAware, U
    * <li>
    * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
    * </ul>
-   * 
+   *
    * @return <strong>JSON</strong> signal
    */
   @Validations(
@@ -184,12 +189,13 @@ public class AdminUserAction extends BaseAction implements DepartmentDAOAware, U
   public
       String toEdit() {
     try {
-      User user = userDAO.get(userDTO.getUserId());
-      if (user == null)
+      User user = userService.getUserByUserId(userDTO.getUserId());
+      if (user == null) {
         throw new AppException("No such user!");
+      }
       userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
       userDTO.updateEntity(user);
-      userDAO.update(user);
+      userService.updateUser(user);
       json.put("result", "ok");
     } catch (AppException e) {
       json.put("result", "error");
@@ -212,21 +218,21 @@ public class AdminUserAction extends BaseAction implements DepartmentDAOAware, U
    * <li>
    * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
    * </ul>
-   * 
+   *
    * @return <strong>JSON</strong> signal.
    */
   @SkipValidation
   public String toOperatorUser() {
     try {
       int count = 0, total = 0;
-      Integer[] ids = ArrayUtil.parseIntArray(get("id"));
-      String method = get("method");
+      Integer[] ids = ArrayUtil.parseIntArray(getHttpParameter("id"));
+      String method = getHttpParameter("method");
       for (Integer id : ids)
         if (id != null) {
           ++total;
           try {
             if ("delete".equals(method)) {
-              userDAO.delete(userDAO.get(id));
+              userService.getDAO().delete(userService.getUserByUserId(id));
             }
             ++count;
           } catch (AppException ignored) {

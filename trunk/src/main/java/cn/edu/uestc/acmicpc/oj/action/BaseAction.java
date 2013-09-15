@@ -45,11 +45,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.WebApplicationContext;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
+import cn.edu.uestc.acmicpc.ioc.service.UserServiceAware;
 import cn.edu.uestc.acmicpc.oj.interceptor.AppInterceptor;
 import cn.edu.uestc.acmicpc.oj.interceptor.iface.IActionInterceptor;
+import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.Settings;
@@ -61,16 +61,12 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * Base action support, add specified common elements in here.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Controller
 @Scope(WebApplicationContext.SCOPE_SESSION)
-//@Scope("session")
-//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class BaseAction extends ActionSupport implements RequestAware, SessionAware,
-    ApplicationAware, IActionInterceptor, ServletResponseAware, ServletRequestAware, UserDAOAware,
-    ApplicationContextAware {
+    ApplicationAware, IActionInterceptor, ServletResponseAware, ServletRequestAware,
+    UserServiceAware, ApplicationContextAware {
 
   private static final long serialVersionUID = -3221772654123596229L;
 
@@ -84,23 +80,19 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
    */
   @Autowired
   private Global global;
-  //private final ThreadLocal<Global> global = new ThreadLocal<>();
 
   public Global getGlobal() {
-    //return global.get();
     return global;
   }
 
   public void setGlobal(Global global) {
     this.global = global;
-    //this.global.set(global);
   }
 
   protected Map<Integer, Global.AuthorStatusType> problemStatus;
 
   @Autowired
   protected ApplicationContext applicationContext;
-
 
   /**
    * Request attribute map.
@@ -143,12 +135,6 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
   protected User currentUser;
 
   /**
-   * userDAO for user toLogin check.
-   */
-  @Autowired
-  protected IUserDAO userDAO = null;
-
-  /**
    * redirect flag.
    */
   protected final String REDIRECT = "redirect";
@@ -168,6 +154,9 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
    */
   protected Map<String, Object> json = new HashMap<>();
 
+  @Autowired
+  protected UserService userService;
+
   /**
    * Global settings for actions.
    */
@@ -178,31 +167,16 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
     this.settings = settings;
   }
 
-  /**
-   * Implement {@link ApplicationAware} interface, with Ioc.
-   *
-   * @param application application attribute
-   */
   @Override
   public void setApplication(Map<String, Object> application) {
     this.application = application;
   }
 
-  /**
-   * Implement {@link RequestAware} interface, with Ioc.
-   *
-   * @param request request attribute
-   */
   @Override
   public void setRequest(Map<String, Object> request) {
     this.request = request;
   }
 
-  /**
-   * Implement {@link SessionAware} interface, with Ioc.
-   *
-   * @param session session attribute
-   */
   @Override
   public void setSession(Map<String, Object> session) {
     this.session = session;
@@ -248,7 +222,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
    * @param param parameter name
    * @return parameter value
    */
-  protected String get(String param) {
+  protected String getHttpParameter(String param) {
     return httpServletRequest.getParameter(param);
   }
 
@@ -285,7 +259,7 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
       String userName = (String) session.get("userName");
       String password = (String) session.get("password");
       Timestamp lastLogin = (Timestamp) session.get("lastLogin");
-      User user = userDAO.getEntityByUniqueField("userName", userName);
+      User user = userService.getUserByUserName(userName);
       if (user == null || !user.getPassword().equals(password)
           || !user.getLastLogin().equals(lastLogin))
         return null;
@@ -374,7 +348,6 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
         if (user.getType() != permit.value().ordinal()) {
           throw new AppException("This user is not " + permit.value().getDescription() + ".");
         }
-        // TODO add extra option here
       }
     } catch (AppException e) {
       actionInfo.setCancel(true);
@@ -415,11 +388,6 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
   @Override
   public void setServletResponse(HttpServletResponse response) {
     httpServletResponse = response;
-  }
-
-  @Override
-  public void setUserDAO(IUserDAO userDAO) {
-    this.userDAO = userDAO;
   }
 
   /**
@@ -493,5 +461,10 @@ public class BaseAction extends ActionSupport implements RequestAware, SessionAw
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
     this.applicationContext = applicationContext;
+  }
+
+  @Override
+  public void setUserService(UserService userService) {
+    this.userService = userService;
   }
 }

@@ -22,28 +22,30 @@
 
 package cn.edu.uestc.acmicpc.oj.action.user;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
-import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dto.UserDTOAware;
-import cn.edu.uestc.acmicpc.oj.action.BaseAction;
-import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
-import com.opensymphony.xwork2.validator.annotations.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
+import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.ioc.dto.UserDTOAware;
+import cn.edu.uestc.acmicpc.oj.action.BaseAction;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+
+import com.opensymphony.xwork2.validator.annotations.EmailValidator;
+import com.opensymphony.xwork2.validator.annotations.FieldExpressionValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.Validations;
+
 /**
  * Action for register
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @Controller
 @LoginPermit(NeedLogin = false)
-public class RegisterAction extends BaseAction implements DepartmentDAOAware, UserDTOAware {
+public class RegisterAction extends BaseAction implements UserDTOAware {
 
   private static final long serialVersionUID = -2854303130010851540L;
 
@@ -51,17 +53,11 @@ public class RegisterAction extends BaseAction implements DepartmentDAOAware, Us
   private UserDTO userDTO;
 
   /**
-   * department dao, use for get a department entity by id.
-   */
-  @Autowired
-  private IDepartmentDAO departmentDAO;
-
-  /**
    * Register action.
    * <p/>
    * Check register information and pass then to validator, if the information is correct, write the
    * user's information into database.
-   * 
+   *
    * @return <strong>JSON</strong> signal, process in front
    */
   @Validations(
@@ -96,11 +92,11 @@ public class RegisterAction extends BaseAction implements DepartmentDAOAware, Us
   public
       String toRegister() {
     try {
-      if (userDAO.getEntityByUniqueField("userName", userDTO.getUserName()) != null) {
+      if (userService.getUserByUserName(userDTO.getUserName()) != null) {
         addFieldError("userDTO.userName", "User name has been used!");
         return INPUT;
       }
-      if (userDAO.getEntityByUniqueField("email", userDTO.getEmail()) != null) {
+      if (userService.getUserByEmail(userDTO.getEmail()) != null) {
         addFieldError("userDTO.email", "Email has benn used!");
         return INPUT;
       }
@@ -114,9 +110,9 @@ public class RegisterAction extends BaseAction implements DepartmentDAOAware, Us
         return INPUT;
       }
 
-      userDTO.setDepartment(departmentDAO.get(userDTO.getDepartmentId()));
+      userDTO.setDepartmentId(userDTO.getDepartmentId());
       User user = userDTO.getEntity();
-      userDAO.add(user);
+      userService.createNewUser(user);
       session.put("userName", user.getUserName());
       session.put("password", user.getPassword());
       session.put("lastLogin", user.getLastLogin());
@@ -139,13 +135,4 @@ public class RegisterAction extends BaseAction implements DepartmentDAOAware, Us
   public void setUserDTO(UserDTO userDTO) {
     this.userDTO = userDTO;
   }
-
-  public IDepartmentDAO getDepartmentDAO() {
-    return departmentDAO;
-  }
-
-  public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
-    this.departmentDAO = departmentDAO;
-  }
-
 }

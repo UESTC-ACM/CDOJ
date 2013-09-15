@@ -22,13 +22,13 @@
 
 package cn.edu.uestc.acmicpc.db.condition.base;
 
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Projection;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Projection;
 
 /**
  * Other conditions setting for DAO findAll method.
@@ -37,7 +37,7 @@ import java.util.Map;
  * <p/>
  * {@code currentPage} and {@code countPerPage} can be {@code null}, if the fields is {@code null}
  * we ignore this restriction, otherwise we consider the record range by this two fields.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class Condition {
@@ -134,7 +134,7 @@ public class Condition {
 
   /**
    * Constructor for currentPage, countPerPage and single order field.
-   * 
+   *
    * @param currentPage current page number
    * @param countPerPage number of records per page
    * @param field order field name
@@ -150,35 +150,41 @@ public class Condition {
 
   /**
    * Add new order field into the order list.
-   * 
+   *
    * @param field new order field name
    * @param asc whether new order field asc or not
+   * @return condition itself.
    */
-  public void addOrder(String field, boolean asc) {
+  public Condition addOrder(String field, boolean asc) {
     getOrders().add(new Order(field, asc));
+    return this;
   }
 
   /**
    * Add new projection into the projection list.
-   * 
+   *
    * @param projection new projection object
+   * @return condition itself.
    */
-  public void addProjection(Projection projection) {
+  public Condition addProjection(Projection projection) {
     getProjections().add(projection);
+    return this;
   }
 
   /**
    * Add new criterion into the criterion list.
-   * 
+   *
    * @param criterion new criterion object
+   * @return condition itself.
    */
-  public void addCriterion(Criterion criterion) {
+  public Condition addCriterion(Criterion criterion) {
     getCriterionList().add(criterion);
+    return this;
   }
 
   /**
    * Order conditions.
-   * 
+   *
    * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
    */
   public class Order {
@@ -198,7 +204,15 @@ public class Condition {
     public final boolean asc;
   }
 
-  public void addJoinedProperty(String key, JoinedProperty value) {
+  /**
+   * Add joined property for query.
+   *
+   * @param key property's key
+   * @param value property's value
+   * @return condition itself.
+   */
+  public Condition addJoinedProperty(String key, JoinedProperty value) {
     getJoinedProperties().put(key, value);
+    return this;
   }
 }

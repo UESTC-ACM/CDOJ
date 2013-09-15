@@ -22,30 +22,32 @@
 
 package cn.edu.uestc.acmicpc.oj.action.user;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
-import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import com.opensymphony.xwork2.validator.annotations.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import com.opensymphony.xwork2.validator.annotations.CustomValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.ValidationParameter;
+import com.opensymphony.xwork2.validator.annotations.Validations;
 
 /**
  * Login action for user toLogin.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Controller
 @LoginPermit(NeedLogin = false)
-public class LoginAction extends BaseAction implements StatusConditionAware, StatusDAOAware {
+public class LoginAction extends BaseAction implements StatusConditionAware {
 
   private static final long serialVersionUID = 2034049134718450987L;
 
@@ -53,8 +55,6 @@ public class LoginAction extends BaseAction implements StatusConditionAware, Sta
   private String password;
   @Autowired
   private StatusCondition statusCondition;
-  @Autowired
-  private IStatusDAO statusDAO;
 
   /**
    * toLogin with {@code userName} and {@code password}. <strong>JSON output</strong>:
@@ -64,7 +64,7 @@ public class LoginAction extends BaseAction implements StatusConditionAware, Sta
    * <li>
    * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
    * </ul>
-   * 
+   *
    * @return action signal
    */
   @Validations(requiredStrings = {
@@ -78,14 +78,14 @@ public class LoginAction extends BaseAction implements StatusConditionAware, Sta
               @ValidationParameter(name = "trim", value = "false") }) })
   public String toLogin() {
     try {
-      User user = userDAO.getEntityByUniqueField("userName", getUserName());
+      User user = userService.getUserByUserName(getUserName());
       if (user == null || !StringUtil.encodeSHA1(getPassword()).equals(user.getPassword())) {
         addFieldError("password", "User or password is wrong, please try again.");
         return INPUT;
       }
 
       user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
-      userDAO.update(user);
+      userService.updateUser(user);
 
       session.put("userName", user.getUserName());
       session.put("password", user.getPassword());
@@ -129,10 +129,5 @@ public class LoginAction extends BaseAction implements StatusConditionAware, Sta
   @Override
   public StatusCondition getStatusCondition() {
     return statusCondition;
-  }
-
-  @Override
-  public void setStatusDAO(IStatusDAO statusDAO) {
-    this.statusDAO = statusDAO;
   }
 }

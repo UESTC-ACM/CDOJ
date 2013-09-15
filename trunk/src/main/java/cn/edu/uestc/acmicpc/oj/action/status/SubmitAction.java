@@ -22,8 +22,15 @@
 
 package cn.edu.uestc.acmicpc.oj.action.status;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.*;
+import cn.edu.uestc.acmicpc.db.dao.iface.ICodeDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.CodeDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.StatusDTO;
 import cn.edu.uestc.acmicpc.db.entity.Code;
@@ -31,17 +38,17 @@ import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.db.entity.Language;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
-import cn.edu.uestc.acmicpc.ioc.dao.*;
+import cn.edu.uestc.acmicpc.ioc.dao.CodeDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.ContestDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.LanguageDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
+import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.action.BaseAction;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
 /**
  * action for submit code.
- * 
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @Controller
 @LoginPermit(NeedLogin = true)
@@ -49,7 +56,7 @@ public class SubmitAction extends BaseAction implements StatusDAOAware, CodeDAOA
     ContestDAOAware, LanguageDAOAware, ProblemDAOAware, StatusConditionAware {
 
   /**
-	 * 
+	 *
 	 */
   private static final long serialVersionUID = -4600945935804778289L;
 
@@ -100,7 +107,7 @@ public class SubmitAction extends BaseAction implements StatusDAOAware, CodeDAOA
    * <li>
    * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
    * </ul>
-   * 
+   *
    * @return JSON
    */
   public String toSubmit() {
@@ -132,7 +139,7 @@ public class SubmitAction extends BaseAction implements StatusDAOAware, CodeDAOA
       statusDAO.add(statusDTO.getEntity());
 
       String hql = "update User set tried=tried+1 where userId=" + currentUser.getUserId();
-      userDAO.executeHQL(hql);
+      userService.getDAO().executeHQL(hql);
       hql = "update Problem set tried=tried+1 where problemId=" + problem.getProblemId();
       problemDAO.executeHQL(hql);
       json.put("result", "ok");
