@@ -34,7 +34,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Data transfer object for {@link Article}.
  */
-@Controller
 public class ArticleDTO extends BaseDTO<Article> {
 
   private Integer articleId;

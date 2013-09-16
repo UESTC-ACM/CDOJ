@@ -43,8 +43,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * <p/>
  * If set the field to {@code null}, this field will not be updated in {@code updateEntity} method.
  */
-@Controller
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public abstract class BaseDTO<Entity extends Serializable> {
 
   protected abstract Class<Entity> getReferenceClass();

@@ -32,7 +32,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Data transfer object for {@link Problem} data.
  */
-@Controller
 public class ProblemDataDTO extends BaseDTO<Problem> {
 
   public ProblemDataDTO() {

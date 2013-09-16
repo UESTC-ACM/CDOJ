@@ -31,7 +31,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Data transfer object for {@link TrainingUser}.
  */
-@Controller
 public class TrainingUserDTO extends BaseDTO<TrainingUser> {
 
   private Integer trainingUserId;
