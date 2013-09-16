@@ -21,7 +21,7 @@
         <input type="text" class="search-query span2" placeholder="Search">
       </form>
 
-      <%--<page:applyDecorator name="body" page="/WEB-INF/views/common/navbarUser.jsp"/>--%>
+      <page:applyDecorator name="body" page="/WEB-INF/views/common/navbarUser.jsp"/>
 
     </div>
   </div>

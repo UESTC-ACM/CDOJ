@@ -19,8 +19,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package cn.edu.uestc.acmicpc.oj.controller;
+package cn.edu.uestc.acmicpc.oj.controller.index;
 
+import cn.edu.uestc.acmicpc.oj.controller.base.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,11 +35,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/")
-public class IndexController {
+public class IndexController extends BaseController {
 
   @RequestMapping(method = RequestMethod.GET)
   public String toIndex(ModelMap model) {
     model.put("message", "Fuck!");
+
     return "index/index";
   }
 
