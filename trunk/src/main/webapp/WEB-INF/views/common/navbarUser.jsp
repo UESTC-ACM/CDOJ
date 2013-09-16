@@ -9,45 +9,43 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title></title>
+  <title></title>
 </head>
 <body>
-<s:if test="currentUser == null">
-    <ul class="nav pull-right">
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-white icon-pencil"></i>
-                Login
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                    <!-- Button to trigger modal -->
-                    <a href="#loginModal" role="button" data-toggle="modal">
-                        <i class="icon-ok-circle"></i>
-                        Login
-                    </a>
-                </li>
+<ul class="nav pull-right">
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+      <i class="icon-white icon-pencil"></i>
+      Login
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <!-- Button to trigger modal -->
+        <a href="#loginModal" role="button" data-toggle="modal">
+          <i class="icon-ok-circle"></i>
+          Login
+        </a>
+      </li>
 
-                <li>
-                    <!-- Button to trigger modal -->
-                    <a href="#registerModal" role="button" data-toggle="modal">
-                        <i class="icon-plus-sign"></i>
-                        Register
-                    </a>
-                </li>
+      <li>
+        <!-- Button to trigger modal -->
+        <a href="#registerModal" role="button" data-toggle="modal">
+          <i class="icon-plus-sign"></i>
+          Register
+        </a>
+      </li>
 
-                <li>
-                    <a href="#activateModal" role="button" data-toggle="modal">
-                        <i class="icon-refresh"></i>
-                        Forget password
-                    </a>
-                </li>
-            </ul>
-        </li>
+      <li>
+        <a href="#activateModal" role="button" data-toggle="modal">
+          <i class="icon-refresh"></i>
+          Forget password
+        </a>
+      </li>
     </ul>
-</s:if>
-<s:else>
+  </li>
+</ul>
+<%--
     <ul class="nav pull-right">
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -95,6 +93,6 @@
             </ul>
         </li>
     </ul>
-</s:else>
+--%>
 </body>
 </html>
