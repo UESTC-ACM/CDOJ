@@ -19,28 +19,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package cn.edu.uestc.acmicpc.training.action.admin;
+package cn.edu.uestc.acmicpc.oj.controller;
 
-import cn.edu.uestc.acmicpc.oj.action.BaseAction;
-import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * Description
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
+
 @Controller
-@LoginPermit(value = Global.AuthenticationType.ADMIN)
-public class AdminTrainingSystemIndexAction extends BaseAction {
+@RequestMapping("/")
+public class IndexController {
 
-  /**
-	 * 
-	 */
-  private static final long serialVersionUID = -1551050786444888901L;
-
-  public String toIndex() {
-    return SUCCESS;
+  @RequestMapping(method = RequestMethod.GET)
+  public String toIndex(ModelMap model) {
+    model.put("message", "Fuck!");
+    return "index/index";
   }
+
 }
