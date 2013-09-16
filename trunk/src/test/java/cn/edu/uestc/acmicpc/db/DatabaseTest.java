@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.ContestDTO;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Junction;
@@ -24,7 +25,6 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.ContestDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.Global;
@@ -70,18 +70,17 @@ public class DatabaseTest {
   @Autowired
   private IContestDAO contestDAO;
 
-  @Autowired
-  private ContestDTO contestDTO;
-
   @Test
   public void testContestDAO() {
     try {
+      ContestDTO contestDTO = new ContestDTO();
       contestDTO.setIsVisible(true);
       contestDTO.setLength(300);
       contestDTO.setProblemList(new ArrayList<Integer>());
       contestDTO.setTime(new Date().getTime());
       contestDTO.setTitle("test title");
       Contest contest = contestDTO.getEntity();
+
       System.out.println(contest.toString());
       contestDAO.add(contest);
     } catch (AppException e) {

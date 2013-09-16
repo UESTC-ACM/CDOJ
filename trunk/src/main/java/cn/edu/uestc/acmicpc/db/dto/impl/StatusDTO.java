@@ -42,7 +42,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Data transfer object for {@link Status}.
  */
-@Controller
 public class StatusDTO extends BaseDTO<Status> {
 
   private Integer statusId;

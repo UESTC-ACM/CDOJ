@@ -31,7 +31,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Data transfer object for {@link Code}.
  */
-@Controller
 public class CodeDTO extends BaseDTO<Code> {
 
   private Integer codeId;

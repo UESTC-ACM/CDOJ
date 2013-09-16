@@ -19,11 +19,9 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 @ContextConfiguration({ "classpath:applicationContext-test.xml" })
 public class DTOTest {
 
-  @Autowired
-  private UserDTO userDTO;
-
   @Test
   public void testUserDTO() throws AppException {
+    UserDTO userDTO = new UserDTO();
     userDTO.setUserId(1);
     userDTO.setUserName("userName");
     userDTO.setDepartmentId(1);

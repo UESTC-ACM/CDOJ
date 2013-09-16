@@ -31,7 +31,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Data transfer object for {@link TrainingStatus}.
  */
-@Controller
 public class TrainingStatusDTO extends BaseDTO<TrainingStatus> {
 
   @Override

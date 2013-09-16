@@ -46,14 +46,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Data transfer object for {@link Contest}.
  */
-@Controller
-public class ContestDTO extends BaseDTO<Contest> implements ContestProblemDAOAware, ProblemDAOAware {
-
-  @Autowired
-  private IContestProblemDAO contestProblemDAO;
-
-  @Autowired
-  private IProblemDAO problemDAO;
+public class ContestDTO extends BaseDTO<Contest> {
 
   private Integer contestId;
   private String title;
@@ -162,7 +155,8 @@ public class ContestDTO extends BaseDTO<Contest> implements ContestProblemDAOAwa
   @Override
   public void updateEntity(Contest contest) throws AppException {
     super.updateEntity(contest);
-
+    /*
+    TODO Remove DAO
     Collection<ContestProblem> problems = contest.getContestProblemsByContestId();
     if (problems != null) {
       for (ContestProblem problem : problems) {
@@ -183,20 +177,11 @@ public class ContestDTO extends BaseDTO<Contest> implements ContestProblemDAOAwa
       }
       contest.setContestProblemsByContestId(problems);
     }
+    */
   }
 
   @Override
   protected Class<Contest> getReferenceClass() {
     return Contest.class;
-  }
-
-  @Override
-  public void setContestProblemDAO(IContestProblemDAO contestProblemDAO) {
-    this.contestProblemDAO = contestProblemDAO;
-  }
-
-  @Override
-  public void setProblemDAO(IProblemDAO problemDAO) {
-    this.problemDAO = problemDAO;
   }
 }
