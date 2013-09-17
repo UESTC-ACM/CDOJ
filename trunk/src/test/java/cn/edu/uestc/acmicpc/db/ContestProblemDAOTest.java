@@ -9,7 +9,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.db.dao.impl.ContestProblemDAO;
 import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 

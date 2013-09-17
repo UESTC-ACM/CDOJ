@@ -1,9 +1,8 @@
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
-import org.hibernate.validator.constraints.Length;
-
 import javax.validation.constraints.Pattern;
-import java.sql.Timestamp;
+
+import org.hibernate.validator.constraints.Length;
 
 /**
  * Description
