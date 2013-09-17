@@ -22,8 +22,6 @@
 
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
-import org.springframework.stereotype.Controller;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;

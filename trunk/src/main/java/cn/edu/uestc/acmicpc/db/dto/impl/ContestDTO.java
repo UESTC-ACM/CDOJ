@@ -28,18 +28,11 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-
-import cn.edu.uestc.acmicpc.db.dao.iface.IContestProblemDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 import cn.edu.uestc.acmicpc.db.entity.ContestUser;
 import cn.edu.uestc.acmicpc.db.entity.Status;
-import cn.edu.uestc.acmicpc.ioc.dao.ContestProblemDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
