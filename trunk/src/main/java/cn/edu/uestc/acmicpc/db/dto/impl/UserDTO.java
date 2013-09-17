@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.db.dto.impl;
 import java.sql.Timestamp;
 
 import cn.edu.uestc.acmicpc.db.entity.Department;
-import cn.edu.uestc.acmicpc.db.entity.User;
 
 /**
  * Data transfer object for {@link User}.
