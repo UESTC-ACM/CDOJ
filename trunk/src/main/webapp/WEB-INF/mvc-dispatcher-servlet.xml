@@ -2,7 +2,10 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
          http://www.springframework.org/schema/mvc
          http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
          http://www.springframework.org/schema/beans
@@ -22,10 +25,15 @@
     </mvc:message-converters>
   </mvc:annotation-driven>
 
+  <aop:aspectj-autoproxy proxy-target-class="true"/>
+
   <!-- bind your messages.properties -->
   <bean class="org.springframework.context.support.ResourceBundleMessageSource"
         id="messageSource">
-    <property name="basename" value="messages"/>
+    <property name="basename" value="WEB-INF/messages"/>
+  </bean>
+  <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+    <property name="validationMessageSource" ref="messageSource"/>
   </bean>
 
   <bean

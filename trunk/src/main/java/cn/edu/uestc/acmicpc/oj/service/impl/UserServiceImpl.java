@@ -1,5 +1,8 @@
 package cn.edu.uestc.acmicpc.oj.service.impl;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
+import cn.edu.uestc.acmicpc.util.StringUtil;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,9 @@ import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
+
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Implementation for {@link UserService}.
@@ -56,6 +62,24 @@ public class UserServiceImpl extends AbstractService implements UserService, Use
   @Override
   public void createNewUser(User user) throws AppException {
     userDAO.add(user);
+  }
+
+  @Override
+  public UserDTO login(UserLoginDTO userLoginDTO) throws AppException {
+    User user = getUserByUserName(userLoginDTO.getUserName());
+    if (user == null || !StringUtil.encodeSHA1(userLoginDTO.getPassword()).equals(user.getPassword()))
+      return null;
+
+    user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
+    userDAO.update(user);
+
+    UserDTO userDTO = new UserDTO();
+    userDTO.setUserName(user.getUserName());
+    userDTO.setNickName(user.getNickName());
+    userDTO.setEmail(user.getEmail());
+    userDTO.setLastLogin(user.getLastLogin());
+    userDTO.setType(user.getType());
+    return userDTO;
   }
 
   @Override

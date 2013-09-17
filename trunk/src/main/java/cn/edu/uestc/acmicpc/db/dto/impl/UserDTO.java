@@ -1,43 +1,16 @@
-/*
- *
- *  cdoj, UESTC ACMICPC Online Judge
- *  Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  	mzry1992 <@link muziriyun@gmail.com>
- *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU General Public License
- *  as published by the Free Software Foundation; either version 2
- *  of the License, or (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
-import org.springframework.stereotype.Controller;
-
-import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.util.StringUtil;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Data transfer object for {@link User}.
+ *
+ * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
-public class UserDTO extends BaseDTO<User> {
+public class UserDTO {
 
   /**
    * Input: user id, set null for new user
@@ -49,6 +22,9 @@ public class UserDTO extends BaseDTO<User> {
    */
   private String userName;
 
+  /**
+   * Input: old password
+   */
   private String oldPassword;
 
   /**
@@ -91,59 +67,16 @@ public class UserDTO extends BaseDTO<User> {
    */
   private String studentId;
 
-  public UserDTO() {
-    super();
-  }
-
-  @Ignore
-  public String getOldPassword() {
-    return oldPassword;
-  }
-
-  public void setOldPassword(String oldPassword) {
-    this.oldPassword = oldPassword;
-  }
-
-  public Integer getUserId() {
-    return userId;
-
-  }
-
-  public void setUserId(Integer userId) {
-    this.userId = userId;
-  }
+  /**
+   * Last login time
+   */
+  private Timestamp lastLogin;
 
   /**
    * Input: number of problems the user has solved
    */
   private Integer solved;
 
-  @Ignore
-  public Integer getSolved() {
-    return solved;
-  }
-
-  public void setSolved(Integer solved) {
-    this.solved = solved;
-  }
-
-  @Ignore
-  public Integer getTried() {
-    return tried;
-  }
-
-  public void setTried(Integer tried) {
-    this.tried = tried;
-  }
-
-  @Ignore
-  public Integer getType() {
-    return type;
-  }
-
-  public void setType(Integer type) {
-    this.type = type;
-  }
 
   /**
    * Input: number the problems the user has tried
@@ -155,25 +88,12 @@ public class UserDTO extends BaseDTO<User> {
    */
   private Integer type;
 
-  /**
-   * Output: A user entity
-   */
-  private User user;
-
-  @Override
-  public User getEntity() throws AppException {
-    user = super.getEntity();
-    user.setPassword(StringUtil.encodeSHA1(getPassword()));
-    user.setDepartmentByDepartmentId(department);
-    user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
-    user.setSolved(getSolved() == null ? 0 : getSolved());
-    user.setTried(getTried() == null ? 0 : getTried());
-    user.setType(getType() == null ? 0 : getType());
-    return user;
+  public Integer getUserId() {
+    return userId;
   }
 
-  public void setUser(User user) {
-    this.user = user;
+  public void setUserId(Integer userId) {
+    this.userId = userId;
   }
 
   public String getUserName() {
@@ -184,7 +104,14 @@ public class UserDTO extends BaseDTO<User> {
     this.userName = userName;
   }
 
-  @Ignore
+  public String getOldPassword() {
+    return oldPassword;
+  }
+
+  public void setOldPassword(String oldPassword) {
+    this.oldPassword = oldPassword;
+  }
+
   public String getPassword() {
     return password;
   }
@@ -193,7 +120,6 @@ public class UserDTO extends BaseDTO<User> {
     this.password = password;
   }
 
-  @Ignore
   public String getPasswordRepeat() {
     return passwordRepeat;
   }
@@ -226,15 +152,6 @@ public class UserDTO extends BaseDTO<User> {
     this.school = school;
   }
 
-  public String getStudentId() {
-    return studentId;
-  }
-
-  public void setStudentId(String studentId) {
-    this.studentId = studentId;
-  }
-
-  @Ignore
   public Integer getDepartmentId() {
     return departmentId;
   }
@@ -243,7 +160,6 @@ public class UserDTO extends BaseDTO<User> {
     this.departmentId = departmentId;
   }
 
-  @Ignore
   public Department getDepartment() {
     return department;
   }
@@ -252,35 +168,43 @@ public class UserDTO extends BaseDTO<User> {
     this.department = department;
   }
 
-  /**
-   * User is very special, the user name and password etc can not be changed in this method.
-   *
-   * @param user user entity to be updated
-   */
-  @Override
-  public void updateEntity(User user) {
-    if (nickName != null) {
-      user.setNickName(nickName);
-    }
-    if (password != null) {
-      user.setPassword(StringUtil.encodeSHA1(password));
-    }
-    if (school != null) {
-      user.setSchool(school);
-    }
-    if (department != null) {
-      user.setDepartmentByDepartmentId(department);
-    }
-    if (studentId != null) {
-      user.setStudentId(studentId);
-    }
-    if (type != null) {
-      user.setType(type);
-    }
+  public String getStudentId() {
+    return studentId;
   }
 
-  @Override
-  protected Class<User> getReferenceClass() {
-    return User.class;
+  public void setStudentId(String studentId) {
+    this.studentId = studentId;
+  }
+
+  public Timestamp getLastLogin() {
+    return lastLogin;
+  }
+
+  public void setLastLogin(Timestamp lastLogin) {
+    this.lastLogin = lastLogin;
+  }
+
+  public Integer getSolved() {
+    return solved;
+  }
+
+  public void setSolved(Integer solved) {
+    this.solved = solved;
+  }
+
+  public Integer getTried() {
+    return tried;
+  }
+
+  public void setTried(Integer tried) {
+    this.tried = tried;
+  }
+
+  public Integer getType() {
+    return type;
+  }
+
+  public void setType(Integer type) {
+    this.type = type;
   }
 }

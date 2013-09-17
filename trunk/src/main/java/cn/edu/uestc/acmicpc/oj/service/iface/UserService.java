@@ -1,5 +1,7 @@
 package cn.edu.uestc.acmicpc.oj.service.iface;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -50,4 +52,13 @@ public interface UserService extends OnlineJudgeService<User, Integer> {
    * @throws AppException
    */
   void createNewUser(User user) throws AppException;
+
+  /**
+   * User login operation
+   *
+   * @param userLoginDTO User need login (collect from form)
+   * @return login state
+   * @throws AppException
+   */
+  UserDTO login(UserLoginDTO userLoginDTO) throws AppException;
 }

@@ -22,6 +22,7 @@
 package cn.edu.uestc.acmicpc.oj.controller.index;
 
 import cn.edu.uestc.acmicpc.oj.controller.base.BaseController;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class IndexController extends BaseController {
 
   @RequestMapping(method = RequestMethod.GET)
+  @LoginPermit(NeedLogin = false)
   public String toIndex(ModelMap model) {
     model.put("message", "Fuck!");
 
