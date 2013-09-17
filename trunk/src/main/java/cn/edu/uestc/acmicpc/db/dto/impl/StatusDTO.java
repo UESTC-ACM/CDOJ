@@ -25,8 +25,6 @@ package cn.edu.uestc.acmicpc.db.dto.impl;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import org.springframework.stereotype.Controller;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Code;
 import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
