@@ -45,34 +45,16 @@
         info=$("#loginModal").find(".form-horizontal").getFormData();
         console.log(info);
 
-        $.ajax({
-          type:"POST",
-          url:"user/login",
-          dataType:"json",
-          contentType:"application/json",
-          data:JSON.stringify(info),
-          success:function(data){
-            console.log(data);
-            $("#loginModal").find(".form-horizontal").checkValidate({
-              result: data,
-              onSuccess: function(e) {
-                $("#loginModal").modal('hide');
-                //window.location.reload();
-              }
-            });
-          }
-        });
-
-        /*$.post('/user/login', info, function(data) {
+        post('/user/login', info, function(data) {
           console.log(data);
-          $("#loginModal").find(".form-horizontal").checkValidate({
+          $("#loginModal").find(".form-horizontal").formValidate({
             result: data,
             onSuccess: function(e) {
               $("#loginModal").modal('hide');
-              //window.location.reload();
+              window.location.reload();
             }
           });
-        });*/
+        });
       },
       blindEnterKey: true
     });

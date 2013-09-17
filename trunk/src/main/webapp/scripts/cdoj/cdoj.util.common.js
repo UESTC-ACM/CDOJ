@@ -1,45 +1,33 @@
-/*
- *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 /**
- * Some common functions
+ * Common functions
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
  */
 
 function mergeOptions(options,userOptions) {
-    if (userOptions != undefined) {
-        $.each(userOptions,function(index,value) {
-                options[index] = value;
-        });
-    }
-    return options;
+  if (userOptions != undefined) {
+    $.each(userOptions,function(index,value) {
+      options[index] = value;
+    });
+  }
+  return options;
 }
 
 function subSum(array, op, ed) {
-    var res = 0;
-    ed = Math.min(ed, array.length - 1);
-    for (var i = op; i <= ed; i++)
-        res += array[i];
-    return res;
+  var res = 0;
+  ed = Math.min(ed, array.length - 1);
+  for (var i = op; i <= ed; i++)
+    res += array[i];
+  return res;
+}
+
+function post(url, data, callback) {
+  $.ajax({
+    type : "POST",
+    url : url,
+    dataType : "json",
+    contentType : "application/json",
+    data : JSON.stringify(data),
+    success : callback
+  });
 }
