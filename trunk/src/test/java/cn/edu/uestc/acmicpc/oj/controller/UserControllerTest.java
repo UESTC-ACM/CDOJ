@@ -1,16 +1,17 @@
 package cn.edu.uestc.acmicpc.oj.controller;
 
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+import java.nio.charset.Charset;
 import java.util.UUID;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,20 @@ import cn.edu.uestc.acmicpc.config.WebMVCConfig;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
-import cn.edu.uestc.acmicpc.oj.test.TestUtil;
 
+import com.alibaba.fastjson.JSON;
+
+/** Mock test for {@link UserController}. */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = { MockMVCContext.class, WebMVCConfig.class })
 public class UserControllerTest {
 
+  public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(
+      MediaType.APPLICATION_JSON.getType(),
+      MediaType.APPLICATION_JSON.getSubtype(),
+      Charset.forName("utf8")
+      );
   @Autowired
   private WebApplicationContext context;
   @Autowired
@@ -49,17 +57,18 @@ public class UserControllerTest {
   }
 
   @Test
-  @Ignore
   public void testLogin_successful() throws Exception {
     UserLoginDTO userLoginDTO = new UserLoginDTO();
     UserDTO userDTO = new UserDTO();
+    userLoginDTO.setUserName("admin");
+    userLoginDTO.setPassword("password");
     when(userService.login(userLoginDTO)).thenReturn(userDTO);
     mockMvc.perform(post("/user/login")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(TestUtil.convertObjectToFormUrlEncodedBytes(userLoginDTO))
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userLoginDTO))
         .session(session))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.result").value("success"));
-    Assert.assertEquals(session.getAttribute("currentUser"), userDTO);
+        .andExpect(jsonPath("$.result", is("success")));
+     Assert.assertEquals(userDTO, session.getAttribute("currentUser"));
   }
 }
