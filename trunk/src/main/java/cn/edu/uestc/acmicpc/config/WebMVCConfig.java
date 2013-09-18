@@ -51,7 +51,6 @@ public class WebMVCConfig extends WebMvcConfigurationSupport {
 
   @Bean
   public ViewResolver viewResolver() {
-    System.out.println("Fuck !");
     InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 
     viewResolver.setPrefix("/WEB-INF/views/");
