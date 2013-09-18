@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.db;
 
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.config.ApplicationContextConfig;
 import org.hibernate.criterion.Projections;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,7 +26,9 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
  * Test cases for {@link Status}.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({ "classpath:applicationContext-test.xml" })
+@ContextConfiguration(classes = {
+    ApplicationContextConfig.class
+})
 public class StatusDatabaseTest {
 
   @Before
