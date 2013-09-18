@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -19,17 +21,18 @@ import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.ioc.service.UserServiceAware;
 import cn.edu.uestc.acmicpc.oj.controller.base.BaseController;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
+import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Description TODO
- *
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @Controller
 @RequestMapping("/user")
 public class UserController extends BaseController implements UserServiceAware {
+
+  private static final Logger LOGGER = LogManager.getLogger(UserController.class);
 
   /**
    * Login controller, TODO need test to check weather validation works.
@@ -49,6 +52,8 @@ public class UserController extends BaseController implements UserServiceAware {
   Map<String, Object> toLogin(HttpSession session,
       @RequestBody @Valid UserLoginDTO userLoginDTO,
       BindingResult validateResult) {
+    LOGGER.debug("call toLogin successfully");
+    LOGGER.debug(ObjectUtil.toString(userLoginDTO));
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
@@ -57,6 +62,7 @@ public class UserController extends BaseController implements UserServiceAware {
       try {
         UserDTO userDTO = userService.login(userLoginDTO);
         if (userDTO != null) {
+          LOGGER.debug("set attribute");
           session.setAttribute("currentUser", userDTO);
           json.put("result", "success");
         } else {
@@ -70,6 +76,7 @@ public class UserController extends BaseController implements UserServiceAware {
         json.put("error_msg", e.getMessage());
       }
     }
+    LOGGER.debug(json);
     return json;
   }
 
