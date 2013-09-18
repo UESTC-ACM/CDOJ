@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.db;
 
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.config.ApplicationContextConfig;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +18,9 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * Test cases for {@link Tag}.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({ "classpath:applicationContext-test.xml" })
+@ContextConfiguration(classes = {
+    ApplicationContextConfig.class
+})
 public class TagDatabaseTest {
 
   @Autowired

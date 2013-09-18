@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.db;
 
+import cn.edu.uestc.acmicpc.config.ApplicationContextConfig;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +19,9 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
  * Test cases for {@link UserSerialKey}.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({ "classpath:applicationContext-test.xml" })
+@ContextConfiguration(classes = {
+    ApplicationContextConfig.class
+})
 public class UserSerialKeyDatabaseTest {
 
   @Autowired

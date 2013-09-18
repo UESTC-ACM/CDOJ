@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.edu.uestc.acmicpc.config.ApplicationContextConfig;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -27,7 +28,9 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({ "classpath:applicationContext-test.xml" })
+@ContextConfiguration(classes = {
+    ApplicationContextConfig.class
+})
 public class TriedTest {
 
   @Before

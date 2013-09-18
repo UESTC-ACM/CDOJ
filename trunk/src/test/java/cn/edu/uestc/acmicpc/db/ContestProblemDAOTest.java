@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.db;
 
+import cn.edu.uestc.acmicpc.config.ApplicationContextConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,9 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * Test case for {@link ContestProblemDAO}.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({ "classpath:applicationContext-test.xml" })
+@ContextConfiguration(classes = {
+    ApplicationContextConfig.class
+})
 public class ContestProblemDAOTest {
 
   @Autowired

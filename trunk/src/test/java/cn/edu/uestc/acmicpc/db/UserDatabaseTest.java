@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.config.ApplicationContextConfig;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -25,7 +26,9 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
  * Test cases for {@link User}.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({ "classpath:applicationContext-test.xml" })
+@ContextConfiguration(classes = {
+    ApplicationContextConfig.class
+})
 public class UserDatabaseTest implements UserConditionAware, UserDAOAware {
 
   @Before
