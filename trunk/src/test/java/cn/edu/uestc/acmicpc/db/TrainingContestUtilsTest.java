@@ -2,10 +2,6 @@ package cn.edu.uestc.acmicpc.db;
 
 import java.util.List;
 
-import cn.edu.uestc.acmicpc.config.ApplicationContextConfig;
-import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.TrainingStatusDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDTO;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.db.condition.impl.TrainingContestCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TrainingStatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TrainingUserCondition;
@@ -20,6 +17,9 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.TrainingStatusDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDTO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
@@ -33,9 +33,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {
-    ApplicationContextConfig.class
-})
+@ContextConfiguration(classes = { TestContext.class })
 public class TrainingContestUtilsTest {
 
   @Test

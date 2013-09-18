@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.db;
 import java.util.List;
 import java.util.Random;
 
-import cn.edu.uestc.acmicpc.config.ApplicationContextConfig;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
@@ -23,9 +23,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * Test cases for {@link Problem}.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {
-    ApplicationContextConfig.class
-})
+@ContextConfiguration(classes = { TestContext.class })
 public class ProblemDatabaseTest implements ProblemConditionAware, ProblemDAOAware {
 
   @Autowired

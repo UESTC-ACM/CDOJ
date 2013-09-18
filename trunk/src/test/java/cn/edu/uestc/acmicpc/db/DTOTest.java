@@ -1,11 +1,11 @@
 package cn.edu.uestc.acmicpc.db;
 
-import cn.edu.uestc.acmicpc.config.ApplicationContextConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -13,9 +13,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * Test cases for DTO entities.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {
-    ApplicationContextConfig.class
-})
+@ContextConfiguration(classes = { TestContext.class })
 public class DTOTest {
 
   @Test
@@ -32,13 +30,11 @@ public class DTOTest {
     userDTO.setStudentId("123456789");
     userDTO.setType(2);
     /*
-    @TODO wuwu
-    User user = userDTO.getEntity();
-    Assert.assertEquals(Integer.valueOf(1), user.getUserId());
-    Assert.assertEquals("userName", user.getUserName());
-    Assert.assertEquals("nickName", user.getNickName());
-    Assert.assertEquals(StringUtil.encodeSHA1("password"), user.getPassword());
-    Assert.assertEquals(Integer.valueOf(2), user.getType());
-    */
+     * @TODO wuwu User user = userDTO.getEntity(); Assert.assertEquals(Integer.valueOf(1),
+     * user.getUserId()); Assert.assertEquals("userName", user.getUserName());
+     * Assert.assertEquals("nickName", user.getNickName());
+     * Assert.assertEquals(StringUtil.encodeSHA1("password"), user.getPassword());
+     * Assert.assertEquals(Integer.valueOf(2), user.getType());
+     */
   }
 }

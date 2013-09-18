@@ -6,8 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
-import cn.edu.uestc.acmicpc.config.ApplicationContextConfig;
-import cn.edu.uestc.acmicpc.config.WebMVCConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,13 +16,13 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import cn.edu.uestc.acmicpc.config.MockMVCContext;
+import cn.edu.uestc.acmicpc.config.WebMVCConfig;
+
 /** Test cases for {@link IndexController}. */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {
-    ApplicationContextConfig.class,
-    WebMVCConfig.class
-})
+@ContextConfiguration(classes = { MockMVCContext.class, WebMVCConfig.class })
 public class IndexControllerTest {
 
   @Autowired
