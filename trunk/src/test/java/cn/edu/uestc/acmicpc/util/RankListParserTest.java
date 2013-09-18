@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import cn.edu.uestc.acmicpc.config.ApplicationContextConfig;
 import jxl.read.biff.BiffException;
 
 import org.junit.Ignore;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
@@ -30,9 +30,7 @@ import cn.edu.uestc.acmicpc.util.exception.ParserException;
  * Test cases for {@link TrainingRankListParser}.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {
-    ApplicationContextConfig.class
-})
+@ContextConfiguration(classes = { TestContext.class })
 public class RankListParserTest implements TrainingRankListParserAware, TrainingContestDAOAware,
     TrainingStatusDAOAware {
 

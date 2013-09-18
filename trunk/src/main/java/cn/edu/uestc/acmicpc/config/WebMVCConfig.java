@@ -1,36 +1,34 @@
 package cn.edu.uestc.acmicpc.config;
 
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
-import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-import java.util.List;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 
 /**
  * Description
- *
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {
-  "cn.edu.uestc.acmicpc.oj.controller"
+    "cn.edu.uestc.acmicpc.oj.controller"
 })
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class WebMVCConfig extends WebMvcConfigurationSupport {
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    System.out.println("FFFFFFFFFFFFFFFF");
     registry.addResourceHandler("/images/**").addResourceLocations("/images/**");
     registry.addResourceHandler("/plugins/**").addResourceLocations("/plugins/**");
     registry.addResourceHandler("/scripts/**").addResourceLocations("/scripts/**");
@@ -38,7 +36,8 @@ public class WebMVCConfig extends WebMvcConfigurationSupport {
   }
 
   @Override
-  public void configureDefaultServletHandling(DefaultServletHandlerConfigurer defaultServletHandlerConfigurer) {
+  public void configureDefaultServletHandling(
+      DefaultServletHandlerConfigurer defaultServletHandlerConfigurer) {
     defaultServletHandlerConfigurer.enable();
   }
 

@@ -22,25 +22,24 @@
 
 package cn.edu.uestc.acmicpc.service;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.transaction.annotation.Transactional;
+
 import cn.edu.uestc.acmicpc.ioc.util.SettingsAware;
 import cn.edu.uestc.acmicpc.service.entity.Judge;
 import cn.edu.uestc.acmicpc.service.entity.JudgeItem;
 import cn.edu.uestc.acmicpc.service.entity.Scheduler;
 import cn.edu.uestc.acmicpc.util.Settings;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Judge main service, use multi-thread architecture to process judge
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 @Transactional
