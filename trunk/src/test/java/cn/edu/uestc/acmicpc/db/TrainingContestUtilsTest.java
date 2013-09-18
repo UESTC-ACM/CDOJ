@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.db;
 
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.config.ApplicationContextConfig;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingStatusDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDTO;
@@ -32,7 +33,9 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({ "classpath:applicationContext-test.xml" })
+@ContextConfiguration(classes = {
+    ApplicationContextConfig.class
+})
 public class TrainingContestUtilsTest {
 
   @Test

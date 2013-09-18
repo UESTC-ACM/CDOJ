@@ -98,6 +98,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
     try {
       return getSession().createCriteria(getReferenceClass());
     } catch (Exception e) {
+      e.printStackTrace();
       throw new AppException("Get criteria error");
     }
   }
@@ -199,6 +200,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable> 
       return (Entity) getSession().get(getReferenceClass(), key);
     } catch (HibernateException e) {
       LOGGER.error(e);
+      e.printStackTrace();
       throw new AppException("Invoke get method error.");
     }
   }

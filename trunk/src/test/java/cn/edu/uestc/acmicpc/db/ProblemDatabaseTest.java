@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.db;
 import java.util.List;
 import java.util.Random;
 
+import cn.edu.uestc.acmicpc.config.ApplicationContextConfig;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +23,9 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * Test cases for {@link Problem}.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({ "classpath:applicationContext-test.xml" })
+@ContextConfiguration(classes = {
+    ApplicationContextConfig.class
+})
 public class ProblemDatabaseTest implements ProblemConditionAware, ProblemDAOAware {
 
   @Autowired
