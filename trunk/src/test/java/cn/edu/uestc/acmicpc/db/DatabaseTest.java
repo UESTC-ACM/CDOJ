@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.edu.uestc.acmicpc.config.ApplicationContextConfig;
 import cn.edu.uestc.acmicpc.db.dto.impl.ContestDTO;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -35,7 +36,9 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
  * Simple database test class.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({ "classpath:applicationContext-test.xml" })
+@ContextConfiguration(classes = {
+    ApplicationContextConfig.class
+})
 public class DatabaseTest {
 
   private static final Logger LOGGER = LogManager.getLogger(DatabaseTest.class);

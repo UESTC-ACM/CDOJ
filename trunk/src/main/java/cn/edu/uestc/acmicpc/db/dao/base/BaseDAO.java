@@ -52,6 +52,8 @@ public class BaseDAO {
    * @return if the IoC works, return current session, otherwise open a new session
    */
   protected Session getSession() {
+    if (sessionFactory == null)
+      System.out.println("fuck");
     Session session;
     try {
       session = sessionFactory.getCurrentSession();
