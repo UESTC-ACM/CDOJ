@@ -26,11 +26,10 @@ import java.util.List;
   "cn.edu.uestc.acmicpc.oj.controller"
 })
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-public class WebMVCConfig extends WebMvcConfigurationSupport {
+public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    System.out.println("FFFFFFFFFFFFFFFF");
     registry.addResourceHandler("/images/**").addResourceLocations("/images/**");
     registry.addResourceHandler("/plugins/**").addResourceLocations("/plugins/**");
     registry.addResourceHandler("/scripts/**").addResourceLocations("/scripts/**");
@@ -45,13 +44,10 @@ public class WebMVCConfig extends WebMvcConfigurationSupport {
   @Override
   public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
     converters.add(new FastJsonHttpMessageConverter());
-
-    addDefaultHttpMessageConverters(converters);
   }
 
   @Bean
   public ViewResolver viewResolver() {
-    System.out.println("Fuck !");
     InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 
     viewResolver.setPrefix("/WEB-INF/views/");
