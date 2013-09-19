@@ -7,16 +7,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
-import java.nio.charset.Charset;
 import java.util.UUID;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -36,13 +33,8 @@ import com.alibaba.fastjson.JSON;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = { MockMVCContext.class, WebMVCConfig.class })
-public class UserControllerTest {
+public class UserControllerTest extends ControllerTest {
 
-  public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(
-      MediaType.APPLICATION_JSON.getType(),
-      MediaType.APPLICATION_JSON.getSubtype(),
-      Charset.forName("utf8")
-      );
   @Autowired
   private WebApplicationContext context;
   @Autowired
