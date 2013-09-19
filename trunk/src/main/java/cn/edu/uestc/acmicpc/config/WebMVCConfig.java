@@ -25,7 +25,7 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
     "cn.edu.uestc.acmicpc.oj.controller"
 })
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-public class WebMVCConfig extends WebMvcConfigurationSupport {
+public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -44,8 +44,6 @@ public class WebMVCConfig extends WebMvcConfigurationSupport {
   @Override
   public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
     converters.add(new FastJsonHttpMessageConverter());
-
-    addDefaultHttpMessageConverters(converters);
   }
 
   @Bean
