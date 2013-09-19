@@ -37,7 +37,7 @@ public class IndexControllerTest extends ControllerTest {
 
   @Test
   public void testVisitIndex() throws Exception {
-    mockMvc.perform(get("/", model()))
+    mockMvc.perform(get("/"))
         .andExpect(status().isOk())
         .andExpect(view().name("index/index"))
         .andExpect(model().attribute("message", "home page."));
