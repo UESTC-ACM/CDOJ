@@ -23,7 +23,7 @@ import cn.edu.uestc.acmicpc.config.WebMVCConfig;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = { MockMVCContext.class, WebMVCConfig.class })
-public class IndexControllerTest {
+public class IndexControllerTest extends ControllerTest {
 
   @Autowired
   private WebApplicationContext context;
