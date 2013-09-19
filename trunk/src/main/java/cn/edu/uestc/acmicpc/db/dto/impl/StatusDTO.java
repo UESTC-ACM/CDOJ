@@ -1,25 +1,3 @@
-/*
- *
- *  cdoj, UESTC ACMICPC Online Judge
- *  Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  	mzry1992 <@link muziriyun@gmail.com>
- *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU General Public License
- *  as published by the Free Software Foundation; either version 2
- *  of the License, or (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
 import java.sql.Timestamp;
@@ -52,6 +30,35 @@ public class StatusDTO extends BaseDTO<Status> {
   private Integer codeId;
   private Code code;
   private Integer compileInfoId;
+  private CompileInfo compileInfo;
+  private Integer contestId;
+  private Contest contest;
+  private Integer languageId;
+  private Language language;
+
+  public StatusDTO() {
+  }
+
+  private StatusDTO(Integer statusId, Integer result, Integer memoryCost, Integer timeCost,
+      Integer length, Timestamp time, Integer caseNumber, Integer codeId, Code code,
+      Integer compileInfoId, CompileInfo compileInfo, Integer contestId, Contest contest,
+      Integer languageId, Language language) {
+    this.statusId = statusId;
+    this.result = result;
+    this.memoryCost = memoryCost;
+    this.timeCost = timeCost;
+    this.length = length;
+    this.time = time;
+    this.caseNumber = caseNumber;
+    this.codeId = codeId;
+    this.code = code;
+    this.compileInfoId = compileInfoId;
+    this.compileInfo = compileInfo;
+    this.contestId = contestId;
+    this.contest = contest;
+    this.languageId = languageId;
+    this.language = language;
+  }
 
   @Ignore
   public Code getCode() {
@@ -106,12 +113,6 @@ public class StatusDTO extends BaseDTO<Status> {
   public void setLanguage(Language language) {
     this.language = language;
   }
-
-  private CompileInfo compileInfo;
-  private Integer contestId;
-  private Contest contest;
-  private Integer languageId;
-  private Language language;
 
   @Override
   public Status getEntity() throws AppException {
@@ -254,5 +255,113 @@ public class StatusDTO extends BaseDTO<Status> {
   @Override
   protected Class<Status> getReferenceClass() {
     return Status.class;
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  /** Builder for {@link StatusDTO}. */
+  public static class Builder {
+
+    private Builder() {
+    }
+
+    private Integer statusId;
+    private Integer result = Global.OnlineJudgeReturnType.OJ_AC.ordinal();
+    private Integer memoryCost = 100;
+    private Integer timeCost = 100;
+    private Integer length = 100;
+    private Timestamp time = new Timestamp(new Date().getTime());
+    private Integer caseNumber = 1;
+    private Integer codeId;
+    // TODO get rid of code and use code content instead of it.
+    private Code code;
+    private Integer compileInfoId;
+    private CompileInfo compileInfo;
+    private Integer contestId;
+    private Contest contest;
+    private Integer languageId;
+    private Language language;
+
+    public Builder setStatusId(Integer statusId) {
+      this.statusId = statusId;
+      return this;
+    }
+
+    public Builder setResult(Integer result) {
+      this.result = result;
+      return this;
+    }
+
+    public Builder setMemoryCost(Integer memoryCost) {
+      this.memoryCost = memoryCost;
+      return this;
+    }
+
+    public Builder setTimeCost(Integer timeCost) {
+      this.timeCost = timeCost;
+      return this;
+    }
+
+    public Builder setLength(Integer length) {
+      this.length = length;
+      return this;
+    }
+
+    public Builder setTime(Timestamp time) {
+      this.time = time;
+      return this;
+    }
+
+    public Builder setCaseNumber(Integer caseNumber) {
+      this.caseNumber = caseNumber;
+      return this;
+    }
+
+    public Builder setCodeId(Integer codeId) {
+      this.codeId = codeId;
+      return this;
+    }
+
+    public Builder setCode(Code code) {
+      this.code = code;
+      return this;
+    }
+
+    public Builder setCompileInfoId(Integer compileInfoId) {
+      this.compileInfoId = compileInfoId;
+      return this;
+    }
+
+    public Builder setCompileInfo(CompileInfo compileInfo) {
+      this.compileInfo = compileInfo;
+      return this;
+    }
+
+    public Builder setContestId(Integer contestId) {
+      this.contestId = contestId;
+      return this;
+    }
+
+    public Builder setContest(Contest contest) {
+      this.contest = contest;
+      return this;
+    }
+
+    public Builder setLanguageId(Integer languageId) {
+      this.languageId = languageId;
+      return this;
+    }
+
+    public Builder setLanguage(Language language) {
+      this.language = language;
+      return this;
+    }
+
+    public StatusDTO build() {
+      return new StatusDTO(statusId, result, memoryCost, timeCost, length, time, caseNumber,
+          codeId, code, compileInfoId, compileInfo, contestId, contest, languageId, language);
+    }
   }
 }

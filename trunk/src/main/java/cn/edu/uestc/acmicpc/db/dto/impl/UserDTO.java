@@ -1,14 +1,12 @@
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 import cn.edu.uestc.acmicpc.db.entity.Department;
-import cn.edu.uestc.acmicpc.db.entity.User;
 
 /**
  * Data transfer object for {@link User}.
- *
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class UserDTO {
 
@@ -77,7 +75,6 @@ public class UserDTO {
    */
   private Integer solved;
 
-
   /**
    * Input: number the problems the user has tried
    */
@@ -87,6 +84,30 @@ public class UserDTO {
    * Input: User type
    */
   private Integer type;
+
+  public UserDTO() {
+  }
+
+  private UserDTO(Integer userId, String userName, String oldPassword, String password,
+      String passwordRepeat, String nickName, String email, String school, Integer departmentId,
+      Department department, String studentId, Timestamp lastLogin, Integer solved,
+      Integer tried, Integer type) {
+    this.userId = userId;
+    this.userName = userName;
+    this.oldPassword = oldPassword;
+    this.password = password;
+    this.passwordRepeat = passwordRepeat;
+    this.nickName = nickName;
+    this.email = email;
+    this.school = school;
+    this.departmentId = departmentId;
+    this.department = department;
+    this.studentId = studentId;
+    this.lastLogin = lastLogin;
+    this.solved = solved;
+    this.tried = tried;
+    this.type = type;
+  }
 
   public Integer getUserId() {
     return userId;
@@ -206,5 +227,113 @@ public class UserDTO {
 
   public void setType(Integer type) {
     this.type = type;
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  /** Builder for {@link UserDTO}. */
+  public static class Builder {
+
+    private Builder() {
+    }
+
+    private Integer userId;
+    private String userName = "";
+    private String oldPassword = "";
+    private String password = "";
+    private String passwordRepeat = "";
+    private String nickName = "";
+    private String email = "";
+    private String school = "";
+    private Integer departmentId;
+    // TODO do not use DB entity in dto.
+    private Department department;
+    private String studentId = "";
+    private Timestamp lastLogin = new Timestamp(new Date().getTime());
+    private Integer solved = 0;
+    private Integer tried = 0;
+    private Integer type = 0;
+
+    public Builder setUserId(Integer userId) {
+      this.userId = userId;
+      return this;
+    }
+
+    public Builder setUserName(String userName) {
+      this.userName = userName;
+      return this;
+    }
+
+    public Builder setOldPassword(String oldPassword) {
+      this.oldPassword = oldPassword;
+      return this;
+    }
+
+    public Builder setPassword(String password) {
+      this.password = password;
+      return this;
+    }
+
+    public Builder setPasswordRepeat(String passwordRepeat) {
+      this.passwordRepeat = passwordRepeat;
+      return this;
+    }
+
+    public Builder setNickName(String nickName) {
+      this.nickName = nickName;
+      return this;
+    }
+
+    public Builder setEmail(String email) {
+      this.email = email;
+      return this;
+    }
+
+    public Builder setSchool(String school) {
+      this.school = school;
+      return this;
+    }
+
+    public Builder setDepartmentId(Integer departmentId) {
+      this.departmentId = departmentId;
+      return this;
+    }
+
+    public Builder setDepartment(Department department) {
+      this.department = department;
+      return this;
+    }
+
+    public Builder setStudentId(String studentId) {
+      this.studentId = studentId;
+      return this;
+    }
+
+    public Builder setLastLogin(Timestamp lastLogin) {
+      this.lastLogin = lastLogin;
+      return this;
+    }
+
+    public Builder setSolved(Integer solved) {
+      this.solved = solved;
+      return this;
+    }
+
+    public Builder setTried(Integer tried) {
+      this.tried = tried;
+      return this;
+    }
+
+    public Builder setType(Integer type) {
+      this.type = type;
+      return this;
+    }
+
+    public UserDTO build() {
+      return new UserDTO(userId, userName, oldPassword, password, passwordRepeat, nickName, email,
+          school, departmentId, department, studentId, lastLogin, solved, tried, type);
+    }
   }
 }
