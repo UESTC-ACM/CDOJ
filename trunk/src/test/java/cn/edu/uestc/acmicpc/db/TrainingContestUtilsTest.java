@@ -23,7 +23,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDTO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
-import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
@@ -40,9 +39,8 @@ public class TrainingContestUtilsTest {
   @Ignore
   public void setTrainingUser() throws AppException {
     for (int i = 0; i < 10; i++) {
-      TrainingUserDTO trainingUserDTO = new TrainingUserDTO();
-      trainingUserDTO.setName("UESTC_" + i);
-      trainingUserDTO.setType(Global.TrainingUserType.PERSONAL.ordinal());
+      TrainingUserDTO trainingUserDTO = TrainingUserDTO.builder()
+          .setName("UESTC_" + i).build();
       TrainingUser trainingUser = trainingUserDTO.getEntity();
       trainingUser.setUserByUserId(userDAO.get(1));
       trainingUserDAO.add(trainingUser);
@@ -53,9 +51,9 @@ public class TrainingContestUtilsTest {
   @Ignore
   public void setTrainingContet() throws AppException {
     for (int i = 0; i < 10; i++) {
-      TrainingContestDTO trainingContestDTO = new TrainingContestDTO();
-      trainingContestDTO.setTitle("Contest " + i);
-      trainingContestDTO.setIsPersonal(true);
+      TrainingContestDTO trainingContestDTO = TrainingContestDTO.builder()
+          .setTitle("Contest " + i)
+          .setIsPersonal(true).build();
       TrainingContest trainingContest = trainingContestDTO.getEntity();
       trainingContestDAO.add(trainingContest);
     }
@@ -66,7 +64,7 @@ public class TrainingContestUtilsTest {
   public void setTrainingStatus() throws AppException {
     for (int i = 1; i <= 10; i++) {
       for (int j = 1; j <= 10; j++) {
-        TrainingStatusDTO trainingStatusDTO = new TrainingStatusDTO();
+        TrainingStatusDTO trainingStatusDTO = TrainingStatusDTO.builder().build();
         TrainingStatus trainingStatus = trainingStatusDTO.getEntity();
         trainingStatus.setTrainingUserByTrainingUserId(trainingUserDAO.get(j));
         trainingStatus.setTrainingContestByTrainingContestId(trainingContestDAO.get(i));

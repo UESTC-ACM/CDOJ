@@ -1,8 +1,8 @@
 package cn.edu.uestc.acmicpc.oj.service.impl;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
-import cn.edu.uestc.acmicpc.util.StringUtil;
+import java.sql.Timestamp;
+import java.util.Date;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
+import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
-
-import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * Implementation for {@link UserService}.
@@ -73,12 +73,13 @@ public class UserServiceImpl extends AbstractService implements UserService, Use
     user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
     userDAO.update(user);
 
-    UserDTO userDTO = new UserDTO();
-    userDTO.setUserName(user.getUserName());
-    userDTO.setNickName(user.getNickName());
-    userDTO.setEmail(user.getEmail());
-    userDTO.setLastLogin(user.getLastLogin());
-    userDTO.setType(user.getType());
+    UserDTO userDTO = UserDTO.builder()
+        .setUserName(user.getUserName())
+        .setNickName(user.getNickName())
+        .setEmail(user.getEmail())
+        .setLastLogin(user.getLastLogin())
+        .setType(user.getType())
+        .build();
     return userDTO;
   }
 

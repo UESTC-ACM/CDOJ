@@ -24,6 +24,14 @@ public class UserLoginDTO {
   @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
   private String password;
 
+  public UserLoginDTO() {
+  }
+
+  private UserLoginDTO(String userName, String password) {
+    this.userName = userName;
+    this.password = password;
+  }
+
   public String getUserName() {
     return userName;
   }
@@ -38,5 +46,33 @@ public class UserLoginDTO {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  /** Builder for {@link UserLoginDTO}. */
+  public static class Builder {
+
+    private Builder() {
+    }
+
+    private String userName = "";
+    private String password = "";
+
+    public Builder setUserName(String userName) {
+      this.userName = userName;
+      return this;
+    }
+
+    public Builder setPassword(String password) {
+      this.password = password;
+      return this;
+    }
+
+    public UserLoginDTO build() {
+      return new UserLoginDTO(userName, password);
+    }
   }
 }

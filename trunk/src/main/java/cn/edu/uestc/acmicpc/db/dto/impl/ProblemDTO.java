@@ -1,25 +1,3 @@
-/*
- *
- *  cdoj, UESTC ACMICPC Online Judge
- *  Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  	mzry1992 <@link muziriyun@gmail.com>
- *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU General Public License
- *  as published by the Free Software Foundation; either version 2
- *  of the License, or (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
@@ -31,13 +9,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 public class ProblemDTO extends BaseDTO<Problem> {
 
-  public ProblemDTO() {
-    super();
-  }
-
-  /**
-   * Input: problem id
-   */
   private Integer problemId;
   private String title;
   private String description;
@@ -47,6 +18,22 @@ public class ProblemDTO extends BaseDTO<Problem> {
   private String sampleOutput;
   private String hint;
   private String source;
+
+  public ProblemDTO() {
+  }
+
+  private ProblemDTO(Integer problemId, String title, String description, String input,
+      String output, String sampleInput, String sampleOutput, String hint, String source) {
+    this.problemId = problemId;
+    this.title = title;
+    this.description = description;
+    this.input = input;
+    this.output = output;
+    this.sampleInput = sampleInput;
+    this.sampleOutput = sampleOutput;
+    this.hint = hint;
+    this.source = source;
+  }
 
   public String getTitle() {
     return title;
@@ -146,5 +133,76 @@ public class ProblemDTO extends BaseDTO<Problem> {
   @Override
   protected Class<Problem> getReferenceClass() {
     return Problem.class;
+  }
+
+  public static Builder bulder() {
+    return new Builder();
+  }
+
+  /** Builder for {@link ProblemDTO}. */
+  public static class Builder {
+
+    private Builder() {
+    }
+
+    private Integer problemId;
+    private String title = "";
+    private String description = "";
+    private String input = "";
+    private String output = "";
+    private String sampleInput = "";
+    private String sampleOutput = "";
+    private String hint = "";
+    private String source = "";
+
+    public Builder setProblemId(Integer problemId) {
+      this.problemId = problemId;
+      return this;
+    }
+
+    public Builder setTitle(String title) {
+      this.title = title;
+      return this;
+    }
+
+    public Builder setDescription(String description) {
+      this.description = description;
+      return this;
+    }
+
+    public Builder setInput(String input) {
+      this.input = input;
+      return this;
+    }
+
+    public Builder setOutput(String output) {
+      this.output = output;
+      return this;
+    }
+
+    public Builder setSampleInput(String sampleInput) {
+      this.sampleInput = sampleInput;
+      return this;
+    }
+
+    public Builder setSampleOutput(String sampleOutput) {
+      this.sampleOutput = sampleOutput;
+      return this;
+    }
+
+    public Builder setHint(String hint) {
+      this.hint = hint;
+      return this;
+    }
+
+    public Builder setSource(String source) {
+      this.source = source;
+      return this;
+    }
+
+    public ProblemDTO build() {
+      return new ProblemDTO(problemId, title, description, input, output, sampleInput,
+          sampleOutput, hint, source);
+    }
   }
 }

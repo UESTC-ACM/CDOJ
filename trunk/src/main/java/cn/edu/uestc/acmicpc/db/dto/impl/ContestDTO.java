@@ -1,28 +1,7 @@
-/*
- *
- *  cdoj, UESTC ACMICPC Online Judge
- *  Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  	mzry1992 <@link muziriyun@gmail.com>
- *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU General Public License
- *  as published by the Free Software Foundation; either version 2
- *  of the License, or (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
@@ -49,6 +28,21 @@ public class ContestDTO extends BaseDTO<Contest> {
   private Integer length;
   private Boolean isVisible;
   private List<Integer> problemList;
+
+  public ContestDTO() {
+  }
+
+  private ContestDTO(Integer contestId, String title, String description, Byte type,
+      Timestamp time, Integer length, Boolean isVisible, List<Integer> problemList) {
+    this.contestId = contestId;
+    this.title = title;
+    this.description = description;
+    this.type = type;
+    this.time = time;
+    this.length = length;
+    this.isVisible = isVisible;
+    this.problemList = problemList;
+  }
 
   public Boolean getVisible() {
     return isVisible;
@@ -149,32 +143,91 @@ public class ContestDTO extends BaseDTO<Contest> {
   public void updateEntity(Contest contest) throws AppException {
     super.updateEntity(contest);
     /*
-    TODO Remove DAO
-    Collection<ContestProblem> problems = contest.getContestProblemsByContestId();
-    if (problems != null) {
-      for (ContestProblem problem : problems) {
-        contestProblemDAO.delete(problem);
-      }
-    }
-
-    if (problemList != null) {
-      problems = new LinkedList<>();
-      for (Integer id = 0; id < problemList.size(); id++) {
-        Integer problemId = problemList.get(id);
-        ContestProblem contestProblem = new ContestProblem();
-        contestProblem.setContestByContestId(contest);
-        contestProblem.setProblemByProblemId(problemDAO.get(problemId));
-        contestProblem.setOrder(id);
-        contestProblemDAO.add(contestProblem);
-        problems.add(contestProblem);
-      }
-      contest.setContestProblemsByContestId(problems);
-    }
-    */
+     * TODO Remove DAO Collection<ContestProblem> problems =
+     * contest.getContestProblemsByContestId(); if (problems != null) { for (ContestProblem problem
+     * : problems) { contestProblemDAO.delete(problem); } }
+     *
+     * if (problemList != null) { problems = new LinkedList<>(); for (Integer id = 0; id <
+     * problemList.size(); id++) { Integer problemId = problemList.get(id); ContestProblem
+     * contestProblem = new ContestProblem(); contestProblem.setContestByContestId(contest);
+     * contestProblem.setProblemByProblemId(problemDAO.get(problemId)); contestProblem.setOrder(id);
+     * contestProblemDAO.add(contestProblem); problems.add(contestProblem); }
+     * contest.setContestProblemsByContestId(problems); }
+     */
   }
 
   @Override
   protected Class<Contest> getReferenceClass() {
     return Contest.class;
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  /** Builder for {@link ContestDTO}. */
+  public static class Builder {
+
+    private Builder() {
+    }
+
+    private Integer contestId;
+    private String title = "";
+    private String description = "";
+    private Byte type = 0;
+    private Timestamp time = new Timestamp(new Date().getTime());
+    private Integer length = 300;
+    private Boolean isVisible = false;
+    private List<Integer> problemList = new ArrayList<>();
+
+    public Builder setContestId(Integer contestId) {
+      this.contestId = contestId;
+      return this;
+    }
+
+    public Builder setTitle(String title) {
+      this.title = title;
+      return this;
+    }
+
+    public Builder setDescription(String description) {
+      this.description = description;
+      return this;
+    }
+
+    public Builder setType(Byte type) {
+      this.type = type;
+      return this;
+    }
+
+    public Builder setTime(Timestamp time) {
+      this.time = time;
+      return this;
+    }
+
+    public Builder setLength(Integer length) {
+      this.length = length;
+      return this;
+    }
+
+    public Builder setIsVisible(Boolean isVisible) {
+      this.isVisible = isVisible;
+      return this;
+    }
+
+    public Builder setProblemList(List<Integer> problemList) {
+      this.problemList = problemList;
+      return this;
+    }
+
+    public Builder addProblem(Integer problemId) {
+      this.problemList.add(problemId);
+      return this;
+    }
+
+    public ContestDTO build() {
+      return new ContestDTO(contestId, title, description, type, time, length, isVisible,
+          problemList);
+    }
   }
 }

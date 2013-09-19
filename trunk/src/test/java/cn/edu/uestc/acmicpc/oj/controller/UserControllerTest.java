@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,10 +59,14 @@ public class UserControllerTest {
 
   @Test
   public void testLogin_successful() throws Exception {
-    UserLoginDTO userLoginDTO = new UserLoginDTO();
-    UserDTO userDTO = new UserDTO();
-    userLoginDTO.setUserName("admin");
-    userLoginDTO.setPassword("password");
+    UserLoginDTO userLoginDTO = UserLoginDTO.builder()
+        .setUserName("admin")
+        .setPassword("password")
+        .build();
+    UserDTO userDTO = UserDTO.builder()
+        .setUserName("admin")
+        .setPassword("password")
+        .build();
     when(userService.login(userLoginDTO)).thenReturn(userDTO);
     mockMvc.perform(post("/user/login")
         .contentType(APPLICATION_JSON_UTF8)
