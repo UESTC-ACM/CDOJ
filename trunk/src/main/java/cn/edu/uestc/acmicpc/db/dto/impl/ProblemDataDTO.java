@@ -1,25 +1,3 @@
-/*
- *
- *  cdoj, UESTC ACMICPC Online Judge
- *  Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  	mzry1992 <@link muziriyun@gmail.com>
- *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU General Public License
- *  as published by the Free Software Foundation; either version 2
- *  of the License, or (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
@@ -32,14 +10,27 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 public class ProblemDataDTO extends BaseDTO<Problem> {
 
+  private Integer problemId;
+  private Integer timeLimit;
+  private Integer memoryLimit;
+  private Boolean isSpj;
+  private Integer outputLimit;
+  private Integer javaTimeLimit;
+  private Integer javaMemoryLimit;
+
   public ProblemDataDTO() {
-    super();
   }
 
-  /**
-   * Input: problem id
-   */
-  private Integer problemId;
+  private ProblemDataDTO(Integer problemId, Integer timeLimit, Integer memoryLimit,
+      Boolean isSpj, Integer outputLimit, Integer javaTimeLimit, Integer javaMemoryLimit) {
+    this.problemId = problemId;
+    this.timeLimit = timeLimit;
+    this.memoryLimit = memoryLimit;
+    this.isSpj = isSpj;
+    this.outputLimit = outputLimit;
+    this.javaTimeLimit = javaTimeLimit;
+    this.javaMemoryLimit = javaMemoryLimit;
+  }
 
   public Integer getTimeLimit() {
     return timeLimit;
@@ -90,13 +81,6 @@ public class ProblemDataDTO extends BaseDTO<Problem> {
     this.javaMemoryLimit = javaMemoryLimit;
   }
 
-  private Integer timeLimit;
-  private Integer memoryLimit;
-  private Boolean isSpj;
-  private Integer outputLimit;
-  private Integer javaTimeLimit;
-  private Integer javaMemoryLimit;
-
   public Integer getProblemId() {
     return problemId;
   }
@@ -134,5 +118,64 @@ public class ProblemDataDTO extends BaseDTO<Problem> {
   @Override
   protected Class<Problem> getReferenceClass() {
     return Problem.class;
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  /** Builder for {@link ProblemDataDTO}. */
+  public static class Builder {
+
+    private Builder() {
+    }
+
+    private Integer problemId;
+    private Integer timeLimit = 1000;
+    private Integer memoryLimit = 65535;
+    private Boolean isSpj = false;
+    private Integer outputLimit = 8000;
+    private Integer javaTimeLimit = 3000;
+    private Integer javaMemoryLimit = 65535;
+
+    public Builder setProblemId(Integer problemId) {
+      this.problemId = problemId;
+      return this;
+    }
+
+    public Builder setTimeLimit(Integer timeLimit) {
+      this.timeLimit = timeLimit;
+      return this;
+    }
+
+    public Builder setMemoryLimit(Integer memoryLimit) {
+      this.memoryLimit = memoryLimit;
+      return this;
+    }
+
+    public Builder setIsSpj(Boolean isSpj) {
+      this.isSpj = isSpj;
+      return this;
+    }
+
+    public Builder setOutputLimit(Integer outputLimit) {
+      this.outputLimit = outputLimit;
+      return this;
+    }
+
+    public Builder setJavaTimeLimit(Integer javaTimeLimit) {
+      this.javaTimeLimit = javaTimeLimit;
+      return this;
+    }
+
+    public Builder setJavaMemoryLimit(Integer javaMemoryLimit) {
+      this.javaMemoryLimit = javaMemoryLimit;
+      return this;
+    }
+
+    public ProblemDataDTO build() {
+      return new ProblemDataDTO(problemId, timeLimit, memoryLimit, isSpj, outputLimit,
+          javaTimeLimit, javaMemoryLimit);
+    }
   }
 }

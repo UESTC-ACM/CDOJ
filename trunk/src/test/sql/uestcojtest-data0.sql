@@ -26,7 +26,7 @@ COMMIT;
 START TRANSACTION;
 USE `uestcojtest`;
 INSERT INTO `uestcojtest`.`user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`) VALUES (1, 'administrator', '2010013100008', 1, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'administrator', 'acm@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0);
-INSERT INTO `uestcojtest`.`user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`) VALUES (2, 'admin', '2010013100008', 1, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'admin', 'acm_admin@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0);
+INSERT INTO `uestcojtest`.`user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`) VALUES (2, 'admin', '2010013100008', 1, '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'UESTC', 'admin', 'acm_admin@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0);
 INSERT INTO `uestcojtest`.`user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`) VALUES (3, 'user_id3', '2010013100008', 2, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'user_id3', 'user_id3@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0);
 
 COMMIT;

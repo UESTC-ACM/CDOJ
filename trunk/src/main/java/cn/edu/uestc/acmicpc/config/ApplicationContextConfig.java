@@ -1,18 +1,41 @@
 package cn.edu.uestc.acmicpc.config;
 
-import cn.edu.uestc.acmicpc.db.entity.*;
-import cn.edu.uestc.acmicpc.service.JudgeService;
-import com.jolbox.bonecp.BoneCPDataSource;
-import org.hibernate.SessionFactory;
+import java.util.Properties;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.sql.DataSource;
-import java.util.Properties;
+import cn.edu.uestc.acmicpc.db.entity.Article;
+import cn.edu.uestc.acmicpc.db.entity.Code;
+import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
+import cn.edu.uestc.acmicpc.db.entity.Contest;
+import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
+import cn.edu.uestc.acmicpc.db.entity.ContestTeamInfo;
+import cn.edu.uestc.acmicpc.db.entity.ContestUser;
+import cn.edu.uestc.acmicpc.db.entity.Department;
+import cn.edu.uestc.acmicpc.db.entity.Language;
+import cn.edu.uestc.acmicpc.db.entity.Message;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
+import cn.edu.uestc.acmicpc.db.entity.Status;
+import cn.edu.uestc.acmicpc.db.entity.Tag;
+import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
+import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
+import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
+import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
+import cn.edu.uestc.acmicpc.service.JudgeService;
+
+import com.jolbox.bonecp.BoneCPDataSource;
 
 /**
  * Application Context Config
@@ -20,7 +43,7 @@ import java.util.Properties;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @Configuration
-//TODO
+// TODO
 @ComponentScan(basePackages = {
     "cn.edu.uestc.acmicpc.db",
     "cn.edu.uestc.acmicpc.util",
@@ -37,6 +60,7 @@ public class ApplicationContextConfig {
 
   /**
    * Bean: Judge service
+   *
    * @return judgeService bean
    */
   @Bean(name = "judgeService", initMethod = "init", destroyMethod = "destroy")
@@ -48,6 +72,7 @@ public class ApplicationContextConfig {
 
   /**
    * Bean: Data source
+   *
    * @return dataSource bean
    */
   @Bean(name = "dataSource", destroyMethod = "close")
@@ -58,18 +83,21 @@ public class ApplicationContextConfig {
     dataSource.setJdbcUrl(getProperty("db.url"));
     dataSource.setUsername(getProperty("db.username"));
     dataSource.setPassword(getProperty("db.password"));
-    dataSource.setMaxConnectionsPerPartition(Integer.parseInt(getProperty("db.maxConnectionsPerPartition")));
-    dataSource.setMinConnectionsPerPartition(Integer.parseInt(getProperty("db.minConnectionsPerPartition")));
+    dataSource.setMaxConnectionsPerPartition(Integer
+        .parseInt(getProperty("db.maxConnectionsPerPartition")));
+    dataSource.setMinConnectionsPerPartition(Integer
+        .parseInt(getProperty("db.minConnectionsPerPartition")));
     dataSource.setPartitionCount(Integer.parseInt(getProperty("db.partitionCount")));
     dataSource.setAcquireIncrement(Integer.parseInt(getProperty("db.acquireIncrement")));
     dataSource.setStatementsCacheSize(Integer.parseInt(getProperty("db.statementsCacheSize")));
-    //dataSource.setIdleMaxAgeInSeconds(Integer.parseInt(getProperty("db.idleMaxAge")));
-    //dataSource.setIdleConnectionTestPeriodInSeconds(Integer.parseInt(getProperty("db.idleConnectionTestPeriod")));
+    // dataSource.setIdleMaxAgeInSeconds(Integer.parseInt(getProperty("db.idleMaxAge")));
+    // dataSource.setIdleConnectionTestPeriodInSeconds(Integer.parseInt(getProperty("db.idleConnectionTestPeriod")));
     return dataSource;
   }
 
   /**
    * Bean: session factory
+   *
    * @return sessionFactory bean
    */
   @Bean(name = "sessionFactory")
@@ -79,7 +107,7 @@ public class ApplicationContextConfig {
 
     localSessionFactoryBean.setDataSource(this.dataSource());
     localSessionFactoryBean.setHibernateProperties(this.getHibernateProperties());
-    localSessionFactoryBean.setAnnotatedClasses(new Class<?>[]{
+    localSessionFactoryBean.setAnnotatedClasses(new Class<?>[] {
         Article.class,
         Code.class,
         CompileInfo.class,
@@ -105,8 +133,7 @@ public class ApplicationContextConfig {
   }
 
   /**
-   * Bean: transaction manager
-   * TODO: txAdvise
+   * Bean: transaction manager TODO: txAdvise
    *
    * @return transactionManagerBean
    */
@@ -115,17 +142,17 @@ public class ApplicationContextConfig {
     HibernateTransactionManager transactionManager = new HibernateTransactionManager();
     transactionManager.setSessionFactory(this.sessionFactory().getObject());
     /*
-      <tx:method name="save*" propagation="REQUIRED" />
-			<tx:method name="add*" propagation="REQUIRED" />
-			<tx:method name="update*" propagation="REQUIRED" />
-			<tx:method name="del*" propagation="REQUIRED" />
-			<tx:method name="find*" propagation="REQUIRED" read-only="true" />
+     * <tx:method name="save*" propagation="REQUIRED" /> <tx:method name="add*"
+     * propagation="REQUIRED" /> <tx:method name="update*" propagation="REQUIRED" /> <tx:method
+     * name="del*" propagation="REQUIRED" /> <tx:method name="find*" propagation="REQUIRED"
+     * read-only="true" />
      */
     return transactionManager;
   }
 
   /**
    * Hibernate properties
+   *
    * @return properties
    */
   private Properties getHibernateProperties() {
@@ -140,6 +167,7 @@ public class ApplicationContextConfig {
 
   /**
    * Simply get property in PropertySource
+   *
    * @param name property name
    * @return property value
    */
