@@ -18,17 +18,19 @@ public class DTOTest {
 
   @Test
   public void testUserDTO() throws AppException {
-    UserDTO userDTO = new UserDTO();
-    userDTO.setUserId(1);
-    userDTO.setUserName("userName");
-    userDTO.setDepartmentId(1);
-    userDTO.setEmail("email@email.com");
-    userDTO.setPassword("password");
-    userDTO.setNickName("nickName");
-    userDTO.setSchool("school");
-    userDTO.setPasswordRepeat("password");
-    userDTO.setStudentId("123456789");
-    userDTO.setType(2);
+    @SuppressWarnings("unused")
+    UserDTO userDTO = UserDTO.builder()
+        .setUserId(1)
+        .setUserName("userName")
+        .setDepartmentId(1)
+        .setEmail("email@email.com")
+        .setPassword("password")
+        .setNickName("nickName")
+        .setSchool("school")
+        .setPasswordRepeat("password")
+        .setStudentId("123456789")
+        .setType(2)
+        .build();
     /*
      * @TODO wuwu User user = userDTO.getEntity(); Assert.assertEquals(Integer.valueOf(1),
      * user.getUserId()); Assert.assertEquals("userName", user.getUserName());

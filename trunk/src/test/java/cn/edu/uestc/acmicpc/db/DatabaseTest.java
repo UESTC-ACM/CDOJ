@@ -1,7 +1,5 @@
 package cn.edu.uestc.acmicpc.db;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,15 +72,10 @@ public class DatabaseTest {
   @Test
   public void testContestDAO() {
     try {
-      ContestDTO contestDTO = new ContestDTO();
-      contestDTO.setIsVisible(true);
-      contestDTO.setLength(300);
-      contestDTO.setProblemList(new ArrayList<Integer>());
-      contestDTO.setTime(new Date().getTime());
-      contestDTO.setTitle("test title");
+      ContestDTO contestDTO = ContestDTO.builder()
+          .setIsVisible(true)
+          .setTitle("test title").build();
       Contest contest = contestDTO.getEntity();
-
-      System.out.println(contest.toString());
       contestDAO.add(contest);
     } catch (AppException e) {
       LOGGER.error(e);
