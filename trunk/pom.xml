@@ -18,6 +18,8 @@
 		<db.url>jdbc:mysql://localhost:3306/uestcojtest</db.url>
 		<db.user>root</db.user>
 		<db.password>root</db.password>
+		<downloadSources>true</downloadSources>
+		<downloadJavadocs>true</downloadJavadocs>
 	</properties>
 
 	<dependencies>
