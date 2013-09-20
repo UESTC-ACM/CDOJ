@@ -91,8 +91,7 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field", hasSize(1)))
         .andExpect(jsonPath("$.field[0].field", is("userName")))
         .andExpect(jsonPath("$.field[0].objectName", is("userLoginDTO")))
-        .andExpect(jsonPath("$.field[0].defaultMessage",
-            is("Please enter 4-24 characters consist of A-Z, a-z, 0-9 and '_'.")));
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter your user name.")));;
     Assert.assertEquals(null, session.getAttribute("currentUser"));
   }
 
@@ -191,7 +190,7 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field", hasSize(1)))
         .andExpect(jsonPath("$.field[0].field", is("password")))
         .andExpect(jsonPath("$.field[0].objectName", is("userLoginDTO")))
-        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 6-20 characters.")));
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter your password.")));
     Assert.assertEquals(null, session.getAttribute("currentUser"));
   }
 
@@ -291,8 +290,8 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field[*].objectName",
             containsInAnyOrder("userLoginDTO", "userLoginDTO")))
         .andExpect(jsonPath("$.field[*].defaultMessage", containsInAnyOrder(
-            "Please enter 6-20 characters.",
-            "Please enter 4-24 characters consist of A-Z, a-z, 0-9 and '_'.")));
+            "Please enter your password.",
+            "Please enter your user name.")));
     Assert.assertEquals(null, session.getAttribute("currentUser"));
   }
 
