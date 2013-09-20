@@ -75,6 +75,7 @@ public class UserDTO {
   /**
    * Input: departmentId
    */
+  @NotNull(message = "Please select your department.")
   private Integer departmentId;
 
   /**
