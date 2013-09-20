@@ -6,9 +6,11 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +37,7 @@ public class UserController extends BaseController implements UserServiceAware {
    * @param userLoginDTO User DTO
    * @param validateResult Validation result
    * @return <ul>
-   *         <li>For success: {"result":"ok"}</li>
+   *         <li>For success: {"result":"success"}</li>
    *         <li>For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
    *         <li>For validation error: {"result":"field_error","field":<strong>Field
    *         errors</strong>}</li>
@@ -45,8 +47,8 @@ public class UserController extends BaseController implements UserServiceAware {
   @LoginPermit(NeedLogin = false)
   public @ResponseBody
   Map<String, Object> toLogin(HttpSession session,
-      @RequestBody @Valid UserLoginDTO userLoginDTO,
-      BindingResult validateResult) {
+                              @RequestBody @Valid UserLoginDTO userLoginDTO,
+                              BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
@@ -54,15 +56,54 @@ public class UserController extends BaseController implements UserServiceAware {
     } else {
       try {
         UserDTO userDTO = userService.login(userLoginDTO);
-        if (userDTO != null) {
-          session.setAttribute("currentUser", userDTO);
-          json.put("result", "success");
-        } else {
-          validateResult.addError(new FieldError("password", "password",
-              "User or password is wrong, please try again"));
-          json.put("result", "field_error");
-          json.put("field", validateResult.getFieldErrors());
-        }
+        session.setAttribute("currentUser", userDTO);
+        json.put("result", "success");
+      } catch (FieldException e) {
+        putFieldErrosIntoBindingResult(e, validateResult);
+        json.put("result", "field_error");
+        json.put("field", validateResult.getFieldErrors());
+      } catch (AppException e) {
+          json.put("result", "error");
+          json.put("error_msg", e.getMessage());
+      }
+    }
+    return json;
+  }
+
+  /**
+   * Logout controller.
+   *
+   * @param session session
+   * @return {"result":"success"}
+   */
+  @RequestMapping("logout")
+  @LoginPermit(NeedLogin = true)
+  public @ResponseBody
+  Map<String, Object> toLogout(HttpSession session) {
+    Map<String, Object> json = new HashMap<>();
+    session.removeAttribute("currentUser");
+    json.put("result", "success");
+    return json;
+  }
+
+  @RequestMapping("register")
+  @LoginPermit(NeedLogin = false)
+  public @ResponseBody
+  Map<String, Object> toRegister(HttpSession session,
+                                 @RequestBody @Valid UserDTO userDTO,
+                                 BindingResult validateResult) {
+    Map<String, Object> json = new HashMap<>();
+    if (validateResult.hasErrors()) {
+      json.put("result", "field_error");
+      json.put("field", validateResult.getFieldErrors());
+    } else {
+      try {
+        userService.register(userDTO);
+        json.put("result", "success");
+      } catch (FieldException e) {
+        putFieldErrosIntoBindingResult(e, validateResult);
+        json.put("result", "field_error");
+        json.put("field", validateResult.getFieldErrors());
       } catch (AppException e) {
         json.put("result", "error");
         json.put("error_msg", e.getMessage());
