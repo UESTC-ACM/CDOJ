@@ -77,9 +77,9 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
   /**
    * parser from excel file.
    *
-   * @param file       excel file entity
+   * @param file excel file entity
    * @param isPersonal contest category
-   * @param type       contest type
+   * @param type contest type
    * @return training contest rank list entity
    * @throws IOException
    * @throws BiffException
@@ -97,7 +97,8 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
    * Parse by formatted string values.
    *
    * @param excelValueList parsed value list
-   * @param isPersonal     contest type
+   * @param isPersonal contest type
+   * @param type user type
    * @return training contest rank list entity
    * @throws IOException
    * @throws BiffException
@@ -106,7 +107,7 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
    * @throws AppException
    */
   public TrainingContestRankList parse(List<String[]> excelValueList, Boolean isPersonal,
-                                       Integer type) throws IOException, BiffException, ParserException, FieldNotUniqueException,
+      Integer type) throws IOException, BiffException, ParserException, FieldNotUniqueException,
       AppException {
     if (excelValueList == null || excelValueList.size() == 0)
       throw new ParserException("Error while parse xls document, Please check it!");
@@ -322,8 +323,7 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
   }
 
   /**
-   * Parse training user summary in database.
-   * See encodeTrainingUserSummary for more detail
+   * Parse training user summary in database. See encodeTrainingUserSummary for more detail
    *
    * @param summary encoded training user summary
    * @return parsed training user summary
@@ -342,16 +342,16 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
   }
 
   /**
-   * Encode training user summary
-   * Use PC^2 style, split by '|'
+   * Encode training user summary Use PC^2 style, split by '|'
    *
    * @param trainingUserRankSummary training user rank summary entity
-   * @param type                    contest type
+   * @param type contest type
    * @return encoded training user summary
    */
   public String encodeTrainingUserSummary(TrainingUserRankSummary trainingUserRankSummary,
-                                          Integer type) {
-    TrainingProblemSummaryInfo[] trainingProblemSummaryInfos = trainingUserRankSummary.getTrainingProblemSummaryInfoList();
+      Integer type) {
+    TrainingProblemSummaryInfo[] trainingProblemSummaryInfos =
+        trainingUserRankSummary.getTrainingProblemSummaryInfoList();
     StringBuilder stringBuilder = new StringBuilder();
     if (type == Global.TrainingContestType.TC.ordinal()
         || type == Global.TrainingContestType.CF.ordinal()) {

@@ -38,9 +38,14 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * if you do not set value in get/update method.
  * <p/>
  * If set the field to {@code null}, this field will not be updated in {@code updateEntity} method.
+ *
+ * @param <Entity> Entity type
  */
 public abstract class BaseDTO<Entity extends Serializable> {
 
+  /**
+   * @return this DTO's reference entity's class.
+   */
   protected abstract Class<Entity> getReferenceClass();
 
   /**
@@ -93,6 +98,7 @@ public abstract class BaseDTO<Entity extends Serializable> {
    * Update entity by DTO fields.
    *
    * @param entity entity to be updated
+   * @throws AppException
    */
   protected void updateEntity(Entity entity) throws AppException {
     Method[] methods = getClass().getMethods();

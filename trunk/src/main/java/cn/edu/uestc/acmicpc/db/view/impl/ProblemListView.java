@@ -22,6 +22,12 @@
 
 package cn.edu.uestc.acmicpc.db.view.impl;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
 import cn.edu.uestc.acmicpc.db.entity.User;
@@ -29,15 +35,10 @@ import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.apache.commons.lang3.StringEscapeUtils;
-
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * description
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class ProblemListView extends View<Problem> {
@@ -78,7 +79,7 @@ public class ProblemListView extends View<Problem> {
 
   /**
    * Get a simple problem list view use for contest list.
-   * 
+   *
    * @param problem specific problem entity
    */
   public ProblemListView(Problem problem) {
@@ -87,10 +88,12 @@ public class ProblemListView extends View<Problem> {
 
   /**
    * Get ProblemListView entity by problem entity.
-   * 
+   *
    * @param problem specific problem entity
+   * @param currentUser current login user
+   * @param type user's type
    * @throws cn.edu.uestc.acmicpc.util.exception.AppException
-   * 
+   *
    */
   public ProblemListView(Problem problem, User currentUser, Global.AuthorStatusType type)
       throws AppException {
