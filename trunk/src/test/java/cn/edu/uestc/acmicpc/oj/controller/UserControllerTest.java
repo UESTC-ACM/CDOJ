@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.oj.controller;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
@@ -30,6 +31,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.FieldException;
 
 import com.alibaba.fastjson.JSON;
 
@@ -72,6 +74,26 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")));
     Assert.assertEquals(userDTO, session.getAttribute("currentUser"));
+  }
+
+  @Test
+  public void testLogin_invalidUserName_null() throws Exception {
+    UserLoginDTO userLoginDTO = UserLoginDTO.builder()
+        .setUserName(null)
+        .setPassword("password")
+        .build();
+    mockMvc.perform(post("/user/login")
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userLoginDTO))
+        .session(session))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(1)))
+        .andExpect(jsonPath("$.field[0].field", is("userName")))
+        .andExpect(jsonPath("$.field[0].objectName", is("userLoginDTO")))
+        .andExpect(jsonPath("$.field[0].defaultMessage",
+            is("Please enter 4-24 characters consist of A-Z, a-z, 0-9 and '_'.")));
+    Assert.assertEquals(null, session.getAttribute("currentUser"));
   }
 
   @Test
@@ -155,6 +177,25 @@ public class UserControllerTest extends ControllerTest {
   }
 
   @Test
+  public void testLogin_invalidPassword_null() throws Exception {
+    UserLoginDTO userLoginDTO = UserLoginDTO.builder()
+        .setUserName("admin")
+        .setPassword(null)
+        .build();
+    mockMvc.perform(post("/user/login")
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userLoginDTO))
+        .session(session))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(1)))
+        .andExpect(jsonPath("$.field[0].field", is("password")))
+        .andExpect(jsonPath("$.field[0].objectName", is("userLoginDTO")))
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 6-20 characters.")));
+    Assert.assertEquals(null, session.getAttribute("currentUser"));
+  }
+
+  @Test
   public void testLogin_invalidPassword_empty() throws Exception {
     UserLoginDTO userLoginDTO = UserLoginDTO.builder()
         .setUserName("admin")
@@ -217,7 +258,8 @@ public class UserControllerTest extends ControllerTest {
         .setUserName("admin")
         .setPassword("wrongPassword")
         .build();
-    when(userService.login(Mockito.<UserLoginDTO> any())).thenReturn(null);
+    when(userService.login(Mockito.<UserLoginDTO> any()))
+        .thenThrow(new FieldException("password", "User or password is wrong, please try again"));
     mockMvc.perform(post("/user/login")
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userLoginDTO))
@@ -229,6 +271,50 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field[0].objectName", is("password")))
         .andExpect(jsonPath("$.field[0].defaultMessage",
             is("User or password is wrong, please try again")));
+    Assert.assertEquals(null, session.getAttribute("currentUser"));
+  }
+
+  @Test
+  public void testLogin_failed_bothUserNameAndPassword_null() throws Exception {
+    UserLoginDTO userLoginDTO = UserLoginDTO.builder()
+        .setUserName(null)
+        .setPassword(null)
+        .build();
+    mockMvc.perform(post("/user/login")
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userLoginDTO))
+        .session(session))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(2)))
+        .andExpect(jsonPath("$.field[*].field", containsInAnyOrder("password", "userName")))
+        .andExpect(jsonPath("$.field[*].objectName",
+            containsInAnyOrder("userLoginDTO", "userLoginDTO")))
+        .andExpect(jsonPath("$.field[*].defaultMessage", containsInAnyOrder(
+            "Please enter 6-20 characters.",
+            "Please enter 4-24 characters consist of A-Z, a-z, 0-9 and '_'.")));
+    Assert.assertEquals(null, session.getAttribute("currentUser"));
+  }
+
+  @Test
+  public void testLogin_failed_bothUserNameAndPassword_empty() throws Exception {
+    UserLoginDTO userLoginDTO = UserLoginDTO.builder()
+        .setUserName("")
+        .setPassword("")
+        .build();
+    mockMvc.perform(post("/user/login")
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userLoginDTO))
+        .session(session))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(2)))
+        .andExpect(jsonPath("$.field[*].field", containsInAnyOrder("password", "userName")))
+        .andExpect(jsonPath("$.field[*].objectName",
+            containsInAnyOrder("userLoginDTO", "userLoginDTO")))
+        .andExpect(jsonPath("$.field[*].defaultMessage", containsInAnyOrder(
+            "Please enter 6-20 characters.",
+            "Please enter 4-24 characters consist of A-Z, a-z, 0-9 and '_'.")));
     Assert.assertEquals(null, session.getAttribute("currentUser"));
   }
 
