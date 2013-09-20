@@ -740,4 +740,197 @@ public class UserControllerTest extends ControllerTest {
   public void testRegister_failed_email_case6() throws Exception {
     testRegister_failed_email_invalid("email@uestc@com");
   }
+
+  @Test
+  public void testRegister_failed_school_null() throws Exception {
+    UserDTO userDTO = UserDTO.builder()
+        .setSchool(null)
+        .build();
+    mockMvc.perform(post(URL_REGISTER)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userDTO)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(1)))
+        .andExpect(jsonPath("$.field[0].field", is("school")))
+        .andExpect(jsonPath("$.field[0].objectName", is("userDTO")))
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter your school name.")));
+  }
+
+  @Test
+  public void testRegister_failed_school_empty() throws Exception {
+    UserDTO userDTO = UserDTO.builder()
+        .setSchool("")
+        .build();
+    mockMvc.perform(post(URL_REGISTER)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userDTO)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(1)))
+        .andExpect(jsonPath("$.field[0].field", is("school")))
+        .andExpect(jsonPath("$.field[0].objectName", is("userDTO")))
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 1-100 characters.")));
+  }
+
+  @Test
+  public void testRegister_failed_school_tooShort() throws Exception {
+    UserDTO userDTO = UserDTO.builder()
+        .setSchool(StringUtil.repeat("a", 0))
+        .build();
+    mockMvc.perform(post(URL_REGISTER)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userDTO)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(1)))
+        .andExpect(jsonPath("$.field[0].field", is("school")))
+        .andExpect(jsonPath("$.field[0].objectName", is("userDTO")))
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 1-100 characters.")));
+  }
+
+  @Test
+  public void testRegister_failed_school_tooLong() throws Exception {
+    UserDTO userDTO = UserDTO.builder()
+        .setSchool(StringUtil.repeat("a", 101))
+        .build();
+    mockMvc.perform(post(URL_REGISTER)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userDTO)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(1)))
+        .andExpect(jsonPath("$.field[0].field", is("school")))
+        .andExpect(jsonPath("$.field[0].objectName", is("userDTO")))
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 1-100 characters.")));
+  }
+
+  @Test
+  public void testRegister_failed_departmentId_null() throws Exception {
+    UserDTO userDTO = UserDTO.builder()
+        .setDepartmentId(null)
+        .build();
+    mockMvc.perform(post(URL_REGISTER)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userDTO)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(1)))
+        .andExpect(jsonPath("$.field[0].field", is("departmentId")))
+        .andExpect(jsonPath("$.field[0].objectName", is("userDTO")))
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please select your department.")));
+  }
+
+  @Test
+  public void testRegister_failed_studentId_null() throws Exception {
+    UserDTO userDTO = UserDTO.builder()
+        .setStudentId(null)
+        .build();
+    mockMvc.perform(post(URL_REGISTER)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userDTO)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(1)))
+        .andExpect(jsonPath("$.field[0].field", is("studentId")))
+        .andExpect(jsonPath("$.field[0].objectName", is("userDTO")))
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter your student ID.")));
+  }
+
+  @Test
+  public void testRegister_failed_studentId_empty() throws Exception {
+    UserDTO userDTO = UserDTO.builder()
+        .setStudentId("")
+        .build();
+    mockMvc.perform(post(URL_REGISTER)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userDTO)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(1)))
+        .andExpect(jsonPath("$.field[0].field", is("studentId")))
+        .andExpect(jsonPath("$.field[0].objectName", is("userDTO")))
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 1-20 characters.")));
+  }
+
+  @Test
+  public void testRegister_failed_studentId_tooShort() throws Exception {
+    UserDTO userDTO = UserDTO.builder()
+        .setStudentId(StringUtil.repeat("a", 0))
+        .build();
+    mockMvc.perform(post(URL_REGISTER)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userDTO)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(1)))
+        .andExpect(jsonPath("$.field[0].field", is("studentId")))
+        .andExpect(jsonPath("$.field[0].objectName", is("userDTO")))
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 1-20 characters.")));
+  }
+
+  @Test
+  public void testRegister_failed_studentId_tooLong() throws Exception {
+    UserDTO userDTO = UserDTO.builder()
+        .setStudentId(StringUtil.repeat("a", 21))
+        .build();
+    mockMvc.perform(post(URL_REGISTER)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userDTO)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(1)))
+        .andExpect(jsonPath("$.field[0].field", is("studentId")))
+        .andExpect(jsonPath("$.field[0].objectName", is("userDTO")))
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 1-20 characters.")));
+  }
+
+  @Test
+  public void testRegister_failed_usedUserName() throws Exception {
+    UserDTO userDTO = UserDTO.builder().build();
+    when(userService.register(Mockito.<UserDTO> any())).thenThrow(
+        new FieldException("userName", "User name has been used!"));
+    mockMvc.perform(post(URL_REGISTER)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userDTO)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(1)))
+        .andExpect(jsonPath("$.field[0].field", is("userName")))
+        .andExpect(jsonPath("$.field[0].objectName", is("userName")))
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("User name has been used!")));
+  }
+
+  @Test
+  public void testRegister_failed_usedEmail() throws Exception {
+    UserDTO userDTO = UserDTO.builder().build();
+    when(userService.register(Mockito.<UserDTO> any())).thenThrow(
+        new FieldException("email", "Email has benn used!"));
+    mockMvc.perform(post(URL_REGISTER)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userDTO)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(1)))
+        .andExpect(jsonPath("$.field[0].field", is("email")))
+        .andExpect(jsonPath("$.field[0].objectName", is("email")))
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Email has benn used!")));
+  }
+
+  @Test
+  public void testRegister_failed_departmentNotFound() throws Exception {
+    UserDTO userDTO = UserDTO.builder().build();
+    when(userService.register(Mockito.<UserDTO> any())).thenThrow(
+        new FieldException("departmentId", "Please choose a validate department."));
+    mockMvc.perform(post(URL_REGISTER)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userDTO)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(1)))
+        .andExpect(jsonPath("$.field[0].field", is("departmentId")))
+        .andExpect(jsonPath("$.field[0].objectName", is("departmentId")))
+        .andExpect(jsonPath("$.field[0].defaultMessage",
+            is("Please choose a validate department.")));
+  }
 }
