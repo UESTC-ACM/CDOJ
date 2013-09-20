@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.oj.service.impl;
 
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.service.impl.AbstractService;
 import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
