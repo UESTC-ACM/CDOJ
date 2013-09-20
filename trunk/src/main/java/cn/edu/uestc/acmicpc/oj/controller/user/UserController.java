@@ -6,8 +6,6 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -31,11 +29,10 @@ import cn.edu.uestc.acmicpc.util.exception.FieldException;
 @RequestMapping("/user")
 public class UserController extends BaseController implements UserServiceAware {
 
-  private static final Logger LOGGER = LogManager.getLogger(UserController.class);
-
   /**
    * Login controller.
    *
+   * @param session HTTP session entity.
    * @param userLoginDTO User DTO
    * @param validateResult Validation result
    * @return <ul>
@@ -49,8 +46,8 @@ public class UserController extends BaseController implements UserServiceAware {
   @LoginPermit(NeedLogin = false)
   public @ResponseBody
   Map<String, Object> toLogin(HttpSession session,
-                              @RequestBody @Valid UserLoginDTO userLoginDTO,
-                              BindingResult validateResult) {
+      @RequestBody @Valid UserLoginDTO userLoginDTO,
+      BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
@@ -65,8 +62,8 @@ public class UserController extends BaseController implements UserServiceAware {
         json.put("result", "field_error");
         json.put("field", validateResult.getFieldErrors());
       } catch (AppException e) {
-          json.put("result", "error");
-          json.put("error_msg", e.getMessage());
+        json.put("result", "error");
+        json.put("error_msg", e.getMessage());
       }
     }
     return json;
@@ -92,8 +89,8 @@ public class UserController extends BaseController implements UserServiceAware {
   @LoginPermit(NeedLogin = false)
   public @ResponseBody
   Map<String, Object> toRegister(HttpSession session,
-                                 @RequestBody @Valid UserDTO userDTO,
-                                 BindingResult validateResult) {
+      @RequestBody @Valid UserDTO userDTO,
+      BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");

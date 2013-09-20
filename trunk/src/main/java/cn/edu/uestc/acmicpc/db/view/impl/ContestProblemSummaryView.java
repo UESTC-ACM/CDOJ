@@ -31,7 +31,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Use for return problem summary information with json type in contest.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ContestProblemSummaryView extends View<Problem> {
@@ -76,8 +76,10 @@ public class ContestProblemSummaryView extends View<Problem> {
 
   /**
    * Get ProblemView entity by problem entity.
-   * 
+   *
    * @param problem specific problem entity
+   * @param currentUser current's login user
+   * @param type user's type
    * @throws AppException
    */
   public ContestProblemSummaryView(Problem problem, User currentUser, Global.AuthorStatusType type)

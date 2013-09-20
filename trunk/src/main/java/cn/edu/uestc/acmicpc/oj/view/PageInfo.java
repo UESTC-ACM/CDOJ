@@ -24,7 +24,7 @@ package cn.edu.uestc.acmicpc.oj.view;
 
 /**
  * Object to build view's page tags.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class PageInfo {
@@ -102,7 +102,7 @@ public class PageInfo {
 
   /**
    * get a li tag formatted like <li class="sytle"><a href="url">name</a></li>
-   * 
+   *
    * @param style the CSS style of li tag
    * @param toPage the page to go
    * @param name the name display on the pagination
@@ -127,9 +127,11 @@ public class PageInfo {
 
   /**
    * Create a PageInfo object
-   * 
+   *
    * @param count total number of records
    * @param countPerPage number of records per page
+   * @param baseURL page's base URL
+   * @param displayDistance
    * @param currentPage current page number to show
    * @return a specific PageInfo object
    */

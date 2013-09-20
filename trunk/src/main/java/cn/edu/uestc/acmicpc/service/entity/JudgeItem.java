@@ -101,6 +101,8 @@ public class JudgeItem implements CompileInfoDAOAware, StatusDAOAware, UserDAOAw
 
   /**
    * Update database for item.
+   *
+   * @param updateStatus if set {@code true}, update status' information.
    */
   public void update(boolean updateStatus) {
     if (compileInfo != null) {

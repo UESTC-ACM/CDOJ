@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 /** Abstract test to define constant variables for controller tests. */
 public abstract class ControllerTest {
 
+  /** Application JSON type with UTF-8 character set. */
   protected static final MediaType APPLICATION_JSON_UTF8 = new MediaType(
       MediaType.APPLICATION_JSON.getType(),
       MediaType.APPLICATION_JSON.getSubtype(),

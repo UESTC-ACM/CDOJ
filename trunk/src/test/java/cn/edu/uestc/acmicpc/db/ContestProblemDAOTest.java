@@ -10,12 +10,11 @@ import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dao.impl.ContestProblemDAO;
 import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
-/**
- * Test case for {@link ContestProblemDAO}.
- */
+/** Test case for {@link ContestProblemDAO}. */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestContext.class })
 public class ContestProblemDAOTest {
