@@ -1,11 +1,6 @@
 package cn.edu.uestc.acmicpc.util.exception;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import cn.edu.uestc.acmicpc.util.ObjectUtil;
 
 /**
  * Global Application Exception class
