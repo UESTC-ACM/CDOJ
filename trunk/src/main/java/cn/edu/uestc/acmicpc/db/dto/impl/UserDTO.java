@@ -229,7 +229,7 @@ public class UserDTO {
     private String nickName = "admin";
     private String email = "acm_admin@uestc.edu.cn";
     private String school = "UESTC";
-    private Integer departmentId;
+    private Integer departmentId = 1;
     private String studentId = "2010013100008";
     private Timestamp lastLogin = new Timestamp(new Date().getTime());
     private Integer type = Global.AuthenticationType.ADMIN.ordinal();
