@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.oj.service.impl;
+package cn.edu.uestc.acmicpc.service.impl;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
