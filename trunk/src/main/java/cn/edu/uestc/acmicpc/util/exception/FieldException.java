@@ -1,19 +1,19 @@
 package cn.edu.uestc.acmicpc.util.exception;
 
-import cn.edu.uestc.acmicpc.util.ObjectUtil;
-import org.springframework.validation.FieldError;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.validation.FieldError;
+
+import cn.edu.uestc.acmicpc.util.ObjectUtil;
+
 /**
  * Description
- *
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class FieldException extends AppException implements Iterable<FieldError> {
 
+  private static final long serialVersionUID = 8730271948825458848L;
   private List<FieldError> errors = new ArrayList<>();
 
   /**

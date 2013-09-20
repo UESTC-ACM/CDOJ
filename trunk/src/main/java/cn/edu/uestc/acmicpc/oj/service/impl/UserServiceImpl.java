@@ -23,8 +23,6 @@ import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 
 /**
  * Implementation for {@link UserService}.
@@ -84,14 +82,13 @@ public class UserServiceImpl extends AbstractService implements UserService, Use
     user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
     userDAO.update(user);
 
-    UserDTO userDTO = UserDTO.builder()
+    return UserDTO.builder()
         .setUserName(user.getUserName())
         .setNickName(user.getNickName())
         .setEmail(user.getEmail())
         .setLastLogin(user.getLastLogin())
         .setType(user.getType())
         .build();
-    return userDTO;
   }
 
   @Override
