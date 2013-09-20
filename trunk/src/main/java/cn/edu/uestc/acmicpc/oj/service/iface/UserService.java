@@ -4,6 +4,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import org.springframework.validation.BindingResult;
 
 /**
  * User service interface to handle operations about {@link User}.
@@ -61,4 +62,6 @@ public interface UserService extends OnlineJudgeService<User, Integer> {
    * @throws AppException
    */
   UserDTO login(UserLoginDTO userLoginDTO) throws AppException;
+
+  UserDTO register(UserDTO userDTO) throws AppException;
 }
