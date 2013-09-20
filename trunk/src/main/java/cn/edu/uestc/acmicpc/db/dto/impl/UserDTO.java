@@ -4,10 +4,17 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import cn.edu.uestc.acmicpc.db.entity.Department;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.ScriptAssert;
+
+import javax.validation.constraints.Pattern;
 
 /**
  * Data transfer object for {@link User}.
  */
+@ScriptAssert(lang = "javascript", script="_this.password == _this.passwordRepeat", message = "Password do not match.")
 public class UserDTO {
 
   /**
@@ -18,6 +25,9 @@ public class UserDTO {
   /**
    * Input: user name
    */
+  @Pattern(regexp = "\\b^[a-zA-Z0-9_]{4,24}$\\b",
+      message = "Please enter 4-24 characters consist of A-Z, a-z, 0-9 and '_'.")
+  @NotEmpty
   private String userName;
 
   /**
@@ -28,26 +38,36 @@ public class UserDTO {
   /**
    * Input: password
    */
+  @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
+  @NotEmpty
   private String password;
 
   /**
    * Input: repeat password
    */
+  @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
+  @NotEmpty
   private String passwordRepeat;
 
   /**
    * Input: nick name
    */
+  @Length(min = 2, max = 20, message = "Please enter 2-20 characters.")
+  @NotEmpty
   private String nickName;
 
   /**
    * Input: email
    */
+  @Email(message = "Please enter a validation email address.")
+  @NotEmpty
   private String email;
 
   /**
    * Input: school
    */
+  @Length(min = 1, max = 100, message = "Please enter 1-100 characters.")
+  @NotEmpty
   private String school;
 
   /**
@@ -56,13 +76,10 @@ public class UserDTO {
   private Integer departmentId;
 
   /**
-   * Department entity
-   */
-  private Department department;
-
-  /**
    * Input: student ID
    */
+  @Length(min = 1, max = 20, message = "Please enter 1-20 characters.")
+  @NotEmpty
   private String studentId;
 
   /**
@@ -90,7 +107,7 @@ public class UserDTO {
 
   private UserDTO(Integer userId, String userName, String oldPassword, String password,
       String passwordRepeat, String nickName, String email, String school, Integer departmentId,
-      Department department, String studentId, Timestamp lastLogin, Integer solved,
+      String studentId, Timestamp lastLogin, Integer solved,
       Integer tried, Integer type) {
     this.userId = userId;
     this.userName = userName;
@@ -101,7 +118,6 @@ public class UserDTO {
     this.email = email;
     this.school = school;
     this.departmentId = departmentId;
-    this.department = department;
     this.studentId = studentId;
     this.lastLogin = lastLogin;
     this.solved = solved;
@@ -179,14 +195,6 @@ public class UserDTO {
 
   public void setDepartmentId(Integer departmentId) {
     this.departmentId = departmentId;
-  }
-
-  public Department getDepartment() {
-    return department;
-  }
-
-  public void setDepartment(Department department) {
-    this.department = department;
   }
 
   public String getStudentId() {
@@ -333,7 +341,7 @@ public class UserDTO {
 
     public UserDTO build() {
       return new UserDTO(userId, userName, oldPassword, password, passwordRepeat, nickName, email,
-          school, departmentId, department, studentId, lastLogin, solved, tried, type);
+          school, departmentId, studentId, lastLogin, solved, tried, type);
     }
   }
 }

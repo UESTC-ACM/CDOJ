@@ -21,7 +21,7 @@ function subSum(array, op, ed) {
   return res;
 }
 
-function post(url, data, callback) {
+function jsonPost(url, data, callback) {
   $.ajax({
     type : "POST",
     url : url,

@@ -50,27 +50,27 @@
   <div class="modal-body" style="max-height: 450px; ">
     <form class="form-horizontal">
       <fieldset>
-        <div class="control-group "><label class="control-label" for="userDTO_userName">User Name</label><div class="controls">
+        <div class="control-group "><label class="control-label" for="userName">User Name</label><div class="controls">
 
-          <input type="text" name="userDTO.userName" maxlength="24" value="" id="userDTO_userName" class="span4"></div>
+          <input type="text" name="userName" maxlength="24" value="" id="userName" class="span4"></div>
         </div>
 
-        <div class="control-group "><label class="control-label" for="userDTO_password">Password</label><div class="controls">
-          <input type="password" name="userDTO.password" maxlength="20" id="userDTO_password" class="span4"></div>
+        <div class="control-group "><label class="control-label" for="password">Password</label><div class="controls">
+          <input type="password" name="password" maxlength="20" id="password" class="span4"></div>
         </div>
 
-        <div class="control-group "><label class="control-label" for="userDTO_passwordRepeat">Repeat your password</label><div class="controls">
-          <input type="password" name="userDTO.passwordRepeat" maxlength="20" id="userDTO_passwordRepeat" class="span4"></div>
+        <div class="control-group "><label class="control-label" for="passwordRepeat">Repeat your password</label><div class="controls">
+          <input type="password" name="passwordRepeat" maxlength="20" id="passwordRepeat" class="span4"></div>
         </div>
 
-        <div class="control-group "><label class="control-label" for="userDTO_nickName">Nick name</label><div class="controls">
+        <div class="control-group "><label class="control-label" for="nickName">Nick name</label><div class="controls">
 
-          <input type="text" name="userDTO.nickName" maxlength="20" value="" id="userDTO_nickName" class="span4"></div>
+          <input type="text" name="nickName" maxlength="20" value="" id="nickName" class="span4"></div>
         </div>
 
-        <div class="control-group "><label class="control-label" for="userDTO_email">Email</label><div class="controls">
+        <div class="control-group "><label class="control-label" for="email">Email</label><div class="controls">
 
-          <input type="text" name="userDTO.email" maxlength="100" value="" id="userDTO_email" class="span4"></div>
+          <input type="text" name="email" maxlength="100" value="" id="email" class="span4"></div>
         </div>
 
         <div class="control-group ">
@@ -79,14 +79,14 @@
             Your email will be used for <a href="http://en.gravatar.com/">Gravatar</a> server and get back your password.
           </div>
         </div>
-        <div class="control-group "><label class="control-label" for="userDTO_school">School</label><div class="controls">
+        <div class="control-group "><label class="control-label" for="school">School</label><div class="controls">
 
-          <input type="text" name="userDTO.school" maxlength="50" value="UESTC" id="userDTO_school" class="span4"></div>
+          <input type="text" name="school" maxlength="50" value="UESTC" id="school" class="span4"></div>
         </div>
 
         <!--TODO list!-->
-        <div class="control-group "><label class="control-label" for="userDTO_departmentId">Department</label><div class="controls">
-          <select name="userDTO.departmentId" id="userDTO_departmentId" class="span4">
+        <div class="control-group "><label class="control-label" for="departmentId">Department</label><div class="controls">
+          <select name="departmentId" id="departmentId" class="span4">
             <option value="1">Others</option>
             <option value="2">School of Information and Software Engineering</option>
             <option value="3">School of Mathematical Sciences</option>
@@ -109,9 +109,9 @@
         </div>
         </div>
 
-        <div class="control-group "><label class="control-label" for="userDTO_studentId">Student ID</label><div class="controls">
+        <div class="control-group "><label class="control-label" for="studentId">Student ID</label><div class="controls">
 
-          <input type="text" name="userDTO.studentId" maxlength="20" value="" id="userDTO_studentId" class="span4"></div>
+          <input type="text" name="studentId" maxlength="20" value="" id="studentId" class="span4"></div>
         </div>
 
       </fieldset>

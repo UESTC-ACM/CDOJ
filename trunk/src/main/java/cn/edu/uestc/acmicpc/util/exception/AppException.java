@@ -10,11 +10,9 @@ import cn.edu.uestc.acmicpc.util.ObjectUtil;
 /**
  * Global Application Exception class
  */
-public class AppException extends Exception implements Serializable, Iterable<AppError> {
+public class AppException extends Exception implements Serializable {
 
   private static final long serialVersionUID = -4267655542557102261L;
-
-  private List<AppError> errors = new ArrayList<>();
 
   /**
    * Construct a new application exception with {@code null} as its detail message and cause.
@@ -67,41 +65,7 @@ public class AppException extends Exception implements Serializable, Iterable<Ap
 
   @Override
   public void printStackTrace() {
-    System.err.println(ObjectUtil.toString(errors));
     super.printStackTrace();
   }
 
-  @Override
-  public String toString() {
-    return ObjectUtil.toString(errors) + "\n" + super.toString();
-  }
-
-  /**
-   * Add a single {@link AppError} into this exception.
-   *
-   * @param objectName error object's name.
-   * @param field error object's field.
-   * @param message message for error.
-   */
-  public void addErrors(String objectName, String field, String message) {
-    errors.add(new AppError(objectName, field, message));
-  }
-
-  /**
-   * Add a group of {@link AppError}s into error list.
-   *
-   * @param errors errors for this exception.
-   */
-  public void addErrors(AppError... errors) {
-    if (errors != null) {
-      for (AppError error : errors) {
-        this.errors.add(error);
-      }
-    }
-  }
-
-  @Override
-  public Iterator<AppError> iterator() {
-    return errors.iterator();
-  }
 }
