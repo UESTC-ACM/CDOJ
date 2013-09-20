@@ -3,13 +3,14 @@ package cn.edu.uestc.acmicpc.db.dto.impl;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import cn.edu.uestc.acmicpc.db.entity.Department;
+import javax.validation.constraints.Pattern;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.ScriptAssert;
 
-import javax.validation.constraints.Pattern;
+import cn.edu.uestc.acmicpc.db.entity.Department;
 
 /**
  * Data transfer object for {@link User}.
