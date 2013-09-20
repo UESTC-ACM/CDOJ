@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -28,6 +30,8 @@ import cn.edu.uestc.acmicpc.util.exception.FieldException;
 @Controller
 @RequestMapping("/user")
 public class UserController extends BaseController implements UserServiceAware {
+
+  private static final Logger LOGGER = LogManager.getLogger(UserController.class);
 
   /**
    * Login controller.
