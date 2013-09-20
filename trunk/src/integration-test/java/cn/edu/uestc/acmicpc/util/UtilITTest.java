@@ -19,7 +19,7 @@ import cn.edu.uestc.acmicpc.db.entity.Department;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestContext.class })
-public class UtilTest {
+public class UtilITTest {
 
   @Autowired
   private Global global;

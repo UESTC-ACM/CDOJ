@@ -35,9 +35,9 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestContext.class })
-public class DatabaseTest {
+public class DatabaseITTest {
 
-  private static final Logger LOGGER = LogManager.getLogger(DatabaseTest.class);
+  private static final Logger LOGGER = LogManager.getLogger(DatabaseITTest.class);
 
   @Autowired
   private IUserDAO userDAO;

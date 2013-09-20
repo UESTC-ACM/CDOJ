@@ -31,7 +31,7 @@ import cn.edu.uestc.acmicpc.util.exception.ParserException;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestContext.class })
-public class RankListParserTest implements TrainingRankListParserAware, TrainingContestDAOAware,
+public class RankListParserITTest implements TrainingRankListParserAware, TrainingContestDAOAware,
     TrainingStatusDAOAware {
 
   @SuppressWarnings("unused")
