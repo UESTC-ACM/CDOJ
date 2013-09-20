@@ -57,8 +57,10 @@
     $("#loginModal").setDialog({
       callback: function() {
         var info=$("#loginModal").find(".form-horizontal").getFormData();
+        //info = {"userName": null, "password": "password"};
 
         jsonPost('/user/login', info, function(data) {
+          console.log(data);
           $("#loginModal").find(".form-horizontal").formValidate({
             result: data,
             onSuccess: function() {
