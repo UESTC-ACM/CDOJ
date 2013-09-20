@@ -57,10 +57,17 @@ public interface UserService extends OnlineJudgeService<User, Integer> {
    * User login operation
    *
    * @param userLoginDTO User need login (collect from form)
-   * @return login state
+   * @return User dto
    * @throws AppException
    */
   UserDTO login(UserLoginDTO userLoginDTO) throws AppException;
 
+  /**
+   * User register operation
+   *
+   * @param userDTO User information (collect from form)
+   * @return User dto
+   * @throws AppException
+   */
   UserDTO register(UserDTO userDTO) throws AppException;
 }
