@@ -3,32 +3,33 @@ package cn.edu.uestc.acmicpc.oj.service.impl;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
-import cn.edu.uestc.acmicpc.ioc.util.GlobalAware;
-import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
+import cn.edu.uestc.acmicpc.ioc.util.GlobalAware;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 /**
  * Implementation for {@link UserService}.
  */
 @Service
-public class UserServiceImpl extends AbstractService implements UserService, UserDAOAware, DepartmentDAOAware, GlobalAware {
+public class UserServiceImpl extends AbstractService implements UserService, UserDAOAware,
+    DepartmentDAOAware, GlobalAware {
 
   private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
   @Autowired
@@ -76,7 +77,8 @@ public class UserServiceImpl extends AbstractService implements UserService, Use
   @Override
   public UserDTO login(UserLoginDTO userLoginDTO) throws AppException {
     User user = getUserByUserName(userLoginDTO.getUserName());
-    if (user == null || !StringUtil.encodeSHA1(userLoginDTO.getPassword()).equals(user.getPassword()))
+    if (user == null
+        || !StringUtil.encodeSHA1(userLoginDTO.getPassword()).equals(user.getPassword()))
       throw new FieldException("password", "User or password is wrong, please try again");
 
     user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
@@ -94,9 +96,9 @@ public class UserServiceImpl extends AbstractService implements UserService, Use
   @Override
   public UserDTO register(UserDTO userDTO) throws AppException {
     /*
-    @FieldExpressionValidator(fieldName = "userDTO.departmentId",
-              expression = "userDTO.departmentId in global.departmentList.{departmentId}",
-              key = "error.department.validation") },
+     * @FieldExpressionValidator(fieldName = "userDTO.departmentId", expression =
+     * "userDTO.departmentId in global.departmentList.{departmentId}", key =
+     * "error.department.validation") },
      */
     if (getUserByUserName(userDTO.getUserName()) != null)
       throw new FieldException("userName", "User name has been used!");
