@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.db.dto.impl;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
@@ -26,6 +27,7 @@ public class UserDTO {
   /**
    * Input: user name
    */
+  @NotNull(message = "Please enter your user name.")
   @Pattern(regexp = "\\b^[a-zA-Z0-9_]{4,24}$\\b",
       message = "Please enter 4-24 characters consist of A-Z, a-z, 0-9 and '_'.")
   private String userName;
@@ -38,30 +40,35 @@ public class UserDTO {
   /**
    * Input: password
    */
+  @NotNull(message = "Please enter your password.")
   @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
   private String password;
 
   /**
    * Input: repeat password
    */
+  @NotNull(message = "Please repeat your password.")
   @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
   private String passwordRepeat;
 
   /**
    * Input: nick name
    */
+  @NotNull(message = "Please enter your nick name.")
   @Length(min = 2, max = 20, message = "Please enter 2-20 characters.")
   private String nickName;
 
   /**
    * Input: email
    */
+  @NotEmpty(message = "Please enter a validation email address.")
   @Email(message = "Please enter a validation email address.")
   private String email;
 
   /**
    * Input: school
    */
+  @NotNull(message = "Please enter your school name.")
   @Length(min = 1, max = 100, message = "Please enter 1-100 characters.")
   private String school;
 
@@ -73,6 +80,7 @@ public class UserDTO {
   /**
    * Input: student ID
    */
+  @NotNull(message = "Please enter your student ID.")
   @Length(min = 1, max = 20, message = "Please enter 1-20 characters.")
   private String studentId;
 
@@ -80,16 +88,6 @@ public class UserDTO {
    * Last login time
    */
   private Timestamp lastLogin;
-
-  /**
-   * Input: number of problems the user has solved
-   */
-  private Integer solved;
-
-  /**
-   * Input: number the problems the user has tried
-   */
-  private Integer tried;
 
   /**
    * Input: User type
@@ -101,8 +99,7 @@ public class UserDTO {
 
   private UserDTO(Integer userId, String userName, String oldPassword, String password,
       String passwordRepeat, String nickName, String email, String school, Integer departmentId,
-      String studentId, Timestamp lastLogin, Integer solved,
-      Integer tried, Integer type) {
+      String studentId, Timestamp lastLogin, Integer type) {
     this.userId = userId;
     this.userName = userName;
     this.oldPassword = oldPassword;
@@ -114,8 +111,6 @@ public class UserDTO {
     this.departmentId = departmentId;
     this.studentId = studentId;
     this.lastLogin = lastLogin;
-    this.solved = solved;
-    this.tried = tried;
     this.type = type;
   }
 
@@ -207,22 +202,6 @@ public class UserDTO {
     this.lastLogin = lastLogin;
   }
 
-  public Integer getSolved() {
-    return solved;
-  }
-
-  public void setSolved(Integer solved) {
-    this.solved = solved;
-  }
-
-  public Integer getTried() {
-    return tried;
-  }
-
-  public void setTried(Integer tried) {
-    this.tried = tried;
-  }
-
   public Integer getType() {
     return type;
   }
@@ -250,12 +229,8 @@ public class UserDTO {
     private String email = "";
     private String school = "";
     private Integer departmentId;
-    // TODO do not use DB entity in dto.
-    private Department department;
     private String studentId = "";
     private Timestamp lastLogin = new Timestamp(new Date().getTime());
-    private Integer solved = 0;
-    private Integer tried = 0;
     private Integer type = 0;
 
     public Builder setUserId(Integer userId) {
@@ -303,11 +278,6 @@ public class UserDTO {
       return this;
     }
 
-    public Builder setDepartment(Department department) {
-      this.department = department;
-      return this;
-    }
-
     public Builder setStudentId(String studentId) {
       this.studentId = studentId;
       return this;
@@ -318,16 +288,6 @@ public class UserDTO {
       return this;
     }
 
-    public Builder setSolved(Integer solved) {
-      this.solved = solved;
-      return this;
-    }
-
-    public Builder setTried(Integer tried) {
-      this.tried = tried;
-      return this;
-    }
-
     public Builder setType(Integer type) {
       this.type = type;
       return this;
@@ -335,7 +295,7 @@ public class UserDTO {
 
     public UserDTO build() {
       return new UserDTO(userId, userName, oldPassword, password, passwordRepeat, nickName, email,
-          school, departmentId, studentId, lastLogin, solved, tried, type);
+          school, departmentId, studentId, lastLogin, type);
     }
   }
 }
