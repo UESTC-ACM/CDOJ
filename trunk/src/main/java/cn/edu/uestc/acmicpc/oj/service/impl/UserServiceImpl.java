@@ -3,6 +3,10 @@ package cn.edu.uestc.acmicpc.oj.service.impl;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import cn.edu.uestc.acmicpc.db.entity.Department;
+import cn.edu.uestc.acmicpc.ioc.service.GlobalServiceAware;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
+import cn.edu.uestc.acmicpc.service.impl.AbstractService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +33,13 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
  */
 @Service
 public class UserServiceImpl extends AbstractService implements UserService, UserDAOAware,
-    DepartmentDAOAware, GlobalAware {
+    GlobalServiceAware {
 
   private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
   @Autowired
   private IUserDAO userDAO;
   @Autowired
-  private IDepartmentDAO departmentDAO;
-  @Autowired
-  private Global global;
+  private GlobalService globalService;
 
   @Override
   public void setUserDAO(IUserDAO userDAO) {
@@ -95,20 +97,20 @@ public class UserServiceImpl extends AbstractService implements UserService, Use
 
   @Override
   public UserDTO register(UserDTO userDTO) throws AppException {
-    /*
-     * @FieldExpressionValidator(fieldName = "userDTO.departmentId", expression =
-     * "userDTO.departmentId in global.departmentList.{departmentId}", key =
-     * "error.department.validation") },
-     */
+    if (!StringUtil.trimAllSpace(userDTO.getNickName()).equals(userDTO.getNickName()))
+      throw new FieldException("nickName", "Nick name should not have useless blank.");
     if (getUserByUserName(userDTO.getUserName()) != null)
       throw new FieldException("userName", "User name has been used!");
     if (getUserByEmail(userDTO.getEmail()) != null)
       throw new FieldException("email", "Email has benn used!");
+    Department department = globalService.getDepartmentByDepartmentId(userDTO.getDepartmentId());
+    if (department == null)
+      throw new FieldException("departmentId", "Please choose a validate department.");
 
     User user = new User();
     user.setTried(0);
     user.setNickName(userDTO.getNickName());
-    user.setDepartmentByDepartmentId(departmentDAO.get(userDTO.getDepartmentId()));
+    user.setDepartmentByDepartmentId(department);
     user.setEmail(userDTO.getEmail());
     user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
     user.setPassword(StringUtil.encodeSHA1(userDTO.getPassword()));
@@ -132,12 +134,7 @@ public class UserServiceImpl extends AbstractService implements UserService, Use
   }
 
   @Override
-  public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
-    this.departmentDAO = departmentDAO;
-  }
-
-  @Override
-  public void setGlobal(Global global) {
-    this.global = global;
+  public void setGlobalService(GlobalService globalService) {
+    this.globalService = globalService;
   }
 }

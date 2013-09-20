@@ -33,6 +33,15 @@ import java.util.Date;
 public class StringUtil {
 
   /**
+   * Trim all space, include chinese blank character.
+   *
+   * @param str origin string
+   * @return result
+   */
+  public static String trimAllSpace(String str) {
+    return str == null ? str : str.replaceAll("^[\\s　]*|[\\s　]*$", "");
+  }
+  /**
    * get Setter or Getter name, return {@code null} if exception occurred.
    * 
    * @param methodType method type for getter or setter

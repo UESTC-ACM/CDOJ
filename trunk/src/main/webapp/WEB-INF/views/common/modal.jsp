@@ -87,24 +87,9 @@
         <!--TODO list!-->
         <div class="control-group "><label class="control-label" for="departmentId">Department</label><div class="controls">
           <select name="departmentId" id="departmentId" class="span4">
-            <option value="1">Others</option>
-            <option value="2">School of Information and Software Engineering</option>
-            <option value="3">School of Mathematical Sciences</option>
-            <option value="4">School of Management and Economics</option>
-            <option value="5">School of Automation Engineering</option>
-            <option value="6">School of Mechatronics Engineering</option>
-            <option value="7">School of Optoelectronic Information</option>
-            <option value="8">School of Computer Science &amp; Engineering</option>
-            <option value="9">School of Life Science and Technology</option>
-            <option value="10">School of Foreign Languages</option>
-            <option value="11">School of Energy Science and Engineering</option>
-            <option value="12">School of Marxism Education</option>
-            <option value="13">School of Political Science and Public Administrat</option>
-            <option value="14">School of Microelectronics and Solid-State Electro</option>
-            <option value="15">School of Electronic Engineering</option>
-            <option value="16">School of Physical Electronics</option>
-            <option value="17">School of Communication &amp; Information Engineering</option>
-            <option value="18">Yingcai Experimental School</option>
+            <c:forEach var="department" items="${departmentList}">
+              <option value="${department.departmentId}}"><c:out value="${department.name}"/></option>
+            </c:forEach>
           </select>
         </div>
         </div>
