@@ -11,6 +11,8 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.ScriptAssert;
 
+import cn.edu.uestc.acmicpc.util.Global;
+
 /**
  * Data transfer object for {@link User}.
  */
@@ -218,18 +220,18 @@ public class UserDTO {
     private Builder() {
     }
 
-    private Integer userId;
-    private String userName = "";
-    private String oldPassword = "";
-    private String password = "";
-    private String passwordRepeat = "";
-    private String nickName = "";
-    private String email = "";
-    private String school = "";
+    private Integer userId = 2;
+    private String userName = "admin";
+    private String oldPassword = "password";
+    private String password = "password";
+    private String passwordRepeat = "password";
+    private String nickName = "admin";
+    private String email = "acm_admin@uestc.edu.cn";
+    private String school = "UESTC";
     private Integer departmentId;
-    private String studentId = "";
+    private String studentId = "2010013100008";
     private Timestamp lastLogin = new Timestamp(new Date().getTime());
-    private Integer type = 0;
+    private Integer type = Global.AuthenticationType.ADMIN.ordinal();
 
     public Builder setUserId(Integer userId) {
       this.userId = userId;
