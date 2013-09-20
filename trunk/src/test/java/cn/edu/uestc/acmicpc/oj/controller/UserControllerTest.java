@@ -627,6 +627,8 @@ public class UserControllerTest extends ControllerTest {
     UserDTO userDTO = UserDTO.builder()
         .setNickName(StringUtil.repeat(" ", 10))
         .build();
+    when(userService.register(Mockito.<UserDTO> any())).thenThrow(
+        new FieldException("nickName", "Nick name should not have useless blank."));
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userDTO)))
@@ -634,8 +636,9 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.result", is("field_error")))
         .andExpect(jsonPath("$.field", hasSize(1)))
         .andExpect(jsonPath("$.field[0].field", is("nickName")))
-        .andExpect(jsonPath("$.field[0].objectName", is("userDTO")))
-        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 2-20 characters.")));
+        .andExpect(jsonPath("$.field[0].objectName", is("nickName")))
+        .andExpect(jsonPath("$.field[0].defaultMessage",
+            is("Nick name should not have useless blank.")));
   }
 
   @Test
@@ -687,10 +690,9 @@ public class UserControllerTest extends ControllerTest {
             is("Please enter a validation email address.")));
   }
 
-  @Test
-  public void testRegister_failed_email_invalid() throws Exception {
+  public void testRegister_failed_email_invalid(String email) throws Exception {
     UserDTO userDTO = UserDTO.builder()
-        .setEmail(null)
+        .setEmail(email)
         .build();
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
@@ -702,5 +704,40 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field[0].objectName", is("userDTO")))
         .andExpect(jsonPath("$.field[0].defaultMessage",
             is("Please enter a validation email address.")));
+  }
+
+  @Test
+  public void testRegister_failed_email_empty() throws Exception {
+    testRegister_failed_email_invalid("");
+  }
+
+  @Test
+  public void testRegister_failed_email_case1() throws Exception {
+    testRegister_failed_email_invalid("email");
+  }
+
+  @Test
+  public void testRegister_failed_email_case2() throws Exception {
+    testRegister_failed_email_invalid("@uestc.edu.cn");
+  }
+
+  @Test
+  public void testRegister_failed_email_case3() throws Exception {
+    testRegister_failed_email_invalid("email@");
+  }
+
+  @Test
+  public void testRegister_failed_email_case4() throws Exception {
+    testRegister_failed_email_invalid("  email@uestc.edu.cn");
+  }
+
+  @Test
+  public void testRegister_failed_email_case5() throws Exception {
+    testRegister_failed_email_invalid("email@uestc.edu.cn   ");
+  }
+
+  @Test
+  public void testRegister_failed_email_case6() throws Exception {
+    testRegister_failed_email_invalid("email@uestc@com");
   }
 }
