@@ -17,7 +17,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /** Test case for {@link ContestProblemDAO}. */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestContext.class })
-public class ContestProblemDAOTest {
+public class ContestProblemDAOITTest {
 
   @Autowired
   private IProblemDAO problemDAO;

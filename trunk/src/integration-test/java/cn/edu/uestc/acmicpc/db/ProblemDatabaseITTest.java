@@ -24,7 +24,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestContext.class })
-public class ProblemDatabaseTest implements ProblemConditionAware, ProblemDAOAware {
+public class ProblemDatabaseITTest implements ProblemConditionAware, ProblemDAOAware {
 
   @Autowired
   private IProblemDAO problemDAO;

@@ -9,32 +9,39 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserSerialKeyDAO;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
+import com.jolbox.bonecp.BoneCPDataSource;
+
 /**
- * Test cases for {@link UserSerialKey}.
+ * Test cases for AOP framework
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestContext.class })
-public class UserSerialKeyDatabaseTest {
+public class AOPITTest {
 
   @Autowired
-  private IUserDAO userDAO;
+  IUserDAO userDAO;
+
+  public void setUserDAO(IUserDAO userDAO) {
+    this.userDAO = userDAO;
+  }
 
   @Autowired
-  private IUserSerialKeyDAO userSerialKeyDAO;
+  BoneCPDataSource dataSource;
 
   @Test
-  public void testFindUserSerialKeyByUserName() throws FieldNotUniqueException, AppException {
-    // TODO add test case and not assert null here.
-    User user = userDAO.getEntityByUniqueField("userName", "administrator");
-    Assert.assertEquals(Integer.valueOf(1), user.getUserId());
-    UserSerialKey userSerialKey =
-        userSerialKeyDAO.getEntityByUniqueField("userId", user, "userByUserId", true);
-    Assert.assertNull(userSerialKey);
+  public void testFetchDataSource() {
+    Assert.assertEquals(
+        "jdbc:mysql://localhost:3306/uestcojtest?useUnicode=true&characterEncoding=UTF-8",
+        dataSource.getJdbcUrl());
+  }
+
+  @Test
+  public void testDataBaseConnection() throws FieldNotUniqueException, AppException {
+    User user = userDAO.getEntityByUniqueField("userName", "admin");
+    Assert.assertEquals("admin", user.getUserName());
   }
 }

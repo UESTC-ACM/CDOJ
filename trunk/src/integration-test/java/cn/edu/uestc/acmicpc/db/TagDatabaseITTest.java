@@ -19,7 +19,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestContext.class })
-public class TagDatabaseTest {
+public class TagDatabaseITTest {
 
   @Autowired
   private ITagDAO tagDAO;

@@ -27,7 +27,7 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestContext.class })
-public class UserDatabaseTest implements UserConditionAware, UserDAOAware {
+public class UserDatabaseITTest implements UserConditionAware, UserDAOAware {
 
   @Before
   public void init() {

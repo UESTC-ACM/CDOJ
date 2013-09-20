@@ -33,7 +33,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestContext.class })
-public class TrainingContestUtilsTest {
+public class TrainingContestUtilsITTest {
 
   @Test
   @Ignore
