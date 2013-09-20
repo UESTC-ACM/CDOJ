@@ -6,8 +6,6 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -20,7 +18,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.ioc.service.UserServiceAware;
 import cn.edu.uestc.acmicpc.oj.controller.base.BaseController;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
-import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
@@ -31,8 +28,6 @@ import cn.edu.uestc.acmicpc.util.exception.FieldException;
 @Controller
 @RequestMapping("/user")
 public class UserController extends BaseController implements UserServiceAware {
-
-  private static final Logger LOGGER = LogManager.getLogger(UserController.class);
 
   /**
    * Login controller.
@@ -52,7 +47,6 @@ public class UserController extends BaseController implements UserServiceAware {
   Map<String, Object> toLogin(HttpSession session,
                               @RequestBody @Valid UserLoginDTO userLoginDTO,
                               BindingResult validateResult) {
-    LOGGER.debug(ObjectUtil.toString(userLoginDTO));
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");

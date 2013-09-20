@@ -11,8 +11,6 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.ScriptAssert;
 
-import cn.edu.uestc.acmicpc.db.entity.Department;
-
 /**
  * Data transfer object for {@link User}.
  */
