@@ -97,6 +97,8 @@ public class UserServiceImpl extends AbstractService implements UserService, Use
 
   @Override
   public UserDTO register(UserDTO userDTO) throws AppException {
+    if (!StringUtil.trimAllSpace(userDTO.getNickName()).equals(userDTO.getNickName()))
+      throw new FieldException("nickName", "Nick name should not have useless blank.");
     if (getUserByUserName(userDTO.getUserName()) != null)
       throw new FieldException("userName", "User name has been used!");
     if (getUserByEmail(userDTO.getEmail()) != null)

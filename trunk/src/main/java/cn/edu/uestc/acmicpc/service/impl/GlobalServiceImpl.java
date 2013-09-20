@@ -7,8 +7,10 @@ import cn.edu.uestc.acmicpc.util.Global;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
- * Description
+ * Global service.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
@@ -18,16 +20,37 @@ public class GlobalServiceImpl extends AbstractService implements GlobalService,
   @Autowired
   private Global global;
 
+  /**
+   * Return global entity
+   *
+   * @return global entity
+   */
   @Override
   public Global getGlobal() {
     return global;
   }
 
+  /**
+   * Get department by department id
+   *
+   * @param departmentId department id
+   * @return department entity
+   */
+  @Override
   public Department getDepartmentByDepartmentId(Integer departmentId) {
     for (Department department: global.getDepartmentList())
       if (department.getDepartmentId().equals(departmentId))
         return department;
     return null;
+  }
+
+  /**
+   * Get department list
+   * @return department list
+   */
+  @Override
+  public List<Department> getDepartmentList() {
+    return global.getDepartmentList();
   }
 
   @Override
