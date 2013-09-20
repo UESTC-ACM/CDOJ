@@ -27,7 +27,6 @@ public class UserDTO {
    */
   @Pattern(regexp = "\\b^[a-zA-Z0-9_]{4,24}$\\b",
       message = "Please enter 4-24 characters consist of A-Z, a-z, 0-9 and '_'.")
-  @NotEmpty
   private String userName;
 
   /**
@@ -39,35 +38,30 @@ public class UserDTO {
    * Input: password
    */
   @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
-  @NotEmpty
   private String password;
 
   /**
    * Input: repeat password
    */
   @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
-  @NotEmpty
   private String passwordRepeat;
 
   /**
    * Input: nick name
    */
   @Length(min = 2, max = 20, message = "Please enter 2-20 characters.")
-  @NotEmpty
   private String nickName;
 
   /**
    * Input: email
    */
   @Email(message = "Please enter a validation email address.")
-  @NotEmpty
   private String email;
 
   /**
    * Input: school
    */
   @Length(min = 1, max = 100, message = "Please enter 1-100 characters.")
-  @NotEmpty
   private String school;
 
   /**
@@ -79,7 +73,6 @@ public class UserDTO {
    * Input: student ID
    */
   @Length(min = 1, max = 20, message = "Please enter 1-20 characters.")
-  @NotEmpty
   private String studentId;
 
   /**

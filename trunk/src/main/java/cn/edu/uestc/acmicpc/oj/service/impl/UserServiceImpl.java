@@ -5,6 +5,7 @@ import java.util.Date;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
+import cn.edu.uestc.acmicpc.ioc.util.GlobalAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import org.apache.log4j.LogManager;
@@ -29,13 +30,15 @@ import org.springframework.validation.FieldError;
  * Implementation for {@link UserService}.
  */
 @Service
-public class UserServiceImpl extends AbstractService implements UserService, UserDAOAware, DepartmentDAOAware {
+public class UserServiceImpl extends AbstractService implements UserService, UserDAOAware, DepartmentDAOAware, GlobalAware {
 
   private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
   @Autowired
   private IUserDAO userDAO;
   @Autowired
   private IDepartmentDAO departmentDAO;
+  @Autowired
+  private Global global;
 
   @Override
   public void setUserDAO(IUserDAO userDAO) {
@@ -132,5 +135,10 @@ public class UserServiceImpl extends AbstractService implements UserService, Use
   @Override
   public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
     this.departmentDAO = departmentDAO;
+  }
+
+  @Override
+  public void setGlobal(Global global) {
+    this.global = global;
   }
 }
