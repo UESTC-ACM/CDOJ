@@ -599,12 +599,17 @@ public class UserControllerTest extends ControllerTest {
         .setPassword("12345678")
         .setPasswordRepeat("123456789")
         .build();
+    when(userService.register(Mockito.<UserDTO>any())).thenThrow(
+        new FieldException("passwordRepeat", "Password do not match."));
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userDTO)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("field_error")))
-        .andExpect(jsonPath("$.field", hasSize(0)));
+        .andExpect(jsonPath("$.field", hasSize(1)))
+        .andExpect(jsonPath("$.field[0].field", is("passwordRepeat")))
+        .andExpect(jsonPath("$.field[0].objectName", is("passwordRepeat")))
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Password do not match.")));
   }
 
   @Test

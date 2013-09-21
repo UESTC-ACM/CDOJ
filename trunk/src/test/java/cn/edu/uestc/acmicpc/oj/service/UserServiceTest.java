@@ -4,8 +4,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -30,10 +32,17 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 public class UserServiceTest {
 
   @Autowired
+  @Qualifier("service")
   private UserService userService;
+
   @Autowired
   @Qualifier("mock")
   private IUserDAO userDAO;
+
+  @Before
+  public void init() {
+    Mockito.reset(userDAO);
+  }
 
   @Test
   public void testLogin_successful() throws AppException, FieldNotUniqueException {

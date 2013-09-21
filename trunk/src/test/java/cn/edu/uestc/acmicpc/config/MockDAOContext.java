@@ -28,8 +28,8 @@ import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 public class MockDAOContext extends TestContext {
 
   @Bean
-  @Qualifier("service")
   @Autowired
+  @Qualifier("service")
   public UserService userService(GlobalService globalService) {
     return new UserServiceImpl(iUserDAO(), globalService);
   }
