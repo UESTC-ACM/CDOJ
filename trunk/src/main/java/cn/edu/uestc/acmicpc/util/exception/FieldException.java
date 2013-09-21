@@ -79,4 +79,16 @@ public class FieldException extends AppException implements Iterable<FieldError>
   public Iterator<FieldError> iterator() {
     return errors.iterator();
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof FieldException) {
+      FieldException e = (FieldException) obj;
+      if (!super.equals(obj)) {
+        return false;
+      }
+      return errors.equals(e.errors);
+    }
+    return false;
+  }
 }

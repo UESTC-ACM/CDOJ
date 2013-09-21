@@ -63,4 +63,28 @@ public class AppException extends Exception implements Serializable {
     super.printStackTrace();
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof AppException) {
+      AppException e = (AppException) obj;
+      if (this == e) {
+        return true;
+      } else {
+        boolean result = true;
+        if (getCause() == null) {
+          result &= e.getCause() == null;
+        } else {
+          result &= getCause().equals(e.getCause());
+        }
+        if (getMessage() == null) {
+          result &= e.getMessage() == null;
+        } else {
+          result &= getMessage().equals(e.getMessage());
+        }
+        return result;
+      }
+    } else {
+      return false;
+    }
+  }
 }
