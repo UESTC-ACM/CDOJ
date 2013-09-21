@@ -18,6 +18,7 @@ import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
+import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
@@ -100,6 +101,8 @@ public class UserServiceTest {
   @Test
   public void testRegister_successful() throws AppException {
     UserDTO userDTO = UserDTO.builder().build();
+    when(globalService.getDepartmentById(userDTO.getDepartmentId()))
+        .thenReturn(mock(Department.class));
     Assert.assertEquals(userDTO, userService.register(userDTO));
   }
 
