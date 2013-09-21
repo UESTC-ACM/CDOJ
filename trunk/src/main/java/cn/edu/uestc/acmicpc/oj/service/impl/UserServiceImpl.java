@@ -1,8 +1,14 @@
 package cn.edu.uestc.acmicpc.oj.service.impl;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
+import cn.edu.uestc.acmicpc.db.view.impl.UserView;
+import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,6 +122,25 @@ public class UserServiceImpl extends AbstractService implements UserService {
     user.setUserName(userDTO.getUserName());
     createNewUser(user);
     return userDTO;
+  }
+
+  @Override
+  public List<UserView> search(UserCondition userCondition, PageInfo pageInfo) throws AppException {
+    Condition condition = userCondition.getCondition();
+    condition.setCurrentPage(pageInfo.getCurrentPage());
+    condition.setCountPerPage(Global.RECORD_PER_PAGE);
+    List<User> userList = (List<User>) userDAO.findAll(condition);
+    List<UserView> userViewList = new ArrayList<>();
+    for (User user : userList) {
+      UserView userView = new UserView(user);
+      userViewList.add(userView);
+    }
+    return userViewList;
+  }
+
+  @Override
+  public Long count(UserCondition userCondition) throws AppException {
+    return userDAO.count(userCondition.getCondition());
   }
 
   @Override
