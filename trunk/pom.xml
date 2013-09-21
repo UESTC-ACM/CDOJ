@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cn.edu.uestc.acmicpc</groupId>
-	<artifactId>trunk</artifactId>
+	<artifactId>cdoj</artifactId>
 	<packaging>war</packaging>
 	<version>1.0</version>
 	<name>UESTC Online Judge</name>
@@ -464,7 +464,6 @@
 					<includes>
 						<include>**/*ITTest.java</include>
 					</includes>
-					<parallel>10</parallel>
 				</configuration>
 				<executions>
 					<execution>
@@ -476,7 +475,7 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<finalName>trunk</finalName>
+		<finalName>cdoj</finalName>
 	</build>
 	<reporting>
 		<plugins>
