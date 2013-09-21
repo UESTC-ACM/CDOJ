@@ -17,7 +17,6 @@ import cn.edu.uestc.acmicpc.util.Global;
 /**
  * Data transfer object for {@link User}.
  */
-@ScriptAssert(lang = "javascript", script="_this.password == _this.passwordRepeat", message = "Password do not match.")
 public class UserDTO {
 
   /**

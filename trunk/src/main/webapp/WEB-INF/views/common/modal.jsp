@@ -88,7 +88,7 @@
         <div class="control-group "><label class="control-label" for="departmentId">Department</label><div class="controls">
           <select name="departmentId" id="departmentId" class="span4">
             <c:forEach var="department" items="${departmentList}">
-              <option value="${department.departmentId}}"><c:out value="${department.name}"/></option>
+              <option value="${department.departmentId}"><c:out value="${department.name}"/></option>
             </c:forEach>
           </select>
         </div>

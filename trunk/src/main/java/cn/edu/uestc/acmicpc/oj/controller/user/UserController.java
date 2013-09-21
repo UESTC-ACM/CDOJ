@@ -85,6 +85,19 @@ public class UserController extends BaseController implements UserServiceAware {
     return json;
   }
 
+  /**
+   * Register controller
+   *
+   * @param session session
+   * @param userDTO User DTO
+   * @param validateResult Validation result
+   * @return <ul>
+   *         <li>For success: {"result":"success"}</li>
+   *         <li>For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
+   *         <li>For validation error: {"result":"field_error","field":<strong>Field
+   *         errors</strong>}</li>
+   *         </ul>
+   */
   @RequestMapping("register")
   @LoginPermit(NeedLogin = false)
   public @ResponseBody
