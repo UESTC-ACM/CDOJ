@@ -14,12 +14,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import cn.edu.uestc.acmicpc.config.MockDAOContext;
+import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
@@ -28,20 +29,24 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 /** Test cases for {@link UserService}. */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = { MockDAOContext.class })
+@ContextConfiguration(classes = { TestContext.class })
 public class UserServiceTest {
 
   @Autowired
-  @Qualifier("service")
+  @Qualifier("realUserService")
   private UserService userService;
 
   @Autowired
-  @Qualifier("mock")
+  @Qualifier("mockUserDAO")
   private IUserDAO userDAO;
+
+  @Autowired
+  @Qualifier("mockGlobalService")
+  private GlobalService globalService;
 
   @Before
   public void init() {
-    Mockito.reset(userDAO);
+    Mockito.reset(userDAO, globalService);
   }
 
   @Test
@@ -63,7 +68,8 @@ public class UserServiceTest {
           .build();
       when(userDAO.getEntityByUniqueField("userName", userLoginDTO.getUserName()))
           .thenReturn(null);
-      Assert.assertNotNull(userService.login(userLoginDTO));
+      userService.login(userLoginDTO);
+      Assert.fail();
     } catch (FieldException e) {
       Assert.assertEquals(
           new FieldException("password", "User or password is wrong, please try again"),
@@ -82,7 +88,8 @@ public class UserServiceTest {
       when(user.getPassword()).thenReturn(StringUtil.encodeSHA1("password"));
       when(userDAO.getEntityByUniqueField("userName", userLoginDTO.getUserName()))
           .thenReturn(user);
-      Assert.assertNotNull(userService.login(userLoginDTO));
+      userService.login(userLoginDTO);
+      Assert.fail();
     } catch (FieldException e) {
       Assert.assertEquals(
           new FieldException("password", "User or password is wrong, please try again"),
@@ -94,5 +101,74 @@ public class UserServiceTest {
   public void testRegister_successful() throws AppException {
     UserDTO userDTO = UserDTO.builder().build();
     Assert.assertEquals(userDTO, userService.register(userDTO));
+  }
+
+  @Test
+  public void testRegister_failed_passwordDifferent() throws AppException {
+    try {
+      UserDTO userDTO = UserDTO.builder()
+          .setPassword("password")
+          .setPasswordRepeat("passwordRepeat")
+          .build();
+      userService.register(userDTO);
+      Assert.fail();
+    } catch (FieldException e) {
+      Assert.assertEquals(new FieldException("passwordRepeat", "Password do not match."), e);
+    }
+  }
+
+  @Test
+  public void testRegister_failed_containsUnusedWhiteSpaces() throws AppException {
+    try {
+      UserDTO userDTO = UserDTO.builder()
+          .setNickName("nick name  ")
+          .build();
+      userService.register(userDTO);
+      Assert.fail();
+    } catch (FieldException e) {
+      Assert.assertEquals(
+          new FieldException("nickName", "Nick name should not have useless blank."),
+          e);
+    }
+  }
+
+  @Test
+  public void testRegister_failed_userIsInUsed() throws AppException, FieldNotUniqueException {
+    try {
+      UserDTO userDTO = UserDTO.builder().build();
+      when(userDAO.getEntityByUniqueField("userName", userDTO.getUserName()))
+          .thenReturn(mock(User.class));
+      userService.register(userDTO);
+      Assert.fail();
+    } catch (FieldException e) {
+      Assert.assertEquals(new FieldException("userName", "User name has been used!"), e);
+    }
+  }
+
+  @Test
+  public void testRegister_failed_emailIsInUsed() throws AppException, FieldNotUniqueException {
+    try {
+      UserDTO userDTO = UserDTO.builder().build();
+      when(userDAO.getEntityByUniqueField("email", userDTO.getEmail()))
+          .thenReturn(mock(User.class));
+      userService.register(userDTO);
+      Assert.fail();
+    } catch (FieldException e) {
+      Assert.assertEquals(new FieldException("email", "Email has benn used!"), e);
+    }
+  }
+
+  @Test
+  public void testRegister_failed_noSuchDepartment() throws AppException, FieldNotUniqueException {
+    try {
+      UserDTO userDTO = UserDTO.builder().build();
+      when(globalService.getDepartmentById(userDTO.getDepartmentId())).thenReturn(null);
+      userService.register(userDTO);
+      Assert.fail();
+    } catch (FieldException e) {
+      Assert.assertEquals(
+          new FieldException("departmentId", "Please choose a validate department."),
+          e);
+    }
   }
 }
