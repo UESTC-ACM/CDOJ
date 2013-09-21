@@ -14,8 +14,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
-import cn.edu.uestc.acmicpc.ioc.service.GlobalServiceAware;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.impl.AbstractService;
@@ -29,18 +27,16 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
  * Implementation for {@link UserService}.
  */
 @Service
-public class UserServiceImpl extends AbstractService implements UserService, UserDAOAware,
-    GlobalServiceAware {
+public class UserServiceImpl extends AbstractService implements UserService {
 
   private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
-  @Autowired
   private IUserDAO userDAO;
-  @Autowired
   private GlobalService globalService;
 
-  @Override
-  public void setUserDAO(IUserDAO userDAO) {
+  @Autowired
+  public UserServiceImpl(IUserDAO userDAO, GlobalService globalService) {
     this.userDAO = userDAO;
+    this.globalService = globalService;
   }
 
   @Override
@@ -133,10 +129,5 @@ public class UserServiceImpl extends AbstractService implements UserService, Use
   @Override
   public IDAO<User, Integer> getDAO() {
     return userDAO;
-  }
-
-  @Override
-  public void setGlobalService(GlobalService globalService) {
-    this.globalService = globalService;
   }
 }
