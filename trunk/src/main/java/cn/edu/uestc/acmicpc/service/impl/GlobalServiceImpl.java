@@ -13,7 +13,7 @@ import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.Global;
 
 /**
- * Global service.
+ * Implementation for {@link GlobalService}.
  *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
@@ -37,12 +37,6 @@ public class GlobalServiceImpl extends AbstractService implements GlobalService,
     return global;
   }
 
-  /**
-   * Get department by department id
-   *
-   * @param departmentId department id
-   * @return department entity
-   */
   @Override
   public Department getDepartment(Integer departmentId) {
     for (Department department : global.getDepartmentList()) {
