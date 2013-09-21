@@ -2,7 +2,6 @@ package cn.edu.uestc.acmicpc.oj.service.impl;
 
 import java.util.List;
 
-import cn.edu.uestc.acmicpc.service.impl.AbstractService;
 import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,8 +10,8 @@ import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
-import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.oj.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.service.impl.AbstractService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -20,13 +19,12 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * Implementation for {@link StatusService}.
  */
 @Service
-public class StatusServiceImpl extends AbstractService implements StatusService, StatusDAOAware {
+public class StatusServiceImpl extends AbstractService implements StatusService {
 
-  @Autowired
   private IStatusDAO statusDAO;
 
-  @Override
-  public void setStatusDAO(IStatusDAO statusDAO) {
+  @Autowired
+  public StatusServiceImpl(IStatusDAO statusDAO) {
     this.statusDAO = statusDAO;
   }
 

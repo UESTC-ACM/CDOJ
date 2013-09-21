@@ -1,24 +1,3 @@
-/*
- * cdoj, UESTC ACMICPC Online Judge
- *
- * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- * mzry1992 <@link muziriyun@gmail.com>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
-
 package cn.edu.uestc.acmicpc.util;
 
 import java.util.LinkedList;
@@ -34,8 +13,6 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
-import cn.edu.uestc.acmicpc.ioc.dao.TrainingStatusDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.TrainingUserDAOAware;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
@@ -43,33 +20,45 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware {
+public class RatingUtil {
+
+  private ITrainingStatusDAO trainingStatusDAO;
+  private ITrainingUserDAO trainingUserDAO;
+
+  @Autowired
+  public RatingUtil(ITrainingUserDAO trainingUserDAO,
+      ITrainingStatusDAO trainingStatusDAO) {
+    this.trainingUserDAO = trainingUserDAO;
+    this.trainingStatusDAO = trainingStatusDAO;
+  }
 
   public void updateRating(TrainingContest trainingContest) throws AppException {
     if (trainingContest.getType() == Global.TrainingContestType.UNRATED.ordinal()) {
-        for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
-            TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
-            if (!trainingUser.getAllow()) continue;
+      for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
+        TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
+        if (!trainingUser.getAllow())
+          continue;
 
-            trainingUser.setRating(trainingUser.getRating());
-            trainingUser.setRatingVary(0.0);
-            trainingUser.setVolatility(trainingUser.getVolatility());
-            trainingUser.setVolatilityVary(0.0);
-            trainingUser.setCompetitions(trainingUser.getCompetitions() + 1);
+        trainingUser.setRating(trainingUser.getRating());
+        trainingUser.setRatingVary(0.0);
+        trainingUser.setVolatility(trainingUser.getVolatility());
+        trainingUser.setVolatilityVary(0.0);
+        trainingUser.setCompetitions(trainingUser.getCompetitions() + 1);
 
-            trainingStatus.setRating(trainingUser.getRating());
-            trainingStatus.setRatingVary(trainingUser.getRatingVary());
-            trainingStatus.setVolatility(trainingUser.getVolatility());
-            trainingStatus.setVolatilityVary(trainingUser.getVolatilityVary());
+        trainingStatus.setRating(trainingUser.getRating());
+        trainingStatus.setRatingVary(trainingUser.getRatingVary());
+        trainingStatus.setVolatility(trainingUser.getVolatility());
+        trainingStatus.setVolatilityVary(trainingUser.getVolatilityVary());
 
-            trainingUserDAO.update(trainingUser);
-            trainingStatusDAO.update(trainingStatus);
-        }
+        trainingUserDAO.update(trainingUser);
+        trainingStatusDAO.update(trainingStatus);
+      }
     } else if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal() ||
         trainingContest.getType() == Global.TrainingContestType.ABSENT.ordinal()) {
       for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
         TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
-        if (!trainingUser.getAllow()) continue;
+        if (!trainingUser.getAllow())
+          continue;
 
         trainingUser.setRating(trainingUser.getRating() - trainingStatus.getPenalty());
         trainingUser.setRatingVary(-1.0 * trainingStatus.getPenalty());
@@ -94,9 +83,10 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
       List<Integer> trainingUserRank = new LinkedList<>();
       for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
         TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
-        if (!trainingUser.getAllow()) continue;
-          trainingUsers.add(trainingUser);
-          trainingUserRank.add(trainingStatus.getRank());
+        if (!trainingUser.getAllow())
+          continue;
+        trainingUsers.add(trainingUser);
+        trainingUserRank.add(trainingStatus.getRank());
       }
 
       if (trainingContest.getType() == Global.TrainingContestType.TEAM.ordinal()) {
@@ -106,7 +96,8 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
       }
       for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
         TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
-        if (!trainingUser.getAllow()) continue;
+        if (!trainingUser.getAllow())
+          continue;
 
         trainingStatus.setRating(trainingUser.getRating());
         trainingStatus.setRatingVary(trainingUser.getRatingVary());
@@ -317,20 +308,5 @@ public class RatingUtil implements TrainingUserDAOAware, TrainingStatusDAOAware 
               * r)
               * r);
     }
-  }
-
-  @Autowired
-  private ITrainingStatusDAO trainingStatusDAO;
-  @Autowired
-  private ITrainingUserDAO trainingUserDAO;
-
-  @Override
-  public void setTrainingStatusDAO(ITrainingStatusDAO trainingStatusDAO) {
-    this.trainingStatusDAO = trainingStatusDAO;
-  }
-
-  @Override
-  public void setTrainingUserDAO(ITrainingUserDAO trainingUserDAO) {
-    this.trainingUserDAO = trainingUserDAO;
   }
 }

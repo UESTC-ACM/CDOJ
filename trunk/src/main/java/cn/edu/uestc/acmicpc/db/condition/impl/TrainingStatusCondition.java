@@ -33,17 +33,20 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.JoinedProperty;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
-import cn.edu.uestc.acmicpc.ioc.dao.TrainingContestDAOAware;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * // TODO(mzry1992) Description
  */
 @Repository
-public class TrainingStatusCondition extends BaseCondition implements TrainingContestDAOAware {
+public class TrainingStatusCondition extends BaseCondition {
 
   private static final Logger LOGGER = LogManager.getLogger(TrainingStatusCondition.class);
+
+  @Autowired
+  public TrainingStatusCondition(ITrainingContestDAO trainingContestDAO) {
+    this.trainingContestDAO = trainingContestDAO;
+  }
 
   private Integer startId;
   private Integer endId;
@@ -95,12 +98,5 @@ public class TrainingStatusCondition extends BaseCondition implements TrainingCo
     }
   }
 
-  @Autowired
   private ITrainingContestDAO trainingContestDAO;
-
-  @Override
-  @Ignore
-  public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
-    this.trainingContestDAO = trainingContestDAO;
-  }
 }

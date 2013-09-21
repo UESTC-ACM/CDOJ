@@ -17,9 +17,6 @@ import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
-import cn.edu.uestc.acmicpc.ioc.dao.TrainingContestDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.TrainingStatusDAOAware;
-import cn.edu.uestc.acmicpc.ioc.util.TrainingRankListParserAware;
 import cn.edu.uestc.acmicpc.training.entity.TrainingContestRankList;
 import cn.edu.uestc.acmicpc.training.parser.TrainingRankListParser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -31,8 +28,7 @@ import cn.edu.uestc.acmicpc.util.exception.ParserException;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { IntegrationTestContext.class })
-public class RankListParserITTest implements TrainingRankListParserAware, TrainingContestDAOAware,
-    TrainingStatusDAOAware {
+public class RankListParserITTest {
 
   @SuppressWarnings("unused")
   @Test
@@ -69,24 +65,9 @@ public class RankListParserITTest implements TrainingRankListParserAware, Traini
   @Autowired
   private TrainingRankListParser trainingRankListParser;
 
-  @Override
-  public void setTrainingRankListParserAware(TrainingRankListParser trainingRankListParser) {
-    this.trainingRankListParser = trainingRankListParser;
-  }
-
   @Autowired
   private ITrainingContestDAO trainingContestDAO;
 
-  @Override
-  public void setTrainingContestDAO(ITrainingContestDAO trainingContestDAO) {
-    this.trainingContestDAO = trainingContestDAO;
-  }
-
   @Autowired
   private ITrainingStatusDAO trainingStatusDAO;
-
-  @Override
-  public void setTrainingStatusDAO(ITrainingStatusDAO trainingStatusDAO) {
-    this.trainingStatusDAO = trainingStatusDAO;
-  }
 }

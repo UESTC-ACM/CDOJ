@@ -41,7 +41,6 @@ import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
-import cn.edu.uestc.acmicpc.ioc.entity.TrainingContestRankListAware;
 import cn.edu.uestc.acmicpc.training.entity.TrainingContestRankList;
 import cn.edu.uestc.acmicpc.training.entity.TrainingProblemSummaryInfo;
 import cn.edu.uestc.acmicpc.training.entity.TrainingUserRankSummary;
@@ -55,7 +54,12 @@ import cn.edu.uestc.acmicpc.util.exception.ParserException;
  */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class TrainingRankListParser implements TrainingContestRankListAware {
+public class TrainingRankListParser {
+
+  @Autowired
+  public TrainingRankListParser(TrainingContestRankList trainingContestRankList) {
+    this.trainingContestRankList = trainingContestRankList;
+  }
 
   /**
    * Parse from database.
@@ -382,16 +386,5 @@ public class TrainingRankListParser implements TrainingContestRankListAware {
     return stringBuilder.toString();
   }
 
-  @Autowired
   private TrainingContestRankList trainingContestRankList;
-
-  @Override
-  public void setTrainingContestRankList(TrainingContestRankList trainingContestRankList) {
-    this.trainingContestRankList = trainingContestRankList;
-  }
-
-  @Override
-  public TrainingContestRankList getTrainingContestRankList() {
-    return trainingContestRankList;
-  }
 }
