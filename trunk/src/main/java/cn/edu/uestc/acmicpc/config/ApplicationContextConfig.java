@@ -63,7 +63,7 @@ public class ApplicationContextConfig {
    *
    * @return judgeService bean
    */
-  @Bean(name = "judgeService", initMethod = "init", destroyMethod = "destroy")
+  @Bean(name = "judgeService")
   @Scope("singleton")
   @Lazy(false)
   public JudgeService judgeService() {
