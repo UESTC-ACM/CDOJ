@@ -46,6 +46,8 @@ public class UserServiceImpl extends AbstractService implements UserService, Use
   @Override
   public User getUserByUserName(String userName) throws AppException {
     try {
+      LOGGER.warn("userName: " + userName);
+      LOGGER.warn("userDAO: " + userDAO);
       return userDAO.getEntityByUniqueField("userName", userName);
     } catch (FieldNotUniqueException e) {
       LOGGER.error(e);
@@ -75,6 +77,7 @@ public class UserServiceImpl extends AbstractService implements UserService, Use
 
   @Override
   public UserDTO login(UserLoginDTO userLoginDTO) throws AppException {
+    LOGGER.trace("login");
     User user = getUserByUserName(userLoginDTO.getUserName());
     if (user == null
         || !StringUtil.encodeSHA1(userLoginDTO.getPassword()).equals(user.getPassword()))
@@ -94,6 +97,8 @@ public class UserServiceImpl extends AbstractService implements UserService, Use
 
   @Override
   public UserDTO register(UserDTO userDTO) throws AppException {
+    if (!userDTO.getPassword().equals(userDTO.getPasswordRepeat()))
+      throw new FieldException("passwordRepeat", "Password do not match.");
     if (!StringUtil.trimAllSpace(userDTO.getNickName()).equals(userDTO.getNickName()))
       throw new FieldException("nickName", "Nick name should not have useless blank.");
     if (getUserByUserName(userDTO.getUserName()) != null)
