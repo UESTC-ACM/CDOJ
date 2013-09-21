@@ -223,6 +223,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
   /**
    * Initializer.
+   * @throws AppException
    */
   @SuppressWarnings("unchecked")
   @PostConstruct

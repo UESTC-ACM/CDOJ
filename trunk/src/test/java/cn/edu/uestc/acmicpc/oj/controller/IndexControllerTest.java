@@ -18,6 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import cn.edu.uestc.acmicpc.config.MockMVCContext;
 import cn.edu.uestc.acmicpc.config.WebMVCConfig;
+import cn.edu.uestc.acmicpc.oj.controller.index.IndexController;
 
 /** Test cases for {@link IndexController}. */
 @RunWith(SpringJUnit4ClassRunner.class)

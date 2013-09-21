@@ -6,6 +6,9 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 
 /**
  * Online judge global service.
+ *
+ * @param <E> Entity type
+ * @param <K> Key type
  */
 public interface OnlineJudgeService<E extends Serializable, K extends Serializable> {
 
