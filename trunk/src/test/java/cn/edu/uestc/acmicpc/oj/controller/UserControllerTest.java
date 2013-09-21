@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -49,6 +50,7 @@ public class UserControllerTest extends ControllerTest {
   @Autowired
   private WebApplicationContext context;
   @Autowired
+  @Qualifier("mock")
   private UserService userService;
 
   private MockMvc mockMvc;
