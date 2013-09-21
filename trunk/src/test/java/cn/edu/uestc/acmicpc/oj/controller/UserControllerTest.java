@@ -592,6 +592,20 @@ public class UserControllerTest extends ControllerTest {
   }
 
   @Test
+  public void testRegister_failed_password_different() throws Exception {
+    UserDTO userDTO = UserDTO.builder()
+        .setPassword("12345678")
+        .setPasswordRepeat("123456789")
+        .build();
+    mockMvc.perform(post(URL_REGISTER)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userDTO)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(0)));
+  }
+
+  @Test
   public void testRegister_failed_nickName_null() throws Exception {
     UserDTO userDTO = UserDTO.builder()
         .setNickName(null)
@@ -933,5 +947,32 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field[0].objectName", is("departmentId")))
         .andExpect(jsonPath("$.field[0].defaultMessage",
             is("Please choose a validate department.")));
+  }
+
+  @Test
+  public void testUser_register_login_logout() throws Exception {
+    UserDTO userDTO = UserDTO.builder().build();
+    UserLoginDTO userLoginDTO = UserLoginDTO.builder().build();
+    when(userService.register(Mockito.<UserDTO> any())).thenReturn(userDTO);
+    when(userService.login(Mockito.<UserLoginDTO> any())).thenReturn(userDTO);
+    mockMvc.perform(post(URL_REGISTER)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userDTO))
+        .session(session))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")));
+    mockMvc.perform(post(URL_LOGIN)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(userLoginDTO))
+        .session(session))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")));
+    Assert.assertEquals(userDTO, session.getAttribute("currentUser"));
+    mockMvc.perform(post(URL_LOGOUT)
+        .contentType(APPLICATION_JSON_UTF8)
+        .session(session))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")));
+    Assert.assertNull(session.getAttribute("currentUser"));
   }
 }
