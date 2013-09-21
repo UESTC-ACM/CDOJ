@@ -57,7 +57,7 @@ import com.jolbox.bonecp.BoneCPDataSource;
 public class ApplicationContextConfig {
 
   @Autowired
-  Environment environment;
+  private Environment environment;
 
   /**
    * Bean: Judge service
