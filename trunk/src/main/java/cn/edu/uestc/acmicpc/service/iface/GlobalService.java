@@ -23,7 +23,7 @@ public interface GlobalService {
    * @param departmentId department id
    * @return department entity
    */
-  public Department getDepartment(Integer departmentId);
+  public Department getDepartmentById(Integer departmentId);
 
   /**
    * Get department list
