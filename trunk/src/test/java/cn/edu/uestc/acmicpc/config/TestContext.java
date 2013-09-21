@@ -20,11 +20,6 @@ import cn.edu.uestc.acmicpc.service.JudgeService;
 @EnableTransactionManagement
 public class TestContext extends ApplicationContextConfig {
 
-  /**
-   * Bean: Judge service
-   *
-   * @return judgeService bean
-   */
   @Bean(name = "judgeService")
   @Override
   public JudgeService judgeService() {

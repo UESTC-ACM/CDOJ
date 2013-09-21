@@ -8,10 +8,16 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+/**
+ * Abstract service implementation.
+ */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public abstract class AbstractService implements ApplicationContextAware {
 
+  /**
+   * Spring {@link ApplicationContext} entity for services.
+   */
   @Autowired
   protected ApplicationContext applicationContext;
 

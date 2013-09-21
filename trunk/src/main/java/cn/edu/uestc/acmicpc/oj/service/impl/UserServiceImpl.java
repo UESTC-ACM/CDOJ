@@ -3,25 +3,22 @@ package cn.edu.uestc.acmicpc.oj.service.impl;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import cn.edu.uestc.acmicpc.db.entity.Department;
-import cn.edu.uestc.acmicpc.ioc.service.GlobalServiceAware;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
-import cn.edu.uestc.acmicpc.service.impl.AbstractService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
+import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
 import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
-import cn.edu.uestc.acmicpc.ioc.util.GlobalAware;
+import cn.edu.uestc.acmicpc.ioc.service.GlobalServiceAware;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
+import cn.edu.uestc.acmicpc.service.impl.AbstractService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -103,7 +100,7 @@ public class UserServiceImpl extends AbstractService implements UserService, Use
       throw new FieldException("userName", "User name has been used!");
     if (getUserByEmail(userDTO.getEmail()) != null)
       throw new FieldException("email", "Email has benn used!");
-    Department department = globalService.getDepartmentByDepartmentId(userDTO.getDepartmentId());
+    Department department = globalService.getDepartment(userDTO.getDepartmentId());
     if (department == null)
       throw new FieldException("departmentId", "Please choose a validate department.");
 

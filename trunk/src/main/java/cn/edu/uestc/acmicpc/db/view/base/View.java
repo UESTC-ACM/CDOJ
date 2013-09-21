@@ -22,27 +22,28 @@
 
 package cn.edu.uestc.acmicpc.db.view.base;
 
-import cn.edu.uestc.acmicpc.util.StringUtil;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
-import org.apache.commons.lang3.StringEscapeUtils;
-
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+
+import cn.edu.uestc.acmicpc.util.StringUtil;
+import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 
 /**
  * Base view entity.
  * <p/>
  * <strong>USAGE</strong>: Create subclass and set {@code ignore} tag for files' getter which we
  * want to initialize ourselves.
- * 
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ *
+ * @param <Entity> Entity class for this view.
  */
 public class View<Entity extends Serializable> {
 
   /**
    * Fetch data from entity.
-   * 
+   *
    * @param entity specific entity
    */
   protected View(Entity entity) {
@@ -72,6 +73,7 @@ public class View<Entity extends Serializable> {
     }
   }
 
+  /** Inner construct for sub classes. */
   protected View() {
   }
 }

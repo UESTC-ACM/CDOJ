@@ -22,11 +22,17 @@
 
 package cn.edu.uestc.acmicpc.util;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * File util methods.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class FileUtil {
@@ -35,7 +41,7 @@ public class FileUtil {
 
   /**
    * Save string into the specific file.
-   * 
+   *
    * @param content string content
    * @param filePath file's path
    */
@@ -51,7 +57,7 @@ public class FileUtil {
 
   /**
    * Save inputStream's content into outputStream.
-   * 
+   *
    * @param inputStream input stream to read
    * @param outputStream output stream to write
    * @throws IOException
@@ -74,7 +80,8 @@ public class FileUtil {
    * Recursively delete the contents of {@code targetFile}, but not the {@code targetFile} itself.
    * <p/>
    * If the {@code targetFile} does not exist or it is not a directory, return {@code 0}.
-   * 
+   *
+   * @param targetFile file to delete.
    * @return the total number of files deleted
    */
   public static int deleteContents(File targetFile) {
@@ -88,7 +95,7 @@ public class FileUtil {
    * Clear all the files under the path and delete the directory.
    * <p/>
    * <strong>WARN</strong>: this operation cannot be reverted.
-   * 
+   *
    * @param path absolute path value
    */
   public static void clearDirectory(String path) {
@@ -97,7 +104,7 @@ public class FileUtil {
 
   /**
    * Move a directory into specific location.
-   * 
+   *
    * @param fromDir origin directory location
    * @param toDir destination location
    * @throws IOException
@@ -109,7 +116,7 @@ public class FileUtil {
 
   /**
    * Count number of files in the folder.
-   * 
+   *
    * @param file file pointer
    * @return number of files in the folder
    */
@@ -124,7 +131,7 @@ public class FileUtil {
 
   /**
    * Delete specific directory.
-   * 
+   *
    * @param file directory file pointer
    */
   private static void clearDirectory(File file) {
@@ -136,7 +143,7 @@ public class FileUtil {
 
   /**
    * Get file's name without file extension.
-   * 
+   *
    * @param file file entity
    * @return file's name
    */

@@ -122,6 +122,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param fieldName the unique field name
    * @param value field's value
    * @return unique result, null if not exist
+   * @throws FieldNotUniqueException
    * @throws AppException
    */
   public Entity getEntityByUniqueField(String fieldName, Object value)

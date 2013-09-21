@@ -1,13 +1,16 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.ioc.util.GlobalAware;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.Global;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Implementation for {@link GlobalService}.
@@ -20,19 +23,35 @@ public class GlobalServiceImpl extends AbstractService implements GlobalService,
   @Autowired
   private Global global;
 
+  @PostConstruct
+  public void init() {
+  }
+
+  /**
+   * Return global entity
+   *
+   * @return global entity
+   */
   @Override
   public Global getGlobal() {
     return global;
   }
 
   @Override
-  public Department getDepartmentByDepartmentId(Integer departmentId) {
-    for (Department department: global.getDepartmentList())
-      if (department.getDepartmentId().equals(departmentId))
+  public Department getDepartment(Integer departmentId) {
+    for (Department department : global.getDepartmentList()) {
+      if (department.getDepartmentId().equals(departmentId)) {
         return department;
+      }
+    }
     return null;
   }
 
+  /**
+   * Get department list
+   *
+   * @return department list
+   */
   @Override
   public List<Department> getDepartmentList() {
     return global.getDepartmentList();

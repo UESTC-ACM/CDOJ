@@ -22,18 +22,18 @@
 
 package cn.edu.uestc.acmicpc.util;
 
-import cn.edu.uestc.acmicpc.checker.base.Checker;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import cn.edu.uestc.acmicpc.checker.base.Checker;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+
 /**
  * Operations for zip files.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ZipUtil {
@@ -43,9 +43,10 @@ public class ZipUtil {
    * <p/>
    * <strong>WARN:</strong> If the file list can not pass the checker's validation, delete all the
    * contents in the {@code path}, and the {@code path} itself.
-   * 
+   *
    * @param zipFile zipFile object
    * @param path target path
+   * @param checker checker to validate ZIP files.
    * @throws AppException if exception occurred, convert them into {@code AppException} object.
    */
   public static void unzipFile(ZipFile zipFile, String path, Checker<File> checker)

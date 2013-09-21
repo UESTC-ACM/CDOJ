@@ -1,25 +1,3 @@
-/*
- *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 package cn.edu.uestc.acmicpc.service.entity;
 
 import java.io.BufferedReader;
@@ -34,7 +12,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
-import cn.edu.uestc.acmicpc.ioc.util.SettingsAware;
 import cn.edu.uestc.acmicpc.util.FileUtil;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.Settings;
@@ -44,7 +21,7 @@ import cn.edu.uestc.acmicpc.util.Settings;
  */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class Judge implements Runnable, SettingsAware {
+public class Judge implements Runnable {
 
   public void setJudgeName(String judgeName) {
     this.judgeName = judgeName;
@@ -266,10 +243,5 @@ public class Judge implements Runnable, SettingsAware {
 
     judgeItem.update(false);
     return isAccepted;
-  }
-
-  @Override
-  public void setSettings(Settings settings) {
-    this.settings = settings;
   }
 }
