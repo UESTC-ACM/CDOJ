@@ -14,7 +14,7 @@ public interface GlobalService {
 
   public Global getGlobal();
 
-  public Department getDepartmentByDepartmentId(Integer departmentId);
+  public Department getDepartment(Integer departmentId);
 
   public List<Department> getDepartmentList();
 }

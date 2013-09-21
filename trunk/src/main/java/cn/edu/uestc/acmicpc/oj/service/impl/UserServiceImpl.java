@@ -100,7 +100,7 @@ public class UserServiceImpl extends AbstractService implements UserService, Use
       throw new FieldException("userName", "User name has been used!");
     if (getUserByEmail(userDTO.getEmail()) != null)
       throw new FieldException("email", "Email has benn used!");
-    Department department = globalService.getDepartmentByDepartmentId(userDTO.getDepartmentId());
+    Department department = globalService.getDepartment(userDTO.getDepartmentId());
     if (department == null)
       throw new FieldException("departmentId", "Please choose a validate department.");
 
