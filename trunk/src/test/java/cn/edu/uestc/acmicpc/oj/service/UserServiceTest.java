@@ -3,12 +3,11 @@ package cn.edu.uestc.acmicpc.oj.service;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -28,11 +27,10 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 @ContextConfiguration(classes = { MockDAOContext.class })
 public class UserServiceTest {
 
-  private static final Logger LOGGER = LogManager.getLogger(UserServiceTest.class);
-
   @Autowired
   private UserService userService;
   @Autowired
+  @Qualifier("mock")
   private IUserDAO userDAO;
 
   @Test
@@ -41,10 +39,8 @@ public class UserServiceTest {
     User user = mock(User.class);
     when(user.getUserName()).thenReturn("admin");
     when(user.getPassword()).thenReturn(StringUtil.encodeSHA1("password"));
-    // when(userDAO.getEntityByUniqueField("userName", userLoginDTO.getUserName()))
-    // .thenReturn(user);
-    LOGGER.warn("userDAO: " + userDAO);
-    LOGGER.warn("userService: " + userService);
+    when(userDAO.getEntityByUniqueField("userName", userLoginDTO.getUserName()))
+        .thenReturn(user);
     Assert.assertNotNull(userService.login(userLoginDTO));
   }
 }

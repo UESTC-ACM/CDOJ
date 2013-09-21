@@ -462,8 +462,9 @@
 				<version>2.16</version>
 				<configuration>
 					<includes>
-					 <include>**/*ITTest.java</include>
+						<include>**/*ITTest.java</include>
 					</includes>
+					<parallel>10</parallel>
 				</configuration>
 				<executions>
 					<execution>
