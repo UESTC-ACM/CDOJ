@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.config;
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -64,7 +65,7 @@ public class ApplicationContextConfig {
    * @return judgeService bean
    */
   @Bean(name = "judgeService")
-  @Scope("singleton")
+  @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
   @Lazy(false)
   public JudgeService judgeService() {
     return new JudgeService();

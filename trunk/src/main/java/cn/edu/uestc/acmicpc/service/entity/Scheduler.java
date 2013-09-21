@@ -5,19 +5,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.BlockingQueue;
 
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
-import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
-import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -26,8 +22,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class Scheduler implements ApplicationContextAware, Runnable, StatusConditionAware,
-    StatusDAOAware {
+public class Scheduler implements Runnable {
 
   /**
    * StatusDAO for database operation.
@@ -95,25 +90,5 @@ public class Scheduler implements ApplicationContextAware, Runnable, StatusCondi
       e.printStackTrace();
     } catch (InterruptedException ignored) {
     }
-  }
-
-  @Override
-  public void setStatusCondition(StatusCondition statusCondition) {
-    this.statusCondition = statusCondition;
-  }
-
-  @Override
-  public StatusCondition getStatusCondition() {
-    return statusCondition;
-  }
-
-  @Override
-  public void setStatusDAO(IStatusDAO statusDAO) {
-    this.statusDAO = statusDAO;
-  }
-
-  @Override
-  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-    this.applicationContext = applicationContext;
   }
 }
