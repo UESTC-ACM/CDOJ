@@ -30,6 +30,11 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 public class Global {
 
   /**
+   * Number of records per page
+   */
+  public static final Long RECORD_PER_PAGE = 50L;
+
+  /**
    * User serial key's length
    */
   public static final int USER_SERIAL_KEY_LENGTH = 128;

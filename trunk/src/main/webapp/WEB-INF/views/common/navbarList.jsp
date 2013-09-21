@@ -31,7 +31,7 @@
   </li>
   <li class="divider-vertical"></li>
   <li>
-    <a href="#">Users</a>
+    <a href="<c:url value="/user/list"/>">Users</a>
   </li>
   <li class="divider-vertical"></li>
 

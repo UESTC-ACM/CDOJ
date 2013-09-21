@@ -1,9 +1,6 @@
 <%--suppress XmlDuplicatedId --%>
 <%--
  All modal will used on every page
-
- @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- @version 1
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
@@ -84,7 +81,6 @@
           <input type="text" name="school" maxlength="50" value="UESTC" id="school" class="span4"></div>
         </div>
 
-        <!--TODO list!-->
         <div class="control-group "><label class="control-label" for="departmentId">Department</label><div class="controls">
           <select name="departmentId" id="departmentId" class="span4">
             <c:forEach var="department" items="${departmentList}">

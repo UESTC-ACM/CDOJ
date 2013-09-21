@@ -12,17 +12,18 @@ import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.Global;
 
 /**
- * Implementation for {@link GlobalService}.
+ * Global service.
+ *
+ * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @Service
 public class GlobalServiceImpl extends AbstractService implements GlobalService {
 
-  private Global global;
-
+  /**
+   * TODO
+   */
   @Autowired
-  public GlobalServiceImpl(Global global) {
-    this.global = global;
-  }
+  private Global global;
 
   @PostConstruct
   public void init() {
@@ -38,6 +39,12 @@ public class GlobalServiceImpl extends AbstractService implements GlobalService 
     return global;
   }
 
+  /**
+   * Get department by department id
+   *
+   * @param departmentId department id
+   * @return department entity
+   */
   @Override
   public Department getDepartment(Integer departmentId) {
     for (Department department : global.getDepartmentList()) {
@@ -57,4 +64,15 @@ public class GlobalServiceImpl extends AbstractService implements GlobalService 
   public List<Department> getDepartmentList() {
     return global.getDepartmentList();
   }
+
+  /**
+   * Get authentication type list
+   *
+   * @return authentication type list
+   */
+  @Override
+  public List<Global.AuthenticationType> getAuthenticationTypeList() {
+    return global.getAuthenticationTypeList();
+  }
+
 }
