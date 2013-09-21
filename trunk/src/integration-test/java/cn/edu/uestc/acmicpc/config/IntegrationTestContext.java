@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import cn.edu.uestc.acmicpc.service.JudgeService;
 
+/** Integration test context configurations. */
 @Configuration
 @ComponentScan(basePackages = {
     "cn.edu.uestc.acmicpc.db",
@@ -18,8 +19,13 @@ import cn.edu.uestc.acmicpc.service.JudgeService;
 })
 @PropertySource("classpath:resources.properties")
 @EnableTransactionManagement
-public class TestContext extends ApplicationContextConfig {
+public class IntegrationTestContext extends ApplicationContextConfig {
 
+  /**
+   * Bean: Judge service
+   *
+   * @return judgeService bean
+   */
   @Bean(name = "judgeService")
   @Override
   public JudgeService judgeService() {

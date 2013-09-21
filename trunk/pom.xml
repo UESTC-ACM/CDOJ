@@ -389,7 +389,6 @@
 					</dependency>
 				</dependencies>
 
-				<!-- common configuration shared by all executions -->
 				<configuration>
 					<driver>com.mysql.jdbc.Driver</driver>
 					<url>${db.url}</url>
@@ -407,7 +406,6 @@
 							<goal>execute</goal>
 						</goals>
 						<configuration>
-							<!-- need another database to drop the targeted one -->
 							<url>jdbc:mysql://localhost:3306/uestcoj</url>
 							<autocommit>true</autocommit>
 							<sqlCommand>drop database uestcojtest</sqlCommand>

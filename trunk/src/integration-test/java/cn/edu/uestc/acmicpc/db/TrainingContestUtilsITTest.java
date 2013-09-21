@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import cn.edu.uestc.acmicpc.config.TestContext;
+import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.impl.TrainingContestCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TrainingStatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TrainingUserCondition;
@@ -32,7 +32,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { TestContext.class })
+@ContextConfiguration(classes = { IntegrationTestContext.class })
 public class TrainingContestUtilsITTest {
 
   @Test

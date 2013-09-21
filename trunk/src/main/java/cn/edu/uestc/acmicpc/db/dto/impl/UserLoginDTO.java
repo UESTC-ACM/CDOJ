@@ -61,8 +61,8 @@ public class UserLoginDTO {
     private Builder() {
     }
 
-    private String userName = "";
-    private String password = "";
+    private String userName = "admin";
+    private String password = "password";
 
     public Builder setUserName(String userName) {
       this.userName = userName;
