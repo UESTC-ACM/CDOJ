@@ -22,13 +22,13 @@ public class UserServiceITTest {
   UserService userService;
 
   @Test
-  public void testUserLogin_successful() throws AppException {
+  public void testLogin_successful() throws AppException {
     UserLoginDTO userLoginDTO = UserLoginDTO.builder().build();
     Assert.assertNotNull(userService.login(userLoginDTO));
   }
 
   @Test
-  public void testUserLogin_wrongPassword() throws AppException {
+  public void testLogin_wrongPassword() throws AppException {
     try {
       UserLoginDTO userLoginDTO = UserLoginDTO.builder()
           .setPassword("password2")
@@ -41,7 +41,7 @@ public class UserServiceITTest {
   }
 
   @Test
-  public void testUserLogin_wrongUserName() throws AppException {
+  public void testLogin_wrongUserName() throws AppException {
     try {
       UserLoginDTO userLoginDTO = UserLoginDTO.builder()
           .setUserName("nullUserName")
