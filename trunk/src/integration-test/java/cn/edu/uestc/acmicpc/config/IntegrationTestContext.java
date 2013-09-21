@@ -21,11 +21,6 @@ import cn.edu.uestc.acmicpc.service.JudgeService;
 @EnableTransactionManagement
 public class IntegrationTestContext extends ApplicationContextConfig {
 
-  /**
-   * Bean: Judge service
-   *
-   * @return judgeService bean
-   */
   @Bean(name = "judgeService")
   @Override
   public JudgeService judgeService() {
