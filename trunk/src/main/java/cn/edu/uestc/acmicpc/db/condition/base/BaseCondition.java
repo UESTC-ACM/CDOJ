@@ -103,6 +103,17 @@ public abstract class BaseCondition implements ApplicationContextAware {
   @Autowired
   protected ApplicationContext applicationContext;
 
+  private Long currentPage;
+
+  @Ignore
+  public Long getCurrentPage() {
+    return currentPage;
+  }
+
+  public void setCurrentPage(Long currentPage) {
+    this.currentPage = currentPage;
+  }
+
   private String orderFields;
   private String orderAsc;
 

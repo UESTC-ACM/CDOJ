@@ -1,13 +1,20 @@
 package cn.edu.uestc.acmicpc.oj.controller.user;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
+import cn.edu.uestc.acmicpc.db.view.impl.UserView;
+import cn.edu.uestc.acmicpc.oj.view.PageInfo;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
+import cn.edu.uestc.acmicpc.util.Global;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +36,10 @@ import cn.edu.uestc.acmicpc.util.exception.FieldException;
 public class UserController extends BaseController {
 
   @Autowired
-  public UserController(UserService userService) {
+  public UserController(UserService userService,
+                        GlobalService globalService) {
     this.userService = userService;
+    this.globalService = globalService;
   }
 
   /**
@@ -49,7 +58,7 @@ public class UserController extends BaseController {
   @RequestMapping("login")
   @LoginPermit(NeedLogin = false)
   public @ResponseBody
-  Map<String, Object> toLogin(HttpSession session,
+  Map<String, Object> login(HttpSession session,
       @RequestBody @Valid UserLoginDTO userLoginDTO,
       BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
@@ -82,7 +91,7 @@ public class UserController extends BaseController {
   @RequestMapping("logout")
   @LoginPermit(NeedLogin = true)
   public @ResponseBody
-  Map<String, Object> toLogout(HttpSession session) {
+  Map<String, Object> logout(HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     session.removeAttribute("currentUser");
     json.put("result", "success");
@@ -105,7 +114,7 @@ public class UserController extends BaseController {
   @RequestMapping("register")
   @LoginPermit(NeedLogin = false)
   public @ResponseBody
-  Map<String, Object> toRegister(HttpSession session,
+  Map<String, Object> register(HttpSession session,
       @RequestBody @Valid UserDTO userDTO,
       BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
@@ -115,6 +124,7 @@ public class UserController extends BaseController {
     } else {
       try {
         userService.register(userDTO);
+        session.setAttribute("currentUser", userDTO);
         json.put("result", "success");
       } catch (FieldException e) {
         putFieldErrosIntoBindingResult(e, validateResult);
@@ -128,5 +138,56 @@ public class UserController extends BaseController {
     return json;
   }
 
+  /**
+   * User list
+   *
+   * @param model model map
+   * @return userList view
+   */
+  @RequestMapping("list")
+  @LoginPermit(NeedLogin = false)
+  public String list(ModelMap model) {
+    model.put("departmentList", globalService.getDepartmentList());
+    model.put("authenticationTypeList", globalService.getAuthenticationTypeList());
+    return "user/userList";
+  }
+
+  /**
+   * Search user
+   *
+   * @param userCondition condition
+   * @return
+   * <ul>
+   * <li>
+   * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>, "condition",
+   * <strong>UserCondition entity</strong>, "userList":<strong>query result</strong>}</li>
+   * <li>
+   * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
+   * </ul>
+   */
+  @RequestMapping("search")
+  @LoginPermit(NeedLogin = false)
+  public @ResponseBody
+  Map<String, Object> search(@RequestBody UserCondition userCondition) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      Long count = userService.count(userCondition);
+      PageInfo pageInfo = buildPageInfo(count, userCondition.getCurrentPage(), Global.RECORD_PER_PAGE, "", null);
+      List<UserView> userViewList = userService.search(userCondition, pageInfo);
+
+      json.put("pageInfo", pageInfo.getHtmlString());
+      json.put("result", "success");
+      json.put("userList", userViewList);
+    }  catch (AppException e) {
+      json.put("result", "error");
+    } catch (Exception e) {
+      json.put("result", "error");
+      e.printStackTrace();
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
   private UserService userService;
+  private GlobalService globalService;
 }
