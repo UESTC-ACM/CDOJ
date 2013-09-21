@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
-import cn.edu.uestc.acmicpc.ioc.service.UserServiceAware;
 import cn.edu.uestc.acmicpc.oj.controller.base.BaseController;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
@@ -27,7 +26,12 @@ import cn.edu.uestc.acmicpc.util.exception.FieldException;
  */
 @Controller
 @RequestMapping("/user")
-public class UserController extends BaseController implements UserServiceAware {
+public class UserController extends BaseController {
+
+  @Autowired
+  public UserController(UserService userService) {
+    this.userService = userService;
+  }
 
   /**
    * Login controller.
@@ -124,11 +128,5 @@ public class UserController extends BaseController implements UserServiceAware {
     return json;
   }
 
-  @Autowired
   private UserService userService;
-
-  @Override
-  public void setUserService(UserService userService) {
-    this.userService = userService;
-  }
 }

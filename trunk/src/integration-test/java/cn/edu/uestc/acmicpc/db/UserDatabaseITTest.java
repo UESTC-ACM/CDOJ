@@ -17,8 +17,6 @@ import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
-import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
@@ -27,7 +25,7 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { IntegrationTestContext.class })
-public class UserDatabaseITTest implements UserConditionAware, UserDAOAware {
+public class UserDatabaseITTest {
 
   @Before
   public void init() {
@@ -87,20 +85,5 @@ public class UserDatabaseITTest implements UserConditionAware, UserDAOAware {
     userCondition.setStartId(2);
     userCondition.setEndId(10);
     Assert.assertEquals(Long.valueOf(2), userDAO.count(userCondition.getCondition()));
-  }
-
-  @Override
-  public void setUserCondition(UserCondition userCondition) {
-    this.userCondition = userCondition;
-  }
-
-  @Override
-  public UserCondition getUserCondition() {
-    return this.userCondition;
-  }
-
-  @Override
-  public void setUserDAO(IUserDAO userDAO) {
-    this.userDAO = userDAO;
   }
 }

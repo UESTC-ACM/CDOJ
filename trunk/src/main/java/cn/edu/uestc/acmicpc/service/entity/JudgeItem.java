@@ -1,25 +1,3 @@
-/*
- *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 package cn.edu.uestc.acmicpc.service.entity;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +14,6 @@ import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.ioc.condition.StatusConditionAware;
-import cn.edu.uestc.acmicpc.ioc.dao.CompileInfoDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.StatusDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.UserDAOAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -49,36 +22,33 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class JudgeItem implements CompileInfoDAOAware, StatusDAOAware, UserDAOAware,
-    ProblemDAOAware, StatusConditionAware {
+public class JudgeItem {
 
   public Status status;
   public CompileInfo compileInfo;
-  /**
-   * Status database condition.
-   */
+
   @Autowired
-  private StatusCondition statusCondition;
+  public JudgeItem(StatusCondition statusCondition,
+      ICompileInfoDAO compileInfoDAO,
+      IStatusDAO statusDAO,
+      IUserDAO userDAO,
+      IProblemDAO problemDAO) {
+    this.compileinfoDAO = compileInfoDAO;
+    this.statusDAO = statusDAO;
+    this.problemDAO = problemDAO;
+  }
 
   /**
-   * Compileinfo DAO for database query.
+   * CompileInfo DAO for database query.
    */
-  @Autowired
   private ICompileInfoDAO compileinfoDAO;
   /**
    * Status DAO for database query.
    */
-  @Autowired
   private IStatusDAO statusDAO;
-  /**
-   * User DAO for database query.
-   */
-  @Autowired
-  private IUserDAO userDAO;
   /**
    * Problem DAO for database query.
    */
-  @Autowired
   private IProblemDAO problemDAO;
 
   public int parseLanguage() {
@@ -140,35 +110,5 @@ public class JudgeItem implements CompileInfoDAOAware, StatusDAOAware, UserDAOAw
         System.out.println(e.toString());
       }
     }
-  }
-
-  @Override
-  public void setStatusCondition(StatusCondition statusCondition) {
-    this.statusCondition = statusCondition;
-  }
-
-  @Override
-  public StatusCondition getStatusCondition() {
-    return statusCondition;
-  }
-
-  @Override
-  public void setCompileinfoDAO(ICompileInfoDAO compileinfoDAO) {
-    this.compileinfoDAO = compileinfoDAO;
-  }
-
-  @Override
-  public void setProblemDAO(IProblemDAO problemDAO) {
-    this.problemDAO = problemDAO;
-  }
-
-  @Override
-  public void setStatusDAO(IStatusDAO statusDAO) {
-    this.statusDAO = statusDAO;
-  }
-
-  @Override
-  public void setUserDAO(IUserDAO userDAO) {
-    this.userDAO = userDAO;
   }
 }

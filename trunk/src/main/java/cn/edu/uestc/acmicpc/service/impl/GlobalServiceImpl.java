@@ -8,20 +8,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.entity.Department;
-import cn.edu.uestc.acmicpc.ioc.util.GlobalAware;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.Global;
 
 /**
  * Implementation for {@link GlobalService}.
- *
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @Service
-public class GlobalServiceImpl extends AbstractService implements GlobalService, GlobalAware {
+public class GlobalServiceImpl extends AbstractService implements GlobalService {
+
+  private Global global;
 
   @Autowired
-  private Global global;
+  public GlobalServiceImpl(Global global) {
+    this.global = global;
+  }
 
   @PostConstruct
   public void init() {
@@ -55,10 +56,5 @@ public class GlobalServiceImpl extends AbstractService implements GlobalService,
   @Override
   public List<Department> getDepartmentList() {
     return global.getDepartmentList();
-  }
-
-  @Override
-  public void setGlobal(Global global) {
-    this.global = global;
   }
 }

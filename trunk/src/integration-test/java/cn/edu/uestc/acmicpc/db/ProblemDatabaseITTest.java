@@ -15,8 +15,6 @@ import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.ioc.condition.ProblemConditionAware;
-import cn.edu.uestc.acmicpc.ioc.dao.ProblemDAOAware;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
@@ -24,7 +22,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { IntegrationTestContext.class })
-public class ProblemDatabaseITTest implements ProblemConditionAware, ProblemDAOAware {
+public class ProblemDatabaseITTest {
 
   @Autowired
   private IProblemDAO problemDAO;
@@ -92,20 +90,5 @@ public class ProblemDatabaseITTest implements ProblemConditionAware, ProblemDAOA
     problem.setIsVisible(new Random().nextBoolean());
     problemDAO.add(problem);
     Assert.assertNotNull(problem.getProblemId());
-  }
-
-  @Override
-  public void setProblemCondition(ProblemCondition problemCondition) {
-    this.problemCondition = problemCondition;
-  }
-
-  @Override
-  public ProblemCondition getProblemCondition() {
-    return problemCondition;
-  }
-
-  @Override
-  public void setProblemDAO(IProblemDAO problemDAO) {
-    this.problemDAO = problemDAO;
   }
 }

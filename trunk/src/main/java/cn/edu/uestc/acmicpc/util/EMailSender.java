@@ -36,17 +36,15 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import cn.edu.uestc.acmicpc.ioc.util.SettingsAware;
-
 /**
  * TODO description
  */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class EMailSender implements SettingsAware {
+public class EMailSender {
 
-  @Override
-  public void setSettings(Settings settings) {
+  @Autowired
+  public EMailSender(Settings settings) {
     this.settings = settings;
   }
 
@@ -66,7 +64,6 @@ public class EMailSender implements SettingsAware {
     }
   }
 
-  @Autowired
   private Settings settings;
 
   public boolean send(String emailAddress, String title, String content) {

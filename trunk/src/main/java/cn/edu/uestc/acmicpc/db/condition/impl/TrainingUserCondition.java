@@ -33,14 +33,18 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.JoinedProperty;
 import cn.edu.uestc.acmicpc.db.dao.impl.UserDAO;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * // TODO(mzry1992) Description
  */
 @Repository
-public class TrainingUserCondition extends BaseCondition implements UserConditionAware {
+public class TrainingUserCondition extends BaseCondition {
+
+  @Autowired
+  public TrainingUserCondition(UserCondition userCondition) {
+    this.userCondition = userCondition;
+  }
 
   private Integer startId;
   private Integer endId;
@@ -124,16 +128,5 @@ public class TrainingUserCondition extends BaseCondition implements UserConditio
     }
   }
 
-  @Autowired
   private UserCondition userCondition;
-
-  @Override
-  public void setUserCondition(UserCondition userCondition) {
-    this.userCondition = userCondition;
-  }
-
-  @Override
-  public UserCondition getUserCondition() {
-    return userCondition;
-  }
 }

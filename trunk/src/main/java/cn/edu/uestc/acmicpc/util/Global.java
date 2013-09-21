@@ -1,25 +1,3 @@
-/*
- *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 package cn.edu.uestc.acmicpc.util;
 
 import java.util.ArrayList;
@@ -39,8 +17,6 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.Language;
-import cn.edu.uestc.acmicpc.ioc.dao.DepartmentDAOAware;
-import cn.edu.uestc.acmicpc.ioc.dao.LanguageDAOAware;
 import cn.edu.uestc.acmicpc.oj.entity.ContestRankList;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -51,7 +27,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 @Repository
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class Global implements DepartmentDAOAware, LanguageDAOAware {
+public class Global {
 
   /**
    * User serial key's length
@@ -166,16 +142,21 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
     }
   }
 
+  @Autowired
+  public Global(IDepartmentDAO departmentDAO,
+      ILanguageDAO languageDAO) {
+    this.departmentDAO = departmentDAO;
+    this.languageDAO = languageDAO;
+  }
+
   /**
    * Department DAO using for get all departments.
    */
-  @Autowired
   private IDepartmentDAO departmentDAO;
 
   /**
    * Language DAO using for get all languages.
    */
-  @Autowired
   private ILanguageDAO languageDAO;
 
   /**
@@ -223,6 +204,7 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
   /**
    * Initializer.
+   *
    * @throws AppException
    */
   @SuppressWarnings("unchecked")
@@ -240,16 +222,6 @@ public class Global implements DepartmentDAOAware, LanguageDAOAware {
 
     this.trainingContestTypeList = new ArrayList<>();
     Collections.addAll(trainingContestTypeList, TrainingContestType.values());
-  }
-
-  @Override
-  public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
-    this.departmentDAO = departmentDAO;
-  }
-
-  @Override
-  public void setLanguageDAO(ILanguageDAO languageDAO) {
-    this.languageDAO = languageDAO;
   }
 
   /**

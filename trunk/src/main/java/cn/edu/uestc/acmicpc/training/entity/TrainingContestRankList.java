@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
-import cn.edu.uestc.acmicpc.ioc.dao.TrainingUserDAOAware;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
@@ -25,7 +24,7 @@ import cn.edu.uestc.acmicpc.util.exception.ParserException;
  */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class TrainingContestRankList implements TrainingUserDAOAware {
+public class TrainingContestRankList {
 
   private List<TrainingContestProblemSummaryView> problemSummary;
   private List<TrainingUserRankSummary> trainingUserRankSummaryList;
@@ -35,19 +34,21 @@ public class TrainingContestRankList implements TrainingUserDAOAware {
 
   private static final Logger LOGGER = LogManager.getLogger(TrainingContestRankList.class);
 
-  //TODO Fix me! SCOPE error(maybe)
-  public TrainingContestRankList() {
+  // TODO Fix me! SCOPE error(maybe)
+  @Autowired
+  public TrainingContestRankList(ITrainingUserDAO trainingUserDAO) {
     LOGGER.info("Clear old data");
     problemSummary = new LinkedList<>();
     trainingUserRankSummaryList = new LinkedList<>();
+    this.trainingUserDAO = trainingUserDAO;
   }
 
   /**
    * Generate training contest rank list by string values.
    *
-   * @param rankList   original rank list
+   * @param rankList original rank list
    * @param isPersonal contest category
-   * @param type       contest type
+   * @param type contest type
    * @throws FieldNotUniqueException
    * @throws AppException
    * @throws ParserException
@@ -59,10 +60,11 @@ public class TrainingContestRankList implements TrainingUserDAOAware {
     this.isPersonal = isPersonal;
     this.type = type;
 
-    //Get problem number
+    // Get problem number
     problemCount = rankList.get(0).length - 1;
-    //Special cases
-    if (type != Global.TrainingContestType.TEAM.ordinal() && type != Global.TrainingContestType.NORMAL.ordinal())
+    // Special cases
+    if (type != Global.TrainingContestType.TEAM.ordinal()
+        && type != Global.TrainingContestType.NORMAL.ordinal())
       problemCount = 0;
     for (int i = 0; i < problemCount; i++) {
       TrainingContestProblemSummaryView trainingContestProblemSummaryView =
@@ -70,12 +72,12 @@ public class TrainingContestRankList implements TrainingUserDAOAware {
       problemSummary.add(trainingContestProblemSummaryView);
     }
 
-    //Get user rank summary list
+    // Get user rank summary list
     for (String[] userInfo : rankList) {
       trainingUserRankSummaryList.addAll(getTrainingUserRankSummaryListByUserInfo(userInfo));
     }
 
-    //Sort and calc problem summary
+    // Sort and calc problem summary
     if (type == Global.TrainingContestType.TEAM.ordinal()
         || type == Global.TrainingContestType.NORMAL.ordinal()
         || type == Global.TrainingContestType.UNRATED.ordinal()) {
@@ -92,11 +94,11 @@ public class TrainingContestRankList implements TrainingUserDAOAware {
       sortRankList();
     }
 
-    //Rank
+    // Rank
     for (int i = 0; i < trainingUserRankSummaryList.size(); i++) {
       if (i > 0
           && samePosition(trainingUserRankSummaryList.get(i),
-          trainingUserRankSummaryList.get(i - 1)))
+              trainingUserRankSummaryList.get(i - 1)))
         trainingUserRankSummaryList.get(i)
             .setRank(trainingUserRankSummaryList.get(i - 1).getRank());
       else
@@ -105,9 +107,8 @@ public class TrainingContestRankList implements TrainingUserDAOAware {
   }
 
   /**
-   * Get training user rank summary by a row of records
-   * If this contest is team contest, use ',' to split team member's name
-   * Team members in the same team share same rank summary
+   * Get training user rank summary by a row of records If this contest is team contest, use ',' to
+   * split team member's name Team members in the same team share same rank summary
    *
    * @param userInfo a row of records from data source
    * @return parsed training user rank summary list
@@ -164,7 +165,7 @@ public class TrainingContestRankList implements TrainingUserDAOAware {
       for (TrainingUserRankSummary anTrainingUserRankSummaryList : trainingUserRankSummaryList)
         if (anTrainingUserRankSummaryList.getTrainingProblemSummaryInfoList()[i].getSolved()
             && anTrainingUserRankSummaryList.getTrainingProblemSummaryInfoList()[i]
-            .getSolutionTime().equals(firstSolvedTime))
+                .getSolutionTime().equals(firstSolvedTime))
           anTrainingUserRankSummaryList.getTrainingProblemSummaryInfoList()[i].setFirstSolved(true);
     }
   }
@@ -199,7 +200,8 @@ public class TrainingContestRankList implements TrainingUserDAOAware {
   }
 
   /**
-   * Sort rank list by solved, if two user have same solved number, who have smaller penalty(score) goes first.
+   * Sort rank list by solved, if two user have same solved number, who have smaller penalty(score)
+   * goes first.
    */
   public void sortRankList() {
     // Sort
@@ -259,11 +261,5 @@ public class TrainingContestRankList implements TrainingUserDAOAware {
     this.trainingUserRankSummaryList = trainingUserRankSummaryList;
   }
 
-  @Autowired
   private ITrainingUserDAO trainingUserDAO;
-
-  @Override
-  public void setTrainingUserDAO(ITrainingUserDAO trainingUserDAO) {
-    this.trainingUserDAO = trainingUserDAO;
-  }
 }

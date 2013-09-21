@@ -39,16 +39,19 @@ import cn.edu.uestc.acmicpc.db.dao.impl.UserDAO;
 import cn.edu.uestc.acmicpc.db.entity.Language;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.ioc.condition.UserConditionAware;
 import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Status search condition.
  */
 @Repository
-public class StatusCondition extends BaseCondition implements UserConditionAware {
+public class StatusCondition extends BaseCondition {
+
+  @Autowired
+  public StatusCondition(UserCondition userCondition) {
+    this.userCondition = userCondition;
+  }
 
   /**
    * Start status id.
@@ -196,7 +199,6 @@ public class StatusCondition extends BaseCondition implements UserConditionAware
     this.resultId = resultId;
   }
 
-  @Autowired
   UserCondition userCondition;
 
   /**
@@ -251,16 +253,5 @@ public class StatusCondition extends BaseCondition implements UserConditionAware
         condition.addCriterion(Restrictions.eq("result", resultId));
       }
     }
-  }
-
-  @Override
-  @Ignore
-  public void setUserCondition(UserCondition userCondition) {
-    this.userCondition = userCondition;
-  }
-
-  @Override
-  public UserCondition getUserCondition() {
-    return userCondition;
   }
 }
