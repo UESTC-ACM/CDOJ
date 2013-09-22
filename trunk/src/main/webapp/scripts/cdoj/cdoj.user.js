@@ -78,11 +78,11 @@ function refreshUserList(condition) {
 }
 
 function changeOrder(field) {
-  if (currentCondition["userCondition.orderFields"] == field)
-    currentCondition["userCondition.orderAsc"] = (currentCondition["userCondition.orderAsc"] == "true" ? "false" : "true");
+  if (currentCondition["orderFields"] == field)
+    currentCondition["orderAsc"] = (currentCondition["orderAsc"] == "true" ? "false" : "true");
   else {
-    currentCondition["userCondition.orderFields"] = field;
-    currentCondition["userCondition.orderAsc"] = "false";
+    currentCondition["orderFields"] = field;
+    currentCondition["orderAsc"] = "false";
   }
   refreshUserList(currentCondition);
 }
