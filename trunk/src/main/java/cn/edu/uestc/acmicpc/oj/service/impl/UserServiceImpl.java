@@ -12,6 +12,7 @@ import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
@@ -33,6 +34,7 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
  * Implementation for {@link UserService}.
  */
 @Service
+@Primary
 public class UserServiceImpl extends AbstractService implements UserService {
 
   private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
@@ -96,17 +98,22 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public UserDTO register(UserDTO userDTO) throws AppException {
-    if (!userDTO.getPassword().equals(userDTO.getPasswordRepeat()))
+    if (!userDTO.getPassword().equals(userDTO.getPasswordRepeat())) {
       throw new FieldException("passwordRepeat", "Password do not match.");
-    if (!StringUtil.trimAllSpace(userDTO.getNickName()).equals(userDTO.getNickName()))
+    }
+    if (!StringUtil.trimAllSpace(userDTO.getNickName()).equals(userDTO.getNickName())) {
       throw new FieldException("nickName", "Nick name should not have useless blank.");
-    if (getUserByUserName(userDTO.getUserName()) != null)
+    }
+    if (getUserByUserName(userDTO.getUserName()) != null) {
       throw new FieldException("userName", "User name has been used!");
-    if (getUserByEmail(userDTO.getEmail()) != null)
+    }
+    if (getUserByEmail(userDTO.getEmail()) != null) {
       throw new FieldException("email", "Email has benn used!");
-    Department department = globalService.getDepartment(userDTO.getDepartmentId());
-    if (department == null)
+    }
+    Department department = globalService.getDepartmentById(userDTO.getDepartmentId());
+    if (department == null) {
       throw new FieldException("departmentId", "Please choose a validate department.");
+    }
 
     User user = new User();
     user.setTried(0);

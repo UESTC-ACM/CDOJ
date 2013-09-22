@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.entity.Department;
@@ -17,6 +18,7 @@ import cn.edu.uestc.acmicpc.util.Global;
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @Service
+@Primary
 public class GlobalServiceImpl extends AbstractService implements GlobalService {
 
   /**
@@ -46,7 +48,7 @@ public class GlobalServiceImpl extends AbstractService implements GlobalService 
    * @return department entity
    */
   @Override
-  public Department getDepartment(Integer departmentId) {
+  public Department getDepartmentById(Integer departmentId) {
     for (Department department : global.getDepartmentList()) {
       if (department.getDepartmentId().equals(departmentId)) {
         return department;

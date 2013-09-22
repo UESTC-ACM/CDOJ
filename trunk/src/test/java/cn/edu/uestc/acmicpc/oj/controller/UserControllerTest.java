@@ -7,10 +7,10 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 import java.util.UUID;
 
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,10 +23,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.context.WebApplicationContext;
 
-import cn.edu.uestc.acmicpc.config.MockServiceContext;
-import cn.edu.uestc.acmicpc.config.WebMVCConfig;
+import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.oj.controller.user.UserController;
@@ -40,7 +38,7 @@ import com.alibaba.fastjson.JSON;
 /** Mock test for {@link UserController}. */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = { MockServiceContext.class, WebMVCConfig.class })
+@ContextConfiguration(classes = { TestContext.class })
 public class UserControllerTest extends ControllerTest {
 
   private final String URL_LOGIN = "/user/login";
@@ -48,10 +46,12 @@ public class UserControllerTest extends ControllerTest {
   private final String URL_REGISTER = "/user/register";
 
   @Autowired
-  private WebApplicationContext context;
-  @Autowired
-  @Qualifier("mock")
+  @Qualifier("mockUserService")
   private UserService userService;
+
+  @Autowired
+  @Qualifier("mockGlobalService")
+  private GlobalService globalService;
 
   private MockMvc mockMvc;
   private MockHttpSession session;
@@ -59,7 +59,7 @@ public class UserControllerTest extends ControllerTest {
   @Before
   public void init() {
     Mockito.reset(userService);
-    mockMvc = webAppContextSetup(context).build();
+    mockMvc = initControllers(new UserController(userService, globalService));
     session = new MockHttpSession(context.getServletContext(), UUID.randomUUID().toString());
   }
 
