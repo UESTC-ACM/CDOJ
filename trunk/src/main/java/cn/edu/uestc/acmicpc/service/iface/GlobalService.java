@@ -14,12 +14,6 @@ public interface GlobalService {
 
   public Global getGlobal();
 
-  /**
-   * Get department by department id
-   *
-   * @param departmentId department id
-   * @return department entity
-   */
   public Department getDepartmentById(Integer departmentId);
 
   public List<Department> getDepartmentList();

@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.config;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,20 +46,11 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
   @Override
   public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-    FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
-    List<MediaType> mediaTypes = new LinkedList<>();
-    mediaTypes.add(MediaType.APPLICATION_JSON);
-    fastJsonHttpMessageConverter.setSupportedMediaTypes(mediaTypes);
-    converters.add(fastJsonHttpMessageConverter);
+    converters.addAll(Arrays.asList(WebMVCResource.messageConverters()));
   }
 
   @Bean
   public ViewResolver viewResolver() {
-    InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-
-    viewResolver.setPrefix("/WEB-INF/views/");
-    viewResolver.setSuffix(".jsp");
-
-    return viewResolver;
+    return WebMVCResource.viewResolver();
   }
 }

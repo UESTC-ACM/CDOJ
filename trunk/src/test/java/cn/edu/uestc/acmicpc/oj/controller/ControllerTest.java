@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.config.WebMVCResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -30,27 +31,9 @@ public abstract class ControllerTest {
 
   protected MockMvc initControllers(Object... objects) {
     return standaloneSetup(objects)
-        .setViewResolvers(viewResolver())
-        .setMessageConverters(messageConverter())
+        .setViewResolvers(WebMVCResource.viewResolver())
+        .setMessageConverters(WebMVCResource.messageConverters())
         .build();
   }
 
-  private HttpMessageConverter<?>[] messageConverter() {
-    HttpMessageConverter<?>[] converters = new HttpMessageConverter<?>[1];
-    FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
-    List<MediaType> mediaTypes = new LinkedList<>();
-    mediaTypes.add(MediaType.APPLICATION_JSON);
-    fastJsonHttpMessageConverter.setSupportedMediaTypes(mediaTypes);
-    converters[0] = fastJsonHttpMessageConverter;
-    return converters;
-  }
-
-  private ViewResolver viewResolver() {
-    InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-
-    viewResolver.setPrefix("/WEB-INF/views/");
-    viewResolver.setSuffix(".jsp");
-
-    return viewResolver;
-  }
 }
