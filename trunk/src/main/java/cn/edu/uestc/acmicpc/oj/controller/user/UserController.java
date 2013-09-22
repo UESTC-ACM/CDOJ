@@ -41,6 +41,7 @@ public class UserController extends BaseController {
     this.userService = userService;
     this.globalService = globalService;
   }
+  public UserService getUserService() { return userService; }
 
   /**
    * Login controller.
@@ -71,7 +72,7 @@ public class UserController extends BaseController {
         session.setAttribute("currentUser", userDTO);
         json.put("result", "success");
       } catch (FieldException e) {
-        putFieldErrosIntoBindingResult(e, validateResult);
+        putFieldErrorsIntoBindingResult(e, validateResult);
         json.put("result", "field_error");
         json.put("field", validateResult.getFieldErrors());
       } catch (AppException e) {
@@ -127,7 +128,7 @@ public class UserController extends BaseController {
         session.setAttribute("currentUser", userDTO);
         json.put("result", "success");
       } catch (FieldException e) {
-        putFieldErrosIntoBindingResult(e, validateResult);
+        putFieldErrorsIntoBindingResult(e, validateResult);
         json.put("result", "field_error");
         json.put("field", validateResult.getFieldErrors());
       } catch (AppException e) {

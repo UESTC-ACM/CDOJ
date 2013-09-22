@@ -1,7 +1,5 @@
 package cn.edu.uestc.acmicpc.db;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
@@ -61,13 +59,6 @@ public class UserDatabaseITTest {
     Assert.assertEquals(2, users.size());
     Assert.assertEquals("administrator", users.get(0).getUserName());
     Assert.assertEquals("admin", users.get(1).getUserName());
-  }
-
-  @Test
-  public void testUpdate() throws AppException, FieldNotUniqueException {
-    User user = userDAO.getEntityByUniqueField("userName", "administrator");
-    user.setLastLogin(new Timestamp(new Date().getTime()));
-    userDAO.update(user);
   }
 
   @Test
