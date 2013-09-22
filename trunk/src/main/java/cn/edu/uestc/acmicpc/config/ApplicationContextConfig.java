@@ -15,6 +15,8 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.db.entity.Code;
 import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
@@ -35,6 +37,7 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.service.JudgeService;
+import cn.edu.uestc.acmicpc.util.Global;
 
 import com.jolbox.bonecp.BoneCPDataSource;
 
@@ -144,9 +147,9 @@ public class ApplicationContextConfig {
     transactionManager.setSessionFactory(this.sessionFactory().getObject());
     /*
      * <tx:method name="save*" propagation="REQUIRED" /> <tx:method name="add*"
-     * propagation="REQUIRED" /> <tx:method name="update*" propagation="REQUIRED" /> <tx:method
-     * name="del*" propagation="REQUIRED" /> <tx:method name="find*" propagation="REQUIRED"
-     * read-only="true" />
+     * propagation="REQUIRED" /> <tx:method name="update*"
+     * propagation="REQUIRED" /> <tx:method name="del*" propagation="REQUIRED"
+     * /> <tx:method name="find*" propagation="REQUIRED" read-only="true" />
      */
     return transactionManager;
   }
@@ -166,10 +169,18 @@ public class ApplicationContextConfig {
     return properties;
   }
 
+  @Bean
+  @Autowired
+  @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
+  public Global global(IDepartmentDAO departmentDAO, ILanguageDAO languageDAO) {
+    return new Global(departmentDAO, languageDAO);
+  }
+
   /**
    * Simply get property in PropertySource
    *
-   * @param name property name
+   * @param name
+   *          property name
    * @return property value
    */
   private String getProperty(String name) {

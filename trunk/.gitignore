@@ -9,4 +9,5 @@
 .project
 .settings
 .classpath
+.externalToolBuilders/
 

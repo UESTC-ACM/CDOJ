@@ -5,23 +5,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.view.impl.UserView;
-import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.db.view.impl.UserView;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
+import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.impl.AbstractService;
 import cn.edu.uestc.acmicpc.util.Global;
@@ -38,8 +38,8 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 public class UserServiceImpl extends AbstractService implements UserService {
 
   private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
-  private IUserDAO userDAO;
-  private GlobalService globalService;
+  private final IUserDAO userDAO;
+  private final GlobalService globalService;
 
   @Autowired
   public UserServiceImpl(IUserDAO userDAO, GlobalService globalService) {
@@ -131,6 +131,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
     return userDTO;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public List<UserView> search(UserCondition userCondition, PageInfo pageInfo) throws AppException {
     Condition condition = userCondition.getCondition();
