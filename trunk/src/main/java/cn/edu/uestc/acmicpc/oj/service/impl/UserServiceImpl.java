@@ -152,6 +152,14 @@ public class UserServiceImpl extends AbstractService implements UserService {
   }
 
   @Override
+  public UserView getUserViewByUserName(String userName) throws AppException {
+    User user = getUserByUserName(userName);
+    if (user == null)
+      throw new AppException("No such user!");
+    return new UserView(user);
+  }
+
+  @Override
   public User getUserByUserId(Integer userId) throws AppException {
     return userDAO.get(userId);
   }
