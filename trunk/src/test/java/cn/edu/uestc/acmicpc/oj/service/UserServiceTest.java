@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.oj.service;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +27,8 @@ import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
+
+import com.alibaba.fastjson.JSON;
 
 /** Test cases for {@link UserService}. */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -103,7 +106,9 @@ public class UserServiceTest {
     UserDTO userDTO = UserDTO.builder().build();
     when(globalService.getDepartmentById(userDTO.getDepartmentId()))
         .thenReturn(mock(Department.class));
-    Assert.assertEquals(userDTO, userService.register(userDTO));
+    System.err.println(JSON.toJSONString(userDTO));
+    System.err.println(JSON.toJSONString(userService.register(userDTO)));
+    Assert.assertTrue(ObjectUtils.equals(userDTO, userService.register(userDTO)));
   }
 
   @Test

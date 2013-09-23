@@ -10,16 +10,14 @@ import org.springframework.stereotype.Repository;
 
 import cn.edu.uestc.acmicpc.db.dao.base.DAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * DAO for user entity.
  */
 @Repository
 @Primary
-public class UserDAO extends DAO<User, Integer, UserDTO> implements IUserDAO {
+public class UserDAO extends DAO<User, Integer> implements IUserDAO {
 
   @Override
   protected Class<Integer> getPKClass() {
@@ -43,15 +41,5 @@ public class UserDAO extends DAO<User, Integer, UserDTO> implements IUserDAO {
     if (list == null || list.isEmpty())
       return null;
     return (User) list.get(0);
-  }
-
-  @Override
-  public void delete(Integer key) throws AppException {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public UserDTO persist(UserDTO userDTO) throws AppException {
-    throw new UnsupportedOperationException();
   }
 }

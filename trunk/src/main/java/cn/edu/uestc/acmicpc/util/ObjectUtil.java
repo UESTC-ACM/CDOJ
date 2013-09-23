@@ -67,7 +67,7 @@ public class ObjectUtil {
     return String.format("{ %s }", ArrayUtil.join(list.toArray(), " , "));
   }
 
-  public static boolean euqals(Object first, Object second) {
+  public static boolean equals(Object first, Object second) {
     if (first == second) {
       return true;
     }

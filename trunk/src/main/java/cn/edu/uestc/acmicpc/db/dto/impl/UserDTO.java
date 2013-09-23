@@ -13,6 +13,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.ObjectUtil;
 
 /**
  * Data transfer object for {@link User}.
@@ -94,6 +95,23 @@ public class UserDTO implements BaseDTO<User> {
   private Integer type;
 
   public UserDTO() {
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof UserDTO) {
+      boolean result = true;
+      UserDTO dto = (UserDTO) obj;
+      result &= ObjectUtil.equals(userName, dto.userName);
+      result &= ObjectUtil.equals(nickName, dto.nickName);
+      result &= ObjectUtil.equals(email, dto.email);
+      result &= ObjectUtil.equals(school, dto.school);
+      result &= ObjectUtil.equals(departmentId, dto.departmentId);
+      result &= ObjectUtil.equals(studentId, dto.studentId);
+      result &= ObjectUtil.equals(type, dto.type);
+      return result;
+    }
+    return false;
   }
 
   private UserDTO(Integer userId, String userName, String oldPassword, String password,
