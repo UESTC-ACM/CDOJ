@@ -60,8 +60,8 @@ public class UserDTO {
   /**
    * Input: email
    */
-  @NotEmpty(message = "Please enter a validation email address.")
-  @Email(message = "Please enter a validation email address.")
+  @NotEmpty(message = "Please enter a valid email address.")
+  @Email(message = "Please enter a valid email address.")
   private String email;
 
   /**
