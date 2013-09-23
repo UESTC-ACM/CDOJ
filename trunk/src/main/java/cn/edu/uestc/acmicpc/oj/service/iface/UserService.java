@@ -77,60 +77,64 @@ public interface UserService extends OnlineJudgeService<User, Integer> {
   UserDTO register(UserDTO userDTO) throws AppException;
 
   /**
-   * TODO
-   * @param userCondition
-   * @param pageInfo
-   * @return
+   * Search user by condition and page info.
+   *
+   * @param userCondition condition
+   * @param pageInfo page range
+   * @return All user correspond to the condition and range.
    * @throws AppException
    */
   List<UserView> search(UserCondition userCondition, PageInfo pageInfo) throws AppException;
 
   /**
-   * TODO
-   * @param userCondition
-   * @return
+   * Count user number by condition
+   *
+   * @param userCondition condition
+   * @return Tot users correspond to the condition.
    * @throws AppException
    */
   Long count(UserCondition userCondition) throws AppException;
 
   /**
-   * TODO
-   * @param userName
-   * @return
+   * Return UserView entity by user name
+   *
+   * @param userName user's name
+   * @return UserView entity
    * @throws AppException
    */
   UserView getUserViewByUserName(String userName) throws AppException;
 
   /**
-   * TODO
-   * @param userDTO
-   * @param currentUser
+   * Edit user, and check the permission of edit operation.
+   *
+   * @param userDTO Edit information collected from form
+   * @param currentUser Current user who do this operation
    * @throws AppException
    */
   void edit(UserDTO userDTO, UserDTO currentUser) throws AppException;
 
   /**
-   * TODO
-   * @param user
-   * @return
+   * Transform user to user dto
+   * @param user user entity
+   * @return user dto entity
    * @throws AppException
    */
   UserDTO getUserDTOByUser(User user) throws AppException;
 
   /**
    * FIXME here we should consider the case when userDTO.getUserId is not null.
-   * TODO
+   * Transform user dto to user
    *
-   * @param userDTO
-   * @return
+   * @param userDTO user dto entity
+   * @return user entity
    * @throws AppException
    */
   User getUserByUserDTO(UserDTO userDTO) throws AppException;
 
   /**
-   * TODO
-   * @param user
-   * @param userDTO
+   * Update user by user dto
+   * @param user user entity who will be update
+   * @param userDTO user dto entity, from form
    * @throws AppException
    */
   void updateUserByUserDTO(User user, UserDTO userDTO) throws AppException;
