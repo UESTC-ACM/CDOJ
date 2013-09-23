@@ -107,6 +107,10 @@
             <input type="text" name="userId" maxlength="20" value="<c:out value="${targetUser.userId}"/>" readonly="readonly" id="userId" class="span4"></div>
           </div>
 
+          <div class="control-group "><label class="control-label" for="userName">User Name</label><div class="controls">
+            <input type="text" name="userName" maxlength="20" value="<c:out value="${targetUser.userName}"/>" readonly="readonly" id="userName" class="span4"></div>
+          </div>
+
           <div class="control-group "><label class="control-label" for="nickName">Nick name</label><div class="controls">
             <input type="text" name="nickName" maxlength="20" value="<c:out value="${targetUser.nickName}"/>" id="nickName" class="span4"></div>
           </div>

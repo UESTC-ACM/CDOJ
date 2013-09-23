@@ -98,6 +98,12 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public UserDTO register(UserDTO userDTO) throws AppException {
+    if (userDTO.getPassword() == null) {
+      throw new FieldException("password", "Please enter your password.");
+    }
+    if (userDTO.getPasswordRepeat() == null) {
+      throw new FieldException("passwordRepeat", "Please repeat your password.");
+    }
     if (!userDTO.getPassword().equals(userDTO.getPasswordRepeat())) {
       throw new FieldException("passwordRepeat", "Password do not match.");
     }
@@ -157,6 +163,35 @@ public class UserServiceImpl extends AbstractService implements UserService {
     if (user == null)
       throw new AppException("No such user!");
     return new UserView(user);
+  }
+
+  @Override
+  public void edit(UserDTO userDTO, UserDTO currentUser) throws AppException {
+    if (!currentUser.getUserName().equals(userDTO.getUserName())) {
+      throw new AppException("You can only edit your information.");
+    }
+    User user = getUserByUserName(userDTO.getUserName());
+    if (user == null) {
+      throw new AppException("No such user.");
+    }
+    if (!StringUtil.encodeSHA1(userDTO.getOldPassword()).equals(user.getPassword())) {
+      throw new FieldException("oldPassword", "Your passowrd is wrong, please try again.");
+    }
+    System.out.println("|" + userDTO.getPassword() + "|");
+    if (userDTO.getPassword() != null) {
+      if (userDTO.getPasswordRepeat() == null) {
+        throw new FieldException("passwordRepeat", "Please repeat your new password.");
+      }
+      if (!userDTO.getPassword().equals(userDTO.getPasswordRepeat())) {
+        throw new FieldException("passwordRepeat", "Password do not match.");
+      }
+      user.setPassword(StringUtil.encodeSHA1(userDTO.getPassword()));
+    }
+    user.setNickName(userDTO.getNickName());
+    user.setSchool(userDTO.getSchool());
+    user.setDepartmentByDepartmentId(globalService.getDepartmentById(userDTO.getDepartmentId()));
+    user.setStudentId(userDTO.getStudentId());
+    updateUser(user);
   }
 
   @Override

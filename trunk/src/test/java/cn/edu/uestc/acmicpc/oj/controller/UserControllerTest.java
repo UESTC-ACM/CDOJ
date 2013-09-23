@@ -470,6 +470,8 @@ public class UserControllerTest extends ControllerTest {
     UserDTO userDTO = UserDTO.builder()
         .setPassword(null)
         .build();
+    when(userService.register(Mockito.<UserDTO>any())).thenThrow(
+        new FieldException("password", "Please enter your password."));
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userDTO)))
@@ -477,7 +479,7 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.result", is("field_error")))
         .andExpect(jsonPath("$.field", hasSize(1)))
         .andExpect(jsonPath("$.field[0].field", is("password")))
-        .andExpect(jsonPath("$.field[0].objectName", is("userDTO")))
+        .andExpect(jsonPath("$.field[0].objectName", is("password")))
         .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter your password.")));
   }
 
@@ -534,6 +536,8 @@ public class UserControllerTest extends ControllerTest {
     UserDTO userDTO = UserDTO.builder()
         .setPasswordRepeat(null)
         .build();
+    when(userService.register(Mockito.<UserDTO>any())).thenThrow(
+        new FieldException("passwordRepeat", "Please repeat your password."));
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userDTO)))
@@ -541,7 +545,7 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.result", is("field_error")))
         .andExpect(jsonPath("$.field", hasSize(1)))
         .andExpect(jsonPath("$.field[0].field", is("passwordRepeat")))
-        .andExpect(jsonPath("$.field[0].objectName", is("userDTO")))
+        .andExpect(jsonPath("$.field[0].objectName", is("passwordRepeat")))
         .andExpect(jsonPath("$.field[0].defaultMessage", is("Please repeat your password.")));
   }
 
