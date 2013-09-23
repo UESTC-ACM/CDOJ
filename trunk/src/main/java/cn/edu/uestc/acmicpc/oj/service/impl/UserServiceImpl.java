@@ -87,13 +87,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
     user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
     userDAO.update(user);
 
-    return UserDTO.builder()
-        .setUserName(user.getUserName())
-        .setNickName(user.getNickName())
-        .setEmail(user.getEmail())
-        .setLastLogin(user.getLastLogin())
-        .setType(user.getType())
-        .build();
+    return getUserDTOByUser(user);
   }
 
   @Override
@@ -116,25 +110,15 @@ public class UserServiceImpl extends AbstractService implements UserService {
     if (getUserByEmail(userDTO.getEmail()) != null) {
       throw new FieldException("email", "Email has benn used!");
     }
-    Department department = globalService.getDepartmentById(userDTO.getDepartmentId());
-    if (department == null) {
+
+    User user = getUserByUserDTO(userDTO);
+    if (user.getDepartmentByDepartmentId() == null) {
       throw new FieldException("departmentId", "Please choose a validate department.");
     }
 
-    User user = new User();
-    user.setTried(0);
-    user.setNickName(userDTO.getNickName());
-    user.setDepartmentByDepartmentId(department);
-    user.setEmail(userDTO.getEmail());
-    user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
-    user.setPassword(StringUtil.encodeSHA1(userDTO.getPassword()));
-    user.setSchool(userDTO.getSchool());
-    user.setSolved(0);
-    user.setStudentId(userDTO.getStudentId());
-    user.setType(Global.AuthenticationType.NORMAL.ordinal());
-    user.setUserName(userDTO.getUserName());
     createNewUser(user);
-    return userDTO;
+
+    return getUserDTOByUser(user);
   }
 
   @SuppressWarnings("unchecked")
@@ -167,17 +151,16 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public void edit(UserDTO userDTO, UserDTO currentUser) throws AppException {
-    if (!currentUser.getUserName().equals(userDTO.getUserName())) {
+    if (!currentUser.getUserId().equals(userDTO.getUserId())) {
       throw new AppException("You can only edit your information.");
     }
-    User user = getUserByUserName(userDTO.getUserName());
+    User user = getUserByUserId(userDTO.getUserId());
     if (user == null) {
       throw new AppException("No such user.");
     }
     if (!StringUtil.encodeSHA1(userDTO.getOldPassword()).equals(user.getPassword())) {
       throw new FieldException("oldPassword", "Your passowrd is wrong, please try again.");
     }
-    System.out.println("|" + userDTO.getPassword() + "|");
     if (userDTO.getPassword() != null) {
       if (userDTO.getPasswordRepeat() == null) {
         throw new FieldException("passwordRepeat", "Please repeat your new password.");
@@ -185,13 +168,50 @@ public class UserServiceImpl extends AbstractService implements UserService {
       if (!userDTO.getPassword().equals(userDTO.getPasswordRepeat())) {
         throw new FieldException("passwordRepeat", "Password do not match.");
       }
-      user.setPassword(StringUtil.encodeSHA1(userDTO.getPassword()));
     }
+
+    updateUserByUserDTO(user, userDTO);
+    updateUser(user);
+  }
+
+  @Override
+  public UserDTO getUserDTOByUser(User user) throws AppException {
+    return UserDTO.builder()
+        .setUserId(user.getUserId())
+        .setUserName(user.getUserName())
+        .setNickName(user.getNickName())
+        .setEmail(user.getEmail())
+        .setLastLogin(user.getLastLogin())
+        .setType(user.getType())
+        .build();
+  }
+
+  @Override
+  public User getUserByUserDTO(UserDTO userDTO) throws AppException {
+    Department department = globalService.getDepartmentById(userDTO.getDepartmentId());
+    User user = new User();
+    user.setTried(0);
+    user.setNickName(userDTO.getNickName());
+    user.setDepartmentByDepartmentId(department);
+    user.setEmail(userDTO.getEmail());
+    user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
+    user.setPassword(StringUtil.encodeSHA1(userDTO.getPassword()));
+    user.setSchool(userDTO.getSchool());
+    user.setSolved(0);
+    user.setStudentId(userDTO.getStudentId());
+    user.setType(Global.AuthenticationType.NORMAL.ordinal());
+    user.setUserName(userDTO.getUserName());
+    return user;
+  }
+
+  @Override
+  public void updateUserByUserDTO(User user, UserDTO userDTO) throws AppException {
+    if (userDTO.getPassword() != null)
+      user.setPassword(StringUtil.encodeSHA1(userDTO.getPassword()));
     user.setNickName(userDTO.getNickName());
     user.setSchool(userDTO.getSchool());
     user.setDepartmentByDepartmentId(globalService.getDepartmentById(userDTO.getDepartmentId()));
     user.setStudentId(userDTO.getStudentId());
-    updateUser(user);
   }
 
   @Override
