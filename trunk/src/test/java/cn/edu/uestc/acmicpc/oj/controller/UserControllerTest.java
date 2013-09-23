@@ -709,7 +709,7 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field[0].field", is("email")))
         .andExpect(jsonPath("$.field[0].objectName", is("userDTO")))
         .andExpect(jsonPath("$.field[0].defaultMessage",
-            is("Please enter a validation email address.")));
+            is("Please enter a valid email address.")));
   }
 
   public void testRegister_failed_email_invalid(String email) throws Exception {
@@ -725,7 +725,7 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field[0].field", is("email")))
         .andExpect(jsonPath("$.field[0].objectName", is("userDTO")))
         .andExpect(jsonPath("$.field[0].defaultMessage",
-            is("Please enter a validation email address.")));
+            is("Please enter a valid email address.")));
   }
 
   @Test
