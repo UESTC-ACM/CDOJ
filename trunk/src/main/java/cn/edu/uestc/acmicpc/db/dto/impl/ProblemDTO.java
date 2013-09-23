@@ -2,12 +2,11 @@ package cn.edu.uestc.acmicpc.db.dto.impl;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Data transfer object for {@link Problem}.
  */
-public class ProblemDTO extends BaseDTO<Problem> {
+public class ProblemDTO implements BaseDTO<Problem> {
 
   private Integer problemId;
   private String title;
@@ -105,34 +104,6 @@ public class ProblemDTO extends BaseDTO<Problem> {
 
   public void setProblemId(Integer problemId) {
     this.problemId = problemId;
-  }
-
-  @Override
-  public Problem getEntity() throws AppException {
-    Problem problem = super.getEntity();
-    problem.setTimeLimit(1000);
-    problem.setJavaTimeLimit(3000);
-    problem.setMemoryLimit(65535);
-    problem.setJavaMemoryLimit(65535);
-    problem.setOutputLimit(8192);
-    problem.setSolved(0);
-    problem.setTried(0);
-    problem.setDataCount(0);
-    problem.setIsSpj(false);
-    problem.setIsVisible(false);
-    problem.setProblemId(null);
-    problem.setDifficulty(1);
-    return problem;
-  }
-
-  @Override
-  public void updateEntity(Problem problem) throws AppException {
-    super.updateEntity(problem);
-  }
-
-  @Override
-  protected Class<Problem> getReferenceClass() {
-    return Problem.class;
   }
 
   public static Builder bulder() {

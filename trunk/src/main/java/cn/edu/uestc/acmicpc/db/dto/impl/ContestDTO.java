@@ -2,23 +2,17 @@ package cn.edu.uestc.acmicpc.db.dto.impl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
-import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
-import cn.edu.uestc.acmicpc.db.entity.ContestUser;
-import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Data transfer object for {@link Contest}.
  */
-public class ContestDTO extends BaseDTO<Contest> {
+public class ContestDTO implements BaseDTO<Contest> {
 
   private Integer contestId;
   private String title;
@@ -115,50 +109,6 @@ public class ContestDTO extends BaseDTO<Contest> {
 
   public void setIsVisible(Boolean visible) {
     isVisible = visible;
-  }
-
-  @Override
-  public Contest getEntity() throws AppException {
-    Contest contest = super.getEntity();
-
-    contest.setTime(new Timestamp(new Date().getTime()));
-    contest.setLength(5 * 60 * 60);
-    contest.setType((byte) 0);
-
-    contest.setIsVisible(false);
-
-    Collection<ContestProblem> contestProblems = new LinkedList<>();
-    contest.setContestProblemsByContestId(contestProblems);
-
-    Collection<ContestUser> contestUsers = new LinkedList<>();
-    contest.setContestUsersByContestId(contestUsers);
-
-    Collection<Status> contestStatus = new LinkedList<>();
-    contest.setStatusesByContestId(contestStatus);
-
-    return contest;
-  }
-
-  @Override
-  public void updateEntity(Contest contest) throws AppException {
-    super.updateEntity(contest);
-    /*
-     * TODO Remove DAO Collection<ContestProblem> problems =
-     * contest.getContestProblemsByContestId(); if (problems != null) { for (ContestProblem problem
-     * : problems) { contestProblemDAO.delete(problem); } }
-     *
-     * if (problemList != null) { problems = new LinkedList<>(); for (Integer id = 0; id <
-     * problemList.size(); id++) { Integer problemId = problemList.get(id); ContestProblem
-     * contestProblem = new ContestProblem(); contestProblem.setContestByContestId(contest);
-     * contestProblem.setProblemByProblemId(problemDAO.get(problemId)); contestProblem.setOrder(id);
-     * contestProblemDAO.add(contestProblem); problems.add(contestProblem); }
-     * contest.setContestProblemsByContestId(problems); }
-     */
-  }
-
-  @Override
-  protected Class<Contest> getReferenceClass() {
-    return Contest.class;
   }
 
   public static Builder builder() {

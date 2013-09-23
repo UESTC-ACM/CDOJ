@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
-import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.oj.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.impl.AbstractService;
 import cn.edu.uestc.acmicpc.util.Global;
@@ -21,7 +19,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 @Service
 public class StatusServiceImpl extends AbstractService implements StatusService {
 
-  private IStatusDAO statusDAO;
+  private final IStatusDAO statusDAO;
 
   @Autowired
   public StatusServiceImpl(IStatusDAO statusDAO) {
@@ -48,7 +46,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   }
 
   @Override
-  public IDAO<Status, Integer> getDAO() {
+  public IStatusDAO getDAO() {
     return statusDAO;
   }
 }

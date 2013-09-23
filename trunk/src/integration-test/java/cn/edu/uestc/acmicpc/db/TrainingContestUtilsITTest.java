@@ -17,11 +17,7 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.TrainingStatusDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDTO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
-import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -39,38 +35,38 @@ public class TrainingContestUtilsITTest {
   @Ignore
   public void setTrainingUser() throws AppException {
     for (int i = 0; i < 10; i++) {
-      TrainingUserDTO trainingUserDTO = TrainingUserDTO.builder()
-          .setName("UESTC_" + i).build();
-      TrainingUser trainingUser = trainingUserDTO.getEntity();
-      trainingUser.setUserByUserId(userDAO.get(1));
-      trainingUserDAO.add(trainingUser);
+      // TrainingUserDTO trainingUserDTO = TrainingUserDTO.builder()
+      // .setName("UESTC_" + i).build();
+      // TrainingUser trainingUser = strainingUserDTO.getEntity();
+      // trainingUser.setUserByUserId(userDAO.get(1));
+      // trainingUserDAO.add(trainingUser);
     }
   }
 
   @Test
   @Ignore
   public void setTrainingContet() throws AppException {
-    for (int i = 0; i < 10; i++) {
-      TrainingContestDTO trainingContestDTO = TrainingContestDTO.builder()
-          .setTitle("Contest " + i)
-          .setIsPersonal(true).build();
-      TrainingContest trainingContest = trainingContestDTO.getEntity();
-      trainingContestDAO.add(trainingContest);
-    }
+//    for (int i = 0; i < 10; i++) {
+//      TrainingContestDTO trainingContestDTO = TrainingContestDTO.builder()
+//          .setTitle("Contest " + i)
+//          .setIsPersonal(true).build();
+//      TrainingContest trainingContest = trainingContestDTO.getEntity();
+//      trainingContestDAO.add(trainingContest);
+//    }
   }
 
   @Test
   @Ignore
   public void setTrainingStatus() throws AppException {
-    for (int i = 1; i <= 10; i++) {
-      for (int j = 1; j <= 10; j++) {
-        TrainingStatusDTO trainingStatusDTO = TrainingStatusDTO.builder().build();
-        TrainingStatus trainingStatus = trainingStatusDTO.getEntity();
-        trainingStatus.setTrainingUserByTrainingUserId(trainingUserDAO.get(j));
-        trainingStatus.setTrainingContestByTrainingContestId(trainingContestDAO.get(i));
-        trainingStatusDAO.add(trainingStatus);
-      }
-    }
+//    for (int i = 1; i <= 10; i++) {
+//      for (int j = 1; j <= 10; j++) {
+//        TrainingStatusDTO trainingStatusDTO = TrainingStatusDTO.builder().build();
+//        TrainingStatus trainingStatus = trainingStatusDTO.getEntity();
+//        trainingStatus.setTrainingUserByTrainingUserId(trainingUserDAO.get(j));
+//        trainingStatus.setTrainingContestByTrainingContestId(trainingContestDAO.get(i));
+//        trainingStatusDAO.add(trainingStatus);
+//      }
+//    }
   }
 
   @Test

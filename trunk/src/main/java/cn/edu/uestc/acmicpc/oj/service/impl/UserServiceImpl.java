@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
@@ -200,7 +199,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
   }
 
   @Override
-  public IDAO<User, Integer> getDAO() {
+  public IUserDAO getDAO() {
     return userDAO;
   }
 }

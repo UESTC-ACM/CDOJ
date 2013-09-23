@@ -10,13 +10,14 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.Global;
 
 /**
  * Data transfer object for {@link User}.
  */
-public class UserDTO {
+public class UserDTO implements BaseDTO<User> {
 
   /**
    * Input: user id, set null for new user

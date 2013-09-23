@@ -3,12 +3,11 @@ package cn.edu.uestc.acmicpc.db.dto.impl;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Data transfer object for {@link TrainingUser}.
  */
-public class TrainingUserDTO extends BaseDTO<TrainingUser> {
+public class TrainingUserDTO implements BaseDTO<TrainingUser> {
 
   private Integer trainingUserId;
   private String name;
@@ -55,21 +54,6 @@ public class TrainingUserDTO extends BaseDTO<TrainingUser> {
 
   public void setType(Integer type) {
     this.type = type;
-  }
-
-  @Override
-  public TrainingUser getEntity() throws AppException {
-    TrainingUser trainingUser = super.getEntity();
-    trainingUser.setRating(1200.0);
-    trainingUser.setVolatility(550.0);
-    trainingUser.setAllow(false);
-    trainingUser.setCompetitions(0);
-    return trainingUser;
-  }
-
-  @Override
-  protected Class<TrainingUser> getReferenceClass() {
-    return TrainingUser.class;
   }
 
   public static Builder builder() {

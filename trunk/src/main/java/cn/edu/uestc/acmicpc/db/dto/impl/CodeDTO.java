@@ -2,12 +2,11 @@ package cn.edu.uestc.acmicpc.db.dto.impl;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Code;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Data transfer object for {@link Code}.
  */
-public class CodeDTO extends BaseDTO<Code> {
+public class CodeDTO implements BaseDTO<Code> {
 
   private Integer codeId;
   private String content;
@@ -34,21 +33,6 @@ public class CodeDTO extends BaseDTO<Code> {
 
   public void setContent(String content) {
     this.content = content;
-  }
-
-  @Override
-  protected Class<Code> getReferenceClass() {
-    return Code.class;
-  }
-
-  @Override
-  public Code getEntity() throws AppException {
-    return super.getEntity();
-  }
-
-  @Override
-  public void updateEntity(Code code) throws AppException {
-    super.updateEntity(code);
   }
 
   public static Builder builder() {
