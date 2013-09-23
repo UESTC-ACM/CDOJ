@@ -39,14 +39,12 @@ public class UserDTO {
   /**
    * Input: password
    */
-  @NotNull(message = "Please enter your password.")
   @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
   private String password;
 
   /**
    * Input: repeat password
    */
-  @NotNull(message = "Please repeat your password.")
   @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
   private String passwordRepeat;
 

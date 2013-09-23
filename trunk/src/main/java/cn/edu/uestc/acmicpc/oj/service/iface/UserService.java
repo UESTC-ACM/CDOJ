@@ -100,4 +100,12 @@ public interface UserService extends OnlineJudgeService<User, Integer> {
    * @throws AppException
    */
   UserView getUserViewByUserName(String userName) throws AppException;
+
+  /**
+   * TODO
+   * @param userDTO
+   * @param currentUser
+   * @throws AppException
+   */
+  void edit(UserDTO userDTO, UserDTO currentUser) throws AppException;
 }

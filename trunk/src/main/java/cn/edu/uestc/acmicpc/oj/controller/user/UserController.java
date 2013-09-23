@@ -190,6 +190,13 @@ public class UserController extends BaseController {
     return json;
   }
 
+  /**
+   * Go to the user center
+   *
+   * @param userName user name, specified in url
+   * @param model model
+   * @return userCenter page if this user exist, other wise return 404 error page.
+   */
   @RequestMapping("center/{userName}")
   @LoginPermit(NeedLogin = false)
   public String userCenter(@PathVariable("userName") String userName,
@@ -203,6 +210,33 @@ public class UserController extends BaseController {
     }
     return "user/userCenter";
   }
+
+  @RequestMapping("edit")
+  @LoginPermit(NeedLogin = true)
+  public @ResponseBody
+  Map<String, Object> edit(HttpSession session,
+                           @RequestBody @Valid UserDTO userDTO,
+                           BindingResult validateResult) {
+    Map<String, Object> json = new HashMap<>();
+    if (validateResult.hasErrors()) {
+      json.put("result", "field_error");
+      json.put("field", validateResult.getFieldErrors());
+    } else {
+      try {
+        userService.edit(userDTO, (UserDTO)session.getAttribute("currentUser"));
+        json.put("result", "success");
+      } catch (FieldException e) {
+        putFieldErrorsIntoBindingResult(e, validateResult);
+        json.put("result", "field_error");
+        json.put("field", validateResult.getFieldErrors());
+      } catch (AppException e) {
+        json.put("result", "error");
+        json.put("error_msg", e.getMessage());
+      }
+    }
+    return json;
+  }
+
   private UserService userService;
   private GlobalService globalService;
 }
