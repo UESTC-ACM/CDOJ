@@ -2,12 +2,11 @@ package cn.edu.uestc.acmicpc.db.dto.impl;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Data transfer object for {@link TrainingContest}.
  */
-public class TrainingContestDTO extends BaseDTO<TrainingContest> {
+public class TrainingContestDTO implements BaseDTO<TrainingContest> {
 
   private Integer trainingContestId;
   private Boolean isPersonal;
@@ -55,23 +54,6 @@ public class TrainingContestDTO extends BaseDTO<TrainingContest> {
 
   public void setTitle(String title) {
     this.title = title;
-  }
-
-  @Override
-  protected Class<TrainingContest> getReferenceClass() {
-    return TrainingContest.class;
-  }
-
-  @Override
-  public TrainingContest getEntity() throws AppException {
-    TrainingContest trainingContest = super.getEntity();
-    trainingContest.setIsPersonal(true);
-    return trainingContest;
-  }
-
-  @Override
-  public void updateEntity(TrainingContest trainingContest) throws AppException {
-    super.updateEntity(trainingContest);
   }
 
   public static Builder builder() {

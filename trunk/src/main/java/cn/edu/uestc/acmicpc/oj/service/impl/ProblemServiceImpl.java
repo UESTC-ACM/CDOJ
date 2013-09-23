@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.impl.AbstractService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -20,7 +18,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 @Service
 public class ProblemServiceImpl extends AbstractService implements ProblemService {
 
-  private IProblemDAO problemDAO;
+  private final IProblemDAO problemDAO;
 
   @Autowired
   public ProblemServiceImpl(IProblemDAO problemDAO) {
@@ -37,7 +35,7 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
   }
 
   @Override
-  public IDAO<Problem, Integer> getDAO() {
+  public IProblemDAO getDAO() {
     return problemDAO;
   }
 }

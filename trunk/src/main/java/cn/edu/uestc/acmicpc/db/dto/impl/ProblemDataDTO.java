@@ -3,12 +3,11 @@ package cn.edu.uestc.acmicpc.db.dto.impl;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Data transfer object for {@link Problem} data.
  */
-public class ProblemDataDTO extends BaseDTO<Problem> {
+public class ProblemDataDTO implements BaseDTO<Problem> {
 
   private Integer problemId;
   private Integer timeLimit;
@@ -87,37 +86,6 @@ public class ProblemDataDTO extends BaseDTO<Problem> {
 
   public void setProblemId(Integer problemId) {
     this.problemId = problemId;
-  }
-
-  @Override
-  @Deprecated
-  public Problem getEntity() throws AppException {
-    Problem problem = super.getEntity();
-    problem.setTimeLimit(1000);
-    problem.setJavaTimeLimit(3000);
-    problem.setMemoryLimit(65535);
-    problem.setJavaMemoryLimit(65535);
-    problem.setOutputLimit(8192);
-    problem.setSolved(0);
-    problem.setTried(0);
-    problem.setDataCount(0);
-    problem.setIsSpj(false);
-    problem.setIsVisible(false);
-    problem.setProblemId(null);
-    return problem;
-  }
-
-  @Override
-  public void updateEntity(Problem problem) throws AppException {
-    super.updateEntity(problem);
-    if (getIsSpj() != null) {
-      problem.setIsSpj(getIsSpj());
-    }
-  }
-
-  @Override
-  protected Class<Problem> getReferenceClass() {
-    return Problem.class;
   }
 
   public static Builder builder() {

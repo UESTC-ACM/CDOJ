@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
@@ -37,7 +38,8 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
  * @param <PK> Primary key's type
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
-public interface IDAO<Entity extends Serializable, PK extends Serializable> {
+public interface IDAO<Entity extends Serializable, PK extends Serializable,
+    DTO extends BaseDTO<Entity>> {
 
   /**
    * Add entity into database, and return number of Row changed.
@@ -45,7 +47,9 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param entity entity to be added.
    * @return number of rows changed.
    * @throws AppException
+   * @Deprecated use {@link IDAO#persist(BaseDTO)}.
    */
+  @Deprecated
   public Serializable add(Entity entity) throws AppException;
 
   /**
@@ -53,7 +57,9 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    *
    * @param entity entity to be added or updated
    * @throws AppException
+   * @Deprecated use {@link IDAO#persist(BaseDTO)}.
    */
+  @Deprecated
   public void addOrUpdate(Entity entity) throws AppException;
 
   /**
@@ -70,7 +76,9 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    *
    * @param entity entity to be updated
    * @throws AppException
+   * @Deprecated use {@link IDAO#persist(BaseDTO))}.
    */
+  @Deprecated
   public void update(Entity entity) throws AppException;
 
   /**
@@ -78,7 +86,9 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    *
    * @param entity entity to be deleted
    * @throws AppException
+   * @Deprecated use {@link IDAO#delete(Integer)}.
    */
+  @Deprecated
   public void delete(Entity entity) throws AppException;
 
   /**
@@ -199,4 +209,21 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @return number of rows effected
    */
   public int executeSQL(String sql);
+
+  /**
+   * Update or create db entity by DTO.
+   *
+   * @param dto entity DTO.
+   * @throws AppException
+   * @return dto with new properties.
+   */
+  public DTO persist(DTO dto) throws AppException;
+
+  /**
+   * Delete entity by key.
+   *
+   * @param key entity's key
+   * @throws AppException
+   */
+  public void delete(Integer key) throws AppException;
 }

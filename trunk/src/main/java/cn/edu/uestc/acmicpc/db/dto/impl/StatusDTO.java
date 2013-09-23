@@ -13,12 +13,11 @@ import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Data transfer object for {@link Status}.
  */
-public class StatusDTO extends BaseDTO<Status> {
+public class StatusDTO implements BaseDTO<Status> {
 
   private Integer statusId;
   private Integer result;
@@ -112,29 +111,6 @@ public class StatusDTO extends BaseDTO<Status> {
 
   public void setLanguage(Language language) {
     this.language = language;
-  }
-
-  @Override
-  public Status getEntity() throws AppException {
-    Status status = super.getEntity();
-    status.setCodeByCodeId(code);
-    status.setCompileInfoByCompileInfoId(null);
-    status.setContestByContestId(contest);
-    status.setLanguageByLanguageId(language);
-    status.setResult(Global.OnlineJudgeReturnType.OJ_WAIT.ordinal());
-    status.setMemoryCost(0);
-    status.setTimeCost(0);
-    status.setTime(new Timestamp(new Date().getTime()));
-    status.setCaseNumber(0);
-    status.setUserByUserId(user);
-    status.setProblemByProblemId(problem);
-    return status;
-  }
-
-  @Override
-  public void updateEntity(Status status) throws AppException {
-    super.updateEntity(status);
-    status.setTime(new Timestamp(new Date().getTime()));
   }
 
   public Integer getStatusId() {
@@ -251,11 +227,6 @@ public class StatusDTO extends BaseDTO<Status> {
   private Problem problem;
   private Integer userId;
   private User user;
-
-  @Override
-  protected Class<Status> getReferenceClass() {
-    return Status.class;
-  }
 
   public static Builder builder() {
     return new Builder();

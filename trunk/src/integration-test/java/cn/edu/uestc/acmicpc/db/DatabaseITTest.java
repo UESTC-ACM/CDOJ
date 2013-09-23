@@ -3,8 +3,6 @@ package cn.edu.uestc.acmicpc.db;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.Restrictions;
 import org.junit.Assert;
@@ -23,8 +21,6 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.ContestDTO;
-import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -36,8 +32,6 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { IntegrationTestContext.class })
 public class DatabaseITTest {
-
-  private static final Logger LOGGER = LogManager.getLogger(DatabaseITTest.class);
 
   @Autowired
   private IUserDAO userDAO;
@@ -68,19 +62,6 @@ public class DatabaseITTest {
 
   @Autowired
   private IContestDAO contestDAO;
-
-  @Test
-  public void testContestDAO() {
-    try {
-      ContestDTO contestDTO = ContestDTO.builder()
-          .setIsVisible(true)
-          .setTitle("test title").build();
-      Contest contest = contestDTO.getEntity();
-      contestDAO.add(contest);
-    } catch (AppException e) {
-      LOGGER.error(e);
-    }
-  }
 
   @Test
   @Ignore(value = "not stable")
