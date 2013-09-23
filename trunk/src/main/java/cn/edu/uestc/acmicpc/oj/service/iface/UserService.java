@@ -13,7 +13,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * User service interface to handle operations about {@link User}.
  */
-public interface UserService extends OnlineJudgeService<User, Integer, UserDTO> {
+public interface UserService extends OnlineJudgeService<User, Integer> {
 
   /**
    * Get unique user entity from database by user id.
@@ -45,7 +45,7 @@ public interface UserService extends OnlineJudgeService<User, Integer, UserDTO> 
   /**
    * Update user entity.
    *
-   * @param user user entity to be updated.
+   * @param user user dto to be updated.
    * @throws AppException
    */
   void updateUser(User user) throws AppException;
@@ -118,7 +118,9 @@ public interface UserService extends OnlineJudgeService<User, Integer, UserDTO> 
   UserDTO getUserDTOByUser(User user) throws AppException;
 
   /**
+   * FIXME here we should consider the case when userDTO.getUserId is not null.
    * TODO
+   *
    * @param userDTO
    * @return
    * @throws AppException

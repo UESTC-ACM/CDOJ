@@ -66,7 +66,7 @@ public class UserDatabaseITTest {
   public void testDelete() throws AppException, FieldNotUniqueException {
     User user = userDAO.getEntityByUniqueField("userName", "testDeleted");
     Long oldCount = userDAO.count();
-    userDAO.delete(user);
+    userDAO.delete(user.getUserId());
     Long newCount = userDAO.count();
     Assert.assertEquals(oldCount - 1, newCount.longValue());
   }

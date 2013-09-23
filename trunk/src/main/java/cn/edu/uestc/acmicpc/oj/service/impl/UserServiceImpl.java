@@ -26,6 +26,7 @@ import cn.edu.uestc.acmicpc.service.impl.AbstractService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
@@ -58,6 +59,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public void updateUser(User user) throws AppException {
+    AppExceptionUtil.assertNotNull(user);
+    AppExceptionUtil.assertNotNull(user.getUserId());
     userDAO.update(user);
   }
 
@@ -198,7 +201,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
     user.setSchool(userDTO.getSchool());
     user.setSolved(0);
     user.setStudentId(userDTO.getStudentId());
-    user.setType(Global.AuthenticationType.NORMAL.ordinal());
+    // TODO I think here should be type?
+    user.setType(userDTO.getType());
     user.setUserName(userDTO.getUserName());
     return user;
   }

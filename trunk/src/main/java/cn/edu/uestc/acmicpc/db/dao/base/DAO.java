@@ -26,10 +26,10 @@ import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.JoinedProperty;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
-import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.DatabaseUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 /**
@@ -43,13 +43,12 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
  * @param <DTO> dto's type.
  */
 @Repository
-public abstract class DAO<Entity extends Serializable, PK extends Serializable, DTO extends BaseDTO<Entity>>
-    extends BaseDAO implements IDAO<Entity, PK, DTO> {
+public abstract class DAO<Entity extends Serializable, PK extends Serializable>
+    extends BaseDAO implements IDAO<Entity, PK> {
 
   private static final Logger LOGGER = LogManager.getLogger(DAO.class);
 
   @Override
-  @Deprecated
   public void addOrUpdate(Entity entity) throws AppException {
     try {
       if (DatabaseUtil.getKeyValue(entity) == null) {
@@ -161,7 +160,6 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable, 
   }
 
   @Override
-  @Deprecated
   public Serializable add(Entity entity) throws AppException {
     try {
       return getSession().save(entity);
@@ -187,25 +185,12 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable, 
   }
 
   @Override
-  @Deprecated
   public void update(Entity entity) throws AppException {
     try {
       getSession().update(entity);
     } catch (HibernateException e) {
       LOGGER.error(e);
       throw new AppException("Invoke update method error.");
-    }
-  }
-
-  @Override
-  @Deprecated
-  public void delete(Entity entity) throws AppException {
-    try {
-      if (entity != null) {
-        getSession().delete(entity);
-      }
-    } catch (HibernateException e) {
-      throw new AppException("Invoke delete method error.");
     }
   }
 
@@ -371,5 +356,18 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable, 
   @Override
   public int executeSQL(String sql) {
     return getSession().createSQLQuery(sql).executeUpdate();
+  }
+
+  @Override
+  public void delete(PK key) throws AppException {
+    AppExceptionUtil.assertNotNull(key);
+    Entity entity = get(key);
+    AppExceptionUtil.assertNotNull(entity);
+    try {
+      getSession().delete(entity);
+    } catch (HibernateException e) {
+      LOGGER.error(e);
+      throw new AppException("Invoke delete method error.");
+    }
   }
 }
