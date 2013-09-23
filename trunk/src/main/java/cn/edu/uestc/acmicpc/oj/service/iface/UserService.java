@@ -108,4 +108,28 @@ public interface UserService extends OnlineJudgeService<User, Integer, UserDTO> 
    * @throws AppException
    */
   void edit(UserDTO userDTO, UserDTO currentUser) throws AppException;
+
+  /**
+   * TODO
+   * @param user
+   * @return
+   * @throws AppException
+   */
+  UserDTO getUserDTOByUser(User user) throws AppException;
+
+  /**
+   * TODO
+   * @param userDTO
+   * @return
+   * @throws AppException
+   */
+  User getUserByUserDTO(UserDTO userDTO) throws AppException;
+
+  /**
+   * TODO
+   * @param user
+   * @param userDTO
+   * @throws AppException
+   */
+  void updateUserByUserDTO(User user, UserDTO userDTO) throws AppException;
 }

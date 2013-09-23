@@ -27,7 +27,7 @@
             <dt>Nick name</dt>
             <dd>
               <c:out value="${targetUser.nickName}"/>
-              <c:if test="${sessionScope.currentUser.userName == targetUser.userName}">
+              <c:if test="${sessionScope.currentUser.userId== targetUser.userId}">
                 <div class="pull-right" style="margin-right: 20px;">
                   <a href="#userEditModal" role="button" data-toggle="modal">
                     <i class="icon-pencil"></i>
@@ -40,7 +40,7 @@
             <dd><c:out value="${targetUser.school}"/></dd>
             <dt>Department</dt>
             <dd><c:out value="${targetUser.department}"/></dd>
-            <c:if test="${sessionScope.currentUser.userName == targetUser.userName}">
+            <c:if test="${sessionScope.currentUser.userId == targetUser.userId}">
               <dt>Student ID</dt>
               <dd><c:out value="${targetUser.studentId}"/></dd>
               <dt>Email</dt>
@@ -92,7 +92,7 @@
   </div>
 </div>
 
-<c:if test="${sessionScope.currentUser.userName == targetUser.userName}">
+<c:if test="${sessionScope.currentUser.userId == targetUser.userId}">
   <!-- User edit Modal -->
   <div id="userEditModal" class="modal hide fade modal-large" tabindex="-1" role="dialog"
        aria-labelledby="userEditModal" aria-hidden="true">
