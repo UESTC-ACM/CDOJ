@@ -69,7 +69,7 @@
             </li>
           </c:if>
           <li>
-            <a href="#">
+            <a href="<c:url value="/user/center/${sessionScope.currentUser.userName}"/>">
               <i class="icon-home"></i>
               User center
             </a>

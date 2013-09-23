@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -189,6 +190,19 @@ public class UserController extends BaseController {
     return json;
   }
 
+  @RequestMapping("center/{userName}")
+  @LoginPermit(NeedLogin = false)
+  public String userCenter(@PathVariable("userName") String userName,
+                           ModelMap model) {
+    try {
+      UserView userView = userService.getUserViewByUserName(userName);
+      model.put("departmentList", globalService.getDepartmentList());
+      model.put("targetUser", userView);
+    } catch (AppException e) {
+      return "error/404";
+    }
+    return "user/userCenter";
+  }
   private UserService userService;
   private GlobalService globalService;
 }

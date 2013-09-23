@@ -92,4 +92,12 @@ public interface UserService extends OnlineJudgeService<User, Integer> {
    * @throws AppException
    */
   Long count(UserCondition userCondition) throws AppException;
+
+  /**
+   * TODO
+   * @param userName
+   * @return
+   * @throws AppException
+   */
+  UserView getUserViewByUserName(String userName) throws AppException;
 }
