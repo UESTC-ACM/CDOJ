@@ -22,6 +22,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
+import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -47,6 +48,10 @@ public class UserServiceTest {
   @Autowired
   @Qualifier("mockGlobalService")
   private GlobalService globalService;
+
+  @Autowired
+  @Qualifier("mockEmailService")
+  private EmailService emailService;
 
   @Before
   public void init() {

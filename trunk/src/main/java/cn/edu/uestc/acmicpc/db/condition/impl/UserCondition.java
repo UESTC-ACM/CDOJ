@@ -71,8 +71,7 @@ public class UserCondition extends BaseCondition {
   }
 
   @Exp(MapField = "departmentByDepartmentId", Type = ConditionType.eq, MapObject = Department.class)
-  public
-      Integer getDepartmentId() {
+  public Integer getDepartmentId() {
     return departmentId;
   }
 
