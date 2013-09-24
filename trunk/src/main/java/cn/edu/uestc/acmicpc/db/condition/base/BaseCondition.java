@@ -97,9 +97,6 @@ public abstract class BaseCondition implements ApplicationContextAware {
 
   private static final Logger LOGGER = LogManager.getLogger(BaseCondition.class);
 
-  /**
-   * Spring application context.
-   */
   @Autowired
   protected ApplicationContext applicationContext;
 
@@ -172,7 +169,10 @@ public abstract class BaseCondition implements ApplicationContextAware {
 
   /**
    * Clear all field, and set then to {@code null}.
+   *
+   * @deprecated this method is not supported in new API, please create condition directly.
    */
+  @Deprecated
   public void clear() {
     Method[] methods = getClass().getMethods();
     for (Method method : methods) {
@@ -199,7 +199,10 @@ public abstract class BaseCondition implements ApplicationContextAware {
 
   /**
    * Basic condition type of database handler
+   * @deprecated
+   *    this method is not supported in new API, please use {@link Condition.ConditionType}.
    */
+  @Deprecated
   public enum ConditionType {
     eq("="), gt(">"), lt("<"), ge(">="), le("<="), like(" like ");
 
@@ -223,7 +226,9 @@ public abstract class BaseCondition implements ApplicationContextAware {
    * Get {@code Condition} objects from conditions
    *
    * @return condition object we need
+   * @deprecated this method is not supported in new API, please use services to get conditions.
    */
+  @Deprecated
   public Condition getCondition() {
     return getCondition(false);
   }
@@ -233,8 +238,10 @@ public abstract class BaseCondition implements ApplicationContextAware {
    *
    * @param upperCaseFirst whether columns' name begin uppercase letter first
    * @return condition object we need
+   * @deprecated this method is not supported in new API, please use services to get conditions.
    */
   @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Deprecated
   Condition getCondition(boolean upperCaseFirst) {
     Condition condition = new Condition();
     Class<?> clazz = this.getClass();
@@ -294,8 +301,11 @@ public abstract class BaseCondition implements ApplicationContextAware {
 
   /**
    * Annotation for condition expressions
+   *
+   * @deprecated this type is not supported in new API, please use {@link Condition} for DB query.
    */
   @Retention(RetentionPolicy.RUNTIME)
+  @Deprecated
   public @interface Exp {
 
     /**

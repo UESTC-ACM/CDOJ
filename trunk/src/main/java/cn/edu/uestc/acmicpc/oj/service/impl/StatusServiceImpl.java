@@ -6,6 +6,7 @@ import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.oj.service.iface.StatusService;
@@ -48,5 +49,10 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   @Override
   public IStatusDAO getDAO() {
     return statusDAO;
+  }
+
+  @Override
+  public Condition getCondition(StatusCondition condition) throws AppException {
+    throw new UnsupportedOperationException();
   }
 }

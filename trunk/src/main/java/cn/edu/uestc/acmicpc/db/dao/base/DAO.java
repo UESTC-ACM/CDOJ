@@ -40,7 +40,6 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
  *
  * @param <Entity> Entity's type
  * @param <PK> Primary key's type
- * @param <DTO> dto's type.
  */
 @Repository
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
@@ -114,16 +113,27 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     }
   }
 
+  /**
+   * Build hql with class name.
+   *
+   * @param condition DB condition entity.
+   * @return hql with class name.
+   */
+  private String buildHQLString(Condition condition) {
+    return "from " + getReferenceClass().getSimpleName() + " " + condition.toHQLString();
+  }
+
   @Override
   public List<?> findAll(Condition condition) throws AppException {
     if (condition == null) {
       condition = new Condition();
     }
     try {
-      Criteria criteria = createCriteria();
-      updateCriteria(criteria, condition);
-      return criteria.list();
+      String hql = buildHQLString(condition);
+      return getSession().createQuery(hql).list();
     } catch (HibernateException e) {
+      LOGGER.error(e);
+      e.printStackTrace();
       throw new AppException("Invoke findAll method error.");
     }
   }
@@ -148,11 +158,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
       condition = new Condition();
     }
     try {
-      Criteria criteria = createCriteria();
-      condition.projections = null;
-      condition.addProjection(Projections.count(getKeyFieldName()));
-      updateCriteria(criteria, condition);
-      return (Long) criteria.uniqueResult();
+      String hql = "select count(*) " + buildHQLString(condition);
+      return (Long)getSession().createQuery(hql).uniqueResult();
     } catch (HibernateException e) {
       LOGGER.error(e);
       throw new AppException("Invoke count method error.");
@@ -282,6 +289,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   protected abstract Class<Entity> getReferenceClass();
 
   @Override
+  @Deprecated
   public String getSQLString(Condition condition) throws AppException {
     if (condition == null) {
       return "";
@@ -291,8 +299,9 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
       String field = criterion.toString();
       params.add(field);
     }
-    for (String key : condition.getJoinedProperties().keySet()) {
-      JoinedProperty joinedProperty = condition.getJoinedProperties().get(key);
+    for (Map.Entry<String, JoinedProperty> entry : condition.getJoinedProperties().entrySet()) {
+      String key = entry.getKey();
+      JoinedProperty joinedProperty = entry.getValue();
       String field;
       if (joinedProperty.getConditionType() == BaseCondition.ConditionType.like) {
         field =

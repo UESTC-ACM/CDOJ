@@ -127,7 +127,10 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param condition specific condition entity
    * @return where clause we need
    * @throws AppException
+   * @Deprecated
+   *    this method is not supported in new API, please use {@link Condition#toHQLString()}.
    */
+  @Deprecated
   public String getSQLString(Condition condition) throws AppException;
 
   /**
