@@ -9,14 +9,11 @@ import java.util.Map;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.base.JoinedProperty;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
@@ -24,11 +21,11 @@ import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
-import cn.edu.uestc.acmicpc.oj.service.AbstractOnlineJudgeService;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
+import cn.edu.uestc.acmicpc.service.impl.AbstractService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -40,8 +37,7 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
  */
 @Service
 @Primary
-public class UserServiceImpl extends AbstractOnlineJudgeService<User, Integer, UserCondition>
-    implements UserService {
+public class UserServiceImpl extends AbstractService implements UserService {
 
   private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
   private final IUserDAO userDAO;
@@ -287,15 +283,5 @@ public class UserServiceImpl extends AbstractOnlineJudgeService<User, Integer, U
   @Override
   public IUserDAO getDAO() {
     return userDAO;
-  }
-
-  @Override
-  public Condition getCondition(UserCondition userCondition) throws AppException {
-    Condition condition = super.getCondition(userCondition);
-    if (userCondition.getStartId() != null) {
-      condition.addJoinedProperty("userId", new JoinedProperty(
-          Restrictions.ge("userId", userCondition), userCondition.getStartId(), ConditionType.eq));
-    }
-    return condition;
   }
 }

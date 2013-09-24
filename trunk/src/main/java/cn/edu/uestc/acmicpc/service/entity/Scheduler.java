@@ -74,9 +74,10 @@ public class Scheduler implements Runnable {
   @SuppressWarnings("unchecked")
   private void searchForJudge() {
     try {
-      statusCondition.clear();
-      statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_WAIT);
-      statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_REJUDGING);
+      StatusCondition statusCondition = new StatusCondition();
+      // FIXME set status condition.
+//      statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_WAIT);
+//      statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_REJUDGING);
       List<Status> statusList = (List<Status>) statusDAO.findAll(statusCondition.getCondition());
       for (Status status : statusList) {
         status.setResult(Global.OnlineJudgeReturnType.OJ_JUDGING.ordinal());

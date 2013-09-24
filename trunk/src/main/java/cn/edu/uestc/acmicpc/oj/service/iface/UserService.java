@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.oj.service.iface;
 import java.util.List;
 import java.util.Map;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
@@ -15,7 +14,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * User service interface to handle operations about {@link User}.
  */
-public interface UserService extends OnlineJudgeService<User, Integer, UserCondition> {
+public interface UserService extends OnlineJudgeService<User, Integer> {
 
   /**
    * Get unique user entity from database by user id.
@@ -114,7 +113,7 @@ public interface UserService extends OnlineJudgeService<User, Integer, UserCondi
   /**
    * TODO
    * @param user
-   * @return
+   * @return user DTO entity we need.
    * @throws AppException
    */
   UserDTO getUserDTOByUser(User user) throws AppException;
@@ -152,7 +151,4 @@ public interface UserService extends OnlineJudgeService<User, Integer, UserCondi
    * @throws AppException
    */
   Boolean sendSerialKey(String userName) throws AppException;
-
-  @Override
-  public Condition getCondition(UserCondition condition) throws AppException;
 }

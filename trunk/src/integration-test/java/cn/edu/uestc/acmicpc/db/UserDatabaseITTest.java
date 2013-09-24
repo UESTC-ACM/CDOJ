@@ -11,8 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
+import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -31,9 +30,9 @@ public class UserDatabaseITTest {
   @SuppressWarnings("unchecked")
   @Test
   public void testQuery_byName() throws AppException {
-    Condition condition = new Condition();
-    condition.addEntry("userName", ConditionType.LIKE, "admin");
-    List<User> users = (List<User>) userDAO.findAll(condition);
+    UserCondition condition = new UserCondition();
+    condition.userName = "admin";
+    List<User> users = (List<User>) userDAO.findAll(condition.getCondition());
     Assert.assertEquals(2, users.size());
     Assert.assertEquals("administrator", users.get(0).getUserName());
     Assert.assertEquals(Integer.valueOf(1), users.get(0).getUserId());
@@ -44,10 +43,10 @@ public class UserDatabaseITTest {
   @SuppressWarnings("unchecked")
   @Test
   public void testQuery_byDepartmentId() throws AppException {
-    Condition condition = new Condition();
-    condition.addEntry("userId", ConditionType.LESS_OR_EQUALS, 5);
-    condition.addEntry("departmentId", ConditionType.EQUALS, 1);
-    List<User> users = (List<User>) userDAO.findAll(condition);
+    UserCondition condition = new UserCondition();
+    condition.endId = 5;
+    condition.departmentId = 1;
+    List<User> users = (List<User>) userDAO.findAll(condition.getCondition());
     Assert.assertEquals(2, users.size());
     Assert.assertEquals("administrator", users.get(0).getUserName());
     Assert.assertEquals("admin", users.get(1).getUserName());
@@ -65,9 +64,9 @@ public class UserDatabaseITTest {
 
   @Test
   public void testUserCondition_byStartIdAndEndId() throws AppException {
-    Condition condition = new Condition();
-    condition.addEntry("userId", ConditionType.GREATER_OR_EQUALS, 2);
-    condition.addEntry("userId", ConditionType.LESS_OR_EQUALS, 10);
-    Assert.assertEquals(Long.valueOf(2), userDAO.count(condition));
+    UserCondition condition = new UserCondition();
+    condition.startId = 2;
+    condition.endId = 10;
+    Assert.assertEquals(Long.valueOf(2), userDAO.count(condition.getCondition()));
   }
 }

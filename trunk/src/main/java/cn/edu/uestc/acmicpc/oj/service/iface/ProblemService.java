@@ -2,15 +2,13 @@ package cn.edu.uestc.acmicpc.oj.service.iface;
 
 import java.util.List;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Service interface for {@link Problem}.
  */
-public interface ProblemService extends OnlineJudgeService<Problem, Integer, ProblemCondition> {
+public interface ProblemService extends OnlineJudgeService<Problem, Integer> {
 
   /**
    * Get all visible problems' id without any statements.
@@ -19,7 +17,4 @@ public interface ProblemService extends OnlineJudgeService<Problem, Integer, Pro
    * @throws AppException
    */
   List<Integer> getAllVisibleProblemIds() throws AppException;
-
-  @Override
-  public Condition getCondition(ProblemCondition condition) throws AppException;
 }

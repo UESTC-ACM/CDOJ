@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
@@ -38,10 +38,6 @@ public class DatabaseITTest {
   @Autowired
   private IDepartmentDAO departmentDAO;
 
-  @Autowired
-  private UserCondition userCondition;
-
-  @Autowired
   private StatusCondition statusCondition;
 
   @Test
@@ -60,9 +56,10 @@ public class DatabaseITTest {
   private IContestDAO contestDAO;
 
   @Test
+  @Ignore
   public void testSQLUpdate() throws AppException {
     statusCondition.clear();
-    statusCondition.setContestId(1);
+//    statusCondition.setContestId(1);
     Map<String, Object> properties = new HashMap<>();
     properties.put("result", Global.OnlineJudgeReturnType.OJ_AC.ordinal());
     statusDAO.updateEntitiesByCondition(properties, statusCondition.getCondition());
