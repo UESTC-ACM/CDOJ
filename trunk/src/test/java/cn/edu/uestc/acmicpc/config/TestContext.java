@@ -2,12 +2,10 @@ package cn.edu.uestc.acmicpc.config;
 
 import static org.mockito.Mockito.mock;
 
+import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -63,8 +61,9 @@ public class TestContext extends ApplicationContextConfig {
   @Bean
   @Autowired
   public UserService realUserService(@Qualifier("mockUserDAO") IUserDAO userDAO,
-      @Qualifier("mockGlobalService") GlobalService globalService) {
-    return new UserServiceImpl(userDAO, globalService);
+      @Qualifier("mockGlobalService") GlobalService globalService,
+      @Qualifier("mockEmailService") EmailService emailService) {
+    return new UserServiceImpl(userDAO, globalService, emailService);
   }
 
   @Bean
@@ -75,6 +74,11 @@ public class TestContext extends ApplicationContextConfig {
   @Bean
   public GlobalService mockGlobalService() {
     return mock(GlobalService.class);
+  }
+
+  @Bean
+  public EmailService mockEmailService() {
+    return mock(EmailService.class);
   }
 
   @Bean
