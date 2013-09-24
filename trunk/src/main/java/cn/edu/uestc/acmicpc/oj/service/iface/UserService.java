@@ -1,6 +1,7 @@
 package cn.edu.uestc.acmicpc.oj.service.iface;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
@@ -8,8 +9,8 @@ import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 /**
  * User service interface to handle operations about {@link User}.
  */
@@ -138,4 +139,20 @@ public interface UserService extends OnlineJudgeService<User, Integer> {
    * @throws AppException
    */
   void updateUserByUserDTO(User user, UserDTO userDTO) throws AppException;
+
+  /**
+   * TODO
+   * @param userName
+   * @return
+   * @throws AppException
+   */
+  Map<Integer, Global.AuthorStatusType> getUserProblemStatus(String userName) throws AppException;
+
+  /**
+   * TODO
+   * @param userName
+   * @return
+   * @throws AppException
+   */
+  Boolean sendSerialKey(String userName) throws AppException;
 }

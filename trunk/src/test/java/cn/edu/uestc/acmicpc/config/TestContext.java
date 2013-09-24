@@ -18,6 +18,7 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.oj.service.impl.UserServiceImpl;
 import cn.edu.uestc.acmicpc.service.JudgeService;
+import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.Global;
 
@@ -63,8 +64,9 @@ public class TestContext extends ApplicationContextConfig {
   @Bean
   @Autowired
   public UserService realUserService(@Qualifier("mockUserDAO") IUserDAO userDAO,
-      @Qualifier("mockGlobalService") GlobalService globalService) {
-    return new UserServiceImpl(userDAO, globalService);
+      @Qualifier("mockGlobalService") GlobalService globalService,
+      @Qualifier("mockEmailService") EmailService emailService) {
+    return new UserServiceImpl(userDAO, globalService, emailService);
   }
 
   @Bean
@@ -75,6 +77,11 @@ public class TestContext extends ApplicationContextConfig {
   @Bean
   public GlobalService mockGlobalService() {
     return mock(GlobalService.class);
+  }
+
+  @Bean
+  public EmailService mockEmailService() {
+    return mock(EmailService.class);
   }
 
   @Bean

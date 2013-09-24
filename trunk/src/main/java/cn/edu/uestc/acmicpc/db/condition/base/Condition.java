@@ -1,27 +1,6 @@
-/*
- *
- *  cdoj, UESTC ACMICPC Online Judge
- *  Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  	mzry1992 <@link muziriyun@gmail.com>
- *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU General Public License
- *  as published by the Free Software Foundation; either version 2
- *  of the License, or (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 package cn.edu.uestc.acmicpc.db.condition.base;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +9,9 @@ import java.util.Map;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Projection;
 
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+
 /**
  * Other conditions setting for DAO findAll method.
  * <p/>
@@ -37,26 +19,107 @@ import org.hibernate.criterion.Projection;
  * <p/>
  * {@code currentPage} and {@code countPerPage} can be {@code null}, if the fields is {@code null}
  * we ignore this restriction, otherwise we consider the record range by this two fields.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ * <p/>
+ * If this condition is stored as {@link Entry#getValue()}, we ignore the order
+ * and projection information of it.
  */
 public class Condition {
+
+  /** Entries' joined type for DB query. */
+  public static enum JoinedType {
+    AND("and"), OR("or");
+
+    private final String singal;
+
+    private JoinedType(String singal) {
+      this.singal = singal;
+    }
+
+    public String getSingal() {
+      return singal;
+    }
+  }
+
+  /** Basic condition type of database handler. */
+  public static enum ConditionType {
+    CONDITION(""), EQUALS("="), GREATER_THAN(">"), LESS_THAN("<"), GREATER_OR_EQUALS(">="),
+    LESS_OR_EQUALS("<="), LIKE(" like "), STRING_EQUALS(" like ");
+
+    private final String signal;
+
+    public String getSignal() {
+      return signal;
+    }
+
+    private ConditionType(String signal) {
+      this.signal = signal;
+
+    }
+  }
+
+  /** Condition basic entity. */
+  public static class Entry {
+    private final String fieldName;
+    private final Object value;
+    private final ConditionType conditionType;
+
+    public static Entry of(Condition condition) throws AppException {
+      AppExceptionUtil.assertNotNull(condition);
+      return new Entry(null, ConditionType.CONDITION, condition);
+    }
+
+    public static Entry of(String fieldName, ConditionType conditionType, Object value)
+        throws AppException {
+      if (conditionType == ConditionType.CONDITION) {
+        AppExceptionUtil.assertTrue(value instanceof Condition);
+      }
+      return new Entry(fieldName, conditionType, value);
+    }
+
+    private Entry(String fieldName, ConditionType conditionType, Object value) {
+      this.fieldName = fieldName;
+      this.conditionType = conditionType;
+      this.value = value;
+    }
+
+    public String getFieldName() {
+      return fieldName;
+    }
+
+    public Object getValue() {
+      return value;
+    }
+
+    public ConditionType getConditionType() {
+      return conditionType;
+    }
+  }
 
   /**
    * Current page number.
    */
   private Long currentPage;
+
   /**
    * Number of records per page.
    */
   private Long countPerPage;
+
   /**
-   * Extra criterion list.
+   * DB query entries.
    */
+  private final List<Entry> entries = new ArrayList<>();
+
+  /** DB query joined type. */
+  private final JoinedType joinedType;
+
+  @Deprecated
   private List<Criterion> criterionList;
 
+  @Deprecated
   private Map<String, JoinedProperty> joinedProperties;
 
+  @Deprecated
   public Map<String, JoinedProperty> getJoinedProperties() {
     if (joinedProperties == null) {
       joinedProperties = new HashMap<>();
@@ -64,6 +127,7 @@ public class Condition {
     return joinedProperties;
   }
 
+  @Deprecated
   public void setJoinedProperties(Map<String, JoinedProperty> joinedProperties) {
     this.joinedProperties = joinedProperties;
   }
@@ -93,6 +157,7 @@ public class Condition {
     this.countPerPage = countPerPage;
   }
 
+  @Deprecated
   public List<Criterion> getCriterionList() {
     if (criterionList == null) {
       criterionList = new LinkedList<>();
@@ -100,10 +165,12 @@ public class Condition {
     return criterionList;
   }
 
+  @Deprecated
   public void setCriterionList(List<Criterion> criterionList) {
     this.criterionList = criterionList;
   }
 
+  @Deprecated
   public List<Order> getOrders() {
     if (orders == null) {
       orders = new LinkedList<>();
@@ -111,10 +178,12 @@ public class Condition {
     return orders;
   }
 
+  @Deprecated
   public void setOrders(List<Order> orders) {
     this.orders = orders;
   }
 
+  @Deprecated
   public List<Projection> getProjections() {
     if (projections == null) {
       projections = new LinkedList<>();
@@ -122,6 +191,7 @@ public class Condition {
     return projections;
   }
 
+  @Deprecated
   public void setProjections(List<Projection> projections) {
     this.projections = projections;
   }
@@ -130,6 +200,11 @@ public class Condition {
    * Default constructor.
    */
   public Condition() {
+    this(JoinedType.AND);
+  }
+
+  public Condition(JoinedType joinedType) {
+    this.joinedType = joinedType;
   }
 
   /**
@@ -146,6 +221,7 @@ public class Condition {
     if (field != null && asc != null) {
       addOrder(field, asc);
     }
+    this.joinedType = JoinedType.AND;
   }
 
   /**
@@ -184,10 +260,8 @@ public class Condition {
 
   /**
    * Order conditions.
-   *
-   * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
    */
-  public class Order {
+  public static class Order {
 
     public Order(String field, boolean asc) {
       this.field = field;
@@ -210,9 +284,88 @@ public class Condition {
    * @param key property's key
    * @param value property's value
    * @return condition itself.
+   * @deprecated this method is not supported in new API, please use.
    */
+  @Deprecated
   public Condition addJoinedProperty(String key, JoinedProperty value) {
     getJoinedProperties().put(key, value);
     return this;
+  }
+
+  public void addEntry(Condition condition) throws AppException {
+    addEntry(Entry.of(condition));
+  }
+
+  public void addEntry(String fieldName, ConditionType conditionType, Object value)
+      throws AppException {
+    addEntry(Entry.of(fieldName, conditionType, value));
+  }
+
+  public void addEntry(Entry entry) {
+    entries.add(entry);
+  }
+
+  /**
+   * Build DB query string and append it into builder.
+   *
+   * @return if this condition's HQL is empty, return {@code false}.
+   */
+  private String buildSQLString() {
+    String flag = " " + joinedType.getSingal() + " ";
+    StringBuilder builder = new StringBuilder();
+    boolean first = true;
+
+    builder.append("(");
+    for (Entry entry : entries) {
+      if (entry.getConditionType() == ConditionType.CONDITION) {
+        String hql = ((Condition) entry.getValue()).buildSQLString();
+        if (hql != null) {
+          if (first) {
+            first = false;
+          } else {
+            builder.append(flag);
+          }
+          builder.append(hql);
+        }
+      } else {
+        if (first) {
+          first = false;
+        } else {
+          builder.append(flag);
+        }
+        builder.append(entry.getFieldName());
+        builder.append(entry.getConditionType().getSignal());
+        builder.append("'");
+        if (entry.getConditionType() == ConditionType.LIKE) {
+          builder.append("%").append(entry.getValue()).append("%");
+        } else {
+          builder.append(entry.getValue());
+        }
+        builder.append("'");
+      }
+    }
+    if (first) {
+      return null;
+    }
+    builder.append(")");
+    return builder.toString();
+  }
+
+  /**
+   * Get DB query where clause by condition.
+   *
+   * @return DB query where clause.
+   */
+  public String toHQLString() {
+    String hql = buildSQLString();
+    if (hql == null) {
+      return "";
+    } else {
+      return "where " + hql;
+    }
+  }
+
+  public JoinedType getJoinedType() {
+    return joinedType;
   }
 }

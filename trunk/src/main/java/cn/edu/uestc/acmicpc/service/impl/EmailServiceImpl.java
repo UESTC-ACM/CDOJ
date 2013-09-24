@@ -1,24 +1,4 @@
-/*
- * cdoj, UESTC ACMICPC Online Judge
- * Copyright (c) 2012  fish <@link lyhypacm@gmail.com>,
- * mzry1992 <@link muziriyun@gmail.com>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
-
-package cn.edu.uestc.acmicpc.util;
+package cn.edu.uestc.acmicpc.service.impl;
 
 import java.util.Properties;
 
@@ -32,26 +12,26 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import cn.edu.uestc.acmicpc.service.iface.EmailService;
+import cn.edu.uestc.acmicpc.util.Settings;
+
 /**
- * TODO description
+ * Implementation for {@link EmailService}
  */
 @Service
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class EMailSender {
+@Primary
+public class EmailServiceImpl extends AbstractService implements EmailService {
 
   @Autowired
-  public EMailSender(Settings settings) {
-    this.settings = settings;
-  }
+  private Settings settings;
 
   class AJavaAuthenticator extends Authenticator {
 
-    private String user;
-    private String pwd;
+    private final String user;
+    private final String pwd;
 
     public AJavaAuthenticator(String user, String pwd) {
       this.user = user;
@@ -64,9 +44,8 @@ public class EMailSender {
     }
   }
 
-  private Settings settings;
-
-  public boolean send(String emailAddress, String title, String content) {
+  @Override
+  public Boolean send(String emailAddress, String title, String content) {
     Properties properties = new Properties();
     properties.setProperty("mail.transport.protocol", "smtp");
     // properties.setProperty("mail.smtp.starttls.enable", "true");

@@ -22,7 +22,6 @@
 
 package cn.edu.uestc.acmicpc.db.condition.base;
 
-import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
@@ -31,19 +30,14 @@ import java.lang.reflect.Method;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
-import cn.edu.uestc.acmicpc.util.StringUtil;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition.Entry;
 import cn.edu.uestc.acmicpc.util.annotation.Ignore;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * We can use this class to transform conditions to database's Criterion list
@@ -93,15 +87,9 @@ import cn.edu.uestc.acmicpc.util.annotation.Ignore;
  */
 @Repository
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public abstract class BaseCondition implements ApplicationContextAware {
+public abstract class BaseCondition {
 
   private static final Logger LOGGER = LogManager.getLogger(BaseCondition.class);
-
-  /**
-   * Spring application context.
-   */
-  @Autowired
-  protected ApplicationContext applicationContext;
 
   private Long currentPage;
 
@@ -142,16 +130,13 @@ public abstract class BaseCondition implements ApplicationContextAware {
    * <p/>
    * We can iterator all the fields which will be considered, and handle the condition object
    * according to the fields' values.
-   * <p/>
-   * <strong>WARN</strong>:
-   * <p/>
-   * When you deal with {@code joined} columns, please put then into {@code condition} entity with
-   * {@code JoinedProperty} entity.
    *
    * @param condition conditions that to be considered
    * @see Condition
-   * @see JoinedProperty
+   * @see Entry
+   * @deprecated if you should do this, deal with the condition is sub class' getCondition method.
    */
+  @Deprecated
   protected void invoke(Condition condition) {
     if (orderFields != null) {
       String[] fields = orderFields.split(",");
@@ -164,15 +149,12 @@ public abstract class BaseCondition implements ApplicationContextAware {
     }
   }
 
-  @Override
-  @Ignore
-  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-    this.applicationContext = applicationContext;
-  }
-
   /**
    * Clear all field, and set then to {@code null}.
+   *
+   * @deprecated this method is not supported in new API, please create condition directly.
    */
+  @Deprecated
   public void clear() {
     Method[] methods = getClass().getMethods();
     for (Method method : methods) {
@@ -198,93 +180,42 @@ public abstract class BaseCondition implements ApplicationContextAware {
   }
 
   /**
-   * Basic condition type of database handler
-   */
-  public enum ConditionType {
-    eq("="), gt(">"), lt("<"), ge(">="), le("<="), like(" like ");
-
-    private String signal;
-
-    public String getSignal() {
-      return signal;
-    }
-
-    public void setSignal(String signal) {
-      this.signal = signal;
-    }
-
-    private ConditionType(String signal) {
-      this.signal = signal;
-
-    }
-  }
-
-  /**
-   * Get {@code Condition} objects from conditions
-   *
-   * @return condition object we need
-   */
-  public Condition getCondition() {
-    return getCondition(false);
-  }
-
-  /**
    * Get Condition objects from conditions
+   * <p/>
+   * <strong>For developers:</strong>
+   * This method is not supported order now, but it's will be supported later.
    *
-   * @param upperCaseFirst whether columns' name begin uppercase letter first
    * @return condition object we need
+   * @throws AppException
    */
-  @SuppressWarnings({ "unchecked", "rawtypes" })
-  Condition getCondition(boolean upperCaseFirst) {
+  public Condition getCondition() throws AppException {
     Condition condition = new Condition();
+    if (orderFields != null) {
+      String[] fields = orderFields.split(",");
+      String[] asc = orderAsc.split(",");
+      if (fields.length == asc.length) {
+        for (int i = 0; i < fields.length; i++) {
+          condition.addOrder(fields[i], asc[i].equals("true"));
+        }
+      }
+    }
     Class<?> clazz = this.getClass();
-    Class<?> restrictionsClass = Restrictions.class;
-    Class<?> objectClass = Object.class;
-    for (Method method : clazz.getMethods()) {
-      if (method.getName().startsWith("get")) {
+    for (Field field : clazz.getFields()) {
+      if (field.isAnnotationPresent(Exp.class)) {
+        Exp exp = field.getAnnotation(Exp.class);
         try {
-          String fieldName = StringUtil.getFieldNameFromGetterOrSetter(method.getName());
-          Object value, keyValue;
-          Exp exp = method.getAnnotation(Exp.class);
-          if (exp == null) {
-            continue;
-          }
-          try {
-            value = method.invoke(this);
-          } catch (Exception e) {
-            continue;
-          }
+          Object value = field.get(this);
           if (value == null) {
             continue;
           }
-          keyValue = value;
-          String mapField = exp.MapField();
-          mapField = StringUtil.isNullOrWhiteSpace(mapField) ? fieldName : mapField;
-          mapField =
-              upperCaseFirst ? mapField.substring(0, 1).toUpperCase() + mapField.substring(1)
-                  : mapField;
-          boolean isJoinedProperty = false;
-          if (!exp.MapObject().equals(objectClass)) {
-            String name =
-                exp.MapObject().getName().substring(exp.MapObject().getName().lastIndexOf('.') + 1);
-            String DAOName = name.substring(0, 1).toLowerCase() + name.substring(1) + "DAO";
-            IDAO DAO = (IDAO) applicationContext.getBean(DAOName);
-            value = DAO.get((Serializable) value);
-            isJoinedProperty = true;
-          }
-          if (exp.Type().name().equals("like")) {
-            value = String.format("%%%s%%", value);
-          }
-          Criterion c =
-              (Criterion) restrictionsClass
-                  .getMethod(exp.Type().name(), String.class, Object.class).invoke(null, mapField,
-                      value);
-          if (isJoinedProperty) {
-            condition.addJoinedProperty(mapField, new JoinedProperty(c, keyValue, exp.Type()));
+          if (exp.mapField().trim().equals("")) {
+            condition.addEntry(field.getName(), exp.type(), value);
           } else {
-            condition.addCriterion(c);
+            condition.addEntry(exp.mapField(), exp.type(), value);
           }
-        } catch (Exception e) {
+        } catch (IllegalArgumentException | IllegalAccessException | AppException e) {
+          e.printStackTrace();
+          LOGGER.error(e);
         }
       }
     }
@@ -303,21 +234,14 @@ public abstract class BaseCondition implements ApplicationContextAware {
      *
      * @return mapping field name
      */
-    public String MapField() default "";
-
-    /**
-     * Mapping object's class, we will get the persistence entity by specific DAO object.
-     *
-     * @return mapping object class
-     */
-    public Class<?> MapObject() default Object.class;
+    public String mapField() default "";
 
     /**
      * Condition compare type, generate the condition clause by the compare type.
      *
      * @return condition compare type
      */
-    public ConditionType Type();
+    public ConditionType type();
 
   }
 

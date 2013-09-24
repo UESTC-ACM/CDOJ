@@ -30,7 +30,20 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 
 /**
- * Description TODO
+ * User controller
+ * <ul>
+ *   <li><strong>/user/login</strong> Upload user's name and password in json, and do login operation on server</li>
+ *   <li><strong>/user/logout</strong> Logout current user</li>
+ *   <li><strong>/user/register</strong> Upload user's information and generate a new user</li>
+ *   <li><strong>/user/sendSerialKey/{userName}</strong></li>
+ *   <li><strong>/user/active/{userName}/{serialKey}</strong></li>
+ *   <li><strong>/user/resetPassword</strong></li>
+ *   <li><strong>/user/center/{userName}</strong> Visit user center</li>
+ *   <li><strong>/user/status/{userName}</strong> User problem submission status</li>
+ *   <li><strong>/user/list</strong> User list page</li>
+ *   <li><strong>/user/search</strong> Search users by user condition</li>
+ *   <li><strong>/user/edi</strong> Update user information</li>
+ * </ul>
  */
 @Controller
 @RequestMapping("/user")
@@ -42,7 +55,6 @@ public class UserController extends BaseController {
     this.userService = userService;
     this.globalService = globalService;
   }
-  public UserService getUserService() { return userService; }
 
   /**
    * Login controller.
@@ -211,6 +223,18 @@ public class UserController extends BaseController {
     return "user/userCenter";
   }
 
+  /**
+   * Update user information
+   * @param session session
+   * @param userDTO form information
+   * @param validateResult validate result
+   * @return <ul>
+   *         <li>For success: {"result":"success"}</li>
+   *         <li>For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
+   *         <li>For validation error: {"result":"field_error","field":<strong>Field
+   *         errors</strong>}</li>
+   *         </ul>
+   */
   @RequestMapping("edit")
   @LoginPermit(NeedLogin = true)
   public @ResponseBody
@@ -233,6 +257,51 @@ public class UserController extends BaseController {
         json.put("result", "error");
         json.put("error_msg", e.getMessage());
       }
+    }
+    return json;
+  }
+
+  /**
+   * Find all problem that target user passed or failed.
+   *
+   * @param userName user name
+   * @return <ul>
+   * <li>
+   * For success: {"result":"ok", "problemStatus":<strong>ProblemStatus object</strong>,
+   * "problemCount":<strong>Tot problems</strong>}</li>
+   * <li>
+   * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
+   * </ul>
+   */
+  @RequestMapping("status/{userName}")
+  @LoginPermit(NeedLogin = false)
+  public @ResponseBody
+  Map<String, Object> status(@PathVariable("userName") String userName) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      Map<Integer, Global.AuthorStatusType> status = userService.getUserProblemStatus(userName);
+      json.put("status", status);
+      json.put("result", "success");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    }
+    return json;
+  }
+
+  @RequestMapping("sendSerialKey/{userName}")
+  @LoginPermit(NeedLogin = false)
+  public @ResponseBody
+  Map<String, Object> sendSerialKey(@PathVariable("userName") String userName) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      if (userService.sendSerialKey(userName))
+        json.put("result", "success");
+      else
+        json.put("result", "failed");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
     }
     return json;
   }
