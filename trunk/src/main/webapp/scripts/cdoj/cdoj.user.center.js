@@ -35,8 +35,8 @@ $(document).ready(function () {
     });
   }
 
-  $.post('/user/problemStatus/' + currentUserPageUser, function (data) {
-    var problemStatus = data.problemStatus;
+  jsonPost('/user/status/' + currentUserPageUser, function (data) {
+    var problemStatus = data['status'];
     var status = [];
     $.each(problemStatus, function(index, data) {
       if (data == 'PASS')
