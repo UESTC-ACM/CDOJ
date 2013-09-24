@@ -42,7 +42,7 @@ public class TriedITTest {
     List<User> userList = (List<User>) userDAO.findAll();
     for (User user : userList) {
       statusCondition.clear();
-      statusCondition.setUserId(user.getUserId());
+//      statusCondition.setUserId(user.getUserId());
       Condition condition = statusCondition.getCondition();
       Long count = statusDAO.count(condition);
       user.setTried(count.intValue());
@@ -59,9 +59,9 @@ public class TriedITTest {
     for (Problem problem : problemList) {
       statusCondition.clear();
       problemCondition.clear();
-      statusCondition.setProblemId(problem.getProblemId());
-      problemCondition.setStartId(problem.getProblemId());
-      problemCondition.setEndId(problem.getProblemId());
+//      statusCondition.setProblemId(problem.getProblemId());
+//      problemCondition.setStartId(problem.getProblemId());
+//      problemCondition.setEndId(problem.getProblemId());
       Long count = statusDAO.count(statusCondition.getCondition());
       problem.setTried(count.intValue());
       Map<String, Object> properties = new HashMap<>();

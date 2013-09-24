@@ -3,7 +3,9 @@ package cn.edu.uestc.acmicpc.oj.service.impl;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -21,12 +23,12 @@ import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
+import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.impl.AbstractService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
@@ -40,11 +42,16 @@ public class UserServiceImpl extends AbstractService implements UserService {
   private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
   private final IUserDAO userDAO;
   private final GlobalService globalService;
+  @SuppressWarnings("unused")
+  private final EmailService emailService;
 
   @Autowired
-  public UserServiceImpl(IUserDAO userDAO, GlobalService globalService) {
+  public UserServiceImpl(IUserDAO userDAO,
+                         GlobalService globalService,
+                         EmailService emailService) {
     this.userDAO = userDAO;
     this.globalService = globalService;
+    this.emailService = emailService;
   }
 
   @Override
@@ -59,8 +66,6 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public void updateUser(User user) throws AppException {
-    AppExceptionUtil.assertNotNull(user);
-    AppExceptionUtil.assertNotNull(user.getUserId());
     userDAO.update(user);
   }
 
@@ -215,6 +220,59 @@ public class UserServiceImpl extends AbstractService implements UserService {
     user.setSchool(userDTO.getSchool());
     user.setDepartmentByDepartmentId(globalService.getDepartmentById(userDTO.getDepartmentId()));
     user.setStudentId(userDTO.getStudentId());
+  }
+
+  @Override
+  public Map<Integer, Global.AuthorStatusType> getUserProblemStatus(String userName) throws AppException {
+    Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
+    //TODO complete this part after refactor condition
+    return problemStatus;
+  }
+
+  @Override
+  public Boolean sendSerialKey(String userName) throws AppException {
+    User user = getUserByUserName(userName);
+    if (user == null) {
+      throw new AppException("No such user!");
+    }
+    /*UserSerialKey userSerialKey =
+        userSerialKeyDAO.getEntityByUniqueField("userId", targetUser, "userByUserId", true);
+    if (userSerialKey != null) {
+      // less than 30 minutes
+         * if (new Date().getTime() - userSerialKey.getTime().getTime() <= 1800000) { throw new
+         * AppException( "serial key can only be generated in every 30 minutes."); }
+    } else {
+      userSerialKey = new UserSerialKey();
+    }
+    StringBuilder stringBuilder = new StringBuilder();
+    Random random = new Random();
+    for (int i = 0; i < Global.USER_SERIAL_KEY_LENGTH; ++i) {
+      stringBuilder.append((char) (random.nextInt(126 - 33 + 1) + 33));
+    }
+    String serialKey = stringBuilder.toString();
+    userSerialKey.setTime(new Timestamp(new Date().getTime()));
+    userSerialKey.setSerialKey(serialKey);
+    userSerialKey.setUserByUserId(targetUser);
+    userSerialKeyDAO.update(userSerialKey);
+
+    String url =
+        settings.SETTING_HOST
+            + getActionURL("/user",
+            "activate/" + targetUser.getUserName() + "/" + StringUtil.encodeSHA1(serialKey));
+    stringBuilder = new StringBuilder();
+    stringBuilder.append("Dear ").append(targetUser.getUserName()).append(" :\n\n");
+    stringBuilder
+        .append("To reset your password, simply click on the link below or paste into the url field on your favorite browser:\n\n");
+    stringBuilder.append(url).append("\n\n");
+    stringBuilder
+        .append("The activation link will only be good for 30 minutes, after that you will have to try again from the beginning. When you visit the above page, you'll be able to set your password as you like.\n\n");
+    stringBuilder
+        .append("If you have any questions about the system, feel free to contact us anytime at acm@uestc.edu.cn.\n\n");
+    stringBuilder.append("The UESTC OJ Team.\n");
+
+    eMailSender.send(targetUser.getEmail(), "UESTC Online Judge", stringBuilder.toString());
+    */
+    return true;
   }
 
   @Override

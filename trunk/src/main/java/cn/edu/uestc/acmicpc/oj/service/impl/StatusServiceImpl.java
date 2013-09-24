@@ -10,7 +10,6 @@ import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.oj.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.impl.AbstractService;
-import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
@@ -30,8 +29,8 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   @Override
   public List<Integer> findAllUserAcceptedProblemIds(Integer userId) throws AppException {
     StatusCondition statusCondition = applicationContext.getBean(StatusCondition.class);
-    statusCondition.setUserId(userId);
-    statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+//    statusCondition.setUserId(userId);
+//    statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
     return (List<Integer>) statusDAO.findAll(statusCondition.getCondition().addProjection(
         Projections.groupProperty("problemByProblemId.problemId")));
   }
@@ -40,7 +39,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   @Override
   public List<Integer> findAllUserTriedProblemIds(Integer userId) throws AppException {
     StatusCondition statusCondition = applicationContext.getBean(StatusCondition.class);
-    statusCondition.setUserId(userId);
+//    statusCondition.setUserId(userId);
     return (List<Integer>) statusDAO.findAll(statusCondition.getCondition().addProjection(
         Projections.groupProperty("problemByProblemId.problemId")));
   }

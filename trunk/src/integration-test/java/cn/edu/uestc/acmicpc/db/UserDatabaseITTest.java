@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.db;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,23 +24,15 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 @ContextConfiguration(classes = { IntegrationTestContext.class })
 public class UserDatabaseITTest {
 
-  @Before
-  public void init() {
-    userCondition.clear();
-  }
-
-  @Autowired
-  private UserCondition userCondition;
-
   @Autowired
   private IUserDAO userDAO;
 
   @SuppressWarnings("unchecked")
   @Test
   public void testQuery_byName() throws AppException {
-    userCondition.setUserName("admin");
-    Assert.assertEquals("admin", userCondition.getUserName());
-    List<User> users = (List<User>) userDAO.findAll(userCondition.getCondition());
+    UserCondition condition = new UserCondition();
+    condition.userName = "admin";
+    List<User> users = (List<User>) userDAO.findAll(condition.getCondition());
     Assert.assertEquals(2, users.size());
     Assert.assertEquals("administrator", users.get(0).getUserName());
     Assert.assertEquals(Integer.valueOf(1), users.get(0).getUserId());
@@ -52,10 +43,10 @@ public class UserDatabaseITTest {
   @SuppressWarnings("unchecked")
   @Test
   public void testQuery_byDepartmentId() throws AppException {
-    userCondition.setDepartmentId(1);
-    userCondition.setEndId(5);
-    Assert.assertEquals(Integer.valueOf(1), userCondition.getDepartmentId());
-    List<User> users = (List<User>) userDAO.findAll(userCondition.getCondition());
+    UserCondition condition = new UserCondition();
+    condition.endId = 5;
+    condition.departmentId = 1;
+    List<User> users = (List<User>) userDAO.findAll(condition.getCondition());
     Assert.assertEquals(2, users.size());
     Assert.assertEquals("administrator", users.get(0).getUserName());
     Assert.assertEquals("admin", users.get(1).getUserName());
@@ -73,8 +64,9 @@ public class UserDatabaseITTest {
 
   @Test
   public void testUserCondition_byStartIdAndEndId() throws AppException {
-    userCondition.setStartId(2);
-    userCondition.setEndId(10);
-    Assert.assertEquals(Long.valueOf(2), userDAO.count(userCondition.getCondition()));
+    UserCondition condition = new UserCondition();
+    condition.startId = 2;
+    condition.endId = 10;
+    Assert.assertEquals(Long.valueOf(2), userDAO.count(condition.getCondition()));
   }
 }

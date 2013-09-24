@@ -25,8 +25,9 @@ package cn.edu.uestc.acmicpc.db.condition.impl;
 import org.springframework.stereotype.Repository;
 
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.entity.Department;
+import cn.edu.uestc.acmicpc.util.Global.AuthenticationType;
 
 /**
  * User search condition.
@@ -37,93 +38,40 @@ public class UserCondition extends BaseCondition {
   /**
    * Start user id.
    */
-  private Integer startId;
+  @Exp(mapField = "userId", type = ConditionType.GREATER_OR_EQUALS)
+  public Integer startId;
+
   /**
    * End user id.
    */
-  private Integer endId;
+  @Exp(mapField = "userId", type = ConditionType.LESS_OR_EQUALS)
+  public Integer endId;
 
   /**
    * User name (partly matches).
    */
-  private String userName;
+  @Exp(type = ConditionType.LIKE)
+  public String userName;
 
   /**
    * User's type.
    *
-   * @see cn.edu.uestc.acmicpc.util.Global.AuthenticationType
+   * @see AuthenticationType
    */
-  private Integer type;
+  @Exp(type = ConditionType.EQUALS)
+  public Integer type;
 
   /**
    * User's department's id.
    *
    * @see Department
    */
-  private Integer departmentId;
-
-  public String getSchool() {
-    return school;
-  }
-
-  public void setSchool(String school) {
-    this.school = school;
-  }
-
-  @Exp(MapField = "departmentByDepartmentId", Type = ConditionType.eq, MapObject = Department.class)
-  public
-      Integer getDepartmentId() {
-    return departmentId;
-  }
-
-  public void setDepartmentId(Integer departmentId) {
-    this.departmentId = departmentId;
-  }
-
-  @Exp(Type = ConditionType.eq)
-  public Integer getType() {
-    return type;
-  }
-
-  public void setType(Integer type) {
-    this.type = type;
-  }
-
-  @Exp(Type = ConditionType.like)
-  public String getUserName() {
-    return userName;
-  }
-
-  public void setUserName(String userName) {
-    this.userName = userName;
-  }
-
-  @Exp(MapField = "userId", Type = ConditionType.le)
-  public Integer getEndId() {
-    return endId;
-  }
-
-  public void setEndId(Integer endId) {
-    this.endId = endId;
-  }
-
-  @Exp(MapField = "userId", Type = ConditionType.ge)
-  public Integer getStartId() {
-    return startId;
-  }
-
-  public void setStartId(Integer startId) {
-    this.startId = startId;
-  }
+  @Exp(type = ConditionType.EQUALS)
+  public Integer departmentId;
 
   /**
    * User's school(partly matches).
    */
-  @Exp(Type = ConditionType.like)
-  private String school;
-
-  @Override
-  public void invoke(Condition condition) {
-    super.invoke(condition);
-  }
+  @Exp(type = ConditionType.LIKE)
+  public String school;
 }
