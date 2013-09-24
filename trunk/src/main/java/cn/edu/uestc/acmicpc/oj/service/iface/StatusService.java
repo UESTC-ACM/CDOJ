@@ -2,15 +2,13 @@ package cn.edu.uestc.acmicpc.oj.service.iface;
 
 import java.util.List;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Service interface for {@link Status}.
  */
-public interface StatusService extends OnlineJudgeService<Status, Integer, StatusCondition> {
+public interface StatusService extends OnlineJudgeService<Status, Integer> {
 
   /**
    * list user's trieds problem ids
@@ -29,7 +27,4 @@ public interface StatusService extends OnlineJudgeService<Status, Integer, Statu
    * @throws AppException
    */
   List<Integer> findAllUserAcceptedProblemIds(Integer userId) throws AppException;
-
-  @Override
-  public Condition getCondition(StatusCondition condition) throws AppException;
 }

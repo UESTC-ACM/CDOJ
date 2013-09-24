@@ -73,7 +73,7 @@ public class TrainingContestUtilsITTest {
   @Ignore
   public void testDeleteByCondition() throws AppException {
     trainingStatusCondition.clear();
-    trainingStatusCondition.setTrainingContestId(5);
+//    trainingStatusCondition.setTrainingContestId(5);
     trainingStatusDAO.deleteEntitiesByCondition(trainingStatusCondition.getCondition());
   }
 

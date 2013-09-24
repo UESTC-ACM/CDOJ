@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 
 import org.apache.log4j.LogManager;
@@ -22,8 +21,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.JoinedProperty;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
@@ -71,6 +70,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
    * Create a criteria object from session.
    *
    * @return expected criteria entity
+   * @throws AppException
    */
   private Criteria createCriteria() throws AppException {
     try {
@@ -86,7 +86,9 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
    *
    * @param criteria Criteria object to update
    * @param condition conditions for criteria query
+   * @deprecated criteria is deprecated, use {@link Condition}.
    */
+  @Deprecated
   private void updateCriteria(Criteria criteria, Condition condition) {
     if (condition.orders != null) {
       for (Condition.Order order : condition.orders) {
@@ -211,25 +213,6 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     return count(null);
   }
 
-  /**
-   * Get reference entity's id field name.
-   *
-   * @return id field name
-   */
-  private String getKeyFieldName() {
-    Method[] methods = getReferenceClass().getMethods();
-    for (Method method : methods) {
-      if (method.getAnnotation(Id.class) != null) {
-        Column column = method.getAnnotation(Column.class);
-        if (column == null) {
-          return null;
-        }
-        return column.name();
-      }
-    }
-    return null;
-  }
-
   @Override
   public Entity getEntityByUniqueField(String fieldName, Object value)
       throws FieldNotUniqueException, AppException {
@@ -303,7 +286,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
       String key = entry.getKey();
       JoinedProperty joinedProperty = entry.getValue();
       String field;
-      if (joinedProperty.getConditionType() == BaseCondition.ConditionType.like) {
+      if (joinedProperty.getConditionType() == ConditionType.LIKE) {
         field =
             key + joinedProperty.getConditionType().getSignal() + "%"
                 + joinedProperty.getKeyValue() + "%";
