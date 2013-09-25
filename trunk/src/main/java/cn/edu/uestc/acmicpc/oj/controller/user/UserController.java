@@ -194,6 +194,7 @@ public class UserController extends BaseController {
       json.put("userList", userViewList);
     }  catch (AppException e) {
       json.put("result", "error");
+      json.put("error_msg", e.getMessage());
     } catch (Exception e) {
       json.put("result", "error");
       e.printStackTrace();
