@@ -35,10 +35,8 @@ public class ConditionITTest {
   @Autowired
   private IUserDAO userDAO;
 
-  @Autowired
   private ProblemCondition problemCondition;
 
-  @Autowired
   private StatusCondition statusCondition;
 
   @SuppressWarnings("unchecked")
@@ -47,13 +45,26 @@ public class ConditionITTest {
     Condition condition = new Condition();
     List<User> users = (List<User>) userDAO.findAll(condition);
     Assert.assertEquals(3, users.size());
-    for (User user : users) {
-      System.err.println(user.getUserId() + " " + user.getUserName());
+    for (int i = 0 ; i < users.size(); i++) {
+      Assert.assertEquals(Integer.valueOf(i + 1), users.get(i).getUserId());
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  @Test
+  public void testCondition_emptyEntrySetWithDescId() throws AppException {
+    Condition condition = new Condition();
+    condition.addOrder("userId", false);
+    List<User> users = (List<User>) userDAO.findAll(condition);
+    Assert.assertEquals(3, users.size());
+    for (int i = 0 ; i < users.size(); i++) {
+      Assert.assertEquals(Integer.valueOf(users.size() - i), users.get(i).getUserId());
     }
   }
 
   @Test
   @Ignore
+  @Deprecated
   public void testClear() throws AppException {
 //    problemCondition.setStartId(2);
 //    problemCondition.setTitle("a+b problem");
@@ -65,6 +76,7 @@ public class ConditionITTest {
   @SuppressWarnings("unchecked")
   @Test
   @Ignore
+  @Deprecated
   public void testProjections() throws AppException, FieldNotUniqueException {
 //    statusCondition.setUserId(1);
 //    statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
