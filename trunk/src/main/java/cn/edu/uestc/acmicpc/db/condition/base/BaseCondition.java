@@ -85,8 +85,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * </code></li>
  * </ul>
  */
-@Repository
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public abstract class BaseCondition {
 
   private static final Logger LOGGER = LogManager.getLogger(BaseCondition.class);

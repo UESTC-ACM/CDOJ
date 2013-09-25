@@ -32,7 +32,6 @@ import cn.edu.uestc.acmicpc.util.Global.AuthenticationType;
 /**
  * User search condition.
  */
-@Repository
 public class UserCondition extends BaseCondition {
 
   /**

@@ -43,7 +43,7 @@ public class Condition {
   /** Basic condition type of database handler. */
   public static enum ConditionType {
     CONDITION(""), EQUALS("="), GREATER_THAN(">"), LESS_THAN("<"), GREATER_OR_EQUALS(">="),
-    LESS_OR_EQUALS("<="), LIKE(" like "), STRING_EQUALS(" like ");
+    LESS_OR_EQUALS("<="), LIKE(" like "), STRING_EQUALS(" like "), IS_NULL("");
 
     private final String signal;
 
@@ -226,6 +226,7 @@ public class Condition {
 
   /**
    * Add new order field into the order list.
+   * TODO getOrders is deprecated
    *
    * @param field new order field name
    * @param asc whether new order field asc or not
@@ -238,6 +239,7 @@ public class Condition {
 
   /**
    * Add new projection into the projection list.
+   * TODO getProjections is deprecated
    *
    * @param projection new projection object
    * @return condition itself.
@@ -249,6 +251,7 @@ public class Condition {
 
   /**
    * Add new criterion into the criterion list.
+   * TODO criterionList is deprecated
    *
    * @param criterion new criterion object
    * @return condition itself.
@@ -307,6 +310,7 @@ public class Condition {
 
   /**
    * Build DB query string and append it into builder.
+   * TODO IS_NULL
    *
    * @return if this condition's HQL is empty, return {@code false}.
    */
