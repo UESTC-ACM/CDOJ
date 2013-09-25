@@ -2,7 +2,6 @@ package cn.edu.uestc.acmicpc.db.dao.base;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,10 +20,8 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.JoinedProperty;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
-import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.DatabaseUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
@@ -135,6 +132,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
+  @Deprecated
   public Long customCount(Condition condition) throws AppException {
     if (condition == null) {
       return count();
@@ -266,38 +264,6 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   protected abstract Class<Entity> getReferenceClass();
 
   @Override
-  @Deprecated
-  public String getSQLString(Condition condition) throws AppException {
-    if (condition == null) {
-      return "";
-    }
-    List<String> params = new LinkedList<>();
-    for (Criterion criterion : condition.getCriterionList()) {
-      String field = criterion.toString();
-      params.add(field);
-    }
-    for (Map.Entry<String, JoinedProperty> entry : condition.getJoinedProperties().entrySet()) {
-      String key = entry.getKey();
-      JoinedProperty joinedProperty = entry.getValue();
-      String field;
-      if (joinedProperty.getConditionType() == ConditionType.LIKE) {
-        field =
-            key + joinedProperty.getConditionType().getSignal() + "%"
-                + joinedProperty.getKeyValue() + "%";
-      } else {
-        field = key + joinedProperty.getConditionType().getSignal() + joinedProperty.getKeyValue();
-      }
-      params.add(field);
-    }
-
-    if (params.isEmpty()) {
-      return "";
-    }
-
-    return "where " + ArrayUtil.join(params.toArray(), " and ");
-  }
-
-  @Override
   public void updateEntitiesByCondition(Map<String, Object> properties, Condition condition)
       throws AppException {
     if (properties.isEmpty()) {
@@ -313,7 +279,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
       first = false;
       stringBuilder.append(" ").append(key).append("=").append(properties.get(key));
     }
-    stringBuilder.append(" ").append(getSQLString(condition));
+    stringBuilder.append(" ").append(condition.toHQLString());
     String hql = stringBuilder.toString();
     LOGGER.info(hql);
     getSession().createQuery(hql).executeUpdate();
@@ -323,9 +289,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   public void deleteEntitiesByCondition(Condition condition) throws AppException {
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("delete ").append(getReferenceClass().getSimpleName());
-    stringBuilder.append(" ").append(getSQLString(condition));
+    stringBuilder.append(" ").append(condition.toHQLString());
     String hql = stringBuilder.toString();
-    LOGGER.info(hql);
     getSession().createQuery(hql).executeUpdate();
   }
 

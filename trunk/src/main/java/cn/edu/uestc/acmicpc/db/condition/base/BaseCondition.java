@@ -127,12 +127,13 @@ public abstract class BaseCondition {
    * according to the fields' values.
    *
    * @param condition conditions that to be considered
+   * @throws AppException
    * @see Condition
    * @see Entry
    * @deprecated if you should do this, deal with the condition is sub class' getCondition method.
    */
   @Deprecated
-  protected void invoke(Condition condition) {
+  protected void invoke(Condition condition) throws AppException {
     if (orderFields != null) {
       String[] fields = orderFields.split(",");
       String[] asc = orderAsc.split(",");
