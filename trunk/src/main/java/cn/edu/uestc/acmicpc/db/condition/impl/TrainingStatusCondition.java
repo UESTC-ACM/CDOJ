@@ -7,7 +7,6 @@ import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 /**
  * // TODO(mzry1992) Description
  */
-@Repository
 public class TrainingStatusCondition extends BaseCondition {
 //
 //  private static final Logger LOGGER = LogManager.getLogger(TrainingStatusCondition.class);

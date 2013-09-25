@@ -40,12 +40,6 @@ public class Scheduler implements Runnable {
   private BlockingQueue<JudgeItem> judgeQueue;
 
   /**
-   * Status database condition.
-   */
-  @Autowired
-  private StatusCondition statusCondition;
-
-  /**
    * Spring application context
    */
   @Autowired
