@@ -201,8 +201,10 @@ public class Condition {
    * @param countPerPage number of records per page
    * @param field order field name
    * @param asc whether the order field is asc or not
+   * @throws AppException
    */
-  public Condition(Long currentPage, Long countPerPage, String field, Boolean asc) {
+  public Condition(Long currentPage, Long countPerPage, String field, Boolean asc)
+      throws AppException {
     this.currentPage = currentPage;
     this.countPerPage = countPerPage;
     if (field != null && asc != null) {
@@ -217,8 +219,9 @@ public class Condition {
    * @param field new order field name
    * @param asc whether new order field asc or not
    * @return condition itself.
+   * @throws AppException
    */
-  public Condition addOrder(String field, boolean asc) {
+  public Condition addOrder(String field, boolean asc) throws AppException {
     orders.add(new Order(field, asc));
     return this;
   }
@@ -254,7 +257,8 @@ public class Condition {
    */
   public static class Order {
 
-    public Order(String field, boolean asc) {
+    public Order(String field, boolean asc) throws AppException {
+      AppExceptionUtil.assertNotNull(field);
       this.field = field;
       this.asc = asc;
     }

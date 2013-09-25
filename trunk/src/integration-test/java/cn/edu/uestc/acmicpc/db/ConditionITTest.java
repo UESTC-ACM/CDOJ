@@ -76,6 +76,7 @@ public class ConditionITTest {
   @SuppressWarnings("unchecked")
   @Test
   @Ignore
+  @Deprecated
   public void testProjections() throws AppException, FieldNotUniqueException {
 //    statusCondition.setUserId(1);
 //    statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
