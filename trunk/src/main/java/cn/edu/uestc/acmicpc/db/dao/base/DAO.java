@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -90,11 +89,6 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
    */
   @Deprecated
   private void updateCriteria(Criteria criteria, Condition condition) {
-    if (condition.orders != null) {
-      for (Condition.Order order : condition.orders) {
-        criteria.addOrder(order.asc ? Order.asc(order.field) : Order.desc(order.field));
-      }
-    }
     criteria.setFirstResult(condition.getCurrentPage() == null ? 0 : (int) ((condition
         .getCurrentPage() - 1) * condition.getCountPerPage()));
     if (condition.getCountPerPage() != null) {
@@ -116,13 +110,13 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   /**
-   * Build hql with class name.
+   * Build HQL with class name.
    *
    * @param condition DB condition entity.
-   * @return hql with class name.
+   * @return HQL with class name.
    */
   private String buildHQLString(Condition condition) {
-    return "from " + getReferenceClass().getSimpleName() + " " + condition.toHQLString();
+    return "from " + getReferenceClass().getSimpleName() + " " + condition.toHQLStringWithOrders();
   }
 
   @Override

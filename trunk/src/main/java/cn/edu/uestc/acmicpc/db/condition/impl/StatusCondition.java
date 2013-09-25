@@ -1,14 +1,12 @@
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
+import java.sql.Timestamp;
+import java.util.List;
+
+import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.springframework.stereotype.Repository;
-
-import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
-
-import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * Status search condition.

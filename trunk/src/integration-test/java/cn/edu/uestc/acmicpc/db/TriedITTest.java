@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,13 +30,10 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 @ContextConfiguration(classes = { IntegrationTestContext.class })
 public class TriedITTest {
 
-  @Before
-  public void init() {
-    statusCondition.clear();
-  }
-
   @SuppressWarnings("unchecked")
   @Test
+  @Ignore
+  @Deprecated
   public void testSyncUserTried() throws AppException {
     List<User> userList = (List<User>) userDAO.findAll();
     for (User user : userList) {
@@ -53,6 +49,7 @@ public class TriedITTest {
   @SuppressWarnings("unchecked")
   @Test
   @Ignore
+  @Deprecated
   public void testSyncProblemTried() throws AppException {
     // FIXME broken test case
     List<Problem> problemList = (List<Problem>) problemDAO.findAll();
