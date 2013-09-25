@@ -34,7 +34,7 @@ public class TrainingContestRankList {
 
   private static final Logger LOGGER = LogManager.getLogger(TrainingContestRankList.class);
 
-  // TODO Fix me! SCOPE error(maybe)
+  // TODO(mzry1992): Fix me! SCOPE error(maybe)
   @Autowired
   public TrainingContestRankList(ITrainingUserDAO trainingUserDAO) {
     LOGGER.info("Clear old data");
@@ -140,9 +140,9 @@ public class TrainingContestRankList {
   }
 
   /**
-   * Calc problem summary.
+   * Calculate problem summary.
    * <p/>
-   * TODO Fix problem tried and solved under team type contest.
+   * TODO(mzry1992): Fix problem tried and solved under team type contest.
    */
   public void calcProblemSummary() {
     for (int i = 0; i < problemCount; i++) {
@@ -261,5 +261,5 @@ public class TrainingContestRankList {
     this.trainingUserRankSummaryList = trainingUserRankSummaryList;
   }
 
-  private ITrainingUserDAO trainingUserDAO;
+  private final ITrainingUserDAO trainingUserDAO;
 }

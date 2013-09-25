@@ -21,13 +21,14 @@
 
 package cn.edu.uestc.acmicpc.db.view.impl;
 
+import java.sql.Timestamp;
+
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.db.view.base.View;
-import java.sql.Timestamp;
 
 /**
  * Description
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class ArticleView extends View<Article> {
@@ -87,6 +88,7 @@ public class ArticleView extends View<Article> {
     this.time = time;
   }
 
+  @Deprecated
   public ArticleView(Article article) {
     super(article);
   }

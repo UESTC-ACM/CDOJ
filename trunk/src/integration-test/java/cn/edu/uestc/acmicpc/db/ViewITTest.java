@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class ViewITTest {
   private IDepartmentDAO departmentDAO;
 
   @Test
+  @Ignore
   public void testUserView() throws AppException {
     User user = new User();
     user.setUserName("admin");

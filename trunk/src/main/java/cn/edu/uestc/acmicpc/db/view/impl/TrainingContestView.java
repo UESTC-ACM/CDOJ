@@ -1,19 +1,18 @@
 package cn.edu.uestc.acmicpc.db.view.impl;
 
-import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
-import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
-import cn.edu.uestc.acmicpc.db.view.base.View;
-import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
+import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
+import cn.edu.uestc.acmicpc.db.view.base.View;
+import cn.edu.uestc.acmicpc.util.Global;
+
 /**
  * Description
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class TrainingContestView extends View<TrainingContest> {
@@ -37,7 +36,6 @@ public class TrainingContestView extends View<TrainingContest> {
     return typeName;
   }
 
-  @Ignore
   public void setTypeName(String typeName) {
     this.typeName = typeName;
   }
@@ -70,11 +68,11 @@ public class TrainingContestView extends View<TrainingContest> {
     return trainingStatusViewList;
   }
 
-  @Ignore
   public void setTrainingStatusViewList(List<TrainingStatusView> trainingStatusViewList) {
     this.trainingStatusViewList = trainingStatusViewList;
   }
 
+  @Deprecated
   public TrainingContestView(TrainingContest trainingContest) {
     super(trainingContest);
     List<TrainingStatus> trainingStatusList =

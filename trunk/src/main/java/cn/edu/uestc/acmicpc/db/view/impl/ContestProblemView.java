@@ -24,12 +24,11 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.base.View;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Use for return problem information with json type in contest.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ContestProblemView extends View<Problem> {
@@ -57,17 +56,11 @@ public class ContestProblemView extends View<Problem> {
     return order;
   }
 
-  @Ignore
   public void setOrder(char order) {
     this.order = order;
   }
 
-  /**
-   * Get ProblemView entity by problem entity.
-   * 
-   * @param problem specific problem entity
-   * @throws AppException
-   */
+  @Deprecated
   public ContestProblemView(Problem problem) throws AppException {
     super(problem);
   }
@@ -164,7 +157,6 @@ public class ContestProblemView extends View<Problem> {
     return solved;
   }
 
-  @Ignore
   public void setSolved(Integer solved) {
     this.solved = solved;
   }
@@ -173,7 +165,6 @@ public class ContestProblemView extends View<Problem> {
     return tried;
   }
 
-  @Ignore
   public void setTried(Integer tried) {
     this.tried = tried;
   }

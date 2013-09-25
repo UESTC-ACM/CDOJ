@@ -9,6 +9,10 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 public class ProblemCondition extends BaseCondition {
 
+  public ProblemCondition() {
+    super("problemId");
+  }
+
   /**
    * Start problem id.
    */

@@ -3,11 +3,10 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 
 /**
  * Use for return training contest list view with json type.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class TrainingContestListView extends View<TrainingContest> {
@@ -30,7 +29,6 @@ public class TrainingContestListView extends View<TrainingContest> {
     return typeName;
   }
 
-  @Ignore
   public void setTypeName(String typeName) {
     this.typeName = typeName;
   }
@@ -59,6 +57,7 @@ public class TrainingContestListView extends View<TrainingContest> {
     isPersonal = personal;
   }
 
+  @Deprecated
   public TrainingContestListView(TrainingContest trainingContest) {
     super(trainingContest);
     setTypeName(Global.TrainingContestType.values()[trainingContest.getType()].getDescription());

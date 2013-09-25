@@ -26,7 +26,7 @@ import cn.edu.uestc.acmicpc.db.view.base.View;
 
 /**
  * Code view
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class CodeView extends View<Code> {
@@ -50,11 +50,7 @@ public class CodeView extends View<Code> {
     this.content = content;
   }
 
-  /**
-   * Fetch data from entity.
-   * 
-   * @param code specific entity
-   */
+  @Deprecated
   public CodeView(Code code) {
     super(code);
   }

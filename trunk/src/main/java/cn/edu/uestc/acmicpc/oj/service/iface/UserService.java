@@ -123,7 +123,7 @@ public interface UserService extends OnlineJudgeService<User, Integer> {
   UserDTO getUserDTOByUser(User user) throws AppException;
 
   /**
-   * FIXME here we should consider the case when userDTO.getUserId is not null.
+   * FIXME(mzry1992): here we should consider the case when userDTO.getUserId is not null.
    * Transform user dto to user
    *
    * @param userDTO user dto entity
@@ -141,17 +141,17 @@ public interface UserService extends OnlineJudgeService<User, Integer> {
   void updateUserByUserDTO(User user, UserDTO userDTO) throws AppException;
 
   /**
-   * TODO
+   * TODO(mzry1992): description
    * @param userName
-   * @return
+   * @return return
    * @throws AppException
    */
   Map<Integer, Global.AuthorStatusType> getUserProblemStatus(String userName) throws AppException;
 
   /**
-   * TODO
+   * TODO(mzry1992): description
    * @param userName
-   * @return
+   * @return return
    * @throws AppException
    */
   Boolean sendSerialKey(String userName) throws AppException;

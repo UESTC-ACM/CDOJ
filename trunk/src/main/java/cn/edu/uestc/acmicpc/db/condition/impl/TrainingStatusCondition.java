@@ -3,10 +3,14 @@ package cn.edu.uestc.acmicpc.db.condition.impl;
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 
 /**
- * // TODO(mzry1992) Description
+ * // TODO(mzry1992): Description
  */
 public class TrainingStatusCondition extends BaseCondition {
-//
+
+  public TrainingStatusCondition() {
+    super("trainingStatusId");
+  }
+  //
 //  private static final Logger LOGGER = LogManager.getLogger(TrainingStatusCondition.class);
 //
 //  @Autowired

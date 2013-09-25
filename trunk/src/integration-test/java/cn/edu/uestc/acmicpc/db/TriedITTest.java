@@ -37,7 +37,7 @@ public class TriedITTest {
   public void testSyncUserTried() throws AppException {
     List<User> userList = (List<User>) userDAO.findAll();
     for (User user : userList) {
-      statusCondition.clear();
+//      statusCondition.clear();
 //      statusCondition.setUserId(user.getUserId());
       Condition condition = statusCondition.getCondition();
       Long count = statusDAO.count(condition);
@@ -51,11 +51,11 @@ public class TriedITTest {
   @Ignore
   @Deprecated
   public void testSyncProblemTried() throws AppException {
-    // FIXME broken test case
+    // FIXME(fish): broken test case
     List<Problem> problemList = (List<Problem>) problemDAO.findAll();
     for (Problem problem : problemList) {
-      statusCondition.clear();
-      problemCondition.clear();
+//      statusCondition.clear();
+//      problemCondition.clear();
 //      statusCondition.setProblemId(problem.getProblemId());
 //      problemCondition.setStartId(problem.getProblemId());
 //      problemCondition.setEndId(problem.getProblemId());

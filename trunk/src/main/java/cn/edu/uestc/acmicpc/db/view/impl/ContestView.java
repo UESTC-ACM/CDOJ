@@ -21,18 +21,21 @@
 
 package cn.edu.uestc.acmicpc.db.view.impl;
 
+import java.sql.Timestamp;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.base.View;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
-
-import java.sql.Timestamp;
-import java.util.*;
 
 /**
  * Contest view
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  * @version 1
  */
@@ -54,7 +57,6 @@ public class ContestView extends View<Contest> {
     return timeLeft;
   }
 
-  @Ignore
   public void setTimeLeft(Long timeLeft) {
     this.timeLeft = timeLeft;
   }
@@ -63,7 +65,6 @@ public class ContestView extends View<Contest> {
     return status;
   }
 
-  @Ignore
   public void setStatus(String status) {
     this.status = status;
   }
@@ -80,7 +81,6 @@ public class ContestView extends View<Contest> {
     return problemListString;
   }
 
-  @Ignore
   public void setProblemListString(String problemListString) {
     this.problemListString = problemListString;
   }
@@ -89,7 +89,6 @@ public class ContestView extends View<Contest> {
     return problemList;
   }
 
-  @Ignore
   public void setProblemList(List<Integer> problemList) {
     this.problemList = problemList;
   }
@@ -150,11 +149,7 @@ public class ContestView extends View<Contest> {
     isVisible = visible;
   }
 
-  /**
-   * Fetch data from entity.
-   * 
-   * @param contest specific entity
-   */
+  @Deprecated
   public ContestView(Contest contest) {
     super(contest);
     Timestamp now = new Timestamp(new Date().getTime());

@@ -3,9 +3,13 @@ package cn.edu.uestc.acmicpc.db.condition.impl;
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 
 /**
- * // TODO(mzry1992) Description
+ * // TODO(mzry1992): Description
  */
 public class TrainingContestCondition extends BaseCondition {
+
+  protected TrainingContestCondition() {
+    super("trainingContestId");
+  }
 //
 //  private Integer startId;
 //  private Integer endId;
