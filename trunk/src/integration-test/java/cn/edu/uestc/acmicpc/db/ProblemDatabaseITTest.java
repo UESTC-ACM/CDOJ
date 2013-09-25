@@ -14,6 +14,7 @@ import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.Entry;
+import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -25,7 +26,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 @ContextConfiguration(classes = { IntegrationTestContext.class })
 public class ProblemDatabaseITTest {
 
-  // TODO use problem service to query.
+  // TODO(fish): use problem service to query.
 
   @Autowired
   private IProblemDAO problemDAO;
@@ -57,12 +58,11 @@ public class ProblemDatabaseITTest {
 
   @Test
   public void testIsSpjQuery_spj() throws AppException {
-    // TODO use problem service to query.
-    Condition condition = new Condition();
-    condition.addEntry(Entry.of("problemId", ConditionType.GREATER_OR_EQUALS, 1));
-    condition.addEntry(Entry.of("problemId", ConditionType.LESS_OR_EQUALS, 5));
-    condition.addEntry(Entry.of("isSpj", ConditionType.EQUALS, 1));
-    Assert.assertEquals(Long.valueOf(2), problemDAO.count(condition));
+    ProblemCondition condition = new ProblemCondition();
+    condition.startId = 1;
+    condition.endId = 5;
+    condition.isSpj = true;
+    Assert.assertEquals(Long.valueOf(2), problemDAO.count(condition.getCondition()));
   }
 
   @SuppressWarnings("unchecked")

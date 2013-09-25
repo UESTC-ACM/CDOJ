@@ -22,20 +22,20 @@
 
 package cn.edu.uestc.acmicpc.db.view.impl;
 
-import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
-import cn.edu.uestc.acmicpc.db.view.base.View;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.apache.commons.lang3.StringEscapeUtils;
-
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
+import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
+import cn.edu.uestc.acmicpc.db.view.base.View;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+
 /**
  * Use for return problem information with json type.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ProblemView extends View<Problem> {
@@ -62,12 +62,7 @@ public class ProblemView extends View<Problem> {
   private Integer difficulty;
   private List<String> tags;
 
-  /**
-   * Get ProblemView entity by problem entity.
-   * 
-   * @param problem specific problem entity
-   * @throws AppException
-   */
+  @Deprecated
   public ProblemView(Problem problem) throws AppException {
     super(problem);
     List<String> list = new LinkedList<>();
@@ -244,7 +239,6 @@ public class ProblemView extends View<Problem> {
     return tags;
   }
 
-  @Ignore
   public void setTags(List<String> tags) {
     this.tags = tags;
   }

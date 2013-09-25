@@ -22,17 +22,16 @@
 
 package cn.edu.uestc.acmicpc.db.view.impl;
 
-import cn.edu.uestc.acmicpc.db.entity.Contest;
-import cn.edu.uestc.acmicpc.db.view.base.View;
-import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
-
 import java.sql.Timestamp;
 import java.util.Date;
 
+import cn.edu.uestc.acmicpc.db.entity.Contest;
+import cn.edu.uestc.acmicpc.db.view.base.View;
+import cn.edu.uestc.acmicpc.util.Global;
+
 /**
  * Contest information view.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ContestListView extends View<Contest> {
@@ -51,7 +50,6 @@ public class ContestListView extends View<Contest> {
     return status;
   }
 
-  @Ignore
   public void setStatus(String status) {
     this.status = status;
   }
@@ -124,16 +122,11 @@ public class ContestListView extends View<Contest> {
     return typeName;
   }
 
-  @Ignore
   public void setTypeName(String typeName) {
     this.typeName = typeName;
   }
 
-  /**
-   * Fetch data from entity.
-   * 
-   * @param contest specific entity
-   */
+  @Deprecated
   public ContestListView(Contest contest) {
     super(contest);
 

@@ -5,9 +5,13 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
- * Article databse condition entity.
+ * Article database condition entity.
  */
 public class ArticleCondition extends BaseCondition {
+
+  protected ArticleCondition() {
+    super("articleId");
+  }
 
   /**
    * Minimal article id

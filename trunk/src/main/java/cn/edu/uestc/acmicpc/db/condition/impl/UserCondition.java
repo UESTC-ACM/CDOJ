@@ -32,6 +32,10 @@ import cn.edu.uestc.acmicpc.util.Global.AuthenticationType;
  */
 public class UserCondition extends BaseCondition {
 
+  public UserCondition() {
+    super("userId");
+  }
+
   /**
    * Start user id.
    */

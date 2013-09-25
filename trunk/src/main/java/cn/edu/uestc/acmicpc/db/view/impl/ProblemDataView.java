@@ -27,7 +27,7 @@ import cn.edu.uestc.acmicpc.db.view.base.View;
 
 /**
  * Contest information view.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ProblemDataView extends View<Problem> {
@@ -96,11 +96,7 @@ public class ProblemDataView extends View<Problem> {
     this.isSpj = isSpj;
   }
 
-  /**
-   * Fetch data from problem entity.
-   * 
-   * @param problem specific entity
-   */
+  @Deprecated
   public ProblemDataView(Problem problem) {
     super(problem);
   }

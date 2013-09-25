@@ -21,19 +21,18 @@
 
 package cn.edu.uestc.acmicpc.db.view.impl;
 
-import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
-import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
-import cn.edu.uestc.acmicpc.db.view.base.View;
-import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
+import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
+import cn.edu.uestc.acmicpc.db.view.base.View;
+import cn.edu.uestc.acmicpc.util.Global;
+
 /**
  * Description
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class TrainingUserView extends View<TrainingUser> {
@@ -58,7 +57,6 @@ public class TrainingUserView extends View<TrainingUser> {
     return lastContestId;
   }
 
-  @Ignore
   public void setLastContestId(Integer lastContestId) {
     this.lastContestId = lastContestId;
   }
@@ -75,7 +73,6 @@ public class TrainingUserView extends View<TrainingUser> {
     return rank;
   }
 
-  @Ignore
   public void setRank(Integer rank) {
     this.rank = rank;
   }
@@ -156,7 +153,6 @@ public class TrainingUserView extends View<TrainingUser> {
     return typeName;
   }
 
-  @Ignore
   public void setTypeName(String typeName) {
     this.typeName = typeName;
   }
@@ -165,7 +161,6 @@ public class TrainingUserView extends View<TrainingUser> {
     return userName;
   }
 
-  @Ignore
   public void setUserName(String userName) {
     this.userName = userName;
   }
@@ -174,16 +169,11 @@ public class TrainingUserView extends View<TrainingUser> {
     return userEmail;
   }
 
-  @Ignore
   public void setUserEmail(String userEmail) {
     this.userEmail = userEmail;
   }
 
-  /**
-   * Fetch data from entity.
-   * 
-   * @param trainingUser specific entity
-   */
+  @Deprecated
   public TrainingUserView(TrainingUser trainingUser) {
     super(trainingUser);
     setUserName(trainingUser.getUserByUserId().getUserName());
