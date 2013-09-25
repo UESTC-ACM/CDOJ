@@ -57,6 +57,7 @@ public class DatabaseITTest {
 
   @Test
   @Ignore
+  @Deprecated
   public void testSQLUpdate() throws AppException {
     statusCondition.clear();
 //    statusCondition.setContestId(1);

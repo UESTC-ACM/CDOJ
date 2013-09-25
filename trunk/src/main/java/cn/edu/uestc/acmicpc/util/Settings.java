@@ -143,6 +143,7 @@ public class Settings implements ApplicationContextAware {
    * initialize configuration mappings from configuration file.
    *
    * @throws cn.edu.uestc.acmicpc.util.exception.AppException
+   * @throws IOException
    *
    */
   @SuppressWarnings("unchecked")
