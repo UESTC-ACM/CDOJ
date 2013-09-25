@@ -1,6 +1,7 @@
 package cn.edu.uestc.acmicpc.oj.service.iface;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
@@ -10,8 +11,6 @@ import cn.edu.uestc.acmicpc.db.view.impl.UserView;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-
-import java.util.Map;
 /**
  * User service interface to handle operations about {@link User}.
  */
@@ -114,7 +113,7 @@ public interface UserService extends OnlineJudgeService<User, Integer> {
   /**
    * TODO
    * @param user
-   * @return
+   * @return user DTO entity we need.
    * @throws AppException
    */
   UserDTO getUserDTOByUser(User user) throws AppException;
