@@ -34,8 +34,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
     statusCondition.resultId = Global.OnlineJudgeReturnType.OJ_AC.ordinal();
-    return (List<Integer>) statusDAO.findAll(statusCondition.getCondition().addProjection(
-        Projections.groupProperty("problemByProblemId.problemId")));
+    return (List<Integer>) statusDAO.findAll("problemByProblemId.problemId", statusCondition.getCondition());
   }
 
   @SuppressWarnings("unchecked")
@@ -43,8 +42,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   public List<Integer> findAllUserTriedProblemIds(Integer userId) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
-    return (List<Integer>) statusDAO.findAll(statusCondition.getCondition().addProjection(
-        Projections.groupProperty("problemByProblemId.problemId")));
+    return (List<Integer>) statusDAO.findAll("problemByProblemId.problemId", statusCondition.getCondition());
   }
 
   @Override
