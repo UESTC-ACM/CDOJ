@@ -31,10 +31,8 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
   @Override
   public List<Integer> getAllVisibleProblemIds() throws AppException {
     ProblemCondition problemCondition = new ProblemCondition();
-    // TODO set this is problem condition.
     problemCondition.isVisible = true;
-    return (List<Integer>) problemDAO.findAll(problemCondition.getCondition().addProjection(
-        Projections.id()));
+    return (List<Integer>) problemDAO.findAll("problemId", problemCondition.getCondition());
   }
 
   @Override
