@@ -30,9 +30,6 @@ import java.lang.reflect.Method;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Repository;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.Entry;
@@ -130,12 +127,13 @@ public abstract class BaseCondition {
    * according to the fields' values.
    *
    * @param condition conditions that to be considered
+   * @throws AppException
    * @see Condition
    * @see Entry
    * @deprecated if you should do this, deal with the condition is sub class' getCondition method.
    */
   @Deprecated
-  protected void invoke(Condition condition) {
+  protected void invoke(Condition condition) throws AppException {
     if (orderFields != null) {
       String[] fields = orderFields.split(",");
       String[] asc = orderAsc.split(",");

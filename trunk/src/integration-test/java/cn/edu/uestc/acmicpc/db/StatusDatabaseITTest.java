@@ -41,6 +41,7 @@ public class StatusDatabaseITTest {
   @SuppressWarnings("unchecked")
   @Test
   @Ignore
+  @Deprecated
   public void testStatusDAO_withDistinctProblem() throws AppException, FieldNotUniqueException {
     User user = userDAO.getEntityByUniqueField("userName", "administrator");
     Assert.assertEquals(Integer.valueOf(1), user.getUserId());

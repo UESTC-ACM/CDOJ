@@ -34,6 +34,7 @@ public class BaseController {
    * getContextPath("") + "/Problem", null);}
    *
    * @param count total number of records
+   * @param currentPage current page number
    * @param countPerPage number of records per page
    * @param baseURL base URL
    * @param displayDistance display distance for page numbers

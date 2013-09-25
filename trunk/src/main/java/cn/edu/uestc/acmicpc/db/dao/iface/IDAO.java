@@ -23,7 +23,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @return number of rows changed.
    * @throws AppException
    */
-  public Serializable add(Entity entity) throws AppException;
+  Serializable add(Entity entity) throws AppException;
 
   /**
    * Add entity or update entity, according to key value of the entity.
@@ -31,7 +31,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param entity entity to be added or updated
    * @throws AppException
    */
-  public void addOrUpdate(Entity entity) throws AppException;
+  void addOrUpdate(Entity entity) throws AppException;
 
   /**
    * Get entity by key value.
@@ -40,7 +40,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @return entity which key value matches
    * @throws AppException
    */
-  public Entity get(PK key) throws AppException;
+  Entity get(PK key) throws AppException;
 
   /**
    * Update an entity object.
@@ -56,7 +56,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @return entity list in tables.
    * @throws AppException
    */
-  public List<?> findAll() throws AppException;
+  List<?> findAll() throws AppException;
 
   /**
    * List all entities in tables by conditions.
@@ -65,7 +65,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @return expected entity list
    * @throws AppException
    */
-  public List<?> findAll(Condition condition) throws AppException;
+  List<?> findAll(Condition condition) throws AppException;
 
   /**
    * Count the number of records in the table.
@@ -73,7 +73,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @return number of records we query
    * @throws AppException
    */
-  public Long count() throws AppException;
+  Long count() throws AppException;
 
   /**
    * Count the number of records in the table by conditions.
@@ -82,7 +82,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @return number of records we query
    * @throws AppException
    */
-  public Long count(Condition condition) throws AppException;
+  Long count(Condition condition) throws AppException;
 
   /**
    * Get unique entity by the field name, if the field is not unique field, throw
@@ -94,7 +94,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @throws FieldNotUniqueException
    * @throws AppException
    */
-  public Entity getEntityByUniqueField(String fieldName, Object value)
+  Entity getEntityByUniqueField(String fieldName, Object value)
       throws FieldNotUniqueException, AppException;
 
   /**
@@ -109,7 +109,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @throws FieldNotUniqueException
    * @throws AppException
    */
-  public Entity getEntityByUniqueField(String fieldName, Object value, String propertyName,
+  Entity getEntityByUniqueField(String fieldName, Object value, String propertyName,
       boolean forceUnique) throws FieldNotUniqueException, AppException;
 
   /**
@@ -118,20 +118,10 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param condition user custom condition entity
    * @return number of records for database query result
    * @throws AppException
-   */
-  Long customCount(Condition condition) throws AppException;
-
-  /**
-   * Get SQL where clause according to condition entity.
-   *
-   * @param condition specific condition entity
-   * @return where clause we need
-   * @throws AppException
-   * @Deprecated
-   *    this method is not supported in new API, please use {@link Condition#toHQLString()}.
+   * @Deprecated this method is not supported in new API, we are design new interface for that.
    */
   @Deprecated
-  public String getSQLString(Condition condition) throws AppException;
+  Long customCount(Condition condition) throws AppException;
 
   /**
    * Update all records according condition entity.
@@ -140,7 +130,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param condition specific condition entity
    * @throws AppException
    */
-  public void updateEntitiesByCondition(Map<String, Object> properties, Condition condition)
+  void updateEntitiesByCondition(Map<String, Object> properties, Condition condition)
       throws AppException;
 
   /**
@@ -149,12 +139,12 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param condition specific condition entity
    * @throws AppException
    */
-  public void deleteEntitiesByCondition(Condition condition) throws AppException;
+  void deleteEntitiesByCondition(Condition condition) throws AppException;
 
   /**
    * Execute SQL immediately
    */
-  public void flush();
+  void flush();
 
   /**
    * Crate a hibernate query.
@@ -162,7 +152,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param hql hibernate query string
    * @return number of rows effected
    */
-  public int executeHQL(String hql);
+  int executeHQL(String hql);
 
   /**
    * Create a basic database query.
@@ -170,7 +160,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param sql SQL string for query
    * @return number of rows effected
    */
-  public int executeSQL(String sql);
+  int executeSQL(String sql);
 
   /**
    * Delete entity by key.
@@ -178,5 +168,5 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param key entity's key
    * @throws AppException
    */
-  public void delete(PK key) throws AppException;
+  void delete(PK key) throws AppException;
 }

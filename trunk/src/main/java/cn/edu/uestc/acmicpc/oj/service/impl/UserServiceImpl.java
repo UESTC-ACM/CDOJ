@@ -2,16 +2,13 @@ package cn.edu.uestc.acmicpc.oj.service.impl;
 
 import java.sql.Timestamp;
 import java.util.*;
-
-import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.oj.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserSerialKeyService;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -24,6 +21,8 @@ import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
+import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.oj.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
@@ -32,6 +31,7 @@ import cn.edu.uestc.acmicpc.service.impl.AbstractService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
@@ -78,6 +78,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public void updateUser(User user) throws AppException {
+    AppExceptionUtil.assertNotNull(user);
+    AppExceptionUtil.assertNotNull(user.getUserId());
     userDAO.update(user);
   }
 

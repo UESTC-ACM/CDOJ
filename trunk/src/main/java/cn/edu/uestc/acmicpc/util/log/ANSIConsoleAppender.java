@@ -40,9 +40,6 @@ public class ANSIConsoleAppender extends ConsoleAppender {
   private static final String TRACE_COLOR = PREFIX
       + NORMAL + SEPARATOR + FOREGROUND_BLUE + SUFFIX;
 
-  /**
-   * Wraps the ANSI control characters around the output from the super-class Appender.
-   */
   @Override
   protected void subAppend(LoggingEvent event) {
     this.qw.write(getColor(event.getLevel()));
@@ -56,6 +53,9 @@ public class ANSIConsoleAppender extends ConsoleAppender {
 
   /**
    * Get the appropriate control characters to change the color for the specified logging level.
+   *
+   * @param level log level.
+   * @return color prefix for the level.
    */
   private String getColor(Level level) {
     switch (level.toInt()) {

@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.db.condition.base;
 import org.hibernate.criterion.Criterion;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition.Entry;
 
 /**
  * Entity for joined properties of database update.

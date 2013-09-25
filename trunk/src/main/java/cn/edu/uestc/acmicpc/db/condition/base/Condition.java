@@ -135,7 +135,7 @@ public class Condition {
   /**
    * Order fields.
    */
-  public List<Order> orders;
+  private final List<Order> orders = new ArrayList<>();
   /**
    * Select projections.
    */
@@ -171,19 +171,6 @@ public class Condition {
   }
 
   @Deprecated
-  public List<Order> getOrders() {
-    if (orders == null) {
-      orders = new LinkedList<>();
-    }
-    return orders;
-  }
-
-  @Deprecated
-  public void setOrders(List<Order> orders) {
-    this.orders = orders;
-  }
-
-  @Deprecated
   public List<Projection> getProjections() {
     if (projections == null) {
       projections = new LinkedList<>();
@@ -214,8 +201,10 @@ public class Condition {
    * @param countPerPage number of records per page
    * @param field order field name
    * @param asc whether the order field is asc or not
+   * @throws AppException
    */
-  public Condition(Long currentPage, Long countPerPage, String field, Boolean asc) {
+  public Condition(Long currentPage, Long countPerPage, String field, Boolean asc)
+      throws AppException {
     this.currentPage = currentPage;
     this.countPerPage = countPerPage;
     if (field != null && asc != null) {
@@ -225,37 +214,39 @@ public class Condition {
   }
 
   /**
-   * Add new order field into the order list.
-   * TODO getOrders is deprecated
+   * Adds new order field into the order list.
    *
    * @param field new order field name
    * @param asc whether new order field asc or not
    * @return condition itself.
+   * @throws AppException
    */
-  public Condition addOrder(String field, boolean asc) {
-    getOrders().add(new Order(field, asc));
+  public Condition addOrder(String field, boolean asc) throws AppException {
+    orders.add(new Order(field, asc));
     return this;
   }
 
   /**
-   * Add new projection into the projection list.
-   * TODO getProjections is deprecated
+   * Adds new projection into the projection list.
    *
    * @param projection new projection object
    * @return condition itself.
+   * @deprecated it's not supported in new API, please use {@link Entry}.
    */
+  @Deprecated
   public Condition addProjection(Projection projection) {
     getProjections().add(projection);
     return this;
   }
 
   /**
-   * Add new criterion into the criterion list.
-   * TODO criterionList is deprecated
+   * Adds new criterion into the criterion list.
    *
    * @param criterion new criterion object
    * @return condition itself.
+   * @deprecated it's not supported in new API, please use {@link Entry}.
    */
+  @Deprecated
   public Condition addCriterion(Criterion criterion) {
     getCriterionList().add(criterion);
     return this;
@@ -266,23 +257,29 @@ public class Condition {
    */
   public static class Order {
 
-    public Order(String field, boolean asc) {
+    public Order(String field, boolean asc) throws AppException {
+      AppExceptionUtil.assertNotNull(field);
       this.field = field;
       this.asc = asc;
+    }
+
+    @Override
+    public String toString() {
+      return field + " " + (asc ? " asc" : "desc");
     }
 
     /**
      * Order field name.
      */
-    public final String field;
+    private final String field;
     /**
      * Whether order field asc or not.
      */
-    public final boolean asc;
+    private final boolean asc;
   }
 
   /**
-   * Add joined property for query.
+   * Adds joined property for query.
    *
    * @param key property's key
    * @param value property's value
@@ -309,12 +306,12 @@ public class Condition {
   }
 
   /**
-   * Build DB query string and append it into builder.
+   * Builds DB query string and append it into builder.
    * TODO IS_NULL
    *
    * @return if this condition's HQL is empty, return {@code false}.
    */
-  private String buildSQLString() {
+  private String buildHQLString() {
     String flag = " " + joinedType.getSingal() + " ";
     StringBuilder builder = new StringBuilder();
     boolean first = true;
@@ -322,7 +319,7 @@ public class Condition {
     builder.append("(");
     for (Entry entry : entries) {
       if (entry.getConditionType() == ConditionType.CONDITION) {
-        String hql = ((Condition) entry.getValue()).buildSQLString();
+        String hql = ((Condition) entry.getValue()).buildHQLString();
         if (hql != null) {
           if (first) {
             first = false;
@@ -356,17 +353,39 @@ public class Condition {
   }
 
   /**
-   * Get DB query where clause by condition.
+   * Gets DB query where clause by condition.
    *
    * @return DB query where clause.
    */
   public String toHQLString() {
-    String hql = buildSQLString();
+    String hql = buildHQLString();
     if (hql == null) {
       return "";
     } else {
       return "where " + hql;
     }
+  }
+
+  /**
+   * Gets HQL string with order by clause.
+   *
+   * @return HQL string we need.
+   */
+  public String toHQLStringWithOrders() {
+    StringBuilder builder = new StringBuilder();
+    builder.append(toHQLString());
+    if (!orders.isEmpty()) {
+      builder.append("order by");
+      boolean first = true;
+      for (Order order : orders) {
+        if (first) {
+          builder.append(" ").append(order.toString());
+        } else {
+          builder.append(",").append(order.toString());
+        }
+      }
+    }
+    return builder.toString();
   }
 
   public JoinedType getJoinedType() {

@@ -1,12 +1,10 @@
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.springframework.stereotype.Repository;
+import java.sql.Timestamp;
 
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
-
-import java.sql.Timestamp;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Contest database condition entity.

@@ -22,8 +22,6 @@
 
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
-import org.springframework.stereotype.Repository;
-
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.entity.Department;

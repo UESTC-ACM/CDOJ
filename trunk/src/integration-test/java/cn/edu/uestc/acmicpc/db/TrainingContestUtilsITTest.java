@@ -71,6 +71,7 @@ public class TrainingContestUtilsITTest {
 
   @Test
   @Ignore
+  @Deprecated
   public void testDeleteByCondition() throws AppException {
     trainingStatusCondition.clear();
 //    trainingStatusCondition.setTrainingContestId(5);
