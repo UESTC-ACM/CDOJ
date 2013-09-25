@@ -4,6 +4,7 @@ import static org.mockito.Mockito.mock;
 
 import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.oj.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.oj.service.iface.UserSerialKeyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -69,12 +70,14 @@ public class TestContext extends ApplicationContextConfig {
       @Qualifier("mockGlobalService") GlobalService globalService,
       @Qualifier("mockEmailService") EmailService emailService,
       @Qualifier("mockProblemService") ProblemService problemService,
-      @Qualifier("mockStatusService") StatusService statusService) {
+      @Qualifier("mockStatusService") StatusService statusService,
+      @Qualifier("mockUserSerialKeyService") UserSerialKeyService userSerialKeyService) {
     return new UserServiceImpl(userDAO,
         globalService,
         emailService,
         problemService,
-        statusService);
+        statusService,
+        userSerialKeyService);
   }
 
   @Bean
@@ -90,6 +93,11 @@ public class TestContext extends ApplicationContextConfig {
   @Bean
   public StatusService mockStatusService() {
     return mock(StatusService.class);
+  }
+
+  @Bean
+  public UserSerialKeyService mockUserSerialKeyService() {
+    return mock(UserSerialKeyService.class);
   }
 
   @Bean

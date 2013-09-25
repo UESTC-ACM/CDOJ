@@ -36,13 +36,13 @@ import cn.edu.uestc.acmicpc.util.exception.FieldException;
  *   <li><strong>/user/logout</strong> Logout current user</li>
  *   <li><strong>/user/register</strong> Upload user's information and generate a new user</li>
  *   <li><strong>/user/sendSerialKey/{userName}</strong></li>
- *   <li><strong>/user/active/{userName}/{serialKey}</strong></li>
- *   <li><strong>/user/resetPassword</strong></li>
+ *   <li><strong>/user/active/{userName}/{serialKey}</strong></li> TODO
+ *   <li><strong>/user/resetPassword</strong></li> TODO
  *   <li><strong>/user/center/{userName}</strong> Visit user center</li>
  *   <li><strong>/user/status/{userName}</strong> User problem submission status</li>
  *   <li><strong>/user/list</strong> User list page</li>
  *   <li><strong>/user/search</strong> Search users by user condition</li>
- *   <li><strong>/user/edi</strong> Update user information</li>
+ *   <li><strong>/user/edit</strong> Update user information</li>
  * </ul>
  */
 @Controller
@@ -211,7 +211,7 @@ public class UserController extends BaseController {
    */
   @RequestMapping("center/{userName}")
   @LoginPermit(NeedLogin = false)
-  public String userCenter(@PathVariable("userName") String userName,
+  public String center(@PathVariable("userName") String userName,
                            ModelMap model) {
     try {
       UserView userView = userService.getUserViewByUserName(userName);
@@ -304,6 +304,16 @@ public class UserController extends BaseController {
       json.put("error_msg", e.getMessage());
     }
     return json;
+  }
+
+  @RequestMapping("active/{userName}/{serialKey}")
+  @LoginPermit(NeedLogin = false)
+  public String activate(@PathVariable("userName") String userName,
+                         @PathVariable("serialKey") String serialKey,
+                         ModelMap model) {
+    model.addAttribute("userName", userName);
+    model.addAttribute("serialKey", serialKey);
+    return "user/activate";
   }
 
   private UserService userService;
