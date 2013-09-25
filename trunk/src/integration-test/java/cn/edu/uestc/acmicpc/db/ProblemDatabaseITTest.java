@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition.Entry;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -24,52 +25,52 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 @ContextConfiguration(classes = { IntegrationTestContext.class })
 public class ProblemDatabaseITTest {
 
+  // TODO use problem service to query.
+
   @Autowired
   private IProblemDAO problemDAO;
 
-  @Autowired
-  private ProblemCondition problemCondition;
-
-  @Before
-  public void init() {
-    problemCondition.clear();
-  }
-
   @Test
   public void testStartIdAndEndId() throws AppException {
-    problemCondition.setStartId(1);
-    problemCondition.setEndId(5);
-    Assert.assertEquals(Long.valueOf(5), problemDAO.count(problemCondition.getCondition()));
+    Condition condition = new Condition();
+    condition.addEntry(Entry.of("problemId", ConditionType.GREATER_OR_EQUALS, 1));
+    condition.addEntry(Entry.of("problemId", ConditionType.LESS_OR_EQUALS, 5));
+    Assert.assertEquals(Long.valueOf(5), problemDAO.count(condition));
   }
 
   @Test
   public void testStartIdAndEndId_invalidParameter() throws AppException {
-    problemCondition.setStartId(2);
-    problemCondition.setEndId(1);
-    Assert.assertEquals(Long.valueOf(0), problemDAO.count(problemCondition.getCondition()));
+    Condition condition = new Condition();
+    condition.addEntry(Entry.of("problemId", ConditionType.GREATER_OR_EQUALS, 2));
+    condition.addEntry(Entry.of("problemId", ConditionType.LESS_OR_EQUALS, 1));
+    Assert.assertEquals(Long.valueOf(0), problemDAO.count(condition));
   }
 
   @Test
   public void testIsSpjQuery_notSpj() throws AppException {
-    problemCondition.setStartId(1);
-    problemCondition.setEndId(5);
-    problemCondition.setIsSpj(false);
-    Assert.assertEquals(Long.valueOf(3), problemDAO.count(problemCondition.getCondition()));
+    Condition condition = new Condition();
+    condition.addEntry(Entry.of("problemId", ConditionType.GREATER_OR_EQUALS, 1));
+    condition.addEntry(Entry.of("problemId", ConditionType.LESS_OR_EQUALS, 5));
+    condition.addEntry(Entry.of("isSpj", ConditionType.EQUALS, false));
+    Assert.assertEquals(Long.valueOf(3), problemDAO.count(condition));
   }
 
   @Test
   public void testIsSpjQuery_spj() throws AppException {
-    problemCondition.setStartId(1);
-    problemCondition.setEndId(5);
-    problemCondition.setIsSpj(true);
-    Assert.assertEquals(Long.valueOf(2), problemDAO.count(problemCondition.getCondition()));
+    // TODO use problem service to query.
+    Condition condition = new Condition();
+    condition.addEntry(Entry.of("problemId", ConditionType.GREATER_OR_EQUALS, 1));
+    condition.addEntry(Entry.of("problemId", ConditionType.LESS_OR_EQUALS, 5));
+    condition.addEntry(Entry.of("isSpj", ConditionType.EQUALS, 1));
+    Assert.assertEquals(Long.valueOf(2), problemDAO.count(condition));
   }
 
   @SuppressWarnings("unchecked")
   @Test
   public void testProblemCondition_emptyTitle() throws AppException {
-    problemCondition.setIsTitleEmpty(true);
-    List<Problem> problems = (List<Problem>) problemDAO.findAll(problemCondition.getCondition());
+    Condition condition = new Condition();
+    condition.addEntry(Entry.of("title", ConditionType.STRING_EQUALS, ""));
+    List<Problem> problems = (List<Problem>) problemDAO.findAll(condition);
     Assert.assertEquals(1, problems.size());
     Assert.assertEquals(Integer.valueOf(5), problems.get(0).getProblemId());
   }

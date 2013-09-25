@@ -1,19 +1,28 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.service.iface.EmailService;
-import cn.edu.uestc.acmicpc.util.Settings;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.util.Properties;
 
-import javax.mail.*;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.Properties;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
+
+import cn.edu.uestc.acmicpc.service.iface.EmailService;
+import cn.edu.uestc.acmicpc.util.Settings;
 
 /**
  * Implementation for {@link EmailService}
  */
 @Service
+@Primary
 public class EmailServiceImpl extends AbstractService implements EmailService {
 
   @Autowired
@@ -21,8 +30,8 @@ public class EmailServiceImpl extends AbstractService implements EmailService {
 
   class AJavaAuthenticator extends Authenticator {
 
-    private String user;
-    private String pwd;
+    private final String user;
+    private final String pwd;
 
     public AJavaAuthenticator(String user, String pwd) {
       this.user = user;
