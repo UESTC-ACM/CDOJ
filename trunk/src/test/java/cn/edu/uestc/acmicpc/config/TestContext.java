@@ -2,6 +2,8 @@ package cn.edu.uestc.acmicpc.config;
 
 import static org.mockito.Mockito.mock;
 
+import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.oj.service.iface.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -65,13 +67,29 @@ public class TestContext extends ApplicationContextConfig {
   @Autowired
   public UserService realUserService(@Qualifier("mockUserDAO") IUserDAO userDAO,
       @Qualifier("mockGlobalService") GlobalService globalService,
-      @Qualifier("mockEmailService") EmailService emailService) {
-    return new UserServiceImpl(userDAO, globalService, emailService);
+      @Qualifier("mockEmailService") EmailService emailService,
+      @Qualifier("mockProblemService") ProblemService problemService,
+      @Qualifier("mockStatusService") StatusService statusService) {
+    return new UserServiceImpl(userDAO,
+        globalService,
+        emailService,
+        problemService,
+        statusService);
   }
 
   @Bean
   public UserService mockUserService() {
     return mock(UserService.class);
+  }
+
+  @Bean
+  public ProblemService mockProblemService() {
+    return mock(ProblemService.class);
+  }
+
+  @Bean
+  public StatusService mockStatusService() {
+    return mock(StatusService.class);
   }
 
   @Bean

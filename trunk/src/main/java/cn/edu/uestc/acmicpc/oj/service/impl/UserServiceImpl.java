@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.oj.service.iface.StatusService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Projections;
@@ -46,14 +49,20 @@ public class UserServiceImpl extends AbstractService implements UserService {
   private final GlobalService globalService;
   @SuppressWarnings("unused")
   private final EmailService emailService;
+  private final ProblemService problemService;
+  private final StatusService statusService;
 
   @Autowired
   public UserServiceImpl(IUserDAO userDAO,
                          GlobalService globalService,
-                         EmailService emailService) {
+                         EmailService emailService,
+                         ProblemService problemService,
+                         StatusService statusService) {
     this.userDAO = userDAO;
     this.globalService = globalService;
     this.emailService = emailService;
+    this.problemService = problemService;
+    this.statusService = statusService;
   }
 
   @Override
@@ -226,39 +235,25 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public Map<Integer, Global.AuthorStatusType> getUserProblemStatus(String userName) throws AppException {
+    User user = getUserByUserName(userName);
+    if (user == null)
+      throw new AppException("No such user!");
     Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
 
-    ProblemCondition problemCondition = new ProblemCondition();
-    problemCondition.isVisible = true;
-    Condition condition = problemCondition.getCondition();
-    condition.addProjection(Projections.id());
-    /*
-    List<Integer> results = (List<Integer>) problemDAO.findAll(condition);
+    List<Integer> results = problemService.getAllVisibleProblemIds();
     for (Integer result : results)
       problemStatus.put(result, Global.AuthorStatusType.NONE);
 
-    statusCondition.clear();
-    statusCondition.setUserId(currentUser.getUserId());
-    statusCondition.setResultId(null);
-    condition = statusCondition.getCondition();
-    condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
-    results = (List<Integer>) statusDAO.findAll(condition);
+    results = statusService.findAllUserTriedProblemIds(user.getUserId());
     for (Integer result : results)
       if (problemStatus.containsKey(result))
         problemStatus.put(result, Global.AuthorStatusType.FAIL);
 
-    statusCondition.clear();
-    statusCondition.setUserId(currentUser.getUserId());
-    statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-    condition = statusCondition.getCondition();
-    condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
-    results = (List<Integer>) statusDAO.findAll(condition);
+    results = statusService.findAllUserAcceptedProblemIds(user.getUserId());
     for (Integer result : results)
       if (problemStatus.containsKey(result))
         problemStatus.put(result, Global.AuthorStatusType.PASS);
-    */
 
-    //TODO complete this part after refactor condition
     return problemStatus;
   }
 
