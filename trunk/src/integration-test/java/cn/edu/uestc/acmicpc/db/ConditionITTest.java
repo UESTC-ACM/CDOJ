@@ -2,9 +2,7 @@ package cn.edu.uestc.acmicpc.db;
 
 import java.util.List;
 
-import org.hibernate.criterion.Projections;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +11,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 /**
  * Test cases for conditions entities.
@@ -34,10 +30,6 @@ public class ConditionITTest {
 
   @Autowired
   private IUserDAO userDAO;
-
-  private ProblemCondition problemCondition;
-
-  private StatusCondition statusCondition;
 
   @SuppressWarnings("unchecked")
   @Test
@@ -63,28 +55,16 @@ public class ConditionITTest {
   }
 
   @Test
-  @Ignore
-  @Deprecated
-  public void testClear() throws AppException {
-//    problemCondition.setStartId(2);
-//    problemCondition.setTitle("a+b problem");
-    Assert.assertEquals(Long.valueOf(3), problemDAO.count(problemCondition.getCondition()));
-    problemCondition.clear();
-    Assert.assertEquals(Long.valueOf(5), problemDAO.count(problemCondition.getCondition()));
+  public void testCondition_count_emptyCondition() throws AppException {
+    UserCondition userCondition = new UserCondition();
+    Assert.assertEquals(Long.valueOf(3), userDAO.count(userCondition.getCondition()));
   }
 
-  @SuppressWarnings("unchecked")
   @Test
-  @Ignore
-  @Deprecated
-  public void testProjections() throws AppException, FieldNotUniqueException {
-//    statusCondition.setUserId(1);
-//    statusCondition.setResultId(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-    Condition condition = statusCondition.getCondition();
-    condition.addProjection(Projections.groupProperty("problemByProblemId.problemId"));
-    List<Integer> results = (List<Integer>) statusDAO.findAll(condition);
-    Assert.assertEquals(1, results.size());
-    Assert.assertEquals(Integer.valueOf(1), results.get(0));
+  public void testCondition_count_withDepartmentId() throws AppException {
+    UserCondition userCondition = new UserCondition();
+    userCondition.departmentId = 1;
+    Assert.assertEquals(Long.valueOf(2), userDAO.count(userCondition.getCondition()));
   }
 
   @Autowired
