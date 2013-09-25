@@ -1,16 +1,14 @@
 package cn.edu.uestc.acmicpc.oj.service.impl;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.oj.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.oj.service.iface.UserSerialKeyService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Projections;
@@ -51,18 +49,21 @@ public class UserServiceImpl extends AbstractService implements UserService {
   private final EmailService emailService;
   private final ProblemService problemService;
   private final StatusService statusService;
+  private final UserSerialKeyService userSerialKeyService;
 
   @Autowired
   public UserServiceImpl(IUserDAO userDAO,
                          GlobalService globalService,
                          EmailService emailService,
                          ProblemService problemService,
-                         StatusService statusService) {
+                         StatusService statusService,
+                         UserSerialKeyService userSerialKeyService) {
     this.userDAO = userDAO;
     this.globalService = globalService;
     this.emailService = emailService;
     this.problemService = problemService;
     this.statusService = statusService;
+    this.userSerialKeyService = userSerialKeyService;
   }
 
   @Override
@@ -263,15 +264,9 @@ public class UserServiceImpl extends AbstractService implements UserService {
     if (user == null) {
       throw new AppException("No such user!");
     }
-    /*UserSerialKey userSerialKey =
-        userSerialKeyDAO.getEntityByUniqueField("userId", targetUser, "userByUserId", true);
-    if (userSerialKey != null) {
-      // less than 30 minutes
-         * if (new Date().getTime() - userSerialKey.getTime().getTime() <= 1800000) { throw new
-         * AppException( "serial key can only be generated in every 30 minutes."); }
-    } else {
-      userSerialKey = new UserSerialKey();
-    }
+
+    UserSerialKey userSerialKey = userSerialKeyService.generateUserSerialKey(user.getUserId());
+
     StringBuilder stringBuilder = new StringBuilder();
     Random random = new Random();
     for (int i = 0; i < Global.USER_SERIAL_KEY_LENGTH; ++i) {
@@ -280,27 +275,10 @@ public class UserServiceImpl extends AbstractService implements UserService {
     String serialKey = stringBuilder.toString();
     userSerialKey.setTime(new Timestamp(new Date().getTime()));
     userSerialKey.setSerialKey(serialKey);
-    userSerialKey.setUserByUserId(targetUser);
-    userSerialKeyDAO.update(userSerialKey);
+    userSerialKey.setUserByUserId(user);
+    userSerialKeyService.createNewUserSerialKey(userSerialKey);
 
-    String url =
-        settings.SETTING_HOST
-            + getActionURL("/user",
-            "activate/" + targetUser.getUserName() + "/" + StringUtil.encodeSHA1(serialKey));
-    stringBuilder = new StringBuilder();
-    stringBuilder.append("Dear ").append(targetUser.getUserName()).append(" :\n\n");
-    stringBuilder
-        .append("To reset your password, simply click on the link below or paste into the url field on your favorite browser:\n\n");
-    stringBuilder.append(url).append("\n\n");
-    stringBuilder
-        .append("The activation link will only be good for 30 minutes, after that you will have to try again from the beginning. When you visit the above page, you'll be able to set your password as you like.\n\n");
-    stringBuilder
-        .append("If you have any questions about the system, feel free to contact us anytime at acm@uestc.edu.cn.\n\n");
-    stringBuilder.append("The UESTC OJ Team.\n");
-
-    eMailSender.send(targetUser.getEmail(), "UESTC Online Judge", stringBuilder.toString());
-    */
-    return true;
+    return emailService.sendUserSerialKey(userSerialKey);
   }
 
   @Override
