@@ -2,7 +2,6 @@ package cn.edu.uestc.acmicpc.oj.service.impl;
 
 import java.util.List;
 
-import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -33,8 +32,8 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
     ProblemCondition problemCondition = new ProblemCondition();
     // TODO set this is problem condition.
     problemCondition.isVisible = true;
-    return (List<Integer>) problemDAO.findAll(problemCondition.getCondition().addProjection(
-        Projections.id()));
+    // TODO(mzry1992) please test for this statement.
+    return (List<Integer>) problemDAO.findAll("problemId", problemCondition.getCondition());
   }
 
   @Override

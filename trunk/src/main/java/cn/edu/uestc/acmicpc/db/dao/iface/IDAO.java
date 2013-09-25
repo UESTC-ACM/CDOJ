@@ -138,13 +138,12 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   /**
    * Count number of entities for custom counting.
    *
+   * @param fieldName count field's name
    * @param condition user custom condition entity
    * @return number of records for database query result
    * @throws AppException
-   * @Deprecated this method is not supported in new API, we are design new interface for that.
    */
-  @Deprecated
-  Long customCount(Condition condition) throws AppException;
+  Long customCount(String fieldName, Condition condition) throws AppException;
 
   /**
    * Update all records according condition entity.
