@@ -9,11 +9,12 @@ import java.util.Map;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Projection;
 
+import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
 /**
- * Other conditions setting for DAO findAll method.
+ * Conditions setting for DAO findAll method.
  * <p/>
  * <strong>For Developers</strong>:
  * <p/>
@@ -138,7 +139,11 @@ public class Condition {
   private final List<Order> orders = new ArrayList<>();
   /**
    * Select projections.
+   *
+   * @deprecated this is not supported in new API,
+   * please use {@link IDAO#findAll(String, Condition)}.
    */
+  @Deprecated
   public List<Projection> projections;
 
   public Long getCurrentPage() {

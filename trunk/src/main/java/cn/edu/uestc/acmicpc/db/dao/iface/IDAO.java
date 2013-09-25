@@ -68,6 +68,29 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   List<?> findAll(Condition condition) throws AppException;
 
   /**
+   * List all entities in tables by HQL.
+   *
+   * @param hql HQL string for query.
+   * @return expected entity list
+   * @throws AppException
+   */
+  List<?> findAll(String hql) throws AppException;
+
+  /**
+   * List all entities in tables by fields name and condition entity.
+   * <p />
+   * <strong>For developers:</strong>
+   * The return list's element type is {@link Object}[], every element of the array is the
+   * field value.
+   *
+   * @param fields fields name for query.
+   * @param condition condition entity for DB query.
+   * @return result list.
+   * @throws AppException
+   */
+  List<?> findAll(String fields, Condition condition) throws AppException;
+
+  /**
    * Count the number of records in the table.
    *
    * @return number of records we query
