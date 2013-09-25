@@ -12,15 +12,10 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Projection;
-import org.hibernate.criterion.ProjectionList;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.base.JoinedProperty;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.DatabaseUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -78,35 +73,6 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   /**
-   * Update criteria entity according to specific conditions.
-   *
-   * @param criteria Criteria object to update
-   * @param condition conditions for criteria query
-   * @deprecated criteria is deprecated, use {@link Condition}.
-   */
-  @Deprecated
-  private void updateCriteria(Criteria criteria, Condition condition) {
-    criteria.setFirstResult(condition.getCurrentPage() == null ? 0 : (int) ((condition
-        .getCurrentPage() - 1) * condition.getCountPerPage()));
-    if (condition.getCountPerPage() != null) {
-      criteria.setMaxResults((int) condition.getCountPerPage().longValue());
-    }
-    for (Criterion criterion : condition.getCriterionList()) {
-      criteria.add(criterion);
-    }
-    for (JoinedProperty joinedProperty : condition.getJoinedProperties().values()) {
-      criteria.add(joinedProperty.getCriterion());
-    }
-    if (condition.projections != null) {
-      ProjectionList projectionList = Projections.projectionList();
-      for (Projection projection : condition.projections) {
-        projectionList.add(projection);
-      }
-      criteria.setProjection(projectionList);
-    }
-  }
-
-  /**
    * Build HQL with class name.
    *
    * @param condition DB condition entity.
@@ -139,7 +105,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     }
     try {
       Criteria criteria = createCriteria();
-      updateCriteria(criteria, condition);
+//      updateCriteria(criteria, condition);
       return (Long) criteria.uniqueResult();
     } catch (HibernateException e) {
       throw new AppException("Invoke customCount method error.");
@@ -197,7 +163,28 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
 
   @Override
   public List<?> findAll() throws AppException {
-    return findAll(null);
+    return findAll(new Condition());
+  }
+
+  @Override
+  public List<?> findAll(String hql) throws AppException {
+    try {
+      return getSession().createQuery(hql).list();
+    } catch(HibernateException e) {
+      LOGGER.error(e);
+      throw new AppException("Invoke findAll method error.");
+    }
+  }
+
+  @Override
+  public List<?> findAll(String fields, Condition condition) throws AppException {
+    try {
+      String hql = "select " + fields + " " + buildHQLString(condition);
+      return getSession().createQuery(hql).list();
+    } catch (HibernateException e) {
+      LOGGER.error(e);
+      throw new AppException("Invoke findAll method error.");
+    }
   }
 
   @Override
