@@ -58,27 +58,22 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   protected abstract Class<PK> getPKClass();
 
   /**
-   * Create a criteria object from session.
-   *
-   * @return expected criteria entity
-   * @throws AppException
-   */
-  private Criteria createCriteria() throws AppException {
-    try {
-      return getSession().createCriteria(getReferenceClass());
-    } catch (Exception e) {
-      e.printStackTrace();
-      throw new AppException("Get criteria error");
-    }
-  }
-
-  /**
    * Build HQL with class name.
    *
    * @param condition DB condition entity.
    * @return HQL with class name.
    */
   private String buildHQLString(Condition condition) {
+    return "from " + getReferenceClass().getSimpleName() + " " + condition.toHQLString();
+  }
+
+  /**
+   * Build HQL with class name, and the condition's order is considered..
+   *
+   * @param condition DB condition entity.
+   * @return HQL with class name.
+   */
+  private String buildHQLStringWithOrders(Condition condition) {
     return "from " + getReferenceClass().getSimpleName() + " " + condition.toHQLStringWithOrders();
   }
 
@@ -88,26 +83,24 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
       condition = new Condition();
     }
     try {
-      String hql = buildHQLString(condition);
+      String hql = buildHQLStringWithOrders(condition);
       return getSession().createQuery(hql).list();
     } catch (HibernateException e) {
       LOGGER.error(e);
-      e.printStackTrace();
       throw new AppException("Invoke findAll method error.");
     }
   }
 
   @Override
-  @Deprecated
-  public Long customCount(Condition condition) throws AppException {
+  public Long customCount(String fieldName, Condition condition) throws AppException {
     if (condition == null) {
-      return count();
+      condition = new Condition();
     }
     try {
-      Criteria criteria = createCriteria();
-//      updateCriteria(criteria, condition);
-      return (Long) criteria.uniqueResult();
+      String hql = "select count(" + fieldName + ") " + buildHQLString(condition);
+      return (Long) getSession().createQuery(hql).uniqueResult();
     } catch (HibernateException e) {
+      LOGGER.error(e);
       throw new AppException("Invoke customCount method error.");
     }
   }
@@ -146,7 +139,6 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
       return (Entity) getSession().get(getReferenceClass(), key);
     } catch (HibernateException e) {
       LOGGER.error(e);
-      e.printStackTrace();
       throw new AppException("Invoke get method error.");
     }
   }
@@ -179,7 +171,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   @Override
   public List<?> findAll(String fields, Condition condition) throws AppException {
     try {
-      String hql = "select " + fields + " " + buildHQLString(condition);
+      String hql = "select " + fields + " " + buildHQLStringWithOrders(condition);
       return getSession().createQuery(hql).list();
     } catch (HibernateException e) {
       LOGGER.error(e);
