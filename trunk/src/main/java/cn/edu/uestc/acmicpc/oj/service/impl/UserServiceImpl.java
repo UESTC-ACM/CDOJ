@@ -11,6 +11,8 @@ import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.oj.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.service.iface.EmailService;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Projections;
@@ -77,6 +79,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public void updateUser(User user) throws AppException {
+    AppExceptionUtil.assertNotNull(user);
+    AppExceptionUtil.assertNotNull(user.getUserId());
     userDAO.update(user);
   }
 
