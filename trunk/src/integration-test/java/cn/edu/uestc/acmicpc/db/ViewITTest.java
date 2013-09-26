@@ -37,7 +37,7 @@ public class ViewITTest {
     user.setNickName("admin");
     user.setEmail("acm@uestc.edu.cn");
     user.setSchool("UESTC");
-    user.setDepartmentByDepartmentId(departmentDAO.get(1));
+//    user.setDepartmentByDepartmentId(departmentDAO.get(1));
     user.setStudentId("2010013100008");
     user.setLastLogin(new Timestamp(new Date().getTime()));
     user.setType(0);
