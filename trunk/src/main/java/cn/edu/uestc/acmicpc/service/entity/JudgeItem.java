@@ -28,8 +28,7 @@ public class JudgeItem {
   public CompileInfo compileInfo;
 
   @Autowired
-  public JudgeItem(StatusCondition statusCondition,
-      ICompileInfoDAO compileInfoDAO,
+  public JudgeItem(ICompileInfoDAO compileInfoDAO,
       IStatusDAO statusDAO,
       IUserDAO userDAO,
       IProblemDAO problemDAO) {
