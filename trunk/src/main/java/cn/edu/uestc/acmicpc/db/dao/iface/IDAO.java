@@ -117,7 +117,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @throws FieldNotUniqueException
    * @throws AppException
    */
-  Entity getEntityByUniqueField(String fieldName, Object value)
+  Object getEntityByUniqueField(String fieldName, Object value)
       throws FieldNotUniqueException, AppException;
 
   /**
@@ -132,7 +132,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @throws FieldNotUniqueException
    * @throws AppException
    */
-  Entity getEntityByUniqueField(String fieldName, Object value, String propertyName,
+  Object getEntityByUniqueField(String fieldName, Object value, String propertyName,
       boolean forceUnique) throws FieldNotUniqueException, AppException;
 
   /**

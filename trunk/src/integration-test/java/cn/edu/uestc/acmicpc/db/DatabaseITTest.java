@@ -42,7 +42,7 @@ public class DatabaseITTest {
 
   @Test
   public void testDAO_getEntityByUnique() throws FieldNotUniqueException, AppException {
-    User user = userDAO.getEntityByUniqueField("userName", "administrator");
+    User user = (User) userDAO.getEntityByUniqueField("userName", "administrator");
     Assert.assertEquals("UESTC", user.getSchool());
   }
 
