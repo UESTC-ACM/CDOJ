@@ -51,10 +51,20 @@ public class UserView extends View<User> {
   private Timestamp lastLogin;
 
   public UserView(User user) {
-    super(user);
+    setUserId(user.getUserId());
+    setUserName(user.getUserName());
+    setPassword(user.getPassword());
+    setNickName(user.getNickName());
+    setEmail(user.getEmail());
+    setSchool(user.getSchool());
     setDepartmentId(user.getDepartmentByDepartmentId().getDepartmentId());
     setDepartment(user.getDepartmentByDepartmentId().getName());
+    setStudentId(user.getStudentId());
+    setTried(user.getTried());
+    setSolved(user.getSolved());
     setTypeName(Global.AuthenticationType.values()[user.getType()].getDescription());
+    setType(user.getType());
+    setLastLogin(user.getLastLogin());
   }
 
   public Integer getUserId() {

@@ -242,6 +242,7 @@ public class Condition {
       for (Order order : orders) {
         if (first) {
           builder.append(" ").append(order.toString());
+          first = false;
         } else {
           builder.append(",").append(order.toString());
         }
