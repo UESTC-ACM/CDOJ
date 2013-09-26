@@ -6,7 +6,6 @@ import java.util.Map;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 /**
  * Global DAO interface.
@@ -114,11 +113,10 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param fieldName the unique field name
    * @param value field's value
    * @return unique result, null if not exist
-   * @throws FieldNotUniqueException
    * @throws AppException
    */
   Object getEntityByUniqueField(String fieldName, Object value)
-      throws FieldNotUniqueException, AppException;
+      throws AppException;
 
   /**
    * Get unique entity by the field name, if the field is not unique field, throw
@@ -129,11 +127,10 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param propertyName property's name for JoinColumn
    * @param forceUnique force the field's unique property
    * @return unique result, null if not exist
-   * @throws FieldNotUniqueException
    * @throws AppException
    */
   Object getEntityByUniqueField(String fieldName, Object value, String propertyName,
-      boolean forceUnique) throws FieldNotUniqueException, AppException;
+      boolean forceUnique) throws AppException;
 
   /**
    * Count number of entities for custom counting.

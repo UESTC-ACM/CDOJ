@@ -32,7 +32,6 @@ import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
-import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 /**
  * Implementation for {@link UserService}.
@@ -43,7 +42,6 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
   private final IUserDAO userDAO;
-  @SuppressWarnings("unused")
   private final GlobalService globalService;
   @SuppressWarnings("unused")
   private final EmailService emailService;
@@ -65,12 +63,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public User getUserByUserName(String userName) throws AppException {
-    try {
-      return (User) userDAO.getEntityByUniqueField("userName", userName);
-    } catch (FieldNotUniqueException e) {
-      LOGGER.error(e);
-      throw new AppException(e);
-    }
+    return (User) userDAO.getEntityByUniqueField("userName", userName);
   }
 
   @Override
@@ -82,12 +75,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public User getUserByEmail(String email) throws AppException {
-    try {
-      return (User) userDAO.getEntityByUniqueField("email", email);
-    } catch (FieldNotUniqueException e) {
-      LOGGER.error(e);
-      throw new AppException(e);
-    }
+    return (User) userDAO.getEntityByUniqueField("email", email);
   }
 
   @Override
