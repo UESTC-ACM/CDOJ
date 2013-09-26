@@ -14,8 +14,6 @@ import cn.edu.uestc.acmicpc.util.Global;
 
 /**
  * Implementation for {@link GlobalService}.
- *
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @Service
 @Primary

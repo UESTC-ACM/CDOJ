@@ -15,8 +15,6 @@ import java.sql.Timestamp;
 
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.view.base.View;
-import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.StringUtil;
 
 /**
  * Use for return status information with json type.
@@ -158,22 +156,23 @@ public class StatusView extends View<Status> {
   @Deprecated
   public StatusView(Status status) {
     super(status);
-    if (status.getResult() == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
-      setTimeCost(Integer.toString(status.getTimeCost()));
-      setMemoryCost(Integer.toString(status.getMemoryCost()));
-    } else {
-      setTimeCost("");
-      setMemoryCost("");
-    }
-    setUserId(status.getUserByUserId().getUserId());
-    setUserName(status.getUserByUserId().getUserName());
-    setProblemId(status.getProblemByProblemId().getProblemId());
-    if (status.getContestByContestId() != null)
-      setContestId(status.getContestByContestId().getContestId());
-    setLanguageId(status.getLanguageByLanguageId().getLanguageId());
-    setReturnTypeId(status.getResult());
-    setReturnType(StringUtil.getStatusDescription(
-        Global.OnlineJudgeReturnType.values()[status.getResult()], status.getCaseNumber()));
-    setLanguage(status.getLanguageByLanguageId().getName());
+ // TODO(mzry1992): use dto transfer.
+//    if (status.getResult() == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
+//      setTimeCost(Integer.toString(status.getTimeCost()));
+//      setMemoryCost(Integer.toString(status.getMemoryCost()));
+//    } else {
+//      setTimeCost("");
+//      setMemoryCost("");
+//    }
+//    setUserId(status.getUserByUserId().getUserId());
+//    setUserName(status.getUserByUserId().getUserName());
+//    setProblemId(status.getProblemByProblemId().getProblemId());
+//    if (status.getContestByContestId() != null)
+//      setContestId(status.getContestByContestId().getContestId());
+//    setLanguageId(status.getLanguageByLanguageId().getLanguageId());
+//    setReturnTypeId(status.getResult());
+//    setReturnType(StringUtil.getStatusDescription(
+//        Global.OnlineJudgeReturnType.values()[status.getResult()], status.getCaseNumber()));
+//    setLanguage(status.getLanguageByLanguageId().getName());
   }
 }

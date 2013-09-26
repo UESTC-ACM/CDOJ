@@ -26,6 +26,7 @@ public class UserView extends View<User> {
   private Integer type;
   private Timestamp lastLogin;
 
+  @Deprecated
   public UserView(User user) {
     super(user);
     // TODO(mzry1992): fetch the view in service.

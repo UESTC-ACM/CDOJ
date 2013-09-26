@@ -1,40 +1,13 @@
-/*
- *
- *  cdoj, UESTC ACMICPC Online Judge
- *  Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  	mzry1992 <@link muziriyun@gmail.com>
- *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU General Public License
- *  as published by the Free Software Foundation; either version 2
- *  of the License, or (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Collection;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -179,118 +152,52 @@ public class Article implements Serializable {
     this.isVisible = visible;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
 
-    Article article = (Article) o;
+  private Integer userId;
 
-    if (!articleId.equals(article.articleId)) {
-      return false;
-    }
-    if (!clicked.equals(article.clicked)) {
-      return false;
-    }
-    if (isNotice != article.isNotice) {
-      return false;
-    }
-    if (!order.equals(article.order)) {
-      return false;
-    }
-    if (isVisible != article.isVisible) {
-      return false;
-    }
-    if (author != null ? !author.equals(article.author) : article.author != null) {
-      return false;
-    }
-    if (content != null ? !content.equals(article.content) : article.content != null) {
-      return false;
-    }
-    if (time != null ? !time.equals(article.time) : article.time != null) {
-      return false;
-    }
-    if (title != null ? !title.equals(article.title) : article.title != null) {
-      return false;
-    }
-
-    return true;
+  @Column(name = "userId", nullable = true, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getUserId() {
+    return userId;
   }
 
-  @Override
-  public int hashCode() {
-    int result = articleId;
-    result = 31 * result + (title != null ? title.hashCode() : 0);
-    result = 31 * result + (content != null ? content.hashCode() : 0);
-    result = 31 * result + (author != null ? author.hashCode() : 0);
-    result = 31 * result + (time != null ? time.hashCode() : 0);
-    result = 31 * result + clicked;
-    result = 31 * result + order;
-    result = 31 * result + (isNotice ? 1 : 0);
-    result = 31 * result + (isVisible ? 1 : 0);
-    return result;
+  public void setUserId(Integer userId) {
+    this.userId = userId;
   }
 
-  private User userByUserId;
+  private Integer parentId;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = true)
-  public User getUserByUserId() {
-    return userByUserId;
+  @Column(name = "parentId", nullable = true, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getParentId() {
+    return parentId;
   }
 
-  public void setUserByUserId(User userByUserId) {
-    this.userByUserId = userByUserId;
+  public void setParentId(Integer parentId) {
+    this.parentId = parentId;
   }
 
-  private Article articleByParentId;
+  private Integer problemId;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "parentId", referencedColumnName = "articleId", nullable = true)
-  public Article getArticleByParentId() {
-    return articleByParentId;
+  @Column(name = "problemId", nullable = true, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getProblemId() {
+    return problemId;
   }
 
-  public void setArticleByParentId(Article articleByParentId) {
-    this.articleByParentId = articleByParentId;
+  public void setProblemId(Integer problemId) {
+    this.problemId = problemId;
   }
 
-  private Problem problemByProblemId;
+  private Integer contestId;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = true)
-  public Problem getProblemByProblemId() {
-    return problemByProblemId;
+  @Column(name = "contestId", nullable = true, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getContestId() {
+    return contestId;
   }
 
-  public void setProblemByProblemId(Problem problemByProblemId) {
-    this.problemByProblemId = problemByProblemId;
-  }
-
-  private Contest contestByContestId;
-
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "contestId", referencedColumnName = "contestId", nullable = true)
-  public Contest getContestByContestId() {
-    return contestByContestId;
-  }
-
-  public void setContestByContestId(Contest contestByContestId) {
-    this.contestByContestId = contestByContestId;
-  }
-
-  private Collection<Article> articlesByParentId;
-
-  @OneToMany(mappedBy = "articleByParentId", cascade = CascadeType.ALL)
-  public Collection<Article> getArticlesByParentId() {
-    return articlesByParentId;
-  }
-
-  public void setArticlesByParentId(Collection<Article> articlesByParentId) {
-    this.articlesByParentId = articlesByParentId;
+  public void setContestId(Integer contestId) {
+    this.contestId = contestId;
   }
 }

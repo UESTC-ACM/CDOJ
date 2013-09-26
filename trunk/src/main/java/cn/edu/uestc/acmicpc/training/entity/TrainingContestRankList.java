@@ -115,7 +115,10 @@ public class TrainingContestRankList {
    * @throws FieldNotUniqueException
    * @throws AppException
    * @throws ParserException
+   * @Deprecated
+   * TODO(mzry1992): refactor
    */
+  @Deprecated
   public List<TrainingUserRankSummary> getTrainingUserRankSummaryListByUserInfo(String[] userInfo)
       throws FieldNotUniqueException, AppException, ParserException {
     List<TrainingUserRankSummary> trainingUserRankSummaryList = new LinkedList<>();

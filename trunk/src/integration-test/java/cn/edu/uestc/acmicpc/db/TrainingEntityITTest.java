@@ -30,7 +30,7 @@ public class TrainingEntityITTest {
     TrainingUser trainingUser = new TrainingUser();
     trainingUser.setRating(1200.0);
     trainingUser.setVolatility(550.0);
-    trainingUser.setUserByUserId(userDAO.get(1));
+    trainingUser.setUserId(1);
     trainingUser.setName("01李昀");
     trainingUser.setType(0);
     trainingUserDAO.add(trainingUser);
@@ -56,8 +56,8 @@ public class TrainingEntityITTest {
     trainingStatus.setSolve(1);
     trainingStatus.setRatingVary(-200.0);
     trainingStatus.setVolatilityVary(-50.0);
-    trainingStatus.setTrainingUserByTrainingUserId(trainingUserDAO.get(1));
-    trainingStatus.setTrainingContestByTrainingContestId(trainingContestDAO.get(1));
+    trainingStatus.setTrainingUserId(1);
+    trainingStatus.setTrainingContestId(1);
 
     trainingStatusDAO.add(trainingStatus);
   }

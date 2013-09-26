@@ -44,7 +44,7 @@ public class StatusDatabaseITTest {
     condition.addEntry("userId", ConditionType.EQUALS, user.getUserId());
     condition.addEntry("result", ConditionType.EQUALS,
         Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-    List<?> results = statusDAO.findAll("problemByProblemId.problemId", condition);
+    List<?> results = statusDAO.findAll("problemId", condition);
     Assert.assertEquals(1, results.size());
     Assert.assertEquals(Integer.valueOf(1), results.get(0));
   }

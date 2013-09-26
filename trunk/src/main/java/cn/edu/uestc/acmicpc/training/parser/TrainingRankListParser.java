@@ -40,7 +40,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
-import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 import cn.edu.uestc.acmicpc.training.entity.TrainingContestRankList;
 import cn.edu.uestc.acmicpc.training.entity.TrainingProblemSummaryInfo;
 import cn.edu.uestc.acmicpc.training.entity.TrainingUserRankSummary;
@@ -282,48 +281,50 @@ public class TrainingRankListParser {
    * @throws ParserException
    */
   public List<String[]> parseDatabase(TrainingContest trainingContest) throws ParserException {
-    List<String[]> valueList = new LinkedList<>();
-    Integer summaryLength = -1;
-    for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
-      String[] summary = parseTrainingUserSummary(trainingStatus.getSummary());
-      String[] result = new String[summary.length + 1];
-      result[0] = trainingStatus.getTrainingUserByTrainingUserId().getName();
-      System.arraycopy(summary, 0, result, 1, summary.length);
-      valueList.add(result);
-
-      if (summaryLength == -1)
-        summaryLength = result.length;
-      else if (summaryLength != result.length)
-        throw new ParserException("Summary in database length different error");
-    }
-
-    if (trainingContest.getType() == Global.TrainingContestType.CF.ordinal()
-        || trainingContest.getType() == Global.TrainingContestType.TC.ordinal()) {
-      String[] header = new String[3];
-      header[0] = "name";
-      header[1] = "score";
-      header[2] = "type";
-      valueList.add(0, header);
-    } else if (trainingContest.getType() == Global.TrainingContestType.OTHERS.ordinal()) {
-      String[] header = new String[3];
-      header[0] = "name";
-      header[1] = "solved";
-      header[2] = "penalty";
-      valueList.add(0, header);
-    } else if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal() ||
-        trainingContest.getType() == Global.TrainingContestType.ABSENT.ordinal()) {
-      String[] header = new String[2];
-      header[0] = "name";
-      header[1] = "penalty";
-      valueList.add(0, header);
-    } else {
-      String[] header = new String[summaryLength];
-      header[0] = "name";
-      for (int i = 1; i < header.length; i++)
-        header[i] = String.valueOf(i);
-      valueList.add(0, header);
-    }
-    return valueList;
+    // TODO(mzry1992): refactor.
+//    List<String[]> valueList = new LinkedList<>();
+//    Integer summaryLength = -1;
+//    for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
+//      String[] summary = parseTrainingUserSummary(trainingStatus.getSummary());
+//      String[] result = new String[summary.length + 1];
+//      result[0] = trainingStatus.getTrainingUserByTrainingUserId().getName();
+//      System.arraycopy(summary, 0, result, 1, summary.length);
+//      valueList.add(result);
+//
+//      if (summaryLength == -1)
+//        summaryLength = result.length;
+//      else if (summaryLength != result.length)
+//        throw new ParserException("Summary in database length different error");
+//    }
+//
+//    if (trainingContest.getType() == Global.TrainingContestType.CF.ordinal()
+//        || trainingContest.getType() == Global.TrainingContestType.TC.ordinal()) {
+//      String[] header = new String[3];
+//      header[0] = "name";
+//      header[1] = "score";
+//      header[2] = "type";
+//      valueList.add(0, header);
+//    } else if (trainingContest.getType() == Global.TrainingContestType.OTHERS.ordinal()) {
+//      String[] header = new String[3];
+//      header[0] = "name";
+//      header[1] = "solved";
+//      header[2] = "penalty";
+//      valueList.add(0, header);
+//    } else if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal() ||
+//        trainingContest.getType() == Global.TrainingContestType.ABSENT.ordinal()) {
+//      String[] header = new String[2];
+//      header[0] = "name";
+//      header[1] = "penalty";
+//      valueList.add(0, header);
+//    } else {
+//      String[] header = new String[summaryLength];
+//      header[0] = "name";
+//      for (int i = 1; i < header.length; i++)
+//        header[i] = String.valueOf(i);
+//      valueList.add(0, header);
+//    }
+//    return valueList;
+    return null;
   }
 
   /**
@@ -386,5 +387,5 @@ public class TrainingRankListParser {
     return stringBuilder.toString();
   }
 
-  private TrainingContestRankList trainingContestRankList;
+  private final TrainingContestRankList trainingContestRankList;
 }

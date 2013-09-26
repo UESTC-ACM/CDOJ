@@ -22,15 +22,11 @@
 package cn.edu.uestc.acmicpc.db.view.impl;
 
 import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 import cn.edu.uestc.acmicpc.db.entity.Contest;
-import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
-import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.base.View;
 
 /**
@@ -164,21 +160,22 @@ public class ContestView extends View<Contest> {
         status = "Ended";
     }
 
-    List<ContestProblem> contestProblems =
-        (List<ContestProblem>) contest.getContestProblemsByContestId();
-    Collections.sort(contestProblems, new Comparator<ContestProblem>() {
-
-      @Override
-      public int compare(ContestProblem a, ContestProblem b) {
-        return a.getOrder().compareTo(b.getOrder());
-      }
-    });
+ // TODO(mzry1992): use dto transfer.
+//    List<ContestProblem> contestProblems =
+//        (List<ContestProblem>) contest.getContestProblemsByContestId();
+//    Collections.sort(contestProblems, new Comparator<ContestProblem>() {
+//
+//      @Override
+//      public int compare(ContestProblem a, ContestProblem b) {
+//        return a.getOrder().compareTo(b.getOrder());
+//      }
+//    });
     problemList = new LinkedList<>();
     problemListString = "";
-    for (ContestProblem contestProblem : contest.getContestProblemsByContestId()) {
-      Problem problem = contestProblem.getProblemByProblemId();
-      problemList.add(problem.getProblemId());
-      problemListString = problemListString + problem.getProblemId() + ",";
-    }
+//    for (ContestProblem contestProblem : contest.getContestProblemsByContestId()) {
+//      Problem problem = contestProblem.getProblemByProblemId();
+//      problemList.add(problem.getProblemId());
+//      problemListString = problemListString + problem.getProblemId() + ",";
+//    }
   }
 }
