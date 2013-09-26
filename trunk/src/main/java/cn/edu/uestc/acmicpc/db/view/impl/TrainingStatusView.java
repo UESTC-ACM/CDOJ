@@ -113,12 +113,13 @@ public class TrainingStatusView extends View<TrainingStatus> {
 
   @Deprecated
   public TrainingStatusView(TrainingStatus trainingStatus) {
+    // TODO(mzry1992): use dto transfer.
     super(trainingStatus);
-    setContestId(trainingStatus.getTrainingContestByTrainingContestId().getTrainingContestId());
-    setContestName(trainingStatus.getTrainingContestByTrainingContestId().getTitle());
-    setName(trainingStatus.getTrainingUserByTrainingUserId().getName());
-    setUserName(trainingStatus.getTrainingUserByTrainingUserId().getUserByUserId().getUserName());
-    setUserEmail(trainingStatus.getTrainingUserByTrainingUserId().getUserByUserId().getEmail());
+//    setContestId(trainingStatus.getTrainingContestByTrainingContestId().getTrainingContestId());
+//    setContestName(trainingStatus.getTrainingContestByTrainingContestId().getTitle());
+//    setName(trainingStatus.getTrainingUserByTrainingUserId().getName());
+//    setUserName(trainingStatus.getTrainingUserByTrainingUserId().getUserByUserId().getUserName());
+//    setUserEmail(trainingStatus.getTrainingUserByTrainingUserId().getUserByUserId().getEmail());
   }
 
   public String getName() {

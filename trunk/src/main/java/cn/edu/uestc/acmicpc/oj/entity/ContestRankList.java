@@ -21,15 +21,17 @@
 
 package cn.edu.uestc.acmicpc.oj.entity;
 
+import java.sql.Timestamp;
+import java.util.LinkedList;
+import java.util.List;
+
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.view.impl.ContestListView;
 import cn.edu.uestc.acmicpc.db.view.impl.ContestProblemSummaryView;
-import java.sql.Timestamp;
-import java.util.*;
 
 /**
  * Description
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class ContestRankList {
@@ -94,47 +96,48 @@ public class ContestRankList {
   }
 
   public void updateRankList(Status status) {
-    Boolean isNewUser = true;
-    if (userRankSummaryList.size() > 0) {
-      for (UserRankSummary userRankSummary : userRankSummaryList) {
-        if (userRankSummary.getUserId().equals(status.getUserByUserId().getUserId())) {
-          isNewUser = false;
-          break;
-        }
-      }
-    }
-    if (isNewUser)
-      userRankSummaryList.add(new UserRankSummary(status.getUserByUserId(), problemSummary));
-
-    for (UserRankSummary userRankSummary : userRankSummaryList) {
-      if (userRankSummary.getUserId().equals(status.getUserByUserId().getUserId())) {
-        Boolean visible = true;
-        if (contestSummary.getLength() == 5 * 60 * 60) {
-          // standard contest && still running
-          if (contestSummary.getStatus().equals("Running"))
-            if ((status.getTime().getTime() - contestSummary.getTime().getTime()) / 1000 > 4 * 60 * 60)
-              visible = false;
-        }
-        userRankSummary.updateUserRank(status, contestSummary, problemSummary, visible);
-        break;
-      }
-    }
-
-    Collections.sort(userRankSummaryList, new Comparator<UserRankSummary>() {
-
-      @Override
-      public int compare(UserRankSummary a, UserRankSummary b) {
-        if (a.getSolved().equals(b.getSolved())) {
-          if (a.getPenalty().equals(b.getPenalty())) {
-            return a.getNickName().compareTo(b.getNickName());
-          }
-          return a.getPenalty().compareTo(b.getPenalty());
-        }
-        return (b.getSolved().compareTo(a.getSolved()));
-      }
-    });
-
-    for (int i = 0; i < userRankSummaryList.size(); i++)
-      userRankSummaryList.get(i).setRank(i + 1);
+    // TODO(mzry1992): refactor.
+//    Boolean isNewUser = true;
+//    if (userRankSummaryList.size() > 0) {
+//      for (UserRankSummary userRankSummary : userRankSummaryList) {
+//        if (userRankSummary.getUserId().equals(status.getUserByUserId().getUserId())) {
+//          isNewUser = false;
+//          break;
+//        }
+//      }
+//    }
+//    if (isNewUser)
+//      userRankSummaryList.add(new UserRankSummary(status.getUserByUserId(), problemSummary));
+//
+//    for (UserRankSummary userRankSummary : userRankSummaryList) {
+//      if (userRankSummary.getUserId().equals(status.getUserByUserId().getUserId())) {
+//        Boolean visible = true;
+//        if (contestSummary.getLength() == 5 * 60 * 60) {
+//          // standard contest && still running
+//          if (contestSummary.getStatus().equals("Running"))
+//            if ((status.getTime().getTime() - contestSummary.getTime().getTime()) / 1000 > 4 * 60 * 60)
+//              visible = false;
+//        }
+//        userRankSummary.updateUserRank(status, contestSummary, problemSummary, visible);
+//        break;
+//      }
+//    }
+//
+//    Collections.sort(userRankSummaryList, new Comparator<UserRankSummary>() {
+//
+//      @Override
+//      public int compare(UserRankSummary a, UserRankSummary b) {
+//        if (a.getSolved().equals(b.getSolved())) {
+//          if (a.getPenalty().equals(b.getPenalty())) {
+//            return a.getNickName().compareTo(b.getNickName());
+//          }
+//          return a.getPenalty().compareTo(b.getPenalty());
+//        }
+//        return (b.getSolved().compareTo(a.getSolved()));
+//      }
+//    });
+//
+//    for (int i = 0; i < userRankSummaryList.size(); i++)
+//      userRankSummaryList.get(i).setRank(i + 1);
   }
 }

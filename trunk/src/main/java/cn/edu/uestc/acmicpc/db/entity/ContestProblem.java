@@ -1,37 +1,12 @@
-/*
- *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -85,51 +60,27 @@ public class ContestProblem implements Serializable {
     this.order = order;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
+  private Integer contestId;
 
-    ContestProblem that = (ContestProblem) o;
-
-    if (!contestProblemId.equals(that.contestProblemId))
-      return false;
-    if (!order.equals(that.order))
-      return false;
-
-    return true;
+  @Column(name = "contestId", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getContestId() {
+    return contestId;
   }
 
-  @Override
-  public int hashCode() {
-    int result = contestProblemId;
-    result = 31 * result + order;
-    return result;
+  public void setContestId(Integer contestId) {
+    this.contestId = contestId;
   }
 
-  private Contest contestByContestId;
+  private Integer problemId;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "contestId", referencedColumnName = "contestId", nullable = false)
-  public Contest getContestByContestId() {
-    return contestByContestId;
+  @Column(name = "problemId", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getProblemId() {
+    return problemId;
   }
 
-  public void setContestByContestId(Contest contestByContestId) {
-    this.contestByContestId = contestByContestId;
-  }
-
-  private Problem problemByProblemId;
-
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = false)
-  public Problem getProblemByProblemId() {
-    return problemByProblemId;
-  }
-
-  public void setProblemByProblemId(Problem problemByProblemId) {
-    this.problemByProblemId = problemByProblemId;
+  public void setProblemId(Integer problemId) {
+    this.problemId = problemId;
   }
 }

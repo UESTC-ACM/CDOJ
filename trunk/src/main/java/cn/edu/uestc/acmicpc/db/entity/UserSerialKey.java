@@ -1,36 +1,13 @@
-/*
- * cdoj, UESTC ACMICPC Online Judge
- * Copyright (c) 2012  fish <@link lyhypacm@gmail.com>,
- * mzry1992 <@link muziriyun@gmail.com>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
-
 package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -60,7 +37,7 @@ public class UserSerialKey implements Serializable {
 
   @Override
   public String toString() {
-    return "UserSerialKey{" + "serialKey='" + serialKey + '\'' + ", userByUserId=" + userByUserId
+    return "UserSerialKey{" + "serialKey='" + serialKey + '\'' + ", userByUserId=" + userId
         + ", time=" + time + ", userSerialKeyId=" + userSerialKeyId + '}';
   }
 
@@ -99,49 +76,19 @@ public class UserSerialKey implements Serializable {
     return time;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
-
-    UserSerialKey that = (UserSerialKey) o;
-
-    if (!serialKey.equals(that.serialKey))
-      return false;
-    if (!time.equals(that.time))
-      return false;
-    if (!userByUserId.equals(that.userByUserId))
-      return false;
-    if (!userSerialKeyId.equals(that.userSerialKeyId))
-      return false;
-
-    return true;
-  }
-
-  @Override
-  public int hashCode() {
-    int result = userSerialKeyId.hashCode();
-    result = 31 * result + time.hashCode();
-    result = 31 * result + serialKey.hashCode();
-    result = 31 * result + userByUserId.hashCode();
-    return result;
-  }
-
   public void setTime(Timestamp time) {
     this.time = time;
   }
 
-  private User userByUserId;
+  private Integer userId;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
-  public User getUserByUserId() {
-    return userByUserId;
+  @Column(name = "userId", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getUserId() {
+    return userId;
   }
 
-  public void setUserByUserId(User userByUserId) {
-    this.userByUserId = userByUserId;
+  public void setUserId(Integer userId) {
+    this.userId = userId;
   }
 }
