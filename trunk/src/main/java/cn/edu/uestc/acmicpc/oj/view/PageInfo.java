@@ -145,7 +145,7 @@ public class PageInfo {
     currentPage = currentPage > totalPages ? totalPages : currentPage;
     currentPage = currentPage < 1 ? 1 : currentPage;
 
-    // TODO format the HTML content use htmlString
+    // TODO(mzry1992): format the HTML content use htmlString
     String htmlString = "<div class=\"pagination pagination-centered\">\n" + "            <ul>\n";
     if (currentPage == 1) {
       htmlString += getLiTag("disabled", null, "← First", baseURL);

@@ -2,11 +2,10 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 
 import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 import cn.edu.uestc.acmicpc.db.view.base.View;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 
 /**
  * Description
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class TrainingStatusView extends View<TrainingStatus> {
@@ -28,7 +27,6 @@ public class TrainingStatusView extends View<TrainingStatus> {
     return userName;
   }
 
-  @Ignore
   public void setUserName(String userName) {
     this.userName = userName;
   }
@@ -37,7 +35,6 @@ public class TrainingStatusView extends View<TrainingStatus> {
     return userEmail;
   }
 
-  @Ignore
   public void setUserEmail(String userEmail) {
     this.userEmail = userEmail;
   }
@@ -102,7 +99,6 @@ public class TrainingStatusView extends View<TrainingStatus> {
     return contestId;
   }
 
-  @Ignore
   public void setContestId(Integer contestId) {
     this.contestId = contestId;
   }
@@ -111,11 +107,11 @@ public class TrainingStatusView extends View<TrainingStatus> {
     return contestName;
   }
 
-  @Ignore
   public void setContestName(String contestName) {
     this.contestName = contestName;
   }
 
+  @Deprecated
   public TrainingStatusView(TrainingStatus trainingStatus) {
     super(trainingStatus);
     setContestId(trainingStatus.getTrainingContestByTrainingContestId().getTrainingContestId());
@@ -129,7 +125,6 @@ public class TrainingStatusView extends View<TrainingStatus> {
     return name;
   }
 
-  @Ignore
   public void setName(String name) {
     this.name = name;
   }

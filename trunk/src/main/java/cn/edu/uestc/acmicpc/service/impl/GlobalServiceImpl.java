@@ -22,7 +22,7 @@ import cn.edu.uestc.acmicpc.util.Global;
 public class GlobalServiceImpl extends AbstractService implements GlobalService {
 
   /**
-   * TODO
+   * TODO(mzry1992): please get rid of global's bean property.
    */
   @Autowired
   private Global global;

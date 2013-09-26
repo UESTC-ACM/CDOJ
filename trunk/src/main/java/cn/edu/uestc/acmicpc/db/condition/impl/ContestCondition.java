@@ -11,6 +11,10 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 public class ContestCondition extends BaseCondition {
 
+  public ContestCondition() {
+    super("contestId");
+  }
+
   /**
    * Minimal contest id
    */

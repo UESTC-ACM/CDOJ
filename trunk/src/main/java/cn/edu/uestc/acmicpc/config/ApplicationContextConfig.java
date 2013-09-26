@@ -43,11 +43,9 @@ import com.jolbox.bonecp.BoneCPDataSource;
 
 /**
  * Application Context Config
- *
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 @Configuration
-// TODO
+// TODO(mzry1992): description
 @ComponentScan(basePackages = {
     "cn.edu.uestc.acmicpc.db",
     "cn.edu.uestc.acmicpc.util",
@@ -137,7 +135,9 @@ public class ApplicationContextConfig {
   }
 
   /**
-   * Bean: transaction manager TODO: txAdvise
+   * Bean: transaction manager
+   * <p/>
+   * TODO(mzry1992): txAdvise
    *
    * @return transactionManagerBean
    */

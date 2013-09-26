@@ -7,7 +7,6 @@ import java.util.List;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 
 /**
  * Data transfer object for {@link Contest}.
@@ -46,7 +45,6 @@ public class ContestDTO implements BaseDTO<Contest> {
     isVisible = visible;
   }
 
-  @Ignore
   public List<Integer> getProblemList() {
     return problemList;
   }

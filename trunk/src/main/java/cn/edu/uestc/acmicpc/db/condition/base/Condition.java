@@ -1,20 +1,14 @@
 package cn.edu.uestc.acmicpc.db.condition.base;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Projection;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
 /**
- * Conditions setting for DAO findAll method.
+ * Conditions setting for {@link IDAO#findAll()} and {@link IDAO#count()}.
  * <p/>
  * <strong>For Developers</strong>:
  * <p/>
@@ -97,16 +91,6 @@ public class Condition {
   }
 
   /**
-   * Current page number.
-   */
-  private Long currentPage;
-
-  /**
-   * Number of records per page.
-   */
-  private Long countPerPage;
-
-  /**
    * DB query entries.
    */
   private final List<Entry> entries = new ArrayList<>();
@@ -114,79 +98,10 @@ public class Condition {
   /** DB query joined type. */
   private final JoinedType joinedType;
 
-  @Deprecated
-  private List<Criterion> criterionList;
-
-  @Deprecated
-  private Map<String, JoinedProperty> joinedProperties;
-
-  @Deprecated
-  public Map<String, JoinedProperty> getJoinedProperties() {
-    if (joinedProperties == null) {
-      joinedProperties = new HashMap<>();
-    }
-    return joinedProperties;
-  }
-
-  @Deprecated
-  public void setJoinedProperties(Map<String, JoinedProperty> joinedProperties) {
-    this.joinedProperties = joinedProperties;
-  }
-
   /**
    * Order fields.
    */
   private final List<Order> orders = new ArrayList<>();
-  /**
-   * Select projections.
-   *
-   * @deprecated this is not supported in new API,
-   * please use {@link IDAO#findAll(String, Condition)}.
-   */
-  @Deprecated
-  public List<Projection> projections;
-
-  public Long getCurrentPage() {
-    return currentPage;
-  }
-
-  public void setCurrentPage(Long currentPage) {
-    this.currentPage = currentPage;
-  }
-
-  public Long getCountPerPage() {
-    return countPerPage;
-  }
-
-  public void setCountPerPage(Long countPerPage) {
-    this.countPerPage = countPerPage;
-  }
-
-  @Deprecated
-  public List<Criterion> getCriterionList() {
-    if (criterionList == null) {
-      criterionList = new LinkedList<>();
-    }
-    return criterionList;
-  }
-
-  @Deprecated
-  public void setCriterionList(List<Criterion> criterionList) {
-    this.criterionList = criterionList;
-  }
-
-  @Deprecated
-  public List<Projection> getProjections() {
-    if (projections == null) {
-      projections = new LinkedList<>();
-    }
-    return projections;
-  }
-
-  @Deprecated
-  public void setProjections(List<Projection> projections) {
-    this.projections = projections;
-  }
 
   /**
    * Default constructor.
@@ -200,25 +115,6 @@ public class Condition {
   }
 
   /**
-   * Constructor for currentPage, countPerPage and single order field.
-   *
-   * @param currentPage current page number
-   * @param countPerPage number of records per page
-   * @param field order field name
-   * @param asc whether the order field is asc or not
-   * @throws AppException
-   */
-  public Condition(Long currentPage, Long countPerPage, String field, Boolean asc)
-      throws AppException {
-    this.currentPage = currentPage;
-    this.countPerPage = countPerPage;
-    if (field != null && asc != null) {
-      addOrder(field, asc);
-    }
-    this.joinedType = JoinedType.AND;
-  }
-
-  /**
    * Adds new order field into the order list.
    *
    * @param field new order field name
@@ -228,32 +124,6 @@ public class Condition {
    */
   public Condition addOrder(String field, boolean asc) throws AppException {
     orders.add(new Order(field, asc));
-    return this;
-  }
-
-  /**
-   * Adds new projection into the projection list.
-   *
-   * @param projection new projection object
-   * @return condition itself.
-   * @deprecated it's not supported in new API, please use {@link Entry}.
-   */
-  @Deprecated
-  public Condition addProjection(Projection projection) {
-    getProjections().add(projection);
-    return this;
-  }
-
-  /**
-   * Adds new criterion into the criterion list.
-   *
-   * @param criterion new criterion object
-   * @return condition itself.
-   * @deprecated it's not supported in new API, please use {@link Entry}.
-   */
-  @Deprecated
-  public Condition addCriterion(Criterion criterion) {
-    getCriterionList().add(criterion);
     return this;
   }
 
@@ -283,20 +153,6 @@ public class Condition {
     private final boolean asc;
   }
 
-  /**
-   * Adds joined property for query.
-   *
-   * @param key property's key
-   * @param value property's value
-   * @return condition itself.
-   * @deprecated this method is not supported in new API, please use.
-   */
-  @Deprecated
-  public Condition addJoinedProperty(String key, JoinedProperty value) {
-    getJoinedProperties().put(key, value);
-    return this;
-  }
-
   public void addEntry(Condition condition) throws AppException {
     addEntry(Entry.of(condition));
   }
@@ -312,7 +168,6 @@ public class Condition {
 
   /**
    * Builds DB query string and append it into builder.
-   * TODO IS_NULL
    *
    * @return if this condition's HQL is empty, return {@code false}.
    */
@@ -344,6 +199,8 @@ public class Condition {
         builder.append("'");
         if (entry.getConditionType() == ConditionType.LIKE) {
           builder.append("%").append(entry.getValue()).append("%");
+        } else if (entry.getConditionType() == ConditionType.IS_NULL) {
+          // TODO(fish): IS_NULL
         } else {
           builder.append(entry.getValue());
         }

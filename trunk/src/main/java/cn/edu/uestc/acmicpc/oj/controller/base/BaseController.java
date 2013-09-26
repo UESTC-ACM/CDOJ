@@ -8,7 +8,9 @@ import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 
 /**
- * BaseController TODO: Exception handler description
+ * BaseController
+ *
+ * TODO(mzry1992): Exception handler description
  */
 @Controller
 public class BaseController {
@@ -19,7 +21,8 @@ public class BaseController {
    * @param fieldException field exception
    * @param validateResult prev validate result
    */
-  protected void putFieldErrorsIntoBindingResult(FieldException fieldException, BindingResult validateResult) {
+  protected void putFieldErrorsIntoBindingResult(FieldException fieldException,
+      BindingResult validateResult) {
     for (FieldError error: fieldException) {
       validateResult.addError(error);
     }

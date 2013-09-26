@@ -7,11 +7,6 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.view.impl.UserView;
-import cn.edu.uestc.acmicpc.oj.view.PageInfo;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
-import cn.edu.uestc.acmicpc.util.Global;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,10 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
+import cn.edu.uestc.acmicpc.db.view.impl.UserView;
 import cn.edu.uestc.acmicpc.oj.controller.base.BaseController;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
+import cn.edu.uestc.acmicpc.oj.view.PageInfo;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
@@ -186,7 +186,8 @@ public class UserController extends BaseController {
     Map<String, Object> json = new HashMap<>();
     try {
       Long count = userService.count(userCondition);
-      PageInfo pageInfo = buildPageInfo(count, userCondition.getCurrentPage(), Global.RECORD_PER_PAGE, "", null);
+      PageInfo pageInfo = buildPageInfo(count, userCondition.currentPage,
+          Global.RECORD_PER_PAGE, "", null);
       List<UserView> userViewList = userService.search(userCondition, pageInfo);
 
       json.put("pageInfo", pageInfo.getHtmlString());
@@ -317,6 +318,6 @@ public class UserController extends BaseController {
     return "user/activate";
   }
 
-  private UserService userService;
-  private GlobalService globalService;
+  private final UserService userService;
+  private final GlobalService globalService;
 }

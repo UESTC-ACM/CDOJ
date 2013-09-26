@@ -12,7 +12,6 @@ import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 
 /**
  * Data transfer object for {@link Status}.
@@ -59,7 +58,6 @@ public class StatusDTO implements BaseDTO<Status> {
     this.language = language;
   }
 
-  @Ignore
   public Code getCode() {
     return code;
   }
@@ -68,7 +66,6 @@ public class StatusDTO implements BaseDTO<Status> {
     this.code = code;
   }
 
-  @Ignore
   public CompileInfo getCompileInfo() {
     return compileInfo;
   }
@@ -77,7 +74,6 @@ public class StatusDTO implements BaseDTO<Status> {
     this.compileInfo = compileInfo;
   }
 
-  @Ignore
   public Contest getContest() {
     return contest;
   }
@@ -86,7 +82,6 @@ public class StatusDTO implements BaseDTO<Status> {
     this.contest = contest;
   }
 
-  @Ignore
   public Problem getProblem() {
     return problem;
   }
@@ -95,7 +90,6 @@ public class StatusDTO implements BaseDTO<Status> {
     this.problem = problem;
   }
 
-  @Ignore
   public User getUser() {
     return user;
   }
@@ -104,7 +98,6 @@ public class StatusDTO implements BaseDTO<Status> {
     this.user = user;
   }
 
-  @Ignore
   public Language getLanguage() {
     return language;
   }
@@ -169,7 +162,6 @@ public class StatusDTO implements BaseDTO<Status> {
     this.caseNumber = caseNumber;
   }
 
-  @Ignore
   public Integer getCodeId() {
     return codeId;
   }
@@ -178,7 +170,6 @@ public class StatusDTO implements BaseDTO<Status> {
     this.codeId = codeId;
   }
 
-  @Ignore
   public Integer getCompileInfoId() {
     return compileInfoId;
   }
@@ -187,7 +178,6 @@ public class StatusDTO implements BaseDTO<Status> {
     this.compileInfoId = compileInfoId;
   }
 
-  @Ignore
   public Integer getContestId() {
     return contestId;
   }
@@ -196,7 +186,6 @@ public class StatusDTO implements BaseDTO<Status> {
     this.contestId = contestId;
   }
 
-  @Ignore
   public Integer getLanguageId() {
     return languageId;
   }
@@ -205,7 +194,6 @@ public class StatusDTO implements BaseDTO<Status> {
     this.languageId = languageId;
   }
 
-  @Ignore
   public Integer getProblemId() {
     return problemId;
   }
@@ -214,7 +202,6 @@ public class StatusDTO implements BaseDTO<Status> {
     this.problemId = problemId;
   }
 
-  @Ignore
   public Integer getUserId() {
     return userId;
   }
@@ -246,7 +233,7 @@ public class StatusDTO implements BaseDTO<Status> {
     private Timestamp time = new Timestamp(new Date().getTime());
     private Integer caseNumber = 1;
     private Integer codeId;
-    // TODO get rid of code and use code content instead of it.
+    // TODO(mzry1992): get rid of code and use code content instead of it.
     private Code code;
     private Integer compileInfoId;
     private CompileInfo compileInfo;

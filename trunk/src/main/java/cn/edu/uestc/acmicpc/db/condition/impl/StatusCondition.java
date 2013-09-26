@@ -12,6 +12,11 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * Status search condition.
  */
 public class StatusCondition extends BaseCondition {
+
+  public StatusCondition() {
+    super("statusId");
+  }
+
   /**
    * Minimal status id
    */
@@ -91,7 +96,7 @@ public class StatusCondition extends BaseCondition {
 
     if ((result != null && !result.isEmpty()) || resultId != null) {
       if (result != null && !result.isEmpty()) {
-        //TODO
+        //TODO(fish): add in property
       } else {
         condition.addEntry("result", Condition.ConditionType.EQUALS, resultId);
       }
