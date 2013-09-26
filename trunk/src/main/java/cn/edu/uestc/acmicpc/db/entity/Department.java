@@ -23,15 +23,12 @@
 package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -83,40 +80,5 @@ public class Department implements Serializable {
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
-
-    Department that = (Department) o;
-
-    if (!departmentId.equals(that.departmentId))
-      return false;
-    if (name != null ? !name.equals(that.name) : that.name != null)
-      return false;
-
-    return true;
-  }
-
-  @Override
-  public int hashCode() {
-    int result = departmentId;
-    result = 31 * result + (name != null ? name.hashCode() : 0);
-    return result;
-  }
-
-  private Collection<User> usersByDepartmentId;
-
-  @OneToMany(mappedBy = "departmentByDepartmentId", cascade = CascadeType.ALL)
-  public Collection<User> getUsersByDepartmentId() {
-    return usersByDepartmentId;
-  }
-
-  public void setUsersByDepartmentId(Collection<User> usersByDepartmentId) {
-    this.usersByDepartmentId = usersByDepartmentId;
   }
 }

@@ -17,7 +17,6 @@ import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
-import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
 import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
@@ -132,9 +131,10 @@ public class UserServiceImpl extends AbstractService implements UserService {
     }
 
     User user = getUserByUserDTO(userDTO);
-    if (user.getDepartmentByDepartmentId() == null) {
-      throw new FieldException("departmentId", "Please choose a validate department.");
-    }
+    // TODO(mzry1992): just use depaetment Id.
+//    if (user.getDepartmentByDepartmentId() == null) {
+//      throw new FieldException("departmentId", "Please choose a validate department.");
+//    }
 
     createNewUser(user);
 
@@ -208,11 +208,12 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public User getUserByUserDTO(UserDTO userDTO) throws AppException {
-    Department department = globalService.getDepartmentById(userDTO.getDepartmentId());
+//    Department department = globalService.getDepartmentById(userDTO.getDepartmentId());
     User user = new User();
     user.setTried(0);
     user.setNickName(userDTO.getNickName());
-    user.setDepartmentByDepartmentId(department);
+    // TODO(mzry1992): just use departmentId.
+//    user.setDepartmentByDepartmentId(department);
     user.setEmail(userDTO.getEmail());
     user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
     user.setPassword(StringUtil.encodeSHA1(userDTO.getPassword()));
@@ -231,7 +232,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
       user.setPassword(StringUtil.encodeSHA1(userDTO.getPassword()));
     user.setNickName(userDTO.getNickName());
     user.setSchool(userDTO.getSchool());
-    user.setDepartmentByDepartmentId(globalService.getDepartmentById(userDTO.getDepartmentId()));
+    // TODO(mzry1992): just use departmentId.
+//    user.setDepartmentByDepartmentId(globalService.getDepartmentById(userDTO.getDepartmentId()));
     user.setStudentId(userDTO.getStudentId());
   }
 
