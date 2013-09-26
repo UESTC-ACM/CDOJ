@@ -37,7 +37,7 @@ public class StatusDatabaseITTest {
 
   @Test
   public void testStatusDAO_withDistinctProblem() throws AppException, FieldNotUniqueException {
-    User user = userDAO.getEntityByUniqueField("userName", "administrator");
+    User user = (User) userDAO.getEntityByUniqueField("userName", "administrator");
     Assert.assertEquals(Integer.valueOf(1), user.getUserId());
     Assert.assertEquals("administrator", user.getUserName());
     Condition condition = new Condition();

@@ -66,7 +66,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
   @Override
   public User getUserByUserName(String userName) throws AppException {
     try {
-      return userDAO.getEntityByUniqueField("userName", userName);
+      return (User) userDAO.getEntityByUniqueField("userName", userName);
     } catch (FieldNotUniqueException e) {
       LOGGER.error(e);
       throw new AppException(e);
@@ -83,7 +83,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
   @Override
   public User getUserByEmail(String email) throws AppException {
     try {
-      return userDAO.getEntityByUniqueField("email", email);
+      return (User) userDAO.getEntityByUniqueField("email", email);
     } catch (FieldNotUniqueException e) {
       LOGGER.error(e);
       throw new AppException(e);

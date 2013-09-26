@@ -73,8 +73,11 @@ public class Condition {
 
     private Entry(String fieldName, ConditionType conditionType, Object value) {
       this.fieldName = fieldName;
-      this.conditionType = conditionType;
       this.value = value;
+      if (value instanceof String && conditionType == ConditionType.EQUALS) {
+        conditionType = ConditionType.STRING_EQUALS;
+      }
+      this.conditionType = conditionType;
     }
 
     public String getFieldName() {
