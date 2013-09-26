@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -21,39 +22,16 @@ import cn.edu.uestc.acmicpc.util.Global;
 @Primary
 public class GlobalServiceImpl extends AbstractService implements GlobalService {
 
-  /**
-   * TODO(mzry1992): please get rid of global's bean property.
-   */
-  @Autowired
-  private Global global;
-
-  @PostConstruct
-  public void init() {
-  }
-
-  @Override
-  public Global getGlobal() {
-    return global;
-  }
-
-  @Override
-  public Department getDepartmentById(Integer departmentId) {
-    for (Department department : global.getDepartmentList()) {
-      if (department.getDepartmentId().equals(departmentId)) {
-        return department;
-      }
-    }
-    return null;
-  }
-
-  @Override
-  public List<Department> getDepartmentList() {
-    return global.getDepartmentList();
-  }
-
   @Override
   public List<Global.AuthenticationType> getAuthenticationTypeList() {
-    return global.getAuthenticationTypeList();
+    return Arrays.asList(Global.AuthenticationType.values());
   }
 
+  @Override
+  public String getAuthenticationName(Integer type) {
+    for (Global.AuthenticationType authenticationType : Global.AuthenticationType.values())
+      if (authenticationType.ordinal() == type)
+        return authenticationType.getDescription();
+    return null;
+  }
 }

@@ -1,12 +1,12 @@
 package cn.edu.uestc.acmicpc.db;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.UserRegisterDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
@@ -19,7 +19,7 @@ public class DTOITTest {
   @Test
   public void testUserDTO() throws AppException {
     @SuppressWarnings("unused")
-    UserDTO userDTO = UserDTO.builder()
+    UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder()
         .setUserId(1)
         .setUserName("userName")
         .setDepartmentId(1)
@@ -32,7 +32,7 @@ public class DTOITTest {
         .setType(2)
         .build();
     /*
-     * @TODO wuwu User user = userDTO.getEntity(); Assert.assertEquals(Integer.valueOf(1),
+     * @TODO wuwu User user = userRegisterDTO.getEntity(); Assert.assertEquals(Integer.valueOf(1),
      * user.getUserId()); Assert.assertEquals("userName", user.getUserName());
      * Assert.assertEquals("nickName", user.getNickName());
      * Assert.assertEquals(StringUtil.encodeSHA1("password"), user.getPassword());

@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.oj.service;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.UserRegisterDTO;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -12,7 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
@@ -79,11 +79,11 @@ public class UserServiceITTest {
   @Test
   @Ignore("broken with transaction issue")
   public void testRegister_successful() throws AppException {
-    UserDTO userDTO = UserDTO.builder()
+    UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder()
         .setUserName("newUser")
         .setEmail("userName@uestc.edu.cn")
         .build();
-    userService.register(userDTO);
+    userService.register(userRegisterDTO);
   }
 
   @Test
