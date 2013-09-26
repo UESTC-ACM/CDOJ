@@ -15,7 +15,6 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.DatabaseUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 /**
  * Global DAO implementation.
@@ -186,20 +185,22 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
 
   @Override
   public Object getEntityByUniqueField(String fieldName, Object value)
-      throws FieldNotUniqueException, AppException {
+      throws AppException {
     return getEntityByUniqueField(fieldName, value, null, false);
   }
 
   @Override
   public Object getEntityByUniqueField(String fieldName, Object value, String propertyName,
-      boolean forceUnique) throws FieldNotUniqueException, AppException {
+      boolean forceUnique) throws AppException {
     Condition condition = new Condition();
     condition.addEntry(fieldName, ConditionType.EQUALS, value);
     List<?> results = findAll(propertyName, condition);
     if (forceUnique) {
       return results.isEmpty() ? null : results.get(0);
     } else {
-      if (results.size() == 1) {
+      if (results.isEmpty()) {
+        return null;
+      } else if (results.size() == 1) {
         return results.get(0);
       } else {
         throw new AppException("the value is not unique.");
