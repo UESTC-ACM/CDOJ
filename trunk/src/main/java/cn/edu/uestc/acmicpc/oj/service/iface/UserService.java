@@ -79,25 +79,6 @@ public interface UserService extends OnlineJudgeService<User, Integer> {
    */
   Long count(UserCondition userCondition) throws AppException;
 
-
-  /**
-   * Return UserView entity by user name
-   *
-   * @param userName user's name
-   * @return UserView entity
-   * @throws AppException
-   */
-  UserView getUserViewByUserName(String userName) throws AppException;
-
-  /**
-   * Edit user, and check the permission of edit operation.
-   *
-   * @param userDTO Edit information collected from form
-   * @param currentUser Current user who do this operation
-   * @throws AppException
-   */
-  void edit(UserDTO userDTO, UserDTO currentUser) throws AppException;
-
   /**
    * TODO(mzry1992): description
    * @param userName

@@ -139,11 +139,11 @@
           <div class="control-group "><label class="control-label" for="studentId">Student ID</label><div class="controls">
             <input type="text" name="studentId" maxlength="20" value="<c:out value="${targetUser.studentId}"/>" id="studentId" class="span4"></div>
           </div>
-          <div class="control-group "><label class="control-label" for="password">New password</label><div class="controls">
-            <input type="password" name="password" maxlength="20" id="password" class="span4"></div>
+          <div class="control-group "><label class="control-label" for="newPassword">New password</label><div class="controls">
+            <input type="password" name="newPassword" maxlength="20" id="newPassword" class="span4"></div>
           </div>
-          <div class="control-group "><label class="control-label" for="passwordRepeat">Repeat new password</label><div class="controls">
-            <input type="password" name="passwordRepeat" maxlength="20" id="passwordRepeat" class="span4"></div>
+          <div class="control-group "><label class="control-label" for="newPasswordRepeat">Repeat new password</label><div class="controls">
+            <input type="password" name="newPasswordRepeat" maxlength="20" id="newPasswordRepeat" class="span4"></div>
           </div>
           <div class="control-group "><label class="control-label" for="oldPassword">Your current password</label><div class="controls">
             <input type="password" name="oldPassword" maxlength="20" id="oldPassword" class="span4"></div>

@@ -1,38 +1,13 @@
-/*
- *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Collection;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -156,89 +131,5 @@ public class Contest implements Serializable {
 
   public void setIsVisible(Boolean visible) {
     isVisible = visible;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
-
-    Contest contest = (Contest) o;
-
-    if (!contestId.equals(contest.contestId))
-      return false;
-    if (isVisible != contest.isVisible)
-      return false;
-    if (!length.equals(contest.length))
-      return false;
-    if (!type.equals(contest.type))
-      return false;
-    if (description != null ? !description.equals(contest.description)
-        : contest.description != null)
-      return false;
-    if (time != null ? !time.equals(contest.time) : contest.time != null)
-      return false;
-    if (title != null ? !title.equals(contest.title) : contest.title != null)
-      return false;
-
-    return true;
-  }
-
-  @Override
-  public int hashCode() {
-    int result = contestId;
-    result = 31 * result + (title != null ? title.hashCode() : 0);
-    result = 31 * result + (description != null ? description.hashCode() : 0);
-    result = 31 * result + (int) type;
-    result = 31 * result + (time != null ? time.hashCode() : 0);
-    result = 31 * result + length;
-    result = 31 * result + (isVisible ? 1 : 0);
-    return result;
-  }
-
-  private Collection<ContestProblem> contestProblemsByContestId;
-
-  @OneToMany(mappedBy = "contestByContestId", cascade = CascadeType.ALL)
-  public Collection<ContestProblem> getContestProblemsByContestId() {
-    return contestProblemsByContestId;
-  }
-
-  public void setContestProblemsByContestId(Collection<ContestProblem> contestProblemsByContestId) {
-    this.contestProblemsByContestId = contestProblemsByContestId;
-  }
-
-  private Collection<ContestUser> contestUsersByContestId;
-
-  @OneToMany(mappedBy = "contestByContestId", cascade = CascadeType.ALL)
-  public Collection<ContestUser> getContestUsersByContestId() {
-    return contestUsersByContestId;
-  }
-
-  public void setContestUsersByContestId(Collection<ContestUser> contestUsersByContestId) {
-    this.contestUsersByContestId = contestUsersByContestId;
-  }
-
-  private Collection<Status> statusesByContestId;
-
-  @OneToMany(mappedBy = "contestByContestId", cascade = CascadeType.ALL)
-  public Collection<Status> getStatusesByContestId() {
-    return statusesByContestId;
-  }
-
-  public void setStatusesByContestId(Collection<Status> statusesByContestId) {
-    this.statusesByContestId = statusesByContestId;
-  }
-
-  private Collection<Article> articlesByContestId;
-
-  @OneToMany(mappedBy = "contestByContestId", cascade = CascadeType.ALL)
-  public Collection<Article> getArticlesByContestId() {
-    return articlesByContestId;
-  }
-
-  public void setArticlesByContestId(Collection<Article> articlesByContestId) {
-    this.articlesByContestId = articlesByContestId;
   }
 }

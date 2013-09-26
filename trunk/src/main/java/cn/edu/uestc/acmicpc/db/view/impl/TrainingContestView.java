@@ -1,14 +1,9 @@
 package cn.edu.uestc.acmicpc.db.view.impl;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
-import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 import cn.edu.uestc.acmicpc.db.view.base.View;
-import cn.edu.uestc.acmicpc.util.Global;
 
 /**
  * Description
@@ -74,19 +69,20 @@ public class TrainingContestView extends View<TrainingContest> {
 
   @Deprecated
   public TrainingContestView(TrainingContest trainingContest) {
+    // TODO(mzry1992): use dto transfer.
     super(trainingContest);
-    List<TrainingStatus> trainingStatusList =
-        (List<TrainingStatus>) trainingContest.getTrainingStatusesByTrainingContestId();
-    Collections.sort(trainingStatusList, new Comparator<TrainingStatus>() {
-
-      @Override
-      public int compare(TrainingStatus a, TrainingStatus b) {
-        return a.getRank().compareTo(b.getRank());
-      }
-    });
-    trainingStatusViewList = new LinkedList<>();
-    for (TrainingStatus trainingStatus : trainingStatusList)
-      trainingStatusViewList.add(new TrainingStatusView(trainingStatus));
-    setTypeName(Global.TrainingContestType.values()[trainingContest.getType()].getDescription());
+//    List<TrainingStatus> trainingStatusList =
+//        (List<TrainingStatus>) trainingContest.getTrainingStatusesByTrainingContestId();
+//    Collections.sort(trainingStatusList, new Comparator<TrainingStatus>() {
+//
+//      @Override
+//      public int compare(TrainingStatus a, TrainingStatus b) {
+//        return a.getRank().compareTo(b.getRank());
+//      }
+//    });
+//    trainingStatusViewList = new LinkedList<>();
+//    for (TrainingStatus trainingStatus : trainingStatusList)
+//      trainingStatusViewList.add(new TrainingStatusView(trainingStatus));
+//    setTypeName(Global.TrainingContestType.values()[trainingContest.getType()].getDescription());
   }
 }

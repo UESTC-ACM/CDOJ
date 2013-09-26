@@ -26,6 +26,7 @@ public class UserView extends View<User> {
   private Integer type;
   private Timestamp lastLogin;
 
+  @Deprecated
   public UserView(User user) {
     setUserId(user.getUserId());
     setUserName(user.getUserName());

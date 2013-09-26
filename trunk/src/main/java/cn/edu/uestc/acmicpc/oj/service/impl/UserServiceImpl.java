@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
+import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
@@ -39,6 +40,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
   private final IUserDAO userDAO;
+  @SuppressWarnings("unused")
   private final GlobalService globalService;
   private final EmailService emailService;
   private final ProblemService problemService;
@@ -163,38 +165,6 @@ public class UserServiceImpl extends AbstractService implements UserService {
   }
 
   /*
-  @Override
-  public UserView getUserViewByUserName(String userName) throws AppException {
-    User user = getUserByUserName(userName);
-    if (user == null)
-      throw new AppException("No such user!");
-    return new UserView(user);
-  }
-
-  @Override
-  public void edit(UserRegisterDTO userRegisterDTO, UserRegisterDTO currentUser) throws AppException {
-    if (!currentUser.getUserId().equals(userRegisterDTO.getUserId())) {
-      throw new AppException("You can only edit your information.");
-    }
-    User user = getUserByUserId(userRegisterDTO.getUserId());
-    if (user == null) {
-      throw new AppException("No such user.");
-    }
-    if (!StringUtil.encodeSHA1(userRegisterDTO.getOldPassword()).equals(user.getPassword())) {
-      throw new FieldException("oldPassword", "Your passowrd is wrong, please try again.");
-    }
-    if (userRegisterDTO.getPassword() != null) {
-      if (userRegisterDTO.getPasswordRepeat() == null) {
-        throw new FieldException("passwordRepeat", "Please repeat your new password.");
-      }
-      if (!userRegisterDTO.getPassword().equals(userRegisterDTO.getPasswordRepeat())) {
-        throw new FieldException("passwordRepeat", "Password do not match.");
-      }
-    }
-
-    updateUserByUserDTO(user, userRegisterDTO);
-    updateUser(user);
-  }
 
   @Override
   public UserRegisterDTO getUserDTOByUser(User user) throws AppException {
@@ -209,6 +179,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
   }
 
   @Override
+<<<<<<< HEAD
   public User getUserByUserDTO(UserRegisterDTO userRegisterDTO) throws AppException {
 //    Department department = globalService.getDepartmentById(userRegisterDTO.getDepartmentId());
     User user = new User();
@@ -217,6 +188,15 @@ public class UserServiceImpl extends AbstractService implements UserService {
     // TODO(mzry1992): just use departmentId.
 //    user.setDepartmentByDepartmentId(department);
     user.setEmail(userRegisterDTO.getEmail());
+=======
+  public User getUserByUserDTO(UserDTO userDTO) throws AppException {
+    Department department = globalService.getDepartmentById(userDTO.getDepartmentId());
+    User user = new User();
+    user.setTried(0);
+    user.setNickName(userDTO.getNickName());
+    user.setDepartmentId(department == null ? null : department.getDepartmentId());
+    user.setEmail(userDTO.getEmail());
+>>>>>>> springMVC-test
     user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
     user.setPassword(StringUtil.encodeSHA1(userRegisterDTO.getPassword()));
     user.setSchool(userRegisterDTO.getSchool());

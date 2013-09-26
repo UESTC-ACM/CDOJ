@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserRegisterDTO;
 import cn.edu.uestc.acmicpc.oj.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.util.StringUtil;
@@ -278,7 +279,7 @@ public class UserController extends BaseController {
   /**
    * Update user information
    * @param session session
-   * @param userRegisterDTO form information
+   * @param userEditDTO form information
    * @param validateResult validate result
    * @return <ul>
    *         <li>For success: {"result":"success"}</li>
@@ -291,7 +292,7 @@ public class UserController extends BaseController {
   @LoginPermit(NeedLogin = true)
   public @ResponseBody
   Map<String, Object> edit(HttpSession session,
-                           @RequestBody @Valid UserRegisterDTO userRegisterDTO,
+                           @RequestBody @Valid UserEditDTO userEditDTO,
                            BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
@@ -299,7 +300,34 @@ public class UserController extends BaseController {
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        userService.edit(userRegisterDTO, (UserRegisterDTO)session.getAttribute("currentUser"));
+        UserDTO currentUser = (UserDTO)session.getAttribute("currentUser");
+
+        if (!currentUser.getUserId().equals(userEditDTO.getUserId())) {
+          throw new AppException("You can only edit your information.");
+        }
+        UserDTO userDTO = userService.getUserByUserId(userEditDTO.getUserId());
+        if (userDTO == null) {
+          throw new AppException("No such user.");
+        }
+        if (!StringUtil.encodeSHA1(userEditDTO.getOldPassword()).equals(currentUser.getPassword())) {
+          throw new FieldException("oldPassword", "Your passowrd is wrong, please try again.");
+        }
+        if (userEditDTO.getNewPassword() != null) {
+          if (userEditDTO.getNewPasswordRepeat() == null) {
+            throw new FieldException("passwordRepeat", "Please repeat your new password.");
+          }
+          if (!userEditDTO.getNewPassword().equals(userEditDTO.getNewPasswordRepeat())) {
+            throw new FieldException("passwordRepeat", "Password do not match.");
+          }
+          userDTO.setPassword(userEditDTO.getNewPassword());
+        }
+
+        userDTO.setNickName(userEditDTO.getNickName());
+        userDTO.setSchool(userEditDTO.getSchool());
+        userDTO.setDepartmentId(userEditDTO.getDepartmentId());
+        userDTO.setStudentId(userEditDTO.getStudentId());
+
+        userService.updateUser(userDTO);
         json.put("result", "success");
       } catch (FieldException e) {
         putFieldErrorsIntoBindingResult(e, validateResult);

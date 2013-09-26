@@ -1,38 +1,13 @@
-/*
- *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -125,60 +100,27 @@ public class Message implements Serializable {
     isOpened = opened;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
+  private Integer receiverId;
 
-    Message message = (Message) o;
-
-    if (isOpened != message.isOpened)
-      return false;
-    if (!messageId.equals(message.messageId))
-      return false;
-    if (content != null ? !content.equals(message.content) : message.content != null)
-      return false;
-    if (time != null ? !time.equals(message.time) : message.time != null)
-      return false;
-    if (title != null ? !title.equals(message.title) : message.title != null)
-      return false;
-
-    return true;
+  @Column(name = "receiverId", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getReceiverId() {
+    return receiverId;
   }
 
-  @Override
-  public int hashCode() {
-    int result = messageId;
-    result = 31 * result + (title != null ? title.hashCode() : 0);
-    result = 31 * result + (content != null ? content.hashCode() : 0);
-    result = 31 * result + (time != null ? time.hashCode() : 0);
-    result = 31 * result + (isOpened ? 1 : 0);
-    return result;
+  public void setReceiverId(Integer receiverId) {
+    this.receiverId = receiverId;
   }
 
-  private User userByReceiverId;
+  private Integer senderId;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "receiverId", referencedColumnName = "userId", nullable = false)
-  public User getUserByReceiverId() {
-    return userByReceiverId;
+  @Column(name = "senderId", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getSenderId() {
+    return senderId;
   }
 
-  public void setUserByReceiverId(User userByReceiverId) {
-    this.userByReceiverId = userByReceiverId;
-  }
-
-  private User userBySenderId;
-
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "senderId", referencedColumnName = "userId", nullable = false)
-  public User getUserBySenderId() {
-    return userBySenderId;
-  }
-
-  public void setUserBySenderId(User userBySenderId) {
-    this.userBySenderId = userBySenderId;
+  public void setSenderId(Integer senderId) {
+    this.senderId = senderId;
   }
 }

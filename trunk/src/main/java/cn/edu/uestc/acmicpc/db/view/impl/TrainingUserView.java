@@ -21,14 +21,8 @@
 
 package cn.edu.uestc.acmicpc.db.view.impl;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.db.view.base.View;
-import cn.edu.uestc.acmicpc.util.Global;
 
 /**
  * Description
@@ -175,25 +169,26 @@ public class TrainingUserView extends View<TrainingUser> {
 
   @Deprecated
   public TrainingUserView(TrainingUser trainingUser) {
+    // TODO(mzry1992): use dto transfer.
     super(trainingUser);
-    setUserName(trainingUser.getUserByUserId().getUserName());
-    setUserEmail(trainingUser.getUserByUserId().getEmail());
-    setTypeName(Global.TrainingUserType.values()[trainingUser.getType()].getDescription());
-    List<TrainingStatus> trainingStatusList =
-        (List<TrainingStatus>) trainingUser.getTrainingStatusesByTrainingUserId();
-    if (trainingStatusList.size() == 0)
-      setLastContestId(0);
-    else {
-      Collections.sort(trainingStatusList, new Comparator<TrainingStatus>() {
-
-        @Override
-        public int compare(TrainingStatus a, TrainingStatus b) {
-          return a.getTrainingContestByTrainingContestId().getTrainingContestId()
-              .compareTo(b.getTrainingContestByTrainingContestId().getTrainingContestId());
-        }
-      });
-      setLastContestId(trainingStatusList.get(trainingStatusList.size() - 1)
-          .getTrainingContestByTrainingContestId().getTrainingContestId());
-    }
+//    setUserName(trainingUser.getUserByUserId().getUserName());
+//    setUserEmail(trainingUser.getUserByUserId().getEmail());
+//    setTypeName(Global.TrainingUserType.values()[trainingUser.getType()].getDescription());
+//    List<TrainingStatus> trainingStatusList =
+//        (List<TrainingStatus>) trainingUser.getTrainingStatusesByTrainingUserId();
+//    if (trainingStatusList.size() == 0)
+//      setLastContestId(0);
+//    else {
+//      Collections.sort(trainingStatusList, new Comparator<TrainingStatus>() {
+//
+//        @Override
+//        public int compare(TrainingStatus a, TrainingStatus b) {
+//          return a.getTrainingContestByTrainingContestId().getTrainingContestId()
+//              .compareTo(b.getTrainingContestByTrainingContestId().getTrainingContestId());
+//        }
+//      });
+//      setLastContestId(trainingStatusList.get(trainingStatusList.size() - 1)
+//          .getTrainingContestByTrainingContestId().getTrainingContestId());
+//    }
   }
 }
