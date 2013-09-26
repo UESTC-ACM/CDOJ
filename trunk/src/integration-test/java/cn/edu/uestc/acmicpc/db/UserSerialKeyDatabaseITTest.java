@@ -30,7 +30,7 @@ public class UserSerialKeyDatabaseITTest {
 
   @Test
   public void testFindUserSerialKeyByUserName() throws FieldNotUniqueException, AppException {
-    // TODO add test case and not assert null here.
+    // TODO(fish): add test case and not assert null here.
     User user = userDAO.getEntityByUniqueField("userName", "administrator");
     Assert.assertEquals(Integer.valueOf(1), user.getUserId());
     UserSerialKey userSerialKey =

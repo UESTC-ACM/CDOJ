@@ -16,14 +16,14 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
- * TODO Description
+ * TODO(mzry1992): Description
  */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class RatingUtil {
 
-  private ITrainingStatusDAO trainingStatusDAO;
-  private ITrainingUserDAO trainingUserDAO;
+  private final ITrainingStatusDAO trainingStatusDAO;
+  private final ITrainingUserDAO trainingUserDAO;
 
   @Autowired
   public RatingUtil(ITrainingUserDAO trainingUserDAO,

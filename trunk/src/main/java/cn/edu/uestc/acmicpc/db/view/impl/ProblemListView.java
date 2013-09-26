@@ -33,7 +33,6 @@ import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
@@ -62,7 +61,6 @@ public class ProblemListView extends View<Problem> {
     return state;
   }
 
-  @Ignore
   public void setState(Integer state) {
     this.state = state;
   }
@@ -77,24 +75,12 @@ public class ProblemListView extends View<Problem> {
   private Integer difficulty;
   private List<String> tags;
 
-  /**
-   * Get a simple problem list view use for contest list.
-   *
-   * @param problem specific problem entity
-   */
+  @Deprecated
   public ProblemListView(Problem problem) {
     super(problem);
   }
 
-  /**
-   * Get ProblemListView entity by problem entity.
-   *
-   * @param problem specific problem entity
-   * @param currentUser current login user
-   * @param type user's type
-   * @throws cn.edu.uestc.acmicpc.util.exception.AppException
-   *
-   */
+  @Deprecated
   public ProblemListView(Problem problem, User currentUser, Global.AuthorStatusType type)
       throws AppException {
     super(problem);
@@ -179,7 +165,6 @@ public class ProblemListView extends View<Problem> {
     return tags;
   }
 
-  @Ignore
   public void setTags(List<String> tags) {
     this.tags = tags;
   }

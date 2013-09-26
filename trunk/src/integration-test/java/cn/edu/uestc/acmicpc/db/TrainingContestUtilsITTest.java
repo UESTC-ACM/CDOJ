@@ -24,7 +24,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Test cases for {@link TrainingContest}
  *
- * TODO remove ignore tags.
+ * TODO(fish): remove ignore tags.
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -73,7 +73,7 @@ public class TrainingContestUtilsITTest {
   @Ignore
   @Deprecated
   public void testDeleteByCondition() throws AppException {
-    trainingStatusCondition.clear();
+//    trainingStatusCondition.clear();
 //    trainingStatusCondition.setTrainingContestId(5);
     trainingStatusDAO.deleteEntitiesByCondition(trainingStatusCondition.getCondition());
   }

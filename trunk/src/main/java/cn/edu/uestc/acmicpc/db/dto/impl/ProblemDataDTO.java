@@ -2,7 +2,6 @@ package cn.edu.uestc.acmicpc.db.dto.impl;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 
 /**
  * Data transfer object for {@link Problem} data.
@@ -47,7 +46,6 @@ public class ProblemDataDTO implements BaseDTO<Problem> {
     this.memoryLimit = memoryLimit;
   }
 
-  @Ignore
   public Boolean getIsSpj() {
     return isSpj;
   }

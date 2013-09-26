@@ -11,17 +11,16 @@
 
 package cn.edu.uestc.acmicpc.db.view.impl;
 
+import java.sql.Timestamp;
+
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.StringUtil;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
-
-import java.sql.Timestamp;
 
 /**
  * Use for return status information with json type.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class StatusView extends View<Status> {
@@ -37,7 +36,6 @@ public class StatusView extends View<Status> {
     return contestId;
   }
 
-  @Ignore
   public void setContestId(Integer contestId) {
     this.contestId = contestId;
   }
@@ -46,7 +44,6 @@ public class StatusView extends View<Status> {
     return returnTypeId;
   }
 
-  @Ignore
   public void setReturnTypeId(Integer returnTypeId) {
     this.returnTypeId = returnTypeId;
   }
@@ -63,7 +60,6 @@ public class StatusView extends View<Status> {
     return userId;
   }
 
-  @Ignore
   public void setUserId(Integer userId) {
     this.userId = userId;
   }
@@ -72,7 +68,6 @@ public class StatusView extends View<Status> {
     return userName;
   }
 
-  @Ignore
   public void setUserName(String userName) {
     this.userName = userName;
   }
@@ -81,7 +76,6 @@ public class StatusView extends View<Status> {
     return problemId;
   }
 
-  @Ignore
   public void setProblemId(Integer problemId) {
     this.problemId = problemId;
   }
@@ -90,7 +84,6 @@ public class StatusView extends View<Status> {
     return returnType;
   }
 
-  @Ignore
   public void setReturnType(String returnType) {
     this.returnType = returnType;
   }
@@ -107,7 +100,6 @@ public class StatusView extends View<Status> {
     return languageId;
   }
 
-  @Ignore
   public void setLanguageId(Integer languageId) {
     this.languageId = languageId;
   }
@@ -124,7 +116,6 @@ public class StatusView extends View<Status> {
     return timeCost;
   }
 
-  @Ignore
   public void setTimeCost(String timeCost) {
     this.timeCost = timeCost;
   }
@@ -133,7 +124,6 @@ public class StatusView extends View<Status> {
     return memoryCost;
   }
 
-  @Ignore
   public void setMemoryCost(String memoryCost) {
     this.memoryCost = memoryCost;
   }
@@ -154,7 +144,6 @@ public class StatusView extends View<Status> {
     return language;
   }
 
-  @Ignore
   public void setLanguage(String language) {
     this.language = language;
   }
@@ -166,11 +155,7 @@ public class StatusView extends View<Status> {
 
   private Integer contestId;
 
-  /**
-   * Fetch data from status entity.
-   * 
-   * @param status specific status entity
-   */
+  @Deprecated
   public StatusView(Status status) {
     super(status);
     if (status.getResult() == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {

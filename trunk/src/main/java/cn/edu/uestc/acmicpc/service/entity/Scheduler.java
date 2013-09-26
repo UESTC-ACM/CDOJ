@@ -69,7 +69,7 @@ public class Scheduler implements Runnable {
   private void searchForJudge() {
     try {
       StatusCondition statusCondition = new StatusCondition();
-      // FIXME set status condition.
+      // FIXME(fish): set status condition.
 //      statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_WAIT);
 //      statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_REJUDGING);
       List<Status> statusList = (List<Status>) statusDAO.findAll(statusCondition.getCondition());

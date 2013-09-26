@@ -57,10 +57,8 @@ public class DatabaseITTest {
 
   @Test
   @Ignore
-  @Deprecated
   public void testSQLUpdate() throws AppException {
-    statusCondition.clear();
-//    statusCondition.setContestId(1);
+    statusCondition.contestId = 1;
     Map<String, Object> properties = new HashMap<>();
     properties.put("result", Global.OnlineJudgeReturnType.OJ_AC.ordinal());
     statusDAO.updateEntitiesByCondition(properties, statusCondition.getCondition());

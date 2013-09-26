@@ -26,7 +26,6 @@ import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
@@ -55,7 +54,6 @@ public class ContestProblemSummaryView extends View<Problem> {
     return state;
   }
 
-  @Ignore
   public void setState(Integer state) {
     this.state = state;
   }
@@ -69,19 +67,11 @@ public class ContestProblemSummaryView extends View<Problem> {
     return order;
   }
 
-  @Ignore
   public void setOrder(char order) {
     this.order = order;
   }
 
-  /**
-   * Get ProblemView entity by problem entity.
-   *
-   * @param problem specific problem entity
-   * @param currentUser current's login user
-   * @param type user's type
-   * @throws AppException
-   */
+  @Deprecated
   public ContestProblemSummaryView(Problem problem, User currentUser, Global.AuthorStatusType type)
       throws AppException {
     super(problem);
@@ -105,7 +95,6 @@ public class ContestProblemSummaryView extends View<Problem> {
     return solved;
   }
 
-  @Ignore
   public void setSolved(Integer solved) {
     this.solved = solved;
   }
@@ -114,7 +103,6 @@ public class ContestProblemSummaryView extends View<Problem> {
     return tried;
   }
 
-  @Ignore
   public void setTried(Integer tried) {
     this.tried = tried;
   }

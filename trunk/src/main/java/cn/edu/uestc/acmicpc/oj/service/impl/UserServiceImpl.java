@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
@@ -144,11 +143,11 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<UserView> search(UserCondition userCondition, PageInfo pageInfo) throws AppException {
-    Condition condition = userCondition.getCondition();
-    condition.setCurrentPage(pageInfo.getCurrentPage());
-    condition.setCountPerPage(Global.RECORD_PER_PAGE);
-    List<User> userList = (List<User>) userDAO.findAll(condition);
+  public List<UserView> search(UserCondition userCondition, PageInfo pageInfo)
+      throws AppException {
+    userCondition.currentPage = pageInfo.getCurrentPage();
+    userCondition.countPerPage = Global.RECORD_PER_PAGE;
+    List<User> userList = (List<User>) userDAO.findAll(userCondition.getCondition());
     List<UserView> userViewList = new ArrayList<>();
     for (User user : userList) {
       UserView userView = new UserView(user);
@@ -220,7 +219,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
     user.setSchool(userDTO.getSchool());
     user.setSolved(0);
     user.setStudentId(userDTO.getStudentId());
-    // TODO I think here should be type?
+    // TODO(mzry1992): I think here should be type?
     user.setType(userDTO.getType());
     user.setUserName(userDTO.getUserName());
     return user;

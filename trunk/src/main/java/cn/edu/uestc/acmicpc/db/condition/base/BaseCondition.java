@@ -25,59 +25,52 @@ package cn.edu.uestc.acmicpc.db.condition.base;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
-import cn.edu.uestc.acmicpc.db.condition.base.Condition.Entry;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
 /**
  * We can use this class to transform conditions to database's Criterion list
  * <p/>
  * <strong>USAGE</strong>
  * <p/>
- * We can write a simple class than extends this class, and add the Exp annotation to each getter of
- * the class. If we do not do with, the field will be passed into invoke() method.
+ * We can write a simple class than extends this class, and add the {@link Exp}
+ * annotation to each field of the class. If we do not do with, the field will be
+ * handled in subclass {@code getCondition} method.
  * <p/>
  * <strong>For developer</strong>:
  * <ul>
  * <li>
- * In default, the class field's name is equal to the data field's name. If you want to map the
- * class field into another data field, use the {@code MapField} parameter please.
+ * In default, the map field's name is equal to the data field's name. If you want to map the
+ * class field into another data field, use the {@code Exp#mapField()} parameter please.
  * <p/>
  * For example:
  * <p/>
  * <code>
- * {@literal @}Exp(MapField = "userId", Type = ConditionType.eq)<br/>
- * public Integer getId();
+ * {@literal @}Exp(MapField = "userId", Type = ConditionType.EQUALS)<br/>
+ * public Integer id;
  * </code></li>
  * <li>
- * If the field is other class's key field, please use the {@code MapObject} parameter.
+ * {@code ConditionType.LIKE} type will add % in two ends of the string, otherwise please
+ * handle this case in {@code getCondition} by yourself.
  * <p/>
  * For example:
  * <p/>
  * <code>
- * {@literal @}Exp(Type = ConditionType.eq, MapObject = Department.class)<br/>
- * public Integer getDepartmentId;
- * </code></li>
- * <li>
- * {@code ConditionType.like} type will add % in two ends of the string, otherwise rewrite the
- * invoke method to deal with it.
- * <p/>
- * For example:
- * <p/>
- * <code>
- * public String getUserName;
+ * public String userName;
  * <br/>
  * {@literal @}Override<br/>
- * public void invoke(ArrayList<Criterion> conditions) {<br/>
- * &nbsp;&nbsp;if (userName != null)<br/>
- * &nbsp;&nbsp;&nbsp;&nbsp;conditions.add(Restrictions.like("userName", "%" + userName"));<br/>
+ * public Condition getCondition() {<br/>
+ * &nbsp;&nbsp;Condition condition = super.getCondition();<br/>
+ * &nbsp;&nbsp;if (userName != null) {<br/>
+ * &nbsp;&nbsp;&nbsp;&nbsp;conditions.addEntry("userName", ConditionType.STRING_EQUALS,
+ * "%" + userName);<br/>
+ * &nbsp;&nbsp;}<br/>
+ * &nbsp;&nbsp;return condition;<br/>
  * }
  * </code></li>
  * </ul>
@@ -85,115 +78,37 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 public abstract class BaseCondition {
 
   private static final Logger LOGGER = LogManager.getLogger(BaseCondition.class);
+  private final String keyField;
 
-  private Long currentPage;
-
-  @Ignore
-  public Long getCurrentPage() {
-    return currentPage;
+  protected BaseCondition(String keyField) {
+    this.keyField = keyField;
   }
 
-  public void setCurrentPage(Long currentPage) {
-    this.currentPage = currentPage;
-  }
-
-  private String orderFields;
-  private String orderAsc;
-
-  @Ignore
-  public String getOrderFields() {
-    return orderFields;
-  }
-
-  public void setOrderFields(String orderFields) {
-    this.orderFields = orderFields;
-  }
-
-  @Ignore
-  public String getOrderAsc() {
-    return orderAsc;
-  }
-
-  public void setOrderAsc(String orderAsc) {
-    this.orderAsc = orderAsc;
-  }
-
-  /**
-   * Method for user to invoke special columns
-   * <p/>
-   * <strong>USAGE</strong>:
-   * <p/>
-   * We can iterator all the fields which will be considered, and handle the condition object
-   * according to the fields' values.
-   *
-   * @param condition conditions that to be considered
-   * @throws AppException
-   * @see Condition
-   * @see Entry
-   * @deprecated if you should do this, deal with the condition is sub class' getCondition method.
-   */
-  @Deprecated
-  protected void invoke(Condition condition) throws AppException {
-    if (orderFields != null) {
-      String[] fields = orderFields.split(",");
-      String[] asc = orderAsc.split(",");
-      if (fields.length == asc.length) {
-        for (int i = 0; i < fields.length; i++) {
-          condition.addOrder(fields[i], asc[i].equals("true"));
-        }
-      }
-    }
-  }
-
-  /**
-   * Clear all field, and set then to {@code null}.
-   *
-   * @deprecated this method is not supported in new API, please create condition directly.
-   */
-  @Deprecated
-  public void clear() {
-    Method[] methods = getClass().getMethods();
-    for (Method method : methods) {
-      if (method.getName().startsWith("set")) {
-        try {
-          if (method.isAnnotationPresent(Ignore.class)) {
-            continue;
-          }
-          method.invoke(this, (Object) null);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-          LOGGER.error(e);
-        }
-      }
-    }
-
-    Field[] fields = getClass().getFields();
-    for (Field field : fields) {
-      try {
-        field.set(this, null);
-      } catch (IllegalAccessException ignored) {
-      }
-    }
-  }
+  public Long currentPage;
+  public Long countPerPage;
+  public String orderFields;
+  public String orderAsc;
 
   /**
    * Get Condition objects from conditions
-   * <p/>
-   * <strong>For developers:</strong>
-   * This method is not supported order now, but it's will be supported later.
    *
    * @return condition object we need
    * @throws AppException
    */
   public Condition getCondition() throws AppException {
     Condition condition = new Condition();
+    if (currentPage != null && countPerPage != null) {
+      condition.addEntry(keyField, ConditionType.GREATER_OR_EQUALS, currentPage * countPerPage);
+      condition.addEntry(keyField, ConditionType.LESS_THAN, (currentPage + 1) * countPerPage);
+    }
+
     if (orderFields != null) {
       String[] fields = orderFields.split(",");
       String[] asc = orderAsc.split(",");
-      if (fields.length == asc.length) {
+      AppExceptionUtil.assertTrue(fields.length == asc.length);
         for (int i = 0; i < fields.length; i++) {
           condition.addOrder(fields[i], asc[i].equals("true"));
         }
-      }
     }
     Class<?> clazz = this.getClass();
     for (Field field : clazz.getFields()) {
@@ -203,6 +118,9 @@ public abstract class BaseCondition {
           Object value = field.get(this);
           if (value == null) {
             continue;
+          }
+          if (value instanceof Boolean) {
+            value = (Boolean) value ? "1" : "0";
           }
           if (exp.mapField().trim().equals("")) {
             condition.addEntry(field.getName(), exp.type(), value);
@@ -215,7 +133,6 @@ public abstract class BaseCondition {
         }
       }
     }
-    invoke(condition);
     return condition;
   }
 

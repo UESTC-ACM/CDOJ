@@ -22,16 +22,15 @@
 
 package cn.edu.uestc.acmicpc.db.view.impl;
 
+import java.sql.Timestamp;
+
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.annotation.Ignore;
-
-import java.sql.Timestamp;
 
 /**
  * Use for return user information with json type.
- * 
+ *
  * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
  */
 public class UserView extends View<User> {
@@ -110,7 +109,6 @@ public class UserView extends View<User> {
     return departmentId;
   }
 
-  @Ignore
   public void setDepartmentId(Integer departmentId) {
     this.departmentId = departmentId;
   }
@@ -119,7 +117,6 @@ public class UserView extends View<User> {
     return department;
   }
 
-  @Ignore
   public void setDepartment(String department) {
     this.department = department;
   }
@@ -152,7 +149,6 @@ public class UserView extends View<User> {
     return typeName;
   }
 
-  @Ignore
   public void setTypeName(String typeName) {
     this.typeName = typeName;
   }

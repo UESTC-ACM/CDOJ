@@ -2,8 +2,8 @@ package cn.edu.uestc.acmicpc.training.entity;
 
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.db.view.impl.TrainingUserView;
-import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.training.parser.TrainingRankListFormatParser;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.ParserException;
 
 /**
@@ -22,6 +22,7 @@ public class TrainingUserRankSummary {
   private String nickName;
   private TrainingProblemSummaryInfo[] trainingProblemSummaryInfoList;
 
+  @Deprecated
   public TrainingUserRankSummary(TrainingUser user, String[] userInfo, Integer type)
       throws ParserException {
     setUser(new TrainingUserView(user));
