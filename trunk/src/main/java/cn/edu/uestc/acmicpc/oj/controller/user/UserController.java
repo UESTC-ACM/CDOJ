@@ -1,12 +1,15 @@
 package cn.edu.uestc.acmicpc.oj.controller.user;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserRegisterDTO;
+import cn.edu.uestc.acmicpc.oj.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
 import cn.edu.uestc.acmicpc.oj.controller.base.BaseController;
@@ -49,11 +51,17 @@ import cn.edu.uestc.acmicpc.util.exception.FieldException;
 @RequestMapping("/user")
 public class UserController extends BaseController {
 
+  private final UserService userService;
+  private final GlobalService globalService;
+  private final DepartmentService departmentService;
+
   @Autowired
   public UserController(UserService userService,
-                        GlobalService globalService) {
+                        GlobalService globalService,
+                        DepartmentService departmentService) {
     this.userService = userService;
     this.globalService = globalService;
+    this.departmentService = departmentService;
   }
 
   /**
@@ -81,7 +89,12 @@ public class UserController extends BaseController {
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        UserDTO userDTO = userService.login(userLoginDTO);
+        UserDTO userDTO = userService.getUserByUserName(userLoginDTO.getUserName());
+        if (userDTO == null || !StringUtil.encodeSHA1(userLoginDTO.getPassword()).equals(userDTO.getPassword()))
+          throw new FieldException("password", "User or password is wrong, please try again");
+        userDTO.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
+        userService.updateUser(userDTO);
+
         session.setAttribute("currentUser", userDTO);
         json.put("result", "success");
       } catch (FieldException e) {
@@ -116,7 +129,7 @@ public class UserController extends BaseController {
    * Register controller
    *
    * @param session session
-   * @param userDTO User DTO
+   * @param userRegisterDTO User DTO
    * @param validateResult Validation result
    * @return <ul>
    *         <li>For success: {"result":"success"}</li>
@@ -129,7 +142,7 @@ public class UserController extends BaseController {
   @LoginPermit(NeedLogin = false)
   public @ResponseBody
   Map<String, Object> register(HttpSession session,
-      @RequestBody @Valid UserDTO userDTO,
+      @RequestBody @Valid UserRegisterDTO userRegisterDTO,
       BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
@@ -137,7 +150,42 @@ public class UserController extends BaseController {
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        userService.register(userDTO);
+        if (userRegisterDTO.getPassword() == null) {
+          throw new FieldException("password", "Please enter your password.");
+        }
+        if (userRegisterDTO.getPasswordRepeat() == null) {
+          throw new FieldException("passwordRepeat", "Please repeat your password.");
+        }
+        if (!userRegisterDTO.getPassword().equals(userRegisterDTO.getPasswordRepeat())) {
+          throw new FieldException("passwordRepeat", "Password do not match.");
+        }
+        if (!StringUtil.trimAllSpace(userRegisterDTO.getNickName()).equals(userRegisterDTO.getNickName())) {
+          throw new FieldException("nickName", "Nick name should not have useless blank.");
+        }
+        if (userService.getUserByUserName(userRegisterDTO.getUserName()) != null) {
+          throw new FieldException("userName", "User name has been used!");
+        }
+        if (userService.getUserByEmail(userRegisterDTO.getEmail()) != null) {
+          throw new FieldException("email", "Email has benn used!");
+        }
+        if (departmentService.getDepartmentName(userRegisterDTO.getDepartmentId()) == null)
+          throw new FieldException("departmentId", "Please choose a validate department.");
+
+        UserDTO userDTO = UserDTO.builder()
+            .setUserName(userRegisterDTO.getUserName())
+            .setStudentId(userRegisterDTO.getStudentId())
+            .setPassword(userRegisterDTO.getPassword())
+            .setSchool(userRegisterDTO.getSchool())
+            .setNickName(userRegisterDTO.getNickName())
+            .setEmail(userRegisterDTO.getEmail())
+            .setSolved(0)
+            .setTried(0)
+            .setType(Global.AuthenticationType.NORMAL.ordinal())
+            .setTypeName(Global.AuthenticationType.NORMAL.getDescription())
+            .setDepartmentId(userRegisterDTO.getDepartmentId())
+            .setDepartmentName(departmentService.getDepartmentName(userRegisterDTO.getDepartmentId()))
+            .build();
+        userService.createNewUser(userDTO);
         session.setAttribute("currentUser", userDTO);
         json.put("result", "success");
       } catch (FieldException e) {
@@ -161,7 +209,7 @@ public class UserController extends BaseController {
   @RequestMapping("list")
   @LoginPermit(NeedLogin = false)
   public String list(ModelMap model) {
-    model.put("departmentList", globalService.getDepartmentList());
+    model.put("departmentList", departmentService.getDepartmentList());
     model.put("authenticationTypeList", globalService.getAuthenticationTypeList());
     return "user/userList";
   }
@@ -188,7 +236,9 @@ public class UserController extends BaseController {
       Long count = userService.count(userCondition);
       PageInfo pageInfo = buildPageInfo(count, userCondition.currentPage,
           Global.RECORD_PER_PAGE, "", null);
-      List<UserView> userViewList = userService.search(userCondition, pageInfo);
+      List<UserDTO> userDTOList = userService.search(userCondition, pageInfo);
+      List<UserView> userViewList = new LinkedList<>();
+      //TODO
 
       json.put("pageInfo", pageInfo.getHtmlString());
       json.put("result", "success");
@@ -217,7 +267,7 @@ public class UserController extends BaseController {
                            ModelMap model) {
     try {
       UserView userView = userService.getUserViewByUserName(userName);
-      model.put("departmentList", globalService.getDepartmentList());
+      model.put("departmentList", departmentService.getDepartmentList());
       model.put("targetUser", userView);
     } catch (AppException e) {
       return "error/404";
@@ -228,7 +278,7 @@ public class UserController extends BaseController {
   /**
    * Update user information
    * @param session session
-   * @param userDTO form information
+   * @param userRegisterDTO form information
    * @param validateResult validate result
    * @return <ul>
    *         <li>For success: {"result":"success"}</li>
@@ -241,7 +291,7 @@ public class UserController extends BaseController {
   @LoginPermit(NeedLogin = true)
   public @ResponseBody
   Map<String, Object> edit(HttpSession session,
-                           @RequestBody @Valid UserDTO userDTO,
+                           @RequestBody @Valid UserRegisterDTO userRegisterDTO,
                            BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
@@ -249,7 +299,7 @@ public class UserController extends BaseController {
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        userService.edit(userDTO, (UserDTO)session.getAttribute("currentUser"));
+        userService.edit(userRegisterDTO, (UserRegisterDTO)session.getAttribute("currentUser"));
         json.put("result", "success");
       } catch (FieldException e) {
         putFieldErrorsIntoBindingResult(e, validateResult);
@@ -318,6 +368,4 @@ public class UserController extends BaseController {
     return "user/activate";
   }
 
-  private final UserService userService;
-  private final GlobalService globalService;
 }
