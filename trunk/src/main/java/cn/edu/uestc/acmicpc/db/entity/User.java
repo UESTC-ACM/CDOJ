@@ -24,20 +24,16 @@ package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Collection;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
@@ -157,10 +153,7 @@ public class User implements Serializable {
 
   @Override
   public String toString() {
-    return "User{" + "userId=" + userId + ", userName='" + userName + '\'' + ", studentId='"
-        + studentId + '\'' + ", password='" + password + '\'' + ", school='" + school + '\''
-        + ", nickName='" + nickName + '\'' + ", email='" + email + '\'' + ", solved=" + solved
-        + ", tried=" + tried + ", type=" + type + ", lastLogin=" + lastLogin + '}';
+    return ObjectUtil.toString(this);
   }
 
   @Column(name = "solved", nullable = false, insertable = true, updatable = true, length = 10,
@@ -213,133 +206,14 @@ public class User implements Serializable {
     this.lastLogin = lastLogin;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
+  private Integer departmentId;
 
-    User user = (User) o;
-
-    if (!solved.equals(user.solved))
-      return false;
-    if (!tried.equals(user.tried))
-      return false;
-    if (!type.equals(user.type))
-      return false;
-    if (!userId.equals(user.userId))
-      return false;
-    if (email != null ? !email.equals(user.email) : user.email != null)
-      return false;
-    if (lastLogin != null ? !lastLogin.equals(user.lastLogin) : user.lastLogin != null)
-      return false;
-    if (nickName != null ? !nickName.equals(user.nickName) : user.nickName != null)
-      return false;
-    if (password != null ? !password.equals(user.password) : user.password != null)
-      return false;
-    if (school != null ? !school.equals(user.school) : user.school != null)
-      return false;
-    if (studentId != null ? !studentId.equals(user.studentId) : user.studentId != null)
-      return false;
-    if (!(userName != null ? !userName.equals(user.userName) : user.userName != null))
-      return true;
-    else
-      return false;
-
+  @Column(name = "departmentId", nullable = false)
+  public Integer getDepartmentId() {
+    return departmentId;
   }
 
-  @Override
-  public int hashCode() {
-    int result = userId;
-    result = 31 * result + (userName != null ? userName.hashCode() : 0);
-    result = 31 * result + (studentId != null ? studentId.hashCode() : 0);
-    result = 31 * result + (password != null ? password.hashCode() : 0);
-    result = 31 * result + (school != null ? school.hashCode() : 0);
-    result = 31 * result + (nickName != null ? nickName.hashCode() : 0);
-    result = 31 * result + (email != null ? email.hashCode() : 0);
-    result = 31 * result + solved;
-    result = 31 * result + tried;
-    result = 31 * result + type;
-    result = 31 * result + (lastLogin != null ? lastLogin.hashCode() : 0);
-    return result;
-  }
-
-  private Collection<ContestUser> contestUsersByUserId;
-
-  @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
-  public Collection<ContestUser> getContestUsersByUserId() {
-    return contestUsersByUserId;
-  }
-
-  public void setContestUsersByUserId(Collection<ContestUser> contestUsersByUserId) {
-    this.contestUsersByUserId = contestUsersByUserId;
-  }
-
-  private Collection<Message> messagesByUserId;
-
-  @OneToMany(mappedBy = "userByReceiverId", cascade = CascadeType.ALL)
-  public Collection<Message> getMessagesByUserId() {
-    return messagesByUserId;
-  }
-
-  public void setMessagesByUserId(Collection<Message> messagesByUserId) {
-    this.messagesByUserId = messagesByUserId;
-  }
-
-  private Collection<Message> messagesByUserId_0;
-
-  @OneToMany(mappedBy = "userBySenderId", cascade = CascadeType.ALL)
-  public Collection<Message> getMessagesByUserId_0() {
-    return messagesByUserId_0;
-  }
-
-  public void setMessagesByUserId_0(Collection<Message> messagesByUserId_0) {
-    this.messagesByUserId_0 = messagesByUserId_0;
-  }
-
-  private Collection<Status> statusesByUserId;
-
-  @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
-  public Collection<Status> getStatusesByUserId() {
-    return statusesByUserId;
-  }
-
-  public void setStatusesByUserId(Collection<Status> statusesByUserId) {
-    this.statusesByUserId = statusesByUserId;
-  }
-
-  private Collection<UserSerialKey> userSerialKeysByUserId;
-
-  @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
-  public Collection<UserSerialKey> getUserSerialKeysByUserId() {
-    return userSerialKeysByUserId;
-  }
-
-  public void setUserSerialKeysByUserId(Collection<UserSerialKey> userSerialKeysByUserId) {
-    this.userSerialKeysByUserId = userSerialKeysByUserId;
-  }
-
-  private Department departmentByDepartmentId;
-
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "departmentId", referencedColumnName = "departmentId", nullable = false)
-  public Department getDepartmentByDepartmentId() {
-    return departmentByDepartmentId;
-  }
-
-  public void setDepartmentByDepartmentId(Department departmentByDepartmentId) {
-    this.departmentByDepartmentId = departmentByDepartmentId;
-  }
-
-  private Collection<Article> articlesByUserId;
-
-  @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
-  public Collection<Article> getArticlesByUserId() {
-    return articlesByUserId;
-  }
-
-  public void setArticlesByUserId(Collection<Article> articlesByUserId) {
-    this.articlesByUserId = articlesByUserId;
+  public void setDepartmentId(Integer departmentId) {
+    this.departmentId = departmentId;
   }
 }
