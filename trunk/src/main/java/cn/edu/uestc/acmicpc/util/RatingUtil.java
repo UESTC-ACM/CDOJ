@@ -1,6 +1,5 @@
 package cn.edu.uestc.acmicpc.util;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
-import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -22,7 +20,9 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class RatingUtil {
 
+  @SuppressWarnings("unused")
   private final ITrainingStatusDAO trainingStatusDAO;
+  @SuppressWarnings("unused")
   private final ITrainingUserDAO trainingUserDAO;
 
   @Autowired
@@ -32,84 +32,86 @@ public class RatingUtil {
     this.trainingStatusDAO = trainingStatusDAO;
   }
 
+  // TODO(mzry1992): refactor.
   public void updateRating(TrainingContest trainingContest) throws AppException {
-    if (trainingContest.getType() == Global.TrainingContestType.UNRATED.ordinal()) {
-      for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
-        TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
-        if (!trainingUser.getAllow())
-          continue;
-
-        trainingUser.setRating(trainingUser.getRating());
-        trainingUser.setRatingVary(0.0);
-        trainingUser.setVolatility(trainingUser.getVolatility());
-        trainingUser.setVolatilityVary(0.0);
-        trainingUser.setCompetitions(trainingUser.getCompetitions() + 1);
-
-        trainingStatus.setRating(trainingUser.getRating());
-        trainingStatus.setRatingVary(trainingUser.getRatingVary());
-        trainingStatus.setVolatility(trainingUser.getVolatility());
-        trainingStatus.setVolatilityVary(trainingUser.getVolatilityVary());
-
-        trainingUserDAO.update(trainingUser);
-        trainingStatusDAO.update(trainingStatus);
-      }
-    } else if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal() ||
-        trainingContest.getType() == Global.TrainingContestType.ABSENT.ordinal()) {
-      for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
-        TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
-        if (!trainingUser.getAllow())
-          continue;
-
-        trainingUser.setRating(trainingUser.getRating() - trainingStatus.getPenalty());
-        trainingUser.setRatingVary(-1.0 * trainingStatus.getPenalty());
-        if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal()) {
-          trainingUser.setVolatilityVary(trainingUser.getVolatility() - 550.0);
-          trainingUser.setVolatility(550.0);
-        } else {
-          trainingUser.setVolatilityVary(0.0);
-        }
-        trainingUser.setCompetitions(trainingUser.getCompetitions() + 1);
-
-        trainingStatus.setRating(trainingUser.getRating());
-        trainingStatus.setRatingVary(trainingUser.getRatingVary());
-        trainingStatus.setVolatility(trainingUser.getVolatility());
-        trainingStatus.setVolatilityVary(trainingUser.getVolatilityVary());
-
-        trainingUserDAO.update(trainingUser);
-        trainingStatusDAO.update(trainingStatus);
-      }
-    } else {
-      List<TrainingUser> trainingUsers = new LinkedList<>();
-      List<Integer> trainingUserRank = new LinkedList<>();
-      for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
-        TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
-        if (!trainingUser.getAllow())
-          continue;
-        trainingUsers.add(trainingUser);
-        trainingUserRank.add(trainingStatus.getRank());
-      }
-
-      if (trainingContest.getType() == Global.TrainingContestType.TEAM.ordinal()) {
-        updateTrainingUser(trainingUsers, trainingUserRank, 0.5);
-      } else {
-        updateTrainingUser(trainingUsers, trainingUserRank, 1.0);
-      }
-      for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
-        TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
-        if (!trainingUser.getAllow())
-          continue;
-
-        trainingStatus.setRating(trainingUser.getRating());
-        trainingStatus.setRatingVary(trainingUser.getRatingVary());
-        trainingStatus.setVolatility(trainingUser.getVolatility());
-        trainingStatus.setVolatilityVary(trainingUser.getVolatilityVary());
-
-        trainingUserDAO.update(trainingUser);
-        trainingStatusDAO.update(trainingStatus);
-      }
-    }
+//    if (trainingContest.getType() == Global.TrainingContestType.UNRATED.ordinal()) {
+//      for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
+//        TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
+//        if (!trainingUser.getAllow())
+//          continue;
+//
+//        trainingUser.setRating(trainingUser.getRating());
+//        trainingUser.setRatingVary(0.0);
+//        trainingUser.setVolatility(trainingUser.getVolatility());
+//        trainingUser.setVolatilityVary(0.0);
+//        trainingUser.setCompetitions(trainingUser.getCompetitions() + 1);
+//
+//        trainingStatus.setRating(trainingUser.getRating());
+//        trainingStatus.setRatingVary(trainingUser.getRatingVary());
+//        trainingStatus.setVolatility(trainingUser.getVolatility());
+//        trainingStatus.setVolatilityVary(trainingUser.getVolatilityVary());
+//
+//        trainingUserDAO.update(trainingUser);
+//        trainingStatusDAO.update(trainingStatus);
+//      }
+//    } else if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal() ||
+//        trainingContest.getType() == Global.TrainingContestType.ABSENT.ordinal()) {
+//      for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
+//        TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
+//        if (!trainingUser.getAllow())
+//          continue;
+//
+//        trainingUser.setRating(trainingUser.getRating() - trainingStatus.getPenalty());
+//        trainingUser.setRatingVary(-1.0 * trainingStatus.getPenalty());
+//        if (trainingContest.getType() == Global.TrainingContestType.ADJUST.ordinal()) {
+//          trainingUser.setVolatilityVary(trainingUser.getVolatility() - 550.0);
+//          trainingUser.setVolatility(550.0);
+//        } else {
+//          trainingUser.setVolatilityVary(0.0);
+//        }
+//        trainingUser.setCompetitions(trainingUser.getCompetitions() + 1);
+//
+//        trainingStatus.setRating(trainingUser.getRating());
+//        trainingStatus.setRatingVary(trainingUser.getRatingVary());
+//        trainingStatus.setVolatility(trainingUser.getVolatility());
+//        trainingStatus.setVolatilityVary(trainingUser.getVolatilityVary());
+//
+//        trainingUserDAO.update(trainingUser);
+//        trainingStatusDAO.update(trainingStatus);
+//      }
+//    } else {
+//      List<TrainingUser> trainingUsers = new LinkedList<>();
+//      List<Integer> trainingUserRank = new LinkedList<>();
+//      for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
+//        TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
+//        if (!trainingUser.getAllow())
+//          continue;
+//        trainingUsers.add(trainingUser);
+//        trainingUserRank.add(trainingStatus.getRank());
+//      }
+//
+//      if (trainingContest.getType() == Global.TrainingContestType.TEAM.ordinal()) {
+//        updateTrainingUser(trainingUsers, trainingUserRank, 0.5);
+//      } else {
+//        updateTrainingUser(trainingUsers, trainingUserRank, 1.0);
+//      }
+//      for (TrainingStatus trainingStatus : trainingContest.getTrainingStatusesByTrainingContestId()) {
+//        TrainingUser trainingUser = trainingStatus.getTrainingUserByTrainingUserId();
+//        if (!trainingUser.getAllow())
+//          continue;
+//
+//        trainingStatus.setRating(trainingUser.getRating());
+//        trainingStatus.setRatingVary(trainingUser.getRatingVary());
+//        trainingStatus.setVolatility(trainingUser.getVolatility());
+//        trainingStatus.setVolatilityVary(trainingUser.getVolatilityVary());
+//
+//        trainingUserDAO.update(trainingUser);
+//        trainingStatusDAO.update(trainingStatus);
+//      }
+//    }
   }
 
+  @SuppressWarnings("unused")
   private void updateTrainingUser(List<TrainingUser> trainingUsers, List<Integer> rank,
       Double contestWeight) {
     if (trainingUsers.size() <= 1) {

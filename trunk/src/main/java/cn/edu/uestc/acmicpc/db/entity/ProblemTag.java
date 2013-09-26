@@ -1,36 +1,11 @@
-/*
- *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -71,47 +46,27 @@ public class ProblemTag implements Serializable {
     this.problemTagId = problemTagId;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
+  private Integer problemId;
 
-    ProblemTag that = (ProblemTag) o;
-
-    if (!problemTagId.equals(that.problemTagId))
-      return false;
-
-    return true;
+  @Column(name = "problemId", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getProblemId() {
+    return problemId;
   }
 
-  @Override
-  public int hashCode() {
-    return problemTagId;
+  public void setProblemId(Integer problemId) {
+    this.problemId = problemId;
   }
 
-  private Problem problemByProblemId;
+  private Integer tagId;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = false)
-  public Problem getProblemByProblemId() {
-    return problemByProblemId;
+  @Column(name = "tagId", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getTagId() {
+    return tagId;
   }
 
-  public void setProblemByProblemId(Problem problemByProblemId) {
-    this.problemByProblemId = problemByProblemId;
-  }
-
-  private Tag tagByTagId;
-
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "tagId", referencedColumnName = "tagId", nullable = false)
-  public Tag getTagByTagId() {
-    return tagByTagId;
-  }
-
-  public void setTagByTagId(Tag tagByTagId) {
-    this.tagByTagId = tagByTagId;
+  public void setTagId(Integer tagId) {
+    this.tagId = tagId;
   }
 }

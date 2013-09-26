@@ -31,8 +31,8 @@ public class ContestProblemDAOITTest {
   @Test
   public void testAddContestProblem() throws AppException {
     ContestProblem contestProblem = new ContestProblem();
-    contestProblem.setContestByContestId(contestDAO.get(1));
-    contestProblem.setProblemByProblemId(problemDAO.get(1));
+    contestProblem.setContestId(1);
+    contestProblem.setProblemId(1);
     contestProblem.setOrder(0);
     contestProblemDAO.add(contestProblem);
   }

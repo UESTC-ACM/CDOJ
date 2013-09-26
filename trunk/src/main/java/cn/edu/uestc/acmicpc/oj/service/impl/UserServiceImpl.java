@@ -17,6 +17,7 @@ import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
+import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
 import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
@@ -42,6 +43,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
   private final IUserDAO userDAO;
+  @SuppressWarnings("unused")
   private final GlobalService globalService;
   @SuppressWarnings("unused")
   private final EmailService emailService;
@@ -129,9 +131,9 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
     User user = getUserByUserDTO(userDTO);
     // TODO(mzry1992): just use depaetment Id.
-//    if (user.getDepartmentByDepartmentId() == null) {
-//      throw new FieldException("departmentId", "Please choose a validate department.");
-//    }
+    if (user.getDepartmentId() == null) {
+      throw new FieldException("departmentId", "Please choose a validate department.");
+    }
 
     createNewUser(user);
 
@@ -205,12 +207,11 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public User getUserByUserDTO(UserDTO userDTO) throws AppException {
-//    Department department = globalService.getDepartmentById(userDTO.getDepartmentId());
+    Department department = globalService.getDepartmentById(userDTO.getDepartmentId());
     User user = new User();
     user.setTried(0);
     user.setNickName(userDTO.getNickName());
-    // TODO(mzry1992): just use departmentId.
-//    user.setDepartmentByDepartmentId(department);
+    user.setDepartmentId(department == null ? null : department.getDepartmentId());
     user.setEmail(userDTO.getEmail());
     user.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
     user.setPassword(StringUtil.encodeSHA1(userDTO.getPassword()));

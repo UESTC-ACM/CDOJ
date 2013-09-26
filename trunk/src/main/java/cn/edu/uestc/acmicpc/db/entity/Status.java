@@ -1,38 +1,13 @@
-/*
- *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -151,114 +126,75 @@ public class Status implements Serializable {
     this.caseNumber = caseNumber;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
+  private Integer codeId;
 
-    Status status = (Status) o;
-
-    if (!caseNumber.equals(status.caseNumber))
-      return false;
-    if (!length.equals(status.length))
-      return false;
-    if (!memoryCost.equals(status.memoryCost))
-      return false;
-    if (!result.equals(status.result))
-      return false;
-    if (!statusId.equals(status.statusId))
-      return false;
-    if (!timeCost.equals(status.timeCost))
-      return false;
-    if (time != null ? !time.equals(status.time) : status.time != null)
-      return false;
-
-    return true;
+  @Column(name = "codeId", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getCodeId() {
+    return codeId;
   }
 
-  @Override
-  public int hashCode() {
-    int result1 = statusId;
-    result1 = 31 * result1 + result;
-    result1 = 31 * result1 + memoryCost;
-    result1 = 31 * result1 + timeCost;
-    result1 = 31 * result1 + length;
-    result1 = 31 * result1 + (time != null ? time.hashCode() : 0);
-    result1 = 31 * result1 + caseNumber;
-    return result1;
+  public void setCodeId(Integer codeId) {
+    this.codeId = codeId;
   }
 
-  private Code codeByCodeId;
+  private Integer compileInfoId;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "codeId", referencedColumnName = "codeId", nullable = false)
-  public Code getCodeByCodeId() {
-    return codeByCodeId;
+  @Column(name = "compileInfoId", nullable = true, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getCompileInfoId() {
+    return compileInfoId;
   }
 
-  public void setCodeByCodeId(Code codeByCodeId) {
-    this.codeByCodeId = codeByCodeId;
+  public void setCompileInfoId(Integer compileInfoId) {
+    this.compileInfoId = compileInfoId;
   }
 
-  private CompileInfo compileInfoByCompileInfoId;
+  private Integer contestId;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "compileInfoId", referencedColumnName = "compileInfoId")
-  public CompileInfo getCompileInfoByCompileInfoId() {
-    return compileInfoByCompileInfoId;
+  @Column(name = "contestId", nullable = true, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getContestId() {
+    return contestId;
   }
 
-  public void setCompileInfoByCompileInfoId(CompileInfo compileInfoByCompileInfoId) {
-    this.compileInfoByCompileInfoId = compileInfoByCompileInfoId;
+  public void setContestId(Integer contestId) {
+    this.contestId = contestId;
   }
 
-  private Contest contestByContestId;
+  private Integer languageId;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "contestId", referencedColumnName = "contestId")
-  public Contest getContestByContestId() {
-    return contestByContestId;
+  @Column(name = "languageId", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getLanguageId() {
+    return languageId;
   }
 
-  public void setContestByContestId(Contest contestByContestId) {
-    this.contestByContestId = contestByContestId;
+  public void setLanguageId(Integer languageId) {
+    this.languageId = languageId;
   }
 
-  private Language languageByLanguageId;
+  private Integer problemId;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "languageId", referencedColumnName = "languageId", nullable = false)
-  public Language getLanguageByLanguageId() {
-    return languageByLanguageId;
+  @Column(name = "problemId", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getProblemId() {
+    return problemId;
   }
 
-  public void setLanguageByLanguageId(Language languageByLanguageId) {
-    this.languageByLanguageId = languageByLanguageId;
+  public void setProblemId(Integer problemId) {
+    this.problemId = problemId;
   }
 
-  private Problem problemByProblemId;
+  private Integer userId;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = false)
-  public Problem getProblemByProblemId() {
-    return problemByProblemId;
+  @Column(name = "userId", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getUserId() {
+    return userId;
   }
 
-  public void setProblemByProblemId(Problem problemByProblemId) {
-    this.problemByProblemId = problemByProblemId;
-  }
-
-  private User userByUserId;
-
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
-  public User getUserByUserId() {
-    return userByUserId;
-  }
-
-  public void setUserByUserId(User userByUserId) {
-    this.userByUserId = userByUserId;
+  public void setUserId(Integer userId) {
+    this.userId = userId;
   }
 }

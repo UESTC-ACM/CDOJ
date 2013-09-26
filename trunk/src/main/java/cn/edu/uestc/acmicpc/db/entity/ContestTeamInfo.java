@@ -1,25 +1,3 @@
-/*
- *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
@@ -210,59 +188,5 @@ public class ContestTeamInfo implements Serializable {
 
   public void setState(Byte state) {
     this.state = state;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
-
-    ContestTeamInfo that = (ContestTeamInfo) o;
-
-    if (!state.equals(that.state))
-      return false;
-    if (!teamId.equals(that.teamId))
-      return false;
-    if (!userId.equals(that.userId))
-      return false;
-    if (coderName != null ? !coderName.equals(that.coderName) : that.coderName != null)
-      return false;
-    if (department != null ? !department.equals(that.department) : that.department != null)
-      return false;
-    if (email != null ? !email.equals(that.email) : that.email != null)
-      return false;
-    if (grade != null ? !grade.equals(that.grade) : that.grade != null)
-      return false;
-    if (name != null ? !name.equals(that.name) : that.name != null)
-      return false;
-    if (phone != null ? !phone.equals(that.phone) : that.phone != null)
-      return false;
-    if (school != null ? !school.equals(that.school) : that.school != null)
-      return false;
-    if (sex != null ? !sex.equals(that.sex) : that.sex != null)
-      return false;
-    if (size != null ? !size.equals(that.size) : that.size != null)
-      return false;
-
-    return true;
-  }
-
-  @Override
-  public int hashCode() {
-    int result = teamId;
-    result = 31 * result + userId;
-    result = 31 * result + (name != null ? name.hashCode() : 0);
-    result = 31 * result + (coderName != null ? coderName.hashCode() : 0);
-    result = 31 * result + (sex != null ? sex.hashCode() : 0);
-    result = 31 * result + (department != null ? department.hashCode() : 0);
-    result = 31 * result + (grade != null ? grade.hashCode() : 0);
-    result = 31 * result + (phone != null ? phone.hashCode() : 0);
-    result = 31 * result + (size != null ? size.hashCode() : 0);
-    result = 31 * result + (email != null ? email.hashCode() : 0);
-    result = 31 * result + (school != null ? school.hashCode() : 0);
-    result = 31 * result + (int) state;
-    return result;
   }
 }

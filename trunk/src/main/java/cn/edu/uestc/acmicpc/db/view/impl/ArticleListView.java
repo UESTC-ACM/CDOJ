@@ -94,7 +94,8 @@ public class ArticleListView extends View<Article> {
   @Deprecated
   public ArticleListView(Article article) {
     super(article);
-    setOwnerName(article.getUserByUserId().getUserName());
-    setOwnerEmail(article.getUserByUserId().getEmail());
+    // TODO(mzry1992): use dto transfer.
+//    setOwnerName(article.getUserByUserId().getUserName());
+//    setOwnerEmail(article.getUserByUserId().getEmail());
   }
 }

@@ -22,14 +22,10 @@
 
 package cn.edu.uestc.acmicpc.db.view.impl;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-
 import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.Global;
@@ -83,12 +79,13 @@ public class ProblemListView extends View<Problem> {
   @Deprecated
   public ProblemListView(Problem problem, User currentUser, Global.AuthorStatusType type)
       throws AppException {
+    // TODO(mzry1992): use dto transfer.
     super(problem);
     List<String> list = new LinkedList<>();
-    Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
-    for (ProblemTag problemTag : problemTags) {
-      list.add(StringEscapeUtils.escapeHtml4(problemTag.getTagByTagId().getName()));
-    }
+//    Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
+//    for (ProblemTag problemTag : problemTags) {
+//      list.add(StringEscapeUtils.escapeHtml4(problemTag.getTagByTagId().getName()));
+//    }
     setTags(list);
     if (currentUser == null) {
       setState(NONE);
