@@ -1,11 +1,5 @@
 package cn.edu.uestc.acmicpc.oj.service;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
-import cn.edu.uestc.acmicpc.db.dto.impl.UserRegisterDTO;
-import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +7,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
-import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.exception.FieldException;
-import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 /** Integration test cases for {@link UserService}. */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -27,6 +16,10 @@ public class UserServiceITTest {
 
   @Autowired
   UserService userService;
+
+  @Test
+  public void testStub() {
+  }
 
   /*
   TODO(fish)
