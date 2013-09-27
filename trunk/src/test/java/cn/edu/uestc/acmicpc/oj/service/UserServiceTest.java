@@ -56,6 +56,9 @@ public class UserServiceTest {
     Mockito.reset(userDAO, globalService);
   }
 
+  @Test
+  public void testFish() {
+  }
   /*
   TODO(fish)
   @Test

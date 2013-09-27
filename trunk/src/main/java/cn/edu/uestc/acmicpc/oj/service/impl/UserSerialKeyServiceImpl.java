@@ -42,12 +42,8 @@ public class UserSerialKeyServiceImpl extends AbstractService implements UserSer
 
   @Override
   public UserSerialKeyDTO findUserSerialKeyByUserId(Integer userId) throws AppException {
-    try {
-      UserSerialKey userSerialKey = getDAO().getEntityByUniqueField("userId", userId);
-      return getUserSerialKeyDTOByUserSerialKey(userSerialKey);
-    } catch (FieldNotUniqueException e) {
-      throw new AppException(e);
-    }
+    UserSerialKey userSerialKey = (UserSerialKey) getDAO().getEntityByUniqueField("userId", userId);
+    return getUserSerialKeyDTOByUserSerialKey(userSerialKey);
   }
 
   @Override
