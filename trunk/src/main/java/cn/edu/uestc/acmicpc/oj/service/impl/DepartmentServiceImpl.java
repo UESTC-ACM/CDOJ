@@ -1,19 +1,20 @@
 package cn.edu.uestc.acmicpc.oj.service.impl;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
+
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.DepartmentDTO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.oj.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.impl.AbstractService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Description
@@ -39,7 +40,12 @@ public class DepartmentServiceImpl extends AbstractService implements Department
 
   @PostConstruct
   public void init() throws AppException {
-    List<Department> departmentList = (List<Department>) departmentDAO.findAll();
+    List<Department> departmentList;
+    try {
+      departmentList = (List<Department>) departmentDAO.findAll();
+    } catch (NullPointerException e) {
+      departmentList = new LinkedList<>();
+    }
     departmentDTOList = new LinkedList<>();
     for (Department department: departmentList)
       departmentDTOList.add(getDepartmentDTO(department));
