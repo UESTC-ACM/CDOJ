@@ -20,7 +20,6 @@ import cn.edu.uestc.acmicpc.service.impl.AbstractService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 /**
  * Implementation for {@link UserService}.
@@ -77,24 +76,14 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public UserDTO getUserByUserName(String userName) throws AppException {
-    try {
-      User user = userDAO.getEntityByUniqueField("userName", userName);
-      return getUserDTOByUser(user);
-    } catch (FieldNotUniqueException e) {
-      LOGGER.error(e);
-      throw new AppException(e);
-    }
+    User user = (User)userDAO.getEntityByUniqueField("userName", userName);
+    return getUserDTOByUser(user);
   }
 
   @Override
   public UserDTO getUserByEmail(String email) throws AppException {
-    try {
-      User user = userDAO.getEntityByUniqueField("email", email);
-      return getUserDTOByUser(user);
-    } catch (FieldNotUniqueException e) {
-      LOGGER.error(e);
-      throw new AppException(e);
-    }
+    User user = (User)userDAO.getEntityByUniqueField("email", email);
+    return getUserDTOByUser(user);
   }
 
   @Override
@@ -133,7 +122,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
     List<User> userList = (List<User>) userDAO.findAll(userCondition.getCondition());
     List<UserDTO> userDTOList = new ArrayList<>();
     for (User user : userList)
-    userDTOList.add(getUserDTOByUser(user));
+      userDTOList.add(getUserDTOByUser(user));
     return userDTOList;
   }
 

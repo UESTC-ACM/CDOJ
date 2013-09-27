@@ -20,7 +20,6 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 /**
  * Simple database test class.
@@ -41,15 +40,18 @@ public class DatabaseITTest {
   private StatusCondition statusCondition;
 
   @Test
-  public void testDAO_getEntityByUnique() throws FieldNotUniqueException, AppException {
-    User user = userDAO.getEntityByUniqueField("userName", "administrator");
+  public void testDAO_getEntityByUnique() throws AppException {
+    User user = (User) userDAO.getEntityByUniqueField("userName", "administrator");
     Assert.assertEquals("UESTC", user.getSchool());
   }
 
-  @Test(expected = FieldNotUniqueException.class)
-  public void testDAO_getEntityByUnique_withNotUniqueField() throws FieldNotUniqueException,
-      AppException {
-    userDAO.getEntityByUniqueField("password", "123456");
+  @Test
+  public void testDAO_getEntityByUnique_withNotUniqueField() {
+    try {
+      userDAO.getEntityByUniqueField("password", "123456");
+    } catch (AppException e) {
+      Assert.assertEquals(new AppException("the value is not unique."), e);
+    }
   }
 
   @Autowired
