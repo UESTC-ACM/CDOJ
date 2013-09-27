@@ -38,7 +38,7 @@ public class Condition {
   /** Basic condition type of database handler. */
   public static enum ConditionType {
     CONDITION(""), EQUALS("="), GREATER_THAN(">"), LESS_THAN("<"), GREATER_OR_EQUALS(">="),
-    LESS_OR_EQUALS("<="), LIKE(" like "), STRING_EQUALS(" like "), IS_NULL("");
+    LESS_OR_EQUALS("<="), LIKE(" like "), STRING_EQUALS(" like "), IS_NULL(""), IS_NOT_NULL("");
 
     private final String signal;
 
@@ -143,7 +143,7 @@ public class Condition {
 
     @Override
     public String toString() {
-      return field + " " + (asc ? " asc" : "desc");
+      return field + " " + (asc ? "asc" : "desc");
     }
 
     /**
@@ -197,17 +197,21 @@ public class Condition {
         } else {
           builder.append(flag);
         }
-        builder.append(entry.getFieldName());
-        builder.append(entry.getConditionType().getSignal());
-        builder.append("'");
-        if (entry.getConditionType() == ConditionType.LIKE) {
-          builder.append("%").append(entry.getValue()).append("%");
-        } else if (entry.getConditionType() == ConditionType.IS_NULL) {
-          // TODO(fish): IS_NULL
+        if (entry.getConditionType() == ConditionType.IS_NOT_NULL) {
+          builder.append("(").append(entry.getFieldName()).append(" is not null)");
+        } else if(entry.getConditionType() == ConditionType.IS_NULL) {
+          builder.append("(").append(entry.getFieldName()).append(" is null)");
         } else {
-          builder.append(entry.getValue());
+          builder.append(entry.getFieldName());
+          builder.append(entry.getConditionType().getSignal());
+          builder.append("'");
+          if (entry.getConditionType() == ConditionType.LIKE) {
+            builder.append("%").append(entry.getValue()).append("%");
+          } else {
+            builder.append(entry.getValue());
+          }
+          builder.append("'");
         }
-        builder.append("'");
       }
     }
     if (first) {
@@ -240,11 +244,12 @@ public class Condition {
     StringBuilder builder = new StringBuilder();
     builder.append(toHQLString());
     if (!orders.isEmpty()) {
-      builder.append("order by");
+      builder.append(" order by");
       boolean first = true;
       for (Order order : orders) {
         if (first) {
           builder.append(" ").append(order.toString());
+          first = false;
         } else {
           builder.append(",").append(order.toString());
         }
