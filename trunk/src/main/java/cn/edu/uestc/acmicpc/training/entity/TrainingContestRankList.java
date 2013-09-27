@@ -124,7 +124,8 @@ public class TrainingContestRankList {
     List<TrainingUserRankSummary> trainingUserRankSummaryList = new LinkedList<>();
     String names[] = userInfo[0].split(",");
     for (String name : names) {
-      TrainingUser trainingUser = trainingUserDAO.getEntityByUniqueField("name", name);
+      TrainingUser trainingUser =
+          (TrainingUser) trainingUserDAO.getEntityByUniqueField("name", name);
       // If there are no such user or it's not allowed, just
       // continue
       if (trainingUser == null || !trainingUser.getAllow())

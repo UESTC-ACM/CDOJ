@@ -1,26 +1,20 @@
 package cn.edu.uestc.acmicpc.db.dao.base;
 
 import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.DatabaseUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 
 /**
  * Global DAO implementation.
@@ -171,7 +165,12 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   @Override
   public List<?> findAll(String fields, Condition condition) throws AppException {
     try {
-      String hql = "select " + fields + " " + buildHQLStringWithOrders(condition);
+      String hql;
+      if (fields == null) {
+        hql = buildHQLStringWithOrders(condition);
+      } else {
+        hql = "select " + fields + " " + buildHQLStringWithOrders(condition);
+      }
       return getSession().createQuery(hql).list();
     } catch (HibernateException e) {
       LOGGER.error(e);
@@ -185,53 +184,28 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
-  public Entity getEntityByUniqueField(String fieldName, Object value)
-      throws FieldNotUniqueException, AppException {
-    return getEntityByUniqueField(fieldName, value, fieldName, false);
+  public Object getEntityByUniqueField(String fieldName, Object value)
+      throws AppException {
+    return getEntityByUniqueField(fieldName, value, null, false);
   }
 
-  @SuppressWarnings("unchecked")
   @Override
-  public Entity getEntityByUniqueField(String fieldName, Object value, String propertyName,
-      boolean forceUnique) throws FieldNotUniqueException, AppException {
-    Entity result = null;
-    Method[] methods = getReferenceClass().getMethods();
-    try {
-      for (Method method : methods) {
-        String columnName = null;
-        boolean isUnique = false;
-        if (method.getAnnotation(Column.class) != null) {
-          columnName = method.getAnnotation(Column.class).name();
-          isUnique = method.getAnnotation(Column.class).unique();
-        } else if (method.getAnnotation(JoinColumn.class) != null) {
-          columnName = method.getAnnotation(JoinColumn.class).name();
-          isUnique = method.getAnnotation(JoinColumn.class).unique();
-        }
-        if (forceUnique) {
-          isUnique = true;
-        }
-        if (columnName != null && columnName.equals(fieldName)) {
-          if (isUnique) {
-            if (value == null) {
-              return null;
-            }
-            Criteria criteria = getSession().createCriteria(getReferenceClass());
-            criteria.add(Restrictions.eq(propertyName, value));
-            List<?> list = criteria.list();
-            if (list == null || list.isEmpty()) {
-              return null;
-            }
-            result = (Entity) list.get(0);
-            break;
-          } else {
-            throw new FieldNotUniqueException("Field '" + propertyName + "' is not unique.");
-          }
-        }
+  public Object getEntityByUniqueField(String fieldName, Object value, String propertyName,
+      boolean forceUnique) throws AppException {
+    Condition condition = new Condition();
+    condition.addEntry(fieldName, ConditionType.EQUALS, value);
+    List<?> results = findAll(propertyName, condition);
+    if (forceUnique) {
+      return results.isEmpty() ? null : results.get(0);
+    } else {
+      if (results.isEmpty()) {
+        return null;
+      } else if (results.size() == 1) {
+        return results.get(0);
+      } else {
+        throw new AppException("the value is not unique.");
       }
-    } catch (HibernateException e) {
-      throw new AppException("Invoke getEntityByUniqueField method error.");
     }
-    return result;
   }
 
   /**

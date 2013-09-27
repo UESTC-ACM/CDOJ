@@ -44,7 +44,7 @@ public class AOPITTest {
 
   @Test
   public void testDataBaseConnection() throws FieldNotUniqueException, AppException {
-    User user = userDAO.getEntityByUniqueField("userName", "admin");
+    User user = (User) userDAO.getEntityByUniqueField("userName", "admin");
     Assert.assertEquals("admin", user.getUserName());
   }
 

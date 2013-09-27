@@ -55,7 +55,7 @@ public class UserDatabaseITTest {
   @Test
   @Ignore("borken test for design-in problem")
   public void testDelete() throws AppException, FieldNotUniqueException {
-    User user = userDAO.getEntityByUniqueField("userName", "testDeleted");
+    User user = (User) userDAO.getEntityByUniqueField("userName", "testDeleted");
     Long oldCount = userDAO.count();
     userDAO.delete(user.getUserId());
     Long newCount = userDAO.count();
