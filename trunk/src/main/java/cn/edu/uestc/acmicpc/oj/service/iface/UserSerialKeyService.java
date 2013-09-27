@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.oj.service.iface;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.UserSerialKeyDTO;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -14,7 +15,7 @@ public interface UserSerialKeyService extends OnlineJudgeService<UserSerialKey, 
    * @return user serial key of that user
    * @throws AppException
    */
-  public UserSerialKey findUserSerialKeyByUserId(Integer userId) throws AppException;
+  public UserSerialKeyDTO findUserSerialKeyByUserId(Integer userId) throws AppException;
 
   /**
    * Generate a new user serial key for user
@@ -22,12 +23,13 @@ public interface UserSerialKeyService extends OnlineJudgeService<UserSerialKey, 
    * @return a new user serial key if there isn't exists
    * @throws AppException if this user generated a user serial key in 30 minutes
    */
-  public UserSerialKey generateUserSerialKey(Integer userId) throws AppException;
+  public UserSerialKeyDTO generateUserSerialKey(Integer userId) throws AppException;
 
   /**
    * Save new user serial key
-   * @param userSerialKey Entity
+   * @param userSerialKeyDTO Entity
    * @throws AppException
    */
-  public void createNewUserSerialKey(UserSerialKey userSerialKey) throws AppException;
+  public void createNewUserSerialKey(UserSerialKeyDTO userSerialKeyDTO) throws AppException;
+
 }

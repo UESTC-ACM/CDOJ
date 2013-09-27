@@ -2,9 +2,7 @@ package cn.edu.uestc.acmicpc.config;
 
 import static org.mockito.Mockito.mock;
 
-import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
-import cn.edu.uestc.acmicpc.oj.service.iface.StatusService;
-import cn.edu.uestc.acmicpc.oj.service.iface.UserSerialKeyService;
+import cn.edu.uestc.acmicpc.oj.service.iface.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +16,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.oj.service.impl.UserServiceImpl;
 import cn.edu.uestc.acmicpc.service.JudgeService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
@@ -69,16 +66,10 @@ public class TestContext extends ApplicationContextConfig {
   public UserService realUserService(
       @Qualifier("mockUserDAO") IUserDAO userDAO,
       @Qualifier("mockGlobalService") GlobalService globalService,
-      @Qualifier("mockEmailService") EmailService emailService,
-      @Qualifier("mockProblemService") ProblemService problemService,
-      @Qualifier("mockStatusService") StatusService statusService,
-      @Qualifier("mockUserSerialKeyService") UserSerialKeyService userSerialKeyService) {
+      @Qualifier("mockDepartmentService") DepartmentService departmentService) {
     return new UserServiceImpl(userDAO,
         globalService,
-        emailService,
-        problemService,
-        statusService,
-        userSerialKeyService);
+        departmentService);
   }
 
   @Bean
@@ -109,6 +100,11 @@ public class TestContext extends ApplicationContextConfig {
   @Bean
   public EmailService mockEmailService() {
     return mock(EmailService.class);
+  }
+
+  @Bean
+  public DepartmentService mockDepartmentService() {
+    return mock(DepartmentService.class);
   }
 
   @Bean

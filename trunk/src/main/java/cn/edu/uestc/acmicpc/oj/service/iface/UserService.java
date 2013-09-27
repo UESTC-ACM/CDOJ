@@ -79,19 +79,4 @@ public interface UserService extends OnlineJudgeService<User, Integer> {
    */
   Long count(UserCondition userCondition) throws AppException;
 
-  /**
-   * TODO(mzry1992): description
-   * @param userName
-   * @return return
-   * @throws AppException
-   */
-  Map<Integer, Global.AuthorStatusType> getUserProblemStatus(String userName) throws AppException;
-
-  /**
-   * TODO(mzry1992): description
-   * @param userName
-   * @return return
-   * @throws AppException
-   */
-  Boolean sendSerialKey(String userName) throws AppException;
 }

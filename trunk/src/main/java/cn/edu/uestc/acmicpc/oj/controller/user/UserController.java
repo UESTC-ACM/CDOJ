@@ -6,10 +6,9 @@ import java.util.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserEditDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserRegisterDTO;
-import cn.edu.uestc.acmicpc.oj.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.db.dto.impl.*;
+import cn.edu.uestc.acmicpc.oj.service.iface.*;
+import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,10 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
 import cn.edu.uestc.acmicpc.oj.controller.base.BaseController;
-import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.Global;
@@ -55,14 +52,26 @@ public class UserController extends BaseController {
   private final UserService userService;
   private final GlobalService globalService;
   private final DepartmentService departmentService;
+  private final ProblemService problemService;
+  private final StatusService statusService;
+  private final UserSerialKeyService userSerialKeyService;
+  private final EmailService emailService;
 
   @Autowired
   public UserController(UserService userService,
                         GlobalService globalService,
-                        DepartmentService departmentService) {
+                        DepartmentService departmentService,
+                        ProblemService problemService,
+                        StatusService statusService,
+                        UserSerialKeyService userSerialKeyService,
+                        EmailService emailService) {
     this.userService = userService;
     this.globalService = globalService;
     this.departmentService = departmentService;
+    this.problemService = problemService;
+    this.statusService = statusService;
+    this.userSerialKeyService = userSerialKeyService;
+    this.emailService = emailService;
   }
 
   /**
@@ -267,7 +276,13 @@ public class UserController extends BaseController {
   public String center(@PathVariable("userName") String userName,
                            ModelMap model) {
     try {
-      UserView userView = userService.getUserViewByUserName(userName);
+      UserDTO userDTO = userService.getUserByUserName(userName);
+      if (userDTO == null) {
+        throw new AppException("No such user!");
+      }
+      //TODO
+      UserView userView = null;
+
       model.put("departmentList", departmentService.getDepartmentList());
       model.put("targetUser", userView);
     } catch (AppException e) {
@@ -359,8 +374,27 @@ public class UserController extends BaseController {
   Map<String, Object> status(@PathVariable("userName") String userName) {
     Map<String, Object> json = new HashMap<>();
     try {
-      Map<Integer, Global.AuthorStatusType> status = userService.getUserProblemStatus(userName);
-      json.put("status", status);
+      UserDTO userDTO = userService.getUserByUserName(userName);
+      if (userDTO == null)
+        throw new AppException("No such user!");
+
+      Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
+
+      List<Integer> results = problemService.getAllVisibleProblemIds();
+      for (Integer result : results)
+        problemStatus.put(result, Global.AuthorStatusType.NONE);
+
+      results = statusService.findAllUserTriedProblemIds(userDTO.getUserId());
+      for (Integer result : results)
+        if (problemStatus.containsKey(result))
+          problemStatus.put(result, Global.AuthorStatusType.FAIL);
+
+      results = statusService.findAllUserAcceptedProblemIds(userDTO.getUserId());
+      for (Integer result : results)
+        if (problemStatus.containsKey(result))
+          problemStatus.put(result, Global.AuthorStatusType.PASS);
+
+      json.put("status", problemStatus);
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
@@ -375,7 +409,13 @@ public class UserController extends BaseController {
   Map<String, Object> sendSerialKey(@PathVariable("userName") String userName) {
     Map<String, Object> json = new HashMap<>();
     try {
-      if (userService.sendSerialKey(userName))
+      UserDTO userDTO = userService.getUserByUserName(userName);
+      if (userDTO == null)
+        throw new AppException("No such user!");
+      UserSerialKeyDTO userSerialKeyDTO = userSerialKeyService.generateUserSerialKey(userDTO.getUserId());
+      userSerialKeyService.createNewUserSerialKey(userSerialKeyDTO);
+
+      if (emailService.sendUserSerialKey(userSerialKeyDTO))
         json.put("result", "success");
       else
         json.put("result", "failed");
