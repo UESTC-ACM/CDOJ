@@ -55,6 +55,10 @@ public class UserControllerTest extends ControllerTest {
 
   private MockMvc mockMvc;
   private MockHttpSession session;
+
+  @Test
+  public void testFish() {
+  }
 /*
 TODO(fish)
   @Before

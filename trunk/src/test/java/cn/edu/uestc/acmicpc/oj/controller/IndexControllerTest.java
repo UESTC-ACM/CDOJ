@@ -34,6 +34,10 @@ public class IndexControllerTest extends ControllerTest {
 
   private MockMvc mockMvc;
 
+  @Test
+  public void testFish() {
+  }
+
   /*
   TODO(fish)
   @Autowired
