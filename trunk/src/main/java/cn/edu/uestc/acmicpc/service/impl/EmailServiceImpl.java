@@ -11,7 +11,10 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserSerialKeyDTO;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
+import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +31,15 @@ import cn.edu.uestc.acmicpc.util.Settings;
 @Primary
 public class EmailServiceImpl extends AbstractService implements EmailService {
 
+  private final Settings settings;
+  private final UserService userService;
+
   @Autowired
-  private Settings settings;
+  public EmailServiceImpl(Settings settings,
+                          UserService userService) {
+    this.settings = settings;
+    this.userService = userService;
+  }
 
   class AJavaAuthenticator extends Authenticator {
 
@@ -71,12 +81,16 @@ public class EmailServiceImpl extends AbstractService implements EmailService {
   }
 
   @Override
-  public Boolean sendUserSerialKey(UserSerialKey userSerialKey) throws AppException {
+  public Boolean sendUserSerialKey(UserSerialKeyDTO userSerialKey) throws AppException {
+    UserDTO userDTO = userService.getUserByUserId(userSerialKey.getUserId());
+    if (userDTO == null) {
+      throw new AppException("No such user!");
+    }
     String url = settings.SETTING_HOST
-            + "/user/activate/" + userSerialKey.getUserByUserId().getUserName()
+            + "/user/activate/" + userDTO.getUserName()
             + "/" + StringUtil.encodeSHA1(userSerialKey.getSerialKey());
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append("Dear ").append(userSerialKey.getUserByUserId().getUserName()).append(" :\n\n");
+    stringBuilder.append("Dear ").append(userDTO.getUserName()).append(" :\n\n");
     stringBuilder
         .append("To reset your password, simply click on the link below or paste into the url field on your favorite browser:\n\n");
     stringBuilder.append(url).append("\n\n");
@@ -86,6 +100,6 @@ public class EmailServiceImpl extends AbstractService implements EmailService {
         .append("If you have any questions about the system, feel free to contact us anytime at acm@uestc.edu.cn.\n\n");
     stringBuilder.append("The UESTC OJ Team.\n");
 
-    return send(userSerialKey.getUserByUserId().getEmail(), "UESTC Online Judge", stringBuilder.toString());
+    return send(userDTO.getEmail(), "UESTC Online Judge", stringBuilder.toString());
   }
 }

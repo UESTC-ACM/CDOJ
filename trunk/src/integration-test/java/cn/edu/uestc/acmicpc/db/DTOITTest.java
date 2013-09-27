@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.db;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserRegisterDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +20,7 @@ public class DTOITTest {
   @Test
   public void testUserDTO() throws AppException {
     @SuppressWarnings("unused")
-    UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder()
+    UserDTO userDTO = UserDTO.builder()
         .setUserId(1)
         .setUserName("userName")
         .setDepartmentId(1)
@@ -27,7 +28,6 @@ public class DTOITTest {
         .setPassword("password")
         .setNickName("nickName")
         .setSchool("school")
-        .setPasswordRepeat("password")
         .setStudentId("123456789")
         .setType(2)
         .build();

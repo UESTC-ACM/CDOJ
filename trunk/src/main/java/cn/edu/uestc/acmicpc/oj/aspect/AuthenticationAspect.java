@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.oj.aspect;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserRegisterDTO;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
@@ -39,12 +40,11 @@ public class AuthenticationAspect {
 
     try {
       if (permit.NeedLogin()) {
-        UserRegisterDTO userRegisterDTO = (UserRegisterDTO)request.getSession().getAttribute("currentUser");
-        System.out.println("need login");
-        if (userRegisterDTO == null)
+        UserDTO userDTO = (UserDTO)request.getSession().getAttribute("currentUser");
+        if (userDTO == null)
           throw new AppException("Permission denied");
         if (permit.value() != Global.AuthenticationType.NORMAL) {
-          if (userRegisterDTO.getType() != permit.value().ordinal()) {
+          if (userDTO.getType() != permit.value().ordinal()) {
             throw new AppException("Permission denied");
           }
         }

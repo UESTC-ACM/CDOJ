@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.UserSerialKeyDTO;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -20,9 +21,9 @@ public interface EmailService {
 
   /**
    * Send user serial key by email
-   * @param userSerialKey Entity
+   * @param userSerialKeyDTO Entity
    * @return true if this operation success
    * @throws AppException
    */
-  public Boolean sendUserSerialKey(UserSerialKey userSerialKey) throws AppException;
+  public Boolean sendUserSerialKey(UserSerialKeyDTO userSerialKeyDTO) throws AppException;
 }
