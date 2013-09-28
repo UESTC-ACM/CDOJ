@@ -95,22 +95,13 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
       return (Long) getSession().createQuery(hql).uniqueResult();
     } catch (HibernateException e) {
       LOGGER.error(e);
-      throw new AppException("Invoke customCount method error.");
+      throw new AppException("Invoke count method error.");
     }
   }
 
   @Override
   public Long count(Condition condition) throws AppException {
-    if (condition == null) {
-      condition = new Condition();
-    }
-    try {
-      String hql = "select count(*) " + buildHQLString(condition);
-      return (Long)getSession().createQuery(hql).uniqueResult();
-    } catch (HibernateException e) {
-      LOGGER.error(e);
-      throw new AppException("Invoke count method error.");
-    }
+    return customCount("*", condition);
   }
 
   @Override

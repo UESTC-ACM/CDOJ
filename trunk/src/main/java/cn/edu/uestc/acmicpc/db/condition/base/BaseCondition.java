@@ -34,7 +34,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
 /**
- * We can use this class to transform conditions to database's Criterion list
+ * We can use this class to get {@link Condition} entity.
  * <p/>
  * <strong>USAGE</strong>
  * <p/>
@@ -51,7 +51,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
  * For example:
  * <p/>
  * <code>
- * {@literal @}Exp(MapField = "userId", Type = ConditionType.EQUALS)<br/>
+ * {@literal @}Exp(mapField = "userId", type = ConditionType.EQUALS)<br/>
  * public Integer id;
  * </code></li>
  * <li>
