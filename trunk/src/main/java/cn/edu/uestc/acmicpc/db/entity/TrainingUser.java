@@ -1,12 +1,15 @@
 package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -64,8 +67,7 @@ public class TrainingUser implements Serializable {
 
   @Column(name = "volatility", nullable = false, insertable = true, updatable = true, precision = 0)
   @Basic
-  public
-      Double getVolatility() {
+  public Double getVolatility() {
     return volatility;
   }
 
@@ -171,5 +173,17 @@ public class TrainingUser implements Serializable {
 
   public void setUserId(Integer userId) {
     this.userId = userId;
+  }
+
+  private Collection<TrainingStatus> trainingStatusesByTrainingUserId;
+
+  @OneToMany(mappedBy = "trainingUserByTrainingUserId", cascade = CascadeType.ALL)
+  public Collection<TrainingStatus> getTrainingStatusesByTrainingUserId() {
+    return trainingStatusesByTrainingUserId;
+  }
+
+  public void setTrainingStatusesByTrainingUserId(
+      Collection<TrainingStatus> trainingStatusesByTrainingUserId) {
+    this.trainingStatusesByTrainingUserId = trainingStatusesByTrainingUserId;
   }
 }

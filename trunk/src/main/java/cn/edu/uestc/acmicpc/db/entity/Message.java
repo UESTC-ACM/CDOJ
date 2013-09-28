@@ -4,10 +4,13 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -122,5 +125,31 @@ public class Message implements Serializable {
 
   public void setSenderId(Integer senderId) {
     this.senderId = senderId;
+  }
+
+  private User userByReceiverId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "receiverId", referencedColumnName = "userId", nullable = false,
+      insertable = false, updatable = false)
+  public User getUserByReceiverId() {
+    return userByReceiverId;
+  }
+
+  public void setUserByReceiverId(User userByReceiverId) {
+    this.userByReceiverId = userByReceiverId;
+  }
+
+  private User userBySenderId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "senderId", referencedColumnName = "userId", nullable = false,
+      insertable = false, updatable = false)
+  public User getUserBySenderId() {
+    return userBySenderId;
+  }
+
+  public void setUserBySenderId(User userBySenderId) {
+    this.userBySenderId = userBySenderId;
   }
 }

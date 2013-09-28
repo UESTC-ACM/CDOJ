@@ -1,9 +1,6 @@
 package cn.edu.uestc.acmicpc.db;
 
-import java.util.List;
-
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +25,6 @@ public class AOPITTest {
   @Autowired
   IUserDAO userDAO;
 
-  public void setUserDAO(IUserDAO userDAO) {
-    this.userDAO = userDAO;
-  }
-
   @Autowired
   BoneCPDataSource dataSource;
 
@@ -49,10 +42,26 @@ public class AOPITTest {
   }
 
   @Test
-  @Ignore
   public void testHQLQuery() throws AppException {
-    String hql = "select distinct departmentByDepartmentId.departmentId from User where userId>=1 and userId<=3";
-    List<?> results = userDAO.findAll(hql);
-    System.err.println(results);
+    userDAO.findAll("from Article");
+    userDAO.findAll("from Code");
+    userDAO.findAll("from CompileInfo");
+    userDAO.findAll("from Contest");
+    userDAO.findAll("from ContestProblem");
+    userDAO.findAll("from ContestTeamInfo");
+    userDAO.findAll("from ContestUser");
+    userDAO.findAll("from Department");
+    userDAO.findAll("from Language");
+    userDAO.findAll("from Message");
+    userDAO.findAll("from Code");
+    userDAO.findAll("from Problem");
+    userDAO.findAll("from ProblemTag");
+    userDAO.findAll("from Status");
+    userDAO.findAll("from Tag");
+    userDAO.findAll("from TrainingContest");
+    userDAO.findAll("from TrainingStatus");
+    userDAO.findAll("from TrainingUser");
+    userDAO.findAll("from User");
+    userDAO.findAll("from UserSerialKey");
   }
 }
