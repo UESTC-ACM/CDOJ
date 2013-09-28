@@ -12,11 +12,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
  * <p/>
  * <strong>For Developers</strong>:
  * <p/>
- * {@code currentPage} and {@code countPerPage} can be {@code null}, if the fields is {@code null}
- * we ignore this restriction, otherwise we consider the record range by this two fields.
- * <p/>
- * If this condition is stored as {@link Entry#getValue()}, we ignore the order
- * and projection information of it.
+ * If this condition is stored as {@link Entry#getValue()}, we ignore the order of it.
  */
 public class Condition {
 
