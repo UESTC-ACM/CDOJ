@@ -30,6 +30,7 @@ public class ViewITTest {
 
   @Test
   @Ignore
+  @Deprecated
   public void testUserView() throws AppException {
     User user = new User();
     user.setUserName("admin");
