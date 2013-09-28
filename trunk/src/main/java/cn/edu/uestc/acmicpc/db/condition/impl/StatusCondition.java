@@ -5,6 +5,8 @@ import java.util.List;
 
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -96,7 +98,10 @@ public class StatusCondition extends BaseCondition {
 
     if ((result != null && !result.isEmpty()) || resultId != null) {
       if (result != null && !result.isEmpty()) {
-        //TODO(fish): add in property
+        Condition typeCondition = new Condition(JoinedType.OR);
+        for (Global.OnlineJudgeReturnType type : result) {
+          typeCondition.addEntry("result", ConditionType.EQUALS, type.ordinal());
+        }
       } else {
         condition.addEntry("result", Condition.ConditionType.EQUALS, resultId);
       }
