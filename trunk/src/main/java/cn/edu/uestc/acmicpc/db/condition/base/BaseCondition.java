@@ -98,8 +98,9 @@ public abstract class BaseCondition {
   public Condition getCondition() throws AppException {
     Condition condition = new Condition();
     if (currentPage != null && countPerPage != null) {
-      condition.addEntry(keyField, ConditionType.GREATER_OR_EQUALS, currentPage * countPerPage);
-      condition.addEntry(keyField, ConditionType.LESS_THAN, (currentPage + 1) * countPerPage);
+      AppExceptionUtil.assertTrue(currentPage >= 1);
+      condition.addEntry(keyField, ConditionType.GREATER_OR_EQUALS, (currentPage - 1) * countPerPage);
+      condition.addEntry(keyField, ConditionType.LESS_THAN, currentPage * countPerPage);
     }
 
     if (orderFields != null) {
