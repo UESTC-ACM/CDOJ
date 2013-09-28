@@ -1,6 +1,9 @@
 package cn.edu.uestc.acmicpc.db.dao.base;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -12,18 +15,24 @@ import org.springframework.stereotype.Repository;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
+import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
+import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
+import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.DatabaseUtil;
+import cn.edu.uestc.acmicpc.util.annotation.Fields;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
 /**
  * Global DAO implementation.
  * <p/>
- * <strong>WARN</strong>: This class is only a abstract class, please create subclass by overriding
- * {@code getReference} method.
+ * <strong>WARN</strong>: This class is only a abstract class, please create
+ * subclass by overriding {@code getReference} method.
  *
- * @param <Entity> Entity's type
- * @param <PK> Primary key's type
+ * @param <Entity>
+ *          Entity's type
+ * @param <PK>
+ *          Primary key's type
  */
 @Repository
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
@@ -54,7 +63,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   /**
    * Build HQL with class name.
    *
-   * @param condition DB condition entity.
+   * @param condition
+   *          DB condition entity.
    * @return HQL with class name.
    */
   private String buildHQLString(Condition condition) {
@@ -64,7 +74,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   /**
    * Build HQL with class name, and the condition's order is considered..
    *
-   * @param condition DB condition entity.
+   * @param condition
+   *          DB condition entity.
    * @return HQL with class name.
    */
   private String buildHQLStringWithOrders(Condition condition) {
@@ -147,7 +158,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   public List<?> findAll(String hql) throws AppException {
     try {
       return getSession().createQuery(hql).list();
-    } catch(HibernateException e) {
+    } catch (HibernateException e) {
       LOGGER.error(e);
       throw new AppException("Invoke findAll method error.");
     }
@@ -200,8 +211,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   /**
-   * Return the specific Object class that will be used for class-specific implementation of this
-   * DAO.
+   * Return the specific Object class that will be used for class-specific
+   * implementation of this DAO.
    *
    * @return the reference Class
    */
@@ -264,5 +275,24 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
       LOGGER.error(e);
       throw new AppException("Invoke delete method error.");
     }
+  }
+
+  @Override
+  public <T extends BaseDTO<Entity>> List<T> findAll(Class<T> clazz, BaseBuilder<T> builder,
+      Condition condition) throws AppException {
+    List<T> list = new ArrayList<>();
+    AppExceptionUtil.assertTrue(clazz.isAnnotationPresent(Fields.class));
+    String[] fields = clazz.getAnnotation(Fields.class).value();
+    String queryField = ArrayUtil.join(fields, ",");
+    List<?> result = findAll(queryField, condition);
+    for (Iterator<?> iterator = result.iterator(); iterator.hasNext(); ) {
+      Object[] entity = (Object[]) iterator.next();
+      Map<String, Object> properties = new HashMap<>();
+      for (int i = 0; i < fields.length; i++) {
+        properties.put(fields[i], entity[i]);
+      }
+      list.add(builder.build(properties));
+    }
+    return list;
   }
 }
