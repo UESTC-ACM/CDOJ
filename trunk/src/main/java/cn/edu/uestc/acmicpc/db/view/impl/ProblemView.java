@@ -25,6 +25,7 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 import java.util.LinkedList;
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -58,18 +59,38 @@ public class ProblemView extends View<Problem> {
   private Integer difficulty;
   private List<String> tags;
 
-  @Deprecated
-  public ProblemView(Problem problem) throws AppException {
-    // TODO(mzry1992): use dto transfer.
-    super(problem);
-    List<String> list = new LinkedList<>();
-//    Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
-//    if (problemTags != null) {
-//      for (ProblemTag problemTag : problemTags) {
-//        list.add(StringEscapeUtils.escapeHtml4(problemTag.getTagByTagId().getName()));
-//      }
-//    }
-    setTags(list);
+  public ProblemView(ProblemDTO problemDTO) {
+    
+    setProblemId(problemDTO.getProblemId());
+    setTitle(problemDTO.getTitle());
+    setDescription(problemDTO.getDescription());
+    setInput(problemDTO.getInput());
+    setOutput(problemDTO.getOutput());
+    setSampleInput(problemDTO.getSampleInput());
+    setSampleOutput(problemDTO.getSampleOutput());
+    setHint(problemDTO.getHint());
+    setSource(problemDTO.getSource());
+    setTimeLimit(problemDTO.getTimeLimit());
+    setMemoryLimit(problemDTO.getMemoryLimit());
+    setSolved(problemDTO.getSolved());
+    setTried(problemDTO.getTried());
+    setIsSpj(problemDTO.getIsSpj());
+    setIsVisible(problemDTO.getIsVisible());
+    setOutputLimit(problemDTO.getOutputLimit());
+    setJavaTimeLimit(problemDTO.getJavaTimeLimit());
+    setJavaMemoryLimit(problemDTO.getJavaMemoryLimit());
+    setDataCount(problemDTO.getDataCount());
+    setDifficulty(problemDTO.getDifficulty());
+    
+    // TODO(mzry1992): add Tags and others into the view.
+    // List<String> list = new LinkedList<>();
+    // Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
+    // if (problemTags != null) {
+    //   for (ProblemTag problemTag : problemTags) {
+    //     list.add(StringEscapeUtils.escapeHtml4(problemTag.getTagByTagId().getName()));
+    //   }
+    // }
+    // setTags(list);
   }
 
   public Integer getProblemId() {
