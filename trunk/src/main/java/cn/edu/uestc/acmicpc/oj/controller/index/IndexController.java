@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.oj.controller.index;
 
+import cn.edu.uestc.acmicpc.oj.service.iface.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,18 +18,18 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 @RequestMapping("/")
 public class IndexController extends BaseController {
 
-  private GlobalService globalService;
+  private DepartmentService departmentService;
 
   @Autowired
-  public IndexController(GlobalService globalService) {
-    this.globalService = globalService;
+  public IndexController(DepartmentService departmentService) {
+    this.departmentService = departmentService;
   }
 
   @RequestMapping(method = RequestMethod.GET)
   @LoginPermit(NeedLogin = false)
   public String toIndex(ModelMap model) {
     model.put("message", "home page.");
-    model.put("departmentList", globalService.getDepartmentList());
+    model.put("departmentList", departmentService.getDepartmentList());
     return "index/index";
   }
 }

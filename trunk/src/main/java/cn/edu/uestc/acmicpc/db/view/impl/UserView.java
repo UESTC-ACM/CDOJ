@@ -28,11 +28,20 @@ public class UserView extends View<User> {
 
   @Deprecated
   public UserView(User user) {
-    super(user);
-    // TODO(mzry1992): fetch the view in service.
+    setUserId(user.getUserId());
+    setUserName(user.getUserName());
+    setPassword(user.getPassword());
+    setNickName(user.getNickName());
+    setEmail(user.getEmail());
+    setSchool(user.getSchool());
+    setStudentId(user.getStudentId());
+    setTried(user.getTried());
+    setSolved(user.getSolved());
 //    setDepartmentId(user.getDepartmentByDepartmentId().getDepartmentId());
 //    setDepartment(user.getDepartmentByDepartmentId().getName());
     setTypeName(Global.AuthenticationType.values()[user.getType()].getDescription());
+    setType(user.getType());
+    setLastLogin(user.getLastLogin());
   }
 
   public Integer getUserId() {
