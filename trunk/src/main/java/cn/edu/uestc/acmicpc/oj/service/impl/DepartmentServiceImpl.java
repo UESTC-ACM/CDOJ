@@ -38,6 +38,7 @@ public class DepartmentServiceImpl extends AbstractService implements Department
         .build();
   }
 
+  @SuppressWarnings("unchecked")
   @PostConstruct
   public void init() throws AppException {
     List<Department> departmentList;

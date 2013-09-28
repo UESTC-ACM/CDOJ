@@ -1,8 +1,5 @@
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -12,7 +9,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.ObjectUtil;
 
 /**

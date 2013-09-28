@@ -1,6 +1,13 @@
 package cn.edu.uestc.acmicpc.oj.service.impl;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
+
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserSerialKeyDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserSerialKeyDTO;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
@@ -8,14 +15,6 @@ import cn.edu.uestc.acmicpc.oj.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.service.impl.AbstractService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
-
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.Random;
 
 /**
  * Implementation for {@link UserSerialKeyService}.
