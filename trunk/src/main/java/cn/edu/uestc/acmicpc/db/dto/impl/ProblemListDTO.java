@@ -1,9 +1,7 @@
 package cn.edu.uestc.acmicpc.db.dto.impl;
 
-import java.text.Bidi;
 import java.util.List;
 
-import com.jayway.jsonpath.JsonModel.ListMappingModelReader;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
