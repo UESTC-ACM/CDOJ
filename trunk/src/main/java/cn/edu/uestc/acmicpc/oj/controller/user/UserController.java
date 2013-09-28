@@ -1,15 +1,15 @@
 package cn.edu.uestc.acmicpc.oj.controller.user;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.*;
-import cn.edu.uestc.acmicpc.oj.service.iface.*;
-import cn.edu.uestc.acmicpc.service.iface.EmailService;
-import cn.edu.uestc.acmicpc.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,11 +20,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserEditDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserRegisterDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserSerialKeyDTO;
 import cn.edu.uestc.acmicpc.db.view.impl.UserView;
 import cn.edu.uestc.acmicpc.oj.controller.base.BaseController;
+import cn.edu.uestc.acmicpc.oj.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.oj.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.oj.service.iface.UserSerialKeyService;
+import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
+import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
@@ -248,7 +260,7 @@ public class UserController extends BaseController {
           Global.RECORD_PER_PAGE, "", null);
       List<UserDTO> userDTOList = userService.search(userCondition, pageInfo);
       List<UserView> userViewList = new LinkedList<>();
-      //TODO
+      //TODO(mzry1992):
 
       json.put("pageInfo", pageInfo.getHtmlString());
       json.put("result", "success");
@@ -280,7 +292,7 @@ public class UserController extends BaseController {
       if (userDTO == null) {
         throw new AppException("No such user!");
       }
-      //TODO
+      //TODO(mzry1992):
       UserView userView = null;
 
       model.put("departmentList", departmentService.getDepartmentList());
