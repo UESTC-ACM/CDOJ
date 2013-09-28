@@ -2,12 +2,17 @@ package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Collection;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -188,5 +193,84 @@ public class User implements Serializable {
 
   public void setDepartmentId(Integer departmentId) {
     this.departmentId = departmentId;
+  }
+
+  private Collection<ContestUser> contestUsersByUserId;
+
+  @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
+  public Collection<ContestUser> getContestUsersByUserId() {
+    return contestUsersByUserId;
+  }
+
+  public void setContestUsersByUserId(Collection<ContestUser> contestUsersByUserId) {
+    this.contestUsersByUserId = contestUsersByUserId;
+  }
+
+  private Collection<Message> messagesByUserId;
+
+  @OneToMany(mappedBy = "userByReceiverId", cascade = CascadeType.ALL)
+  public Collection<Message> getMessagesByUserId() {
+    return messagesByUserId;
+  }
+
+  public void setMessagesByUserId(Collection<Message> messagesByUserId) {
+    this.messagesByUserId = messagesByUserId;
+  }
+
+  private Collection<Message> messagesByUserId_0;
+
+  @OneToMany(mappedBy = "userBySenderId", cascade = CascadeType.ALL)
+  public Collection<Message> getMessagesByUserId_0() {
+    return messagesByUserId_0;
+  }
+
+  public void setMessagesByUserId_0(Collection<Message> messagesByUserId_0) {
+    this.messagesByUserId_0 = messagesByUserId_0;
+  }
+
+  private Collection<Status> statusesByUserId;
+
+  @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
+  public Collection<Status> getStatusesByUserId() {
+    return statusesByUserId;
+  }
+
+  public void setStatusesByUserId(Collection<Status> statusesByUserId) {
+    this.statusesByUserId = statusesByUserId;
+  }
+
+  private Collection<UserSerialKey> userSerialKeysByUserId;
+
+  @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
+  public Collection<UserSerialKey> getUserSerialKeysByUserId() {
+    return userSerialKeysByUserId;
+  }
+
+  public void setUserSerialKeysByUserId(Collection<UserSerialKey> userSerialKeysByUserId) {
+    this.userSerialKeysByUserId = userSerialKeysByUserId;
+  }
+
+  private Department departmentByDepartmentId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "departmentId", referencedColumnName = "departmentId", nullable = false,
+      insertable = false, updatable = false)
+  public Department getDepartmentByDepartmentId() {
+    return departmentByDepartmentId;
+  }
+
+  public void setDepartmentByDepartmentId(Department departmentByDepartmentId) {
+    this.departmentByDepartmentId = departmentByDepartmentId;
+  }
+
+  private Collection<Article> articlesByUserId;
+
+  @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
+  public Collection<Article> getArticlesByUserId() {
+    return articlesByUserId;
+  }
+
+  public void setArticlesByUserId(Collection<Article> articlesByUserId) {
+    this.articlesByUserId = articlesByUserId;
   }
 }

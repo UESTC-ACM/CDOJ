@@ -1,12 +1,15 @@
 package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -304,5 +307,49 @@ public class Problem implements Serializable {
 
   public void setDifficulty(Integer difficulty) {
     this.difficulty = difficulty;
+  }
+
+  private Collection<ContestProblem> contestproblemsByProblemId;
+
+  @OneToMany(mappedBy = "problemByProblemId", cascade = CascadeType.ALL)
+  public Collection<ContestProblem> getContestproblemsByProblemId() {
+    return contestproblemsByProblemId;
+  }
+
+  public void setContestproblemsByProblemId(Collection<ContestProblem> contestproblemsByProblemId) {
+    this.contestproblemsByProblemId = contestproblemsByProblemId;
+  }
+
+  private Collection<ProblemTag> problemtagsByProblemId;
+
+  @OneToMany(mappedBy = "problemByProblemId", cascade = CascadeType.ALL)
+  public Collection<ProblemTag> getProblemtagsByProblemId() {
+    return problemtagsByProblemId;
+  }
+
+  public void setProblemtagsByProblemId(Collection<ProblemTag> problemtagsByProblemId) {
+    this.problemtagsByProblemId = problemtagsByProblemId;
+  }
+
+  private Collection<Status> statusesByProblemId;
+
+  @OneToMany(mappedBy = "problemByProblemId", cascade = CascadeType.ALL)
+  public Collection<Status> getStatusesByProblemId() {
+    return statusesByProblemId;
+  }
+
+  public void setStatusesByProblemId(Collection<Status> statusesByProblemId) {
+    this.statusesByProblemId = statusesByProblemId;
+  }
+
+  private Collection<Article> articlesByProblemId;
+
+  @OneToMany(mappedBy = "problemByProblemId", cascade = CascadeType.ALL)
+  public Collection<Article> getArticlesByProblemId() {
+    return articlesByProblemId;
+  }
+
+  public void setArticlesByProblemId(Collection<Article> articlesByProblemId) {
+    this.articlesByProblemId = articlesByProblemId;
   }
 }

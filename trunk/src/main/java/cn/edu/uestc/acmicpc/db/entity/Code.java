@@ -1,12 +1,15 @@
 package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -58,5 +61,16 @@ public class Code implements Serializable {
 
   public void setContent(String content) {
     this.content = content;
+  }
+
+  private Collection<Status> statusesByCodeId;
+
+  @OneToMany(mappedBy = "codeByCodeId", cascade = CascadeType.ALL)
+  public Collection<Status> getStatusesByCodeId() {
+    return statusesByCodeId;
+  }
+
+  public void setStatusesByCodeId(Collection<Status> statusesByCodeId) {
+    this.statusesByCodeId = statusesByCodeId;
   }
 }

@@ -2,12 +2,17 @@ package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Collection;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -199,5 +204,68 @@ public class Article implements Serializable {
 
   public void setContestId(Integer contestId) {
     this.contestId = contestId;
+  }
+
+  private User userByUserId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = true,
+      insertable = false, updatable = false)
+  public User getUserByUserId() {
+    return userByUserId;
+  }
+
+  public void setUserByUserId(User userByUserId) {
+    this.userByUserId = userByUserId;
+  }
+
+  private Article articleByParentId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "parentId", referencedColumnName = "articleId", nullable = true,
+      insertable = false, updatable = false)
+  public Article getArticleByParentId() {
+    return articleByParentId;
+  }
+
+  public void setArticleByParentId(Article articleByParentId) {
+    this.articleByParentId = articleByParentId;
+  }
+
+  private Problem problemByProblemId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = true,
+      insertable = false, updatable = false)
+  public Problem getProblemByProblemId() {
+    return problemByProblemId;
+  }
+
+  public void setProblemByProblemId(Problem problemByProblemId) {
+    this.problemByProblemId = problemByProblemId;
+  }
+
+  private Contest contestByContestId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "contestId", referencedColumnName = "contestId", nullable = true,
+      insertable = false, updatable = false)
+  public Contest getContestByContestId() {
+    return contestByContestId;
+  }
+
+  public void setContestByContestId(Contest contestByContestId) {
+    this.contestByContestId = contestByContestId;
+  }
+
+  private Collection<Article> articlesByParentId;
+
+  @OneToMany(mappedBy = "articleByParentId", cascade = CascadeType.ALL)
+  public Collection<Article> getArticlesByParentId() {
+    return articlesByParentId;
+  }
+
+  public void setArticlesByParentId(Collection<Article> articlesByParentId) {
+    this.articlesByParentId = articlesByParentId;
   }
 }
