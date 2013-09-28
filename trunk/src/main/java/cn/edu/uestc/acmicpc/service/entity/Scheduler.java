@@ -5,6 +5,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.BlockingQueue;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -15,6 +17,7 @@ import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.Global.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
@@ -23,6 +26,8 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class Scheduler implements Runnable {
+
+  private static final Logger LOGGER = LogManager.getLogger(Scheduler.class);
 
   /**
    * StatusDAO for database operation.
@@ -69,9 +74,8 @@ public class Scheduler implements Runnable {
   private void searchForJudge() {
     try {
       StatusCondition statusCondition = new StatusCondition();
-      // FIXME(fish): set status condition.
-//      statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_WAIT);
-//      statusCondition.getResult().add(Global.OnlineJudgeReturnType.OJ_REJUDGING);
+      statusCondition.result.add(OnlineJudgeReturnType.OJ_WAIT);
+      statusCondition.result.add(OnlineJudgeReturnType.OJ_REJUDGING);
       List<Status> statusList = (List<Status>) statusDAO.findAll(statusCondition.getCondition());
       for (Status status : statusList) {
         status.setResult(Global.OnlineJudgeReturnType.OJ_JUDGING.ordinal());
@@ -82,7 +86,7 @@ public class Scheduler implements Runnable {
         judgeQueue.put(judgeItem);
       }
     } catch (AppException e) {
-      e.printStackTrace();
+      LOGGER.error(e);
     } catch (InterruptedException ignored) {
     }
   }
