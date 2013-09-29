@@ -1,12 +1,15 @@
 package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -83,5 +86,17 @@ public class TrainingContest implements Serializable {
 
   public void setVersion(Integer version) {
     this.version = version;
+  }
+
+  private Collection<TrainingStatus> trainingStatusesByTrainingContestId;
+
+  @OneToMany(mappedBy = "trainingContestByTrainingContestId", cascade = CascadeType.ALL)
+  public Collection<TrainingStatus> getTrainingStatusesByTrainingContestId() {
+    return trainingStatusesByTrainingContestId;
+  }
+
+  public void setTrainingStatusesByTrainingContestId(
+      Collection<TrainingStatus> trainingStatusesByTrainingContestId) {
+    this.trainingStatusesByTrainingContestId = trainingStatusesByTrainingContestId;
   }
 }

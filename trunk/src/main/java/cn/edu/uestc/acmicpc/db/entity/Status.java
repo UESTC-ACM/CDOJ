@@ -4,10 +4,13 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -196,5 +199,83 @@ public class Status implements Serializable {
 
   public void setUserId(Integer userId) {
     this.userId = userId;
+  }
+
+  private Code codeByCodeId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "codeId", referencedColumnName = "codeId", nullable = false,
+      insertable = false, updatable = false)
+  public Code getCodeByCodeId() {
+    return codeByCodeId;
+  }
+
+  public void setCodeByCodeId(Code codeByCodeId) {
+    this.codeByCodeId = codeByCodeId;
+  }
+
+  private CompileInfo compileInfoByCompileInfoId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "compileInfoId", referencedColumnName = "compileInfoId",
+      insertable = false, updatable = false)
+  public CompileInfo getCompileInfoByCompileInfoId() {
+    return compileInfoByCompileInfoId;
+  }
+
+  public void setCompileInfoByCompileInfoId(CompileInfo compileInfoByCompileInfoId) {
+    this.compileInfoByCompileInfoId = compileInfoByCompileInfoId;
+  }
+
+  private Contest contestByContestId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "contestId", referencedColumnName = "contestId",
+      insertable = false, updatable = false)
+  public Contest getContestByContestId() {
+    return contestByContestId;
+  }
+
+  public void setContestByContestId(Contest contestByContestId) {
+    this.contestByContestId = contestByContestId;
+  }
+
+  private Language languageByLanguageId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "languageId", referencedColumnName = "languageId", nullable = false,
+      insertable = false, updatable = false)
+  public Language getLanguageByLanguageId() {
+    return languageByLanguageId;
+  }
+
+  public void setLanguageByLanguageId(Language languageByLanguageId) {
+    this.languageByLanguageId = languageByLanguageId;
+  }
+
+  private Problem problemByProblemId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = false,
+      insertable = false, updatable = false)
+  public Problem getProblemByProblemId() {
+    return problemByProblemId;
+  }
+
+  public void setProblemByProblemId(Problem problemByProblemId) {
+    this.problemByProblemId = problemByProblemId;
+  }
+
+  private User userByUserId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false,
+      insertable = false, updatable = false)
+  public User getUserByUserId() {
+    return userByUserId;
+  }
+
+  public void setUserByUserId(User userByUserId) {
+    this.userByUserId = userByUserId;
   }
 }
