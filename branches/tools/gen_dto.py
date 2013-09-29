@@ -93,7 +93,7 @@ def main(argv):
     field = fields[i]
     out.write("\"" + field + "\"")
   out.write(" })\n")
-  out.write("public class " + class_name + " {\n\n")
+  out.write("public class " + class_name + " implements BaseDTO<" + entity + "> {\n\n")
   out.write(2 * ' ')
   out.write("public " + class_name + "() {\n")
   out.write(2 * ' ')
