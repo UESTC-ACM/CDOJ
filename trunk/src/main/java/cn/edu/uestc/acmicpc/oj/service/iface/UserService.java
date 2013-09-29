@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserSummaryDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -63,7 +64,7 @@ public interface UserService extends OnlineJudgeService<User, Integer> {
    * @return All user correspond to the condition and range.
    * @throws AppException
    */
-  List<UserDTO> search(UserCondition userCondition, PageInfo pageInfo) throws AppException;
+  List<UserSummaryDTO> search(UserCondition userCondition, PageInfo pageInfo) throws AppException;
 
   /**
    * Count user number by condition
