@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
+import cn.edu.uestc.acmicpc.util.FileUtil;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.Settings;
 
@@ -53,7 +54,6 @@ public class Judge implements Runnable {
   /**
    * Temp files path.
    */
-  @SuppressWarnings("unused")
   private String tempPath;
 
   public void setJudgeQueue(BlockingQueue<JudgeItem> judgeQueue) {
@@ -87,48 +87,45 @@ public class Judge implements Runnable {
    * @param judgeItem {@code judgeItem} entity
    * @return command line we need
    */
-  @SuppressWarnings("unused")
   private String buildJudgeShellCommand(int problemId, int currentTestCase, JudgeItem judgeItem) {
-    // TODO(fish): use new API.
-//    StringBuilder stringBuilder = new StringBuilder();
-//
-//    stringBuilder.append(workPath);
-//    stringBuilder.append("/");
-//    stringBuilder.append(settings.JUDGE_JUDGE_CORE);
-//    stringBuilder.append(" -u ");
-//    stringBuilder.append(judgeItem.status.getStatusId());
-//    stringBuilder.append(" -s ");
-//    stringBuilder.append(judgeItem.getSourceName());
-//    stringBuilder.append(" -n ");
-//    stringBuilder.append(problemId);
-//    stringBuilder.append(" -D ");
-//    stringBuilder.append(settings.JUDGE_DATA_PATH);
-//    stringBuilder.append("/").append(judgeItem.status.getProblemByProblemId().getProblemId())
-//        .append("/");
-//    stringBuilder.append(" -d ");
-//    stringBuilder.append(tempPath);
-//    stringBuilder.append(" -t ");
-//    stringBuilder.append(judgeItem.status.getProblemByProblemId().getTimeLimit());
-//    stringBuilder.append(" -m ");
-//    stringBuilder.append(judgeItem.status.getProblemByProblemId().getMemoryLimit());
-//    stringBuilder.append(" -o ");
-//    stringBuilder.append(judgeItem.status.getProblemByProblemId().getOutputLimit());
-//    if (judgeItem.status.getProblemByProblemId().getIsSpj())
-//      stringBuilder.append(" -S");
-//    stringBuilder.append(" -l ");
-//    stringBuilder.append(judgeItem.status.getLanguageByLanguageId().getLanguageId());
-//    stringBuilder.append(" -I ");
-//    stringBuilder.append(settings.JUDGE_DATA_PATH).append("/")
-//        .append(judgeItem.status.getProblemByProblemId().getProblemId()).append("/")
-//        .append(currentTestCase).append(".in");
-//    stringBuilder.append(" -O ");
-//    stringBuilder.append(settings.JUDGE_DATA_PATH).append("/")
-//        .append(judgeItem.status.getProblemByProblemId().getProblemId()).append("/")
-//        .append(currentTestCase).append(".out");
-//    if (currentTestCase == 1)
-//      stringBuilder.append(" -C");
-//    return stringBuilder.toString();
-    return null;
+    StringBuilder stringBuilder = new StringBuilder();
+
+    stringBuilder.append(workPath);
+    stringBuilder.append("/");
+    stringBuilder.append(settings.JUDGE_JUDGE_CORE);
+    stringBuilder.append(" -u ");
+    stringBuilder.append(judgeItem.status.getStatusId());
+    stringBuilder.append(" -s ");
+    stringBuilder.append(judgeItem.getSourceName());
+    stringBuilder.append(" -n ");
+    stringBuilder.append(problemId);
+    stringBuilder.append(" -D ");
+    stringBuilder.append(settings.JUDGE_DATA_PATH);
+    stringBuilder.append("/").append(judgeItem.status.getProblemByProblemId().getProblemId())
+        .append("/");
+    stringBuilder.append(" -d ");
+    stringBuilder.append(tempPath);
+    stringBuilder.append(" -t ");
+    stringBuilder.append(judgeItem.status.getProblemByProblemId().getTimeLimit());
+    stringBuilder.append(" -m ");
+    stringBuilder.append(judgeItem.status.getProblemByProblemId().getMemoryLimit());
+    stringBuilder.append(" -o ");
+    stringBuilder.append(judgeItem.status.getProblemByProblemId().getOutputLimit());
+    if (judgeItem.status.getProblemByProblemId().getIsSpj())
+      stringBuilder.append(" -S");
+    stringBuilder.append(" -l ");
+    stringBuilder.append(judgeItem.status.getLanguageByLanguageId().getLanguageId());
+    stringBuilder.append(" -I ");
+    stringBuilder.append(settings.JUDGE_DATA_PATH).append("/")
+        .append(judgeItem.status.getProblemByProblemId().getProblemId()).append("/")
+        .append(currentTestCase).append(".in");
+    stringBuilder.append(" -O ");
+    stringBuilder.append(settings.JUDGE_DATA_PATH).append("/")
+        .append(judgeItem.status.getProblemByProblemId().getProblemId()).append("/")
+        .append(currentTestCase).append(".out");
+    if (currentTestCase == 1)
+      stringBuilder.append(" -C");
+    return stringBuilder.toString();
   }
 
   /**
@@ -137,7 +134,6 @@ public class Judge implements Runnable {
    * @param shellCommand shell command line
    * @return command's call back string
    */
-  @SuppressWarnings("unused")
   private String[] getCallBackString(String shellCommand) {
     Process p;
     String callBackString = "";
@@ -160,22 +156,21 @@ public class Judge implements Runnable {
    */
   void judge(JudgeItem judgeItem) {
     try {
-      // TODO(fish): use new API.
-//      int numberOfTestCase = judgeItem.status.getProblemByProblemId().getDataCount();
-//      boolean isAccepted = true;
-//      FileUtil.saveToFile(judgeItem.status.getCodeByCodeId().getContent(), tempPath + "/"
-//          + judgeItem.getSourceName());
-//      int problemId = judgeItem.status.getProblemByProblemId().getProblemId();
-//      for (int currentTestCase = 1; isAccepted && currentTestCase <= numberOfTestCase; ++currentTestCase) {
-//        judgeItem.status.setCaseNumber(currentTestCase);
-//        String shellCommand = buildJudgeShellCommand(problemId, currentTestCase, judgeItem);
-//        String[] callBackString = getCallBackString(shellCommand);
-//        isAccepted = updateJudgeItem(callBackString, judgeItem);
-//      }
-//      if (isAccepted) {
-//        judgeItem.status.setResult(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-//        judgeItem.update(true);
-//      }
+      int numberOfTestCase = judgeItem.status.getProblemByProblemId().getDataCount();
+      boolean isAccepted = true;
+      FileUtil.saveToFile(judgeItem.status.getCodeByCodeId().getContent(), tempPath + "/"
+          + judgeItem.getSourceName());
+      int problemId = judgeItem.status.getProblemByProblemId().getProblemId();
+      for (int currentTestCase = 1; isAccepted && currentTestCase <= numberOfTestCase; ++currentTestCase) {
+        judgeItem.status.setCaseNumber(currentTestCase);
+        String shellCommand = buildJudgeShellCommand(problemId, currentTestCase, judgeItem);
+        String[] callBackString = getCallBackString(shellCommand);
+        isAccepted = updateJudgeItem(callBackString, judgeItem);
+      }
+      if (isAccepted) {
+        judgeItem.status.setResult(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+        judgeItem.update(true);
+      }
     } catch (Exception e) {
       e.printStackTrace();
       judgeItem.status.setResult(Global.OnlineJudgeReturnType.OJ_SE.ordinal());
@@ -183,7 +178,6 @@ public class Judge implements Runnable {
     }
   }
 
-  @SuppressWarnings("unused")
   private boolean updateJudgeItem(String[] callBackString, JudgeItem judgeItem) {
     boolean isAccepted = true;
     if (callBackString != null && callBackString.length == 3) {
