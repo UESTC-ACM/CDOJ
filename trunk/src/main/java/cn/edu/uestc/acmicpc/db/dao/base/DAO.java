@@ -83,6 +83,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
+  @Deprecated
   public List<?> findAll(Condition condition) throws AppException {
     if (condition == null) {
       condition = new Condition();
@@ -150,6 +151,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
+  @Deprecated
   public List<?> findAll() throws AppException {
     return findAll(new Condition());
   }
@@ -241,6 +243,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
+  @Deprecated
   public void deleteEntitiesByCondition(Condition condition) throws AppException {
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("delete ").append(getReferenceClass().getSimpleName());
@@ -265,6 +268,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
+  @Deprecated
   public void delete(PK key) throws AppException {
     AppExceptionUtil.assertNotNull(key);
     Entity entity = get(key);
