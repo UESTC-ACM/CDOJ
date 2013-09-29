@@ -1,12 +1,15 @@
 package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -58,5 +61,16 @@ public class Tag implements Serializable {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  private Collection<ProblemTag> problemTagsByTagId;
+
+  @OneToMany(mappedBy = "tagByTagId", cascade = CascadeType.ALL)
+  public Collection<ProblemTag> getProblemTagsByTagId() {
+    return problemTagsByTagId;
+  }
+
+  public void setProblemTagsByTagId(Collection<ProblemTag> problemTagsByTagId) {
+    this.problemTagsByTagId = problemTagsByTagId;
   }
 }

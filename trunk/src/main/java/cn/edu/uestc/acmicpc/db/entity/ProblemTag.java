@@ -2,10 +2,13 @@ package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -68,5 +71,32 @@ public class ProblemTag implements Serializable {
 
   public void setTagId(Integer tagId) {
     this.tagId = tagId;
+  }
+
+
+  private Problem problemByProblemId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = false,
+    insertable = false, updatable = false)
+  public Problem getProblemByProblemId() {
+    return problemByProblemId;
+  }
+
+  public void setProblemByProblemId(Problem problemByProblemId) {
+    this.problemByProblemId = problemByProblemId;
+  }
+
+  private Tag tagByTagId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "tagId", referencedColumnName = "tagId", nullable = false,
+    insertable = false, updatable = false)
+  public Tag getTagByTagId() {
+    return tagByTagId;
+  }
+
+  public void setTagByTagId(Tag tagByTagId) {
+    this.tagByTagId = tagByTagId;
   }
 }
