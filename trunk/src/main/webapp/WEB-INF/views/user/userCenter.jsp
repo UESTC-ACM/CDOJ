@@ -27,7 +27,7 @@
             <dt>Nick name</dt>
             <dd>
               <c:out value="${targetUser.nickName}"/>
-              <c:if test="${sessionScope.currentUser.userId== targetUser.userId}">
+              <c:if test="${sessionScope.currentUser.userId == targetUser.userId}">
                 <div class="pull-right" style="margin-right: 20px;">
                   <a href="#userEditModal" role="button" data-toggle="modal">
                     <i class="icon-pencil"></i>

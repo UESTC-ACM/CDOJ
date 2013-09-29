@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.oj.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserSummaryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -113,15 +114,13 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<UserDTO> search(UserCondition userCondition, PageInfo pageInfo)
+  public List<UserSummaryDTO> search(UserCondition userCondition, PageInfo pageInfo)
       throws AppException {
     userCondition.currentPage = pageInfo.getCurrentPage();
     userCondition.countPerPage = Global.RECORD_PER_PAGE;
-    List<User> userList = (List<User>) userDAO.findAll(userCondition.getCondition());
-    List<UserDTO> userDTOList = new ArrayList<>();
-    for (User user : userList)
-      userDTOList.add(getUserDTOByUser(user));
-    return userDTOList;
+    return userDAO.findAll(UserSummaryDTO.class,
+        UserSummaryDTO.builder(),
+        userCondition.getCondition());
   }
 
   @Override

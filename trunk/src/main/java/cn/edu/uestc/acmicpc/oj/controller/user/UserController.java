@@ -10,6 +10,8 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserSummaryDTO;
+import cn.edu.uestc.acmicpc.oj.entity.UserRankSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -258,13 +260,11 @@ public class UserController extends BaseController {
       Long count = userService.count(userCondition);
       PageInfo pageInfo = buildPageInfo(count, userCondition.currentPage,
           Global.RECORD_PER_PAGE, "", null);
-      List<UserDTO> userDTOList = userService.search(userCondition, pageInfo);
-      List<UserView> userViewList = new LinkedList<>();
-      //TODO(mzry1992):
+      List<UserSummaryDTO> userList = userService.search(userCondition, pageInfo);
 
       json.put("pageInfo", pageInfo.getHtmlString());
       json.put("result", "success");
-      json.put("userList", userViewList);
+      json.put("userList", userList);
     }  catch (AppException e) {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
@@ -292,11 +292,9 @@ public class UserController extends BaseController {
       if (userDTO == null) {
         throw new AppException("No such user!");
       }
-      //TODO(mzry1992):
-      UserView userView = null;
 
       model.put("departmentList", departmentService.getDepartmentList());
-      model.put("targetUser", userView);
+      model.put("targetUser", userDTO);
     } catch (AppException e) {
       return "error/404";
     }
