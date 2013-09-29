@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
+import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
@@ -188,4 +190,16 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @throws AppException
    */
   void delete(PK key) throws AppException;
+
+  /**
+   * List all entity in condition for specific DTO type.
+   *
+   * @param clazz DTO class type.
+   * @param builder DTO's builder, should extends from {@link BaseBuilder}.
+   * @param condition DB query condition.
+   * @return DTO list for this query.
+   * @throws AppException
+   */
+  <T extends BaseDTO<Entity>> List<T> findAll(Class<T> clazz, BaseBuilder<T> builder,
+      Condition condition) throws AppException;
 }
