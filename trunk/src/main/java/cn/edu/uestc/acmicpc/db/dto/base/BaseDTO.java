@@ -8,4 +8,5 @@ import java.io.Serializable;
  * @param <Entity> Entity type
  */
 public interface BaseDTO<Entity extends Serializable> {
+
 }
