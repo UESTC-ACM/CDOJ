@@ -35,7 +35,7 @@ def main(argv):
   package = ''
   entity = ''
   try:
-    opts, args = getopt.getopt(argv, "vhe:p:c:f:t:", ["entity=", "package=", "class=", "fields=", "types="])
+    opts, args = getopt.getopt(argv, "he:p:c:f:t:", ["entity=", "package=", "class=", "fields=", "types="])
   except getopt.GetoptError:
     print help_info
     sys.exit(1)
@@ -86,13 +86,13 @@ def main(argv):
   out.write("import cn.edu.uestc.acmicpc.util.annotation.Fields;\n\n")
 
   #class
-  out.write("@Fields({")
+  out.write("@Fields({ ")
   for i in range(0, len(fields)):
     if i > 0:
       out.write(", ")
     field = fields[i]
     out.write("\"" + field + "\"")
-  out.write("})\n")
+  out.write(" })\n")
   out.write("public class " + class_name + " {\n\n")
   out.write(2 * ' ')
   out.write("public " + class_name + "() {\n")
