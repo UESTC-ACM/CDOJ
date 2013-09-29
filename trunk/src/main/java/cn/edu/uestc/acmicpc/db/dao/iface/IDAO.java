@@ -12,15 +12,18 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Global DAO interface.
  *
- * @param <Entity> Entity's type
- * @param <PK> Primary key's type
+ * @param <Entity>
+ *          Entity's type
+ * @param <PK>
+ *          Primary key's type
  */
 public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * Add entity into database, and return number of Row changed.
    *
-   * @param entity entity to be added.
+   * @param entity
+   *          entity to be added.
    * @return number of rows changed.
    * @throws AppException
    */
@@ -29,7 +32,8 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   /**
    * Add entity or update entity, according to key value of the entity.
    *
-   * @param entity entity to be added or updated
+   * @param entity
+   *          entity to be added or updated
    * @throws AppException
    */
   void addOrUpdate(Entity entity) throws AppException;
@@ -37,7 +41,8 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   /**
    * Get entity by key value.
    *
-   * @param key key value
+   * @param key
+   *          key value
    * @return entity which key value matches
    * @throws AppException
    */
@@ -46,7 +51,8 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   /**
    * Update an entity object.
    *
-   * @param entity entity to be updated
+   * @param entity
+   *          entity to be updated
    * @throws AppException
    */
   public void update(Entity entity) throws AppException;
@@ -56,22 +62,30 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    *
    * @return entity list in tables.
    * @throws AppException
+   * @Deprecated this method is not supported in new API, please use
+   *             {@link IDAO#findAll(Class, BaseBuilder, Condition)}
    */
+  @Deprecated
   List<?> findAll() throws AppException;
 
   /**
    * List all entities in tables by conditions.
    *
-   * @param condition extra conditions for query
+   * @param condition
+   *          extra conditions for query
    * @return expected entity list
    * @throws AppException
+   * @Deprecated this method is not supported in new API, please use
+   *             {@link IDAO#findAll(Class, BaseBuilder, Condition)}
    */
+  @Deprecated
   List<?> findAll(Condition condition) throws AppException;
 
   /**
    * List all entities in tables by HQL.
    *
-   * @param hql HQL string for query.
+   * @param hql
+   *          HQL string for query.
    * @return expected entity list
    * @throws AppException
    */
@@ -80,12 +94,13 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   /**
    * List all entities in tables by fields name and condition entity.
    * <p />
-   * <strong>For developers:</strong>
-   * The return list's element type is {@link Object}[], every element of the array is the
-   * field value.
+   * <strong>For developers:</strong> The return list's element type is
+   * {@link Object}[], every element of the array is the field value.
    *
-   * @param fields fields name for query.
-   * @param condition condition entity for DB query.
+   * @param fields
+   *          fields name for query.
+   * @param condition
+   *          condition entity for DB query.
    * @return result list.
    * @throws AppException
    */
@@ -102,18 +117,21 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   /**
    * Count the number of records in the table by conditions.
    *
-   * @param condition condition object
+   * @param condition
+   *          condition object
    * @return number of records we query
    * @throws AppException
    */
   Long count(Condition condition) throws AppException;
 
   /**
-   * Get unique entity by the field name, if the field is not unique field, throw
-   * {@code AppException}.
+   * Get unique entity by the field name, if the field is not unique field,
+   * throw {@code AppException}.
    *
-   * @param fieldName the unique field name
-   * @param value field's value
+   * @param fieldName
+   *          the unique field name
+   * @param value
+   *          field's value
    * @return unique result, null if not exist
    * @throws AppException
    */
@@ -121,13 +139,17 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
       throws AppException;
 
   /**
-   * Get unique entity by the field name, if the field is not unique field, throw
-   * {@code AppException}.
+   * Get unique entity by the field name, if the field is not unique field,
+   * throw {@code AppException}.
    *
-   * @param fieldName the unique field name
-   * @param value field's value
-   * @param propertyName property's name for JoinColumn
-   * @param forceUnique force the field's unique property
+   * @param fieldName
+   *          the unique field name
+   * @param value
+   *          field's value
+   * @param propertyName
+   *          property's name for JoinColumn
+   * @param forceUnique
+   *          force the field's unique property
    * @return unique result, null if not exist
    * @throws AppException
    */
@@ -137,8 +159,10 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   /**
    * Count number of entities for custom counting.
    *
-   * @param fieldName count field's name
-   * @param condition user custom condition entity
+   * @param fieldName
+   *          count field's name
+   * @param condition
+   *          user custom condition entity
    * @return number of records for database query result
    * @throws AppException
    */
@@ -147,8 +171,10 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   /**
    * Update all records according condition entity.
    *
-   * @param properties properties for setting
-   * @param condition specific condition entity
+   * @param properties
+   *          properties for setting
+   * @param condition
+   *          specific condition entity
    * @throws AppException
    */
   void updateEntitiesByCondition(Map<String, Object> properties, Condition condition)
@@ -157,9 +183,12 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   /**
    * Delete all records according condition entity.
    *
-   * @param condition specific condition entity
+   * @param condition
+   *          specific condition entity
    * @throws AppException
+   * @Deprecated design-in issue, new API is not supported delete method.
    */
+  @Deprecated
   void deleteEntitiesByCondition(Condition condition) throws AppException;
 
   /**
@@ -170,7 +199,8 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   /**
    * Crate a hibernate query.
    *
-   * @param hql hibernate query string
+   * @param hql
+   *          hibernate query string
    * @return number of rows effected
    */
   int executeHQL(String hql);
@@ -178,7 +208,8 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   /**
    * Create a basic database query.
    *
-   * @param sql SQL string for query
+   * @param sql
+   *          SQL string for query
    * @return number of rows effected
    */
   int executeSQL(String sql);
@@ -186,17 +217,23 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   /**
    * Delete entity by key.
    *
-   * @param key entity's key
+   * @param key
+   *          entity's key
    * @throws AppException
+   * @Deprecated design-in issue, new API is not supported delete method.
    */
+  @Deprecated
   void delete(PK key) throws AppException;
 
   /**
    * List all entity in condition for specific DTO type.
    *
-   * @param clazz DTO class type.
-   * @param builder DTO's builder, should extends from {@link BaseBuilder}.
-   * @param condition DB query condition.
+   * @param clazz
+   *          DTO class type.
+   * @param builder
+   *          DTO's builder, should extends from {@link BaseBuilder}.
+   * @param condition
+   *          DB query condition.
    * @return DTO list for this query.
    * @throws AppException
    */
