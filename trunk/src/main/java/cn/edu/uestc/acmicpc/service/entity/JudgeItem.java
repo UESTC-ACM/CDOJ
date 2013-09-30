@@ -1,10 +1,15 @@
 package cn.edu.uestc.acmicpc.service.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
@@ -86,19 +91,24 @@ public class JudgeItem {
       try {
         Integer userId = status.getUserId();
         Integer problemId = status.getProblemId();
-        // TODO(fish): use new API.
-        String hql =
-            "update User set solved = (select count(distinct problemByProblemId.problemId)"
-                + " from Status where userByUserId.userId = " + userId + " and result = "
-                + Global.OnlineJudgeReturnType.OJ_AC.ordinal() + ") where userId = "
-                + userId;
-        userDAO.executeHQL(hql);
-        hql =
-            "update Problem set solved = (select count(distinct userByUserId.userId)"
-                + " from Status where problemByProblemId.problemId = " + problemId
-                + " and result=" + Global.OnlineJudgeReturnType.OJ_AC.ordinal()
-                + ") where problemId = " + problemId;
-        problemDAO.executeHQL(hql);
+        Condition condition = new Condition();
+        condition.addEntry("userId", ConditionType.EQUALS, userId);
+        condition.addEntry("result", ConditionType.EQUALS,
+            Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("solved", statusDAO.customCount("distinct problemId", condition));
+        condition = new Condition();
+        condition.addEntry("userId", ConditionType.EQUALS, userId);
+        userDAO.updateEntitiesByCondition(properties, condition);
+        condition = new Condition();
+        condition.addEntry("problemId", ConditionType.EQUALS, problemId);
+        condition.addEntry("result", ConditionType.EQUALS,
+            Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+        properties.clear();
+        properties.put("solved", statusDAO.customCount("distinct userId", condition));
+        condition = new Condition();
+        condition.addEntry("problemId", ConditionType.EQUALS, problemId);
+        problemDAO.updateEntitiesByCondition(properties, condition);
 
       } catch (Exception e) {
       }
