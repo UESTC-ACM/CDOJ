@@ -1,38 +1,50 @@
-package cn.edu.uestc.acmicpc.db.dto.impl;
+package cn.edu.uestc.acmicpc.db.dto.impl.user;
 
-import java.sql.Timestamp;
+import java.util.*;
+import java.sql.*;
 
-/**
- * Description
- * TODO(mzry1992)
- */
-public class UserDTO {
+import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
+import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
+import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.util.annotation.Fields;
+
+@Fields({ "userId", "userName", "studentId", "password", "school", "nickName", "email", "solved",
+    "tried", "type", "lastLogin", "departmentId", "departmentByDepartmentId.name" })
+public class UserDTO implements BaseDTO<User> {
+
+  public UserDTO() {
+  }
+
+  private UserDTO(Integer userId, String userName, String studentId, String password,
+                  String school, String nickName, String email, Integer solved, Integer tried,
+                  Integer type, Timestamp lastLogin, Integer departmentId, String departmentName) {
+    this.userId = userId;
+    this.userName = userName;
+    this.studentId = studentId;
+    this.password = password;
+    this.school = school;
+    this.nickName = nickName;
+    this.email = email;
+    this.solved = solved;
+    this.tried = tried;
+    this.type = type;
+    this.lastLogin = lastLogin;
+    this.departmentId = departmentId;
+    this.departmentName = departmentName;
+  }
+
   private Integer userId;
-
   private String userName;
-
   private String studentId;
-
   private String password;
-
   private String school;
-
   private String nickName;
-
   private String email;
-
   private Integer solved;
-
   private Integer tried;
-
   private Integer type;
-
-  private String typeName;
-
   private Timestamp lastLogin;
-
   private Integer departmentId;
-
   private String departmentName;
 
   public Integer getUserId() {
@@ -115,14 +127,6 @@ public class UserDTO {
     this.type = type;
   }
 
-  public String getTypeName() {
-    return typeName;
-  }
-
-  public void setTypeName(String typeName) {
-    this.typeName = typeName;
-  }
-
   public Timestamp getLastLogin() {
     return lastLogin;
   }
@@ -147,70 +151,65 @@ public class UserDTO {
     this.departmentName = departmentName;
   }
 
-  public UserDTO() {
-  }
-
-  public UserDTO(Integer userId, String userName, String studentId, String password,
-                 String school, String nickName, String email, Integer solved, Integer tried,
-                 Integer type, String typeName, Timestamp lastLogin, Integer departmentId,
-                 String departmentName) {
-    this.userId = userId;
-    this.userName = userName;
-    this.studentId = studentId;
-    this.password = password;
-    this.school = school;
-    this.nickName = nickName;
-    this.email = email;
-    this.solved = solved;
-    this.tried = tried;
-    this.type = type;
-    this.typeName = typeName;
-    this.lastLogin = lastLogin;
-    this.departmentId = departmentId;
-    this.departmentName = departmentName;
-  }
-
   public static Builder builder() {
     return new Builder();
   }
 
-  /** Builder for {@link UserDTO}. */
-  public static class Builder {
+  public static class Builder implements BaseBuilder<UserDTO> {
 
     private Builder() {
     }
 
+    @Override
+    public UserDTO build() {
+      return new UserDTO(userId, userName, studentId, password, school, nickName, email, solved,
+          tried, type, lastLogin, departmentId, departmentName);
+    }
+
+    @Override
+    public UserDTO build(Map<String, Object> properties) {
+      userId = (Integer) properties.get("userId");
+      userName = (String) properties.get("userName");
+      studentId = (String) properties.get("studentId");
+      password = (String) properties.get("password");
+      school = (String) properties.get("school");
+      nickName = (String) properties.get("nickName");
+      email = (String) properties.get("email");
+      solved = (Integer) properties.get("solved");
+      tried = (Integer) properties.get("tried");
+      type = (Integer) properties.get("type");
+      lastLogin = (Timestamp) properties.get("lastLogin");
+      departmentId = (Integer) properties.get("departmentId");
+      departmentName = (String) properties.get("departmentByDepartmentId.name");
+      return build();
+
+    }
+
     private Integer userId;
-
     private String userName;
-
     private String studentId;
-
     private String password;
-
     private String school;
-
     private String nickName;
-
     private String email;
-
     private Integer solved;
-
     private Integer tried;
-
     private Integer type;
-
-    private String typeName;
-
     private Timestamp lastLogin;
-
     private Integer departmentId;
-
     private String departmentName;
+
+    public Integer getUserId() {
+      return userId;
+    }
 
     public Builder setUserId(Integer userId) {
       this.userId = userId;
       return this;
+    }
+
+    public String getUserName() {
+      return userName;
     }
 
     public Builder setUserName(String userName) {
@@ -218,9 +217,17 @@ public class UserDTO {
       return this;
     }
 
+    public String getStudentId() {
+      return studentId;
+    }
+
     public Builder setStudentId(String studentId) {
       this.studentId = studentId;
       return this;
+    }
+
+    public String getPassword() {
+      return password;
     }
 
     public Builder setPassword(String password) {
@@ -228,9 +235,17 @@ public class UserDTO {
       return this;
     }
 
+    public String getSchool() {
+      return school;
+    }
+
     public Builder setSchool(String school) {
       this.school = school;
       return this;
+    }
+
+    public String getNickName() {
+      return nickName;
     }
 
     public Builder setNickName(String nickName) {
@@ -238,9 +253,17 @@ public class UserDTO {
       return this;
     }
 
+    public String getEmail() {
+      return email;
+    }
+
     public Builder setEmail(String email) {
       this.email = email;
       return this;
+    }
+
+    public Integer getSolved() {
+      return solved;
     }
 
     public Builder setSolved(Integer solved) {
@@ -248,9 +271,17 @@ public class UserDTO {
       return this;
     }
 
+    public Integer getTried() {
+      return tried;
+    }
+
     public Builder setTried(Integer tried) {
       this.tried = tried;
       return this;
+    }
+
+    public Integer getType() {
+      return type;
     }
 
     public Builder setType(Integer type) {
@@ -258,9 +289,8 @@ public class UserDTO {
       return this;
     }
 
-    public Builder setTypeName(String typeName) {
-      this.typeName = typeName;
-      return this;
+    public Timestamp getLastLogin() {
+      return lastLogin;
     }
 
     public Builder setLastLogin(Timestamp lastLogin) {
@@ -268,21 +298,22 @@ public class UserDTO {
       return this;
     }
 
+    public Integer getDepartmentId() {
+      return departmentId;
+    }
+
     public Builder setDepartmentId(Integer departmentId) {
       this.departmentId = departmentId;
       return this;
     }
 
+    public String getDepartmentName() {
+      return departmentName;
+    }
+
     public Builder setDepartmentName(String departmentName) {
       this.departmentName = departmentName;
       return this;
-    }
-
-    public UserDTO build() {
-      return new UserDTO(userId, userName, studentId, password,
-          school, nickName, email, solved, tried,
-          type, typeName, lastLogin, departmentId,
-          departmentName);
     }
   }
 }

@@ -14,7 +14,7 @@ import java.util.Map;
  */
 
 @Fields({"userId", "userName", "nickName", "email", "school", "departmentId",
-    "departmentByDepartmentId.departmentName", "studentId", "tried", "solved",
+    "departmentByDepartmentId.name", "studentId", "tried", "solved",
     "type", "lastLogin" })
 public class UserCenterDTO implements BaseDTO<User> {
 
@@ -187,7 +187,7 @@ public class UserCenterDTO implements BaseDTO<User> {
       type = (Integer) properties.get("type");
       school = (String) properties.get("school");
       departmentId = (Integer) properties.get("departmentId");
-      department = (String) properties.get("departmentByDepartmentId.departmentName");
+      department = (String) properties.get("departmentByDepartmentId.name");
       studentId = (String) properties.get("studentId");
       lastLogin = (Timestamp) properties.get("lastLogin");
       solved = (Integer) properties.get("solved");

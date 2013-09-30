@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -28,25 +28,25 @@ public class UserServiceITTest {
   UserService userService;
 
   public void testGetUserByUserId() throws AppException {
-    UserDTO user = userService.getUserByUserId(2);
+    UserDTO user = userService.getUserDTOByUserId(2);
     Assert.assertEquals("admin", user.getUserName());
   }
 
   @Test
   public void testGetUserByUserName() throws AppException {
-    UserDTO user = userService.getUserByUserName("admin");
+    UserDTO user = userService.getUserDTOByUserName("admin");
     Assert.assertEquals("admin", user.getUserName());
   }
 
   @Test
   public void testGetUserByUserEmail() throws AppException {
-    UserDTO user = userService.getUserByEmail("acm_admin@uestc.edu.cn");
+    UserDTO user = userService.getUserDTOByEmail("acm_admin@uestc.edu.cn");
     Assert.assertEquals("acm_admin@uestc.edu.cn", user.getEmail());
   }
 
   @Test
   public void testUpdateUser() throws AppException, FieldNotUniqueException {
-    UserDTO user = userService.getUserByUserName("administrator");
+    UserDTO user = userService.getUserDTOByUserName("administrator");
     user.setLastLogin(new Timestamp(new Date().getTime()));
     userService.updateUser(user);
   }

@@ -3,7 +3,8 @@ package cn.edu.uestc.acmicpc.oj.service.iface;
 import java.util.List;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserSummaryDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
@@ -14,31 +15,40 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 public interface UserService extends OnlineJudgeService<User, Integer> {
 
   /**
-   * Get unique user entity from database by user id.
+   * Get unique user dto from database by user id.
    *
    * @param userId user's entity id.
    * @return the unique user entity from database.
    * @throws AppException
    */
-  UserDTO getUserByUserId(Integer userId) throws AppException;
+  UserDTO getUserDTOByUserId(Integer userId) throws AppException;
 
   /**
-   * Get unique user entity from database by user name.
+   * Get unique user dto from database by user name.
    *
    * @param userName name of the user
    * @return the unique user entity from database
    * @throws AppException
    */
-  UserDTO getUserByUserName(String userName) throws AppException;
+  UserDTO getUserDTOByUserName(String userName) throws AppException;
 
   /**
-   * Get unique user entity from database by user's email.
+   * Get unique user center dto from database by user name.
+   *
+   * @param userName name of the user
+   * @return the unique user entity from database
+   * @throws AppException
+   */
+  UserCenterDTO getUserCenterDTOByUserName(String userName) throws AppException;
+
+  /**
+   * Get unique user dto from database by user's email.
    *
    * @param email user's email.
    * @return the unique user entity from database.
    * @throws AppException
    */
-  UserDTO getUserByEmail(String email) throws AppException;
+  UserDTO getUserDTOByEmail(String email) throws AppException;
 
   /**
    * Update user entity.

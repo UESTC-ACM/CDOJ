@@ -3,15 +3,14 @@ package cn.edu.uestc.acmicpc.oj.controller.user;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserSummaryDTO;
-import cn.edu.uestc.acmicpc.oj.entity.UserRankSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,12 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserEditDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserRegisterDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserSerialKeyDTO;
-import cn.edu.uestc.acmicpc.db.view.impl.UserView;
 import cn.edu.uestc.acmicpc.oj.controller.base.BaseController;
 import cn.edu.uestc.acmicpc.oj.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
@@ -113,7 +111,7 @@ public class UserController extends BaseController {
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        UserDTO userDTO = userService.getUserByUserName(userLoginDTO.getUserName());
+        UserDTO userDTO = userService.getUserDTOByUserName(userLoginDTO.getUserName());
         if (userDTO == null || !StringUtil.encodeSHA1(userLoginDTO.getPassword()).equals(userDTO.getPassword()))
           throw new FieldException("password", "User or password is wrong, please try again");
         userDTO.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
@@ -186,10 +184,10 @@ public class UserController extends BaseController {
         if (!StringUtil.trimAllSpace(userRegisterDTO.getNickName()).equals(userRegisterDTO.getNickName())) {
           throw new FieldException("nickName", "Nick name should not have useless blank.");
         }
-        if (userService.getUserByUserName(userRegisterDTO.getUserName()) != null) {
+        if (userService.getUserDTOByUserName(userRegisterDTO.getUserName()) != null) {
           throw new FieldException("userName", "User name has been used!");
         }
-        if (userService.getUserByEmail(userRegisterDTO.getEmail()) != null) {
+        if (userService.getUserDTOByEmail(userRegisterDTO.getEmail()) != null) {
           throw new FieldException("email", "Email has benn used!");
         }
         if (departmentService.getDepartmentName(userRegisterDTO.getDepartmentId()) == null)
@@ -205,11 +203,15 @@ public class UserController extends BaseController {
             .setSolved(0)
             .setTried(0)
             .setType(Global.AuthenticationType.NORMAL.ordinal())
-            .setTypeName(Global.AuthenticationType.NORMAL.getDescription())
             .setDepartmentId(userRegisterDTO.getDepartmentId())
+            .setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000))
             .setDepartmentName(departmentService.getDepartmentName(userRegisterDTO.getDepartmentId()))
             .build();
         userService.createNewUser(userDTO);
+
+        userDTO = userService.getUserDTOByUserName(userRegisterDTO.getUserName());
+        if (userDTO == null)
+          throw new AppException("Register failed, please try again.");
         session.setAttribute("currentUser", userDTO);
         json.put("result", "success");
       } catch (FieldException e) {
@@ -288,13 +290,13 @@ public class UserController extends BaseController {
   public String center(@PathVariable("userName") String userName,
                            ModelMap model) {
     try {
-      UserDTO userDTO = userService.getUserByUserName(userName);
-      if (userDTO == null) {
+      UserCenterDTO userCenterDTO = userService.getUserCenterDTOByUserName(userName);
+      if (userCenterDTO == null) {
         throw new AppException("No such user!");
       }
 
       model.put("departmentList", departmentService.getDepartmentList());
-      model.put("targetUser", userDTO);
+      model.put("targetUser", userCenterDTO);
     } catch (AppException e) {
       return "error/404";
     }
@@ -330,7 +332,7 @@ public class UserController extends BaseController {
         if (!currentUser.getUserId().equals(userEditDTO.getUserId())) {
           throw new AppException("You can only edit your information.");
         }
-        UserDTO userDTO = userService.getUserByUserId(userEditDTO.getUserId());
+        UserDTO userDTO = userService.getUserDTOByUserId(userEditDTO.getUserId());
         if (userDTO == null) {
           throw new AppException("No such user.");
         }
@@ -339,10 +341,10 @@ public class UserController extends BaseController {
         }
         if (userEditDTO.getNewPassword() != null) {
           if (userEditDTO.getNewPasswordRepeat() == null) {
-            throw new FieldException("passwordRepeat", "Please repeat your new password.");
+            throw new FieldException("newPasswordRepeat", "Please repeat your new password.");
           }
           if (!userEditDTO.getNewPassword().equals(userEditDTO.getNewPasswordRepeat())) {
-            throw new FieldException("passwordRepeat", "Password do not match.");
+            throw new FieldException("newPasswordRepeat", "Password do not match.");
           }
           userDTO.setPassword(userEditDTO.getNewPassword());
         }
@@ -384,7 +386,7 @@ public class UserController extends BaseController {
   Map<String, Object> status(@PathVariable("userName") String userName) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO userDTO = userService.getUserByUserName(userName);
+      UserDTO userDTO = userService.getUserDTOByUserName(userName);
       if (userDTO == null)
         throw new AppException("No such user!");
 
@@ -419,7 +421,7 @@ public class UserController extends BaseController {
   Map<String, Object> sendSerialKey(@PathVariable("userName") String userName) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO userDTO = userService.getUserByUserName(userName);
+      UserDTO userDTO = userService.getUserDTOByUserName(userName);
       if (userDTO == null)
         throw new AppException("No such user!");
       UserSerialKeyDTO userSerialKeyDTO = userSerialKeyService.generateUserSerialKey(userDTO.getUserId());
