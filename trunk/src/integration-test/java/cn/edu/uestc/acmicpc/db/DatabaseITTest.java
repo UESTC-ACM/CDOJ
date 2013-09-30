@@ -62,7 +62,7 @@ public class DatabaseITTest {
   private IContestDAO contestDAO;
 
   @Test
-  public void testDAO_findAddByBuilder() throws AppException {
+  public void testDAO_findAllByBuilder() throws AppException {
     UserCondition userCondition = new UserCondition();
     userCondition.startId = 2;
     userCondition.endId = 2;
@@ -79,6 +79,54 @@ public class DatabaseITTest {
     Assert.assertEquals(Integer.valueOf(1), dto.getType());
     Assert.assertEquals("UESTC", dto.getSchool());
     Assert.assertEquals(new Timestamp(1359523046000L), dto.getLastLogin());
+  }
+
+  @Test
+  public void testDAO_getDTOByUniqueField_null() throws AppException {
+    UserSummaryDTO result = userDAO.getDTOByUniqueField(UserSummaryDTO.class,
+        UserSummaryDTO.builder(), "userName", "wrongUser");
+    Assert.assertNull(result);
+  }
+
+  @Test
+  public void testDAO_getDTOByUniqueField_successful_intType() throws AppException {
+    UserSummaryDTO userDTO = userDAO.getDTOByUniqueField(UserSummaryDTO.class,
+        UserSummaryDTO.builder(), "userId", 2);
+    Assert.assertEquals(Integer.valueOf(2), userDTO.getUserId());
+    Assert.assertEquals("admin", userDTO.getUserName());
+    Assert.assertEquals("admin", userDTO.getNickName());
+    Assert.assertEquals("acm_admin@uestc.edu.cn", userDTO.getEmail());
+    Assert.assertEquals(Integer.valueOf(0), userDTO.getSolved());
+    Assert.assertEquals(Integer.valueOf(0), userDTO.getTried());
+    Assert.assertEquals(Integer.valueOf(1), userDTO.getType());
+    Assert.assertEquals("UESTC", userDTO.getSchool());
+    Assert.assertEquals(new Timestamp(1359523046000L), userDTO.getLastLogin());
+  }
+
+  @Test
+  public void testDAO_getDTOByUniqueField_successful_stringType() throws AppException {
+    UserSummaryDTO userDTO = userDAO.getDTOByUniqueField(UserSummaryDTO.class,
+        UserSummaryDTO.builder(), "userName", "admin");
+    Assert.assertEquals(Integer.valueOf(2), userDTO.getUserId());
+    Assert.assertEquals("admin", userDTO.getUserName());
+    Assert.assertEquals("admin", userDTO.getNickName());
+    Assert.assertEquals("acm_admin@uestc.edu.cn", userDTO.getEmail());
+    Assert.assertEquals(Integer.valueOf(0), userDTO.getSolved());
+    Assert.assertEquals(Integer.valueOf(0), userDTO.getTried());
+    Assert.assertEquals(Integer.valueOf(1), userDTO.getType());
+    Assert.assertEquals("UESTC", userDTO.getSchool());
+    Assert.assertEquals(new Timestamp(1359523046000L), userDTO.getLastLogin());
+  }
+
+  @Test
+  public void testDAO_getDTOByUniqueField_failed() {
+    try {
+      userDAO.getDTOByUniqueField(UserSummaryDTO.class,
+          UserSummaryDTO.builder(), "departmentId", 1);
+      Assert.fail();
+    } catch (AppException e) {
+      Assert.assertEquals(new AppException("the value is not unique."), e);
+    }
   }
 
   @Test

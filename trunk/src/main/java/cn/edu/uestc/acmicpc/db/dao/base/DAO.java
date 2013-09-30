@@ -299,4 +299,23 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     }
     return list;
   }
+
+  @Override
+  public <T extends BaseDTO<Entity>> T getDTOByUniqueField(Class<T> clazz, BaseBuilder<T> builder,
+      String field, Object value) throws AppException {
+    Condition condition = new Condition();
+    if (value instanceof String) {
+      condition.addEntry(field, ConditionType.STRING_EQUALS, value);
+    } else {
+      condition.addEntry(field, ConditionType.EQUALS, value);
+    }
+    List<T> results = findAll(clazz, builder, condition);
+    if (results.isEmpty()) {
+      return null;
+    } else if (results.size() == 1) {
+      return results.get(0);
+    } else {
+      throw new AppException("the value is not unique.");
+    }
+  }
 }

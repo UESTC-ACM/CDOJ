@@ -239,4 +239,17 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    */
   <T extends BaseDTO<Entity>> List<T> findAll(Class<T> clazz, BaseBuilder<T> builder,
       Condition condition) throws AppException;
+
+  /**
+   * Get unique DTO entity by unique field.
+   *
+   * @param clazz DTO class type.
+   * @param builder DTO's builder, should extends from {@link BaseBuilder}.
+   * @param field unique field name.
+   * @param value field's value.
+   * @return unique entity for query.
+   * @throws AppException
+   */
+  <T extends BaseDTO<Entity>> T getDTOByUniqueField(Class<T> clazz, BaseBuilder<T> builder,
+      String field, Object value) throws AppException;
 }
