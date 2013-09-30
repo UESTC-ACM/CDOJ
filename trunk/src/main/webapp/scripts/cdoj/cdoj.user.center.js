@@ -19,10 +19,9 @@ $(document).ready(function () {
     $('#userEditModal').setDialog({
       callback: function () {
         var info = $('#userEditModal').getFormData();
-        if (info["password"] == '')
-          info["password"] = info["passwordRepeat"] = undefined;
+        if (info["newPassword"] == '')
+          info["newPassword"] = info["newPasswordRepeat"] = undefined;
         jsonPost('/user/edit', info, function (data) {
-          console.log(data);
           $('#userEditModal').find('.form-horizontal').formValidate({
             result: data,
             onSuccess: function () {

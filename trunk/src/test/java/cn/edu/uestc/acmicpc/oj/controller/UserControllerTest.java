@@ -25,9 +25,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import cn.edu.uestc.acmicpc.config.TestContext;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserRegisterDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDTO;
 import cn.edu.uestc.acmicpc.oj.controller.user.UserController;
 import cn.edu.uestc.acmicpc.oj.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
@@ -101,7 +101,7 @@ public class UserControllerTest extends ControllerTest {
         .setUserName("admin")
         .setPassword(StringUtil.encodeSHA1("password"))
         .build();
-    when(userService.getUserByUserName(userLoginDTO.getUserName())).thenReturn(userDTO);
+    when(userService.getUserDTOByUserName(userLoginDTO.getUserName())).thenReturn(userDTO);
     mockMvc.perform(post(URL_LOGIN)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userLoginDTO))
@@ -296,7 +296,7 @@ public class UserControllerTest extends ControllerTest {
         .setUserName("admin")
         .setPassword(StringUtil.encodeSHA1("password"))
         .build();
-    when(userService.getUserByUserName(userLoginDTO.getUserName())).thenReturn(userDTO);
+    when(userService.getUserDTOByUserName(userLoginDTO.getUserName())).thenReturn(userDTO);
     mockMvc.perform(post(URL_LOGIN)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userLoginDTO))
@@ -361,7 +361,7 @@ public class UserControllerTest extends ControllerTest {
         .setUserName("admin")
         .setPassword("password")
         .build();
-    when(userService.getUserByUserName(userLoginDTO.getUserName()))
+    when(userService.getUserDTOByUserName(userLoginDTO.getUserName()))
         .thenThrow(new AppException("service error"));
     mockMvc.perform(post(URL_LOGIN)
         .contentType(APPLICATION_JSON_UTF8)
@@ -387,8 +387,8 @@ public class UserControllerTest extends ControllerTest {
   @Test
   public void testRegister_successfully() throws Exception {
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder().build();
-    when(userService.getUserByUserName(userRegisterDTO.getUserName())).thenReturn(null);
-    when(userService.getUserByEmail(userRegisterDTO.getEmail())).thenReturn(null);
+    when(userService.getUserDTOByUserName(userRegisterDTO.getUserName())).thenReturn(null);
+    when(userService.getUserDTOByEmail(userRegisterDTO.getEmail())).thenReturn(null);
     when(departmentService.getDepartmentName(userRegisterDTO.getDepartmentId()))
         .thenReturn("department");
     mockMvc.perform(post(URL_REGISTER)
@@ -941,7 +941,7 @@ public class UserControllerTest extends ControllerTest {
   @Test
   public void testRegister_failed_usedUserName() throws Exception {
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder().build();
-    when(userService.getUserByUserName(userRegisterDTO.getUserName()))
+    when(userService.getUserDTOByUserName(userRegisterDTO.getUserName()))
         .thenReturn(mock(UserDTO.class));
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
@@ -957,7 +957,7 @@ public class UserControllerTest extends ControllerTest {
   @Test
   public void testRegister_failed_usedEmail() throws Exception {
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder().build();
-    when(userService.getUserByEmail(userRegisterDTO.getEmail())).thenReturn(mock(UserDTO.class));
+    when(userService.getUserDTOByEmail(userRegisterDTO.getEmail())).thenReturn(mock(UserDTO.class));
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userRegisterDTO)))
@@ -992,9 +992,9 @@ public class UserControllerTest extends ControllerTest {
     UserDTO userDTO = UserDTO.builder()
         .setPassword(StringUtil.encodeSHA1(userLoginDTO.getPassword()))
         .build();
-    when(userService.getUserByUserName(userRegisterDTO.getUserName()))
+    when(userService.getUserDTOByUserName(userRegisterDTO.getUserName()))
         .thenReturn(null).thenReturn(userDTO);
-    when(userService.getUserByEmail(userRegisterDTO.getEmail())).thenReturn(null);
+    when(userService.getUserDTOByEmail(userRegisterDTO.getEmail())).thenReturn(null);
     when(departmentService.getDepartmentName(userRegisterDTO.getDepartmentId()))
         .thenReturn("department");
     mockMvc.perform(post(URL_REGISTER)

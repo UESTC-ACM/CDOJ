@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.UserSerialKeyDTO;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
@@ -81,7 +81,7 @@ public class EmailServiceImpl extends AbstractService implements EmailService {
 
   @Override
   public Boolean sendUserSerialKey(UserSerialKeyDTO userSerialKey) throws AppException {
-    UserDTO userDTO = userService.getUserByUserId(userSerialKey.getUserId());
+    UserDTO userDTO = userService.getUserDTOByUserId(userSerialKey.getUserId());
     if (userDTO == null) {
       throw new AppException("No such user!");
     }
