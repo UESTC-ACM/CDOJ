@@ -1,6 +1,7 @@
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
 import java.sql.Timestamp;
+import java.util.LinkedList;
 import java.util.List;
 
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
@@ -74,7 +75,7 @@ public class StatusCondition extends BaseCondition {
   /**
    * Result list
    */
-  public List<Global.OnlineJudgeReturnType> result;
+  public List<Global.OnlineJudgeReturnType> result = new LinkedList<>();
 
   /**
    * Result id

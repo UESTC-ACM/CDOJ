@@ -1,30 +1,5 @@
-/*
- *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 /**
  * All function used in problem list page.
- *
- * @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- * @version 1
  */
 
 
@@ -120,17 +95,17 @@ function changeOrder(field) {
 $(document).ready(function () {
     currentCondition = {
         "currentPage": null,
-        "problemCondition.startId": undefined,
-        "problemCondition.endId": undefined,
-        "problemCondition.title": undefined,
-        "problemCondition.source": undefined,
-        "problemCondition.isSpj": undefined,
-        "problemCondition.startDifficulty": undefined,
-        "problemCondition.endDifficulty": undefined,
-        "problemCondition.keyword": undefined,
-        "problemCondition.orderFields": undefined,
-        "problemCondition.orderAsc": undefined
-    }
+        "startId": undefined,
+        "endId": undefined,
+        "title": undefined,
+        "source": undefined,
+        "isSpj": undefined,
+        "startDifficulty": undefined,
+        "endDifficulty": undefined,
+        "keyword": undefined,
+        "orderFields": undefined,
+        "orderAsc": undefined
+    };
 
     $('input#search').setButton({
         callback: function () {
