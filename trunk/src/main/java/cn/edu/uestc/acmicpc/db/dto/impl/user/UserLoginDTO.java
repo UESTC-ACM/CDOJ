@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.db.dto.impl;
+package cn.edu.uestc.acmicpc.db.dto.impl.user;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
