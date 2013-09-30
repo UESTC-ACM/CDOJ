@@ -18,7 +18,10 @@ def writeProperties(indent, out, fields, types, builder):
     out.write(indent * ' ')
     out.write("}\n\n")
     out.write(indent * ' ')
-    out.write("public Builder set" + fetchName(fields[i]) + "(" + types[i] + " " + fields[i] +  ") {\n")
+    if builder == True:
+      out.write("public Builder set" + fetchName(fields[i]) + "(" + types[i] + " " + fields[i] +  ") {\n")
+    else:
+      out.write("public void set" + fetchName(fields[i]) + "(" + types[i] + " " + fields[i] +  ") {\n")
     out.write((indent + 2) * ' ')
     out.write("this." + fields[i] + " = " + fields[i] + ";\n")
     if builder == True:
