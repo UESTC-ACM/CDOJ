@@ -80,8 +80,8 @@ def main(argv):
   out.write("import java.util.*;\n")
   out.write("import java.sql.*;\n")
   out.write("\n")
-  out.write("import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder\n")
-  out.write("import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO\n")
+  out.write("import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;\n")
+  out.write("import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;\n")
   out.write("import cn.edu.uestc.acmicpc.db.entity." + fetchName(entity) + ";\n")
   out.write("import cn.edu.uestc.acmicpc.util.annotation.Fields;\n\n")
 
