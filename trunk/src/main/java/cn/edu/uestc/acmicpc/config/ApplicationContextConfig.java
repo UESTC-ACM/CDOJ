@@ -36,7 +36,7 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
-import cn.edu.uestc.acmicpc.service.JudgeService;
+import cn.edu.uestc.acmicpc.judge.JudgeService;
 import cn.edu.uestc.acmicpc.util.Global;
 
 import com.jolbox.bonecp.BoneCPDataSource;
@@ -50,8 +50,8 @@ import com.jolbox.bonecp.BoneCPDataSource;
     "cn.edu.uestc.acmicpc.db",
     "cn.edu.uestc.acmicpc.util",
     "cn.edu.uestc.acmicpc.service",
-    "cn.edu.uestc.acmicpc.oj.service",
-    "cn.edu.uestc.acmicpc.training"
+    "cn.edu.uestc.acmicpc.web.oj.service",
+    "cn.edu.uestc.acmicpc.web.training"
 })
 @PropertySource("classpath:resources.properties")
 @EnableTransactionManagement
