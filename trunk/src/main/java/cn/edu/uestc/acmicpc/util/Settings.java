@@ -43,8 +43,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Repository;
 
-import cn.edu.uestc.acmicpc.oj.xml.XmlNode;
-import cn.edu.uestc.acmicpc.oj.xml.XmlParser;
+import cn.edu.uestc.acmicpc.web.xml.XmlNode;
+import cn.edu.uestc.acmicpc.web.xml.XmlParser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
