@@ -67,13 +67,8 @@ public class TestContext extends ApplicationContextConfig {
 
   @Bean
   @Autowired
-  public UserService realUserService(
-      @Qualifier("mockUserDAO") IUserDAO userDAO,
-      @Qualifier("mockGlobalService") GlobalService globalService,
-      @Qualifier("mockDepartmentService") DepartmentService departmentService) {
-    return new UserServiceImpl(userDAO,
-        globalService,
-        departmentService);
+  public UserService realUserService(@Qualifier("mockUserDAO") IUserDAO userDAO) {
+    return new UserServiceImpl(userDAO);
   }
 
   @Bean
