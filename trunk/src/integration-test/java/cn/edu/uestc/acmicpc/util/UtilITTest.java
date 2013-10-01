@@ -4,12 +4,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.AssertJUnit;
+import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.entity.Department;
@@ -17,18 +16,17 @@ import cn.edu.uestc.acmicpc.db.entity.Department;
 /**
  * Util class test
  */
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { IntegrationTestContext.class })
-public class UtilITTest {
+public class UtilITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired
   private Global global;
 
   @Test
   public void testGlobal() {
-    Assert.assertNotNull("Constructor global instance is null.", global);
+    AssertJUnit.assertNotNull("Constructor global instance is null.", global);
     List<Department> departments = global.getDepartmentList();
-    Assert.assertEquals(18, departments.size());
+    AssertJUnit.assertEquals(18, departments.size());
   }
 
   private static String VJ_1Y = "^(\\d{1,2})\\s*:\\s*(\\d{2})\\s*:\\s*(\\d{2})$";
@@ -57,21 +55,21 @@ public class UtilITTest {
     pattern = Pattern.compile(VJ_NORMAL);
     query = "4:35:00 (-2)";
     matcher = pattern.matcher(query);
-    Assert.assertTrue(matcher.find());
+    AssertJUnit.assertTrue(matcher.find());
 
     pattern = Pattern.compile(VJ_FAIL);
     query = "(-5 )";
     matcher = pattern.matcher(query);
-    Assert.assertTrue(matcher.find());
+    AssertJUnit.assertTrue(matcher.find());
 
     pattern = Pattern.compile(PC_NORMAL);
     query = "14/ 294";
     matcher = pattern.matcher(query);
-    Assert.assertTrue(matcher.find());
+    AssertJUnit.assertTrue(matcher.find());
 
     pattern = Pattern.compile(PC_FAIL);
     query = "16/- -";
     matcher = pattern.matcher(query);
-    Assert.assertTrue(matcher.find());
+    AssertJUnit.assertTrue(matcher.find());
   }
 }
