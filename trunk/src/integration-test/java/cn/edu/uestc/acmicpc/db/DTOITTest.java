@@ -1,13 +1,12 @@
 package cn.edu.uestc.acmicpc.db;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserRegisterDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**

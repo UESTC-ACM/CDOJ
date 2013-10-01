@@ -2,7 +2,6 @@ package cn.edu.uestc.acmicpc.config;
 
 import static org.mockito.Mockito.mock;
 
-import cn.edu.uestc.acmicpc.oj.service.iface.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +15,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.oj.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.oj.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.oj.service.iface.UserSerialKeyService;
+import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.oj.service.impl.UserServiceImpl;
 import cn.edu.uestc.acmicpc.service.JudgeService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;

@@ -3,10 +3,13 @@ package cn.edu.uestc.acmicpc.db.entity;
 import java.io.Serializable;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -51,8 +54,7 @@ public class TrainingStatus implements Serializable {
 
   @Column(name = "volatility", nullable = false, insertable = true, updatable = true, precision = 0)
   @Basic
-  public
-      Double getVolatility() {
+  public Double getVolatility() {
     return volatility;
   }
 
@@ -103,8 +105,7 @@ public class TrainingStatus implements Serializable {
 
   @Column(name = "ratingVary", nullable = false, insertable = true, updatable = true, precision = 0)
   @Basic
-  public
-      Double getRatingVary() {
+  public Double getRatingVary() {
     return ratingVary;
   }
 
@@ -172,5 +173,32 @@ public class TrainingStatus implements Serializable {
 
   public void setTrainingContestId(Integer trainingContestId) {
     this.trainingContestId = trainingContestId;
+  }
+
+  private TrainingUser trainingUserByTrainingUserId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "trainingUserId", referencedColumnName = "trainingUserId", nullable = false,
+      insertable = false, updatable = false)
+  public TrainingUser getTrainingUserByTrainingUserId() {
+    return trainingUserByTrainingUserId;
+  }
+
+  public void setTrainingUserByTrainingUserId(TrainingUser trainingUserByTrainingUserId) {
+    this.trainingUserByTrainingUserId = trainingUserByTrainingUserId;
+  }
+
+  private TrainingContest trainingContestByTrainingContestId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "trainingContestId", referencedColumnName = "trainingContestId",
+      nullable = false, insertable = false, updatable = false)
+  public TrainingContest getTrainingContestByTrainingContestId() {
+    return trainingContestByTrainingContestId;
+  }
+
+  public void setTrainingContestByTrainingContestId(
+      TrainingContest trainingContestByTrainingContestId) {
+    this.trainingContestByTrainingContestId = trainingContestByTrainingContestId;
   }
 }

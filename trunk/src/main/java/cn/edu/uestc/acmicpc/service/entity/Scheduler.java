@@ -70,7 +70,7 @@ public class Scheduler implements Runnable {
   /**
    * Search status in queuing.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "deprecation" })
   private void searchForJudge() {
     try {
       StatusCondition statusCondition = new StatusCondition();
