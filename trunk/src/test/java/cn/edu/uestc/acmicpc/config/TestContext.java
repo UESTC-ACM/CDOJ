@@ -15,13 +15,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.oj.service.iface.DepartmentService;
-import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
-import cn.edu.uestc.acmicpc.oj.service.iface.StatusService;
-import cn.edu.uestc.acmicpc.oj.service.iface.UserSerialKeyService;
-import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
-import cn.edu.uestc.acmicpc.oj.service.impl.UserServiceImpl;
-import cn.edu.uestc.acmicpc.service.JudgeService;
+import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
+import cn.edu.uestc.acmicpc.service.iface.UserService;
+import cn.edu.uestc.acmicpc.service.impl.UserServiceImpl;
+import cn.edu.uestc.acmicpc.judge.JudgeService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.Global;
@@ -33,8 +33,8 @@ import com.jolbox.bonecp.BoneCPDataSource;
     "cn.edu.uestc.acmicpc.db",
     "cn.edu.uestc.acmicpc.util",
     "cn.edu.uestc.acmicpc.service",
-    "cn.edu.uestc.acmicpc.oj.service",
-    "cn.edu.uestc.acmicpc.training"
+    "cn.edu.uestc.acmicpc.web.oj.service",
+    "cn.edu.uestc.acmicpc.web.training"
 })
 @PropertySource("classpath:resources.properties")
 @EnableTransactionManagement

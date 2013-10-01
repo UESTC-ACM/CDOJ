@@ -14,7 +14,7 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.Language;
-import cn.edu.uestc.acmicpc.oj.entity.ContestRankList;
+import cn.edu.uestc.acmicpc.web.oj.entity.ContestRankList;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
