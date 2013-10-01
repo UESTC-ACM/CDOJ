@@ -85,7 +85,7 @@ if __name__ == '__main__':
   base_dir = base_dir[:base_dir.rfind('/cdoj/trunk') + 11]
   dao_dir = base_dir + '/src/main/java/cn/edu/uestc/acmicpc/db/dao/'
   initDaos(dao_dir)
-  controller_dir = base_dir + '/src/main/java/cn/edu/uestc/acmicpc/oj/controller/'
+  controller_dir = base_dir + '/src/main/java/cn/edu/uestc/acmicpc/web/oj/controller/'
   addTestCases(suite, controller_dir)
   result = unittest.TextTestRunner(verbosity = 2).run(suite)
   quit(len(result.errors) + len(result.failures))
