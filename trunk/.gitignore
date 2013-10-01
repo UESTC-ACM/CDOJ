@@ -10,4 +10,5 @@
 .settings
 .classpath
 .externalToolBuilders/
+/test-output/
 

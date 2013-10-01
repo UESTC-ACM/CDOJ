@@ -2,12 +2,10 @@ package cn.edu.uestc.acmicpc.db;
 
 import java.util.List;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.impl.TrainingContestCondition;
@@ -27,12 +25,10 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * TODO(fish): remove ignore tags.
  */
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { IntegrationTestContext.class })
-public class TrainingContestUtilsITTest {
+public class TrainingContestUtilsITTest extends AbstractTestNGSpringContextTests {
 
-  @Test
-  @Ignore
+  @Test(enabled = false)
   public void setTrainingUser() throws AppException {
     for (int i = 0; i < 10; i++) {
       // TrainingUserDTO trainingUserDTO = TrainingUserDTO.builder()
@@ -43,8 +39,7 @@ public class TrainingContestUtilsITTest {
     }
   }
 
-  @Test
-  @Ignore
+  @Test(enabled = false)
   public void setTrainingContet() throws AppException {
 //    for (int i = 0; i < 10; i++) {
 //      TrainingContestDTO trainingContestDTO = TrainingContestDTO.builder()
@@ -55,8 +50,7 @@ public class TrainingContestUtilsITTest {
 //    }
   }
 
-  @Test
-  @Ignore
+  @Test(enabled = false)
   public void setTrainingStatus() throws AppException {
 //    for (int i = 1; i <= 10; i++) {
 //      for (int j = 1; j <= 10; j++) {
@@ -69,8 +63,7 @@ public class TrainingContestUtilsITTest {
 //    }
   }
 
-  @Test
-  @Ignore
+  @Test(enabled = false)
   @Deprecated
   public void testDeleteByCondition() throws AppException {
 //    trainingStatusCondition.clear();
@@ -79,8 +72,8 @@ public class TrainingContestUtilsITTest {
   }
 
   @SuppressWarnings("unchecked")
-  @Test
-  @Ignore
+  @Test(enabled = false)
+  @Deprecated
   public void updateUser() throws AppException {
     List<TrainingUser> trainingUserList = (List<TrainingUser>) trainingUserDAO.findAll();
     for (TrainingUser trainingUser : trainingUserList) {
