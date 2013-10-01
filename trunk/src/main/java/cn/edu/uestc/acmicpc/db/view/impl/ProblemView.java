@@ -25,7 +25,7 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 import java.util.LinkedList;
 import java.util.List;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -51,13 +51,8 @@ public class ProblemView extends View<Problem> {
   private Integer solved;
   private Integer tried;
   private Boolean isSpj;
-  private Boolean isVisible;
-  private Integer outputLimit;
   private Integer javaTimeLimit;
   private Integer javaMemoryLimit;
-  private Integer dataCount;
-  private Integer difficulty;
-  private List<String> tags;
 
   public ProblemView(ProblemDTO problemDTO) {
     
@@ -75,12 +70,8 @@ public class ProblemView extends View<Problem> {
     setSolved(problemDTO.getSolved());
     setTried(problemDTO.getTried());
     setIsSpj(problemDTO.getIsSpj());
-    setIsVisible(problemDTO.getIsVisible());
-    setOutputLimit(problemDTO.getOutputLimit());
     setJavaTimeLimit(problemDTO.getJavaTimeLimit());
     setJavaMemoryLimit(problemDTO.getJavaMemoryLimit());
-    setDataCount(problemDTO.getDataCount());
-    setDifficulty(problemDTO.getDifficulty());
     
     // TODO(mzry1992): add Tags and others into the view.
     // List<String> list = new LinkedList<>();
@@ -205,22 +196,6 @@ public class ProblemView extends View<Problem> {
     this.isSpj = isSPJ;
   }
 
-  public Boolean getIsVisible() {
-    return isVisible;
-  }
-
-  public void setIsVisible(Boolean isVisible) {
-    this.isVisible = isVisible;
-  }
-
-  public Integer getOutputLimit() {
-    return outputLimit;
-  }
-
-  public void setOutputLimit(Integer outputLimit) {
-    this.outputLimit = outputLimit;
-  }
-
   public Integer getJavaTimeLimit() {
     return javaTimeLimit;
   }
@@ -235,29 +210,5 @@ public class ProblemView extends View<Problem> {
 
   public void setJavaMemoryLimit(Integer javaMemoryLimit) {
     this.javaMemoryLimit = javaMemoryLimit;
-  }
-
-  public Integer getDataCount() {
-    return dataCount;
-  }
-
-  public void setDataCount(Integer dataCount) {
-    this.dataCount = dataCount;
-  }
-
-  public Integer getDifficulty() {
-    return difficulty;
-  }
-
-  public void setDifficulty(Integer difficulty) {
-    this.difficulty = difficulty;
-  }
-
-  public List<String> getTags() {
-    return tags;
-  }
-
-  public void setTags(List<String> tags) {
-    this.tags = tags;
   }
 }
