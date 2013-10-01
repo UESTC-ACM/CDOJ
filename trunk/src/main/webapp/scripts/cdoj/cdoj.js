@@ -27,13 +27,16 @@
 
     $("#activateModal").setDialog({
       callback: function() {
-        info=$("#activateModal").find(".form-horizontal").getFormData();
+        var info=$("#activateModal").find(".form-horizontal").getFormData();
+        //noinspection JSUnresolvedFunction
         $.post('/user/sendSerialKey/' + info.userName, function(data) {
-          if (data.result == 'ok') {
+          if (data.result == 'success') {
             alert('We send you an Email with the url to reset your password right now, please check your mail box.');
             $('#activateModal').modal('hide');
-          } else
-            alert(data.err_msg);
+          } else if (data.result = 'failed')
+            alert('Unknown error occurred.');
+          else
+            alert(data['error_msg']);
         });
       },
       blindEnterKey: true
@@ -75,6 +78,7 @@
 
     $("#logoutButton").setButton({
       callback: function() {
+        //noinspection JSUnresolvedFunction
         $.post('/user/logout', function(data) {
           if (data["result"] == "success")
             window.location.reload();
@@ -83,5 +87,4 @@
     });
 
   })
-}(window.jQuery)
-
+}(window.jQuery);
