@@ -5,13 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
@@ -28,9 +26,8 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Simple database test class.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { IntegrationTestContext.class })
-public class DatabaseITTest {
+public class DatabaseITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired
   private IUserDAO userDAO;
@@ -129,8 +126,7 @@ public class DatabaseITTest {
     }
   }
 
-  @Test
-  @Ignore
+  @Test(enabled = false)
   public void testSQLUpdate() throws AppException {
     statusCondition.contestId = 1;
     Map<String, Object> properties = new HashMap<>();

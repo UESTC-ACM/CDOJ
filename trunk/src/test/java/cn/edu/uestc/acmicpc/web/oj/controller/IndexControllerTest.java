@@ -9,25 +9,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.config.WebMVCConfig;
 import cn.edu.uestc.acmicpc.db.dto.impl.DepartmentDTO;
-import cn.edu.uestc.acmicpc.web.oj.controller.index.IndexController;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.web.oj.controller.index.IndexController;
 
 /** Test cases for {@link IndexController}. */
-@RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = { TestContext.class, WebMVCConfig.class })
 public class IndexControllerTest extends ControllerTest {
@@ -38,7 +35,7 @@ public class IndexControllerTest extends ControllerTest {
   @Qualifier("mockDepartmentService")
   private DepartmentService departmentService;
 
-  @Before
+  @BeforeMethod
   public void init() {
     Mockito.reset(departmentService);
     mockMvc = initControllers(new IndexController(departmentService));

@@ -3,13 +3,11 @@ package cn.edu.uestc.acmicpc.db;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.AssertJUnit;
+import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
@@ -21,15 +19,13 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Test cases for views.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { IntegrationTestContext.class })
-public class ViewITTest {
+public class ViewITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired
   private IDepartmentDAO departmentDAO;
 
-  @Test
-  @Ignore
+  @Test(enabled = false)
   @Deprecated
   public void testUserView() throws AppException {
     User user = new User();
@@ -43,6 +39,6 @@ public class ViewITTest {
     user.setLastLogin(new Timestamp(new Date().getTime()));
     user.setType(0);
     UserView userView = new UserView(user);
-    Assert.assertEquals("admin", userView.getUserName());
+    AssertJUnit.assertEquals("admin", userView.getUserName());
   }
 }
