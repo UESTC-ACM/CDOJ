@@ -62,7 +62,7 @@
         <ul class="dropdown-menu">
           <c:if test="${sessionScope.currentUser.type == 1}">
             <li>
-              <a href="#">
+              <a href="<c:url value="/admin/index"/>">
                 <i class="icon-lock"></i>
                 Admin
               </a>
