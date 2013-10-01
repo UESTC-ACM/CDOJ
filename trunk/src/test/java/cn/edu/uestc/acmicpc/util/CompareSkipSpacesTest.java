@@ -1,14 +1,11 @@
 package cn.edu.uestc.acmicpc.util;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.BlockJUnit4ClassRunner;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * All test cases for {@code StringUtil.compareSkipSpaces} methods.
  */
-@RunWith(BlockJUnit4ClassRunner.class)
 public class CompareSkipSpacesTest {
 
   @Test

@@ -1,11 +1,10 @@
 package cn.edu.uestc.acmicpc.db;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
@@ -18,9 +17,8 @@ import com.jolbox.bonecp.BoneCPDataSource;
 /**
  * Test cases for AOP framework
  */
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { IntegrationTestContext.class })
-public class AOPITTest {
+public class AOPITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired
   IUserDAO userDAO;

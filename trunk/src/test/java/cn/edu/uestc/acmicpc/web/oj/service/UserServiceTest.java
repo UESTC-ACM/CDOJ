@@ -1,26 +1,24 @@
 package cn.edu.uestc.acmicpc.web.oj.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
+import cn.edu.uestc.acmicpc.service.iface.UserService;
 
 /** Test cases for {@link UserService}. */
-@RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = { TestContext.class })
-public class UserServiceTest {
+public class UserServiceTest extends AbstractTestNGSpringContextTests {
 
   @Autowired
   @Qualifier("realUserService")
@@ -38,7 +36,7 @@ public class UserServiceTest {
   @Qualifier("mockEmailService")
   private EmailService emailService;
 
-  @Before
+  @BeforeMethod
   public void init() {
     Mockito.reset(userDAO, globalService);
   }
