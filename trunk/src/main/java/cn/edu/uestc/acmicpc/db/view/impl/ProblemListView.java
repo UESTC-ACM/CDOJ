@@ -25,9 +25,9 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 import java.util.LinkedList;
 import java.util.List;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.ProblemListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.base.View;

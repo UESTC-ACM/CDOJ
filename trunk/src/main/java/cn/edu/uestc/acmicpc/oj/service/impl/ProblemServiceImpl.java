@@ -16,8 +16,8 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.impl.ProblemDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.ProblemListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
@@ -81,14 +81,9 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
            .setMemoryLimit(problem.getMemoryLimit())
            .setSolved(problem.getSolved())
            .setTried(problem.getTried())
-           .setIsSpj(problem.getIsSpj())
-           .setIsVisible(problem.getIsVisible())
-           .setOutputLimit(problem.getOutputLimit())
+           .setIsSpj(problem.getIsSpj())  
            .setJavaTimeLimit(problem.getJavaTimeLimit())
            .setJavaMemoryLimit(problem.getJavaMemoryLimit())
-           .setDataCount(problem.getDataCount())
-           .setDifficulty(problem.getDifficulty())
-           //TODO(mzry1992): Add Tags.
            .build();
             
   }
@@ -106,7 +101,6 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
            .setIsSpj(problem.getIsSpj())
            .setIsVisible(problem.getIsVisible())
            .setDifficulty(problem.getDifficulty())
-           //TODO(mzry1992): Add tags.
            .build();
     
   }
@@ -122,12 +116,7 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
       PageInfo pageInfo) throws AppException{
     problemCondition.currentPage = pageInfo.getCurrentPage();
     problemCondition.countPerPage = Global.RECORD_PER_PAGE;
-    List<Problem> problemList = (List<Problem>) problemDAO.findAll(
-        "problemID,title,source,solved,tried", problemCondition.getCondition());
-    List<ProblemListDTO> problemListDTOList = new ArrayList<ProblemListDTO>();
-    for(Problem problem: problemList){
-      problemListDTOList.add(getProblemListDTOByProblem(problem));
-    }
-    return problemListDTOList;
+    return problemDAO.findAll(ProblemListDTO.class, ProblemListDTO.builder(), 
+                              problemCondition.getCondition());
   }
 }

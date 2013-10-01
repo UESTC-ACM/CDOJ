@@ -20,9 +20,10 @@ import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.impl.ProblemDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.ProblemDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.ProblemListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.LanguageDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemListView;
 import cn.edu.uestc.acmicpc.db.view.impl.ProblemView;
@@ -53,35 +54,48 @@ public class ProblemController extends BaseController{
     this.userService = userService;
   }
   
+  /**
+   * Show a problem
+   * 
+   * @param ProblemId
+   * @return String
+   */
   @RequestMapping("show/{problemId}")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String,Object> show(@PathVariable("ProblemId") Integer ProblemId){
-    Map<String, Object> json = new HashMap<String, Object>();
+  public String show(@PathVariable("ProblemId") Integer ProblemId, ModelMap model){
     try{
       ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(ProblemId);
       if(problemDTO == null){
         throw new AppException("No such problem");
       }
-      ProblemView problemView = new ProblemView(problemDTO);
-      json.put("result", "ok");
-      json.put("problem", problemView);
+      model.put("targetProblem", problemDTO);
     }catch (AppException e){
-      json.put("result", "error");
-      json.put("error_msg", e.getMessage());
+      return "error/404";
     }catch (Exception e){
       e.printStackTrace();
-      json.put("result", "error");
-      json.put("error_msg", "Unknown exception occurred.");
+      return "error/404";
     }
-    return json;
+    return "problem/problemShow";
   }
   
+  /**
+   * Show problem list
+   * 
+   * @return String
+   */
   @RequestMapping("list")
   @LoginPermit(NeedLogin = false)
   public String list(){
     return "problem/problemList";
   }
   
+  /**
+   * Search problem
+   * 
+   * @param session
+   * @param problemCondition
+   * @return json
+   */
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public @ResponseBody Map<String,Object> search(HttpSession session, 
@@ -102,16 +116,20 @@ public class ProblemController extends BaseController{
       List<ProblemListDTO> problemListDTOList = problemService.GetProblemListDTOList(
           problemCondition, pageInfo);
       
-      List<ProblemListView> problemListViewList = new ArrayList<>();
       Map<Integer, Global.AuthorStatusType> problemStatus = GetProblemStatus(currentUser);
       
       for(ProblemListDTO problemListDTO: problemListDTOList){
-        problemListViewList.add(new ProblemListView(problemListDTO, currentUser, 
-            problemStatus.get(problemListDTO.getProblemId())));
+        if(problemStatus.get(problemListDTO.getProblemId()) == 
+            Global.AuthorStatusType.PASS){
+          problemListDTO.setStatus(1);
+        }
+        else {
+          problemListDTO.setStatus(2);
+        }
       }
       json.put("pageInfo", pageInfo.getHtmlString());
-      json.put("result", "ok");
-      json.put("problemList", problemListViewList);
+      json.put("result", "success");
+      json.put("problemList", problemListDTOList);
     }catch(AppException e){
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
