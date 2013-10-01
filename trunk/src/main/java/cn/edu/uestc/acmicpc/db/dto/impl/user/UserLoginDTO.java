@@ -42,4 +42,46 @@ public class UserLoginDTO {
     this.password = password;
   }
 
+  public UserLoginDTO() {
+  }
+
+  public UserLoginDTO(String userName, String password) {
+    this.userName = userName;
+    this.password = password;
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  public static class Builder {
+
+    private Builder() {
+    }
+
+    public UserLoginDTO build() {
+      return new UserLoginDTO(userName, password);
+    }
+
+    private String userName = "admin";
+    private String password = "password";
+
+    public String getUserName() {
+      return userName;
+    }
+
+    public Builder setUserName(String userName) {
+      this.userName = userName;
+      return this;
+    }
+
+    public String getPassword() {
+      return password;
+    }
+
+    public Builder setPassword(String password) {
+      this.password = password;
+      return this;
+    }
+  }
 }
