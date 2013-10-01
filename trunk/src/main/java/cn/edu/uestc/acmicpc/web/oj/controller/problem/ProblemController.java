@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.oj.controller.problem;
+package cn.edu.uestc.acmicpc.web.oj.controller.problem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
