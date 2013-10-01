@@ -7,14 +7,12 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.util.ObjectUtil;
 
 /**
  * Data transfer object for {@link User}.
  */
-public class UserRegisterDTO implements BaseDTO<User> {
+public class UserRegisterDTO {
 
   /**
    * Input: user id, set null for new user
@@ -74,39 +72,6 @@ public class UserRegisterDTO implements BaseDTO<User> {
   @NotNull(message = "Please enter your student ID.")
   @Length(min = 1, max = 20, message = "Please enter 1-20 characters.")
   private String studentId;
-
-  public UserRegisterDTO() {
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (obj instanceof UserRegisterDTO) {
-      boolean result = true;
-      UserRegisterDTO dto = (UserRegisterDTO) obj;
-      result &= ObjectUtil.equals(userName, dto.userName);
-      result &= ObjectUtil.equals(nickName, dto.nickName);
-      result &= ObjectUtil.equals(email, dto.email);
-      result &= ObjectUtil.equals(school, dto.school);
-      result &= ObjectUtil.equals(departmentId, dto.departmentId);
-      result &= ObjectUtil.equals(studentId, dto.studentId);
-      return result;
-    }
-    return false;
-  }
-
-  private UserRegisterDTO(Integer userId, String userName, String password,
-                          String passwordRepeat, String nickName, String email, String school, Integer departmentId,
-                          String studentId) {
-    this.userId = userId;
-    this.userName = userName;
-    this.password = password;
-    this.passwordRepeat = passwordRepeat;
-    this.nickName = nickName;
-    this.email = email;
-    this.school = school;
-    this.departmentId = departmentId;
-    this.studentId = studentId;
-  }
 
   public Integer getUserId() {
     return userId;
@@ -180,74 +145,4 @@ public class UserRegisterDTO implements BaseDTO<User> {
     this.studentId = studentId;
   }
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
-  /** Builder for {@link UserRegisterDTO}. */
-  public static class Builder {
-
-    private Builder() {
-    }
-
-    private Integer userId = 2;
-    private String userName = "admin";
-    private String password = "password";
-    private String passwordRepeat = "password";
-    private String nickName = "admin";
-    private String email = "acm_admin@uestc.edu.cn";
-    private String school = "UESTC";
-    private Integer departmentId = 1;
-    private String studentId = "2010013100008";
-
-    public Builder setUserId(Integer userId) {
-      this.userId = userId;
-      return this;
-    }
-
-    public Builder setUserName(String userName) {
-      this.userName = userName;
-      return this;
-    }
-
-    public Builder setPassword(String password) {
-      this.password = password;
-      return this;
-    }
-
-    public Builder setPasswordRepeat(String passwordRepeat) {
-      this.passwordRepeat = passwordRepeat;
-      return this;
-    }
-
-    public Builder setNickName(String nickName) {
-      this.nickName = nickName;
-      return this;
-    }
-
-    public Builder setEmail(String email) {
-      this.email = email;
-      return this;
-    }
-
-    public Builder setSchool(String school) {
-      this.school = school;
-      return this;
-    }
-
-    public Builder setDepartmentId(Integer departmentId) {
-      this.departmentId = departmentId;
-      return this;
-    }
-
-    public Builder setStudentId(String studentId) {
-      this.studentId = studentId;
-      return this;
-    }
-
-    public UserRegisterDTO build() {
-      return new UserRegisterDTO(userId, userName, password, passwordRepeat, nickName, email,
-          school, departmentId, studentId);
-    }
-  }
 }
