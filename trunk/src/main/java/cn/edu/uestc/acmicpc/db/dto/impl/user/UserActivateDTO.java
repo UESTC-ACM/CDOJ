@@ -5,10 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-/**
- * Description
- * TODO(mzry1992)
- */
+/** TODO(mzry1992) **/
 public class UserActivateDTO {
 
   @NotNull(message = "Please enter your user name.")
@@ -61,4 +58,70 @@ public class UserActivateDTO {
   public void setPasswordRepeat(String passwordRepeat) {
     this.passwordRepeat = passwordRepeat;
   }
+
+  public UserActivateDTO() {
+  }
+
+  private UserActivateDTO(String userName, String serialKey, String password, String passwordRepeat) {
+    this.userName = userName;
+    this.serialKey = serialKey;
+    this.password = password;
+    this.passwordRepeat = passwordRepeat;
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  public static class Builder {
+
+    private Builder() {
+    }
+
+    public UserActivateDTO build() {
+      return new UserActivateDTO(userName, serialKey, password, passwordRepeat);
+    }
+
+    private String userName;
+    private String serialKey;
+    private String password;
+    private String passwordRepeat;
+
+    public String getUserName() {
+      return userName;
+    }
+
+    public Builder setUserName(String userName) {
+      this.userName = userName;
+      return this;
+    }
+
+    public String getSerialKey() {
+      return serialKey;
+    }
+
+    public Builder setSerialKey(String serialKey) {
+      this.serialKey = serialKey;
+      return this;
+    }
+
+    public String getPassword() {
+      return password;
+    }
+
+    public Builder setPassword(String password) {
+      this.password = password;
+      return this;
+    }
+
+    public String getPasswordRepeat() {
+      return passwordRepeat;
+    }
+
+    public Builder setPasswordRepeat(String passwordRepeat) {
+      this.passwordRepeat = passwordRepeat;
+      return this;
+    }
+  }
+
 }
