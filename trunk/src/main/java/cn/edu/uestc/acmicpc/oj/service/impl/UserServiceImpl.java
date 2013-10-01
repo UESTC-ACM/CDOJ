@@ -12,10 +12,8 @@ import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.oj.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.impl.AbstractService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -29,16 +27,10 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 public class UserServiceImpl extends AbstractService implements UserService {
 
   private final IUserDAO userDAO;
-  private final GlobalService globalService;
-  private final DepartmentService departmentService;
 
   @Autowired
-  public UserServiceImpl(IUserDAO userDAO,
-                         GlobalService globalService,
-                         DepartmentService departmentService) {
+  public UserServiceImpl(IUserDAO userDAO) {
     this.userDAO = userDAO;
-    this.globalService = globalService;
-    this.departmentService = departmentService;
   }
 
   private void updateUserByUserDTO(User user, UserDTO userDTO) {

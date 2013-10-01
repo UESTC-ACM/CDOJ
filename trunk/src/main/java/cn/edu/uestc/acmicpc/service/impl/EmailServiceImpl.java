@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserSerialKeyDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDTO;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.util.Settings;
