@@ -19,7 +19,6 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 echo -e "\x1b[0;33mrun integration tests\x1b[m"
-echo -e "\x1b[0;33mrun integration tests\x1b[m"
 mvn integration-test
 if [ $? -ne 0 ]; then
   echo -e $PRE_COMMIT_ERRRO

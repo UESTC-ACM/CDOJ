@@ -34,7 +34,7 @@ class TestTestingCodeNotContainJUnit(unittest.TestCase):
       if comment:
         continue
       if 'import org.junit' in line:
-        self.fail('\x1b[1;31mfind junit iport at line ' + str(current) + ' of ' + self.file_name + '\n\x1b[0;33m' + self.file_name[self.file_name.rfind('/') + 1 : ] + '@' + str(current) + ': ' + line + '\x1b[m')
+        self.fail('\x1b[1;31mfind junit import at line ' + str(current) + ' of ' + self.file_name + '\n\x1b[0;33m' + self.file_name[self.file_name.rfind('/') + 1 : ] + '@' + str(current) + ': ' + line + '\x1b[m')
 
 def addTestCases(suite, dir_name):
   for item in os.listdir(dir_name):
