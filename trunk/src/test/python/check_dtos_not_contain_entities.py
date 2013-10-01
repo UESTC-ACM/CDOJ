@@ -70,7 +70,7 @@ def addTestCases(suite, dir_name):
       suite.addTest(TestDtosNotContainEntities(file_name = sub_path))
 
 def initEntities(dir_name):
-  for item in os.listdir(entity_dir):
+  for item in os.listdir(dir_name):
     sub_path = os.path.join(dir_name, item)
     mode = os.stat(sub_path)[stat.ST_MODE]
     if stat.S_ISDIR(mode):

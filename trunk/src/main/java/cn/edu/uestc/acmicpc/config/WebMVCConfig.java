@@ -20,7 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {
-    "cn.edu.uestc.acmicpc.oj.controller"
+    "cn.edu.uestc.acmicpc.web.oj.controller"
 })
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class WebMVCConfig extends WebMvcConfigurerAdapter {
