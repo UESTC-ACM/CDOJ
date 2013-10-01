@@ -9,8 +9,6 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserSummaryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.UserSerialKeyDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserSerialKeyDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserSummaryDTO;
 import cn.edu.uestc.acmicpc.oj.controller.base.BaseController;
 import cn.edu.uestc.acmicpc.oj.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
@@ -210,8 +210,9 @@ public class UserController extends BaseController {
         userService.createNewUser(userDTO);
 
         userDTO = userService.getUserDTOByUserName(userRegisterDTO.getUserName());
-        if (userDTO == null)
+        if (userDTO == null) {
           throw new AppException("Register failed, please try again.");
+        }
         session.setAttribute("currentUser", userDTO);
         json.put("result", "success");
       } catch (FieldException e) {
@@ -219,6 +220,7 @@ public class UserController extends BaseController {
         json.put("result", "field_error");
         json.put("field", validateResult.getFieldErrors());
       } catch (AppException e) {
+        e.printStackTrace();
         json.put("result", "error");
         json.put("error_msg", e.getMessage());
       }

@@ -387,7 +387,8 @@ public class UserControllerTest extends ControllerTest {
   @Test
   public void testRegister_successfully() throws Exception {
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder().build();
-    when(userService.getUserDTOByUserName(userRegisterDTO.getUserName())).thenReturn(null);
+    when(userService.getUserDTOByUserName(userRegisterDTO.getUserName())).thenReturn(null)
+        .thenReturn(mock(UserDTO.class));
     when(userService.getUserDTOByEmail(userRegisterDTO.getEmail())).thenReturn(null);
     when(departmentService.getDepartmentName(userRegisterDTO.getDepartmentId()))
         .thenReturn("department");
