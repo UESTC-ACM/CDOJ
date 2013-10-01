@@ -1,19 +1,19 @@
 package cn.edu.uestc.acmicpc.oj.service.impl;
 
-import java.util.*;
+import java.util.List;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.UserDTO;
-import cn.edu.uestc.acmicpc.oj.service.iface.*;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserSummaryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.oj.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
 import cn.edu.uestc.acmicpc.oj.view.PageInfo;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.impl.AbstractService;
@@ -28,7 +28,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 @Primary
 public class UserServiceImpl extends AbstractService implements UserService {
 
-  private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
   private final IUserDAO userDAO;
   private final GlobalService globalService;
   private final DepartmentService departmentService;
@@ -42,54 +41,31 @@ public class UserServiceImpl extends AbstractService implements UserService {
     this.departmentService = departmentService;
   }
 
-  private UserDTO getUserDTOByUser(User user) {
-    return UserDTO.builder()
-        .setUserId(user.getUserId())
-        .setUserName(user.getUserName())
-        .setStudentId(user.getStudentId())
-        .setPassword(user.getPassword())
-        .setSchool(user.getSchool())
-        .setNickName(user.getNickName())
-        .setEmail(user.getEmail())
-        .setSolved(user.getSolved())
-        .setTried(user.getTried())
-        .setType(user.getType())
-        .setTypeName(globalService.getAuthenticationName(user.getType()))
-        .setDepartmentId(user.getDepartmentId())
-        .setDepartmentName(departmentService.getDepartmentName(user.getDepartmentId()))
-        .build();
-  }
-
   private void updateUserByUserDTO(User user, UserDTO userDTO) {
-    user.setUserId(userDTO.getUserId());
-    user.setUserName(userDTO.getUserName());
-    user.setStudentId(userDTO.getStudentId());
-    user.setPassword(userDTO.getPassword());
-    user.setSchool(userDTO.getSchool());
-    user.setNickName(userDTO.getNickName());
-    user.setEmail(userDTO.getEmail());
-    user.setSolved(userDTO.getSolved());
-    user.setTried(userDTO.getTried());
-    user.setType(userDTO.getType());
-    user.setDepartmentId(userDTO.getDepartmentId());
-  }
-
-  @Override
-  public UserDTO getUserByUserName(String userName) throws AppException {
-    User user = (User)userDAO.getEntityByUniqueField("userName", userName);
-    return getUserDTOByUser(user);
-  }
-
-  @Override
-  public UserDTO getUserByEmail(String email) throws AppException {
-    User user = (User)userDAO.getEntityByUniqueField("email", email);
-    return getUserDTOByUser(user);
-  }
-
-  @Override
-  public UserDTO getUserByUserId(Integer userId) throws AppException {
-    User user = userDAO.get(userId);
-    return getUserDTOByUser(user);
+    if (userDTO.getUserId() != null)
+      user.setUserId(userDTO.getUserId());
+    if (userDTO.getUserName() != null)
+      user.setUserName(userDTO.getUserName());
+    if (userDTO.getStudentId() != null)
+      user.setStudentId(userDTO.getStudentId());
+    if (userDTO.getPassword() != null)
+      user.setPassword(userDTO.getPassword());
+    if (userDTO.getSchool() != null)
+      user.setSchool(userDTO.getSchool());
+    if (userDTO.getNickName() != null)
+      user.setNickName(userDTO.getNickName());
+    if (userDTO.getEmail() != null)
+      user.setEmail(userDTO.getEmail());
+    if (userDTO.getSolved() != null)
+      user.setSolved(userDTO.getSolved());
+    if (userDTO.getTried() != null)
+      user.setTried(userDTO.getTried());
+    if (userDTO.getType() != null)
+      user.setType(userDTO.getType());
+    if (userDTO.getDepartmentId() != null)
+      user.setDepartmentId(userDTO.getDepartmentId());
+    if (userDTO.getLastLogin() != null)
+      user.setLastLogin(userDTO.getLastLogin());
   }
 
   @Override
@@ -115,15 +91,34 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<UserDTO> search(UserCondition userCondition, PageInfo pageInfo)
+  public List<UserSummaryDTO> search(UserCondition userCondition, PageInfo pageInfo)
       throws AppException {
     userCondition.currentPage = pageInfo.getCurrentPage();
     userCondition.countPerPage = Global.RECORD_PER_PAGE;
-    List<User> userList = (List<User>) userDAO.findAll(userCondition.getCondition());
-    List<UserDTO> userDTOList = new ArrayList<>();
-    for (User user : userList)
-      userDTOList.add(getUserDTOByUser(user));
-    return userDTOList;
+    return userDAO.findAll(UserSummaryDTO.class,
+        UserSummaryDTO.builder(),
+        userCondition.getCondition());
+  }
+
+  @Override
+  public UserDTO getUserDTOByUserName(String userName) throws AppException {
+    return userDAO.getDTOByUniqueField(UserDTO.class, UserDTO.builder(), "userName", userName);
+  }
+
+  @Override
+  public UserDTO getUserDTOByEmail(String email) throws AppException {
+    return userDAO.getDTOByUniqueField(UserDTO.class, UserDTO.builder(), "email", email);
+  }
+
+  @Override
+  public UserDTO getUserDTOByUserId(Integer userId) throws AppException {
+    return userDAO.getDTOByUniqueField(UserDTO.class, UserDTO.builder(), "userId", userId);
+  }
+
+  @Override
+  public UserCenterDTO getUserCenterDTOByUserName(String userName) throws AppException {
+    return userDAO.getDTOByUniqueField(UserCenterDTO.class, UserCenterDTO.builder(), "userName",
+        userName);
   }
 
   @Override

@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.oj.controller;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -10,8 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.UUID;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.UserRegisterDTO;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,12 +25,19 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import cn.edu.uestc.acmicpc.config.TestContext;
-import cn.edu.uestc.acmicpc.db.dto.impl.UserLoginDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDTO;
 import cn.edu.uestc.acmicpc.oj.controller.user.UserController;
+import cn.edu.uestc.acmicpc.oj.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.oj.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.oj.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.oj.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.oj.service.iface.UserService;
+import cn.edu.uestc.acmicpc.service.iface.EmailService;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.exception.FieldException;
 
 import com.alibaba.fastjson.JSON;
 
@@ -53,18 +59,35 @@ public class UserControllerTest extends ControllerTest {
   @Qualifier("mockGlobalService")
   private GlobalService globalService;
 
+  @Autowired
+  @Qualifier("mockDepartmentService")
+  private DepartmentService departmentService;
+
+  @Autowired
+  @Qualifier("mockProblemService")
+  private ProblemService problemService;
+
+  @Autowired
+  @Qualifier("mockStatusService")
+  private StatusService statusService;
+
+  @Autowired
+  @Qualifier("mockUserSerialKeyService")
+  private UserSerialKeyService userSerialKeyService;
+
+  @Autowired
+  @Qualifier("mockEmailService")
+  EmailService emailService;
+
   private MockMvc mockMvc;
   private MockHttpSession session;
 
-  @Test
-  public void testFish() {
-  }
-/*
-TODO(fish)
   @Before
   public void init() {
-    Mockito.reset(userService);
-    mockMvc = initControllers(new UserController(userService, globalService));
+    Mockito.reset(userService,globalService, departmentService,
+        problemService, statusService, userSerialKeyService, emailService);
+    mockMvc = initControllers(new UserController(userService,globalService, departmentService,
+        problemService, statusService, userSerialKeyService, emailService));
     session = new MockHttpSession(context.getServletContext(), UUID.randomUUID().toString());
   }
 
@@ -74,18 +97,18 @@ TODO(fish)
         .setUserName("admin")
         .setPassword("password")
         .build();
-    UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder()
+    UserDTO userDTO = UserDTO.builder()
         .setUserName("admin")
-        .setPassword("password")
+        .setPassword(StringUtil.encodeSHA1("password"))
         .build();
-    when(userService.login(Mockito.<UserLoginDTO> any())).thenReturn(userRegisterDTO);
+    when(userService.getUserDTOByUserName(userLoginDTO.getUserName())).thenReturn(userDTO);
     mockMvc.perform(post(URL_LOGIN)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userLoginDTO))
         .session(session))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")));
-    Assert.assertEquals(userRegisterDTO, session.getAttribute("currentUser"));
+    Assert.assertEquals(userDTO, session.getAttribute("currentUser"));
   }
 
   @Test
@@ -269,8 +292,11 @@ TODO(fish)
         .setUserName("admin")
         .setPassword("wrongPassword")
         .build();
-    when(userService.login(Mockito.<UserLoginDTO> any()))
-        .thenThrow(new FieldException("password", "User or password is wrong, please try again"));
+    UserDTO userDTO = UserDTO.builder()
+        .setUserName("admin")
+        .setPassword(StringUtil.encodeSHA1("password"))
+        .build();
+    when(userService.getUserDTOByUserName(userLoginDTO.getUserName())).thenReturn(userDTO);
     mockMvc.perform(post(URL_LOGIN)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userLoginDTO))
@@ -335,7 +361,7 @@ TODO(fish)
         .setUserName("admin")
         .setPassword("password")
         .build();
-    when(userService.login(Mockito.<UserLoginDTO> any()))
+    when(userService.getUserDTOByUserName(userLoginDTO.getUserName()))
         .thenThrow(new AppException("service error"));
     mockMvc.perform(post(URL_LOGIN)
         .contentType(APPLICATION_JSON_UTF8)
@@ -361,7 +387,10 @@ TODO(fish)
   @Test
   public void testRegister_successfully() throws Exception {
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder().build();
-    when(userService.register(userRegisterDTO)).thenReturn(userRegisterDTO);
+    when(userService.getUserDTOByUserName(userRegisterDTO.getUserName())).thenReturn(null);
+    when(userService.getUserDTOByEmail(userRegisterDTO.getEmail())).thenReturn(null);
+    when(departmentService.getDepartmentName(userRegisterDTO.getDepartmentId()))
+        .thenReturn("department");
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userRegisterDTO)))
@@ -475,8 +504,6 @@ TODO(fish)
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder()
         .setPassword(null)
         .build();
-    when(userService.register(Mockito.<UserRegisterDTO>any())).thenThrow(
-        new FieldException("password", "Please enter your password."));
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userRegisterDTO)))
@@ -503,6 +530,7 @@ TODO(fish)
         .andExpect(jsonPath("$.field[0].objectName", is("userRegisterDTO")))
         .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 6-20 characters.")));
   }
+
 
   @Test
   public void testRegister_failed_password_tooShort() throws Exception {
@@ -541,8 +569,6 @@ TODO(fish)
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder()
         .setPasswordRepeat(null)
         .build();
-    when(userService.register(Mockito.<UserRegisterDTO>any())).thenThrow(
-        new FieldException("passwordRepeat", "Please repeat your password."));
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userRegisterDTO)))
@@ -608,8 +634,6 @@ TODO(fish)
         .setPassword("12345678")
         .setPasswordRepeat("123456789")
         .build();
-    when(userService.register(Mockito.<UserRegisterDTO>any())).thenThrow(
-        new FieldException("passwordRepeat", "Password do not match."));
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userRegisterDTO)))
@@ -658,8 +682,6 @@ TODO(fish)
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder()
         .setNickName(StringUtil.repeat(" ", 10))
         .build();
-    when(userService.register(Mockito.<UserRegisterDTO> any())).thenThrow(
-        new FieldException("nickName", "Nick name should not have useless blank."));
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userRegisterDTO)))
@@ -919,8 +941,8 @@ TODO(fish)
   @Test
   public void testRegister_failed_usedUserName() throws Exception {
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder().build();
-    when(userService.register(Mockito.<UserRegisterDTO> any())).thenThrow(
-        new FieldException("userName", "User name has been used!"));
+    when(userService.getUserDTOByUserName(userRegisterDTO.getUserName()))
+        .thenReturn(mock(UserDTO.class));
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userRegisterDTO)))
@@ -935,8 +957,7 @@ TODO(fish)
   @Test
   public void testRegister_failed_usedEmail() throws Exception {
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder().build();
-    when(userService.register(Mockito.<UserRegisterDTO> any())).thenThrow(
-        new FieldException("email", "Email has benn used!"));
+    when(userService.getUserDTOByEmail(userRegisterDTO.getEmail())).thenReturn(mock(UserDTO.class));
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userRegisterDTO)))
@@ -951,8 +972,7 @@ TODO(fish)
   @Test
   public void testRegister_failed_departmentNotFound() throws Exception {
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder().build();
-    when(userService.register(Mockito.<UserRegisterDTO> any())).thenThrow(
-        new FieldException("departmentId", "Please choose a validate department."));
+    when(departmentService.getDepartmentName(userRegisterDTO.getDepartmentId())).thenReturn(null);
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userRegisterDTO)))
@@ -969,8 +989,14 @@ TODO(fish)
   public void testUser_register_login_logout() throws Exception {
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder().build();
     UserLoginDTO userLoginDTO = UserLoginDTO.builder().build();
-    when(userService.register(Mockito.<UserRegisterDTO> any())).thenReturn(userRegisterDTO);
-    when(userService.login(Mockito.<UserLoginDTO> any())).thenReturn(userRegisterDTO);
+    UserDTO userDTO = UserDTO.builder()
+        .setPassword(StringUtil.encodeSHA1(userLoginDTO.getPassword()))
+        .build();
+    when(userService.getUserDTOByUserName(userRegisterDTO.getUserName()))
+        .thenReturn(null).thenReturn(userDTO);
+    when(userService.getUserDTOByEmail(userRegisterDTO.getEmail())).thenReturn(null);
+    when(departmentService.getDepartmentName(userRegisterDTO.getDepartmentId()))
+        .thenReturn("department");
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(userRegisterDTO))
@@ -983,7 +1009,7 @@ TODO(fish)
         .session(session))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")));
-    Assert.assertEquals(userRegisterDTO, session.getAttribute("currentUser"));
+    Assert.assertEquals(userDTO, session.getAttribute("currentUser"));
     mockMvc.perform(post(URL_LOGOUT)
         .contentType(APPLICATION_JSON_UTF8)
         .session(session))
@@ -991,5 +1017,4 @@ TODO(fish)
         .andExpect(jsonPath("$.result", is("success")));
     Assert.assertNull(session.getAttribute("currentUser"));
   }
-  */
 }

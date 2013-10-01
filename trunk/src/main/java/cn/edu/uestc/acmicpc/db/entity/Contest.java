@@ -2,12 +2,15 @@ package cn.edu.uestc.acmicpc.db.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Collection;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -131,5 +134,49 @@ public class Contest implements Serializable {
 
   public void setIsVisible(Boolean visible) {
     isVisible = visible;
+  }
+
+  private Collection<ContestProblem> contestProblemsByContestId;
+
+  @OneToMany(mappedBy = "contestByContestId", cascade = CascadeType.ALL)
+  public Collection<ContestProblem> getContestProblemsByContestId() {
+    return contestProblemsByContestId;
+  }
+
+  public void setContestProblemsByContestId(Collection<ContestProblem> contestProblemsByContestId) {
+    this.contestProblemsByContestId = contestProblemsByContestId;
+  }
+
+  private Collection<ContestUser> contestUsersByContestId;
+
+  @OneToMany(mappedBy = "contestByContestId", cascade = CascadeType.ALL)
+  public Collection<ContestUser> getContestUsersByContestId() {
+    return contestUsersByContestId;
+  }
+
+  public void setContestUsersByContestId(Collection<ContestUser> contestUsersByContestId) {
+    this.contestUsersByContestId = contestUsersByContestId;
+  }
+
+  private Collection<Status> statusesByContestId;
+
+  @OneToMany(mappedBy = "contestByContestId", cascade = CascadeType.ALL)
+  public Collection<Status> getStatusesByContestId() {
+    return statusesByContestId;
+  }
+
+  public void setStatusesByContestId(Collection<Status> statusesByContestId) {
+    this.statusesByContestId = statusesByContestId;
+  }
+
+  private Collection<Article> articlesByContestId;
+
+  @OneToMany(mappedBy = "contestByContestId", cascade = CascadeType.ALL)
+  public Collection<Article> getArticlesByContestId() {
+    return articlesByContestId;
+  }
+
+  public void setArticlesByContestId(Collection<Article> articlesByContestId) {
+    this.articlesByContestId = articlesByContestId;
   }
 }
