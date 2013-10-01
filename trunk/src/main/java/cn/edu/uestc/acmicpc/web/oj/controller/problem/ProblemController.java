@@ -57,14 +57,14 @@ public class ProblemController extends BaseController{
   /**
    * Show a problem
    * 
-   * @param ProblemId
+   * @param problemId
    * @return String
    */
   @RequestMapping("show/{problemId}")
   @LoginPermit(NeedLogin = false)
-  public String show(@PathVariable("ProblemId") Integer ProblemId, ModelMap model){
+  public String show(@PathVariable("problemId") Integer problemId, ModelMap model){
     try{
-      ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(ProblemId);
+      ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(problemId);
       if(problemDTO == null){
         throw new AppException("No such problem");
       }
