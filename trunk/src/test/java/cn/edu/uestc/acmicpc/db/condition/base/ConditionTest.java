@@ -1,15 +1,12 @@
 package cn.edu.uestc.acmicpc.db.condition.base;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.BlockJUnit4ClassRunner;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
-@RunWith(BlockJUnit4ClassRunner.class)
 public class ConditionTest {
 
   @Test

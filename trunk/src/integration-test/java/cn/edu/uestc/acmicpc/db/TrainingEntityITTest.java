@@ -1,11 +1,9 @@
 package cn.edu.uestc.acmicpc.db;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
@@ -20,12 +18,10 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Test cases for training entity.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { IntegrationTestContext.class })
-public class TrainingEntityITTest {
+public class TrainingEntityITTest extends AbstractTestNGSpringContextTests {
 
-  @Test
-  @Ignore
+  @Test(enabled = false)
   public void testTrainingUserDAO_addTrainingUser() throws AppException {
     TrainingUser trainingUser = new TrainingUser();
     trainingUser.setRating(1200.0);
@@ -36,8 +32,7 @@ public class TrainingEntityITTest {
     trainingUserDAO.add(trainingUser);
   }
 
-  @Test
-  @Ignore
+  @Test(enabled = false)
   public void testTrainingContestDAO_addTrainingContest() throws AppException {
     TrainingContest trainingContest = new TrainingContest();
     trainingContest.setTitle("World final 2013");
@@ -45,8 +40,7 @@ public class TrainingEntityITTest {
     trainingContestDAO.add(trainingContest);
   }
 
-  @Test
-  @Ignore
+  @Test(enabled = false)
   public void testTrainingStatusDAO_addTrainingStatus() throws AppException {
     TrainingStatus trainingStatus = new TrainingStatus();
     trainingStatus.setRating(1000.0);

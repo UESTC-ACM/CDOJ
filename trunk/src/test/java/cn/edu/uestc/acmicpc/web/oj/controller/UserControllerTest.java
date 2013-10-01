@@ -11,38 +11,35 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.UUID;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDTO;
-import cn.edu.uestc.acmicpc.web.oj.controller.user.UserController;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.service.iface.EmailService;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
-import cn.edu.uestc.acmicpc.service.iface.EmailService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.web.oj.controller.user.UserController;
 
 import com.alibaba.fastjson.JSON;
 
 /** Mock test for {@link UserController}. */
-@RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = { TestContext.class })
 public class UserControllerTest extends ControllerTest {
@@ -82,7 +79,7 @@ public class UserControllerTest extends ControllerTest {
   private MockMvc mockMvc;
   private MockHttpSession session;
 
-  @Before
+  @BeforeMethod
   public void init() {
     Mockito.reset(userService,globalService, departmentService,
         problemService, statusService, userSerialKeyService, emailService);
