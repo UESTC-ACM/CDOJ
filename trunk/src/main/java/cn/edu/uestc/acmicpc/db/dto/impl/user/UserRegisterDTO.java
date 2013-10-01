@@ -145,4 +145,125 @@ public class UserRegisterDTO {
     this.studentId = studentId;
   }
 
+  public UserRegisterDTO() {
+  }
+
+  private UserRegisterDTO(Integer userId, String userName, String password, String passwordRepeat, String nickName, String email, String school, Integer departmentId, String studentId) {
+    this.userId = userId;
+    this.userName = userName;
+    this.password = password;
+    this.passwordRepeat = passwordRepeat;
+    this.nickName = nickName;
+    this.email = email;
+    this.school = school;
+    this.departmentId = departmentId;
+    this.studentId = studentId;
+  }
+
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  public static class Builder {
+
+    private Builder() {
+    }
+
+    public UserRegisterDTO build() {
+      return new UserRegisterDTO(userId, userName, password, passwordRepeat, nickName, email, school, departmentId, studentId);
+    }
+
+    private Integer userId = 2;
+    private String userName = "admin";
+    private String password = "password";
+    private String passwordRepeat = "password";
+    private String nickName = "admin";
+    private String email = "acm_admin@uestc.edu.cn";
+    private String school = "UESTC";
+    private Integer departmentId = 1;
+    private String studentId = "2010013100008";
+
+    public Integer getUserId() {
+      return userId;
+    }
+
+    public Builder setUserId(Integer userId) {
+      this.userId = userId;
+      return this;
+    }
+
+    public String getUserName() {
+      return userName;
+    }
+
+    public Builder setUserName(String userName) {
+      this.userName = userName;
+      return this;
+    }
+
+    public String getPassword() {
+      return password;
+    }
+
+    public Builder setPassword(String password) {
+      this.password = password;
+      return this;
+    }
+
+    public String getPasswordRepeat() {
+      return passwordRepeat;
+    }
+
+    public Builder setPasswordRepeat(String passwordRepeat) {
+      this.passwordRepeat = passwordRepeat;
+      return this;
+    }
+
+    public String getNickName() {
+      return nickName;
+    }
+
+    public Builder setNickName(String nickName) {
+      this.nickName = nickName;
+      return this;
+    }
+
+    public String getEmail() {
+      return email;
+    }
+
+    public Builder setEmail(String email) {
+      this.email = email;
+      return this;
+    }
+
+    public String getSchool() {
+      return school;
+    }
+
+    public Builder setSchool(String school) {
+      this.school = school;
+      return this;
+    }
+
+    public Integer getDepartmentId() {
+      return departmentId;
+    }
+
+    public Builder setDepartmentId(Integer departmentId) {
+      this.departmentId = departmentId;
+      return this;
+    }
+
+    public String getStudentId() {
+      return studentId;
+    }
+
+    public Builder setStudentId(String studentId) {
+      this.studentId = studentId;
+      return this;
+    }
+  }
+
 }
