@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,6 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserActivateDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserSummaryDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDTO;
 import cn.edu.uestc.acmicpc.oj.controller.base.BaseController;
 import cn.edu.uestc.acmicpc.oj.service.iface.DepartmentService;
