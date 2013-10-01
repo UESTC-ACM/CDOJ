@@ -13,8 +13,8 @@ def isLetterOrDigit(c):
 def findWholeWord(word, line):
   index = 0;
   while (index < len(line)):
-    newIndex = line[index: 0].find(word)
-    if newIndex == -1:
+    newIndex = line[index : ].find(word)
+    if newIndex < index:
       break
     left = False
     right = False
@@ -44,17 +44,21 @@ class TestDtosNotContainEntities(unittest.TestCase):
     for line in f:
       if line[-1] == '\n':
         line = line[:-1]
+      if '//' in line:
+        line = line[ : line.find('//')]
       current = current + 1
+      if '/*' in line and '*/' in line:
+        continue
       if '/*' in line:
         comment = True
-      if '*/' in line:
+      elif '*/' in line:
         comment = False
       if comment:
         continue
       if 'implements' not in line and 'import' not in line:
         for entity in entities:
           if findWholeWord(entity, line):
-            self.fail('find ' + entity + ' reference at line ' + str(current) + ' of ' + self.file_name + '\n' + line)
+            self.fail('\x1b[1;31mfind DB entity \x1b[0;32m' + entity + '\x1b[m reference at line ' + str(current) + ' of ' + self.file_name + '\n\x1b[0;33m' + self.file_name[self.file_name.find('/dto/impl/') : ] + '@' + str(current) + ': ' + line + '\x1b[m')
 
 def addTestCases(suite, dir_name):
   for item in os.listdir(dir_name):

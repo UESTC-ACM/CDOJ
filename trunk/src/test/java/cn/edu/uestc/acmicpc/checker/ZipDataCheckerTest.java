@@ -15,9 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
-/**
- * Test cases for {@link ZipDataChecker}.
- */
+/** Test cases for {@link ZipDataChecker}. */
 @RunWith(MockitoJUnitRunner.class)
 public class ZipDataCheckerTest {
 
