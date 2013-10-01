@@ -5,7 +5,7 @@ import sys
 import os
 import stat
 
-entities = []
+daos = []
 
 def isLetterOrDigit(c):
   return (c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z') or (c >= '0' and c <= '9')
@@ -27,7 +27,7 @@ def findWholeWord(word, line):
     index = newIndex + len(word)
   return False
 
-class TestDtosNotContainEntities(unittest.TestCase):
+class TestControllersNotContainDaos(unittest.TestCase):
 
   def __init__(self, file_name):
     unittest.TestCase.__init__(self, methodName = 'test')
@@ -56,9 +56,9 @@ class TestDtosNotContainEntities(unittest.TestCase):
       if comment:
         continue
       if 'implements' not in line and 'import' not in line:
-        for entity in entities:
+        for entity in daos:
           if findWholeWord(entity, line):
-            self.fail('\x1b[1;31mfind DB entity \x1b[0;32m' + entity + '\x1b[m reference at line ' + str(current) + ' of ' + self.file_name + '\n\x1b[0;33m' + self.file_name[self.file_name.find('/dto/impl/') : ] + '@' + str(current) + ': ' + line + '\x1b[m')
+            self.fail('\x1b[1;31mfind DB DAO \x1b[0;32m' + entity + '\x1b[m reference at line ' + str(current) + ' of ' + self.file_name + '\n\x1b[0;33m' + self.file_name[self.file_name.find('/db/dao/') : ] + '@' + str(current) + ': ' + line + '\x1b[m')
 
 def addTestCases(suite, dir_name):
   for item in os.listdir(dir_name):
@@ -67,26 +67,26 @@ def addTestCases(suite, dir_name):
     if stat.S_ISDIR(mode):
       addTestCases(suite, sub_path)
     elif sub_path[-5 : ] == '.java':
-      suite.addTest(TestDtosNotContainEntities(file_name = sub_path))
+      suite.addTest(TestControllersNotContainDaos(file_name = sub_path))
 
-def initEntities(dir_name):
+def initDaos(dir_name):
   for item in os.listdir(dir_name):
     sub_path = os.path.join(dir_name, item)
     mode = os.stat(sub_path)[stat.ST_MODE]
     if stat.S_ISDIR(mode):
-      initEntities(sub_path)
+      initDaos(sub_path)
     elif sub_path[-5 : ] == '.java':
-      entity = sub_path[sub_path.rfind('/') + 1 : -5]
-      entities.append(entity)
+      dao = sub_path[sub_path.rfind('/') + 1 : -5]
+      daos.append(dao)
 
 if __name__ == '__main__':
   suite = unittest.TestSuite()
   base_dir =  os.getcwd()
   base_dir = base_dir[:base_dir.rfind('/cdoj/trunk') + 11]
-  entity_dir = base_dir + '/src/main/java/cn/edu/uestc/acmicpc/db/entity/'
-  initEntities(entity_dir)
-  dto_dir = base_dir + '/src/main/java/cn/edu/uestc/acmicpc/db/dto/impl/'
-  addTestCases(suite, dto_dir)
+  dao_dir = base_dir + '/src/main/java/cn/edu/uestc/acmicpc/db/dao/'
+  initDaos(dao_dir)
+  controller_dir = base_dir + '/src/main/java/cn/edu/uestc/acmicpc/oj/controller/'
+  addTestCases(suite, controller_dir)
   result = unittest.TextTestRunner(verbosity = 2).run(suite)
   quit(len(result.errors) + len(result.failures))
 
