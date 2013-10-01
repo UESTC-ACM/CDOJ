@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import cn.edu.uestc.acmicpc.service.JudgeService;
+import cn.edu.uestc.acmicpc.judge.JudgeService;
 
 /** Integration test context configurations. */
 @Configuration
@@ -14,8 +14,8 @@ import cn.edu.uestc.acmicpc.service.JudgeService;
     "cn.edu.uestc.acmicpc.db",
     "cn.edu.uestc.acmicpc.util",
     "cn.edu.uestc.acmicpc.service",
-    "cn.edu.uestc.acmicpc.oj.service",
-    "cn.edu.uestc.acmicpc.training"
+    "cn.edu.uestc.acmicpc.web.oj.service",
+    "cn.edu.uestc.acmicpc.web.training"
 })
 @PropertySource("classpath:resources.properties")
 @EnableTransactionManagement
