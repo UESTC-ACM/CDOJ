@@ -1,9 +1,8 @@
 package cn.edu.uestc.acmicpc.db;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
@@ -12,9 +11,8 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Test cases for DTO entities.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { IntegrationTestContext.class })
-public class DTOITTest {
+public class DTOITTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void testUserDTO() throws AppException {

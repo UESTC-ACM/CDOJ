@@ -1,11 +1,10 @@
 package cn.edu.uestc.acmicpc.db;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.AssertJUnit;
+import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
@@ -18,9 +17,8 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 /**
  * Test cases for {@link UserSerialKey}.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { IntegrationTestContext.class })
-public class UserSerialKeyDatabaseITTest {
+public class UserSerialKeyDatabaseITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired
   private IUserDAO userDAO;
@@ -32,10 +30,10 @@ public class UserSerialKeyDatabaseITTest {
   public void testFindUserSerialKeyByUserName() throws FieldNotUniqueException, AppException {
     // TODO(fish): add test case and not assert null here.
     User user = (User) userDAO.getEntityByUniqueField("userName", "administrator");
-    Assert.assertEquals(Integer.valueOf(1), user.getUserId());
+    AssertJUnit.assertEquals(Integer.valueOf(1), user.getUserId());
     UserSerialKey userSerialKey =
         (UserSerialKey) userSerialKeyDAO.getEntityByUniqueField("userId", user.getUserId(),
             null, true);
-    Assert.assertNull(userSerialKey);
+    AssertJUnit.assertNull(userSerialKey);
   }
 }
