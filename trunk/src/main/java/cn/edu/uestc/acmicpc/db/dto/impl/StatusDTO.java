@@ -26,21 +26,17 @@ public class StatusDTO implements BaseDTO<Status> {
   private Timestamp time;
   private Integer caseNumber;
   private Integer codeId;
-  private Code code;
   private Integer compileInfoId;
-  private CompileInfo compileInfo;
   private Integer contestId;
-  private Contest contest;
   private Integer languageId;
-  private Language language;
 
   public StatusDTO() {
   }
 
   private StatusDTO(Integer statusId, Integer result, Integer memoryCost, Integer timeCost,
-      Integer length, Timestamp time, Integer caseNumber, Integer codeId, Code code,
-      Integer compileInfoId, CompileInfo compileInfo, Integer contestId, Contest contest,
-      Integer languageId, Language language) {
+      Integer length, Timestamp time, Integer caseNumber, Integer codeId,
+      Integer compileInfoId, Integer contestId,
+      Integer languageId) {
     this.statusId = statusId;
     this.result = result;
     this.memoryCost = memoryCost;
@@ -49,61 +45,9 @@ public class StatusDTO implements BaseDTO<Status> {
     this.time = time;
     this.caseNumber = caseNumber;
     this.codeId = codeId;
-    this.code = code;
     this.compileInfoId = compileInfoId;
-    this.compileInfo = compileInfo;
     this.contestId = contestId;
-    this.contest = contest;
     this.languageId = languageId;
-    this.language = language;
-  }
-
-  public Code getCode() {
-    return code;
-  }
-
-  public void setCode(Code code) {
-    this.code = code;
-  }
-
-  public CompileInfo getCompileInfo() {
-    return compileInfo;
-  }
-
-  public void setCompileInfo(CompileInfo compileInfo) {
-    this.compileInfo = compileInfo;
-  }
-
-  public Contest getContest() {
-    return contest;
-  }
-
-  public void setContest(Contest contest) {
-    this.contest = contest;
-  }
-
-  public Problem getProblem() {
-    return problem;
-  }
-
-  public void setProblem(Problem problem) {
-    this.problem = problem;
-  }
-
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
-  }
-
-  public Language getLanguage() {
-    return language;
-  }
-
-  public void setLanguage(Language language) {
-    this.language = language;
   }
 
   public Integer getStatusId() {
@@ -211,9 +155,7 @@ public class StatusDTO implements BaseDTO<Status> {
   }
 
   private Integer problemId;
-  private Problem problem;
   private Integer userId;
-  private User user;
 
   public static Builder builder() {
     return new Builder();
@@ -234,13 +176,13 @@ public class StatusDTO implements BaseDTO<Status> {
     private Integer caseNumber = 1;
     private Integer codeId;
     // TODO(mzry1992): get rid of code and use code content instead of it.
-    private Code code;
+    //private Code code;
     private Integer compileInfoId;
-    private CompileInfo compileInfo;
+    //private CompileInfo compileInfo;
     private Integer contestId;
-    private Contest contest;
+    //private Contest contest;
     private Integer languageId;
-    private Language language;
+    //private Language language;
 
     public Builder setStatusId(Integer statusId) {
       this.statusId = statusId;
@@ -282,18 +224,8 @@ public class StatusDTO implements BaseDTO<Status> {
       return this;
     }
 
-    public Builder setCode(Code code) {
-      this.code = code;
-      return this;
-    }
-
     public Builder setCompileInfoId(Integer compileInfoId) {
       this.compileInfoId = compileInfoId;
-      return this;
-    }
-
-    public Builder setCompileInfo(CompileInfo compileInfo) {
-      this.compileInfo = compileInfo;
       return this;
     }
 
@@ -302,24 +234,14 @@ public class StatusDTO implements BaseDTO<Status> {
       return this;
     }
 
-    public Builder setContest(Contest contest) {
-      this.contest = contest;
-      return this;
-    }
-
     public Builder setLanguageId(Integer languageId) {
       this.languageId = languageId;
       return this;
     }
 
-    public Builder setLanguage(Language language) {
-      this.language = language;
-      return this;
-    }
-
     public StatusDTO build() {
       return new StatusDTO(statusId, result, memoryCost, timeCost, length, time, caseNumber,
-          codeId, code, compileInfoId, compileInfo, contestId, contest, languageId, language);
+          codeId, compileInfoId, contestId, languageId);
     }
   }
 }
