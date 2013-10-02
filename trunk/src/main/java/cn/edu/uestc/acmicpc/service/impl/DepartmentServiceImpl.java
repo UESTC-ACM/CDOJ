@@ -31,11 +31,12 @@ public class DepartmentServiceImpl extends AbstractService implements Department
   }
 
   @PostConstruct
-  public void init() {
+  public void init() throws AppException {
     try {
       departmentDTOList = departmentDAO.findAll(DepartmentDTO.class, DepartmentDTO.builder(),
           new Condition());
-    } catch (AppException e) {
+    } catch (NullPointerException e) {
+      //TODO(fish) Please check this exception!
       departmentDTOList = new LinkedList<>();
     }
   }
