@@ -1,12 +1,12 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.problem;
 
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,7 +23,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
-import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
@@ -36,14 +35,14 @@ public class ProblemController extends BaseController{
 
   private final ProblemService problemService;
   private final StatusService statusService;
-  private final UserService userService;
+  private final LanguageService languageService;
 
   @Autowired
   public ProblemController(ProblemService problemService, StatusService statusService,
-                           UserService userService){
+                           LanguageService languageService){
     this.problemService = problemService;
     this.statusService = statusService;
-    this.userService = userService;
+    this.languageService = languageService;
   }
 
   /**
@@ -62,6 +61,7 @@ public class ProblemController extends BaseController{
       }
       model.put("targetProblem", problemDTO);
       model.put("brToken", "\n");
+      model.put("languageList", languageService.getLanguageList());
     }catch (AppException e){
       return "error/404";
     }catch (Exception e){

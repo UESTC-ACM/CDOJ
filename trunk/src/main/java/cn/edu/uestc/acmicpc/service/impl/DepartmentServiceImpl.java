@@ -5,13 +5,13 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.dto.impl.department.DepartmentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.DepartmentDTO;
-import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -30,25 +30,14 @@ public class DepartmentServiceImpl extends AbstractService implements Department
     this.departmentDAO = departmentDAO;
   }
 
-  private DepartmentDTO getDepartmentDTO(Department department) {
-    return DepartmentDTO.builder()
-        .setDepartmentId(department.getDepartmentId())
-        .setName(department.getName())
-        .build();
-  }
-
-  @SuppressWarnings("unchecked")
   @PostConstruct
-  public void init() throws AppException {
-    List<Department> departmentList;
+  public void init() {
     try {
-      departmentList = (List<Department>) departmentDAO.findAll();
-    } catch (NullPointerException e) {
-      departmentList = new LinkedList<>();
+      departmentDTOList = departmentDAO.findAll(DepartmentDTO.class, DepartmentDTO.builder(),
+          new Condition());
+    } catch (AppException e) {
+      departmentDTOList = new LinkedList<>();
     }
-    departmentDTOList = new LinkedList<>();
-    for (Department department: departmentList)
-      departmentDTOList.add(getDepartmentDTO(department));
   }
 
   @Override
