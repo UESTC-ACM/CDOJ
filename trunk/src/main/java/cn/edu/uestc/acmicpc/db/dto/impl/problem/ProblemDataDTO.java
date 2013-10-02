@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.db.dto.impl;
+package cn.edu.uestc.acmicpc.db.dto.impl.problem;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;

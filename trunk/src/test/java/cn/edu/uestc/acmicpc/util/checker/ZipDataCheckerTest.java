@@ -1,50 +1,47 @@
 package cn.edu.uestc.acmicpc.util.checker;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /** Test cases for {@link ZipDataChecker}. */
-@RunWith(MockitoJUnitRunner.class)
 public class ZipDataCheckerTest {
 
   private static final Logger LOGGER = LogManager.getLogger(ZipDataCheckerTest.class);
 
   ZipDataChecker checker = new ZipDataChecker();
-  @Mock
   File directory;
-  @Mock
   File dataInput1;
-  @Mock
   File dataInput2;
-  @Mock
   File dataInput3;
-  @Mock
   File dataOutput1;
-  @Mock
   File dataOutput2;
-  @Mock
   File dataOutput3;
-  @Mock
   File spjFile;
-  @Mock
   File otherFile;
-  @Mock
   File otherDirectory;
 
-  @Before
+  @BeforeMethod
   public void init() {
+    directory = mock(File.class);
+    dataInput1 = mock(File.class);
+    dataInput2 = mock(File.class);
+    dataInput3 = mock(File.class);
+    dataOutput1 = mock(File.class);
+    dataOutput2 = mock(File.class);
+    dataOutput3 = mock(File.class);
+    spjFile = mock(File.class);
+    otherFile = mock(File.class);
+    otherDirectory = mock(File.class);
     when(dataInput1.getName()).thenReturn("1.in");
     when(dataInput2.getName()).thenReturn("2.in");
     when(dataInput3.getName()).thenReturn("3.in");

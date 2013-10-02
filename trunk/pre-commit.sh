@@ -12,6 +12,12 @@ if [ $? -ne 0 ]; then
   echo -e $PRE_COMMIT_ERRRO
   exit 1
 fi
+echo -e "\x1b[0;33mCheck: no junit import in testing codes\x1b[m"
+./src/test/python/check_testing_code_all_not_use_junit.py
+if [ $? -ne 0 ]; then
+  echo -e $PRE_COMMIT_ERRRO
+  exit 1
+fi
 echo -e "\x1b[0;33mrun integration tests\x1b[m"
 mvn integration-test
 if [ $? -ne 0 ]; then

@@ -252,6 +252,12 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>6.1.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<version>1.9.5</version>
@@ -520,6 +526,10 @@
 					<excludes>
 						<exclude>**/*ITTest.java</exclude>
 					</excludes>
+					<configuration>
+						<parallel>methods</parallel>
+						<threadCount>10</threadCount>
+					</configuration>
 				</configuration>
 			</plugin>
 			<plugin>

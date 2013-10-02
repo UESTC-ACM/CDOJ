@@ -3,12 +3,11 @@ package cn.edu.uestc.acmicpc.db;
 import java.util.List;
 import java.util.Random;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
@@ -22,9 +21,8 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Test cases for {@link Problem}.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { IntegrationTestContext.class })
-public class ProblemDatabaseITTest {
+public class ProblemDatabaseITTest extends AbstractTestNGSpringContextTests {
 
   // TODO(fish): use problem service to query.
 
