@@ -3,6 +3,8 @@ package cn.edu.uestc.acmicpc.judge.entity;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.edu.uestc.acmicpc.db.dao.iface.*;
+import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -10,10 +12,6 @@ import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
-import cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.Global;
@@ -33,38 +31,37 @@ public class JudgeItem {
   public JudgeItem(ICompileInfoDAO compileInfoDAO,
       IStatusDAO statusDAO,
       IUserDAO userDAO,
-      IProblemDAO problemDAO) {
+      IProblemDAO problemDAO,
+      LanguageService languageService) {
     this.compileinfoDAO = compileInfoDAO;
     this.statusDAO = statusDAO;
     this.userDAO = userDAO;
     this.problemDAO = problemDAO;
+    this.languageService = languageService;
   }
 
   private final ICompileInfoDAO compileinfoDAO;
   private final IStatusDAO statusDAO;
   private final IProblemDAO problemDAO;
   private final IUserDAO userDAO;
+  private final LanguageService languageService;
 
   public int parseLanguage() {
-    // TODO(mzry1992): please add language information in global service.
-//    String extension = status.getLanguageByLanguageId().getExtension();
-//    switch (extension) {
-//      case "cc":
-//        return 0;
-//      case "c":
-//        return 1;
-//      case "java":
-//        return 2;
-//      default:
-//        return 3;
-//    }
-    return 3;
+    String extension = languageService.getExtension(status.getLanguageId());
+    switch (extension) {
+      case "cc":
+        return 0;
+      case "c":
+        return 1;
+      case "java":
+        return 2;
+      default:
+        return 3;
+    }
   }
 
   public String getSourceName() {
-    // TODO(mzry1992): please add language information in global service.
-//    return "Main" + status.getLanguageByLanguageId().getExtension();
-    return null;
+    return "Main" + languageService.getExtension(status.getLanguageId());
   }
 
   /**
