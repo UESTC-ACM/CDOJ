@@ -238,7 +238,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     }
     stringBuilder.append(" ").append(condition.toHQLString());
     String hql = stringBuilder.toString();
-    LOGGER.info(hql);
+    //LOGGER.info(hql);
     getSession().createQuery(hql).executeUpdate();
   }
 
