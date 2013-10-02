@@ -61,6 +61,7 @@ public class ProblemController extends BaseController{
         throw new AppException("No such problem.");
       }
       model.put("targetProblem", problemDTO);
+      model.put("brToken", "\n");
     }catch (AppException e){
       return "error/404";
     }catch (Exception e){
