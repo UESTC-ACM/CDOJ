@@ -25,6 +25,9 @@ package cn.edu.uestc.acmicpc.db.view.impl;
 import java.util.LinkedList;
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.base.View;
@@ -66,27 +69,32 @@ public class ProblemListView extends View<Problem> {
   private String source;
   private Integer solved;
   private Integer tried;
-  private Boolean isSPJ;
+  private Boolean isSpj;
   private Boolean isVisible;
   private Integer difficulty;
   private List<String> tags;
 
-  @Deprecated
   public ProblemListView(Problem problem) {
-    super(problem);
   }
 
-  @Deprecated
-  public ProblemListView(Problem problem, User currentUser, Global.AuthorStatusType type)
+  public ProblemListView(ProblemListDTO problemListDTO, UserDTO currentUser, Global.AuthorStatusType type)
       throws AppException {
-    // TODO(mzry1992): use dto transfer.
-    super(problem);
-    List<String> list = new LinkedList<>();
-//    Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
-//    for (ProblemTag problemTag : problemTags) {
-//      list.add(StringEscapeUtils.escapeHtml4(problemTag.getTagByTagId().getName()));
-//    }
-    setTags(list);
+    problemId = problemListDTO.getProblemId();
+    title = problemListDTO.getTitle();
+    source = problemListDTO.getSource();
+    solved = problemListDTO.getSolved();
+    tried = problemListDTO.getTried();
+    isSpj = problemListDTO.getIsSpj();
+    isVisible = problemListDTO.getIsVisible();
+    difficulty = problemListDTO.getDifficulty();
+    
+    // TODO(mzry1992): Add tags and others;
+    // List<String> list = new LinkedList<>();
+    // Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
+    // for (ProblemTag problemTag : problemTags) {
+    // list.add(StringEscapeUtils.escapeHtml4(problemTag.getTagByTagId().getName()));
+    // }
+    // setTags(list);
     if (currentUser == null) {
       setState(NONE);
     } else {
@@ -135,11 +143,11 @@ public class ProblemListView extends View<Problem> {
   }
 
   public Boolean getIsSpj() {
-    return isSPJ;
+    return isSpj;
   }
 
-  public void setIsSpj(Boolean SPJ) {
-    isSPJ = SPJ;
+  public void setIsSpj(Boolean Spj) {
+    this.isSpj = Spj;
   }
 
   public Boolean getIsVisible() {
