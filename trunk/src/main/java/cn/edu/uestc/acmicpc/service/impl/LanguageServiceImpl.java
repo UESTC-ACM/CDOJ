@@ -29,11 +29,12 @@ public class LanguageServiceImpl extends AbstractService implements LanguageServ
   }
 
   @PostConstruct
-  public void init() {
+  public void init() throws AppException {
     try {
       languageDTOList = languageDAO.findAll(LanguageDTO.class, LanguageDTO.builder(),
           new Condition());
-    } catch (AppException e) {
+    } catch (NullPointerException e) {
+      //TODO(fish) Please check this exception!
       languageDTOList = new LinkedList<>();
     }
   }

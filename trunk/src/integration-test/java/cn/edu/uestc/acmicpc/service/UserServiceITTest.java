@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.web.oj.service;
+package cn.edu.uestc.acmicpc.service;
 
 import java.sql.Timestamp;
 import java.util.Date;
