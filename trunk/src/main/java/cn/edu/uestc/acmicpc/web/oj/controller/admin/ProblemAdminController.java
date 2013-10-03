@@ -4,20 +4,25 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditDTO;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,4 +150,42 @@ public class ProblemAdminController extends BaseController {
     }
     return "admin/problem/problemEditor";
   }
+
+  @RequestMapping("edit")
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public @ResponseBody
+  Map<String, Object> edit(@RequestBody @Valid ProblemEditDTO problemEditDTO,
+                           BindingResult validateResult) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      if (StringUtil.trimAllSpace(problemEditDTO.getTitle()).equals(""))
+        throw new FieldException("title", "Please enter a validate title.");
+      if (problemEditDTO.getProblemId() == null)
+        throw new AppException("No such problem.");
+      ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(problemEditDTO.getProblemId());
+      if (problemDTO == null)
+        throw new AppException("No such problem.");
+
+      problemDTO.setTitle(problemEditDTO.getTitle());
+      problemDTO.setDescription(problemEditDTO.getDescription());
+      problemDTO.setInput(problemEditDTO.getInput());
+      problemDTO.setOutput(problemEditDTO.getOutput());
+      problemDTO.setSampleInput(problemEditDTO.getSampleInput());
+      problemDTO.setSampleOutput(problemEditDTO.getSampleOutput());
+      problemDTO.setHint(problemEditDTO.getHint());
+      problemDTO.setSource(problemEditDTO.getSource());
+
+      problemService.updateProblem(problemDTO);
+      json.put("result", "success");
+    } catch (FieldException e) {
+      putFieldErrorsIntoBindingResult(e, validateResult);
+      json.put("result", "field_error");
+      json.put("field", validateResult.getFieldErrors());
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    }
+    return json;
+  }
+
 }

@@ -14,7 +14,7 @@
    */
   $.fn.formValidate = function(userOptions) {
     var options = mergeOptions({
-          result: {"result": "ok"},
+          result: {"result": "success"},
           onSuccess: function(){},
           onFail: function(){}
         },

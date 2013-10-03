@@ -67,5 +67,10 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
    */
   public Integer createNewProblem() throws AppException;
 
-
+  /**
+   * TODO(mzry1992)
+   * @param problemDTO
+   * @throws AppException
+   */
+  public void updateProblem(ProblemDTO problemDTO) throws AppException;
 }
