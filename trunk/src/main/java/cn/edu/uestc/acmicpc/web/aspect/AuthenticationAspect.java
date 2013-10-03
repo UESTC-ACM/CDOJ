@@ -30,8 +30,12 @@ public class AuthenticationAspect {
   /**
    * Http request
    */
-  @Autowired(required = true)
   private HttpServletRequest request;
+
+  @Autowired(required = true)
+  public void setRequest(HttpServletRequest request) {
+    this.request = request;
+  }
 
   @Around("@annotation(cn.edu.uestc.acmicpc.util.annotation.LoginPermit)")
   public Object checkAuth(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
