@@ -4,7 +4,9 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.util.Global;
@@ -154,5 +156,17 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
     AppExceptionUtil.assertNotNull(problem.getProblemId());
     updateProblemByProblemDTO(problem, problemDTO);
     problemDAO.update(problem);
+  }
+
+  @Override
+  public ProblemShowDTO getProblemShowDTO(Integer problemId) throws AppException {
+    return problemDAO.getDTOByUniqueField(ProblemShowDTO.class, ProblemShowDTO.builder(),
+        "problemId", problemId);
+  }
+
+  @Override
+  public ProblemEditorShowDTO getProblemEditorShowDTO(Integer problemId) throws AppException {
+    return problemDAO.getDTOByUniqueField(ProblemEditorShowDTO.class, ProblemEditorShowDTO.builder(),
+        "problemId", problemId);
   }
 }

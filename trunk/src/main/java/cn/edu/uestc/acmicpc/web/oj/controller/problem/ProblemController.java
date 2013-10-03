@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,11 +63,11 @@ public class ProblemController extends BaseController{
   @LoginPermit(NeedLogin = false)
   public String show(@PathVariable("problemId") Integer problemId, ModelMap model){
     try{
-      ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(problemId);
-      if(problemDTO == null){
+      ProblemShowDTO problemShowDTO = problemService.getProblemShowDTO(problemId);
+      if(problemShowDTO == null){
         throw new AppException("No such problem.");
       }
-      model.put("targetProblem", problemDTO);
+      model.put("targetProblem", problemShowDTO);
       model.put("brToken", "\n");
       model.put("languageList", languageService.getLanguageList());
     }catch (AppException e){
