@@ -82,6 +82,7 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
   @Override
   public Integer createNewProblem() throws AppException {
     Problem problem = new Problem();
+    problem.setProblemId(null);
     problem.setTitle("");
     problem.setDescription("");
     problem.setInput("");
@@ -101,9 +102,57 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
     problem.setJavaMemoryLimit(65535);
     problem.setDataCount(0);
     problem.setDifficulty(1);
-    problem.setProblemId(null);
     problemDAO.add(problem);
     return problem.getProblemId();
   }
 
+  private void updateProblemByProblemDTO(Problem problem, ProblemDTO problemDTO) {
+    if (problemDTO.getTitle() != null)
+      problem.setTitle(problemDTO.getTitle());
+    if (problemDTO.getDescription() != null)
+      problem.setDescription(problemDTO.getDescription());
+    if (problemDTO.getInput() != null)
+      problem.setInput(problemDTO.getInput());
+    if (problemDTO.getOutput() != null)
+      problem.setOutput(problemDTO.getOutput());
+    if (problemDTO.getSampleInput() != null)
+      problem.setSampleInput(problemDTO.getSampleInput());
+    if (problemDTO.getSampleOutput() != null)
+      problem.setSampleOutput(problemDTO.getSampleOutput());
+    if (problemDTO.getHint() != null)
+      problem.setHint(problemDTO.getHint());
+    if (problemDTO.getSource() != null)
+      problem.setSource(problemDTO.getSource());
+    if (problemDTO.getTimeLimit() != null)
+      problem.setTimeLimit(problemDTO.getTimeLimit());
+    if (problemDTO.getMemoryLimit() != null)
+      problem.setMemoryLimit(problemDTO.getMemoryLimit());
+    if (problemDTO.getSolved() != null)
+      problem.setSolved(problemDTO.getSolved());
+    if (problemDTO.getTried() != null)
+      problem.setTried(problemDTO.getTried());
+    if (problemDTO.getIsSpj() != null)
+      problem.setIsSpj(problemDTO.getIsSpj());
+    if (problemDTO.getIsVisible() != null)
+      problem.setIsVisible(problemDTO.getIsVisible());
+    if (problemDTO.getOutputLimit() != null)
+      problem.setOutputLimit(problemDTO.getOutputLimit());
+    if (problemDTO.getJavaTimeLimit() != null)
+      problem.setJavaTimeLimit(problemDTO.getJavaTimeLimit());
+    if (problemDTO.getJavaMemoryLimit() != null)
+      problem.setJavaMemoryLimit(problemDTO.getJavaMemoryLimit());
+    if (problemDTO.getDataCount() != null)
+      problem.setDataCount(problemDTO.getDataCount());
+    if (problemDTO.getDifficulty() != null)
+      problem.setDifficulty(problemDTO.getDifficulty());
+  }
+
+  @Override
+  public void updateProblem(ProblemDTO problemDTO) throws AppException {
+    Problem problem = problemDAO.get(problemDTO.getProblemId());
+    AppExceptionUtil.assertNotNull(problem);
+    AppExceptionUtil.assertNotNull(problem.getProblemId());
+    updateProblemByProblemDTO(problem, problemDTO);
+    problemDAO.update(problem);
+  }
 }

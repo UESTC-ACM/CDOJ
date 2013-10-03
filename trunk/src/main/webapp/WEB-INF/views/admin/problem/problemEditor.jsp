@@ -23,10 +23,10 @@
     <div class="control-group">
       <div class="controls">
         <input type="text"
-               name="problemDTO.title"
+               name="title"
                maxlength="50"
                value="${targetProblem.title}"
-               id="problemDTO_title"
+               id="title"
                class="span10"
                placeholder="Enter title here">
       </div>
@@ -34,17 +34,17 @@
   </div>
 
   <div class="span10">
-    <div id="problemDTO_description" class="textarea-content textarea-large"><c:out value="${targetProblem.description}" escapeXml="true"/></div>
+    <div id="description" class="textarea-content textarea-large"><c:out value="${targetProblem.description}" escapeXml="true"/></div>
   </div>
 
   <div class="span10">
     <h2>Input</h2>
-    <div id="problemDTO_input" class="textarea-content textarea-mini"><c:out value="${targetProblem.input}" escapeXml="true"/></div>
+    <div id="input" class="textarea-content textarea-mini"><c:out value="${targetProblem.input}" escapeXml="true"/></div>
   </div>
 
   <div class="span10">
     <h2>Output</h2>
-    <div id="problemDTO_output" class="textarea-content textarea-mini"><c:out value="${targetProblem.output}" escapeXml="true"/></div>
+    <div id="output" class="textarea-content textarea-mini"><c:out value="${targetProblem.output}" escapeXml="true"/></div>
   </div>
 
   <div class="span10">
@@ -59,10 +59,10 @@
       <tbody class="font-code">
       <tr>
         <td>
-          <div id="problemDTO_sampleInput" class="textarea-content textarea-big"><c:out value="${targetProblem.sampleInput}" escapeXml="true"/></div>
+          <div id="sampleInput" class="textarea-content textarea-big"><c:out value="${targetProblem.sampleInput}" escapeXml="true"/></div>
         </td>
         <td>
-          <div id="problemDTO_sampleOutput" class="textarea-content textarea-big"><c:out value="${targetProblem.sampleOutput}" escapeXml="true"/></div>
+          <div id="sampleOutput" class="textarea-content textarea-big"><c:out value="${targetProblem.sampleOutput}" escapeXml="true"/></div>
         </td>
       </tr>
       </tbody>
@@ -71,7 +71,7 @@
 
   <div class="span10">
     <h2>Hint</h2>
-    <div id="problemDTO_hint" class="textarea-content textarea-mini"><c:out value="${targetProblem.hint}" escapeXml="true"/></div>
+    <div id="hint" class="textarea-content textarea-mini"><c:out value="${targetProblem.hint}" escapeXml="true"/></div>
   </div>
 
   <div class="span10">
@@ -79,10 +79,10 @@
     <div class="control-group ">
       <div class="controls">
         <input type="text"
-               name="problemDTO.source"
+               name="source"
                maxlength="100"
                value="${targetProblem.source}"
-               id="problemDTO_source"
+               id="source"
                class="span10"
                placeholder="Enter source here">
       </div>
