@@ -33,15 +33,22 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 @RequestMapping("/problem")
 public class ProblemController extends BaseController{
 
-  private final ProblemService problemService;
-  private final StatusService statusService;
-  private final LanguageService languageService;
+  private ProblemService problemService;
+  private StatusService statusService;
+  private LanguageService languageService;
 
   @Autowired
-  public ProblemController(ProblemService problemService, StatusService statusService,
-                           LanguageService languageService){
+  public void setProblemService(ProblemService problemService) {
     this.problemService = problemService;
+  }
+
+  @Autowired
+  public void setStatusService(StatusService statusService) {
     this.statusService = statusService;
+  }
+
+  @Autowired
+  public void setLanguageService(LanguageService languageService) {
     this.languageService = languageService;
   }
 

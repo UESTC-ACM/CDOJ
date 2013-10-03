@@ -17,10 +17,10 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 @RequestMapping("/")
 public class IndexController extends BaseController {
 
-  private final DepartmentService departmentService;
+  private DepartmentService departmentService;
 
   @Autowired
-  public IndexController(DepartmentService departmentService) {
+  public void setDepartmentService(DepartmentService departmentService) {
     this.departmentService = departmentService;
   }
 
@@ -31,4 +31,5 @@ public class IndexController extends BaseController {
     model.put("departmentList", departmentService.getDepartmentList());
     return "index/index";
   }
+
 }
