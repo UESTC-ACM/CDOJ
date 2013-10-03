@@ -19,7 +19,7 @@
   </li>
   <li class="divider-vertical"></li>
   <li>
-    <a href="#">Problems</a>
+    <a href="<c:url value="/problem/list"/>">Problems</a>
   </li>
   <li class="divider-vertical"></li>
   <li>

@@ -12,10 +12,9 @@ import cn.edu.uestc.acmicpc.judge.JudgeService;
 @Configuration
 @ComponentScan(basePackages = {
     "cn.edu.uestc.acmicpc.db",
+    "cn.edu.uestc.acmicpc.judge",
     "cn.edu.uestc.acmicpc.util",
-    "cn.edu.uestc.acmicpc.service",
-    "cn.edu.uestc.acmicpc.web.oj.service",
-    "cn.edu.uestc.acmicpc.web.training"
+    "cn.edu.uestc.acmicpc.service"
 })
 @PropertySource("classpath:resources.properties")
 @EnableTransactionManagement

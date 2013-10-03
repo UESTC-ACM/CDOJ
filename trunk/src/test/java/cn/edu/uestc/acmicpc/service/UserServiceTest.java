@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.web.oj.service;
+package cn.edu.uestc.acmicpc.service;
 
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
