@@ -44,9 +44,7 @@ public class AuthenticationAspect {
     LoginPermit permit = method.getAnnotation(LoginPermit.class);
 
     try {
-      System.out.println(method.getName());
       if (permit.NeedLogin()) {
-        System.out.println("need login");
         UserDTO userDTO = (UserDTO)request.getSession().getAttribute("currentUser");
         if (userDTO == null)
           throw new AppException("Permission denied");
@@ -60,7 +58,7 @@ public class AuthenticationAspect {
     } catch (AppException e) {
       if (method.getReturnType() == String.class)
         //@TODO Need test
-        return "index/index";
+        return "redirect:/error/authenticationError";
       else {
         Map<String, Object> json = new HashMap<>();
         json.put("result", "error");

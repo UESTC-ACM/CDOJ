@@ -113,7 +113,7 @@ public class ProblemController extends BaseController{
       PageInfo pageInfo = buildPageInfo(count, problemCondition.currentPage,
           Global.RECORD_PER_PAGE, "", null);
 
-      List<ProblemListDTO> problemListDTOList = problemService.GetProblemListDTOList(
+      List<ProblemListDTO> problemListDTOList = problemService.getProblemListDTOList(
           problemCondition, pageInfo);
 
       Map<Integer, Global.AuthorStatusType> problemStatus = GetProblemStatus(currentUser);

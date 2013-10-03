@@ -26,7 +26,7 @@ public class IndexController extends BaseController {
 
   @RequestMapping(method = RequestMethod.GET)
   @LoginPermit(NeedLogin = false)
-  public String toIndex(ModelMap model) {
+  public String index(ModelMap model) {
     model.put("message", "home page.");
     model.put("departmentList", departmentService.getDepartmentList());
     return "index/index";
