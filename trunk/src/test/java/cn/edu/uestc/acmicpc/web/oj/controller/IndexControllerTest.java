@@ -20,7 +20,7 @@ import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.config.WebMVCConfig;
-import cn.edu.uestc.acmicpc.db.dto.impl.DepartmentDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.department.DepartmentDTO;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.web.oj.controller.index.IndexController;
 

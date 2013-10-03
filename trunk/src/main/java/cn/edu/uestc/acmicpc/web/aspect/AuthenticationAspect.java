@@ -40,7 +40,9 @@ public class AuthenticationAspect {
     LoginPermit permit = method.getAnnotation(LoginPermit.class);
 
     try {
+      System.out.println(method.getName());
       if (permit.NeedLogin()) {
+        System.out.println("need login");
         UserDTO userDTO = (UserDTO)request.getSession().getAttribute("currentUser");
         if (userDTO == null)
           throw new AppException("Permission denied");

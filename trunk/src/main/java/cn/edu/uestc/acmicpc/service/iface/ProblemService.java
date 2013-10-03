@@ -26,30 +26,12 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
   /**
    * Get specific problem by problem's ID.
    * 
-   * @param Integer
+   * @param problemId
    * @return ProblemDTO
    * @throw AppException
    */
   ProblemDTO getProblemDTOByProblemId(Integer problemId) throws AppException;
-  
-  /**
-   * Translate problem to problemDTO. 
-   * 
-   * @param Problem
-   * @return ProblemDTO
-   * @throws AppException
-   */
-  ProblemDTO getProblemDTOByProblem(Problem problem) throws AppException;
-  
-  /**
-   * Translate problem to problemListDTO.
-   * 
-   * @param problem
-   * @return ProblemListDTO
-   * @throws AppException
-   */
-  ProblemListDTO getProblemListDTOByProblem(Problem problem) throws AppException;
-  
+
   /**
    * Get number of problems that meet the condition.
    * 

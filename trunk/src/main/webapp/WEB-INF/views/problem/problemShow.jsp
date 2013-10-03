@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
+<%@ taglib prefix='fn' uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -102,12 +103,12 @@
             <tr>
               <td>
                 <div class="sample" type="no-prettify">
-                  <cdoj:format value="${targetProblem.sampleInput}"/>
+                  ${fn:replace(targetProblem.sampleInput, brToken, '<br/>')}
                 </div>
               </td>
               <td>
                 <div class="sample" type="no-prettify">
-                  <cdoj:format value="${targetProblem.sampleOutput}"/>
+                  ${fn:replace(targetProblem.sampleOutput, brToken, '<br/>')}
                 </div>
               </td>
             </tr>
