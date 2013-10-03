@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.web.oj.controller.admin;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditDTO;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
@@ -150,7 +151,7 @@ public class ProblemAdminController extends BaseController {
 
         return "redirect:/admin/problem/editor/" + problemId;
       } else {
-        ProblemDTO targetProblem = problemService.getProblemDTOByProblemId(problemId);
+        ProblemEditorShowDTO targetProblem = problemService.getProblemEditorShowDTO(problemId);
         if (targetProblem == null)
           throw new AppException("No such problem.");
         model.put("targetProblem", targetProblem);
@@ -255,4 +256,5 @@ public class ProblemAdminController extends BaseController {
     }
     return json;
   }
+
 }
