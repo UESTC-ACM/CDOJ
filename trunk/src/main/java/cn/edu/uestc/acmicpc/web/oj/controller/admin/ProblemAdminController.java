@@ -5,27 +5,32 @@ import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditDTO;
+import cn.edu.uestc.acmicpc.service.iface.FileService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.Settings;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
+import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
+import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.util.*;
 
 /**
  * Description
@@ -36,6 +41,12 @@ import java.util.Map;
 public class ProblemAdminController extends BaseController {
 
   private ProblemService problemService;
+  private FileService fileService;
+
+  @Autowired
+  public void setFileService(FileService fileService) {
+    this.fileService = fileService;
+  }
 
   @Autowired
   public void setProblemService(ProblemService problemService) {
@@ -188,4 +199,60 @@ public class ProblemAdminController extends BaseController {
     return json;
   }
 
+  @RequestMapping("getUploadedPictures/{problemId}")
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public @ResponseBody
+  Map<String, Object> pictureList(@PathVariable("problemId") Integer problemId) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      if (problemId == null)
+        throw new AppException("Error, target problem id is null!");
+      ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(problemId);
+      if (problemDTO == null)
+        throw new AppException("Error, target problem doesn't exist!");
+      ArrayList<String> pictures = fileService.getProblemPictures(problemDTO.getProblemId());
+      json.put("success", "true");
+      json.put("pictures", pictures);
+    } catch (AppException e) {
+      json.put("error", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("error", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  @RequestMapping(value = "uploadProblemPicture/{problemId}",
+      method = RequestMethod.POST)
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public @ResponseBody
+  Map<String, Object> uploadPicture(@PathVariable("problemId") Integer problemId,
+                                    @RequestParam(value="uploadFile", required=true)
+                                    MultipartFile[] files) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      if (problemId == null)
+        throw new AppException("Error, target problem id is null!");
+      ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(problemId);
+      if (problemDTO == null)
+        throw new AppException("Error, target problem doesn't exist!");
+
+      FileInformationDTO fileInformationDTO = fileService.uploadProblemPictures(
+          FileUploadDTO.builder()
+          .setFiles(Arrays.asList(files))
+          .build(),
+          problemId);
+
+      json.put("success", "true");
+      json.put("uploadedFile", fileInformationDTO.getFileName());
+      json.put("uploadedFileUrl", fileInformationDTO.getFileURL());
+    } catch (AppException e) {
+      e.printStackTrace();
+      json.put("error", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("error", "Unknown exception occurred.");
+    }
+    return json;
+  }
 }
