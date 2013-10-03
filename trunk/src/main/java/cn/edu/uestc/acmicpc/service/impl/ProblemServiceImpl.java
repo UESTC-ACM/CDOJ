@@ -5,6 +5,7 @@ import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -15,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation for {@link ProblemService}.
@@ -61,12 +64,46 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
 
   
   @Override
-  public List<ProblemListDTO> GetProblemListDTOList(ProblemCondition problemCondition, 
-      PageInfo pageInfo) throws AppException{
+  public List<ProblemListDTO> getProblemListDTOList(ProblemCondition problemCondition,
+                                                    PageInfo pageInfo) throws AppException{
     problemCondition.currentPage = pageInfo.getCurrentPage();
     problemCondition.countPerPage = Global.RECORD_PER_PAGE;
     return problemDAO.findAll(ProblemListDTO.class, ProblemListDTO.builder(), 
                               problemCondition.getCondition());
   }
-  
+
+  @Override
+  public void operator(String field, String ids, String value) throws AppException {
+    Map<String, Object> properties = new HashMap<>();
+    properties.put(field, value);
+    problemDAO.updateEntitiesByField(properties, "problemId", ids);
+  }
+
+  @Override
+  public Integer createNewProblem() throws AppException {
+    Problem problem = new Problem();
+    problem.setTitle("");
+    problem.setDescription("");
+    problem.setInput("");
+    problem.setOutput("");
+    problem.setSampleInput("");
+    problem.setSampleOutput("");
+    problem.setHint("");
+    problem.setSource("");
+    problem.setTimeLimit(1000);
+    problem.setMemoryLimit(65535);
+    problem.setSolved(0);
+    problem.setTried(0);
+    problem.setIsSpj(false);
+    problem.setIsVisible(false);
+    problem.setOutputLimit(8192);
+    problem.setJavaTimeLimit(3000);
+    problem.setJavaMemoryLimit(65535);
+    problem.setDataCount(0);
+    problem.setDifficulty(1);
+    problem.setProblemId(null);
+    problemDAO.add(problem);
+    return problem.getProblemId();
+  }
+
 }

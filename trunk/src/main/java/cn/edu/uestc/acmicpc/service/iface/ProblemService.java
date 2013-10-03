@@ -21,7 +21,7 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
    * @return all problem id list
    * @throws AppException
    */
-  List<Integer> getAllVisibleProblemIds() throws AppException;
+  public List<Integer> getAllVisibleProblemIds() throws AppException;
   
   /**
    * Get specific problem by problem's ID.
@@ -30,7 +30,7 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
    * @return ProblemDTO
    * @throw AppException
    */
-  ProblemDTO getProblemDTOByProblemId(Integer problemId) throws AppException;
+  public ProblemDTO getProblemDTOByProblemId(Integer problemId) throws AppException;
 
   /**
    * Get number of problems that meet the condition.
@@ -39,7 +39,7 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
    * @return Long
    * @throws AppException
    */
-  Long count(Condition condition) throws AppException;
+  public Long count(Condition condition) throws AppException;
   
   /**
    * Get problems list that meet the condition and inside the range of page
@@ -48,6 +48,24 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
    * @return ProblemDTO List
    * @throws AppException
    */
-  List<ProblemListDTO> GetProblemListDTOList(ProblemCondition problemCondition, 
-      PageInfo pageInfo) throws AppException;
+  public List<ProblemListDTO> getProblemListDTOList(ProblemCondition problemCondition,
+                                                    PageInfo pageInfo) throws AppException;
+
+  /**
+   * TODO(mzry1992)
+   * @param field
+   * @param ids
+   * @param value
+   * @throws AppException
+   */
+  public void operator(String field, String ids, String value) throws AppException;
+
+  /**
+   * TODO(mzry1992)
+   * @return
+   * @throws AppException
+   */
+  public Integer createNewProblem() throws AppException;
+
+
 }
