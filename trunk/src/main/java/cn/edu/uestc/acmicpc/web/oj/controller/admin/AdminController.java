@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Description
+ * TODO(mzry1992)
  */
 @Controller
 @RequestMapping("/admin")
 public class AdminController extends BaseController {
 
   @RequestMapping("index")
-  @LoginPermit(value = Global.AuthenticationType.ADMIN)
+  @LoginPermit(Global.AuthenticationType.ADMIN)
   public String index() {
     return "admin/index";
   }

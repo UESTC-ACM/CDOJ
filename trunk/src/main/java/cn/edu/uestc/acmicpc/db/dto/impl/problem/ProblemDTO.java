@@ -12,7 +12,8 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  */
 @Fields({"problemId", "title", "description", "input", "output", "sampleInput", 
   "sampleOutput", "hint", "source", "timeLimit", "memoryLimit", "solved", "tried",
-  "isSpj", "javaTimeLimit", "javaMemoryLimit"})
+  "isSpj", "isVisible", "outputLimit", "javaTimeLimit", "javaMemoryLimit", "dataCount",
+  "difficulty"})
 public class ProblemDTO implements BaseDTO<Problem> {
 
   private Integer problemId;
@@ -29,9 +30,12 @@ public class ProblemDTO implements BaseDTO<Problem> {
   private Integer solved;
   private Integer tried;
   private Boolean isSpj;
+  private Boolean isVisible;
+  private Integer outputLimit;
   private Integer javaTimeLimit;
   private Integer javaMemoryLimit;
-  
+  private Integer dataCount;
+  private Integer difficulty;
 
   public ProblemDTO() {
   }
@@ -39,7 +43,8 @@ public class ProblemDTO implements BaseDTO<Problem> {
   private ProblemDTO(Integer problemId, String title, String description, String input,
       String output, String sampleInput, String sampleOutput, String hint, String source,
       Integer timeLimit, Integer memoryLimit, Integer solved, Integer tried,Boolean isSpj,
-      Integer javaTimeLimit, Integer javaMemoryLimit) {
+      Boolean isVisible, Integer outputLimit, Integer javaTimeLimit, Integer javaMemoryLimit,
+      Integer dataCount, Integer difficulty) {
     this.problemId = problemId;
     this.title = title;
     this.description = description;
@@ -54,8 +59,44 @@ public class ProblemDTO implements BaseDTO<Problem> {
     this.solved = solved;
     this.tried = tried;
     this.isSpj = isSpj;
+    this.isVisible = isVisible;
+    this.outputLimit = outputLimit;
     this.javaTimeLimit = javaTimeLimit;
     this.javaMemoryLimit = javaMemoryLimit;
+    this.dataCount = dataCount;
+    this.difficulty = difficulty;
+  }
+
+  public Boolean getIsVisible() {
+    return isVisible;
+  }
+
+  public void setIsVisible(Boolean visible) {
+    isVisible = visible;
+  }
+
+  public Integer getOutputLimit() {
+    return outputLimit;
+  }
+
+  public void setOutputLimit(Integer outputLimit) {
+    this.outputLimit = outputLimit;
+  }
+
+  public Integer getDataCount() {
+    return dataCount;
+  }
+
+  public void setDataCount(Integer dataCount) {
+    this.dataCount = dataCount;
+  }
+
+  public Integer getDifficulty() {
+    return difficulty;
+  }
+
+  public void setDifficulty(Integer difficulty) {
+    this.difficulty = difficulty;
   }
 
   public String getTitle() {
@@ -211,14 +252,18 @@ public class ProblemDTO implements BaseDTO<Problem> {
     private Integer solved;
     private Integer tried;
     private Boolean isSpj;
+    private Boolean isVisible;
+    private Integer outputLimit;
     private Integer javaTimeLimit;
     private Integer javaMemoryLimit;
+    private Integer dataCount;
+    private Integer difficulty;
     
     @Override
     public ProblemDTO build() {
       return new ProblemDTO(problemId, title, description, input, output, sampleInput,
-          sampleOutput, hint, source, timeLimit, memoryLimit, solved, tried, isSpj, 
-          javaTimeLimit, javaMemoryLimit);
+          sampleOutput, hint, source, timeLimit, memoryLimit, solved, tried, isSpj, isVisible,
+          outputLimit, javaTimeLimit, javaMemoryLimit, dataCount, difficulty);
     }
     
     @Override
@@ -237,8 +282,12 @@ public class ProblemDTO implements BaseDTO<Problem> {
       solved = (Integer) properties.get("solved");
       tried = (Integer) properties.get("tried");
       isSpj = (Boolean) properties.get("isSpj");
+      isVisible = (Boolean) properties.get("isVisible");
+      outputLimit = (Integer) properties.get("outputLimit");
       javaTimeLimit = (Integer) properties.get("javaTimeLimit");
       javaMemoryLimit = (Integer) properties.get("javaMemoryLimit");
+      dataCount = (Integer) properties.get("dataCount");
+      difficulty = (Integer) properties.get("difficulty");
       return build();
     }
 
@@ -319,6 +368,26 @@ public class ProblemDTO implements BaseDTO<Problem> {
     
     public Builder setJavaMemoryLimit(Integer javaMemoryLimit) {
       this.javaMemoryLimit = javaMemoryLimit;
+      return this;
+    }
+
+    public Builder setIsVisible(Boolean isVisible) {
+      this.isVisible = isVisible;
+      return this;
+    }
+
+    public Builder setOutputLimit(Integer outputLimit) {
+      this.outputLimit = outputLimit;
+      return this;
+    }
+
+    public Builder setDataCount(Integer dataCount) {
+      this.dataCount = dataCount;
+      return this;
+    }
+
+    public Builder setDifficulty(Integer difficulty) {
+      this.difficulty = difficulty;
       return this;
     }
   }

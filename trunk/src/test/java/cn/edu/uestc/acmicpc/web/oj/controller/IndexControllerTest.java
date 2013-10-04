@@ -38,7 +38,9 @@ public class IndexControllerTest extends ControllerTest {
   @BeforeMethod
   public void init() {
     Mockito.reset(departmentService);
-    mockMvc = initControllers(new IndexController(departmentService));
+    IndexController indexController = new IndexController();
+    indexController.setDepartmentService(departmentService);
+    mockMvc = initControllers(indexController);
   }
 
   @SuppressWarnings("unchecked")

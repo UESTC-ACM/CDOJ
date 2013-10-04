@@ -17,18 +17,19 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 @RequestMapping("/")
 public class IndexController extends BaseController {
 
-  private final DepartmentService departmentService;
+  private DepartmentService departmentService;
 
   @Autowired
-  public IndexController(DepartmentService departmentService) {
+  public void setDepartmentService(DepartmentService departmentService) {
     this.departmentService = departmentService;
   }
 
   @RequestMapping(method = RequestMethod.GET)
   @LoginPermit(NeedLogin = false)
-  public String toIndex(ModelMap model) {
+  public String index(ModelMap model) {
     model.put("message", "home page.");
     model.put("departmentList", departmentService.getDepartmentList());
     return "index/index";
   }
+
 }
