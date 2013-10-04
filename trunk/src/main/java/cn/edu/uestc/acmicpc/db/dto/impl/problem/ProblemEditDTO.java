@@ -1,11 +1,15 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.problem;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * TODO(mzry1992)
  */
 public class ProblemEditDTO {
 
+  @NotNull(message = "No such problem!")
   private Integer problemId;
+
   private String title;
   private String description;
   private String input;

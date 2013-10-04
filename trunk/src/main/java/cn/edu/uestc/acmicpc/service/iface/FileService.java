@@ -29,4 +29,22 @@ public interface FileService {
    */
   public FileInformationDTO uploadProblemPictures(FileUploadDTO fileUploadDTO,
                                                   Integer problemId) throws AppException;
+
+  /**
+   * TODO(mzry1992)
+   *
+   * @param fileUploadDTO
+   * @param problemId
+   * @throws AppException
+   */
+  public Integer uploadProblemDataFile(FileUploadDTO fileUploadDTO,
+                                       Integer problemId) throws AppException;
+
+  /**
+   * TODO(mzry1992)
+   * @param problemId
+   * @return
+   * @throws AppException
+   */
+  public Integer moveProblemDataFile(Integer problemId) throws AppException;
 }
