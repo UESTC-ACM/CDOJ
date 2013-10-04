@@ -1,5 +1,11 @@
 #!/bin/bash
 PRE_COMMIT_ERRRO="\x1b[1;31mpre-commit error!\x1b[m"
+echo -e "\x1b[0;33mCheck: mysql connection.\x1b[m"
+mysql -uroot -proot -e exit 2> /dev/null
+if [ $? -ne 0 ]; then
+  echo -e "\x1b[1;31mMysql service is not opened, please open mysql service.\x1b[m"
+  exit 1
+fi
 echo -e "\x1b[0;33mCheck: no entity used in DTO\x1b[m"
 ./src/test/python/check_dtos_not_contain_entities.py
 if [ $? -ne 0 ]; then
