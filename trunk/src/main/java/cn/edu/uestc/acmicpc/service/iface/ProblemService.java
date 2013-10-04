@@ -4,10 +4,7 @@ import java.util.List;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditorShowDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.*;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -91,4 +88,12 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
    * @throws AppException
    */
   public ProblemEditorShowDTO getProblemEditorShowDTO(Integer problemId) throws AppException;
+
+  /**
+   * TODO(mzry1992)
+   * @param problemId
+   * @return
+   * @throws AppException
+   */
+  public ProblemDataShowDTO getProblemDataShowDTO(Integer problemId) throws AppException;
 }
