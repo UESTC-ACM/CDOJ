@@ -29,7 +29,7 @@ public class DTOITTest extends AbstractTestNGSpringContextTests {
         .setType(2)
         .build();
     /*
-     * @TODO wuwu User user = userRegisterDTO.getEntity(); Assert.assertEquals(Integer.valueOf(1),
+     * @TODO(fish): User user = userRegisterDTO.getEntity(); Assert.assertEquals(Integer.valueOf(1),
      * user.getUserId()); Assert.assertEquals("userName", user.getUserName());
      * Assert.assertEquals("nickName", user.getNickName());
      * Assert.assertEquals(StringUtil.encodeSHA1("password"), user.getPassword());

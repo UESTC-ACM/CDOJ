@@ -6,7 +6,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
@@ -27,19 +27,19 @@ public class UserServiceITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testGetUserByUserId() throws AppException {
     UserDTO user = userService.getUserDTOByUserId(2);
-    AssertJUnit.assertEquals("admin", user.getUserName());
+    Assert.assertEquals(user.getUserName(), "admin");
   }
 
   @Test
   public void testGetUserByUserName() throws AppException {
     UserDTO user = userService.getUserDTOByUserName("admin");
-    AssertJUnit.assertEquals("admin", user.getUserName());
+    Assert.assertEquals(user.getUserName(), "admin");
   }
 
   @Test
   public void testGetUserByUserEmail() throws AppException {
     UserDTO user = userService.getUserDTOByEmail("acm_admin@uestc.edu.cn");
-    AssertJUnit.assertEquals("acm_admin@uestc.edu.cn", user.getEmail());
+    Assert.assertEquals(user.getEmail(), "acm_admin@uestc.edu.cn");
   }
 
   @Test
@@ -56,21 +56,21 @@ public class UserServiceITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testCount_emptyCondition() throws AppException {
     UserCondition condition = new UserCondition();
-    AssertJUnit.assertEquals(Long.valueOf(3L), userService.count(condition));
+    Assert.assertEquals(userService.count(condition), Long.valueOf(3L));
   }
 
   @Test
   public void testCount_byStartId() throws AppException {
     UserCondition condition = new UserCondition();
     condition.startId = 2;
-    AssertJUnit.assertEquals(Long.valueOf(2L), userService.count(condition));
+    Assert.assertEquals(userService.count(condition), Long.valueOf(2L));
   }
 
   @Test
   public void testCount_byEndId() throws AppException {
     UserCondition condition = new UserCondition();
     condition.endId = 2;
-    AssertJUnit.assertEquals(Long.valueOf(2L), userService.count(condition));
+    Assert.assertEquals(userService.count(condition), Long.valueOf(2L));
   }
 
   @Test
@@ -78,7 +78,7 @@ public class UserServiceITTest extends AbstractTestNGSpringContextTests {
     UserCondition condition = new UserCondition();
     condition.startId = 2;
     condition.endId = 10;
-    AssertJUnit.assertEquals(Long.valueOf(2L), userService.count(condition));
+    Assert.assertEquals(userService.count(condition), Long.valueOf(2L));
   }
 
   @Test
@@ -86,41 +86,41 @@ public class UserServiceITTest extends AbstractTestNGSpringContextTests {
     UserCondition condition = new UserCondition();
     condition.startId = 3;
     condition.endId = 2;
-    AssertJUnit.assertEquals(Long.valueOf(0L), userService.count(condition));
+    Assert.assertEquals(userService.count(condition), Long.valueOf(0L));
   }
 
   @Test
   public void testCount_byDepartmentId() throws AppException {
     UserCondition condition = new UserCondition();
     condition.departmentId = 1;
-    AssertJUnit.assertEquals(Long.valueOf(2L), userService.count(condition));
+    Assert.assertEquals(userService.count(condition), Long.valueOf(2L));
   }
 
   @Test
   public void testCount_bySchool() throws AppException {
     UserCondition condition = new UserCondition();
     condition.school = "UES";
-    AssertJUnit.assertEquals(Long.valueOf(3L), userService.count(condition));
+    Assert.assertEquals(userService.count(condition), Long.valueOf(3L));
   }
 
   @Test
   public void testCount_bySchool_emptyRsult() throws AppException {
     UserCondition condition = new UserCondition();
     condition.school = "USE";
-    AssertJUnit.assertEquals(Long.valueOf(0L), userService.count(condition));
+    Assert.assertEquals(userService.count(condition), Long.valueOf(0L));
   }
 
   @Test
   public void testCount_byUserName() throws AppException {
     UserCondition condition = new UserCondition();
     condition.userName = "admin";
-    AssertJUnit.assertEquals(Long.valueOf(2L), userService.count(condition));
+    Assert.assertEquals(userService.count(condition), Long.valueOf(2L));
   }
 
   @Test
   public void testCount_byType() throws AppException {
     UserCondition condition = new UserCondition();
     condition.type = Global.AuthenticationType.CONSTANT.ordinal();
-    AssertJUnit.assertEquals(Long.valueOf(1L), userService.count(condition));
+    Assert.assertEquals(userService.count(condition), Long.valueOf(1L));
   }
 }

@@ -43,7 +43,7 @@ public class StatusDatabaseITTest extends AbstractTestNGSpringContextTests {
     condition.addEntry("result", ConditionType.EQUALS,
         Global.OnlineJudgeReturnType.OJ_AC.ordinal());
     List<?> results = statusDAO.findAll("problemId", condition);
-    Assert.assertEquals(1, results.size());
-    Assert.assertEquals(Integer.valueOf(1), results.get(0));
+    Assert.assertEquals(results.size(), 1);
+    Assert.assertEquals(results.get(0), Integer.valueOf(1));
   }
 }

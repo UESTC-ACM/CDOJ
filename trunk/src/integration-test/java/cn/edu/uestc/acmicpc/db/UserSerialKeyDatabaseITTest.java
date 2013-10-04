@@ -3,7 +3,7 @@ package cn.edu.uestc.acmicpc.db;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
@@ -30,10 +30,10 @@ public class UserSerialKeyDatabaseITTest extends AbstractTestNGSpringContextTest
   public void testFindUserSerialKeyByUserName() throws FieldNotUniqueException, AppException {
     // TODO(fish): add test case and not assert null here.
     User user = (User) userDAO.getEntityByUniqueField("userName", "administrator");
-    AssertJUnit.assertEquals(Integer.valueOf(1), user.getUserId());
+    Assert.assertEquals(user.getUserId(), Integer.valueOf(1));
     UserSerialKey userSerialKey =
         (UserSerialKey) userSerialKeyDAO.getEntityByUniqueField("userId", user.getUserId(),
             null, true);
-    AssertJUnit.assertNull(userSerialKey);
+    Assert.assertNull(userSerialKey);
   }
 }

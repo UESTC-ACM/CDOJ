@@ -12,14 +12,14 @@ public class ConditionTest {
   @Test
   public void testToHQLString_empty() {
     Condition condition = new Condition();
-    Assert.assertEquals("", condition.toHQLString());
+    Assert.assertEquals(condition.toHQLString(), "");
   }
 
   @Test
   public void testToHQLString_simpleEntry() throws AppException {
     Condition condition = new Condition();
     condition.addEntry("id", ConditionType.EQUALS, 1);
-    Assert.assertEquals("where (id='1')", condition.toHQLString());
+    Assert.assertEquals(condition.toHQLString(), "where (id='1')");
   }
 
   @Test
@@ -27,7 +27,7 @@ public class ConditionTest {
     Condition condition = new Condition();
     condition.addEntry("id", ConditionType.GREATER_OR_EQUALS, 1);
     condition.addEntry("id", ConditionType.LESS_OR_EQUALS, 5);
-    Assert.assertEquals("where (id>='1' and id<='5')", condition.toHQLString());
+    Assert.assertEquals(condition.toHQLString(), "where (id>='1' and id<='5')");
   }
 
   @Test
@@ -35,7 +35,7 @@ public class ConditionTest {
     Condition condition = new Condition(JoinedType.OR);
     condition.addEntry("id", ConditionType.GREATER_OR_EQUALS, 1);
     condition.addEntry("id", ConditionType.LESS_OR_EQUALS, 5);
-    Assert.assertEquals("where (id>='1' or id<='5')", condition.toHQLString());
+    Assert.assertEquals(condition.toHQLString(), "where (id>='1' or id<='5')");
   }
 
   @Test
@@ -49,9 +49,8 @@ public class ConditionTest {
     second.addEntry("price", ConditionType.LESS_OR_EQUALS, 20);
     condition.addEntry(first);
     condition.addEntry(second);
-    Assert.assertEquals(
-        "where ((id>='1' or id<='5') and (price>'10' or price<='20'))",
-        condition.toHQLString());
+    Assert.assertEquals(condition.toHQLString(),
+        "where ((id>='1' or id<='5') and (price>'10' or price<='20'))");
   }
 
   @Test
@@ -59,21 +58,21 @@ public class ConditionTest {
     Condition condition = new Condition();
     condition.addEntry(new Condition());
     condition.addEntry(new Condition());
-    Assert.assertEquals("", condition.toHQLString());
+    Assert.assertEquals(condition.toHQLString(), "");
   }
 
   @Test
   public void testToHQLString_conditionType_isNotNull() throws AppException {
     Condition condition = new Condition();
     condition.addEntry("userId", ConditionType.IS_NOT_NULL, null);
-    Assert.assertEquals("where ((userId is not null))", condition.toHQLString());
+    Assert.assertEquals(condition.toHQLString(), "where ((userId is not null))");
   }
 
   @Test
   public void testToHQLString_conditionType_isNull() throws AppException {
     Condition condition = new Condition();
     condition.addEntry("userId", ConditionType.IS_NULL, null);
-    Assert.assertEquals("where ((userId is null))", condition.toHQLString());
+    Assert.assertEquals(condition.toHQLString(), "where ((userId is null))");
   }
 
   @Test
@@ -81,14 +80,14 @@ public class ConditionTest {
     Condition condition = new Condition();
     condition.addEntry("userId", ConditionType.IS_NOT_NULL, null);
     condition.addEntry("departmentId", ConditionType.IS_NULL, null);
-    Assert.assertEquals("where ((userId is not null) and (departmentId is null))",
-        condition.toHQLString());
+    Assert.assertEquals(condition.toHQLString(),
+        "where ((userId is not null) and (departmentId is null))");
   }
 
   @Test
   public void testToHQLStringWithOrder_empty() {
     Condition condition = new Condition();
-    Assert.assertEquals("", condition.toHQLStringWithOrders());
+    Assert.assertEquals(condition.toHQLStringWithOrders(), "");
   }
 
   @Test
@@ -96,8 +95,8 @@ public class ConditionTest {
     Condition condition = new Condition();
     condition.addEntry("userId", ConditionType.GREATER_OR_EQUALS, 1);
     condition.addOrder("userId", false);
-    Assert.assertEquals("where (userId>='1') order by userId desc",
-        condition.toHQLStringWithOrders());
+    Assert.assertEquals(condition.toHQLStringWithOrders(),
+        "where (userId>='1') order by userId desc");
   }
 
   @Test
@@ -106,8 +105,8 @@ public class ConditionTest {
     condition.addEntry("userId", ConditionType.GREATER_OR_EQUALS, 1);
     condition.addOrder("departmentId", true);
     condition.addOrder("userId", false);
-    Assert.assertEquals("where (userId>='1') order by departmentId asc,userId desc",
-        condition.toHQLStringWithOrders());
+    Assert.assertEquals(condition.toHQLStringWithOrders(),
+        "where (userId>='1') order by departmentId asc,userId desc");
   }
 
   @Test
@@ -123,9 +122,8 @@ public class ConditionTest {
     condition.addEntry(second);
     condition.addOrder("departmentId", true);
     condition.addOrder("userId", false);
-    Assert.assertEquals(
+    Assert.assertEquals(condition.toHQLStringWithOrders(),
         "where ((userId>='1' or userId<='5') and ((departmentId is not null)"
-        + " or userName like '%user%')) order by departmentId asc,userId desc",
-        condition.toHQLStringWithOrders());
+        + " or userName like '%user%')) order by departmentId asc,userId desc");
   }
 }

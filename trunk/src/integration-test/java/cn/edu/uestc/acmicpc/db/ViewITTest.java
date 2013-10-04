@@ -6,7 +6,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
@@ -39,6 +39,6 @@ public class ViewITTest extends AbstractTestNGSpringContextTests {
     user.setLastLogin(new Timestamp(new Date().getTime()));
     user.setType(0);
     UserView userView = new UserView(user);
-    AssertJUnit.assertEquals("admin", userView.getUserName());
+    Assert.assertEquals(userView.getUserName(), "admin");
   }
 }

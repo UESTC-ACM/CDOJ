@@ -100,7 +100,7 @@ public class ZipDataCheckerTest {
       checker.check(directory);
       Assert.fail();
     } catch (AppException e) {
-      Assert.assertEquals(new AppException("Data file contains directory."), e);
+      Assert.assertEquals(e, new AppException("Data file contains directory."));
     }
   }
 
@@ -120,7 +120,7 @@ public class ZipDataCheckerTest {
       checker.check(otherDirectory);
       Assert.fail();
     } catch (AppException e) {
-      Assert.assertEquals(new AppException("Data file is invalid."), e);
+      Assert.assertEquals(e, new AppException("Data file is invalid."));
     }
   }
 
@@ -132,9 +132,8 @@ public class ZipDataCheckerTest {
       checker.check(directory);
       Assert.fail();
     } catch (AppException e) {
-      Assert.assertEquals(
-          new AppException("Some data files has not input file or output file."),
-          e);
+      Assert.assertEquals(e,
+          new AppException("Some data files has not input file or output file."));
     }
   }
 
@@ -146,9 +145,8 @@ public class ZipDataCheckerTest {
       checker.check(directory);
       Assert.fail();
     } catch (AppException e) {
-      Assert.assertEquals(
-          new AppException("Some data files has not input file or output file."),
-          e);
+      Assert.assertEquals(e,
+          new AppException("Some data files has not input file or output file."));
     }
   }
 }

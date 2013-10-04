@@ -34,7 +34,7 @@ public class ProblemDatabaseITTest extends AbstractTestNGSpringContextTests {
     Condition condition = new Condition();
     condition.addEntry(Entry.of("problemId", ConditionType.GREATER_OR_EQUALS, 1));
     condition.addEntry(Entry.of("problemId", ConditionType.LESS_OR_EQUALS, 5));
-    Assert.assertEquals(Long.valueOf(5), problemDAO.count(condition));
+    Assert.assertEquals(problemDAO.count(condition), Long.valueOf(5));
   }
 
   @Test
@@ -42,7 +42,7 @@ public class ProblemDatabaseITTest extends AbstractTestNGSpringContextTests {
     Condition condition = new Condition();
     condition.addEntry(Entry.of("problemId", ConditionType.GREATER_OR_EQUALS, 2));
     condition.addEntry(Entry.of("problemId", ConditionType.LESS_OR_EQUALS, 1));
-    Assert.assertEquals(Long.valueOf(0), problemDAO.count(condition));
+    Assert.assertEquals(problemDAO.count(condition), Long.valueOf(0));
   }
 
   @Test
@@ -51,7 +51,7 @@ public class ProblemDatabaseITTest extends AbstractTestNGSpringContextTests {
     condition.addEntry(Entry.of("problemId", ConditionType.GREATER_OR_EQUALS, 1));
     condition.addEntry(Entry.of("problemId", ConditionType.LESS_OR_EQUALS, 5));
     condition.addEntry(Entry.of("isSpj", ConditionType.EQUALS, false));
-    Assert.assertEquals(Long.valueOf(3), problemDAO.count(condition));
+    Assert.assertEquals(problemDAO.count(condition), Long.valueOf(3));
   }
 
   @Test
@@ -60,17 +60,17 @@ public class ProblemDatabaseITTest extends AbstractTestNGSpringContextTests {
     condition.startId = 1;
     condition.endId = 5;
     condition.isSpj = true;
-    Assert.assertEquals(Long.valueOf(2), problemDAO.count(condition.getCondition()));
+    Assert.assertEquals(problemDAO.count(condition.getCondition()), Long.valueOf(2));
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "deprecation" })
   @Test
   public void testProblemCondition_emptyTitle() throws AppException {
     Condition condition = new Condition();
     condition.addEntry(Entry.of("title", ConditionType.STRING_EQUALS, ""));
     List<Problem> problems = (List<Problem>) problemDAO.findAll(condition);
-    Assert.assertEquals(1, problems.size());
-    Assert.assertEquals(Integer.valueOf(5), problems.get(0).getProblemId());
+    Assert.assertEquals(problems.size(), 1);
+    Assert.assertEquals(problems.get(0).getProblemId(), Integer.valueOf(5));
   }
 
   @Test

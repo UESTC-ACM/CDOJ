@@ -105,7 +105,7 @@ public class UserControllerTest extends ControllerTest {
         .session(session))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")));
-    Assert.assertEquals(userDTO, session.getAttribute("currentUser"));
+    Assert.assertEquals(session.getAttribute("currentUser"), userDTO);
   }
 
   @Test
@@ -1007,7 +1007,7 @@ public class UserControllerTest extends ControllerTest {
         .session(session))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")));
-    Assert.assertEquals(userDTO, session.getAttribute("currentUser"));
+    Assert.assertEquals(session.getAttribute("currentUser"), userDTO);
     mockMvc.perform(post(URL_LOGOUT)
         .contentType(APPLICATION_JSON_UTF8)
         .session(session))
