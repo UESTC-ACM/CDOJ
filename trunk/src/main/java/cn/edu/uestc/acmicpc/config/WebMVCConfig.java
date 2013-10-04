@@ -8,6 +8,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -48,4 +50,10 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
   public ViewResolver viewResolver() {
     return WebMVCResource.viewResolver();
   }
+
+  @Bean
+  public MultipartResolver multipartResolver() {
+    return new CommonsMultipartResolver();
+  }
+
 }
