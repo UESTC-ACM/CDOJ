@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,15 +34,22 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 @RequestMapping("/problem")
 public class ProblemController extends BaseController{
 
-  private final ProblemService problemService;
-  private final StatusService statusService;
-  private final LanguageService languageService;
+  private ProblemService problemService;
+  private StatusService statusService;
+  private LanguageService languageService;
 
   @Autowired
-  public ProblemController(ProblemService problemService, StatusService statusService,
-                           LanguageService languageService){
+  public void setProblemService(ProblemService problemService) {
     this.problemService = problemService;
+  }
+
+  @Autowired
+  public void setStatusService(StatusService statusService) {
     this.statusService = statusService;
+  }
+
+  @Autowired
+  public void setLanguageService(LanguageService languageService) {
     this.languageService = languageService;
   }
 
@@ -55,11 +63,11 @@ public class ProblemController extends BaseController{
   @LoginPermit(NeedLogin = false)
   public String show(@PathVariable("problemId") Integer problemId, ModelMap model){
     try{
-      ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(problemId);
-      if(problemDTO == null){
+      ProblemShowDTO problemShowDTO = problemService.getProblemShowDTO(problemId);
+      if(problemShowDTO == null){
         throw new AppException("No such problem.");
       }
-      model.put("targetProblem", problemDTO);
+      model.put("targetProblem", problemShowDTO);
       model.put("brToken", "\n");
       model.put("languageList", languageService.getLanguageList());
     }catch (AppException e){
@@ -106,7 +114,7 @@ public class ProblemController extends BaseController{
       PageInfo pageInfo = buildPageInfo(count, problemCondition.currentPage,
           Global.RECORD_PER_PAGE, "", null);
 
-      List<ProblemListDTO> problemListDTOList = problemService.GetProblemListDTOList(
+      List<ProblemListDTO> problemListDTOList = problemService.getProblemListDTOList(
           problemCondition, pageInfo);
 
       Map<Integer, Global.AuthorStatusType> problemStatus = GetProblemStatus(currentUser);

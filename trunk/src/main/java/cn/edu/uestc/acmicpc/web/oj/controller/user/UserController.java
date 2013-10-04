@@ -62,28 +62,46 @@ import cn.edu.uestc.acmicpc.web.view.PageInfo;
 @RequestMapping("/user")
 public class UserController extends BaseController {
 
-  private final UserService userService;
-  private final GlobalService globalService;
-  private final DepartmentService departmentService;
-  private final ProblemService problemService;
-  private final StatusService statusService;
-  private final UserSerialKeyService userSerialKeyService;
-  private final EmailService emailService;
+  private UserService userService;
+  private GlobalService globalService;
+  private DepartmentService departmentService;
+  private ProblemService problemService;
+  private StatusService statusService;
+  private UserSerialKeyService userSerialKeyService;
+  private EmailService emailService;
 
   @Autowired
-  public UserController(UserService userService,
-                        GlobalService globalService,
-                        DepartmentService departmentService,
-                        ProblemService problemService,
-                        StatusService statusService,
-                        UserSerialKeyService userSerialKeyService,
-                        EmailService emailService) {
+  public void setUserService(UserService userService) {
     this.userService = userService;
+  }
+
+  @Autowired
+  public void setGlobalService(GlobalService globalService) {
     this.globalService = globalService;
+  }
+
+  @Autowired
+  public void setDepartmentService(DepartmentService departmentService) {
     this.departmentService = departmentService;
+  }
+
+  @Autowired
+  public void setProblemService(ProblemService problemService) {
     this.problemService = problemService;
+  }
+
+  @Autowired
+  public void setStatusService(StatusService statusService) {
     this.statusService = statusService;
+  }
+
+  @Autowired
+  public void setUserSerialKeyService(UserSerialKeyService userSerialKeyService) {
     this.userSerialKeyService = userSerialKeyService;
+  }
+
+  @Autowired
+  public void setEmailService(EmailService emailService) {
     this.emailService = emailService;
   }
 
