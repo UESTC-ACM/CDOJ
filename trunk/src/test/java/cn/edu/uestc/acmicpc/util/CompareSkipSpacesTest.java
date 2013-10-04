@@ -10,43 +10,43 @@ public class CompareSkipSpacesTest {
 
   @Test
   public void testSame() {
-    Assert.assertEquals(0, StringUtil.compareSkipSpaces("cat", "cat"));
+    Assert.assertEquals(StringUtil.compareSkipSpaces("cat", "cat"), 0);
   }
 
   @Test
   public void testSame_deletingWhiteSpace() {
-    Assert.assertEquals(0, StringUtil.compareSkipSpaces("c a t", "cat"));
+    Assert.assertEquals(StringUtil.compareSkipSpaces("c a t", "cat"), 0);
   }
 
   @Test
   public void testSame_endingSpaces() {
-    Assert.assertEquals(0, StringUtil.compareSkipSpaces("c a t    ", " c a t"));
+    Assert.assertEquals(StringUtil.compareSkipSpaces("c a t    ", " c a t"), 0);
   }
 
   @Test
   public void testDifferent_endingSpaces() {
     Assert
-        .assertEquals("cat".compareTo("dog"), StringUtil.compareSkipSpaces("c a t    ", " d o g"));
+        .assertEquals(StringUtil.compareSkipSpaces("c a t    ", " d o g"), "cat".compareTo("dog"));
   }
 
   @Test
   public void testSame_tabSpaces() {
-    Assert.assertEquals(0, StringUtil.compareSkipSpaces("\tc\ta\tt\t", "\tc\ta\tt\t"));
+    Assert.assertEquals(StringUtil.compareSkipSpaces("\tc\ta\tt\t", "\tc\ta\tt\t"), 0);
   }
 
   @Test
   public void testDifferent_tabSpacesWithDifferentString() {
-    Assert.assertEquals("cat".compareTo("catt"),
-        StringUtil.compareSkipSpaces("\tc\ta\tt\t", "\tc\ta\tt\tt"));
+    Assert.assertEquals(StringUtil.compareSkipSpaces("\tc\ta\tt\t", "\tc\ta\tt\tt"),
+        "cat".compareTo("catt"));
   }
 
   @Test
   public void testSame_specialCharacter() {
-    Assert.assertEquals(0, StringUtil.compareSkipSpaces("\t\012\ta\tt\t", "\t\012\ta\tt\t"));
+    Assert.assertEquals(StringUtil.compareSkipSpaces("\t\012\ta\tt\t", "\t\012\ta\tt\t"), 0);
   }
 
   @Test
   public void testDifferent_specialCharacter() {
-    Assert.assertEquals(1, StringUtil.compareSkipSpaces("\t\012\ta\tt\t", "\t\012\t\001a\tt\t"));
+    Assert.assertEquals(StringUtil.compareSkipSpaces("\t\012\ta\tt\t", "\t\012\t\001a\tt\t"), 1);
   }
 }

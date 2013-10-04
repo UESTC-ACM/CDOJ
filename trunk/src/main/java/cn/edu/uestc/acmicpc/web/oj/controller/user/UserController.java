@@ -27,20 +27,20 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserSummaryDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDTO;
-import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.service.iface.EmailService;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
-import cn.edu.uestc.acmicpc.web.view.PageInfo;
-import cn.edu.uestc.acmicpc.service.iface.EmailService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
+import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
+import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
 /**
  * User controller

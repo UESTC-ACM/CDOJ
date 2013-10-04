@@ -28,15 +28,14 @@ public class AOPITTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void testFetchDataSource() {
-    Assert.assertEquals(
-        "jdbc:mysql://localhost:3306/uestcojtest?useUnicode=true&characterEncoding=UTF-8",
-        dataSource.getJdbcUrl());
+    Assert.assertEquals(dataSource.getJdbcUrl(),
+        "jdbc:mysql://localhost:3306/uestcojtest?useUnicode=true&characterEncoding=UTF-8");
   }
 
   @Test
   public void testDataBaseConnection() throws FieldNotUniqueException, AppException {
     User user = (User) userDAO.getEntityByUniqueField("userName", "admin");
-    Assert.assertEquals("admin", user.getUserName());
+    Assert.assertEquals(user.getUserName(), "admin");
   }
 
   @Test

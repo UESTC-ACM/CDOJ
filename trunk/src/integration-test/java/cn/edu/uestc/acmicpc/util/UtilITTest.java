@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
@@ -24,9 +24,9 @@ public class UtilITTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void testGlobal() {
-    AssertJUnit.assertNotNull("Constructor global instance is null.", global);
+    Assert.assertNotNull(global, "Constructor global instance is null.");
     List<Department> departments = global.getDepartmentList();
-    AssertJUnit.assertEquals(18, departments.size());
+    Assert.assertEquals(departments.size(), 18);
   }
 
   private static String VJ_1Y = "^(\\d{1,2})\\s*:\\s*(\\d{2})\\s*:\\s*(\\d{2})$";
@@ -55,21 +55,21 @@ public class UtilITTest extends AbstractTestNGSpringContextTests {
     pattern = Pattern.compile(VJ_NORMAL);
     query = "4:35:00 (-2)";
     matcher = pattern.matcher(query);
-    AssertJUnit.assertTrue(matcher.find());
+    Assert.assertTrue(matcher.find());
 
     pattern = Pattern.compile(VJ_FAIL);
     query = "(-5 )";
     matcher = pattern.matcher(query);
-    AssertJUnit.assertTrue(matcher.find());
+    Assert.assertTrue(matcher.find());
 
     pattern = Pattern.compile(PC_NORMAL);
     query = "14/ 294";
     matcher = pattern.matcher(query);
-    AssertJUnit.assertTrue(matcher.find());
+    Assert.assertTrue(matcher.find());
 
     pattern = Pattern.compile(PC_FAIL);
     query = "16/- -";
     matcher = pattern.matcher(query);
-    AssertJUnit.assertTrue(matcher.find());
+    Assert.assertTrue(matcher.find());
   }
 }

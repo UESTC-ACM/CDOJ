@@ -43,7 +43,7 @@ public class DatabaseITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testDAO_getEntityByUnique() throws AppException {
     User user = (User) userDAO.getEntityByUniqueField("userName", "administrator");
-    Assert.assertEquals("UESTC", user.getSchool());
+    Assert.assertEquals(user.getSchool(), "UESTC");
   }
 
   @Test
@@ -51,7 +51,7 @@ public class DatabaseITTest extends AbstractTestNGSpringContextTests {
     try {
       userDAO.getEntityByUniqueField("password", "123456");
     } catch (AppException e) {
-      Assert.assertEquals(new AppException("the value is not unique."), e);
+      Assert.assertEquals(e, new AppException("the value is not unique."));
     }
   }
 
@@ -65,17 +65,17 @@ public class DatabaseITTest extends AbstractTestNGSpringContextTests {
     userCondition.endId = 2;
     List<UserSummaryDTO> result = userDAO.findAll(UserSummaryDTO.class, UserSummaryDTO.builder(),
         userCondition.getCondition());
-    Assert.assertEquals(1, result.size());
+    Assert.assertEquals(result.size(), 1);
     UserSummaryDTO dto = result.get(0);
     Assert.assertEquals(Integer.valueOf(2), dto.getUserId());
-    Assert.assertEquals("admin", dto.getUserName());
-    Assert.assertEquals("admin", dto.getNickName());
-    Assert.assertEquals("acm_admin@uestc.edu.cn", dto.getEmail());
-    Assert.assertEquals(Integer.valueOf(0), dto.getSolved());
-    Assert.assertEquals(Integer.valueOf(0), dto.getTried());
-    Assert.assertEquals(Integer.valueOf(1), dto.getType());
-    Assert.assertEquals("UESTC", dto.getSchool());
-    Assert.assertEquals(new Timestamp(1359523046000L), dto.getLastLogin());
+    Assert.assertEquals(dto.getUserName(), "admin");
+    Assert.assertEquals(dto.getNickName(), "admin");
+    Assert.assertEquals(dto.getEmail(), "acm_admin@uestc.edu.cn");
+    Assert.assertEquals(dto.getSolved(), Integer.valueOf(0));
+    Assert.assertEquals(dto.getTried(), Integer.valueOf(0));
+    Assert.assertEquals(dto.getType(), Integer.valueOf(1));
+    Assert.assertEquals(dto.getSchool(), "UESTC");
+    Assert.assertEquals(dto.getLastLogin(), new Timestamp(1359523046000L));
   }
 
   @Test
@@ -90,29 +90,29 @@ public class DatabaseITTest extends AbstractTestNGSpringContextTests {
     UserSummaryDTO userDTO = userDAO.getDTOByUniqueField(UserSummaryDTO.class,
         UserSummaryDTO.builder(), "userId", 2);
     Assert.assertEquals(Integer.valueOf(2), userDTO.getUserId());
-    Assert.assertEquals("admin", userDTO.getUserName());
-    Assert.assertEquals("admin", userDTO.getNickName());
-    Assert.assertEquals("acm_admin@uestc.edu.cn", userDTO.getEmail());
-    Assert.assertEquals(Integer.valueOf(0), userDTO.getSolved());
-    Assert.assertEquals(Integer.valueOf(0), userDTO.getTried());
-    Assert.assertEquals(Integer.valueOf(1), userDTO.getType());
-    Assert.assertEquals("UESTC", userDTO.getSchool());
-    Assert.assertEquals(new Timestamp(1359523046000L), userDTO.getLastLogin());
+    Assert.assertEquals(userDTO.getUserName(), "admin");
+    Assert.assertEquals(userDTO.getNickName(), "admin");
+    Assert.assertEquals(userDTO.getEmail(), "acm_admin@uestc.edu.cn");
+    Assert.assertEquals(userDTO.getSolved(), Integer.valueOf(0));
+    Assert.assertEquals(userDTO.getTried(), Integer.valueOf(0));
+    Assert.assertEquals(userDTO.getType(), Integer.valueOf(1));
+    Assert.assertEquals(userDTO.getSchool(), "UESTC");
+    Assert.assertEquals(userDTO.getLastLogin(), new Timestamp(1359523046000L));
   }
 
   @Test
   public void testDAO_getDTOByUniqueField_successful_stringType() throws AppException {
     UserSummaryDTO userDTO = userDAO.getDTOByUniqueField(UserSummaryDTO.class,
         UserSummaryDTO.builder(), "userName", "admin");
-    Assert.assertEquals(Integer.valueOf(2), userDTO.getUserId());
-    Assert.assertEquals("admin", userDTO.getUserName());
-    Assert.assertEquals("admin", userDTO.getNickName());
-    Assert.assertEquals("acm_admin@uestc.edu.cn", userDTO.getEmail());
-    Assert.assertEquals(Integer.valueOf(0), userDTO.getSolved());
-    Assert.assertEquals(Integer.valueOf(0), userDTO.getTried());
-    Assert.assertEquals(Integer.valueOf(1), userDTO.getType());
-    Assert.assertEquals("UESTC", userDTO.getSchool());
-    Assert.assertEquals(new Timestamp(1359523046000L), userDTO.getLastLogin());
+    Assert.assertEquals(userDTO.getUserId(), Integer.valueOf(2));
+    Assert.assertEquals(userDTO.getUserName(), "admin");
+    Assert.assertEquals(userDTO.getNickName(), "admin");
+    Assert.assertEquals(userDTO.getEmail(), "acm_admin@uestc.edu.cn");
+    Assert.assertEquals(userDTO.getSolved(), Integer.valueOf(0));
+    Assert.assertEquals(userDTO.getTried(), Integer.valueOf(0));
+    Assert.assertEquals(userDTO.getType(), Integer.valueOf(1));
+    Assert.assertEquals(userDTO.getSchool(), "UESTC");
+    Assert.assertEquals(userDTO.getLastLogin(), new Timestamp(1359523046000L));
   }
 
   @Test
@@ -122,7 +122,7 @@ public class DatabaseITTest extends AbstractTestNGSpringContextTests {
           UserSummaryDTO.builder(), "departmentId", 1);
       Assert.fail();
     } catch (AppException e) {
-      Assert.assertEquals(new AppException("the value is not unique."), e);
+      Assert.assertEquals(e, new AppException("the value is not unique."));
     }
   }
 

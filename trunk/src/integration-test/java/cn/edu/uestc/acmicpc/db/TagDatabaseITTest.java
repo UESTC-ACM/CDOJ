@@ -22,19 +22,19 @@ public class TagDatabaseITTest extends AbstractTestNGSpringContextTests {
   @Autowired
   private ITagDAO tagDAO;
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "deprecation" })
   @Test
   public void testQuery_fetchAllTags() throws AppException {
     List<Tag> tags = (List<Tag>) tagDAO.findAll();
-    Assert.assertEquals("tag1", tags.get(0).getName());
-    Assert.assertEquals("tag2", tags.get(1).getName());
-    Assert.assertEquals("tag3", tags.get(2).getName());
-    Assert.assertEquals("tag4", tags.get(3).getName());
-    Assert.assertEquals("tag5", tags.get(4).getName());
+    Assert.assertEquals(tags.get(0).getName(), "tag1");
+    Assert.assertEquals(tags.get(1).getName(), "tag2");
+    Assert.assertEquals(tags.get(2).getName(), "tag3");
+    Assert.assertEquals(tags.get(3).getName(), "tag4");
+    Assert.assertEquals(tags.get(4).getName(), "tag5");
   }
 
   @Test
   public void testCount() throws AppException {
-    Assert.assertEquals(Long.valueOf(5), tagDAO.count());
+    Assert.assertEquals(tagDAO.count(), Long.valueOf(5));
   }
 }

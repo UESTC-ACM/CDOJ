@@ -29,18 +29,18 @@ public class ConditionITTest extends AbstractTestNGSpringContextTests {
   @Autowired
   private IUserDAO userDAO;
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "deprecation" })
   @Test
   public void testCondition_emptyEntrySet() throws AppException {
     Condition condition = new Condition();
     List<User> users = (List<User>) userDAO.findAll(condition);
     Assert.assertEquals(3, users.size());
     for (int i = 0 ; i < users.size(); i++) {
-      Assert.assertEquals(Integer.valueOf(i + 1), users.get(i).getUserId());
+      Assert.assertEquals(users.get(i).getUserId(), Integer.valueOf(i + 1));
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "deprecation" })
   @Test
   public void testCondition_emptyEntrySetWithDescId() throws AppException {
     Condition condition = new Condition();
@@ -48,21 +48,21 @@ public class ConditionITTest extends AbstractTestNGSpringContextTests {
     List<User> users = (List<User>) userDAO.findAll(condition);
     Assert.assertEquals(3, users.size());
     for (int i = 0 ; i < users.size(); i++) {
-      Assert.assertEquals(Integer.valueOf(users.size() - i), users.get(i).getUserId());
+      Assert.assertEquals(users.get(i).getUserId(), Integer.valueOf(users.size() - i));
     }
   }
 
   @Test
   public void testCondition_count_emptyCondition() throws AppException {
     UserCondition userCondition = new UserCondition();
-    Assert.assertEquals(Long.valueOf(3), userDAO.count(userCondition.getCondition()));
+    Assert.assertEquals(userDAO.count(userCondition.getCondition()), Long.valueOf(3));
   }
 
   @Test
   public void testCondition_count_withDepartmentId() throws AppException {
     UserCondition userCondition = new UserCondition();
     userCondition.departmentId = 1;
-    Assert.assertEquals(Long.valueOf(2), userDAO.count(userCondition.getCondition()));
+    Assert.assertEquals(userDAO.count(userCondition.getCondition()), Long.valueOf(2));
   }
 
   @Autowired
