@@ -21,7 +21,7 @@ public interface UserService extends DatabaseService<User, Integer> {
    * @return the unique user entity from database.
    * @throws AppException
    */
-  UserDTO getUserDTOByUserId(Integer userId) throws AppException;
+  public UserDTO getUserDTOByUserId(Integer userId) throws AppException;
 
   /**
    * Get unique user dto from database by user name.
@@ -30,7 +30,7 @@ public interface UserService extends DatabaseService<User, Integer> {
    * @return the unique user entity from database
    * @throws AppException
    */
-  UserDTO getUserDTOByUserName(String userName) throws AppException;
+  public UserDTO getUserDTOByUserName(String userName) throws AppException;
 
   /**
    * Get unique user center dto from database by user name.
@@ -39,7 +39,7 @@ public interface UserService extends DatabaseService<User, Integer> {
    * @return the unique user entity from database
    * @throws AppException
    */
-  UserCenterDTO getUserCenterDTOByUserName(String userName) throws AppException;
+  public UserCenterDTO getUserCenterDTOByUserName(String userName) throws AppException;
 
   /**
    * Get unique user dto from database by user's email.
@@ -48,7 +48,7 @@ public interface UserService extends DatabaseService<User, Integer> {
    * @return the unique user entity from database.
    * @throws AppException
    */
-  UserDTO getUserDTOByEmail(String email) throws AppException;
+  public UserDTO getUserDTOByEmail(String email) throws AppException;
 
   /**
    * Update user entity.
@@ -56,7 +56,7 @@ public interface UserService extends DatabaseService<User, Integer> {
    * @param userDTO user dto to be updated.
    * @throws AppException
    */
-  void updateUser(UserDTO userDTO) throws AppException;
+  public void updateUser(UserDTO userDTO) throws AppException;
 
   /**
    * Create a new user entity and make persistence with it.
@@ -64,7 +64,7 @@ public interface UserService extends DatabaseService<User, Integer> {
    * @param userDTO new user entity with {@code null} id.
    * @throws AppException
    */
-  void createNewUser(UserDTO userDTO) throws AppException;
+  public void createNewUser(UserDTO userDTO) throws AppException;
 
   /**
    * Search user by condition and page info.
@@ -74,7 +74,8 @@ public interface UserService extends DatabaseService<User, Integer> {
    * @return All user correspond to the condition and range.
    * @throws AppException
    */
-  List<UserSummaryDTO> search(UserCondition userCondition, PageInfo pageInfo) throws AppException;
+  public List<UserSummaryDTO> search(UserCondition userCondition, PageInfo pageInfo)
+      throws AppException;
 
   /**
    * Count user number by condition
@@ -83,6 +84,6 @@ public interface UserService extends DatabaseService<User, Integer> {
    * @return Tot users correspond to the condition.
    * @throws AppException
    */
-  Long count(UserCondition userCondition) throws AppException;
+  public Long count(UserCondition userCondition) throws AppException;
 
 }

@@ -242,6 +242,28 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     getSession().createQuery(hql).executeUpdate();
   }
 
+  /** TODO(fish) **/
+  @Override
+  public void updateEntitiesByField(Map<String, Object> properties, String field, String values) {
+    if (properties.isEmpty()) {
+      return;
+    }
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append("update ").append(getReferenceClass().getSimpleName()).append(" set");
+    Boolean first = true;
+    for (String key : properties.keySet()) {
+      if (!first) {
+        stringBuilder.append(",");
+      }
+      first = false;
+      stringBuilder.append(" ").append(key).append("=").append(properties.get(key));
+    }
+    stringBuilder.append(" where ").append(field).append(" in (").append(values).append(")");
+    String hql = stringBuilder.toString();
+    //LOGGER.info(hql);
+    getSession().createQuery(hql).executeUpdate();
+  }
+
   @Override
   @Deprecated
   public void deleteEntitiesByCondition(Condition condition) throws AppException {

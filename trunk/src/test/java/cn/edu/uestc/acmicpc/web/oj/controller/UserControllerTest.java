@@ -83,8 +83,15 @@ public class UserControllerTest extends ControllerTest {
   public void init() {
     Mockito.reset(userService,globalService, departmentService,
         problemService, statusService, userSerialKeyService, emailService);
-    mockMvc = initControllers(new UserController(userService,globalService, departmentService,
-        problemService, statusService, userSerialKeyService, emailService));
+    UserController userController = new UserController();
+    userController.setUserSerialKeyService(userSerialKeyService);
+    userController.setDepartmentService(departmentService);
+    userController.setEmailService(emailService);
+    userController.setGlobalService(globalService);
+    userController.setProblemService(problemService);
+    userController.setStatusService(statusService);
+    userController.setUserService(userService);
+    mockMvc = initControllers(userController);
     session = new MockHttpSession(context.getServletContext(), UUID.randomUUID().toString());
   }
 

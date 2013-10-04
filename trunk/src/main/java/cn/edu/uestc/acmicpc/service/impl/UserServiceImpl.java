@@ -33,8 +33,6 @@ public class UserServiceImpl extends AbstractService implements UserService {
   }
 
   private void updateUserByUserDTO(User user, UserDTO userDTO) {
-    if (userDTO.getUserId() != null)
-      user.setUserId(userDTO.getUserId());
     if (userDTO.getUserName() != null)
       user.setUserName(userDTO.getUserName());
     if (userDTO.getStudentId() != null)

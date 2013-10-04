@@ -181,6 +181,16 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
       throws AppException;
 
   /**
+   * Update all records according field value.
+   * TODO(fish) Review this method please!
+   *
+   * @param properties properties for setting
+   * @param field specific field name
+   * @param values records need to update
+   */
+  void updateEntitiesByField(Map<String, Object> properties, String field, String values);
+
+  /**
    * Delete all records according condition entity.
    *
    * @param condition

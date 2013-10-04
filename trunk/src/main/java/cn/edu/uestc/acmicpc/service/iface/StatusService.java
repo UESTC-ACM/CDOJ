@@ -17,7 +17,7 @@ public interface StatusService extends DatabaseService<Status, Integer> {
    * @return problem id list
    * @throws AppException
    */
-  List<Integer> findAllUserTriedProblemIds(Integer userId) throws AppException;
+  public List<Integer> findAllUserTriedProblemIds(Integer userId) throws AppException;
 
   /**
    * list user's accepted problem ids
@@ -26,5 +26,5 @@ public interface StatusService extends DatabaseService<Status, Integer> {
    * @return problem id list
    * @throws AppException
    */
-  List<Integer> findAllUserAcceptedProblemIds(Integer userId) throws AppException;
+  public List<Integer> findAllUserAcceptedProblemIds(Integer userId) throws AppException;
 }
