@@ -2,8 +2,10 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminSummaryDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserSummaryDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -78,7 +80,6 @@ public class UserServiceImpl extends AbstractService implements UserService {
     userDAO.add(user);
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public List<UserSummaryDTO> search(UserCondition userCondition, PageInfo pageInfo)
       throws AppException {
@@ -88,7 +89,16 @@ public class UserServiceImpl extends AbstractService implements UserService {
         UserSummaryDTO.builder(),
         userCondition.getCondition());
   }
-
+  
+  @Override
+  public List<UserAdminSummaryDTO> adminSearch(UserCondition userCondition, PageInfo pageInfo)
+      throws AppException {
+    userCondition.currentPage = pageInfo.getCurrentPage();
+    userCondition.countPerPage = Global.RECORD_PER_PAGE;
+    return userDAO.findAll(UserAdminSummaryDTO.class,UserAdminSummaryDTO.builder(),
+        userCondition.getCondition());
+  }
+  
   @Override
   public UserDTO getUserDTOByUserName(String userName) throws AppException {
     return userDAO.getDTOByUniqueField(UserDTO.class, UserDTO.builder(), "userName", userName);
@@ -114,5 +124,5 @@ public class UserServiceImpl extends AbstractService implements UserService {
   public Long count(UserCondition userCondition) throws AppException {
     return userDAO.count(userCondition.getCondition());
   }
-
+  
 }
