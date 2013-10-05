@@ -15,15 +15,15 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.judge.JudgeService;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.service.iface.EmailService;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.service.impl.UserServiceImpl;
-import cn.edu.uestc.acmicpc.judge.JudgeService;
-import cn.edu.uestc.acmicpc.service.iface.EmailService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.Global;
 
 import com.jolbox.bonecp.BoneCPDataSource;
@@ -42,26 +42,26 @@ public class TestContext extends ApplicationContextConfig {
   @Override
   @Bean
   public BoneCPDataSource dataSource() {
-    return null;
+    return mock(BoneCPDataSource.class);
   }
 
   @Override
   @Bean
   public LocalSessionFactoryBean sessionFactory() {
-    return null;
+    return mock(LocalSessionFactoryBean.class);
   }
 
   @Override
   @Bean
   public HibernateTransactionManager transactionManager() {
-    return null;
+    return mock(HibernateTransactionManager.class);
   }
 
   @Override
   @Bean
   @Autowired
   public Global global(IDepartmentDAO departmentDAO, ILanguageDAO languageDAO) {
-    return null;
+    return mock(Global.class);
   }
 
   @Bean

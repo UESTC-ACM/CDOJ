@@ -182,7 +182,6 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * Update all records according field value.
-   * TODO(fish) Review this method please!
    *
    * @param properties properties for setting
    * @param field specific field name
