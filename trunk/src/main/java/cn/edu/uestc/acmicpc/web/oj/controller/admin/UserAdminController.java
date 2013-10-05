@@ -126,7 +126,7 @@ public class UserAdminController extends BaseController{
         if(userAdminEditDTO.getType() != Global.AuthenticationType.ADMIN.ordinal()
          ||userAdminEditDTO.getType() != Global.AuthenticationType.CONSTANT.ordinal()
          ||userAdminEditDTO.getType() != Global.AuthenticationType.NORMAL.ordinal()) {
-          throw new AppException("Type Error.");
+          throw new FieldException("type", "Type Error.");
         }
         UserDTO userDTO = null;
         if(userDTO == null && userAdminEditDTO.getUserId() != null){
