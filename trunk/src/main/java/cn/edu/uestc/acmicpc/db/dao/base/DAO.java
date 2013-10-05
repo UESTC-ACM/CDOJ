@@ -242,7 +242,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     getSession().createQuery(hql).executeUpdate();
   }
 
-  /** TODO(fish) **/
+  /** TODO(fish): need it test. */
   @Override
   public void updateEntitiesByField(Map<String, Object> properties, String field, String values) {
     if (properties.isEmpty()) {

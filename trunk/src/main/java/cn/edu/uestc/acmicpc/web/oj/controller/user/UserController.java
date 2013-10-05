@@ -50,7 +50,7 @@ import cn.edu.uestc.acmicpc.web.view.PageInfo;
  *   <li><strong>/user/register</strong> Upload user's information and generate a new user</li>
  *   <li><strong>/user/sendSerialKey/{userName}</strong></li>
  *   <li><strong>/user/activate/{userName}/{serialKey}</strong></li>
- *   <li><strong>/user/resetPassword</strong></li> TODO
+ *   <li><strong>/user/resetPassword</strong></li> TODO(mzry1992):
  *   <li><strong>/user/center/{userName}</strong> Visit user center</li>
  *   <li><strong>/user/status/{userName}</strong> User problem submission status</li>
  *   <li><strong>/user/list</strong> User list page</li>
