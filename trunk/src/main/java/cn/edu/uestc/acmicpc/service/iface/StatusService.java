@@ -2,8 +2,12 @@ package cn.edu.uestc.acmicpc.service.iface;
 
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
 /**
  * Service interface for {@link Status}.
@@ -27,4 +31,22 @@ public interface StatusService extends DatabaseService<Status, Integer> {
    * @throws AppException
    */
   public List<Integer> findAllUserAcceptedProblemIds(Integer userId) throws AppException;
+
+  /**
+   * TODO(mzry1992)
+   * @param condition
+   * @return
+   * @throws AppException
+   */
+  public Long count(StatusCondition condition) throws AppException;
+
+  /**
+   * TODO(mzry1992)
+   * @param condition
+   * @param pageInfo
+   * @return
+   * @throws AppException
+   */
+  public List<StatusListDTO> getStatusList(StatusCondition condition,
+                                           PageInfo pageInfo) throws AppException;
 }

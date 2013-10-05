@@ -82,6 +82,8 @@ public class StatusCondition extends BaseCondition {
    */
   public Integer resultId;
 
+  public Boolean isVisible;
+
   @Override
   public Condition getCondition() throws AppException {
     Condition condition = super.getCondition();
@@ -107,6 +109,9 @@ public class StatusCondition extends BaseCondition {
         condition.addEntry("result", Condition.ConditionType.EQUALS, resultId);
       }
     }
+
+    if (isVisible != null)
+      condition.addEntry("problemByProblemId.isVisible", ConditionType.EQUALS, isVisible);
     return condition;
   }
 
