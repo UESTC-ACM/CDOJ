@@ -2,7 +2,6 @@ package cn.edu.uestc.acmicpc.service.iface;
 
 import java.util.List;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
