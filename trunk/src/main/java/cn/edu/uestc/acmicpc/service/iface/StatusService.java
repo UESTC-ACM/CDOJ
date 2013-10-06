@@ -4,6 +4,8 @@ import java.util.List;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -49,4 +51,13 @@ public interface StatusService extends DatabaseService<Status, Integer> {
    */
   public List<StatusListDTO> getStatusList(StatusCondition condition,
                                            PageInfo pageInfo) throws AppException;
+
+  /**
+   * TODO(mzry1992)
+   * @param statusDTO
+   * @throws AppException
+   */
+  public void createNewStatus(StatusDTO statusDTO) throws AppException;
+
+  public StatusInformationDTO getStatusInformation(Integer statusId) throws AppException;
 }

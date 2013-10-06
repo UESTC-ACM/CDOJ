@@ -45,12 +45,27 @@ public class LanguageServiceImpl extends AbstractService implements LanguageServ
     return languageDTOList;
   }
 
-  @Override
-  public String getExtension(Integer languageId) {
+  private LanguageDTO getLanguage(Integer languageId) {
     for (LanguageDTO languageDTO: languageDTOList)
       if (languageDTO.getLanguageId().equals(languageId))
-        return languageDTO.getExtension();
+        return languageDTO;
     return null;
+  }
+
+  @Override
+  public String getExtension(Integer languageId) {
+    LanguageDTO languageDTO = getLanguage(languageId);
+    if (languageDTO == null)
+      return null;
+    return languageDTO.getExtension();
+  }
+
+  @Override
+  public String getLanguageName(Integer languageId) {
+    LanguageDTO languageDTO = getLanguage(languageId);
+    if (languageDTO == null)
+      return null;
+    return languageDTO.getName();
   }
 
   @Override

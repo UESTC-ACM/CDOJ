@@ -27,7 +27,7 @@
   </li>
   <li class="divider-vertical"></li>
   <li>
-    <a href="#">Status</a>
+    <a href="<c:url value="/status/list"/>">Status</a>
   </li>
   <li class="divider-vertical"></li>
   <li>
