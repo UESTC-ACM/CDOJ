@@ -182,7 +182,7 @@
   </div>
 </div>
 
-<page:applyDecorator name="body" page="/WEB-INF/views/status/modal.jsp"/>
+<page:applyDecorator name="body" page="/WEB-INF/views/status/statusModal.jsp"/>
 
 </body>
 </html>
