@@ -1,6 +1,5 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.problem;
 
-import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;

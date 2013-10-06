@@ -1,7 +1,6 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.base;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
