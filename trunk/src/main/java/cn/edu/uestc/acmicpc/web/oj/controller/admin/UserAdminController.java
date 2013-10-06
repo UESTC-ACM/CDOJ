@@ -88,8 +88,9 @@ public class UserAdminController extends BaseController{
           Global.RECORD_PER_PAGE, "", null);
       List<UserAdminSummaryDTO> userList = userService.adminSearch(userCondition, 
           pageInfo);
-      for (UserAdminSummaryDTO summaryDTO : userList)
+      for (UserAdminSummaryDTO summaryDTO : userList) {
         summaryDTO.setTypeName(globalService.getAuthenticationName(summaryDTO.getType()));
+      }
       json.put("pageInfo", pageInfo.getHtmlString());
       json.put("result", "success");
       json.put("userList", userList);
