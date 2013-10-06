@@ -5,13 +5,11 @@ import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.code.CodeDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.SubmitDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
-import cn.edu.uestc.acmicpc.service.iface.CodeService;
-import cn.edu.uestc.acmicpc.service.iface.LanguageService;
-import cn.edu.uestc.acmicpc.service.iface.ProblemService;
-import cn.edu.uestc.acmicpc.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.service.iface.*;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -21,6 +19,7 @@ import cn.edu.uestc.acmicpc.web.view.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,6 +44,12 @@ public class StatusController extends BaseController {
   private ProblemService problemService;
   private LanguageService languageService;
   private CodeService codeService;
+  private GlobalService globalService;
+
+  @Autowired
+  public void setGlobalService(GlobalService globalService) {
+    this.globalService = globalService;
+  }
 
   @Autowired
   public void setCodeService(CodeService codeService) {
@@ -97,6 +102,10 @@ public class StatusController extends BaseController {
           Global.RECORD_PER_PAGE, "", null);
       List<StatusListDTO> statusListDTOList = statusService.getStatusList(statusCondition,
           pageInfo);
+      for (StatusListDTO statusListDTO : statusListDTOList) {
+        statusListDTO.setReturnType(globalService.getReturnDescription(
+            statusListDTO.getReturnTypeId(), statusListDTO.getCaseNumber()));
+      }
 
       json.put("result", "success");
       json.put("pageInfo", pageInfo.getHtmlString());
@@ -155,12 +164,42 @@ public class StatusController extends BaseController {
             .setProblemId(submitDTO.getProblemId())
             .setTime(new Timestamp(new Date().getTime()))
             .setUserId(currentUser.getUserId())
+            .setLength(submitDTO.getCodeContent().length())
             .build());
         json.put("result", "success");
       } catch (AppException e) {
         json.put("result", "error");
         json.put("error_msg", e.getMessage());
       }
+    }
+    return json;
+  }
+
+  @RequestMapping("info/{statusId}")
+  @LoginPermit(NeedLogin = true)
+  public @ResponseBody
+  Map<String, Object> info(HttpSession session,
+                           @PathVariable Integer statusId) {
+    Map<String, Object> json = new HashMap<>();
+    try{
+      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+      StatusInformationDTO statusInformationDTO = statusService.getStatusInformation(statusId);
+      System.out.println(statusInformationDTO + " " + statusId);
+      if (statusInformationDTO == null)
+        throw new AppException("No such status.");
+      if (currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal() &&
+          !statusInformationDTO.getUserId().equals(currentUser.getUserId()))
+        throw new AppException("You have no permission to view this code.");
+      json.put("result", "success");
+      json.put("code", statusInformationDTO.getCodeContent());
+      json.put("compileInfo", statusInformationDTO.getCompileInfoContent());
+    }catch(AppException e){
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    }catch(Exception e){
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
     }
     return json;
   }
