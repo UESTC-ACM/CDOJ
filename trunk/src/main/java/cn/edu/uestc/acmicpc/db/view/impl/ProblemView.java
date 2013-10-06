@@ -22,13 +22,9 @@
 
 package cn.edu.uestc.acmicpc.db.view.impl;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.view.base.View;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Use for return problem information with json type.
@@ -55,7 +51,7 @@ public class ProblemView extends View<Problem> {
   private Integer javaMemoryLimit;
 
   public ProblemView(ProblemDTO problemDTO) {
-    
+
     setProblemId(problemDTO.getProblemId());
     setTitle(problemDTO.getTitle());
     setDescription(problemDTO.getDescription());
@@ -72,7 +68,7 @@ public class ProblemView extends View<Problem> {
     setIsSpj(problemDTO.getIsSpj());
     setJavaTimeLimit(problemDTO.getJavaTimeLimit());
     setJavaMemoryLimit(problemDTO.getJavaMemoryLimit());
-    
+
     // TODO(mzry1992): add Tags and others into the view.
     // List<String> list = new LinkedList<>();
     // Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
