@@ -6,10 +6,13 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleListDTO;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.util.Global;
@@ -35,7 +38,7 @@ public class ArticleAdminController extends BaseController{
   @RequestMapping("list")
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public String list() {
-    return "admin/article/";
+    return "admin/article/articleList";
   }
 
   @RequestMapping("search")
@@ -62,4 +65,65 @@ public class ArticleAdminController extends BaseController{
     }
     return json;
   }
+
+  /**
+   * TODO(mzry1992)
+   *
+   * @param targetId
+   * @param field
+   * @param value
+   * @return
+   */
+  @RequestMapping("operator/{id}/{field}/{value}")
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public @ResponseBody
+  Map<String, Object> operator(@PathVariable("id") String targetId,
+                               @PathVariable("field") String field,
+                               @PathVariable("value") String value) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      articleService.operator(field, targetId, value);
+      json.put("result", "success");
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  @RequestMapping("editor/{articleId}")
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public String editor(@PathVariable("articleId") Integer articleId,
+                       ModelMap model) {
+    try {
+      if (articleId == 0) {
+        ArticleCondition articleCondition = new ArticleCondition();
+        articleCondition.isTitleEmpty = true;
+        Long count = articleService.count(articleCondition);
+        if (count == 0) {
+          articleId = articleService.createNewArticle();
+        } else {
+          PageInfo pageInfo = buildPageInfo(count, articleCondition.currentPage,
+              Global.RECORD_PER_PAGE, "", null);
+          List<ArticleListDTO> articleList = articleService.getArticleList(articleCondition, pageInfo);
+          if (articleList == null || articleList.size() == 0)
+            throw new AppException("Add new article error.");
+          ArticleListDTO articleListDTO = articleList.get(0);
+          articleId = articleListDTO.getArticleId();
+        }
+        return "redirect:/admin/article/editor/" + articleId;
+      } else {
+        ArticleEditorShowDTO targetArticle = articleService.getArticleEditorShowDTO(articleId);
+        if (targetArticle == null)
+          throw new AppException("No such article.");
+        model.put("targetArticle", targetArticle);
+      }
+    } catch (AppException e) {
+      model.put("message", e.getMessage());
+      return "error/error";
+    }
+    return "admin/article/articleEditor";
+  }
+
 }

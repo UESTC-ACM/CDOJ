@@ -21,7 +21,7 @@
 
     <li class="nav-header"><i class="icon-pencil"></i>Article</li>
     <li><a href="<c:url value="/admin/article/list"/>">Article list</a><li>
-    <li><s:a action="editor/" namespace="/admin/article">Add article</s:a></li>
+    <li><a href="<c:url value="/admin/article/editor/0"/>">Add article</a></li>
 
     <li class="divider"></li>
 
