@@ -110,8 +110,9 @@ public class StatusCondition extends BaseCondition {
       }
     }
 
-    if (isVisible != null)
+    if (isVisible != null) {
       condition.addEntry("problemByProblemId.isVisible", ConditionType.EQUALS, isVisible);
+    }
     return condition;
   }
 
