@@ -1,13 +1,12 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
-import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
-import cn.edu.uestc.acmicpc.service.iface.CompileInfoService;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+
+import cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO;
+import cn.edu.uestc.acmicpc.service.iface.CompileInfoService;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Description
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Primary
 public class CompileInfoServiceImpl extends AbstractService implements CompileInfoService {
 
-  private ICompileInfoDAO compileInfoDAO;
+  private final ICompileInfoDAO compileInfoDAO;
 
   @Autowired
   public CompileInfoServiceImpl(ICompileInfoDAO compileInfoDAO) {
