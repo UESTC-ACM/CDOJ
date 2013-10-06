@@ -2,6 +2,10 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
+import cn.edu.uestc.acmicpc.web.view.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -45,6 +49,19 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     // TODO(mzry1992): please test for this statement.
     return (List<Integer>) statusDAO.findAll("problemByProblemId.problemId",
         statusCondition.getCondition());
+  }
+
+  @Override
+  public Long count(StatusCondition condition) throws AppException {
+    return statusDAO.count(condition.getCondition());
+  }
+
+  @Override
+  public List<StatusListDTO> getStatusList(StatusCondition condition, PageInfo pageInfo) throws AppException {
+    condition.currentPage = pageInfo.getCurrentPage();
+    condition.countPerPage = Global.RECORD_PER_PAGE;
+    return statusDAO.findAll(StatusListDTO.class, StatusListDTO.builder(),
+        condition.getCondition());
   }
 
   @Override
