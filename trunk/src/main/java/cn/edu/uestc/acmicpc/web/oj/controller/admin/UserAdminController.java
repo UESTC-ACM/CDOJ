@@ -81,7 +81,6 @@ public class UserAdminController extends BaseController{
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public @ResponseBody 
   Map<String, Object> search(@RequestBody UserCondition userCondition){
-    
     Map<String, Object> json = new HashMap<>();
     try {
       Long count = userService.count(userCondition);
@@ -89,6 +88,9 @@ public class UserAdminController extends BaseController{
           Global.RECORD_PER_PAGE, "", null);
       List<UserAdminSummaryDTO> userList = userService.adminSearch(userCondition, 
           pageInfo);
+      for (UserAdminSummaryDTO summaryDTO : userList) {
+        summaryDTO.setTypeName(globalService.getAuthenticationName(summaryDTO.getType()));
+      }
       json.put("pageInfo", pageInfo.getHtmlString());
       json.put("result", "success");
       json.put("userList", userList);
@@ -122,23 +124,12 @@ public class UserAdminController extends BaseController{
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        
-        if(userAdminEditDTO.getType() != Global.AuthenticationType.ADMIN.ordinal()
-         ||userAdminEditDTO.getType() != Global.AuthenticationType.CONSTANT.ordinal()
-         ||userAdminEditDTO.getType() != Global.AuthenticationType.NORMAL.ordinal()) {
-          throw new AppException("Type Error.");
-        }
-        UserDTO userDTO = null;
-        if(userDTO == null && userAdminEditDTO.getUserId() != null){
-          userDTO = userService.getUserDTOByUserId(userAdminEditDTO.getUserId());
-        }
-        if(userDTO == null && userAdminEditDTO.getUserName() != null){
-          userDTO = userService.getUserDTOByUserName(userAdminEditDTO.getUserName());
-        }
-        if(userDTO == null && userAdminEditDTO.getEmail() != null ){
-          userDTO = userService.getUserDTOByEmail(userAdminEditDTO.getEmail());
-        }
-        if(userDTO == null){
+        if (globalService.getAuthenticationName(userAdminEditDTO.getType()) == null)
+          throw new FieldException("type", "Type Error.");
+        if(userAdminEditDTO.getUserId() == null)
+          throw new FieldException("userId", "User id error.");
+        UserDTO userDTO = userService.getUserDTOByUserId(userAdminEditDTO.getUserId());
+        if(userDTO == null) {
           throw new AppException("Can't find user.");
         }
         userDTO.setNickName(userAdminEditDTO.getNickName());

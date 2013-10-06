@@ -82,6 +82,9 @@ public class StatusCondition extends BaseCondition {
    */
   public Integer resultId;
 
+  @Exp(mapField = "problemByProblemId.isVisible", type = ConditionType.GREATER_OR_EQUALS)
+  public Boolean isVisible;
+
   @Override
   public Condition getCondition() throws AppException {
     Condition condition = super.getCondition();

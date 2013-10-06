@@ -11,7 +11,8 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
-@Fields({"userId","userName","nickName","email","type","lastLogin"})
+@Fields({"userId","userName","nickName","email","type","lastLogin", "school", "departmentId",
+    "studentId"})
 public class UserAdminSummaryDTO implements BaseDTO<User>{
   
   private Integer userId;
@@ -19,19 +20,36 @@ public class UserAdminSummaryDTO implements BaseDTO<User>{
   private String nickName;
   private String email;
   private Integer type;
+  private String typeName;
   private Timestamp lastLogin;
+  private String school;
+  private Integer departmentId;
+  private String studentId;
   
   public UserAdminSummaryDTO() {
   }
   
   public UserAdminSummaryDTO(Integer userId, String userName, String nickName, 
-      String email, Integer type, Timestamp lastLogin) {
+      String email, Integer type, String typeName, Timestamp lastLogin, String school,
+      Integer departmentId, String studentId) {
     this.userId = userId;
     this.userName = userName;
     this.nickName = nickName;
     this.email = email;
     this.type = type;
+    this.typeName = typeName;
     this.lastLogin = lastLogin;
+    this.school = school;
+    this.departmentId = departmentId;
+    this.studentId = studentId;
+  }
+
+  public String getTypeName() {
+    return typeName;
+  }
+
+  public void setTypeName(String typeName) {
+    this.typeName = typeName;
   }
 
   public Integer getUserId() {
@@ -81,7 +99,31 @@ public class UserAdminSummaryDTO implements BaseDTO<User>{
   public void setLastLogin(Timestamp lastLogin) {
     this.lastLogin = lastLogin;
   }
-  
+
+  public String getSchool() {
+    return school;
+  }
+
+  public void setSchool(String school) {
+    this.school = school;
+  }
+
+  public Integer getDepartmentId() {
+    return departmentId;
+  }
+
+  public void setDepartmentId(Integer departmentId) {
+    this.departmentId = departmentId;
+  }
+
+  public String getStudentId() {
+    return studentId;
+  }
+
+  public void setStudentId(String studentId) {
+    this.studentId = studentId;
+  }
+
   public static Builder builder() {
     return new Builder();
   }
@@ -95,11 +137,16 @@ public class UserAdminSummaryDTO implements BaseDTO<User>{
     private String nickName="";
     private String email="";
     private Integer type;
+    private String typeName = "";
     private Timestamp lastLogin;
-    
+    private String school;
+    private Integer departmentId;
+    private String studentId;
+
     @Override
     public UserAdminSummaryDTO build() {
-      return new UserAdminSummaryDTO(userId, userName, nickName, email,type, lastLogin);
+      return new UserAdminSummaryDTO(userId, userName, nickName, email, type, typeName, lastLogin,
+          school, departmentId, studentId);
     }
 
     @Override
@@ -110,6 +157,9 @@ public class UserAdminSummaryDTO implements BaseDTO<User>{
       email = (String) properties.get("email");
       type = (Integer) properties.get("type");
       lastLogin = (Timestamp) properties.get("lastLogin");
+      school = (String) properties.get("school");
+      departmentId = (Integer) properties.get("departmentId");
+      studentId = (String) properties.get("studentId");
       return build();
     }
     
@@ -142,6 +192,25 @@ public class UserAdminSummaryDTO implements BaseDTO<User>{
       this.lastLogin = lastLogin;
       return this;
     }
-    
+
+    public Builder setTypeName(String typeName) {
+      this.typeName = typeName;
+      return this;
+    }
+
+    public Builder setSchool(String school) {
+      this.school = school;
+      return this;
+    }
+
+    public Builder setDepartmentId(Integer departmentId) {
+      this.departmentId = departmentId;
+      return this;
+    }
+
+    public Builder setStudentId(String studentId) {
+      this.studentId = studentId;
+      return this;
+    }
   }
 }
