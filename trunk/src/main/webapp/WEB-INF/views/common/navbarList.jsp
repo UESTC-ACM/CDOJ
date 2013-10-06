@@ -47,10 +47,10 @@
 
       <li class="divider"></li>
       <li class="nav-header">About</li>
-      <li><a href="<c:url value="/article/show/1"/>">F.A.Q</a></li>
-      <li><a href="<c:url value="/article/show/2"/>">Markdown</a></li>
-      <li><a href="<c:url value="/article/show/3"/>">Training system</a></li>
-      <li><a href="<c:url value="/article/show/4"/>">About</a></li>
+      <li><a href="#">F.A.Q</a></li>
+      <li><a href="#">Markdown</a></li>
+      <li><a href="#">Training system</a></li>
+      <li><a href="#">About</a></li>
     </ul>
   </li>
   <li class="divider-vertical"></li>

@@ -22,11 +22,14 @@
 
 package cn.edu.uestc.acmicpc.db.view.impl;
 
+import java.util.LinkedList;
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.view.base.View;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -84,7 +87,7 @@ public class ProblemListView extends View<Problem> {
     isSpj = problemListDTO.getIsSpj();
     isVisible = problemListDTO.getIsVisible();
     difficulty = problemListDTO.getDifficulty();
-
+    
     // TODO(mzry1992): Add tags and others;
     // List<String> list = new LinkedList<>();
     // Collection<ProblemTag> problemTags = problem.getProblemtagsByProblemId();
