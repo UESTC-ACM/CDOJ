@@ -7,6 +7,7 @@
  */
 var currentCondition;
 
+var userList;
 /**
  * refresh the user list
  * @param condition
@@ -29,7 +30,7 @@ function refreshUserList(condition) {
       return false;
     });
 
-    var userList = data.userList;
+    userList = data.userList;
     var tbody = $('#userList');
     // remove old user list
     tbody.find('tr').remove();
@@ -41,7 +42,7 @@ function refreshUserList(condition) {
           '<td>' + value.nickName + '</td>' +
           '<td>' + value.email + '</td>' +
           '<td>' + value.typeName + '</td>' +
-          '<td class="cdoj-time">' + value.lastLogin + '</td>' +
+          '<td class="cdoj-time" type="milliseconds">' + value.lastLogin + '</td>' +
           '<td><a href="#" onclick="return editUserDialog(' + index + ')"><i class="icon-pencil"/></a></td>' +
           '</tr>';
       tbody.append(html);
@@ -97,9 +98,9 @@ function changeOrder(field) {
 $(document).ready(function () {
 
   $('#userCondition').find('#departmentId').prepend('<option value="-1">All</option>');
-  $('#userCondition').find('departmentId').attr("value", -1);
+  $('#userCondition').find('#departmentId').attr("value", -1);
   $('#userCondition').find('#type').prepend('<option value="-1">All</option>');
-  $('#userCondition').find('type').attr("value", -1);
+  $('#userCondition').find('#type').attr("value", -1);
 
   currentCondition = {
     "currentPage": null,
