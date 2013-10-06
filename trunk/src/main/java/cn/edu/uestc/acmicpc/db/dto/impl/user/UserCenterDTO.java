@@ -1,13 +1,12 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.user;
 
-import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
-import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
-import cn.edu.uestc.acmicpc.db.entity.Department;
-import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.util.annotation.Fields;
-
 import java.sql.Timestamp;
 import java.util.Map;
+
+import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
+import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
+import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
 /**
  * User center DTO for user center
