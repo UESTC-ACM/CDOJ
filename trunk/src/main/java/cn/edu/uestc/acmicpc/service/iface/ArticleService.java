@@ -20,4 +20,5 @@ public interface ArticleService extends DatabaseService<Article, Integer> {
   public Long count(ArticleCondition condition) throws AppException;
 
   public List<ArticleListDTO> getArticleList(ArticleCondition condition, PageInfo pageInfo) throws AppException;
+
 }
