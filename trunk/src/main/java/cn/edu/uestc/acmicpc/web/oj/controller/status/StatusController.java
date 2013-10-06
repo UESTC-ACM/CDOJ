@@ -45,6 +45,12 @@ public class StatusController extends BaseController {
   private LanguageService languageService;
   private CodeService codeService;
   private GlobalService globalService;
+  private CompileInfoService compileInfoService;
+
+  @Autowired
+  public void setCompileInfoService(CompileInfoService compileInfoService) {
+    this.compileInfoService = compileInfoService;
+  }
 
   @Autowired
   public void setGlobalService(GlobalService globalService) {
@@ -184,7 +190,6 @@ public class StatusController extends BaseController {
     try{
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
       StatusInformationDTO statusInformationDTO = statusService.getStatusInformation(statusId);
-      System.out.println(statusInformationDTO + " " + statusId);
       if (statusInformationDTO == null)
         throw new AppException("No such status.");
       if (currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal() &&
@@ -192,7 +197,10 @@ public class StatusController extends BaseController {
         throw new AppException("You have no permission to view this code.");
       json.put("result", "success");
       json.put("code", statusInformationDTO.getCodeContent());
-      json.put("compileInfo", statusInformationDTO.getCompileInfoContent());
+      if (statusInformationDTO.getCompileInfoId() != null) {
+        json.put("compileInfo", compileInfoService.getCompileInfo(
+            statusInformationDTO.getCompileInfoId()));
+      }
     }catch(AppException e){
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
