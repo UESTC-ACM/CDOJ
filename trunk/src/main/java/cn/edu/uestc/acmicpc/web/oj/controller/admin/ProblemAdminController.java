@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDataEditDTO;
@@ -85,8 +84,7 @@ public class ProblemAdminController extends BaseController {
     Map<String, Object> json = new HashMap<>();
     try{
       problemCondition.isTitleEmpty = false;
-      Condition condition = problemCondition.getCondition();
-      Long count = problemService.count(condition);
+      Long count = problemService.count(problemCondition);
       PageInfo pageInfo = buildPageInfo(count, problemCondition.currentPage,
           Global.RECORD_PER_PAGE, "", null);
 
@@ -141,8 +139,7 @@ public class ProblemAdminController extends BaseController {
       if (problemId == 0) {
         ProblemCondition problemCondition= new ProblemCondition();
         problemCondition.isTitleEmpty = true;
-        Condition condition = problemCondition.getCondition();
-        Long count = problemService.count(condition);
+        Long count = problemService.count(problemCondition);
         if (count == 0) {
           problemId = problemService.createNewProblem();
         } else {
