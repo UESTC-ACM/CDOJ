@@ -58,7 +58,7 @@ function getMemoryCost(memoryCost) {
 }
 
 function getTime(time) {
-  var html = $('<td class="cdoj-time">' + time + '</td>');
+  var html = $('<td class="cdoj-time" type="milliseconds">' + time + '</td>');
   return html;
 }
 
@@ -83,15 +83,15 @@ function getHTML(value) {
 function blindCodeHref() {
   $('#codeHref').live('click', function () {
     var id = $(this).attr('statusId');
-    jsonPost('/status/code/' + id, function (data) {
+    jsonPost('/status/info/' + id, function (data) {
       var codeModal = $('#codeModal');
       var codeLabel = $('#codeModalLabel');
       var codeViewer = $('#codeViewer');
       codeLabel.empty();
-      codeLabel.append('Code ' + data.code.codeId);
+      codeLabel.append('Code');
       codeViewer.empty();
 
-      var str = data.code.content;
+      var str = data['code'];
       str = '<pre class="prettyprint linenums">' + str + '</pre>'
       codeViewer.append(str);
 
@@ -110,7 +110,7 @@ function blindCodeHref() {
 function blindCompileInfo() {
   $('#compileInfo').live('click', function () {
     var id = $(this).attr('statusId');
-    jsonPost('/status/compileInfo/' + id, function (data) {
+    jsonPost('/status/info/' + id, function (data) {
       var compileInfoModal = $('#compileInfoModal');
       var compileInfoModalLabel = $('#compileInfoModalLabel');
       var compileInfoViewer = $('#compileInfoViewer');
@@ -118,7 +118,7 @@ function blindCompileInfo() {
       compileInfoModalLabel.append('Compilation Error Information');
       compileInfoViewer.empty();
       compileInfoViewer.removeClass('linenums');
-      compileInfoViewer.append(data.CEInformation);
+      compileInfoViewer.append(data['compileInfo']);
       prettyPrint();
       compileInfoModal.modal();
     });
@@ -229,6 +229,7 @@ $(document).ready(function () {
     //Get language Id
     info['languageId'] = $('#languageSelector').find('.active').attr('value');
 
+    console.log(info);
     jsonPost('/status/submit', info, function (data) {
       if (data.result == 'error')
         alert(data['error_msg']);

@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.util.StringUtil;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,14 @@ public class GlobalServiceImpl extends AbstractService implements GlobalService 
     for (Global.AuthenticationType authenticationType : Global.AuthenticationType.values())
       if (authenticationType.ordinal() == type)
         return authenticationType.getDescription();
+    return null;
+  }
+
+  @Override
+  public String getReturnDescription(Integer returnTypeId, Integer caseNumber) {
+    for (Global.OnlineJudgeReturnType returnType : Global.OnlineJudgeReturnType.values())
+      if (returnType.ordinal() == returnTypeId)
+        return StringUtil.getStatusDescription(returnType, caseNumber);
     return null;
   }
 }

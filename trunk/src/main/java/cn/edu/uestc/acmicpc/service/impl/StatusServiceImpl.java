@@ -2,9 +2,8 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import java.util.List;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
@@ -98,6 +97,12 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     Status status = new Status();
     updateStatusByStatusDTO(status, statusDTO);
     statusDAO.add(status);
+  }
+
+  @Override
+  public StatusInformationDTO getStatusInformation(Integer statusId) throws AppException {
+    return statusDAO.getDTOByUniqueField(StatusInformationDTO.class,
+        StatusInformationDTO.builder(), "statusId", statusId);
   }
 
   @Override
