@@ -92,7 +92,6 @@ function blindCodeHref() {
       if (data.result == 'error')
         alert(data['error_msg']);
       else {
-        console.log(data);
         var codeModal = $('#codeModal');
         var codeLabel = $('#codeModalLabel');
         var codeViewer = $('#codeViewer');
@@ -101,7 +100,7 @@ function blindCodeHref() {
         codeViewer.empty();
 
         var str = data['code'];
-        str = '<pre class="prettyprint linenums">' + str + '</pre>'
+        str = '<pre class="prettyprint linenums">' + js.lang.String.encodeHtml(str) + '</pre>'
         codeViewer.append(str);
 
         var mult = 0.95;
@@ -117,7 +116,6 @@ function blindCodeHref() {
   });
 }
 
-
 function blindCompileInfo() {
   $('#compileInfo').live('click', function () {
     var id = $(this).attr('statusId');
@@ -132,7 +130,7 @@ function blindCompileInfo() {
         compileInfoModalLabel.append('Compilation Error Information');
         compileInfoViewer.empty();
         compileInfoViewer.removeClass('linenums');
-        compileInfoViewer.append(data['compileInfo']);
+        compileInfoViewer.append(js.lang.String.encodeHtml(data['compileInfo']));
         prettyPrint();
         compileInfoModal.modal();
       }

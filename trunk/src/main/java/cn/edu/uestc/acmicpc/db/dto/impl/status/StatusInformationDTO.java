@@ -8,24 +8,24 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
-@Fields({ "statusId", "userId", "codeByCodeId.content", "compileInfoByCompileInfoId.content" })
+@Fields({ "statusId", "userId", "codeByCodeId.content", "compileInfoId" })
 public class StatusInformationDTO implements BaseDTO<Status> {
 
   public StatusInformationDTO() {
   }
 
   private StatusInformationDTO(Integer statusId, Integer userId, String codeContent,
-                               String compileInfoContent) {
+                               Integer compileInfoId) {
     this.statusId = statusId;
     this.userId = userId;
     this.codeContent = codeContent;
-    this.compileInfoContent = compileInfoContent;
+    this.compileInfoId = compileInfoId;
   }
 
   private Integer statusId;
   private Integer userId;
   private String codeContent;
-  private String compileInfoContent;
+  private Integer compileInfoId;
 
   public Integer getStatusId() {
     return statusId;
@@ -51,12 +51,12 @@ public class StatusInformationDTO implements BaseDTO<Status> {
     this.codeContent = codeContent;
   }
 
-  public String getCompileInfoContent() {
-    return compileInfoContent;
+  public Integer getCompileInfoId() {
+    return compileInfoId;
   }
 
-  public void setCompileInfoContent(String compileInfoContent) {
-    this.compileInfoContent = compileInfoContent;
+  public void setCompileInfoId(Integer compileInfoId) {
+    this.compileInfoId = compileInfoId;
   }
 
   public static Builder builder() {
@@ -70,7 +70,7 @@ public class StatusInformationDTO implements BaseDTO<Status> {
 
     @Override
     public StatusInformationDTO build() {
-      return new StatusInformationDTO(statusId, userId, codeContent, compileInfoContent);
+      return new StatusInformationDTO(statusId, userId, codeContent, compileInfoId);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class StatusInformationDTO implements BaseDTO<Status> {
       statusId = (Integer) properties.get("statusId");
       userId = (Integer) properties.get("userId");
       codeContent = (String) properties.get("codeByCodeId.content");
-      compileInfoContent = (String) properties.get("compileInfoByCompileInfoId.content");
+      compileInfoId = (Integer) properties.get("compileInfoId");
       return build();
 
     }
@@ -86,7 +86,7 @@ public class StatusInformationDTO implements BaseDTO<Status> {
     private Integer statusId;
     private Integer userId;
     private String codeContent;
-    private String compileInfoContent;
+    private Integer compileInfoId;
 
     public Integer getStatusId() {
       return statusId;
@@ -115,12 +115,12 @@ public class StatusInformationDTO implements BaseDTO<Status> {
       return this;
     }
 
-    public String getCompileInfoContent() {
-      return compileInfoContent;
+    public Integer getCompileInfoId() {
+      return compileInfoId;
     }
 
-    public Builder setCompileInfoContent(String compileInfoContent) {
-      this.compileInfoContent = compileInfoContent;
+    public Builder setCompileInfoId(Integer compileInfoId) {
+      this.compileInfoId = compileInfoId;
       return this;
     }
   }
