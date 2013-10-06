@@ -10,7 +10,16 @@ entities = []
 def isLetterOrDigit(c):
   return (c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z') or (c >= '0' and c <= '9')
 
-def findWholeWord(word, line):
+def findWholeWord(word, s):
+  line = ''
+  in_string = False
+  for i in range(0, len(s)):
+    if s[i] == '"':
+      in_string = (in_string == False)
+    elif s[i] == '\\' and s[i + 1] == '"':
+      in_string = False
+    elif in_string == False:
+      line = line + s[i]
   index = 0;
   while (index < len(line)):
     newIndex = line[index : ].find(word)
