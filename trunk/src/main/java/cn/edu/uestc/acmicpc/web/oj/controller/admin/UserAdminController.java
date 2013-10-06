@@ -124,10 +124,12 @@ public class UserAdminController extends BaseController{
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        if (globalService.getAuthenticationName(userAdminEditDTO.getType()) == null)
+        if (globalService.getAuthenticationName(userAdminEditDTO.getType()) == null) {
           throw new FieldException("type", "Type Error.");
-        if(userAdminEditDTO.getUserId() == null)
+        }
+        if(userAdminEditDTO.getUserId() == null) {
           throw new FieldException("userId", "User id error.");
+        }
         UserDTO userDTO = userService.getUserDTOByUserId(userAdminEditDTO.getUserId());
         if(userDTO == null) {
           throw new AppException("Can't find user.");

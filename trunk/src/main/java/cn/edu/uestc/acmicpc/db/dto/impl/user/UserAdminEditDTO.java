@@ -1,16 +1,9 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.user;
 
-import java.util.Map;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
-import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
-import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
-import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
-@Fields({"userId", "userName", "nickName", "email", "school", "departmentId", 
-  "studentId", "type"})
-public class UserAdminEditDTO implements BaseDTO<User>{
+public class UserAdminEditDTO {
   
   private Integer userId;
   
@@ -119,7 +112,7 @@ public class UserAdminEditDTO implements BaseDTO<User>{
     return new Builder();
   }
   
-  public static class Builder implements BaseBuilder<UserAdminEditDTO> {
+  public static class Builder {
     
     private Integer userId;   
     private String userName;
@@ -133,24 +126,11 @@ public class UserAdminEditDTO implements BaseDTO<User>{
     private Builder() {
     }
     
-    @Override
     public UserAdminEditDTO build() {
       return new UserAdminEditDTO(userId, userName, nickName, email, school, 
           departmentId, studentId, type);
     }
-    @Override
-    public UserAdminEditDTO build(Map<String, Object> properties) {
-      userId = (Integer) properties.get("userId");
-      userName = (String) properties.get("userName");
-      nickName = (String) properties.get("nickName");
-      email = (String) properties.get("email");
-      school = (String) properties.get("school");
-      departmentId = (Integer) properties.get("departmentId");
-      studentId = (String) properties.get("studentId");
-      type = (Integer) properties.get("type");
-      return build();
-    }
-    
+
     public Builder getUserId(Integer userId) {
       this.userId = userId;
       return this;
