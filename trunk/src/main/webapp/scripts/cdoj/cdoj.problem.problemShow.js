@@ -229,10 +229,10 @@ $(document).ready(function () {
     //Get language Id
     info['languageId'] = $('#languageSelector').find('.active').attr('value');
 
-    $.post('/status/submit', info, function (data) {
+    jsonPost('/status/submit', info, function (data) {
       if (data.result == 'error')
-        alert(data.error_msg);
-      else if (data.result == 'ok') {
+        alert(data['error_msg']);
+      else if (data.result == 'success') {
         $('#TabMenu').find('a[href="#tab-problem-status"]').tab('show');
         //TODO change it like PC^2
       } else {
