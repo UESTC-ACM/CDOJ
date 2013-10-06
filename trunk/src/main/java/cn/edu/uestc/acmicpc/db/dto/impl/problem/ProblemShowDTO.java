@@ -1,6 +1,8 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.problem;
 
 import java.util.*;
+import java.sql.*;
+
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
