@@ -82,6 +82,7 @@ public class StatusCondition extends BaseCondition {
    */
   public Integer resultId;
 
+  @Exp(mapField = "problemByProblemId.isVisible", type = ConditionType.GREATER_OR_EQUALS)
   public Boolean isVisible;
 
   @Override
@@ -108,10 +109,6 @@ public class StatusCondition extends BaseCondition {
       } else {
         condition.addEntry("result", Condition.ConditionType.EQUALS, resultId);
       }
-    }
-
-    if (isVisible != null) {
-      condition.addEntry("problemByProblemId.isVisible", ConditionType.EQUALS, isVisible);
     }
     return condition;
   }
