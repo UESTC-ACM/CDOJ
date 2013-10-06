@@ -18,4 +18,6 @@ public interface GlobalService {
   public List<Global.AuthenticationType> getAuthenticationTypeList();
 
   public String getAuthenticationName(Integer type);
+
+  public String getReturnDescription(Integer returnTypeId, Integer caseNumber);
 }

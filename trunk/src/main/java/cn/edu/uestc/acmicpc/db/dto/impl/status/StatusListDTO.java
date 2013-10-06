@@ -9,7 +9,7 @@ import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
 @Fields({ "statusId", "userByUserId.userName", "problemId", "result", "length",
-    "languageByLanguageId.name", "timeCost", "memoryCost", "time" })
+    "languageByLanguageId.name", "timeCost", "memoryCost", "time", "caseNumber" })
 public class StatusListDTO implements BaseDTO<Status> {
 
   public StatusListDTO() {
@@ -17,7 +17,7 @@ public class StatusListDTO implements BaseDTO<Status> {
 
   private StatusListDTO(Integer statusId, String userName, Integer problemId, String returnType,
                         Integer returnTypeId, Integer length, String language, Integer timeCost,
-                        Integer memoryCost, Timestamp time) {
+                        Integer memoryCost, Timestamp time, Integer caseNumber) {
     this.statusId = statusId;
     this.userName = userName;
     this.problemId = problemId;
@@ -28,6 +28,7 @@ public class StatusListDTO implements BaseDTO<Status> {
     this.timeCost = timeCost;
     this.memoryCost = memoryCost;
     this.time = time;
+    this.caseNumber = caseNumber;
   }
 
   private Integer statusId;
@@ -40,6 +41,7 @@ public class StatusListDTO implements BaseDTO<Status> {
   private Integer timeCost;
   private Integer memoryCost;
   private Timestamp time;
+  private Integer caseNumber;
 
   public Integer getStatusId() {
     return statusId;
@@ -121,6 +123,14 @@ public class StatusListDTO implements BaseDTO<Status> {
     this.time = time;
   }
 
+  public Integer getCaseNumber() {
+    return caseNumber;
+  }
+
+  public void setCaseNumber(Integer caseNumber) {
+    this.caseNumber = caseNumber;
+  }
+
   public static Builder builder() {
     return new Builder();
   }
@@ -133,7 +143,7 @@ public class StatusListDTO implements BaseDTO<Status> {
     @Override
     public StatusListDTO build() {
       return new StatusListDTO(statusId, userName, problemId, returnType, returnTypeId, length,
-          language, timeCost, memoryCost, time);
+          language, timeCost, memoryCost, time, caseNumber);
     }
 
     @Override
@@ -147,6 +157,7 @@ public class StatusListDTO implements BaseDTO<Status> {
       timeCost = (Integer) properties.get("timeCost");
       memoryCost = (Integer) properties.get("memoryCost");
       time = (Timestamp) properties.get("time");
+      caseNumber = (Integer) properties.get("caseNumber");
       return build();
 
     }
@@ -161,6 +172,7 @@ public class StatusListDTO implements BaseDTO<Status> {
     private Integer timeCost;
     private Integer memoryCost;
     private Timestamp time;
+    private Integer caseNumber;
 
     public Integer getStatusId() {
       return statusId;
@@ -249,6 +261,15 @@ public class StatusListDTO implements BaseDTO<Status> {
 
     public Builder setTime(Timestamp time) {
       this.time = time;
+      return this;
+    }
+
+    public Integer getCaseNumber() {
+      return caseNumber;
+    }
+
+    public Builder setCaseNumber(Integer caseNumber) {
+      this.caseNumber = caseNumber;
       return this;
     }
   }

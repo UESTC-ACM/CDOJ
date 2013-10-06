@@ -1,22 +1,39 @@
-package cn.edu.uestc.acmicpc.db.dto.impl;
+package cn.edu.uestc.acmicpc.db.dto.impl.status;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import java.util.*;
+import java.sql.*;
 
+import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
-import cn.edu.uestc.acmicpc.db.entity.Code;
-import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
-import cn.edu.uestc.acmicpc.db.entity.Contest;
-import cn.edu.uestc.acmicpc.db.entity.Language;
-import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.Status;
-import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
-/**
- * Data transfer object for {@link Status}.
- */
+@Fields({ "statusId", "result", "memoryCost", "timeCost", "length", "time", "caseNumber", "codeId",
+    "compileInfoId", "contestId", "languageId", "problemId", "userId" })
 public class StatusDTO implements BaseDTO<Status> {
+
+  public StatusDTO() {
+  }
+
+  private StatusDTO(Integer statusId, Integer result, Integer memoryCost, Integer timeCost,
+                    Integer length, Timestamp time, Integer caseNumber, Integer codeId,
+                    Integer compileInfoId, Integer contestId, Integer languageId,
+                    Integer problemId, Integer userId) {
+    this.statusId = statusId;
+    this.result = result;
+    this.memoryCost = memoryCost;
+    this.timeCost = timeCost;
+    this.length = length;
+    this.time = time;
+    this.caseNumber = caseNumber;
+    this.codeId = codeId;
+    this.compileInfoId = compileInfoId;
+    this.contestId = contestId;
+    this.languageId = languageId;
+    this.problemId = problemId;
+    this.userId = userId;
+  }
 
   private Integer statusId;
   private Integer result;
@@ -29,26 +46,8 @@ public class StatusDTO implements BaseDTO<Status> {
   private Integer compileInfoId;
   private Integer contestId;
   private Integer languageId;
-
-  public StatusDTO() {
-  }
-
-  private StatusDTO(Integer statusId, Integer result, Integer memoryCost, Integer timeCost,
-      Integer length, Timestamp time, Integer caseNumber, Integer codeId,
-      Integer compileInfoId, Integer contestId,
-      Integer languageId) {
-    this.statusId = statusId;
-    this.result = result;
-    this.memoryCost = memoryCost;
-    this.timeCost = timeCost;
-    this.length = length;
-    this.time = time;
-    this.caseNumber = caseNumber;
-    this.codeId = codeId;
-    this.compileInfoId = compileInfoId;
-    this.contestId = contestId;
-    this.languageId = languageId;
-  }
+  private Integer problemId;
+  private Integer userId;
 
   public Integer getStatusId() {
     return statusId;
@@ -154,39 +153,65 @@ public class StatusDTO implements BaseDTO<Status> {
     this.userId = userId;
   }
 
-  private Integer problemId;
-  private Integer userId;
-
   public static Builder builder() {
     return new Builder();
   }
 
-  /** Builder for {@link StatusDTO}. */
-  public static class Builder {
+  public static class Builder implements BaseBuilder<StatusDTO> {
 
     private Builder() {
     }
 
+    @Override
+    public StatusDTO build() {
+      return new StatusDTO(statusId, result, memoryCost, timeCost, length, time, caseNumber,
+          codeId, compileInfoId, contestId, languageId, problemId, userId);
+    }
+
+    @Override
+    public StatusDTO build(Map<String, Object> properties) {
+      statusId = (Integer) properties.get("statusId");
+      result = (Integer) properties.get("result");
+      memoryCost = (Integer) properties.get("memoryCost");
+      timeCost = (Integer) properties.get("timeCost");
+      length = (Integer) properties.get("length");
+      time = (Timestamp) properties.get("time");
+      caseNumber = (Integer) properties.get("caseNumber");
+      codeId = (Integer) properties.get("codeId");
+      compileInfoId = (Integer) properties.get("compileInfoId");
+      contestId = (Integer) properties.get("contestId");
+      languageId = (Integer) properties.get("languageId");
+      problemId = (Integer) properties.get("problemId");
+      userId = (Integer) properties.get("userId");
+      return build();
+
+    }
+
     private Integer statusId;
-    private Integer result = Global.OnlineJudgeReturnType.OJ_AC.ordinal();
-    private Integer memoryCost = 100;
-    private Integer timeCost = 100;
-    private Integer length = 100;
-    private Timestamp time = new Timestamp(new Date().getTime());
-    private Integer caseNumber = 1;
+    private Integer result = Global.OnlineJudgeReturnType.OJ_WAIT.ordinal();
+    private Integer memoryCost = 0;
+    private Integer timeCost = 0;
+    private Integer length;
+    private Timestamp time;
+    private Integer caseNumber = 0;
     private Integer codeId;
-    // TODO(mzry1992): get rid of code and use code content instead of it.
-    //private Code code;
     private Integer compileInfoId;
-    //private CompileInfo compileInfo;
     private Integer contestId;
-    //private Contest contest;
     private Integer languageId;
-    //private Language language;
+    private Integer problemId;
+    private Integer userId;
+
+    public Integer getStatusId() {
+      return statusId;
+    }
 
     public Builder setStatusId(Integer statusId) {
       this.statusId = statusId;
       return this;
+    }
+
+    public Integer getResult() {
+      return result;
     }
 
     public Builder setResult(Integer result) {
@@ -194,9 +219,17 @@ public class StatusDTO implements BaseDTO<Status> {
       return this;
     }
 
+    public Integer getMemoryCost() {
+      return memoryCost;
+    }
+
     public Builder setMemoryCost(Integer memoryCost) {
       this.memoryCost = memoryCost;
       return this;
+    }
+
+    public Integer getTimeCost() {
+      return timeCost;
     }
 
     public Builder setTimeCost(Integer timeCost) {
@@ -204,9 +237,17 @@ public class StatusDTO implements BaseDTO<Status> {
       return this;
     }
 
+    public Integer getLength() {
+      return length;
+    }
+
     public Builder setLength(Integer length) {
       this.length = length;
       return this;
+    }
+
+    public Timestamp getTime() {
+      return time;
     }
 
     public Builder setTime(Timestamp time) {
@@ -214,9 +255,17 @@ public class StatusDTO implements BaseDTO<Status> {
       return this;
     }
 
+    public Integer getCaseNumber() {
+      return caseNumber;
+    }
+
     public Builder setCaseNumber(Integer caseNumber) {
       this.caseNumber = caseNumber;
       return this;
+    }
+
+    public Integer getCodeId() {
+      return codeId;
     }
 
     public Builder setCodeId(Integer codeId) {
@@ -224,9 +273,17 @@ public class StatusDTO implements BaseDTO<Status> {
       return this;
     }
 
+    public Integer getCompileInfoId() {
+      return compileInfoId;
+    }
+
     public Builder setCompileInfoId(Integer compileInfoId) {
       this.compileInfoId = compileInfoId;
       return this;
+    }
+
+    public Integer getContestId() {
+      return contestId;
     }
 
     public Builder setContestId(Integer contestId) {
@@ -234,14 +291,31 @@ public class StatusDTO implements BaseDTO<Status> {
       return this;
     }
 
+    public Integer getLanguageId() {
+      return languageId;
+    }
+
     public Builder setLanguageId(Integer languageId) {
       this.languageId = languageId;
       return this;
     }
 
-    public StatusDTO build() {
-      return new StatusDTO(statusId, result, memoryCost, timeCost, length, time, caseNumber,
-          codeId, compileInfoId, contestId, languageId);
+    public Integer getProblemId() {
+      return problemId;
+    }
+
+    public Builder setProblemId(Integer problemId) {
+      this.problemId = problemId;
+      return this;
+    }
+
+    public Integer getUserId() {
+      return userId;
+    }
+
+    public Builder setUserId(Integer userId) {
+      this.userId = userId;
+      return this;
     }
   }
 }

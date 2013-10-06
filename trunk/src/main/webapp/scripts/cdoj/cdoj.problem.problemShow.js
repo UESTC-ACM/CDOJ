@@ -58,7 +58,7 @@ function getMemoryCost(memoryCost) {
 }
 
 function getTime(time) {
-  var html = $('<td class="cdoj-time">' + time + '</td>');
+  var html = $('<td class="cdoj-time" type="milliseconds">' + time + '</td>');
   return html;
 }
 
@@ -83,25 +83,29 @@ function getHTML(value) {
 function blindCodeHref() {
   $('#codeHref').live('click', function () {
     var id = $(this).attr('statusId');
-    jsonPost('/status/code/' + id, function (data) {
-      var codeModal = $('#codeModal');
-      var codeLabel = $('#codeModalLabel');
-      var codeViewer = $('#codeViewer');
-      codeLabel.empty();
-      codeLabel.append('Code ' + data.code.codeId);
-      codeViewer.empty();
+    $.post('/status/info/' + id, function (data) {
+      if (data.result == 'error')
+        alert(data['error_msg']);
+      else {
+        var codeModal = $('#codeModal');
+        var codeLabel = $('#codeModalLabel');
+        var codeViewer = $('#codeViewer');
+        codeLabel.empty();
+        codeLabel.append('Code');
+        codeViewer.empty();
 
-      var str = data.code.content;
-      str = '<pre class="prettyprint linenums">' + str + '</pre>'
-      codeViewer.append(str);
+        var str = data['code'];
+        str = '<pre class="prettyprint linenums">' + js.lang.String.encodeHtml(str) + '</pre>'
+        codeViewer.append(str);
 
-      var mult = 0.95;
-      if (Sys.windows)
-        mult = 0.65;
+        var mult = 0.95;
+        if (Sys.windows || Sys.safari)
+          mult = 0.65;
 
-      codeViewer.css('max-height', Math.min(600, $(window).height() * mult));
-      prettyPrint();
-      codeModal.modal();
+        codeViewer.css('max-height', Math.min(600, $(window).height() * mult));
+        prettyPrint();
+        codeModal.modal();
+      }
     });
     return false;
   });
@@ -110,17 +114,21 @@ function blindCodeHref() {
 function blindCompileInfo() {
   $('#compileInfo').live('click', function () {
     var id = $(this).attr('statusId');
-    jsonPost('/status/compileInfo/' + id, function (data) {
-      var compileInfoModal = $('#compileInfoModal');
-      var compileInfoModalLabel = $('#compileInfoModalLabel');
-      var compileInfoViewer = $('#compileInfoViewer');
-      compileInfoModalLabel.empty();
-      compileInfoModalLabel.append('Compilation Error Information');
-      compileInfoViewer.empty();
-      compileInfoViewer.removeClass('linenums');
-      compileInfoViewer.append(data.CEInformation);
-      prettyPrint();
-      compileInfoModal.modal();
+    $.post('/status/info/' + id, function (data) {
+      if (data.result == 'error')
+        alert(data['error_msg']);
+      else {
+        var compileInfoModal = $('#compileInfoModal');
+        var compileInfoModalLabel = $('#compileInfoModalLabel');
+        var compileInfoViewer = $('#compileInfoViewer');
+        compileInfoModalLabel.empty();
+        compileInfoModalLabel.append('Compilation Error Information');
+        compileInfoViewer.empty();
+        compileInfoViewer.removeClass('linenums');
+        compileInfoViewer.append(js.lang.String.encodeHtml(data['compileInfo']));
+        prettyPrint();
+        compileInfoModal.modal();
+      }
     });
     return false;
   });
@@ -229,10 +237,11 @@ $(document).ready(function () {
     //Get language Id
     info['languageId'] = $('#languageSelector').find('.active').attr('value');
 
-    $.post('/status/submit', info, function (data) {
+    console.log(info);
+    jsonPost('/status/submit', info, function (data) {
       if (data.result == 'error')
-        alert(data.error_msg);
-      else if (data.result == 'ok') {
+        alert(data['error_msg']);
+      else if (data.result == 'success') {
         $('#TabMenu').find('a[href="#tab-problem-status"]').tab('show');
         //TODO change it like PC^2
       } else {
