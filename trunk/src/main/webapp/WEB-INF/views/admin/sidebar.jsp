@@ -26,7 +26,7 @@
     <li class="divider"></li>
 
     <li class="nav-header"><i class="icon-user"></i>User</li>
-    <li><a href="<c:url value="/admin/user/list"/>">User list</a></li>
+    <li><a href="<c:url value="/admin/user/list"/> ">User list</a></li>
 
     <li class="divider"></li>
 
