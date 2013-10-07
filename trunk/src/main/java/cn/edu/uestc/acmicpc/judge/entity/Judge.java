@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
 import cn.edu.uestc.acmicpc.util.FileUtil;
@@ -69,10 +70,11 @@ public class Judge implements Runnable {
   public void run() {
     try {
       while (true) {
-        if (judgeQueue.size() > 0)
+        if (judgeQueue.size() > 0) {
           judge(judgeQueue.take());
-        else
+        } else {
           Thread.sleep(200);
+        }
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -82,9 +84,12 @@ public class Judge implements Runnable {
   /**
    * Build judge's core shell command line
    *
-   * @param problemId problem's id
-   * @param currentTestCase current test case number
-   * @param judgeItem {@code judgeItem} entity
+   * @param problemId
+   *          problem's id
+   * @param currentTestCase
+   *          current test case number
+   * @param judgeItem
+   *          {@code judgeItem} entity
    * @return command line we need
    */
   private String buildJudgeShellCommand(int problemId, int currentTestCase, JudgeItem judgeItem) {
@@ -131,7 +136,8 @@ public class Judge implements Runnable {
   /**
    * Get process' call back string with shell command.
    *
-   * @param shellCommand shell command line
+   * @param shellCommand
+   *          shell command line
    * @return command's call back string
    */
   private String[] getCallBackString(String shellCommand) {
@@ -152,8 +158,10 @@ public class Judge implements Runnable {
   /**
    * Judge judgeItem by judge core.
    *
-   * @param judgeItem judge item to be judged
+   * @param judgeItem
+   *          judge item to be judged
    */
+  @Transactional
   void judge(JudgeItem judgeItem) {
     try {
       int numberOfTestCase = judgeItem.status.getProblemByProblemId().getDataCount();
@@ -161,9 +169,9 @@ public class Judge implements Runnable {
       FileUtil.saveToFile(judgeItem.status.getCodeByCodeId().getContent(), tempPath + "/"
           + judgeItem.getSourceName());
       int problemId = judgeItem.status.getProblemByProblemId().getProblemId();
-      for (int currentTestCase = 1; isAccepted && currentTestCase <= numberOfTestCase; ++currentTestCase) {
-        judgeItem.status.setCaseNumber(currentTestCase);
-        String shellCommand = buildJudgeShellCommand(problemId, currentTestCase, judgeItem);
+      for (int currentCase = 1; isAccepted && currentCase <= numberOfTestCase; currentCase++) {
+        judgeItem.status.setCaseNumber(currentCase);
+        String shellCommand = buildJudgeShellCommand(problemId, currentCase, judgeItem);
         String[] callBackString = getCallBackString(shellCommand);
         isAccepted = updateJudgeItem(callBackString, judgeItem);
       }
