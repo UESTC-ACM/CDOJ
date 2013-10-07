@@ -10,7 +10,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.transaction.annotation.Transactional;
 
 import cn.edu.uestc.acmicpc.judge.entity.Judge;
 import cn.edu.uestc.acmicpc.judge.entity.JudgeItem;
@@ -20,7 +19,6 @@ import cn.edu.uestc.acmicpc.util.Settings;
 /**
  * Judge main service, use multi-thread architecture to process judge
  */
-@Transactional
 public class JudgeService {
 
   private static final Logger LOGGER = LogManager.getLogger(JudgeService.class);
