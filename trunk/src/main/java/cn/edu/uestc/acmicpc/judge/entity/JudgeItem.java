@@ -3,17 +3,21 @@ package cn.edu.uestc.acmicpc.judge.entity;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.*;
-import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
+import cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
 import cn.edu.uestc.acmicpc.db.entity.Status;
+import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -69,6 +73,7 @@ public class JudgeItem {
    *
    * @param updateStatus if set {@code true}, update status' information.
    */
+  @Transactional
   public void update(boolean updateStatus) {
     if (compileInfo != null) {
       if (compileInfo.getContent().length() > 65535)
