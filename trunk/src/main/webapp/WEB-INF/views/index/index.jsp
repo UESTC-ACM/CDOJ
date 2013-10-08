@@ -7,7 +7,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <script src="<c:url value="/scripts/cdoj/cdoj.home.js"/>"></script>
   <title>CDOJ</title>
 </head>
 <body>

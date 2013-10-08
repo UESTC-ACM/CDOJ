@@ -16,3 +16,6 @@
 [submodule "trunk/src/main/webapp/plugins/jquery"]
 	path = trunk/src/main/webapp/plugins/jquery
 	url = https://github.com/jquery/jquery.git
+[submodule "trunk/src/main/webapp/plugins/cdoj"]
+	path = trunk/src/main/webapp/plugins/cdoj
+	url = git@gitcafe.com:mzry1992/CDOJ-UI.git

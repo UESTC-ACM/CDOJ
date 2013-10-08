@@ -12,12 +12,15 @@
   <meta http-equiv=Content-Type content="text/html;charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="<c:url value="/plugins/pure/build/pure.css"/>">
-  <link rel="stylesheet" href="<c:url value="/styles/cdoj-new/cdoj.css"/>">
+  <link rel="stylesheet" href="<c:url value="/plugins/cdoj/dist/css/cdoj.css"/>">
 	<link rel="stylesheet" href="<c:url value="/plugins/google-plus-ui-buttons/css/css3-buttons.css"/>">
 	<link rel="stylesheet" href="<c:url value="/plugins/Font-Awesome/css/font-awesome.min.css"/>">
 	<!--[if IE 7]>
 	<link rel="stylesheet" href="<c:url value="/plugins/Font-Awesome/css/font-awesome-ie7.min.css"/>">
 	<![endif]-->
+
+	<script src="<c:url value="/plugins/jquery/dist/jquery.js"/>"></script>	
+	<script src="<c:url value="/plugins/cdoj/dist/js/cdoj.js"/>"></script>	
 </head>
 <body>
 </body>
