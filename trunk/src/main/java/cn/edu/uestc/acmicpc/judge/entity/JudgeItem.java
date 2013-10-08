@@ -31,36 +31,48 @@ public class JudgeItem {
   public Status status;
   public CompileInfo compileInfo;
 
+  private ICompileInfoDAO compileinfoDAO;
+  private IStatusDAO statusDAO;
+  private IProblemDAO problemDAO;
+  private IUserDAO userDAO;
+  private LanguageService languageService;
+
   @Autowired
-  public JudgeItem(ICompileInfoDAO compileInfoDAO,
-      IStatusDAO statusDAO,
-      IUserDAO userDAO,
-      IProblemDAO problemDAO,
-      LanguageService languageService) {
+  public void setCompileInfoDAO(ICompileInfoDAO compileInfoDAO) {
     this.compileinfoDAO = compileInfoDAO;
-    this.statusDAO = statusDAO;
-    this.userDAO = userDAO;
-    this.problemDAO = problemDAO;
-    this.languageService = languageService;
   }
 
-  private final ICompileInfoDAO compileinfoDAO;
-  private final IStatusDAO statusDAO;
-  private final IProblemDAO problemDAO;
-  private final IUserDAO userDAO;
-  private final LanguageService languageService;
+  @Autowired
+  public void setStatusDAO(IStatusDAO statusDAO) {
+    this.statusDAO = statusDAO;
+  }
+
+  @Autowired
+  public void setProblemDAO(IProblemDAO problemDAO) {
+    this.problemDAO = problemDAO;
+  }
+
+  @Autowired
+  public void setUserDAO(IUserDAO userDAO) {
+    this.userDAO = userDAO;
+  }
+
+  @Autowired
+  public void setLanguageService(LanguageService languageService) {
+    this.languageService = languageService;
+  }
 
   public int parseLanguage() {
     String extension = languageService.getExtension(status.getLanguageId());
     switch (extension) {
-      case "cc":
-        return 0;
-      case "c":
-        return 1;
-      case "java":
-        return 2;
-      default:
-        return 3;
+    case "cc":
+      return 0;
+    case "c":
+      return 1;
+    case "java":
+      return 2;
+    default:
+      return 3;
     }
   }
 
@@ -71,7 +83,8 @@ public class JudgeItem {
   /**
    * Update database for item.
    *
-   * @param updateStatus if set {@code true}, update status' information.
+   * @param updateStatus
+   *          if set {@code true}, update status' information.
    */
   @Transactional
   public void update(boolean updateStatus) {

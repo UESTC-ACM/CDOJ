@@ -7,9 +7,11 @@ import java.util.concurrent.BlockingQueue;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -25,14 +27,10 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class Scheduler implements Runnable {
+public class Scheduler implements Runnable, ApplicationContextAware {
 
   private static final Logger LOGGER = LogManager.getLogger(Scheduler.class);
 
-  /**
-   * StatusDAO for database operation.
-   */
-  @Autowired
   private IStatusDAO statusDAO;
 
   public void setJudgeQueue(BlockingQueue<JudgeItem> judgeQueue) {
@@ -47,7 +45,6 @@ public class Scheduler implements Runnable {
   /**
    * Spring application context
    */
-  @Autowired
   private ApplicationContext applicationContext;
 
   /**
@@ -89,5 +86,16 @@ public class Scheduler implements Runnable {
       LOGGER.error(e);
     } catch (InterruptedException ignored) {
     }
+  }
+
+  @Autowired
+  public void setStatusDAO(IStatusDAO statusDAO) {
+    this.statusDAO = statusDAO;
+  }
+
+  @Override
+  @Autowired
+  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    this.applicationContext = applicationContext;
   }
 }
