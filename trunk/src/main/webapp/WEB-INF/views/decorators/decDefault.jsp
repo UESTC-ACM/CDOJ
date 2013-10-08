@@ -1,8 +1,5 @@
 <%--
  Default decorator
-
- @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- @version 1
 --%>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>

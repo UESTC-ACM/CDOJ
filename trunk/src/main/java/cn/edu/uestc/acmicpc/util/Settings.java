@@ -43,9 +43,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Repository;
 
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.xml.XmlNode;
 import cn.edu.uestc.acmicpc.web.xml.XmlParser;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Global static class to get configuration parameters from <strong>settings.xml</strong>.
@@ -83,16 +83,12 @@ public class Settings implements ApplicationContextAware {
   public String SETTING_UPLOAD_FOLDER;
 
   /**
-   * Problems' pictures store folder
+   * Pictures store folder
    */
-  public String SETTING_PROBLEM_PICTURE_FOLDER;
-  public String SETTING_PROBLEM_PICTURE_FOLDER_ABSOLUTE;
+  public String SETTING_USER_PICTURE_FOLDER;
+  public String SETTING_USER_PICTURE_FOLDER_ABSOLUTE;
 
-  /**
-   * Article' pictures store folder
-   */
-  public String SETTING_ARTICLE_PICTURE_FOLDER;
-  public String SETTING_ARTICLE_PICTURE_FOLDER_ABSOLUTE;
+  public String SETTING_ABSOLUTE_PATH;
 
   /**
    * Judge core's name.
@@ -187,12 +183,9 @@ public class Settings implements ApplicationContextAware {
     SETTING_UPLOAD_SIZE = Integer.valueOf((String) getConfig("setting", "uploadSize", "value"));
     SETTING_UPLOAD_TYPES = (String) getConfig("setting", "uploadTypes", "value");
     SETTING_UPLOAD_FOLDER = getAbsolutePath((String) getConfig("setting", "uploadFolder", "value"));
-    SETTING_PROBLEM_PICTURE_FOLDER = (String) getConfig("setting", "problemPictureFolder", "value");
-    SETTING_ARTICLE_PICTURE_FOLDER = (String) getConfig("setting", "articlePictureFolder", "value");
-    SETTING_PROBLEM_PICTURE_FOLDER_ABSOLUTE =
-        getAbsolutePath((String) getConfig("setting", "problemPictureFolder", "value"));
-    SETTING_ARTICLE_PICTURE_FOLDER_ABSOLUTE =
-        getAbsolutePath((String) getConfig("setting", "articlePictureFolder", "value"));
+    SETTING_USER_PICTURE_FOLDER = (String) getConfig("setting", "userPictureFolder", "value");
+    SETTING_USER_PICTURE_FOLDER_ABSOLUTE =
+        getAbsolutePath((String) getConfig("setting", "userPictureFolder", "value"));
 
     JUDGE_JUDGE_CORE = (String) getConfig("judge", "judgeCore", "value");
     JUDGE_DATA_PATH = getAbsolutePath((String) getConfig("judge", "dataPath", "value"));
@@ -203,6 +196,8 @@ public class Settings implements ApplicationContextAware {
     EMAIL_USERNAME = (String) getConfig("email", "username", "value");
     EMAIL_PASSWORD = (String) getConfig("email", "password", "value");
     EMAIL_SMTP_SERVER = (String) getConfig("email", "smtpServer", "value");
+
+    SETTING_ABSOLUTE_PATH = getAbsolutePath("");
   }
 
   /**
