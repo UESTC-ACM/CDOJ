@@ -1,11 +1,15 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.base;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import cn.edu.uestc.acmicpc.web.view.PageInfo;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
+import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
 /**
  * BaseController
@@ -14,6 +18,11 @@ import cn.edu.uestc.acmicpc.util.exception.FieldException;
  */
 @Controller
 public class BaseController {
+
+  protected Integer getCurrentUserID(HttpSession session) throws AppException {
+    UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
+    return userDTO.getUserId();
+  }
 
   /**
    * Put field errors into binding result

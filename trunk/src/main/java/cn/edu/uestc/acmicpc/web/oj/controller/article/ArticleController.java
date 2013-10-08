@@ -12,6 +12,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
@@ -27,6 +28,7 @@ public class ArticleController extends BaseController {
   }
 
   @RequestMapping("show/{articleId}")
+  @LoginPermit(NeedLogin = false)
   public String show(@PathVariable("articleId") Integer articleId,
       HttpSession session, ModelMap model) {
     try {

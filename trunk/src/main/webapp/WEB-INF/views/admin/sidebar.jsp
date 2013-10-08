@@ -20,19 +20,19 @@
     <li class="divider"></li>
 
     <li class="nav-header"><i class="icon-pencil"></i>Article</li>
-    <li><s:a action="list" namespace="/admin/article">Article list</s:a><li>
-    <li><s:a action="editor/" namespace="/admin/article">Add article</s:a></li>
+    <li><a href="<c:url value="/admin/article/list"/>">Article list</a><li>
+    <li><a href="<c:url value="/admin/article/editor/new"/>">Add article</a></li>
 
     <li class="divider"></li>
 
     <li class="nav-header"><i class="icon-user"></i>User</li>
-    <li><a href="<c:url value="/admin/user/list"/>">User list</a></li>
+    <li><a href="<c:url value="/admin/user/list"/> ">User list</a></li>
 
     <li class="divider"></li>
 
     <li class="nav-header"><i class="icon-file"></i>Problem</li>
     <li><a href="<c:url value="/admin/problem/list"/>">Problem list</a></li>
-    <li><a href="<c:url value="/admin/problem/editor/0"/>">Add problem</a></li>
+    <li><a href="<c:url value="/admin/problem/editor/new"/>">Add problem</a></li>
 
     <li class="divider"></li>
 

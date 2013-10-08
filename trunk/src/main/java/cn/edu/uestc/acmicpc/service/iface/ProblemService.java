@@ -2,12 +2,15 @@ package cn.edu.uestc.acmicpc.service.iface;
 
 import java.util.List;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.*;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDataShowDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditorShowDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.web.view.PageInfo;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
 /**
  * Service interface for {@link Problem}.
@@ -21,10 +24,10 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
    * @throws AppException
    */
   public List<Integer> getAllVisibleProblemIds() throws AppException;
-  
+
   /**
    * Get specific problem by problem's ID.
-   * 
+   *
    * @param problemId
    * @return ProblemDTO
    * @throw AppException
@@ -33,13 +36,13 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
 
   /**
    * Get number of problems that meet the condition.
-   * 
+   *
    * @param condition
    * @return Long
    * @throws AppException
    */
-  public Long count(Condition condition) throws AppException;
-  
+  public Long count(ProblemCondition condition) throws AppException;
+
   /**
    * Get problems list that meet the condition and inside the range of page
    * @param problemCondition

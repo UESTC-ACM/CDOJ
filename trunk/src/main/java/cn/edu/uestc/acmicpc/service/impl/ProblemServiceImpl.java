@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
@@ -60,8 +59,8 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
   }
 
   @Override
-  public Long count(Condition condition) throws AppException {
-    return problemDAO.count(condition);
+  public Long count(ProblemCondition condition) throws AppException {
+    return problemDAO.count(condition.getCondition());
   }
 
 
