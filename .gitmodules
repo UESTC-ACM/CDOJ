@@ -13,3 +13,6 @@
 [submodule "trunk/src/main/webapp/plugins/pure"]
 	path = trunk/src/main/webapp/plugins/pure
 	url = https://github.com/yui/pure.git
+[submodule "trunk/src/main/webapp/plugins/jquery"]
+	path = trunk/src/main/webapp/plugins/jquery
+	url = https://github.com/jquery/jquery.git
