@@ -52,17 +52,20 @@ var problemDTO = {
 };
 
 var problemId;
+var action;
 
 //TODO clean the styles paste into editor
 
 $(document).ready(function () {
 
   problemId = $('#problemId')[0].innerHTML;
-
+  action = $('#problemId').attr('type');
+  if (action == 'new')
+    problemId = 'new';
   $.each(editors,function(editorId) {
     epicEditorOpts.container = editorId;
-    epicEditorOpts.uploadUrl = '/admin/problem/uploadProblemPicture/' + problemId;
-    epicEditorOpts.pictureListUrl = '/admin/problem/getUploadedPictures/' + problemId;
+    epicEditorOpts.uploadUrl = '/picture/uploadProblemPicture/';
+    epicEditorOpts.pictureListUrl = '/picture/getUploadedPictures/';
     epicEditorOpts.file.name = editorId+problemId;
     var oldContent = $('#'+editorId)[0].innerHTML.toString();
     oldContent = js.lang.String.decodeHtml(oldContent);
@@ -71,7 +74,11 @@ $(document).ready(function () {
   });
 
   $('input#submit').click(function () {
-    problemDTO['problemId'] = problemId;
+    problemDTO['action'] = action;
+    if (action == 'new')
+      problemDTO['problemId'] = null;
+    else
+      problemDTO['problemId'] = problemId;
     problemDTO['title'] = $('#title').val();
     problemDTO['source'] = $('#source').val();
     $.each(editors,function(editorId) {

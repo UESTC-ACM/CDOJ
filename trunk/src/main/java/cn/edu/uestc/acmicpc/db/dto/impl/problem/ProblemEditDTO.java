@@ -1,15 +1,13 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.problem;
 
-import javax.validation.constraints.NotNull;
 
 /**
  * TODO(mzry1992)
  */
 public class ProblemEditDTO {
 
-  @NotNull(message = "No such problem!")
   private Integer problemId;
-
+  private String action;
   private String title;
   private String description;
   private String input;
@@ -22,8 +20,12 @@ public class ProblemEditDTO {
   public ProblemEditDTO() {
   }
 
-  private ProblemEditDTO(Integer problemId, String title, String description, String input, String output, String sampleInput, String sampleOutput, String hint, String source) {
+  private ProblemEditDTO(Integer problemId, String action,
+      String title, String description, String input,
+      String output, String sampleInput, String sampleOutput,
+      String hint, String source) {
     this.problemId = problemId;
+    this.action = action;
     this.title = title;
     this.description = description;
     this.input = input;
@@ -40,6 +42,14 @@ public class ProblemEditDTO {
 
   public void setProblemId(Integer problemId) {
     this.problemId = problemId;
+  }
+
+  public String getAction() {
+    return action;
+  }
+
+  public void setAction(String action) {
+    this.action = action;
   }
 
   public String getTitle() {
@@ -116,10 +126,12 @@ public class ProblemEditDTO {
     }
 
     public ProblemEditDTO build() {
-      return new ProblemEditDTO(problemId, title, description, input, output, sampleInput, sampleOutput, hint, source);
+      return new ProblemEditDTO(problemId, action, title, description, input, output,
+          sampleInput, sampleOutput, hint, source);
     }
 
     private Integer problemId;
+    private String action;
     private String title;
     private String description;
     private String input;
@@ -135,6 +147,15 @@ public class ProblemEditDTO {
 
     public Builder setProblemId(Integer problemId) {
       this.problemId = problemId;
+      return this;
+    }
+
+    public String getAction() {
+      return action;
+    }
+
+    public Builder setAction(String action) {
+      this.action = action;
       return this;
     }
 

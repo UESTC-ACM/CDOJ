@@ -21,7 +21,7 @@
 
     <li class="nav-header"><i class="icon-pencil"></i>Article</li>
     <li><a href="<c:url value="/admin/article/list"/>">Article list</a><li>
-    <li><a href="<c:url value="/admin/article/editor/0"/>">Add article</a></li>
+    <li><a href="<c:url value="/admin/article/editor/new"/>">Add article</a></li>
 
     <li class="divider"></li>
 
@@ -32,7 +32,7 @@
 
     <li class="nav-header"><i class="icon-file"></i>Problem</li>
     <li><a href="<c:url value="/admin/problem/list"/>">Problem list</a></li>
-    <li><a href="<c:url value="/admin/problem/editor/0"/>">Add problem</a></li>
+    <li><a href="<c:url value="/admin/problem/editor/new"/>">Add problem</a></li>
 
     <li class="divider"></li>
 

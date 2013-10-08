@@ -1,11 +1,11 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.admin;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,6 @@ import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
-import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
@@ -133,31 +132,22 @@ public class ProblemAdminController extends BaseController {
 
   @RequestMapping("editor/{problemId}")
   @LoginPermit(Global.AuthenticationType.ADMIN)
-  public String editor(@PathVariable("problemId") Integer problemId,
+  public String editor(@PathVariable("problemId") String sProblemId,
                        ModelMap model) {
     try {
-      if (problemId == 0) {
-        ProblemCondition problemCondition= new ProblemCondition();
-        problemCondition.isTitleEmpty = true;
-        Long count = problemService.count(problemCondition);
-        if (count == 0) {
-          problemId = problemService.createNewProblem();
-        } else {
-          PageInfo pageInfo = buildPageInfo(count, problemCondition.currentPage,
-              Global.RECORD_PER_PAGE, "", null);
-          List<ProblemListDTO> problemListDTOList =
-              problemService.getProblemListDTOList(problemCondition, pageInfo);
-          if (problemListDTOList == null || problemListDTOList.size() == 0)
-            throw new AppException("Add new problem error.");
-          ProblemListDTO problemListDTO = problemListDTOList.get(0);
-          problemId = problemListDTO.getProblemId();
-        }
-
-        return "redirect:/admin/problem/editor/" + problemId;
+      if (sProblemId.compareTo("new") == 0) {
+        model.put("action", "new");
       } else {
+        Integer problemId;
+        try {
+          problemId = Integer.parseInt(sProblemId);
+        } catch (NumberFormatException e) {
+          throw new AppException("Parse problem id error.");
+        }
         ProblemEditorShowDTO targetProblem = problemService.getProblemEditorShowDTO(problemId);
         if (targetProblem == null)
           throw new AppException("No such problem.");
+        model.put("action", "edit");
         model.put("targetProblem", targetProblem);
       }
     } catch (AppException e) {
@@ -171,14 +161,23 @@ public class ProblemAdminController extends BaseController {
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public @ResponseBody
   Map<String, Object> edit(@RequestBody @Valid ProblemEditDTO problemEditDTO,
-                           BindingResult validateResult) {
+                           BindingResult validateResult,
+                           HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
       if (StringUtil.trimAllSpace(problemEditDTO.getTitle()).equals(""))
         throw new FieldException("title", "Please enter a validate title.");
-      ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(problemEditDTO.getProblemId());
-      if (problemDTO == null)
-        throw new AppException("No such problem.");
+      ProblemDTO problemDTO;
+      if (problemEditDTO.getAction().compareTo("new") == 0) {
+        Integer problemId = problemService.createNewProblem();
+        problemDTO = problemService.getProblemDTOByProblemId(problemId);
+        if (problemDTO == null)
+          throw new AppException("Error while creating problem.");
+      } else {
+        problemDTO = problemService.getProblemDTOByProblemId(problemEditDTO.getProblemId());
+        if (problemDTO == null)
+          throw new AppException("No such problem.");
+      }
 
       problemDTO.setTitle(problemEditDTO.getTitle());
       problemDTO.setDescription(problemEditDTO.getDescription());
@@ -198,63 +197,6 @@ public class ProblemAdminController extends BaseController {
     } catch (AppException e) {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
-    }
-    return json;
-  }
-
-  @RequestMapping("getUploadedPictures/{problemId}")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
-  public @ResponseBody
-  Map<String, Object> pictureList(@PathVariable("problemId") Integer problemId) {
-    Map<String, Object> json = new HashMap<>();
-    try {
-      if (problemId == null)
-        throw new AppException("Error, target problem id is null!");
-      ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(problemId);
-      if (problemDTO == null)
-        throw new AppException("Error, target problem doesn't exist!");
-      ArrayList<String> pictures = fileService.getProblemPictures(problemDTO.getProblemId());
-      json.put("success", "true");
-      json.put("pictures", pictures);
-    } catch (AppException e) {
-      json.put("error", e.getMessage());
-    } catch (Exception e) {
-      e.printStackTrace();
-      json.put("error", "Unknown exception occurred.");
-    }
-    return json;
-  }
-
-  @RequestMapping(value = "uploadProblemPicture/{problemId}",
-      method = RequestMethod.POST)
-  @LoginPermit(Global.AuthenticationType.ADMIN)
-  public @ResponseBody
-  Map<String, Object> uploadPicture(@PathVariable("problemId") Integer problemId,
-                                    @RequestParam(value="uploadFile", required=true)
-                                    MultipartFile[] files) {
-    Map<String, Object> json = new HashMap<>();
-    try {
-      if (problemId == null)
-        throw new AppException("Error, target problem id is null!");
-      ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(problemId);
-      if (problemDTO == null)
-        throw new AppException("Error, target problem doesn't exist!");
-
-      FileInformationDTO fileInformationDTO = fileService.uploadProblemPictures(
-          FileUploadDTO.builder()
-          .setFiles(Arrays.asList(files))
-          .build(),
-          problemId);
-
-      json.put("success", "true");
-      json.put("uploadedFile", fileInformationDTO.getFileName());
-      json.put("uploadedFileUrl", fileInformationDTO.getFileURL());
-    } catch (AppException e) {
-      e.printStackTrace();
-      json.put("error", e.getMessage());
-    } catch (Exception e) {
-      e.printStackTrace();
-      json.put("error", "Unknown exception occurred.");
     }
     return json;
   }
