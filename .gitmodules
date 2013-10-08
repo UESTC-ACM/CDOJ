@@ -19,3 +19,9 @@
 [submodule "trunk/src/main/webapp/plugins/cdoj"]
 	path = trunk/src/main/webapp/plugins/cdoj
 	url = git@gitcafe.com:mzry1992/CDOJ-UI.git
+[submodule "trunk/src/main/webapp/plugins/underscore"]
+	path = trunk/src/main/webapp/plugins/underscore
+	url = https://github.com/jashkenas/underscore
+[submodule "trunk/src/main/webapp/plugins/sugar"]
+	path = trunk/src/main/webapp/plugins/sugar
+	url = https://github.com/andrewplummer/Sugar.git

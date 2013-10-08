@@ -33,11 +33,25 @@ User menu on navbar
 		</form>
 		</c:when>
 		<c:otherwise>
-		<div id='cdoj-user-info'>
-			<img id="userAvatar" email="<c:out value="${sessionScope.currentUser.email}"/>" type="avatar"/>
-			<span id="currentUser" type="<c:out value="${sessionScope.currentUser.type}"/>">
-				<c:out value="${sessionScope.currentUser.userName}"/>
-			</span>
+		<div class="pure-g">
+			<div class="pure-u-1-2">
+				<img id="userAvatar" email="<c:out value="${sessionScope.currentUser.email}"/>" type="avatar"/>
+			</div>
+			<div id="cdoj-user-menu" class="pure-u">
+				<div class="pure-menu pure-menu-open">				
+					<ul>
+						<li><a href="<c:url value="/admin/index"/>"><i class="icon-wrench"></i>Admin</a></li>
+						<li><a href="<c:url value="/user/center/${sessionScope.currentUser.userName}"/>"><i class="icon-home"></i>User center</a></li>
+						<li><a href="#" id="logoutButton"><i class="icon-off"></i>Logout</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="pure-u">
+				Hello, 
+				<span id="currentUser" type="<c:out value="${sessionScope.currentUser.type}"/>">
+					<c:out value="${sessionScope.currentUser.userName}"/>
+				</span>
+			</div>
 		</div>
 		<%--
     <ul class="nav pull-right">

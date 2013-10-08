@@ -20,6 +20,7 @@
 	<![endif]-->
 
 	<script src="<c:url value="/plugins/jquery/dist/jquery.js"/>"></script>	
+	<script src="<c:url value="/plugins/sugar/release/sugar-full.min.js"/>"></script>	
 	<script src="<c:url value="/plugins/cdoj/dist/js/cdoj.js"/>"></script>	
 </head>
 <body>
