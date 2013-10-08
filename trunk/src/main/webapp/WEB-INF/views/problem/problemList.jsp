@@ -1,5 +1,5 @@
 <%--
- Admin problem list page
+Admin problem list page
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -7,38 +7,47 @@
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-  <script src="<c:url value="/scripts/cdoj/cdoj.problem.js"/>"></script>
-  <title>Problem</title>
-</head>
-<body>
+	<head>
+		<title>Problem</title>
+	</head>
+	<body>
+		<div id="problem-list" class="pure-g">
+			<div id="pageInfo" class="pure-u-3-4">
+				<div class="pagination pagination-centered">
+					<ul>
+						<li class="disabled"><a>← First</a></li>
+						<li class="disabled"><a>«</a></li>
+						<li class="active"><a href="1">1</a></li>
+						<li class="disabled"><a>»</a></li>
+						<li class="disabled"><a>Last →</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="pure-u-1-4">
+				<div id="search-group">
+					<input type="text" name="keyword" maxlength="24" value="" id="keyword" class="pull-left">
+					<button id="search" class="action blue pull-right"><span class="label"><i class="icon-search"></i></span></button>
+					<a href="#" id="advanced"><i class="icon-chevron-down"></i></a>
+				</div>
+			</div>
 
-<ul id="TabMenu" class="nav nav-pills">
-  <li class="active">
-    <a href="#tab-problem-list" data-toggle="tab">Problem list</a>
-  </li>
-  <li><a href="#tab-problem-search" data-toggle="tab">Search</a></li>
-</ul>
+			<div class="pure-u-1">
+				<table class="pure-table pure-table-bordered">
+					<thead>
+						<tr>
+							<th style="width: 30px;" class="orderButton" field="id">Id</th>
+							<th class="orderButton" field="title">Title</th>
+							<th style="width: 70px;" class="orderButton" field="difficulty">Difficulty</th>
+							<th style="width: 70px;" class="orderButton" field="solved">Solved</th>
+						</tr>
+					</thead>
+					<tbody id="problemList">
+					</tbody>
+				</table>
+			</div>
+		</div>
 
-<div id="TabContent" class="tab-content">
-  <div class="tab-pane fade active in" id="tab-problem-list">
-    <div id="pageInfo">
-    </div>
-
-    <table class="table table-bordered">
-      <thead>
-      <tr>
-        <th style="width: 30px;" class="orderButton" field="id">Id</th>
-        <th class="orderButton" field="title">Title</th>
-        <th style="width: 70px;" class="orderButton" field="difficulty">Difficulty</th>
-        <th style="width: 70px;" class="orderButton" field="solved">Solved</th>
-      </tr>
-      </thead>
-      <tbody id="problemList">
-      </tbody>
-    </table>
-  </div>
-
+<%--
   <div class="tab-pane fade" id="tab-problem-search">
     <div id="problemCondition">
       <form class="form-horizontal">
@@ -111,6 +120,6 @@
     </div>
   </div>
 </div>
-
+--%>
 </body>
 </html>

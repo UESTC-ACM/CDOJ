@@ -10,29 +10,43 @@ Nav list on navbar
 		<title></title>
 	</head>
 	<body>
-		<div class="pure-menu pure-menu-open">
-			<ul>
-				<li class="pure-menu-heading">CDOJ</li>
-				<li><a href="/">Home</a></li>
-				<li><a href="<c:url value="/problem/list"/>">Problems</a></li>
-				<li><a href="#">Contests</a></li>
-				<li><a href="<c:url value="/status/list"/>">Status</a></li>
-				<li><a href="<c:url value="/user/list"/>">Users</a></li>
-				<%--
-				<li class="pure-menu-heading">Links</li>
-				<li><a href="#">BBS</a></li>
-				<li><a href="#">Wiki</a></li>
-				<li><a href="#">Training</a></li>
-				<li><a href="#">Download</a></li>
-				<li><a href="#">Step-by-Step</a></li>
-				<li><a href="#">Team Honors</a></li>
-				<li class="pure-menu-heading">About</li>
-				<li><a href="<c:url value="/article/show/1"/>">F.A.Q</a></li>
-				<li><a href="<c:url value="/article/show/2"/>">Markdown</a></li>
-				<li><a href="<c:url value="/article/show/3"/>">Training system</a></li>
-				<li><a href="<c:url value="/article/show/4"/>">About</a></li>
-				--%>
-			</ul>
+		<div class="pure-g">
+			<div class="pure-u-1">
+				<div class="pure-menu pure-menu-open">
+					<ul>
+						<li class="pure-menu-heading">CDOJ</li>
+						<li id="menu-item-home"><a href="/">Home</a></li>
+						<li id="menu-item-problem"><a href="<c:url value="/problem/list"/>">Problems</a></li>
+						<li id="menu-item-contest"><a href="#">Contests</a></li>
+						<li id="menu-item-status"><a href="<c:url value="/status/list"/>">Status</a></li>
+						<li id="menu-item-user"><a href="<c:url value="/user/list"/>">Users</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="pure-u-1-2">
+				<div class="pure-menu pure-menu-open">
+					<ul>
+						<li class="pure-menu-heading">Links</li>
+						<li><a href="#">BBS</a></li>
+						<li><a href="#">Wiki</a></li>
+						<li><a href="#">Training</a></li>
+						<li><a href="#">Download</a></li>
+						<li><a href="#">Step-by-Step</a></li>
+						<li><a href="#">Team Honors</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="pure-u-1-2">
+				<div class="pure-menu pure-menu-open">
+					<ul>
+						<li class="pure-menu-heading">About</li>
+						<li><a href="<c:url value="/article/show/1"/>">F.A.Q</a></li>
+						<li><a href="<c:url value="/article/show/2"/>">Markdown</a></li>
+						<li><a href="<c:url value="/article/show/3"/>">Training system</a></li>
+						<li><a href="<c:url value="/article/show/4"/>">About</a></li>
+					</ul>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>
