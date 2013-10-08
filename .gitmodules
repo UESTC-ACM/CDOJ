@@ -10,3 +10,6 @@
 [submodule "trunk/src/main/webapp/plugins/fine-uploader"]
 	path = trunk/src/main/webapp/plugins/fine-uploader
 	url = https://github.com/Widen/fine-uploader.git
+[submodule "trunk/src/main/webapp/plugins/pure"]
+	path = trunk/src/main/webapp/plugins/pure
+	url = https://github.com/yui/pure.git
