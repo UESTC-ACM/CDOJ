@@ -20,7 +20,12 @@
 
     <div class="span10">
       <h3>
-        Edit article <span id="articleId">${targetArticle.articleId}</span>
+      <c:if test="${action eq 'new'}">
+        New article<span id="articleId" type="<c:out value="${action}"/>"></span>
+      </c:if>
+      <c:if test="${action eq 'edit'}">
+        Edit article <span id="articleId" type="<c:out value="${action}"/>">${targetArticle.articleId}</span>
+      </c:if>
       </h3>
       <div class="control-group">
         <div class="controls">

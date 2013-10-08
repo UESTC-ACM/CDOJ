@@ -39,20 +39,21 @@ var articleDTO = {
 };
 
 var articleId;
-
+var action;
 // TODO clean the styles paste into editor
 
 $(document).ready(
     function() {
 
       articleId = $('#articleId')[0].innerHTML;
-
+      action = $('#articleId').attr('type');
+      if (action == 'new')
+        articleId = 'new';
+      
       $.each(editors, function(editorId) {
         epicEditorOpts.container = editorId;
-        epicEditorOpts.uploadUrl = '/admin/article/uploadArticlePicture/'
-            + articleId;
-        epicEditorOpts.pictureListUrl = '/admin/article/getUploadedPictures/'
-            + articleId;
+        epicEditorOpts.uploadUrl = '/picture/uploadProblemPicture/';
+        epicEditorOpts.pictureListUrl = '/picture/getUploadedPictures/';
         epicEditorOpts.file.name = editorId + articleId;
         var oldContent = $('#' + editorId)[0].innerHTML.toString();
         oldContent = js.lang.String.decodeHtml(oldContent);
@@ -61,14 +62,19 @@ $(document).ready(
       });
 
       $('input#submit').click(function() {
-        articleDTO['articleId'] = articleId;
+        articleDTO['action'] = action;
+        if (action == 'new')
+          articleDTO['articleId'] = null;
+        else
+          articleDTO['articleId'] = articleId;
         articleDTO['title'] = $('#title').val();
         articleDTO['author'] = $('#author').val();
         $.each(editors, function(editorId) {
           articleDTO[editorId] = this.exportFile();
         });
-        $.post('/admin/article/edit', articleDTO, function(data) {
-          $('#articleEditor').checkValidate({
+        console.log(articleDTO);
+        jsonPost('/admin/article/edit', articleDTO, function(data) {
+          $('#articleEditor').formValidate({
             result : data,
             onSuccess : function() {
               alert('Successful!');

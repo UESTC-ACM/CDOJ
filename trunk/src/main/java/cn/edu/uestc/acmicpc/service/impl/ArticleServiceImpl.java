@@ -19,6 +19,7 @@ import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
 @Service
@@ -64,17 +65,17 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
     articleDAO.updateEntitiesByField(properties, "articleId", ids);
   }
 
-
   @Override
   public Integer createNewArticle() throws AppException {
     Article article = new Article();
-    article.setAuthor("");
-    article.setClicked(0);
+    article.setTitle("");
     article.setContent("");
+    article.setAuthor("");
+    article.setTime(new Timestamp(new Date().getTime()));
+    article.setClicked(0);
+    article.setOrder(0);
     article.setIsNotice(false);
     article.setIsVisible(false);
-    article.setOrder(0);
-    article.setTime(new Timestamp(new Date().getTime()));
     article.setUserId(1);
     articleDAO.add(article);
     return article.getArticleId();
@@ -84,6 +85,41 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
   public ArticleEditorShowDTO getArticleEditorShowDTO(Integer articleId)
       throws AppException {
     return articleDAO.getDTOByUniqueField(ArticleEditorShowDTO.class, ArticleEditorShowDTO.builder(), "articleId", articleId);
+  }
+
+  private void updateArticleByArticleDTO(Article article, ArticleDTO articleDTO) {
+    if (articleDTO.getParentId() != null)
+      article.setParentId(articleDTO.getParentId());
+    if (articleDTO.getAuthor() != null)
+      article.setAuthor(articleDTO.getAuthor());
+    if (articleDTO.getClicked() != null)
+      article.setClicked(articleDTO.getClicked());
+    if (articleDTO.getContent() != null)
+      article.setContent(articleDTO.getContent());
+    if (articleDTO.getIsNotice() != null)
+      article.setIsNotice(articleDTO.getIsNotice());
+    if (articleDTO.getIsVisible() != null)
+      article.setIsVisible(articleDTO.getIsVisible());
+    if (articleDTO.getOrder() != null)
+      article.setOrder(articleDTO.getOrder());
+    if (articleDTO.getProblemId() != null)
+      article.setProblemId(articleDTO.getProblemId());
+    if (articleDTO.getTime() != null)
+      article.setTime(articleDTO.getTime());
+    if (articleDTO.getTitle() != null)
+      article.setTitle(articleDTO.getTitle());
+    if (articleDTO.getUserId() != null)
+      article.setUserId(articleDTO.getUserId());
+  }
+
+  @Override
+  public void updateArticle(ArticleDTO articleDTO) throws AppException {
+    AppExceptionUtil.assertNotNull(articleDTO);
+    AppExceptionUtil.assertNotNull(articleDTO.getArticleId());
+    Article article = articleDAO.get(articleDTO.getArticleId());
+    AppExceptionUtil.assertNotNull(article);
+    updateArticleByArticleDTO(article, articleDTO);
+    articleDAO.update(article);
   }
 
 }

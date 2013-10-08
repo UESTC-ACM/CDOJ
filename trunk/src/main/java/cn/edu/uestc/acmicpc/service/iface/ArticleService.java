@@ -16,6 +16,8 @@ import cn.edu.uestc.acmicpc.web.view.PageInfo;
  */
 public interface ArticleService extends DatabaseService<Article, Integer> {
 
+  public void updateArticle(ArticleDTO articleDTO) throws AppException;
+
   public ArticleDTO getArticleDTO(Integer articleId) throws AppException;
 
   public Long count(ArticleCondition condition) throws AppException;
