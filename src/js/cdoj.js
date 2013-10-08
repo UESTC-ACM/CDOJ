@@ -10,7 +10,7 @@ $(function () {
     currentUser = $currentUser[0].innerHTML;
     $('#userAvatar').setAvatar({
       image: 'http://www.acm.uestc.edu.cn/images/akari_small.jpg',
-      size: 120
+      size: $('#userAvatar').width()
     });
   }
 
@@ -25,6 +25,16 @@ $(function () {
             window.location.reload();
           }
         });
+      });
+    }
+  });
+
+  $("#logoutButton").setButton({
+    callback: function() {
+      //noinspection JSUnresolvedFunction
+      $.post('/user/logout', function(data) {
+        if (data.result == "success")
+          window.location.reload();
       });
     }
   });
