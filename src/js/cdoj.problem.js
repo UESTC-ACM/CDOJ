@@ -40,6 +40,7 @@
     function refreshProblemList(condition) {
       if (condition === undefined)
         condition = currentCondition;
+      console.log(condition);
       jsonPost('/problem/search', condition, function (data) {
 
         if (data.result == "error") {
@@ -105,7 +106,6 @@
       "orderAsc": undefined
     };
 
-
     $.each($problemList.find('.orderButton'), function(){
       var field = $(this).attr('field');
       $(this).setButton({
@@ -118,9 +118,69 @@
     refreshProblemList(currentCondition);
 
     var $searchForm = $problemList.find('#search-group');
+    var $conditionForm = $searchForm.find('#condition');
+
+    function trigger() {
+      if ($conditionForm.hasClass('open')) {
+        $conditionForm.removeClass('open');
+
+      } else {
+        $conditionForm.addClass('open');
+      }
+    }
+
+    $conditionForm.hover(function() {
+      $conditionForm.addClass('hover');
+    }, function() {
+      $conditionForm.removeClass('hover');
+    });
+
+    $(document).click(function() {
+      if ($conditionForm.hasClass('open') && !$conditionForm.hasClass('hover')) {
+        trigger();
+        return false;
+      }
+    });
+
     $searchForm.find('#advanced').setButton({
       callback: function() {
-        alert('fuck');
+        if (!$conditionForm.hasClass('open')) {
+          trigger();
+        }
+      }
+    });
+
+    $conditionForm.find('#search-button').setButton({
+      callback: function () {
+        currentCondition = $conditionForm.getFormData();
+        currentCondition.currentPage = 1;
+        refreshProblemList(currentCondition);
+        trigger();
+      }
+    });
+
+    $conditionForm.find('#reset-button').setButton({
+      callback: function () {
+        $conditionForm.resetFormData();
+      }
+    });
+
+    $searchForm.find('#search').setButton({
+      callback: function () {
+        currentCondition = {
+          "currentPage": 1,
+          "startId": undefined,
+          "endId": undefined,
+          "title": undefined,
+          "source": undefined,
+          "isSpj": undefined,
+          "startDifficulty": undefined,
+          "endDifficulty": undefined,
+          "keyword": $searchForm.find('#search-keyword').val(),
+          "orderFields": undefined,
+          "orderAsc": undefined
+        };
+        refreshProblemList(currentCondition);
       }
     });
   };

@@ -55,14 +55,14 @@
   margin: 37px 0 20px 0;
   display: block;
 
-  #keyword {
+  #search-keyword {
     width: 171px;
     height: 23px;
     border-bottom-right-radius: 0;
     border-top-right-radius: 0;
     padding-right: 16px;
   }
-  #keyword:focus {
+  #search-keyword:focus {
     outline: none;
   }
   #search {
@@ -83,5 +83,32 @@
     padding: 8px 0 9px 0;
     text-decoration: none;
     color: black;
+  }
+  #condition {
+    display: none;
+    position:absolute;
+    background-color: #ffffff;
+    width: 360px;
+    left: -168px;
+    top: 29px;
+    -webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,0.2);
+    z-index: 1000;
+    .pure-form {
+      padding: 9px;
+    }
+    .form-actions {
+      button {
+        float: right;
+        .label {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+  #condition.open {
+    display: block;
   }
 }
