@@ -9,7 +9,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  */
 public class ArticleCondition extends BaseCondition {
 
-  protected ArticleCondition() {
+  public ArticleCondition() {
     super("articleId");
   }
 
