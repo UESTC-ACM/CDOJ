@@ -1,0 +1,170 @@
+#cdoj-layout {
+	padding-left: 300px;
+	position: relative;
+}
+#cdoj-navbar {
+	margin-left: -300px;
+	width: 300px;
+	position: fixed;
+	top: 0;
+	left: 300px;
+	bottom: 0;
+	z-index: 1000;
+	background: #191818;
+	overflow-y: auto;
+	-webkit-overflow-scroll: touch;
+}
+#cdoj-navbar a {
+	color: #999;
+	border: none;
+	white-space: normal;
+	padding: 0.6em 0 0.6em 0.6em;
+}
+#cdoj-navbar .pure-menu-open {
+	background: transparent;
+	border: 0;
+}
+#cdoj-navbar .pure-menu ul {
+	border: none;
+	background: transparent;
+}
+#cdoj-navbar .pure-menu ul,
+#cdoj-navbar .pure-menu .menu-item-divided {
+	border-top: 1px solid #333;
+}
+#cdoj-navbar .pure-menu li a:hover,
+#cdoj-navbar .pure-menu li a:focus {
+	background: #333;
+}
+.pure-menu-link {
+	display: none; /* show this only on small screens */
+	top: 0;
+	left: 150px; /* "#cdoj-navbar width" */
+	background: #000;
+	background: rgba(0,0,0,0.7);
+	font-size: 10px; /* change this value to increase/decrease button size */
+	z-index: 10;
+	width: 2em;
+	height: auto;
+	padding: 2.1em 1.6em;
+}
+.pure-menu-link:hover,
+.pure-menu-link:focus {
+	background: #000;
+}
+.pure-menu-link span {
+	position: relative;
+	display: block;
+}
+.pure-menu-link span,
+.pure-menu-link span:before,
+.pure-menu-link span:after {
+	background-color: #fff;
+	width: 100%;
+	height: .2em;
+	-webkit-transition: all 0.8s;
+	-moz-transition: all 0.8s;
+	-ms-transition: all 0.8s;
+	-o-transition: all 0.8s;
+	transition: all 0.8s;
+}
+.pure-menu-link span:before,
+.pure-menu-link span:after {
+	position: absolute;
+	margin-top: -.6em;
+	content: " ";
+}
+.pure-menu-link span:after {
+	margin-top: .6em;
+}
+.pure-menu-link.active span {
+	background: transparent;
+}
+.pure-menu-link.active span:before {
+	-webkit-transform: rotate(45deg) translate(.5em, .4em);
+	-moz-transform: rotate(45deg) translate(.5em, .4em);
+	-ms-transform: rotate(45deg) translate(.5em, .4em);
+	-o-transform: rotate(45deg) translate(.5em, .4em);
+	transform: rotate(45deg) translate(.5em, .4em);
+}
+.pure-menu-link.active span:after {
+	-webkit-transform: rotate(-45deg) translate(.45em, -.35em);
+	-moz-transform: rotate(-45deg) translate(.45em, -.35em);
+	-ms-transform: rotate(-45deg) translate(.45em, -.35em);
+	-o-transform: rotate(-45deg) translate(.45em, -.35em);
+	transform: rotate(-45deg) translate(.45em, -.35em);
+}
+#cdoj-navbar .pure-menu-heading {
+	font-size: 110%;
+	color: #fff;
+}
+#cdoj-navbar .pure-menu-heading:hover,
+#cdoj-navbar .pure-menu-heading:focus {
+	color: #999;
+}
+#cdoj-navbar .pure-menu-selected {
+	background: #1f8dd6;
+}
+#cdoj-navbar .pure-menu-selected a {
+	color: #fff;
+}
+#cdoj-navbar li.pure-menu-selected a:hover,
+#cdoj-navbar li.pure-menu-selected a:focus {
+	background: none;
+}
+
+.input-group {
+	position: relative;
+	display: table;
+	border-collapse: separate;
+}
+.input-group-addon:first-child {
+	border-right: 0;
+}
+.input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child > .btn, .input-group-btn:first-child > .dropdown-toggle, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle) {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+.input-group .form-control:last-child, .input-group-addon:last-child, .input-group-btn:last-child > .btn, .input-group-btn:last-child > .dropdown-toggle, .input-group-btn:first-child > .btn:not(:first-child) {
+	border-bottom-left-radius: 0;
+	border-top-left-radius: 0;
+}
+.input-group-addon {
+	padding: 6px 12px;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1;
+	color: #555555;
+	text-align: center;
+	background-color: #eeeeee;
+	border: 1px solid #cccccc;
+	border-radius: 2px;
+	width: 14px;
+}
+.input-group-addon, .input-group-btn {
+	white-space: nowrap;
+	vertical-align: middle;
+}
+.input-group-addon, .input-group-btn, .input-group .form-control {
+	display: table-cell;
+}
+.input-group .form-control {
+	width: 100%;
+	margin-bottom: 0;
+}
+.pure-form input[type="text"], .pure-form input[type="password"], .pure-form input[type="email"], .pure-form input[type="url"], .pure-form input[type="date"], .pure-form input[type="month"], .pure-form input[type="time"], .pure-form input[type="datetime"], .pure-form input[type="datetime-local"], .pure-form input[type="week"], .pure-form input[type="number"], .pure-form input[type="search"], .pure-form input[type="tel"], .pure-form input[type="color"], .pure-form select, .pure-form textarea {
+	border-radius: 2px;
+}
+.input-group {
+	margin: 0 5px 10px 5px;
+}
+#cdoj-user {
+	width: 222px;
+	margin: 24px auto;
+}
+.pull-right {
+  float: right !important;
+}
+.pull-left {
+  float: left !important;
+}

@@ -1,52 +1,38 @@
 <%--
- User menu on navbar
-
- @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
+User menu on navbar
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-  <title></title>
-</head>
-<body>
-<c:choose>
-  <c:when test="${sessionScope.currentUser == null}">
-    <ul class="nav pull-right">
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          <i class="icon-white icon-pencil"></i>
-          Login
-          <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu">
-          <li>
-            <!-- Button to trigger modal -->
-            <a href="#loginModal" role="button" data-toggle="modal">
-              <i class="icon-ok-circle"></i>
-              Login
-            </a>
-          </li>
+	<head>
+		<title></title>
+	</head>
+	<body>
+		<c:choose>
+		<c:when test="${sessionScope.currentUser == null}">
+		<div class="cdoj-login-form">
+			<form class="pure-form pure-form-aligned">
+				<fieldset>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="icon-user"></i></span>
+						<input type="text" name="userName" maxlength="24" value="" id="userName" class="form-control" placeholder="Username">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="icon-key"></i></span>
+						<input type="password" name="password" maxlength="20" id="password" class="form-control" placeholder="Password">
+					</div>
 
-          <li>
-            <!-- Button to trigger modal -->
-            <a href="#registerModal" role="button" data-toggle="modal">
-              <i class="icon-plus-sign"></i>
-              Register
-            </a>
-          </li>
+					<button class="action blue pull-left"><span class="label">Login</span></button>
+					<button class="action green pull-right"><span class="label">Register</span></button>
 
-          <li>
-            <a href="#activateModal" role="button" data-toggle="modal">
-              <i class="icon-refresh"></i>
-              Forget password
-            </a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+					<%--
+					<div class="pull-right"><span class="label"><i class="icon-question-sign"></i>Forget your password?</span></div>
+					--%>
+				</fieldset>
+			</form>
+		</div>
   </c:when>
   <c:otherwise>
     <ul class="nav pull-right">
