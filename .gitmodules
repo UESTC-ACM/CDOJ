@@ -4,3 +4,6 @@
 [submodule "trunk/src/main/webapp/plugins/MathJax"]
 	path = trunk/src/main/webapp/plugins/MathJax
 	url = https://github.com/mathjax/MathJax.git
+[submodule "trunk/src/main/webapp/plugins/bootstrapSwitch"]
+	path = trunk/src/main/webapp/plugins/bootstrapSwitch
+	url = https://github.com/nostalgiaz/bootstrap-switch.git
