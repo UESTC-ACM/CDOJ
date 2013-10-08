@@ -18,7 +18,12 @@
 
   <div class="span10">
     <h3>
-      Edit problem <span id="problemId">${targetProblem.problemId}</span>
+      <c:if test="${action eq 'new'}">
+        New problem<span id="problemId" type="<c:out value="${action}"/>"></span>
+      </c:if>
+      <c:if test="${action eq 'edit'}">
+        Edit problem <span id="problemId" type="<c:out value="${action}"/>">${targetProblem.problemId}</span>
+      </c:if>
     </h3>
     <div class="control-group">
       <div class="controls">
