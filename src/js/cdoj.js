@@ -4,7 +4,7 @@
 
 var currentUser;
 
-$(function () {
+$(document).ready(function () {
   var $currentUser = $('#currentUser');
   if ($currentUser.length !== 0) {
     currentUser = $currentUser[0].innerHTML;
