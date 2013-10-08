@@ -7,3 +7,6 @@
 [submodule "trunk/src/main/webapp/plugins/bootstrapSwitch"]
 	path = trunk/src/main/webapp/plugins/bootstrapSwitch
 	url = https://github.com/nostalgiaz/bootstrap-switch.git
+[submodule "trunk/src/main/webapp/plugins/fine-uploader"]
+	path = trunk/src/main/webapp/plugins/fine-uploader
+	url = https://github.com/Widen/fine-uploader.git
