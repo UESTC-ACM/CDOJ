@@ -12,37 +12,37 @@ User menu on navbar
 	<body>
 		<c:choose>
 		<c:when test="${sessionScope.currentUser == null}">
-		<div class="cdoj-login-form">
-			<form class="pure-form pure-form-aligned">
-				<fieldset>
-					<div class="input-group">
-						<span class="input-group-addon"><i class="icon-user"></i></span>
-						<input type="text" name="userName" maxlength="24" value="" id="userName" class="form-control" placeholder="Username">
-					</div>
-					<div class="input-group">
-						<span class="input-group-addon"><i class="icon-key"></i></span>
-						<input type="password" name="password" maxlength="20" id="password" class="form-control" placeholder="Password">
-					</div>
+		<form id="cdoj-login-form" class="pure-form pure-form-aligned">
+			<fieldset>
+				<div class="input-group">
+					<span class="input-group-addon"><i class="icon-user"></i></span>
+					<input type="text" name="userName" maxlength="24" value="" id="userName" class="form-control" placeholder="Username">
+				</div>
+				<div class="input-group">
+					<span class="input-group-addon"><i class="icon-key"></i></span>
+					<input type="password" name="password" maxlength="20" id="password" class="form-control" placeholder="Password">
+				</div>
 
-					<button class="action blue pull-left"><span class="label">Login</span></button>
-					<button class="action green pull-right"><span class="label">Register</span></button>
+				<button type="button" id="cdoj-login-button" class="action blue pull-left"><span class="label">Login</span></button>
+				<button type="button" class="action green pull-right"><span class="label">Register</span></button>
 
-					<%--
-					<div class="pull-right"><span class="label"><i class="icon-question-sign"></i>Forget your password?</span></div>
-					--%>
-				</fieldset>
-			</form>
+				<%--
+				<div class="pull-right"><span class="label"><i class="icon-question-sign"></i>Forget your password?</span></div>
+				--%>
+			</fieldset>
+		</form>
+		</c:when>
+		<c:otherwise>
+		<div id='cdoj-user-info'>
+			<img id="userAvatar" email="<c:out value="${sessionScope.currentUser.email}"/>" type="avatar"/>
+			<span id="currentUser" type="<c:out value="${sessionScope.currentUser.type}"/>">
+				<c:out value="${sessionScope.currentUser.userName}"/>
+			</span>
 		</div>
-  </c:when>
-  <c:otherwise>
+		<%--
     <ul class="nav pull-right">
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          <!-- TODO src missing? -->
-          <img id="userAvatar" email="<c:out value="${sessionScope.currentUser.email}"/>" type="avatar"/>
-          <span id="currentUser" type="<c:out value="${sessionScope.currentUser.type}"/>">
-            <c:out value="${sessionScope.currentUser.userName}"/>
-          </span>
           <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
@@ -81,7 +81,8 @@ User menu on navbar
           </li>
         </ul>
       </li>
-    </ul>
+		</ul>
+		--%>
   </c:otherwise>
 </c:choose>
 </body>
