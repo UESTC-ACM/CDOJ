@@ -13,7 +13,9 @@
       if (isVisible === false)
         html += '<i class = "icon-eye-close pull-left tags"/>';
 
-      html += '<a class="pull-left" href="/problem/show/' + problemId + '" title="'+source+'">' + title + '</a></span>';
+      html += '<a class="pull-left" href="/problem/show/' + problemId + '">' + title + '</a></span>';
+      if (source !== undefined && source !== null && js.lang.String.trim(source) !== '')
+        html += '<span class="muted problem-source">' + source + '</span>';
       return html;
     }
 

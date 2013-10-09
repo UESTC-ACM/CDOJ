@@ -1,0 +1,39 @@
+.dl-horizontal {
+}
+dl {
+  margin-bottom: 20px;
+}
+.dl-horizontal::before, .dl-horizontal::after {
+  display: table;
+  line-height: 0;
+  content: "";
+}
+.dl-horizontal::after {
+  clear: both;
+}
+.dl-horizontal::before, .dl-horizontal::after {
+  display: table;
+  line-height: 0;
+  content: "";
+}
+.dl-horizontal dt {
+  float: left;
+  width: 160px;
+  overflow: hidden;
+  clear: left;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+dt {
+  font-weight: bold;
+}
+dt, dd {
+  line-height: 20px;
+}
+.dl-horizontal dd {
+  margin-left: 180px;
+}
+dd {
+  margin-left: 10px;
+}
