@@ -1,101 +1,119 @@
 <%--
- User list page
+User list page
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-  <script src="<c:url value="/scripts/cdoj/cdoj.user.js"/>"></script>
-  <title>User</title>
-</head>
-<body>
+	<head>
+		<title>User</title>
+	</head>
+	<body>
 
-<ul id="TabMenu" class="nav nav-pills">
-  <li class="active">
-    <a href="#tab-user-list" data-toggle="tab">User list</a>
-  </li>
-  <li><a href="#tab-user-search" data-toggle="tab">Search</a></li>
-</ul>
+		<div class="pure-g" id="user-list">
+			<div id="pageInfo"class="pure-u-3-4">
+				<div class="pagination pagination-centered">
+					<ul>
+						<li class="disabled"><a>← First</a></li>
+						<li class="disabled"><a>«</a></li>
+						<li class="active"><a href="1">1</a></li>
+						<li class="disabled"><a>»</a></li>
+						<li class="disabled"><a>Last →</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="pure-u-1-4">
+				<div id="search-group">
+					<input type="text" name="search-keyword" maxlength="24" value="" id="search-keyword" class="pull-left">
+					<button id="search" class="action blue pull-right"><span class="label"><i class="icon-search"></i></span></button>
+					<a href="#" id="advanced"><i class="icon-chevron-down"></i></a>
+					<div id="condition">
+						<form class="pure-form pure-form-stacked">
+							<fieldset>
+								<legend>User ID</legend>
+								<div class="pure-g">
+									<div class="pure-u-1-2">
+										<span class="add-on">Form</span>
+										<input type="text" name="startId" maxlength="6" value="" id="startId" class="pure-input-1">
+									</div>
+									<div class="pure-u-1-2">
+										<span class="add-on">To</span>
+										<input type="text" name="endId" maxlength="6" value="" id="endId" class="pure-input-1">
+									</div>							
+								</div>
+							</fieldset>
+							<fieldset>
+								<div class="pure-g">
+									<div class="pure-u-1">
+										<span class="add-on">User Name</span>
+									</div>
+									<div class="pure-u-1">
+										<input type="text" name="userName" maxlength="24" value="" id="userName" class="pure-input-1">
+									</div>
+									<div class="pure-u-1">
+										<span class="add-on">Type</span>
+									</div>
+									<div class="pure-u-1">
+										<select name="type" id="type" class="pure-u-1">
+											<c:forEach var="authenticationType" items="${authenticationTypeList}">
+											<option value="${authenticationType.ordinal()}"><c:out value="${authenticationType.description}"/></option>
+											</c:forEach>
+										</select>
+									</div>
+									<div class="pure-u-1">
+										<span class="add-on">Keyword</span>
+									</div>
+									<div class="pure-u-1">
+										<input type="text" name="keyword" maxlength="100" value="" id="keyword" class="pure-input-1">
+									</div>
+									<div class="pure-u-1">
+										<span class="add-on">School</span>
+									</div>
+									<div class="pure-u-1">
+										<input type="text" name="school" maxlength="100" value="" id="school" class="pure-input-1">
+									</div>
+									<div class="pure-u-1">
+										<span class="add-on">Department</span>
+									</div>
+									<div class="pure-u-1">
+										<select name="departmentId" id="departmentId" class="pure-u-1">
+											<c:forEach var="department" items="${departmentList}">
+											<option value="${department.departmentId}"><c:out value="${department.name}"/></option>
+											</c:forEach>
+										</select>
+									</div>
 
-<div id="TabContent" class="tab-content">
-  <div class="tab-pane fade active in" id="tab-user-list">
-    <div id="pageInfo"></div>
 
-    <table class="table table-striped table-bordered">
-      <thead>
-      <tr>
-        <th style="width: 30px;" class="orderButton" field="id">Id</th>
-        <th class="orderButton" field="userName">User name</th>
-        <th class="orderButton" field="nickName">Nick name</th>
-        <th class="orderButton" field="school">School</th>
-        <th style="width: 160px;" class="orderButton" field="lastLogin">Last login</th>
-        <th style="width: 60px;" class="orderButton" field="solved">Solved</th>
-        <th style="width: 60px;" class="orderButton" field="tried">Tried</th>
-      </tr>
-      </thead>
-      <tbody id="userList">
-      </tbody>
-    </table>
-  </div>
+								</div>
+							</fieldset>
+							<div class="form-actions">
+								<button class="action blue" id="search-button"><span class="label">Search</span></button>
+								<button class="action red" id="reset-button"><span class="label">Reset</span></button>							
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
 
-  <div class="tab-pane fade" id="tab-user-search">
-    <div id="userCondition">
-      <form class="form-horizontal">
-        <div class="control-group">
-          <label class="control-label" for="startId">User ID</label>
-          <div class="controls">
-            <div class="input-prepend inline">
-              <span class="add-on">Form</span>
-              <input type="text" name="startId" maxlength="6" value="" id="startId" class="input-small">
-            </div>
-            <div class="input-prepend">
-              <span class="add-on">To</span>
-              <input type="text" name="endId" maxlength="6" value="" id="endId" class="input-small">
-            </div>
-          </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label" for="userName">User name</label>
-          <div class="controls">
-            <input type="text" name="userName" maxlength="24" value="" id="userName" class="span6">
-          </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label" for="type">Type</label>
-          <div class="controls">
-            <select name="type" id="type" class="span6">
-              <c:forEach var="authenticationType" items="${authenticationTypeList}">
-                <option value="${authenticationType.ordinal()}"><c:out value="${authenticationType.description}"/></option>
-              </c:forEach>
-            </select>
-          </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label" for="school">School</label>
-          <div class="controls">
-            <input type="text" name="school" maxlength="50" value="" id="school" class="span6">
-          </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label" for="departmentId">Department</label>
-          <div class="controls">
-            <select name="departmentId" id="departmentId" class="span6">
-              <c:forEach var="department" items="${departmentList}">
-                <option value="${department.departmentId}"><c:out value="${department.name}"/></option>
-              </c:forEach>
-            </select>
-          </div>
-        </div>
-        <div class="form-actions">
-          <input type="submit" id="search" name="search" value="Search" class="btn btn-primary">
-          <input type="submit" id="reset" name="reset" value="Reset" class="btn btn-danger">
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+			<div class="pure-u-1">
+				<table class="pure-table pure-table-bordered">
+					<thead>
+						<tr>
+							<th style="width: 30px;" class="orderButton" field="id">Id</th>
+							<th class="orderButton" field="userName">User name</th>
+							<th class="orderButton" field="nickName">Nick name</th>
+							<th class="orderButton" field="school">School</th>
+							<th style="width: 160px;" class="orderButton" field="lastLogin">Last login</th>
+							<th style="width: 60px;" class="orderButton" field="solved">Solved</th>
+							<th style="width: 60px;" class="orderButton" field="tried">Tried</th>
+						</tr>
+					</thead>
+					<tbody id="userList">
+					</tbody>
+				</table>
+			</div>
+		</div>
 
-</body>
+	</body>
 </html>

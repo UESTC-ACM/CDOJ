@@ -25,9 +25,86 @@ Admin problem list page
 			</div>
 			<div class="pure-u-1-4">
 				<div id="search-group">
-					<input type="text" name="keyword" maxlength="24" value="" id="keyword" class="pull-left">
+					<input type="text" name="search-keyword" maxlength="24" value="" id="search-keyword" class="pull-left">
 					<button id="search" class="action blue pull-right"><span class="label"><i class="icon-search"></i></span></button>
 					<a href="#" id="advanced"><i class="icon-chevron-down"></i></a>
+					<div id="condition">
+						<form class="pure-form pure-form-stacked">
+							<fieldset>
+								<legend>Problem ID</legend>
+								<div class="pure-g">
+									<div class="pure-u-1-2">
+										<span class="add-on">Form</span>
+										<input type="text" name="startId" maxlength="6" value="" id="startId" class="pure-input-1">
+									</div>
+									<div class="pure-u-1-2">
+										<span class="add-on">To</span>
+										<input type="text" name="endId" maxlength="6" value="" id="endId" class="pure-input-1">
+									</div>							
+								</div>
+							</fieldset>
+							<fieldset>
+								<legend>Difficulty</legend>
+								<div class="pure-g">
+									<div class="pure-u-1-2">
+										<span class="add-on">Form</span> 
+										<input type="text" name="startDifficulty" maxlength="6" value="" id="startDifficulty" class="pure-input-1">
+									</div>
+									<div class="pure-u-1-2">
+										<span class="add-on">To</span>
+										<input type="text" name="endDifficulty" maxlength="6" value="" id="endDifficulty" class="pure-input-1">
+									</div>							
+								</div>
+							</fieldset>
+							<fieldset>
+								<div class="pure-g">
+									<div class="pure-u-1">
+										<span class="add-on">Title</span>
+									</div>
+									<div class="pure-u-1">
+										<input type="text" name="title" maxlength="100" value="" id="title" class="pure-input-1">
+									</div>
+									<div class="pure-u-1">
+										<span class="add-on">Keyword</span>
+									</div>
+									<div class="pure-u-1">
+										<input type="text" name="keyword" maxlength="100" value="" id="keyword" class="pure-input-1">
+									</div>
+									<div class="pure-u-1">
+										<span class="add-on">Source</span>
+									</div>
+									<div class="pure-u-1">
+										<input type="text" name="source" maxlength="100" value="" id="source" class="pure-input-1">
+									</div>
+									<div class="pure-u-1">
+										<span class="add-on">Is SPJ</span>
+									</div>							
+									<div class="pure-u-1-3">
+										<label class="radio inline">
+											<input type="radio" name="isSpj" value="all" checked="">
+											All
+										</label>
+									</div>
+										<div class="pure-u-1-3">
+										<label class="radio inline">
+											<input type="radio" name="isSpj" value="true">
+											Yes
+										</label>
+									</div>
+									<div class="pure-u-1-3">
+										<label class="radio inline">
+											<input type="radio" name="isSpj" value="false">
+											No
+										</label>
+									</div>
+								</div>
+							</fieldset>
+							<div class="form-actions">
+								<button class="action blue" id="search-button"><span class="label">Search</span></button>
+								<button class="action red" id="reset-button"><span class="label">Reset</span></button>							
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
 
@@ -46,80 +123,6 @@ Admin problem list page
 				</table>
 			</div>
 		</div>
-
-<%--
-  <div class="tab-pane fade" id="tab-problem-search">
-    <div id="problemCondition">
-      <form class="form-horizontal">
-        <div class="control-group">
-          <label class="control-label" for="startId">Problem ID</label>
-          <div class="controls">
-            <div class="input-prepend inline">
-              <span class="add-on">Form</span>
-              <input type="text" name="startId" maxlength="6" value="" id="startId" class="input-small">
-            </div>
-            <div class="input-prepend">
-              <span class="add-on">To</span>
-              <input type="text" name="endId" maxlength="6" value="" id="endId" class="input-small">
-            </div>
-          </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label" for="startDifficulty">Difficulty</label>
-          <div class="controls">
-            <div class="input-prepend inline">
-              <span class="add-on">Form</span>
-              <input type="text" name="startDifficulty" maxlength="6" value="" id="startDifficulty" class="input-small">
-            </div>
-            <div class="input-prepend">
-              <span class="add-on">To</span>
-              <input type="text" name="endDifficulty" maxlength="6" value="" id="endDifficulty" class="input-small">
-            </div>
-          </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label" for="title">Title</label>
-          <div class="controls">
-            <input type="text" name="title" maxlength="100" value="" id="title" class="span6">
-          </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label" for="keyword">Keyword</label>
-          <div class="controls">
-            <input type="text" name="keyword" maxlength="100" value="" id="keyword" class="span6">
-          </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label" for="source">Source</label>
-          <div class="controls">
-            <input type="text" name="source" maxlength="100" value="" id="source" class="span6">
-          </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label">Is SPJ</label>
-          <div class="controls">
-            <label class="radio inline">
-              <input type="radio" name="isSpj" value="all" checked="">
-              All
-            </label>
-            <label class="radio inline">
-              <input type="radio" name="isSpj" value="true">
-              Yes
-            </label>
-            <label class="radio inline">
-              <input type="radio" name="isSpj" value="false">
-              No
-            </label>
-          </div>
-        </div>
-        <div class="form-actions">
-          <input type="submit" id="search" name="search" value="Search" class="btn btn-primary">
-          <input type="submit" id="reset" name="reset" value="Reset" class="btn btn-danger">
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
---%>
-</body>
+	
+	</body>
 </html>
