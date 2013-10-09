@@ -18,7 +18,6 @@
 	<!--[if IE 7]>
 	<link rel="stylesheet" href="<c:url value="/plugins/Font-Awesome/css/font-awesome-ie7.min.css"/>">
 	<![endif]-->
-	<link rel="stylesheet" href="<c:url value="/plugins/prettify/prettify.css"/>">
 
 	<script src="<c:url value="/plugins/jquery/dist/jquery.js"/>"></script>	
 	<script src="<c:url value="/plugins/sugar/release/sugar-full.min.js"/>"></script>	
