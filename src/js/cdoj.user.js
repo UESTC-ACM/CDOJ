@@ -10,9 +10,9 @@
     var $list = $(this);
 
     function getUserName(email, userName) {
-      var html = $('<td style="text-align: left;">' +
+      var html = $('<td>' +
           '<img id="usersAvatar" email="' + email + '"/>' +
-          '<a href="/user/center/' + userName + '">' + userName + '</a>' +
+          '<span><a href="/user/center/' + userName + '">' + userName + '</a></span>' +
           '</td>');
       return html;
     }

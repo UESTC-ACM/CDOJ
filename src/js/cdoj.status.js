@@ -114,6 +114,9 @@
         // put user list
 
         $.each(statusList, function (index, value) {
+          value.timeCost = 60000;
+          value.memoryCost = 655360;
+          value.length = 65536;
           tbody.append(getHTML(value));
         });
 
