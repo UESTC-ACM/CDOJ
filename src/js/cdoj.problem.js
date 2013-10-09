@@ -6,7 +6,7 @@
   'use strict';
 
   $.fn.problemListModule = function() {
-    var $problemList = $(this);
+    var $list = $(this);
 
     function getTitle(problemId, title, source, isVisible) {
       var html = '';
@@ -37,7 +37,7 @@
       return html;
     }
 
-    function refreshProblemList(condition) {
+    function refreshList(condition) {
       if (condition === undefined)
         condition = currentCondition;
       console.log(condition);
@@ -49,19 +49,19 @@
         }
 
         //pagination
-        $problemList.find('#pageInfo').empty();
-        $problemList.find('#pageInfo').append(data.pageInfo);
-        $problemList.find('#pageInfo').find('a').click(function (e) {
+        $list.find('#pageInfo').empty();
+        $list.find('#pageInfo').append(data.pageInfo);
+        $list.find('#pageInfo').find('a').click(function (e) {
           if ($(this).attr('href') === null)
             return false;
           currentCondition.currentPage = $(this).attr('href');
-          refreshProblemList(currentCondition);
+          refreshList(currentCondition);
           return false;
         });
 
         var problemList = data.problemList;
 
-        var tbody = $problemList.find('#problemList');
+        var tbody = $list.find('#problemList');
         // remove old user list
         tbody.find('tr').remove();
         // put user list
@@ -82,16 +82,6 @@
       });
     }
 
-    function changeOrder(field) {
-      if (currentCondition.orderFields == field)
-        currentCondition.orderAsc = (currentCondition.orderAsc === "true" ? "false" : "true");
-      else {
-        currentCondition.orderFields = field;
-        currentCondition.orderAsc = "false";
-      }
-      refreshProblemList(currentCondition);
-    }
-
     var currentCondition = {
       "currentPage": null,
       "startId": undefined,
@@ -106,7 +96,18 @@
       "orderAsc": undefined
     };
 
-    $.each($problemList.find('.orderButton'), function(){
+    ///////////////////////////////////////////////////////////////////////////
+    function changeOrder(field) {
+      if (currentCondition.orderFields == field)
+        currentCondition.orderAsc = (currentCondition.orderAsc === "true" ? "false" : "true");
+      else {
+        currentCondition.orderFields = field;
+        currentCondition.orderAsc = "false";
+      }
+      refreshList(currentCondition);
+    }
+
+    $.each($list.find('.orderButton'), function(){
       var field = $(this).attr('field');
       $(this).setButton({
         callback: function(){
@@ -115,9 +116,9 @@
       });
     });
 
-    refreshProblemList(currentCondition);
+    refreshList(currentCondition);
 
-    var $searchForm = $problemList.find('#search-group');
+    var $searchForm = $list.find('#search-group');
     var $conditionForm = $searchForm.find('#condition');
 
     function trigger() {
@@ -154,7 +155,7 @@
       callback: function () {
         currentCondition = $conditionForm.getFormData();
         currentCondition.currentPage = 1;
-        refreshProblemList(currentCondition);
+        refreshList(currentCondition);
         trigger();
       }
     });
@@ -169,18 +170,9 @@
       callback: function () {
         currentCondition = {
           "currentPage": 1,
-          "startId": undefined,
-          "endId": undefined,
-          "title": undefined,
-          "source": undefined,
-          "isSpj": undefined,
-          "startDifficulty": undefined,
-          "endDifficulty": undefined,
-          "keyword": $searchForm.find('#search-keyword').val(),
-          "orderFields": undefined,
-          "orderAsc": undefined
+          "keyword": $searchForm.find('#search-keyword').val()
         };
-        refreshProblemList(currentCondition);
+        refreshList(currentCondition);
       }
     });
   };

@@ -3,11 +3,13 @@
  */
 
 var currentUser;
+var currentUserType;
 
 $(document).ready(function () {
   var $currentUser = $('#currentUser');
   if ($currentUser.length !== 0) {
-    currentUser = $currentUser[0].innerHTML;
+    currentUser = js.lang.String.trim($currentUser[0].innerHTML);
+    currentUserType = $currentUser.attr('type');
     $('#userAvatar').setAvatar({
       image: 'http://www.acm.uestc.edu.cn/images/akari_small.jpg',
       size: $('#userAvatar').width()
