@@ -18,9 +18,14 @@
 	<!--[if IE 7]>
 	<link rel="stylesheet" href="<c:url value="/plugins/Font-Awesome/css/font-awesome-ie7.min.css"/>">
 	<![endif]-->
+	<link rel="stylesheet" href="<c:url value="/plugins/prettify/prettify.css"/>">
 
 	<script src="<c:url value="/plugins/jquery/dist/jquery.js"/>"></script>	
 	<script src="<c:url value="/plugins/sugar/release/sugar-full.min.js"/>"></script>	
+	<script src="<c:url value="/plugins/prettify/prettify.js"/>"></script>
+	<script src="<c:url value="/plugins/marked/lib/marked.js"/>"></script>	
+	<script src="<c:url value="/plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"/>"></script>
+
 	<script src="<c:url value="/plugins/cdoj/dist/js/cdoj.js"/>"></script>	
 </head>
 <body>
