@@ -77,14 +77,14 @@ Admin problem list page
 				<table class="pure-table pure-table-bordered">
 					<thead>
 						<tr>
-							<th style="width: 60px;" class="orderButton" field="id">Id</th>
+							<th style="width: 30px;" class="orderButton" field="id">#</th>
 							<th>User</th>
-							<th style="width: 60px;" class="orderButton" field="problemByProblemId">Problem</th>
-							<th style="width: 260px;" class="orderButton" field="result">Judge's Response</th>
+							<th style="width: 30px;" class="orderButton" field="problemByProblemId">Prob</th>
+							<th style="width: 290px;" class="orderButton" field="result">Judge's Response</th>
 							<th style="width: 100px;" class="orderButton" field="length">Length</th>
 							<th style="width: 70px;" class="orderButton" field="timeCost">Time</th>
 							<th style="width: 80px;" class="orderButton" field="memoryCost">Memory</th>
-							<th style="width: 140px;" class="orderButton" field="time">Submit Time</th>
+							<th style="width: 160px;" class="orderButton" field="time">Submit Time</th>
 						</tr>
 					</thead>
 					<tbody id="statusList">
