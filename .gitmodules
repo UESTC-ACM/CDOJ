@@ -25,3 +25,6 @@
 [submodule "trunk/src/main/webapp/plugins/sugar"]
 	path = trunk/src/main/webapp/plugins/sugar
 	url = https://github.com/andrewplummer/Sugar.git
+[submodule "trunk/src/main/webapp/plugins/marked"]
+	path = trunk/src/main/webapp/plugins/marked
+	url = https://github.com/chjj/marked.git

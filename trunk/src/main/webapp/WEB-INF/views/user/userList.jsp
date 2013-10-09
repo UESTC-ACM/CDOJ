@@ -100,7 +100,7 @@ User list page
 				<table class="pure-table pure-table-bordered">
 					<thead>
 						<tr>
-							<th style="width: 30px;" class="orderButton" field="id">Id</th>
+							<th style="width: 30px;" class="orderButton" field="id">#</th>
 							<th class="orderButton" field="userName">User name</th>
 							<th class="orderButton" field="nickName">Nick name</th>
 							<th class="orderButton" field="school">School</th>

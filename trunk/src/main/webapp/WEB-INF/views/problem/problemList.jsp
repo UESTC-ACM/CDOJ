@@ -112,7 +112,7 @@ Admin problem list page
 				<table class="pure-table pure-table-bordered">
 					<thead>
 						<tr>
-							<th style="width: 30px;" class="orderButton" field="id">Id</th>
+							<th style="width: 30px;" class="orderButton" field="id">#</th>
 							<th class="orderButton" field="title">Title</th>
 							<th style="width: 70px;" class="orderButton" field="difficulty">Difficulty</th>
 							<th style="width: 70px;" class="orderButton" field="solved">Solved</th>
