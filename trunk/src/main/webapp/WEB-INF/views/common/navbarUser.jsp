@@ -34,10 +34,10 @@ User menu on navbar
 		</c:when>
 		<c:otherwise>
 		<div class="pure-g">
-			<div class="pure-u-1-2">
+			<div class="pure-u-2-5">
 				<img id="userAvatar" email="<c:out value="${sessionScope.currentUser.email}"/>" type="avatar"/>
 			</div>
-			<div id="cdoj-user-menu" class="pure-u">
+			<div id="cdoj-user-menu" class="pure-u-3-5">
 				<div class="pure-menu pure-menu-open">				
 					<ul>
 						<li><a href="<c:url value="/admin/index"/>"><i class="icon-wrench"></i>Admin</a></li>

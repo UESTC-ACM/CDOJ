@@ -20,29 +20,13 @@
 
 <body>
 
-<page:applyDecorator name="body" page="/WEB-INF/views/common/navbar.jsp"/>
-<page:applyDecorator name="body" page="/WEB-INF/views/common/modal.jsp"/>
-
-<div id="wrap">
-  <div class="mzry1992">
-    <div class="container">
-
-      <page:applyDecorator name="body" page="/WEB-INF/views/common/debug.jsp"/>
-
-      <div class="row">
-        <div class="span2">
-          <page:applyDecorator name="body" page="/WEB-INF/views/admin/sidebar.jsp"/>
-        </div>
-        <div class="span10">
-          <decorator:body/>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<page:applyDecorator name="body" page="/WEB-INF/views/common/footer.jsp"/>
-
+	<div class="pure-g-r" id="cdoj-layout">
+		<div class="pure-u" id="cdoj-navbar">
+	    <page:applyDecorator name="body" page="/WEB-INF/views/admin/common/navbar.jsp"/>
+		</div>
+		<div class="pure-u-1" id="mzry1992">
+			<decorator:body/>
+		</div>
+	</div>
 </body>
 </html>

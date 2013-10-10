@@ -12,20 +12,20 @@ Problem statement
 	</head>
 	<body>
 
-		<div id="problem-show" class="pure-g">
-			<div class="pure-u-4-5" id="problem_title" value="<c:out value="${targetProblem.problemId}"/>">
-				<h1 class="pull-left">
-					<c:out value="${targetProblem.title}"/>
-				</h1>
-				<c:if test="${targetProblem.isSpj == true}">
-				<div style="margin: 18px 0 0 0;">
-					<span class="label label-danger tags" style="margin: 0 0 0 8px;">SPJ</span>
+		<div id="problem-show">
+			<div class="pure-g mzry1992-header">
+				<div class="pure-u-4-5" id="problem_title" value="<c:out value="${targetProblem.problemId}"/>">
+					<h1>
+						<c:out value="${targetProblem.title}"/>
+						<c:if test="${targetProblem.isSpj == true}">
+						<sup>
+							<span class="label label-danger tags" style="margin: 0 0 0 8px; font-size: 16px;">SPJ</span>
+						</sup>
+						</c:if>
+					</h1>
 				</div>
-				</c:if>
-			</div>
-			<div class="pure-u-1-5">
-				<c:if test="${currentUser.type == 1}">
-				<div class="pull-right" style="margin: 18px 0;">
+				<div class="pure-u-1-5">
+					<c:if test="${currentUser.type == 1}">
 					<a href="<c:url value="/admin/problem/editor/${targetProblem.problemId}"/>">
 						<i class="icon-pencil"></i>
 						Edit problem statement
@@ -35,87 +35,89 @@ Problem statement
 						<i class="icon-cog"></i>
 						Edit problem data
 					</a>
+					</c:if>
+				</div>
+			</div>
+
+			<div class="pure-g mzry1992-content">
+				<div class="pure-u-1">
+					<dl class="dl-horizontal">
+						<dt>Time limit</dt>
+						<dd><span>${targetProblem.javaTimeLimit} / ${targetProblem.timeLimit} ms (Java / others)</span>
+						</dd>
+						<dt>Memory limit</dt>
+						<dd>
+						<span>${targetProblem.javaMemoryLimit} / ${targetProblem.memoryLimit} kb (Java / others)</span>
+						</dd>
+						<dt>Total accepted</dt>
+						<dd><span>${targetProblem.solved}</span></dd>
+						<dt>Total submissions</dt>
+						<dd><span>${targetProblem.tried}</span></dd>
+					</dl>
+				</div>
+
+				<div class="pure-u-1" id="problem_description" type="markdown">
+					<textarea>${targetProblem.description}</textarea>
+				</div>
+
+				<div class="pure-u-1">
+					<h2>Input</h2>
+					<div id="problem_input" type="markdown">
+						<textarea>${targetProblem.input}</textarea>
+					</div>
+				</div>
+
+				<div class="pure-u-1">
+					<h2>Output</h2>
+					<div id="problem_output" type="markdown">
+						<textarea>${targetProblem.output}</textarea>
+					</div>
+				</div>
+				<div class="pure-u-1">
+					<h2>Sample input and output</h2>
+					<table class="pure-table">
+						<thead>
+							<tr>
+								<th>Sample Input</th>
+								<th>Sample Output</th>
+							</tr>
+						</thead>
+						<tbody class="font-code">
+							<tr>
+								<td>
+									<div class="sample" type="no-prettify">
+										${fn:replace(targetProblem.sampleInput, brToken, '<br/>')}
+									</div>
+								</td>
+								<td>
+									<div class="sample" type="no-prettify">
+										${fn:replace(targetProblem.sampleOutput, brToken, '<br/>')}
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<c:if test="${targetProblem.hint != ''}">
+				<div class="pure-u-1">
+					<h2>Hint</h2>
+
+					<div class="" id="problem_hint" type="markdown">
+						<textarea>${targetProblem.hint}</textarea>
+					</div>
 				</div>
 				</c:if>
-			</div>
+				<c:if test="${targetProblem.source != ''}">
+				<div class="pure-u-1">
+					<h2>Source</h2>
 
-			<div class="pure-u-1">
-				<dl class="dl-horizontal">
-					<dt>Time limit</dt>
-					<dd><span>${targetProblem.javaTimeLimit} / ${targetProblem.timeLimit} ms (Java / others)</span>
-					</dd>
-					<dt>Memory limit</dt>
-					<dd>
-					<span>${targetProblem.javaMemoryLimit} / ${targetProblem.memoryLimit} kb (Java / others)</span>
-					</dd>
-					<dt>Total accepted</dt>
-					<dd><span>${targetProblem.solved}</span></dd>
-					<dt>Total submissions</dt>
-					<dd><span>${targetProblem.tried}</span></dd>
-				</dl>
-			</div>
-
-			<div class="pure-u-1" id="problem_description" type="markdown">
-				<textarea>${targetProblem.description}</textarea>
-			</div>
-
-			<div class="pure-u-1">
-				<h2>Input</h2>
-				<div id="problem_input" type="markdown">
-					<textarea>${targetProblem.input}</textarea>
+					<div class="" id="problem_source">
+						${targetProblem.source}
+					</div>
 				</div>
-			</div>
+				</c:if>
 
-			<div class="pure-u-1">
-				<h2>Output</h2>
-				<div id="problem_output" type="markdown">
-					<textarea>${targetProblem.output}</textarea>
-				</div>
 			</div>
-			<div class="pure-u-1">
-				<h2>Sample input and output</h2>
-				<table class="pure-table">
-					<thead>
-						<tr>
-							<th>Sample Input</th>
-							<th>Sample Output</th>
-						</tr>
-					</thead>
-					<tbody class="font-code">
-						<tr>
-							<td>
-								<div class="sample" type="no-prettify">
-									${fn:replace(targetProblem.sampleInput, brToken, '<br/>')}
-								</div>
-							</td>
-							<td>
-								<div class="sample" type="no-prettify">
-									${fn:replace(targetProblem.sampleOutput, brToken, '<br/>')}
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<c:if test="${targetProblem.hint != ''}">
-			<div class="pure-u-1">
-				<h2>Hint</h2>
-
-				<div class="" id="problem_hint" type="markdown">
-					<textarea>${targetProblem.hint}</textarea>
-				</div>
-			</div>
-			</c:if>
-			<c:if test="${targetProblem.source != ''}">
-			<div class="pure-u-1">
-				<h2>Source</h2>
-
-				<div class="" id="problem_source">
-					${targetProblem.source}
-				</div>
-			</div>
-			</c:if>
-
 		</div>
 	</div>
 
