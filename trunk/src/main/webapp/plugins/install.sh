@@ -17,5 +17,7 @@ function install_cdoj {
   cd ..
 }
 
+cd src/main/webapp/plugins/
 prepare
 install_cdoj
+cd ../../../../
