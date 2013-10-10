@@ -8,6 +8,7 @@
   $.fn.userListModule = function() {
 
     var $list = $(this);
+    if ($list.length === 0) return;
 
     function getUserName(email, userName) {
       var html = $('<td>' +

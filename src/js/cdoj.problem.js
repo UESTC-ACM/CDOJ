@@ -42,7 +42,6 @@
     function refreshList(condition) {
       if (condition === undefined)
         condition = currentCondition;
-      console.log(condition);
       jsonPost('/problem/search', condition, function (data) {
 
         if (data.result == "error") {

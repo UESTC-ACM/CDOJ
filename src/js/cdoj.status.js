@@ -8,6 +8,7 @@
   $.fn.statusListModule = function() {
 
     var $list = $(this);
+    if ($list.length === 0) return;
 
     function getStatusId(statusId) {
       var html = $('<td>' + statusId + '</td>');
