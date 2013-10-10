@@ -11,7 +11,10 @@
 <head>
   <meta http-equiv=Content-Type content="text/html;charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="<c:url value="/plugins/pure/build/pure.css"/>">
+
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700|Source+Code+Pro:400,600,700|Special+Elite' rel='stylesheet' type='text/css'>
+
+	<link rel="stylesheet" href="<c:url value="/plugins/pure/build/pure.css"/>">
   <link rel="stylesheet" href="<c:url value="/plugins/cdoj/dist/css/cdoj.css"/>">
 	<link rel="stylesheet" href="<c:url value="/plugins/google-plus-ui-buttons/css/css3-buttons.css"/>">
 	<link rel="stylesheet" href="<c:url value="/plugins/Font-Awesome/css/font-awesome.min.css"/>">

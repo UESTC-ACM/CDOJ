@@ -22,11 +22,7 @@
 		<div class="pure-u-1" id="mzry1992">
 			<decorator:body/>
 		</div>
-		<%--
-		<div class="pure-u-1">
-			<page:applyDecorator name="body" page="/WEB-INF/views/common/footer.jsp"/>
-		</div>
-		--%>
 	</div>
+
 </body>
 </html>
