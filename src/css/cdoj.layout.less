@@ -1,15 +1,34 @@
 #cdoj-layout {
   padding-left: @navbar-width;
-  position: relative;
 }
 #mzry1992 {
-  width: @content-width;
-  padding: 0 36px;
-  background-color: #ffffff;
+  background-color: @background;
 }
 .pure-table {
   width: 100%;
 }
 #pageInfo {
-  height: 90px;
+  height: 50px;
+}
+.mzry1992-content {
+  padding: 0 2em;
+}
+.mzry1992-header {
+  background-color: @background;
+  margin-left: @navbar-width;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1020; /* 10 less than .navbar-fixed to prevent any overlap */
+  padding: 30px 2em 20px 2em;
+}
+
+@media screen {
+  html {
+    min-width: 1366px;
+  }
+  .mzry1992-content, .mzry1992-header {
+    min-width: @screen-width;
+  }
 }
