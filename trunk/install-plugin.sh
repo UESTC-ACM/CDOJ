@@ -2,6 +2,13 @@
 
 INSTALLER="src/main/webapp/plugins/install.sh"
 
+function mzry_exist {
+  if which $1 1>/dev/null 2>&1; then
+    return 0
+  else
+    return 1
+  fi
+}
 function mzry_error {
   echo -e "\033[41mERROR\033[0m "$1
 }
@@ -17,7 +24,7 @@ function mzry_git_submodule {
   cd trunk
 }
 
-if which npm 1>/dev/null 2>&1; then
+if mzry_exist npm; then
   npm_version=$(npm --version)
   mzry_info "npm version \033[41m"$npm_version"\033[0m"
   mzry_git_submodule
