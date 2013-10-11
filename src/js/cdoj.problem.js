@@ -182,4 +182,5 @@
 
 $(document).ready(function () {
   $('#problem-list').problemListModule();
+  $('#problem-show-tab').setTab({});
 });

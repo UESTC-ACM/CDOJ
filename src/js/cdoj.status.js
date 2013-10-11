@@ -140,7 +140,8 @@
     };
 
     refreshList(currentCondition);
-    setInterval(refreshList, 3000);
+
+    this.prototype.refreshList = refreshList;
 
     ///////////////////////////////////////////////////////////////////////////
     function changeOrder(field) {
