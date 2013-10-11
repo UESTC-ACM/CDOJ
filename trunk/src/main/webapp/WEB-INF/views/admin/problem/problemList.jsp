@@ -23,6 +23,7 @@ Admin problem list page
 						</ul>
 					</div>
 				</div>
+			
 				<div class="pure-u-1-4">
 					<div id="search-group">
 						<input type="text" name="search-keyword" maxlength="24" value="" id="search-keyword" class="pull-left">
