@@ -1,23 +1,33 @@
 #!/bin/bash
 
-DEPS=("grunt")
+DEPS=("grunt" "bower")
+DEPS_COMMAND=("grunt grunt-cli" "bower")
 
 function prepare {
-  for dep in ${DEPS[@]} 
-  do
-    mzry_info "Install \033[41m"$dep"\033[0m"
-    npm install -g dep
+  local i
+  for (( i = 0 ; i < ${#DEPS[@]} ; i++ )) do
+    dep=${DEPS[$i]}
+	command=${DEPS_COMMAND[$i]}
+	if mzry_exist $dep; then
+	  mzry_info "Skip install "$dep
+	else
+	  mzry_info "Install "$dep
+	  npm install -g $command
+	fi
   done
 }
 
-function install_cdoj {
-  cd cdoj
+function grunt_install {
+  mzry_info "Configuration \033[41m"$1"\033[0m"
+  cd $1 
+  bower install
   npm install
-  npm grunt
+  grunt
   cd ..
 }
-
 cd src/main/webapp/plugins/
 prepare
-install_cdoj
+grunt_install pure
+grunt_install cdoj
+grunt_install jquery
 cd ../../../../
