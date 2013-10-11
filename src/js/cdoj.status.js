@@ -27,6 +27,7 @@
 
     function getJudgeResponse(returnType, returnTypeId, statusId, userName) {
       var html = $('<td></td>');
+      console.log(returnTypeId, returnType);
       if (returnTypeId === 0)
         html.addClass('status-querying');
       else if (returnTypeId == 1)
@@ -41,7 +42,7 @@
     }
 
     function getCodeUrl(length, statusId, userName) {
-      var html = $('<span style="margin-right: 8px;"></span>');
+      var html = $('<span class="pull-right"></span>');
       if (currentUserType == 1 || userName == currentUser)
         html.append($('<a id="codeHref" href="#" statusId="' + statusId + '">' + length + ' B</a>'));
       else
@@ -51,8 +52,8 @@
 
     function getLength(length, language, statusId, userName) {
       var html = $('<td style="text-align: right;"></td>');
+      html.append($('<span class="pull-left label label-success" style="width: 26px; text-align: center;">' + language + '</span>'));
       html.append(getCodeUrl(length, statusId, userName));
-      html.append($('<span class="label label-success" style="width: 30px; text-align: center;">' + language + '</span>'));
       return html;
     }
 
@@ -240,6 +241,6 @@
 var statusList;
 $(document).ready(function () {
   statusList = $('#status-list').statusListModule();
-  if (statusList !== null)
-    statusList.autoRefresh('on');
+  //if (statusList !== null)
+  //  statusList.autoRefresh('on');
 });

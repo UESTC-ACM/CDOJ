@@ -5,6 +5,8 @@
 $(document).ready(function () {
   if ($('#problem-show').length === 0) return;
 
+  $('#languageSelector').setButtonRadio({});
+
   //Only refresh status at status tab
   statusList.autoRefresh('off');
   $('#problem-show-tab').find('a[href="#tab-problem-status"]').on('show.bs.tab', function () {
