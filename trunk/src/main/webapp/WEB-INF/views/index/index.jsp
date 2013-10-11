@@ -16,7 +16,7 @@
 	<div class="hero">
 		<div class="hero-titles">
 				<h1>CDOJ</h1>
-				<h2>To beloved lyhypacm</h2>
+				<h2>Orz lyhypacm</h2>
 		</div>
 
 	</div>

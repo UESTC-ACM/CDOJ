@@ -18,7 +18,7 @@
 						<li id="menu-item-home"><a href="/admin/index"><i class="icon-cog"></i>Summary</a></li>
 						<li id="menu-item-problem"><a href="<c:url value="/admin/problem/list"/>"><i class="icon-file"></i>Problems</a></li>
 						<li id="menu-item-contest"><a href="#"><i class="icon-screenshot"></i>Contests</a></li>
-						<li id="menu-item-status"><a href="<c:url value="/admin/status/list"/>"><i class="icon-refresh"></i>Status</a></li>
+						<li id="menu-item-status"><a href="#"><i class="icon-refresh"></i>Status</a></li>
 						<li id="menu-item-user"><a href="<c:url value="/admin/user/list"/>"><i class="icon-user"></i>Users</a></li>
 						<li id="menu-item-article"><a href="<c:url value="/admin/article/list"/>"><i class="icon-pencil"></i>Article</a><li>    
 					</ul>
