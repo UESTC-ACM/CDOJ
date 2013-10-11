@@ -7,34 +7,33 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <!--[if lte IE 8]>
-  <script src="<c:url value="/scripts/r2d3.js"/>"></script>
-  <![endif]-->
-  <!--[if gte IE 9]><!-->
-  <script src="<c:url value="/scripts/d3.js"/>"></script>
-  <!--<![endif]-->
-
-  <script src="<c:url value="/scripts/cdoj/cdoj.user.center.js"/>"></script>
   <title><c:out value="${targetUser.userName}"/></title>
 </head>
 <body>
-<div id="userInfoWrap" class="row">
-  <div id="userInfoLeft" class="span9">
-    <div class="row">
-      <div class="span9">
-        <div id="userInfo">
-          <dl class="dl-userInfo">
-            <dt>Nick name</dt>
-            <dd>
-              <c:out value="${targetUser.nickName}"/>
+    <div id="user-show">
+      <div class="pure-g mzry1992-header">
+        <div class="pure-u-4-5">
+          <h1>
+            <c:out value="${targetUser.userName}"/>
+          </h1>
+        </div>
+
+        <div class="pure-u-1-5">
               <c:if test="${sessionScope.currentUser.userId == targetUser.userId}">
-                <div class="pull-right" style="margin-right: 20px;">
                   <a href="#userEditModal" role="button" data-toggle="modal">
                     <i class="icon-pencil"></i>
                     Edit Your Profile
                   </a>
-                </div>
               </c:if>
+        </div>
+      </div>
+
+      <div class="pure-g mzry1992-content">
+        <div class="pure-u-1">
+          <dl class="dl-horizontal">
+            <dt>Nick name</dt>
+            <dd>
+              <c:out value="${targetUser.nickName}"/>
             </dd>
             <dt>School</dt>
             <dd><c:out value="${targetUser.school}"/></dd>
@@ -51,15 +50,8 @@
           </dl>
         </div>
       </div>
-      <div class="span9">
-        <div id="userSolvedList">
-          <div id="chart">
-          </div>
-        </div>
-      </div>
     </div>
-
-  </div>
+    <%--
   <div id="userInfoRight" class="span3">
     <div id="userInfoSummary">
       <a id="userAvatarWrap"
@@ -157,6 +149,6 @@
     </div>
   </div>
 </c:if>
-
+--%>
 </body>
 </html>

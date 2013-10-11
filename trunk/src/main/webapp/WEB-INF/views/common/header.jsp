@@ -23,10 +23,17 @@
 	<![endif]-->
 
 	<script src="<c:url value="/plugins/jquery/dist/jquery.js"/>"></script>	
+	<script src="<c:url value="/plugins/bootstrap/dist/js/bootstrap.js"/>"></script>
 	<script src="<c:url value="/plugins/sugar/release/sugar-full.min.js"/>"></script>	
 	<script src="<c:url value="/plugins/prettify/prettify.js"/>"></script>
 	<script src="<c:url value="/plugins/marked/lib/marked.js"/>"></script>	
 	<script src="<c:url value="/plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"/>"></script>
+  <!--[if lte IE 8]>
+  <script src="<c:url value="/scripts/r2d3.js"/>"></script>
+  <![endif]-->
+  <!--[if gte IE 9]><!-->
+  <script src="<c:url value="/scripts/d3.js"/>"></script>
+  <!--<![endif]-->
 
 	<script src="<c:url value="/plugins/cdoj/dist/js/cdoj.js"/>"></script>	
 </head>
