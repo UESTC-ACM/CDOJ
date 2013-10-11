@@ -21,7 +21,16 @@ module.exports = function(grunt) {
         separator: ';'
       },
       dist: {
-        src: ['src/js/*.js'],
+        src: [
+          'src/js/cdoj.util.*.js',
+          'src/js/jquery.gravatar.js',
+          'src/js/md5.js',
+          'src/js/cdoj.problem.js',
+          'src/js/cdoj.status.js',
+          'src/js/cdoj.user.js',
+          'src/js/cdoj.admin.*.js',
+          'src/js/*.js'
+        ],
         dest: 'dist/js/cdoj.js'}},
     uglify: {
       options: {

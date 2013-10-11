@@ -8,7 +8,7 @@
   $.fn.statusListModule = function() {
 
     var $list = $(this);
-    if ($list.length === 0) return;
+    if ($list.length === 0) return null;
 
     function getStatusId(statusId) {
       var html = $('<td>' + statusId + '</td>');
@@ -135,13 +135,21 @@
       "languageId": undefined,
       "contestId": undefined,
       "result": undefined,
-      "orderFields": undefined,
-      "orderAsc": undefined
+      "orderFields": "statusId",
+      "orderAsc": "false"
     };
 
-    refreshList(currentCondition);
+    var statusTimer = null;
 
-    this.prototype.refreshList = refreshList;
+    function autoRefresh(action) {
+      if (statusTimer !== null) {
+        clearInterval(statusTimer);
+        statusTimer = null;
+      }
+      if (action == 'on')
+        statusTimer = setInterval(refreshList, 3000);
+    }
+    this.autoRefresh = autoRefresh;
 
     ///////////////////////////////////////////////////////////////////////////
     function changeOrder(field) {
@@ -222,10 +230,16 @@
         refreshList(currentCondition);
       }
     });
+
+    this.refreshList = refreshList;
+    return this;
   };
 
 }(jQuery));
 
+var statusList;
 $(document).ready(function () {
-  $('#status-list').statusListModule();
+  statusList = $('#status-list').statusListModule();
+  if (statusList !== null)
+    statusList.autoRefresh('on');
 });

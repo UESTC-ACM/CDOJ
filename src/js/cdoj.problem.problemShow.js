@@ -3,6 +3,17 @@
  */
 
 $(document).ready(function () {
+  if ($('#problem-show').length === 0) return;
+
+  //Only refresh status at status tab
+  statusList.autoRefresh('off');
+  $('#problem-show-tab').find('a[href="#tab-problem-status"]').on('show.bs.tab', function () {
+    statusList.refreshList();
+    statusList.autoRefresh('on');
+  });
+  $('#problem-show-tab').find('a[href!="#tab-problem-status"]').on('show.bs.tab', function () {
+    statusList.autoRefresh('off');
+  });
 
   var currentProblem = $('#problem_title').attr('value');
   //Blind Submit
@@ -18,12 +29,11 @@ $(document).ready(function () {
     //Get language Id
     info.languageId = $('#languageSelector').find('.active').attr('value');
 
-    console.log(info);
     jsonPost('/status/submit', info, function (data) {
       if (data.result == 'error')
         alert(data.error_msg);
       else if (data.result == 'success') {
-        $('#problem-show-tab').find('a[href="#tab-problem-status"]').trigger('click');
+        $('#problem-show-tab').find('a[href="#tab-problem-status"]').tab('show');
 
         //TODO change it like PC^2
       } else {

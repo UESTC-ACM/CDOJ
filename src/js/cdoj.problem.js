@@ -176,11 +176,15 @@
         refreshList(currentCondition);
       }
     });
+
+    this.refreshList = refreshList;
+    return this;
   };
 
 }(jQuery));
 
+var problemList;
+
 $(document).ready(function () {
-  $('#problem-list').problemListModule();
-  $('#problem-show-tab').setTab({});
+  problemList = $('#problem-list').problemListModule();
 });

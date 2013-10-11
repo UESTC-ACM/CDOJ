@@ -174,10 +174,14 @@
         refreshList(currentCondition);
       }
     });
+
+    this.refreshList = refreshList;
+    return this;
   };
 
 }(jQuery));
 
+var userList;
 $(document).ready(function () {
-  $('#user-list').userListModule();
+  userList = $('#user-list').userListModule();
 });
