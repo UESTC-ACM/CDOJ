@@ -37,6 +37,16 @@ Problem statement
 					</a>
 					</c:if>
 				</div>
+				<div class="pure-u-1">
+					<div class="pure-menu pure-menu-open pure-menu-horizontal">
+						<ul>
+							<li class="pure-menu-selected"><a href="#">Problem</a></li>
+							<li><a href="#">Submit</a></li>
+							<li><a href="#">Status</a></li>
+							<li class="pure-menu-disabled"><a href="#">Discus</a></li>
+						</ul>
+					</div>
+				</div>
 			</div>
 
 			<div class="pure-g mzry1992-content">

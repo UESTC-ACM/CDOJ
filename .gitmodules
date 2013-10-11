@@ -28,3 +28,6 @@
 [submodule "trunk/src/main/webapp/plugins/marked"]
 	path = trunk/src/main/webapp/plugins/marked
 	url = https://github.com/chjj/marked.git
+[submodule "trunk/src/main/webapp/plugins/jqueryui"]
+	path = trunk/src/main/webapp/plugins/jqueryui
+	url = https://github.com/jquery/jquery-ui.git
