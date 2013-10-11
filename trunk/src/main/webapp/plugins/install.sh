@@ -22,12 +22,20 @@ function grunt_install {
   cd $1 
   bower install
   npm install
-  grunt
+  if [ $2 == "build" ]; then
+		grunt build
+  else
+		grunt
+	fi
   cd ..
 }
+
 cd src/main/webapp/plugins/
 prepare
+grunt_install bootstrap
+rm -rf bootstrap/bower_components
 grunt_install pure
 grunt_install cdoj
 grunt_install jquery
+grunt_install jqueryui
 cd ../../../../

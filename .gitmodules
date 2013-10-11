@@ -31,3 +31,9 @@
 [submodule "trunk/src/main/webapp/plugins/jqueryui"]
 	path = trunk/src/main/webapp/plugins/jqueryui
 	url = https://github.com/jquery/jquery-ui.git
+[submodule "trunk/src/main/webapp/plugins/bootstrap"]
+	path = trunk/src/main/webapp/plugins/bootstrap
+	url = https://github.com/twbs/bootstrap.git
+[submodule "trunk/src/main/webapp/plugins/codemirror"]
+	path = trunk/src/main/webapp/plugins/codemirror
+	url = https://github.com/marijnh/CodeMirror.git
