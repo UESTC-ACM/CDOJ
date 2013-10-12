@@ -70,7 +70,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`article` (
   `content` TEXT NOT NULL ,
   `time` DATETIME NOT NULL ,
   `clicked` INT NOT NULL DEFAULT 0 ,
-  `order` INT NOT NULL DEFAULT 0 COMMENT 'set order to top and move' ,
+  `order` INT NOT NULL DEFAULT 0 ,
   `type` INT NOT NULL DEFAULT 0 ,
   `isVisible` TINYINT(1) NOT NULL DEFAULT 0 ,
   `parentId` INT NULL DEFAULT NULL ,
