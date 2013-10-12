@@ -6,7 +6,7 @@ USE `uestcojtest` ;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`department` (
   `departmentId` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(50) NOT NULL DEFAULT '',
+  `name` VARCHAR(50) NOT NULL DEFAULT '' COMMENT 'department\'s name' ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`departmentId`) ,
   UNIQUE INDEX `departmentId_UNIQUE` (`departmentId` ASC) )
@@ -30,6 +30,7 @@ CREATE  TABLE IF NOT EXISTS `uestcojtest`.`user` (
   `type` INT NOT NULL DEFAULT 0 ,
   `lastLogin` DATETIME NOT NULL ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
+  `motto` VARCHAR(255) NOT NULL DEFAULT '这个人很屌，什么都没写。。。' ,
   PRIMARY KEY (`userId`) ,
   UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) ,
   UNIQUE INDEX `userName_UNIQUE` (`userName` ASC) ,
@@ -65,7 +66,7 @@ CREATE  TABLE IF NOT EXISTS `uestcojtest`.`problem` (
   `outputLimit` INT NOT NULL DEFAULT 8000 ,
   `javaTimeLimit` INT NOT NULL DEFAULT 3000 ,
   `javaMemoryLimit` INT NOT NULL DEFAULT 65535 ,
-  `dataCount` INT NOT NULL DEFAULT 0 ,
+  `dataCount` INT NOT NULL DEFAULT 1 ,
   `difficulty` INT NOT NULL DEFAULT 1 ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`problemId`) ,
@@ -97,11 +98,10 @@ CREATE  TABLE IF NOT EXISTS `uestcojtest`.`article` (
   `articleId` INT NOT NULL AUTO_INCREMENT ,
   `title` VARCHAR(50) NOT NULL ,
   `content` TEXT NOT NULL ,
-  `author` VARCHAR(50) NOT NULL DEFAULT '' ,
   `time` DATETIME NOT NULL ,
   `clicked` INT NOT NULL DEFAULT 0 ,
   `order` INT NOT NULL DEFAULT 0 COMMENT 'set order to top and move' ,
-  `isNotice` TINYINT(1) NOT NULL DEFAULT 0 ,
+  `type` INT NOT NULL DEFAULT 0 ,
   `isVisible` TINYINT(1) NOT NULL DEFAULT 0 ,
   `parentId` INT NULL DEFAULT NULL ,
   `problemId` INT NULL DEFAULT NULL ,
@@ -277,6 +277,7 @@ CREATE  TABLE IF NOT EXISTS `uestcojtest`.`code` (
   `codeId` INT NOT NULL AUTO_INCREMENT ,
   `content` TEXT NOT NULL ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
+  `share` TINYINT(1) NOT NULL DEFAULT false ,
   PRIMARY KEY (`codeId`) ,
   UNIQUE INDEX `codeId_UNIQUE` (`codeId` ASC) )
 ENGINE = InnoDB;
@@ -421,8 +422,8 @@ CREATE  TABLE IF NOT EXISTS `uestcojtest`.`trainingUser` (
   `OPTLOCK` INT NULL ,
   `name` VARCHAR(45) NOT NULL ,
   `allow` TINYINT(1) NOT NULL ,
-  `ratingVary` DOUBLE NULL ,
-  `volatilityVary` DOUBLE NULL ,
+  `ratingVary` DOUBLE NOT NULL DEFAULT 0.0,
+  `volatilityVary` DOUBLE NOT NULL DEFAULT 0.0,
   `competitions` INT NOT NULL ,
   `member` VARCHAR(128) NOT NULL ,
   PRIMARY KEY (`trainingUserId`) ,
