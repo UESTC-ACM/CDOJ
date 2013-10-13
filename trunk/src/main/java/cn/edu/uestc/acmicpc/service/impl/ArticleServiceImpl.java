@@ -1,15 +1,5 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
-
 import cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IArticleDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleDTO;
@@ -21,6 +11,15 @@ import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Primary
@@ -70,11 +69,10 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
     Article article = new Article();
     article.setTitle("");
     article.setContent("");
-    article.setAuthor("");
     article.setTime(new Timestamp(new Date().getTime()));
     article.setClicked(0);
     article.setOrder(0);
-    article.setIsNotice(false);
+    article.setType(0);
     article.setIsVisible(false);
     article.setUserId(1);
     articleDAO.add(article);
@@ -90,14 +88,12 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
   private void updateArticleByArticleDTO(Article article, ArticleDTO articleDTO) {
     if (articleDTO.getParentId() != null)
       article.setParentId(articleDTO.getParentId());
-    if (articleDTO.getAuthor() != null)
-      article.setAuthor(articleDTO.getAuthor());
     if (articleDTO.getClicked() != null)
       article.setClicked(articleDTO.getClicked());
     if (articleDTO.getContent() != null)
       article.setContent(articleDTO.getContent());
-    if (articleDTO.getIsNotice() != null)
-      article.setIsNotice(articleDTO.getIsNotice());
+    if (articleDTO.getType() != null)
+      article.setType(articleDTO.getType());
     if (articleDTO.getIsVisible() != null)
       article.setIsVisible(articleDTO.getIsVisible());
     if (articleDTO.getOrder() != null)

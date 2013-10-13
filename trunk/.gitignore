@@ -11,5 +11,6 @@
 .classpath
 .externalToolBuilders/
 /test-output/
+/cdoj.iml
 
 /target

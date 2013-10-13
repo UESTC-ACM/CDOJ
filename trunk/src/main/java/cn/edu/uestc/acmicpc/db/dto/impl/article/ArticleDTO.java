@@ -1,30 +1,29 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.article;
 
-import java.sql.Timestamp;
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
-@Fields({ "articleId", "parentId", "author", "clicked", "content", "contestId", "isNotice",
+import java.sql.Timestamp;
+import java.util.Map;
+
+@Fields({ "articleId", "parentId", "clicked", "content", "contestId", "type",
   "isVisible", "order", "problemId", "time", "title", "userId" })
 public class ArticleDTO implements BaseDTO<Article> {
 
   public ArticleDTO() {
   }
 
-  private ArticleDTO(Integer articleId, Integer parentId, String author, Integer clicked,
-      String content, Integer contestId, Boolean isNotice, Boolean isVisible, Integer order,
+  private ArticleDTO(Integer articleId, Integer parentId, Integer clicked,
+      String content, Integer contestId, Integer type, Boolean isVisible, Integer order,
       Integer problemId, Timestamp time, String title, Integer userId) {
     this.articleId = articleId;
     this.parentId = parentId;
-    this.author = author;
     this.clicked = clicked;
     this.content = content;
     this.contestId = contestId;
-    this.isNotice = isNotice;
+    this.type = type;
     this.isVisible = isVisible;
     this.order = order;
     this.problemId = problemId;
@@ -35,11 +34,10 @@ public class ArticleDTO implements BaseDTO<Article> {
 
   private Integer articleId;
   private Integer parentId;
-  private String author;
   private Integer clicked;
   private String content;
   private Integer contestId;
-  private Boolean isNotice;
+  private Integer type;
   private Boolean isVisible;
   private Integer order;
   private Integer problemId;
@@ -61,14 +59,6 @@ public class ArticleDTO implements BaseDTO<Article> {
 
   public void setParentId(Integer parentId) {
     this.parentId = parentId;
-  }
-
-  public String getAuthor() {
-    return author;
-  }
-
-  public void setAuthor(String author) {
-    this.author = author;
   }
 
   public Integer getClicked() {
@@ -95,12 +85,12 @@ public class ArticleDTO implements BaseDTO<Article> {
     this.contestId = contestId;
   }
 
-  public Boolean getIsNotice() {
-    return isNotice;
+  public Integer getType() {
+    return type;
   }
 
-  public void setIsNotice(Boolean isNotice) {
-    this.isNotice = isNotice;
+  public void setType(Integer type) {
+    this.type = type;
   }
 
   public Boolean getIsVisible() {
@@ -162,19 +152,18 @@ public class ArticleDTO implements BaseDTO<Article> {
 
     @Override
     public ArticleDTO build() {
-      return new ArticleDTO(articleId, parentId, author, clicked, content, contestId,
-          isNotice, isVisible, order, problemId, time, title, userId);
+      return new ArticleDTO(articleId, parentId, clicked, content, contestId,
+          type, isVisible, order, problemId, time, title, userId);
     }
 
     @Override
     public ArticleDTO build(Map<String, Object> properties) {
       articleId = (Integer) properties.get("articleId");
       parentId = (Integer) properties.get("parentId");
-      author = (String) properties.get("author");
       clicked = (Integer) properties.get("clicked");
       content = (String) properties.get("content");
       contestId = (Integer) properties.get("contestId");
-      isNotice = (Boolean) properties.get("isNotice");
+      type = (Integer) properties.get("type");
       isVisible = (Boolean) properties.get("isVisible");
       order = (Integer) properties.get("order");
       problemId = (Integer) properties.get("problemId");
@@ -187,11 +176,10 @@ public class ArticleDTO implements BaseDTO<Article> {
 
     private Integer articleId;
     private Integer parentId;
-    private String author;
     private Integer clicked;
     private String content;
     private Integer contestId;
-    private Boolean isNotice;
+    private Integer type;
     private Boolean isVisible;
     private Integer order;
     private Integer problemId;
@@ -214,15 +202,6 @@ public class ArticleDTO implements BaseDTO<Article> {
 
     public Builder setParentId(Integer parentId) {
       this.parentId = parentId;
-      return this;
-    }
-
-    public String getAuthor() {
-      return author;
-    }
-
-    public Builder setAuthor(String author) {
-      this.author = author;
       return this;
     }
 
@@ -253,12 +232,12 @@ public class ArticleDTO implements BaseDTO<Article> {
       return this;
     }
 
-    public Boolean getIsNotice() {
-      return isNotice;
+    public Integer getType() {
+      return type;
     }
 
-    public Builder setIsNotice(Boolean isNotice) {
-      this.isNotice = isNotice;
+    public Builder setType(Integer type) {
+      this.type = type;
       return this;
     }
 

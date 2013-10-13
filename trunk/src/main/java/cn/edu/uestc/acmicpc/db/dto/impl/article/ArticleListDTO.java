@@ -1,26 +1,25 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.article;
 
-import java.sql.Timestamp;
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
-@Fields({ "articleId", "title", "author", "clicked", "time", "isVisible", "userByUserId.userName",
+import java.sql.Timestamp;
+import java.util.Map;
+
+@Fields({ "articleId", "title", "clicked", "time", "isVisible", "userByUserId.userName",
   "userByUserId.email" })
 public class ArticleListDTO implements BaseDTO<Article> {
 
   public ArticleListDTO() {
   }
 
-  private ArticleListDTO(Integer articleId, String title, String author,
+  private ArticleListDTO(Integer articleId, String title,
       Integer clicked, Timestamp time, Boolean isVisible, String ownerName,
       String ownerEmail) {
     this.articleId = articleId;
     this.title = title;
-    this.author = author;
     this.clicked = clicked;
     this.time = time;
     this.isVisible = isVisible;
@@ -30,7 +29,6 @@ public class ArticleListDTO implements BaseDTO<Article> {
 
   private Integer articleId;
   private String title;
-  private String author;
   private Integer clicked;
   private Timestamp time;
   private Boolean isVisible;
@@ -51,14 +49,6 @@ public class ArticleListDTO implements BaseDTO<Article> {
 
   public void setTitle(String title) {
     this.title = title;
-  }
-
-  public String getAuthor() {
-    return author;
-  }
-
-  public void setAuthor(String author) {
-    this.author = author;
   }
 
   public Integer getClicked() {
@@ -112,7 +102,7 @@ public class ArticleListDTO implements BaseDTO<Article> {
 
     @Override
     public ArticleListDTO build() {
-      return new ArticleListDTO(articleId, title, author, clicked, time, isVisible,
+      return new ArticleListDTO(articleId, title, clicked, time, isVisible,
           ownerName, ownerEmail);
     }
 
@@ -120,7 +110,6 @@ public class ArticleListDTO implements BaseDTO<Article> {
     public ArticleListDTO build(Map<String, Object> properties) {
       articleId = (Integer) properties.get("articleId");
       title = (String) properties.get("title");
-      author = (String) properties.get("author");
       clicked = (Integer) properties.get("clicked");
       time = (Timestamp) properties.get("time");
       isVisible = (Boolean) properties.get("isVisible");
@@ -132,7 +121,6 @@ public class ArticleListDTO implements BaseDTO<Article> {
 
     private Integer articleId;
     private String title;
-    private String author;
     private Integer clicked;
     private Timestamp time;
     private Boolean isVisible;
@@ -154,15 +142,6 @@ public class ArticleListDTO implements BaseDTO<Article> {
 
     public Builder setTitle(String title) {
       this.title = title;
-      return this;
-    }
-
-    public String getAuthor() {
-      return author;
-    }
-
-    public Builder setAuthor(String author) {
-      this.author = author;
       return this;
     }
 
