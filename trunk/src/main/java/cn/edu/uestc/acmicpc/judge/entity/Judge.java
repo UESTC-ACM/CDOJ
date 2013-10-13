@@ -16,7 +16,6 @@ import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
 import cn.edu.uestc.acmicpc.util.FileUtil;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.Settings;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Problem judge component.
@@ -92,7 +91,6 @@ public class Judge implements Runnable {
    * @param judgeItem
    *          {@code judgeItem} entity
    * @return command line we need
-   * @throws AppException
    */
   private String buildJudgeShellCommand(int problemId, int currentTestCase, JudgeItem judgeItem) {
     StringBuilder stringBuilder = new StringBuilder();
