@@ -46,6 +46,8 @@ ALTER TABLE `uestcoj`.`status` CHANGE COLUMN `contestId` `contestId` INT(11) NUL
 
 ALTER TABLE `uestcoj`.`code` ADD COLUMN `share` TINYINT(1) NOT NULL DEFAULT false  AFTER `OPTLOCK` ;
 
+UPDATE `uestcoj`.`trainingUser` SET `ratingVary` = 0 WHERE `ratingVary` IS NULL;
+UPDATE `uestcoj`.`trainingUser` SET `volatilityVary` = 0 WHERE `volatilityVary` IS NULL;
 ALTER TABLE `uestcoj`.`trainingUser` CHANGE COLUMN `ratingVary` `ratingVary` DOUBLE NOT NULL DEFAULT 0  , CHANGE COLUMN `volatilityVary` `volatilityVary` DOUBLE NOT NULL DEFAULT 0 ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
