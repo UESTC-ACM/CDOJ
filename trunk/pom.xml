@@ -4,7 +4,7 @@
 	<groupId>cn.edu.uestc.acmicpc</groupId>
 	<artifactId>cdoj</artifactId>
 	<packaging>war</packaging>
-	<version>1.0</version>
+	<version>2.0</version>
 	<name>UESTC Online Judge</name>
 	<url>https://gitcafe.com/UESTC_ACM/cdoj</url>
 

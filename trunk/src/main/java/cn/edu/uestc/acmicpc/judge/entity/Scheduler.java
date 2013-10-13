@@ -21,6 +21,7 @@ import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.Global.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
 /**
  * Judge queue scheduler.
@@ -77,7 +78,8 @@ public class Scheduler implements Runnable, ApplicationContextAware {
       for (Status status : statusList) {
         status.setResult(Global.OnlineJudgeReturnType.OJ_JUDGING.ordinal());
         status.setCaseNumber(0);
-        JudgeItem judgeItem = applicationContext.getBean("judgeItem", JudgeItem.class);
+        JudgeItem judgeItem = applicationContext.getBean(JudgeItem.class);
+        AppExceptionUtil.assertNotNull(status);
         judgeItem.status = status;
         statusDAO.update(status);
         judgeQueue.put(judgeItem);
