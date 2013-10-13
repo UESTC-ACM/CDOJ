@@ -1,25 +1,27 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.code;
 
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Code;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
-@Fields({ "codeId", "content" })
+import java.util.Map;
+
+@Fields({ "codeId", "content", "share" })
 public class CodeDTO implements BaseDTO<Code> {
 
   public CodeDTO() {
   }
 
-  private CodeDTO(Integer codeId, String content) {
+  private CodeDTO(Integer codeId, String content, Boolean share) {
     this.codeId = codeId;
     this.content = content;
+    this.share = share;
   }
 
   private Integer codeId;
   private String content;
+  private Boolean share;
 
   public Integer getCodeId() {
     return codeId;
@@ -37,6 +39,14 @@ public class CodeDTO implements BaseDTO<Code> {
     this.content = content;
   }
 
+  public Boolean getShare() {
+    return share;
+  }
+
+  public void setShare(Boolean share) {
+    this.share = share;
+  }
+
   public static Builder builder() {
     return new Builder();
   }
@@ -48,19 +58,21 @@ public class CodeDTO implements BaseDTO<Code> {
 
     @Override
     public CodeDTO build() {
-      return new CodeDTO(codeId, content);
+      return new CodeDTO(codeId, content, share);
     }
 
     @Override
     public CodeDTO build(Map<String, Object> properties) {
       codeId = (Integer) properties.get("codeId");
       content = (String) properties.get("content");
+      share = (Boolean) properties.get("share");
       return build();
 
     }
 
     private Integer codeId;
     private String content;
+    private Boolean share;
 
     public Integer getCodeId() {
       return codeId;
@@ -77,6 +89,15 @@ public class CodeDTO implements BaseDTO<Code> {
 
     public Builder setContent(String content) {
       this.content = content;
+      return this;
+    }
+
+    public Boolean getShare() {
+      return share;
+    }
+
+    public Builder setShare(Boolean share) {
+      this.share = share;
       return this;
     }
   }

@@ -8,19 +8,17 @@ public class ArticleEditDTO implements BaseDTO<Article> {
   public ArticleEditDTO() {
   }
 
-  private ArticleEditDTO(Integer articleId, String action, String title, String content, String author) {
+  private ArticleEditDTO(Integer articleId, String action, String title, String content) {
     this.articleId = articleId;
     this.action = action;
     this.title = title;
     this.content = content;
-    this.author = author;
   }
 
   private Integer articleId;
   private String action;
   private String title;
   private String content;
-  private String author;
 
   public Integer getArticleId() {
     return articleId;
@@ -54,14 +52,6 @@ public class ArticleEditDTO implements BaseDTO<Article> {
     this.content = content;
   }
 
-  public String getAuthor() {
-    return author;
-  }
-
-  public void setAuthor(String author) {
-    this.author = author;
-  }
-
   public static Builder builder() {
     return new Builder();
   }
@@ -72,14 +62,13 @@ public class ArticleEditDTO implements BaseDTO<Article> {
     }
 
     public ArticleEditDTO build() {
-      return new ArticleEditDTO(articleId, action, title, content, author);
+      return new ArticleEditDTO(articleId, action, title, content);
     }
 
     private Integer articleId;
     private String action;
     private String title;
     private String content;
-    private String author;
 
     public Integer getArticleId() {
       return articleId;
@@ -117,13 +106,5 @@ public class ArticleEditDTO implements BaseDTO<Article> {
       return this;
     }
 
-    public String getAuthor() {
-      return author;
-    }
-
-    public Builder setAuthor(String author) {
-      this.author = author;
-      return this;
-    }
   }
 }

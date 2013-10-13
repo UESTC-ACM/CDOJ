@@ -1,12 +1,12 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.user;
 
-import java.sql.Timestamp;
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
+
+import java.sql.Timestamp;
+import java.util.Map;
 
 /**
  * User center DTO for user center
@@ -14,7 +14,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
 @Fields({"userId", "userName", "nickName", "email", "school", "departmentId",
     "departmentByDepartmentId.name", "studentId", "tried", "solved",
-    "type", "lastLogin" })
+    "type", "motto", "lastLogin" })
 public class UserCenterDTO implements BaseDTO<User> {
 
   private Integer userId;
@@ -28,6 +28,7 @@ public class UserCenterDTO implements BaseDTO<User> {
   private Integer tried;
   private Integer solved;
   private Integer type;
+  private String motto;
   private Timestamp lastLogin;
 
   public UserCenterDTO() {
@@ -35,7 +36,7 @@ public class UserCenterDTO implements BaseDTO<User> {
 
   public UserCenterDTO(Integer userId, String userName, String nickName,
                        String email, String school, String department, Integer departmentId,
-                       String studentId, Integer tried, Integer solved, Integer type,
+                       String studentId, Integer tried, Integer solved, Integer type, String motto,
                        Timestamp lastLogin) {
     this.userId = userId;
     this.userName = userName;
@@ -48,6 +49,7 @@ public class UserCenterDTO implements BaseDTO<User> {
     this.tried = tried;
     this.solved = solved;
     this.type = type;
+    this.motto = motto;
     this.lastLogin = lastLogin;
   }
 
@@ -139,6 +141,14 @@ public class UserCenterDTO implements BaseDTO<User> {
     this.type = type;
   }
 
+  public String getMotto() {
+    return motto;
+  }
+
+  public void setMotto(String motto) {
+    this.motto = motto;
+  }
+
   public Timestamp getLastLogin() {
     return lastLogin;
   }
@@ -167,13 +177,14 @@ public class UserCenterDTO implements BaseDTO<User> {
     private Integer tried;
     private Integer solved;
     private Integer type;
+    private String motto;
     private Timestamp lastLogin;
 
     @Override
     public UserCenterDTO build() {
       return new UserCenterDTO(userId, userName, nickName,
           email, school, department, departmentId,
-          studentId, tried, solved, type,
+          studentId, tried, solved, type, motto,
           lastLogin);
     }
 
@@ -190,6 +201,7 @@ public class UserCenterDTO implements BaseDTO<User> {
       studentId = (String) properties.get("studentId");
       lastLogin = (Timestamp) properties.get("lastLogin");
       solved = (Integer) properties.get("solved");
+      motto = (String) properties.get("motto");
       tried = (Integer) properties.get("tried");
       return build();
     }
@@ -280,6 +292,15 @@ public class UserCenterDTO implements BaseDTO<User> {
 
     public void setType(Integer type) {
       this.type = type;
+    }
+
+    public String getMotto() {
+      return motto;
+    }
+
+    public Builder setMotto(String motto) {
+      this.motto = motto;
+      return this;
     }
 
     public Timestamp getLastLogin() {
