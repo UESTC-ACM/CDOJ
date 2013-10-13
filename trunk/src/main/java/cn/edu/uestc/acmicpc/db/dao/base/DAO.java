@@ -90,7 +90,6 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     }
     try {
       String hql = buildHQLStringWithOrders(condition);
-      LOGGER.info(hql);
       return getSession().createQuery(hql).list();
     } catch (HibernateException e) {
       LOGGER.error(e.getMessage(), e);
