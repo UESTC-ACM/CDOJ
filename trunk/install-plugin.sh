@@ -10,10 +10,10 @@ function mzry_exist {
   fi
 }
 function mzry_error {
-  echo "\033[41mERROR\033[0m "$1
+  echo -e "\033[41mERROR\033[0m "$1
 }
 function mzry_info {
-  echo "\033[42mINFO\033[0m "$1
+  echo -e "\033[42mINFO\033[0m "$1
 }
 function mzry_git_submodule {
   cd ..
