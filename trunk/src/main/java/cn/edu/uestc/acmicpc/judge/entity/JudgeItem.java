@@ -20,6 +20,7 @@ import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
 /**
  * Judge item for single problem.
@@ -31,36 +32,16 @@ public class JudgeItem {
   public Status status;
   public CompileInfo compileInfo;
 
+  @Autowired
   private ICompileInfoDAO compileinfoDAO;
+  @Autowired
   private IStatusDAO statusDAO;
+  @Autowired
   private IProblemDAO problemDAO;
+  @Autowired
   private IUserDAO userDAO;
+  @Autowired
   private LanguageService languageService;
-
-  @Autowired
-  public void setCompileInfoDAO(ICompileInfoDAO compileInfoDAO) {
-    this.compileinfoDAO = compileInfoDAO;
-  }
-
-  @Autowired
-  public void setStatusDAO(IStatusDAO statusDAO) {
-    this.statusDAO = statusDAO;
-  }
-
-  @Autowired
-  public void setProblemDAO(IProblemDAO problemDAO) {
-    this.problemDAO = problemDAO;
-  }
-
-  @Autowired
-  public void setUserDAO(IUserDAO userDAO) {
-    this.userDAO = userDAO;
-  }
-
-  @Autowired
-  public void setLanguageService(LanguageService languageService) {
-    this.languageService = languageService;
-  }
 
   public int parseLanguage() {
     String extension = languageService.getExtension(status.getLanguageId());
@@ -76,7 +57,8 @@ public class JudgeItem {
     }
   }
 
-  public String getSourceName() {
+  public String getSourceName() throws AppException {
+    AppExceptionUtil.assertNotNull(languageService);
     return "Main" + languageService.getExtension(status.getLanguageId());
   }
 

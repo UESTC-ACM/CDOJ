@@ -69,8 +69,7 @@ public class ApplicationContextConfig {
   @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
   @Lazy(false)
   public JudgeService judgeService() {
-    return null;
-    //return new JudgeService();
+    return new JudgeService();
   }
 
   /**
