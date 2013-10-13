@@ -59,6 +59,8 @@ public class JudgeItem {
 
   public String getSourceName() throws AppException {
     AppExceptionUtil.assertNotNull(languageService);
+    AppExceptionUtil.assertNotNull(status);
+    AppExceptionUtil.assertNotNull(status.getLanguageId());
     return "Main" + languageService.getExtension(status.getLanguageId());
   }
 
