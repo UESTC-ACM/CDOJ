@@ -31,6 +31,8 @@ public class CodeServiceImpl extends AbstractService implements CodeService {
   private void updateCodeByCodeDTO(Code code, CodeDTO codeDTO) {
     if (codeDTO.getContent() != null)
       code.setContent(codeDTO.getContent());
+    if (codeDTO.getShare() != null)
+      code.setShare(codeDTO.getShare());
   }
 
   @Override

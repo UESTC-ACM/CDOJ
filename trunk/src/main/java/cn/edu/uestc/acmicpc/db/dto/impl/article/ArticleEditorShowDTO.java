@@ -1,29 +1,27 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.article;
 
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
-@Fields({ "articleId", "title", "content", "author" })
+import java.util.Map;
+
+@Fields({ "articleId", "title", "content"})
 public class ArticleEditorShowDTO implements BaseDTO<Article> {
 
   public ArticleEditorShowDTO() {
   }
 
-  private ArticleEditorShowDTO(Integer articleId, String title, String content, String author) {
+  private ArticleEditorShowDTO(Integer articleId, String title, String content) {
     this.articleId = articleId;
     this.title = title;
     this.content = content;
-    this.author = author;
   }
 
   private Integer articleId;
   private String title;
   private String content;
-  private String author;
 
   public Integer getArticleId() {
     return articleId;
@@ -49,14 +47,6 @@ public class ArticleEditorShowDTO implements BaseDTO<Article> {
     this.content = content;
   }
 
-  public String getAuthor() {
-    return author;
-  }
-
-  public void setAuthor(String author) {
-    this.author = author;
-  }
-
   public static Builder builder() {
     return new Builder();
   }
@@ -68,7 +58,7 @@ public class ArticleEditorShowDTO implements BaseDTO<Article> {
 
     @Override
     public ArticleEditorShowDTO build() {
-      return new ArticleEditorShowDTO(articleId, title, content, author);
+      return new ArticleEditorShowDTO(articleId, title, content);
     }
 
     @Override
@@ -76,7 +66,6 @@ public class ArticleEditorShowDTO implements BaseDTO<Article> {
       articleId = (Integer) properties.get("articleId");
       title = (String) properties.get("title");
       content = (String) properties.get("content");
-      author = (String) properties.get("author");
       return build();
 
     }
@@ -84,7 +73,6 @@ public class ArticleEditorShowDTO implements BaseDTO<Article> {
     private Integer articleId;
     private String title;
     private String content;
-    private String author;
 
     public Integer getArticleId() {
       return articleId;
@@ -113,13 +101,5 @@ public class ArticleEditorShowDTO implements BaseDTO<Article> {
       return this;
     }
 
-    public String getAuthor() {
-      return author;
-    }
-
-    public Builder setAuthor(String author) {
-      this.author = author;
-      return this;
-    }
   }
 }

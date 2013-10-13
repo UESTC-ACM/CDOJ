@@ -1,7 +1,8 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.user;
 
-import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
 
 public class UserAdminEditDTO {
   
@@ -29,11 +30,13 @@ public class UserAdminEditDTO {
   @NotNull(message = "Please enter the user type.")
   private Integer type;
 
+  private String motto;
+
   public UserAdminEditDTO(){
   }
   
   public UserAdminEditDTO(Integer userId, String userName, String nickName, String email, 
-      String school, Integer departmentId, String studentId, Integer type){
+      String school, Integer departmentId, String studentId, Integer type, String motto){
     this.userId = userId;
     this.userName = userName;
     this.nickName = nickName;
@@ -42,6 +45,7 @@ public class UserAdminEditDTO {
     this.departmentId = departmentId;
     this.studentId = studentId;
     this.type = type;
+    this.motto = motto;
   }
   
   public Integer getUserId() {
@@ -107,7 +111,15 @@ public class UserAdminEditDTO {
   public void setType(Integer type) {
     this.type = type;
   }
-  
+
+  public String getMotto() {
+    return motto;
+  }
+
+  public void setMotto(String motto) {
+    this.motto = motto;
+  }
+
   public static Builder builder() {
     return new Builder();
   }
@@ -122,52 +134,94 @@ public class UserAdminEditDTO {
     private Integer departmentId;
     private String studentId;
     private Integer type;
+    private String motto;
     
     private Builder() {
     }
     
     public UserAdminEditDTO build() {
       return new UserAdminEditDTO(userId, userName, nickName, email, school, 
-          departmentId, studentId, type);
+          departmentId, studentId, type, motto);
     }
 
-    public Builder getUserId(Integer userId) {
+    public Integer getUserId() {
+      return userId;
+    }
+
+    public Builder setUserId(Integer userId) {
       this.userId = userId;
       return this;
     }
-    
-    public Builder getUserName(String userName) {
+
+    public String getUserName() {
+      return userName;
+    }
+
+    public Builder setUserName(String userName) {
       this.userName = userName;
       return this;
     }
-    
-    public Builder getNickName(String nickName) {
+
+    public String getNickName() {
+      return nickName;
+    }
+
+    public Builder setNickName(String nickName) {
       this.nickName = nickName;
       return this;
     }
-    
-    public Builder getEmail(String email) {
+
+    public String getEmail() {
+      return email;
+    }
+
+    public Builder setEmail(String email) {
       this.email = email;
       return this;
     }
-    
-    public Builder getSchool(String school) {
+
+    public String getSchool() {
+      return school;
+    }
+
+    public Builder setSchool(String school) {
       this.school = school;
       return this;
     }
-    
-    public Builder getDepartmentId(Integer departmentId) {
+
+    public Integer getDepartmentId() {
+      return departmentId;
+    }
+
+    public Builder setDepartmentId(Integer departmentId) {
       this.departmentId = departmentId;
       return this;
     }
-    
-    public Builder getStudentId(String studentId) {
+
+    public String getStudentId() {
+      return studentId;
+    }
+
+    public Builder setStudentId(String studentId) {
       this.studentId = studentId;
       return this;
     }
-    
-    public Builder getType(Integer type) {
+
+    public Integer getType() {
+      return type;
+    }
+
+    public Builder setType(Integer type) {
       this.type = type;
+      return this;
+    }
+
+    public String getMotto() {
+      return motto;
+    }
+
+    public Builder setMotto(String motto) {
+      this.motto = motto;
       return this;
     }
   }
