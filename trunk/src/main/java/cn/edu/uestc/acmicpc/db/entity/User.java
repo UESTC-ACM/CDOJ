@@ -1,22 +1,11 @@
 package cn.edu.uestc.acmicpc.db.entity;
 
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
-
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Version;
-
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * User information.
@@ -181,6 +170,19 @@ public class User implements Serializable {
 
   public void setLastLogin(Timestamp lastLogin) {
     this.lastLogin = lastLogin;
+  }
+
+  private String motto;
+
+  @Column(name = "motto", nullable = false, insertable = true, updatable = true, length = 255,
+  precision = 0)
+  @Basic
+  public String getMotto() {
+    return motto;
+  }
+
+  public void setMotto(String motto) {
+    this.motto = motto;
   }
 
   private Integer departmentId;

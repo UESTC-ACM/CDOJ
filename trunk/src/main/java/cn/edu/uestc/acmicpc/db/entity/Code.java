@@ -1,19 +1,10 @@
 package cn.edu.uestc.acmicpc.db.entity;
 
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
-
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Version;
-
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Code information.
@@ -61,6 +52,19 @@ public class Code implements Serializable {
 
   public void setContent(String content) {
     this.content = content;
+  }
+
+  private Boolean share;
+
+  @Column(name = "share", nullable = false, insertable = true, updatable = true, length = 0,
+  precision = 0)
+  @Basic
+  public Boolean getShare() {
+    return share;
+  }
+
+  public void setShare(Boolean share) {
+    this.share = share;
   }
 
   private Collection<Status> statusesByCodeId;

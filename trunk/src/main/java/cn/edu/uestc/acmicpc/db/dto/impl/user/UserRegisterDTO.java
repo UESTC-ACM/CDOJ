@@ -1,13 +1,12 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.user;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
+import cn.edu.uestc.acmicpc.db.entity.User;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import cn.edu.uestc.acmicpc.db.entity.User;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 /**
  * Data transfer object for {@link User}.
@@ -60,6 +59,7 @@ public class UserRegisterDTO {
   @Length(min = 1, max = 100, message = "Please enter 1-100 characters.")
   private String school;
 
+  private String motto;
   /**
    * Input: departmentId
    */
@@ -129,6 +129,14 @@ public class UserRegisterDTO {
     this.school = school;
   }
 
+  public String getMotto() {
+    return motto;
+  }
+
+  public void setMotto(String motto) {
+    this.motto = motto;
+  }
+
   public Integer getDepartmentId() {
     return departmentId;
   }
@@ -148,7 +156,9 @@ public class UserRegisterDTO {
   public UserRegisterDTO() {
   }
 
-  private UserRegisterDTO(Integer userId, String userName, String password, String passwordRepeat, String nickName, String email, String school, Integer departmentId, String studentId) {
+  private UserRegisterDTO(Integer userId, String userName, String password, String passwordRepeat,
+                          String nickName, String email, String school, String motto,
+                          Integer departmentId, String studentId) {
     this.userId = userId;
     this.userName = userName;
     this.password = password;
@@ -156,6 +166,7 @@ public class UserRegisterDTO {
     this.nickName = nickName;
     this.email = email;
     this.school = school;
+    this.motto = motto;
     this.departmentId = departmentId;
     this.studentId = studentId;
   }
@@ -171,7 +182,8 @@ public class UserRegisterDTO {
     }
 
     public UserRegisterDTO build() {
-      return new UserRegisterDTO(userId, userName, password, passwordRepeat, nickName, email, school, departmentId, studentId);
+      return new UserRegisterDTO(userId, userName, password, passwordRepeat, nickName, email,
+          school, motto, departmentId, studentId);
     }
 
     private Integer userId = 2;
@@ -181,6 +193,7 @@ public class UserRegisterDTO {
     private String nickName = "admin";
     private String email = "acm_admin@uestc.edu.cn";
     private String school = "UESTC";
+    private String motto;
     private Integer departmentId = 1;
     private String studentId = "2010013100008";
 
@@ -244,6 +257,15 @@ public class UserRegisterDTO {
 
     public Builder setSchool(String school) {
       this.school = school;
+      return this;
+    }
+
+    public String getMotto() {
+      return motto;
+    }
+
+    public Builder setMotto(String motto) {
+      this.motto = motto;
       return this;
     }
 

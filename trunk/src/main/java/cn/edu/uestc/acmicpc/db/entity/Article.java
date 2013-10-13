@@ -1,22 +1,11 @@
 package cn.edu.uestc.acmicpc.db.entity;
 
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
-
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Version;
-
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Article information.
@@ -79,19 +68,6 @@ public class Article implements Serializable {
     this.content = content;
   }
 
-  private String author = "";
-
-  @Column(name = "author", nullable = false, insertable = true, updatable = true, length = 50,
-      precision = 0)
-  @Basic
-  public String getAuthor() {
-    return author;
-  }
-
-  public void setAuthor(String author) {
-    this.author = author;
-  }
-
   private Timestamp time;
 
   @Column(name = "time", nullable = false, insertable = true, updatable = true, length = 19,
@@ -131,17 +107,17 @@ public class Article implements Serializable {
     this.order = order;
   }
 
-  private Boolean isNotice = false;
+  private Integer type = 0;
 
-  @Column(name = "isNotice", nullable = false, insertable = true, updatable = true, length = 0,
+  @Column(name = "type", nullable = false, insertable = true, updatable = true, length = 10,
       precision = 0)
   @Basic
-  public Boolean getIsNotice() {
-    return isNotice;
+  public Integer getType() {
+    return type;
   }
 
-  public void setIsNotice(Boolean notice) {
-    isNotice = notice;
+  public void setType(Integer type) {
+    this.type = type;
   }
 
   private Boolean isVisible = false;
@@ -156,7 +132,6 @@ public class Article implements Serializable {
   public void setIsVisible(Boolean visible) {
     this.isVisible = visible;
   }
-
 
   private Integer userId;
 
