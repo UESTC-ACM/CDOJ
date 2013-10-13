@@ -94,8 +94,7 @@ public class Judge implements Runnable {
    * @return command line we need
    * @throws AppException
    */
-  private String buildJudgeShellCommand(int problemId, int currentTestCase, JudgeItem judgeItem)
-      throws AppException {
+  private String buildJudgeShellCommand(int problemId, int currentTestCase, JudgeItem judgeItem) {
     StringBuilder stringBuilder = new StringBuilder();
 
     stringBuilder.append(workPath);

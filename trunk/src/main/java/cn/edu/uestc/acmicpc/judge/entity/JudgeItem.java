@@ -56,7 +56,7 @@ public class JudgeItem {
     }
   }
 
-  public String getSourceName() throws AppException {
+  public String getSourceName() {
     return "Main" + languageService.getExtension(status.getLanguageId());
   }
 
