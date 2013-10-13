@@ -106,6 +106,7 @@ public class StatusCondition extends BaseCondition {
         for (Global.OnlineJudgeReturnType type : result) {
           typeCondition.addEntry("result", ConditionType.EQUALS, type.ordinal());
         }
+        condition.addEntry(typeCondition);
       } else {
         condition.addEntry("result", Condition.ConditionType.EQUALS, resultId);
       }
