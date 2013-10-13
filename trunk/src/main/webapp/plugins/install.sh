@@ -12,7 +12,7 @@ function prepare {
 	  mzry_info "Skip install "$dep
 	else
 	  mzry_info "Install "$dep
-	  npm install -g $command
+	  sudo npm install -g $command
 	fi
   done
 }
