@@ -8,10 +8,8 @@ import javax.annotation.PreDestroy;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 import cn.edu.uestc.acmicpc.judge.entity.Judge;
 import cn.edu.uestc.acmicpc.judge.entity.JudgeItem;
@@ -21,7 +19,7 @@ import cn.edu.uestc.acmicpc.util.Settings;
 /**
  * Judge main service, use multi-thread architecture to process judge
  */
-public class JudgeService implements ApplicationContextAware {
+public class JudgeService {
 
   private static final Logger LOGGER = LogManager.getLogger(JudgeService.class);
 
@@ -32,14 +30,10 @@ public class JudgeService implements ApplicationContextAware {
    */
   private static final BlockingQueue<JudgeItem> judgeQueue = new LinkedBlockingQueue<>();
 
-  /**
-   * Spring application context
-   */
+  @Autowired
   private ApplicationContext applicationContext;
 
-  /**
-   * Fetch global Settings for judge.
-   */
+  @Autowired
   private Settings settings;
 
   /**
@@ -84,16 +78,5 @@ public class JudgeService implements ApplicationContextAware {
     } catch (SecurityException ignored) {
     }
     LOGGER.info("judge service destroy completed.");
-  }
-
-  @Override
-  @Autowired
-  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-    this.applicationContext = applicationContext;
-  }
-
-  @Autowired
-  public void setSettings(Settings settings) {
-    this.settings = settings;
   }
 }

@@ -31,36 +31,16 @@ public class JudgeItem {
   public Status status;
   public CompileInfo compileInfo;
 
+  @Autowired
   private ICompileInfoDAO compileinfoDAO;
+  @Autowired
   private IStatusDAO statusDAO;
+  @Autowired
   private IProblemDAO problemDAO;
+  @Autowired
   private IUserDAO userDAO;
+  @Autowired
   private LanguageService languageService;
-
-  @Autowired
-  public void setCompileInfoDAO(ICompileInfoDAO compileInfoDAO) {
-    this.compileinfoDAO = compileInfoDAO;
-  }
-
-  @Autowired
-  public void setStatusDAO(IStatusDAO statusDAO) {
-    this.statusDAO = statusDAO;
-  }
-
-  @Autowired
-  public void setProblemDAO(IProblemDAO problemDAO) {
-    this.problemDAO = problemDAO;
-  }
-
-  @Autowired
-  public void setUserDAO(IUserDAO userDAO) {
-    this.userDAO = userDAO;
-  }
-
-  @Autowired
-  public void setLanguageService(LanguageService languageService) {
-    this.languageService = languageService;
-  }
 
   public int parseLanguage() {
     String extension = languageService.getExtension(status.getLanguageId());

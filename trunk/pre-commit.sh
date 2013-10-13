@@ -24,8 +24,14 @@ if [ $? -ne 0 ]; then
   echo -e $PRE_COMMIT_ERRRO
   exit 1
 fi
+echo -e "\x1b[0;33mrun unit tests\x1b[m"
+mvn test
+if [ $? -ne 0 ]; then
+  echo -e $PRE_COMMIT_ERRRO
+  exit 1
+fi
 echo -e "\x1b[0;33mrun integration tests\x1b[m"
-mvn integration-test
+mvn failsafe:integration-test
 if [ $? -ne 0 ]; then
   echo -e $PRE_COMMIT_ERRRO
   exit 1
