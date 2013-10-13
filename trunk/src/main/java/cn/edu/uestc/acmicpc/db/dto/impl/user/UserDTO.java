@@ -1,15 +1,15 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.user;
 
-import java.util.*;
-import java.sql.*;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+import java.sql.Timestamp;
+import java.util.Map;
+
 @Fields({ "userId", "userName", "studentId", "password", "school", "nickName", "email", "solved",
-    "tried", "type", "lastLogin", "departmentId", "departmentByDepartmentId.name" })
+    "tried", "type", "motto", "lastLogin", "departmentId", "departmentByDepartmentId.name" })
 public class UserDTO implements BaseDTO<User> {
 
   public UserDTO() {
@@ -17,7 +17,7 @@ public class UserDTO implements BaseDTO<User> {
 
   private UserDTO(Integer userId, String userName, String studentId, String password,
                   String school, String nickName, String email, Integer solved, Integer tried,
-                  Integer type, Timestamp lastLogin, Integer departmentId, String departmentName) {
+                  Integer type, String motto, Timestamp lastLogin, Integer departmentId, String departmentName) {
     this.userId = userId;
     this.userName = userName;
     this.studentId = studentId;
@@ -28,6 +28,7 @@ public class UserDTO implements BaseDTO<User> {
     this.solved = solved;
     this.tried = tried;
     this.type = type;
+    this.motto = motto;
     this.lastLogin = lastLogin;
     this.departmentId = departmentId;
     this.departmentName = departmentName;
@@ -43,6 +44,7 @@ public class UserDTO implements BaseDTO<User> {
   private Integer solved;
   private Integer tried;
   private Integer type;
+  private String motto;
   private Timestamp lastLogin;
   private Integer departmentId;
   private String departmentName;
@@ -127,6 +129,14 @@ public class UserDTO implements BaseDTO<User> {
     this.type = type;
   }
 
+  public String getMotto() {
+    return motto;
+  }
+
+  public void setMotto(String motto) {
+    this.motto = motto;
+  }
+
   public Timestamp getLastLogin() {
     return lastLogin;
   }
@@ -163,7 +173,7 @@ public class UserDTO implements BaseDTO<User> {
     @Override
     public UserDTO build() {
       return new UserDTO(userId, userName, studentId, password, school, nickName, email, solved,
-          tried, type, lastLogin, departmentId, departmentName);
+          tried, type, motto, lastLogin, departmentId, departmentName);
     }
 
     @Override
@@ -178,6 +188,7 @@ public class UserDTO implements BaseDTO<User> {
       solved = (Integer) properties.get("solved");
       tried = (Integer) properties.get("tried");
       type = (Integer) properties.get("type");
+      motto = (String) properties.get("motto");
       lastLogin = (Timestamp) properties.get("lastLogin");
       departmentId = (Integer) properties.get("departmentId");
       departmentName = (String) properties.get("departmentByDepartmentId.name");
@@ -195,6 +206,7 @@ public class UserDTO implements BaseDTO<User> {
     private Integer solved;
     private Integer tried;
     private Integer type;
+    private String motto;
     private Timestamp lastLogin;
     private Integer departmentId;
     private String departmentName;
@@ -286,6 +298,15 @@ public class UserDTO implements BaseDTO<User> {
 
     public Builder setType(Integer type) {
       this.type = type;
+      return this;
+    }
+
+    public String getMotto() {
+      return motto;
+    }
+
+    public Builder setMotto(String motto) {
+      this.motto = motto;
       return this;
     }
 
