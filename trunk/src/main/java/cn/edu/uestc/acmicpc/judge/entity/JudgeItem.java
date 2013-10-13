@@ -20,7 +20,6 @@ import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
 /**
  * Judge item for single problem.
@@ -58,9 +57,6 @@ public class JudgeItem {
   }
 
   public String getSourceName() throws AppException {
-    AppExceptionUtil.assertNotNull(languageService);
-    AppExceptionUtil.assertNotNull(status);
-    AppExceptionUtil.assertNotNull(status.getLanguageId());
     return "Main" + languageService.getExtension(status.getLanguageId());
   }
 
