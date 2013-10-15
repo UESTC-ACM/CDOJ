@@ -16,15 +16,23 @@ module.exports = function(grunt) {
         }
       }
     },
+    coffee: {
+      compile: {
+        files: {
+          'dist/js/cdoj.js': 'src/coffee/cdoj.coffee'
+        }
+      }
+    },
     watch: {
-      files: ['<%= jshint.files %>'],
+      files: ['src/*/*.*'],
       tasks: ['less']
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-coffee');
 
-  grunt.registerTask('default', ['less']);
+  grunt.registerTask('default', ['less', 'coffee']);
 
 };
