@@ -1,1 +1,4 @@
-currentUser = $('#currentUser');
+$ = jQuery;
+$ ->
+  initUser()
+  initProblemList()
