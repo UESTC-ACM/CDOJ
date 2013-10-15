@@ -30,14 +30,14 @@ User menu on navbar
           </form>
         </div>
         <div class="col-md-12">
-          <span>
+          <a href="#" data-toggle="modal" data-target="#cdoj-register-modal">
             <span class="label muted"><i class="icon-circle-arrow-right"></i>Register</span>
-          </span>
+          </a>
         </div>
         <div class="col-md-12">
-          <span>
+          <a href="#" data-toggle="modal" data-target="#cdoj-activate-modal">
             <span class="label muted"><i class="icon-circle-arrow-right"></i>Forget password?</span>
-          </span>
+          </a>
         </div>
       </div>
     </c:when>
@@ -56,7 +56,7 @@ User menu on navbar
               </li>
               <li><a href="<c:url value="/admin/index"/>"><i class="icon-wrench"></i>Admin</a></li>
               <li><a href="<c:url value="/user/center/${sessionScope.currentUser.userName}"/>"><i class="icon-home"></i>User center</a></li>
-              <li><a href="#" id="logoutButton"><i class="icon-off"></i>Logout</a></li>
+              <li><a href="#" id="cdoj-logout-button"><i class="icon-off"></i>Logout</a></li>
             </ul>
           </div>
         </div>
