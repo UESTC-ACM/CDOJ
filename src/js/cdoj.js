@@ -10,9 +10,9 @@ $(document).ready(function () {
   if ($currentUser.length !== 0) {
     currentUser = js.lang.String.trim($currentUser[0].innerHTML);
     currentUserType = $currentUser.attr('type');
-    $('#userAvatar').setAvatar({
+    $('#cdoj-user-avatar').setAvatar({
       image: 'http://www.acm.uestc.edu.cn/images/akari_small.jpg',
-      size: $('#userAvatar').width()
+      size: $('#cdoj-user-avatar').width()
     });
   }
 

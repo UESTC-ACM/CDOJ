@@ -1,9 +1,25 @@
-#cdoj-layout {
-  padding-left: @navbar-width;
+@media screen and (min-width: 992px) {
+  #cdoj-layout {
+    padding-left: @navbar-width;
+  }
+  #mzry1992 {
+    background-color: @background;
+  }
+  #cdoj-navbar {
+    margin-left: -@navbar-width;
+    width: @navbar-width;
+    position: fixed;
+    top: 0;
+    left: @navbar-width;
+    bottom: 0;
+    z-index: 1000;
+    background: @black;
+    overflow-y: auto;
+    -webkit-overflow-scroll: touch;
+    color: #ffffff;
+  }
 }
-#mzry1992 {
-  background-color: @background;
-}
+
 .pure-table {
   width: 100%;
 }

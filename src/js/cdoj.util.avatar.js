@@ -25,7 +25,8 @@
       if (self.attr('size') !== undefined)
         options.size = self.attr('size');
       var result = $.gravatar(self.attr('email'), options)
-          .attr('id', selfId);
+        .attr('id', selfId)
+        .addClass(self.attr('class'));
       self.replaceWith(result);
     });
 
