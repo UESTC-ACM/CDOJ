@@ -200,6 +200,7 @@ public class UserController extends BaseController {
             .setType(Global.AuthenticationType.NORMAL.ordinal())
             .setDepartmentId(userRegisterDTO.getDepartmentId())
             .setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000))
+            .setMotto(userRegisterDTO.getMotto())
             .setDepartmentName(departmentService.getDepartmentName(
                 userRegisterDTO.getDepartmentId()))
             .build();
