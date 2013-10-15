@@ -1,37 +1,22 @@
-/*
- *
- *  * cdoj, UESTC ACMICPC Online Judge
- *  * Copyright (c) 2013 fish <@link lyhypacm@gmail.com>,
- *  * 	mzry1992 <@link muziriyun@gmail.com>
- *  *
- *  * This program is free software; you can redistribute it and/or
- *  * modify it under the terms of the GNU General Public License
- *  * as published by the Free Software Foundation; either version 2
- *  * of the License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program; if not, write to the Free Software
- *  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- */
-
 package cn.edu.uestc.acmicpc.util;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
+
 /**
  * Object global methods.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class ObjectUtil {
+
+  private static final Logger LOGGER = LogManager.getLogger(ObjectUtil.class);
 
   /**
    * Output object's fields and methods.
@@ -75,5 +60,24 @@ public class ObjectUtil {
       return false;
     }
     return first.equals(second);
+  }
+
+  public static <T extends Serializable> boolean entityEquals(BaseDTO<T> dto, T object) {
+    for (Method method : dto.getClass().getMethods()) {
+      if (method.getName().startsWith("get") && !method.getName().equals("getClass")) {
+        try {
+          if (!method.invoke(dto)
+              .equals(object.getClass().getMethod(method.getName()).invoke(object))) {
+            LOGGER.info("method: " + method.getName());
+            LOGGER.info("dto: " + method.invoke(dto));
+            LOGGER.info("entity: " + object.getClass().getMethod(method.getName()).invoke(object));
+            return false;
+          }
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+            | NoSuchMethodException | SecurityException ignored) {
+        }
+      }
+    }
+    return true;
   }
 }
