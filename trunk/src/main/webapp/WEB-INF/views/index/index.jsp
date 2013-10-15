@@ -7,20 +7,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-	<title>CDOJ</title>
+  <title>CDOJ</title>
 </head>
 <body>
 
-<div class="pure-g">
-	<div class="pure-u-1">
-	<div class="hero">
-		<div class="hero-titles">
-				<h1>CDOJ</h1>
-				<h2>Orz lyhypacm</h2>
-		</div>
-
-	</div>
-</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="hero">
+      <div class="hero-titles">
+        <h1>CDOJ</h1>
+        <h2>Orz lyhypacm</h2>
+      </div>
+    </div>
+  </div>
 </div>
 
 </body>

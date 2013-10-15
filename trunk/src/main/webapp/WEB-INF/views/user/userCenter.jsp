@@ -45,6 +45,8 @@
               <dt>Email</dt>
               <dd><c:out value="${targetUser.email}"/></dd>
             </c:if>
+            <dt>Motto</dt>
+            <dd><c:out value="${targetUser.motto}"/></dd>
             <dt>Last login</dt>
             <dd class="cdoj-time" type="milliseconds" isUTC="true"><c:out value="${targetUser.lastLogin.time}"/></dd>
           </dl>

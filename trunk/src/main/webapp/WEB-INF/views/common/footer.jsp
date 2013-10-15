@@ -8,31 +8,16 @@ Footer part of all pages.
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-	<head>
-		<title></title>
-	</head>
-	<body>
-		<div id="footer">
-			<div class="pure-g-r">
-				<div class="pure-u-1-4">
-					<a id="logo-banner" href="<c:url value="/"/>"></a>
-				</div>
-				<div class="pure-u">
-					<p class="muted credit">
-					UESTC Online Judge
-					</p>
-
-					<p class="muted credit">
-					Gnomovision version 69, Copyright (C) 2012 lyhypacm, mzry1992
-					<br/>
-					Gnomovision comes with ABSOLUTELY NO WARRANTY
-					<br/>
-					This is free software, and you are welcome to redistribute it under <a
-						href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt">certain conditions</a>
-					</p>
-				</div>
-			</div>
-		</div>
-
+<head>
+  <script src="<c:url value="/plugins/jquery/dist/jquery.js"/>"></script>
+  <script src="<c:url value="/plugins/sugar/release/sugar-full.development.js"/>"></script>
+  <script src="<c:url value="/plugins/underscore/underscore.js"/>"></script>
+  <script src="<c:url value="/plugins/bootstrap/dist/js/bootstrap.js"/>"></script>
+  <script src="<c:url value="/plugins/prettify/prettify.js"/>"></script>
+  <script src="<c:url value="/plugins/marked/lib/marked.js"/>"></script>
+  <script src="<c:url value="/plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"/>"></script>
+  <script src="<c:url value="/plugins/cdoj/dist/js/cdoj.js"/>"></script>
+</head>
+<body>
 </body>
 </html>
