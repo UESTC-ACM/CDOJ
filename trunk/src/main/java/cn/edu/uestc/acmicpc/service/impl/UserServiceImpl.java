@@ -1,5 +1,11 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
+
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminSummaryDTO;
@@ -12,11 +18,6 @@ import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Implementation for {@link UserService}.
@@ -89,7 +90,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
         UserSummaryDTO.builder(),
         userCondition.getCondition());
   }
-  
+
   @Override
   public List<UserAdminSummaryDTO> adminSearch(UserCondition userCondition, PageInfo pageInfo)
       throws AppException {
@@ -98,7 +99,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
     return userDAO.findAll(UserAdminSummaryDTO.class,UserAdminSummaryDTO.builder(),
         userCondition.getCondition());
   }
-  
+
   @Override
   public UserDTO getUserDTOByUserName(String userName) throws AppException {
     return userDAO.getDTOByUniqueField(UserDTO.class, UserDTO.builder(), "userName", userName);
@@ -124,5 +125,5 @@ public class UserServiceImpl extends AbstractService implements UserService {
   public Long count(UserCondition userCondition) throws AppException {
     return userDAO.count(userCondition.getCondition());
   }
-  
+
 }

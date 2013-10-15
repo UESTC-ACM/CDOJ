@@ -1,12 +1,13 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.user;
 
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Map;
+
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
-
-import java.sql.Timestamp;
-import java.util.Map;
 
 @Fields({ "userId", "userName", "studentId", "password", "school", "nickName", "email", "solved",
     "tried", "type", "motto", "lastLogin", "departmentId", "departmentByDepartmentId.name" })
@@ -196,20 +197,20 @@ public class UserDTO implements BaseDTO<User> {
 
     }
 
-    private Integer userId;
-    private String userName;
-    private String studentId;
-    private String password;
-    private String school;
-    private String nickName;
-    private String email;
-    private Integer solved;
-    private Integer tried;
-    private Integer type;
-    private String motto;
-    private Timestamp lastLogin;
-    private Integer departmentId;
-    private String departmentName;
+    private Integer userId = 2;
+    private String userName = "admin";
+    private String studentId = "20131010";
+    private String password = "password";
+    private String school = "school";
+    private String nickName = "nickName";
+    private String email = "email";
+    private Integer solved = 0;
+    private Integer tried = 0;
+    private Integer type = 0;
+    private String motto = "";
+    private Timestamp lastLogin = new Timestamp(new Date().getTime());
+    private Integer departmentId = 1;
+    private String departmentName = "department";
 
     public Integer getUserId() {
       return userId;
