@@ -1,9 +1,12 @@
 package cn.edu.uestc.acmicpc.service;
 
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.List;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -17,15 +20,24 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.TestContext;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition.Entry;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
+import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminSummaryDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserSummaryDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
 /** Test cases for {@link UserService}. */
 @WebAppConfiguration
@@ -138,7 +150,46 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     Assert.assertTrue(ObjectUtil.entityEquals(userDTO, user));
   }
 
-  // TODO(fish): search test cases needed.
-  // TODO(fish): adminSearch test cases needed.
-  // TODO(fish): count test cases needed.
+  @Test
+  public void testSearch() throws AppException {
+    ArgumentCaptor<Condition> captor = ArgumentCaptor.forClass(Condition.class);
+    PageInfo pageInfo = PageInfo.create(300L, Global.RECORD_PER_PAGE, "baseURL", 10, 2L);
+    userService.search(new UserCondition(), pageInfo);
+    verify(userDAO).findAll(eq(UserSummaryDTO.class),
+        isA(UserSummaryDTO.Builder.class), captor.capture());
+    Condition condition = captor.getValue();
+    Assert.assertEquals(condition.getJoinedType(), JoinedType.AND);
+    List<Entry> entries = condition.getentEntries();
+    Assert.assertEquals(entries.size(), 2);
+    Assert.assertEquals(Entry.of("userId",
+        ConditionType.GREATER_OR_EQUALS, Global.RECORD_PER_PAGE), entries.get(0));
+    Assert.assertEquals(Entry.of("userId",
+        ConditionType.LESS_THAN, 2 * Global.RECORD_PER_PAGE), entries.get(1));
+  }
+
+  @Test
+  public void testAdminSearch() throws AppException {
+    ArgumentCaptor<Condition> captor = ArgumentCaptor.forClass(Condition.class);
+    PageInfo pageInfo = PageInfo.create(300L, Global.RECORD_PER_PAGE, "baseURL", 10, 2L);
+    userService.adminSearch(new UserCondition(), pageInfo);
+    verify(userDAO).findAll(eq(UserAdminSummaryDTO.class),
+        isA(UserAdminSummaryDTO.Builder.class), captor.capture());
+    Condition condition = captor.getValue();
+    Assert.assertEquals(condition.getJoinedType(), JoinedType.AND);
+    List<Entry> entries = condition.getentEntries();
+    Assert.assertEquals(entries.size(), 2);
+    Assert.assertEquals(Entry.of("userId",
+        ConditionType.GREATER_OR_EQUALS, Global.RECORD_PER_PAGE), entries.get(0));
+    Assert.assertEquals(Entry.of("userId",
+        ConditionType.LESS_THAN, 2 * Global.RECORD_PER_PAGE), entries.get(1));
+  }
+
+  @Test
+  public void testCount() throws AppException {
+    UserCondition userCondition = mock(UserCondition.class);
+    Condition condition = mock(Condition.class);
+    when(userCondition.getCondition()).thenReturn(condition);
+    userService.count(userCondition);
+    verify(userDAO).count(condition);
+  }
 }
