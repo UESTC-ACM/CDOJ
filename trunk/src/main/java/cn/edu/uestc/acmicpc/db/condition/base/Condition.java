@@ -3,12 +3,12 @@ package cn.edu.uestc.acmicpc.db.condition.base;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
+import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
 /**
- * Conditions setting for {@link IDAO#findAll()} and {@link IDAO#count()}.
+ * Conditions setting for {@code IDAO#findAll()} and {@code IDAO#count()}.
  * <p/>
  * <strong>For Developers</strong>:
  * <p/>
@@ -87,12 +87,30 @@ public class Condition {
     public ConditionType getConditionType() {
       return conditionType;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof Entry)) {
+        return false;
+      }
+      Entry entry = (Entry) obj;
+      return ObjectUtil.equals(fieldName, entry.fieldName)
+          && ObjectUtil.equals(value, entry.value)
+          && ObjectUtil.equals(conditionType, entry.conditionType);
+    }
   }
 
   /**
    * DB query entries.
    */
   private final List<Entry> entries = new ArrayList<>();
+
+  public List<Entry> getentEntries() {
+    return entries;
+  }
 
   /** DB query joined type. */
   private final JoinedType joinedType;
