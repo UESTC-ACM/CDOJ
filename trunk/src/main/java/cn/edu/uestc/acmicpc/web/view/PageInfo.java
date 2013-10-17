@@ -146,7 +146,7 @@ public class PageInfo {
     currentPage = currentPage < 1 ? 1 : currentPage;
 
     // TODO(mzry1992): format the HTML content use htmlString
-    String htmlString = "<div class=\"pagination pagination-centered\">\n" + "            <ul>\n";
+    String htmlString = "<ul class=\"pagination pagination-centered\">\n";
     if (currentPage == 1) {
       htmlString += getLiTag("disabled", null, "← First", baseURL);
       htmlString += getLiTag("disabled", null, "«", baseURL);
@@ -195,7 +195,7 @@ public class PageInfo {
       htmlString += getLiTag(null, totalPages, "Last →", baseURL);
     }
 
-    htmlString += "\n" + "            </ul>\n" + "        </div>\n";
+    htmlString += "\n" + "            </ul>\n";
 
     return new PageInfo(currentPage, countPerPage, baseURL, displayDistance, htmlString);
   }

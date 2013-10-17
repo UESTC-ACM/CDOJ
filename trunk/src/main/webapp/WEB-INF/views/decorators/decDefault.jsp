@@ -14,15 +14,16 @@
 </head>
 
 <body>
-	
-	<div class="pure-g-r" id="cdoj-layout">
-		<div class="pure-u" id="cdoj-navbar">
+	<div id="cdoj-layout">
+		<div id="cdoj-navbar">
 			<page:applyDecorator name="body" page="/WEB-INF/views/common/navbar.jsp"/>
 		</div>
-		<div class="pure-u-1" id="mzry1992">
+		<div id="cdoj-container">
 			<decorator:body/>
 		</div>
 	</div>
 
+  <page:applyDecorator name="body" page="/WEB-INF/views/common/modal.jsp"/>
+  <page:applyDecorator name="head" page="/WEB-INF/views/common/footer.jsp"/>
 </body>
 </html>

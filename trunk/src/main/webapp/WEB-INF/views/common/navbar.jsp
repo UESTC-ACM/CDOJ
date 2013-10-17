@@ -10,11 +10,7 @@ Navbar
 		<title></title>
 	</head>
 	<body>
-		<div id="cdoj-user">
-			<page:applyDecorator name="body" page="/WEB-INF/views/common/navbarUser.jsp"/>
-		</div>
-		<div id="cdoj-menu">
-			<page:applyDecorator name="body" page="/WEB-INF/views/common/navbarList.jsp"/>
-		</div>
+		<page:applyDecorator name="body" page="/WEB-INF/views/common/navbarUser.jsp"/>
+		<page:applyDecorator name="body" page="/WEB-INF/views/common/navbarList.jsp"/>
 	</body>
 </html>

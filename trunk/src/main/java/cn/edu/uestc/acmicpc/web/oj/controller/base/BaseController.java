@@ -1,15 +1,21 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.base;
 
-import javax.servlet.http.HttpSession;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-
+import cn.edu.uestc.acmicpc.db.dto.impl.department.DepartmentDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * BaseController
@@ -18,6 +24,29 @@ import cn.edu.uestc.acmicpc.web.view.PageInfo;
  */
 @Controller
 public class BaseController {
+
+  protected DepartmentService departmentService;
+  protected GlobalService globalService;
+
+  @Autowired
+  protected void setDepartmentService(DepartmentService departmentService) {
+    this.departmentService = departmentService;
+  }
+
+  @Autowired
+  protected void setGlobalService(GlobalService globalService) {
+    this.globalService = globalService;
+  }
+
+  @ModelAttribute("departmentList")
+  protected List<DepartmentDTO> getDepartmentList() {
+    return departmentService.getDepartmentList();
+  }
+
+  @ModelAttribute("authenticationTypeList")
+  protected List<Global.AuthenticationType> getAuthenticationTypeList() {
+    return globalService.getAuthenticationTypeList();
+  }
 
   protected Integer getCurrentUserID(HttpSession session) throws AppException {
     UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
