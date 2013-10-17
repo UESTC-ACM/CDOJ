@@ -418,10 +418,7 @@
 				<configuration>
 					<show>private</show>
 					<nohelp>true</nohelp>
-					<includes>
-						<include>cn.edu.uestc.acmicpc.db</include>
-						<include>cn.edu.uestc.acmicpc.service</include>
-					</includes>
+					<excludePackageNames>cn.edu.uestc.acmicpc.config.*:cn.edu.uestc.acmicpc.judge.*:cn.edu.uestc.acmicpc.web.*</excludePackageNames>
 				</configuration>
 			</plugin>
 			<plugin>
