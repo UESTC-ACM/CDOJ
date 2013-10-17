@@ -418,6 +418,10 @@
 				<configuration>
 					<show>private</show>
 					<nohelp>true</nohelp>
+					<includes>
+						<include>cn.edu.uestc.acmicpc.db</include>
+						<include>cn.edu.uestc.acmicpc.service</include>
+					</includes>
 				</configuration>
 			</plugin>
 			<plugin>
