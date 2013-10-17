@@ -96,7 +96,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
       throws AppException {
     userCondition.currentPage = pageInfo.getCurrentPage();
     userCondition.countPerPage = Global.RECORD_PER_PAGE;
-    return userDAO.findAll(UserAdminSummaryDTO.class,UserAdminSummaryDTO.builder(),
+    return userDAO.findAll(UserAdminSummaryDTO.class, UserAdminSummaryDTO.builder(),
         userCondition.getCondition());
   }
 
