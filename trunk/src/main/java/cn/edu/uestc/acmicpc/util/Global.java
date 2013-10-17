@@ -2,9 +2,7 @@ package cn.edu.uestc.acmicpc.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -14,7 +12,6 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.Language;
-import cn.edu.uestc.acmicpc.web.oj.entity.ContestRankList;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
@@ -180,18 +177,6 @@ public class Global {
    * training contest type list
    */
   private List<TrainingContestType> trainingContestTypeList;
-  /**
-   * Cache used contest ranklist
-   */
-  private Map<Integer, ContestRankList> contestRankListMap;
-
-  public Map<Integer, ContestRankList> getContestRankListMap() {
-    return contestRankListMap;
-  }
-
-  public void setContestRankListMap(Map<Integer, ContestRankList> contestRankListMap) {
-    this.contestRankListMap = contestRankListMap;
-  }
 
   /**
    * Get all languages.
@@ -211,7 +196,6 @@ public class Global {
   @PostConstruct
   public void init() throws AppException {
     try {
-      contestRankListMap = new HashMap<>();
       this.departmentList = (List<Department>) departmentDAO.findAll();
       this.languageList = (List<Language>) languageDAO.findAll();
 
