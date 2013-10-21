@@ -3,18 +3,16 @@ package cn.edu.uestc.acmicpc.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
-import cn.edu.uestc.acmicpc.util.StringUtil;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.StringUtil;
 
 /**
  * Implementation for {@link GlobalService}.
  */
 @Service
-@Primary
 public class GlobalServiceImpl extends AbstractService implements GlobalService {
 
   @Override

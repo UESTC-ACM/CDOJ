@@ -1,5 +1,15 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.base;
 
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
 import cn.edu.uestc.acmicpc.db.dto.impl.department.DepartmentDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
@@ -8,14 +18,6 @@ import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-
-import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  * BaseController
@@ -25,16 +27,16 @@ import java.util.List;
 @Controller
 public class BaseController {
 
-  protected DepartmentService departmentService;
-  protected GlobalService globalService;
+  public DepartmentService departmentService;
+  public GlobalService globalService;
 
   @Autowired
-  protected void setDepartmentService(DepartmentService departmentService) {
+  public void setDepartmentService(DepartmentService departmentService) {
     this.departmentService = departmentService;
   }
 
   @Autowired
-  protected void setGlobalService(GlobalService globalService) {
+  public void setGlobalService(GlobalService globalService) {
     this.globalService = globalService;
   }
 

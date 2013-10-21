@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserSerialKeyDAO;
@@ -19,7 +18,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * Implementation for {@link UserSerialKeyService}.
  */
 @Service
-@Primary
 public class UserSerialKeyServiceImpl extends AbstractService implements UserSerialKeyService {
 
   private final IUserSerialKeyDAO userSerialKeyDAO;
@@ -29,6 +27,7 @@ public class UserSerialKeyServiceImpl extends AbstractService implements UserSer
     this.userSerialKeyDAO = userSerialKeyDAO;
   }
 
+  @Override
   public UserSerialKeyDTO findUserSerialKeyDTOByUserId(Integer userId) throws AppException {
     return userSerialKeyDAO.getDTOByUniqueField(UserSerialKeyDTO.class, UserSerialKeyDTO.builder(),
         "userId", userId);
