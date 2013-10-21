@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
@@ -26,7 +25,6 @@ import cn.edu.uestc.acmicpc.web.view.PageInfo;
  * Implementation for {@link ProblemService}.
  */
 @Service
-@Primary
 public class ProblemServiceImpl extends AbstractService implements ProblemService {
 
   private final IProblemDAO problemDAO;

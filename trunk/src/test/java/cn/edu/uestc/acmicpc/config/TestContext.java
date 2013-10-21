@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
@@ -71,41 +72,49 @@ public class TestContext extends ApplicationContextConfig {
   }
 
   @Bean
+  @Primary
   public UserService mockUserService() {
     return mock(UserService.class);
   }
 
   @Bean
+  @Primary
   public ProblemService mockProblemService() {
     return mock(ProblemService.class);
   }
 
   @Bean
+  @Primary
   public StatusService mockStatusService() {
     return mock(StatusService.class);
   }
 
   @Bean
+  @Primary
   public UserSerialKeyService mockUserSerialKeyService() {
     return mock(UserSerialKeyService.class);
   }
 
   @Bean
+  @Primary
   public GlobalService mockGlobalService() {
     return mock(GlobalService.class);
   }
 
   @Bean
+  @Primary
   public EmailService mockEmailService() {
     return mock(EmailService.class);
   }
 
   @Bean
+  @Primary
   public DepartmentService mockDepartmentService() {
     return mock(DepartmentService.class);
   }
 
   @Bean
+  @Primary
   public IUserDAO mockUserDAO() {
     return mock(IUserDAO.class);
   }

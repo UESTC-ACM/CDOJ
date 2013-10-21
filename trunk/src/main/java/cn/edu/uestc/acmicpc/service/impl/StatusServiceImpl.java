@@ -2,26 +2,24 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import java.util.List;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
-import cn.edu.uestc.acmicpc.db.entity.Status;
-import cn.edu.uestc.acmicpc.web.view.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
+import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
 /**
  * Implementation for {@link StatusService}.
  */
 @Service
-@Primary
 public class StatusServiceImpl extends AbstractService implements StatusService {
 
   private final IStatusDAO statusDAO;
