@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
@@ -23,7 +22,6 @@ import cn.edu.uestc.acmicpc.web.view.PageInfo;
  * Implementation for {@link UserService}.
  */
 @Service
-@Primary
 public class UserServiceImpl extends AbstractService implements UserService {
 
   private final IUserDAO userDAO;

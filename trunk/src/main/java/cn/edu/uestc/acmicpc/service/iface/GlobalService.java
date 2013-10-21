@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.service.iface;
 
 import java.util.List;
 
-import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.Global.AuthenticationType;
 
 /**
  * Global service.
@@ -15,7 +15,7 @@ public interface GlobalService {
    *
    * @return authentication type list
    */
-  public List<Global.AuthenticationType> getAuthenticationTypeList();
+  public List<AuthenticationType> getAuthenticationTypeList();
 
   public String getAuthenticationName(Integer type);
 

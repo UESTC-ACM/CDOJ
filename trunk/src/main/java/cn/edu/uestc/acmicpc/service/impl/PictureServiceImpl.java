@@ -10,7 +10,6 @@ import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +21,6 @@ import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 
 @Service
-@Primary
 public class PictureServiceImpl extends AbstractService implements PictureService {
 
   private final Settings settings;

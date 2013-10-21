@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.zip.ZipFile;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +24,6 @@ import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
  * Implement for {@link FileService}
  */
 @Service
-@Primary
 public class FileServiceImpl extends AbstractService implements FileService {
 
   private final Settings settings;
