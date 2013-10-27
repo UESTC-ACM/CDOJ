@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Unit test suite">
-	<test verbose="2" name="Service tests" parallel="classes"
+	<test name="Service tests" parallel="classes"
 		thread-count="2" time-out="60000">
 		<classes>
 			<class name="cn.edu.uestc.acmicpc.service.UserServiceTest" />
 		</classes>
 	</test>
-	<test verbose="2" name="Condition tests" parallel="classes"
+	<test name="Condition tests" parallel="classes"
 		thread-count="2" time-out="60000">
 		<classes>
 			<class name="cn.edu.uestc.acmicpc.db.condition.base.ConditionTest" />
 		</classes>
 	</test>
-	<test verbose="2" name="Utility classes tests" parallel="classes"
+	<test name="Utility classes tests" parallel="classes"
 		thread-count="2" time-out="60000">
 		<classes>
 			<class name="cn.edu.uestc.acmicpc.util.ArrayUtilTest" />
@@ -21,11 +21,15 @@
 			<class name="cn.edu.uestc.acmicpc.util.checker.ZipDataCheckerTest" />
 		</classes>
 	</test>
-	<test verbose="2" name="Web unit tests" parallel="classes"
+	<test name="Web unit tests" parallel="classes"
 		thread-count="2" time-out="60000">
 		<classes>
 			<class name="cn.edu.uestc.acmicpc.web.oj.controller.IndexControllerTest" />
 			<class name="cn.edu.uestc.acmicpc.web.oj.controller.UserControllerTest" />
 		</classes>
 	</test>
+
+	<listeners>
+		<listener class-name="cn.edu.uestc.acmicpc.config.TestListener" />
+	</listeners>
 </suite>
