@@ -12,5 +12,5 @@
 .externalToolBuilders/
 /test-output/
 /cdoj.iml
-
+*.pyc
 /target
