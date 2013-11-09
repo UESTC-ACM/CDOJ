@@ -4,46 +4,20 @@ import unittest
 import sys
 import os
 import stat
+import test_util
+from test_util import isLetterOrDigit
+from test_util import findWholeWord
 
 entities = []
 
-def isLetterOrDigit(c):
-  return (c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z') or (c >= '0' and c <= '9')
-
-def findWholeWord(word, s):
-  line = ''
-  in_string = False
-  for i in range(0, len(s)):
-    if s[i] == '"':
-      in_string = (in_string == False)
-    elif s[i] == '\\' and s[i + 1] == '"':
-      in_string = False
-    elif in_string == False:
-      line = line + s[i]
-  index = 0;
-  while (index < len(line)):
-    newIndex = line[index : ].find(word)
-    if newIndex < index:
-      break
-    left = False
-    right = False
-    if newIndex == index or isLetterOrDigit(line[newIndex - 1]) == False:
-      left = True
-    if newIndex + len(word) == len(line) or isLetterOrDigit(line[newIndex + len(word)]) == False:
-      right = True
-    if left and right:
-      return True
-    index = newIndex + len(word)
-  return False
-
-class TestDtosNotContainEntities(unittest.TestCase):
+class TestDtosNotContainEntities(test_util.TestCase):
 
   def __init__(self, file_name):
     unittest.TestCase.__init__(self, methodName = 'test')
     self.file_name = file_name
 
-  def getDescription(self):
-    return 'testDtosNotContainEntities_' + self.file_name[self.file_name.rfind('/') : -5]
+  def getName(self):
+    return 'testDtosNotContainEntities_' + self.file_name[self.file_name.rfind('/') + 1 : -5]
 
   def test(self):
     f = open(self.file_name, 'r')
@@ -96,6 +70,6 @@ if __name__ == '__main__':
   initEntities(entity_dir)
   dto_dir = base_dir + '/src/main/java/cn/edu/uestc/acmicpc/db/dto/impl/'
   addTestCases(suite, dto_dir)
-  result = unittest.TextTestRunner(verbosity = 2).run(suite)
+  result = test_util.TestRunner().run(suite);
   quit(len(result.errors) + len(result.failures))
 
