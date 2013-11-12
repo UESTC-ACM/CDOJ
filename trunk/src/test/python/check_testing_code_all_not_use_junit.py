@@ -4,15 +4,16 @@ import unittest
 import sys
 import os
 import stat
+import test_util
 
-class TestTestingCodeNotContainJUnit(unittest.TestCase):
+class TestTestingCodeNotContainJUnit(test_util.TestCase):
 
   def __init__(self, file_name):
     unittest.TestCase.__init__(self, methodName = 'test')
     self.file_name = file_name
 
-  def getDescription(self):
-    return 'testDtosNotContainEntities_' + self.file_name[self.file_name.rfind('/') : -5]
+  def getName(self):
+    return 'testTestingCodeAllNotUseJUnit_' + self.file_name[self.file_name.rfind('/') + 1 : -5]
 
   def test(self):
     f = open(self.file_name, 'r')
@@ -53,6 +54,6 @@ if __name__ == '__main__':
   addTestCases(suite, test_dir)
   test_dir = base_dir + '/src/integration-test/java'
   addTestCases(suite, test_dir)
-  result = unittest.TextTestRunner(verbosity = 2).run(suite)
+  result = test_util.TestRunner().run(suite)
   quit(len(result.errors) + len(result.failures))
 
