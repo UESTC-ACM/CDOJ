@@ -10,7 +10,7 @@ Nav list on navbar
   <title></title>
 </head>
 <body>
-<div class="row">
+<div id="cdoj-navbar-menu" class="row">
   <div class="col-md-12">
     <div class="cdoj-menu">
       <ul class="nav nav-pills nav-stacked">

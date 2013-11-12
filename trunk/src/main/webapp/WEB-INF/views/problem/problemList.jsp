@@ -15,7 +15,7 @@ Admin problem list page
 			<div class="row mzry1992-header">
 				<div class="col-md-12">
           <div id="pageInfo">
-            <ul class="pagination pagination-centered">
+            <ul class="pagination pagination-centere">
               <li class="disabled"><a>← First</a></li>
               <li class="disabled"><a>«</a></li>
               <li class="active"><a href="1">1</a></li>
@@ -113,8 +113,8 @@ Admin problem list page
 				</div>
 			</div>
 
-			<div class="pure-g mzry1992-content">
-				<div class="pure-u-1">
+			<div class="row mzry1992-content">
+				<div class="col-md-12">
 					<table class="pure-table pure-table-bordered">
 						<thead>
 							<tr>
