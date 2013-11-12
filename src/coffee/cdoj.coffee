@@ -1,4 +1,5 @@
 $ = jQuery;
 $ ->
+  initLayout()
   initUser()
   initProblemList()
