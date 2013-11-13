@@ -84,4 +84,35 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
     verify(problemDAO).count(condition);
   }
 
+  @Test
+  public void testUpdateProblem() throws AppException {
+    ProblemDTO problemDTO = ProblemDTO.builder().build();
+    Problem problem = new Problem();
+    problem.setProblemId(problemDTO.getProblemId());
+    when(problemDAO.get(problemDTO.getProblemId())).thenReturn(problem);
+    problemService.updateProblem(problemDTO);
+    ArgumentCaptor<Problem> captor = ArgumentCaptor.forClass(Problem.class);
+    verify(problemDAO).update(captor.capture());
+    Assert.assertTrue(ObjectUtil.entityEquals(problemDTO, captor.getValue()));
+    verify(problemDAO).get(problemDTO.getProblemId());
+  }
+
+  @Test(expectedExceptions = AppException.class)
+  public void testUpdateProblem_problemNotFound() throws AppException {
+    ProblemDTO problemDTO = ProblemDTO.builder().build();
+    when(problemDAO.get(problemDTO.getProblemId())).thenReturn(null);
+    problemService.updateProblem(problemDTO);
+    Assert.fail();
+  }
+
+  @Test(expectedExceptions = AppException.class)
+  public void testUpdateProblem_problemFoundWithNullId() throws AppException {
+    ProblemDTO problemDTO = ProblemDTO.builder().build();
+    Problem problem = mock(Problem.class);
+    when(problemDAO.get(problemDTO.getProblemId())).thenReturn(problem);
+    when(problem.getProblemId()).thenReturn(null);
+    problemService.updateProblem(problemDTO);
+    Assert.fail();
+  }
+
 }
