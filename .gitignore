@@ -1,5 +1,6 @@
 *.bak
-*.swp
+*.sw[mnop]
 .DS_Store
 nohup.out
-
+*.pyc
+*.py~
