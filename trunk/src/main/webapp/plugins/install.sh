@@ -1,7 +1,7 @@
 #!/bin/bash
 
-DEPS=("grunt" "bower" "coffee")
-DEPS_COMMAND=("grunt grunt-cli" "bower" "coffee-script")
+DEPS=("grunt" "bower" "coffee" "phantomjs")
+DEPS_COMMAND=("grunt grunt-cli" "bower" "coffee-script" "phantomjs")
 
 function prepare {
   local i
@@ -22,11 +22,7 @@ function grunt_install {
   cd $1 
   bower install
   npm install
-  if [ $2 == "build" ]; then
-		grunt build
-  else
-		grunt
-	fi
+	grunt $2
   cd ..
 }
 
@@ -39,7 +35,7 @@ function check_file {
 
 cd src/main/webapp/plugins/
 prepare
-grunt_install bootstrap
+grunt_install bootstrap --force
 rm -rf bootstrap/bower_components
 grunt_install cdoj
 grunt_install jquery
