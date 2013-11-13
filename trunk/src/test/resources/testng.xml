@@ -5,6 +5,7 @@
 		thread-count="2" time-out="60000">
 		<classes>
 			<class name="cn.edu.uestc.acmicpc.service.UserServiceTest" />
+			<class name="cn.edu.uestc.acmicpc.service.ProblemServiceTest" />
 		</classes>
 	</test>
 	<test name="Condition tests" parallel="classes"
