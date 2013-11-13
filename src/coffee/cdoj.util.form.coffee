@@ -27,6 +27,8 @@ $.fn.getFormData = ->
 
   return result
 
+# Oops, I forgot write setFormData and resetFormData...
+
 $.fn.formValidate = (userOptions) ->
   options =
     result:
