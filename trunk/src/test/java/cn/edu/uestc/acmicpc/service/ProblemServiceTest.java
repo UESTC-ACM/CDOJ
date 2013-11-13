@@ -75,4 +75,13 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
            eq("problemId"), eq(problemDTO.getProblemId()));
   }
 
+  @Test
+  public void testCount() throws AppException {
+    ProblemCondition problemCondition = mock(ProblemCondition.class);
+    Condition condition = mock(Condition.class);
+    when(problemCondition.getCondition()).thenReturn(condition);
+    problemService.count(problemCondition);
+    verify(problemDAO).count(condition);
+  }
+
 }
