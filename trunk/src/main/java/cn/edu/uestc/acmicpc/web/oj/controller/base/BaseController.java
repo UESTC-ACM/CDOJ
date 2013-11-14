@@ -27,8 +27,8 @@ import cn.edu.uestc.acmicpc.web.view.PageInfo;
 @Controller
 public class BaseController {
 
-  public DepartmentService departmentService;
-  public GlobalService globalService;
+  protected DepartmentService departmentService;
+  protected GlobalService globalService;
 
   @Autowired
   public void setDepartmentService(DepartmentService departmentService) {
