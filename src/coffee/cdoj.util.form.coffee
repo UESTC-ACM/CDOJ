@@ -28,6 +28,33 @@ $.fn.getFormData = ->
   return result
 
 # Oops, I forgot write setFormData and resetFormData...
+# TODO, it doesn't work...
+$.fn.setFormValue = (value) ->
+  $el = $(this)
+  isType = (_type) -> $el.attr("type") == _type || $el[0].localName == _type
+  if isType "radio"
+    value = "all" if value == undefined
+    if ($el.attr("value") == value)
+      $el.attr("checked", true);
+    else
+      $el.attr("checked", false);
+  else if isType "select"
+    value = -1 if value == undefined
+    $el.val(value)
+  else
+    $el.val(value)
+
+$.fn.resetFormData = ->
+  this.each (id, el) =>
+    ignoreList = ["submit", "reset", "button"];
+
+    $el = $(el)
+    $inputs = $el.find(":input")
+    for input in $inputs
+      $input = $(input)
+      if ignoreList.none $input.attr("type")
+        $input.setFormValue(undefined)
+
 
 $.fn.formValidate = (userOptions) ->
   options =

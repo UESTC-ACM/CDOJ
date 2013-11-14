@@ -29,6 +29,7 @@ class SearchModule
       @father.refresh currentCondition
       return false
     $advancedResetButton.click =>
+      # TODO
       $conditionForm.resetFormData()
       return false
 
@@ -65,11 +66,12 @@ class ListModule
       @list = @listContainer.find("#list-container")
       # Clear first
       @list.empty()
-      # Get problem list via requestUrl
+      # Get list via requestUrl
       jsonPost(@options.requestUrl
         condition
         (datas) =>
-          datas.problemList.each((data) =>
+          @pageInfo.empty().append(datas.pageInfo)
+          datas.list.each((data) =>
             @list.append(@options.formatter data)
           )
           @refreshLock = 0

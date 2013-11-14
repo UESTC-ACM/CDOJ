@@ -3,3 +3,5 @@ $ ->
   initLayout()
   initUser()
   initProblemList()
+  initStatusList()
+  initUserList()
