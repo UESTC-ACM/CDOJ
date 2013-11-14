@@ -107,7 +107,7 @@ public class StatusController extends BaseController {
 
       json.put("result", "success");
       json.put("pageInfo", pageInfo.getHtmlString());
-      json.put("statusList", statusListDTOList);
+      json.put("list", statusListDTOList);
     }catch(AppException e){
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
