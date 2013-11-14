@@ -11,6 +11,8 @@ import java.util.List;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.mockito.stubbing.Answer;
+import org.mockito.invocation.InvocationOnMock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -113,6 +115,22 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
     when(problem.getProblemId()).thenReturn(null);
     problemService.updateProblem(problemDTO);
     Assert.fail();
+  }
+
+  @Test
+  public void testCreateNewProblem() throws AppException {
+    ArgumentCaptor<Problem> captor = ArgumentCaptor.forClass(Problem.class);
+    when(problemDAO.add(captor.capture())).thenAnswer(new Answer() {
+      public Problem answer(InvocationOnMock invocation) {
+        Object[] args = invocation.getArguments();
+        Object mock = invocation.getMock();
+        Problem problem = (Problem) args[0];
+        problem.setProblemId(1015);
+        return null;
+      }
+    });
+    Integer problemId = problemService.createNewProblem();
+    Assert.assertEquals(problemId, Integer.valueOf(1015));
   }
 
   @Test
