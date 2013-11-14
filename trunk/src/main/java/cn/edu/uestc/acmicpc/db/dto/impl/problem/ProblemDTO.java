@@ -238,26 +238,26 @@ public class ProblemDTO implements BaseDTO<Problem> {
     private Builder() {
     }
 
-    private Integer problemId;
-    private String title="";
-    private String description="";
-    private String input="";
-    private String output="";
-    private String sampleInput="";
-    private String sampleOutput="";
-    private String hint="";
-    private String source="";
-    private Integer timeLimit;
-    private Integer memoryLimit;
-    private Integer solved;
-    private Integer tried;
-    private Boolean isSpj;
-    private Boolean isVisible;
-    private Integer outputLimit;
-    private Integer javaTimeLimit;
-    private Integer javaMemoryLimit;
-    private Integer dataCount;
-    private Integer difficulty;
+    private Integer problemId = 1000;
+    private String title = "a + b";
+    private String description = "Calculate a + b.";
+    private String input = "1 2";
+    private String output = "3";
+    private String sampleInput = "1 2";
+    private String sampleOutput = "3";
+    private String hint = "Sample code is here.";
+    private String source = "Classcal problem";
+    private Integer timeLimit = 1000;
+    private Integer memoryLimit = 65536;
+    private Integer solved = 0;
+    private Integer tried = 0;
+    private Boolean isSpj = false;
+    private Boolean isVisible = true;
+    private Integer outputLimit = 8000;
+    private Integer javaTimeLimit = 3000;
+    private Integer javaMemoryLimit = 65536;
+    private Integer dataCount = 1;
+    private Integer difficulty = 1;
     
     @Override
     public ProblemDTO build() {
