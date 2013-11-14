@@ -115,4 +115,21 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
     Assert.fail();
   }
 
+  @Test
+  public void testGetProblemListDTOList() throws AppException {
+    ArgumentCaptor<Condition> captor = ArgumentCaptor.forClass(Condition.class);
+    PageInfo pageInfo = PageInfo.create(300L, Global.RECORD_PER_PAGE, "baseURL", 10, 2L);
+    problemService.getProblemListDTOList(new ProblemCondition(), pageInfo);
+    verify(problemDAO).findAll(eq(ProblemListDTO.class),
+        isA(ProblemListDTO.Builder.class), captor.capture());
+    Condition condition = captor.getValue();
+    Assert.assertEquals(condition.getJoinedType(), JoinedType.AND);
+    List<Entry> entries = condition.getentEntries();
+    Assert.assertEquals(entries.size(), 2);
+    Assert.assertEquals(Entry.of("problemId",
+        ConditionType.GREATER_OR_EQUALS, Global.RECORD_PER_PAGE), entries.get(0));
+    Assert.assertEquals(Entry.of("problemId",
+        ConditionType.LESS_THAN, 2 * Global.RECORD_PER_PAGE), entries.get(1));
+  }
+
 }
