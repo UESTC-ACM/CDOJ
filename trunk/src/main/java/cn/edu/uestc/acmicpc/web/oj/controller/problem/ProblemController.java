@@ -128,7 +128,7 @@ public class ProblemController extends BaseController{
 
       json.put("pageInfo", pageInfo.getHtmlString());
       json.put("result", "success");
-      json.put("problemList", problemListDTOList);
+      json.put("list", problemListDTOList);
     }catch(AppException e){
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
