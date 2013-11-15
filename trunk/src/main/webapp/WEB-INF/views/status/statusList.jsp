@@ -46,7 +46,6 @@ Admin problem list page
 										</div>
 									</div>
 								</fieldset>
-
 								<fieldset>
 									<div class="row">
 										<div class="col-md-12">
