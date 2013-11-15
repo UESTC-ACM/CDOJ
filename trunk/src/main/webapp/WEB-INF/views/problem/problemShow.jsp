@@ -15,7 +15,7 @@ Problem statement
 		<div id="problem-show">
 			<div id="mzry1992-container">
 				<div class="row">
-					<div class="col-md-12" id="problem_title" value="<c:out value="${targetProblem.problemId}"/>">
+					<div class="col-md-12" id="problem-title" value="<c:out value="${targetProblem.problemId}"/>">
 						<h1>
 							<c:out value="${targetProblem.title}"/>
 							<c:if test="${targetProblem.isSpj == true}">
@@ -44,7 +44,12 @@ Problem statement
 						<div id="problem-show-tab" style="margin: 16px 0;">
 							<ul class="nav nav-pills">
 								<li class="active"><a href="#tab-problem-show" data-toggle="tab">Problem</a></li>
-								<li><a href="#tab-problem-submit" data-toggle="tab">Submit</a></li>
+								<c:if test="${currentUser != null}">
+									<li><a href="#tab-problem-submit" data-toggle="tab">Submit</a></li>
+								</c:if>
+								<c:if test="${currentUser == null}">
+									<li class="disabled"><a href="#">Please Login before submit</a></li>
+								</c:if>
 								<li class="disabled"><a href="#">Status</a></li>
 								<li class="disabled"><a href="#">Discus</a></li>
 							</ul>
@@ -69,20 +74,20 @@ Problem statement
 								</dl>
 							</div>
 
-							<div class="col-md-12" id="problem_description" type="markdown">
+							<div class="col-md-12" id="problem-description" type="markdown">
 								<textarea>${targetProblem.description}</textarea>
 							</div>
 
 							<div class="col-md-12">
 								<h2>Input</h2>
-								<div id="problem_input" type="markdown">
+								<div id="problem-input" type="markdown">
 									<textarea>${targetProblem.input}</textarea>
 								</div>
 							</div>
 
 							<div class="col-md-12">
 								<h2>Output</h2>
-								<div id="problem_output" type="markdown">
+								<div id="problem-output" type="markdown">
 									<textarea>${targetProblem.output}</textarea>
 								</div>
 							</div>
@@ -116,7 +121,7 @@ Problem statement
 								<div class="col-md-12">
 									<h2>Hint</h2>
 
-									<div class="" id="problem_hint" type="markdown">
+									<div class="" id="problem-hint" type="markdown">
 										<textarea>${targetProblem.hint}</textarea>
 									</div>
 								</div>
@@ -125,38 +130,39 @@ Problem statement
 								<div class="col-md-12">
 									<h2>Source</h2>
 
-									<div class="" id="problem_source">
+									<div class="" id="problem-source">
 										${targetProblem.source}
 									</div>
 								</div>
 							</c:if>
 						</div>
 
-						<div class="tab-pane" id="tab-problem-submit">
-							<div class="col-md-12">
-								<div class="panel panel-default">
-								  <div class="panel-body">
-										<form>
-											<textarea class="cdoj-submit-area" id="code-content"></textarea>
-										</form>
-								  </div>
-									<div class="panel-footer">
-										<div class="btn-group" data-toggle="buttons">
-											<c:forEach var="language" items="${languageList}">
-												<label class="btn btn-default">
-													<input type="radio" name="language"
-															value="<c:out value="${language.languageId}"/>"> 
-													<c:out value="${language.name}"/>
-												</label>
-											</c:forEach>
+						<c:if test="${currentUser != null}">
+							<div class="tab-pane" id="tab-problem-submit">
+								<div class="col-md-12">
+									<div class="panel panel-default">
+										<div class="panel-body">
+											<form>
+												<textarea class="cdoj-submit-area" id="code-content"></textarea>
+											</form>
 										</div>
-										<button type="button" class="pull-right btn btn-danger" id="submit-code" data-loading-text="Submitting...">
-											Submit
-										</button>
+										<div class="panel-footer">
+											<div class="btn-group" data-toggle="buttons">
+												<c:forEach var="language" items="${languageList}">
+													<label class="btn btn-default">
+														<input type="radio" name="language" value="<c:out value="${language.languageId}"/>"/> 
+														<c:out value="${language.name}"/>
+													</label>
+												</c:forEach>
+											</div>
+											<button type="button" class="pull-right btn btn-danger" id="submit-code" data-loading-text="Submitting...">
+												Submit
+											</button>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
+						</c:if>
 
 						<div class="tab-pane" id="tab-problem-status">
 						</div>
