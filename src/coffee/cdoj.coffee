@@ -5,5 +5,5 @@ $ ->
   initProblemList()
   initStatusList()
   initUserList()
-
+  initProblemPage()
   render()

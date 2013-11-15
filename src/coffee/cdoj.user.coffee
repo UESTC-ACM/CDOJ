@@ -1,5 +1,5 @@
 initUser = ->
-  $currentUser = $("#currentUser");
+  $currentUser = $("#currentUser")
   @userLogin = if $currentUser.length != 0 then true else false
 
   #Set user information and bind user avatar on page
