@@ -181,4 +181,14 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
            eq("problemId"), eq(problemEditorShowDTO.getProblemId()));
   }
 
+  @Test
+  public void testGetProblemDataShowDTO() throws AppException {
+    ProblemDataShowDTO problemDataShowDTO = ProblemDataShowDTO.builder().build();
+    when(problemDAO.getDTOByUniqueField(eq(ProblemDataShowDTO.class), Mockito.<ProblemDataShowDTO.Builder>any(),
+         eq("problemId"), eq(problemDataShowDTO.getProblemId()))).thenReturn(problemDataShowDTO);
+    Assert.assertEquals(problemService.getProblemDataShowDTO(problemDataShowDTO.getProblemId()), problemDataShowDTO);
+    verify(problemDAO).getDTOByUniqueField(eq(ProblemDataShowDTO.class), Mockito.<ProblemDataShowDTO.Builder>any(),
+           eq("problemId"), eq(problemDataShowDTO.getProblemId()));
+  }
+
 }
