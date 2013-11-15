@@ -17,25 +17,25 @@ public class ProblemCondition extends BaseCondition {
    * Start problem id.
    */
   @Exp(mapField = "problemId", type = Condition.ConditionType.GREATER_OR_EQUALS)
-  public Integer startId;
+    public Integer startId;
 
   /**
    * End problem id.
    */
   @Exp(mapField = "problemId", type = Condition.ConditionType.LESS_OR_EQUALS)
-  public Integer endId;
+    public Integer endId;
 
   /**
    * Problem title (partly matches)
    */
   @Exp(type = Condition.ConditionType.LIKE)
-  public String title;
+    public String title;
 
   /**
    * Problem source (partly matches)
    */
   @Exp(type = Condition.ConditionType.LIKE)
-  public String source;
+    public String source;
 
   /**
    * Keyword for {@code description}, {@code input}, {@code output}, {@code sampleInput},
@@ -47,25 +47,25 @@ public class ProblemCondition extends BaseCondition {
    * Is problem need spj?
    */
   @Exp(type = Condition.ConditionType.EQUALS)
-  public Boolean isSpj;
+    public Boolean isSpj;
 
   /**
    * Is problem visible?
    */
   @Exp(type = Condition.ConditionType.EQUALS)
-  public Boolean isVisible;
+    public Boolean isVisible;
 
   /**
    * Minimal problem difficulty
    */
   @Exp(mapField = "difficulty", type = Condition.ConditionType.GREATER_OR_EQUALS)
-  public Integer startDifficulty;
+    public Integer startDifficulty;
 
   /**
    * Maximal problem difficulty
    */
   @Exp(mapField = "difficulty", type = Condition.ConditionType.LESS_OR_EQUALS)
-  public Integer endDifficulty;
+    public Integer endDifficulty;
 
   /**
    * Is problem has an empty title?

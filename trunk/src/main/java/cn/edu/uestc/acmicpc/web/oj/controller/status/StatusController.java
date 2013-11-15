@@ -87,7 +87,7 @@ public class StatusController extends BaseController {
   @LoginPermit(NeedLogin = false)
   public @ResponseBody
   Map<String, Object> search(HttpSession session,
-                             @RequestBody StatusCondition statusCondition) {
+      @RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try{
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
@@ -95,7 +95,7 @@ public class StatusController extends BaseController {
       if(currentUser == null ||
           currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
         statusCondition.isVisible = true;
-			}
+          }
       Long count = statusService.count(statusCondition);
       PageInfo pageInfo = buildPageInfo(count, statusCondition.currentPage,
           Global.RECORD_PER_PAGE, "", null);
@@ -103,7 +103,7 @@ public class StatusController extends BaseController {
           pageInfo);
       for (StatusListDTO statusListDTO : statusListDTOList) {
         statusListDTO.setReturnType(globalService.getReturnDescription(
-            statusListDTO.getReturnTypeId(), statusListDTO.getCaseNumber()));
+              statusListDTO.getReturnTypeId(), statusListDTO.getCaseNumber()));
       }
 
       json.put("result", "success");
@@ -124,8 +124,8 @@ public class StatusController extends BaseController {
   @LoginPermit(NeedLogin = true)
   public @ResponseBody
   Map<String, Object> submit(HttpSession session,
-                             @RequestBody @Valid SubmitDTO submitDTO,
-                             BindingResult validateResult) {
+      @RequestBody @Valid SubmitDTO submitDTO,
+      BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
@@ -136,32 +136,32 @@ public class StatusController extends BaseController {
 
         if (submitDTO.getProblemId() == null) {
           throw new AppException("Wrong problem id.");
-				}
+        }
         ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(submitDTO.getProblemId());
         if (problemDTO == null) {
           throw new AppException("Wrong problem id.");
-				}
+        }
         if (!problemDTO.getIsVisible() &&
             currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
           throw new AppException("You have no permission to submit this problem.");
-				}
+            }
 
         //TODO(mzry1992) Check contest id after contest controller has been completed.
 
         if (submitDTO.getLanguageId() == null) {
           throw new AppException("Please select a language.");
-				}
+        }
         if (languageService.getLanguageName(submitDTO.getLanguageId()) == null) {
           throw new AppException("No such language.");
-				}
+        }
 
         Integer codeId = codeService.createNewCode(CodeDTO.builder()
             .setContent(submitDTO.getCodeContent())
-						.setShare(false)
+            .setShare(false)
             .build());
         if (codeId == null) {
           throw new AppException("Error while saving you code.");
-				}
+        }
 
         statusService.createNewStatus(StatusDTO.builder()
             .setCodeId(codeId)
@@ -185,7 +185,7 @@ public class StatusController extends BaseController {
   @LoginPermit(NeedLogin = true)
   public @ResponseBody
   Map<String, Object> info(HttpSession session,
-                           @PathVariable Integer statusId) {
+      @PathVariable Integer statusId) {
     Map<String, Object> json = new HashMap<>();
     try{
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
@@ -199,7 +199,7 @@ public class StatusController extends BaseController {
       json.put("code", statusInformationDTO.getCodeContent());
       if (statusInformationDTO.getCompileInfoId() != null) {
         json.put("compileInfo", compileInfoService.getCompileInfo(
-            statusInformationDTO.getCompileInfoId()));
+              statusInformationDTO.getCompileInfoId()));
       }
     }catch(AppException e){
       json.put("result", "error");
