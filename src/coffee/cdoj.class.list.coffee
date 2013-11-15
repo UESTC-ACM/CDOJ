@@ -49,6 +49,7 @@ class ListModule
       requestUrl: search request url
       condition: defalut condition
       format: list item format
+      after: function will be called after datas apeended
   ###
   constructor: (@options) ->
     @listContainer = @options.listContainer
@@ -72,8 +73,11 @@ class ListModule
         (datas) =>
           @pageInfo.empty().append(datas.pageInfo)
           datas.list.each((data) =>
+            # TODO We can pass the status of prev list item to next list item
             @list.append(@options.formatter data)
           )
+          if @options.after != undefined
+            @options.after()
           @refreshLock = 0
       )
     return

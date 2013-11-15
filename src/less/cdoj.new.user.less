@@ -6,8 +6,17 @@
     }
   }
 }
+.image-size(@size) {
+  width: @size;
+  height: @size;
+  min-height: @size;
+  min-width: @size;
+}
 #cdoj-user-avatar {
-  width: 200px;
+  .image-size(111px)
+}
+#cdoj-users-avatar {
+  .image-size(64px)
 }
 #currentUser {
   font-size: 14px;
