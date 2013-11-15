@@ -150,4 +150,15 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
         ConditionType.LESS_THAN, 2 * Global.RECORD_PER_PAGE), entries.get(1));
   }
 
+  @Test
+  public void testGetAllVisibleProblemIds() throws AppException {
+    ArgumentCaptor<Condition> captor = ArgumentCaptor.forClass(Condition.class);
+    problemService.getAllVisibleProblemIds();
+    verify(problemDAO).findAll(eq("problemId"), captor.capture());
+    Condition condition = captor.getValue();
+    List<Entry> entries = condition.getentEntries();
+    Assert.assertEquals(Entry.of("isVisible",
+        ConditionType.STRING_EQUALS, "1"), entries.get(0));
+  }
+
 }
