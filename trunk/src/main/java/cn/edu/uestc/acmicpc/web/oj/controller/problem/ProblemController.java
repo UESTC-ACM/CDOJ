@@ -101,12 +101,13 @@ public class ProblemController extends BaseController{
                                                  @RequestBody ProblemCondition problemCondition){
     Map<String, Object> json = new HashMap<>();
     try{
+      problemCondition.isTitleEmpty = false;
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-      if(currentUser == null ||
-          currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()){
+      if (currentUser != null && currentUser.getType() == Global.AuthenticationType.ADMIN.ordinal()) {
+        // We can put some special condition here
+      } else {
         problemCondition.isVisible = true;
       }
-      problemCondition.isTitleEmpty = false;
       Long count = problemService.count(problemCondition);
       PageInfo pageInfo = buildPageInfo(count, problemCondition.currentPage,
           Global.RECORD_PER_PAGE, "", null);
@@ -133,6 +134,32 @@ public class ProblemController extends BaseController{
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
     }catch(Exception e){
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  /**
+   * Modify special field of problem
+   *
+   * @param targetId problem id
+   * @param field field want to modified
+   * @param value value
+   * @return JSON
+   */
+  @RequestMapping("operator/{id}/{field}/{value}")
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public @ResponseBody
+  Map<String, Object> operator(@PathVariable("id") String targetId,
+                               @PathVariable("field") String field,
+                               @PathVariable("value") String value) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      problemService.operator(field, targetId, value);
+      json.put("result", "success");
+    } catch (Exception e) {
       e.printStackTrace();
       json.put("result", "error");
       json.put("error_msg", "Unknown exception occurred.");
