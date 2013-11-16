@@ -24,25 +24,25 @@ public class StatusCondition extends BaseCondition {
    * Minimal status id
    */
   @Exp(mapField = "statusId", type = Condition.ConditionType.GREATER_OR_EQUALS)
-    public Integer startId;
+  public Integer startId;
 
   /**
    * Maximal status id
    */
   @Exp(mapField = "statusId", type = Condition.ConditionType.LESS_OR_EQUALS)
-    public Integer endId;
+  public Integer endId;
 
   /**
    * Minimal submit time
    */
   @Exp(mapField = "time", type = Condition.ConditionType.GREATER_OR_EQUALS)
-    public Timestamp startTime;
+  public Timestamp startTime;
 
   /**
    * Maximal submit time
    */
   @Exp(mapField = "time", type = Condition.ConditionType.LESS_OR_EQUALS)
-    public Timestamp endTime;
+  public Timestamp endTime;
 
   /**
    * Submit user name
@@ -53,19 +53,19 @@ public class StatusCondition extends BaseCondition {
    * Submit user id
    */
   @Exp(mapField = "userByUserId", type = Condition.ConditionType.EQUALS)
-    public Integer userId;
+  public Integer userId;
 
   /**
    * Problem id
    */
   @Exp(mapField = "problemByProblemId", type = Condition.ConditionType.EQUALS)
-    public Integer problemId;
+  public Integer problemId;
 
   /**
    * Language
    */
   @Exp(mapField = "languageByLanguageId", type = Condition.ConditionType.EQUALS)
-    public Integer languageId;
+  public Integer languageId;
 
   /**
    * Contest id
@@ -83,7 +83,7 @@ public class StatusCondition extends BaseCondition {
   public Integer resultId;
 
   @Exp(mapField = "problemByProblemId.isVisible", type = ConditionType.EQUALS)
-    public Boolean isVisible;
+  public Boolean isVisible;
 
   @Override
   public Condition getCondition() throws AppException {
