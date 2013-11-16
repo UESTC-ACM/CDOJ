@@ -28,8 +28,24 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class JudgeItem {
 
-  public Status status;
-  public CompileInfo compileInfo;
+  private Status status;
+  private CompileInfo compileInfo;
+
+  public void setStatus(Status status) {
+    this.status = status;
+  }
+
+  public Status getStatus() {
+    return status;
+  }
+
+  public void setCompileInfo(CompileInfo compileInfo) {
+    this.compileInfo = compileInfo;
+  }
+
+  public CompileInfo getCompileInfo() {
+    return compileInfo;
+  }
 
   @Autowired
   private ICompileInfoDAO compileinfoDAO;
@@ -63,8 +79,7 @@ public class JudgeItem {
   /**
    * Update database for item.
    *
-   * @param updateStatus
-   *          if set {@code true}, update status' information.
+   * @param updateStatus if set {@code true}, update status' information.
    */
   @Transactional
   public void update(boolean updateStatus) {
