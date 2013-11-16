@@ -9,7 +9,7 @@ Footer part of all pages.
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <script src="<c:url value="/plugins/jquery/dist/jquery.js"/>"></script>
+  <script src="<c:url value="/plugins/jquery/dist/jquery.min.js"/>"></script>
   <script src="<c:url value="/plugins/sugar/release/sugar-full.development.js"/>"></script>
   <script src="<c:url value="/plugins/underscore/underscore.js"/>"></script>
   <script src="<c:url value="/plugins/bootstrap/dist/js/bootstrap.js"/>"></script>
