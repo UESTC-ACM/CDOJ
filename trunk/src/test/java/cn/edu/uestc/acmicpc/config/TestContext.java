@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.judge.JudgeService;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
@@ -25,6 +26,7 @@ import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.service.impl.UserServiceImpl;
+import cn.edu.uestc.acmicpc.service.impl.ProblemServiceImpl;
 import cn.edu.uestc.acmicpc.util.Global;
 
 import com.jolbox.bonecp.BoneCPDataSource;
@@ -69,6 +71,12 @@ public class TestContext extends ApplicationContextConfig {
   @Autowired
   public UserService realUserService(@Qualifier("mockUserDAO") IUserDAO userDAO) {
     return new UserServiceImpl(userDAO);
+  }
+
+  @Bean
+  @Autowired
+  public ProblemService realProblemService(@Qualifier("mockProblemDAO") IProblemDAO problemDAO) {
+    return new ProblemServiceImpl(problemDAO);
   }
 
   @Bean
@@ -117,6 +125,12 @@ public class TestContext extends ApplicationContextConfig {
   @Primary
   public IUserDAO mockUserDAO() {
     return mock(IUserDAO.class);
+  }
+
+  @Bean
+  @Primary
+  public IProblemDAO mockProblemDAO() {
+    return mock(IProblemDAO.class);
   }
 
   @Bean
