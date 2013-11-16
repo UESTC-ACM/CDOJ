@@ -104,31 +104,6 @@ public class ProblemAdminController extends BaseController {
     return json;
   }
 
-  /**
-   * TODO(mzry1992)
-   *
-   * @param targetId
-   * @param field
-   * @param value
-   * @return
-   */
-  @RequestMapping("operator/{id}/{field}/{value}")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
-  public @ResponseBody
-  Map<String, Object> operator(@PathVariable("id") String targetId,
-                               @PathVariable("field") String field,
-                               @PathVariable("value") String value) {
-    Map<String, Object> json = new HashMap<>();
-    try {
-      problemService.operator(field, targetId, value);
-      json.put("result", "success");
-    } catch (Exception e) {
-      e.printStackTrace();
-      json.put("result", "error");
-      json.put("error_msg", "Unknown exception occurred.");
-    }
-    return json;
-  }
 
   @RequestMapping("editor/{problemId}")
   @LoginPermit(Global.AuthenticationType.ADMIN)
