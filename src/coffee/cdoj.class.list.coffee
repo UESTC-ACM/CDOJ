@@ -63,7 +63,6 @@ class ListModule
   refresh: (condition) ->
     if @refreshLock == 0
       @refreshLock = 1
-      console.log(condition)
       @list = @listContainer.find("#list-container")
       # Clear first
       @list.empty()
@@ -71,7 +70,17 @@ class ListModule
       jsonPost(@options.requestUrl
         condition
         (datas) =>
+          # Add pagination
           @pageInfo.empty().append(datas.pageInfo)
+          console.log(@pageInfo.find('a'))
+          @pageInfo.find('a').click (e) =>
+            $el = $(e.currentTarget)
+            if $el.attr('href') == null
+              return false
+            condition.currentPage = $el.attr('href')
+            @refresh(condition);
+            return false
+
           datas.list.each((data) =>
             # TODO We can pass the status of prev list item to next list item
             @list.append(@options.formatter data)

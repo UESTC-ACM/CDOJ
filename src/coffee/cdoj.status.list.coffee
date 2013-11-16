@@ -17,18 +17,23 @@ initStatusList = ->
         "orderFields": "statusId",
         "orderAsc": "false"
       formatter: (data) ->
-        console.log(data)
+        #console.log(data)
         """
           <div class="col-md-12">
             <div class="panel panel-default">
               <div class="panel-body">
                 <div class="media">
-                  <a class="pull-left" href="#">
-                    <img />
-                  </a>
+                  <div class="pull-left">
+                    <div class="status-sign">
+                      #{if data.returnTypeId == 16 then "<i class='icon-spinner icon-spin'></i>" else ""}
+                    </div>
+                  </div>
+                  <div class="pull-right">
+                    ##{data.statusId}
+                  </div>
                   <div class="media-body">
                     <h4 class="media-heading">#{data.returnType}</h4>
-                    #{data.userName} | We can use media image to show the state... | TODO
+                    #{data.userName} <span class="muted">submitted at</span> #{Date.create(data.time)}
                   </div>
                 </div>
               </div>

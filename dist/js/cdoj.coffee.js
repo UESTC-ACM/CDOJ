@@ -300,11 +300,21 @@
       var _this = this;
       if (this.refreshLock === 0) {
         this.refreshLock = 1;
-        console.log(condition);
         this.list = this.listContainer.find("#list-container");
         this.list.empty();
         jsonPost(this.options.requestUrl, condition, function(datas) {
           _this.pageInfo.empty().append(datas.pageInfo);
+          console.log(_this.pageInfo.find('a'));
+          _this.pageInfo.find('a').click(function(e) {
+            var $el;
+            $el = $(e.currentTarget);
+            if ($el.attr('href') === null) {
+              return false;
+            }
+            condition.currentPage = $el.attr('href');
+            _this.refresh(condition);
+            return false;
+          });
           datas.list.each(function(data) {
             return _this.list.append(_this.options.formatter(data));
           });
@@ -427,7 +437,7 @@
         },
         formatter: function(data) {
           console.log(data);
-          return "<div class=\"col-lg-6\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <a class=\"pull-left\" href=\"#\">\n          <img />\n        </a>\n        <div class=\"media-body\" style=\"height: 70px;\">\n          <h4 class=\"media-heading\"><a href=\"/problem/show/" + data.problemId + "\">" + data.title + "</a></h4>\n          " + data.source + "\n          <div>\n            <span class=\"label label-default\">Tag</span>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
+          return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <a class=\"pull-left\" href=\"#\">\n          <img />\n        </a>\n        <div class=\"media-body\" style=\"height: 70px;\">\n          <h4 class=\"media-heading\"><a href=\"/problem/show/" + data.problemId + "\">" + data.title + "</a></h4>\n          " + (data.source.trim() === '' ? "&nbsp;" : data.source) + "\n          <div>\n            " + (data.isSpj ? "<span class='label label-danger'>SPJ</span>" : "") + "\n            <span class=\"label label-default\">Tag</span>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
         }
       });
     }
@@ -482,8 +492,7 @@
           "orderAsc": "false"
         },
         formatter: function(data) {
-          console.log(data);
-          return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <a class=\"pull-left\" href=\"#\">\n          <img />\n        </a>\n        <div class=\"media-body\">\n          <h4 class=\"media-heading\">" + data.returnType + "</h4>\n          " + data.userName + " | We can use media image to show the state... | TODO\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
+          return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <div class=\"pull-left\">\n          <div class=\"status-sign\">\n            " + (data.returnTypeId === 16 ? "<i class='icon-spinner icon-spin'></i>" : "") + "\n          </div>\n        </div>\n        <div class=\"pull-right\">\n          #" + data.statusId + "\n        </div>\n        <div class=\"media-body\">\n          <h4 class=\"media-heading\">" + data.returnType + "</h4>\n          " + data.userName + " <span class=\"muted\">submitted at</span> " + (Date.create(data.time)) + "\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
         }
       });
     }

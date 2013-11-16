@@ -182,6 +182,9 @@ html,
 .sample {
   font-family: "Source Code Pro", Monaco, Menlo, Consolas, "Courier New", monospace;
 }
+.status-sign i {
+  font-size: 48px;
+}
 .hero {
   text-align: center;
   margin: 6em auto 3em;
