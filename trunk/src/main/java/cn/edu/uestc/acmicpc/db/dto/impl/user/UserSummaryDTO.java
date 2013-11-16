@@ -9,8 +9,8 @@ import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
 /** User DTO for user summary view. */
-@Fields({ "userId", "email", "userName", "nickName", "type", "school", "lastLogin", "solved",
-    "tried" })
+@Fields({ "userId", "email", "userName", "nickName", "type", "school", "motto", "lastLogin", "solved",
+  "tried" })
 public class UserSummaryDTO implements BaseDTO<User> {
 
   private Integer userId;
@@ -19,6 +19,7 @@ public class UserSummaryDTO implements BaseDTO<User> {
   private String nickName;
   private Integer type;
   private String school;
+  private String motto;
   private Timestamp lastLogin;
   private Integer solved;
   private Integer tried;
@@ -27,13 +28,14 @@ public class UserSummaryDTO implements BaseDTO<User> {
   }
 
   private UserSummaryDTO(Integer userId, String email, String userName, String nickName,
-      Integer type, String school, Timestamp lastLogin, Integer solved, Integer tried) {
+      Integer type, String school, String motto, Timestamp lastLogin, Integer solved, Integer tried) {
     this.userId = userId;
     this.email = email;
     this.userName = userName;
     this.nickName = nickName;
     this.type = type;
     this.school = school;
+    this.motto = motto;
     this.lastLogin = lastLogin;
     this.solved = solved;
     this.tried = tried;
@@ -87,6 +89,14 @@ public class UserSummaryDTO implements BaseDTO<User> {
     this.school = school;
   }
 
+  public String getMotto() {
+    return motto;
+  }
+
+  public void setMotto(String motto) {
+    this.motto = motto;
+  }
+
   public Timestamp getLastLogin() {
     return lastLogin;
   }
@@ -126,6 +136,7 @@ public class UserSummaryDTO implements BaseDTO<User> {
     private String nickName;
     private Integer type;
     private String school;
+    private String motto;
     private Timestamp lastLogin;
     private Integer solved;
     private Integer tried;
@@ -133,7 +144,7 @@ public class UserSummaryDTO implements BaseDTO<User> {
     @Override
     public UserSummaryDTO build() {
       return new UserSummaryDTO(userId, email, userName, nickName, type, school,
-          lastLogin, solved, tried);
+          motto, lastLogin, solved, tried);
     }
 
     @Override
@@ -144,6 +155,7 @@ public class UserSummaryDTO implements BaseDTO<User> {
       nickName = (String) properties.get("nickName");
       type = (Integer) properties.get("type");
       school = (String) properties.get("school");
+      motto = (String) properties.get("motto");
       lastLogin = (Timestamp) properties.get("lastLogin");
       solved = (Integer) properties.get("solved");
       tried = (Integer) properties.get("tried");
@@ -177,6 +189,11 @@ public class UserSummaryDTO implements BaseDTO<User> {
 
     public Builder setSchool(String school) {
       this.school = school;
+      return this;
+    }
+
+    public Builder setMotto(String motto) {
+      this.motto = motto;
       return this;
     }
 
