@@ -7,6 +7,7 @@ import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
 /**
  * Conditions setting for {@code IDAO#findAll()} and {@code IDAO#count()}.
@@ -278,8 +279,8 @@ public class Condition {
       }
     }
     if (pageInfo != null) {
-      builder.append(" limit " + pageInfo.getCurrentPage * Global.RECORD_PER_PAGE
-          + "," + Gloabl.RECORD_PER_PAGE);
+      builder.append(" limit " + pageInfo.getCurrentPage() * Global.RECORD_PER_PAGE
+          + "," + Global.RECORD_PER_PAGE);
     }
     return builder.toString();
   }
