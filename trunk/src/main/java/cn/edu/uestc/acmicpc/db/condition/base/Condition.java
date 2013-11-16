@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.db.condition.base;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
@@ -249,8 +250,15 @@ public class Condition {
     }
   }
 
+  private PageInfo pageInfo = null;
+
+  public void setPageInfo(PageInfo pageInfo) {
+    this.pageInfo = pageInfo;
+  }
+
   /**
-   * Gets HQL string with order by clause.
+   * Gets HQL string with order by clause. Note that we can apply
+   * page info in this method.
    *
    * @return HQL string we need.
    */
@@ -268,6 +276,10 @@ public class Condition {
           builder.append(",").append(order.toString());
         }
       }
+    }
+    if (pageInfo != null) {
+      builder.append(" limit " + pageInfo.getCurrentPage * Global.RECORD_PER_PAGE
+          + "," + Gloabl.RECORD_PER_PAGE);
     }
     return builder.toString();
   }
