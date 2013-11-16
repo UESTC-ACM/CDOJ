@@ -46,10 +46,12 @@ public class ObjectUtil {
       } catch (Exception ignored) {
       }
     }
-    if (obj instanceof Iterable)
-      for (Object object : (Iterable) obj)
+    if (obj instanceof Iterable) {
+      for (Object object : (Iterable) obj) {
         list.add(toString(object));
-    return String.format("{ %s }", ArrayUtil.join(list.toArray(), " , "));
+      }
+    }
+    return String.format("{\n%s\n}", ArrayUtil.join(list.toArray(), ",\n"));
   }
 
   public static boolean equals(Object first, Object second) {
