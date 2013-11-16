@@ -24,7 +24,7 @@ public class StatusCondition extends BaseCondition {
    * Minimal status id
    */
   @Exp(mapField = "statusId", type = Condition.ConditionType.GREATER_OR_EQUALS)
-  public Integer stratId;
+  public Integer startId;
 
   /**
    * Maximal status id
@@ -96,7 +96,7 @@ public class StatusCondition extends BaseCondition {
       }
     }
 
-    if (userName != null) {
+    if (userName != null && !userName.equals("")) {
       condition.addEntry("userByUserId.userName", Condition.ConditionType.STRING_EQUALS, userName);
     }
 
