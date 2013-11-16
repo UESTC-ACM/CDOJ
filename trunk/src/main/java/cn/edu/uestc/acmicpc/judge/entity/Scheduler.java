@@ -78,7 +78,7 @@ public class Scheduler implements Runnable, ApplicationContextAware {
         status.setResult(Global.OnlineJudgeReturnType.OJ_JUDGING.ordinal());
         status.setCaseNumber(0);
         JudgeItem judgeItem = applicationContext.getBean(JudgeItem.class);
-        judgeItem.status = status;
+        judgeItem.setStatus(status);
         statusDAO.update(status);
         judgeQueue.put(judgeItem);
       }
