@@ -13,9 +13,6 @@
 [submodule "trunk/src/main/webapp/plugins/pure"]
 	path = trunk/src/main/webapp/plugins/pure
 	url = https://github.com/yui/pure.git
-[submodule "trunk/src/main/webapp/plugins/jquery"]
-	path = trunk/src/main/webapp/plugins/jquery
-	url = https://github.com/jquery/jquery.git
 [submodule "trunk/src/main/webapp/plugins/cdoj"]
 	path = trunk/src/main/webapp/plugins/cdoj
 	url = git@gitcafe.com:mzry1992/CDOJ-UI.git
@@ -31,6 +28,3 @@
 [submodule "trunk/src/main/webapp/plugins/jqueryui"]
 	path = trunk/src/main/webapp/plugins/jqueryui
 	url = https://github.com/jquery/jquery-ui.git
-[submodule "trunk/src/main/webapp/plugins/bootstrap"]
-	path = trunk/src/main/webapp/plugins/bootstrap
-	url = https://github.com/twbs/bootstrap.git
