@@ -34,7 +34,7 @@ public class ConditionITTest extends AbstractTestNGSpringContextTests {
   public void testCondition_emptyEntrySet() throws AppException {
     Condition condition = new Condition();
     List<User> users = (List<User>) userDAO.findAll(condition);
-    Assert.assertEquals(3, users.size());
+    Assert.assertEquals(6, users.size());
     for (int i = 0 ; i < users.size(); i++) {
       Assert.assertEquals(users.get(i).getUserId(), Integer.valueOf(i + 1));
     }
@@ -46,7 +46,7 @@ public class ConditionITTest extends AbstractTestNGSpringContextTests {
     Condition condition = new Condition();
     condition.addOrder("userId", false);
     List<User> users = (List<User>) userDAO.findAll(condition);
-    Assert.assertEquals(3, users.size());
+    Assert.assertEquals(6, users.size());
     for (int i = 0 ; i < users.size(); i++) {
       Assert.assertEquals(users.get(i).getUserId(), Integer.valueOf(users.size() - i));
     }
@@ -55,14 +55,14 @@ public class ConditionITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testCondition_count_emptyCondition() throws AppException {
     UserCondition userCondition = new UserCondition();
-    Assert.assertEquals(userDAO.count(userCondition.getCondition()), Long.valueOf(3));
+    Assert.assertEquals(userDAO.count(userCondition.getCondition()), Long.valueOf(6));
   }
 
   @Test
   public void testCondition_count_withDepartmentId() throws AppException {
     UserCondition userCondition = new UserCondition();
     userCondition.departmentId = 1;
-    Assert.assertEquals(userDAO.count(userCondition.getCondition()), Long.valueOf(2));
+    Assert.assertEquals(userDAO.count(userCondition.getCondition()), Long.valueOf(5));
   }
 
   @Autowired

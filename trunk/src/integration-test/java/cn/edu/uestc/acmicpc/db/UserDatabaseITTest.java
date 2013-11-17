@@ -40,7 +40,7 @@ public class UserDatabaseITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testQuery_byDepartmentId() throws AppException {
     UserCondition condition = new UserCondition();
-    condition.endId = 5;
+    condition.endId = 3;
     condition.departmentId = 1;
     List<User> users = (List<User>) userDAO.findAll(condition.getCondition());
     Assert.assertEquals(2, users.size());
@@ -53,6 +53,6 @@ public class UserDatabaseITTest extends AbstractTestNGSpringContextTests {
     UserCondition condition = new UserCondition();
     condition.startId = 2;
     condition.endId = 10;
-    Assert.assertEquals(userDAO.count(condition.getCondition()), Long.valueOf(2));
+    Assert.assertEquals(userDAO.count(condition.getCondition()), Long.valueOf(5));
   }
 }

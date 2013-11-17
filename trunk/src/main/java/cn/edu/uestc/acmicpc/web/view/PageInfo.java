@@ -2,8 +2,6 @@ package cn.edu.uestc.acmicpc.web.view;
 
 /**
  * Object to build view's page tags.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class PageInfo {
 
@@ -11,6 +9,10 @@ public class PageInfo {
    * Current page number
    */
   private Long currentPage;
+  /**
+   * Number of records per page.
+   */
+  private Long countPerPage;
   /**
    * Total number of pages
    */
@@ -29,9 +31,10 @@ public class PageInfo {
    */
   private String htmlString;
 
-  private PageInfo(Long currentPage, Long totalPages, String baseURL, int displayDistance,
+  private PageInfo(Long currentPage, Long countPerPage, Long totalPages, String baseURL, int displayDistance,
       String htmlString) {
     this.currentPage = currentPage;
+    this.countPerPage = countPerPage;
     this.totalPages = totalPages;
     this.baseURL = baseURL;
     this.displayDistance = displayDistance;
@@ -44,6 +47,14 @@ public class PageInfo {
 
   public void setCurrentPage(Long currentPage) {
     this.currentPage = currentPage;
+  }
+
+  public Long getCountPerPage() {
+    return countPerPage;
+  }
+
+  public void setCountPerPage(Long countPerPage) {
+    this.countPerPage = countPerPage;
   }
 
   public Long getTotalPages() {
@@ -175,6 +186,6 @@ public class PageInfo {
 
     htmlString += "\n" + "            </ul>\n";
 
-    return new PageInfo(currentPage, countPerPage, baseURL, displayDistance, htmlString);
+    return new PageInfo(currentPage, countPerPage, totalPages, baseURL, displayDistance, htmlString);
   }
 }
