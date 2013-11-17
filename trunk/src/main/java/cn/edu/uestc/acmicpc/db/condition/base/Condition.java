@@ -257,6 +257,10 @@ public class Condition {
     this.pageInfo = pageInfo;
   }
 
+  public PageInfo getPageInfo() {
+    return pageInfo;
+  }
+
   /**
    * Gets HQL string with order by clause. Note that we can apply
    * page info in this method.
