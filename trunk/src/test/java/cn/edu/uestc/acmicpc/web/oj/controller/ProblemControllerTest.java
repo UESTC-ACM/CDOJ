@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -68,9 +67,6 @@ public class ProblemControllerTest extends ControllerTest {
   @Autowired
   @Qualifier("mockDepartmentService")
   private DepartmentService departmentService;
-
-  private MockMvc mockMvc;
-  private MockHttpSession session;
 
   @BeforeMethod
   public void init() {
