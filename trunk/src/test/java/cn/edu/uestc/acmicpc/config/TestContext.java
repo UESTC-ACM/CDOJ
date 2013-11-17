@@ -25,6 +25,7 @@ import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
+import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.impl.UserServiceImpl;
 import cn.edu.uestc.acmicpc.service.impl.ProblemServiceImpl;
 import cn.edu.uestc.acmicpc.util.Global;
@@ -119,6 +120,12 @@ public class TestContext extends ApplicationContextConfig {
   @Primary
   public DepartmentService mockDepartmentService() {
     return mock(DepartmentService.class);
+  }
+
+  @Bean
+  @Primary
+  public LanguageService mockLanguageService() {
+    return mock(LanguageService.class);
   }
 
   @Bean
