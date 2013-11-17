@@ -56,14 +56,14 @@ public class UserServiceITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testCount_emptyCondition() throws AppException {
     UserCondition condition = new UserCondition();
-    Assert.assertEquals(userService.count(condition), Long.valueOf(3L));
+    Assert.assertEquals(userService.count(condition), Long.valueOf(6L));
   }
 
   @Test
   public void testCount_byStartId() throws AppException {
     UserCondition condition = new UserCondition();
     condition.startId = 2;
-    Assert.assertEquals(userService.count(condition), Long.valueOf(2L));
+    Assert.assertEquals(userService.count(condition), Long.valueOf(5L));
   }
 
   @Test
@@ -78,7 +78,7 @@ public class UserServiceITTest extends AbstractTestNGSpringContextTests {
     UserCondition condition = new UserCondition();
     condition.startId = 2;
     condition.endId = 10;
-    Assert.assertEquals(userService.count(condition), Long.valueOf(2L));
+    Assert.assertEquals(userService.count(condition), Long.valueOf(5L));
   }
 
   @Test
@@ -93,14 +93,14 @@ public class UserServiceITTest extends AbstractTestNGSpringContextTests {
   public void testCount_byDepartmentId() throws AppException {
     UserCondition condition = new UserCondition();
     condition.departmentId = 1;
-    Assert.assertEquals(userService.count(condition), Long.valueOf(2L));
+    Assert.assertEquals(userService.count(condition), Long.valueOf(5L));
   }
 
   @Test
   public void testCount_bySchool() throws AppException {
     UserCondition condition = new UserCondition();
     condition.school = "UES";
-    Assert.assertEquals(userService.count(condition), Long.valueOf(3L));
+    Assert.assertEquals(userService.count(condition), Long.valueOf(6L));
   }
 
   @Test

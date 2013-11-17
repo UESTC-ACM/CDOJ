@@ -12,6 +12,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
@@ -22,6 +23,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserSummaryDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
 /**
  * Simple database test class.
@@ -67,7 +69,7 @@ public class DatabaseITTest extends AbstractTestNGSpringContextTests {
         userCondition.getCondition());
     Assert.assertEquals(result.size(), 1);
     UserSummaryDTO dto = result.get(0);
-    Assert.assertEquals(Integer.valueOf(2), dto.getUserId());
+    Assert.assertEquals(dto.getUserId(), Integer.valueOf(2));
     Assert.assertEquals(dto.getUserName(), "admin");
     Assert.assertEquals(dto.getNickName(), "admin");
     Assert.assertEquals(dto.getEmail(), "acm_admin@uestc.edu.cn");
@@ -76,6 +78,20 @@ public class DatabaseITTest extends AbstractTestNGSpringContextTests {
     Assert.assertEquals(dto.getType(), Integer.valueOf(1));
     Assert.assertEquals(dto.getSchool(), "UESTC");
     Assert.assertEquals(dto.getLastLogin(), new Timestamp(1359523046000L));
+  }
+
+  @Test
+  public void testDAO_findAllByBuilder_withPageInfo() throws AppException {
+    UserCondition userCondition = new UserCondition();
+    PageInfo pageInfo = PageInfo.create(103L, 3L, "", 0, 2L);
+    Condition condition = userCondition.getCondition();
+    condition.setPageInfo(pageInfo);
+    List<UserSummaryDTO> result = userDAO.findAll(UserSummaryDTO.class, UserSummaryDTO.builder(),
+        condition);
+    Assert.assertEquals(result.size(), 3);
+    Assert.assertEquals(result.get(0).getUserId(), Integer.valueOf(4));
+    Assert.assertEquals(result.get(1).getUserId(), Integer.valueOf(5));
+    Assert.assertEquals(result.get(2).getUserId(), Integer.valueOf(6));
   }
 
   @Test
