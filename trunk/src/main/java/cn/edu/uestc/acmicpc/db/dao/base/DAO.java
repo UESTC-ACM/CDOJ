@@ -10,6 +10,7 @@ import java.util.Map;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
@@ -19,9 +20,11 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.DatabaseUtil;
+import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
 /**
  * Global DAO implementation.
@@ -82,6 +85,15 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     return "from " + getReferenceClass().getSimpleName() + " " + condition.toHQLStringWithOrders();
   }
 
+  private Query getQuery(String hql, PageInfo pageInfo) {
+    Query query = getSession().createQuery(hql);
+    if (pageInfo != null) {
+      query.setFirstResult((int) (pageInfo.getCurrentPage() * Global.RECORD_PER_PAGE));
+      query.setMaxResults(Global.RECORD_PER_PAGE.intValue());
+    }
+    return query;
+  }
+
   @Override
   @Deprecated
   public List<?> findAll(Condition condition) throws AppException {
@@ -90,7 +102,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     }
     try {
       String hql = buildHQLStringWithOrders(condition);
-      return getSession().createQuery(hql).list();
+      return getQuery(hql, condition.getPageInfo()).list();
     } catch (HibernateException e) {
       LOGGER.error(e.getMessage(), e);
       throw new AppException("Invoke findAll method error.");
@@ -104,7 +116,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     }
     try {
       String hql = "select count(" + fieldName + ") " + buildHQLString(condition);
-      return (Long) getSession().createQuery(hql).uniqueResult();
+      return (Long) getQuery(hql, null).uniqueResult();
     } catch (HibernateException e) {
       LOGGER.error(e);
       throw new AppException("Invoke count method error.");
@@ -159,7 +171,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   @Override
   public List<?> findAll(String hql) throws AppException {
     try {
-      return getSession().createQuery(hql).list();
+      return getQuery(hql, null).list();
     } catch (HibernateException e) {
       LOGGER.error(e);
       throw new AppException("Invoke findAll method error.");
@@ -176,7 +188,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         hql = "select " + fields + " " + buildHQLStringWithOrders(condition);
       }
       System.out.println(hql);
-      return getSession().createQuery(hql).list();
+      return getQuery(hql, condition.getPageInfo()).list();
     } catch (HibernateException e) {
       LOGGER.error(e);
       throw new AppException("Invoke findAll method error.");
@@ -239,8 +251,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     }
     stringBuilder.append(" ").append(condition.toHQLString());
     String hql = stringBuilder.toString();
-    //LOGGER.info(hql);
-    getSession().createQuery(hql).executeUpdate();
+    getQuery(hql, null).executeUpdate();
   }
 
   /** TODO(fish): need it test. */
@@ -261,8 +272,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     }
     stringBuilder.append(" where ").append(field).append(" in (").append(values).append(")");
     String hql = stringBuilder.toString();
-    //LOGGER.info(hql);
-    getSession().createQuery(hql).executeUpdate();
+    getQuery(hql, null).executeUpdate();
   }
 
   @Override
@@ -272,7 +282,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     stringBuilder.append("delete ").append(getReferenceClass().getSimpleName());
     stringBuilder.append(" ").append(condition.toHQLString());
     String hql = stringBuilder.toString();
-    getSession().createQuery(hql).executeUpdate();
+    getQuery(hql, null).executeUpdate();
   }
 
   @Override
@@ -282,7 +292,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
 
   @Override
   public int executeHQL(String hql) {
-    return getSession().createQuery(hql).executeUpdate();
+    return getQuery(hql, null).executeUpdate();
   }
 
   @Override
