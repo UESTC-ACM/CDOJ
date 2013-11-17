@@ -20,7 +20,6 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.util.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.DatabaseUtil;
-import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
@@ -88,8 +87,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   private Query getQuery(String hql, PageInfo pageInfo) {
     Query query = getSession().createQuery(hql);
     if (pageInfo != null) {
-      query.setFirstResult((int) (pageInfo.getCurrentPage() * Global.RECORD_PER_PAGE));
-      query.setMaxResults(Global.RECORD_PER_PAGE.intValue());
+      query.setFirstResult((int) ((pageInfo.getCurrentPage() - 1) * pageInfo.getCountPerPage()));
+      query.setMaxResults(pageInfo.getCountPerPage().intValue());
     }
     return query;
   }

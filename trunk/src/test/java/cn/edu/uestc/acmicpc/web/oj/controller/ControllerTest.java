@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
@@ -21,6 +22,9 @@ import cn.edu.uestc.acmicpc.util.Global.AuthenticationType;
 
 /** Abstract test to define constant variables for controller tests. */
 public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
+
+  protected MockMvc mockMvc;
+  protected MockHttpSession session;
 
   protected List<DepartmentDTO> departmentList = new ArrayList<DepartmentDTO>();
 
