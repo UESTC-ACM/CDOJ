@@ -262,8 +262,7 @@ public class Condition {
   }
 
   /**
-   * Gets HQL string with order by clause. Note that we can apply
-   * page info in this method.
+   * Gets HQL string with order by clause.
    *
    * @return HQL string we need.
    */
@@ -281,10 +280,6 @@ public class Condition {
           builder.append(",").append(order.toString());
         }
       }
-    }
-    if (pageInfo != null) {
-      builder.append(" limit " + pageInfo.getCurrentPage() * Global.RECORD_PER_PAGE
-          + "," + Global.RECORD_PER_PAGE);
     }
     return builder.toString();
   }
