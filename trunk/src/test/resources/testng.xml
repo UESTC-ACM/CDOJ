@@ -27,6 +27,7 @@
 		<classes>
 			<class name="cn.edu.uestc.acmicpc.web.oj.controller.IndexControllerTest" />
 			<class name="cn.edu.uestc.acmicpc.web.oj.controller.UserControllerTest" />
+			<class name="cn.edu.uestc.acmicpc.web.oj.controller.ProblemControllerTest" />
 		</classes>
 	</test>
 

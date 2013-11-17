@@ -9,7 +9,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -21,8 +20,6 @@ import cn.edu.uestc.acmicpc.web.oj.controller.index.IndexController;
 @WebAppConfiguration
 @ContextConfiguration(classes = { TestContext.class, WebMVCConfig.class })
 public class IndexControllerTest extends ControllerTest {
-
-  private MockMvc mockMvc;
 
   @Autowired
   private IndexController indexController;
