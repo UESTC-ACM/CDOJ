@@ -60,7 +60,6 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   public List<StatusListDTO> getStatusList(StatusCondition statusCondition, PageInfo pageInfo) throws AppException {
     Condition condition = statusCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    System.out.println("Fuck");
     return statusDAO.findAll(StatusListDTO.class, StatusListDTO.builder(), condition);
   }
 

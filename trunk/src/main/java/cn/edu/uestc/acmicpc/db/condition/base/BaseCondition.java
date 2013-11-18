@@ -62,15 +62,7 @@ public abstract class BaseCondition {
     this.keyField = keyField;
   }
 
-  /**
-   * @Deprecated this field is deprecated and will be removed later.
-   */
-  @Deprecated
   public Long currentPage;
-  /**
-   * @Deprecated this field is deprecated and will be removed later.
-   */
-  @Deprecated
   public Long countPerPage;
   public String orderFields;
   public String orderAsc;
