@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
@@ -165,6 +166,33 @@ public class ProblemController extends BaseController{
       json.put("error_msg", "Unknown exception occurred.");
     }
     return json;
+  }
+
+  @RequestMapping("editor/{problemId}")
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public String editor(@PathVariable("problemId") String sProblemId,
+                       ModelMap model) {
+    try {
+      if (sProblemId.compareTo("new") == 0) {
+        model.put("action", "new");
+      } else {
+        Integer problemId;
+        try {
+          problemId = Integer.parseInt(sProblemId);
+        } catch (NumberFormatException e) {
+          throw new AppException("Parse problem id error.");
+        }
+        ProblemEditorShowDTO targetProblem = problemService.getProblemEditorShowDTO(problemId);
+        if (targetProblem == null)
+          throw new AppException("No such problem.");
+        model.put("action", "edit");
+        model.put("targetProblem", targetProblem);
+      }
+    } catch (AppException e) {
+      model.put("message", e.getMessage());
+      return "error/error";
+    }
+    return "/problem/problemEditor";
   }
 
   private Map<Integer, Global.AuthorStatusType> GetProblemStatus(UserDTO currentUser) {

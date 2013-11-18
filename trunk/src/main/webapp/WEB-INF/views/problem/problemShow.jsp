@@ -94,11 +94,11 @@ Problem statement
 
               <div class="col-md-12">
                 <h2>Sample input and output</h2>
-                <table class="table">
+                <table class="table table-bordered">
                   <thead>
                     <tr>
-                      <th>Sample Input</th>
-                      <th>Sample Output</th>
+                      <th style="width: 50%;">Sample Input</th>
+                      <th style="width: 50%;">Sample Output</th>
                     </tr>
                   </thead>
                   <tbody>
