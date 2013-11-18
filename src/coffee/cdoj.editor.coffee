@@ -1,5 +1,5 @@
 # A markdown editor
-# require jQuery and sugar
+# require jQuery, sugar and marked
 class Flandre
   constructor: (@options) ->
     @element = @options.element
