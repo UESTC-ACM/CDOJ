@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IArticleDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleDTO;
@@ -49,11 +50,11 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
   }
 
   @Override
-  public List<ArticleListDTO> getArticleList(ArticleCondition condition,
+  public List<ArticleListDTO> getArticleList(ArticleCondition articleCondition,
       PageInfo pageInfo) throws AppException {
-    condition.currentPage = pageInfo.getCurrentPage();
-    condition.countPerPage = Global.RECORD_PER_PAGE;
-    return articleDAO.findAll(ArticleListDTO.class, ArticleListDTO.builder(), condition.getCondition());
+    Condition condition = articleCondition.getCondition();
+    condition.setPageInfo(pageInfo);
+    return articleDAO.findAll(ArticleListDTO.class, ArticleListDTO.builder(), condition);
   }
 
   @Override

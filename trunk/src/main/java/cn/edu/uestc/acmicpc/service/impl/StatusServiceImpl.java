@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
@@ -56,11 +57,11 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   }
 
   @Override
-  public List<StatusListDTO> getStatusList(StatusCondition condition, PageInfo pageInfo) throws AppException {
-    condition.currentPage = pageInfo.getCurrentPage();
-    condition.countPerPage = Global.RECORD_PER_PAGE;
-    return statusDAO.findAll(StatusListDTO.class, StatusListDTO.builder(),
-        condition.getCondition());
+  public List<StatusListDTO> getStatusList(StatusCondition statusCondition, PageInfo pageInfo) throws AppException {
+    Condition condition = statusCondition.getCondition();
+    condition.setPageInfo(pageInfo);
+    System.out.println("Fuck");
+    return statusDAO.findAll(StatusListDTO.class, StatusListDTO.builder(), condition);
   }
 
   private void updateStatusByStatusDTO(Status status, StatusDTO statusDTO) {
