@@ -24,6 +24,7 @@ module.exports = function(grunt) {
         files: {
           "dist/js/cdoj.coffee.js": [
             "src/coffee/cdoj.util.*.coffee",
+            "src/coffee/cdoj.editor.coffee",
             "src/coffee/cdoj.class.*.coffee",
             "src/coffee/cdoj.layout.coffee",
             "src/coffee/cdoj.user.coffee",

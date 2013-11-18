@@ -129,7 +129,6 @@ li.L7,
 li.L8,
 li.L9 {
   /* */
-
 }
 /* Alternate shading for lines */
 li.L1,
@@ -138,7 +137,6 @@ li.L5,
 li.L7,
 li.L9 {
   /* */
-
 }
 body,
 html,
@@ -217,7 +215,6 @@ html,
   right: 0;
   z-index: 1020;
   /* 10 less than .navbar-fixed to prevent any overlap */
-
   padding: 30px 2em 12px 2em;
   border-bottom: 1px solid black;
 }
@@ -342,9 +339,6 @@ html,
 #cdoj-user-menu i {
   margin-right: 4px;
 }
-@media (max-width: 767px) {
-  
-}
 @media (min-width: 768px) and (max-width: 991px) {
   .cdoj-menu li.cdoj-menu-heading {
     font-size: 110%;
@@ -379,9 +373,6 @@ html,
 }
 #currentUser {
   font-size: 14px;
-}
-@media (max-width: 767px) {
-  
 }
 @media (min-width: 768px) and (max-width: 991px) {
   #cdoj-user {
@@ -496,6 +487,28 @@ html,
   #page-info {
     float: left;
   }
+}
+.admin-span {
+  margin-top: -6px;
+  margin-left: 15px;
+}
+.flandre {
+  display: block;
+  height: auto;
+  width: 100%;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 /*
 @import "cdoj.layout.less";

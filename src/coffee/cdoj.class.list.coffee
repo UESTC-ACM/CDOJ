@@ -72,7 +72,6 @@ class ListModule
         (datas) =>
           # Add pagination
           @pageInfo.empty().append(datas.pageInfo)
-          console.log(@pageInfo.find('a'))
           @pageInfo.find('a').click (e) =>
             $el = $(e.currentTarget)
             if $el.attr('href') == null

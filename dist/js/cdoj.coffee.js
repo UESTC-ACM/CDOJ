@@ -1,5 +1,5 @@
 (function() {
-  var $, ListModule, SearchModule, avatar, initLayout, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonPost, render;
+  var $, Flandre, ListModule, SearchModule, avatar, getCurrentUser, initLayout, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonPost, render;
 
   avatar = function(el, options) {
     var $el, emailAddress, url;
@@ -224,6 +224,48 @@
     return window.prettyPrint && prettyPrint();
   };
 
+  Flandre = (function() {
+    function Flandre(options) {
+      this.options = options;
+      this.element = this.options.element;
+      if (this.element === null || this.element.length === 0) {
+        return null;
+      }
+      this.createTextarea();
+    }
+
+    Flandre.prototype.setText = function(el, content) {
+      content = content.replace(/</g, '&lt;');
+      content = content.replace(/>/g, '&gt;');
+      content = content.replace(/\n/g, '<br>');
+      content = content.replace(/<br>\s/g, '<br>&nbsp;');
+      content = content.replace(/\s\s\s/g, '&nbsp; &nbsp;');
+      content = content.replace(/\s\s/g, '&nbsp; ');
+      content = content.replace(/^ /, '&nbsp;');
+      return el.innerHTML = content;
+    };
+
+    Flandre.prototype.createTextarea = function() {
+      var oldText;
+      oldText = this.element[0].innerHTML;
+      this.element.empty();
+      this.setText(this.element[0], oldText);
+      return this.element.addClass("flandre tex2jax_ignore form-control").attr("contentEditable", "true");
+    };
+
+    return Flandre;
+
+  })();
+
+  $ = jQuery;
+
+  $.fn.flandre = function(options) {
+    var flandre;
+    this.options = options;
+    this.options["element"] = $(this);
+    return flandre = new Flandre(this.options);
+  };
+
   SearchModule = (function() {
     function SearchModule(father) {
       var $advancedButton, $advancedResetButton, $advancedSearchButton, $conditionForm, $searchButton, $searchKeyword, initCondition,
@@ -304,7 +346,6 @@
         this.list.empty();
         jsonPost(this.options.requestUrl, condition, function(datas) {
           _this.pageInfo.empty().append(datas.pageInfo);
-          console.log(_this.pageInfo.find('a'));
           _this.pageInfo.find('a').click(function(e) {
             var $el;
             $el = $(e.currentTarget);
@@ -343,21 +384,37 @@
     }
   };
 
-  initUser = function() {
-    var $currentUser, $userAvatar,
-      _this = this;
+  getCurrentUser = function() {
+    var $currentUser;
     $currentUser = $("#currentUser");
     this.userLogin = $currentUser.length !== 0 ? true : false;
     if (this.userLogin) {
       this.currentUser = $currentUser[0].innerHTML.trim();
       this.currentUserType = $currentUser.attr("type");
+      return {
+        userLogin: true,
+        currentUser: this.currentUser,
+        currentUserType: this.currentUserType
+      };
+    } else {
+      return {
+        userLogin: false
+      };
+    }
+  };
+
+  initUser = function() {
+    var $userAvatar,
+      _this = this;
+    this.user = getCurrentUser();
+    if (this.user.userLogin) {
       $userAvatar = $("#cdoj-user-avatar");
       $userAvatar.setAvatar({
         image: "http://www.acm.uestc.edu.cn/images/akari_small.jpg",
         size: $userAvatar.width() ? $userAvatar.width() : void 0
       });
     }
-    if (this.userLogin === false) {
+    if (this.user.userLogin === false) {
       $("#cdoj-login-button").click(function() {
         var $loginForm, info;
         $loginForm = $("#cdoj-login-form");
@@ -403,7 +460,7 @@
         return false;
       });
     }
-    if (this.userLogin) {
+    if (this.user.userLogin) {
       return $("#cdoj-logout-button").click(function() {
         $.post("/user/logout", function(data) {
           if (data.result === "success") {
@@ -411,6 +468,19 @@
           }
         });
         return false;
+      });
+    }
+  };
+
+  initProblemEditor = function() {
+    var $editor, editorsId;
+    $editor = $("#problem-editor");
+    if ($editor.length > 0) {
+      editorsId = ["description", "input", "output", "sampleInput", "sampleOutput", "hint"];
+      return editorsId.each(function(value, id) {
+        return $("#" + value).flandre({
+          foo: "bar"
+        });
       });
     }
   };
@@ -436,8 +506,67 @@
           orderAsc: void 0
         },
         formatter: function(data) {
-          console.log(data);
-          return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <a class=\"pull-left\" href=\"#\">\n          <img />\n        </a>\n        <div class=\"media-body\" style=\"height: 70px;\">\n          <h4 class=\"media-heading\"><a href=\"/problem/show/" + data.problemId + "\">" + data.title + "</a></h4>\n          " + (data.source.trim() === '' ? "&nbsp;" : data.source) + "\n          <div>\n            " + (data.isSpj ? "<span class='label label-danger'>SPJ</span>" : "") + "\n            <span class=\"label label-default\">Tag</span>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
+          var adminSpan, difficulty, panelAC, panelDE, panelWA;
+          panelAC = "panel panel-success";
+          panelWA = "panel panel-danger";
+          panelDE = "panel panel-default";
+          this.user = getCurrentUser();
+          adminSpan = function() {
+            var result;
+            result = "";
+            if (this.user.userLogin && this.user.currentUserType === "1") {
+              result += "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-visible-state-editor\" problem-id=\"" + data.problemId + "\" visible=\"" + data.isVisible + "\">\n      <i class=\"" + (data.isVisible ? "icon-eye-open" : "icon-eye-close") + "\"></i>\n    </button>\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-editor\" problem-id=\"" + data.problemId + "\"><i class=\"icon-pencil\"></i></button>\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-data-editor\" problem-id=\"" + data.problemId + "\"><i class=\"icon-cog\"></i></button>\n  </div>\n</div>";
+            }
+            return result;
+          };
+          difficulty = function(value) {
+            var result, star, starEmpty,
+              _this = this;
+            star = "<i class='icon-star'></i>";
+            starEmpty = "<i class='icon-star-empty'></i>";
+            value = Math.max(1, Math.min(5, value));
+            result = "";
+            value.times(function() {
+              return result += star;
+            });
+            (5 - value).times(function() {
+              return result += starEmpty;
+            });
+            return result;
+          };
+          return "<div class=\"col-md-12\">\n  <div class=\"" + (data.status === 1 ? panelAC : data.status === 2 ? panelWA : panelDE) + "\">\n    <div class=\"panel-heading\">\n      <h3 class=\"panel-title\">\n        <a href=\"/problem/show/" + data.problemId + "\">" + data.title + "</a>\n        <span class='pull-right admin-span'>" + (adminSpan()) + "</span>\n        <span class='pull-right'>" + (difficulty(data.difficulty)) + "</span>\n      </h3>\n    </div>\n    <div class=\"panel-body\">\n      <span class=\"source\">\n        " + (data.source.trim() !== '' ? data.source : '') + "\n      </span>\n      " + (data.isSpj ? "<span class='label label-danger'>SPJ</span>" : '') + "\n    </div>\n  </div>\n</div>";
+        },
+        after: function() {
+          var _this = this;
+          this.user = getCurrentUser();
+          if (this.user.userLogin && this.user.currentUserType === "1") {
+            $(".problem-editor").click(function(e) {
+              var $el;
+              $el = $(e.currentTarget);
+              window.location.href = "/problem/editor/" + ($el.attr("problem-id"));
+              return false;
+            });
+            $(".problem-data-editor").click(function(e) {
+              var $el;
+              $el = $(e.currentTarget);
+              window.location.href = "/problem/dataEditor/" + ($el.attr("problem-id"));
+              return false;
+            });
+            return $(".problem-visible-state-editor").click(function(e) {
+              var $el, queryString, visible;
+              $el = $(e.currentTarget);
+              visible = $el.attr("visible") === "true" ? true : false;
+              queryString = "/problem/operator/" + ($el.attr("problem-id")) + "/isVisible/" + (!visible);
+              $.post(queryString, function(data) {
+                if (data.result === "success") {
+                  visible = !visible;
+                  $el.attr("visible", visible);
+                  return $el.empty().append("<i class=\"" + (visible ? "icon-eye-open" : "icon-eye-close") + "\"></i>");
+                }
+              });
+              return false;
+            });
+          }
         }
       });
     }
@@ -539,6 +668,7 @@
     initStatusList();
     initUserList();
     initProblemPage();
+    initProblemEditor();
     return render();
   });
 

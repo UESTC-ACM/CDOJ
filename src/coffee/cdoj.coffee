@@ -6,4 +6,5 @@ $ ->
   initStatusList()
   initUserList()
   initProblemPage()
+  initProblemEditor()
   render()

@@ -1,18 +1,29 @@
-initUser = ->
+getCurrentUser = ->
   $currentUser = $("#currentUser")
   @userLogin = if $currentUser.length != 0 then true else false
-
   #Set user information and bind user avatar on page
   if @userLogin
     @currentUser = $currentUser[0].innerHTML.trim()
     @currentUserType = $currentUser.attr("type")
+    return {
+      userLogin: true
+      currentUser: @currentUser
+      currentUserType: @currentUserType
+    }
+  else
+    return userLogin: false
+
+initUser = ->
+  @user = getCurrentUser()
+  #Set user information and bind user avatar on page
+  if @user.userLogin
     $userAvatar = $("#cdoj-user-avatar")
     $userAvatar.setAvatar
       image: "http://www.acm.uestc.edu.cn/images/akari_small.jpg"
       size: $userAvatar.width() if $userAvatar.width()
 
   #Set login && register && activate button when user not logined
-  if @userLogin == false
+  if @user.userLogin == false
     $("#cdoj-login-button").click =>
       $loginForm = $("#cdoj-login-form")
       info = $loginForm.getFormData()
@@ -53,7 +64,7 @@ initUser = ->
       return false
 
   #Set loginout button when user not logined
-  if @userLogin
+  if @user.userLogin
     $("#cdoj-logout-button").click =>
       $.post("/user/logout"
         (data) =>
