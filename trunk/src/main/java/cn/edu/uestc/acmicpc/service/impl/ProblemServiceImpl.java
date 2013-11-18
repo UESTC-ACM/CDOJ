@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
@@ -65,10 +66,9 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
   @Override
   public List<ProblemListDTO> getProblemListDTOList(ProblemCondition problemCondition,
                                                     PageInfo pageInfo) throws AppException{
-    problemCondition.currentPage = pageInfo.getCurrentPage();
-    problemCondition.countPerPage = Global.RECORD_PER_PAGE;
-    return problemDAO.findAll(ProblemListDTO.class, ProblemListDTO.builder(),
-                              problemCondition.getCondition());
+    Condition condition = problemCondition.getCondition();
+    condition.setPageInfo(pageInfo);
+    return problemDAO.findAll(ProblemListDTO.class, ProblemListDTO.builder(), condition);
   }
 
   @Override

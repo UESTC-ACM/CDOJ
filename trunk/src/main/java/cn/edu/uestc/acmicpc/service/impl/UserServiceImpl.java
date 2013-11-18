@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminSummaryDTO;
@@ -82,20 +83,20 @@ public class UserServiceImpl extends AbstractService implements UserService {
   @Override
   public List<UserSummaryDTO> search(UserCondition userCondition, PageInfo pageInfo)
       throws AppException {
-    userCondition.currentPage = pageInfo.getCurrentPage();
-    userCondition.countPerPage = Global.RECORD_PER_PAGE;
+    Condition condition = userCondition.getCondition();
+    condition.setPageInfo(pageInfo);
     return userDAO.findAll(UserSummaryDTO.class,
         UserSummaryDTO.builder(),
-        userCondition.getCondition());
+        condition);
   }
 
   @Override
   public List<UserAdminSummaryDTO> adminSearch(UserCondition userCondition, PageInfo pageInfo)
       throws AppException {
-    userCondition.currentPage = pageInfo.getCurrentPage();
-    userCondition.countPerPage = Global.RECORD_PER_PAGE;
+    Condition condition = userCondition.getCondition();
+    condition.setPageInfo(pageInfo);
     return userDAO.findAll(UserAdminSummaryDTO.class, UserAdminSummaryDTO.builder(),
-        userCondition.getCondition());
+        condition);
   }
 
   @Override
