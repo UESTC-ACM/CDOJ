@@ -22,6 +22,10 @@
 
 package cn.edu.uestc.acmicpc.util;
 
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.web.xml.XmlNode;
+import cn.edu.uestc.acmicpc.web.xml.XmlParser;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -42,10 +46,6 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Repository;
-
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.web.xml.XmlNode;
-import cn.edu.uestc.acmicpc.web.xml.XmlParser;
 
 /**
  * Global static class to get configuration parameters from <strong>settings.xml</strong>.

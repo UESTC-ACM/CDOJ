@@ -1,15 +1,18 @@
 package cn.edu.uestc.acmicpc.web.oj.controller;
 
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import cn.edu.uestc.acmicpc.config.TestContext;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
+import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
+import cn.edu.uestc.acmicpc.service.iface.LanguageService;
+import cn.edu.uestc.acmicpc.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.web.oj.controller.problem.ProblemController;
 
 import java.util.UUID;
 
@@ -19,27 +22,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import cn.edu.uestc.acmicpc.config.TestContext;
-import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
-import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
-import cn.edu.uestc.acmicpc.service.iface.EmailService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
-import cn.edu.uestc.acmicpc.service.iface.ProblemService;
-import cn.edu.uestc.acmicpc.service.iface.StatusService;
-import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
-import cn.edu.uestc.acmicpc.service.iface.UserService;
-import cn.edu.uestc.acmicpc.service.iface.LanguageService;
-import cn.edu.uestc.acmicpc.util.StringUtil;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.web.oj.controller.problem.ProblemController;
-
-import com.alibaba.fastjson.JSON;
 
 /** Mock test for {@link ProblemController}. */
 @WebAppConfiguration
