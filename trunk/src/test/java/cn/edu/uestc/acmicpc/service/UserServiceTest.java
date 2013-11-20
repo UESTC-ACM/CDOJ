@@ -6,8 +6,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
-
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +19,6 @@ import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
-import cn.edu.uestc.acmicpc.db.condition.base.Condition.Entry;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
@@ -159,12 +155,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
         isA(UserSummaryDTO.Builder.class), captor.capture());
     Condition condition = captor.getValue();
     Assert.assertEquals(condition.getJoinedType(), JoinedType.AND);
-    List<Entry> entries = condition.getentEntries();
-    Assert.assertEquals(entries.size(), 2);
-    Assert.assertEquals(Entry.of("userId",
-        ConditionType.GREATER_OR_EQUALS, Global.RECORD_PER_PAGE), entries.get(0));
-    Assert.assertEquals(Entry.of("userId",
-        ConditionType.LESS_THAN, 2 * Global.RECORD_PER_PAGE), entries.get(1));
+    Assert.assertEquals(condition.getPageInfo(), pageInfo);
   }
 
   @Test
@@ -176,12 +167,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
         isA(UserAdminSummaryDTO.Builder.class), captor.capture());
     Condition condition = captor.getValue();
     Assert.assertEquals(condition.getJoinedType(), JoinedType.AND);
-    List<Entry> entries = condition.getentEntries();
-    Assert.assertEquals(entries.size(), 2);
-    Assert.assertEquals(Entry.of("userId",
-        ConditionType.GREATER_OR_EQUALS, Global.RECORD_PER_PAGE), entries.get(0));
-    Assert.assertEquals(Entry.of("userId",
-        ConditionType.LESS_THAN, 2 * Global.RECORD_PER_PAGE), entries.get(1));
+    Assert.assertEquals(condition.getPageInfo(), pageInfo);
   }
 
   @Test
