@@ -5,16 +5,21 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
@@ -22,8 +27,10 @@ import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
@@ -163,6 +170,88 @@ public class ProblemController extends BaseController{
       e.printStackTrace();
       json.put("result", "error");
       json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  /**
+   * Open problem editor
+   * @param sProblemId target problem id or "new"
+   * @param model model
+   * @return editor view
+   */
+  @RequestMapping("editor/{problemId}")
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public String editor(@PathVariable("problemId") String sProblemId,
+                       ModelMap model) {
+    try {
+      if (sProblemId.compareTo("new") == 0) {
+        model.put("action", "new");
+      } else {
+        Integer problemId;
+        try {
+          problemId = Integer.parseInt(sProblemId);
+        } catch (NumberFormatException e) {
+          throw new AppException("Parse problem id error.");
+        }
+        ProblemEditorShowDTO targetProblem = problemService.getProblemEditorShowDTO(problemId);
+        if (targetProblem == null)
+          throw new AppException("No such problem.");
+        model.put("action", "edit");
+        model.put("targetProblem", targetProblem);
+      }
+    } catch (AppException e) {
+      model.put("message", e.getMessage());
+      return "error/error";
+    }
+    return "/problem/problemEditor";
+  }
+
+  /**
+   * Edit problem
+   * @param problemEditDTO uploaded information
+   * @param validateResult validate result
+   * @return
+   */
+  @RequestMapping("edit")
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public @ResponseBody
+  Map<String, Object> edit(@RequestBody @Valid ProblemEditDTO problemEditDTO,
+                           BindingResult validateResult) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      if (StringUtil.trimAllSpace(problemEditDTO.getTitle()).equals(""))
+        throw new FieldException("title", "Please enter a validate title.");
+      ProblemDTO problemDTO;
+      if (problemEditDTO.getAction().compareTo("new") == 0) {
+        Integer problemId = problemService.createNewProblem();
+        problemDTO = problemService.getProblemDTOByProblemId(problemId);
+        if (problemDTO == null)
+          throw new AppException("Error while creating problem.");
+      } else {
+        problemDTO = problemService.getProblemDTOByProblemId(problemEditDTO.getProblemId());
+        if (problemDTO == null)
+          throw new AppException("No such problem.");
+      }
+
+      problemDTO.setTitle(problemEditDTO.getTitle());
+      problemDTO.setDescription(problemEditDTO.getDescription());
+      problemDTO.setInput(problemEditDTO.getInput());
+      problemDTO.setOutput(problemEditDTO.getOutput());
+      problemDTO.setSampleInput(problemEditDTO.getSampleInput());
+      problemDTO.setSampleOutput(problemEditDTO.getSampleOutput());
+      problemDTO.setHint(problemEditDTO.getHint());
+      problemDTO.setSource(problemEditDTO.getSource());
+
+      problemService.updateProblem(problemDTO);
+      json.put("result", "success");
+    } catch (FieldException e) {
+      putFieldErrorsIntoBindingResult(e, validateResult);
+      json.put("result", "field_error");
+      json.put("field", validateResult.getFieldErrors());
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
     }
     return json;
   }
