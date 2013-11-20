@@ -535,7 +535,7 @@ function binl2b64(binarray)
       var oldText, template;
       oldText = this.element[0].innerHTML;
       this.element.empty();
-      template = "<div class=\"panel panel-default\">\n  <div class=\"panel-heading\" id=\"flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-preview\">Preview</button>\n      </div>\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-picture\"><i class=\"icon-picture\"></i></button>\n      </div>\n    </div>\n  </div>\n  <div class=\"tex2jax_ignore\" contenteditable=\"true\" id=\"flandre-editor\">" + (this.escape(oldText)) + "</div>\n  <div id=\"flandre-preview\"></div>\n</div>";
+      template = "<div class=\"panel panel-default\">\n  <div class=\"panel-heading\" id=\"flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-preview\">Preview</button>\n      </div>\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-picture\"><i class=\"fa fa-picture-o\"></i></button>\n      </div>\n    </div>\n  </div>\n  <div class=\"tex2jax_ignore\" contenteditable=\"true\" id=\"flandre-editor\">" + (this.escape(oldText)) + "</div>\n  <div id=\"flandre-preview\"></div>\n</div>";
       return this.element.append(template);
     };
 
@@ -871,15 +871,15 @@ function binl2b64(binarray)
             var result;
             result = "";
             if (this.user.userLogin && this.user.currentUserType === "1") {
-              result += "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-visible-state-editor\" problem-id=\"" + data.problemId + "\" visible=\"" + data.isVisible + "\">\n      <i class=\"" + (data.isVisible ? "icon-eye-open" : "icon-eye-close") + "\"></i>\n    </button>\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-editor\" problem-id=\"" + data.problemId + "\"><i class=\"icon-pencil\"></i></button>\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-data-editor\" problem-id=\"" + data.problemId + "\"><i class=\"icon-cog\"></i></button>\n  </div>\n</div>";
+              result += "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-visible-state-editor\" problem-id=\"" + data.problemId + "\" visible=\"" + data.isVisible + "\">\n      <i class=\"" + (data.isVisible ? "fa fa-eye" : "fa fa-eye-slash") + "\"></i>\n    </button>\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-editor\" problem-id=\"" + data.problemId + "\"><i class=\"fa fa-pencil\"></i></button>\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-data-editor\" problem-id=\"" + data.problemId + "\"><i class=\"fa fa-cog\"></i></button>\n  </div>\n</div>";
             }
             return result;
           };
           difficulty = function(value) {
             var result, star, starEmpty,
               _this = this;
-            star = "<i class='icon-star'></i>";
-            starEmpty = "<i class='icon-star-empty'></i>";
+            star = "<i class='fa fa-star'></i>";
+            starEmpty = "<i class='fa fa-star-o'></i>";
             value = Math.max(1, Math.min(5, value));
             result = "";
             value.times(function() {
@@ -917,7 +917,7 @@ function binl2b64(binarray)
                 if (data.result === "success") {
                   visible = !visible;
                   $el.attr("visible", visible);
-                  return $el.empty().append("<i class=\"" + (visible ? "icon-eye-open" : "icon-eye-close") + "\"></i>");
+                  return $el.empty().append("<i class=\"" + (visible ? "fa fa-eye" : "fa fa-eye-slash") + "\"></i>");
                 }
               });
               return false;
@@ -977,7 +977,7 @@ function binl2b64(binarray)
           "orderAsc": "false"
         },
         formatter: function(data) {
-          return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <div class=\"pull-left\">\n          <div class=\"status-sign\">\n            " + (data.returnTypeId === 16 ? "<i class='icon-spinner icon-spin'></i>" : "") + "\n          </div>\n        </div>\n        <div class=\"pull-right\">\n          #" + data.statusId + "\n        </div>\n        <div class=\"media-body\">\n          <h4 class=\"media-heading\">" + data.returnType + "</h4>\n          " + data.userName + " <span class=\"muted\">submitted at</span> " + (Date.create(data.time)) + "\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
+          return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <div class=\"pull-left\">\n          <div class=\"status-sign\">\n            " + (data.returnTypeId === 16 ? "<i class='fa fa-spinner fa-spin'></i>" : "") + "\n          </div>\n        </div>\n        <div class=\"pull-right\">\n          #" + data.statusId + "\n        </div>\n        <div class=\"media-body\">\n          <h4 class=\"media-heading\">" + data.returnType + "</h4>\n          " + data.userName + " <span class=\"muted\">submitted at</span> " + (Date.create(data.time)) + "\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
         }
       });
     }
@@ -1003,7 +1003,7 @@ function binl2b64(binarray)
         },
         formatter: function(data) {
           console.log(data);
-          return "<div class=\"col-lg-6\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <a class=\"pull-left\" href=\"#\">\n          <img id=\"cdoj-users-avatar\" email=\"" + data.email + "\"/>\n        </a>\n        <div class=\"media-body\">\n          <h4 class=\"media-heading\"><a href=\"/user/center/" + data.userName + "\">" + data.nickName + " <small>" + data.userName + "</small></a></h4>\n          <i class=\"icon-map-marker\"></i>" + data.school + "\n        </div>\n      </div>\n    </div>\n    <div class=\"panel-footer\" style=\"overflow: hidden;white-space: nowrap;text-overflow: ellipsis;\">Motto: " + data.motto + "</div>\n  </div>\n</div>";
+          return "<div class=\"col-lg-6\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <a class=\"pull-left\" href=\"#\">\n          <img id=\"cdoj-users-avatar\" email=\"" + data.email + "\"/>\n        </a>\n        <div class=\"media-body\">\n          <h4 class=\"media-heading\"><a href=\"/user/center/" + data.userName + "\">" + data.nickName + " <small>" + data.userName + "</small></a></h4>\n          <i class=\"fa fa-map-marker\"></i>" + data.school + "\n        </div>\n      </div>\n    </div>\n    <div class=\"panel-footer\" style=\"overflow: hidden;white-space: nowrap;text-overflow: ellipsis;\">Motto: " + data.motto + "</div>\n  </div>\n</div>";
         },
         after: function() {
           return $("img#cdoj-users-avatar").setAvatar({

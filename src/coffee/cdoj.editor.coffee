@@ -30,7 +30,7 @@ class Flandre
               <button type="button" class="btn btn-default btn-sm" id="tool-preview">Preview</button>
             </div>
             <div class="btn-group">
-              <button type="button" class="btn btn-default btn-sm" id="tool-picture"><i class="icon-picture"></i></button>
+              <button type="button" class="btn btn-default btn-sm" id="tool-picture"><i class="fa fa-picture-o"></i></button>
             </div>
           </div>
         </div>
@@ -65,7 +65,7 @@ class Flandre
     # Fuuuuuuuuuuuuuuuuuck
     toolPicture.click =>
       # Show insert picture modal
-      
+
   getText: ->
     return @element.find("#flandre-editor")[0].innerText
 

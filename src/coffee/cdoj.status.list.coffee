@@ -25,7 +25,7 @@ initStatusList = ->
                 <div class="media">
                   <div class="pull-left">
                     <div class="status-sign">
-                      #{if data.returnTypeId == 16 then "<i class='icon-spinner icon-spin'></i>" else ""}
+                      #{if data.returnTypeId == 16 then "<i class='fa fa-spinner fa-spin'></i>" else ""}
                     </div>
                   </div>
                   <div class="pull-right">

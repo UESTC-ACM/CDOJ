@@ -32,18 +32,18 @@ initProblemList = ->
                       <div class="btn-toolbar" role="toolbar">
                         <div class="btn-group">
                           <button type="button" class="btn btn-default btn-sm problem-visible-state-editor" problem-id="#{data.problemId}" visible="#{data.isVisible}">
-                            <i class="#{if data.isVisible then "icon-eye-open" else "icon-eye-close"}"></i>
+                            <i class="#{if data.isVisible then "fa fa-eye" else "fa fa-eye-slash"}"></i>
                           </button>
-                          <button type="button" class="btn btn-default btn-sm problem-editor" problem-id="#{data.problemId}"><i class="icon-pencil"></i></button>
-                          <button type="button" class="btn btn-default btn-sm problem-data-editor" problem-id="#{data.problemId}"><i class="icon-cog"></i></button>
+                          <button type="button" class="btn btn-default btn-sm problem-editor" problem-id="#{data.problemId}"><i class="fa fa-pencil"></i></button>
+                          <button type="button" class="btn btn-default btn-sm problem-data-editor" problem-id="#{data.problemId}"><i class="fa fa-cog"></i></button>
                         </div>
                       </div>
                       """
           return result
 
         difficulty = (value) ->
-          star = "<i class='icon-star'></i>"
-          starEmpty = "<i class='icon-star-empty'></i>"
+          star = "<i class='fa fa-star'></i>"
+          starEmpty = "<i class='fa fa-star-o'></i>"
           value = Math.max(1, Math.min(5, value))
           result = ""
           value.times =>
@@ -96,7 +96,7 @@ initProblemList = ->
               if data.result == "success"
                 visible = !visible
                 $el.attr("visible", visible)
-                $el.empty().append("<i class=\"#{if visible then "icon-eye-open" else "icon-eye-close"}\"></i>")
+                $el.empty().append("<i class=\"#{if visible then "fa fa-eye" else "fa fa-eye-slash"}\"></i>")
             )
             return false
     )

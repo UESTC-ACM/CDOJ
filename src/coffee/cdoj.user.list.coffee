@@ -27,7 +27,7 @@ initUserList = ->
                   </a>
                   <div class="media-body">
                     <h4 class="media-heading"><a href="/user/center/#{data.userName}">#{data.nickName} <small>#{data.userName}</small></a></h4>
-                    <i class="icon-map-marker"></i>#{data.school}
+                    <i class="fa fa-map-marker"></i>#{data.school}
                   </div>
                 </div>
               </div>
