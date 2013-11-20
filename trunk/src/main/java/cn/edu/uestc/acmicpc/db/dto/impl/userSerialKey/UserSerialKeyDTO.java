@@ -1,12 +1,12 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey;
 
-import java.util.*;
-import java.sql.*;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
+
+import java.sql.Timestamp;
+import java.util.Map;
 
 /** Data transfer object for user serial key **/
 @Fields({ "userSerialKeyId", "time", "serialKey", "userId" })
