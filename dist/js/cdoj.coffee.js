@@ -1,5 +1,5 @@
 (function() {
-  var $, Flandre, ListModule, SearchModule, avatar, getCurrentUser, initLayout, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonPost, render;
+  var $, Flandre, ListModule, SearchModule, avatar, getCurrentUser, initLayout, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonPost, markdown, render;
 
   avatar = function(el, options) {
     var $el, emailAddress, url;
@@ -175,6 +175,10 @@
     }
   };
 
+  markdown = function(content) {
+    return marked(content);
+  };
+
   $ = jQuery;
 
   $.fn.unescapePre = function() {
@@ -201,6 +205,20 @@
 
   $ = jQuery;
 
+  $.fn.mathjax = function() {
+    var _this = this;
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$', '$'], ['\\[', '\\]']]
+      }
+    });
+    return this.each(function(id, el) {
+      return MathJax.Hub.Queue(["Typeset", MathJax.Hub, el]);
+    });
+  };
+
+  $ = jQuery;
+
   $.fn.prePrettify = function() {
     var _this = this;
     return this.each(function(id, el) {
@@ -209,6 +227,16 @@
       if ($el.attr("type") !== "no-prettify") {
         return $el.addClass("prettyprint linenums");
       }
+    });
+  };
+
+  $.fn.prettify = function() {
+    var _this = this;
+    return this.find("pre").each(function(id, el) {
+      var text;
+      text = prettyPrintOne($(el)[0].innerText.escapeHTML());
+      console.log(text);
+      return $(el).empty().append(text);
     });
   };
 
@@ -232,9 +260,10 @@
         return null;
       }
       this.createTextarea();
+      this.toolbar();
     }
 
-    Flandre.prototype.setText = function(el, content) {
+    Flandre.prototype.escape = function(content) {
       content = content.replace(/</g, '&lt;');
       content = content.replace(/>/g, '&gt;');
       content = content.replace(/\n/g, '<br>');
@@ -242,15 +271,46 @@
       content = content.replace(/\s\s\s/g, '&nbsp; &nbsp;');
       content = content.replace(/\s\s/g, '&nbsp; ');
       content = content.replace(/^ /, '&nbsp;');
-      return el.innerHTML = content;
+      return content;
     };
 
     Flandre.prototype.createTextarea = function() {
-      var oldText;
+      var oldText, template;
       oldText = this.element[0].innerHTML;
       this.element.empty();
-      this.setText(this.element[0], oldText);
-      return this.element.addClass("flandre tex2jax_ignore form-control").attr("contentEditable", "true");
+      template = "<div class=\"panel panel-default\">\n  <div class=\"panel-heading\" id=\"flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-preview\">Preview</button>\n      </div>\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-picture\"><i class=\"icon-picture\"></i></button>\n      </div>\n    </div>\n  </div>\n  <div class=\"tex2jax_ignore\" contenteditable=\"true\" id=\"flandre-editor\">" + (this.escape(oldText)) + "</div>\n  <div id=\"flandre-preview\"></div>\n</div>";
+      return this.element.append(template);
+    };
+
+    Flandre.prototype.toolbar = function() {
+      var editor, preview, toolPicture, toolPreview,
+        _this = this;
+      editor = this.element.find("#flandre-editor");
+      preview = this.element.find("#flandre-preview");
+      toolPreview = this.element.find("#tool-preview");
+      toolPreview.click(function(e) {
+        var $el, isActive, text;
+        $el = $(e.currentTarget);
+        isActive = $el.hasClass("active");
+        editor.css("display", "none");
+        preview.css("display", "none");
+        if (isActive) {
+          editor.css("display", "block");
+        } else {
+          text = editor[0].innerText.escapeHTML();
+          preview.empty().append(text);
+          preview.markdown();
+          preview.prettify();
+          preview.mathjax();
+          preview.css("display", "block");
+        }
+        return $el.button("toggle");
+      });
+      return toolPicture = this.element.find("#tool-picture");
+    };
+
+    Flandre.prototype.getText = function() {
+      return this.element.find("#flandre-editor")[0].innerText;
     };
 
     return Flandre;
@@ -261,9 +321,15 @@
 
   $.fn.flandre = function(options) {
     var flandre;
-    this.options = options;
-    this.options["element"] = $(this);
-    return flandre = new Flandre(this.options);
+    if (options !== void 0) {
+      options["element"] = $(this);
+    } else {
+      options = {
+        element: $(this)
+      };
+    }
+    flandre = new Flandre(options);
+    return flandre;
   };
 
   SearchModule = (function() {
@@ -473,14 +539,46 @@
   };
 
   initProblemEditor = function() {
-    var $editor, editorsId;
+    var $editor, action, editors, editorsId,
+      _this = this;
     $editor = $("#problem-editor");
     if ($editor.length > 0) {
-      editorsId = ["description", "input", "output", "sampleInput", "sampleOutput", "hint"];
-      return editorsId.each(function(value, id) {
-        return $("#" + value).flandre({
-          foo: "bar"
+      action = $("#problem-editor-title").attr("value");
+      editorsId = ["description", "input", "output", "hint"];
+      editors = [];
+      editorsId.each(function(value, id) {
+        return editors.push({
+          id: value,
+          editor: $("#" + value).flandre()
         });
+      });
+      return $("#submit").click(function() {
+        var info;
+        info = {
+          sampleInput: $("textarea#sample-input").val(),
+          sampleOutput: $("textarea#sample-output").val(),
+          title: $("#title").val(),
+          source: $("#source").val()
+        };
+        editors.each(function(value, id) {
+          return info[value.id] = value.editor.getText();
+        });
+        if (action === "new") {
+          info["action"] = "new";
+        } else {
+          info["action"] = "edit";
+          info["problemId"] = action;
+        }
+        jsonPost("/problem/edit", info, function(data) {
+          if (data.result === "success") {
+            return window.location.reload();
+          } else if (data.result === "field_error") {
+
+          } else {
+            return alert(data.error_msg);
+          }
+        });
+        return false;
       });
     }
   };

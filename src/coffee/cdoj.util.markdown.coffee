@@ -1,3 +1,6 @@
+markdown = (content) ->
+  return marked(content)
+
 $ = jQuery
 # unescape html in pre tag
 $.fn.unescapePre = ->
