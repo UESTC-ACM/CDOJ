@@ -1,5 +1,17 @@
 package cn.edu.uestc.acmicpc.db.dao.base;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
+import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
+import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
+import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
+import cn.edu.uestc.acmicpc.util.ArrayUtil;
+import cn.edu.uestc.acmicpc.util.DatabaseUtil;
+import cn.edu.uestc.acmicpc.util.annotation.Fields;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+import cn.edu.uestc.acmicpc.web.view.PageInfo;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,18 +24,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
-
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
-import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
-import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
-import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
-import cn.edu.uestc.acmicpc.util.ArrayUtil;
-import cn.edu.uestc.acmicpc.util.DatabaseUtil;
-import cn.edu.uestc.acmicpc.util.annotation.Fields;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
 /**
  * Global DAO implementation.

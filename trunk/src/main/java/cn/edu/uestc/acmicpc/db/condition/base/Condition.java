@@ -1,13 +1,12 @@
 package cn.edu.uestc.acmicpc.db.condition.base;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Conditions setting for {@code IDAO#findAll()} and {@code IDAO#count()}.

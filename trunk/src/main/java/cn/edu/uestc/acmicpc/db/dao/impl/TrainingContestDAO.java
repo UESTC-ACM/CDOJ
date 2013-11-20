@@ -1,10 +1,10 @@
 package cn.edu.uestc.acmicpc.db.dao.impl;
 
-import org.springframework.stereotype.Repository;
-
 import cn.edu.uestc.acmicpc.db.dao.base.DAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
+
+import org.springframework.stereotype.Repository;
 
 /**
  * Training Contest DAO implementation.

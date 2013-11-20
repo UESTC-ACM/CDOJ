@@ -1,15 +1,15 @@
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
-import java.sql.Timestamp;
-import java.util.LinkedList;
-import java.util.List;
-
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+
+import java.sql.Timestamp;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Status search condition.

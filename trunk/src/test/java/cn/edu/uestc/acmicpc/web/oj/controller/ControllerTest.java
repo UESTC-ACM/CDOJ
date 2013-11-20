@@ -3,6 +3,12 @@ package cn.edu.uestc.acmicpc.web.oj.controller;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
+import cn.edu.uestc.acmicpc.config.WebMVCResource;
+import cn.edu.uestc.acmicpc.db.dto.impl.department.DepartmentDTO;
+import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
+import cn.edu.uestc.acmicpc.util.Global.AuthenticationType;
+
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +19,6 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-
-import cn.edu.uestc.acmicpc.config.WebMVCResource;
-import cn.edu.uestc.acmicpc.db.dto.impl.department.DepartmentDTO;
-import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
-import cn.edu.uestc.acmicpc.util.Global.AuthenticationType;
 
 /** Abstract test to define constant variables for controller tests. */
 public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
