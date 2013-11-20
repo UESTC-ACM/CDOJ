@@ -59,50 +59,6 @@ public class ProblemAdminController extends BaseController {
     this.problemService = problemService;
   }
 
-  @RequestMapping("edit")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
-  public @ResponseBody
-  Map<String, Object> edit(@RequestBody @Valid ProblemEditDTO problemEditDTO,
-                           BindingResult validateResult,
-                           HttpSession session) {
-    Map<String, Object> json = new HashMap<>();
-    try {
-      if (StringUtil.trimAllSpace(problemEditDTO.getTitle()).equals(""))
-        throw new FieldException("title", "Please enter a validate title.");
-      ProblemDTO problemDTO;
-      if (problemEditDTO.getAction().compareTo("new") == 0) {
-        Integer problemId = problemService.createNewProblem();
-        problemDTO = problemService.getProblemDTOByProblemId(problemId);
-        if (problemDTO == null)
-          throw new AppException("Error while creating problem.");
-      } else {
-        problemDTO = problemService.getProblemDTOByProblemId(problemEditDTO.getProblemId());
-        if (problemDTO == null)
-          throw new AppException("No such problem.");
-      }
-
-      problemDTO.setTitle(problemEditDTO.getTitle());
-      problemDTO.setDescription(problemEditDTO.getDescription());
-      problemDTO.setInput(problemEditDTO.getInput());
-      problemDTO.setOutput(problemEditDTO.getOutput());
-      problemDTO.setSampleInput(problemEditDTO.getSampleInput());
-      problemDTO.setSampleOutput(problemEditDTO.getSampleOutput());
-      problemDTO.setHint(problemEditDTO.getHint());
-      problemDTO.setSource(problemEditDTO.getSource());
-
-      problemService.updateProblem(problemDTO);
-      json.put("result", "success");
-    } catch (FieldException e) {
-      putFieldErrorsIntoBindingResult(e, validateResult);
-      json.put("result", "field_error");
-      json.put("field", validateResult.getFieldErrors());
-    } catch (AppException e) {
-      json.put("result", "error");
-      json.put("error_msg", e.getMessage());
-    }
-    return json;
-  }
-
   @RequestMapping("data/{problemId}")
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public String dataEditor(@PathVariable("problemId") Integer problemId,
