@@ -1,12 +1,12 @@
 package cn.edu.uestc.acmicpc.util.exception;
 
+import cn.edu.uestc.acmicpc.util.ObjectUtil;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.validation.FieldError;
-
-import cn.edu.uestc.acmicpc.util.ObjectUtil;
 
 /**
  * Description

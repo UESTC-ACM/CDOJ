@@ -5,8 +5,8 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
-import java.util.Map;
 import java.sql.Timestamp;
+import java.util.Map;
 
 @Fields({ "statusId", "userByUserId.userName", "problemId", "result", "length",
     "languageByLanguageId.name", "timeCost", "memoryCost", "time", "caseNumber" })

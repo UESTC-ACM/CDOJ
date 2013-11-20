@@ -2,6 +2,25 @@ package cn.edu.uestc.acmicpc.config;
 
 import static org.mockito.Mockito.mock;
 
+import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.judge.JudgeService;
+import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.service.iface.EmailService;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
+import cn.edu.uestc.acmicpc.service.iface.LanguageService;
+import cn.edu.uestc.acmicpc.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
+import cn.edu.uestc.acmicpc.service.iface.UserService;
+import cn.edu.uestc.acmicpc.service.impl.ProblemServiceImpl;
+import cn.edu.uestc.acmicpc.service.impl.UserServiceImpl;
+import cn.edu.uestc.acmicpc.util.Global;
+
+import com.jolbox.bonecp.BoneCPDataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -12,25 +31,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.judge.JudgeService;
-import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
-import cn.edu.uestc.acmicpc.service.iface.EmailService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
-import cn.edu.uestc.acmicpc.service.iface.ProblemService;
-import cn.edu.uestc.acmicpc.service.iface.StatusService;
-import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
-import cn.edu.uestc.acmicpc.service.iface.UserService;
-import cn.edu.uestc.acmicpc.service.iface.LanguageService;
-import cn.edu.uestc.acmicpc.service.impl.UserServiceImpl;
-import cn.edu.uestc.acmicpc.service.impl.ProblemServiceImpl;
-import cn.edu.uestc.acmicpc.util.Global;
-
-import com.jolbox.bonecp.BoneCPDataSource;
 
 @Configuration
 @ComponentScan(basePackages = {

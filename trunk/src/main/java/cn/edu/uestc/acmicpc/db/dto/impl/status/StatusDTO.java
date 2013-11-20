@@ -6,6 +6,7 @@ import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+import java.sql.Timestamp;
 import java.util.Map;
 
 @Fields({ "statusId", "result", "memoryCost", "timeCost", "length", "time", "caseNumber", "codeId",

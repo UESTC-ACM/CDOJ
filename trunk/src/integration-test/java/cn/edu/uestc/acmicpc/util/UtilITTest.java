@@ -1,5 +1,8 @@
 package cn.edu.uestc.acmicpc.util;
 
+import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
+import cn.edu.uestc.acmicpc.db.entity.Department;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,9 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.entity.Department;
 
 /**
  * Util class test

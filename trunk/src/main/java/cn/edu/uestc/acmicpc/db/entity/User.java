@@ -2,6 +2,10 @@ package cn.edu.uestc.acmicpc.db.entity;
 
 import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Collection;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,13 +13,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Collection;
 
 /**
  * User information.
