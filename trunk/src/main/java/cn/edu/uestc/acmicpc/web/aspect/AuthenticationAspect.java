@@ -57,7 +57,6 @@ public class AuthenticationAspect {
       return proceedingJoinPoint.proceed();
     } catch (AppException e) {
       if (method.getReturnType() == String.class)
-        //@TODO Need test
         return "redirect:/error/authenticationError";
       else {
         Map<String, Object> json = new HashMap<>();
