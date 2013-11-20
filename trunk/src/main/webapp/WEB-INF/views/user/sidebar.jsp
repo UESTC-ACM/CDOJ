@@ -37,7 +37,7 @@
 <body>
 <div class="well" style="padding: 8px 0;">
     <ul class="nav nav-list">
-        <li class="nav-header"><i class="icon-home"></i>Dashboard</li>
+        <li class="nav-header"><i class="fa fa-home"></i>Dashboard</li>
         <li><a href="#">Summary</a></li>
     </ul>
 </div>
