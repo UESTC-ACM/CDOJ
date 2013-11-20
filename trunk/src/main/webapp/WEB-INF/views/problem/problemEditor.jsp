@@ -52,12 +52,12 @@ Admin problem editor page
                 <tr>
                   <td>
                     <div class="sample" type="no-prettify">
-                      <div id="sampleInput"><c:out value="${targetProblem.sampleInput}" escapeXml="true"/></div>
+                      <textarea id="sample-input" class="form-control" style="height: 300px"><c:out value="${targetProblem.sampleInput}" escapeXml="true"/></textarea>
                     </div>
                   </td>
                   <td>
                     <div class="sample" type="no-prettify">
-                      <div id="sampleOutput"><c:out value="${targetProblem.sampleOutput}" escapeXml="true"/></div>
+                      <textarea id="sample-output" class="form-control" style="height: 300px"><c:out value="${targetProblem.sampleOutput}" escapeXml="true"/></textarea>
                     </div>
                   </td>
                 </tr>
@@ -75,7 +75,7 @@ Admin problem editor page
             </div>
           </div>
           <div class="col-md-12 text-center">
-            <button type="button" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-primary" id="submit">Submit</button>
           </div>
         </div>
       </div>
