@@ -1,13 +1,12 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.status;
 
-import java.util.*;
-import java.sql.*;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
+
+import java.util.Map;
 
 @Fields({ "statusId", "result", "memoryCost", "timeCost", "length", "time", "caseNumber", "codeId",
     "compileInfoId", "contestId", "languageId", "problemId", "userId" })
