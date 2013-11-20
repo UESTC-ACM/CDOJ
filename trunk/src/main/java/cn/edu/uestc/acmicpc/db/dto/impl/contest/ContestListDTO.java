@@ -1,27 +1,27 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.contest;
 
-import java.sql.Timestamp;
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+import java.sql.Timestamp;
+import java.util.Map;
+
 @Fields({"contestId", "title", "type", "time", "length"})
 public class ContestListDTO implements BaseDTO<Contest>{
-  
+
   private Integer contestId;
   private String title;
   private String description;
   private Short type;
   private Timestamp time;
   private Integer length;
-  
+
   public ContestListDTO() {
   }
-  
-  public ContestListDTO(Integer contestId, String title, String description, 
+
+  public ContestListDTO(Integer contestId, String title, String description,
       Short type, Timestamp time, Integer length) {
     this.contestId = contestId;
     this.title = title;
@@ -30,7 +30,7 @@ public class ContestListDTO implements BaseDTO<Contest>{
     this.time = time;
     this.length = length;
   }
-  
+
   public Integer getContestId() {
     return contestId;
   }
@@ -70,16 +70,16 @@ public class ContestListDTO implements BaseDTO<Contest>{
   public static Builder builder() {
     return new Builder();
   }
-  
+
   public static class Builder implements BaseBuilder<ContestListDTO>{
-    
+
     private Integer contestId;
     private String title;
     private String description;
     private Short type;
     private Timestamp time;
     private Integer length;
-    
+
     @Override
     public ContestListDTO build() {
       return new ContestListDTO(contestId, title, description, type, time, length);
@@ -95,32 +95,32 @@ public class ContestListDTO implements BaseDTO<Contest>{
       length = (Integer) properties.get("length");
       return build();
     }
-    
+
     public Builder setContestId(Integer contestId) {
       this.contestId = contestId;
       return this;
     }
-    
+
     public Builder setTitle(String title) {
       this.title = title;
       return this;
     }
-    
+
     public Builder setDescription(String description) {
       this.description = description;
       return this;
     }
-    
+
     public Builder setType(Short type) {
       this.type = type;
       return this;
     }
-    
+
     public Builder setTime(Timestamp time) {
       this.time = time;
       return this;
     }
-    
+
     public Builder setLength(Integer length) {
       this.length = length;
       return this;
