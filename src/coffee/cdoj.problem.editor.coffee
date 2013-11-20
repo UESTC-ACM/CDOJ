@@ -28,6 +28,8 @@ initProblemEditor = ->
         if data.result == "success"
           window.location.reload()
         else if data.result == "field_error"
+          # must be empty title
+          alert("Please enter a valid title!")
         else
           alert(data.error_msg)
       )

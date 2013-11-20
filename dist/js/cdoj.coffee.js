@@ -306,7 +306,8 @@
         }
         return $el.button("toggle");
       });
-      return toolPicture = this.element.find("#tool-picture");
+      toolPicture = this.element.find("#tool-picture");
+      return toolPicture.click(function() {});
     };
 
     Flandre.prototype.getText = function() {
@@ -573,7 +574,7 @@
           if (data.result === "success") {
             return window.location.reload();
           } else if (data.result === "field_error") {
-
+            return alert("Please enter a valid title!");
           } else {
             return alert(data.error_msg);
           }

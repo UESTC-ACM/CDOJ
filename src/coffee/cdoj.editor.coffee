@@ -62,7 +62,10 @@ class Flandre
         preview.css("display", "block")
       $el.button("toggle")
     toolPicture = @element.find("#tool-picture")
-
+    # Fuuuuuuuuuuuuuuuuuck
+    toolPicture.click =>
+      # Show insert picture modal
+      
   getText: ->
     return @element.find("#flandre-editor")[0].innerText
 
