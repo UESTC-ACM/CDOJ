@@ -29,12 +29,12 @@ Problem statement
           <div class="pure-u-1-5">
             <c:if test="${currentUser.type == 1}">
               <a href="<c:url value="/admin/problem/editor/${targetProblem.problemId}"/>">
-                <i class="icon-pencil"></i>
+                <i class="fa fa-pencil"></i>
                 Edit problem statement
               </a>
               <br/>
               <a href="<c:url value="/admin/problem/data/${targetProblem.problemId}"/>">
-                <i class="icon-cog"></i>
+                <i class="fa fa-cog"></i>
                 Edit problem data
               </a>
             </c:if>

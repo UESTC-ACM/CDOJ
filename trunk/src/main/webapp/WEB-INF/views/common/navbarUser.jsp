@@ -17,11 +17,11 @@ User menu on navbar
         <div class="col-md-12">
           <form id="cdoj-login-form" class="pure-form pure-form-aligned">
             <div class="input-group form-group">
-              <span class="input-group-addon"><i class="icon-user"></i></span>
+              <span class="input-group-addon"><i class="fa fa-user"></i></span>
               <input type="text" name="userName" maxlength="24" value="" id="userName" class="form-control" placeholder="Username">
             </div>
             <div class="input-group form-group">
-              <span class="input-group-addon"><i class="icon-key"></i></span>
+              <span class="input-group-addon"><i class="fa fa-key"></i></span>
               <input type="password" name="password" maxlength="20" id="password" class="form-control" placeholder="Password">
                 <span class="input-group-btn">
                   <button type="submit" id="cdoj-login-button" class="btn btn-default">Login</button>
@@ -31,12 +31,12 @@ User menu on navbar
         </div>
         <div class="col-md-12">
           <a href="#" data-toggle="modal" data-target="#cdoj-register-modal">
-            <span class="label muted"><i class="icon-circle-arrow-right"></i>Register</span>
+            <span class="label muted"><i class="fa fa-circle-arrow-right"></i>Register</span>
           </a>
         </div>
         <div class="col-md-12">
           <a href="#" data-toggle="modal" data-target="#cdoj-activate-modal">
-            <span class="label muted"><i class="icon-circle-arrow-right"></i>Forget password?</span>
+            <span class="label muted"><i class="fa fa-circle-arrow-right"></i>Forget password?</span>
           </a>
         </div>
       </div>
@@ -54,9 +54,9 @@ User menu on navbar
 					        <c:out value="${sessionScope.currentUser.userName}"/>
 				        </span>
               </li>
-              <li><a href="<c:url value="/admin/index"/>"><i class="icon-wrench"></i>Admin</a></li>
-              <li><a href="<c:url value="/user/center/${sessionScope.currentUser.userName}"/>"><i class="icon-home"></i>User center</a></li>
-              <li><a href="#" id="cdoj-logout-button"><i class="icon-off"></i>Logout</a></li>
+              <li><a href="<c:url value="/admin/index"/>"><i class="fa fa-wrench"></i>Admin</a></li>
+              <li><a href="<c:url value="/user/center/${sessionScope.currentUser.userName}"/>"><i class="fa fa-home"></i>User center</a></li>
+              <li><a href="#" id="cdoj-logout-button"><i class="fa fa-power-off"></i>Logout</a></li>
             </ul>
           </div>
         </div>
