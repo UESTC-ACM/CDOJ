@@ -25,9 +25,9 @@ Admin problem list page
           </div>
           <div id="search-group">
             <input type="text" name="search-keyword" maxlength="24" value="" id="search-keyword" class="pull-left form-control"/>
-            <button id="search" class="btn btn-success"><i class="icon-search"></i></button>
+            <button id="search" class="btn btn-success"><i class="fa fa-search"></i></button>
 
-            <a href="#" id="advanced"><i class="icon-chevron-down"></i></a>
+            <a href="#" id="advanced"><i class="fa fa-chevron-down"></i></a>
             <div id="condition">
               <form class="form">
                 <fieldset>
