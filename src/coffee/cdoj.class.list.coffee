@@ -72,11 +72,11 @@ class ListModule
         (datas) =>
           # Add pagination
           @pageInfo.empty().append(datas.pageInfo)
-          @pageInfo.find('a').click (e) =>
+          @pageInfo.find("a").click (e) =>
             $el = $(e.currentTarget)
-            if $el.attr('href') == null
+            if $el.attr("href") == undefined
               return false
-            condition.currentPage = $el.attr('href')
+            condition.currentPage = $el.attr("href")
             @refresh(condition);
             return false
 

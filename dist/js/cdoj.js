@@ -670,13 +670,13 @@ function binl2b64(binarray)
         this.list.empty();
         jsonPost(this.options.requestUrl, condition, function(datas) {
           _this.pageInfo.empty().append(datas.pageInfo);
-          _this.pageInfo.find('a').click(function(e) {
+          _this.pageInfo.find("a").click(function(e) {
             var $el;
             $el = $(e.currentTarget);
-            if ($el.attr('href') === null) {
+            if ($el.attr("href") === void 0) {
               return false;
             }
-            condition.currentPage = $el.attr('href');
+            condition.currentPage = $el.attr("href");
             _this.refresh(condition);
             return false;
           });
