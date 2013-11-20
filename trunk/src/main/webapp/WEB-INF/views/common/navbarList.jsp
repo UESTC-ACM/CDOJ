@@ -15,11 +15,11 @@ Nav list on navbar
     <div class="cdoj-menu">
       <ul class="nav nav-pills nav-stacked">
         <li class="cdoj-menu-heading">CDOJ</li>
-        <li id="menu-item-home"><a href="/"><i class="icon-home"></i>Home</a></li>
-        <li id="menu-item-problem"><a href="<c:url value="/problem/list"/>"><i class="icon-file"></i>Problems</a></li>
-        <li id="menu-item-contest"><a href="#"><i class="icon-screenshot"></i>Contests</a></li>
-        <li id="menu-item-status"><a href="<c:url value="/status/list"/>"><i class="icon-refresh"></i>Status</a></li>
-        <li id="menu-item-user"><a href="<c:url value="/user/list"/>"><i class="icon-user"></i>Users</a></li>
+        <li id="menu-item-home"><a href="/"><i class="fa fa-home"></i>Home</a></li>
+        <li id="menu-item-problem"><a href="<c:url value="/problem/list"/>"><i class="fa fa-puzzle-piece"></i>Problems</a></li>
+        <li id="menu-item-contest"><a href="#"><i class="fa fa-trophy"></i>Contests</a></li>
+        <li id="menu-item-status"><a href="<c:url value="/status/list"/>"><i class="fa fa-refresh"></i>Status</a></li>
+        <li id="menu-item-user"><a href="<c:url value="/user/list"/>"><i class="fa fa-user"></i>Users</a></li>
       </ul>
     </div>
     <div class="panel-group" id="cdoj-extend-link">
