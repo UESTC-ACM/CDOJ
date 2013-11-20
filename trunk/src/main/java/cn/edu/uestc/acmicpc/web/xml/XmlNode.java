@@ -2,12 +2,15 @@ package cn.edu.uestc.acmicpc.web.xml;
 
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Basic node object used by xml parser.
- * 
+ *
  * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class XmlNode implements Iterable<XmlNode> {
@@ -35,7 +38,7 @@ public class XmlNode implements Iterable<XmlNode> {
   /**
    * Add new attribute into the attribute list, if the attribute list is {@code null} or there is
    * same attribute in the list, throw {@link AppException}.
-   * 
+   *
    * @param key the name of the attribute we want to add
    * @param value attribute innerText
    * @throws AppException
@@ -52,7 +55,7 @@ public class XmlNode implements Iterable<XmlNode> {
   /**
    * Remove specified attribute from the attribute list, if the attribute is {@code null} or there
    * is such attribute in the list, throw {@link AppException}.
-   * 
+   *
    * @param key the name of the attribute we want to remove
    * @throws AppException
    */
@@ -69,7 +72,7 @@ public class XmlNode implements Iterable<XmlNode> {
    * Get specified attribute innerText from the attribute list, if the attribute list is
    * {@code null} or there is no such attribute in the attribute list, return empty string,
    * otherwise return the innerText of this attribute.
-   * 
+   *
    * @param key the attribute name
    * @return the innerText of the attribute
    * @throws AppException
@@ -94,7 +97,7 @@ public class XmlNode implements Iterable<XmlNode> {
   /**
    * Add a new child node into the child nodes list, if the child node or child nodes list is
    * {@code null}, or this is same node in the child node list, throw {@link AppException}.
-   * 
+   *
    * @param child new child node
    * @throws AppException
    */
@@ -111,7 +114,7 @@ public class XmlNode implements Iterable<XmlNode> {
 
   /**
    * Get the iterator of parameters.
-   * 
+   *
    * @return the iterator is of child nodes list.
    */
   @Override

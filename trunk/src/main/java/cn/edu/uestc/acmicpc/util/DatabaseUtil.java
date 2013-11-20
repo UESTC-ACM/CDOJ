@@ -23,11 +23,12 @@
 package cn.edu.uestc.acmicpc.util;
 
 import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Criterion;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
 
 /**
  * All actions for database.

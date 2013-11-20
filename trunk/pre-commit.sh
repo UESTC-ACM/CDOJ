@@ -1,12 +1,12 @@
 #!/bin/bash
 PRE_COMMIT_ERRRO="\x1b[1;31mpre-commit error!\x1b[m"
 
-#echo -e "\x1b[0;33mCheck: java style check\x1b[m"
-#mvn checkstyle:checkstyle
-#if [ $? -ne 0 ]; then
-  #echo -e "\x1b[1;31mJava style is not correctly, please check.\x1b[m"
-  #exit 1
-#fi
+echo -e "\x1b[0;33mCheck: java style check\x1b[m"
+mvn checkstyle:checkstyle
+if [ $? -ne 0 ]; then
+  echo -e "\x1b[1;31mJava style is not correctly, please check.\x1b[m"
+  exit 1
+fi
 
 echo -e "\x1b[0;33mCheck: mysql connection.\x1b[m"
 mysql -uroot -proot -e exit 2> /dev/null

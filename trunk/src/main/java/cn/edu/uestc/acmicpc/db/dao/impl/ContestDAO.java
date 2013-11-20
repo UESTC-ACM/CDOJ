@@ -1,10 +1,10 @@
 package cn.edu.uestc.acmicpc.db.dao.impl;
 
-import org.springframework.stereotype.Repository;
-
 import cn.edu.uestc.acmicpc.db.dao.base.DAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
+
+import org.springframework.stereotype.Repository;
 
 /**
  * DAO for contest entity.
