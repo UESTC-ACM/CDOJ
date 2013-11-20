@@ -2,12 +2,17 @@ package cn.edu.uestc.acmicpc.db.dto.impl.problem;
 
 
 /**
- * TODO(mzry1992)
+ * Problem edit data transfer object
  */
 public class ProblemEditDTO {
 
   private Integer problemId;
+
+  /**
+   * "new" or "edit"
+   */
   private String action;
+
   private String title;
   private String description;
   private String input;
