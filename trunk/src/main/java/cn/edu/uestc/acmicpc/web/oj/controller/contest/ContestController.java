@@ -1,6 +1,20 @@
 
 package cn.edu.uestc.acmicpc.web.oj.controller.contest;
 
+import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestProblemDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestStatusShowDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
+import cn.edu.uestc.acmicpc.service.iface.ContestService;
+import cn.edu.uestc.acmicpc.service.iface.LanguageService;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
+import cn.edu.uestc.acmicpc.web.view.PageInfo;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,31 +29,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
-import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestProblemDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestStatusShowDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
-import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
-import cn.edu.uestc.acmicpc.service.iface.ContestService;
-import cn.edu.uestc.acmicpc.service.iface.LanguageService;
-import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
-import cn.edu.uestc.acmicpc.web.view.PageInfo;
-
 /**
- * 
+ *
  * @author liverliu
  *
  */
 @Controller
 @RequestMapping("/contest")
 public class ContestController extends BaseController{
-  
+
   private ContestService contestService;
   private LanguageService languageService;
   private ContestProblemService contestProblemService;
@@ -48,12 +46,12 @@ public class ContestController extends BaseController{
   public void setContestService(ContestService contestService) {
     this.contestService = contestService;
   }
-  
+
   @Autowired
   public void setLanguageService(LanguageService languageService) {
     this.languageService = languageService;
   }
-  
+
   @Autowired
   public void setContestProblemService(ContestProblemService contestProblemService) {
     this.contestProblemService = contestProblemService;
@@ -61,7 +59,7 @@ public class ContestController extends BaseController{
 
   /**
    * Show a contest.
-   * 
+   *
    * @param contestId
    * @param model
    * @return
@@ -88,10 +86,10 @@ public class ContestController extends BaseController{
     }
     return "contest/contestShow";
   }
-  
+
   /**
    * Show contest list.
-   * 
+   *
    * @return String
    */
   @RequestMapping("list")
@@ -99,17 +97,17 @@ public class ContestController extends BaseController{
   public String list() {
     return "contest/contestList";
   }
-  
+
   /**
    * Search contest
-   * 
+   *
    * @param session
    * @param contestCondition
    * @return
    */
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> search(HttpSession session, 
+  public @ResponseBody Map<String, Object> search(HttpSession session,
       @RequestBody ContestCondition contestCondition){
     Map<String, Object> json = new HashMap<>();
     try{
