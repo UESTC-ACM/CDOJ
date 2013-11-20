@@ -5,14 +5,13 @@ import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.times;
 
 import java.util.List;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-import org.mockito.stubbing.Answer;
 import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -30,15 +29,12 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDataEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDataShowDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
-import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.ObjectUtil;
@@ -121,6 +117,7 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
   public void testCreateNewProblem() throws AppException {
     ArgumentCaptor<Problem> captor = ArgumentCaptor.forClass(Problem.class);
     when(problemDAO.add(captor.capture())).thenAnswer(new Answer() {
+      @Override
       public Problem answer(InvocationOnMock invocation) {
         Object[] args = invocation.getArguments();
         Object mock = invocation.getMock();
@@ -142,12 +139,7 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
         isA(ProblemListDTO.Builder.class), captor.capture());
     Condition condition = captor.getValue();
     Assert.assertEquals(condition.getJoinedType(), JoinedType.AND);
-    List<Entry> entries = condition.getentEntries();
-    Assert.assertEquals(entries.size(), 2);
-    Assert.assertEquals(Entry.of("problemId",
-        ConditionType.GREATER_OR_EQUALS, Global.RECORD_PER_PAGE), entries.get(0));
-    Assert.assertEquals(Entry.of("problemId",
-        ConditionType.LESS_THAN, 2 * Global.RECORD_PER_PAGE), entries.get(1));
+    Assert.assertEquals(condition.getPageInfo(), pageInfo);
   }
 
   @Test
