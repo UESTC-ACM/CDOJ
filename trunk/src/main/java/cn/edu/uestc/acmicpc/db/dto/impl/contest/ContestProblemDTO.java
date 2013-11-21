@@ -1,11 +1,11 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.contest;
 
+import java.util.Map;
+
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
-
-import java.util.Map;
 
 @Fields({"order","problemByProblemId.title","problemByProblemId.isSpj",
   "problemByProblemId.javaTimeLimit","problemByProblemId.javaMemoryLimit",

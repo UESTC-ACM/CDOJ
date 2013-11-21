@@ -21,7 +21,7 @@
         <div class="pure-u-1-5">
               <c:if test="${sessionScope.currentUser.userId == targetUser.userId}">
                   <a href="#userEditModal" role="button" data-toggle="modal">
-                    <i class="icon-pencil"></i>
+                    <i class="fa fa-pencil"></i>
                     Edit Your Profile
                   </a>
               </c:if>

@@ -1,7 +1,5 @@
 package cn.edu.uestc.acmicpc.web.xml;
 
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -9,6 +7,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Simple xml parser in order to mapping the xml file into a {@link XmlNode} object.

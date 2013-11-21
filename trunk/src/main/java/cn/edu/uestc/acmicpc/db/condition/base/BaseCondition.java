@@ -1,15 +1,15 @@
 package cn.edu.uestc.acmicpc.db.condition.base;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
+import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
 /**
  * We can use this class to get {@link Condition} entity.

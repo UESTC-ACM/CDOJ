@@ -1,14 +1,5 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.service.iface.FileService;
-import cn.edu.uestc.acmicpc.util.FileUtil;
-import cn.edu.uestc.acmicpc.util.Settings;
-import cn.edu.uestc.acmicpc.util.ZipUtil;
-import cn.edu.uestc.acmicpc.util.checker.ZipDataChecker;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -19,6 +10,15 @@ import java.util.zip.ZipFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import cn.edu.uestc.acmicpc.service.iface.FileService;
+import cn.edu.uestc.acmicpc.util.FileUtil;
+import cn.edu.uestc.acmicpc.util.Settings;
+import cn.edu.uestc.acmicpc.util.ZipUtil;
+import cn.edu.uestc.acmicpc.util.checker.ZipDataChecker;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 
 /**
  * Implement for {@link FileService}

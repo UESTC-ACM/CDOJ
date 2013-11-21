@@ -1,12 +1,5 @@
 package cn.edu.uestc.acmicpc.judge.entity;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
-import cn.edu.uestc.acmicpc.db.entity.Status;
-import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.Global.OnlineJudgeReturnType;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,6 +14,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
+import cn.edu.uestc.acmicpc.db.entity.Status;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.Global.OnlineJudgeReturnType;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Judge queue scheduler.
