@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.db.dto.base;
 
 import java.util.Map;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 
 /**
