@@ -1,13 +1,13 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.user;
 
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Map;
+
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
-
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.Map;
 
 @Fields({ "userId", "userName", "studentId", "password", "school", "nickName", "email", "solved",
     "tried", "type", "motto", "lastLogin", "departmentId", "departmentByDepartmentId.name" })

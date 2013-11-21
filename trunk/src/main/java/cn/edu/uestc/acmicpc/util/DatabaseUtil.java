@@ -22,13 +22,13 @@
 
 package cn.edu.uestc.acmicpc.util;
 
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
+
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * All actions for database.

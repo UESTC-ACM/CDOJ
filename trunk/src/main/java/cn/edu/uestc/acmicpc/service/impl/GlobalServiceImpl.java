@@ -1,13 +1,13 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
-import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.StringUtil;
-
 import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.StringUtil;
 
 /**
  * Implementation for {@link GlobalService}.

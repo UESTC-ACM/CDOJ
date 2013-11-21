@@ -1,20 +1,6 @@
 
 package cn.edu.uestc.acmicpc.web.oj.controller.contest;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestProblemDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestStatusShowDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
-import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
-import cn.edu.uestc.acmicpc.service.iface.ContestService;
-import cn.edu.uestc.acmicpc.service.iface.LanguageService;
-import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
-import cn.edu.uestc.acmicpc.web.view.PageInfo;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +14,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestProblemDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestStatusShowDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
+import cn.edu.uestc.acmicpc.service.iface.ContestService;
+import cn.edu.uestc.acmicpc.service.iface.LanguageService;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
+import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
 /**
  *
