@@ -1,16 +1,16 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.ContestProblemCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IContestProblemDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestProblemDTO;
-import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+
+import cn.edu.uestc.acmicpc.db.condition.impl.ContestProblemCondition;
+import cn.edu.uestc.acmicpc.db.dao.iface.IContestProblemDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestProblemDTO;
+import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 @Service
 @Primary

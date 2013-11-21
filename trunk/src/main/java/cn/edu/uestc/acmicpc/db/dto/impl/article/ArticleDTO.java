@@ -1,12 +1,12 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.article;
 
+import java.sql.Timestamp;
+import java.util.Map;
+
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
-
-import java.sql.Timestamp;
-import java.util.Map;
 
 @Fields({ "articleId", "parentId", "clicked", "content", "contestId", "type",
   "isVisible", "order", "problemId", "time", "title", "userId" })

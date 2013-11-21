@@ -1,11 +1,5 @@
 package cn.edu.uestc.acmicpc.util;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
-import cn.edu.uestc.acmicpc.db.entity.Department;
-import cn.edu.uestc.acmicpc.db.entity.Language;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,6 +7,12 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
+import cn.edu.uestc.acmicpc.db.entity.Department;
+import cn.edu.uestc.acmicpc.db.entity.Language;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Global enumerates and constants inside project.
