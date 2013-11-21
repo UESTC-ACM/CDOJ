@@ -65,7 +65,7 @@ initProblemList = ->
                 <h3 class="panel-title">
                   <a href="/problem/show/#{data.problemId}">#{data.title}</a>
                   <span class='pull-right admin-span'>#{adminSpan()}</span>
-                  <span class='pull-right'>#{difficulty(data.difficulty)}</span>
+                  <span class='pull-right difficulty-span' value="#{data.problemId}">#{difficulty(data.difficulty)}</span>
                 </h3>
               </div>
               <div class="panel-body">
@@ -80,6 +80,20 @@ initProblemList = ->
       after: ->
         @user = getCurrentUser()
         if @user.userLogin && @user.currentUserType == "1"
+          $(".difficulty-span").find("i").click (e) =>
+            $el = $(e.currentTarget)
+            $pa = $el.parent()
+            problemId = $pa.attr("value")
+            difficulty = $el.index() + 1
+            queryString = "/problem/operator/#{problemId}/difficulty/#{difficulty}"
+            $.post(queryString, (data) ->
+              if data.result == "success"
+                $pa.find("i").removeClass("fa-star").removeClass("fa-star-o").addClass("fa-star-o")
+                difficulty.times((i) ->
+                  $($pa.find("i")[i]).removeClass("fa-star-o").addClass("fa-star")
+                )
+            )
+            return false
           $(".problem-editor").click (e) =>
             $el = $(e.currentTarget)
             window.location.href = "/problem/editor/#{$el.attr("problem-id")}"

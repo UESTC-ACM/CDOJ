@@ -8,5 +8,4 @@ $.fn.prePrettify = ->
 $.fn.prettify = ->
   this.find("pre").each (id, el)=>
     text = prettyPrintOne($(el)[0].innerText.escapeHTML())
-    console.log(text)
     $(el).empty().append(text)

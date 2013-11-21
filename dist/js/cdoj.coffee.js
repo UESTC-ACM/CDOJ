@@ -1,5 +1,5 @@
 (function() {
-  var $, Flandre, ListModule, SearchModule, avatar, getCurrentUser, initLayout, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonPost, markdown, render;
+  var $, Flandre, ListModule, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, initLayout, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonPost, markdown, render;
 
   avatar = function(el, options) {
     var $el, emailAddress, url;
@@ -35,6 +35,134 @@
       data: JSON.stringify(data),
       success: callback
     });
+  };
+
+  $ = jQuery;
+
+  $.fn.getCursorPosition = function() {
+    if (this.lengh === 0) {
+      return -1;
+    }
+    return $(this).getSelectionStart();
+  };
+
+  $.fn.setCursorPosition = function(position) {
+    if (this.lengh === 0) {
+      return this;
+    }
+    return $(this).setSelection(position, position);
+  };
+
+  $.fn.getSelection = function() {
+    var e, s;
+    if (this.lengh === 0) {
+      return -1;
+    }
+    s = $(this).getSelectionStart();
+    e = $(this).getSelectionEnd();
+    return this[0].value.substring(s, e);
+  };
+
+  $.fn.getSelectionStart = function() {
+    var input, pos, r;
+    if (this.lengh === 0) {
+      return -1;
+    }
+    input = this[0];
+    pos = input.value.length;
+    if (input.createTextRange) {
+      r = document.selection.createRange().duplicate();
+      r.moveEnd('character', input.value.length);
+      if (r.text === '') {
+        pos = input.value.length;
+      }
+      pos = input.value.lastIndexOf(r.text);
+    } else if (typeof input.selectionStart !== "undefined") {
+      pos = input.selectionStart;
+    }
+    return pos;
+  };
+
+  $.fn.getSelectionEnd = function() {
+    var input, pos, r;
+    if (this.lengh === 0) {
+      return -1;
+    }
+    input = this[0];
+    pos = input.value.length;
+    if (input.createTextRange) {
+      r = document.selection.createRange().duplicate();
+      r.moveStart('character', -input.value.length);
+      if (r.text === '') {
+        pos = input.value.length;
+      }
+      pos = input.value.lastIndexOf(r.text);
+    } else if (typeof input.selectionEnd !== "undefined") {
+      pos = input.selectionEnd;
+    }
+    return pos;
+  };
+
+  $.fn.setSelection = function(selectionStart, selectionEnd) {
+    var input, range;
+    if (this.lengh === 0) {
+      return this;
+    }
+    input = this[0];
+    if (input.createTextRange) {
+      range = input.createTextRange();
+      range.collapse(true);
+      range.moveEnd('character', selectionEnd);
+      range.moveStart('character', selectionStart);
+      range.select();
+    } else if (input.setSelectionRange) {
+      input.focus();
+      input.setSelectionRange(selectionStart, selectionEnd);
+    }
+    return this;
+  };
+
+  $.fn.insertAfterCursor = function(value, moveSteps) {
+    var oldText, position;
+    if (this.length === 0) {
+      return this;
+    }
+    position = this.getCursorPosition();
+    oldText = this.val();
+    oldText = oldText.insert(value, position);
+    this.val(oldText);
+    return this.setCursorPosition(position + value.length + moveSteps);
+  };
+
+  emotionsPerRow = 8;
+
+  formatEmotionId = function(id) {
+    if (id > 9) {
+      return "" + id;
+    } else {
+      return "0" + id;
+    }
+  };
+
+  getEmotionUrl = function(url, id, extension) {
+    return "" + url + "/" + (formatEmotionId(id + 1)) + "." + extension;
+  };
+
+  emotionTable = function(url, extension, count) {
+    var tableContent, template;
+    tableContent = "";
+    count.times(function(i) {
+      if (i % emotionsPerRow === 0) {
+        if (i > 0) {
+          tableContent += "</tr>";
+        }
+        tableContent += "<tr>";
+      }
+      return tableContent += "<td value=\"![" + (i + 1) + "](" + (getEmotionUrl(url, i, extension)) + ")\">\n  <span><img src=\"" + (getEmotionUrl(url, i, extension)) + "\" class=\"img-rounded\" style=\"width: 50px; height: 50px\"/></span>\n</td>";
+    });
+    tableContent += "</tr>";
+    template = "<table class=\"table table-bordered table-condensed\">\n  <tbody>\n    " + tableContent + "\n  </tbody>\n</table>";
+    return template;
   };
 
   $ = jQuery;
@@ -235,7 +363,6 @@
     return this.find("pre").each(function(id, el) {
       var text;
       text = prettyPrintOne($(el)[0].innerText.escapeHTML());
-      console.log(text);
       return $(el).empty().append(text);
     });
   };
@@ -264,13 +391,6 @@
     }
 
     Flandre.prototype.escape = function(content) {
-      content = content.replace(/</g, '&lt;');
-      content = content.replace(/>/g, '&gt;');
-      content = content.replace(/\n/g, '<br>');
-      content = content.replace(/<br>\s/g, '<br>&nbsp;');
-      content = content.replace(/\s\s\s/g, '&nbsp; &nbsp;');
-      content = content.replace(/\s\s/g, '&nbsp; ');
-      content = content.replace(/^ /, '&nbsp;');
       return content;
     };
 
@@ -278,15 +398,16 @@
       var oldText, template;
       oldText = this.element[0].innerHTML;
       this.element.empty();
-      template = "<div class=\"panel panel-default\">\n  <div class=\"panel-heading\" id=\"flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-preview\">Preview</button>\n      </div>\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-picture\"><i class=\"fa fa-picture-o\"></i></button>\n      </div>\n    </div>\n  </div>\n  <div class=\"tex2jax_ignore\" contenteditable=\"true\" id=\"flandre-editor\">" + (this.escape(oldText)) + "</div>\n  <div id=\"flandre-preview\"></div>\n</div>";
+      template = "<div class=\"panel panel-default\">\n  <div class=\"panel-heading\" id=\"flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-preview\">Preview</button>\n      </div>\n      <div class=\"btn-group flandre-tools\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-emotion\"><i class=\"fa fa-meh-o\"></i></button>\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-picture\"><i class=\"fa fa-picture-o\"></i></button>\n      </div>\n    </div>\n  </div>\n  <textarea class=\"tex2jax_ignore form-control\" id=\"flandre-editor\">" + (this.escape(oldText)) + "</textarea>\n  <div id=\"flandre-preview\"></div>\n</div>";
       return this.element.append(template);
     };
 
     Flandre.prototype.toolbar = function() {
-      var editor, preview, toolPicture, toolPreview,
+      var editor, preview, toolEmotion, toolPicture, toolPreview,
         _this = this;
       editor = this.element.find("#flandre-editor");
       preview = this.element.find("#flandre-preview");
+      editor.elastic();
       toolPreview = this.element.find("#tool-preview");
       toolPreview.click(function(e) {
         var $el, isActive, text;
@@ -296,22 +417,42 @@
         preview.css("display", "none");
         if (isActive) {
           editor.css("display", "block");
+          _this.element.find(".flandre-tools").css("display", "block");
         } else {
-          text = editor[0].innerText.escapeHTML();
+          text = editor.val().escapeHTML();
           preview.empty().append(text);
           preview.markdown();
           preview.prettify();
           preview.mathjax();
           preview.css("display", "block");
+          _this.element.find(".flandre-tools").css("display", "none");
         }
         return $el.button("toggle");
+      });
+      toolEmotion = this.element.find("#tool-emotion");
+      toolEmotion.popover({
+        placement: "bottom",
+        html: true,
+        container: "body",
+        title: "<ul class=\"nav nav-pills\">\n  <li class=\"active\"><a href=\"#emotion-brd\" data-toggle=\"tab\">BRD</a></li>\n</ul>",
+        content: "<div id=\"emotion-dialog\" style=\"width: auto;\">\n  <div class=\"tab-content\">\n    <div class=\"tab-pane active\" id=\"emotion-brd\">\n      " + (emotionTable("/plugins/cdoj/img/emotion/brd", "gif", 40)) + "\n    </div>\n  </div>\n</div>"
+      });
+      toolEmotion.on("shown.bs.popover", function() {
+        var _this = this;
+        return $("#emotion-dialog").find("td").click(function(e) {
+          var $el, value;
+          $el = $(e.currentTarget);
+          value = $el.attr("value");
+          editor.insertAfterCursor(value, 0);
+          return toolEmotion.popover("toggle");
+        });
       });
       toolPicture = this.element.find("#tool-picture");
       return toolPicture.click(function() {});
     };
 
     Flandre.prototype.getText = function() {
-      return this.element.find("#flandre-editor")[0].innerText;
+      return this.element.find("#flandre-editor").val();
     };
 
     return Flandre;
@@ -633,12 +774,29 @@
             });
             return result;
           };
-          return "<div class=\"col-md-12\">\n  <div class=\"" + (data.status === 1 ? panelAC : data.status === 2 ? panelWA : panelDE) + "\">\n    <div class=\"panel-heading\">\n      <h3 class=\"panel-title\">\n        <a href=\"/problem/show/" + data.problemId + "\">" + data.title + "</a>\n        <span class='pull-right admin-span'>" + (adminSpan()) + "</span>\n        <span class='pull-right'>" + (difficulty(data.difficulty)) + "</span>\n      </h3>\n    </div>\n    <div class=\"panel-body\">\n      <span class=\"source\">\n        " + (data.source.trim() !== '' ? data.source : '') + "\n      </span>\n      " + (data.isSpj ? "<span class='label label-danger'>SPJ</span>" : '') + "\n    </div>\n  </div>\n</div>";
+          return "<div class=\"col-md-12\">\n  <div class=\"" + (data.status === 1 ? panelAC : data.status === 2 ? panelWA : panelDE) + "\">\n    <div class=\"panel-heading\">\n      <h3 class=\"panel-title\">\n        <a href=\"/problem/show/" + data.problemId + "\">" + data.title + "</a>\n        <span class='pull-right admin-span'>" + (adminSpan()) + "</span>\n        <span class='pull-right difficulty-span' value=\"" + data.problemId + "\">" + (difficulty(data.difficulty)) + "</span>\n      </h3>\n    </div>\n    <div class=\"panel-body\">\n      <span class=\"source\">\n        " + (data.source.trim() !== '' ? data.source : '') + "\n      </span>\n      " + (data.isSpj ? "<span class='label label-danger'>SPJ</span>" : '') + "\n    </div>\n  </div>\n</div>";
         },
         after: function() {
           var _this = this;
           this.user = getCurrentUser();
           if (this.user.userLogin && this.user.currentUserType === "1") {
+            $(".difficulty-span").find("i").click(function(e) {
+              var $el, $pa, difficulty, problemId, queryString;
+              $el = $(e.currentTarget);
+              $pa = $el.parent();
+              problemId = $pa.attr("value");
+              difficulty = $el.index() + 1;
+              queryString = "/problem/operator/" + problemId + "/difficulty/" + difficulty;
+              $.post(queryString, function(data) {
+                if (data.result === "success") {
+                  $pa.find("i").removeClass("fa-star").removeClass("fa-star-o").addClass("fa-star-o");
+                  return difficulty.times(function(i) {
+                    return $($pa.find("i")[i]).removeClass("fa-star-o").addClass("fa-star");
+                  });
+                }
+              });
+              return false;
+            });
             $(".problem-editor").click(function(e) {
               var $el;
               $el = $(e.currentTarget);

@@ -38,7 +38,7 @@ module.exports = function(grunt) {
     },
     concat: {
       dist: {
-        src: ["src/js/md5.js", "dist/js/cdoj.coffee.js"],
+        src: ["src/js/md5.js", "src/js/jquery.elastic.source.js", "dist/js/cdoj.coffee.js"],
         dest: "dist/js/cdoj.js"
       }
     },
