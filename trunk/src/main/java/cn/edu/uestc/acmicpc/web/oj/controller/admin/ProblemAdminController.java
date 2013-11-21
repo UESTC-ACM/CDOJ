@@ -1,17 +1,5 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.admin;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDataEditDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDataShowDTO;
-import cn.edu.uestc.acmicpc.service.iface.FileService;
-import cn.edu.uestc.acmicpc.service.iface.ProblemService;
-import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.exception.FieldException;
-import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
-import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +17,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDataEditDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDataShowDTO;
+import cn.edu.uestc.acmicpc.service.iface.FileService;
+import cn.edu.uestc.acmicpc.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.FieldException;
+import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
+import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
 /**
  * Description

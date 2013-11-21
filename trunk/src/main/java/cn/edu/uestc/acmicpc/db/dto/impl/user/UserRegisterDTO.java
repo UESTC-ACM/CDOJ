@@ -1,13 +1,13 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.user;
 
-import cn.edu.uestc.acmicpc.db.entity.User;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import cn.edu.uestc.acmicpc.db.entity.User;
 
 /**
  * Data transfer object for {@link User}.

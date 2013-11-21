@@ -1,7 +1,5 @@
 package cn.edu.uestc.acmicpc.db.entity;
 
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-
 import java.io.Serializable;
 
 import javax.persistence.Basic;
@@ -14,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Mappings between contest and problems.
