@@ -15,7 +15,7 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 @RequestMapping("/admin")
 public class AdminController extends BaseController {
 
-  @RequestMapping("index")
+  @RequestMapping(value={"index", "/"})
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public String index() {
     return "admin/index";

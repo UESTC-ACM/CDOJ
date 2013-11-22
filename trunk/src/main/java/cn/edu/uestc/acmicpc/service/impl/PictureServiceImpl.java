@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
@@ -115,6 +117,35 @@ public class PictureServiceImpl extends AbstractService implements PictureServic
         .setFileName(file.getOriginalFilename())
         .setFileURL(folder + newName)
         .build();
+  }
+
+  @Override
+  public String modifyPictureLocation(String content, String oldDirectory,
+      String newDirectory) throws AppException {
+    String imagePatternString = "!\\[.*\\]\\(" + oldDirectory + "(\\S*)\\)";
+    Pattern imagePattern = Pattern.compile(imagePatternString);
+    Matcher matcher = imagePattern.matcher(content);
+    while (matcher.find()) {
+      String imageLocation = matcher.group(1);
+
+      String oldImageLocation = settings.SETTING_ABSOLUTE_PATH + oldDirectory + imageLocation;
+      String newImageLocation = settings.SETTING_ABSOLUTE_PATH + newDirectory + imageLocation;
+
+      File oldFile = new File(oldImageLocation);
+      if (!oldFile.exists())
+        continue;
+
+      File newPath = new File(settings.SETTING_ABSOLUTE_PATH + newDirectory);
+      if (!newPath.exists())
+        if (!newPath.mkdirs())
+          throw new AppException("Error while make picture directory!");
+
+      if (!oldFile.renameTo(new File(newImageLocation)))
+        throw new AppException("Unable to move images!");
+    }
+    String imageReplacePatternString = "!\\[.*\\]\\(" + newDirectory + "$1\\)";
+    content = content.replaceAll(imagePatternString,   imageReplacePatternString);
+    return content;
   }
 
 }

@@ -15,7 +15,7 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 @RequestMapping("/")
 public class IndexController extends BaseController {
 
-  @RequestMapping(method = RequestMethod.GET)
+  @RequestMapping(value={"index", "/"}, method = RequestMethod.GET)
   @LoginPermit(NeedLogin = false)
   public String index(ModelMap model) {
     model.put("message", "home page.");
