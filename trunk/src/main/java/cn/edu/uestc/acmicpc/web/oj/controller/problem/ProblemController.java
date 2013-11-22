@@ -24,6 +24,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
+import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.Global;
@@ -42,6 +43,12 @@ public class ProblemController extends BaseController{
   private ProblemService problemService;
   private StatusService statusService;
   private LanguageService languageService;
+  private PictureService pictureService;
+
+  @Autowired
+  public void setPictureService(PictureService pictureService) {
+    this.pictureService = pictureService;
+  }
 
   @Autowired
   public void setProblemService(ProblemService problemService) {
@@ -226,8 +233,19 @@ public class ProblemController extends BaseController{
       if (problemEditDTO.getAction().compareTo("new") == 0) {
         Integer problemId = problemService.createNewProblem();
         problemDTO = problemService.getProblemDTOByProblemId(problemId);
-        if (problemDTO == null)
+        if (problemDTO == null || !problemDTO.getProblemId().equals(problemId))
           throw new AppException("Error while creating problem.");
+        // Move pictures
+        String oldDirectory = "/images/problem/new/";
+        String newDirectory = "/images/problem/" + problemId + "/";
+        problemEditDTO.setDescription(pictureService.modifyPictureLocation(
+            problemEditDTO.getDescription(), oldDirectory, newDirectory));
+        problemEditDTO.setInput(pictureService.modifyPictureLocation(
+            problemEditDTO.getInput(), oldDirectory, newDirectory));
+        problemEditDTO.setOutput(pictureService.modifyPictureLocation(
+            problemEditDTO.getOutput(), oldDirectory, newDirectory));
+        problemEditDTO.setHint(pictureService.modifyPictureLocation(
+            problemEditDTO.getHint(), oldDirectory, newDirectory));
       } else {
         problemDTO = problemService.getProblemDTOByProblemId(problemEditDTO.getProblemId());
         if (problemDTO == null)
@@ -245,6 +263,7 @@ public class ProblemController extends BaseController{
 
       problemService.updateProblem(problemDTO);
       json.put("result", "success");
+      json.put("problemId", problemDTO.getProblemId());
     } catch (FieldException e) {
       putFieldErrorsIntoBindingResult(e, validateResult);
       json.put("result", "field_error");
