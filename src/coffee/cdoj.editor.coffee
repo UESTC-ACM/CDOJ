@@ -1,5 +1,5 @@
 # A markdown editor
-# require bootstrap3, jQuery, sugar, mathjax and marked
+# require bootstrap3, jQuery, sugar, mathjax, fine-uploader and marked
 class Flandre
   constructor: (options) ->
     @options = options
@@ -31,8 +31,8 @@ class Flandre
               <button type="button" class="btn btn-default btn-sm" id="tool-preview">Preview</button>
             </div>
             <div class="btn-group flandre-tools">
-              <button type="button" class="btn btn-default btn-sm" id="tool-emotion"><i class="fa fa-meh-o"></i></button>
-              <button type="button" class="btn btn-default btn-sm" id="tool-picture"><i class="fa fa-picture-o"></i></button>
+              <a class="btn btn-default btn-sm" id="tool-emotion"><i class="fa fa-meh-o"></i></a>
+              <a class="btn btn-default btn-sm" id="tool-picture"><i class="fa fa-picture-o"></i></a>
             </div>
           </div>
         </div>
@@ -106,7 +106,7 @@ class Flandre
       emotionModal.find("#emotion-dialog").find("td").on("click", (e) =>
         $el = $(e.currentTarget)
         value = $el.attr("value")
-        editor.insertAfterCursor(" #{value} ", 0)
+        editor.insertAfterCursor(value, 0)
         emotionModal.modal("hide")
       )
     )
@@ -124,10 +124,11 @@ class Flandre
       callbacks:
         onComplete: (id, fileName, data) ->
           if data.success == "true"
-            value = " ![#{data.uploadedFile}](#{data.uploadedFileUrl}) "
+            value = "![#{data.uploadedFile}](#{data.uploadedFileUrl})"
             editor.insertAfterCursor(value, 0)
           else
-            alert()
+            # TODO
+            console.log(data)
     )
 
   getText: ->

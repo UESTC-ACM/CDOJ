@@ -29,7 +29,7 @@ initProblemEditor = ->
         info["problemId"] = action
       jsonPost("/problem/edit", info, (data) ->
         if data.result == "success"
-          window.location.reload()
+          window.location.href = "/problem/show/#{data.problemId}"
         else if data.result == "field_error"
           # must be empty title
           alert("Please enter a valid title!")

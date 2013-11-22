@@ -23479,7 +23479,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
       var oldText, template;
       oldText = this.element[0].innerHTML;
       this.element.empty();
-      template = "<div class=\"panel panel-default\">\n  <div class=\"panel-heading\" id=\"flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-preview\">Preview</button>\n      </div>\n      <div class=\"btn-group flandre-tools\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-emotion\"><i class=\"fa fa-meh-o\"></i></button>\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-picture\"><i class=\"fa fa-picture-o\"></i></button>\n      </div>\n    </div>\n  </div>\n  <textarea class=\"tex2jax_ignore form-control\" id=\"flandre-editor\">" + (this.escape(oldText)) + "</textarea>\n  <div id=\"flandre-preview\"></div>\n</div>";
+      template = "<div class=\"panel panel-default\">\n  <div class=\"panel-heading\" id=\"flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-preview\">Preview</button>\n      </div>\n      <div class=\"btn-group flandre-tools\">\n        <a class=\"btn btn-default btn-sm\" id=\"tool-emotion\"><i class=\"fa fa-meh-o\"></i></a>\n        <a class=\"btn btn-default btn-sm\" id=\"tool-picture\"><i class=\"fa fa-picture-o\"></i></a>\n      </div>\n    </div>\n  </div>\n  <textarea class=\"tex2jax_ignore form-control\" id=\"flandre-editor\">" + (this.escape(oldText)) + "</textarea>\n  <div id=\"flandre-preview\"></div>\n</div>";
       return this.element.append(template);
     };
 
@@ -23525,7 +23525,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
           var $el, value;
           $el = $(e.currentTarget);
           value = $el.attr("value");
-          editor.insertAfterCursor(" " + value + " ", 0);
+          editor.insertAfterCursor(value, 0);
           return emotionModal.modal("hide");
         });
       });
@@ -23545,10 +23545,10 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
           onComplete: function(id, fileName, data) {
             var value;
             if (data.success === "true") {
-              value = " ![" + data.uploadedFile + "](" + data.uploadedFileUrl + ") ";
+              value = "![" + data.uploadedFile + "](" + data.uploadedFileUrl + ")";
               return editor.insertAfterCursor(value, 0);
             } else {
-              return alert();
+              return console.log(data);
             }
           }
         }
@@ -23821,7 +23821,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
         }
         jsonPost("/problem/edit", info, function(data) {
           if (data.result === "success") {
-            return window.location.reload();
+            return window.location.href = "/problem/show/" + data.problemId;
           } else if (data.result === "field_error") {
             return alert("Please enter a valid title!");
           } else {
