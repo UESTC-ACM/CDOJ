@@ -9,7 +9,7 @@ initProblemEditor = ->
         id: value
         editor: $("##{value}").flandre(
           picture:
-            uploadUrl: "/picture/problem/#{action}"
+            uploadUrl: "/picture/uploadPicture/problem/#{action}"
         )
       )
     )

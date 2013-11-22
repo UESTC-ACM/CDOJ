@@ -72,53 +72,62 @@ class Flandre
       $el.button("toggle")
 
     toolEmotion = @element.find("#tool-emotion")
-    emotionDialog = "emotion-dialog-#{@element.attr("id")}"
-    toolEmotion.popover(
-      placement: "bottom"
-      html: true
-      container: "body"
-      title: """
-        <ul class="nav nav-pills">
-          <li class="active"><a href="#emotion-brd" data-toggle="tab">BRD</a></li>
-        </ul>
-        """
-      content: """
-        <div id="#{emotionDialog}" style="width: auto;">
-          <div class="tab-content">
-            <div class="tab-pane active" id="emotion-brd">
-              #{emotionTable("/plugins/cdoj/img/emotion/brd", "gif", 40)}
+    emotionModalId = "emotion-modal-#{@element.attr("id")}"
+    emotionModalTemplate = """
+      <div class="modal fade" id="#{emotionModalId}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">
+                <ul class="nav nav-pills">
+                  <li class="active"><a href="#emotion-brd" data-toggle="tab">BRD</a></li>
+                </ul>
+              </h4>
             </div>
-          </div>
-        </div>
-        """
-    )
-    toolEmotion.on("shown.bs.popover", ->
-      $("##{emotionDialog}").find("td").click (e) =>
+            <div class="modal-body">
+              <div id="emotion-dialog" style="width: auto;" value="false">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="emotion-brd">
+                    #{emotionTable("/plugins/cdoj/img/emotion/brd", "gif", 40)}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+      """
+    $(document.body).append(emotionModalTemplate)
+    emotionModal = $("##{emotionModalId}")
+    toolEmotion.click =>
+      emotionModal.modal("show")
+    emotionModal.on("shown.bs.modal", ->
+      emotionModal.find("#emotion-dialog").find("td").on("click", (e) =>
         $el = $(e.currentTarget)
         value = $el.attr("value")
-        editor.insertAfterCursor(value, 0)
-        toolEmotion.popover("toggle")
+        editor.insertAfterCursor(" #{value} ", 0)
+        emotionModal.modal("hide")
+      )
     )
 
     toolPicture = @element.find("#tool-picture")
-    pictureDialog = "picture-dialog-#{@element.attr("id")}"
-    toolPicture.popover(
-      placement: "bottom"
-      html: true
-      container: "body"
-      content: """
-        <div id="#{pictureDialog}">
-          <div class="btn btn-primary" id="picture-upload-button">Upload picture</div>
-        </div>
-        """
-    )
-    toolPicture.on("shown.bs.popover", ->
-      $button = $("picture-upload-button");
-      uploader = new qq.FineUploaderBasic(
-        button: $button[0]
-        request:
-          endpoint: options.picture.uploadUrl
-      )
+    pictureUploader = new qq.FineUploaderBasic(
+      button: toolPicture[0]
+      request:
+        endpoint: options.picture.uploadUrl
+        inputName: "uploadFile"
+      validation:
+        allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+        sizeLimit: 10 * 1024 * 1024 # 10 MB
+      multiple: false
+      callbacks:
+        onComplete: (id, fileName, data) ->
+          if data.success == "true"
+            value = " ![#{data.uploadedFile}](#{data.uploadedFileUrl}) "
+            editor.insertAfterCursor(value, 0)
+          else
+            alert()
     )
 
   getText: ->

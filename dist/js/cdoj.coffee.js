@@ -403,7 +403,7 @@
     };
 
     Flandre.prototype.toolbar = function() {
-      var editor, emotionDialog, options, pictureDialog, preview, toolEmotion, toolPicture, toolPreview,
+      var editor, emotionModal, emotionModalId, emotionModalTemplate, options, pictureUploader, preview, toolEmotion, toolPicture, toolPreview,
         _this = this;
       editor = this.element.find("#flandre-editor");
       preview = this.element.find("#flandre-preview");
@@ -431,41 +431,46 @@
         return $el.button("toggle");
       });
       toolEmotion = this.element.find("#tool-emotion");
-      emotionDialog = "emotion-dialog-" + (this.element.attr("id"));
-      toolEmotion.popover({
-        placement: "bottom",
-        html: true,
-        container: "body",
-        title: "<ul class=\"nav nav-pills\">\n  <li class=\"active\"><a href=\"#emotion-brd\" data-toggle=\"tab\">BRD</a></li>\n</ul>",
-        content: "<div id=\"" + emotionDialog + "\" style=\"width: auto;\">\n  <div class=\"tab-content\">\n    <div class=\"tab-pane active\" id=\"emotion-brd\">\n      " + (emotionTable("/plugins/cdoj/img/emotion/brd", "gif", 40)) + "\n    </div>\n  </div>\n</div>"
+      emotionModalId = "emotion-modal-" + (this.element.attr("id"));
+      emotionModalTemplate = "<div class=\"modal fade\" id=\"" + emotionModalId + "\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n        <h4 class=\"modal-title\">\n          <ul class=\"nav nav-pills\">\n            <li class=\"active\"><a href=\"#emotion-brd\" data-toggle=\"tab\">BRD</a></li>\n          </ul>\n        </h4>\n      </div>\n      <div class=\"modal-body\">\n        <div id=\"emotion-dialog\" style=\"width: auto;\" value=\"false\">\n          <div class=\"tab-content\">\n            <div class=\"tab-pane active\" id=\"emotion-brd\">\n              " + (emotionTable("/plugins/cdoj/img/emotion/brd", "gif", 40)) + "\n            </div>\n          </div>\n        </div>\n      </div>\n    </div><!-- /.modal-content -->\n  </div><!-- /.modal-dialog -->\n</div><!-- /.modal -->";
+      $(document.body).append(emotionModalTemplate);
+      emotionModal = $("#" + emotionModalId);
+      toolEmotion.click(function() {
+        return emotionModal.modal("show");
       });
-      toolEmotion.on("shown.bs.popover", function() {
+      emotionModal.on("shown.bs.modal", function() {
         var _this = this;
-        return $("#" + emotionDialog).find("td").click(function(e) {
+        return emotionModal.find("#emotion-dialog").find("td").on("click", function(e) {
           var $el, value;
           $el = $(e.currentTarget);
           value = $el.attr("value");
-          editor.insertAfterCursor(value, 0);
-          return toolEmotion.popover("toggle");
+          editor.insertAfterCursor(" " + value + " ", 0);
+          return emotionModal.modal("hide");
         });
       });
       toolPicture = this.element.find("#tool-picture");
-      pictureDialog = "picture-dialog-" + (this.element.attr("id"));
-      toolPicture.popover({
-        placement: "bottom",
-        html: true,
-        container: "body",
-        content: "<div id=\"" + pictureDialog + "\">\n  <div class=\"btn btn-primary\" id=\"picture-upload-button\">Upload picture</div>\n</div>"
-      });
-      return toolPicture.on("shown.bs.popover", function() {
-        var $button, uploader;
-        $button = $("picture-upload-button");
-        return uploader = new qq.FineUploaderBasic({
-          button: $button[0],
-          request: {
-            endpoint: options.picture.uploadUrl
+      return pictureUploader = new qq.FineUploaderBasic({
+        button: toolPicture[0],
+        request: {
+          endpoint: options.picture.uploadUrl,
+          inputName: "uploadFile"
+        },
+        validation: {
+          allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+          sizeLimit: 10 * 1024 * 1024
+        },
+        multiple: false,
+        callbacks: {
+          onComplete: function(id, fileName, data) {
+            var value;
+            if (data.success === "true") {
+              value = " ![" + data.uploadedFile + "](" + data.uploadedFileUrl + ") ";
+              return editor.insertAfterCursor(value, 0);
+            } else {
+              return alert();
+            }
           }
-        });
+        }
       });
     };
 
@@ -711,7 +716,7 @@
           id: value,
           editor: $("#" + value).flandre({
             picture: {
-              uploadUrl: "/picture/problem/" + action
+              uploadUrl: "/picture/uploadPicture/problem/" + action
             }
           })
         });

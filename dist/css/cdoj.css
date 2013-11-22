@@ -7623,11 +7623,8 @@ html,
 #flandre-preview p:last-child {
   margin-bottom: 0;
 }
-.popover-title ul > li > a {
+.modal-title ul > li > a {
   padding: 2px 6px;
-}
-.popover {
-  max-width: 9999px;
 }
 /*
 @import "cdoj.layout.less";
