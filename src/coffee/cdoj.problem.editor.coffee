@@ -7,7 +7,10 @@ initProblemEditor = ->
     editorsId.each((value, id) ->
       editors.push(
         id: value
-        editor: $("##{value}").flandre()
+        editor: $("##{value}").flandre(
+          picture:
+            uploadUrl: "/picture/problem/#{action}"
+        )
       )
     )
     $("#submit").click =>

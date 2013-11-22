@@ -39,6 +39,7 @@ module.exports = function(grunt) {
           "src/js/bootstrap.js",
           "src/js/md5.js",
           "src/js/jquery.elastic.source.js",
+          "src/js/fineuploader-4.0.3.min.js",
           "dist/js/cdoj.coffee.js"],
         dest: "dist/js/cdoj.js"
       },

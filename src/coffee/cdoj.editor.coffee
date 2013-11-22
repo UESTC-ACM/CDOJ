@@ -1,7 +1,8 @@
 # A markdown editor
 # require bootstrap3, jQuery, sugar, mathjax and marked
 class Flandre
-  constructor: (@options) ->
+  constructor: (options) ->
+    @options = options
     @element = @options.element
     if @element == null || @element.length == 0
       return null
@@ -44,6 +45,7 @@ class Flandre
   toolbar: ->
     editor = @element.find("#flandre-editor")
     preview = @element.find("#flandre-preview")
+    options = @options
 
     editor.elastic()
 
@@ -70,6 +72,7 @@ class Flandre
       $el.button("toggle")
 
     toolEmotion = @element.find("#tool-emotion")
+    emotionDialog = "emotion-dialog-#{@element.attr("id")}"
     toolEmotion.popover(
       placement: "bottom"
       html: true
@@ -80,7 +83,7 @@ class Flandre
         </ul>
         """
       content: """
-        <div id="emotion-dialog" style="width: auto;">
+        <div id="#{emotionDialog}" style="width: auto;">
           <div class="tab-content">
             <div class="tab-pane active" id="emotion-brd">
               #{emotionTable("/plugins/cdoj/img/emotion/brd", "gif", 40)}
@@ -90,7 +93,7 @@ class Flandre
         """
     )
     toolEmotion.on("shown.bs.popover", ->
-      $("#emotion-dialog").find("td").click (e) =>
+      $("##{emotionDialog}").find("td").click (e) =>
         $el = $(e.currentTarget)
         value = $el.attr("value")
         editor.insertAfterCursor(value, 0)
@@ -98,17 +101,24 @@ class Flandre
     )
 
     toolPicture = @element.find("#tool-picture")
-    # Fuuuuuuuuuuuuuuuuuck
+    pictureDialog = "picture-dialog-#{@element.attr("id")}"
     toolPicture.popover(
       placement: "bottom"
       html: true
       container: "body"
-      title: """
-        Upload picture
-        """
       content: """
-        Fuck?
+        <div id="#{pictureDialog}">
+          <div class="btn btn-primary" id="picture-upload-button">Upload picture</div>
+        </div>
         """
+    )
+    toolPicture.on("shown.bs.popover", ->
+      $button = $("picture-upload-button");
+      uploader = new qq.FineUploaderBasic(
+        button: $button[0]
+        request:
+          endpoint: options.picture.uploadUrl
+      )
     )
 
   getText: ->

@@ -403,10 +403,11 @@
     };
 
     Flandre.prototype.toolbar = function() {
-      var editor, preview, toolEmotion, toolPicture, toolPreview,
+      var editor, emotionDialog, options, pictureDialog, preview, toolEmotion, toolPicture, toolPreview,
         _this = this;
       editor = this.element.find("#flandre-editor");
       preview = this.element.find("#flandre-preview");
+      options = this.options;
       editor.elastic();
       toolPreview = this.element.find("#tool-preview");
       toolPreview.click(function(e) {
@@ -430,16 +431,17 @@
         return $el.button("toggle");
       });
       toolEmotion = this.element.find("#tool-emotion");
+      emotionDialog = "emotion-dialog-" + (this.element.attr("id"));
       toolEmotion.popover({
         placement: "bottom",
         html: true,
         container: "body",
         title: "<ul class=\"nav nav-pills\">\n  <li class=\"active\"><a href=\"#emotion-brd\" data-toggle=\"tab\">BRD</a></li>\n</ul>",
-        content: "<div id=\"emotion-dialog\" style=\"width: auto;\">\n  <div class=\"tab-content\">\n    <div class=\"tab-pane active\" id=\"emotion-brd\">\n      " + (emotionTable("/plugins/cdoj/img/emotion/brd", "gif", 40)) + "\n    </div>\n  </div>\n</div>"
+        content: "<div id=\"" + emotionDialog + "\" style=\"width: auto;\">\n  <div class=\"tab-content\">\n    <div class=\"tab-pane active\" id=\"emotion-brd\">\n      " + (emotionTable("/plugins/cdoj/img/emotion/brd", "gif", 40)) + "\n    </div>\n  </div>\n</div>"
       });
       toolEmotion.on("shown.bs.popover", function() {
         var _this = this;
-        return $("#emotion-dialog").find("td").click(function(e) {
+        return $("#" + emotionDialog).find("td").click(function(e) {
           var $el, value;
           $el = $(e.currentTarget);
           value = $el.attr("value");
@@ -448,12 +450,22 @@
         });
       });
       toolPicture = this.element.find("#tool-picture");
-      return toolPicture.popover({
+      pictureDialog = "picture-dialog-" + (this.element.attr("id"));
+      toolPicture.popover({
         placement: "bottom",
         html: true,
         container: "body",
-        title: "Upload picture",
-        content: "Fuck?"
+        content: "<div id=\"" + pictureDialog + "\">\n  <div class=\"btn btn-primary\" id=\"picture-upload-button\">Upload picture</div>\n</div>"
+      });
+      return toolPicture.on("shown.bs.popover", function() {
+        var $button, uploader;
+        $button = $("picture-upload-button");
+        return uploader = new qq.FineUploaderBasic({
+          button: $button[0],
+          request: {
+            endpoint: options.picture.uploadUrl
+          }
+        });
       });
     };
 
@@ -697,7 +709,11 @@
       editorsId.each(function(value, id) {
         return editors.push({
           id: value,
-          editor: $("#" + value).flandre()
+          editor: $("#" + value).flandre({
+            picture: {
+              uploadUrl: "/picture/problem/" + action
+            }
+          })
         });
       });
       return $("#submit").click(function() {
