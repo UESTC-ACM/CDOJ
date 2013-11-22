@@ -1,5 +1,5 @@
 (function() {
-  var $, Flandre, ListModule, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, initLayout, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonPost, markdown, render;
+  var $, Flandre, ListModule, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonPost, markdown, render;
 
   avatar = function(el, options) {
     var $el, emailAddress, url;
@@ -324,7 +324,7 @@
     return this.each(function(id, el) {
       var $el, html, md;
       $el = $(el);
-      md = $el.html().replace('<textarea>', '').replace('</textarea>', '').replace('<TEXTAREA>', '').replace('</TEXTAREA>', '').trim();
+      md = $el.html().trim().replace('<textarea>', '').replace('</textarea>', '').replace('<TEXTAREA>', '').replace('</TEXTAREA>', '').trim();
       html = $(marked(md));
       $el.empty().append(html);
       return $el.find("pre").unescapePre();
@@ -396,7 +396,7 @@
 
     Flandre.prototype.createTextarea = function() {
       var oldText, template;
-      oldText = this.element[0].innerHTML;
+      oldText = this.element[0].innerHTML.trim();
       this.element.empty();
       template = "<div class=\"panel panel-default\">\n  <div class=\"panel-heading\" id=\"flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-preview\">Preview</button>\n      </div>\n      <div class=\"btn-group flandre-tools\">\n        <a class=\"btn btn-default btn-sm\" id=\"tool-emotion\"><i class=\"fa fa-meh-o\"></i></a>\n        <a class=\"btn btn-default btn-sm\" id=\"tool-picture\"><i class=\"fa fa-picture-o\"></i></a>\n      </div>\n    </div>\n  </div>\n  <textarea class=\"tex2jax_ignore form-control\" id=\"flandre-editor\">" + (this.escape(oldText)) + "</textarea>\n  <div id=\"flandre-preview\"></div>\n</div>";
       return this.element.append(template);
@@ -456,7 +456,7 @@
           inputName: "uploadFile"
         },
         validation: {
-          allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+          allowedExtensions: ["jpeg", "jpg", "gif", "png"],
           sizeLimit: 10 * 1024 * 1024
         },
         multiple: false,
@@ -615,43 +615,19 @@
     }
   };
 
-  getCurrentUser = function() {
-    var $currentUser;
-    $currentUser = $("#currentUser");
-    this.userLogin = $currentUser.length !== 0 ? true : false;
-    if (this.userLogin) {
-      this.currentUser = $currentUser[0].innerHTML.trim();
-      this.currentUserType = $currentUser.attr("type");
-      return {
-        userLogin: true,
-        currentUser: this.currentUser,
-        currentUserType: this.currentUserType
-      };
-    } else {
-      return {
-        userLogin: false
-      };
-    }
-  };
-
-  initUser = function() {
-    var $userAvatar,
+  initProblemDataEditor = function() {
+    var $dataUploadButton, $editor, dataUploader, problemId,
       _this = this;
-    this.user = getCurrentUser();
-    if (this.user.userLogin) {
-      $userAvatar = $("#cdoj-user-avatar");
-      $userAvatar.setAvatar({
-        image: "http://www.acm.uestc.edu.cn/images/akari_small.jpg",
-        size: $userAvatar.width() ? $userAvatar.width() : void 0
-      });
-    }
-    if (this.user.userLogin === false) {
-      $("#cdoj-login-button").click(function() {
-        var $loginForm, info;
-        $loginForm = $("#cdoj-login-form");
-        info = $loginForm.getFormData();
-        jsonPost("/user/login", info, function(data) {
-          return $loginForm.formValidate({
+    $editor = $("#problem-data-editor");
+    if ($editor.length > 0) {
+      problemId = $editor.find("#problem-data-editor-title").attr("value");
+      $editor.find("#submit").click(function() {
+        var $form, info;
+        $form = $editor.find("#problem-data-form");
+        info = $form.getFormData();
+        info["problemId"] = problemId;
+        jsonPost("/problem/updateProblemData", info, function(data) {
+          return $form.formValidate({
             result: data,
             onSuccess: function() {
               return window.location.reload();
@@ -660,45 +636,29 @@
         });
         return false;
       });
-      $("#cdoj-register-button").click(function() {
-        var $registerForm, info;
-        $registerForm = $("#cdoj-register-form");
-        info = $registerForm.getFormData();
-        jsonPost("/user/register", info, function(data) {
-          return $registerForm.formValidate({
-            result: data,
-            onSuccess: function() {
-              return window.location.reload();
+      $dataUploadButton = $editor.find("#problem-data-uploader");
+      return dataUploader = new qq.FineUploaderBasic({
+        button: $dataUploadButton[0],
+        request: {
+          endpoint: "/problem/uploadProblemDataFile/" + problemId,
+          inputName: "uploadFile"
+        },
+        validation: {
+          allowedExtensions: ["zip"],
+          sizeLimit: 100 * 1024 * 1024
+        },
+        multiple: false,
+        callbacks: {
+          onComplete: function(id, fileName, data) {
+            var template;
+            if (data.success === "true") {
+              template = "<div class=\"alert alert-success\">\n  Total data: " + data.total + "\n</div>";
+            } else {
+              template = "<div class=\"alert alert-danger\">\n  " + data.error + "\n</div>";
             }
-          });
-        });
-        return false;
-      });
-      $("#cdoj-activate-button").click(function() {
-        var $activateForm, info;
-        $activateForm = $("#cdoj-activate-form");
-        info = $activateForm.getFormData();
-        $.post("/user/sendSerialKey/" + info.userName, function(data) {
-          if (data.result === "success") {
-            alert("We send you an Email with the url to reset your password right now, please check your mail box.");
-            return $("#cdoj-activate-modal").modal("hide");
-          } else if (data.result === "failed") {
-            return alert("Unknown error occurred.");
-          } else {
-            return alert(data.error_msg);
+            return $editor.find("#uploader-info").empty().append(template);
           }
-        });
-        return false;
-      });
-    }
-    if (this.user.userLogin) {
-      return $("#cdoj-logout-button").click(function() {
-        $.post("/user/logout", function(data) {
-          if (data.result === "success") {
-            return window.location.reload();
-          }
-        });
-        return false;
+        }
       });
     }
   };
@@ -911,6 +871,94 @@
     }
   };
 
+  getCurrentUser = function() {
+    var $currentUser;
+    $currentUser = $("#currentUser");
+    this.userLogin = $currentUser.length !== 0 ? true : false;
+    if (this.userLogin) {
+      this.currentUser = $currentUser[0].innerHTML.trim();
+      this.currentUserType = $currentUser.attr("type");
+      return {
+        userLogin: true,
+        currentUser: this.currentUser,
+        currentUserType: this.currentUserType
+      };
+    } else {
+      return {
+        userLogin: false
+      };
+    }
+  };
+
+  initUser = function() {
+    var $userAvatar,
+      _this = this;
+    this.user = getCurrentUser();
+    if (this.user.userLogin) {
+      $userAvatar = $("#cdoj-user-avatar");
+      $userAvatar.setAvatar({
+        image: "http://www.acm.uestc.edu.cn/images/akari_small.jpg",
+        size: $userAvatar.width() ? $userAvatar.width() : void 0
+      });
+    }
+    if (this.user.userLogin === false) {
+      $("#cdoj-login-button").click(function() {
+        var $loginForm, info;
+        $loginForm = $("#cdoj-login-form");
+        info = $loginForm.getFormData();
+        jsonPost("/user/login", info, function(data) {
+          return $loginForm.formValidate({
+            result: data,
+            onSuccess: function() {
+              return window.location.reload();
+            }
+          });
+        });
+        return false;
+      });
+      $("#cdoj-register-button").click(function() {
+        var $registerForm, info;
+        $registerForm = $("#cdoj-register-form");
+        info = $registerForm.getFormData();
+        jsonPost("/user/register", info, function(data) {
+          return $registerForm.formValidate({
+            result: data,
+            onSuccess: function() {
+              return window.location.reload();
+            }
+          });
+        });
+        return false;
+      });
+      $("#cdoj-activate-button").click(function() {
+        var $activateForm, info;
+        $activateForm = $("#cdoj-activate-form");
+        info = $activateForm.getFormData();
+        $.post("/user/sendSerialKey/" + info.userName, function(data) {
+          if (data.result === "success") {
+            alert("We send you an Email with the url to reset your password right now, please check your mail box.");
+            return $("#cdoj-activate-modal").modal("hide");
+          } else if (data.result === "failed") {
+            return alert("Unknown error occurred.");
+          } else {
+            return alert(data.error_msg);
+          }
+        });
+        return false;
+      });
+    }
+    if (this.user.userLogin) {
+      return $("#cdoj-logout-button").click(function() {
+        $.post("/user/logout", function(data) {
+          if (data.result === "success") {
+            return window.location.reload();
+          }
+        });
+        return false;
+      });
+    }
+  };
+
   initUserList = function() {
     var $userList, userList;
     $userList = $("#user-list");
@@ -953,6 +1001,7 @@
     initUserList();
     initProblemPage();
     initProblemEditor();
+    initProblemDataEditor();
     return render();
   });
 

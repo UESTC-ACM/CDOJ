@@ -7,4 +7,5 @@ $ ->
   initUserList()
   initProblemPage()
   initProblemEditor()
+  initProblemDataEditor()
   render()

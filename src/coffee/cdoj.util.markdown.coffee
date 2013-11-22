@@ -13,7 +13,7 @@ $.fn.unescapePre = ->
 $.fn.markdown = ->
   this.each (id, el)=>
     $el = $(el)
-    md = $el.html().replace('<textarea>','')
+    md = $el.html().trim().replace('<textarea>','')
       .replace('</textarea>','')
       .replace('<TEXTAREA>','')
       .replace('</TEXTAREA>','')

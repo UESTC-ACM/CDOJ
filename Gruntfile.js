@@ -20,10 +20,7 @@ module.exports = function(grunt) {
             "src/coffee/cdoj.editor.coffee",
             "src/coffee/cdoj.class.*.coffee",
             "src/coffee/cdoj.layout.coffee",
-            "src/coffee/cdoj.user.coffee",
-            "src/coffee/cdoj.problem.*.coffee",
-            "src/coffee/cdoj.status.list.coffee",
-            "src/coffee/cdoj.user.list.coffee",
+            "src/coffee/cdoj.*.coffee",
             "src/coffee/cdoj.coffee"
           ]
         }

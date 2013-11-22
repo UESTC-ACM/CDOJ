@@ -21,7 +21,7 @@ class Flandre
     return content
 
   createTextarea: ->
-    oldText = @element[0].innerHTML
+    oldText = @element[0].innerHTML.trim()
     @element.empty()
     template = """
       <div class="panel panel-default">
@@ -118,7 +118,7 @@ class Flandre
         endpoint: options.picture.uploadUrl
         inputName: "uploadFile"
       validation:
-        allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+        allowedExtensions: ["jpeg", "jpg", "gif", "png"],
         sizeLimit: 10 * 1024 * 1024 # 10 MB
       multiple: false
       callbacks:
