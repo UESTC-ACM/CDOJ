@@ -132,16 +132,20 @@ public class PictureServiceImpl extends AbstractService implements PictureServic
       String newImageLocation = settings.SETTING_ABSOLUTE_PATH + newDirectory + imageLocation;
 
       File oldFile = new File(oldImageLocation);
-      if (!oldFile.exists())
+      if (!oldFile.exists()) {
         continue;
+      }
 
       File newPath = new File(settings.SETTING_ABSOLUTE_PATH + newDirectory);
-      if (!newPath.exists())
-        if (!newPath.mkdirs())
+      if (!newPath.exists()) {
+        if (!newPath.mkdirs()) {
           throw new AppException("Error while make picture directory!");
+        }
+      }
 
-      if (!oldFile.renameTo(new File(newImageLocation)))
+      if (!oldFile.renameTo(new File(newImageLocation))) {
         throw new AppException("Unable to move images!");
+      }
     }
     String imageReplacePatternString = "!\\[.*\\]\\(" + newDirectory + "$1\\)";
     content = content.replaceAll(imagePatternString,   imageReplacePatternString);
