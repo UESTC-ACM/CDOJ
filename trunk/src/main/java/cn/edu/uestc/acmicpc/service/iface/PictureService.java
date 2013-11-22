@@ -10,6 +10,7 @@ public interface PictureService {
 
   /**
    * TODO(mzry1992)
+   *
    * @param userId
    * @return
    * @throws AppException
@@ -19,6 +20,7 @@ public interface PictureService {
 
   /**
    * TODO(mzry1992)
+   *
    * @param fileUploadDTO
    * @param userId
    * @return
@@ -30,6 +32,7 @@ public interface PictureService {
 
   /**
    * Upload picture into dir
+   *
    * @param fileUploadDTO
    * @param directory Directory, like "/problem/1/"
    * @return File information DTO
@@ -41,6 +44,7 @@ public interface PictureService {
   /**
    * When we add new problem/article, we upload images into /{category}/new/,
    * but after we save it we should move images into right place.
+   *
    * @param content old article content
    * @param oldDirectory old directory, match the prefix
    * @param newDirectory new directory
