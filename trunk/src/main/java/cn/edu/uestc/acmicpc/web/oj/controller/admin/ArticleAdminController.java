@@ -35,7 +35,7 @@ import cn.edu.uestc.acmicpc.web.view.PageInfo;
  */
 @Controller
 @RequestMapping("/admin/article")
-public class ArticleAdminController extends BaseController{
+public class ArticleAdminController extends BaseController {
 
   private ArticleService articleService;
 
@@ -60,7 +60,8 @@ public class ArticleAdminController extends BaseController{
       Long count = articleService.count(articleCondition);
       PageInfo pageInfo = buildPageInfo(count, articleCondition.currentPage,
           Global.RECORD_PER_PAGE, "", null);
-      List<ArticleListDTO> articleList = articleService.getArticleList(articleCondition, pageInfo);
+      List<ArticleListDTO> articleList = articleService.getArticleList(
+          articleCondition, pageInfo);
       json.put("pageInfo", pageInfo.getHtmlString());
       json.put("result", "ok");
       json.put("articleList", articleList);
@@ -87,8 +88,8 @@ public class ArticleAdminController extends BaseController{
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public @ResponseBody
   Map<String, Object> operator(@PathVariable("id") String targetId,
-                               @PathVariable("field") String field,
-                               @PathVariable("value") String value) {
+      @PathVariable("field") String field,
+      @PathVariable("value") String value) {
     Map<String, Object> json = new HashMap<>();
     try {
       articleService.operator(field, targetId, value);
@@ -104,7 +105,7 @@ public class ArticleAdminController extends BaseController{
   @RequestMapping("editor/{articleId}")
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public String editor(@PathVariable("articleId") String sArticleId,
-                       ModelMap model) {
+      ModelMap model) {
     try {
       if (sArticleId.compareTo("new") == 0) {
         model.put("action", "new");
@@ -115,7 +116,8 @@ public class ArticleAdminController extends BaseController{
         } catch (NumberFormatException e) {
           throw new AppException("Parse article id error.");
         }
-        ArticleEditorShowDTO targetArticle = articleService.getArticleEditorShowDTO(articleId);
+        ArticleEditorShowDTO targetArticle = articleService
+            .getArticleEditorShowDTO(articleId);
         if (targetArticle == null)
           throw new AppException("No such article.");
         model.put("action", "edit");
@@ -132,37 +134,43 @@ public class ArticleAdminController extends BaseController{
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public @ResponseBody
   Map<String, Object> edit(@RequestBody @Valid ArticleEditDTO articleEditDTO,
-                           BindingResult validateResult,
-                           HttpSession session) {
+      BindingResult validateResult,
+      HttpSession session) {
     Map<String, Object> json = new HashMap<>();
-    try {
-      if (StringUtil.trimAllSpace(articleEditDTO.getTitle()).equals(""))
-        throw new FieldException("title", "Please enter a validate title.");
-      ArticleDTO articleDTO;
-      if (articleEditDTO.getAction().compareTo("new") == 0) {
-        Integer articleId = articleService.createNewArticle();
-        articleDTO = articleService.getArticleDTO(articleId);
-        if (articleDTO == null)
-          throw new AppException("Error while creating article.");
-        articleDTO.setUserId(getCurrentUserID(session));
-      } else {
-        articleDTO = articleService.getArticleDTO(articleEditDTO.getArticleId());
-        if (articleDTO == null)
-          throw new AppException("No such article.");
-      }
-
-      articleDTO.setTitle(articleEditDTO.getTitle());
-      articleDTO.setContent(articleEditDTO.getContent());
-
-      articleService.updateArticle(articleDTO);
-      json.put("result", "success");
-    } catch (FieldException e) {
-      putFieldErrorsIntoBindingResult(e, validateResult);
+    if (validateResult.hasErrors()) {
       json.put("result", "field_error");
       json.put("field", validateResult.getFieldErrors());
-    } catch (AppException e) {
-      json.put("result", "error");
-      json.put("error_msg", e.getMessage());
+    } else {
+      try {
+        if (StringUtil.trimAllSpace(articleEditDTO.getTitle()).equals(""))
+          throw new FieldException("title", "Please enter a validate title.");
+        ArticleDTO articleDTO;
+        if (articleEditDTO.getAction().compareTo("new") == 0) {
+          Integer articleId = articleService.createNewArticle();
+          articleDTO = articleService.getArticleDTO(articleId);
+          if (articleDTO == null)
+            throw new AppException("Error while creating article.");
+          articleDTO.setUserId(getCurrentUserID(session));
+        } else {
+          articleDTO = articleService.getArticleDTO(articleEditDTO
+              .getArticleId());
+          if (articleDTO == null)
+            throw new AppException("No such article.");
+        }
+
+        articleDTO.setTitle(articleEditDTO.getTitle());
+        articleDTO.setContent(articleEditDTO.getContent());
+
+        articleService.updateArticle(articleDTO);
+        json.put("result", "success");
+      } catch (FieldException e) {
+        putFieldErrorsIntoBindingResult(e, validateResult);
+        json.put("result", "field_error");
+        json.put("field", validateResult.getFieldErrors());
+      } catch (AppException e) {
+        json.put("result", "error");
+        json.put("error_msg", e.getMessage());
+      }
     }
     return json;
   }
