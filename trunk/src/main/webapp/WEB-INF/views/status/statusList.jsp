@@ -79,7 +79,7 @@ Admin problem list page
       </div>
 
       <div class="row" id="mzry1992-container">
-        <div class="col-md-12" id="list-container">
+        <div id="list-container">
         </div>
       </div>
     </div>
