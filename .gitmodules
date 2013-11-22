@@ -4,27 +4,6 @@
 [submodule "trunk/src/main/webapp/plugins/MathJax"]
 	path = trunk/src/main/webapp/plugins/MathJax
 	url = https://github.com/mathjax/MathJax.git
-[submodule "trunk/src/main/webapp/plugins/bootstrapSwitch"]
-	path = trunk/src/main/webapp/plugins/bootstrapSwitch
-	url = https://github.com/nostalgiaz/bootstrap-switch.git
-[submodule "trunk/src/main/webapp/plugins/fine-uploader"]
-	path = trunk/src/main/webapp/plugins/fine-uploader
-	url = https://github.com/Widen/fine-uploader.git
-[submodule "trunk/src/main/webapp/plugins/pure"]
-	path = trunk/src/main/webapp/plugins/pure
-	url = https://github.com/yui/pure.git
-[submodule "trunk/src/main/webapp/plugins/underscore"]
-	path = trunk/src/main/webapp/plugins/underscore
-	url = https://github.com/jashkenas/underscore
-[submodule "trunk/src/main/webapp/plugins/sugar"]
-	path = trunk/src/main/webapp/plugins/sugar
-	url = https://github.com/andrewplummer/Sugar.git
-[submodule "trunk/src/main/webapp/plugins/marked"]
-	path = trunk/src/main/webapp/plugins/marked
-	url = https://github.com/chjj/marked.git
-[submodule "trunk/src/main/webapp/plugins/jqueryui"]
-	path = trunk/src/main/webapp/plugins/jqueryui
-	url = https://github.com/jquery/jquery-ui.git
 [submodule "trunk/src/main/webapp/plugins/cdoj"]
 	path = trunk/src/main/webapp/plugins/cdoj
 	url = https://gitcafe.com/mzry1992/CDOJ-UI.git
