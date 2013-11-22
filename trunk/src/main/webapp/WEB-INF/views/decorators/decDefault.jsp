@@ -24,6 +24,7 @@
 	</div>
 
   <page:applyDecorator name="body" page="/WEB-INF/views/common/modal.jsp"/>
+  <page:applyDecorator name="body" page="/WEB-INF/views/common/editorModal.jsp"/>
   <page:applyDecorator name="head" page="/WEB-INF/views/common/footer.jsp"/>
 </body>
 </html>

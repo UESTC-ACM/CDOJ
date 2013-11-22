@@ -14,7 +14,6 @@ Common header
 
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900,200italic,300italic,400italic,600italic,700italic,900italic|Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'/>
 
-    <link rel="stylesheet" href="<c:url value="/plugins/bootstrap/dist/css/bootstrap.css"/>"/>
     <link rel="stylesheet" href="<c:url value="/plugins/Font-Awesome/css/font-awesome.min.css"/>"/>
     <!--[if IE 7]>
     <link rel="stylesheet" href="<c:url value="/plugins/Font-Awesome/css/font-awesome-ie7.min.css"/>"/>

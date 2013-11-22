@@ -14,6 +14,7 @@ public interface PictureService {
    * @return
    * @throws AppException
    */
+  @Deprecated
   public ArrayList<String> getPictures(Integer userId) throws AppException;
 
   /**
@@ -23,6 +24,17 @@ public interface PictureService {
    * @return
    * @throws AppException
    */
+  @Deprecated
   public FileInformationDTO uploadPictures(FileUploadDTO fileUploadDTO,
       Integer userId) throws AppException;
+
+  /**
+   * Upload picture into dir
+   * @param fileUploadDTO
+   * @param directory Directory, like "/problem/1/"
+   * @return File information DTO
+   * @throws AppException
+   */
+  public FileInformationDTO uploadPicture(FileUploadDTO fileUploadDTO,
+      String directory) throws AppException;
 }
