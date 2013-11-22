@@ -27,7 +27,7 @@ Admin problem list page
             <input type="text" name="search-keyword" maxlength="24" value="" id="search-keyword" class="pull-left form-control"/>
             <button id="search" class="btn btn-success"><i class="fa fa-search"></i></button>
 
-            <a href="#" id="advanced"><i class="fa fa-chevron-down"></i></a>
+            <a href="#" id="advanced"><i class="fa fa-caret-square-o-down"></i></a>
             <div id="condition">
               <form class="form">
                 <fieldset>

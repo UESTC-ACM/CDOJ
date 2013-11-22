@@ -88,4 +88,33 @@ public class PictureServiceImpl extends AbstractService implements PictureServic
         .build();
   }
 
+  @Override
+  public FileInformationDTO uploadPicture(FileUploadDTO fileUploadDTO,
+      String directory) throws AppException {
+    String folder = settings.SETTING_PICTURE_FOLDER + directory;
+    String path = settings.SETTING_PICTURE_FOLDER_ABSOLUTE + directory;
+    List<MultipartFile> files = fileUploadDTO.getFiles();
+    if (files == null || files.size() > 1)
+      throw new AppException("Fetch uploaded file error.");
+    MultipartFile file = files.get(0);
+    File dir = new File(path);
+    if (!dir.exists())
+      if (!dir.mkdirs())
+        throw new AppException("Error while make picture directory!");
+
+    String newName = StringUtil.generateFileName(file.getOriginalFilename());
+    File newFile =
+        new File(path + newName);
+    try {
+      file.transferTo(newFile);
+    } catch (IOException e) {
+      throw new AppException("Error while save files");
+    }
+
+    return FileInformationDTO.builder()
+        .setFileName(file.getOriginalFilename())
+        .setFileURL(folder + newName)
+        .build();
+  }
+
 }
