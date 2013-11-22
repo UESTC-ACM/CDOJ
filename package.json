@@ -15,6 +15,7 @@
     "grunt-contrib-coffee": "*",
 		"grunt-contrib-watch": "*",
 		"grunt-contrib-less": "*",
-    "grunt-contrib-concat": "*"
+    "grunt-contrib-concat": "*",
+    "grunt-yui-compressor": "*"
   }
 }

@@ -99,8 +99,17 @@ class Flandre
 
     toolPicture = @element.find("#tool-picture")
     # Fuuuuuuuuuuuuuuuuuck
-    toolPicture.click =>
-      # Show insert picture modal
+    toolPicture.popover(
+      placement: "bottom"
+      html: true
+      container: "body"
+      title: """
+        Upload picture
+        """
+      content: """
+        Fuck?
+        """
+    )
 
   getText: ->
     return @element.find("#flandre-editor").val()

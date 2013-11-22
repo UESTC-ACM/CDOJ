@@ -5,14 +5,7 @@ module.exports = function(grunt) {
     less: {
       compile: {
         files: {
-          "dist/css/cdoj.css": "src/less/cdoj.less"
-        }
-      },
-      yuicompress: {
-        files: {
-          "dist/css/cdoj-min.css": "dist/css/cdoj.css"
-        },options: {
-          yuicompress: true
+          "dist/css/cdoj.less.css": "src/less/cdoj.less"
         }
       }
     },
@@ -37,9 +30,33 @@ module.exports = function(grunt) {
       }
     },
     concat: {
-      dist: {
-        src: ["src/js/md5.js", "src/js/jquery.elastic.source.js", "dist/js/cdoj.coffee.js"],
+      js: {
+        src: ["src/js/jquery-2.0.3.js",
+          "src/js/sugar-full.development.js",
+          "src/js/underscore.js",
+          "src/js/prettify.js",
+          "src/js/marked.js",
+          "src/js/bootstrap.js",
+          "src/js/md5.js",
+          "src/js/jquery.elastic.source.js",
+          "dist/js/cdoj.coffee.js"],
         dest: "dist/js/cdoj.js"
+      },
+      css: {
+        src: ["src/css/bootstrap.css", "dist/css/cdoj.less.css"],
+        dest: "dist/css/cdoj.css"
+      }
+    },
+    min: {
+      js: {
+        src: "dist/js/cdoj.js",
+        dest: "dist/js/cdoj.min.js"
+      }
+    },
+    cssmin: {
+      css: {
+        src: "dist/css/cdoj.css",
+        dest: "dist/css/cdoj.min.css"
       }
     },
     watch: {
@@ -55,7 +72,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-less");
   grunt.loadNpmTasks("grunt-contrib-coffee");
   grunt.loadNpmTasks("grunt-contrib-concat");
+  grunt.loadNpmTasks("grunt-yui-compressor");
 
-  grunt.registerTask("default", ["less", "coffee", "concat"]);
+  grunt.registerTask("default", ["less", "coffee", "concat", "min", "cssmin"]);
 
 };

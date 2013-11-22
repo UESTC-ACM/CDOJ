@@ -448,7 +448,13 @@
         });
       });
       toolPicture = this.element.find("#tool-picture");
-      return toolPicture.click(function() {});
+      return toolPicture.popover({
+        placement: "bottom",
+        html: true,
+        container: "body",
+        title: "Upload picture",
+        content: "Fuck?"
+      });
     };
 
     Flandre.prototype.getText = function() {
