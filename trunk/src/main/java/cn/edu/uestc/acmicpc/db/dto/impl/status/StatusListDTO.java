@@ -8,19 +8,22 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
-@Fields({ "statusId", "userByUserId.userName", "problemId", "result", "length",
+@Fields({ "statusId", "userByUserId.userName", "problemId", "contestId",
+    "result", "length",
     "languageByLanguageId.name", "timeCost", "memoryCost", "time", "caseNumber" })
 public class StatusListDTO implements BaseDTO<Status> {
 
   public StatusListDTO() {
   }
 
-  private StatusListDTO(Integer statusId, String userName, Integer problemId, String returnType,
-                        Integer returnTypeId, Integer length, String language, Integer timeCost,
-                        Integer memoryCost, Timestamp time, Integer caseNumber) {
+  private StatusListDTO(Integer statusId, String userName, Integer problemId,
+      Integer contestId, String returnType,
+      Integer returnTypeId, Integer length, String language, Integer timeCost,
+      Integer memoryCost, Timestamp time, Integer caseNumber) {
     this.statusId = statusId;
     this.userName = userName;
     this.problemId = problemId;
+    this.contestId = contestId;
     this.returnType = returnType;
     this.returnTypeId = returnTypeId;
     this.length = length;
@@ -34,6 +37,7 @@ public class StatusListDTO implements BaseDTO<Status> {
   private Integer statusId;
   private String userName;
   private Integer problemId;
+  private Integer contestId;
   private String returnType;
   private Integer returnTypeId;
   private Integer length;
@@ -65,6 +69,14 @@ public class StatusListDTO implements BaseDTO<Status> {
 
   public void setProblemId(Integer problemId) {
     this.problemId = problemId;
+  }
+
+  public Integer getContestId() {
+    return contestId;
+  }
+
+  public void setContestId(Integer contestId) {
+    this.contestId = contestId;
   }
 
   public String getReturnType() {
@@ -142,7 +154,8 @@ public class StatusListDTO implements BaseDTO<Status> {
 
     @Override
     public StatusListDTO build() {
-      return new StatusListDTO(statusId, userName, problemId, returnType, returnTypeId, length,
+      return new StatusListDTO(statusId, userName, problemId, contestId, returnType,
+          returnTypeId, length,
           language, timeCost, memoryCost, time, caseNumber);
     }
 
@@ -151,6 +164,7 @@ public class StatusListDTO implements BaseDTO<Status> {
       statusId = (Integer) properties.get("statusId");
       userName = (String) properties.get("userByUserId.userName");
       problemId = (Integer) properties.get("problemId");
+      contestId = (Integer) properties.get("contestId");
       returnTypeId = (Integer) properties.get("result");
       length = (Integer) properties.get("length");
       language = (String) properties.get("languageByLanguageId.name");
@@ -165,6 +179,7 @@ public class StatusListDTO implements BaseDTO<Status> {
     private Integer statusId;
     private String userName;
     private Integer problemId;
+    private Integer contestId;
     private String returnType;
     private Integer returnTypeId;
     private Integer length;
@@ -198,6 +213,15 @@ public class StatusListDTO implements BaseDTO<Status> {
 
     public Builder setProblemId(Integer problemId) {
       this.problemId = problemId;
+      return this;
+    }
+
+    public Integer getContestId() {
+      return contestId;
+    }
+
+    public Builder setContestId(Integer contestId) {
+      this.contestId = contestId;
       return this;
     }
 
