@@ -2,9 +2,9 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.zip.ZipFile;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,14 +71,14 @@ public class FileServiceImpl extends AbstractService implements FileService {
   public Integer moveProblemDataFile(Integer problemId) throws AppException {
     String dataPath = settings.JUDGE_DATA_PATH + "/" + problemId;
     String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/" + problemId;
-    File targetFile = new File(dataPath);
     File currentFile = new File(tempDirectory);
-    // If the uploaded file list is empty, that means we don't update
+    File targetFile = new File(dataPath);
+    // If the uploaded file list is empty, that means we don't need update
     // the data folder.
     int dataCount = 0;
     boolean foundSpj = false;
     File[] files = currentFile.listFiles();
-    Map<String, Integer> fileMap = new HashMap<>();
+    Map<String, Integer> fileMap = new TreeMap<>();
     if (files != null) {
       for (File file : files) {
         if (file.getName().endsWith(".in")) {
@@ -91,17 +91,17 @@ public class FileServiceImpl extends AbstractService implements FileService {
 
     if (dataCount != 0) {
       FileUtil.clearDirectory(dataPath);
-      try {
-        FileUtil.moveDirectory(currentFile, targetFile);
-      } catch (IOException e) {
-        throw new AppException("Error while move data files");
+      if (!targetFile.exists()) {
+        if (!targetFile.mkdirs()) {
+          throw new AppException("Cannot make data directory");
+        }
       }
       for (String file : fileMap.keySet()) {
-        File fromFile = new File(dataPath + '/' + file + ".in");
+        File fromFile = new File(tempDirectory + '/' + file + ".in");
         File toFile = new File(dataPath + '/' + fileMap.get(file) + ".in");
         if (!fromFile.renameTo(toFile))
           throw new AppException("Cannot rename file: " + file + ".in");
-        fromFile = new File(dataPath + '/' + file + ".out");
+        fromFile = new File(tempDirectory + '/' + file + ".out");
         toFile = new File(dataPath + '/' + fileMap.get(file) + ".out");
         if (!fromFile.renameTo(toFile))
           throw new AppException("Cannot rename file: " + file + ".out");
