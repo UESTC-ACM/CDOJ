@@ -97,10 +97,10 @@ public class StatusController extends BaseController {
     Map<String, Object> json = new HashMap<>();
     try{
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-      statusCondition.contestId = -1;
       if(currentUser == null ||
           currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
         statusCondition.isVisible = true;
+        statusCondition.contestId = -1;
           }
       Long count = statusService.count(statusCondition);
       PageInfo pageInfo = buildPageInfo(count, statusCondition.currentPage,
@@ -110,11 +110,65 @@ public class StatusController extends BaseController {
       for (StatusListDTO statusListDTO : statusListDTOList) {
         statusListDTO.setReturnType(globalService.getReturnDescription(
               statusListDTO.getReturnTypeId(), statusListDTO.getCaseNumber()));
+        if (statusListDTO.getReturnTypeId() != Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
+          statusListDTO.setTimeCost(null);
+          statusListDTO.setMemoryCost(null);
+        }
       }
 
       json.put("result", "success");
       json.put("pageInfo", pageInfo.getHtmlString());
       json.put("list", statusListDTOList);
+    }catch(AppException e){
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    }catch(Exception e){
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  /**
+   * Count the number of status fit in condition
+   * @return {"result": "success", "count": count} if success
+   */
+  @RequestMapping("count")
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public @ResponseBody
+  Map<String, Object> count(@RequestBody StatusCondition statusCondition) {
+    Map<String, Object> json = new HashMap<>();
+    try{
+      Long count = statusService.count(statusCondition);
+
+      json.put("result", "success");
+      json.put("count", count);
+    }catch(AppException e){
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    }catch(Exception e){
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  /**
+   * Count the number of status fit in condition
+   * @param statusCondition
+   * @return {"result": "success", "count": count} if success
+   */
+  @RequestMapping("rejudge")
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public @ResponseBody
+  Map<String, Object> rejudge(@RequestBody StatusCondition statusCondition) {
+    Map<String, Object> json = new HashMap<>();
+    try{
+      statusService.rejudge(statusCondition);
+
+      json.put("result", "success");
     }catch(AppException e){
       json.put("result", "error");
       json.put("error_msg", e.getMessage());

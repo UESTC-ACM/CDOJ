@@ -12,31 +12,34 @@
 </head>
 <body>
   <!-- Code Modal -->
-  <div id="codeModal" class="modal hide fade modal-large" tabindex="-1"
-    role="dialog" aria-labelledby="codeModal" aria-hidden="true">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal"
-        aria-hidden="true">×</button>
-      <h3 id="codeModalLabel"></h3>
+  <div class="modal fade" id="code-modal" tabindex="-1" role="dialog"
+    aria-labelledby="codeModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default">Copy</button>
+          <button type="button" class="btn btn-default">Download</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
     </div>
-    <div class="modal-body-long" id="codeViewer"></div>
+    <!-- /.modal-dialog -->
   </div>
+  <!-- /.modal -->
 
   <!-- Compile Info Modal -->
-  <div id="compileInfoModal" class="modal hide fade modal-large"
-    tabindex="-1" role="dialog" aria-labelledby="compileInfoModal"
-    aria-hidden="true">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal"
-        aria-hidden="true">×</button>
-      <h3 id="compileInfoModalLabel"></h3>
-    </div>
-    <div class="modal-body-long">
-      <div>
-        <pre id="compileInfoViewer"></pre>
+  <div class="modal fade" id="compile-info-modal" tabindex="-1"
+    role="dialog" aria-labelledby="compileInfoModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body"></div>
       </div>
+      <!-- /.modal-content -->
     </div>
+    <!-- /.modal-dialog -->
   </div>
+  <!-- /.modal -->
 
 </body>
 </html>
