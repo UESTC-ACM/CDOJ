@@ -40,14 +40,14 @@ User menu on navbar
             <a href="#" data-toggle="modal"
               data-target="#cdoj-register-modal"> <span
               class="label muted"><i
-                class="fa fa-circle-arrow-right"></i>Register</span>
+                class="fa fa-arrow-circle-right"></i>Register</span>
             </a>
           </div>
           <div class="col-md-12">
             <a href="#" data-toggle="modal"
               data-target="#cdoj-activate-modal"> <span
               class="label muted"><i
-                class="fa fa-circle-arrow-right"></i>Forget password?</span>
+                class="fa fa-arrow-circle-right"></i>Forget password?</span>
             </a>
           </div>
         </div>

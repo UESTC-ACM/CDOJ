@@ -2,58 +2,72 @@
  User center page
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
-<%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator"
+  prefix="decorator"%>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
-  <title><c:out value="${targetUser.userName}"/></title>
+<title><c:out value="${targetUser.userName}" /></title>
 </head>
 <body>
-    <div id="user-show">
-      <div class="pure-g mzry1992-header">
-        <div class="pure-u-4-5">
-          <h1>
-            <c:out value="${targetUser.userName}"/>
-          </h1>
-        </div>
-
-        <div class="pure-u-1-5">
-              <c:if test="${sessionScope.currentUser.userId == targetUser.userId}">
-                  <a href="#userEditModal" role="button" data-toggle="modal">
-                    <i class="fa fa-pencil"></i>
-                    Edit Your Profile
-                  </a>
-              </c:if>
-        </div>
+  <div id="user-show">
+    <div class="pure-g mzry1992-header">
+      <div class="pure-u-4-5">
+        <h1>
+          <c:out value="${targetUser.userName}" />
+        </h1>
       </div>
 
-      <div class="pure-g mzry1992-content">
-        <div class="pure-u-1">
-          <dl class="dl-horizontal">
-            <dt>Nick name</dt>
-            <dd>
-              <c:out value="${targetUser.nickName}"/>
-            </dd>
-            <dt>School</dt>
-            <dd><c:out value="${targetUser.school}"/></dd>
-            <dt>Department</dt>
-            <dd><c:out value="${targetUser.department}"/></dd>
-            <c:if test="${sessionScope.currentUser.userId == targetUser.userId}">
-              <dt>Student ID</dt>
-              <dd><c:out value="${targetUser.studentId}"/></dd>
-              <dt>Email</dt>
-              <dd><c:out value="${targetUser.email}"/></dd>
-            </c:if>
-            <dt>Motto</dt>
-            <dd><c:out value="${targetUser.motto}"/></dd>
-            <dt>Last login</dt>
-            <dd class="cdoj-time" type="milliseconds" isUTC="true"><c:out value="${targetUser.lastLogin.time}"/></dd>
-          </dl>
-        </div>
+      <div class="pure-u-1-5">
+        <c:if
+          test="${sessionScope.currentUser.userId == targetUser.userId}">
+          <a href="#userEditModal" role="button" data-toggle="modal">
+            <i class="fa fa-pencil"></i> Edit Your Profile
+          </a>
+        </c:if>
       </div>
     </div>
-    <%--
+
+    <div class="pure-g mzry1992-content">
+      <div class="pure-u-1">
+        <dl class="dl-horizontal">
+          <dt>Nick name</dt>
+          <dd>
+            <c:out value="${targetUser.nickName}" />
+          </dd>
+          <dt>School</dt>
+          <dd>
+            <c:out value="${targetUser.school}" />
+          </dd>
+          <dt>Department</dt>
+          <dd>
+            <c:out value="${targetUser.department}" />
+          </dd>
+          <c:if
+            test="${sessionScope.currentUser.userId == targetUser.userId}">
+            <dt>Student ID</dt>
+            <dd>
+              <c:out value="${targetUser.studentId}" />
+            </dd>
+            <dt>Email</dt>
+            <dd>
+              <c:out value="${targetUser.email}" />
+            </dd>
+          </c:if>
+          <dt>Motto</dt>
+          <dd>
+            <c:out value="${targetUser.motto}" />
+          </dd>
+          <dt>Last login</dt>
+          <dd class="cdoj-time" type="milliseconds" isUTC="true">
+            <c:out value="${targetUser.lastLogin.time}" />
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <%--
   <div id="userInfoRight" class="span3">
     <div id="userInfoSummary">
       <a id="userAvatarWrap"
