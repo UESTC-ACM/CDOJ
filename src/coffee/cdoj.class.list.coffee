@@ -16,6 +16,7 @@ class SearchModule
         initCondition
         keyword: $searchKeyword.val()
       )
+      @father.options.condition = currentCondition
       @father.refresh currentCondition
       return false
     $advancedButton.click =>
@@ -26,6 +27,7 @@ class SearchModule
         initCondition
         $conditionForm.getFormData()
       )
+      @father.options.condition = currentCondition
       @father.refresh currentCondition
       this.toggle()
       return false
@@ -53,6 +55,9 @@ class SearchModule
           else
             alert(datas.error_msg)
         )
+        @father.options.condition = currentCondition
+        @father.refresh currentCondition
+        this.toggle()
         return false
 
   toggle: ->
@@ -81,13 +86,19 @@ class ListModule
     @refreshLock = 0
     this.refresh(@options.condition)
     @searchModule = new SearchModule this
+    self = this
+    if @options.autoRefresh == true
+      setInterval(() ->
+        self.autoRefresh()
+      if @options.refreshInterval == undefined then 1000 else @options.refreshInterval)
+
+  autoRefresh: ->
+    this.refresh @options.condition
 
   refresh: (condition) ->
     if @refreshLock == 0
       @refreshLock = 1
       @list = @listContainer.find("#list-container")
-      # Clear first
-      @list.empty()
       # Get list via requestUrl
       jsonPost(@options.requestUrl
         condition
@@ -102,6 +113,8 @@ class ListModule
             @refresh(condition);
             return false
 
+          # Clear first
+          @list.empty()
           datas.list.each((data) =>
             # TODO We can pass the status of prev list item to next list item
             @list.append(@options.formatter data)

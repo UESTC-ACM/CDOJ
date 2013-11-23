@@ -506,6 +506,7 @@
         currentCondition = Object.merge(initCondition, {
           keyword: $searchKeyword.val()
         });
+        _this.father.options.condition = currentCondition;
         _this.father.refresh(currentCondition);
         return false;
       });
@@ -516,6 +517,7 @@
       $advancedSearchButton.click(function() {
         var currentCondition;
         currentCondition = Object.merge(initCondition, $conditionForm.getFormData());
+        _this.father.options.condition = currentCondition;
         _this.father.refresh(currentCondition);
         _this.toggle();
         return false;
@@ -544,6 +546,9 @@
               return alert(datas.error_msg);
             }
           });
+          _this.father.options.condition = currentCondition;
+          _this.father.refresh(currentCondition);
+          _this.toggle();
           return false;
         });
       }
@@ -575,6 +580,7 @@
     */
 
     function ListModule(options) {
+      var self;
       this.options = options;
       this.listContainer = this.options.listContainer;
       this.searchGroup = this.listContainer.find("#search-group");
@@ -582,14 +588,23 @@
       this.refreshLock = 0;
       this.refresh(this.options.condition);
       this.searchModule = new SearchModule(this);
+      self = this;
+      if (this.options.autoRefresh === true) {
+        setInterval(function() {
+          return self.autoRefresh();
+        }, this.options.refreshInterval === void 0 ? 1000 : this.options.refreshInterval);
+      }
     }
+
+    ListModule.prototype.autoRefresh = function() {
+      return this.refresh(this.options.condition);
+    };
 
     ListModule.prototype.refresh = function(condition) {
       var _this = this;
       if (this.refreshLock === 0) {
         this.refreshLock = 1;
         this.list = this.listContainer.find("#list-container");
-        this.list.empty();
         jsonPost(this.options.requestUrl, condition, function(datas) {
           _this.pageInfo.empty().append(datas.pageInfo);
           _this.pageInfo.find("a").click(function(e) {
@@ -602,6 +617,7 @@
             _this.refresh(condition);
             return false;
           });
+          _this.list.empty();
           datas.list.each(function(data) {
             return _this.list.append(_this.options.formatter(data));
           });
@@ -867,6 +883,8 @@
       return statusList = new ListModule({
         listContainer: $statusList,
         requestUrl: "/status/search",
+        autoRefresh: true,
+        refreshInterval: 5000,
         condition: {
           "currentPage": null,
           "startId": void 0,
