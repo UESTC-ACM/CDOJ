@@ -11,5 +11,4 @@ render = ->
   MathJax.Hub.Queue([ 'Typeset', MathJax.Hub ])
 
   # prettify
-  $("pre").prePrettify()
-  window.prettyPrint && prettyPrint()
+  $(document.body).prettify()

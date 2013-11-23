@@ -27,11 +27,33 @@ class SearchModule
         $conditionForm.getFormData()
       )
       @father.refresh currentCondition
+      this.toggle()
       return false
     $advancedResetButton.click =>
       # TODO
       $conditionForm.resetFormData()
       return false
+
+    $rejudgeButton = $conditionForm.find("#rejudge-button")
+    if $rejudgeButton.length > 0
+      $rejudgeButton.click =>
+        currentCondition = Object.merge(
+          initCondition
+          $conditionForm.getFormData()
+        )
+        jsonPost("/status/count", currentCondition, (datas) =>
+          if datas.result == "success"
+            if confirm("Rejudge all #{datas.count} records")
+              jsonPost("/status/rejudge", currentCondition, (datas) =>
+                if datas.result == "success"
+                  alert("Done!")
+                else
+                  alert(datas.error_msg)
+              )
+          else
+            alert(datas.error_msg)
+        )
+        return false
 
   toggle: ->
     $advancedForm = @search.find("#condition")

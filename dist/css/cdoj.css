@@ -7253,6 +7253,12 @@ h6,
 .h6 {
   font-family: "Source Sans Pro", sans-serif;
 }
+a {
+  color: inherit;
+}
+a:hover {
+  text-decoration: none;
+}
 h1,
 h2,
 h3,
@@ -7280,6 +7286,15 @@ html,
 }
 .status-sign i {
   font-size: 48px;
+}
+.status-info {
+  color: #3a87ad;
+}
+.status-success {
+  color: #468847;
+}
+.status-danger {
+  color: #b94a48;
 }
 .hero {
   text-align: center;
@@ -7491,6 +7506,9 @@ html,
 .label i {
   margin-right: 4px;
 }
+#page-info {
+  float: left;
+}
 #search-group {
   position: relative;
   margin: 20px 0;
@@ -7581,14 +7599,12 @@ html,
     border-top-right-radius: 3px;
   }
 }
-@media (min-width: 992px) {
-  #page-info {
-    float: left;
-  }
-}
 .admin-span {
   margin-top: -6px;
   margin-left: 15px;
+}
+.panel-body {
+  padding: 12px;
 }
 #flandre-heading {
   padding: 2px 15px;

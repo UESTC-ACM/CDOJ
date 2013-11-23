@@ -347,23 +347,15 @@
 
   $ = jQuery;
 
-  $.fn.prePrettify = function() {
-    var _this = this;
-    return this.each(function(id, el) {
-      var $el;
-      $el = $(el);
-      if ($el.attr("type") !== "no-prettify") {
-        return $el.addClass("prettyprint linenums");
-      }
-    });
-  };
-
   $.fn.prettify = function() {
     var _this = this;
     return this.find("pre").each(function(id, el) {
-      var text;
-      text = prettyPrintOne($(el)[0].innerText.escapeHTML());
-      return $(el).empty().append(text);
+      var $el, text;
+      $el = $(el);
+      if ($el.attr("type") !== "no-prettify") {
+        text = prettyPrintOne($el[0].innerText.escapeHTML());
+        return $el.empty().append(text);
+      }
     });
   };
 
@@ -375,8 +367,7 @@
       }
     });
     MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
-    $("pre").prePrettify();
-    return window.prettyPrint && prettyPrint();
+    return $(document.body).prettify();
   };
 
   Flandre = (function() {
@@ -398,7 +389,7 @@
       var oldText, template;
       oldText = this.element[0].innerHTML.trim();
       this.element.empty();
-      template = "<div class=\"panel panel-default\">\n  <div class=\"panel-heading\" id=\"flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-preview\">Preview</button>\n      </div>\n      <div class=\"btn-group flandre-tools\">\n        <a class=\"btn btn-default btn-sm\" id=\"tool-emotion\"><i class=\"fa fa-meh-o\"></i></a>\n        <a class=\"btn btn-default btn-sm\" id=\"tool-picture\"><i class=\"fa fa-picture-o\"></i></a>\n      </div>\n    </div>\n  </div>\n  <textarea class=\"tex2jax_ignore form-control\" id=\"flandre-editor\">" + (this.escape(oldText)) + "</textarea>\n  <div id=\"flandre-preview\"></div>\n</div>";
+      template = "<div class=\"panel panel-default\">\n  <div class=\"panel-heading\" id=\"flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\" id=\"tool-preview\">Preview</button>\n      </div>\n      <div class=\"btn-group flandre-tools\">\n        <a class=\"btn btn-default btn-sm\" id=\"tool-emotion\"><i class=\"fa fa-smile-o\"></i></a>\n        <a class=\"btn btn-default btn-sm\" id=\"tool-picture\"><i class=\"fa fa-picture-o\"></i></a>\n      </div>\n    </div>\n  </div>\n  <textarea class=\"tex2jax_ignore form-control\" id=\"flandre-editor\">" + (this.escape(oldText)) + "</textarea>\n  <div id=\"flandre-preview\"></div>\n</div>";
       return this.element.append(template);
     };
 
@@ -499,7 +490,7 @@
 
   SearchModule = (function() {
     function SearchModule(father) {
-      var $advancedButton, $advancedResetButton, $advancedSearchButton, $conditionForm, $searchButton, $searchKeyword, initCondition,
+      var $advancedButton, $advancedResetButton, $advancedSearchButton, $conditionForm, $rejudgeButton, $searchButton, $searchKeyword, initCondition,
         _this = this;
       this.father = father;
       this.search = this.father.searchGroup;
@@ -526,12 +517,36 @@
         var currentCondition;
         currentCondition = Object.merge(initCondition, $conditionForm.getFormData());
         _this.father.refresh(currentCondition);
+        _this.toggle();
         return false;
       });
       $advancedResetButton.click(function() {
         $conditionForm.resetFormData();
         return false;
       });
+      $rejudgeButton = $conditionForm.find("#rejudge-button");
+      if ($rejudgeButton.length > 0) {
+        $rejudgeButton.click(function() {
+          var currentCondition;
+          currentCondition = Object.merge(initCondition, $conditionForm.getFormData());
+          jsonPost("/status/count", currentCondition, function(datas) {
+            if (datas.result === "success") {
+              if (confirm("Rejudge all " + datas.count + " records")) {
+                return jsonPost("/status/rejudge", currentCondition, function(datas) {
+                  if (datas.result === "success") {
+                    return alert("Done!");
+                  } else {
+                    return alert(datas.error_msg);
+                  }
+                });
+              }
+            } else {
+              return alert(datas.error_msg);
+            }
+          });
+          return false;
+        });
+      }
     }
 
     SearchModule.prototype.toggle = function() {
@@ -865,7 +880,124 @@
           "orderAsc": "false"
         },
         formatter: function(data) {
-          return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <div class=\"pull-left\">\n          <div class=\"status-sign\">\n            " + (data.returnTypeId === 16 ? "<i class='fa fa-spinner fa-spin'></i>" : "") + "\n          </div>\n        </div>\n        <div class=\"pull-right\">\n          #" + data.statusId + "\n        </div>\n        <div class=\"media-body\">\n          <h4 class=\"media-heading\">" + data.returnType + "</h4>\n          " + data.userName + " <span class=\"muted\">submitted at</span> " + (Date.create(data.time)) + "\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
+          var currentUser, getAlertClass, getCodeInfo, getContestHref, getCostInformation, getReturnType, getStatusImage;
+          getStatusImage = function(id) {
+            switch (id) {
+              case 0:
+              case 16:
+              case 18:
+                return "<i class='fa fa-spinner fa-spin'></i>";
+              case 1:
+                return "<i class='fa fa-check-circle'></i>";
+              case 2:
+                return "<i class='fa fa-circle'></i>";
+              case 3:
+              case 4:
+              case 6:
+              case 13:
+                return "<i class='fa fa-ban'></i>";
+              case 5:
+                return "<i class='fa fa-times-circle'></i>";
+              case 7:
+                return "<i class='fa fa-warning'></i>";
+              case 8:
+              case 9:
+              case 10:
+              case 11:
+              case 12:
+              case 15:
+                return "<i class='fa fa-bug'></i>";
+              case 14:
+                return "<i class='fa fa-frown-o'></i>";
+              case 17:
+                return "<i class='fa fa-gear fa-spin'></i>";
+              default:
+                return "";
+            }
+          };
+          getAlertClass = function(id) {
+            switch (id) {
+              case 0:
+              case 16:
+              case 17:
+              case 18:
+                return "status-info";
+              case 1:
+                return "status-success";
+              default:
+                return "status-danger";
+            }
+          };
+          getContestHref = function(contestId) {
+            return "<small class=\"pull-right\">\n  Contest <a href=\"/contest/show/" + contestId + "\"><i class=\"fa fa-trophy\"></i>" + contestId + "</a>,&nbsp;\n</small>";
+          };
+          getCostInformation = function(timeCost, memoryCost) {
+            return "<small>\n  " + timeCost + " ms, " + memoryCost + " kb\n</small>";
+          };
+          currentUser = getCurrentUser();
+          getReturnType = function(returnType, returnTypeId, statusId, userName) {
+            if (returnTypeId === 7) {
+              if (currentUser.userLogin && (currentUser.currentUserType === "1" || currentUser.currentUser === userName)) {
+                return "<a href=\"#\" value=\"" + statusId + "\" class=\"ce-link\">" + returnType + "</a>";
+              } else {
+                return returnType;
+              }
+            } else {
+              return returnType;
+            }
+          };
+          getCodeInfo = function(length, language, statusId, userName) {
+            if (currentUser.userLogin && (currentUser.currentUserType === "1" || currentUser.currentUser === userName)) {
+              return "<a href=\"#\" value=\"" + statusId + "\" class=\"code-link\">" + data.length + " B, " + data.language + "</a>";
+            } else {
+              return "" + data.length + " B, " + data.language;
+            }
+          };
+          return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <div class=\"pull-left\">\n          <div class=\"status-sign " + (getAlertClass(data.returnTypeId)) + "\">\n            " + (getStatusImage(data.returnTypeId)) + "\n          </div>\n        </div>\n        <div class=\"media-body \">\n          <h4 class=\"media-heading\">\n            <span>" + (getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)) + "</span>\n            " + (data.returnTypeId === 1 ? getCostInformation(data.timeCost, data.memoryCost) : "") + "\n            <small class=\"pull-right\">\n              #" + data.statusId + "\n            </small>\n            " + (data.contestId !== void 0 ? getContestHref(data.contestId) : "") + "\n            <small class=\"pull-right\">\n              Prob <a href=\"/problem/show/" + data.problemId + "\"><i class=\"fa fa-puzzle-piece\"></i>" + data.problemId + "</a>,&nbsp;\n            </small>\n          </h4>\n          <span><a href=\"/user/center/" + data.userName + "\"><i class=\"fa fa-user\"></i>" + data.userName + "</a></span>\n          <span class=\"pull-right label label-default\">" + (Date.create(data.time).format("{yyyy}-{MM}-{dd} {hh}:{mm}:{ss}")) + "</span>\n          <span class=\"pull-right label label-success\" style=\"margin-right: 8px\">" + (getCodeInfo(data.length, data.language, data.statusId, data.userName)) + "</span>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
+        },
+        after: function() {
+          var _this = this;
+          $(".ce-link").click(function(e) {
+            var $el, statusId;
+            $el = $(e.currentTarget);
+            statusId = $el.attr("value");
+            $.post("/status/info/" + statusId, function(data) {
+              var $modal, compileInfo;
+              compileInfo = "";
+              if (data.result === "success") {
+                compileInfo = data.compileInfo;
+              } else {
+                compileInfo = data.error_msg;
+              }
+              compileInfo = compileInfo.trim();
+              $modal = $("#compile-info-modal");
+              $modal.find(".modal-body").empty().append("<pre>" + compileInfo + "</pre>");
+              $modal.find(".modal-body").prettify();
+              return $modal.modal("toggle");
+            });
+            return false;
+          });
+          return $(".code-link").click(function(e) {
+            var $el, statusId;
+            $el = $(e.currentTarget);
+            statusId = $el.attr("value");
+            $.post("/status/info/" + statusId, function(data) {
+              var $modal, code;
+              code = "";
+              if (data.result === "success") {
+                code = data.code;
+              } else {
+                code = data.error_msg;
+              }
+              code = code.trim().escapeHTML();
+              console.log(code);
+              $modal = $("#code-modal");
+              $modal.find(".modal-body").empty().append("<pre>" + code + "</pre>");
+              $modal.find(".modal-body").prettify();
+              return $modal.modal("toggle");
+            });
+            return false;
+          });
         }
       });
     }

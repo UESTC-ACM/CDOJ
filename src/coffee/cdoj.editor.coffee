@@ -31,7 +31,7 @@ class Flandre
               <button type="button" class="btn btn-default btn-sm" id="tool-preview">Preview</button>
             </div>
             <div class="btn-group flandre-tools">
-              <a class="btn btn-default btn-sm" id="tool-emotion"><i class="fa fa-meh-o"></i></a>
+              <a class="btn btn-default btn-sm" id="tool-emotion"><i class="fa fa-smile-o"></i></a>
               <a class="btn btn-default btn-sm" id="tool-picture"><i class="fa fa-picture-o"></i></a>
             </div>
           </div>
