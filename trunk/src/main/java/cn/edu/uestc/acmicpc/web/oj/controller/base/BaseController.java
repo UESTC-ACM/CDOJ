@@ -86,7 +86,7 @@ public class BaseController {
   protected PageInfo buildPageInfo(Long count, Long currentPage, Long countPerPage, String baseURL,
                                    Integer displayDistance) {
     return PageInfo.create(count, countPerPage, baseURL,
-        displayDistance == null ? 4 : displayDistance, currentPage);
+        displayDistance == null ? 2 : displayDistance, currentPage);
   }
 
 }

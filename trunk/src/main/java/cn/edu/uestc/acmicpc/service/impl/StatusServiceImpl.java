@@ -1,6 +1,8 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -106,5 +108,12 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   @Override
   public IStatusDAO getDAO() {
     return statusDAO;
+  }
+
+  @Override
+  public void rejudge(StatusCondition statusCondition) throws AppException {
+    Map<String, Object> properties = new HashMap<>();
+    properties.put("result", Global.OnlineJudgeReturnType.OJ_REJUDGING.ordinal());
+    statusDAO.updateEntitiesByCondition(properties, statusCondition.getCondition());
   }
 }
