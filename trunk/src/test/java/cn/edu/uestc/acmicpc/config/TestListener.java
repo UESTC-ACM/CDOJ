@@ -26,6 +26,8 @@ public class TestListener extends TestListenerAdapter {
     builder.append(LogConstants.INFO_COLOR);
     builder.append("PASSED: ");
     builder.append(LogConstants.END_COLOUR);
+    builder.append(result.getTestClass().getRealClass().getSimpleName());
+    builder.append("#");
     builder.append(result.getName());
     System.out.println(builder.toString());
   }
@@ -36,6 +38,8 @@ public class TestListener extends TestListenerAdapter {
     builder.append(LogConstants.FATAL_COLOR);
     builder.append("FAILED: ");
     builder.append(LogConstants.END_COLOUR);
+    builder.append(result.getTestClass().getRealClass().getSimpleName());
+    builder.append("#");
     builder.append(result.getName());
     System.out.println(builder.toString());
   }
@@ -44,6 +48,8 @@ public class TestListener extends TestListenerAdapter {
   public void onTestSkipped(ITestResult result) {
     StringBuilder builder = new StringBuilder();
     builder.append("SKIPPED: ");
+    builder.append(result.getTestClass().getRealClass().getSimpleName());
+    builder.append("#");
     builder.append(result.getName());
     System.out.println(builder.toString());
   }

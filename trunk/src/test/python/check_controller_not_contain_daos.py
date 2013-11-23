@@ -17,7 +17,7 @@ class TestControllersNotContainDaos(test_util.TestCase):
     self.file_name = file_name
 
   def getName(self):
-    return 'testControllerNotContainDAOs_' + self.file_name[self.file_name.rfind('/') + 1 : -5]
+    return 'testControllerNotContainDAOs#' + self.file_name[self.file_name.rfind('/') + 1 : -5]
 
   def test(self):
     f = open(self.file_name, 'r')

@@ -17,7 +17,7 @@ class TestDtosNotContainEntities(test_util.TestCase):
     self.file_name = file_name
 
   def getName(self):
-    return 'testDtosNotContainEntities_' + self.file_name[self.file_name.rfind('/') + 1 : -5]
+    return 'testDtosNotContainEntities#' + self.file_name[self.file_name.rfind('/') + 1 : -5]
 
   def test(self):
     f = open(self.file_name, 'r')
