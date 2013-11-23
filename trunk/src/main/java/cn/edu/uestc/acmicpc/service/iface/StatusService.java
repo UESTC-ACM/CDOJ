@@ -58,5 +58,18 @@ public interface StatusService extends DatabaseService<Status, Integer> {
    */
   public void createNewStatus(StatusDTO statusDTO) throws AppException;
 
+  /**
+   * TODO(mzry1992)
+   * @param statusId
+   * @return
+   * @throws AppException
+   */
   public StatusInformationDTO getStatusInformation(Integer statusId) throws AppException;
+
+  /**
+   * TODO(mzry1992)
+   * @param statusCondition
+   * @throws AppException
+   */
+  public void rejudge(StatusCondition statusCondition) throws AppException;
 }

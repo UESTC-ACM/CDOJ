@@ -72,6 +72,17 @@ Admin problem list page
                         class="form-control input-sm" />
                     </div>
                   </div>
+                  <c:if
+                    test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="contestId">Contest ID</label> <input
+                          type="text" name="contestId" maxlength="6"
+                          value="" id="contestId"
+                          class="form-control input-sm" />
+                      </div>
+                    </div>
+                  </c:if>
                   <div class="col-md-12">
                     <div class="form-group">
                       <label for="keyword">Keyword</label> <input
@@ -82,6 +93,13 @@ Admin problem list page
                   </div>
                 </div>
               </fieldset>
+              <p class="pull-left">
+                <c:if
+                  test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
+                  <button type="button" class="btn btn-danger btn-sm"
+                    id="rejudge-button">Rejudge</button>
+                </c:if>
+              </p>
               <p class="pull-right">
                 <button type="submit" class="btn btn-primary btn-sm"
                   id="search-button">Search</button>
@@ -98,7 +116,9 @@ Admin problem list page
       <div id="list-container"></div>
     </div>
   </div>
-  <%--<page:applyDecorator name="body" page="/WEB-INF/views/status/statusModal.jsp"/>--%>
+
+  <page:applyDecorator name="body"
+    page="/WEB-INF/views/status/statusModal.jsp" />
 
 </body>
 </html>
