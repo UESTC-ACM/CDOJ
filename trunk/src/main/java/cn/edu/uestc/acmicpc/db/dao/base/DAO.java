@@ -281,9 +281,9 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
       first = false;
       Object value = properties.get(key);
       if (value instanceof String) {
-        value = ((String) value).replaceAll("\\\"", "\\\\\\\"");
-        stringBuilder.append(" ").append(key).append("=\"")
-        .append(value).append("\"");
+        value = ((String) value).replaceAll("'", "''");
+        stringBuilder.append(" ").append(key).append("='")
+        .append(value).append("'");
       } else {
         stringBuilder.append(" ").append(key).append("=")
             .append(value);
