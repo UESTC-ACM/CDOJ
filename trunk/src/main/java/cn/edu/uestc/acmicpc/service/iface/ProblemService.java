@@ -1,6 +1,7 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
@@ -75,6 +76,14 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
    * @throws AppException
    */
   public void updateProblem(ProblemDTO problemDTO) throws AppException;
+
+  /**
+   * TODO(mzry1992)
+   * @param properties
+   * @param problemId
+   * @throws AppException
+   */
+  public void updateProblemByProblemId(Map<String, Object> properties, Integer problemId) throws AppException;
 
   /**
    * TODO(mzry1992)

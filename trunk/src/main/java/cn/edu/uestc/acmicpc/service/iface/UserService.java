@@ -1,6 +1,7 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminSummaryDTO;
@@ -77,7 +78,7 @@ public interface UserService extends DatabaseService<User, Integer> {
    */
   public List<UserSummaryDTO> search(UserCondition userCondition, PageInfo pageInfo)
       throws AppException;
-  
+
   /**
    * Search user by condition and page info for admin dashboard.
    *
@@ -88,7 +89,16 @@ public interface UserService extends DatabaseService<User, Integer> {
    */
   public List<UserAdminSummaryDTO> adminSearch(UserCondition userCondition, PageInfo pageInfo)
       throws AppException;
-  
+
+  /**
+   * TODO(mzry1992)
+   *
+   * @param properties
+   * @param userId
+   * @throws AppException
+   */
+  public void updateUserByUserId(Map<String, Object> properties, Integer userId) throws AppException;
+
   /**
    * Count user number by condition
    *

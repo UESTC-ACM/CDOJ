@@ -7,18 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
-import cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
-import cn.edu.uestc.acmicpc.db.entity.Status;
-import cn.edu.uestc.acmicpc.service.iface.LanguageService;
-import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDTO;
+import cn.edu.uestc.acmicpc.service.iface.CompileInfoService;
+import cn.edu.uestc.acmicpc.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
@@ -28,98 +22,101 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class JudgeItem {
 
-  private Status status;
-  private CompileInfo compileInfo;
+  private StatusForJudgeDTO status;
+  private String compileInfo;
+  private CompileInfoService compileInfoService;
+  private StatusService statusService;
+  private UserService userService;
+  private ProblemService problemService;
 
-  public void setStatus(Status status) {
+  @Autowired
+  public void setCompileInfoService(CompileInfoService compileInfoService) {
+    this.compileInfoService = compileInfoService;
+  }
+
+  @Autowired
+  public void setStatusService(StatusService statusService) {
+    this.statusService = statusService;
+  }
+
+  @Autowired
+  public void setUserService(UserService userService) {
+    this.userService = userService;
+  }
+
+  @Autowired
+  public void setProblemService(ProblemService problemService) {
+    this.problemService = problemService;
+  }
+
+  public void setStatusForJudgeDTO(StatusForJudgeDTO status) {
     this.status = status;
   }
 
-  public Status getStatus() {
+  public StatusForJudgeDTO getStatusForJudgeDTO() {
     return status;
   }
 
-  public void setCompileInfo(CompileInfo compileInfo) {
+  public void setCompileInfo(String compileInfo) {
     this.compileInfo = compileInfo;
   }
 
-  public CompileInfo getCompileInfo() {
+  public String getCompileInfo() {
     return compileInfo;
   }
 
-  @Autowired
-  private ICompileInfoDAO compileinfoDAO;
-  @Autowired
-  private IStatusDAO statusDAO;
-  @Autowired
-  private IProblemDAO problemDAO;
-  @Autowired
-  private IUserDAO userDAO;
-  @Autowired
-  private LanguageService languageService;
-
-  public int parseLanguage() {
-    String extension = languageService.getExtension(status.getLanguageId());
-    switch (extension) {
-    case "cc":
-      return 0;
-    case "c":
-      return 1;
-    case "java":
-      return 2;
-    default:
-      return 3;
-    }
-  }
-
   public String getSourceName() {
-    return "Main" + languageService.getExtension(status.getLanguageId());
+    return "Main" + status.getLanguageExtension();
   }
 
   /**
    * Update database for item.
    *
-   * @param updateStatus if set {@code true}, update status' information.
+   * @param updateStatus
+   *          if set {@code true}, update status' information.
    */
-  @Transactional
   public void update(boolean updateStatus) {
-    if (compileInfo != null) {
-      if (compileInfo.getContent().length() > 65535)
-        compileInfo.setContent(compileInfo.getContent().substring(0, 65534));
-      try {
-        compileinfoDAO.addOrUpdate(compileInfo);
-        status.setCompileInfoId(compileInfo.getCompileInfoId());
-      } catch (AppException ignored) {
-      }
-    }
     try {
-      statusDAO.update(status);
+      if (compileInfo != null) {
+        // Compile error!
+        if (compileInfo.length() > 65535)
+          compileInfo = compileInfo.substring(0, 65534);
+        if (status.getCompileInfoId() != null) {
+          // Update old compile info (if exists)
+          compileInfoService.updateCompileInfoContent(
+              status.getCompileInfoId(),
+              compileInfo);
+        } else {
+          // Create new compile info
+          Integer newCompileInfoId = compileInfoService
+              .createCompileInfo(compileInfo);
+          status.setCompileInfoId(newCompileInfoId);
+        }
+      }
+      statusService.updateStatusByStatusForJudgeDTO(status);
     } catch (AppException ignored) {
+      // TODO(fish) Why not set result as OJ_REJUDGING or something else
+      // to rejudge it.
     }
 
     if (updateStatus) {
       try {
         Integer userId = status.getUserId();
         Integer problemId = status.getProblemId();
-        Condition condition = new Condition();
-        condition.addEntry("userId", ConditionType.EQUALS, userId);
-        condition.addEntry("result", ConditionType.EQUALS,
-            Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-        Map<String, Object> properties = new HashMap<>();
-        properties.put("solved", statusDAO.customCount("distinct problemId", condition));
-        condition = new Condition();
-        condition.addEntry("userId", ConditionType.EQUALS, userId);
-        userDAO.updateEntitiesByCondition(properties, condition);
-        condition = new Condition();
-        condition.addEntry("problemId", ConditionType.EQUALS, problemId);
-        condition.addEntry("result", ConditionType.EQUALS,
-            Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-        properties.clear();
-        properties.put("solved", statusDAO.customCount("distinct userId", condition));
-        condition = new Condition();
-        condition.addEntry("problemId", ConditionType.EQUALS, problemId);
-        problemDAO.updateEntitiesByCondition(properties, condition);
 
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("solved",
+            statusService.countProblemsUserAccepted(userId));
+        properties.put("tried",
+            statusService.countProblemsUserTired(userId));
+        userService.updateUserByUserId(properties, userId);
+
+        properties.clear();
+        properties.put("solved",
+            statusService.countUsersAcceptedProblem(problemId));
+        properties.put("tried",
+            statusService.countUsersTiredProblem(problemId));
+        problemService.updateProblemByProblemId(properties, problemId);
       } catch (Exception e) {
       }
     }
