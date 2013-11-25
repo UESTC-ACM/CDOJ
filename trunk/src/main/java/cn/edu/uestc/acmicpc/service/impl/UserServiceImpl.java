@@ -1,6 +1,7 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -122,6 +123,12 @@ public class UserServiceImpl extends AbstractService implements UserService {
   @Override
   public Long count(UserCondition userCondition) throws AppException {
     return userDAO.count(userCondition.getCondition());
+  }
+
+  @Override
+  public void updateUserByUserId(Map<String, Object> properties, Integer userId)
+      throws AppException {
+    userDAO.updateEntitiesByField(properties, "userId", userId.toString());
   }
 
 }

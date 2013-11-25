@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
@@ -35,6 +36,41 @@ public interface StatusService extends DatabaseService<Status, Integer> {
 
   /**
    * TODO(mzry1992)
+   *
+   * @param userId
+   * @return
+   * @throws AppException
+   */
+  public Long countProblemsUserTired(Integer userId) throws AppException;
+
+  /**
+   * TODO(mzry1992)
+   *
+   * @param userId
+   * @return
+   * @throws AppException
+   */
+  public Long countProblemsUserAccepted(Integer userId) throws AppException;
+  /**
+   * TODO(mzry1992)
+   *
+   * @param problemId
+   * @return
+   * @throws AppException
+   */
+  public Long countUsersTiredProblem(Integer problemId) throws AppException;
+
+  /**
+   * TODO(mzry1992)
+   *
+   * @param problemId
+   * @return
+   * @throws AppException
+   */
+  public Long countUsersAcceptedProblem(Integer problemId) throws AppException;
+
+  /**
+   * TODO(mzry1992)
    * @param condition
    * @return
    * @throws AppException
@@ -50,6 +86,20 @@ public interface StatusService extends DatabaseService<Status, Integer> {
    */
   public List<StatusListDTO> getStatusList(StatusCondition condition,
                                            PageInfo pageInfo) throws AppException;
+
+  /**
+   * TODO(mzry1992)
+   * @return
+   * @throws AppException
+   */
+  public List<StatusForJudgeDTO> getQueuingStatus() throws AppException;
+
+  /**
+   * TODO(mzry1992)
+   * @param statusForJudgeDTO
+   * @throws AppException
+   */
+  public void updateStatusByStatusForJudgeDTO(StatusForJudgeDTO statusForJudgeDTO) throws AppException;
 
   /**
    * TODO(mzry1992)
