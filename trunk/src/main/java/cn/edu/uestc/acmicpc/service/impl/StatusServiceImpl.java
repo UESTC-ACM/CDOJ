@@ -11,11 +11,13 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.Global.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
@@ -34,7 +36,8 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Integer> findAllUserAcceptedProblemIds(Integer userId) throws AppException {
+  public List<Integer> findAllUserAcceptedProblemIds(Integer userId)
+      throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
     statusCondition.resultId = Global.OnlineJudgeReturnType.OJ_AC.ordinal();
@@ -45,7 +48,8 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Integer> findAllUserTriedProblemIds(Integer userId) throws AppException {
+  public List<Integer> findAllUserTriedProblemIds(Integer userId)
+      throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
     // TODO(mzry1992): please test for this statement.
@@ -54,15 +58,47 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   }
 
   @Override
+  public Long countProblemsUserTired(Integer userId) throws AppException {
+    StatusCondition statusCondition = new StatusCondition();
+    statusCondition.userId = userId;
+    return statusDAO.customCount("distinct problemId", statusCondition.getCondition());
+  }
+
+  @Override
+  public Long countProblemsUserAccepted(Integer userId) throws AppException {
+    StatusCondition statusCondition = new StatusCondition();
+    statusCondition.userId = userId;
+    statusCondition.result.add(Global.OnlineJudgeReturnType.OJ_AC);
+    return statusDAO.customCount("distinct problemId", statusCondition.getCondition());
+  }
+
+  @Override
+  public Long countUsersTiredProblem(Integer problemId) throws AppException {
+    StatusCondition statusCondition = new StatusCondition();
+    statusCondition.problemId = problemId;
+    return statusDAO.customCount("distinct userId", statusCondition.getCondition());
+  }
+
+  @Override
+  public Long countUsersAcceptedProblem(Integer problemId) throws AppException {
+    StatusCondition statusCondition = new StatusCondition();
+    statusCondition.problemId = problemId;
+    statusCondition.result.add(Global.OnlineJudgeReturnType.OJ_AC);
+    return statusDAO.customCount("distinct userId", statusCondition.getCondition());
+  }
+
+  @Override
   public Long count(StatusCondition condition) throws AppException {
     return statusDAO.count(condition.getCondition());
   }
 
   @Override
-  public List<StatusListDTO> getStatusList(StatusCondition statusCondition, PageInfo pageInfo) throws AppException {
+  public List<StatusListDTO> getStatusList(StatusCondition statusCondition,
+      PageInfo pageInfo) throws AppException {
     Condition condition = statusCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return statusDAO.findAll(StatusListDTO.class, StatusListDTO.builder(), condition);
+    return statusDAO.findAll(StatusListDTO.class, StatusListDTO.builder(),
+        condition);
   }
 
   private void updateStatusByStatusDTO(Status status, StatusDTO statusDTO) {
@@ -100,7 +136,8 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   }
 
   @Override
-  public StatusInformationDTO getStatusInformation(Integer statusId) throws AppException {
+  public StatusInformationDTO getStatusInformation(Integer statusId)
+      throws AppException {
     return statusDAO.getDTOByUniqueField(StatusInformationDTO.class,
         StatusInformationDTO.builder(), "statusId", statusId);
   }
@@ -113,7 +150,36 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   @Override
   public void rejudge(StatusCondition statusCondition) throws AppException {
     Map<String, Object> properties = new HashMap<>();
-    properties.put("result", Global.OnlineJudgeReturnType.OJ_REJUDGING.ordinal());
-    statusDAO.updateEntitiesByCondition(properties, statusCondition.getCondition());
+    properties.put("result",
+        Global.OnlineJudgeReturnType.OJ_REJUDGING.ordinal());
+    statusDAO.updateEntitiesByCondition(properties,
+        statusCondition.getCondition());
+  }
+
+  @Override
+  public List<StatusForJudgeDTO> getQueuingStatus() throws AppException {
+    StatusCondition statusCondition = new StatusCondition();
+    statusCondition.result.add(OnlineJudgeReturnType.OJ_WAIT);
+    statusCondition.result.add(OnlineJudgeReturnType.OJ_REJUDGING);
+    return statusDAO.findAll(StatusForJudgeDTO.class,
+        StatusForJudgeDTO.builder(), statusCondition.getCondition());
+  }
+
+  @Override
+  public void updateStatusByStatusForJudgeDTO(
+      StatusForJudgeDTO statusForJudgeDTO) throws AppException {
+    Map<String, Object> properties = new HashMap<>();
+    if (statusForJudgeDTO.getResult() != null)
+      properties.put("result", statusForJudgeDTO.getResult());
+    if (statusForJudgeDTO.getCaseNumber() != null)
+      properties.put("caseNumber", statusForJudgeDTO.getCaseNumber());
+    if (statusForJudgeDTO.getTimeCost() != null)
+      properties.put("timeCost", statusForJudgeDTO.getTimeCost());
+    if (statusForJudgeDTO.getMemoryCost() != null)
+      properties.put("memoryCost", statusForJudgeDTO.getMemoryCost());
+    if (statusForJudgeDTO.getCompileInfoId() != null)
+      properties.put("compileInfoId", statusForJudgeDTO.getCompileInfoId());
+    statusDAO.updateEntitiesByField(properties, "statusId", statusForJudgeDTO
+        .getStatusId().toString());
   }
 }

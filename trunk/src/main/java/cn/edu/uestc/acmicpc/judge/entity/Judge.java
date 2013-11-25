@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
 import cn.edu.uestc.acmicpc.util.FileUtil;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.Settings;
@@ -96,41 +94,53 @@ public class Judge implements Runnable {
    *          {@code judgeItem} entity
    * @return command line we need
    */
-  private String buildJudgeShellCommand(int problemId, int currentTestCase, JudgeItem judgeItem) {
+  private String buildJudgeShellCommand(int problemId, int currentTestCase,
+      JudgeItem judgeItem) {
     StringBuilder stringBuilder = new StringBuilder();
 
     stringBuilder.append(workPath);
     stringBuilder.append("/");
     stringBuilder.append(settings.JUDGE_JUDGE_CORE);
     stringBuilder.append(" -u ");
-    stringBuilder.append(judgeItem.getStatus().getStatusId());
+    stringBuilder.append(judgeItem.getStatusForJudgeDTO().getStatusId());
     stringBuilder.append(" -s ");
     stringBuilder.append(judgeItem.getSourceName());
     stringBuilder.append(" -n ");
     stringBuilder.append(problemId);
     stringBuilder.append(" -D ");
     stringBuilder.append(settings.JUDGE_DATA_PATH);
-    stringBuilder.append("/").append(judgeItem.getStatus().getProblemByProblemId().getProblemId())
+    stringBuilder.append("/")
+        .append(judgeItem.getStatusForJudgeDTO().getProblemId())
         .append("/");
     stringBuilder.append(" -d ");
     stringBuilder.append(tempPath);
-    stringBuilder.append(" -t ");
-    stringBuilder.append(judgeItem.getStatus().getProblemByProblemId().getTimeLimit());
-    stringBuilder.append(" -m ");
-    stringBuilder.append(judgeItem.getStatus().getProblemByProblemId().getMemoryLimit());
+
+    if (judgeItem.getStatusForJudgeDTO().getLanguageName().equals("Java")) {
+      stringBuilder.append(" -t ");
+      stringBuilder.append(judgeItem.getStatusForJudgeDTO().getJavaTimeLimit());
+      stringBuilder.append(" -m ");
+      stringBuilder.append(judgeItem.getStatusForJudgeDTO()
+          .getJavaMemoryLimit());
+    } else {
+      stringBuilder.append(" -t ");
+      stringBuilder.append(judgeItem.getStatusForJudgeDTO().getTimeLimit());
+      stringBuilder.append(" -m ");
+      stringBuilder.append(judgeItem.getStatusForJudgeDTO().getMemoryLimit());
+    }
+
     stringBuilder.append(" -o ");
-    stringBuilder.append(judgeItem.getStatus().getProblemByProblemId().getOutputLimit());
-    if (judgeItem.getStatus().getProblemByProblemId().getIsSpj())
+    stringBuilder.append(judgeItem.getStatusForJudgeDTO().getOutputLimit());
+    if (judgeItem.getStatusForJudgeDTO().getIsSpj())
       stringBuilder.append(" -S");
     stringBuilder.append(" -l ");
-    stringBuilder.append(judgeItem.getStatus().getLanguageByLanguageId().getLanguageId());
+    stringBuilder.append(judgeItem.getStatusForJudgeDTO().getLanguageId());
     stringBuilder.append(" -I ");
     stringBuilder.append(settings.JUDGE_DATA_PATH).append("/")
-        .append(judgeItem.getStatus().getProblemByProblemId().getProblemId()).append("/")
+        .append(judgeItem.getStatusForJudgeDTO().getProblemId()).append("/")
         .append(currentTestCase).append(".in");
     stringBuilder.append(" -O ");
     stringBuilder.append(settings.JUDGE_DATA_PATH).append("/")
-        .append(judgeItem.getStatus().getProblemByProblemId().getProblemId()).append("/")
+        .append(judgeItem.getStatusForJudgeDTO().getProblemId()).append("/")
         .append(currentTestCase).append(".out");
     if (currentTestCase == 1)
       stringBuilder.append(" -C");
@@ -149,7 +159,8 @@ public class Judge implements Runnable {
     String callBackString = "";
     try {
       p = Runtime.getRuntime().exec(shellCommand);
-      BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+      BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
+          p.getInputStream()));
       String line;
       while ((line = bufferedReader.readLine()) != null) {
         callBackString += line;
@@ -165,27 +176,29 @@ public class Judge implements Runnable {
    * @param judgeItem
    *          judge item to be judged
    */
-  @Transactional
   void judge(JudgeItem judgeItem) {
     try {
-      int numberOfTestCase = judgeItem.getStatus().getProblemByProblemId().getDataCount();
+      int numberOfTestCase = judgeItem.getStatusForJudgeDTO().getDataCount();
       boolean isAccepted = true;
-      FileUtil.saveToFile(judgeItem.getStatus().getCodeByCodeId().getContent(), tempPath + "/"
-          + judgeItem.getSourceName());
-      int problemId = judgeItem.getStatus().getProblemByProblemId().getProblemId();
+      FileUtil.saveToFile(judgeItem.getStatusForJudgeDTO().getCodeContent(),
+          tempPath + "/"
+              + judgeItem.getSourceName());
+      int problemId = judgeItem.getStatusForJudgeDTO().getProblemId();
       for (int currentCase = 1; isAccepted && currentCase <= numberOfTestCase; currentCase++) {
-        judgeItem.getStatus().setCaseNumber(currentCase);
-        String shellCommand = buildJudgeShellCommand(problemId, currentCase, judgeItem);
+        judgeItem.getStatusForJudgeDTO().setCaseNumber(currentCase);
+        String shellCommand = buildJudgeShellCommand(problemId, currentCase,
+            judgeItem);
         String[] callBackString = getCallBackString(shellCommand);
         isAccepted = updateJudgeItem(callBackString, judgeItem);
       }
-      if (isAccepted) {
-        judgeItem.getStatus().setResult(Global.OnlineJudgeReturnType.OJ_AC.ordinal());
-        judgeItem.update(true);
-      }
+      if (isAccepted)
+        judgeItem.getStatusForJudgeDTO().setResult(
+            Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+      judgeItem.update(true);
     } catch (Exception e) {
       LOGGER.error(e);
-      judgeItem.getStatus().setResult(Global.OnlineJudgeReturnType.OJ_SE.ordinal());
+      judgeItem.getStatusForJudgeDTO().setResult(
+          Global.OnlineJudgeReturnType.OJ_SE.ordinal());
       judgeItem.update(true);
     }
   }
@@ -200,34 +213,41 @@ public class Judge implements Runnable {
         } else {
           isAccepted = false;
         }
-        judgeItem.getStatus().setResult(result);
-        Integer oldMemoryCost = judgeItem.getStatus().getMemoryCost();
+        judgeItem.getStatusForJudgeDTO().setResult(result);
+        Integer oldMemoryCost = judgeItem.getStatusForJudgeDTO()
+            .getMemoryCost();
         Integer currentMemoryCost = Integer.parseInt(callBackString[1]);
         if (currentMemoryCost == null)
-          judgeItem.getStatus().setMemoryCost(currentMemoryCost);
+          judgeItem.getStatusForJudgeDTO().setMemoryCost(currentMemoryCost);
         else
-          judgeItem.getStatus().setMemoryCost(Math.max(currentMemoryCost, oldMemoryCost));
+          judgeItem.getStatusForJudgeDTO().setMemoryCost(
+              Math.max(currentMemoryCost, oldMemoryCost));
 
-        Integer oldTimeCost = judgeItem.getStatus().getTimeCost();
+        Integer oldTimeCost = judgeItem.getStatusForJudgeDTO().getTimeCost();
         Integer currentTimeCost = Integer.parseInt(callBackString[2]);
         if (oldTimeCost == null)
-          judgeItem.getStatus().setTimeCost(currentTimeCost);
+          judgeItem.getStatusForJudgeDTO().setTimeCost(currentTimeCost);
         else
-          judgeItem.getStatus().setTimeCost(Math.max(currentTimeCost, oldTimeCost));
+          judgeItem.getStatusForJudgeDTO().setTimeCost(
+              Math.max(currentTimeCost, oldTimeCost));
       } catch (NumberFormatException e) {
-        judgeItem.getStatus().setResult(Global.OnlineJudgeReturnType.OJ_SE.ordinal());
+        judgeItem.getStatusForJudgeDTO().setResult(
+            Global.OnlineJudgeReturnType.OJ_SE.ordinal());
         isAccepted = false;
       }
     } else {
-      judgeItem.getStatus().setResult(Global.OnlineJudgeReturnType.OJ_SE.ordinal());
+      judgeItem.getStatusForJudgeDTO().setResult(
+          Global.OnlineJudgeReturnType.OJ_SE.ordinal());
       isAccepted = false;
     }
 
-    if (judgeItem.getStatus().getResult() == Global.OnlineJudgeReturnType.OJ_CE.ordinal()) {
+    if (judgeItem.getStatusForJudgeDTO().getResult() == Global.OnlineJudgeReturnType.OJ_CE
+        .ordinal()) {
       StringBuilder stringBuilder = new StringBuilder();
       BufferedReader br = null;
       try {
-        br = new BufferedReader(new FileReader(workPath + "/temp/stderr_compiler.txt"));
+        br = new BufferedReader(new FileReader(workPath
+            + "/temp/stderr_compiler.txt"));
         String line;
         while ((line = br.readLine()) != null) {
           if (line.trim().startsWith("/home/")) {
@@ -245,13 +265,10 @@ public class Judge implements Runnable {
           }
         }
       }
-      if (judgeItem.getCompileInfo() == null) {
-        judgeItem.setCompileInfo(new CompileInfo());
-      }
-      judgeItem.getCompileInfo().setContent(stringBuilder.toString());
+      judgeItem.setCompileInfo(stringBuilder.toString());
     } else {
       if (judgeItem.getCompileInfo() != null)
-        judgeItem.getCompileInfo().setContent("");
+        judgeItem.setCompileInfo(null);
     }
 
     judgeItem.update(false);
