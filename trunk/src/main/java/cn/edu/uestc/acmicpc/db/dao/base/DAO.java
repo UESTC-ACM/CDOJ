@@ -279,8 +279,15 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
         stringBuilder.append(",");
       }
       first = false;
-      stringBuilder.append(" ").append(key).append("=")
-          .append(properties.get(key));
+      Object value = properties.get(key);
+      if (value instanceof String) {
+        value = ((String) value).replaceAll("\\\"", "\\\\\\\"");
+        stringBuilder.append(" ").append(key).append("=\"")
+        .append(value).append("\"");
+      } else {
+        stringBuilder.append(" ").append(key).append("=")
+            .append(value);
+      }
     }
     stringBuilder.append(" where ").append(field).append(" in (")
         .append(values).append(")");
