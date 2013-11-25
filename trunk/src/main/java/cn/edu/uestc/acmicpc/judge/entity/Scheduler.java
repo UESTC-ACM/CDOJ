@@ -15,11 +15,9 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
-import cn.edu.uestc.acmicpc.db.entity.Status;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDTO;
+import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.Global.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
@@ -31,11 +29,14 @@ public class Scheduler implements Runnable, ApplicationContextAware {
 
   private static final Logger LOGGER = LogManager.getLogger(Scheduler.class);
 
-  private IStatusDAO statusDAO;
-
   public void setJudgeQueue(BlockingQueue<JudgeItem> judgeQueue) {
     this.judgeQueue = judgeQueue;
   }
+
+  /**
+   * Status service
+   */
+  private StatusService statusService;
 
   /**
    * Judging queue.
@@ -67,19 +68,15 @@ public class Scheduler implements Runnable, ApplicationContextAware {
   /**
    * Search status in queuing.
    */
-  @SuppressWarnings({ "unchecked", "deprecation" })
   private void searchForJudge() {
     try {
-      StatusCondition statusCondition = new StatusCondition();
-      statusCondition.result.add(OnlineJudgeReturnType.OJ_WAIT);
-      statusCondition.result.add(OnlineJudgeReturnType.OJ_REJUDGING);
-      List<Status> statusList = (List<Status>) statusDAO.findAll(statusCondition.getCondition());
-      for (Status status : statusList) {
+      List<StatusForJudgeDTO> statusList = statusService.getQueuingStatus();
+      for (StatusForJudgeDTO status : statusList) {
         status.setResult(Global.OnlineJudgeReturnType.OJ_JUDGING.ordinal());
         status.setCaseNumber(0);
         JudgeItem judgeItem = applicationContext.getBean(JudgeItem.class);
-        judgeItem.setStatus(status);
-        statusDAO.update(status);
+        judgeItem.setStatusForJudgeDTO(status);
+        statusService.updateStatusByStatusForJudgeDTO(status);
         judgeQueue.put(judgeItem);
       }
     } catch (AppException e) {
@@ -89,8 +86,8 @@ public class Scheduler implements Runnable, ApplicationContextAware {
   }
 
   @Autowired
-  public void setStatusDAO(IStatusDAO statusDAO) {
-    this.statusDAO = statusDAO;
+  public void setStatusService(StatusService statusService) {
+    this.statusService = statusService;
   }
 
   @Override

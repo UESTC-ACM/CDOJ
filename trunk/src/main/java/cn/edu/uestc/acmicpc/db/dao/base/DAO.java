@@ -70,7 +70,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
    * @return HQL with class name.
    */
   private String buildHQLString(Condition condition) {
-    return "from " + getReferenceClass().getSimpleName() + " " + condition.toHQLString();
+    return "from " + getReferenceClass().getSimpleName() + " "
+        + condition.toHQLString();
   }
 
   /**
@@ -81,13 +82,15 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
    * @return HQL with class name.
    */
   private String buildHQLStringWithOrders(Condition condition) {
-    return "from " + getReferenceClass().getSimpleName() + " " + condition.toHQLStringWithOrders();
+    return "from " + getReferenceClass().getSimpleName() + " "
+        + condition.toHQLStringWithOrders();
   }
 
   private Query getQuery(String hql, PageInfo pageInfo) {
     Query query = getSession().createQuery(hql);
     if (pageInfo != null) {
-      query.setFirstResult((int) ((pageInfo.getCurrentPage() - 1) * pageInfo.getCountPerPage()));
+      query.setFirstResult((int) ((pageInfo.getCurrentPage() - 1) * pageInfo
+          .getCountPerPage()));
       query.setMaxResults(pageInfo.getCountPerPage().intValue());
     }
     return query;
@@ -109,12 +112,14 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
-  public Long customCount(String fieldName, Condition condition) throws AppException {
+  public Long customCount(String fieldName, Condition condition)
+      throws AppException {
     if (condition == null) {
       condition = new Condition();
     }
     try {
-      String hql = "select count(" + fieldName + ") " + buildHQLString(condition);
+      String hql = "select count(" + fieldName + ") "
+          + buildHQLString(condition);
       return (Long) getQuery(hql, null).uniqueResult();
     } catch (HibernateException e) {
       LOGGER.error(e);
@@ -178,7 +183,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
-  public List<?> findAll(String fields, Condition condition) throws AppException {
+  public List<?> findAll(String fields, Condition condition)
+      throws AppException {
     try {
       String hql;
       if (fields == null) {
@@ -205,7 +211,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
-  public Object getEntityByUniqueField(String fieldName, Object value, String propertyName,
+  public Object getEntityByUniqueField(String fieldName, Object value,
+      String propertyName,
       boolean forceUnique) throws AppException {
     Condition condition = new Condition();
     condition.addEntry(fieldName, ConditionType.EQUALS, value);
@@ -232,20 +239,23 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   protected abstract Class<Entity> getReferenceClass();
 
   @Override
-  public void updateEntitiesByCondition(Map<String, Object> properties, Condition condition)
+  public void updateEntitiesByCondition(Map<String, Object> properties,
+      Condition condition)
       throws AppException {
     if (properties.isEmpty()) {
       return;
     }
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append("update ").append(getReferenceClass().getSimpleName()).append(" set");
+    stringBuilder.append("update ").append(getReferenceClass().getSimpleName())
+        .append(" set");
     Boolean first = true;
     for (String key : properties.keySet()) {
       if (!first) {
         stringBuilder.append(",");
       }
       first = false;
-      stringBuilder.append(" ").append(key).append("=").append(properties.get(key));
+      stringBuilder.append(" ").append(key).append("=")
+          .append(properties.get(key));
     }
     stringBuilder.append(" ").append(condition.toHQLString());
     String hql = stringBuilder.toString();
@@ -254,28 +264,48 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
 
   /** TODO(fish): need it test. */
   @Override
-  public void updateEntitiesByField(Map<String, Object> properties, String field, String values) {
+  public void updateEntitiesByField(Map<String, Object> properties,
+      String field, String values) {
     if (properties.isEmpty()) {
       return;
     }
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append("update ").append(getReferenceClass().getSimpleName()).append(" set");
+    stringBuilder.append("update ").append(getReferenceClass().getSimpleName())
+        .append(" set");
     Boolean first = true;
     for (String key : properties.keySet()) {
       if (!first) {
         stringBuilder.append(",");
       }
       first = false;
-      stringBuilder.append(" ").append(key).append("=").append(properties.get(key));
+      Object value = properties.get(key);
+      if (value instanceof String) {
+        value = ((String) value).replaceAll("'", "''");
+        stringBuilder.append(" ").append(key).append("='")
+        .append(value).append("'");
+      } else {
+        stringBuilder.append(" ").append(key).append("=")
+            .append(value);
+      }
     }
-    stringBuilder.append(" where ").append(field).append(" in (").append(values).append(")");
+    stringBuilder.append(" where ").append(field).append(" in (")
+        .append(values).append(")");
     String hql = stringBuilder.toString();
     getQuery(hql, null).executeUpdate();
   }
 
   @Override
+  public void updateEntitiesByField(String propertyField, Object propertyValue,
+      String field, String values) {
+    Map<String, Object> properties = new HashMap<>();
+    properties.put(propertyField, propertyValue);
+    updateEntitiesByField(properties, field, values);
+  }
+
+  @Override
   @Deprecated
-  public void deleteEntitiesByCondition(Condition condition) throws AppException {
+  public void deleteEntitiesByCondition(Condition condition)
+      throws AppException {
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("delete ").append(getReferenceClass().getSimpleName());
     stringBuilder.append(" ").append(condition.toHQLString());
@@ -313,14 +343,15 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
-  public <T extends BaseDTO<Entity>> List<T> findAll(Class<T> clazz, BaseBuilder<T> builder,
+  public <T extends BaseDTO<Entity>> List<T> findAll(Class<T> clazz,
+      BaseBuilder<T> builder,
       Condition condition) throws AppException {
     List<T> list = new ArrayList<>();
     AppExceptionUtil.assertTrue(clazz.isAnnotationPresent(Fields.class));
     String[] fields = clazz.getAnnotation(Fields.class).value();
     String queryField = ArrayUtil.join(fields, ",");
     List<?> result = findAll(queryField, condition);
-    for (Iterator<?> iterator = result.iterator(); iterator.hasNext(); ) {
+    for (Iterator<?> iterator = result.iterator(); iterator.hasNext();) {
       Object[] entity = (Object[]) iterator.next();
       Map<String, Object> properties = new HashMap<>();
       for (int i = 0; i < fields.length; i++) {
@@ -332,7 +363,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
-  public <T extends BaseDTO<Entity>> T getDTOByUniqueField(Class<T> clazz, BaseBuilder<T> builder,
+  public <T extends BaseDTO<Entity>> T getDTOByUniqueField(Class<T> clazz,
+      BaseBuilder<T> builder,
       String field, Object value) throws AppException {
     Condition condition = new Condition();
     if (value instanceof String) {

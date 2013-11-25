@@ -61,7 +61,6 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
     return problemDAO.count(condition.getCondition());
   }
 
-
   @Override
   public List<ProblemListDTO> getProblemListDTOList(ProblemCondition problemCondition,
                                                     PageInfo pageInfo) throws AppException{
@@ -170,5 +169,11 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
   public ProblemDataShowDTO getProblemDataShowDTO(Integer problemId) throws AppException {
     return problemDAO.getDTOByUniqueField(ProblemDataShowDTO.class, ProblemDataShowDTO.builder(),
         "problemId", problemId);
+  }
+
+  @Override
+  public void updateProblemByProblemId(Map<String, Object> properties,
+      Integer problemId) throws AppException {
+    problemDAO.updateEntitiesByField(properties, "problemId", problemId.toString());
   }
 }

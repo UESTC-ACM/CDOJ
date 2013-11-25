@@ -10,4 +10,8 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 public interface CompileInfoService extends DatabaseService<CompileInfo, Integer> {
 
   public String getCompileInfo(Integer compileInfoId) throws AppException;
+
+  public void updateCompileInfoContent(Integer compileInfoId, String content) throws AppException;
+
+  public Integer createCompileInfo(String content) throws AppException;
 }
