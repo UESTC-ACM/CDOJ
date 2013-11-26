@@ -428,15 +428,15 @@ public class ProblemController extends BaseController {
     Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
     try {
       if (currentUser != null) {
-        List<Integer> acceptedProblems = statusService.
-            findAllUserAcceptedProblemIds(currentUser.getUserId());
-        for (Integer result : acceptedProblems) {
-          problemStatus.put(result, Global.AuthorStatusType.PASS);
-        }
         List<Integer> triedProblems = statusService.
             findAllUserTriedProblemIds(currentUser.getUserId());
         for (Integer result : triedProblems) {
           problemStatus.put(result, Global.AuthorStatusType.FAIL);
+        }
+        List<Integer> acceptedProblems = statusService.
+            findAllUserAcceptedProblemIds(currentUser.getUserId());
+        for (Integer result : acceptedProblems) {
+          problemStatus.put(result, Global.AuthorStatusType.PASS);
         }
       }
     } catch (AppException ignored) {
