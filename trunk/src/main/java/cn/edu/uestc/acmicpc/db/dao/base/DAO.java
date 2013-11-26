@@ -192,7 +192,6 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
       } else {
         hql = "select " + fields + " " + buildHQLStringWithOrders(condition);
       }
-      LOGGER.info(hql);
       return getQuery(hql, condition.getPageInfo()).list();
     } catch (HibernateException e) {
       LOGGER.error(e);
