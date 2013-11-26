@@ -1,7 +1,7 @@
 LD=g++
 CXX=g++
 INCLUDE=include/
-LOG_OFF=-D LOG_OFF
+LOG_OFF=
 CXXFLAGS=-I $(INCLUDE) -g -Wall -O2 -m32 ${LOG_OFF}
 LDFLAGS= -m32 ${LOG_OFF}
 TARGET=bin/pyloncore
