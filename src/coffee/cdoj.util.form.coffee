@@ -44,6 +44,17 @@ $.fn.setFormValue = (value) ->
   else
     $el.val(value)
 
+$.fn.setFormData = (data) ->
+  this.each (id, el) =>
+    ignoreList = ["submit", "reset", "button"];
+
+    $el = $(el)
+    $inputs = $el.find(":input")
+    for input in $inputs
+      $input = $(input)
+      if ignoreList.none $input.attr("type")
+        $input.setFormValue(data[$input.attr("name")])
+
 $.fn.resetFormData = ->
   this.each (id, el) =>
     ignoreList = ["submit", "reset", "button"];
@@ -54,7 +65,6 @@ $.fn.resetFormData = ->
       $input = $(input)
       if ignoreList.none $input.attr("type")
         $input.setFormValue(undefined)
-
 
 $.fn.formValidate = (userOptions) ->
   options =

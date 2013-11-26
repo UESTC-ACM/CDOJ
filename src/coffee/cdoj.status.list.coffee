@@ -15,7 +15,7 @@ initStatusList = ->
         "problemId": undefined,
         "languageId": undefined,
         "contestId": undefined,
-        "result": undefined,
+        "result": [],
         "orderFields": "statusId",
         "orderAsc": "false"
       formatter: (data) ->

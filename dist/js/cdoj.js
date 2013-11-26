@@ -23080,7 +23080,48 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
 /*! 2013-11-22 */
 
 (function() {
-  var $, Flandre, ListModule, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonPost, markdown, render;
+  var $, AuthenticationType, AuthorStatusType, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonMerge, jsonPost, markdown, render;
+
+  OnlineJudgeReturnType = {
+    OJ_WAIT: 0,
+    OJ_AC: 1,
+    OJ_PE: 2,
+    OJ_TLE: 3,
+    OJ_MLE: 4,
+    OJ_WA: 5,
+    OJ_OLE: 6,
+    OJ_CE: 7,
+    OJ_RE_SEGV: 8,
+    OJ_RE_FPE: 9,
+    OJ_RE_BUS: 10,
+    OJ_RE_ABRT: 11,
+    OJ_RE_UNKNOWN: 12,
+    OJ_RF: 13,
+    OJ_SE: 14,
+    OJ_RE_JAVA: 15,
+    OJ_JUDGING: 16,
+    OJ_RUNNING: 17,
+    OJ_REJUDGING: 18
+  };
+
+  ContestType = {
+    PUBLIC: 0,
+    PRIVATE: 1,
+    DIY: 2,
+    INVITED: 3
+  };
+
+  AuthenticationType = {
+    NORMAL: 0,
+    ADMIN: 1,
+    CONSTANT: 2
+  };
+
+  AuthorStatusType = {
+    NONE: 0,
+    PASS: 1,
+    FAIL: 2
+  };
 
   avatar = function(el, options) {
     var $el, emailAddress, url;
@@ -23115,6 +23156,17 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
       contentType: "application/json",
       data: JSON.stringify(data),
       success: callback
+    });
+  };
+
+  jsonMerge = function(jsonA, jsonB) {
+    return Object.merge(jsonA, jsonB, false, function(key, a, b) {
+      if (a.constructor === Array) {
+        a.add(b);
+      } else {
+        a = b;
+      }
+      return a;
     });
   };
 
@@ -23320,6 +23372,27 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
     }
   };
 
+  $.fn.setFormData = function(data) {
+    var _this = this;
+    return this.each(function(id, el) {
+      var $el, $input, $inputs, ignoreList, input, _i, _len, _results;
+      ignoreList = ["submit", "reset", "button"];
+      $el = $(el);
+      $inputs = $el.find(":input");
+      _results = [];
+      for (_i = 0, _len = $inputs.length; _i < _len; _i++) {
+        input = $inputs[_i];
+        $input = $(input);
+        if (ignoreList.none($input.attr("type"))) {
+          _results.push($input.setFormValue(data[$input.attr("name")]));
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    });
+  };
+
   $.fn.resetFormData = function() {
     var _this = this;
     return this.each(function(id, el) {
@@ -23449,6 +23522,21 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
     });
     MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
     return $(document.body).prettify();
+  };
+
+  getParam = function() {
+    var params, result;
+    params = location.search;
+    params = params.substr(params.indexOf("?") + 1);
+    params = params.split("&");
+    result = {};
+    params.each(function(value, id) {
+      value = value.split("=");
+      if (value.length === 2) {
+        return result[value[0]] = value[1];
+      }
+    });
+    return result;
   };
 
   Flandre = (function() {
@@ -23646,6 +23734,12 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
       }
     };
 
+    SearchModule.prototype.set = function(data) {
+      var $conditionForm;
+      $conditionForm = this.search.find("#condition");
+      return $conditionForm.setFormData(data);
+    };
+
     return SearchModule;
 
   })();
@@ -23661,14 +23755,17 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
     */
 
     function ListModule(options) {
-      var self;
+      var params, self;
       this.options = options;
       this.listContainer = this.options.listContainer;
       this.searchGroup = this.listContainer.find("#search-group");
+      this.searchModule = new SearchModule(this);
       this.pageInfo = this.listContainer.find("#page-info");
       this.refreshLock = 0;
+      params = getParam();
+      this.searchModule.set(params);
+      this.options.condition = jsonMerge(this.options.condition, params);
       this.refresh(this.options.condition);
-      this.searchModule = new SearchModule(this);
       self = this;
       if (this.options.autoRefresh === true) {
         setInterval(function() {
@@ -23974,7 +24071,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
           "problemId": void 0,
           "languageId": void 0,
           "contestId": void 0,
-          "result": void 0,
+          "result": [],
           "orderFields": "statusId",
           "orderAsc": "false"
         },
@@ -24209,8 +24306,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
           "orderAsc": "false,false,true"
         },
         formatter: function(data) {
-          console.log(data);
-          return "<div class=\"col-lg-6\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <a class=\"pull-left\" href=\"#\">\n          <img id=\"cdoj-users-avatar\" email=\"" + data.email + "\"/>\n        </a>\n        <div class=\"media-body\">\n          <h4 class=\"media-heading\"><a href=\"/user/center/" + data.userName + "\">" + data.nickName + " <small>" + data.userName + "</small></a></h4>\n          <i class=\"fa fa-map-marker\"></i>" + data.school + "\n        </div>\n      </div>\n    </div>\n    <div class=\"panel-footer\" style=\"overflow: hidden;white-space: nowrap;text-overflow: ellipsis;\">Motto: " + data.motto + "</div>\n  </div>\n</div>";
+          return "<div class=\"col-lg-6\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <a class=\"pull-left\" href=\"#\">\n          <img id=\"cdoj-users-avatar\" email=\"" + data.email + "\"/>\n        </a>\n        <div class=\"media-body\">\n          <h4 class=\"media-heading\"><a href=\"/user/center/" + data.userName + "\">" + data.nickName + " <small>" + data.userName + "</small></a></h4>\n          <span><i class=\"fa fa-map-marker\"></i>" + data.school + "</span>\n          <br/>\n          <span><a href=\"/status/list?userName=" + data.userName + "&result=OJ_AC\">" + data.solved + "</a></span>\n        </div>\n      </div>\n    </div>\n    <div class=\"panel-footer\" style=\"overflow: hidden;white-space: nowrap;text-overflow: ellipsis;\">Motto: " + data.motto + "</div>\n  </div>\n</div>";
         },
         after: function() {
           return $("img#cdoj-users-avatar").setAvatar({

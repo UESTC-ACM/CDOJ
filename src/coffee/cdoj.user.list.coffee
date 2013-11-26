@@ -16,7 +16,6 @@ initUserList = ->
         "orderFields": "solved,tried,id",
         "orderAsc": "false,false,true"
       formatter: (data) ->
-        console.log(data);
         """
           <div class="col-lg-6">
             <div class="panel panel-default">
@@ -27,7 +26,9 @@ initUserList = ->
                   </a>
                   <div class="media-body">
                     <h4 class="media-heading"><a href="/user/center/#{data.userName}">#{data.nickName} <small>#{data.userName}</small></a></h4>
-                    <i class="fa fa-map-marker"></i>#{data.school}
+                    <span><i class="fa fa-map-marker"></i>#{data.school}</span>
+                    <br/>
+                    <span><a href="/status/list?userName=#{data.userName}&result=OJ_AC">#{data.solved}</a></span>
                   </div>
                 </div>
               </div>

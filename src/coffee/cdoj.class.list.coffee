@@ -69,6 +69,10 @@ class SearchModule
     else
       $advancedForm.addClass("open")
 
+  set: (data) ->
+    $conditionForm = @search.find("#condition")
+    $conditionForm.setFormData(data)
+
 class ListModule
   ###
     options:
@@ -82,10 +86,17 @@ class ListModule
     @listContainer = @options.listContainer
     # TODO pass condition to search module
     @searchGroup = @listContainer.find("#search-group")
+    @searchModule = new SearchModule this
+
     @pageInfo = @listContainer.find("#page-info")
     @refreshLock = 0
+
+    # Get url parameter
+    params = getParam()
+    @searchModule.set params
+    @options.condition = jsonMerge(@options.condition, params)
+
     this.refresh(@options.condition)
-    @searchModule = new SearchModule this
     self = this
     if @options.autoRefresh == true
       setInterval(() ->
