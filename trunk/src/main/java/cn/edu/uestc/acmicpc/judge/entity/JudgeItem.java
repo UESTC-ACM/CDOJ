@@ -79,8 +79,9 @@ public class JudgeItem {
     try {
       if (compileInfo != null) {
         // Compile error!
-        if (compileInfo.length() > 65535)
-          compileInfo = compileInfo.substring(0, 65534);
+        // FIXME(mzry1992) Why 30000?
+        if (compileInfo.length() > 30000)
+          compileInfo = compileInfo.substring(0, 30000);
         if (status.getCompileInfoId() != null) {
           // Update old compile info (if exists)
           compileInfoService.updateCompileInfoContent(
