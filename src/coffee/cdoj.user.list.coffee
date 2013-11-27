@@ -28,7 +28,7 @@ initUserList = ->
                     <h4 class="media-heading"><a href="/user/center/#{data.userName}">#{data.nickName} <small>#{data.userName}</small></a></h4>
                     <span><i class="fa fa-map-marker"></i>#{data.school}</span>
                     <br/>
-                    <span><a href="/status/list?userName=#{data.userName}&result=OJ_AC">#{data.solved}</a></span>
+                    <span><a href="/status/list?userName=#{data.userName}">#{data.solved}/#{data.tried}</a></span>
                   </div>
                 </div>
               </div>
