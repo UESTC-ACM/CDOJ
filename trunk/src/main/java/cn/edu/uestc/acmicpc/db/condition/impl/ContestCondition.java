@@ -46,11 +46,6 @@ public class ContestCondition extends BaseCondition {
   public Byte type;
 
   /**
-   * Is contest have an empty title?
-   */
-  public Boolean isTitleEmpty;
-
-  /**
    * Minimal contest start time
    */
   @Exp(mapField = "time", type = Condition.ConditionType.GREATER_OR_EQUALS)
@@ -76,13 +71,6 @@ public class ContestCondition extends BaseCondition {
   @Override
   public Condition getCondition() throws AppException {
     Condition condition = super.getCondition();
-    if (isTitleEmpty != null) {
-      if (isTitleEmpty) {
-        condition.addEntry("title", Condition.ConditionType.STRING_EQUALS, "");
-      } else {
-        condition.addEntry("title", Condition.ConditionType.STRING_EQUALS, "_%");
-      }
-    }
     if (keyword != null) {
       condition.addEntry("title", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));
       condition.addEntry("description", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));

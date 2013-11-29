@@ -22,7 +22,8 @@ Nav list on navbar
           <li id="menu-item-problem"><a
             href="<c:url value="/problem/list"/>"><i
               class="fa fa-puzzle-piece"></i>Problems</a></li>
-          <li id="menu-item-contest"><a href="#"><i
+          <li id="menu-item-contest"><a
+            href="<c:url value="/contest/list"/>"><i
               class="fa fa-trophy"></i>Contests</a></li>
           <li id="menu-item-status"><a
             href="<c:url value="/status/list"/>"><i
