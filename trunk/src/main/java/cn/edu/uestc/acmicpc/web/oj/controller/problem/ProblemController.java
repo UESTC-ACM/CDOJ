@@ -82,6 +82,7 @@ public class ProblemController extends BaseController {
    * Show a problem
    *
    * @param problemId
+   * @param model
    * @return String
    */
   @RequestMapping("show/{problemId}")

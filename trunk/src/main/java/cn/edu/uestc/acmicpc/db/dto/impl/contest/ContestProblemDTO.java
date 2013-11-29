@@ -7,15 +7,20 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
-@Fields({"order","problemByProblemId.title","problemByProblemId.isSpj",
-  "problemByProblemId.javaTimeLimit","problemByProblemId.javaMemoryLimit",
-  "problemByProblemId.timeLimit","problemByProblemId.memoryLimit",
-  "problemByProblemId.description","problemByProblemId.input","problemByProblemId.output",
-  "problemByProblemId.sampleInput","problemByProblemId.sampleOutput","problemByProblemId.hint",
-  "problemByProblemId.source"})
-public class ContestProblemDTO implements BaseDTO<ContestProblem>{
+@Fields({ "order", "problemId", "problemByProblemId.title",
+    "problemByProblemId.isSpj",
+    "problemByProblemId.javaTimeLimit", "problemByProblemId.javaMemoryLimit",
+    "problemByProblemId.timeLimit", "problemByProblemId.memoryLimit",
+    "problemByProblemId.description", "problemByProblemId.input",
+    "problemByProblemId.output",
+    "problemByProblemId.sampleInput", "problemByProblemId.sampleOutput",
+    "problemByProblemId.hint",
+    "problemByProblemId.source" })
+public class ContestProblemDTO implements BaseDTO<ContestProblem> {
 
   private Integer order;
+  private Character orderCharacter;
+  private Integer problemId;
   private String title;
   private Boolean isSpj;
   private Integer solved;
@@ -36,12 +41,16 @@ public class ContestProblemDTO implements BaseDTO<ContestProblem>{
 
   }
 
-  public ContestProblemDTO(Integer order, String title, Boolean isSpj, Integer solved,
-      Integer tried, Integer javaTimeLimit, Integer javaMemoryLimit, Integer timeLimit,
+  public ContestProblemDTO(Integer order, Character orderCharacter,
+      Integer problemId, String title, Boolean isSpj, Integer solved,
+      Integer tried, Integer javaTimeLimit, Integer javaMemoryLimit,
+      Integer timeLimit,
       Integer memoryLimit, String description, String input, String output,
       String sampleInput, String sampleOutput, String hint, String source) {
 
     this.order = order;
+    this.orderCharacter = orderCharacter;
+    this.problemId = problemId;
     this.title = title;
     this.isSpj = isSpj;
     this.solved = solved;
@@ -65,6 +74,22 @@ public class ContestProblemDTO implements BaseDTO<ContestProblem>{
 
   public void setOrder(Integer order) {
     this.order = order;
+  }
+
+  public Integer getProblemId() {
+    return problemId;
+  }
+
+  public void setProblemId(Integer problemId) {
+    this.problemId = problemId;
+  }
+
+  public Character getOrderCharacter() {
+    return orderCharacter;
+  }
+
+  public void setOrderCharacter(Character orderCharacter) {
+    this.orderCharacter = orderCharacter;
   }
 
   public String getTitle() {
@@ -195,7 +220,9 @@ public class ContestProblemDTO implements BaseDTO<ContestProblem>{
 
     @Override
     public ContestProblemDTO build() {
-      return new ContestProblemDTO(order, title, isSpj, solved, tried, javaTimeLimit,
+      return new ContestProblemDTO(order, orderCharacter, problemId, title, isSpj, solved,
+          tried,
+          javaTimeLimit,
           javaMemoryLimit, timeLimit, memoryLimit, description, input, output,
           sampleInput, sampleOutput, hint, source);
     }
@@ -203,12 +230,16 @@ public class ContestProblemDTO implements BaseDTO<ContestProblem>{
     @Override
     public ContestProblemDTO build(Map<String, Object> properties) {
       order = (Integer) properties.get("order");
+      orderCharacter = (char) ('A' + order);
+      problemId = (Integer) properties.get("problemId");
       title = (String) properties.get("problemByProblemId.title");
       isSpj = (Boolean) properties.get("problemByProblemId.isSpj");
       solved = 0;
       tried = 0;
-      javaTimeLimit = (Integer) properties.get("problemByProblemId.javaTimeLimit");
-      javaMemoryLimit = (Integer) properties.get("problemByProblemId.javaMemoryLimit");
+      javaTimeLimit = (Integer) properties
+          .get("problemByProblemId.javaTimeLimit");
+      javaMemoryLimit = (Integer) properties
+          .get("problemByProblemId.javaMemoryLimit");
       timeLimit = (Integer) properties.get("problemByProblemId.timeLimit");
       memoryLimit = (Integer) properties.get("problemByProblemId.memoryLimit");
       description = (String) properties.get("problemByProblemId.description");
@@ -222,6 +253,8 @@ public class ContestProblemDTO implements BaseDTO<ContestProblem>{
     }
 
     private Integer order;
+    private Character orderCharacter;
+    private Integer problemId;
     private String title;
     private Boolean isSpj;
     private Integer solved;
@@ -242,62 +275,87 @@ public class ContestProblemDTO implements BaseDTO<ContestProblem>{
       this.order = order;
       return this;
     }
+
+    public Builder setOrderCharacter(Character orderCharacter) {
+      this.orderCharacter = orderCharacter;
+      return this;
+    }
+
+    public Builder setProblemId(Integer problemId) {
+      this.problemId = problemId;
+      return this;
+    }
+
     public Builder setTitle(String title) {
       this.title = title;
       return this;
     }
+
     public Builder setIsSpj(Boolean isSpj) {
       this.isSpj = isSpj;
       return this;
     }
+
     public Builder setSolved(Integer solved) {
       this.solved = solved;
       return this;
     }
+
     public Builder setTried(Integer tried) {
       this.tried = tried;
       return this;
     }
+
     public Builder setJavaTimeLimit(Integer javaTimeLimit) {
       this.javaTimeLimit = javaTimeLimit;
       return this;
     }
+
     public Builder setJavaMemoryLimit(Integer javaMemoryLimit) {
       this.javaMemoryLimit = javaMemoryLimit;
       return this;
     }
+
     public Builder setTimeLimit(Integer timeLimit) {
       this.timeLimit = timeLimit;
       return this;
     }
+
     public Builder setMemoryLimit(Integer memoryLimit) {
       this.memoryLimit = memoryLimit;
       return this;
     }
+
     public Builder setDescription(String description) {
       this.description = description;
       return this;
     }
+
     public Builder setInput(String input) {
       this.input = input;
       return this;
     }
+
     public Builder setOutput(String output) {
       this.output = output;
       return this;
     }
+
     public Builder setSampleInput(String sampleInput) {
       this.sampleInput = sampleInput;
       return this;
     }
+
     public Builder setSampleOutput(String sampleOutput) {
       this.sampleOutput = sampleOutput;
       return this;
     }
+
     public Builder setHint(String hint) {
       this.hint = hint;
       return this;
     }
+
     public Builder setSource(String source) {
       this.source = source;
       return this;

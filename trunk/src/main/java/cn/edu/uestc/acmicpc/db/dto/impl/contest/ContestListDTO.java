@@ -14,7 +14,7 @@ public class ContestListDTO implements BaseDTO<Contest>{
   private Integer contestId;
   private String title;
   private String description;
-  private Short type;
+  private Byte type;
   private Timestamp time;
   private Integer length;
 
@@ -22,7 +22,7 @@ public class ContestListDTO implements BaseDTO<Contest>{
   }
 
   public ContestListDTO(Integer contestId, String title, String description,
-      Short type, Timestamp time, Integer length) {
+      Byte type, Timestamp time, Integer length) {
     this.contestId = contestId;
     this.title = title;
     this.description = description;
@@ -49,10 +49,10 @@ public class ContestListDTO implements BaseDTO<Contest>{
   public void setDescription(String description) {
     this.description = description;
   }
-  public Short getType() {
+  public Byte getType() {
     return type;
   }
-  public void setType(Short type) {
+  public void setType(Byte type) {
     this.type = type;
   }
   public Timestamp getTime() {
@@ -76,7 +76,7 @@ public class ContestListDTO implements BaseDTO<Contest>{
     private Integer contestId;
     private String title;
     private String description;
-    private Short type;
+    private Byte type;
     private Timestamp time;
     private Integer length;
 
@@ -90,7 +90,7 @@ public class ContestListDTO implements BaseDTO<Contest>{
       contestId = (Integer) properties.get("contestId");
       title = (String) properties.get("title");
       description = (String) properties.get("description");
-      type = (Short) properties.get("type");
+      type = (Byte) properties.get("type");
       time = (Timestamp) properties.get("time");
       length = (Integer) properties.get("length");
       return build();
@@ -111,7 +111,7 @@ public class ContestListDTO implements BaseDTO<Contest>{
       return this;
     }
 
-    public Builder setType(Short type) {
+    public Builder setType(Byte type) {
       this.type = type;
       return this;
     }

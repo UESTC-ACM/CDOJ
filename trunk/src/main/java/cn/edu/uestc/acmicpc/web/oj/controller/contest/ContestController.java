@@ -1,6 +1,8 @@
 
 package cn.edu.uestc.acmicpc.web.oj.controller.contest;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +77,16 @@ public class ContestController extends BaseController{
       }
       List<ContestProblemDTO> contestProblemList = contestProblemService.
           getContestProblemDTOListByContestId(contestId);
-      model.put("targetcontest", contestStatusShowDTO);
+      Collections.sort(contestProblemList, new Comparator<ContestProblemDTO>() {
+
+        @Override
+        public int compare(ContestProblemDTO a, ContestProblemDTO b) {
+          // TODO Auto-generated method stub
+          return a.getOrder().compareTo(b.getOrder());
+        }
+      });
+      model.put("targetContest", contestStatusShowDTO);
+      model.put("brToken", "\n");
       model.put("contestProblems", contestProblemList);
       model.put("languageList", languageService.getLanguageList());
     }catch (AppException e){
@@ -116,7 +127,6 @@ public class ContestController extends BaseController{
           currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()){
         contestCondition.isVisible = true;
       }
-      contestCondition.isTitleEmpty = false;
       Long count = contestService.count(contestCondition);
       PageInfo pageInfo = buildPageInfo(count, contestCondition.currentPage,
           Global.RECORD_PER_PAGE, "", null);
@@ -124,7 +134,7 @@ public class ContestController extends BaseController{
           getContestListDTOList(contestCondition, pageInfo);
       json.put("pageInfo", pageInfo.getHtmlString());
       json.put("result", "success");
-      json.put("contestList", contestListDTOList);
+      json.put("list", contestListDTOList);
     }catch(AppException e){
       json.put("result", "error");
       json.put("error_msg", e.getMessage());

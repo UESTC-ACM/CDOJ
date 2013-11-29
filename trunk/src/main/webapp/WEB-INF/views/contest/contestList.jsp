@@ -11,107 +11,92 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
-<script src="<s:url value="/scripts/cdoj/cdoj.contest.js"/>"></script>
 <title>Contest</title>
 </head>
 <body>
+  <div id="contest-list">
+    <div class="row" id="mzry1992-header">
+      <div class="col-md-12">
+        <div id="page-info">
+          <ul class="pagination pagination-centere">
+            <li class="disabled"><a>← First</a></li>
+            <li class="disabled"><a>«</a></li>
+            <li class="active"><a href="1">1</a></li>
+            <li class="disabled"><a>»</a></li>
+            <li class="disabled"><a>Last →</a></li>
+          </ul>
+        </div>
+        <div id="search-group">
+          <input type="text" name="search-keyword" maxlength="24"
+            value="" id="search-keyword" class="pull-left form-control" />
+          <button id="search" class="btn btn-success">
+            <i class="fa fa-search"></i>
+          </button>
 
-  <ul id="TabMenu" class="nav nav-pills">
-    <li class="active"><a href="#tab-contest-list"
-      data-toggle="tab">Contest list</a></li>
-    <li><a href="#tab-contest-search" data-toggle="tab">Search</a></li>
-  </ul>
+          <a href="#" id="advanced"><i
+            class="fa fa-caret-square-o-down"></i></a>
+          <div id="condition">
+            <form class="form">
+              <fieldset>
+                <legend>Contest Id</legend>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="startId">Form</label> <input
+                        type="text" name="startId" maxlength="6"
+                        value="" id="startId"
+                        class="form-control input-sm" />
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="endId">To</label> <input type="text"
+                        name="endId" maxlength="6" value="" id="endId"
+                        class="form-control input-sm" />
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
 
-  <div id="TabContent" class="tab-content">
-    <div class="tab-pane fade active in" id="tab-contest-list">
-
-      <div class="pull-right span6" style="clear: both;">
-        <table class="table table-bordered">
-          <tr>
-            <td class="contest-state-running">Running</td>
-            <td class="contest-state-ended">Ended</td>
-            <td class="contest-state-pending">Pending</td>
-          </tr>
-        </table>
+              <fieldset>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="title">Title</label> <input
+                        type="text" name="title" maxlength="100"
+                        value="" id="title"
+                        class="form-control input-sm" />
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+              <p class="pull-right">
+                <button type="submit" class="btn btn-primary btn-sm"
+                  id="search-button">Search</button>
+                <button type="button" class="btn btn-danger btn-sm"
+                  id="reset-button">Reset</button>
+              </p>
+            </form>
+          </div>
+        </div>
       </div>
-
-      <div style="clear: both;"></div>
-
-      <div id="pageInfo"></div>
-
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th style="width: 30px;" class="orderButton" field="id">Id</th>
-            <th class="orderButton" field="title">Title</th>
-            <th style="width: 70px;" class="orderButton" field="type">Type</th>
-            <th style="width: 160px;" class="orderButton" field="time">Start
-              time</th>
-            <th style="width: 100px;" class="orderButton" field="length">Length</th>
-          </tr>
-        </thead>
-        <tbody id="contestList">
-        </tbody>
-      </table>
     </div>
 
-    <div class="tab-pane fade" id="tab-contest-search">
-      <div id="contestCondition">
-        <form class="form-horizontal">
-          <div class="control-group">
-            <label class="control-label" for="contestCondition.startId">Contest
-              ID</label>
-
-            <div class="controls">
-              <div class="input-prepend inline">
-                <span class="add-on">Form</span>
-                <s:textfield name="contestCondition.startId"
-                  maxLength="6" cssClass="input-small" />
-              </div>
-              <div class="input-prepend">
-                <span class="add-on">To</span>
-                <s:textfield name="contestCondition.endId" maxLength="6"
-                  cssClass="input-small" />
-              </div>
+    <div class="row" id="mzry1992-container">
+      <c:if
+        test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
+        <div class="col-md-12" id="contest-admin-operation">
+          <div class="panel panel-danger">
+            <div class="panel-body">
+              <a href="#" class="btn btn-success">
+                <i class="fa fa-plus"></i>Add new contest
+              </a>
             </div>
           </div>
-          <div class="control-group">
-            <label class="control-label" for="contestCondition.title">Title</label>
-
-            <div class="controls">
-              <s:textfield name="contestCondition.title" maxLength="100"
-                cssClass="span6" />
-            </div>
-          </div>
-          <div class="control-group">
-            <label class="control-label" for="contestCondition.keyword">Keyword</label>
-
-            <div class="controls">
-              <s:textfield name="contestCondition.keyword"
-                maxLength="100" cssClass="span6" />
-            </div>
-          </div>
-
-          <div class="control-group">
-            <label class="control-label" for="contestCondition.type">Type</label>
-
-            <div class="controls">
-              <s:select name="contestCondition.type"
-                list="global.contestTypeList" listKey="ordinal()"
-                listValue="description" cssClass="span6" />
-            </div>
-          </div>
-
-          <div class="form-actions">
-            <s:submit name="search" cssClass="btn btn-primary"
-              value="Search" theme="bootstrap" />
-            <s:submit name="reset" cssClass="btn btn-danger"
-              value="Reset" theme="bootstrap" />
-          </div>
-        </form>
-      </div>
+        </div>
+      </c:if>
+      <div id="list-container"></div>
     </div>
   </div>
-
 </body>
 </html>
