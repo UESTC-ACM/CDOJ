@@ -39,7 +39,7 @@ initStatusList = ->
         getContestHref = (contestId) ->
           """
           <small class="pull-right">
-            Contest <a href="/contest/show/#{contestId}"><i class="fa fa-trophy"></i>#{contestId}</a>,&nbsp;
+            <a href="/contest/show/#{contestId}">Contest <i class="fa fa-trophy"></i>#{contestId}</a>,&nbsp;
           </small>
           """
         getCostInformation = (timeCost, memoryCost) ->
@@ -81,11 +81,11 @@ initStatusList = ->
                       </small>
                       #{if data.contestId != undefined then getContestHref(data.contestId) else ""}
                       <small class="pull-right">
-                        Prob <a href="/problem/show/#{data.problemId}"><i class="fa fa-puzzle-piece"></i>#{data.problemId}</a>,&nbsp;
+                        <a href="/problem/show/#{data.problemId}">Prob <i class="fa fa-puzzle-piece"></i>#{data.problemId}</a>,&nbsp;
                       </small>
                     </h4>
                     <span><a href="/user/center/#{data.userName}"><i class="fa fa-user"></i>#{data.userName}</a></span>
-                    <span class="pull-right label label-default">#{Date.create(data.time).format("{yyyy}-{MM}-{dd} {hh}:{mm}:{ss}")}</span>
+                    <span class="pull-right label label-default">#{Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")}</span>
                     <span class="pull-right label label-success" style="margin-right: 8px">#{getCodeInfo(data.length, data.language, data.statusId, data.userName)}</span>
                   </div>
                 </div>

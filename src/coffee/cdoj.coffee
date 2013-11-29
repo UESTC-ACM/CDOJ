@@ -1,11 +1,12 @@
 $ = jQuery;
 $ ->
   initLayout()
-  initUser()
-  initProblemList()
   initStatusList()
   initUserList()
+  initUser()
+  initProblemList()
   initProblemPage()
   initProblemEditor()
   initProblemDataEditor()
+  initContestList()
   render()

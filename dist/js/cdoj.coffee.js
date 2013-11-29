@@ -1,5 +1,5 @@
 (function() {
-  var $, AuthenticationType, AuthorStatusType, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonMerge, jsonPost, markdown, render;
+  var $, AuthenticationType, AuthorStatusType, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initContestList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonMerge, jsonPost, markdown, render;
 
   OnlineJudgeReturnType = {
     OJ_WAIT: 0,
@@ -743,6 +743,41 @@
     }
   };
 
+  initContestList = function() {
+    var $contestList, contestList;
+    $contestList = $("#contest-list");
+    if ($contestList.length !== 0) {
+      return contestList = new ListModule({
+        listContainer: $contestList,
+        requestUrl: "/contest/search",
+        condition: {
+          "currentPage": null,
+          "startId": void 0,
+          "endId": void 0,
+          "keyword": void 0,
+          "title": void 0,
+          "orderFields": "time",
+          "orderAsc": "true"
+        },
+        formatter: function(data) {
+          var adminSpan;
+          console.log(data);
+          this.user = getCurrentUser();
+          adminSpan = function() {
+            var result;
+            result = "";
+            if (this.user.userLogin && this.user.currentUserType === "1") {
+              result += "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-visible-state-editor\" contest-id=\"" + data.contestId + "\" visible=\"" + data.isVisible + "\">\n      <i class=\"" + (data.isVisible ? "fa fa-eye" : "fa fa-eye-slash") + "\"></i>\n    </button>\n    <button type=\"button\" class=\"btn btn-default btn-sm contest-editor\" problem-id=\"" + data.contestId + "\"><i class=\"fa fa-pencil\"></i></button>\n  </div>\n</div>";
+            }
+            return result;
+          };
+          return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n      <h3 class=\"panel-title\">\n        <a href=\"/contest/show/" + data.contestId + "\">" + data.title + "</a>\n        <span class='pull-right admin-span'>" + (adminSpan()) + "</span>\n      </h3>\n    </div>\n    <div class=\"panel-body\">\n      <span>" + (Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "--" + (Date.create(data.time + data.length * 1000).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "</span>\n    </div>\n  </div>\n</div>";
+        },
+        after: function() {}
+      });
+    }
+  };
+
   initProblemDataEditor = function() {
     var $dataUploadButton, $editor, dataUploader, problemId,
       _this = this;
@@ -1044,7 +1079,7 @@
             }
           };
           getContestHref = function(contestId) {
-            return "<small class=\"pull-right\">\n  Contest <a href=\"/contest/show/" + contestId + "\"><i class=\"fa fa-trophy\"></i>" + contestId + "</a>,&nbsp;\n</small>";
+            return "<small class=\"pull-right\">\n  <a href=\"/contest/show/" + contestId + "\">Contest <i class=\"fa fa-trophy\"></i>" + contestId + "</a>,&nbsp;\n</small>";
           };
           getCostInformation = function(timeCost, memoryCost) {
             return "<small>\n  " + timeCost + " ms, " + memoryCost + " kb\n</small>";
@@ -1068,7 +1103,7 @@
               return "" + data.length + " B, " + data.language;
             }
           };
-          return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <div class=\"pull-left\">\n          <div class=\"status-sign " + (getAlertClass(data.returnTypeId)) + "\">\n            " + (getStatusImage(data.returnTypeId)) + "\n          </div>\n        </div>\n        <div class=\"media-body \">\n          <h4 class=\"media-heading\">\n            <span>" + (getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)) + "</span>\n            " + (data.returnTypeId === 1 ? getCostInformation(data.timeCost, data.memoryCost) : "") + "\n            <small class=\"pull-right\">\n              #" + data.statusId + "\n            </small>\n            " + (data.contestId !== void 0 ? getContestHref(data.contestId) : "") + "\n            <small class=\"pull-right\">\n              Prob <a href=\"/problem/show/" + data.problemId + "\"><i class=\"fa fa-puzzle-piece\"></i>" + data.problemId + "</a>,&nbsp;\n            </small>\n          </h4>\n          <span><a href=\"/user/center/" + data.userName + "\"><i class=\"fa fa-user\"></i>" + data.userName + "</a></span>\n          <span class=\"pull-right label label-default\">" + (Date.create(data.time).format("{yyyy}-{MM}-{dd} {hh}:{mm}:{ss}")) + "</span>\n          <span class=\"pull-right label label-success\" style=\"margin-right: 8px\">" + (getCodeInfo(data.length, data.language, data.statusId, data.userName)) + "</span>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
+          return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <div class=\"pull-left\">\n          <div class=\"status-sign " + (getAlertClass(data.returnTypeId)) + "\">\n            " + (getStatusImage(data.returnTypeId)) + "\n          </div>\n        </div>\n        <div class=\"media-body \">\n          <h4 class=\"media-heading\">\n            <span>" + (getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)) + "</span>\n            " + (data.returnTypeId === 1 ? getCostInformation(data.timeCost, data.memoryCost) : "") + "\n            <small class=\"pull-right\">\n              #" + data.statusId + "\n            </small>\n            " + (data.contestId !== void 0 ? getContestHref(data.contestId) : "") + "\n            <small class=\"pull-right\">\n              <a href=\"/problem/show/" + data.problemId + "\">Prob <i class=\"fa fa-puzzle-piece\"></i>" + data.problemId + "</a>,&nbsp;\n            </small>\n          </h4>\n          <span><a href=\"/user/center/" + data.userName + "\"><i class=\"fa fa-user\"></i>" + data.userName + "</a></span>\n          <span class=\"pull-right label label-default\">" + (Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "</span>\n          <span class=\"pull-right label label-success\" style=\"margin-right: 8px\">" + (getCodeInfo(data.length, data.language, data.statusId, data.userName)) + "</span>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
         },
         after: function() {
           var _this = this;
@@ -1241,13 +1276,14 @@
 
   $(function() {
     initLayout();
-    initUser();
-    initProblemList();
     initStatusList();
     initUserList();
+    initUser();
+    initProblemList();
     initProblemPage();
     initProblemEditor();
     initProblemDataEditor();
+    initContestList();
     return render();
   });
 
