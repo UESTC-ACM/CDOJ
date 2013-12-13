@@ -67,10 +67,10 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
   public void testGetProblemDTOByProblemId() throws AppException {
     ProblemDTO problemDTO = ProblemDTO.builder().build();
     when(problemDAO.getDTOByUniqueField(eq(ProblemDTO.class), Mockito.<ProblemDTO.Builder>any(),
-         eq("problemId"), eq(problemDTO.getProblemId()))).thenReturn(problemDTO);
+        eq("problemId"), eq(problemDTO.getProblemId()))).thenReturn(problemDTO);
     Assert.assertEquals(problemService.getProblemDTOByProblemId(problemDTO.getProblemId()), problemDTO);
     verify(problemDAO).getDTOByUniqueField(eq(ProblemDTO.class), Mockito.<ProblemDTO.Builder>any(),
-           eq("problemId"), eq(problemDTO.getProblemId()));
+        eq("problemId"), eq(problemDTO.getProblemId()));
   }
 
   @Test
@@ -116,11 +116,10 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testCreateNewProblem() throws AppException {
     ArgumentCaptor<Problem> captor = ArgumentCaptor.forClass(Problem.class);
-    when(problemDAO.add(captor.capture())).thenAnswer(new Answer() {
+    when(problemDAO.add(captor.capture())).thenAnswer(new Answer<Problem>() {
       @Override
       public Problem answer(InvocationOnMock invocation) {
         Object[] args = invocation.getArguments();
-        Object mock = invocation.getMock();
         Problem problem = (Problem) args[0];
         problem.setProblemId(1015);
         return null;
@@ -157,30 +156,30 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
   public void testGetProblemShowDTO() throws AppException {
     ProblemShowDTO problemShowDTO = ProblemShowDTO.builder().build();
     when(problemDAO.getDTOByUniqueField(eq(ProblemShowDTO.class), Mockito.<ProblemShowDTO.Builder>any(),
-         eq("problemId"), eq(problemShowDTO.getProblemId()))).thenReturn(problemShowDTO);
+        eq("problemId"), eq(problemShowDTO.getProblemId()))).thenReturn(problemShowDTO);
     Assert.assertEquals(problemService.getProblemShowDTO(problemShowDTO.getProblemId()), problemShowDTO);
     verify(problemDAO).getDTOByUniqueField(eq(ProblemShowDTO.class), Mockito.<ProblemShowDTO.Builder>any(),
-           eq("problemId"), eq(problemShowDTO.getProblemId()));
+        eq("problemId"), eq(problemShowDTO.getProblemId()));
   }
 
   @Test
   public void testGetProblemEditorShowDTO() throws AppException {
     ProblemEditorShowDTO problemEditorShowDTO = ProblemEditorShowDTO.builder().build();
     when(problemDAO.getDTOByUniqueField(eq(ProblemEditorShowDTO.class), Mockito.<ProblemEditorShowDTO.Builder>any(),
-         eq("problemId"), eq(problemEditorShowDTO.getProblemId()))).thenReturn(problemEditorShowDTO);
+        eq("problemId"), eq(problemEditorShowDTO.getProblemId()))).thenReturn(problemEditorShowDTO);
     Assert.assertEquals(problemService.getProblemEditorShowDTO(problemEditorShowDTO.getProblemId()), problemEditorShowDTO);
     verify(problemDAO).getDTOByUniqueField(eq(ProblemEditorShowDTO.class), Mockito.<ProblemEditorShowDTO.Builder>any(),
-           eq("problemId"), eq(problemEditorShowDTO.getProblemId()));
+        eq("problemId"), eq(problemEditorShowDTO.getProblemId()));
   }
 
   @Test
   public void testGetProblemDataShowDTO() throws AppException {
     ProblemDataShowDTO problemDataShowDTO = ProblemDataShowDTO.builder().build();
     when(problemDAO.getDTOByUniqueField(eq(ProblemDataShowDTO.class), Mockito.<ProblemDataShowDTO.Builder>any(),
-         eq("problemId"), eq(problemDataShowDTO.getProblemId()))).thenReturn(problemDataShowDTO);
+        eq("problemId"), eq(problemDataShowDTO.getProblemId()))).thenReturn(problemDataShowDTO);
     Assert.assertEquals(problemService.getProblemDataShowDTO(problemDataShowDTO.getProblemId()), problemDataShowDTO);
     verify(problemDAO).getDTOByUniqueField(eq(ProblemDataShowDTO.class), Mockito.<ProblemDataShowDTO.Builder>any(),
-           eq("problemId"), eq(problemDataShowDTO.getProblemId()));
+        eq("problemId"), eq(problemDataShowDTO.getProblemId()));
   }
 
 }
