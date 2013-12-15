@@ -18,10 +18,11 @@ import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
 @Service
 @Primary
-public class ContestServiceImpl extends AbstractService implements ContestService{
+public class ContestServiceImpl extends AbstractService implements
+    ContestService {
 
   private final IContestDAO contestDAO;
-  
+
   @Autowired
   public ContestServiceImpl(IContestDAO contestDAO) {
     this.contestDAO = contestDAO;
@@ -31,24 +32,22 @@ public class ContestServiceImpl extends AbstractService implements ContestServic
   public IContestDAO getDAO() {
     return contestDAO;
   }
-  
-
-  
 
   @SuppressWarnings("unchecked")
   @Override
   public List<Integer> getAllVisibleContestIds() throws AppException {
     ContestCondition contestCondition = new ContestCondition();
     contestCondition.isVisible = true;
-    return (List<Integer>) contestDAO.findAll("contestId",contestCondition.getCondition());
+    return (List<Integer>) contestDAO.findAll("contestId",
+        contestCondition.getCondition());
   }
 
-  
   @Override
-  public ContestStatusShowDTO getcontestStatusShowDTOByContestId(Integer contestId) 
+  public ContestStatusShowDTO getContestStatusShowDTOByContestId(
+      Integer contestId)
       throws AppException {
     AppExceptionUtil.assertNotNull(contestId);
-    return contestDAO.getDTOByUniqueField(ContestStatusShowDTO.class, 
+    return contestDAO.getDTOByUniqueField(ContestStatusShowDTO.class,
         ContestStatusShowDTO.builder(), "contestId", contestId);
   }
 
@@ -58,12 +57,25 @@ public class ContestServiceImpl extends AbstractService implements ContestServic
   }
 
   @Override
-  public List<ContestListDTO> getContestListDTOList(ContestCondition contestCondition,
+  public List<ContestListDTO> getContestListDTOList(
+      ContestCondition contestCondition,
       PageInfo pageInfo) throws AppException {
     contestCondition.currentPage = pageInfo.getCurrentPage();
     contestCondition.countPerPage = Global.RECORD_PER_PAGE;
-    return contestDAO.findAll(ContestListDTO.class, ContestListDTO.builder(), 
+    return contestDAO.findAll(ContestListDTO.class, ContestListDTO.builder(),
         contestCondition.getCondition());
   }
-  
+
+  @Override
+  public void operator(String field, String ids, String sValue)
+      throws AppException {
+    Object value;
+    if (field.equals("isVisible")) {
+      value = Boolean.valueOf(sValue);
+    } else {
+      value = sValue;
+    }
+    contestDAO.updateEntitiesByField(field, value, "contestId", ids);
+  }
+
 }

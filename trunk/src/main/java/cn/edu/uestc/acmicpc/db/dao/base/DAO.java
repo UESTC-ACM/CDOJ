@@ -291,6 +291,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     stringBuilder.append(" where ").append(field).append(" in (")
         .append(values).append(")");
     String hql = stringBuilder.toString();
+    LOGGER.info(hql.toString());
     getQuery(hql, null).executeUpdate();
   }
 
