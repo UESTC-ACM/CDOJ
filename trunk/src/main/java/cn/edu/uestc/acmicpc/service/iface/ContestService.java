@@ -25,7 +25,7 @@ public interface ContestService extends DatabaseService<Contest, Integer> {
    * @return a DTO for contest.
    * @throws AppException
    */
-  public ContestStatusShowDTO getcontestStatusShowDTOByContestId(Integer contestId)
+  public ContestStatusShowDTO getContestStatusShowDTOByContestId(Integer contestId)
       throws AppException;
 
   /**
@@ -50,7 +50,6 @@ public interface ContestService extends DatabaseService<Contest, Integer> {
       PageInfo pageInfo) throws AppException;
 
   /**
-   * TODO(mzry1992)
    *
    * @param field
    * @param ids
@@ -59,4 +58,5 @@ public interface ContestService extends DatabaseService<Contest, Integer> {
    */
   public void operator(String field, String ids, String value)
       throws AppException;
+
 }

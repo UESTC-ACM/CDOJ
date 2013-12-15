@@ -104,7 +104,7 @@
               </div>
             </c:if>
             <c:if test="${targetContest.status == 'Running'}">
-              <div class="col-md-12">
+              <div class="col-md-12" id="contest-problem-summary">
                 <table class="table table-bordered table-striped">
                   <thead>
                     <tr>
@@ -127,7 +127,7 @@
               </div>
             </c:if>
             <c:if test="${targetContest.status == 'Ended'}">
-              <div class="col-md-12">
+              <div class="col-md-12" id="contest-problem-summary">
                 <table class="table table-bordered table-striped">
                   <thead>
                     <tr>
@@ -294,7 +294,7 @@
                         <select class="form-control" id="problem-selector">
                           <c:forEach items="${contestProblems}"
                             var="problem">
-                            <option value="${problem.order}">Problem
+                            <option value="${problem.problemId}">Problem
                               ${problem.orderCharacter} -
                               ${problem.title}</option>
                           </c:forEach>

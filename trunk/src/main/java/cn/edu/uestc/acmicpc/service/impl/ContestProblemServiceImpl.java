@@ -28,7 +28,6 @@ public class ContestProblemServiceImpl extends AbstractService implements Contes
     return contestProblemDAO;
   }
 
-
   @Override
   public List<ContestProblemDTO> getContestProblemDTOListByContestId(Integer contestId)
       throws AppException {
@@ -36,6 +35,16 @@ public class ContestProblemServiceImpl extends AbstractService implements Contes
     contestCondition.contestId = contestId;
     return contestProblemDAO.findAll(ContestProblemDTO.class, ContestProblemDTO.builder(),
         contestCondition.getCondition());
+  }
+
+  @Override
+  public Boolean checkContestProblemInContest(Integer contestProblemId,
+      Integer contestId) throws AppException {
+    ContestProblemCondition contestCondition = new ContestProblemCondition();
+    contestCondition.contestId = contestId;
+    contestCondition.problemId = contestProblemId;
+    return !contestProblemDAO.findAll(ContestProblemDTO.class, ContestProblemDTO.builder(),
+        contestCondition.getCondition()).isEmpty();
   }
 
 }
