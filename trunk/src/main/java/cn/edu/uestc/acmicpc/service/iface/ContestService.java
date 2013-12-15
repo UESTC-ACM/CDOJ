@@ -20,30 +20,29 @@ public interface ContestService extends DatabaseService<Contest, Integer> {
   public List<Integer> getAllVisibleContestIds() throws AppException;
 
   /**
-   * Get contestDTO by contest id.
-   *
-   * @param ContestId
-   * @return
+   * @param contestId
+   *          contest id.
+   * @return a DTO for contest.
    * @throws AppException
    */
-  public ContestStatusShowDTO getContestStatusShowDTOByContestId(
-      Integer contestId) throws AppException;
+  public ContestStatusShowDTO getcontestStatusShowDTOByContestId(Integer contestId)
+      throws AppException;
 
   /**
-   * Count number of contests that meet the condition.
-   *
    * @param contestCondition
-   * @return
+   *          DB query conditoin.
+   * @return number of records for DB query.
    * @throws AppException
    */
   public Long count(ContestCondition contestCondition) throws AppException;
 
   /**
-   * Get contest's list that meet the condition and inside the range of page
-   *
    * @param contestCondition
+   *          DB query condition.
    * @param pageInfo
-   * @return
+   *          page information.
+   * @return contest's list that meets the condition and inside the range of
+   *         page
    * @throws AppException
    */
   public List<ContestListDTO> getContestListDTOList(

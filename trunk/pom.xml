@@ -580,8 +580,6 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.9</version>
 				<configuration>
-					<doctitle>CDOJ API</doctitle>
-					<title>CDOJ API</title>
 					<nohelp>true</nohelp>
 					<author>false</author>
 					<version>false</version>

@@ -60,7 +60,7 @@ Problem statement
           </div>
         </div>
 
-        <div class="row tab-content">
+        <div class="tab-content">
           <div class="tab-pane active" id="tab-problem-show">
             <div class="col-md-12">
               <dl class="dl-horizontal">
