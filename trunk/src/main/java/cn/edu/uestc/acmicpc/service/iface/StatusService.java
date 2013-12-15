@@ -18,8 +18,9 @@ public interface StatusService extends DatabaseService<Status, Integer> {
 
   /**
    * list user's trieds problem ids
-   *
-   * @param userId user's entity id
+   * 
+   * @param userId
+   *          user's entity id
    * @return problem id list
    * @throws AppException
    */
@@ -27,98 +28,105 @@ public interface StatusService extends DatabaseService<Status, Integer> {
 
   /**
    * list user's accepted problem ids
-   *
-   * @param userId user's entity id
+   * 
+   * @param userId
+   *          user's entity id
    * @return problem id list
    * @throws AppException
    */
   public List<Integer> findAllUserAcceptedProblemIds(Integer userId) throws AppException;
 
   /**
-   * TODO(mzry1992)
-   *
    * @param userId
-   * @return
+   *          user id.
+   * @return number of problems this user has tried.
    * @throws AppException
    */
   public Long countProblemsUserTired(Integer userId) throws AppException;
 
   /**
-   * TODO(mzry1992)
-   *
    * @param userId
-   * @return
+   *          user id.
+   * @return number of problems this user get accepted.
    * @throws AppException
    */
   public Long countProblemsUserAccepted(Integer userId) throws AppException;
+
   /**
-   * TODO(mzry1992)
-   *
    * @param problemId
-   * @return
+   *          problem id.
+   * @return number of users who tried this problem.
    * @throws AppException
    */
   public Long countUsersTiredProblem(Integer problemId) throws AppException;
 
   /**
-   * TODO(mzry1992)
-   *
    * @param problemId
-   * @return
+   *          problem id.
+   * @return number of users who get accepted for this problem.
    * @throws AppException
    */
   public Long countUsersAcceptedProblem(Integer problemId) throws AppException;
 
   /**
-   * TODO(mzry1992)
    * @param condition
-   * @return
+   *          DB query condition.
+   * @return number of DB records against DB query condition.
    * @throws AppException
    */
   public Long count(StatusCondition condition) throws AppException;
 
   /**
-   * TODO(mzry1992)
    * @param condition
+   *          DB query condition.
    * @param pageInfo
-   * @return
+   *          page information.
+   * @return status list according to DB query condition and page information.
    * @throws AppException
    */
   public List<StatusListDTO> getStatusList(StatusCondition condition,
-                                           PageInfo pageInfo) throws AppException;
+      PageInfo pageInfo) throws AppException;
 
   /**
-   * TODO(mzry1992)
-   * @return
+   * @return status DTO for judge.
    * @throws AppException
    */
   public List<StatusForJudgeDTO> getQueuingStatus() throws AppException;
 
   /**
-   * TODO(mzry1992)
+   * Updates status according a {@link StatusForJudgeDTO} object.
+   * 
    * @param statusForJudgeDTO
+   *          status DTO for judge.
    * @throws AppException
    */
-  public void updateStatusByStatusForJudgeDTO(StatusForJudgeDTO statusForJudgeDTO) throws AppException;
+  public void updateStatusByStatusForJudgeDTO(StatusForJudgeDTO statusForJudgeDTO)
+      throws AppException;
 
   /**
-   * TODO(mzry1992)
+   * Create a new status with a specific {@link StatusDTO}.
+   * 
    * @param statusDTO
+   *          status DTO newly created.
    * @throws AppException
    */
   public void createNewStatus(StatusDTO statusDTO) throws AppException;
 
   /**
-   * TODO(mzry1992)
+   * Gets {@link StatusInformationDTO} by its status' id.
+   * 
    * @param statusId
-   * @return
+   *          status' id for query.
+   * @return status' information.
    * @throws AppException
    */
   public StatusInformationDTO getStatusInformation(Integer statusId) throws AppException;
 
   /**
-   * TODO(mzry1992)
+   * Runs rejudge process with specific status condition.
+   * 
    * @param statusCondition
+   *          DB query condition for rejudge.
    * @throws AppException
    */
   public void rejudge(StatusCondition statusCondition) throws AppException;

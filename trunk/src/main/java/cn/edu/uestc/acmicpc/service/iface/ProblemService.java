@@ -19,25 +19,25 @@ import cn.edu.uestc.acmicpc.web.view.PageInfo;
 public interface ProblemService extends DatabaseService<Problem, Integer> {
 
   /**
-   * Get all visible problems' id without any statements.
-   *
+   * Gets all visible problems' id without any statements.
+   * 
    * @return all problem id list
    * @throws AppException
    */
   public List<Integer> getAllVisibleProblemIds() throws AppException;
 
   /**
-   * Get specific problem by problem's ID.
-   *
+   * Gets specific problem by problem's ID.
+   * 
    * @param problemId
    * @return ProblemDTO
-   * @throw AppException
+   * @throws AppException
    */
   public ProblemDTO getProblemDTOByProblemId(Integer problemId) throws AppException;
 
   /**
-   * Get number of problems that meet the condition.
-   *
+   * Gets number of problems that meet the condition.
+   * 
    * @param condition
    * @return Long
    * @throws AppException
@@ -45,66 +45,75 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
   public Long count(ProblemCondition condition) throws AppException;
 
   /**
-   * Get problems list that meet the condition and inside the range of page
+   * Gets problems list that meet the condition and inside the range of page
+   * 
    * @param problemCondition
    * @param pageInfo
    * @return ProblemDTO List
    * @throws AppException
    */
   public List<ProblemListDTO> getProblemListDTOList(ProblemCondition problemCondition,
-                                                    PageInfo pageInfo) throws AppException;
+      PageInfo pageInfo) throws AppException;
 
   /**
-   * TODO(mzry1992)
    * @param field
    * @param ids
    * @param value
    * @throws AppException
    */
+  // TODO(mzry1992): it's confuse in API doc. I think you can rename it. please
+  // add java doc for it.
   public void operator(String field, String ids, String value) throws AppException;
 
   /**
-   * TODO(mzry1992)
-   * @return
+   * Creates a new problem record.
+   * 
+   * @return the new problem's id.
    * @throws AppException
    */
   public Integer createNewProblem() throws AppException;
 
   /**
-   * TODO(mzry1992)
+   * Updates problem record according to a {@link ProblemDTO}.
+   * 
    * @param problemDTO
+   *          {@link ProblemDTO} to be updated.
    * @throws AppException
    */
   public void updateProblem(ProblemDTO problemDTO) throws AppException;
 
   /**
-   * TODO(mzry1992)
+   * Updates a problem record according to dirty fields and its id.
+   * 
    * @param properties
+   *          problem property fields.
    * @param problemId
+   *          problem id.
    * @throws AppException
    */
-  public void updateProblemByProblemId(Map<String, Object> properties, Integer problemId) throws AppException;
+  public void updateProblemByProblemId(Map<String, Object> properties, Integer problemId)
+      throws AppException;
 
   /**
-   * TODO(mzry1992)
-   *
    * @param problemId
+   *          problem id.
+   * @return a DTO for problem showing.
    * @throws AppException
    */
   public ProblemShowDTO getProblemShowDTO(Integer problemId) throws AppException;
 
   /**
-   * TODO(mzry1992)
    * @param problemId
-   * @return
+   *          problem id.
+   * @return a DTO for problem editor showing.
    * @throws AppException
    */
   public ProblemEditorShowDTO getProblemEditorShowDTO(Integer problemId) throws AppException;
 
   /**
-   * TODO(mzry1992)
    * @param problemId
-   * @return
+   *          problem id.
+   * @return a DTO for problem data showing.
    * @throws AppException
    */
   public ProblemDataShowDTO getProblemDataShowDTO(Integer problemId) throws AppException;

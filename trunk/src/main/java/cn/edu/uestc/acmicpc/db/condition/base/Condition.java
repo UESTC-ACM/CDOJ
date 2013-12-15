@@ -3,17 +3,20 @@ package cn.edu.uestc.acmicpc.db.condition.base;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
 /**
- * Conditions setting for {@code IDAO#findAll()} and {@code IDAO#count()}.
- * <p/>
+ * Conditions setting for {@link IDAO#findAll(Condition)},
+ * {@link IDAO#findAll(String, Condition)} and {@link IDAO#count(Condition)}.
+ * <p />
  * <strong>For Developers</strong>:
- * <p/>
- * If this condition is stored as {@link Entry#getValue()}, we ignore the order of it.
+ * <p />
+ * If this condition is stored as {@link Entry#getValue()}, we ignore the order
+ * of it.
  */
 public class Condition {
 
@@ -32,10 +35,50 @@ public class Condition {
     }
   }
 
-  /** Basic condition type of database handler. */
+  /**
+   * Basic condition type of database handler.
+   */
   public static enum ConditionType {
-    CONDITION(""), EQUALS("="), GREATER_THAN(">"), LESS_THAN("<"), GREATER_OR_EQUALS(">="),
-    LESS_OR_EQUALS("<="), LIKE(" like "), STRING_EQUALS(" like "), IS_NULL(""), IS_NOT_NULL("");
+    /**
+     * A sub condition as {@link Entry} entity.
+     */
+    CONDITION(""),
+    /**
+     * Be equal to a specific value.
+     */
+    EQUALS("="),
+    /**
+     * Be greater than a specific value.
+     */
+    GREATER_THAN(">"),
+    /**
+     * Be less than a specific value.
+     */
+    LESS_THAN("<"),
+    /**
+     * Be greater than or equal to a specific value.
+     */
+    GREATER_OR_EQUALS(">="),
+    /**
+     * Be less than or equal to a specific value.
+     */
+    LESS_OR_EQUALS("<="),
+    /**
+     * String contains.
+     */
+    LIKE(" like "),
+    /**
+     * String matches.
+     */
+    STRING_EQUALS(" like "),
+    /**
+     * Value is {@code null}.
+     */
+    IS_NULL(""),
+    /**
+     * Value is <strong>not</strong> {@code null}.
+     */
+    IS_NOT_NULL("");
 
     private final String signal;
 
@@ -49,17 +92,43 @@ public class Condition {
     }
   }
 
-  /** Condition basic entity. */
+  /**
+   * Condition basic entity. Can be converted to a condition string when execute
+   * a DB query.
+   */
   public static class Entry {
     private final String fieldName;
     private final Object value;
     private final ConditionType conditionType;
 
+    /**
+     * Creates an {@link Entry} entity according to {@link Condition} entity.
+     * 
+     * @param condition
+     *          DB query condition.
+     * @return an {@link Entry} entity for DB query.
+     * @throws AppException
+     * @see Condition
+     */
     public static Entry of(Condition condition) throws AppException {
       AppExceptionUtil.assertNotNull(condition);
       return new Entry(null, ConditionType.CONDITION, condition);
     }
 
+    /**
+     * Creates an {@link Entry} entity according to query string.
+     * 
+     * @param fieldName
+     *          field name of DB table.
+     * @param conditionType
+     *          condition type for DB query, see {@link ConditionType} for more
+     *          details.
+     * @param value
+     *          field value as expected.
+     * @return an {@link Entry} entity for DB query.
+     * @throws AppException
+     * @see ConditionType
+     */
     public static Entry of(String fieldName, ConditionType conditionType, Object value)
         throws AppException {
       if (conditionType == ConditionType.CONDITION) {
@@ -109,7 +178,7 @@ public class Condition {
    */
   private final List<Entry> entries = new ArrayList<>();
 
-  public List<Entry> getentEntries() {
+  public List<Entry> getEntries() {
     return entries;
   }
 
@@ -128,15 +197,24 @@ public class Condition {
     this(JoinedType.AND);
   }
 
+  /**
+   * Create a DB query condition object with specific {@link JoinedType}.
+   * 
+   * @param joinedType
+   *          DB joined type for query.
+   * @see JoinedType
+   */
   public Condition(JoinedType joinedType) {
     this.joinedType = joinedType;
   }
 
   /**
    * Adds new order field into the order list.
-   *
-   * @param field new order field name
-   * @param asc whether new order field asc or not
+   * 
+   * @param field
+   *          new order field name
+   * @param asc
+   *          whether new order field asc or not
    * @return condition itself.
    * @throws AppException
    */
@@ -186,7 +264,7 @@ public class Condition {
 
   /**
    * Builds DB query string and append it into builder.
-   *
+   * 
    * @return if this condition's HQL is empty, return {@code false}.
    */
   private String buildHQLString() {
@@ -214,7 +292,7 @@ public class Condition {
         }
         if (entry.getConditionType() == ConditionType.IS_NOT_NULL) {
           builder.append("(").append(entry.getFieldName()).append(" is not null)");
-        } else if(entry.getConditionType() == ConditionType.IS_NULL) {
+        } else if (entry.getConditionType() == ConditionType.IS_NULL) {
           builder.append("(").append(entry.getFieldName()).append(" is null)");
         } else {
           builder.append(entry.getFieldName());
@@ -238,7 +316,7 @@ public class Condition {
 
   /**
    * Gets DB query where clause by condition.
-   *
+   * 
    * @return DB query where clause.
    */
   public String toHQLString() {
@@ -262,7 +340,7 @@ public class Condition {
 
   /**
    * Gets HQL string with order by clause.
-   *
+   * 
    * @return HQL string we need.
    */
   public String toHQLStringWithOrders() {

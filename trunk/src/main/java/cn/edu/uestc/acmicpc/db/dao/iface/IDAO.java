@@ -62,7 +62,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    *
    * @return entity list in tables.
    * @throws AppException
-   * @Deprecated this method is not supported in new API, please use
+   * @deprecated this method is not supported in new API, please use
    *             {@link IDAO#findAll(Class, BaseBuilder, Condition)}
    */
   @Deprecated
@@ -75,7 +75,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    *          extra conditions for query
    * @return expected entity list
    * @throws AppException
-   * @Deprecated this method is not supported in new API, please use
+   * @deprecated this method is not supported in new API, please use
    *             {@link IDAO#findAll(Class, BaseBuilder, Condition)}
    */
   @Deprecated
@@ -205,7 +205,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param condition
    *          specific condition entity
    * @throws AppException
-   * @Deprecated design-in issue, new API is not supported delete method.
+   * @deprecated design-in issue, new API is not supported delete method.
    */
   @Deprecated
   void deleteEntitiesByCondition(Condition condition) throws AppException;
@@ -239,7 +239,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param key
    *          entity's key
    * @throws AppException
-   * @Deprecated design-in issue, new API is not supported delete method.
+   * @deprecated design-in issue, new API is not supported delete method.
    */
   @Deprecated
   void delete(PK key) throws AppException;
