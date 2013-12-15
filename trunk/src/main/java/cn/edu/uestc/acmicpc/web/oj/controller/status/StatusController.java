@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.code.CodeDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestStatusShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
@@ -27,6 +28,8 @@ import cn.edu.uestc.acmicpc.db.dto.impl.status.SubmitDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.CodeService;
 import cn.edu.uestc.acmicpc.service.iface.CompileInfoService;
+import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
+import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
@@ -49,10 +52,22 @@ public class StatusController extends BaseController {
   private LanguageService languageService;
   private CodeService codeService;
   private CompileInfoService compileInfoService;
+  private ContestService contestService;
+  private ContestProblemService contestProblemService;
+
+  @Autowired
+  public void setContestProblemService(ContestProblemService contestProblemService) {
+    this.contestProblemService = contestProblemService;
+  }
 
   @Autowired
   public void setCompileInfoService(CompileInfoService compileInfoService) {
     this.compileInfoService = compileInfoService;
+  }
+
+  @Autowired
+  public void setContestService(ContestService contestService) {
+    this.contestService = contestService;
   }
 
   @Autowired
@@ -205,8 +220,17 @@ public class StatusController extends BaseController {
             currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
           throw new AppException("You have no permission to submit this problem.");
             }
-
-        //TODO(mzry1992) Check contest id after contest controller has been completed.
+        if (submitDTO.getContestId() != null) {
+          // Is this contest exist?
+          ContestStatusShowDTO contestStatusShowDTO = contestService.getContestStatusShowDTOByContestId(submitDTO.getContestId());
+          if (contestStatusShowDTO == null) {
+            throw new AppException("Wrong contest id.");
+          }
+          // Is this contest contains this problem?
+          if (contestProblemService.checkContestProblemInContest(submitDTO.getProblemId(), submitDTO.getContestId()) == false) {
+            throw new AppException("Wrong problem id.");
+          }
+        }
 
         if (submitDTO.getLanguageId() == null) {
           throw new AppException("Please select a language.");

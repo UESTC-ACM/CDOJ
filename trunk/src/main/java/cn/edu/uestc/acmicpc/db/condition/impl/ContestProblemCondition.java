@@ -12,17 +12,21 @@ public class ContestProblemCondition extends BaseCondition{
   }
 
   /**
-   * contestId
+   * contest id
    */
   public Integer contestId;
+
+  /**
+   * problem id
+   */
+  @Exp(mapField = "problemId", type = Condition.ConditionType.EQUALS)
+  public Integer problemId;
 
   @Override
   public Condition getCondition() throws AppException {
     Condition condition = super.getCondition();
     AppExceptionUtil.assertNotNull(contestId);
-    if(contestId != null) {
-      condition.addEntry("contestID", Condition.ConditionType.EQUALS, contestId);
-    }
+    condition.addEntry("contestID", Condition.ConditionType.EQUALS, contestId);
     return condition;
   }
 }
