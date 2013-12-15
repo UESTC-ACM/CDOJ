@@ -1,5 +1,16 @@
 cn.edu.uestc.acmicpc.db.condition.base
+cn.edu.uestc.acmicpc.db.condition.impl
+cn.edu.uestc.acmicpc.db.dao.base
 cn.edu.uestc.acmicpc.db.dao.iface
 cn.edu.uestc.acmicpc.db.dto.base
-cn.edu.uestc.acmicpc.db.entity
+cn.edu.uestc.acmicpc.db.dto.impl.article
+cn.edu.uestc.acmicpc.db.dto.impl.code
+cn.edu.uestc.acmicpc.db.dto.impl.contest
+cn.edu.uestc.acmicpc.db.dto.impl.department
+cn.edu.uestc.acmicpc.db.dto.impl.language
+cn.edu.uestc.acmicpc.db.dto.impl.problem
+cn.edu.uestc.acmicpc.db.dto.impl.status
+cn.edu.uestc.acmicpc.db.dto.impl.user
+cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey
 cn.edu.uestc.acmicpc.service.iface
+cn.edu.uestc.acmicpc.util.exception
