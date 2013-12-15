@@ -26,7 +26,7 @@ initProblemList = ->
         @user = getCurrentUser()
         adminSpan = ->
           result = ""
-          if @user.userLogin && @user.currentUserType == "1"
+          if @user.userLogin && @user.currentUserType == AuthenticationType.ADMIN
             # admin
             result += """
                       <div class="btn-toolbar" role="toolbar">
@@ -54,9 +54,9 @@ initProblemList = ->
 
         """
           <div class="col-md-12">
-            <div class="#{if data.status == 1
+            <div class="#{if data.status == AuthorStatusType.PASS
                            panelAC
-                         else if data.status == 2
+                         else if data.status == AuthorStatusType.FAIL
                            panelWA
                          else
                            panelDE
@@ -79,7 +79,7 @@ initProblemList = ->
         """
       after: ->
         @user = getCurrentUser()
-        if @user.userLogin && @user.currentUserType == "1"
+        if @user.userLogin && @user.currentUserType == AuthenticationType.ADMIN
           $(".difficulty-span").find("i").click (e) =>
             $el = $(e.currentTarget)
             $pa = $el.parent()

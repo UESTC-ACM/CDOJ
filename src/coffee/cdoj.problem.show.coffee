@@ -7,10 +7,10 @@ initProblemPage = ->
     if @userLogin
       $("#submit-code").click =>
         info =
-          'codeContent': $("#code-content").val()
-          'languageId': $(":radio[name='language']:checked").attr('value')
-          'contestId': null
-          'problemId': problemId
+          codeContent: $("#code-content").val()
+          languageId: $(":radio[name='language']:checked").attr('value')
+          contestId: null
+          problemId: problemId
         jsonPost("/status/submit", info, (data)=>
           if data.result == "error"
             alert data.error_msg

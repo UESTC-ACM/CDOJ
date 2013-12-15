@@ -25,10 +25,15 @@ ContestType =
   DIY: 2
   INVITED: 3
 
+ContestStatus =
+  PENDING: "Pending"
+  RUNNING: "Running"
+  ENDED: "Ended"
+
 AuthenticationType =
-  NORMAL: 0
-  ADMIN: 1
-  CONSTANT: 2
+  NORMAL: "0"
+  ADMIN: "1"
+  CONSTANT: "2"
 
 AuthorStatusType =
   NONE: 0

@@ -23080,7 +23080,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
 /*! 2013-11-22 */
 
 (function() {
-  var $, AuthenticationType, AuthorStatusType, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initContestList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonMerge, jsonPost, markdown, render;
+  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initContestList, initContestPage, initContestStatusList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonMerge, jsonPost, markdown, render;
 
   OnlineJudgeReturnType = {
     OJ_WAIT: 0,
@@ -23111,10 +23111,16 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
     INVITED: 3
   };
 
+  ContestStatus = {
+    PENDING: "Pending",
+    RUNNING: "Running",
+    ENDED: "Ended"
+  };
+
   AuthenticationType = {
-    NORMAL: 0,
-    ADMIN: 1,
-    CONSTANT: 2
+    NORMAL: "0",
+    ADMIN: "1",
+    CONSTANT: "2"
   };
 
   AuthorStatusType = {
@@ -23824,6 +23830,211 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
     }
   };
 
+  initContestPage = function() {
+    var $contest, $processBar, contestId, contestProblemSummary, contestStatus, contestStatusTabHref, contestTab, contestType, currentTime, currentUser, endTime, startTime,
+      _this = this;
+    $contest = $("#contest-show");
+    if ($contest.length > 0) {
+      contestId = $("#contest-title").attr("value");
+      currentTime = $("#contest-current-time").attr("value");
+      startTime = $("#contest-start-time").attr("value");
+      endTime = $("#contest-end-time").attr("value");
+      contestType = $("#contest-type").attr("value");
+      contestStatus = $("#contest-status").attr("value");
+      contestTab = $("#contest-show-tab");
+      contestProblemSummary = $("#contest-problem-summary");
+      contestStatusTabHref = contestTab.find("a[href='#tab-contest-status']");
+      $processBar = $("#contest-progress-bar");
+      if (contestStatus === ContestStatus.PENDING) {
+
+      } else if (contestStatus === ContestStatus.RUNNING) {
+
+      } else if (contestStatus === ContestStatus.ENDED) {
+        $processBar.addClass("progress-bar-success").css("width", "100%");
+      }
+      contestProblemSummary.find("a").click(function(e) {
+        var $el, href, tabHref;
+        $el = $(e.currentTarget);
+        href = $el.attr("href");
+        if (href.startsWith("#")) {
+          tabHref = contestTab.find("a[href='" + href + "']");
+          if (tabHref.length > 0) {
+            tabHref.tab("show");
+          }
+          return false;
+        } else {
+          return true;
+        }
+      });
+      currentUser = getCurrentUser();
+      if (currentUser.userLogin) {
+        $("#submit-code").click(function() {
+          var info;
+          info = {
+            codeContent: $("#code-content").val(),
+            languageId: $(":radio[name='language']:checked").attr('value'),
+            contestId: contestId,
+            problemId: $("#problem-selector").find("option:selected").val()
+          };
+          jsonPost("/status/submit", info, function(data) {
+            if (data.result === "error") {
+              return alert(data.error_msg);
+            } else if (data.result === "success") {
+              return contestStatusTabHref.tab("show");
+            }
+          });
+          return false;
+        });
+      }
+      initContestStatusList(contestId);
+    }
+  };
+
+  initContestStatusList = function(contestId) {
+    var $statusList, statusList;
+    $statusList = $("#contest-status-list");
+    if ($statusList.length !== 0) {
+      return statusList = new ListModule({
+        listContainer: $statusList,
+        requestUrl: "/status/search",
+        autoRefresh: true,
+        refreshInterval: 5000,
+        condition: {
+          "currentPage": null,
+          "startId": void 0,
+          "endId": void 0,
+          "userName": void 0,
+          "problemId": void 0,
+          "languageId": void 0,
+          "contestId": contestId,
+          "result": [],
+          "orderFields": "statusId",
+          "orderAsc": "false"
+        },
+        formatter: function(data) {
+          var currentUser, getAlertClass, getCodeInfo, getContestHref, getCostInformation, getReturnType, getStatusImage;
+          getStatusImage = function(id) {
+            switch (id) {
+              case 0:
+              case 16:
+              case 18:
+                return "<i class='fa fa-spinner fa-spin'></i>";
+              case 1:
+                return "<i class='fa fa-check-circle'></i>";
+              case 2:
+                return "<i class='fa fa-circle'></i>";
+              case 3:
+              case 4:
+              case 6:
+              case 13:
+                return "<i class='fa fa-ban'></i>";
+              case 5:
+                return "<i class='fa fa-times-circle'></i>";
+              case 7:
+                return "<i class='fa fa-warning'></i>";
+              case 8:
+              case 9:
+              case 10:
+              case 11:
+              case 12:
+              case 15:
+                return "<i class='fa fa-bug'></i>";
+              case 14:
+                return "<i class='fa fa-frown-o'></i>";
+              case 17:
+                return "<i class='fa fa-gear fa-spin'></i>";
+              default:
+                return "";
+            }
+          };
+          getAlertClass = function(id) {
+            switch (id) {
+              case 0:
+              case 16:
+              case 17:
+              case 18:
+                return "status-info";
+              case 1:
+                return "status-success";
+              default:
+                return "status-danger";
+            }
+          };
+          getContestHref = function(contestId) {
+            return "<small class=\"pull-right\">\n  <a href=\"/contest/show/" + contestId + "\">Contest <i class=\"fa fa-trophy\"></i>" + contestId + "</a>,&nbsp;\n</small>";
+          };
+          getCostInformation = function(timeCost, memoryCost) {
+            return "<small>\n  " + timeCost + " ms, " + memoryCost + " kb\n</small>";
+          };
+          currentUser = getCurrentUser();
+          getReturnType = function(returnType, returnTypeId, statusId, userName) {
+            if (returnTypeId === 7) {
+              if (currentUser.userLogin && (currentUser.currentUserType === "1" || currentUser.currentUser === userName)) {
+                return "<a href=\"#\" value=\"" + statusId + "\" class=\"ce-link\">" + returnType + "</a>";
+              } else {
+                return returnType;
+              }
+            } else {
+              return returnType;
+            }
+          };
+          getCodeInfo = function(length, language, statusId, userName) {
+            if (currentUser.userLogin && (currentUser.currentUserType === "1" || currentUser.currentUser === userName)) {
+              return "<a href=\"#\" value=\"" + statusId + "\" class=\"code-link\">" + data.length + " B, " + data.language + "</a>";
+            } else {
+              return "" + data.length + " B, " + data.language;
+            }
+          };
+          return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <div class=\"pull-left\">\n          <div class=\"status-sign " + (getAlertClass(data.returnTypeId)) + "\">\n            " + (getStatusImage(data.returnTypeId)) + "\n          </div>\n        </div>\n        <div class=\"media-body \">\n          <h4 class=\"media-heading\">\n            <span>" + (getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)) + "</span>\n            " + (data.returnTypeId === 1 ? getCostInformation(data.timeCost, data.memoryCost) : "") + "\n            <small class=\"pull-right\">\n              #" + data.statusId + "\n            </small>\n            " + (data.contestId !== void 0 ? getContestHref(data.contestId) : "") + "\n            <small class=\"pull-right\">\n              <a href=\"/problem/show/" + data.problemId + "\">Prob <i class=\"fa fa-puzzle-piece\"></i>" + data.problemId + "</a>,&nbsp;\n            </small>\n          </h4>\n          <span><a href=\"/user/center/" + data.userName + "\"><i class=\"fa fa-user\"></i>" + data.userName + "</a></span>\n          <span class=\"pull-right label label-default\">" + (Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "</span>\n          <span class=\"pull-right label label-success\" style=\"margin-right: 8px\">" + (getCodeInfo(data.length, data.language, data.statusId, data.userName)) + "</span>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
+        },
+        after: function() {
+          var _this = this;
+          $(".ce-link").click(function(e) {
+            var $el, statusId;
+            $el = $(e.currentTarget);
+            statusId = $el.attr("value");
+            $.post("/status/info/" + statusId, function(data) {
+              var $modal, compileInfo;
+              compileInfo = "";
+              if (data.result === "success") {
+                compileInfo = data.compileInfo;
+              } else {
+                compileInfo = data.error_msg;
+              }
+              compileInfo = compileInfo.trim();
+              $modal = $("#compile-info-modal");
+              $modal.find(".modal-body").empty().append("<pre>" + compileInfo + "</pre>");
+              $modal.find(".modal-body").prettify();
+              return $modal.modal("toggle");
+            });
+            return false;
+          });
+          return $(".code-link").click(function(e) {
+            var $el, statusId;
+            $el = $(e.currentTarget);
+            statusId = $el.attr("value");
+            $.post("/status/info/" + statusId, function(data) {
+              var $modal, code;
+              code = "";
+              if (data.result === "success") {
+                code = data.code;
+              } else {
+                code = data.error_msg;
+              }
+              code = code.trim().escapeHTML();
+              console.log(code);
+              $modal = $("#code-modal");
+              $modal.find(".modal-body").empty().append("<pre>" + code + "</pre>");
+              $modal.find(".modal-body").prettify();
+              return $modal.modal("toggle");
+            });
+            return false;
+          });
+        }
+      });
+    }
+  };
+
   initContestList = function() {
     var $contestList, contestList;
     $contestList = $("#contest-list");
@@ -23837,8 +24048,8 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
           "endId": void 0,
           "keyword": void 0,
           "title": void 0,
-          "orderFields": "time",
-          "orderAsc": "true"
+          "orderFields": "id",
+          "orderAsc": "false"
         },
         formatter: function(data) {
           var adminSpan;
@@ -23847,14 +24058,39 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
           adminSpan = function() {
             var result;
             result = "";
-            if (this.user.userLogin && this.user.currentUserType === "1") {
-              result += "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-visible-state-editor\" contest-id=\"" + data.contestId + "\" visible=\"" + data.isVisible + "\">\n      <i class=\"" + (data.isVisible ? "fa fa-eye" : "fa fa-eye-slash") + "\"></i>\n    </button>\n    <button type=\"button\" class=\"btn btn-default btn-sm contest-editor\" problem-id=\"" + data.contestId + "\"><i class=\"fa fa-pencil\"></i></button>\n  </div>\n</div>";
+            if (this.user.userLogin && this.user.currentUserType === AuthenticationType.ADMIN) {
+              result += "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm contest-visible-state-editor\" contest-id=\"" + data.contestId + "\" visible=\"" + data.isVisible + "\">\n      <i class=\"" + (data.isVisible ? "fa fa-eye" : "fa fa-eye-slash") + "\"></i>\n    </button>\n    <button type=\"button\" class=\"btn btn-default btn-sm contest-editor\" contest-id=\"" + data.contestId + "\"><i class=\"fa fa-pencil\"></i></button>\n  </div>\n</div>";
             }
             return result;
           };
           return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n      <h3 class=\"panel-title\">\n        <a href=\"/contest/show/" + data.contestId + "\">" + data.title + "</a>\n        <span class='pull-right admin-span'>" + (adminSpan()) + "</span>\n      </h3>\n    </div>\n    <div class=\"panel-body\">\n      <span>" + (Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "--" + (Date.create(data.time + data.length * 1000).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "</span>\n    </div>\n  </div>\n</div>";
         },
-        after: function() {}
+        after: function() {
+          var _this = this;
+          this.user = getCurrentUser();
+          if (this.user.userLogin && this.user.currentUserType === AuthenticationType.ADMIN) {
+            $(".contest-editor").click(function(e) {
+              var $el;
+              $el = $(e.currentTarget);
+              window.location.href = "/contest/editor/" + ($el.attr("contest-id"));
+              return false;
+            });
+            return $(".contest-visible-state-editor").click(function(e) {
+              var $el, queryString, visible;
+              $el = $(e.currentTarget);
+              visible = $el.attr("visible") === "true" ? true : false;
+              queryString = "/contest/operator/" + ($el.attr("contest-id")) + "/isVisible/" + (!visible);
+              $.post(queryString, function(data) {
+                if (data.result === "success") {
+                  visible = !visible;
+                  $el.attr("visible", visible);
+                  return $el.empty().append("<i class=\"" + (visible ? "fa fa-eye" : "fa fa-eye-slash") + "\"></i>");
+                }
+              });
+              return false;
+            });
+          }
+        }
       });
     }
   };
@@ -23985,7 +24221,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
           adminSpan = function() {
             var result;
             result = "";
-            if (this.user.userLogin && this.user.currentUserType === "1") {
+            if (this.user.userLogin && this.user.currentUserType === AuthenticationType.ADMIN) {
               result += "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-visible-state-editor\" problem-id=\"" + data.problemId + "\" visible=\"" + data.isVisible + "\">\n      <i class=\"" + (data.isVisible ? "fa fa-eye" : "fa fa-eye-slash") + "\"></i>\n    </button>\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-editor\" problem-id=\"" + data.problemId + "\"><i class=\"fa fa-pencil\"></i></button>\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-data-editor\" problem-id=\"" + data.problemId + "\"><i class=\"fa fa-cog\"></i></button>\n  </div>\n</div>";
             }
             return result;
@@ -24005,12 +24241,12 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
             });
             return result;
           };
-          return "<div class=\"col-md-12\">\n  <div class=\"" + (data.status === 1 ? panelAC : data.status === 2 ? panelWA : panelDE) + "\">\n    <div class=\"panel-heading\">\n      <h3 class=\"panel-title\">\n        <a href=\"/problem/show/" + data.problemId + "\">" + data.title + "</a>\n        <span class='pull-right admin-span'>" + (adminSpan()) + "</span>\n        <span class='pull-right difficulty-span' value=\"" + data.problemId + "\">" + (difficulty(data.difficulty)) + "</span>\n      </h3>\n    </div>\n    <div class=\"panel-body\">\n      <span class=\"source\">\n        " + (data.source.trim() !== '' ? data.source : '') + "\n      </span>\n      " + (data.isSpj ? "<span class='label label-danger'>SPJ</span>" : '') + "\n    </div>\n  </div>\n</div>";
+          return "<div class=\"col-md-12\">\n  <div class=\"" + (data.status === AuthorStatusType.PASS ? panelAC : data.status === AuthorStatusType.FAIL ? panelWA : panelDE) + "\">\n    <div class=\"panel-heading\">\n      <h3 class=\"panel-title\">\n        <a href=\"/problem/show/" + data.problemId + "\">" + data.title + "</a>\n        <span class='pull-right admin-span'>" + (adminSpan()) + "</span>\n        <span class='pull-right difficulty-span' value=\"" + data.problemId + "\">" + (difficulty(data.difficulty)) + "</span>\n      </h3>\n    </div>\n    <div class=\"panel-body\">\n      <span class=\"source\">\n        " + (data.source.trim() !== '' ? data.source : '') + "\n      </span>\n      " + (data.isSpj ? "<span class='label label-danger'>SPJ</span>" : '') + "\n    </div>\n  </div>\n</div>";
         },
         after: function() {
           var _this = this;
           this.user = getCurrentUser();
-          if (this.user.userLogin && this.user.currentUserType === "1") {
+          if (this.user.userLogin && this.user.currentUserType === AuthenticationType.ADMIN) {
             $(".difficulty-span").find("i").click(function(e) {
               var $el, $pa, difficulty, problemId, queryString;
               $el = $(e.currentTarget);
@@ -24071,10 +24307,10 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
         return $("#submit-code").click(function() {
           var info;
           info = {
-            'codeContent': $("#code-content").val(),
-            'languageId': $(":radio[name='language']:checked").attr('value'),
-            'contestId': null,
-            'problemId': problemId
+            codeContent: $("#code-content").val(),
+            languageId: $(":radio[name='language']:checked").attr('value'),
+            contestId: null,
+            problemId: problemId
           };
           jsonPost("/status/submit", info, function(data) {
             if (data.result === "error") {
@@ -24365,6 +24601,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
     initProblemEditor();
     initProblemDataEditor();
     initContestList();
+    initContestPage();
     return render();
   });
 

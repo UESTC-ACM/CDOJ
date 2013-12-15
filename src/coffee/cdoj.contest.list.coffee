@@ -11,22 +11,22 @@ initContestList = ->
         "endId": undefined,
         "keyword": undefined,
         "title": undefined,
-        "orderFields": "time",
-        "orderAsc": "true"
+        "orderFields": "id",
+        "orderAsc": "false"
       formatter: (data) ->
         console.log(data)
         @user = getCurrentUser()
         adminSpan = ->
           result = ""
-          if @user.userLogin && @user.currentUserType == "1"
+          if @user.userLogin && @user.currentUserType == AuthenticationType.ADMIN
             # admin
             result += """
                       <div class="btn-toolbar" role="toolbar">
                         <div class="btn-group">
-                          <button type="button" class="btn btn-default btn-sm problem-visible-state-editor" contest-id="#{data.contestId}" visible="#{data.isVisible}">
+                          <button type="button" class="btn btn-default btn-sm contest-visible-state-editor" contest-id="#{data.contestId}" visible="#{data.isVisible}">
                             <i class="#{if data.isVisible then "fa fa-eye" else "fa fa-eye-slash"}"></i>
                           </button>
-                          <button type="button" class="btn btn-default btn-sm contest-editor" problem-id="#{data.contestId}"><i class="fa fa-pencil"></i></button>
+                          <button type="button" class="btn btn-default btn-sm contest-editor" contest-id="#{data.contestId}"><i class="fa fa-pencil"></i></button>
                         </div>
                       </div>
                       """
@@ -47,5 +47,21 @@ initContestList = ->
           </div>
         """
       after: ->
-
+        @user = getCurrentUser()
+        if @user.userLogin && @user.currentUserType == AuthenticationType.ADMIN
+          $(".contest-editor").click (e) =>
+            $el = $(e.currentTarget)
+            window.location.href = "/contest/editor/#{$el.attr("contest-id")}"
+            return false
+          $(".contest-visible-state-editor").click (e) =>
+            $el = $(e.currentTarget)
+            visible = if $el.attr("visible") == "true" then true else false
+            queryString = "/contest/operator/#{$el.attr("contest-id")}/isVisible/#{!visible}"
+            $.post(queryString, (data) ->
+              if data.result == "success"
+                visible = !visible
+                $el.attr("visible", visible)
+                $el.empty().append("<i class=\"#{if visible then "fa fa-eye" else "fa fa-eye-slash"}\"></i>")
+            )
+            return false
     )

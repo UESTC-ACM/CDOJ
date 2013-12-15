@@ -9,4 +9,5 @@ $ ->
   initProblemEditor()
   initProblemDataEditor()
   initContestList()
+  initContestPage()
   render()
