@@ -71,7 +71,7 @@ public class ContestController extends BaseController{
   public String show(@PathVariable("contestId") Integer contestId, ModelMap model) {
     try {
       ContestStatusShowDTO contestStatusShowDTO = contestService.
-          getcontestStatusShowDTOByContestId(contestId);
+          getContestStatusShowDTOByContestId(contestId);
       if(contestStatusShowDTO == null) {
         throw new AppException("NO such contest");
       }
@@ -139,6 +139,35 @@ public class ContestController extends BaseController{
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
     }catch(Exception e){
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  /**
+   * Modify special field of contest
+   *
+   * @param targetId
+   *          contest id
+   * @param field
+   *          field want to modified
+   * @param value
+   *          value
+   * @return JSON
+   */
+  @RequestMapping("operator/{id}/{field}/{value}")
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public @ResponseBody
+  Map<String, Object> operator(@PathVariable("id") String targetId,
+      @PathVariable("field") String field,
+      @PathVariable("value") String value) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      contestService.operator(field, targetId, value);
+      json.put("result", "success");
+    } catch (Exception e) {
       e.printStackTrace();
       json.put("result", "error");
       json.put("error_msg", "Unknown exception occurred.");

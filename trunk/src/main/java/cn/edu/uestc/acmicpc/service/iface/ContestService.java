@@ -9,7 +9,7 @@ import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
-public interface ContestService extends DatabaseService<Contest, Integer>{
+public interface ContestService extends DatabaseService<Contest, Integer> {
 
   /**
    * Get all visible contest's id.
@@ -26,7 +26,8 @@ public interface ContestService extends DatabaseService<Contest, Integer>{
    * @return
    * @throws AppException
    */
-  public ContestStatusShowDTO getcontestStatusShowDTOByContestId(Integer contestId) throws AppException;
+  public ContestStatusShowDTO getContestStatusShowDTOByContestId(
+      Integer contestId) throws AppException;
 
   /**
    * Count number of contests that meet the condition.
@@ -45,7 +46,18 @@ public interface ContestService extends DatabaseService<Contest, Integer>{
    * @return
    * @throws AppException
    */
-  public List<ContestListDTO> getContestListDTOList(ContestCondition contestCondition,
+  public List<ContestListDTO> getContestListDTOList(
+      ContestCondition contestCondition,
       PageInfo pageInfo) throws AppException;
 
+  /**
+   * TODO(mzry1992)
+   *
+   * @param field
+   * @param ids
+   * @param value
+   * @throws AppException
+   */
+  public void operator(String field, String ids, String value)
+      throws AppException;
 }

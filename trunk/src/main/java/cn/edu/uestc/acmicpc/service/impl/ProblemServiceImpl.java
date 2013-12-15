@@ -1,6 +1,5 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +24,8 @@ import cn.edu.uestc.acmicpc.web.view.PageInfo;
  * Implementation for {@link ProblemService}.
  */
 @Service
-public class ProblemServiceImpl extends AbstractService implements ProblemService {
+public class ProblemServiceImpl extends AbstractService implements
+    ProblemService {
 
   private final IProblemDAO problemDAO;
 
@@ -41,7 +41,8 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
     // TODO(mzry1992): set this is problem condition.
     problemCondition.isVisible = true;
     // TODO(mzry1992): please test for this statement.
-    return (List<Integer>) problemDAO.findAll("problemId", problemCondition.getCondition());
+    return (List<Integer>) problemDAO.findAll("problemId",
+        problemCondition.getCondition());
   }
 
   @Override
@@ -50,9 +51,11 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
   }
 
   @Override
-  public ProblemDTO getProblemDTOByProblemId(Integer problemId) throws AppException {
+  public ProblemDTO getProblemDTOByProblemId(Integer problemId)
+      throws AppException {
     AppExceptionUtil.assertNotNull(problemId);
-    return problemDAO.getDTOByUniqueField(ProblemDTO.class, ProblemDTO.builder(), "problemId",
+    return problemDAO.getDTOByUniqueField(ProblemDTO.class,
+        ProblemDTO.builder(), "problemId",
         problemId);
   }
 
@@ -62,18 +65,25 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
   }
 
   @Override
-  public List<ProblemListDTO> getProblemListDTOList(ProblemCondition problemCondition,
-                                                    PageInfo pageInfo) throws AppException{
+  public List<ProblemListDTO> getProblemListDTOList(
+      ProblemCondition problemCondition,
+      PageInfo pageInfo) throws AppException {
     Condition condition = problemCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return problemDAO.findAll(ProblemListDTO.class, ProblemListDTO.builder(), condition);
+    return problemDAO.findAll(ProblemListDTO.class, ProblemListDTO.builder(),
+        condition);
   }
 
   @Override
-  public void operator(String field, String ids, String value) throws AppException {
-    Map<String, Object> properties = new HashMap<>();
-    properties.put(field, value);
-    problemDAO.updateEntitiesByField(properties, "problemId", ids);
+  public void operator(String field, String ids, String sValue)
+      throws AppException {
+    Object value;
+    if (field.equals("isVisible")) {
+      value = Boolean.valueOf(sValue);
+    } else {
+      value = sValue;
+    }
+    problemDAO.updateEntitiesByField(field, value, "problemId", ids);
   }
 
   @Override
@@ -154,26 +164,33 @@ public class ProblemServiceImpl extends AbstractService implements ProblemServic
   }
 
   @Override
-  public ProblemShowDTO getProblemShowDTO(Integer problemId) throws AppException {
-    return problemDAO.getDTOByUniqueField(ProblemShowDTO.class, ProblemShowDTO.builder(),
+  public ProblemShowDTO getProblemShowDTO(Integer problemId)
+      throws AppException {
+    return problemDAO.getDTOByUniqueField(ProblemShowDTO.class,
+        ProblemShowDTO.builder(),
         "problemId", problemId);
   }
 
   @Override
-  public ProblemEditorShowDTO getProblemEditorShowDTO(Integer problemId) throws AppException {
-    return problemDAO.getDTOByUniqueField(ProblemEditorShowDTO.class, ProblemEditorShowDTO.builder(),
+  public ProblemEditorShowDTO getProblemEditorShowDTO(Integer problemId)
+      throws AppException {
+    return problemDAO.getDTOByUniqueField(ProblemEditorShowDTO.class,
+        ProblemEditorShowDTO.builder(),
         "problemId", problemId);
   }
 
   @Override
-  public ProblemDataShowDTO getProblemDataShowDTO(Integer problemId) throws AppException {
-    return problemDAO.getDTOByUniqueField(ProblemDataShowDTO.class, ProblemDataShowDTO.builder(),
+  public ProblemDataShowDTO getProblemDataShowDTO(Integer problemId)
+      throws AppException {
+    return problemDAO.getDTOByUniqueField(ProblemDataShowDTO.class,
+        ProblemDataShowDTO.builder(),
         "problemId", problemId);
   }
 
   @Override
   public void updateProblemByProblemId(Map<String, Object> properties,
       Integer problemId) throws AppException {
-    problemDAO.updateEntitiesByField(properties, "problemId", problemId.toString());
+    problemDAO.updateEntitiesByField(properties, "problemId",
+        problemId.toString());
   }
 }

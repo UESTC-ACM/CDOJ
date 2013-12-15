@@ -33,7 +33,8 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
    * @return ProblemDTO
    * @throw AppException
    */
-  public ProblemDTO getProblemDTOByProblemId(Integer problemId) throws AppException;
+  public ProblemDTO getProblemDTOByProblemId(Integer problemId)
+      throws AppException;
 
   /**
    * Get number of problems that meet the condition.
@@ -46,25 +47,30 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
 
   /**
    * Get problems list that meet the condition and inside the range of page
+   *
    * @param problemCondition
    * @param pageInfo
    * @return ProblemDTO List
    * @throws AppException
    */
-  public List<ProblemListDTO> getProblemListDTOList(ProblemCondition problemCondition,
-                                                    PageInfo pageInfo) throws AppException;
+  public List<ProblemListDTO> getProblemListDTOList(
+      ProblemCondition problemCondition,
+      PageInfo pageInfo) throws AppException;
 
   /**
    * TODO(mzry1992)
+   *
    * @param field
    * @param ids
    * @param value
    * @throws AppException
    */
-  public void operator(String field, String ids, String value) throws AppException;
+  public void operator(String field, String ids, String value)
+      throws AppException;
 
   /**
    * TODO(mzry1992)
+   *
    * @return
    * @throws AppException
    */
@@ -72,6 +78,7 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
 
   /**
    * TODO(mzry1992)
+   *
    * @param problemDTO
    * @throws AppException
    */
@@ -79,11 +86,13 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
 
   /**
    * TODO(mzry1992)
+   *
    * @param properties
    * @param problemId
    * @throws AppException
    */
-  public void updateProblemByProblemId(Map<String, Object> properties, Integer problemId) throws AppException;
+  public void updateProblemByProblemId(Map<String, Object> properties,
+      Integer problemId) throws AppException;
 
   /**
    * TODO(mzry1992)
@@ -91,21 +100,26 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
    * @param problemId
    * @throws AppException
    */
-  public ProblemShowDTO getProblemShowDTO(Integer problemId) throws AppException;
+  public ProblemShowDTO getProblemShowDTO(Integer problemId)
+      throws AppException;
 
   /**
    * TODO(mzry1992)
+   *
    * @param problemId
    * @return
    * @throws AppException
    */
-  public ProblemEditorShowDTO getProblemEditorShowDTO(Integer problemId) throws AppException;
+  public ProblemEditorShowDTO getProblemEditorShowDTO(Integer problemId)
+      throws AppException;
 
   /**
    * TODO(mzry1992)
+   *
    * @param problemId
    * @return
    * @throws AppException
    */
-  public ProblemDataShowDTO getProblemDataShowDTO(Integer problemId) throws AppException;
+  public ProblemDataShowDTO getProblemDataShowDTO(Integer problemId)
+      throws AppException;
 }
