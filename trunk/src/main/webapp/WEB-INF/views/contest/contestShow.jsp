@@ -25,12 +25,9 @@
           <h1>
             <c:out value="${targetContest.title}" />
           </h1>
-          <div class="progress progress-striped active">
-            <div class="progress-bar" role="progressbar"
-              aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"
-              style="width: 45%">
-              <span class="sr-only">45% Complete</span>
-            </div>
+          <div class="progress progress-striped">
+            <div class="progress-bar" id="contest-progress-bar"
+              style="width: 10%"></div>
           </div>
         </div>
         <div class="col-md-12">
@@ -57,37 +54,42 @@
                 <li class="disabled"><a href="#">Please Login
                     before submit</a></li>
               </c:if>
-              <li class="disabled"><a href="#">Status</a></li>
+              <li><a href="#tab-contest-status" data-toggle="tab">Status</a></li>
               <li class="disabled"><a href="#">Rank</a></li>
             </ul>
           </div>
         </div>
 
-        <div class="row tab-content">
+        <div class="tab-content">
           <div class="tab-pane active" id="tab-contest-overview">
             <div class="col-md-12">
               <dl class="dl-horizontal">
                 <dt>Current time</dt>
-                <dd>
+                <dd id="contest-current-time"
+                  value="<c:out value="${targetContest.currentTime.time}"/>">
                   <fmt:formatDate value="${targetContest.currentTime}"
                     type="date" pattern="yyyy-MM-dd HH:mm:ss" />
                 </dd>
                 <dt>Start time</dt>
-                <dd>
+                <dd id="contest-start-time"
+                  value="<c:out value="${targetContest.startTime.time}"/>">
                   <fmt:formatDate value="${targetContest.startTime}"
                     type="date" pattern="yyyy-MM-dd HH:mm:ss" />
                 </dd>
                 <dt>End time</dt>
-                <dd>
+                <dd id="contest-end-time"
+                  value="<c:out value="${targetContest.endTime.time}"/>">
                   <fmt:formatDate value="${targetContest.endTime}"
                     type="date" pattern="yyyy-MM-dd HH:mm:ss" />
                 </dd>
                 <dt>Contest type</dt>
-                <dd>
+                <dd id="contest-type"
+                  value="<c:out value="${targetContest.type}"/>">
                   <c:out value="${targetContest.typeName}" />
                 </dd>
                 <dt>Contest status</dt>
-                <dd>
+                <dd id="contest-status"
+                  value="<c:out value="${targetContest.status}"/>">
                   <c:out value="${targetContest.status}" />
                 </dd>
               </dl>
@@ -168,6 +170,17 @@
           <c:forEach items="${contestProblems}" var="targetProblem">
             <div class="tab-pane"
               id="tab-contest-problem-<c:out value="${targetProblem.orderCharacter}"/>">
+              <div class="col-md-12" id="problem-title"
+                value="<c:out value="${targetProblem.problemId}"/>">
+                <h1>
+                  <c:out value="${targetProblem.title}" />
+                  <c:if test="${targetProblem.isSpj == true}">
+                    <sup> <span class="label label-danger tags"
+                      style="margin: 0 0 0 8px; font-size: 16px;">SPJ</span>
+                    </sup>
+                  </c:if>
+                </h1>
+              </div>
               <div class="col-md-12">
                 <dl class="dl-horizontal">
                   <dt>Time limit</dt>
@@ -278,10 +291,10 @@
                         </c:forEach>
                       </div>
                       <div class="form-group">
-                        <select class="form-control">
+                        <select class="form-control" id="problem-selector">
                           <c:forEach items="${contestProblems}"
                             var="problem">
-                            <option>Problem
+                            <option value="${problem.order}">Problem
                               ${problem.orderCharacter} -
                               ${problem.title}</option>
                           </c:forEach>
@@ -299,12 +312,20 @@
             </div>
           </c:if>
 
-          <div class="tab-pane" id="tab-contest-status"></div>
+          <div class="tab-pane" id="tab-contest-status">
+            <div id="contest-status-list">
+                <div id="list-container"></div>
+            </div>
+          </div>
+
           <div class="tab-pane" id="tab-contest-rank"></div>
         </div>
       </div>
     </div>
   </div>
+
+  <page:applyDecorator name="body"
+    page="/WEB-INF/views/status/statusModal.jsp" />
 
 </body>
 </html>

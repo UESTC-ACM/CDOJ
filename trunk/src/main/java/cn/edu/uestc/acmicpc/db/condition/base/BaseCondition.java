@@ -17,14 +17,15 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
  * <strong>USAGE</strong>
  * <p/>
  * We can write a simple class than extends this class, and add the {@link Exp}
- * annotation to each field of the class. If we do not do with, the field will be
- * handled in subclass {@code getCondition} method.
+ * annotation to each field of the class. If we do not do with, the field will
+ * be handled in subclass {@code getCondition} method.
  * <p/>
  * <strong>For developer</strong>:
  * <ul>
  * <li>
- * In default, the map field's name is equal to the data field's name. If you want to map the
- * class field into another data field, use the {@code Exp#mapField()} parameter please.
+ * In default, the map field's name is equal to the data field's name. If you
+ * want to map the class field into another data field, use the
+ * {@code Exp#mapField()} parameter please.
  * <p/>
  * For example:
  * <p/>
@@ -33,8 +34,8 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
  * public Integer id;
  * </code></li>
  * <li>
- * {@code ConditionType.LIKE} type will add % in two ends of the string, otherwise please
- * handle this case in {@code getCondition} by yourself.
+ * {@code ConditionType.LIKE} type will add % in two ends of the string,
+ * otherwise please handle this case in {@code getCondition} by yourself.
  * <p/>
  * For example:
  * <p/>
@@ -58,18 +59,37 @@ public abstract class BaseCondition {
   private static final Logger LOGGER = LogManager.getLogger(BaseCondition.class);
   private final String keyField;
 
+  /**
+   * Creates a {@link BaseCondition} sub class with key field.
+   * 
+   * @param keyField
+   *          key field's name.
+   */
   protected BaseCondition(String keyField) {
     this.keyField = keyField;
   }
 
+  /**
+   * Current page id.
+   */
   public Long currentPage;
+  /**
+   * Number of records per page.
+   */
   public Long countPerPage;
+  /**
+   * Fields for ordering, separated with ','.
+   */
   public String orderFields;
+  /**
+   * Whether ordered by ascending order for each fields, separated with ','.
+   * Each value can be {@code true} or {@code false}.
+   */
   public String orderAsc;
 
   /**
    * Get Condition objects from conditions
-   *
+   * 
    * @return condition object we need
    * @throws AppException
    */
@@ -86,9 +106,9 @@ public abstract class BaseCondition {
       String[] fields = orderFields.split(",");
       String[] asc = orderAsc.split(",");
       AppExceptionUtil.assertTrue(fields.length == asc.length);
-        for (int i = 0; i < fields.length; i++) {
-          condition.addOrder(fields[i], asc[i].equals("true"));
-        }
+      for (int i = 0; i < fields.length; i++) {
+        condition.addOrder(fields[i], asc[i].equals("true"));
+      }
     }
     Class<?> clazz = this.getClass();
     for (Field field : clazz.getFields()) {
@@ -117,21 +137,23 @@ public abstract class BaseCondition {
   }
 
   /**
-   * Annotation for condition expressions
+   * Annotation for condition expressions. See {@link BaseCondition} for more
+   * details.
    */
   @Retention(RetentionPolicy.RUNTIME)
   public @interface Exp {
 
     /**
      * Mapping field name.
-     *
+     * 
      * @return mapping field name
      */
     public String mapField() default "";
 
     /**
-     * Condition compare type, generate the condition clause by the compare type.
-     *
+     * Condition compare type, generate the condition clause by the compare
+     * type.
+     * 
      * @return condition compare type
      */
     public ConditionType type();

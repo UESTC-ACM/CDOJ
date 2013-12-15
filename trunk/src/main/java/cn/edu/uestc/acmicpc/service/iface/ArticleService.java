@@ -11,8 +11,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
 /**
- * Description
- * TODO(mzry1992)
+ * Description TODO(mzry1992)
  */
 public interface ArticleService extends DatabaseService<Article, Integer> {
 
@@ -22,20 +21,22 @@ public interface ArticleService extends DatabaseService<Article, Integer> {
 
   public Long count(ArticleCondition condition) throws AppException;
 
-  public List<ArticleListDTO> getArticleList(ArticleCondition condition, PageInfo pageInfo) throws AppException;
+  public List<ArticleListDTO> getArticleList(ArticleCondition condition, PageInfo pageInfo)
+      throws AppException;
 
   /**
-   * TODO(mzry1992)
    * @param field
    * @param ids
    * @param value
    * @throws AppException
    */
+  // TODO(mzry1992): same as other file. I think the name should be changed.
   public void operator(String field, String ids, String value) throws AppException;
 
   /**
-   * TODO(mzry1992)
-   * @return
+   * Creates a new article record.
+   * 
+   * @return the newly created article's id.
    * @throws AppException
    */
   public Integer createNewArticle() throws AppException;

@@ -147,7 +147,7 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
     problemService.getAllVisibleProblemIds();
     verify(problemDAO).findAll(eq("problemId"), captor.capture());
     Condition condition = captor.getValue();
-    List<Entry> entries = condition.getentEntries();
+    List<Entry> entries = condition.getEntries();
     Assert.assertEquals(Entry.of("isVisible",
         ConditionType.STRING_EQUALS, "1"), entries.get(0));
   }

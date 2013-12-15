@@ -70,6 +70,28 @@
                   </div>
                 </div>
               </fieldset>
+              <c:if
+                test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
+                <fieldset>
+                  <legend>Is Visible</legend>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label class="radio-inline"> <input
+                          type="radio" name="isVisible" value="all"
+                          checked="" /> All
+                        </label> <label class="radio-inline"> <input
+                          type="radio" name="isVisible" value="true" />
+                          Yes
+                        </label> <label class="radio-inline"> <input
+                          type="radio" name="isVisible" value="false" />
+                          No
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+              </c:if>
               <p class="pull-right">
                 <button type="submit" class="btn btn-primary btn-sm"
                   id="search-button">Search</button>

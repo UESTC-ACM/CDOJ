@@ -6,13 +6,16 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
-public interface ContestProblemService extends DatabaseService<ContestProblem, Integer>{
+public interface ContestProblemService extends DatabaseService<ContestProblem, Integer> {
 
   /**
-   * Get problems of contest.
+   * Gets problems of contest.
+   * 
    * @param contestId
-   * @return
+   *          contest id.
+   * @return all problems as a {@link List} of the contest.
    * @throws AppException
    */
-  public List<ContestProblemDTO> getContestProblemDTOListByContestId(Integer contestId) throws AppException;
+  public List<ContestProblemDTO> getContestProblemDTOListByContestId(Integer contestId)
+      throws AppException;
 }
