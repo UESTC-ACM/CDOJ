@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestStatusShowDTO;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -43,12 +43,12 @@ public class ContestServiceImpl extends AbstractService implements
   }
 
   @Override
-  public ContestStatusShowDTO getContestStatusShowDTOByContestId(
+  public ContestDTO getContestDTO(
       Integer contestId)
       throws AppException {
     AppExceptionUtil.assertNotNull(contestId);
-    return contestDAO.getDTOByUniqueField(ContestStatusShowDTO.class,
-        ContestStatusShowDTO.builder(), "contestId", contestId);
+    return contestDAO.getDTOByUniqueField(ContestDTO.class,
+        ContestDTO.builder(), "contestId", contestId);
   }
 
   @Override

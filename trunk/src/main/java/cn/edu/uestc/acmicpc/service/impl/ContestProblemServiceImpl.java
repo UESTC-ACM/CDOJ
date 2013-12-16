@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestProblemDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestProblemDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
