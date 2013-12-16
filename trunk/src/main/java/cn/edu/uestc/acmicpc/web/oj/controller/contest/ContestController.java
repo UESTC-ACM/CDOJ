@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestProblemDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestStatusShowDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
@@ -70,9 +70,9 @@ public class ContestController extends BaseController{
   @LoginPermit(NeedLogin = false)
   public String show(@PathVariable("contestId") Integer contestId, ModelMap model) {
     try {
-      ContestStatusShowDTO contestStatusShowDTO = contestService.
-          getContestStatusShowDTOByContestId(contestId);
-      if(contestStatusShowDTO == null) {
+      ContestDTO contestDTO = contestService.
+          getContestDTO(contestId);
+      if(contestDTO == null) {
         throw new AppException("NO such contest");
       }
       List<ContestProblemDTO> contestProblemList = contestProblemService.
@@ -85,7 +85,7 @@ public class ContestController extends BaseController{
           return a.getOrder().compareTo(b.getOrder());
         }
       });
-      model.put("targetContest", contestStatusShowDTO);
+      model.put("targetContest", contestDTO);
       model.put("brToken", "\n");
       model.put("contestProblems", contestProblemList);
       model.put("languageList", languageService.getLanguageList());
@@ -174,4 +174,42 @@ public class ContestController extends BaseController{
     }
     return json;
   }
+
+  /**
+   * Open contest editor
+   *
+   * @param sContestId
+   *          target contest id or "new"
+   * @param model
+   *          model
+   * @return editor view
+   */
+  @RequestMapping("editor/{contestId}")
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public String editor(@PathVariable("contestId") String sContestId,
+      ModelMap model) {
+    try {
+      if (sContestId.compareTo("new") == 0) {
+        model.put("action", "new");
+      } else {
+        Integer contestId;
+        try {
+          contestId = Integer.parseInt(sContestId);
+        } catch (NumberFormatException e) {
+          throw new AppException("Parse contest id error.");
+        }
+        /*ProblemEditorShowDTO targetProblem = problemService
+            .getProblemEditorShowDTO(contestId);
+        if (targetProblem == null)
+          throw new AppException("No such problem.");
+        model.put("action", "edit");
+        model.put("targetProblem", targetProblem);*/
+      }
+    } catch (AppException e) {
+      model.put("message", e.getMessage());
+      return "error/error";
+    }
+    return "/problem/problemEditor";
+  }
+
 }

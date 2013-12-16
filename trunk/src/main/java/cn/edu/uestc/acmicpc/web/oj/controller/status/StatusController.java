@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.code.CodeDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestStatusShowDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
@@ -222,8 +222,8 @@ public class StatusController extends BaseController {
             }
         if (submitDTO.getContestId() != null) {
           // Is this contest exist?
-          ContestStatusShowDTO contestStatusShowDTO = contestService.getContestStatusShowDTOByContestId(submitDTO.getContestId());
-          if (contestStatusShowDTO == null) {
+          ContestDTO contestDTO = contestService.getContestDTO(submitDTO.getContestId());
+          if (contestDTO == null) {
             throw new AppException("Wrong contest id.");
           }
           // Is this contest contains this problem?

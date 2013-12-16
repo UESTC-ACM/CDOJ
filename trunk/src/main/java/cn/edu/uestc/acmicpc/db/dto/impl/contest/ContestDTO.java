@@ -10,7 +10,7 @@ import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
 @Fields({ "contestId", "title", "description", "time", "length", "type" })
-public class ContestStatusShowDTO implements BaseDTO<Contest> {
+public class ContestDTO implements BaseDTO<Contest> {
 
   private Integer contestId;
   private String title;
@@ -24,10 +24,10 @@ public class ContestStatusShowDTO implements BaseDTO<Contest> {
   private Byte type;
   private String typeName;
 
-  public ContestStatusShowDTO() {
+  public ContestDTO() {
   }
 
-  public ContestStatusShowDTO(Integer contestId, String title,
+  public ContestDTO(Integer contestId, String title,
       String description,
       String status, Timestamp startTime, Timestamp endTime,
       Timestamp currentTime, Long timeLeft, Integer length, Byte type,
@@ -137,7 +137,7 @@ public class ContestStatusShowDTO implements BaseDTO<Contest> {
     return new Builder();
   }
 
-  public static class Builder implements BaseBuilder<ContestStatusShowDTO> {
+  public static class Builder implements BaseBuilder<ContestDTO> {
 
     private Integer contestId;
     private String title;
@@ -152,14 +152,14 @@ public class ContestStatusShowDTO implements BaseDTO<Contest> {
     private String typeName;
 
     @Override
-    public ContestStatusShowDTO build() {
-      return new ContestStatusShowDTO(contestId, title, description,
+    public ContestDTO build() {
+      return new ContestDTO(contestId, title, description,
           status, startTime, endTime, currentTime, timeLeft, length, type,
           typeName);
     }
 
     @Override
-    public ContestStatusShowDTO build(Map<String, Object> properties) {
+    public ContestDTO build(Map<String, Object> properties) {
       contestId = (Integer) properties.get("contestId");
       title = (String) properties.get("title");
       description = (String) properties.get("description");

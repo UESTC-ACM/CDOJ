@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.db.dto.impl.contest;
+package cn.edu.uestc.acmicpc.db.dto.impl.contestProblem;
 
 import java.util.Map;
 

@@ -3,8 +3,8 @@ package cn.edu.uestc.acmicpc.service.iface;
 import java.util.List;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestStatusShowDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.view.PageInfo;
@@ -25,7 +25,7 @@ public interface ContestService extends DatabaseService<Contest, Integer> {
    * @return a DTO for contest.
    * @throws AppException
    */
-  public ContestStatusShowDTO getContestStatusShowDTOByContestId(Integer contestId)
+  public ContestDTO getContestDTO(Integer contestId)
       throws AppException;
 
   /**
