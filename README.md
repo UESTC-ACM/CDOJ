@@ -5,5 +5,3 @@
 
 - MySQL version should be greater than 5.1 and the db configuration file is located in `trunk/src/main/resources/resources.properties`.
 
-## Hi
-
