@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.service.iface;
 import java.util.List;
 
 import cn.edu.uestc.acmicpc.util.Global.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.Global.ContestType;
 
 /**
  * Global service.
@@ -20,4 +21,6 @@ public interface GlobalService {
   public String getAuthenticationName(Integer type);
 
   public String getReturnDescription(Integer returnTypeId, Integer caseNumber);
+
+  public List<ContestType> getContestTypeList();
 }

@@ -110,7 +110,7 @@
         <div class="col-md-12" id="contest-admin-operation">
           <div class="panel panel-danger">
             <div class="panel-body">
-              <a href="#" class="btn btn-success">
+              <a href="/contest/editor/new" class="btn btn-success">
                 <i class="fa fa-plus"></i>Add new contest
               </a>
             </div>
