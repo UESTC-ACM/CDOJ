@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -59,4 +60,11 @@ public interface ContestService extends DatabaseService<Contest, Integer> {
   public void operator(String field, String ids, String value)
       throws AppException;
 
+  /**
+   *
+   * @param contestId
+   * @return
+   * @throws AppException
+   */
+  public ContestEditorShowDTO getContestEditorShowDTO(Integer contestId) throws AppException;
 }

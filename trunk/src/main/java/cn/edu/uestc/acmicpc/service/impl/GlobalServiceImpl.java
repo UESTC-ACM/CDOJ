@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.Global;
+import cn.edu.uestc.acmicpc.util.Global.ContestType;
 import cn.edu.uestc.acmicpc.util.StringUtil;
 
 /**
@@ -34,5 +35,10 @@ public class GlobalServiceImpl extends AbstractService implements GlobalService 
       if (returnType.ordinal() == returnTypeId)
         return StringUtil.getStatusDescription(returnType, caseNumber);
     return null;
+  }
+
+  @Override
+  public List<ContestType> getContestTypeList() {
+    return Arrays.asList(Global.ContestType.values());
   }
 }

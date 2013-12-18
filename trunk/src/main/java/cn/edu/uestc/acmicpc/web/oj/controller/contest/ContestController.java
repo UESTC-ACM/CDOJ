@@ -1,6 +1,7 @@
 
 package cn.edu.uestc.acmicpc.web.oj.controller.contest;
 
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
@@ -191,6 +193,13 @@ public class ContestController extends BaseController{
     try {
       if (sContestId.compareTo("new") == 0) {
         model.put("action", "new");
+        ContestEditorShowDTO targetContest = ContestEditorShowDTO.builder()
+            .setTime(new Timestamp(System.currentTimeMillis()))
+            .setLengthDays(0)
+            .setLengthHours(5)
+            .setLengthMinutes(0)
+            .build();
+        model.put("targetContest", targetContest);
       } else {
         Integer contestId;
         try {
@@ -198,18 +207,19 @@ public class ContestController extends BaseController{
         } catch (NumberFormatException e) {
           throw new AppException("Parse contest id error.");
         }
-        /*ProblemEditorShowDTO targetProblem = problemService
-            .getProblemEditorShowDTO(contestId);
-        if (targetProblem == null)
-          throw new AppException("No such problem.");
+        ContestEditorShowDTO targetContest = contestService.getContestEditorShowDTO(contestId);
+        if (targetContest == null) {
+          throw new AppException("No such contest.");
+        }
         model.put("action", "edit");
-        model.put("targetProblem", targetProblem);*/
+        model.put("targetContest", targetContest);
       }
+      model.put("contestTypeList", globalService.getContestTypeList());
     } catch (AppException e) {
       model.put("message", e.getMessage());
       return "error/error";
     }
-    return "/problem/problemEditor";
+    return "/contest/contestEditor";
   }
 
 }
