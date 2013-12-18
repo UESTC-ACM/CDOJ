@@ -10,4 +10,5 @@ $ ->
   initProblemDataEditor()
   initContestList()
   initContestPage()
+  initContestEditor()
   render()

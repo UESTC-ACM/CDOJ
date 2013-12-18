@@ -478,6 +478,10 @@ html,
   height: 390px;
   font-family: "Source Code Pro", Monaco, Menlo, Consolas, "Courier New", monospace;
 }
+.form-inline .form-group {
+  margin-left: 0;
+  margin-right: 0;
+}
 @media (min-width: 768px) and (max-width: 991px) {
   #cdoj-user {
     margin: 12px;

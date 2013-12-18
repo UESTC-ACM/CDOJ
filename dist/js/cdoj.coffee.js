@@ -1,5 +1,5 @@
 (function() {
-  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initContestList, initContestPage, initContestStatusList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonMerge, jsonPost, markdown, render;
+  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initContestEditor, initContestList, initContestPage, initContestStatusList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonMerge, jsonPost, markdown, render;
 
   OnlineJudgeReturnType = {
     OJ_WAIT: 0,
@@ -954,6 +954,27 @@
     }
   };
 
+  initContestEditor = function() {
+    var $editor, action, editors, editorsId;
+    $editor = $("#contest-editor");
+    if ($editor.length > 0) {
+      action = $("#contest-editor-title").attr("value");
+      editorsId = ["description"];
+      editors = [];
+      editorsId.each(function(value, id) {
+        return editors.push({
+          id: value,
+          editor: $("#" + value).flandre({
+            picture: {
+              uploadUrl: "/picture/uploadPicture/contest/" + action
+            }
+          })
+        });
+      });
+      return $('.datepicker').datepicker();
+    }
+  };
+
   initContestList = function() {
     var $contestList, contestList;
     $contestList = $("#contest-list");
@@ -1521,6 +1542,7 @@
     initProblemDataEditor();
     initContestList();
     initContestPage();
+    initContestEditor();
     return render();
   });
 

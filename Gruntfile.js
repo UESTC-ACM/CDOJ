@@ -38,11 +38,12 @@ module.exports = function(grunt) {
           "src/js/md5.js",
           "src/js/jquery.elastic.source.js",
           "src/js/fineuploader-4.0.3.min.js",
+          "src/js/bootstrap-datepicker.js",
           "dist/js/cdoj.coffee.js"],
         dest: "dist/js/cdoj.js"
       },
       css: {
-        src: ["src/css/bootstrap.css", "dist/css/cdoj.less.css"],
+        src: ["src/css/bootstrap.css", "src/css/datepicker.css", "dist/css/cdoj.less.css"],
         dest: "dist/css/cdoj.css"
       }
     },
