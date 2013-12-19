@@ -18,7 +18,7 @@ import cn.edu.uestc.acmicpc.config.WebMVCResource;
 import cn.edu.uestc.acmicpc.db.dto.impl.department.DepartmentDTO;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
-import cn.edu.uestc.acmicpc.util.Global.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.settings.Global.AuthenticationType;
 
 /** Abstract test to define constant variables for controller tests. */
 public abstract class ControllerTest extends AbstractTestNGSpringContextTests {

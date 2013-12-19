@@ -8,6 +8,11 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+/**
+ * DTO for contest editor view.
+ * <br/>
+ * <code>@Fields({ "contestId", "title", "description", "time", "length", "type" })</code>
+ */
 @Fields({ "contestId", "title", "description", "time", "length", "type" })
 public class ContestEditorShowDTO implements BaseDTO<Contest> {
 

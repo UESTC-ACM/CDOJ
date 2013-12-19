@@ -15,8 +15,6 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.db.entity.Code;
 import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
@@ -37,7 +35,6 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.judge.JudgeService;
-import cn.edu.uestc.acmicpc.util.Global;
 import com.jolbox.bonecp.BoneCPDataSource;
 
 /**
@@ -166,13 +163,6 @@ public class ApplicationContextConfig {
     properties.setProperty("hibernate.current_session_context_class",
         environment.getProperty("hibernate.current_session_context_class"));
     return properties;
-  }
-
-  @Bean
-  @Autowired
-  @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-  public Global global(final IDepartmentDAO departmentDAO, final ILanguageDAO languageDAO) {
-    return new Global(departmentDAO, languageDAO);
   }
 
   /**

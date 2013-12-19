@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.db.dto.impl.problem;
 
 
 /**
- * Problem edit data transfer object
+ * DTO post from problem editor.
  */
 public class ProblemEditDTO {
 

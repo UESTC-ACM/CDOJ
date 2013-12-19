@@ -8,6 +8,11 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+/**
+ * DTO used in contest list.
+ * <br/>
+ * <code>@Fields({ "contestId", "title", "type", "time", "length", "isVisible" })</code>
+ */
 @Fields({ "contestId", "title", "type", "time", "length", "isVisible" })
 public class ContestListDTO implements BaseDTO<Contest> {
 

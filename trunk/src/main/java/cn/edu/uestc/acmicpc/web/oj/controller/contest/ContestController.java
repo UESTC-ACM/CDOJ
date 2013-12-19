@@ -1,4 +1,3 @@
-
 package cn.edu.uestc.acmicpc.web.oj.controller.contest;
 
 import java.sql.Timestamp;
@@ -27,11 +26,11 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
-import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
-import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
 /**
  *
@@ -83,7 +82,6 @@ public class ContestController extends BaseController{
 
         @Override
         public int compare(ContestProblemDTO a, ContestProblemDTO b) {
-          // TODO Auto-generated method stub
           return a.getOrder().compareTo(b.getOrder());
         }
       });

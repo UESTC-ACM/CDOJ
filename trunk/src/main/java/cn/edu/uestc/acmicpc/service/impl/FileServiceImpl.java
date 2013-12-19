@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.uestc.acmicpc.service.iface.FileService;
-import cn.edu.uestc.acmicpc.util.FileUtil;
-import cn.edu.uestc.acmicpc.util.Settings;
-import cn.edu.uestc.acmicpc.util.ZipUtil;
 import cn.edu.uestc.acmicpc.util.checker.ZipDataChecker;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+import cn.edu.uestc.acmicpc.util.helper.FileUtil;
+import cn.edu.uestc.acmicpc.util.helper.ZipUtil;
+import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 
 /**

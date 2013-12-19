@@ -22,16 +22,16 @@ import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleListDTO;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
-import cn.edu.uestc.acmicpc.util.Global;
-import cn.edu.uestc.acmicpc.util.StringUtil;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
+import cn.edu.uestc.acmicpc.util.helper.StringUtil;
+import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
-import cn.edu.uestc.acmicpc.web.view.PageInfo;
 
 /**
- * TODO(mzry1992)
+ * This controller will be merged into articleController soon.
  */
 @Controller
 @RequestMapping("/admin/article")
@@ -56,7 +56,6 @@ public class ArticleAdminController extends BaseController {
   Map<String, Object> search(ArticleCondition articleCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
-      articleCondition.isTitleEmpty = false;
       Long count = articleService.count(articleCondition);
       PageInfo pageInfo = buildPageInfo(count, articleCondition.currentPage,
           Global.RECORD_PER_PAGE, "", null);
@@ -64,7 +63,7 @@ public class ArticleAdminController extends BaseController {
           articleCondition, pageInfo);
       json.put("pageInfo", pageInfo.getHtmlString());
       json.put("result", "ok");
-      json.put("articleList", articleList);
+      json.put("list", articleList);
     } catch (AppException e) {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
@@ -76,14 +75,6 @@ public class ArticleAdminController extends BaseController {
     return json;
   }
 
-  /**
-   * TODO(mzry1992)
-   *
-   * @param targetId
-   * @param field
-   * @param value
-   * @return
-   */
   @RequestMapping("operator/{id}/{field}/{value}")
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public @ResponseBody

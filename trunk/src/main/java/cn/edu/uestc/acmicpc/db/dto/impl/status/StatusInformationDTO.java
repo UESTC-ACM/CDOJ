@@ -7,6 +7,11 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+/**
+ * DTO for code and compile information query.
+ * <br/>
+ * <code>@Fields({ "statusId", "userId", "codeByCodeId.content", "compileInfoId" })</code>
+ */
 @Fields({ "statusId", "userId", "codeByCodeId.content", "compileInfoId" })
 public class StatusInformationDTO implements BaseDTO<Status> {
 

@@ -7,6 +7,11 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+/**
+ * DTO for department entity.
+ * <br/>
+ * <code>@Fields({ "departmentId", "name" })</code>
+ */
 @Fields({ "departmentId", "name" })
 public class DepartmentDTO implements BaseDTO<Department> {
 

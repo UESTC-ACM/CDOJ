@@ -5,8 +5,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 /**
- * Description
- * TODO(mzry1992)
+ * DTO post from submit form.
  */
 public class SubmitDTO {
 

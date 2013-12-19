@@ -211,7 +211,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   void deleteEntitiesByCondition(Condition condition) throws AppException;
 
   /**
-   * Execute SQL immediately
+   * Execute SQL immediately.
    */
   void flush();
 

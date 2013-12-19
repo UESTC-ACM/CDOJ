@@ -8,7 +8,12 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
-/** User DTO for user summary view. */
+/**
+ * DTO used in user summary list.
+ * <br/>
+ * <code>@Fields({ "userId", "email", "userName", "nickName", "type", "school", "motto", "lastLogin", "solved",
+ * "tried" })</code>
+ */
 @Fields({ "userId", "email", "userName", "nickName", "type", "school", "motto", "lastLogin", "solved",
   "tried" })
 public class UserSummaryDTO implements BaseDTO<User> {

@@ -7,6 +7,17 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+/**
+ * DTO used in judge service.
+ * <br/>
+ * <code>@Fields({ "statusId", "result", "caseNumber", "codeByCodeId.content",
+ *  "problemId", "problemByProblemId.dataCount",
+ *  "problemByProblemId.javaMemoryLimit", "problemByProblemId.javaTimeLimit",
+ *  "problemByProblemId.memoryLimit", "problemByProblemId.timeLimit",
+ *  "problemByProblemId.outputLimit", "problemByProblemId.isSpj", "languageId",
+ *  "languageByLanguageId.extension", "languageByLanguageId.name",
+ *  "memoryCost", "timeCost", "compileInfoId", "userId" })</code>
+ */
 @Fields({ "statusId", "result", "caseNumber", "codeByCodeId.content",
     "problemId", "problemByProblemId.dataCount",
     "problemByProblemId.javaMemoryLimit", "problemByProblemId.javaTimeLimit",

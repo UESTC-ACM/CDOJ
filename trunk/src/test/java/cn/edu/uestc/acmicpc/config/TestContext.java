@@ -13,8 +13,6 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.judge.JudgeService;
@@ -28,7 +26,6 @@ import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.service.impl.ProblemServiceImpl;
 import cn.edu.uestc.acmicpc.service.impl.UserServiceImpl;
-import cn.edu.uestc.acmicpc.util.Global;
 import com.jolbox.bonecp.BoneCPDataSource;
 
 @Configuration
@@ -58,13 +55,6 @@ public class TestContext extends ApplicationContextConfig {
   @Bean
   public HibernateTransactionManager transactionManager() {
     return mock(HibernateTransactionManager.class);
-  }
-
-  @Override
-  @Bean
-  @Autowired
-  public Global global(IDepartmentDAO departmentDAO, ILanguageDAO languageDAO) {
-    return mock(Global.class);
   }
 
   @Bean

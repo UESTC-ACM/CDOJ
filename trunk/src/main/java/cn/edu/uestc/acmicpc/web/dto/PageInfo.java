@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.web.view;
+package cn.edu.uestc.acmicpc.web.dto;
 
 /**
  * Object to build view's page tags.

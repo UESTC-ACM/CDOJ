@@ -14,63 +14,52 @@ public class ArticleCondition extends BaseCondition {
   }
 
   /**
-   * Minimal article id
+   * Minimal article id.
    */
   @Exp(mapField = "articleId", type = Condition.ConditionType.GREATER_OR_EQUALS)
   public Integer startId;
 
   /**
-   * Maximal article id
+   * Maximal article id.
    */
   @Exp(mapField = "articleId", type = Condition.ConditionType.LESS_OR_EQUALS)
   public Integer endId;
 
   /**
-   * Article title (partly matches)
+   * Article title (partly matches).
    */
   @Exp(type = Condition.ConditionType.LIKE)
   public String title;
 
   /**
-   * Article keyword
+   * Search keyword.
    */
   public String keyword;
 
   /**
-   * Is article visible?
+   * Visible state.
    */
   @Exp(type = Condition.ConditionType.EQUALS)
   public Boolean isVisible;
 
   /**
-   * Is this a system notice?
-   */
-  @Exp(type = Condition.ConditionType.EQUALS)
-  public Boolean isNotice;
-
-  /**
-   * Is the title empty?
-   */
-  public Boolean isTitleEmpty;
-
-  /**
-   * Author's user id
+   * Author's user id.
    */
   @Exp(mapField = "userByUserId", type = Condition.ConditionType.EQUALS)
   public Integer userId;
 
   /**
-   * Author's name
+   * Author's name.
    */
   public String userName;
 
   /**
-   * Problem id
+   * Problem id.
    */
   public Integer problemId;
 
   /**
-   * Contest id
+   * Contest id.
    */
   public Integer contestId;
 
@@ -93,13 +82,6 @@ public class ArticleCondition extends BaseCondition {
     }
     if (userName != null) {
       condition.addEntry("userByUserId.userName", Condition.ConditionType.STRING_EQUALS, userName);
-    }
-    if (isTitleEmpty != null) {
-      if (isTitleEmpty) {
-        condition.addEntry("title", Condition.ConditionType.STRING_EQUALS, "");
-      } else {
-        condition.addEntry("title", Condition.ConditionType.STRING_EQUALS, "_%");
-      }
     }
     if (keyword != null) {
       condition.addEntry("title", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));

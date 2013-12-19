@@ -4,10 +4,13 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
+/**
+ * DTO post from user editor by admin.
+ */
 public class UserAdminEditDTO {
-  
+
   private Integer userId;
-  
+
   private String userName;
 
   @NotNull(message = "Please enter your nick name.")
@@ -26,7 +29,7 @@ public class UserAdminEditDTO {
   @NotNull(message = "Please enter your student ID.")
   @Length(min = 1, max = 20, message = "Please enter 1-20 characters.")
   private String studentId;
-  
+
   @NotNull(message = "Please enter the user type.")
   private Integer type;
 
@@ -34,8 +37,8 @@ public class UserAdminEditDTO {
 
   public UserAdminEditDTO(){
   }
-  
-  public UserAdminEditDTO(Integer userId, String userName, String nickName, String email, 
+
+  public UserAdminEditDTO(Integer userId, String userName, String nickName, String email,
       String school, Integer departmentId, String studentId, Integer type, String motto){
     this.userId = userId;
     this.userName = userName;
@@ -47,7 +50,7 @@ public class UserAdminEditDTO {
     this.type = type;
     this.motto = motto;
   }
-  
+
   public Integer getUserId() {
     return userId;
   }
@@ -123,10 +126,10 @@ public class UserAdminEditDTO {
   public static Builder builder() {
     return new Builder();
   }
-  
+
   public static class Builder {
-    
-    private Integer userId;   
+
+    private Integer userId;
     private String userName;
     private String nickName;
     private String email;
@@ -135,12 +138,12 @@ public class UserAdminEditDTO {
     private String studentId;
     private Integer type;
     private String motto;
-    
+
     private Builder() {
     }
-    
+
     public UserAdminEditDTO build() {
-      return new UserAdminEditDTO(userId, userName, nickName, email, school, 
+      return new UserAdminEditDTO(userId, userName, nickName, email, school,
           departmentId, studentId, type, motto);
     }
 

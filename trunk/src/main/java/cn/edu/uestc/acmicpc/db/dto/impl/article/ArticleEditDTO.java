@@ -3,6 +3,9 @@ package cn.edu.uestc.acmicpc.db.dto.impl.article;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 
+/**
+ * DTO post from article editor.
+ */
 public class ArticleEditDTO implements BaseDTO<Article> {
 
   public ArticleEditDTO() {

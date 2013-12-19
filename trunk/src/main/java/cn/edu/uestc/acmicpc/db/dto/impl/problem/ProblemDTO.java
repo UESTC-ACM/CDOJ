@@ -8,9 +8,14 @@ import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
 /**
- * Data transfer object for {@link Problem}.
+ * DTO for problem entity.
+ * <br/>
+ * <code>@Fields({"problemId", "title", "description", "input", "output", "sampleInput",
+ * "sampleOutput", "hint", "source", "timeLimit", "memoryLimit", "solved", "tried",
+ * "isSpj", "isVisible", "outputLimit", "javaTimeLimit", "javaMemoryLimit", "dataCount",
+ * "difficulty"})</code>
  */
-@Fields({"problemId", "title", "description", "input", "output", "sampleInput", 
+@Fields({"problemId", "title", "description", "input", "output", "sampleInput",
   "sampleOutput", "hint", "source", "timeLimit", "memoryLimit", "solved", "tried",
   "isSpj", "isVisible", "outputLimit", "javaTimeLimit", "javaMemoryLimit", "dataCount",
   "difficulty"})
@@ -170,7 +175,7 @@ public class ProblemDTO implements BaseDTO<Problem> {
   public void setProblemId(Integer problemId) {
     this.problemId = problemId;
   }
-  
+
   public Integer getSolved() {
     return solved;
   }
@@ -186,8 +191,8 @@ public class ProblemDTO implements BaseDTO<Problem> {
   public void setTried(Integer tried) {
     this.tried = tried;
   }
-  
-  
+
+
   public Integer getTimeLimit() {
     return timeLimit;
   }
@@ -227,7 +232,7 @@ public class ProblemDTO implements BaseDTO<Problem> {
   public void setJavaMemoryLimit(Integer javaMemoryLimit) {
     this.javaMemoryLimit = javaMemoryLimit;
   }
-  
+
   public static Builder builder() {
     return new Builder();
   }
@@ -258,14 +263,14 @@ public class ProblemDTO implements BaseDTO<Problem> {
     private Integer javaMemoryLimit = 65536;
     private Integer dataCount = 1;
     private Integer difficulty = 1;
-    
+
     @Override
     public ProblemDTO build() {
       return new ProblemDTO(problemId, title, description, input, output, sampleInput,
           sampleOutput, hint, source, timeLimit, memoryLimit, solved, tried, isSpj, isVisible,
           outputLimit, javaTimeLimit, javaMemoryLimit, dataCount, difficulty);
     }
-    
+
     @Override
     public ProblemDTO build(Map<String, Object> properties){
       problemId = (Integer) properties.get("problemId");
@@ -335,37 +340,37 @@ public class ProblemDTO implements BaseDTO<Problem> {
       this.source = source;
       return this;
     }
-    
+
     public Builder setTimeLimit(Integer timeLimit) {
       this.timeLimit = timeLimit;
       return this;
     }
-    
+
     public Builder setMemoryLimit(Integer memoryLimit) {
       this.memoryLimit = memoryLimit;
       return this;
     }
-    
+
     public Builder setSolved(Integer integer) {
       this.solved = integer;
       return this;
     }
-    
+
     public Builder setTried(Integer integer) {
       this.tried = integer;
       return this;
     }
-    
+
     public Builder setIsSpj(Boolean isSpj) {
       this.isSpj = isSpj;
       return this;
     }
-    
+
     public Builder setJavaTimeLimit(Integer javaTimeLimit) {
       this.javaTimeLimit = javaTimeLimit;
       return this;
     }
-    
+
     public Builder setJavaMemoryLimit(Integer javaMemoryLimit) {
       this.javaMemoryLimit = javaMemoryLimit;
       return this;

@@ -14,7 +14,7 @@
     <module name="AvoidStarImport">
     </module>
     <module name="ImportOrder">
-      <property name="groups" value="/^javax?\./,org,*"/>
+      <property name="groups" value="/^javax?\./,org,cn.edu,*"/>
       <property name="ordered" value="true"/>
       <property name="option" value="top"/>
     </module>

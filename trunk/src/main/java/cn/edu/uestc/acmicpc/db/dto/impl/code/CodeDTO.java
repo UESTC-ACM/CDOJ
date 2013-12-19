@@ -7,6 +7,11 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Code;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+/**
+ * DTO for code entity.
+ * <br/>
+ * <code>@Fields({ "codeId", "content", "share" })</code>
+ */
 @Fields({ "codeId", "content", "share" })
 public class CodeDTO implements BaseDTO<Code> {
 

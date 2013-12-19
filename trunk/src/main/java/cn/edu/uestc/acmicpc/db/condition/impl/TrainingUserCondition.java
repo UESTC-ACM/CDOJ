@@ -3,7 +3,7 @@ package cn.edu.uestc.acmicpc.db.condition.impl;
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 
 /**
- * // TODO(mzry1992): Description
+ * Training user database condition entity.
  */
 public class TrainingUserCondition extends BaseCondition {
 

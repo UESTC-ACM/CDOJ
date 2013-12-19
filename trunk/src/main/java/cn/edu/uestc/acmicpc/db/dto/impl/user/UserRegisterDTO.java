@@ -7,10 +7,8 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import cn.edu.uestc.acmicpc.db.entity.User;
-
 /**
- * Data transfer object for {@link User}.
+ * DTO post from user register form.
  */
 public class UserRegisterDTO {
 

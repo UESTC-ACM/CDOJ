@@ -1,18 +1,4 @@
-package cn.edu.uestc.acmicpc.util;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.ILanguageDAO;
-import cn.edu.uestc.acmicpc.db.entity.Department;
-import cn.edu.uestc.acmicpc.db.entity.Language;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
+package cn.edu.uestc.acmicpc.util.settings;
 
 /**
  * Global enumerates and constants inside project.
@@ -52,7 +38,7 @@ public class Global {
     OJ_RUNNING("Running on test $case"),            // 17
     OJ_REJUDGING("Queuing");                        // 18
 
-    private String description;
+    private final String description;
 
     /**
      * Get enumerate value's description.
@@ -149,106 +135,4 @@ public class Global {
     }
   }
 
-  @Autowired
-  public Global(IDepartmentDAO departmentDAO,
-      ILanguageDAO languageDAO) {
-    this.departmentDAO = departmentDAO;
-    this.languageDAO = languageDAO;
-  }
-
-  /**
-   * Department DAO using for get all departments.
-   */
-  private final IDepartmentDAO departmentDAO;
-
-  /**
-   * Language DAO using for get all languages.
-   */
-  private final ILanguageDAO languageDAO;
-
-  /**
-   * Department list.
-   */
-  private List<Department> departmentList;
-
-  private List<Language> languageList;
-
-  /**
-   * authentication type list
-   */
-  private List<AuthenticationType> authenticationTypeList;
-
-  /**
-   * contest type list
-   */
-  private List<ContestType> contestTypeList;
-
-  /**
-   * training contest type list
-   */
-  private List<TrainingContestType> trainingContestTypeList;
-
-  /**
-   * Get all languages.
-   *
-   * @return compile language list
-   */
-  public List<Language> getLanguageList() {
-    return languageList;
-  }
-
-  /**
-   * Initializer.
-   *
-   * @throws AppException
-   */
-  @SuppressWarnings("unchecked")
-  @PostConstruct
-  public void init() throws AppException {
-    try {
-      this.departmentList = (List<Department>) departmentDAO.findAll();
-      this.languageList = (List<Language>) languageDAO.findAll();
-
-      this.authenticationTypeList = new ArrayList<>();
-      Collections.addAll(authenticationTypeList, AuthenticationType.values());
-
-      this.contestTypeList = new ArrayList<>();
-      Collections.addAll(contestTypeList, ContestType.values());
-
-      this.trainingContestTypeList = new ArrayList<>();
-      Collections.addAll(trainingContestTypeList, TrainingContestType.values());
-    } catch (Exception e) {
-    }
-  }
-
-  /**
-   * Get all departments in database.
-   *
-   * @return All departments
-   */
-  public List<Department> getDepartmentList() {
-    return departmentList;
-  }
-
-  /**
-   * Get all authentications.
-   *
-   * @return All authentication type
-   */
-  public List<AuthenticationType> getAuthenticationTypeList() {
-    return authenticationTypeList;
-  }
-
-  /**
-   * Get all contest types.
-   *
-   * @return All contest type
-   */
-  public List<ContestType> getContestTypeList() {
-    return contestTypeList;
-  }
-
-  public List<TrainingContestType> getTrainingContestTypeList() {
-    return trainingContestTypeList;
-  }
 }

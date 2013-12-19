@@ -5,6 +5,9 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
+/**
+ * Contest problem database condition entity.
+ */
 public class ContestProblemCondition extends BaseCondition{
 
   public ContestProblemCondition() {
@@ -12,12 +15,12 @@ public class ContestProblemCondition extends BaseCondition{
   }
 
   /**
-   * contest id
+   * contest id.
    */
   public Integer contestId;
 
   /**
-   * problem id
+   * problem id.
    */
   @Exp(mapField = "problemId", type = Condition.ConditionType.EQUALS)
   public Integer problemId;

@@ -25,7 +25,7 @@ public class BaseDAO {
   private SessionFactory sessionFactory;
 
   /**
-   * Get current database session
+   * Get current database session.
    *
    * @return if the IoC works, return current session, otherwise open a new session
    */

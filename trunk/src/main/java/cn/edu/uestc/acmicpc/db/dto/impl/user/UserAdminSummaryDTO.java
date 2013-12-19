@@ -8,10 +8,16 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+/**
+ * DTO used in user admin page.
+ * <br/>
+ * <code>@Fields({"userId","userName","nickName","email","type","lastLogin", "school", "departmentId",
+ *   "studentId"})</code>
+ */
 @Fields({"userId","userName","nickName","email","type","lastLogin", "school", "departmentId",
     "studentId"})
 public class UserAdminSummaryDTO implements BaseDTO<User>{
-  
+
   private Integer userId;
   private String userName;
   private String nickName;
@@ -22,11 +28,11 @@ public class UserAdminSummaryDTO implements BaseDTO<User>{
   private String school;
   private Integer departmentId;
   private String studentId;
-  
+
   public UserAdminSummaryDTO() {
   }
-  
-  public UserAdminSummaryDTO(Integer userId, String userName, String nickName, 
+
+  public UserAdminSummaryDTO(Integer userId, String userName, String nickName,
       String email, Integer type, String typeName, Timestamp lastLogin, String school,
       Integer departmentId, String studentId) {
     this.userId = userId;
@@ -124,9 +130,9 @@ public class UserAdminSummaryDTO implements BaseDTO<User>{
   public static Builder builder() {
     return new Builder();
   }
-  
+
   public static class Builder implements BaseBuilder<UserAdminSummaryDTO> {
-    
+
     private Builder(){
     }
     private Integer userId;
@@ -159,32 +165,32 @@ public class UserAdminSummaryDTO implements BaseDTO<User>{
       studentId = (String) properties.get("studentId");
       return build();
     }
-    
+
     public Builder setUserId(Integer userId) {
       this.userId = userId;
       return this;
     }
-    
+
     public Builder setUserName(String userName) {
       this.userName = userName;
       return this;
     }
-    
+
     public Builder setNickName(String nickName) {
       this.nickName = nickName;
       return this;
     }
-    
+
     public Builder setEmail(String email) {
       this.email = email;
       return this;
     }
-    
+
     public Builder setType(Integer type) {
       this.type = type;
       return this;
     }
-    
+
     public Builder setLastLogin(Timestamp lastLogin) {
       this.lastLogin = lastLogin;
       return this;

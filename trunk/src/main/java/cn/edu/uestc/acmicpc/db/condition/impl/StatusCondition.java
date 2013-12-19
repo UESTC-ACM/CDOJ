@@ -8,11 +8,12 @@ import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
-import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.settings.Global.OnlineJudgeReturnType;
 
 /**
- * Status search condition.
+ * Status database condition entity.
  */
 public class StatusCondition extends BaseCondition {
 
@@ -21,64 +22,66 @@ public class StatusCondition extends BaseCondition {
   }
 
   /**
-   * Minimal status id
+   * Minimal status id.
    */
   @Exp(mapField = "statusId", type = Condition.ConditionType.GREATER_OR_EQUALS)
   public Integer startId;
 
   /**
-   * Maximal status id
+   * Maximal status id.
    */
   @Exp(mapField = "statusId", type = Condition.ConditionType.LESS_OR_EQUALS)
   public Integer endId;
 
   /**
-   * Minimal submit time
+   * Minimal submit time.
    */
   @Exp(mapField = "time", type = Condition.ConditionType.GREATER_OR_EQUALS)
   public Timestamp startTime;
 
   /**
-   * Maximal submit time
+   * Maximal submit time.
    */
   @Exp(mapField = "time", type = Condition.ConditionType.LESS_OR_EQUALS)
   public Timestamp endTime;
 
   /**
-   * Submit user name
+   * Submit user name.
    */
   public String userName;
 
   /**
-   * Submit user id
+   * Submit user id.
    */
   @Exp(mapField = "userByUserId", type = Condition.ConditionType.EQUALS)
   public Integer userId;
 
   /**
-   * Problem id
+   * Problem id.
    */
   @Exp(mapField = "problemByProblemId", type = Condition.ConditionType.EQUALS)
   public Integer problemId;
 
   /**
-   * Language
+   * Language.
    */
   @Exp(mapField = "languageByLanguageId", type = Condition.ConditionType.EQUALS)
   public Integer languageId;
 
   /**
-   * Contest id
+   * Contest id.
    */
   public Integer contestId;
 
   /**
-   * Result list
+   * Result list.
+   * @see OnlineJudgeReturnType
    */
   public List<Global.OnlineJudgeReturnType> result = new LinkedList<>();
 
   /**
-   * Result id
+   * Result id.
+   * @see OnlineJudgeReturnType
    */
   public Integer resultId;
 

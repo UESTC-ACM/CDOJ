@@ -7,6 +7,11 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+/**
+ * DTO used in article editor view.
+ * <br/>
+ * <code>@Fields({ "articleId", "title", "content"})</code>
+ */
 @Fields({ "articleId", "title", "content"})
 public class ArticleEditorShowDTO implements BaseDTO<Article> {
 

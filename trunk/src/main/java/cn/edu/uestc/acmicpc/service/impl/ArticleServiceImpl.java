@@ -19,7 +19,7 @@ import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-import cn.edu.uestc.acmicpc.web.view.PageInfo;
+import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 @Service
 public class ArticleServiceImpl extends AbstractService implements ArticleService {

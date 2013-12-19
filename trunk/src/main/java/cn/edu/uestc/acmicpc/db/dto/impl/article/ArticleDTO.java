@@ -8,6 +8,12 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+/**
+ * DTO for article entity.
+ * <br/>
+ * <code>@Fields({ "articleId", "parentId", "clicked", "content", "contestId", "type",
+ * "isVisible", "order", "problemId", "time", "title", "userId" })</code>
+ */
 @Fields({ "articleId", "parentId", "clicked", "content", "contestId", "type",
   "isVisible", "order", "problemId", "time", "title", "userId" })
 public class ArticleDTO implements BaseDTO<Article> {

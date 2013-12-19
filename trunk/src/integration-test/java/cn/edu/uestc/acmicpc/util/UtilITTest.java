@@ -1,33 +1,20 @@
 package cn.edu.uestc.acmicpc.util;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.entity.Department;
 
 /**
  * Util class test
  */
 @ContextConfiguration(classes = { IntegrationTestContext.class })
 public class UtilITTest extends AbstractTestNGSpringContextTests {
-
-  @Autowired
-  private Global global;
-
-  @Test
-  public void testGlobal() {
-    Assert.assertNotNull(global, "Constructor global instance is null.");
-    List<Department> departments = global.getDepartmentList();
-    Assert.assertEquals(departments.size(), 18);
-  }
 
   private static String VJ_1Y = "^(\\d{1,2})\\s*:\\s*(\\d{2})\\s*:\\s*(\\d{2})$";
   private static String VJ_NORMAL =

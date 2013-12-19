@@ -3,6 +3,8 @@ package cn.edu.uestc.acmicpc.util;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
+
 /**
  * Test cases for {@link ArrayUtil}.
  */

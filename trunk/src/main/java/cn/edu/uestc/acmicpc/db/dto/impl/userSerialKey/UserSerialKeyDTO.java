@@ -8,7 +8,11 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
-/** Data transfer object for user serial key **/
+/**
+ * DTO for user serial key entity.
+ * <br/>
+ * <code>@Fields({ "userSerialKeyId", "time", "serialKey", "userId" })</code>
+ */
 @Fields({ "userSerialKeyId", "time", "serialKey", "userId" })
 public class UserSerialKeyDTO implements BaseDTO<UserSerialKey> {
 
