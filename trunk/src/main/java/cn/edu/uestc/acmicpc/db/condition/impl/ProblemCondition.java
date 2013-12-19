@@ -5,7 +5,7 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
- * Problem search condition.
+ * Problem database condition entity.
  */
 public class ProblemCondition extends BaseCondition {
 
@@ -38,13 +38,12 @@ public class ProblemCondition extends BaseCondition {
   public String source;
 
   /**
-   * Keyword for {@code description}, {@code input}, {@code output}, {@code sampleInput},
-   * {@code sampleOutput} and {@code hint}.
+   * Search keyword
    */
   public String keyword;
 
   /**
-   * Is problem need spj?
+   * SPJ state
    */
   @Exp(type = Condition.ConditionType.EQUALS)
   public Boolean isSpj;

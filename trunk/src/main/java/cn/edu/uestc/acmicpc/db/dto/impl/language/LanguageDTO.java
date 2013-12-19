@@ -7,6 +7,11 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Language;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+/**
+ * DTO for language entity.
+ * <br/>
+ * <code>@Fields({ "languageId", "name", "extension", "param" })</code>
+ */
 @Fields({ "languageId", "name", "extension", "param" })
 public class LanguageDTO implements BaseDTO<Language> {
 

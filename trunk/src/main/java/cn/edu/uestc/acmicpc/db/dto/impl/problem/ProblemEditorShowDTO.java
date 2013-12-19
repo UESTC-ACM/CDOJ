@@ -7,13 +7,22 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
-@Fields({ "problemId", "title", "description", "input", "output", "sampleInput", "sampleOutput", "hint", "source" })
+/**
+ * DTO used in problem editor.
+ * <br/>
+ * <code>@Fields({ "problemId", "title", "description", "input", "output", "sampleInput",
+ * "sampleOutput", "hint", "source" }) </code>
+ */
+@Fields({ "problemId", "title", "description", "input", "output",
+    "sampleInput", "sampleOutput", "hint", "source" })
 public class ProblemEditorShowDTO implements BaseDTO<Problem> {
 
   public ProblemEditorShowDTO() {
   }
 
-  private ProblemEditorShowDTO(Integer problemId, String title, String description, String input, String output, String sampleInput, String sampleOutput, String hint, String source) {
+  private ProblemEditorShowDTO(Integer problemId, String title,
+      String description, String input, String output, String sampleInput,
+      String sampleOutput, String hint, String source) {
     this.problemId = problemId;
     this.title = title;
     this.description = description;
@@ -118,7 +127,8 @@ public class ProblemEditorShowDTO implements BaseDTO<Problem> {
 
     @Override
     public ProblemEditorShowDTO build() {
-      return new ProblemEditorShowDTO(problemId, title, description, input, output, sampleInput, sampleOutput, hint, source);
+      return new ProblemEditorShowDTO(problemId, title, description, input,
+          output, sampleInput, sampleOutput, hint, source);
     }
 
     @Override

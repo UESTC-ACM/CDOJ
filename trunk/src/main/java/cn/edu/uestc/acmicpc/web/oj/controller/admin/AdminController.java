@@ -3,13 +3,15 @@ package cn.edu.uestc.acmicpc.web.oj.controller.admin;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
 /**
- * Description
- * TODO(mzry1992)
+ * Administrator controller for these pages:
+ * <table>
+ *   <tr><td>admin/index</td><td>dashboard</td></tr>
+ * </table>
  */
 @Controller
 @RequestMapping("/admin")

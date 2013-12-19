@@ -61,7 +61,7 @@ public abstract class BaseCondition {
 
   /**
    * Creates a {@link BaseCondition} sub class with key field.
-   * 
+   *
    * @param keyField
    *          key field's name.
    */
@@ -89,7 +89,7 @@ public abstract class BaseCondition {
 
   /**
    * Get Condition objects from conditions
-   * 
+   *
    * @return condition object we need
    * @throws AppException
    */
@@ -145,7 +145,7 @@ public abstract class BaseCondition {
 
     /**
      * Mapping field name.
-     * 
+     *
      * @return mapping field name
      */
     public String mapField() default "";
@@ -153,7 +153,7 @@ public abstract class BaseCondition {
     /**
      * Condition compare type, generate the condition clause by the compare
      * type.
-     * 
+     *
      * @return condition compare type
      */
     public ConditionType type();

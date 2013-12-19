@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.validation.FieldError;
 
-import cn.edu.uestc.acmicpc.util.ObjectUtil;
+import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
 
 /**
  * Description

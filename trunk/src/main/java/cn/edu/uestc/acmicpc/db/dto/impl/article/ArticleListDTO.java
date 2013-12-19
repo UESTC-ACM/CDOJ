@@ -8,6 +8,12 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+/**
+ * DTO used in article list.
+ * <br/>
+ * <code>@Fields({ "articleId", "title", "clicked", "time", "isVisible", "userByUserId.userName",
+ * "userByUserId.email" })</code>
+ */
 @Fields({ "articleId", "title", "clicked", "time", "isVisible", "userByUserId.userName",
   "userByUserId.email" })
 public class ArticleListDTO implements BaseDTO<Article> {

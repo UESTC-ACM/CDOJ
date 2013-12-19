@@ -7,6 +7,12 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+/**
+ * DTO used in problem data editor.
+ * <br/>
+ * <code>@Fields({ "problemId", "timeLimit", "memoryLimit", "outputLimit", "isSpj", "javaTimeLimit",
+ *  "javaMemoryLimit", "dataCount" })</code>
+ */
 @Fields({ "problemId", "timeLimit", "memoryLimit", "outputLimit", "isSpj", "javaTimeLimit",
     "javaMemoryLimit", "dataCount" })
 public class ProblemDataShowDTO implements BaseDTO<Problem> {

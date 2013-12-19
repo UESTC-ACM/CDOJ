@@ -5,7 +5,9 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
-/** TODO(mzry1992) **/
+/**
+ * DTO post from user activate form.
+ */
 public class UserActivateDTO {
 
   @NotNull(message = "Please enter your user name.")

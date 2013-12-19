@@ -9,9 +9,12 @@ import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
 /**
- * User center DTO for user center
+ * DTO used in user center.
+ * <br/>
+ * <code>@Fields({"userId", "userName", "nickName", "email", "school", "departmentId",
+ *  "departmentByDepartmentId.name", "studentId", "tried", "solved",
+ *  "type", "motto", "lastLogin" })</code>
  */
-
 @Fields({"userId", "userName", "nickName", "email", "school", "departmentId",
     "departmentByDepartmentId.name", "studentId", "tried", "solved",
     "type", "motto", "lastLogin" })

@@ -8,6 +8,13 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+/**
+ * DTO used in status list.
+ * <br/>
+ * <code>@Fields({ "statusId", "userByUserId.userName", "problemId", "contestId",
+ *  "result", "length",
+ *  "languageByLanguageId.name", "timeCost", "memoryCost", "time", "caseNumber" })</code>
+ */
 @Fields({ "statusId", "userByUserId.userName", "problemId", "contestId",
     "result", "length",
     "languageByLanguageId.name", "timeCost", "memoryCost", "time", "caseNumber" })

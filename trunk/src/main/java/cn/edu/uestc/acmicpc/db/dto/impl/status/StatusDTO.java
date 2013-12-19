@@ -6,9 +6,15 @@ import java.util.Map;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
-import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
+import cn.edu.uestc.acmicpc.util.settings.Global;
 
+/**
+ * DTO for status entity.
+ * <br/>
+ * <code>@Fields({ "statusId", "result", "memoryCost", "timeCost", "length", "time", "caseNumber", "codeId",
+ *  "compileInfoId", "contestId", "languageId", "problemId", "userId" })</code>
+ */
 @Fields({ "statusId", "result", "memoryCost", "timeCost", "length", "time", "caseNumber", "codeId",
     "compileInfoId", "contestId", "languageId", "problemId", "userId" })
 public class StatusDTO implements BaseDTO<Status> {

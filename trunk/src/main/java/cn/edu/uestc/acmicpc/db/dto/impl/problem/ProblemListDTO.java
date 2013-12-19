@@ -8,12 +8,15 @@ import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
 /**
- * Data transfer object for {@link Problem}.
+ * DTO used in problem list.
+ * <br/>
+ * <code>@Fields({"problemId", "title", "source", "solved", "tried", "isSpj", "isVisible",
+ * "difficulty"})</code>
  */
-@Fields({"problemId", "title", "source", "solved", "tried", "isSpj", "isVisible", 
+@Fields({"problemId", "title", "source", "solved", "tried", "isSpj", "isVisible",
   "difficulty"})
 public class ProblemListDTO implements BaseDTO<Problem>{
-  
+
   private Integer problemId;
   private String title;
   private String source;
@@ -23,11 +26,11 @@ public class ProblemListDTO implements BaseDTO<Problem>{
   private Boolean isVisible;
   private Integer difficulty;
   private Integer status;
-  
+
   public ProblemListDTO() {
   }
-  
-  private ProblemListDTO(Integer problemId, String title, String source,Integer solved, 
+
+  private ProblemListDTO(Integer problemId, String title, String source,Integer solved,
                          Integer tried, Boolean isSpj, Boolean isVisible, Integer difficulty) {
     this.problemId = problemId;
     this.title = title;
@@ -78,7 +81,7 @@ public class ProblemListDTO implements BaseDTO<Problem>{
   public void setTried(Integer tried) {
     this.tried = tried;
   }
-  
+
   public Boolean getIsSpj() {
     return isSpj;
   }
@@ -102,7 +105,7 @@ public class ProblemListDTO implements BaseDTO<Problem>{
   public void setDifficulty(Integer difficulty) {
     this.difficulty = difficulty;
   }
-  
+
   public Integer getStatus() {
     return status;
   }
@@ -114,13 +117,13 @@ public class ProblemListDTO implements BaseDTO<Problem>{
   public static Builder builder() {
     return new Builder();
   }
-  
+
   /** Builder for {@link ProblemListDTO}. */
   public static class Builder implements BaseBuilder<ProblemListDTO>{
-    
+
     private Builder() {
     }
-    
+
     private Integer problemId;
     private String title="";
     private String source="";
@@ -129,13 +132,13 @@ public class ProblemListDTO implements BaseDTO<Problem>{
     private Boolean isSpj;
     private Boolean isVisible;
     private Integer difficulty;
-    
+
     @Override
     public ProblemListDTO build(){
-      return new ProblemListDTO(problemId, title, source, solved, tried, isSpj, 
+      return new ProblemListDTO(problemId, title, source, solved, tried, isSpj,
           isVisible, difficulty);
     }
-    
+
     @Override
     public ProblemListDTO build(Map<String, Object> properties) {
       problemId = (Integer) properties.get("problemId");
@@ -146,44 +149,44 @@ public class ProblemListDTO implements BaseDTO<Problem>{
       isSpj = (Boolean) properties.get("isSpj");
       isVisible = (Boolean) properties.get("isVisible");
       difficulty = (Integer) properties.get("difficulty");
-      return build(); 
+      return build();
     }
-    
+
     public Builder setProblemId(Integer problemID){
       this.problemId = problemID;
       return this;
     }
-    
+
     public Builder setTitle(String title){
       this.title = title;
       return this;
     }
-    
+
     public Builder setSource(String source){
       this.source = source;
       return this;
     }
-    
+
     public Builder setSolved(Integer solved){
       this.solved = solved;
       return this;
     }
-    
+
     public Builder setTried(Integer tried){
       this.tried = tried;
       return this;
     }
-    
+
     public Builder setIsSpj(Boolean isSpj){
       this.isSpj = isSpj;
       return this;
     }
-    
+
     public Builder setIsVisible(Boolean isVisivle){
       this.isVisible = isVisivle;
       return this;
     }
-    
+
     public Builder setDifficulty(Integer difficulty){
       this.difficulty = difficulty;
       return this;

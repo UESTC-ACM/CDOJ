@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDTO;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
-import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.settings.Global;
 
 /**
  * Judge queue scheduler.

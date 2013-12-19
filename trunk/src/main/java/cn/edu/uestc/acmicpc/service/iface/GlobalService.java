@@ -2,8 +2,8 @@ package cn.edu.uestc.acmicpc.service.iface;
 
 import java.util.List;
 
-import cn.edu.uestc.acmicpc.util.Global.AuthenticationType;
-import cn.edu.uestc.acmicpc.util.Global.ContestType;
+import cn.edu.uestc.acmicpc.util.settings.Global.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.settings.Global.ContestType;
 
 /**
  * Global service.

@@ -11,7 +11,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.web.view.PageInfo;
+import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 /**
  * Service interface for {@link Problem}.

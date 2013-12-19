@@ -6,9 +6,14 @@ import java.util.Map;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
-import cn.edu.uestc.acmicpc.util.Global;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
+import cn.edu.uestc.acmicpc.util.settings.Global;
 
+/**
+ * DTO for contest entity.
+ * <br/>
+ * <code>@Fields({ "contestId", "title", "description", "time", "length", "type" })</code>
+ */
 @Fields({ "contestId", "title", "description", "time", "length", "type" })
 public class ContestDTO implements BaseDTO<Contest> {
 

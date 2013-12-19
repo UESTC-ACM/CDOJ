@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.util;
+package cn.edu.uestc.acmicpc.util.helper;
 
 /**
  * Array util functions.

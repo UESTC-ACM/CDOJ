@@ -2,6 +2,9 @@ package cn.edu.uestc.acmicpc.db.dto.impl.problem;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * DTO post from problem data editor.
+ */
 public class ProblemDataEditDTO {
 
   public ProblemDataEditDTO() {

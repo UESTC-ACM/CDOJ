@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.util.exception;
 
-import cn.edu.uestc.acmicpc.util.ObjectUtil;
+import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
 
 /** Error information for {@link AppException}. */
 public class AppError {

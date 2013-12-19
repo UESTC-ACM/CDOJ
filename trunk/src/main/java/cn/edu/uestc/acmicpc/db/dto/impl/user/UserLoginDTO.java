@@ -6,8 +6,7 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 
 /**
- * Description
- * TODO(mzry1992)
+ * DTO post from user login form.
  */
 public class UserLoginDTO {
 
