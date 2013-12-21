@@ -17,6 +17,9 @@ public class Global {
    */
   public static final int USER_SERIAL_KEY_LENGTH = 128;
 
+  /**
+   * Online judge return type.
+   */
   public enum OnlineJudgeReturnType {
     OJ_WAIT("Queuing"),                             // 0
     OJ_AC("Accepted"),                              // 1
@@ -84,6 +87,9 @@ public class Global {
     }
   }
 
+  /**
+   * Training contest type.
+   */
   public enum TrainingContestType {
     NORMAL("normal"), ADJUST("adjust"), CF("cf"), TC("tc"), TEAM("team"), OTHERS("others"),
     UNRATED("unrated"), ABSENT("absent");
@@ -99,6 +105,9 @@ public class Global {
     }
   }
 
+  /**
+   * Training user type.
+   */
   public enum TrainingUserType {
     PERSONAL("Personal"), TEAM("Team");
 

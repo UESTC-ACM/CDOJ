@@ -22,7 +22,7 @@ public class PageInfo {
    */
   private String baseURL;
   /**
-   * The min/max page will show before/after current page is current-displayDist/current+displayDist
+   * The minimal/maximal page will show before/after current page is current-displayDist/current+displayDist
    */
   private int displayDistance;
 
@@ -90,13 +90,13 @@ public class PageInfo {
   }
 
   /**
-   * get a li tag formatted like <li class="sytle"><a href="url">name</a></li>
+   * get a {@code li} tag formatted like {@code <li class="sytle"><a href="url">name</a></li>}
    *
-   * @param style the CSS style of li tag
+   * @param style the CSS style of {@code li} tag
    * @param toPage the page to go
    * @param name the name display on the pagination
    * @param baseURL the baseURL to show
-   * @return a li tag
+   * @return a {@code li} tag
    */
   private static String getLiTag(String style, Long toPage, String name, String baseURL) {
     String result = "<li";

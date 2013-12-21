@@ -1,8 +1,7 @@
 package cn.edu.uestc.acmicpc.web.dto;
 
 /**
- * Description
- * TODO(mzry1992)
+ * DTO for uploaded file.
  */
 public class FileInformationDTO {
 

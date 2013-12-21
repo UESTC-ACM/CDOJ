@@ -5,8 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * Description
- * TODO(mzry1992)
+ * DTO post from file upload form.
  */
 public class FileUploadDTO {
 

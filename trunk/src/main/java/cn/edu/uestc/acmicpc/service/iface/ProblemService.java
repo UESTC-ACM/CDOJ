@@ -14,56 +14,56 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 /**
- * Service interface for {@link Problem}.
+ * Problem service interface.
  */
 public interface ProblemService extends DatabaseService<Problem, Integer> {
 
   /**
    * Gets all visible problems' id without any statements.
    *
-   * @return all problem id list
+   * @return all problem id list.
    * @throws AppException
    */
   public List<Integer> getAllVisibleProblemIds() throws AppException;
 
   /**
-   * Gets specific problem by problem's ID.
+   * Gets {@link ProblemDTO} entity by problem's ID.
    *
-   * @param problemId
-   * @return ProblemDTO
+   * @param problemId problem's id.
+   * @return ProblemDTO {@link ProblemDTO} entity.
    * @throws AppException
    */
   public ProblemDTO getProblemDTOByProblemId(Integer problemId)
       throws AppException;
 
   /**
-   * Gets number of problems that meet the condition.
+   * Counts the number of problems fit in condition.
    *
-   * @param condition
-   * @return Long
+   * @param condition {@link ProblemCondition} entity.
+   * @return total number of problems fit in the condition.
    * @throws AppException
    */
   public Long count(ProblemCondition condition) throws AppException;
 
   /**
-   * Gets problems list that meet the condition and inside the range of page
+   * Get the problems fit in condition and page range.
    *
-   * @param problemCondition
-   * @param pageInfo
-   * @return ProblemDTO List
+   * @param condition {@link ProblemCondition} entity.
+   * @param pageInfo {@link PageInfo} entity.
+   * @return List of {@link ProblemListDTO} entities.
    * @throws AppException
    */
-  public List<ProblemListDTO> getProblemListDTOList(ProblemCondition problemCondition,
+  public List<ProblemListDTO> getProblemListDTOList(ProblemCondition condition,
       PageInfo pageInfo) throws AppException;
 
   /**
-   * @param field
-   * @param ids
-   * @param value
+   * Modify one filed of multiply entities as value.
+   *
+   * @param field filed need to modified.
+   * @param ids entities' ID split by <code>,</code>.
+   * @param value new value.
    * @throws AppException
    */
-  // TODO(mzry1992): it's confuse in API doc. I think you can rename it. please
-  // add java doc for it.
   public void operator(String field, String ids, String value) throws AppException;
 
   /**
@@ -75,10 +75,10 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
   public Integer createNewProblem() throws AppException;
 
   /**
-   * Updates problem record according to a {@link ProblemDTO}.
+   * Updates problem record by {@link ProblemDTO} entity.
    *
    * @param problemDTO
-   *          {@link ProblemDTO} to be updated.
+   *          {@link ProblemDTO} entity.
    * @throws AppException
    */
   public void updateProblem(ProblemDTO problemDTO) throws AppException;
@@ -89,34 +89,40 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
    * @param properties
    *          problem property fields.
    * @param problemId
-   *          problem id.
+   *          problem's id.
    * @throws AppException
    */
   public void updateProblemByProblemId(Map<String, Object> properties, Integer problemId)
       throws AppException;
 
   /**
+   * Get {@link ProblemShowDTO} entity by problem id.
+   *
    * @param problemId
-   *          problem id.
-   * @return a DTO for problem showing.
+   *          problem's id.
+   * @return {@link ProblemShowDTO} entity.
    * @throws AppException
    */
   public ProblemShowDTO getProblemShowDTO(Integer problemId)
       throws AppException;
 
   /**
+   * Get {@link ProblemEditorShowDTO} entity by problem id.
+   *
    * @param problemId
-   *          problem id.
-   * @return a DTO for problem editor showing.
+   *          problem's id.
+   * @return {@link ProblemEditorShowDTO} entity.
    * @throws AppException
    */
   public ProblemEditorShowDTO getProblemEditorShowDTO(Integer problemId)
       throws AppException;
 
   /**
+   * Get {@link ProblemDataShowDTO} entity by problem id.
+   *
    * @param problemId
-   *          problem id.
-   * @return a DTO for problem data showing.
+   *          problem's id.
+   * @return {@link ProblemDataShowDTO} entity.
    * @throws AppException
    */
   public ProblemDataShowDTO getProblemDataShowDTO(Integer problemId)

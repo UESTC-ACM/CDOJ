@@ -13,9 +13,9 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 public interface DatabaseService<E extends Serializable, K extends Serializable> {
 
   /**
-   * Get entity dao for query.
+   * Get entity DAO for query.
    *
-   * @return enitty dao for query.
+   * @return enitty DAO for query.
    */
   IDAO<E, K> getDAO();
 }

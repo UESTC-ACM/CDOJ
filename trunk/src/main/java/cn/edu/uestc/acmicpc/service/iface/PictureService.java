@@ -6,23 +6,25 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 
+/**
+ * Picture service interface.
+ */
 public interface PictureService {
 
   /**
    * Gets a user's all pictures.
-   * 
+   *
    * @param userId
    *          user id.
    * @return picture's file name.
    * @throws AppException
    */
-  // TODO(mzry1992): please check whether it's file's name or not.
   @Deprecated
   public ArrayList<String> getPictures(Integer userId) throws AppException;
 
   /**
    * Upload pictures.
-   * 
+   *
    * @param fileUploadDTO
    *          file upload DTO to for file uploading.
    * @param userId
@@ -35,12 +37,12 @@ public interface PictureService {
       Integer userId) throws AppException;
 
   /**
-   * Upload picture into dir
-   * 
-   * @param fileUploadDTO
+   * Upload picture into target directory.
+   *
+   * @param fileUploadDTO {@link FileUploadDTO} entity.
    * @param directory
    *          Directory, like "/problem/1/"
-   * @return File information DTO
+   * @return {@link FileInformationDTO} entity.
    * @throws AppException
    */
   public FileInformationDTO uploadPicture(FileUploadDTO fileUploadDTO,
@@ -49,7 +51,7 @@ public interface PictureService {
   /**
    * When we add new problem/article, we upload images into /{category}/new/,
    * but after we save it we should move images into right place.
-   * 
+   *
    * @param content
    *          old article content
    * @param oldDirectory

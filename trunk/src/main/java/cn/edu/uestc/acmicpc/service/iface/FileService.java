@@ -4,28 +4,30 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 
 /**
- * Description
- * TODO(mzry1992)
+ * File service interface.
  */
 public interface FileService {
 
   public void moveFile(String source, String target) throws AppException;
 
   /**
+   * Upload problem data file and return the number of data cases.
    *
-   * @param fileUploadDTO
-   * @param problemId
+   * @param fileUploadDTO {@link FileUploadDTO} entity.
+   * @param problemId problem's id.
+   * @return the number of data cases.
    * @throws AppException
    */
-  // TODO(mzry1992)
   public Integer uploadProblemDataFile(FileUploadDTO fileUploadDTO,
       Integer problemId) throws AppException;
 
   /**
-   * @param problemId
-   * @return problem id.
+   * Move problem data files from temporary into judge directory  and return the number of
+   * data cases.
+   *
+   * @param problemId problem's id.
+   * @return  and return the number of data cases.
    * @throws AppException
    */
-  // TODO(mzry1992): only to pass javadoc process, please change the meaning of @return.
   public Integer moveProblemDataFile(Integer problemId) throws AppException;
 }

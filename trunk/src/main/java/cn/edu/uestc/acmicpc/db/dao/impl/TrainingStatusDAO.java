@@ -6,9 +6,6 @@ import cn.edu.uestc.acmicpc.db.dao.base.DAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 
-/**
- * // TODO(mzry1992): Description
- */
 @Repository
 public class TrainingStatusDAO extends DAO<TrainingStatus, Integer> implements ITrainingStatusDAO {
 

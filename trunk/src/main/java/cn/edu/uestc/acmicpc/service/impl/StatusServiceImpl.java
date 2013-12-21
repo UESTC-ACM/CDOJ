@@ -41,7 +41,6 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
     statusCondition.resultId = Global.OnlineJudgeReturnType.OJ_AC.ordinal();
-    // TODO(mzry1992): please test for this statement.
     return (List<Integer>) statusDAO.findAll("problemByProblemId.problemId",
         statusCondition.getCondition());
   }
@@ -52,7 +51,6 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
       throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
-    // TODO(mzry1992): please test for this statement.
     return (List<Integer>) statusDAO.findAll("problemByProblemId.problemId",
         statusCondition.getCondition());
   }

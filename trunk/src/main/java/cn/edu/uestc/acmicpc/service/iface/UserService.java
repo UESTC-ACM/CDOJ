@@ -4,108 +4,97 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminSummaryDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserSummaryDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
 /**
- * User service interface to handle operations about {@link User}.
+ * User service interface.
  */
 public interface UserService extends DatabaseService<User, Integer> {
 
   /**
-   * Get unique user dto from database by user id.
+   * Get {@link UserDTO} by user id.
    *
-   * @param userId user's entity id.
-   * @return the unique user entity from database.
+   * @param userId user's id.
+   * @return {@link UserDTO} entity.
    * @throws AppException
    */
   public UserDTO getUserDTOByUserId(Integer userId) throws AppException;
 
   /**
-   * Get unique user dto from database by user name.
+   * Get {@link UserDTO} by user name.
    *
-   * @param userName name of the user
-   * @return the unique user entity from database
+   * @param userName user's name.
+   * @return {@link UserDTO} entity.
    * @throws AppException
    */
   public UserDTO getUserDTOByUserName(String userName) throws AppException;
 
   /**
-   * Get unique user center dto from database by user name.
+   * Get {@link UserCenterDTO} by user name.
    *
-   * @param userName name of the user
-   * @return the unique user entity from database
+   * @param userName user's name.
+   * @return {@link UserDTO} entity.
    * @throws AppException
    */
   public UserCenterDTO getUserCenterDTOByUserName(String userName) throws AppException;
 
   /**
-   * Get unique user dto from database by user's email.
+   * Get {@link UserDTO} by user email.
    *
    * @param email user's email.
-   * @return the unique user entity from database.
+   * @return {@link UserDTO} entity.
    * @throws AppException
    */
   public UserDTO getUserDTOByEmail(String email) throws AppException;
 
   /**
-   * Update user entity.
+   * Update user by {@link UserDTO} entity.
    *
-   * @param userDTO user dto to be updated.
+   * @param userDTO {@link UserDTO} entity.
    * @throws AppException
    */
   public void updateUser(UserDTO userDTO) throws AppException;
 
   /**
-   * Create a new user entity and make persistence with it.
+   * Create a new user record {@link UserDTO} entity.
    *
-   * @param userDTO new user entity with {@code null} id.
+   * @param userDTO {@link UserDTO} entity.
    * @throws AppException
    */
   public void createNewUser(UserDTO userDTO) throws AppException;
 
   /**
-   * Search user by condition and page info.
+   * Counts the number of users fit in condition.
    *
-   * @param userCondition condition
-   * @param pageInfo page range
-   * @return All user correspond to the condition and range.
+   * @param condition {@link UserCondition} entity.
+   * @return total number of users fit in the condition.
    * @throws AppException
    */
-  public List<UserSummaryDTO> search(UserCondition userCondition, PageInfo pageInfo)
+  public Long count(UserCondition condition) throws AppException;
+
+  /**
+   * Get the users fit in condition and page range.
+   *
+   * @param condition {@link UserCondition} entity.
+   * @param pageInfo {@link PageInfo} entity.
+   * @return List of {@link UserListDTO} entities.
+   * @throws AppException
+   */
+  public List<UserListDTO> getUserListDTOList(UserCondition condition, PageInfo pageInfo)
       throws AppException;
 
   /**
-   * Search user by condition and page info for admin dashboard.
+   * Update some fields of one user according the user id.
    *
-   * @param userCondition condition
-   * @param pageInfo page range
-   * @return All user correspond to the condition and range.
-   * @throws AppException
-   */
-  public List<UserAdminSummaryDTO> adminSearch(UserCondition userCondition, PageInfo pageInfo)
-      throws AppException;
-
-  /**
-   * TODO(mzry1992)
-   *
-   * @param properties
-   * @param userId
+   * @param properties field name and field value map.
+   * @param userId user's id.
    * @throws AppException
    */
   public void updateUserByUserId(Map<String, Object> properties, Integer userId) throws AppException;
-
-  /**
-   * Count user number by condition
-   *
-   * @param userCondition condition
-   * @return Tot users correspond to the condition.
-   * @throws AppException
-   */
-  public Long count(UserCondition userCondition) throws AppException;
 
 }
