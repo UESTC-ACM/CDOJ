@@ -21,7 +21,6 @@ public interface BaseBuilder<T extends BaseDTO<?>> {
 
   /**
    * Build DTO by properties.
-   * TODO(RuinsHe) Please fix the checkstyle plugin
    * @param properties
    *          property set in
    *          {@link IDAO#findAll(Class, BaseBuilder, cn.edu.uestc.acmicpc.db.condition.base.Condition)}.

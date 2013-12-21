@@ -38,10 +38,9 @@ import cn.edu.uestc.acmicpc.judge.JudgeService;
 import com.jolbox.bonecp.BoneCPDataSource;
 
 /**
- * Application Context Config
+ * Application Context Configuration
  */
 @Configuration
-// TODO(mzry1992): description
 @ComponentScan(basePackages = {
     "cn.edu.uestc.acmicpc.db",
     "cn.edu.uestc.acmicpc.judge",
@@ -132,11 +131,10 @@ public class ApplicationContextConfig {
 
   /**
    * Bean: transaction manager
-   * <p/>
-   * TODO(mzry1992): txAdvise
    *
    * @return transactionManagerBean
    */
+  // TODO(fish) add txAdvise
   @Bean(name = "transactionManager")
   public HibernateTransactionManager transactionManager() {
     HibernateTransactionManager transactionManager = new HibernateTransactionManager();

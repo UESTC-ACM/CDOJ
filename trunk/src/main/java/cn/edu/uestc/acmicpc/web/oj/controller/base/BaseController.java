@@ -21,8 +21,6 @@ import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 /**
  * BaseController
- *
- * TODO(mzry1992): Exception handler description
  */
 @Controller
 public class BaseController {

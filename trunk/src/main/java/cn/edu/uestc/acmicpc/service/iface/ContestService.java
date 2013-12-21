@@ -35,43 +35,42 @@ public interface ContestService extends DatabaseService<Contest, Integer> {
       throws AppException;
 
   /**
-   * Get the number of contests that meet the condition.
+   * Counts the number of contests fit in condition.
    *
-   * @param contestCondition
-   *          {@link ContestCondition} entity.
-   * @return number of records for DB query.
+   * @param condition {@link ContestCondition} entity.
+   * @return total number of contests fit in the condition.
    * @throws AppException
    */
-  public Long count(ContestCondition contestCondition) throws AppException;
+  public Long count(ContestCondition condition) throws AppException;
 
   /**
+   * Get the contests fit in condition and page range.
    *
-   * @param contestCondition
-   *          DB query condition.
-   * @param pageInfo
-   *          page information.
-   * @return contest's list that meets the condition and inside the range of
-   *         page
+   * @param condition {@link ContestCondition} entity.
+   * @param pageInfo {@link PageInfo} entity.
+   * @return List of {@link ContestListDTO} entities.
    * @throws AppException
    */
   public List<ContestListDTO> getContestListDTOList(
-      ContestCondition contestCondition,
+      ContestCondition condition,
       PageInfo pageInfo) throws AppException;
 
   /**
+   * Modify one filed of multiply entities as value.
    *
-   * @param field
-   * @param ids
-   * @param value
+   * @param field filed need to modified.
+   * @param ids entities' ID split by <code>,</code>.
+   * @param value new value.
    * @throws AppException
    */
   public void operator(String field, String ids, String value)
       throws AppException;
 
   /**
+   * Get {@link ContestEditorShowDTO} by contest id.
    *
-   * @param contestId
-   * @return
+   * @param contestId contest's id.
+   * @return {@link ContestEditorShowDTO} entity.
    * @throws AppException
    */
   public ContestEditorShowDTO getContestEditorShowDTO(Integer contestId) throws AppException;

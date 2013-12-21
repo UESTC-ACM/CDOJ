@@ -6,6 +6,7 @@ cn.edu.uestc.acmicpc.db.dto.base
 cn.edu.uestc.acmicpc.db.dto.impl.article
 cn.edu.uestc.acmicpc.db.dto.impl.code
 cn.edu.uestc.acmicpc.db.dto.impl.contest
+cn.edu.uestc.acmicpc.db.dto.impl.contestProblem
 cn.edu.uestc.acmicpc.db.dto.impl.department
 cn.edu.uestc.acmicpc.db.dto.impl.language
 cn.edu.uestc.acmicpc.db.dto.impl.problem
@@ -14,3 +15,5 @@ cn.edu.uestc.acmicpc.db.dto.impl.user
 cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey
 cn.edu.uestc.acmicpc.service.iface
 cn.edu.uestc.acmicpc.util.exception
+cn.edu.uestc.acmicpc.util.settings
+cn.edu.uestc.acmicpc.web.dto

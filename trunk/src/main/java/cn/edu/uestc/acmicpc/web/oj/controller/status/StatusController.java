@@ -39,10 +39,6 @@ import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
-/**
- * Description
- * TODO(mzry1992)
- */
 @Controller
 @RequestMapping("/status")
 public class StatusController extends BaseController {
@@ -90,20 +86,12 @@ public class StatusController extends BaseController {
     this.statusService = statusService;
   }
 
-  /**
-   * TODO(mzry1992)
-   * @return
-   */
   @RequestMapping("list")
   @LoginPermit(NeedLogin = false)
   public String list() {
     return "status/statusList";
   }
 
-  /**
-   * TODO(mzry1992)
-   * @return
-   */
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public @ResponseBody
@@ -145,10 +133,6 @@ public class StatusController extends BaseController {
     return json;
   }
 
-  /**
-   * Count the number of status fit in condition
-   * @return {"result": "success", "count": count} if success
-   */
   @RequestMapping("count")
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public @ResponseBody
@@ -170,11 +154,6 @@ public class StatusController extends BaseController {
     return json;
   }
 
-  /**
-   * Count the number of status fit in condition
-   * @param statusCondition
-   * @return {"result": "success", "count": count} if success
-   */
   @RequestMapping("rejudge")
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public @ResponseBody

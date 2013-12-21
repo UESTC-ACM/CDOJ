@@ -9,10 +9,9 @@ import org.springframework.stereotype.Service;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminSummaryDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserSummaryDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -81,21 +80,12 @@ public class UserServiceImpl extends AbstractService implements UserService {
   }
 
   @Override
-  public List<UserSummaryDTO> search(UserCondition userCondition, PageInfo pageInfo)
+  public List<UserListDTO> getUserListDTOList(UserCondition userCondition, PageInfo pageInfo)
       throws AppException {
     Condition condition = userCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return userDAO.findAll(UserSummaryDTO.class,
-        UserSummaryDTO.builder(),
-        condition);
-  }
-
-  @Override
-  public List<UserAdminSummaryDTO> adminSearch(UserCondition userCondition, PageInfo pageInfo)
-      throws AppException {
-    Condition condition = userCondition.getCondition();
-    condition.setPageInfo(pageInfo);
-    return userDAO.findAll(UserAdminSummaryDTO.class, UserAdminSummaryDTO.builder(),
+    return userDAO.findAll(UserListDTO.class,
+        UserListDTO.builder(),
         condition);
   }
 

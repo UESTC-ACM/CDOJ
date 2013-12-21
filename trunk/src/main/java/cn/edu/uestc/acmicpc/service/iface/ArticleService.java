@@ -33,10 +33,10 @@ public interface ArticleService extends DatabaseService<Article, Integer> {
   public ArticleDTO getArticleDTO(Integer articleId) throws AppException;
 
   /**
-   * Count the number of articles fit in condition.
+   * Counts the number of articles fit in condition.
    *
    * @param condition {@link ArticleCondition} entity.
-   * @return Total number of articles fit in the condition.
+   * @return total number of articles fit in the condition.
    * @throws AppException
    */
   public Long count(ArticleCondition condition) throws AppException;

@@ -22,10 +22,9 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminSummaryDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserSummaryDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
@@ -150,21 +149,9 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
   public void testSearch() throws AppException {
     ArgumentCaptor<Condition> captor = ArgumentCaptor.forClass(Condition.class);
     PageInfo pageInfo = PageInfo.create(300L, Global.RECORD_PER_PAGE, "baseURL", 10, 2L);
-    userService.search(new UserCondition(), pageInfo);
-    verify(userDAO).findAll(eq(UserSummaryDTO.class),
-        isA(UserSummaryDTO.Builder.class), captor.capture());
-    Condition condition = captor.getValue();
-    Assert.assertEquals(condition.getJoinedType(), JoinedType.AND);
-    Assert.assertEquals(condition.getPageInfo(), pageInfo);
-  }
-
-  @Test
-  public void testAdminSearch() throws AppException {
-    ArgumentCaptor<Condition> captor = ArgumentCaptor.forClass(Condition.class);
-    PageInfo pageInfo = PageInfo.create(300L, Global.RECORD_PER_PAGE, "baseURL", 10, 2L);
-    userService.adminSearch(new UserCondition(), pageInfo);
-    verify(userDAO).findAll(eq(UserAdminSummaryDTO.class),
-        isA(UserAdminSummaryDTO.Builder.class), captor.capture());
+    userService.getUserListDTOList(new UserCondition(), pageInfo);
+    verify(userDAO).findAll(eq(UserListDTO.class),
+        isA(UserListDTO.Builder.class), captor.capture());
     Condition condition = captor.getValue();
     Assert.assertEquals(condition.getJoinedType(), JoinedType.AND);
     Assert.assertEquals(condition.getPageInfo(), pageInfo);

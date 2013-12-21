@@ -3,7 +3,7 @@ package cn.edu.uestc.acmicpc.util.exception;
 import java.io.Serializable;
 
 /**
- * A simple exception for Ranklist Parser.
+ * A simple exception for Rank list Parser.
  */
 public class ParserException extends Exception implements Serializable {
 

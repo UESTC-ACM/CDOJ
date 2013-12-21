@@ -23,9 +23,9 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserActivateDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserSummaryDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDTO;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
@@ -40,22 +40,6 @@ import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
-/**
- * User controller
- * <ul>
- *   <li><strong>/user/login</strong> Upload user's name and password in json, and do login operation on server</li>
- *   <li><strong>/user/logout</strong> Logout current user</li>
- *   <li><strong>/user/register</strong> Upload user's information and generate a new user</li>
- *   <li><strong>/user/sendSerialKey/{userName}</strong></li>
- *   <li><strong>/user/activate/{userName}/{serialKey}</strong></li>
- *   <li><strong>/user/resetPassword</strong></li> TODO(mzry1992):
- *   <li><strong>/user/center/{userName}</strong> Visit user center</li>
- *   <li><strong>/user/status/{userName}</strong> User problem submission status</li>
- *   <li><strong>/user/list</strong> User list page</li>
- *   <li><strong>/user/search</strong> Search users by user condition</li>
- *   <li><strong>/user/edit</strong> Update user information</li>
- * </ul>
- */
 @Controller
 @RequestMapping("/user")
 public class UserController extends BaseController {
@@ -91,19 +75,6 @@ public class UserController extends BaseController {
     this.emailService = emailService;
   }
 
-  /**
-   * Login controller.
-   *
-   * @param session HTTP session entity.
-   * @param userLoginDTO User DTO
-   * @param validateResult Validation result
-   * @return <ul>
-   *         <li>For success: {"result":"success"}</li>
-   *         <li>For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
-   *         <li>For validation error: {"result":"field_error","field":<strong>Field
-   *         errors</strong>}</li>
-   *         </ul>
-   */
   @RequestMapping("login")
   @LoginPermit(NeedLogin = false)
   public @ResponseBody
@@ -137,12 +108,6 @@ public class UserController extends BaseController {
     return json;
   }
 
-  /**
-   * Logout controller.
-   *
-   * @param session session
-   * @return {"result":"success"}
-   */
   @RequestMapping("logout")
   @LoginPermit(NeedLogin = true)
   public @ResponseBody
@@ -153,19 +118,6 @@ public class UserController extends BaseController {
     return json;
   }
 
-  /**
-   * Register controller
-   *
-   * @param session session
-   * @param userRegisterDTO User DTO
-   * @param validateResult Validation result
-   * @return <ul>
-   *         <li>For success: {"result":"success"}</li>
-   *         <li>For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
-   *         <li>For validation error: {"result":"field_error","field":<strong>Field
-   *         errors</strong>}</li>
-   *         </ul>
-   */
   @RequestMapping("register")
   @LoginPermit(NeedLogin = false)
   public @ResponseBody
@@ -235,31 +187,12 @@ public class UserController extends BaseController {
     return json;
   }
 
-  /**
-   * User list
-   *
-   * @param model model map
-   * @return userList view
-   */
   @RequestMapping("list")
   @LoginPermit(NeedLogin = false)
   public String list(ModelMap model) {
     return "user/userList";
   }
 
-  /**
-   * Search user
-   *
-   * @param userCondition condition
-   * @return
-   * <ul>
-   * <li>
-   * For success: {"result":"ok", "pageInfo":<strong>PageInfo object</strong>, "condition",
-   * <strong>UserCondition entity</strong>, "userList":<strong>query result</strong>}</li>
-   * <li>
-   * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
-   * </ul>
-   */
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public @ResponseBody
@@ -269,7 +202,7 @@ public class UserController extends BaseController {
       Long count = userService.count(userCondition);
       PageInfo pageInfo = buildPageInfo(count, userCondition.currentPage,
           Global.RECORD_PER_PAGE, "", null);
-      List<UserSummaryDTO> userList = userService.search(userCondition, pageInfo);
+      List<UserListDTO> userList = userService.getUserListDTOList(userCondition, pageInfo);
 
       json.put("pageInfo", pageInfo.getHtmlString());
       json.put("result", "success");
@@ -285,13 +218,6 @@ public class UserController extends BaseController {
     return json;
   }
 
-  /**
-   * Go to the user center
-   *
-   * @param userName user name, specified in url
-   * @param model model
-   * @return userCenter page if this user exist, other wise return 404 error page.
-   */
   @RequestMapping("center/{userName}")
   @LoginPermit(NeedLogin = false)
   public String center(@PathVariable("userName") String userName,
@@ -309,18 +235,6 @@ public class UserController extends BaseController {
     return "user/userCenter";
   }
 
-  /**
-   * Update user information
-   * @param session session
-   * @param userEditDTO form information
-   * @param validateResult validate result
-   * @return <ul>
-   *         <li>For success: {"result":"success"}</li>
-   *         <li>For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
-   *         <li>For validation error: {"result":"field_error","field":<strong>Field
-   *         errors</strong>}</li>
-   *         </ul>
-   */
   @RequestMapping("edit")
   @LoginPermit(NeedLogin = true)
   public @ResponseBody
@@ -376,18 +290,6 @@ public class UserController extends BaseController {
     return json;
   }
 
-  /**
-   * Find all problem that target user passed or failed.
-   *
-   * @param userName user name
-   * @return <ul>
-   * <li>
-   * For success: {"result":"success", "problemStatus":<strong>ProblemStatus object</strong>,
-   * "problemCount":<strong>Tot problems</strong>}</li>
-   * <li>
-   * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
-   * </ul>
-   */
   @RequestMapping("status/{userName}")
   @LoginPermit(NeedLogin = false)
   public @ResponseBody
@@ -423,17 +325,6 @@ public class UserController extends BaseController {
     return json;
   }
 
-  /**
-   * Send serial key to user
-   *
-   * @param userName user name
-   * @return <ul>
-   * <li>
-   * For success: {"result":"success"}</li>
-   * <li>
-   * For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
-   * </ul>
-   */
   @RequestMapping("sendSerialKey/{userName}")
   @LoginPermit(NeedLogin = false)
   public @ResponseBody
@@ -457,14 +348,6 @@ public class UserController extends BaseController {
     return json;
   }
 
-  /**
-   * Go to activate page
-   *
-   * @param userName user name in path
-   * @param serialKey serial key in path
-   * @param model model map
-   * @return activate page
-   */
   @RequestMapping("activate/{userName}/{serialKey}")
   @LoginPermit(NeedLogin = false)
   public String activate(@PathVariable("userName") String userName,
@@ -475,18 +358,6 @@ public class UserController extends BaseController {
     return "user/activate";
   }
 
-  /**
-   * Reset password
-   *
-   * @param userActivateDTO user name and serial key collected form form.
-   * @param validateResult validate result
-   * @return <ul>
-   *         <li>For success: {"result":"success"}</li>
-   *         <li>For error: {"result":"error", "error_msg":<strong>error message</strong>}</li>
-   *         <li>For validation error: {"result":"field_error","field":<strong>Field
-   *         errors</strong>}</li>
-   *         </ul>
-   */
   @RequestMapping("resetPassword")
   @LoginPermit(NeedLogin = false)
   public @ResponseBody
