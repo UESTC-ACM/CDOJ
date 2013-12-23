@@ -25395,16 +25395,15 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
           orderAsc: void 0
         },
         formatter: function(data) {
-          var adminSpan, difficulty, panelAC, panelDE, panelWA;
-          panelAC = "panel panel-success";
-          panelWA = "panel panel-danger";
-          panelDE = "panel panel-default";
+          var adminSpan, difficulty, panelAC, panelWA;
+          panelAC = "success";
+          panelWA = "danger";
           this.user = getCurrentUser();
           adminSpan = function() {
             var result;
             result = "";
             if (this.user.userLogin && this.user.currentUserType === AuthenticationType.ADMIN) {
-              result += "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-visible-state-editor\" problem-id=\"" + data.problemId + "\" visible=\"" + data.isVisible + "\">\n      <i class=\"" + (data.isVisible ? "fa fa-eye" : "fa fa-eye-slash") + "\"></i>\n    </button>\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-editor\" problem-id=\"" + data.problemId + "\"><i class=\"fa fa-pencil\"></i></button>\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-data-editor\" problem-id=\"" + data.problemId + "\"><i class=\"fa fa-cog\"></i></button>\n  </div>\n</div>";
+              result += "<td style=\"padding: 4px;\">\n<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-visible-state-editor\" problem-id=\"" + data.problemId + "\" visible=\"" + data.isVisible + "\">\n      <i class=\"" + (data.isVisible ? "fa fa-eye" : "fa fa-eye-slash") + "\"></i>\n    </button>\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-editor\" problem-id=\"" + data.problemId + "\"><i class=\"fa fa-pencil\"></i></button>\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-data-editor\" problem-id=\"" + data.problemId + "\"><i class=\"fa fa-cog\"></i></button>\n  </div>\n</div>\n</td>";
             }
             return result;
           };
@@ -25423,7 +25422,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
             });
             return result;
           };
-          return "<div class=\"col-md-12\">\n  <div class=\"" + (data.status === AuthorStatusType.PASS ? panelAC : data.status === AuthorStatusType.FAIL ? panelWA : panelDE) + "\">\n    <div class=\"panel-heading\">\n      <h3 class=\"panel-title\">\n        <a href=\"/problem/show/" + data.problemId + "\">" + data.title + "</a>\n        <span class='pull-right admin-span'>" + (adminSpan()) + "</span>\n        <span class='pull-right difficulty-span' value=\"" + data.problemId + "\">" + (difficulty(data.difficulty)) + "</span>\n      </h3>\n    </div>\n    <div class=\"panel-body\">\n      <span class=\"source\">\n        " + (data.source.trim() !== '' ? data.source : '') + "\n      </span>\n      " + (data.isSpj ? "<span class='label label-danger'>SPJ</span>" : '') + "\n    </div>\n  </div>\n</div>";
+          return "<tr>\n  <td style=\"text-align: right;\">" + data.problemId + "</td>\n  <td><a href=\"/problem/show/" + data.problemId + "\">" + data.title + "</a></td>\n  <td class=\"" + (data.status === AuthorStatusType.PASS ? panelAC : data.status === AuthorStatusType.FAIL ? panelWA : void 0) + "\" style=\"text-align: right;\"><a href=\"/status/list?problemId=" + data.problemId + "\">x " + data.solved + "</a></td>\n  " + (adminSpan()) + "\n</tr>";
         },
         after: function() {
           var _this = this;
