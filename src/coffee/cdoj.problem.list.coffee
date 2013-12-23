@@ -19,9 +19,8 @@ initProblemList = ->
         orderAsc: undefined
       formatter: (data) ->
         #console.log(data);
-        panelAC = "panel panel-success"
-        panelWA = "panel panel-danger"
-        panelDE = "panel panel-default"
+        panelAC = "success"
+        panelWA = "danger"
         # data.status = 1 if AC, 2 if TRIED, otherwise null
         @user = getCurrentUser()
         adminSpan = ->
@@ -29,7 +28,8 @@ initProblemList = ->
           if @user.userLogin && @user.currentUserType == AuthenticationType.ADMIN
             # admin
             result += """
-                      <div class="btn-toolbar" role="toolbar">
+                      <td style="padding: 4px;">
+<div class="btn-toolbar" role="toolbar">
                         <div class="btn-group">
                           <button type="button" class="btn btn-default btn-sm problem-visible-state-editor" problem-id="#{data.problemId}" visible="#{data.isVisible}">
                             <i class="#{if data.isVisible then "fa fa-eye" else "fa fa-eye-slash"}"></i>
@@ -38,6 +38,7 @@ initProblemList = ->
                           <button type="button" class="btn btn-default btn-sm problem-data-editor" problem-id="#{data.problemId}"><i class="fa fa-cog"></i></button>
                         </div>
                       </div>
+</td>
                       """
           return result
 
@@ -53,29 +54,16 @@ initProblemList = ->
           return result
 
         """
-          <div class="col-md-12">
-            <div class="#{if data.status == AuthorStatusType.PASS
+          <tr>
+            <td style="text-align: right;">#{data.problemId}</td>
+            <td><a href="/problem/show/#{data.problemId}">#{data.title}</a></td>
+            <td class="#{if data.status == AuthorStatusType.PASS
                            panelAC
                          else if data.status == AuthorStatusType.FAIL
                            panelWA
-                         else
-                           panelDE
-                         }">
-              <div class="panel-heading">
-                <h3 class="panel-title">
-                  <a href="/problem/show/#{data.problemId}">#{data.title}</a>
-                  <span class='pull-right admin-span'>#{adminSpan()}</span>
-                  <span class='pull-right difficulty-span' value="#{data.problemId}">#{difficulty(data.difficulty)}</span>
-                </h3>
-              </div>
-              <div class="panel-body">
-                <span class="source">
-                  #{if data.source.trim() != '' then data.source else ''}
-                </span>
-                #{if data.isSpj then "<span class='label label-danger'>SPJ</span>" else ''}
-              </div>
-            </div>
-          </div>
+                         }" style="text-align: right;"><a href="/status/list?problemId=#{data.problemId}">x #{data.solved}</a></td>
+            #{adminSpan()}
+          </tr>
         """
       after: ->
         @user = getCurrentUser()
