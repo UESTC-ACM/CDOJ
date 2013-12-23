@@ -150,19 +150,49 @@ Admin problem list page
     </div>
 
     <div class="row" id="mzry1992-container">
-      <c:if
-        test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
-        <div class="col-md-12" id="problem-admin-operation">
-          <div class="panel panel-danger">
-            <div class="panel-body">
-              <a href="/problem/editor/new" class="btn btn-success">
-                <i class="fa fa-plus"></i>Add new problem
-              </a>
+      <c:choose>
+        <c:when
+          test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
+          <div class="col-md-12" id="problem-admin-operation">
+            <div class="panel panel-danger">
+              <div class="panel-body">
+                <a href="/problem/editor/new" class="btn btn-success">
+                  <i class="fa fa-plus"></i>Add new problem
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-      </c:if>
-      <div id="list-container"></div>
+          <div class="col-md-12">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width: 80px; text-align: right;">#</th>
+                  <th></th>
+                  <th style="width: 80px;"></th>
+                  <th style="width: 105px;"></th>
+                </tr>
+              </thead>
+              <tbody id="list-container">
+              </tbody>
+            </table>
+          </div>
+        </c:when>
+        <c:otherwise>
+          <div class="col-md-12">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width: 80px; text-align: right;">#</th>
+                  <th></th>
+                  <th style="width: 80px;"></th>
+                </tr>
+              </thead>
+              <tbody id="list-container">
+              </tbody>
+            </table>
+          </div>
+        </c:otherwise>
+      </c:choose>
     </div>
   </div>
 

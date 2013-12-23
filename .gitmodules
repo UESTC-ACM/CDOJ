@@ -6,4 +6,4 @@
 	url = https://github.com/mathjax/MathJax.git
 [submodule "trunk/src/main/webapp/plugins/cdoj"]
 	path = trunk/src/main/webapp/plugins/cdoj
-	url = https://gitcafe.com/mzry1992/CDOJ-UI.git
+	url = http://review.mzry1992.com/CDOJ-UI
