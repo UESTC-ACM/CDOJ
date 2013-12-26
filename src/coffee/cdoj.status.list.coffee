@@ -44,9 +44,8 @@ initStatusList = ->
           """
         getCostInformation = (timeCost, memoryCost) ->
           """
-          <small>
-            #{timeCost} ms, #{memoryCost} kb
-          </small>
+            <td style="text-align: center;">#{memoryCost} KB</td>
+            <td style="text-align: center;">#{timeCost} MS</td>
           """
         currentUser = getCurrentUser()
         getReturnType = (returnType, returnTypeId, statusId, userName) ->
@@ -59,10 +58,26 @@ initStatusList = ->
             returnType
         getCodeInfo = (length, language, statusId, userName) ->
           if currentUser.userLogin && (currentUser.currentUserType == "1" || currentUser.currentUser == userName)
-            "<a href=\"#\" value=\"#{statusId}\" class=\"code-link\">#{data.length} B, #{data.language}</a>"
+            "<a href=\"#\" value=\"#{statusId}\" class=\"code-link\">#{length} B</a>"
           else
-            "#{data.length} B, #{data.language}"
+            "#{length} B"
         """
+          <tr>
+            <td style="text-align: center;">#{data.statusId}</td>
+            <td style="text-align: center;"><a href="/user/center/#{data.userName}">#{data.userName}</a></td>
+            <td style="text-align: center;"><a href="/problem/show/#{data.problemId}">#{data.problemId}</a></td>
+            <td style="text-align: center;">#{getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)}</td>
+
+            #{if data.returnTypeId == 1 then getCostInformation(data.timeCost, data.memoryCost) else "<td></td><td></td>"}
+
+            <td style="text-align: center;">#{data.language}</td>
+
+            <td style="text-align: center;">#{getCodeInfo(data.length, data.language, data.statusId, data.userName)}</td>
+            <td style="text-align: center;">#{Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")}</td>
+            <td></td>
+          </tr>
+        """
+        ###
           <div class="col-md-12">
             <div class="panel panel-default">
               <div class="panel-body">
@@ -92,7 +107,7 @@ initStatusList = ->
               </div>
             </div>
           </div>
-        """
+        ###
       after: ->
         $(".ce-link").click (e) =>
           $el = $(e.currentTarget)

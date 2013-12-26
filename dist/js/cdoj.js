@@ -25580,7 +25580,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
             return "<small class=\"pull-right\">\n  <a href=\"/contest/show/" + contestId + "\">Contest <i class=\"fa fa-trophy\"></i>" + contestId + "</a>,&nbsp;\n</small>";
           };
           getCostInformation = function(timeCost, memoryCost) {
-            return "<small>\n  " + timeCost + " ms, " + memoryCost + " kb\n</small>";
+            return "<td style=\"text-align: center;\">" + memoryCost + " KB</td>\n<td style=\"text-align: center;\">" + timeCost + " MS</td>";
           };
           currentUser = getCurrentUser();
           getReturnType = function(returnType, returnTypeId, statusId, userName) {
@@ -25596,12 +25596,44 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
           };
           getCodeInfo = function(length, language, statusId, userName) {
             if (currentUser.userLogin && (currentUser.currentUserType === "1" || currentUser.currentUser === userName)) {
-              return "<a href=\"#\" value=\"" + statusId + "\" class=\"code-link\">" + data.length + " B, " + data.language + "</a>";
+              return "<a href=\"#\" value=\"" + statusId + "\" class=\"code-link\">" + length + " B</a>";
             } else {
-              return "" + data.length + " B, " + data.language;
+              return "" + length + " B";
             }
           };
-          return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <div class=\"pull-left\">\n          <div class=\"status-sign " + (getAlertClass(data.returnTypeId)) + "\">\n            " + (getStatusImage(data.returnTypeId)) + "\n          </div>\n        </div>\n        <div class=\"media-body \">\n          <h4 class=\"media-heading\">\n            <span>" + (getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)) + "</span>\n            " + (data.returnTypeId === 1 ? getCostInformation(data.timeCost, data.memoryCost) : "") + "\n            <small class=\"pull-right\">\n              #" + data.statusId + "\n            </small>\n            " + (data.contestId !== void 0 ? getContestHref(data.contestId) : "") + "\n            <small class=\"pull-right\">\n              <a href=\"/problem/show/" + data.problemId + "\">Prob <i class=\"fa fa-puzzle-piece\"></i>" + data.problemId + "</a>,&nbsp;\n            </small>\n          </h4>\n          <span><a href=\"/user/center/" + data.userName + "\"><i class=\"fa fa-user\"></i>" + data.userName + "</a></span>\n          <span class=\"pull-right label label-default\">" + (Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "</span>\n          <span class=\"pull-right label label-success\" style=\"margin-right: 8px\">" + (getCodeInfo(data.length, data.language, data.statusId, data.userName)) + "</span>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
+          return "<tr>\n  <td style=\"text-align: center;\">" + data.statusId + "</td>\n  <td style=\"text-align: center;\"><a href=\"/user/center/" + data.userName + "\">" + data.userName + "</a></td>\n  <td style=\"text-align: center;\"><a href=\"/problem/show/" + data.problemId + "\">" + data.problemId + "</a></td>\n  <td style=\"text-align: center;\">" + (getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)) + "</td>\n\n  " + (data.returnTypeId === 1 ? getCostInformation(data.timeCost, data.memoryCost) : "<td></td><td></td>") + "\n\n  <td style=\"text-align: center;\">" + data.language + "</td>\n\n  <td style=\"text-align: center;\">" + (getCodeInfo(data.length, data.language, data.statusId, data.userName)) + "</td>\n  <td style=\"text-align: center;\">" + (Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "</td>\n  <td></td>\n</tr>";
+          /*
+            <div class="col-md-12">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class="media">
+                    <div class="pull-left">
+                      <div class="status-sign #{getAlertClass(data.returnTypeId)}">
+                        #{getStatusImage(data.returnTypeId)}
+                      </div>
+                    </div>
+                    <div class="media-body ">
+                      <h4 class="media-heading">
+                        <span>#{getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)}</span>
+                        #{if data.returnTypeId == 1 then getCostInformation(data.timeCost, data.memoryCost) else ""}
+                        <small class="pull-right">
+                          ##{data.statusId}
+                        </small>
+                        #{if data.contestId != undefined then getContestHref(data.contestId) else ""}
+                        <small class="pull-right">
+                          <a href="/problem/show/#{data.problemId}">Prob <i class="fa fa-puzzle-piece"></i>#{data.problemId}</a>,&nbsp;
+                        </small>
+                      </h4>
+                      <span><a href="/user/center/#{data.userName}"><i class="fa fa-user"></i>#{data.userName}</a></span>
+                      <span class="pull-right label label-default">#{Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")}</span>
+                      <span class="pull-right label label-success" style="margin-right: 8px">#{getCodeInfo(data.length, data.language, data.statusId, data.userName)}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          */
+
         },
         after: function() {
           var _this = this;
