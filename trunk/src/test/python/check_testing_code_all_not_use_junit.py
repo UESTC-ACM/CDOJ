@@ -49,7 +49,6 @@ def addTestCases(suite, dir_name):
 if __name__ == '__main__':
   suite = unittest.TestSuite()
   base_dir =  os.getcwd()
-  base_dir = base_dir[:base_dir.rfind('/cdoj/trunk') + 11]
   test_dir = base_dir + '/src/test/java'
   addTestCases(suite, test_dir)
   test_dir = base_dir + '/src/integration-test/java'

@@ -65,7 +65,6 @@ def initDaos(dir_name):
 if __name__ == '__main__':
   suite = unittest.TestSuite()
   base_dir =  os.getcwd()
-  base_dir = base_dir[:base_dir.rfind('/cdoj/trunk') + 11]
   dao_dir = base_dir + '/src/main/java/cn/edu/uestc/acmicpc/db/dao/'
   initDaos(dao_dir)
   controller_dir = base_dir + '/src/main/java/cn/edu/uestc/acmicpc/web/oj/controller/'

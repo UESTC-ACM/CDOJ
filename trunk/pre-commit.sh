@@ -1,6 +1,11 @@
 #!/bin/bash
 PRE_COMMIT_ERRRO="\x1b[1;31mpre-commit error!\x1b[m"
 
+if [ ${PWD##*/} != 'trunk' ]; then
+  echo -e "\x1b[1;31mYou should run this script under the trunk folder.\x1b[m"
+  exit 1
+fi
+
 echo -e "\x1b[0;33mCheck: java style check\x1b[m"
 mvn checkstyle:checkstyle
 if [ $? -ne 0 ]; then

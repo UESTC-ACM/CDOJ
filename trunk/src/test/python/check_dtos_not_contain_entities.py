@@ -65,7 +65,6 @@ def initEntities(dir_name):
 if __name__ == '__main__':
   suite = unittest.TestSuite()
   base_dir =  os.getcwd()
-  base_dir = base_dir[:base_dir.rfind('/cdoj/trunk') + 11]
   entity_dir = base_dir + '/src/main/java/cn/edu/uestc/acmicpc/db/entity/'
   initEntities(entity_dir)
   dto_dir = base_dir + '/src/main/java/cn/edu/uestc/acmicpc/db/dto/impl/'
