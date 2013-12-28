@@ -107,7 +107,7 @@ Admin problem list page
 
     <div class="row" id="mzry1992-container">
           <div class="col-md-12">
-            <table class="table">
+            <table class="table" style="min-width: 1000px;">
               <thead>
                 <tr>
                   <th style="text-align: center;">#</th>

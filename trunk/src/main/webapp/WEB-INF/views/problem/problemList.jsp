@@ -154,7 +154,7 @@ Admin problem list page
                   <th><a
                     href="/problem/editor/new">Add
                       new problem</a></th>
-                  <th style="width: 80px;"></th>
+                  <th style="width: 80px; text-align: right;">Solved</th>
                   <th style="width: 105px;"></th>
                 </tr>
               </thead>
@@ -170,7 +170,7 @@ Admin problem list page
                 <tr>
                   <th style="width: 80px; text-align: right;">#</th>
                   <th></th>
-                  <th style="width: 80px;"></th>
+                  <th style="width: 80px; text-align: right;">Solved</th>
                 </tr>
               </thead>
               <tbody id="list-container">
