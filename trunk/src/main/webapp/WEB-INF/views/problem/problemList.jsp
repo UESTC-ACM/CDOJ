@@ -152,7 +152,7 @@ Admin problem list page
                 <tr>
                   <th style="width: 80px; text-align: right;">#</th>
                   <th><a
-                    href="/problem/editor/new"><i class="fa fa-plus"></i>Add
+                    href="/problem/editor/new">Add
                       new problem</a></th>
                   <th style="width: 80px;"></th>
                   <th style="width: 105px;"></th>
