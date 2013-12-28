@@ -586,7 +586,7 @@
           <charset>UTF-8</charset>
           <docencoding>UTF-8</docencoding>
           <subpackages>
-          cn.edu.uestc.acmicpc.db.condition:cn.edu.uestc.acmicpc.db.dao.base:cn.edu.uestc.acmicpc.db.dao.iface:cn.edu.uestc.acmicpc.db.dto:cn.edu.uestc.acmicpc.web.dto:cn.edu.uestc.acmicpc.service.iface:cn.edu.uestc.acmicpc.util.exception:cn.edu.uestc.acmicpc.util.settings
+            cn.edu.uestc.acmicpc.db.condition:cn.edu.uestc.acmicpc.db.dao.base:cn.edu.uestc.acmicpc.db.dao.iface:cn.edu.uestc.acmicpc.db.dto:cn.edu.uestc.acmicpc.web.dto:cn.edu.uestc.acmicpc.service.iface:cn.edu.uestc.acmicpc.util.exception:cn.edu.uestc.acmicpc.util.settings
           </subpackages>
         </configuration>
       </plugin>
