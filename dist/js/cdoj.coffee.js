@@ -1271,8 +1271,6 @@
       return statusList = new ListModule({
         listContainer: $statusList,
         requestUrl: "/status/search",
-        autoRefresh: true,
-        refreshInterval: 5000,
         condition: {
           "currentPage": null,
           "startId": void 0,

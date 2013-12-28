@@ -5,8 +5,8 @@ initStatusList = ->
     statusList = new ListModule(
       listContainer: $statusList
       requestUrl: "/status/search"
-      autoRefresh: true
-      refreshInterval: 5000 # 1s
+      #autoRefresh: true
+      #refreshInterval: 5000 # 1s
       condition:
         "currentPage": null,
         "startId": undefined,

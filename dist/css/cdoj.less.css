@@ -178,7 +178,7 @@ h6,
 body,
 html,
 .row {
-  font-size: 16px;
+  font-size: 14px;
 }
 .muted {
   color: #999;
@@ -250,10 +250,10 @@ html,
 }
 @media (min-width: 992px) {
   #cdoj-layout {
-    padding-left: 300px;
+    padding-left: 250px;
   }
   #mzry1992-header {
-    margin-left: 300px;
+    margin-left: 250px;
   }
 }
 #cdoj-navbar {
@@ -306,9 +306,9 @@ html,
 }
 @media (min-width: 992px) {
   #cdoj-navbar {
-    margin-left: -300px;
-    width: 300px;
-    left: 300px;
+    margin-left: -250px;
+    width: 250px;
+    left: 250px;
   }
 }
 .cdoj-menu a {
@@ -374,10 +374,10 @@ html,
   padding: 0;
 }
 #cdoj-user-avatar {
-  width: 111px;
-  height: 111px;
-  min-height: 111px;
-  min-width: 111px;
+  width: 67px;
+  height: 67px;
+  min-height: 67px;
+  min-width: 67px;
 }
 #cdoj-users-avatar {
   width: 64px;
