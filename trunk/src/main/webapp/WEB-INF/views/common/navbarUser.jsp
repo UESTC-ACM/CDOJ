@@ -54,13 +54,13 @@ User menu on navbar
       </c:when>
       <c:otherwise>
         <div class="row">
-          <div class="col-md-6">
+          <!-- <div class="">
             <img id="cdoj-user-avatar"
               class="img-rounded img-responsive"
               email="<c:out value="${sessionScope.currentUser.email}"/>"
               type="avatar" />
-          </div>
-          <div class="col-md-6">
+          </div> -->
+          <div class="col-md-12">
             <div id="cdoj-user-menu" class="cdoj-menu">
               <ul class="nav nav-pills nav-stacked">
                 <li class="cdoj-menu-heading"><span

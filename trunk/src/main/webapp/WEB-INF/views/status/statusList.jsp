@@ -110,15 +110,15 @@ Admin problem list page
             <table class="table">
               <thead>
                 <tr>
-                  <th style="width: 80px; text-align: center;">#</th>
-                  <th style="width: 120px; text-align: center;">User</th>
-                  <th style="width: 80px; text-align: center;">Prob</th>
-                  <th style="width:300px; text-align: center;">Result</th>
-                  <th style="width: 100px; text-align: center;">Memory</th>
-                  <th style="width: 100px; text-align: center;">Time</th>
-                  <th style="width: 80px; text-align: center;">Language</th>
-                  <th style="width: 80px; text-align: center;">Length</th>
-                  <th style=" text-align: center;">Submit Time</th>
+                  <th style="text-align: center;">#</th>
+                  <th style="text-align: center;">User</th>
+                  <th style="text-align: center;">Prob</th>
+                  <th style="text-align: center;">Result</th>
+                  <th style="text-align: center;">Memory</th>
+                  <th style="text-align: center;">Time</th>
+                  <th style="text-align: center;">Language</th>
+                  <th style="text-align: center;">Length</th>
+                  <th style="width: 150px; text-align: center;">Submit Time</th>
                   <th></th>
                 </tr>
               </thead>
