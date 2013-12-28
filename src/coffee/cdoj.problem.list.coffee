@@ -34,8 +34,8 @@ initProblemList = ->
                           <button type="button" class="btn btn-default btn-sm problem-visible-state-editor" problem-id="#{data.problemId}" visible="#{data.isVisible}">
                             <i class="#{if data.isVisible then "fa fa-eye" else "fa fa-eye-slash"}"></i>
                           </button>
-                          <button type="button" class="btn btn-default btn-sm problem-editor" problem-id="#{data.problemId}"><i class="fa fa-pencil"></i></button>
-                          <button type="button" class="btn btn-default btn-sm problem-data-editor" problem-id="#{data.problemId}"><i class="fa fa-cog"></i></button>
+                          <a href="/problem/editor/#{data.problemId}"  class="btn btn-default btn-sm problem-editor"><i class="fa fa-pencil"></i></a>
+                          <a href="/problem/dataEditor/#{data.problemId}" class="btn btn-default btn-sm problem-data-editor"><i class="fa fa-cog"></i></a>
                         </div>
                       </div>
 </td>
@@ -81,14 +81,6 @@ initProblemList = ->
                   $($pa.find("i")[i]).removeClass("fa-star-o").addClass("fa-star")
                 )
             )
-            return false
-          $(".problem-editor").click (e) =>
-            $el = $(e.currentTarget)
-            window.location.href = "/problem/editor/#{$el.attr("problem-id")}"
-            return false
-          $(".problem-data-editor").click (e) =>
-            $el = $(e.currentTarget)
-            window.location.href = "/problem/dataEditor/#{$el.attr("problem-id")}"
             return false
           $(".problem-visible-state-editor").click (e) =>
             $el = $(e.currentTarget)

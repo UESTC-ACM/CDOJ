@@ -100,10 +100,10 @@ class ListModule
     self = this
     if @options.autoRefresh == true
       setInterval(() ->
-        self.autoRefresh()
+        self.triggerRefresh()
       if @options.refreshInterval == undefined then 1000 else @options.refreshInterval)
 
-  autoRefresh: ->
+  triggerRefresh: ->
     this.refresh @options.condition
 
   refresh: (condition) ->

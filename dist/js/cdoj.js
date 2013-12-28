@@ -24936,12 +24936,12 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
       self = this;
       if (this.options.autoRefresh === true) {
         setInterval(function() {
-          return self.autoRefresh();
+          return self.triggerRefresh();
         }, this.options.refreshInterval === void 0 ? 1000 : this.options.refreshInterval);
       }
     }
 
-    ListModule.prototype.autoRefresh = function() {
+    ListModule.prototype.triggerRefresh = function() {
       return this.refresh(this.options.condition);
     };
 
@@ -25403,7 +25403,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
             var result;
             result = "";
             if (this.user.userLogin && this.user.currentUserType === AuthenticationType.ADMIN) {
-              result += "<td style=\"padding: 4px;\">\n<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-visible-state-editor\" problem-id=\"" + data.problemId + "\" visible=\"" + data.isVisible + "\">\n      <i class=\"" + (data.isVisible ? "fa fa-eye" : "fa fa-eye-slash") + "\"></i>\n    </button>\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-editor\" problem-id=\"" + data.problemId + "\"><i class=\"fa fa-pencil\"></i></button>\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-data-editor\" problem-id=\"" + data.problemId + "\"><i class=\"fa fa-cog\"></i></button>\n  </div>\n</div>\n</td>";
+              result += "<td style=\"padding: 4px;\">\n<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-visible-state-editor\" problem-id=\"" + data.problemId + "\" visible=\"" + data.isVisible + "\">\n      <i class=\"" + (data.isVisible ? "fa fa-eye" : "fa fa-eye-slash") + "\"></i>\n    </button>\n    <a href=\"/problem/editor/" + data.problemId + "\"  class=\"btn btn-default btn-sm problem-editor\"><i class=\"fa fa-pencil\"></i></a>\n    <a href=\"/problem/dataEditor/" + data.problemId + "\" class=\"btn btn-default btn-sm problem-data-editor\"><i class=\"fa fa-cog\"></i></a>\n  </div>\n</div>\n</td>";
             }
             return result;
           };
@@ -25443,18 +25443,6 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
                   });
                 }
               });
-              return false;
-            });
-            $(".problem-editor").click(function(e) {
-              var $el;
-              $el = $(e.currentTarget);
-              window.location.href = "/problem/editor/" + ($el.attr("problem-id"));
-              return false;
-            });
-            $(".problem-data-editor").click(function(e) {
-              var $el;
-              $el = $(e.currentTarget);
-              window.location.href = "/problem/dataEditor/" + ($el.attr("problem-id"));
               return false;
             });
             return $(".problem-visible-state-editor").click(function(e) {
@@ -25513,6 +25501,8 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
       return statusList = new ListModule({
         listContainer: $statusList,
         requestUrl: "/status/search",
+        autoRefresh: true,
+        refreshInterval: 1000,
         condition: {
           "currentPage": null,
           "startId": void 0,
@@ -25655,7 +25645,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
             });
             return false;
           });
-          return $(".code-link").click(function(e) {
+          $(".code-link").click(function(e) {
             var $el, statusId;
             $el = $(e.currentTarget);
             statusId = $el.attr("value");
@@ -25674,6 +25664,10 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
               $modal.find(".modal-body").prettify();
               return $modal.modal("toggle");
             });
+            return false;
+          });
+          return $("#status-refresh-button").click(function() {
+            statusList.triggerRefresh();
             return false;
           });
         }

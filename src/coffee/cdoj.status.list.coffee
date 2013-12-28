@@ -5,8 +5,8 @@ initStatusList = ->
     statusList = new ListModule(
       listContainer: $statusList
       requestUrl: "/status/search"
-      #autoRefresh: true
-      #refreshInterval: 5000 # 1s
+      autoRefresh: true
+      refreshInterval: 1000 # 1s
       condition:
         "currentPage": null,
         "startId": undefined,
@@ -141,5 +141,8 @@ initStatusList = ->
             $modal.find(".modal-body").prettify()
             $modal.modal("toggle")
           )
+          return false
+        $("#status-refresh-button").click =>
+          statusList.triggerRefresh()
           return false
     )
