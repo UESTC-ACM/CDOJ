@@ -132,7 +132,6 @@ public class ProblemController extends BaseController {
       @RequestBody ProblemCondition problemCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
-      problemCondition.isTitleEmpty = false;
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
       if (currentUser != null
           && currentUser.getType() == Global.AuthenticationType.ADMIN.ordinal()) {
