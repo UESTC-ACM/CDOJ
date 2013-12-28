@@ -27,7 +27,8 @@ import cn.edu.uestc.acmicpc.web.xml.XmlNode;
 import cn.edu.uestc.acmicpc.web.xml.XmlParser;
 
 /**
- * Global static class to get configuration parameters from <strong>settings.xml</strong>.
+ * Global static class to get configuration parameters from
+ * <strong>settings.xml</strong>.
  */
 @Repository
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
@@ -63,10 +64,25 @@ public class Settings implements ApplicationContextAware {
    * Pictures store folder
    */
   public String SETTING_PICTURE_FOLDER;
+
+  /**
+   * Picture store folder in absolute folder format
+   */
   public String SETTING_PICTURE_FOLDER_ABSOLUTE;
+
+  /**
+   * Pictures store folder for users
+   */
   public String SETTING_USER_PICTURE_FOLDER;
+
+  /**
+   * Picture store folder for users in absolute folder format
+   */
   public String SETTING_USER_PICTURE_FOLDER_ABSOLUTE;
 
+  /**
+   * Setting file's absolute path
+   */
   public String SETTING_ABSOLUTE_PATH;
 
   /**
@@ -84,9 +100,24 @@ public class Settings implements ApplicationContextAware {
    */
   public String JUDGE_TEMP_PATH;
 
+  /**
+   * User name for email server
+   */
   public String EMAIL_USERNAME;
+
+  /**
+   * User password for email server
+   */
   public String EMAIL_PASSWORD;
+
+  /**
+   * Email SMTP server's URL
+   */
   public String EMAIL_SMTP_SERVER;
+
+  /**
+   * Email address of email sender
+   */
   public String EMAIL_ADDRESS;
 
   /**
@@ -104,9 +135,6 @@ public class Settings implements ApplicationContextAware {
    */
   private static final String SETTINGS_XML_PATH = "classpath:settings.xml";
 
-  /**
-   * Spring application context
-   */
   @Autowired
   private ApplicationContext applicationContext;
 
@@ -116,10 +144,10 @@ public class Settings implements ApplicationContextAware {
 
   /**
    * initialize configuration mappings from configuration file.
-   *
+   * 
    * @throws cn.edu.uestc.acmicpc.util.exception.AppException
    * @throws IOException
-   *
+   * 
    */
   @SuppressWarnings("unchecked")
   @PostConstruct
@@ -182,15 +210,17 @@ public class Settings implements ApplicationContextAware {
 
   /**
    * parse item's information
-   *
-   * @param node item node
+   * 
+   * @param node
+   *          item node
    * @return item map
    * @throws AppException
    */
   private Map<String, String> parseItem(XmlNode node) throws AppException {
     Map<String, String> result = new HashMap<>();
-    if (node.getInnerText() != null && !StringUtil.isNullOrWhiteSpace(node.getInnerText()))
+    if (node.getInnerText() != null && !StringUtil.isNullOrWhiteSpace(node.getInnerText())) {
       result.put("value", node.getInnerText().trim());
+    }
     for (XmlNode childNode : node.getChildList()) {
       result.put(childNode.getAttribute("name"), childNode.getAttribute("value").trim());
     }
@@ -199,8 +229,9 @@ public class Settings implements ApplicationContextAware {
 
   /**
    * Get configuration value from <strong>settings.xml</strong>.
-   *
-   * @param path setting path
+   * 
+   * @param path
+   *          setting path
    * @return item value
    */
   private Object getConfig(String... path) {
