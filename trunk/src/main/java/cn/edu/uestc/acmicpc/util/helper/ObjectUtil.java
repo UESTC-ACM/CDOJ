@@ -70,9 +70,6 @@ public class ObjectUtil {
         try {
           if (!method.invoke(dto)
               .equals(object.getClass().getMethod(method.getName()).invoke(object))) {
-            LOGGER.info("method: " + method.getName());
-            LOGGER.info("dto: " + method.invoke(dto));
-            LOGGER.info("entity: " + object.getClass().getMethod(method.getName()).invoke(object));
             return false;
           }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
