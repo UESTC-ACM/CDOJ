@@ -9,7 +9,7 @@ import org.springframework.validation.FieldError;
 import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
 
 /**
- * Description
+ * Application exception to describe errors on UI fields.
  */
 public class FieldException extends AppException implements Iterable<FieldError> {
 
@@ -17,18 +17,22 @@ public class FieldException extends AppException implements Iterable<FieldError>
   private List<FieldError> errors = new ArrayList<>();
 
   /**
-   * Construct a new field exception with {@code null} as its detail message and cause.
+   * Creates a new {@link FieldException} with {@code null} as its detail
+   * message and cause.
    */
   public FieldException() {
     super("field_error");
   }
 
   /**
-   * Construct a new field exception with {@link FieldError} information
-   *
-   * @param objectName error object's name.
-   * @param field error object's field.
-   * @param message message for error.
+   * Creates a new {@link FieldException} with {@link FieldError} information
+   * 
+   * @param objectName
+   *          error object's name.
+   * @param field
+   *          error object's field.
+   * @param message
+   *          message for error.
    */
   public FieldException(String objectName, String field, String message) {
     super("field_error");
@@ -36,36 +40,37 @@ public class FieldException extends AppException implements Iterable<FieldError>
   }
 
   /**
-   * Construct a new field exception with {@link FieldError} information
-   *
-   * @param field error object's field.
-   * @param message message for error.
+   * Creates a new {@link FieldException} with {@link FieldError} information
+   * 
+   * @param field
+   *          error object's field.
+   * @param message
+   *          message for error.
    */
   public FieldException(String field, String message) {
     super("field_error");
     addErrors(field, field, message);
   }
 
-  @Override
-  public String toString() {
-    return ObjectUtil.toString(errors) + "\n" + super.toString();
-  }
-
   /**
-   * Add a single {@link FieldError} into this exception.
-   *
-   * @param objectName error object's name.
-   * @param field error object's field.
-   * @param message message for error.
+   * Adds a single {@link FieldError} into this exception.
+   * 
+   * @param objectName
+   *          error object's name.
+   * @param field
+   *          error object's field.
+   * @param message
+   *          message for error.
    */
   public void addErrors(String objectName, String field, String message) {
     errors.add(new FieldError(objectName, field, message));
   }
 
   /**
-   * Add a group of {@link FieldError}s into error list.
-   *
-   * @param errors errors for this exception.
+   * Adds a group of {@link FieldError}s into error list.
+   * 
+   * @param errors
+   *          errors for this exception.
    */
   public void addErrors(FieldError... errors) {
     if (errors != null) {
@@ -75,9 +80,17 @@ public class FieldException extends AppException implements Iterable<FieldError>
     }
   }
 
+  /**
+   * @return a {@link Iterator} for all API errors in this exception.
+   */
   @Override
   public Iterator<FieldError> iterator() {
     return errors.iterator();
+  }
+
+  @Override
+  public String toString() {
+    return ObjectUtil.toString(errors) + "\n" + super.toString();
   }
 
   @Override
