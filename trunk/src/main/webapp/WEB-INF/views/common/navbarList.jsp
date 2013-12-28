@@ -49,7 +49,7 @@ Nav list on navbar
               </ul>
             </div>
           </div>
-          <div id="cdoj-links" class="panel-collapse collapse cdoj-menu">
+          <div id="cdoj-links" class="panel-collapse cdoj-menu">
             <ul class="nav nav-pills nav-stacked">
               <li><a href="/bbs/">BBS</a></li>
               <!-- <li><a href="#">Wiki</a></li>
@@ -70,7 +70,7 @@ Nav list on navbar
               </ul>
             </div>
           </div>
-          <div id="cdoj-about" class="panel-collapse collapse cdoj-menu">
+          <div id="cdoj-about" class="panel-collapse cdoj-menu">
             <ul class="nav nav-pills nav-stacked">
               <li><a href="<c:url value="/article/show/1"/>">F.A.Q</a></li>
               <!-- <li><a href="<c:url value="/article/show/2"/>">Markdown</a></li> -->

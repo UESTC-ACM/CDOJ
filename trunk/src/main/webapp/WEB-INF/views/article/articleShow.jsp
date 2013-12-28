@@ -11,23 +11,23 @@ Problem statement
 <title>${targetArticle.title}</title>
 </head>
 <body>
-  <div id="article">
-    <div class="pure-g mzry1992-header">
-      <div class="pure-u-4-5" id="article_title"
-        value="${targetArticle.articleId}">
+  <div id="article-show">
+    <div id="mzry1992-container">
+      <div class="col-md-12">
         <h1>${targetArticle.title}</h1>
-      </div>
-      <div class="pure-u-1-5">
         <c:if test="${currentUser.type == 1}">
-          <a href="/admin/article/editor/${targetArticle.articleId}">
-            <i class="icon-pencil"></i> Edit article
-          </a>
+          <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group">
+              <a
+                href="<c:url value="/article/editor/${targetArticle.articleId}"/>"
+                class="btn btn-default btn-sm article-editor"><i
+                class="fa fa-pencil"></i></a>
+            </div>
+          </div>
         </c:if>
       </div>
-    </div>
 
-    <div class="pure-g mzry1992-content">
-      <div class="pure-u-1" id="article_content" type="markdown">
+      <div class="col-md-12" id="problem-description" type="markdown">
         <textarea>${targetArticle.content}</textarea>
       </div>
     </div>

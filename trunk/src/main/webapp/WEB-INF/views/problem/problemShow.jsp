@@ -26,22 +26,19 @@ Problem statement
               </sup>
             </c:if>
           </h1>
+          <c:if test="${currentUser.type == 1}">
+            <div class="btn-toolbar" role="toolbar">
+              <div class="btn-group">
+                <a href="<c:url value="/problem/editor/${targetProblem.problemId}"/>"
+                  class="btn btn-default btn-sm problem-editor"><i
+                  class="fa fa-pencil"></i></a> <a
+                  href="<c:url value="/problem/dataEditor/${targetProblem.problemId}"/>"
+                  class="btn btn-default btn-sm problem-data-editor"><i
+                  class="fa fa-cog"></i></a>
+              </div>
+            </div>
+          </c:if>
         </div>
-        <%--
-          <div class="pure-u-1-5">
-            <c:if test="${currentUser.type == 1}">
-              <a href="<c:url value="/admin/problem/editor/${targetProblem.problemId}"/>">
-                <i class="fa fa-pencil"></i>
-                Edit problem statement
-              </a>
-              <br/>
-              <a href="<c:url value="/admin/problem/data/${targetProblem.problemId}"/>">
-                <i class="fa fa-cog"></i>
-                Edit problem data
-              </a>
-            </c:if>
-          </div>
-          --%>
         <div class="col-md-12">
           <div id="problem-show-tab" style="margin: 16px 0;">
             <ul class="nav nav-pills">
