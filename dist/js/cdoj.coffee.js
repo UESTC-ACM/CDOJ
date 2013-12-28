@@ -1,5 +1,5 @@
 (function() {
-  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initContestEditor, initContestList, initContestPage, initContestStatusList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonMerge, jsonPost, markdown, render;
+  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initContestEditor, initContestList, initContestPage, initContestStatusList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonMerge, jsonPost, markdown, render;
 
   OnlineJudgeReturnType = {
     OJ_WAIT: 0,
@@ -749,6 +749,55 @@
     }
   };
 
+  initArticleEditor = function() {
+    var $editor, action, editors, editorsId,
+      _this = this;
+    $editor = $("#article-editor");
+    if ($editor.length > 0) {
+      action = $("#article-editor-title").attr("value");
+      editorsId = ["content"];
+      editors = [];
+      editorsId.each(function(value, id) {
+        return editors.push({
+          id: value,
+          editor: $("#" + value).flandre({
+            picture: {
+              uploadUrl: "/picture/uploadPicture/article/" + action
+            }
+          })
+        });
+      });
+      return $("#submit").click(function() {
+        var info;
+        info = {
+          sampleInput: $("textarea#sample-input").val(),
+          sampleOutput: $("textarea#sample-output").val(),
+          title: $("#title").val(),
+          source: $("#source").val()
+        };
+        editors.each(function(value, id) {
+          return info[value.id] = value.editor.getText();
+        });
+        if (action === "new") {
+          info["action"] = "new";
+        } else {
+          info["action"] = "edit";
+          info["articleId"] = action;
+        }
+        jsonPost("/article/edit", info, function(data) {
+          if (data.result === "success") {
+            return window.location.href = "/article/show/" + data.articleId;
+          } else if (data.result === "field_error") {
+            return alert("Please enter a valid title!");
+          } else {
+            return alert(data.error_msg);
+          }
+        });
+        return false;
+      });
+    }
+  };
+
   initContestPage = function() {
     var $contest, $processBar, contestId, contestProblemSummary, contestStatus, contestStatusTabHref, contestTab, contestType, currentTime, currentUser, endTime, startTime,
       _this = this;
@@ -1347,7 +1396,7 @@
               return "" + length + " B";
             }
           };
-          return "<tr>\n  <td style=\"text-align: center;\">" + data.statusId + "</td>\n  <td style=\"text-align: center;\"><a href=\"/user/center/" + data.userName + "\">" + data.userName + "</a></td>\n  <td style=\"text-align: center;\"><a href=\"/problem/show/" + data.problemId + "\">" + data.problemId + "</a></td>\n  <td style=\"text-align: center;\">" + (getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)) + "</td>\n\n  " + (data.returnTypeId === 1 ? getCostInformation(data.timeCost, data.memoryCost) : "<td></td><td></td>") + "\n\n  <td style=\"text-align: center;\">" + data.language + "</td>\n\n  <td style=\"text-align: center;\">" + (getCodeInfo(data.length, data.language, data.statusId, data.userName)) + "</td>\n  <td style=\"text-align: center;\">" + (Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "</td>\n  <td></td>\n</tr>";
+          return "<tr>\n  <td style=\"text-align: center;\">" + data.statusId + "</td>\n  <td style=\"text-align: center;\"><a href=\"/user/center/" + data.userName + "\">" + data.userName + "</a></td>\n  <td style=\"text-align: center;\"><a href=\"/problem/show/" + data.problemId + "\">" + data.problemId + "</a></td>\n  <td style=\"text-align: center;\" class=\"" + (getAlertClass(data.returnTypeId)) + "\">" + (getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)) + "</td>\n\n  " + (data.returnTypeId === 1 ? getCostInformation(data.timeCost, data.memoryCost) : "<td></td><td></td>") + "\n\n  <td style=\"text-align: center;\">" + data.language + "</td>\n\n  <td style=\"text-align: center;\">" + (getCodeInfo(data.length, data.language, data.statusId, data.userName)) + "</td>\n  <td style=\"text-align: center;\">" + (Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "</td>\n  <td></td>\n</tr>";
           /*
             <div class="col-md-12">
               <div class="panel panel-default">
@@ -1566,6 +1615,7 @@
     initContestList();
     initContestPage();
     initContestEditor();
+    initArticleEditor();
     return render();
   });
 

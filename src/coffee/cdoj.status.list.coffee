@@ -66,7 +66,7 @@ initStatusList = ->
             <td style="text-align: center;">#{data.statusId}</td>
             <td style="text-align: center;"><a href="/user/center/#{data.userName}">#{data.userName}</a></td>
             <td style="text-align: center;"><a href="/problem/show/#{data.problemId}">#{data.problemId}</a></td>
-            <td style="text-align: center;">#{getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)}</td>
+            <td style="text-align: center;" class="#{getAlertClass(data.returnTypeId)}">#{getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)}</td>
 
             #{if data.returnTypeId == 1 then getCostInformation(data.timeCost, data.memoryCost) else "<td></td><td></td>"}
 
