@@ -16,13 +16,6 @@ Admin problem list page
     <div class="row" id="mzry1992-header">
       <div class="col-md-12">
         <div id="page-info">
-          <ul class="pagination pagination-centere">
-            <li class="disabled"><a>← First</a></li>
-            <li class="disabled"><a>«</a></li>
-            <li class="active"><a href="1">1</a></li>
-            <li class="disabled"><a>»</a></li>
-            <li class="disabled"><a>Last →</a></li>
-          </ul>
         </div>
         <div id="search-group">
           <input type="text" name="search-keyword" maxlength="24"
@@ -153,21 +146,14 @@ Admin problem list page
       <c:choose>
         <c:when
           test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
-          <div class="col-md-12" id="problem-admin-operation">
-            <div class="panel panel-danger">
-              <div class="panel-body">
-                <a href="/problem/editor/new" class="btn btn-success">
-                  <i class="fa fa-plus"></i>Add new problem
-                </a>
-              </div>
-            </div>
-          </div>
           <div class="col-md-12">
             <table class="table">
               <thead>
                 <tr>
                   <th style="width: 80px; text-align: right;">#</th>
-                  <th></th>
+                  <th><a
+                    href="/problem/editor/new"><i class="fa fa-plus"></i>Add
+                      new problem</a></th>
                   <th style="width: 80px;"></th>
                   <th style="width: 105px;"></th>
                 </tr>

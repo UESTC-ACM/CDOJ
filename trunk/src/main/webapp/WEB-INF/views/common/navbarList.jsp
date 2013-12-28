@@ -51,12 +51,12 @@ Nav list on navbar
           </div>
           <div id="cdoj-links" class="panel-collapse collapse cdoj-menu">
             <ul class="nav nav-pills nav-stacked">
-              <li><a href="#">BBS</a></li>
-              <li><a href="#">Wiki</a></li>
+              <li><a href="/bbs/">BBS</a></li>
+              <!-- <li><a href="#">Wiki</a></li>
               <li><a href="#">Training</a></li>
               <li><a href="#">Download</a></li>
               <li><a href="#">Step-by-Step</a></li>
-              <li><a href="#">Team Honors</a></li>
+              <li><a href="#">Team Honors</a></li> -->
             </ul>
           </div>
         </div>
@@ -73,9 +73,9 @@ Nav list on navbar
           <div id="cdoj-about" class="panel-collapse collapse cdoj-menu">
             <ul class="nav nav-pills nav-stacked">
               <li><a href="<c:url value="/article/show/1"/>">F.A.Q</a></li>
-              <li><a href="<c:url value="/article/show/2"/>">Markdown</a></li>
-              <li><a href="<c:url value="/article/show/3"/>">Training
-                  system</a></li>
+              <!-- <li><a href="<c:url value="/article/show/2"/>">Markdown</a></li> -->
+              <!-- <li><a href="<c:url value="/article/show/3"/>">Training
+                  system</a></li> -->
               <li><a href="<c:url value="/article/show/4"/>">About</a></li>
             </ul>
           </div>
