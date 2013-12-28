@@ -7,6 +7,7 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
+import cn.edu.uestc.acmicpc.util.settings.Global;
 
 /**
  * DTO for article entity.
@@ -176,6 +177,10 @@ public class ArticleDTO implements BaseDTO<Article> {
       time = (Timestamp) properties.get("time");
       title = (String) properties.get("title");
       userId = (Integer) properties.get("userId");
+
+      // Remove more tag
+      content = content.replace(Global.ARTICLE_MORE_TAG, "");
+
       return build();
 
     }

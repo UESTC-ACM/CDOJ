@@ -13,6 +13,16 @@ public class Global {
   public static final Long RECORD_PER_PAGE = 50L;
 
   /**
+   * Number of articles per page
+   */
+  public static final Long ARTICLE_PER_PAGE = 10L;
+
+  /**
+   * Article more tag, the substring before first more tag is the summary of this article
+   */
+  public static final String ARTICLE_MORE_TAG = "!!!more!!!";
+
+  /**
    * User serial key's length
    */
   public static final int USER_SERIAL_KEY_LENGTH = 128;

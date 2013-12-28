@@ -7,6 +7,7 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
+import cn.edu.uestc.acmicpc.util.settings.Global;
 
 /**
  * DTO used in article list.
@@ -15,7 +16,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * "userByUserId.email" })</code>
  */
 @Fields({ "articleId", "title", "clicked", "time", "isVisible", "userByUserId.userName",
-  "userByUserId.email" })
+  "userByUserId.email", "content" })
 public class ArticleListDTO implements BaseDTO<Article> {
 
   public ArticleListDTO() {
@@ -23,7 +24,7 @@ public class ArticleListDTO implements BaseDTO<Article> {
 
   private ArticleListDTO(Integer articleId, String title,
       Integer clicked, Timestamp time, Boolean isVisible, String ownerName,
-      String ownerEmail) {
+      String ownerEmail, String content, Boolean hasMore) {
     this.articleId = articleId;
     this.title = title;
     this.clicked = clicked;
@@ -31,6 +32,8 @@ public class ArticleListDTO implements BaseDTO<Article> {
     this.isVisible = isVisible;
     this.ownerName = ownerName;
     this.ownerEmail = ownerEmail;
+    this.content = content;
+    this.hasMore = hasMore;
   }
 
   private Integer articleId;
@@ -40,6 +43,8 @@ public class ArticleListDTO implements BaseDTO<Article> {
   private Boolean isVisible;
   private String ownerName;
   private String ownerEmail;
+  private String content;
+  private Boolean hasMore;
 
   public Integer getArticleId() {
     return articleId;
@@ -97,6 +102,22 @@ public class ArticleListDTO implements BaseDTO<Article> {
     this.ownerEmail = ownerEmail;
   }
 
+  public String getContent() {
+    return content;
+  }
+
+  public void setContent(String content) {
+    this.content = content;
+  }
+
+  public Boolean getHasMore() {
+    return this.hasMore;
+  }
+
+  public void setHasMore(Boolean hasMore) {
+    this.hasMore = hasMore;
+  }
+
   public static Builder builder() {
     return new Builder();
   }
@@ -109,7 +130,7 @@ public class ArticleListDTO implements BaseDTO<Article> {
     @Override
     public ArticleListDTO build() {
       return new ArticleListDTO(articleId, title, clicked, time, isVisible,
-          ownerName, ownerEmail);
+          ownerName, ownerEmail, content, hasMore);
     }
 
     @Override
@@ -121,8 +142,18 @@ public class ArticleListDTO implements BaseDTO<Article> {
       isVisible = (Boolean) properties.get("isVisible");
       ownerName = (String) properties.get("userByUserId.userName");
       ownerEmail = (String) properties.get("userByUserId.email");
-      return build();
+      content = (String) properties.get("content");
 
+      // Get summary info
+      int pos = content.indexOf(Global.ARTICLE_MORE_TAG);
+      if (pos != -1) {
+        content = content.substring(0, pos);
+        hasMore = true;
+      } else {
+        hasMore = false;
+      }
+
+      return build();
     }
 
     private Integer articleId;
@@ -132,6 +163,8 @@ public class ArticleListDTO implements BaseDTO<Article> {
     private Boolean isVisible;
     private String ownerName;
     private String ownerEmail;
+    private String content;
+    private Boolean hasMore;
 
     public Integer getArticleId() {
       return articleId;
@@ -193,6 +226,24 @@ public class ArticleListDTO implements BaseDTO<Article> {
 
     public Builder setOwnerEmail(String ownerEmail) {
       this.ownerEmail = ownerEmail;
+      return this;
+    }
+
+    public String getContent() {
+      return content;
+    }
+
+    public Builder setContent(String content) {
+      this.content = content;
+      return this;
+    }
+
+    public Boolean getHasMore() {
+      return this.hasMore;
+    }
+
+    public Builder setHasMore(Boolean hasMore) {
+      this.hasMore = hasMore;
       return this;
     }
   }

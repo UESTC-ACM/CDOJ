@@ -1,6 +1,7 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.article;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditorShowDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
@@ -26,6 +29,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
 @Controller
@@ -50,12 +54,14 @@ public class ArticleController extends BaseController {
   public String show(@PathVariable("articleId") Integer articleId,
       HttpSession session, ModelMap model) {
     try {
-      UserDTO currentUser = (UserDTO)session.getAttribute("currentUser");
+      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
       ArticleDTO articleDTO = articleService.getArticleDTO(articleId);
       if (articleDTO == null)
         throw new AppException("Wrong article ID.");
-      if (articleDTO.getIsVisible() == false &&
-          (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()))
+      if (articleDTO.getIsVisible() == false
+          &&
+          (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN
+              .ordinal()))
         throw new AppException("You have no permission to view this articl.");
       model.put("targetArticle", articleDTO);
     } catch (AppException e) {
@@ -63,6 +69,41 @@ public class ArticleController extends BaseController {
       return "error/error";
     }
     return "article/articleShow";
+  }
+
+  @RequestMapping("search")
+  @LoginPermit(NeedLogin = false)
+  public @ResponseBody
+  Map<String, Object> search(HttpSession session,
+      @RequestBody ArticleCondition articleCondition) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+      if (currentUser != null
+          && currentUser.getType() == Global.AuthenticationType.ADMIN.ordinal()) {
+        // We can put some special condition here
+      } else {
+        articleCondition.isVisible = true;
+      }
+      Long count = articleService.count(articleCondition);
+      PageInfo pageInfo = buildPageInfo(count, articleCondition.currentPage,
+          Global.ARTICLE_PER_PAGE, "", null);
+
+      List<ArticleListDTO> articleListDTOList = articleService.getArticleList(
+          articleCondition, pageInfo);
+
+      json.put("pageInfo", pageInfo.getHtmlString());
+      json.put("result", "success");
+      json.put("list", articleListDTOList);
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
   }
 
   @RequestMapping("editor/{articleId}")
