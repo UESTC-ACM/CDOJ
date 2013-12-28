@@ -18,13 +18,6 @@
     <div class="row" id="mzry1992-header">
       <div class="col-md-12">
         <div id="page-info">
-          <ul class="pagination pagination-centere">
-            <li class="disabled"><a>← First</a></li>
-            <li class="disabled"><a>«</a></li>
-            <li class="active"><a href="1">1</a></li>
-            <li class="disabled"><a>»</a></li>
-            <li class="disabled"><a>Last →</a></li>
-          </ul>
         </div>
         <div id="search-group">
           <input type="text" name="search-keyword" maxlength="24"
