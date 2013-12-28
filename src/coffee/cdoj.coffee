@@ -12,4 +12,5 @@ $ ->
   initContestPage()
   initContestEditor()
   initArticleEditor()
+  initArticleList()
   render()

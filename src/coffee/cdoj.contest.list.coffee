@@ -1,4 +1,3 @@
-# Move most common functions in a base list module
 initContestList = ->
   $contestList = $("#contest-list")
   if $contestList.length != 0

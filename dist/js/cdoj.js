@@ -24241,7 +24241,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
 }( window.jQuery );
 
 (function() {
-  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initContestEditor, initContestList, initContestPage, initContestStatusList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonMerge, jsonPost, markdown, render;
+  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initArticleList, initContestEditor, initContestList, initContestPage, initContestStatusList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonMerge, jsonPost, markdown, render;
 
   OnlineJudgeReturnType = {
     OJ_WAIT: 0,
@@ -25036,6 +25036,41 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
           }
         });
         return false;
+      });
+    }
+  };
+
+  initArticleList = function() {
+    var $articleList, articleList;
+    $articleList = $("#article-list");
+    if ($articleList.length !== 0) {
+      return articleList = new ListModule({
+        listContainer: $articleList,
+        requestUrl: "/article/search",
+        condition: {
+          "currentPage": null,
+          "startId": void 0,
+          "endId": void 0,
+          "keyword": void 0,
+          "title": void 0,
+          "orderFields": "id",
+          "orderAsc": "false"
+        },
+        formatter: function(data) {
+          var getReadMore;
+          console.log(data);
+          getReadMore = function(hasMore, articleId) {
+            if (hasMore) {
+              return "<a href=\"/article/show/" + articleId + "\">Read more >></a>";
+            } else {
+              return "";
+            }
+          };
+          return "<div class=\"cdoj-article\">\n  <h1><a href=\"/article/show/" + data.articleId + "\">" + data.title + "</a></h1>\n  <small>By " + data.ownerName + ", <span class=\"cdoj-article-post-time\">" + (Date.create(data.time).relative()) + "</span></small>\n  <div class=\"cdoj-article-summary\">\n    <div class=\"cdoj-article-summary-content\"><textarea>" + data.content + "</textarea></div>\n    <p>" + (getReadMore(data.hasMore, data.articleId)) + "</p>\n  </div>\n  <hr />\n</div>";
+        },
+        after: function() {
+          return $(".cdoj-article-summary-content").markdown();
+        }
       });
     }
   };
@@ -25858,6 +25893,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
     initContestPage();
     initContestEditor();
     initArticleEditor();
+    initArticleList();
     return render();
   });
 

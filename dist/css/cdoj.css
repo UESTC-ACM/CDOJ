@@ -7913,6 +7913,9 @@ html,
   /* 10 less than .navbar-fixed to prevent any overlap */
   padding: 4px 2em 0 2em;
 }
+#mzry1992-header #page-info {
+  float: left;
+}
 @media (max-width: 767px) {
   #cdoj-layout {
     padding-left: 0;
@@ -8088,9 +8091,6 @@ html,
 .label i {
   margin-right: 4px;
 }
-#page-info {
-  float: left;
-}
 #search-group {
   position: relative;
   margin: 20px 0;
@@ -8227,6 +8227,11 @@ html,
 }
 .modal-title ul > li > a {
   padding: 2px 6px;
+}
+.cdoj-article .cdoj-article-summary {
+  border-left: 4px solid #1f8dd6;
+  padding-left: 1em;
+  margin-top: 1em;
 }
 /*
 @import "cdoj.layout.less";
