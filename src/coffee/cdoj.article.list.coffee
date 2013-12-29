@@ -19,11 +19,11 @@ initArticleList = ->
         """
           <div class="cdoj-article">
             <h1><a href="/article/show/#{data.articleId}">#{data.title}</a></h1>
-            <small>By #{data.ownerName}, <span class="cdoj-article-post-time">#{Date.create(data.time).relative()}</span></small>
+            <small>#{data.clicked} visited, create by #{data.ownerName}, last modified at <span class="cdoj-article-post-time">#{Date.create(data.time).relative()}</span></small>
             <div class="cdoj-article-summary">
               <div class="cdoj-article-summary-content"><textarea>#{data.content}</textarea></div>
-              <p>#{getReadMore(data.hasMore, data.articleId)}</p>
             </div>
+            <p>#{getReadMore(data.hasMore, data.articleId)}</p>
             <hr />
           </div>
         """

@@ -25066,7 +25066,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
               return "";
             }
           };
-          return "<div class=\"cdoj-article\">\n  <h1><a href=\"/article/show/" + data.articleId + "\">" + data.title + "</a></h1>\n  <small>By " + data.ownerName + ", <span class=\"cdoj-article-post-time\">" + (Date.create(data.time).relative()) + "</span></small>\n  <div class=\"cdoj-article-summary\">\n    <div class=\"cdoj-article-summary-content\"><textarea>" + data.content + "</textarea></div>\n    <p>" + (getReadMore(data.hasMore, data.articleId)) + "</p>\n  </div>\n  <hr />\n</div>";
+          return "<div class=\"cdoj-article\">\n  <h1><a href=\"/article/show/" + data.articleId + "\">" + data.title + "</a></h1>\n  <small>" + data.clicked + " visited, create by " + data.ownerName + ", last modified at <span class=\"cdoj-article-post-time\">" + (Date.create(data.time).relative()) + "</span></small>\n  <div class=\"cdoj-article-summary\">\n    <div class=\"cdoj-article-summary-content\"><textarea>" + data.content + "</textarea></div>\n  </div>\n  <p>" + (getReadMore(data.hasMore, data.articleId)) + "</p>\n  <hr />\n</div>";
         },
         after: function() {
           return $(".cdoj-article-summary-content").markdown();
