@@ -118,6 +118,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
       condition = new Condition();
     }
     try {
+      // TODO wrap the field by ``
       String hql = "select count(" + fieldName + ") "
           + buildHQLString(condition);
       return (Long) getQuery(hql, null).uniqueResult();
@@ -190,6 +191,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
       if (fields == null) {
         hql = buildHQLStringWithOrders(condition);
       } else {
+        // TODO wrap the field by ``
         hql = "select " + fields + " " + buildHQLStringWithOrders(condition);
       }
       return getQuery(hql, condition.getPageInfo()).list();
@@ -270,6 +272,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
       return;
     }
     StringBuilder stringBuilder = new StringBuilder();
+    // TODO wrap the field by ``
     stringBuilder.append("update ").append(getReferenceClass().getSimpleName())
         .append(" set");
     Boolean first = true;
@@ -288,6 +291,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
             .append(value);
       }
     }
+    // TODO wrap the field by ``
     stringBuilder.append(" where ").append(field).append(" in (")
         .append(values).append(")");
     String hql = stringBuilder.toString();
@@ -349,6 +353,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     List<T> list = new ArrayList<>();
     AppExceptionUtil.assertTrue(clazz.isAnnotationPresent(Fields.class));
     String[] fields = clazz.getAnnotation(Fields.class).value();
+    // TODO wrap the field by ``
     String queryField = ArrayUtil.join(fields, ",");
     List<?> result = findAll(queryField, condition);
     for (Iterator<?> iterator = result.iterator(); iterator.hasNext();) {
@@ -386,6 +391,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   public void increment(String incrementField,
       String field, String values) throws AppException {
     StringBuilder stringBuilder = new StringBuilder();
+    // TODO wrap the field by ``
     stringBuilder.append("update ").append(getReferenceClass().getSimpleName())
         .append(" set ").append(incrementField).append(" = ").append(incrementField).append("+1")
         .append(" where ").append(field).append(" in (")
