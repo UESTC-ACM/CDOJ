@@ -381,4 +381,16 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
       throw new AppException("the value is not unique.");
     }
   }
+
+  @Override
+  public void increment(String incrementField,
+      String field, String values) throws AppException {
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append("update ").append(getReferenceClass().getSimpleName())
+        .append(" set ").append(incrementField).append(" = ").append(incrementField).append("+1")
+        .append(" where ").append(field).append(" in (")
+        .append(values).append(")");
+    String hql = stringBuilder.toString();
+    getQuery(hql, null).executeUpdate();
+  }
 }

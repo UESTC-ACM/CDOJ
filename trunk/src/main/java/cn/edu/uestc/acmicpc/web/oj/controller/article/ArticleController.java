@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.article;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +64,7 @@ public class ArticleController extends BaseController {
           (currentUser == null || currentUser.getType() != Global.AuthenticationType.ADMIN
               .ordinal()))
         throw new AppException("You have no permission to view this articl.");
+      articleService.incrementClicked(articleDTO.getArticleId());
       model.put("targetArticle", articleDTO);
     } catch (AppException e) {
       model.put("message", e.getMessage());
@@ -169,6 +171,7 @@ public class ArticleController extends BaseController {
 
         articleDTO.setTitle(articleEditDTO.getTitle());
         articleDTO.setContent(articleEditDTO.getContent());
+        articleDTO.setTime(new Timestamp(System.currentTimeMillis()));
 
         articleService.updateArticle(articleDTO);
         json.put("result", "success");

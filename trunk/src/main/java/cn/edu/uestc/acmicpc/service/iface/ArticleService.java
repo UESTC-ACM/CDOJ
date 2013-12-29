@@ -78,4 +78,12 @@ public interface ArticleService extends DatabaseService<Article, Integer> {
    * @throws AppException
    */
   public ArticleEditorShowDTO getArticleEditorShowDTO(Integer articleId) throws AppException;
+
+  /**
+   * Increment clicked of specific article by 1.
+   *
+   * @param articleId article's id.
+   * @throws AppException
+   */
+  public void incrementClicked(Integer articleId) throws AppException;
 }

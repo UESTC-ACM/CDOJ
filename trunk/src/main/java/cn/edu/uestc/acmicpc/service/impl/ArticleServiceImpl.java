@@ -117,4 +117,9 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
     articleDAO.update(article);
   }
 
+  @Override
+  public void incrementClicked(Integer articleId) throws AppException {
+    articleDAO.increment("clicked", "articleId", articleId.toString());
+  }
+
 }
