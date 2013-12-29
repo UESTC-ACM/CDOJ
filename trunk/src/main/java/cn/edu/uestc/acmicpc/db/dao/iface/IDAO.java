@@ -271,4 +271,15 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    */
   <T extends BaseDTO<Entity>> T getDTOByUniqueField(Class<T> clazz, BaseBuilder<T> builder,
       String field, Object value) throws AppException;
+
+  /**
+   * Increment a number-value field by 1 of all specific records.
+   *
+   * @param incrementField field want increment.
+   * @param field specific field name
+   * @param values records need to update
+   * @throws AppException
+   */
+  void increment(String incrementField,
+      String field, String values) throws AppException;
 }

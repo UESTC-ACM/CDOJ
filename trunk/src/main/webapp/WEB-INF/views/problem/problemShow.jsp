@@ -27,14 +27,10 @@ Problem statement
             </c:if>
           </h1>
           <c:if test="${currentUser.type == 1}">
-            <div class="btn-toolbar" role="toolbar">
-              <div class="btn-group">
-                <a href="<c:url value="/problem/editor/${targetProblem.problemId}"/>"
-                  class="btn btn-default btn-sm problem-editor"><i
-                  class="fa fa-pencil"></i></a> <a
-                  href="<c:url value="/problem/dataEditor/${targetProblem.problemId}"/>"
-                  class="btn btn-default btn-sm problem-data-editor"><i
-                  class="fa fa-cog"></i></a>
+                <a href="<c:url value="/problem/editor/${targetProblem.problemId}"/>"><i
+                  class="fa fa-pencil"></i> Edit</a> &nbsp; <a
+                  href="<c:url value="/problem/dataEditor/${targetProblem.problemId}"/>"><i
+                  class="fa fa-cog"></i> Data manage</a>
               </div>
             </div>
           </c:if>

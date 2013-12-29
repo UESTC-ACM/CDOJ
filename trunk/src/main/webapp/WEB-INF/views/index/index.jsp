@@ -23,20 +23,11 @@
       </div>
       <div id="article-list">
         <div class="col-md-12">
-          <div id="page-info"></div>
+          <div id="list-container">
+          </div>
         </div>
         <div class="col-md-12">
-          <div id="list-container">
-            <div class="cdoj-article">
-              <h1>Test</h1>
-              <small>By mzry1992, xx days ago</small>
-              <div class="cdoj-article-summary">
-                <p>walawala</p>
-                <a href="#">Read more</a>
-              </div>
-              <hr />
-            </div>
-          </div>
+          <div id="page-info"></div>
         </div>
       </div>
     </div>

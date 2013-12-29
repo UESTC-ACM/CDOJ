@@ -16,18 +16,13 @@ Problem statement
       <div class="col-md-12">
         <h1>${targetArticle.title}</h1>
         <c:if test="${currentUser.type == 1}">
-          <div class="btn-toolbar" role="toolbar">
-            <div class="btn-group">
               <a
-                href="<c:url value="/article/editor/${targetArticle.articleId}"/>"
-                class="btn btn-default btn-sm article-editor"><i
-                class="fa fa-pencil"></i></a>
-            </div>
-          </div>
+                href="<c:url value="/article/editor/${targetArticle.articleId}"/>"><i
+                class="fa fa-pencil"></i> Edit</a>
         </c:if>
       </div>
 
-      <div class="col-md-12" id="problem-description" type="markdown">
+      <div class="col-md-12" id="article-content" type="markdown">
         <textarea>${targetArticle.content}</textarea>
       </div>
     </div>
