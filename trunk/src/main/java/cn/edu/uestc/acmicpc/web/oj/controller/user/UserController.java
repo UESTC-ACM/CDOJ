@@ -204,7 +204,9 @@ public class UserController extends BaseController {
           Global.RECORD_PER_PAGE, "", null);
       List<UserListDTO> userList = userService.getUserListDTOList(userCondition, pageInfo);
 
-      json.put("pageInfo", pageInfo.getHtmlString());
+      if (pageInfo.getTotalPages() != 1) {
+        json.put("pageInfo", pageInfo.getHtmlString());
+      }
       json.put("result", "success");
       json.put("list", userList);
     }  catch (AppException e) {

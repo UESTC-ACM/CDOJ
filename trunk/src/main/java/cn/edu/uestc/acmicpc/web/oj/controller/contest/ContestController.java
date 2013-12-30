@@ -132,7 +132,10 @@ public class ContestController extends BaseController{
           Global.RECORD_PER_PAGE, "", null);
       List<ContestListDTO> contestListDTOList = contestService.
           getContestListDTOList(contestCondition, pageInfo);
-      json.put("pageInfo", pageInfo.getHtmlString());
+
+      if (pageInfo.getTotalPages() != 1) {
+        json.put("pageInfo", pageInfo.getHtmlString());
+      }
       json.put("result", "success");
       json.put("list", contestListDTOList);
     }catch(AppException e){

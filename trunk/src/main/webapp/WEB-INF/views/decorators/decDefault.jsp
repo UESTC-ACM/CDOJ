@@ -15,10 +15,12 @@
 </head>
 
 <body>
+  <page:applyDecorator name="body"
+    page="/WEB-INF/views/common/navbarTop.jsp" />
   <div id="cdoj-layout">
     <div id="cdoj-navbar">
       <page:applyDecorator name="body"
-        page="/WEB-INF/views/common/navbar.jsp" />
+        page="/WEB-INF/views/common/navbarList.jsp" />
     </div>
     <div id="cdoj-container">
       <decorator:body />

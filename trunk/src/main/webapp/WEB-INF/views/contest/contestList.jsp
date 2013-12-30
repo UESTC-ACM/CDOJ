@@ -15,89 +15,84 @@
 </head>
 <body>
   <div id="contest-list">
-    <div class="row" id="mzry1992-header">
+    <div class="row">
       <div class="col-md-12">
-        <div id="page-info">
-        </div>
-        <div id="search-group">
-          <input type="text" name="search-keyword" maxlength="24"
-            value="" id="search-keyword" class="pull-left form-control" />
-          <button id="search" class="btn btn-success">
-            <i class="fa fa-search"></i>
-          </button>
-
-          <a href="#" id="advanced"><i
+        <div id="page-info"></div>
+        <div id="advance-search">
+          <a href="#" id="advanced" data-toggle="dropdown"><i
             class="fa fa-caret-square-o-down"></i></a>
-          <div id="condition">
-            <form class="form">
-              <fieldset>
-                <legend>Contest Id</legend>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label for="startId">Form</label> <input
-                        type="text" name="startId" maxlength="6"
-                        value="" id="startId"
-                        class="form-control input-sm" />
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label for="endId">To</label> <input type="text"
-                        name="endId" maxlength="6" value="" id="endId"
-                        class="form-control input-sm" />
-                    </div>
-                  </div>
-                </div>
-              </fieldset>
-
-              <fieldset>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="form-group">
-                      <label for="title">Title</label> <input
-                        type="text" name="title" maxlength="100"
-                        value="" id="title"
-                        class="form-control input-sm" />
-                    </div>
-                  </div>
-                </div>
-              </fieldset>
-              <c:if
-                test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
+          <ul class="dropdown-menu cdoj-form-menu" role="menu"
+            aria-labelledby="advance-menu">
+            <li role="presentation" id="condition">
+              <form class="form">
                 <fieldset>
-                  <legend>Is Visible</legend>
+                  <legend>Contest Id</legend>
                   <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-sm-6">
                       <div class="form-group">
-                        <label class="radio-inline"> <input
-                          type="radio" name="isVisible" value="all"
-                          checked="" /> All
-                        </label> <label class="radio-inline"> <input
-                          type="radio" name="isVisible" value="true" />
-                          Yes
-                        </label> <label class="radio-inline"> <input
-                          type="radio" name="isVisible" value="false" />
-                          No
-                        </label>
+                        <label for="startId">Form</label> <input
+                          type="text" name="startId" maxlength="6"
+                          value="" id="startId"
+                          class="form-control input-sm" />
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label for="endId">To</label> <input type="text"
+                          name="endId" maxlength="6" value="" id="endId"
+                          class="form-control input-sm" />
                       </div>
                     </div>
                   </div>
                 </fieldset>
-              </c:if>
-              <p class="pull-right">
-                <button type="submit" class="btn btn-primary btn-sm"
-                  id="search-button">Search</button>
-                <button type="button" class="btn btn-danger btn-sm"
-                  id="reset-button">Reset</button>
-              </p>
-            </form>
-          </div>
+
+                <fieldset>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="title">Title</label> <input
+                          type="text" name="title" maxlength="100"
+                          value="" id="title"
+                          class="form-control input-sm" />
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <c:if
+                  test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
+                  <fieldset>
+                    <legend>Is Visible</legend>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="radio-inline"> <input
+                            type="radio" name="isVisible" value="all"
+                            checked="" /> All
+                          </label> <label class="radio-inline"> <input
+                            type="radio" name="isVisible" value="true" />
+                            Yes
+                          </label> <label class="radio-inline"> <input
+                            type="radio" name="isVisible" value="false" />
+                            No
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </c:if>
+                <p class="pull-right">
+                  <button type="submit" class="btn btn-primary btn-sm"
+                    id="search-button">Search</button>
+                  <button type="button" class="btn btn-danger btn-sm"
+                    id="reset-button">Reset</button>
+                </p>
+              </form>
+          </ul>
         </div>
       </div>
     </div>
 
-    <div class="row" id="mzry1992-container">
+    <div class="row">
       <c:if
         test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
         <div class="col-md-12" id="contest-admin-operation">
