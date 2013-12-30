@@ -158,7 +158,9 @@ public class ProblemController extends BaseController {
         }
       }
 
-      json.put("pageInfo", pageInfo.getHtmlString());
+      if (pageInfo.getTotalPages() != 1) {
+        json.put("pageInfo", pageInfo.getHtmlString());
+      }
       json.put("result", "success");
       json.put("list", problemListDTOList);
     } catch (AppException e) {

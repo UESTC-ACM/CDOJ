@@ -143,7 +143,7 @@ public class PageInfo {
 
     // Build html
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append("<ul class=\"pagination pagination-centered\">\n");
+    stringBuilder.append("<ul class=\"pagination pagination-sm\">\n");
     if (startPage > 1) {
       stringBuilder.append(getLiTag(null, 1L, "<i class=\"fa fa-arrow-left\"></i>", baseURL));
     }

@@ -16,18 +16,18 @@
       <div class="col-md-12">
         <div class="hero">
           <div class="hero-titles">
-            <h1>CDOJ</h1>
+            <h1 class="cdoj-codefont">CDOJ</h1>
             <h2>Orz lyhypacm</h2>
           </div>
         </div>
       </div>
       <div id="article-list">
         <div class="col-md-12">
-          <div id="list-container">
-          </div>
+          <div id="page-info"></div>
         </div>
         <div class="col-md-12">
-          <div id="page-info"></div>
+          <div id="list-container">
+          </div>
         </div>
       </div>
     </div>

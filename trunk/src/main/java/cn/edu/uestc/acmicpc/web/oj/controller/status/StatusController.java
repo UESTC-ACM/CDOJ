@@ -119,8 +119,10 @@ public class StatusController extends BaseController {
         }
       }
 
+      if (pageInfo.getTotalPages() != 1) {
+        json.put("pageInfo", pageInfo.getHtmlString());
+      }
       json.put("result", "success");
-      json.put("pageInfo", pageInfo.getHtmlString());
       json.put("list", statusListDTOList);
     }catch(AppException e){
       json.put("result", "error");

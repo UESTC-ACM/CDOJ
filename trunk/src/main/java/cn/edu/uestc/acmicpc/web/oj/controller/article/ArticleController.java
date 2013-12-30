@@ -95,7 +95,9 @@ public class ArticleController extends BaseController {
       List<ArticleListDTO> articleListDTOList = articleService.getArticleList(
           articleCondition, pageInfo);
 
-      json.put("pageInfo", pageInfo.getHtmlString());
+      if (pageInfo.getTotalPages() != 1) {
+        json.put("pageInfo", pageInfo.getHtmlString());
+      }
       json.put("result", "success");
       json.put("list", articleListDTOList);
     } catch (AppException e) {
