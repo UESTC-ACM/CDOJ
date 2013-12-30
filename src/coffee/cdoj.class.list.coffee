@@ -4,24 +4,10 @@ class SearchModule
     @search = @father.searchGroup
     initCondition = @father.options.condition
 
-    $searchKeyword = @search.find("#search-keyword")
-    $advancedButton = @search.find("#advanced")
-    $searchButton = @search.find("#search")
     $conditionForm = @search.find("#condition")
     $advancedSearchButton = $conditionForm.find("#search-button")
     $advancedResetButton = $conditionForm.find("#reset-button")
 
-    $searchButton.click =>
-      currentCondition = Object.merge(
-        initCondition
-        keyword: $searchKeyword.val()
-      )
-      @father.options.condition = currentCondition
-      @father.refresh currentCondition
-      return false
-    $advancedButton.click =>
-      this.toggle()
-      return false
     $advancedSearchButton.click =>
       currentCondition = Object.merge(
         initCondition
@@ -29,7 +15,7 @@ class SearchModule
       )
       @father.options.condition = currentCondition
       @father.refresh currentCondition
-      this.toggle()
+      @close()
       return false
     $advancedResetButton.click =>
       # TODO
@@ -57,21 +43,17 @@ class SearchModule
         )
         @father.options.condition = currentCondition
         @father.refresh currentCondition
-        this.toggle()
+        @close()
         return false
-
-  toggle: ->
-    $advancedForm = @search.find("#condition")
-    # OK, just add or remove class on #condition, make this runs first :-)
-    isOpen = if $advancedForm.hasClass("open") then true else false
-    if isOpen
-      $advancedForm.removeClass("open")
-    else
-      $advancedForm.addClass("open")
 
   set: (data) ->
     $conditionForm = @search.find("#condition")
     $conditionForm.setFormData(data)
+
+  close: ->
+    $advancedButton = @search.find("#advanced")
+    console.log $advancedButton
+    $advancedButton.dropdown('toggle')
 
 class ListModule
   ###
@@ -85,7 +67,7 @@ class ListModule
   constructor: (@options) ->
     @listContainer = @options.listContainer
     # TODO pass condition to search module
-    @searchGroup = @listContainer.find("#search-group")
+    @searchGroup = @listContainer.find("#advance-search")
     @searchModule = new SearchModule this
 
     @pageInfo = @listContainer.find("#page-info")
@@ -96,7 +78,7 @@ class ListModule
     @searchModule.set params
     @options.condition = jsonMerge(@options.condition, params)
 
-    this.refresh(@options.condition)
+    @refresh(@options.condition)
     self = this
     if @options.autoRefresh == true
       setInterval(() ->
@@ -114,15 +96,17 @@ class ListModule
       jsonPost(@options.requestUrl
         condition
         (datas) =>
-          # Add pagination
-          @pageInfo.empty().append(datas.pageInfo)
-          @pageInfo.find("a").click (e) =>
-            $el = $(e.currentTarget)
-            if $el.attr("href") == undefined
+          # Add pagination if exists
+          @pageInfo.empty()
+          if datas.pageInfo != undefined
+            @pageInfo.append(datas.pageInfo)
+            @pageInfo.find("a").click (e) =>
+              $el = $(e.currentTarget)
+              if $el.attr("href") == undefined
+                return false
+              condition.currentPage = $el.attr("href")
+              @refresh(condition);
               return false
-            condition.currentPage = $el.attr("href")
-            @refresh(condition);
-            return false
 
           # Clear first
           @list.empty()

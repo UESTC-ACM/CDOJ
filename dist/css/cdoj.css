@@ -7688,6 +7688,12 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
 .pln {
   color: #111111;
 }
+code,
+kbd,
+pre,
+samp {
+  font-family: "Source Code Pro", Monaco, Menlo, Consolas, "Courier New", monospace;
+}
 @media screen {
   /* string content */
   .str {
@@ -7819,6 +7825,9 @@ li.L7,
 li.L9 {
   /* */
 }
+hr {
+  border: 1px solid #ddd;
+}
 body,
 html,
 .row,
@@ -7834,10 +7843,16 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
 }
-a {
-  color: #9a4444;
+.cdoj-codefont {
+  font-family: "Source Code Pro", Monaco, Menlo, Consolas, "Courier New", monospace;
+}
+.fa {
+  margin-right: 1em;
+}
+.input-group-addon .fa {
+  margin: 0;
 }
 a:hover {
   text-decoration: none;
@@ -7896,59 +7911,89 @@ html,
   margin: 0.02em 0 0.8em;
   color: #666;
 }
+#cdoj-layout {
+  margin-top: 50px;
+}
+body {
+  background-color: #f8f8f8;
+}
 #cdoj-container {
-  background-color: #ffffff;
   padding: 0 15px;
 }
-#mzry1992-container {
-  padding: 8px 1em 1em 1em;
-}
-#mzry1992-header {
-  background-color: #ffffff;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1020;
-  /* 10 less than .navbar-fixed to prevent any overlap */
-  padding: 4px 2em 0 2em;
-}
-#mzry1992-header #page-info {
-  float: left;
+#cdoj-layout {
+  padding-left: 165px;
 }
 @media (max-width: 767px) {
   #cdoj-layout {
-    padding-left: 0;
-  }
-  #mzry1992-header {
-    margin-left: 0;
+    padding-left: 36px;
   }
 }
-@media (min-width: 768px) and (max-width: 991px) {
-  #cdoj-layout {
-    padding-left: 150px;
-  }
-  #mzry1992-header {
-    margin-left: 150px;
-  }
+#cdoj-navbar-top {
+  background-color: #0066b2;
+  margin-left: 165px;
 }
-@media (min-width: 992px) {
-  #cdoj-layout {
-    padding-left: 250px;
-  }
-  #mzry1992-header {
-    margin-left: 250px;
-  }
+#cdoj-navbar-top li a {
+  color: #b1d3ec;
+}
+#cdoj-navbar-top .active a,
+#cdoj-navbar-top .open a {
+  color: #fff;
+  background-color: #142a3b;
+}
+#cdoj-navbar-top .dropdown-menu li a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.428571429;
+  color: #333;
+  background-color: inherit;
+  white-space: nowrap;
+}
+#cdoj-navbar-top .dropdown-menu li a:hover {
+  background-color: #ff3300;
+}
+#cdoj-navbar-top .container {
+  margin: 0;
+  width: 100%;
+}
+#cdoj-navbar-top #cdoj-user {
+  padding: 0 15px;
+}
+#cdoj-navbar-top #cdoj-user #cdoj-user-avatar {
+  width: 50px;
+  height: 50px;
+  min-height: 50px;
+  min-width: 50px;
+}
+#cdoj-navbar-top #cdoj-search {
+  width: 300px;
+  padding: 10px 15px;
+}
+.cdoj-form-menu {
+  min-width: 240px;
+}
+.cdoj-form-menu form {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.428571429;
+  color: #333;
+  white-space: nowrap;
 }
 #cdoj-navbar {
   position: fixed;
   top: 0;
   bottom: 0;
   z-index: 1000;
-  background: #191818;
+  background: #fff;
   overflow-y: auto;
   -webkit-overflow-scroll: touch;
   color: #ffffff;
+  margin-left: -165px;
+  width: 165px;
+  left: 165px;
 }
 #cdoj-navbar .row {
   margin: 0;
@@ -7956,58 +8001,29 @@ html,
 #cdoj-navbar .row .col-md-12 {
   padding: 0;
 }
-#cdoj-navbar .panel-group {
-  background: none;
-  padding: 0;
-  margin: 0;
-}
-#cdoj-navbar .panel-group .panel {
-  background: none;
-  padding: 0;
-  margin: 0;
-  border: none;
-}
-#cdoj-navbar .panel-group .panel .panel-heading {
-  background: none;
-  padding: 0;
-  margin: 0;
-  border: none;
-}
-#pageInfo {
-  text-align: center;
-}
-@media (max-width: 767px) {
-  #cdoj-navbar {
-    width: 0;
-  }
-}
-@media (min-width: 768px) and (max-width: 991px) {
-  #cdoj-navbar {
-    margin-left: -150px;
-    width: 150px;
-    left: 150px;
-  }
-}
-@media (min-width: 992px) {
-  #cdoj-navbar {
-    margin-left: -250px;
-    width: 250px;
-    left: 250px;
-  }
-}
 .cdoj-menu a {
-  color: #999;
+  color: #000;
   border: none;
   white-space: normal;
   padding: 0.6em 0 0.6em 0.6em;
+  font-size: 24px;
+}
+.cdoj-menu .fa {
+  font-size: 24px;
+  margin: 0;
+  height: 24px;
+  width: 24px;
+}
+.cdoj-menu .nav-stacked > li + li {
+  margin-top: 0;
 }
 .cdoj-menu li a:hover,
 .cdoj-menu li a:focus {
   border-radius: 0;
-  background: #333;
+  background: #ff3300;
 }
 .cdoj-menu li.cdoj-menu-selected {
-  background: #1f8dd6;
+  background: #0066b2;
 }
 .cdoj-menu li.cdoj-menu-selected a {
   color: #fff;
@@ -8016,52 +8032,41 @@ html,
 .cdoj-menu li.cdoj-menu-selected a:focus {
   background: none;
 }
-.cdoj-menu li.cdoj-menu-heading a {
-  color: inherit;
-  padding: 0;
-  margin: 0;
+.cdoj-menu li.cdoj-menu-heading {
+  font-family: "Source Code Pro", Monaco, Menlo, Consolas, "Courier New", monospace;
+  font-size: 36px;
+  text-align: center;
+  height: 51px;
+  background-color: #6caad9;
+  border-bottom: 1px solid #101010;
+  border-right: 1px solid #101010;
 }
-.cdoj-menu li.cdoj-menu-heading a:hover {
-  background: none;
+#advance-search {
+  position: fixed;
+  top: 17px;
+  right: 160px;
+  z-index: 9999;
 }
-#cdoj-user-menu {
-  overflow: hidden;
+#advance-search .dropdown-menu {
+  right: -40px;
+  left: inherit;
+  width: 360px;
 }
-#cdoj-user-menu a {
-  color: #999;
-  border: none;
-  white-space: normal;
-  padding: 3px 12px;
-  font-size: 12px;
-}
-#cdoj-user-menu i {
-  margin-right: 4px;
-}
-@media (min-width: 768px) and (max-width: 991px) {
-  .cdoj-menu li.cdoj-menu-heading {
-    font-size: 110%;
-    color: #fff;
-    padding: 0 15px;
+@media (max-width: 767px) {
+  #cdoj-navbar {
+    margin-left: -36px;
+    width: 36px;
+    left: 36px;
   }
-}
-@media (min-width: 992px) {
-  .cdoj-menu li.cdoj-menu-heading {
-    font-size: 110%;
-    color: #fff;
-    padding: 10px 15px;
+  #cdoj-navbar-top {
+    margin-left: 36px;
   }
-}
-#cdoj-user .row {
-  margin: 0;
-}
-#cdoj-user .row .col-md-6 {
-  padding: 0;
-}
-#cdoj-user-avatar {
-  width: 67px;
-  height: 67px;
-  min-height: 67px;
-  min-width: 67px;
+  .cdoj-menu-item {
+    display: none;
+  }
+  .cdoj-menu li a {
+    padding: 12px 6px;
+  }
 }
 #cdoj-users-avatar {
   width: 64px;
@@ -8072,118 +8077,11 @@ html,
 #currentUser {
   font-size: 14px;
 }
-@media (min-width: 768px) and (max-width: 991px) {
-  #cdoj-user {
-    margin: 12px;
-  }
-}
-@media (min-width: 992px) {
-  #cdoj-user {
-    margin: 24px 24px 12px 24px;
-  }
-}
-.input-group-addon {
-  width: 39px;
-}
-.input-group {
-  width: 100%;
-}
-.label i {
-  margin-right: 4px;
-}
-#search-group {
-  position: relative;
-  margin: 20px 0;
-  display: block;
-  width: 230px;
-  float: right;
-}
-#search-group #search-keyword {
-  width: 193px;
-  height: 36px;
-  border-bottom-right-radius: 0;
-  border-top-right-radius: 0;
-  padding-right: 22px;
-}
-#search-group #search-keyword:focus {
-  outline: none;
-}
-#search-group #search {
-  margin: 0px;
-  height: 36px;
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0;
-  font-size: 20px;
-  padding: 3px 6px 2px 6px;
-  position: absolute;
-  left: 192px;
-}
-#search-group #search span.label {
-  padding: 0 10px !important;
-}
-#search-group a#advanced {
-  position: absolute;
-  font-size: 12px;
-  left: 176px;
-  padding: 8px 0 9px 0;
-  text-decoration: none;
-  color: black;
-}
-#search-group #condition {
-  display: none;
-  position: absolute;
-  background-color: #ffffff;
-  width: 360px;
-  left: -168px;
-  top: 36px;
-  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  border: 1px solid #ccc;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  padding: 6px 12px;
-  z-index: 1000;
-}
-#search-group #condition .pure-form {
-  padding: 9px;
-}
-#search-group #condition .form-actions button {
-  float: right;
-}
-#search-group #condition.open {
-  display: block;
-}
 .cdoj-submit-area {
   resize: none;
   width: 100%;
   height: 390px;
   font-family: "Source Code Pro", Monaco, Menlo, Consolas, "Courier New", monospace;
-}
-.form-inline .form-group {
-  margin-left: 0;
-  margin-right: 0;
-}
-@media (min-width: 768px) and (max-width: 991px) {
-  #cdoj-user {
-    margin: 12px;
-  }
-  #cdoj-login-form .input-group-addon {
-    display: none;
-  }
-  #cdoj-login-form .form-control {
-    border-bottom-left-radius: 3px;
-    border-top-left-radius: 3px;
-    height: 30px;
-    padding: 5px 10px;
-    font-size: 12px;
-    line-height: 1.5;
-  }
-  #cdoj-login-form #cdoj-login-button {
-    padding: 5px 10px;
-    font-size: 12px;
-    line-height: 1.5;
-    border-bottom-right-radius: 3px;
-    border-top-right-radius: 3px;
-  }
 }
 .admin-span {
   margin-top: -6px;
@@ -8191,6 +8089,12 @@ html,
 }
 .panel-body {
   padding: 12px;
+}
+#page-info {
+  margin: 10px 0;
+}
+#page-info .pagination {
+  margin: 0;
 }
 #flandre-heading {
   padding: 2px 15px;
@@ -8237,21 +8141,3 @@ html,
   padding-top: 1em;
   margin-top: 1em;
 }
-/*
-@import "cdoj.layout.less";
-@import "cdoj.navbar.less";
-@import "cdoj.menu.less";
-@import "cdoj.form.less";
-@import "cdoj.user.less";
-@import "cdoj.icon.less";
-@import "cdoj.foot.less";
-@import "cdoj.font.less";
-@import "cdoj.pagination.less";
-@import "cdoj.label.less";
-@import "cdoj.table.less";
-@import "cdoj.new.code.less";
-@import "cdoj.dl.less";
-@import "cdoj.tab.less";
-@import "cdoj.button.less";
-@import "cdoj.tooltip.less";
-*/

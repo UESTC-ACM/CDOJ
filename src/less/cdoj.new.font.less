@@ -2,10 +2,20 @@ body,
 html,
 .row,
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: @cdoj-font;
+}
+.cdoj-codefont {
+  font-family: @cdoj-codefont;
+}
+.fa {
+  margin-right: 1em;
+}
+.input-group-addon {
+ .fa {
+   margin: 0;
+ }
 }
 a {
-  color: #9a4444;
   &:hover {
     text-decoration: none;
   }

@@ -24826,36 +24826,20 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
 
   SearchModule = (function() {
     function SearchModule(father) {
-      var $advancedButton, $advancedResetButton, $advancedSearchButton, $conditionForm, $rejudgeButton, $searchButton, $searchKeyword, initCondition,
+      var $advancedResetButton, $advancedSearchButton, $conditionForm, $rejudgeButton, initCondition,
         _this = this;
       this.father = father;
       this.search = this.father.searchGroup;
       initCondition = this.father.options.condition;
-      $searchKeyword = this.search.find("#search-keyword");
-      $advancedButton = this.search.find("#advanced");
-      $searchButton = this.search.find("#search");
       $conditionForm = this.search.find("#condition");
       $advancedSearchButton = $conditionForm.find("#search-button");
       $advancedResetButton = $conditionForm.find("#reset-button");
-      $searchButton.click(function() {
-        var currentCondition;
-        currentCondition = Object.merge(initCondition, {
-          keyword: $searchKeyword.val()
-        });
-        _this.father.options.condition = currentCondition;
-        _this.father.refresh(currentCondition);
-        return false;
-      });
-      $advancedButton.click(function() {
-        _this.toggle();
-        return false;
-      });
       $advancedSearchButton.click(function() {
         var currentCondition;
         currentCondition = Object.merge(initCondition, $conditionForm.getFormData());
         _this.father.options.condition = currentCondition;
         _this.father.refresh(currentCondition);
-        _this.toggle();
+        _this.close();
         return false;
       });
       $advancedResetButton.click(function() {
@@ -24884,27 +24868,23 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
           });
           _this.father.options.condition = currentCondition;
           _this.father.refresh(currentCondition);
-          _this.toggle();
+          _this.close();
           return false;
         });
       }
     }
 
-    SearchModule.prototype.toggle = function() {
-      var $advancedForm, isOpen;
-      $advancedForm = this.search.find("#condition");
-      isOpen = $advancedForm.hasClass("open") ? true : false;
-      if (isOpen) {
-        return $advancedForm.removeClass("open");
-      } else {
-        return $advancedForm.addClass("open");
-      }
-    };
-
     SearchModule.prototype.set = function(data) {
       var $conditionForm;
       $conditionForm = this.search.find("#condition");
       return $conditionForm.setFormData(data);
+    };
+
+    SearchModule.prototype.close = function() {
+      var $advancedButton;
+      $advancedButton = this.search.find("#advanced");
+      console.log($advancedButton);
+      return $advancedButton.dropdown('toggle');
     };
 
     return SearchModule;
@@ -24925,7 +24905,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
       var params, self;
       this.options = options;
       this.listContainer = this.options.listContainer;
-      this.searchGroup = this.listContainer.find("#search-group");
+      this.searchGroup = this.listContainer.find("#advance-search");
       this.searchModule = new SearchModule(this);
       this.pageInfo = this.listContainer.find("#page-info");
       this.refreshLock = 0;
@@ -24951,17 +24931,20 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
         this.refreshLock = 1;
         this.list = this.listContainer.find("#list-container");
         jsonPost(this.options.requestUrl, condition, function(datas) {
-          _this.pageInfo.empty().append(datas.pageInfo);
-          _this.pageInfo.find("a").click(function(e) {
-            var $el;
-            $el = $(e.currentTarget);
-            if ($el.attr("href") === void 0) {
+          _this.pageInfo.empty();
+          if (datas.pageInfo !== void 0) {
+            _this.pageInfo.append(datas.pageInfo);
+            _this.pageInfo.find("a").click(function(e) {
+              var $el;
+              $el = $(e.currentTarget);
+              if ($el.attr("href") === void 0) {
+                return false;
+              }
+              condition.currentPage = $el.attr("href");
+              _this.refresh(condition);
               return false;
-            }
-            condition.currentPage = $el.attr("href");
-            _this.refresh(condition);
-            return false;
-          });
+            });
+          }
           _this.list.empty();
           datas.list.each(function(data) {
             return _this.list.append(_this.options.formatter(data));
@@ -24979,7 +24962,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
   })();
 
   initLayout = function() {
-    var $cdojContainer, $cdojNavbar, $cdojNavbarMenu, $cdojUser, $mzry1992Container, $mzry1992Header;
+    var $cdojContainer, $cdojNavbar, $cdojNavbarMenu, $cdojUser, $mzry1992Container, $mzry1992Header, currentUrl, current_position, pos, _i, _len, _ref;
     $cdojNavbar = $("#cdoj-navbar");
     $cdojContainer = $("#cdoj-container");
     $cdojUser = $cdojNavbar.find("#cdoj-user");
@@ -24987,8 +24970,18 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
     $mzry1992Header = $cdojContainer.find("#mzry1992-header");
     $mzry1992Container = $cdojContainer.find("#mzry1992-container");
     if ($mzry1992Header.length !== 0 && $mzry1992Container.length !== 0) {
-      return $mzry1992Container.css("margin-top", $mzry1992Header.outerHeight());
+      $mzry1992Container.css("margin-top", $mzry1992Header.outerHeight());
     }
+    currentUrl = window.location.pathname;
+    current_position = "home";
+    _ref = ["problem", "contest", "status", "user", "article"];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      pos = _ref[_i];
+      if (currentUrl.startsWith("/" + pos + "/")) {
+        current_position = pos;
+      }
+    }
+    return $cdojNavbarMenu.find('#menu-item-' + current_position).addClass('cdoj-menu-selected');
   };
 
   initArticleEditor = function() {
@@ -25790,6 +25783,9 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
       });
     }
     if (this.user.userLogin === false) {
+      $('.dropdown-menu').find('form').click(function(e) {
+        return e.stopPropagation();
+      });
       $("#cdoj-login-button").click(function() {
         var $loginForm, info;
         $loginForm = $("#cdoj-login-form");
