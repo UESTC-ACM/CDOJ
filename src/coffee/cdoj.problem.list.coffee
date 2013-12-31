@@ -56,7 +56,7 @@ initProblemList = ->
         """
           <tr>
             <td style="text-align: right;">#{data.problemId}</td>
-            <td><a href="/problem/show/#{data.problemId}">#{data.title}</a></td>
+            <td><a href="/problem/show/#{data.problemId}">#{data.title}</a><small>&nbsp- #{data.source}</small></td>
             <td class="#{if data.status == AuthorStatusType.PASS
                            panelAC
                          else if data.status == AuthorStatusType.FAIL

@@ -1,4 +1,34 @@
 /* Common variable */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(/font/OpenSansLight.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(/font/OpenSans.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url(/font/OpenSansSemibold.woff) format('woff');
+}
+@font-face {
+  font-family: 'Source Code Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Source Code Pro'), local('SourceCodePro-Regular'), url(/font/SourceCodeProRegular.woff) format('woff');
+}
+@font-face {
+  font-family: 'Source Code Pro';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Source Code Pro Semibold'), local('SourceCodePro-Semibold'), url(/font/SourceCodeProSemibold.woff) format('woff');
+}
 /* Hemisu Light */
 /* Original theme - http://noahfrederick.com/vim-color-scheme-hemisu/ */
 /* Pretty printing styles. Used with prettify.js. */
@@ -231,6 +261,9 @@ html,
   margin: 0.02em 0 0.8em;
   color: #666;
 }
+small {
+  font-size: 70%;
+}
 @media (max-width: 767px) {
   body,
   html,
@@ -250,6 +283,10 @@ body {
 #cdoj-layout {
   padding-left: 165px;
 }
+img {
+  max-width: 100%;
+  height: auto;
+}
 @media (max-width: 767px) {
   #cdoj-layout {
     padding-left: 36px;
@@ -260,7 +297,11 @@ body {
     right: 15px;
     left: 15px;
     bottom: 15px;
-    overflow-y: scroll;
+    overflow-y: auto;
+  }
+  body,
+  html {
+    overflow-x: hidden;
   }
 }
 #cdoj-navbar-top {
@@ -309,7 +350,7 @@ body {
   width: 100%;
 }
 #cdoj-navbar-top #cdoj-user {
-  padding: 0;
+  padding-left: 29px;
 }
 #cdoj-navbar-top #cdoj-user #cdoj-user-avatar {
   width: 50px;
@@ -398,7 +439,7 @@ body {
 #advance-search {
   position: fixed;
   top: 16px;
-  right: 157px;
+  right: 160px;
   z-index: 1031;
 }
 @media (min-width: 768px) {
@@ -429,12 +470,12 @@ body {
   #cdoj-navbar-top .navbar-right {
     float: right !important;
   }
-  #cdoj-navbar-top .navbar-nav li {
-    float: left;
-  }
   #cdoj-navbar-top .navbar-nav li a {
     padding-top: 15px;
     padding-bottom: 15px;
+  }
+  #cdoj-navbar-top .navbar-nav li .dropdown-menu .divider {
+    background-color: #285577;
   }
   #cdoj-navbar-top .navbar-nav #cdoj-search {
     width: auto;
@@ -444,6 +485,7 @@ body {
     position: fixed;
     right: 15px;
     top: 0;
+    z-index: 1040;
     display: inline;
   }
   .cdoj-menu-item {
@@ -453,10 +495,22 @@ body {
     padding: 12px 6px;
   }
   #advance-search {
-    right: 129px;
+    right: 132px;
   }
   #advance-search .dropdown-menu {
     top: 37px;
+  }
+  #cdoj-user #cdoj-user-avatar {
+    position: fixed;
+    right: 15px;
+    top: 0;
+    z-index: 1040;
+    display: inline;
+    padding: 0;
+    width: 50px;
+    height: 50px;
+    min-height: 50px;
+    min-width: 50px;
   }
 }
 #cdoj-users-avatar {
@@ -486,6 +540,9 @@ body {
 }
 #page-info .pagination {
   margin: 0;
+}
+.no-margin-right {
+  margin-right: 0;
 }
 #flandre-heading {
   padding: 2px 15px;

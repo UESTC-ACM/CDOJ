@@ -398,6 +398,16 @@
     });
   };
 
+  $.fn.unescapeCode = function() {
+    var _this = this;
+    return this.each(function(id, el) {
+      var $el, str;
+      $el = $(el);
+      str = "<code>" + ($el[0].innerHTML.unescapeHTML()) + "</code>";
+      return $el.replaceWith(str);
+    });
+  };
+
   $.fn.markdown = function() {
     var _this = this;
     return this.each(function(id, el) {
@@ -406,6 +416,7 @@
       md = $el.html().trim().replace('<textarea>', '').replace('</textarea>', '').replace('<TEXTAREA>', '').replace('</TEXTAREA>', '').trim();
       html = $(marked(md));
       $el.empty().append(html);
+      $el.find("code").unescapeCode();
       return $el.find("pre").unescapePre();
     });
   };
@@ -1257,7 +1268,7 @@
             });
             return result;
           };
-          return "<tr>\n  <td style=\"text-align: right;\">" + data.problemId + "</td>\n  <td><a href=\"/problem/show/" + data.problemId + "\">" + data.title + "</a></td>\n  <td class=\"" + (data.status === AuthorStatusType.PASS ? panelAC : data.status === AuthorStatusType.FAIL ? panelWA : void 0) + "\" style=\"text-align: right;\"><a href=\"/status/list?problemId=" + data.problemId + "\">x " + data.solved + "</a></td>\n  " + (adminSpan()) + "\n</tr>";
+          return "<tr>\n  <td style=\"text-align: right;\">" + data.problemId + "</td>\n  <td><a href=\"/problem/show/" + data.problemId + "\">" + data.title + "</a><small>&nbsp- " + data.source + "</small></td>\n  <td class=\"" + (data.status === AuthorStatusType.PASS ? panelAC : data.status === AuthorStatusType.FAIL ? panelWA : void 0) + "\" style=\"text-align: right;\"><a href=\"/status/list?problemId=" + data.problemId + "\">x " + data.solved + "</a></td>\n  " + (adminSpan()) + "\n</tr>";
         },
         after: function() {
           var _this = this;
@@ -1336,8 +1347,6 @@
       return statusList = new ListModule({
         listContainer: $statusList,
         requestUrl: "/status/search",
-        autoRefresh: true,
-        refreshInterval: 1000,
         condition: {
           "currentPage": null,
           "startId": void 0,

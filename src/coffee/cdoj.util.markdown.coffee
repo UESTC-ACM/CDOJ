@@ -9,6 +9,13 @@ $.fn.unescapePre = ->
     str = "<pre>#{$el[0].innerHTML}</pre>".unescapeHTML()
     $el.replaceWith($("<div>#{str}</div>"))
 
+# unescape html in code tag
+$.fn.unescapeCode = ->
+  this.each (id, el)=>
+    $el = $(el)
+    str = "<code>#{$el[0].innerHTML.unescapeHTML()}</code>"
+    $el.replaceWith(str)
+
 # render markdown content use marked
 $.fn.markdown = ->
   this.each (id, el)=>
@@ -20,4 +27,5 @@ $.fn.markdown = ->
       .trim()
     html = $(marked(md))
     $el.empty().append(html)
+    $el.find("code").unescapeCode()
     $el.find("pre").unescapePre()

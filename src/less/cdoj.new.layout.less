@@ -10,6 +10,10 @@ body {
 #cdoj-layout {
   padding-left: @cdoj-navbar-width;
 }
+img {
+  max-width: 100%;
+  height: auto;
+}
 @media (max-width: @screen-xs-max) {
   #cdoj-layout {
     padding-left: @cdoj-navbar-width-tiny;
@@ -21,6 +25,10 @@ body {
     right: 15px;
     left: 15px;
     bottom: 15px;
-    overflow-y: scroll;
+    overflow-y: auto;
+  }
+
+  body, html {
+    overflow-x: hidden;
   }
 }
