@@ -12,7 +12,6 @@
 </head>
 <body>
   <div id="problem-data-editor">
-    <div id="mzry1992-container">
       <div class="row">
         <div class="col-md-12" id="problem-data-editor-title"
           value="${targetProblem.problemId}">
@@ -164,7 +163,6 @@
         </div>
       </div>
     </div>
-  </div>
 
 </body>
 </html>

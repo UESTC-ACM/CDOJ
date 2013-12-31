@@ -10,9 +10,8 @@
 <title>CDOJ</title>
 </head>
 <body>
-
-  <div id="index">
-    <div class="row" id="mzry1992-container">
+  <div id="cdoj-index">
+    <div class="row">
       <div class="col-md-12">
         <div class="hero">
           <div class="hero-titles">
@@ -32,6 +31,5 @@
       </div>
     </div>
   </div>
-
 </body>
 </html>

@@ -14,7 +14,6 @@ Problem statement
 <body>
 
   <div id="problem-show">
-    <div id="mzry1992-container">
       <div class="row">
         <div class="col-md-12" id="problem-title"
           value="<c:out value="${targetProblem.problemId}"/>">
@@ -176,7 +175,6 @@ Problem statement
           <div class="tab-pane" id="tab-problem-discus"></div>
         </div>
       </div>
-    </div>
   </div>
   <%--<page:applyDecorator name="body" page="/WEB-INF/views/status/statusModal.jsp"/>--%>
 
