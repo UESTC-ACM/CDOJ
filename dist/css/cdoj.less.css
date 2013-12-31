@@ -170,7 +170,8 @@ h6,
 .fa {
   margin-right: 1em;
 }
-.input-group-addon .fa {
+.input-group-addon .fa,
+.btn-toolbar .fa {
   margin: 0;
 }
 a:hover {
@@ -230,6 +231,13 @@ html,
   margin: 0.02em 0 0.8em;
   color: #666;
 }
+@media (max-width: 767px) {
+  body,
+  html,
+  .row {
+    font-size: 12px;
+  }
+}
 #cdoj-layout {
   margin-top: 50px;
 }
@@ -246,16 +254,40 @@ body {
   #cdoj-layout {
     padding-left: 36px;
   }
+  .cdoj-form-menu {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    left: 15px;
+    bottom: 15px;
+    overflow-y: scroll;
+  }
 }
 #cdoj-navbar-top {
+  position: fixed;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+  top: 0;
   background-color: #0066b2;
+  border-bottom: 1px solid #000;
   margin-left: 165px;
 }
-#cdoj-navbar-top li a {
+#cdoj-navbar-top #cdoj-search-icon {
+  display: none;
+}
+#cdoj-navbar-top #cdoj-search-text {
+  display: block;
+}
+#cdoj-navbar-top li a,
+#cdoj-navbar-top li a:hover {
   color: #b1d3ec;
+  background-color: #0066b2;
 }
 #cdoj-navbar-top .active a,
-#cdoj-navbar-top .open a {
+#cdoj-navbar-top .open a,
+#cdoj-navbar-top .active a:hover,
+#cdoj-navbar-top .open a:hover {
   color: #fff;
   background-color: #142a3b;
 }
@@ -277,7 +309,7 @@ body {
   width: 100%;
 }
 #cdoj-navbar-top #cdoj-user {
-  padding: 0 15px;
+  padding: 0;
 }
 #cdoj-navbar-top #cdoj-user #cdoj-user-avatar {
   width: 50px;
@@ -288,6 +320,9 @@ body {
 #cdoj-navbar-top #cdoj-search {
   width: 300px;
   padding: 10px 15px;
+}
+#cdoj-navbar-top .nav {
+  margin: 0px;
 }
 .cdoj-form-menu {
   min-width: 240px;
@@ -362,14 +397,16 @@ body {
 }
 #advance-search {
   position: fixed;
-  top: 17px;
-  right: 160px;
-  z-index: 9999;
+  top: 16px;
+  right: 157px;
+  z-index: 1031;
 }
-#advance-search .dropdown-menu {
-  right: -40px;
-  left: inherit;
-  width: 360px;
+@media (min-width: 768px) {
+  #advance-search .dropdown-menu {
+    right: -40px;
+    left: inherit;
+    width: 360px;
+  }
 }
 @media (max-width: 767px) {
   #cdoj-navbar {
@@ -380,11 +417,46 @@ body {
   #cdoj-navbar-top {
     margin-left: 36px;
   }
+  #cdoj-navbar-top #cdoj-search-icon {
+    display: block;
+  }
+  #cdoj-navbar-top #cdoj-search-icon i.fa {
+    margin-right: 0;
+  }
+  #cdoj-navbar-top #cdoj-search-text {
+    display: none;
+  }
+  #cdoj-navbar-top .navbar-right {
+    float: right !important;
+  }
+  #cdoj-navbar-top .navbar-nav li {
+    float: left;
+  }
+  #cdoj-navbar-top .navbar-nav li a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+  #cdoj-navbar-top .navbar-nav #cdoj-search {
+    width: auto;
+    margin-right: 76px;
+  }
+  #cdoj-navbar-top .navbar-nav li a.dropdown-toggle {
+    position: fixed;
+    right: 15px;
+    top: 0;
+    display: inline;
+  }
   .cdoj-menu-item {
     display: none;
   }
   .cdoj-menu li a {
     padding: 12px 6px;
+  }
+  #advance-search {
+    right: 129px;
+  }
+  #advance-search .dropdown-menu {
+    top: 37px;
   }
 }
 #cdoj-users-avatar {

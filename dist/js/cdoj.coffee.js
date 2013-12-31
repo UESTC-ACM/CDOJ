@@ -732,7 +732,7 @@
     }
     currentUrl = window.location.pathname;
     current_position = "home";
-    _ref = ["problem", "contest", "status", "user", "article"];
+    _ref = ["problem", "contest", "status", "user", "admin"];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       pos = _ref[_i];
       if (currentUrl.startsWith("/" + pos + "/")) {

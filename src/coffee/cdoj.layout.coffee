@@ -14,6 +14,6 @@ initLayout = ->
   # Set current page
   currentUrl = window.location.pathname
   current_position = "home";
-  for pos in ["problem", "contest", "status", "user", "article"]
+  for pos in ["problem", "contest", "status", "user", "admin"]
     current_position = pos if currentUrl.startsWith("/" + pos + "/")
   $cdojNavbarMenu.find('#menu-item-' + current_position).addClass('cdoj-menu-selected');
