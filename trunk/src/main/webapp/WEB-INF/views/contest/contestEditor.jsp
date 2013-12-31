@@ -22,7 +22,6 @@
 <body>
 
   <div id="contest-editor">
-    <div id="mzry1992-container">
       <div class="row">
         <c:if test="${action eq 'new'}">
           <div class="col-md-12" id="contest-editor-title" value="new">

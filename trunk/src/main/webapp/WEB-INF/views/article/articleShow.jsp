@@ -12,7 +12,7 @@ Problem statement
 </head>
 <body>
   <div id="article-show">
-    <div class="row" id="mzry1992-container">
+    <div class="row">
       <div class="col-md-12">
         <h1>${targetArticle.title}</h1>
         <c:if test="${currentUser.type == 1}">

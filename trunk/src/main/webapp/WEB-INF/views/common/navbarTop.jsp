@@ -11,27 +11,19 @@ User menu on navbar
 <title></title>
 </head>
 <body>
-  <header id="cdoj-navbar-top"
-    class="navbar navbar-inverse navbar-fixed-top bs-docs-nav"
-    role="banner">
+  <header id="cdoj-navbar-top">
     <div class="container">
-      <div class="navbar-header">
-        <button class="navbar-toggle" type="button"
-          data-toggle="collapse" data-target=".bs-navbar-collapse">
-          <span class="sr-only">Toggle navigation</span> <span
-            class="icon-bar"></span> <span class="icon-bar"></span> <span
-            class="icon-bar"></span>
-        </button>
-      </div>
-      <nav class="collapse navbar-collapse bs-navbar-collapse"
-        role="navigation">
+      <nav>
         <ul class="nav navbar-nav navbar-right">
           <!-- Search -->
           <li><div class="input-group input-group-sm" id="cdoj-search">
               <input type="text" class="form-control">
               <div class="input-group-btn">
                 <button type="button" class="btn btn-default"
-                  tabindex="-1">Search</button>
+                  tabindex="-1">
+                  <span id="cdoj-search-icon"><i class="fa fa-search"></i></span>
+                  <span id="cdoj-search-text">Search</span>
+                  </button>
               </div>
             </div></li>
           <!-- User -->

@@ -17,7 +17,6 @@ Admin problem editor page
 </head>
 <body>
   <div id="problem-editor">
-    <div id="mzry1992-container">
       <div class="row">
         <c:if test="${action eq 'new'}">
           <div class="col-md-12" id="problem-editor-title" value="new">
@@ -104,7 +103,6 @@ Admin problem editor page
         </div>
       </div>
     </div>
-  </div>
 
 </body>
 </html>
