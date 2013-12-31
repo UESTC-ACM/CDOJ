@@ -33,6 +33,7 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
     registry.addResourceHandler("/plugins/**").addResourceLocations("/plugins/**");
     registry.addResourceHandler("/scripts/**").addResourceLocations("/scripts/**");
     registry.addResourceHandler("/styles/**").addResourceLocations("/styles/**");
+    registry.addResourceHandler("/font/**").addResourceLocations("/font/**");
   }
 
   @Override

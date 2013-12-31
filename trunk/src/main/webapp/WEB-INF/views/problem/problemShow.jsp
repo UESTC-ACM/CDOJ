@@ -26,12 +26,12 @@ Problem statement
             </c:if>
           </h1>
           <c:if test="${currentUser.type == 1}">
+              <div>
                 <a href="<c:url value="/problem/editor/${targetProblem.problemId}"/>"><i
-                  class="fa fa-pencil"></i> Edit</a> &nbsp; <a
+                  class="fa fa-pencil no-margin-right"></i> Edit</a> &nbsp; <a
                   href="<c:url value="/problem/dataEditor/${targetProblem.problemId}"/>"><i
-                  class="fa fa-cog"></i> Data manage</a>
+                  class="fa fa-cog no-margin-right"></i> Data manage</a>
               </div>
-            </div>
           </c:if>
         </div>
         <div class="col-md-12">
@@ -176,7 +176,6 @@ Problem statement
         </div>
       </div>
   </div>
-  <%--<page:applyDecorator name="body" page="/WEB-INF/views/status/statusModal.jsp"/>--%>
 
 </body>
 </html>
