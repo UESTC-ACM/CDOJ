@@ -108,7 +108,7 @@ Admin problem list page
               <th style="text-align: center;">#</th>
               <th style="text-align: center;">User</th>
               <th style="text-align: center;">Prob</th>
-              <th style="text-align: center;">Result <a
+              <th style="width: 19em; text-align: center;">Result <a
                 id="status-refresh-button" href="#"> <i
                   class="fa fa-refresh"></i>
               </a></th>
@@ -116,7 +116,7 @@ Admin problem list page
               <th style="text-align: center;">Time</th>
               <th style="text-align: center;">Language</th>
               <th style="text-align: center;">Length</th>
-              <th style="width: 150px; text-align: center;">Submit
+              <th style="width: 11em; text-align: center;">Submit
                 Time</th>
               <th></th>
             </tr>

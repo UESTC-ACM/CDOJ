@@ -147,10 +147,10 @@ Admin problem list page
             <table class="table">
               <thead>
                 <tr>
-                  <th style="text-align: right;">#</th>
+                  <th style="width: 4em; text-align: right;">#</th>
                   <th><a href="/problem/editor/new">Add new
                       problem</a></th>
-                  <th style="width: 80px; text-align: right;">Solved</th>
+                  <th style="width: 5em; text-align: right;">Solved</th>
                   <th style="width: 105px;"></th>
                 </tr>
               </thead>
@@ -164,9 +164,9 @@ Admin problem list page
             <table class="table">
               <thead>
                 <tr>
-                  <th style="text-align: right;">#</th>
+                  <th style="width: 4em; text-align: right;">#</th>
                   <th></th>
-                  <th style="width: 80px; text-align: right;">Solved</th>
+                  <th style="width: 5em; text-align: right;">Solved</th>
                 </tr>
               </thead>
               <tbody id="list-container">

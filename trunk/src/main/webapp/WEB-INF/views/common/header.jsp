@@ -10,10 +10,10 @@ Common header
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
+<link rel="icon" type="image/png" href="<s:url value="/images/logo/favicon128.png"/>">
 <meta http-equiv=Content-Type content="text/html;charset=utf-8" />
 <meta name="viewport"
   content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,600|Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
 <link rel="stylesheet"
   href="<c:url value="/plugins/Font-Awesome/css/font-awesome.min.css"/>" />
 <!--[if IE 7]>
