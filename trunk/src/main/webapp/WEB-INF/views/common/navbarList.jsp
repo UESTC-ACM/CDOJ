@@ -30,6 +30,8 @@ Nav list on navbar
               class="fa fa-refresh"></i><span class="cdoj-menu-item">Status</span></a></li>
           <li id="menu-item-user"><a
             href="<c:url value="/user/list"/>"><i class="fa fa-user"></i><span class="cdoj-menu-item">Users</span></a></li>
+          <li><a
+            href="<c:url value="/bbs/"/>"><i class="fa fa-comments"></i><span class="cdoj-menu-item">BBS</span></a></li>
           <c:if
             test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
             <li id="menu-item-admin"><a
