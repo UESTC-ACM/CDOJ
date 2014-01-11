@@ -4,6 +4,7 @@ $ ->
   initStatusList()
   initUserList()
   initUser()
+  initUserActivate()
   initProblemList()
   initProblemPage()
   initProblemEditor()

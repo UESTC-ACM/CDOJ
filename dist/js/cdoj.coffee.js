@@ -1,5 +1,5 @@
 (function() {
-  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initArticleList, initContestEditor, initContestList, initContestPage, initContestStatusList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserList, jsonMerge, jsonPost, markdown, render;
+  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initArticleList, initContestEditor, initContestList, initContestPage, initContestStatusList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserActivate, initUserList, jsonMerge, jsonPost, markdown, render;
 
   OnlineJudgeReturnType = {
     OJ_WAIT: 0,
@@ -1519,6 +1519,28 @@
     }
   };
 
+  initUserActivate = function() {
+    var $cdojActivationForm,
+      _this = this;
+    $cdojActivationForm = $("#cdoj-activation-form");
+    if ($cdojActivationForm.length !== 0) {
+      return $cdojActivationForm.find("#submit-button").click(function() {
+        var info;
+        info = $cdojActivationForm.getFormData();
+        jsonPost("/user/resetPassword", info, function(data) {
+          return $cdojActivationForm.formValidate({
+            result: data,
+            onSuccess: function() {
+              alert("Success!");
+              return window.location.href = "/";
+            }
+          });
+        });
+        return false;
+      });
+    }
+  };
+
   getCurrentUser = function() {
     var $currentUser;
     $currentUser = $("#currentUser");
@@ -1648,6 +1670,7 @@
     initStatusList();
     initUserList();
     initUser();
+    initUserActivate();
     initProblemList();
     initProblemPage();
     initProblemEditor();
