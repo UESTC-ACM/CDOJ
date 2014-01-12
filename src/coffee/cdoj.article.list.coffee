@@ -13,7 +13,6 @@ initArticleList = ->
         "orderFields": "id",
         "orderAsc": "false"
       formatter: (data) ->
-        console.log(data)
         getReadMore = (hasMore, articleId) ->
           if hasMore then "<a href=\"/article/show/#{articleId}\">Read more >></a>" else ""
         """

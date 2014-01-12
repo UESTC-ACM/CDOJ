@@ -25062,7 +25062,6 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
         },
         formatter: function(data) {
           var getReadMore;
-          console.log(data);
           getReadMore = function(hasMore, articleId) {
             if (hasMore) {
               return "<a href=\"/article/show/" + articleId + "\">Read more >></a>";
@@ -25863,11 +25862,32 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
       });
     }
     if (this.user.userLogin) {
-      return $("#cdoj-logout-button").click(function() {
+      $("#cdoj-logout-button").click(function() {
         $.post("/user/logout", function(data) {
           if (data.result === "success") {
             return window.location.reload();
           }
+        });
+        return false;
+      });
+      return $("#cdoj-profile-edit-button").click(function() {
+        var $profileEditForm, info;
+        $profileEditForm = $("#cdoj-profile-edit-form");
+        info = $profileEditForm.getFormData();
+        if (info.newPassword === "") {
+          delete info["newPassword"];
+        }
+        if (info.newPasswordRepeat === "") {
+          delete info["newPasswordRepeat"];
+        }
+        console.log(info);
+        jsonPost("/user/edit", info, function(data) {
+          return $profileEditForm.formValidate({
+            result: data,
+            onSuccess: function() {
+              return window.location.reload();
+            }
+          });
         });
         return false;
       });

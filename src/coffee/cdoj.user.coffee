@@ -74,3 +74,18 @@ initUser = ->
             window.location.reload()
       )
       return false
+    $("#cdoj-profile-edit-button").click =>
+      $profileEditForm = $("#cdoj-profile-edit-form")
+      info = $profileEditForm.getFormData()
+      delete info["newPassword"] if info.newPassword == ""
+      delete info["newPasswordRepeat"] if info.newPasswordRepeat == ""
+      console.log info
+      jsonPost("/user/edit"
+        info
+        (data) =>
+          $profileEditForm.formValidate
+            result: data,
+            onSuccess: ->
+              window.location.reload()
+      )
+      return false
