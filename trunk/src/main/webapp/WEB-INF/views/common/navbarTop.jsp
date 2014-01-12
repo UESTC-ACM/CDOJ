@@ -80,8 +80,8 @@ User menu on navbar
                     <li role="presentation"><a
                       href="<c:url value="/user/center/${sessionScope.currentUser.userName}"/>"><i
                         class="fa fa-home"></i>User center</a></li>
-                    <li role="presentation"><a
-                      href="#"><i class="fa fa-wrench"></i>Edit profile</a></li>
+                    <li role="presentation"><a href="#" data-toggle="modal"
+                    data-target="#cdoj-profile-edit-modal"><i class="fa fa-wrench"></i>Edit profile</a></li>
                     <li role="presentation" class="divider"></li>
                     <li role="presentation"><a href="#"
                       id="cdoj-logout-button"><i

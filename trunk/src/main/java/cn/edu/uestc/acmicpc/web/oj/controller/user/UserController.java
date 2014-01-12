@@ -251,10 +251,10 @@ public class UserController extends BaseController {
       try {
         UserDTO currentUser = (UserDTO)session.getAttribute("currentUser");
 
-        if (!currentUser.getUserId().equals(userEditDTO.getUserId())) {
+        if (!currentUser.getUserName().equals(userEditDTO.getUserName())) {
           throw new AppException("You can only edit your information.");
         }
-        UserDTO userDTO = userService.getUserDTOByUserId(userEditDTO.getUserId());
+        UserDTO userDTO = userService.getUserDTOByUserName(userEditDTO.getUserName());
         if (userDTO == null) {
           throw new AppException("No such user.");
         }
