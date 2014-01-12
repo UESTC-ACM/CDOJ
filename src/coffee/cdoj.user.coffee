@@ -79,7 +79,6 @@ initUser = ->
       info = $profileEditForm.getFormData()
       delete info["newPassword"] if info.newPassword == ""
       delete info["newPasswordRepeat"] if info.newPasswordRepeat == ""
-      console.log info
       jsonPost("/user/edit"
         info
         (data) =>

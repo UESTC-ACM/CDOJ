@@ -1638,7 +1638,6 @@
         if (info.newPasswordRepeat === "") {
           delete info["newPasswordRepeat"];
         }
-        console.log(info);
         jsonPost("/user/edit", info, function(data) {
           return $profileEditForm.formValidate({
             result: data,

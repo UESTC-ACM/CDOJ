@@ -25880,7 +25880,6 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
         if (info.newPasswordRepeat === "") {
           delete info["newPasswordRepeat"];
         }
-        console.log(info);
         jsonPost("/user/edit", info, function(data) {
           return $profileEditForm.formValidate({
             result: data,
