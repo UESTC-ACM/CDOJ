@@ -1670,12 +1670,63 @@
           "orderAsc": "false,false,true"
         },
         formatter: function(data) {
-          return "<div class=\"col-lg-6\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <a class=\"pull-left\" href=\"#\">\n          <img id=\"cdoj-users-avatar\" email=\"" + data.email + "\"/>\n        </a>\n        <div class=\"media-body\">\n          <h4 class=\"media-heading\"><a href=\"/user/center/" + data.userName + "\">" + data.nickName + " <small>" + data.userName + "</small></a></h4>\n          <span><i class=\"fa fa-map-marker\"></i>" + data.school + "</span>\n          <br/>\n          <span><a href=\"/status/list?userName=" + data.userName + "\">" + data.solved + "/" + data.tried + "</a></span>\n        </div>\n      </div>\n    </div>\n    <div class=\"panel-footer\" style=\"overflow: hidden;white-space: nowrap;text-overflow: ellipsis;\">Motto: " + data.motto + "</div>\n  </div>\n</div>";
+          var adminSpan;
+          adminSpan = function() {
+            var result;
+            result = "";
+            if (this.user.userLogin && this.user.currentUserType === AuthenticationType.ADMIN) {
+              result += "<div class=\"btn-toolbar\" role=\"toolbar\" style=\"position: absolute; top: 12px; right: 30px;\">\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm admin-profile-edit\" user-name=\"" + data.userName + "\">\n          <i class=\"fa fa-pencil\"></i>\n        </button>\n      </div>\n    </div>";
+            }
+            return result;
+          };
+          return "<div class=\"col-lg-6\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <a class=\"pull-left\" href=\"#\">\n          <img id=\"cdoj-users-avatar\" email=\"" + data.email + "\"/>\n        </a>\n        <div class=\"media-body\">\n          <h4 class=\"media-heading\"><a href=\"/user/center/" + data.userName + "\">" + data.nickName + " <small>" + data.userName + "</small></a></h4>\n          <span><i class=\"fa fa-map-marker\"></i>" + data.school + "</span>\n          <br/>\n          <span><a href=\"/status/list?userName=" + data.userName + "\">" + data.solved + "/" + data.tried + "</a></span>\n          " + (adminSpan()) + "\n        </div>\n      </div>\n    </div>\n    <div class=\"panel-footer\" style=\"overflow: hidden;white-space: nowrap;text-overflow: ellipsis;\">Motto: " + data.motto + "</div>\n  </div>\n</div>";
         },
         after: function() {
-          return $("img#cdoj-users-avatar").setAvatar({
+          var $form, $loading, $modal,
+            _this = this;
+          $("img#cdoj-users-avatar").setAvatar({
             size: 64,
             image: "http://www.acm.uestc.edu.cn/images/akari_small.jpg"
+          });
+          $modal = $("#cdoj-admin-profile-edit-modal");
+          $form = $("#cdoj-admin-profile-edit-form");
+          $loading = $("#cdoj-admin-profile-edit-form-onloading");
+          $(".admin-profile-edit").click(function(e) {
+            var $el, userName;
+            $el = $(e.currentTarget);
+            $modal.modal();
+            userName = $el.attr("user-name");
+            $.post("/user/secretProfile/" + userName, function(data) {
+              console.log(data);
+              $form.setFormData(data.user);
+              $form.css("display", "block");
+              return $loading.css("display", "none");
+            });
+            $modal.on("hidden.bs.modal", function() {
+              $form.css("display", "none");
+              return $loading.css("display", "block");
+            });
+            return false;
+          });
+          return $("#cdoj-admin-profile-edit-button").click(function() {
+            var info;
+            info = $form.getFormData();
+            if (info.newPassword === "") {
+              delete info["newPassword"];
+            }
+            if (info.newPasswordRepeat === "") {
+              delete info["newPasswordRepeat"];
+            }
+            jsonPost("/user/adminEdit", info, function(data) {
+              return $form.formValidate({
+                result: data,
+                onSuccess: function() {
+                  $modal.modal();
+                  return userList.triggerRefresh();
+                }
+              });
+            });
+            return false;
           });
         }
       });
