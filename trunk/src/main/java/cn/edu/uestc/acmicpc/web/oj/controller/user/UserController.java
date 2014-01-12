@@ -276,6 +276,7 @@ public class UserController extends BaseController {
         userDTO.setSchool(userEditDTO.getSchool());
         userDTO.setDepartmentId(userEditDTO.getDepartmentId());
         userDTO.setStudentId(userEditDTO.getStudentId());
+        userDTO.setMotto(userEditDTO.getMotto());
 
         userService.updateUser(userDTO);
         session.setAttribute("currentUser", userDTO);
