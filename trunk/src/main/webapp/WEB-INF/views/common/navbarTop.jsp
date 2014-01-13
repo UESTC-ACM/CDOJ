@@ -67,7 +67,7 @@ User menu on navbar
                 <div id="cdoj-user">
                   <img id="cdoj-user-avatar"
                     email="<c:out value="${sessionScope.currentUser.email}"/>"
-                    type="avatar" data-toggle="dropdown" />
+                    type="avatar" data-toggle="dropdown" src="/images/avatar/default.jpg"/>
                   <ul class="dropdown-menu" role="menu"
                     aria-labelledby="user-menu">
                     <li role="presentation"

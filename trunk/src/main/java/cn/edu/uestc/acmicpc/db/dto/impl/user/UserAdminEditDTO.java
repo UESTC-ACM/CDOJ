@@ -5,51 +5,40 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 /**
- * DTO post from user editor by admin.
+ * DTO post from user editor.
  */
 public class UserAdminEditDTO {
-
   private Integer userId;
 
   private String userName;
 
-  @NotNull(message = "Please enter your nick name.")
+  @NotNull(message = "Please enter the nick name.")
   @Length(min = 2, max = 20, message = "Please enter 2-20 characters.")
   private String nickName;
 
   private String email;
 
-  @NotNull(message = "Please enter your school name.")
+  @NotNull(message = "Please enter the school name.")
   @Length(min = 1, max = 100, message = "Please enter 1-100 characters.")
   private String school;
 
-  @NotNull(message = "Please select your department.")
+  @NotNull(message = "Please select the department.")
   private Integer departmentId;
 
-  @NotNull(message = "Please enter your student ID.")
+  @NotNull(message = "Please enter the student ID.")
   @Length(min = 1, max = 20, message = "Please enter 1-20 characters.")
   private String studentId;
 
-  @NotNull(message = "Please enter the user type.")
-  private Integer type;
-
   private String motto;
 
-  public UserAdminEditDTO(){
-  }
+  @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
+  private String newPassword;
 
-  public UserAdminEditDTO(Integer userId, String userName, String nickName, String email,
-      String school, Integer departmentId, String studentId, Integer type, String motto){
-    this.userId = userId;
-    this.userName = userName;
-    this.nickName = nickName;
-    this.email = email;
-    this.school = school;
-    this.departmentId = departmentId;
-    this.studentId = studentId;
-    this.type = type;
-    this.motto = motto;
-  }
+  @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
+  private String newPasswordRepeat;
+
+  @NotNull(message = "Please select the user type.")
+  private Integer type;
 
   public Integer getUserId() {
     return userId;
@@ -107,14 +96,6 @@ public class UserAdminEditDTO {
     this.studentId = studentId;
   }
 
-  public Integer getType() {
-    return type;
-  }
-
-  public void setType(Integer type) {
-    this.type = type;
-  }
-
   public String getMotto() {
     return motto;
   }
@@ -123,29 +104,74 @@ public class UserAdminEditDTO {
     this.motto = motto;
   }
 
+  public String getNewPassword() {
+    return newPassword;
+  }
+
+  public void setNewPassword(String newPassword) {
+    this.newPassword = newPassword;
+  }
+
+  public String getNewPasswordRepeat() {
+    return newPasswordRepeat;
+  }
+
+  public void setNewPasswordRepeat(String newPasswordRepeat) {
+    this.newPasswordRepeat = newPasswordRepeat;
+  }
+
+  public Integer getType() {
+    return type;
+  }
+
+  public void setType(Integer type) {
+    this.type = type;
+  }
+
+  public UserAdminEditDTO() {
+  }
+
+  private UserAdminEditDTO(Integer userId, String userName, String nickName, String email, String school,
+                      String motto, Integer departmentId, String studentId, String newPassword,
+                      String newPasswordRepeat, Integer type) {
+    this.userId = userId;
+    this.userName = userName;
+    this.nickName = nickName;
+    this.email = email;
+    this.school = school;
+    this.motto = motto;
+    this.departmentId = departmentId;
+    this.studentId = studentId;
+    this.newPassword = newPassword;
+    this.newPasswordRepeat = newPasswordRepeat;
+    this.type = type;
+  }
+
   public static Builder builder() {
     return new Builder();
   }
 
   public static class Builder {
 
+    private Builder() {
+    }
+
+    public UserAdminEditDTO build() {
+      return new UserAdminEditDTO(userId, userName, nickName, email, school, motto, departmentId,
+          studentId, newPassword, newPasswordRepeat, type);
+    }
+
     private Integer userId;
     private String userName;
     private String nickName;
     private String email;
     private String school;
+    private String motto;
     private Integer departmentId;
     private String studentId;
+    private String newPassword;
+    private String newPasswordRepeat;
     private Integer type;
-    private String motto;
-
-    private Builder() {
-    }
-
-    public UserAdminEditDTO build() {
-      return new UserAdminEditDTO(userId, userName, nickName, email, school,
-          departmentId, studentId, type, motto);
-    }
 
     public Integer getUserId() {
       return userId;
@@ -192,6 +218,15 @@ public class UserAdminEditDTO {
       return this;
     }
 
+    public String getMotto() {
+      return motto;
+    }
+
+    public Builder setMotto(String motto) {
+      this.motto = motto;
+      return this;
+    }
+
     public Integer getDepartmentId() {
       return departmentId;
     }
@@ -210,6 +245,24 @@ public class UserAdminEditDTO {
       return this;
     }
 
+    public String getNewPassword() {
+      return newPassword;
+    }
+
+    public Builder setNewPassword(String newPassword) {
+      this.newPassword = newPassword;
+      return this;
+    }
+
+    public String getNewPasswordRepeat() {
+      return newPasswordRepeat;
+    }
+
+    public Builder setNewPasswordRepeat(String newPasswordRepeat) {
+      this.newPasswordRepeat = newPasswordRepeat;
+      return this;
+    }
+
     public Integer getType() {
       return type;
     }
@@ -218,14 +271,6 @@ public class UserAdminEditDTO {
       this.type = type;
       return this;
     }
-
-    public String getMotto() {
-      return motto;
-    }
-
-    public Builder setMotto(String motto) {
-      this.motto = motto;
-      return this;
-    }
   }
+
 }
