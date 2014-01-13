@@ -46,7 +46,7 @@ Problem statement
                 <li class="disabled"><a href="#">Please Login
                     before submit</a></li>
               </c:if>
-              <li class="disabled"><a href="#">Status</a></li>
+              <li><a href="#tab-problem-status" data-toggle="tab">Status</a></li>
               <li class="disabled"><a href="#">Discus</a></li>
             </ul>
           </div>
@@ -170,7 +170,11 @@ Problem statement
             </div>
           </c:if>
 
-          <div class="tab-pane" id="tab-problem-status"></div>
+          <div class="tab-pane" id="tab-problem-status">
+            <div class="col-md-12">
+              <h1>Hi</h1>
+            </div>
+          </div>
 
           <div class="tab-pane" id="tab-problem-discus"></div>
         </div>

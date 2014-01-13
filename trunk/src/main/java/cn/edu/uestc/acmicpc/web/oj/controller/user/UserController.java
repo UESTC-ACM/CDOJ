@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserActivateDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminEditorDTO;
@@ -232,6 +235,23 @@ public class UserController extends BaseController {
         throw new AppException("No such user!");
       }
 
+      Map<Integer, Global.AuthorStatusType> problemStatus = new TreeMap<>();
+
+      List<Integer> results = problemService.getAllVisibleProblemIds();
+      for (Integer result : results)
+        problemStatus.put(result, Global.AuthorStatusType.NONE);
+
+      results = statusService.findAllUserTriedProblemIds(userCenterDTO.getUserId());
+      for (Integer result : results)
+        if (problemStatus.containsKey(result))
+          problemStatus.put(result, Global.AuthorStatusType.FAIL);
+
+      results = statusService.findAllUserAcceptedProblemIds(userCenterDTO.getUserId());
+      for (Integer result : results)
+        if (problemStatus.containsKey(result))
+          problemStatus.put(result, Global.AuthorStatusType.PASS);
+
+      model.put("problemStatus", problemStatus);
       model.put("targetUser", userCenterDTO);
     } catch (AppException e) {
       return "error/404";
@@ -337,41 +357,6 @@ public class UserController extends BaseController {
         json.put("result", "error");
         json.put("error_msg", e.getMessage());
       }
-    }
-    return json;
-  }
-
-  @RequestMapping("status/{userName}")
-  @LoginPermit(NeedLogin = false)
-  public @ResponseBody
-  Map<String, Object> status(@PathVariable("userName") String userName) {
-    Map<String, Object> json = new HashMap<>();
-    try {
-      UserDTO userDTO = userService.getUserDTOByUserName(userName);
-      if (userDTO == null)
-        throw new AppException("No such user!");
-
-      Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
-
-      List<Integer> results = problemService.getAllVisibleProblemIds();
-      for (Integer result : results)
-        problemStatus.put(result, Global.AuthorStatusType.NONE);
-
-      results = statusService.findAllUserTriedProblemIds(userDTO.getUserId());
-      for (Integer result : results)
-        if (problemStatus.containsKey(result))
-          problemStatus.put(result, Global.AuthorStatusType.FAIL);
-
-      results = statusService.findAllUserAcceptedProblemIds(userDTO.getUserId());
-      for (Integer result : results)
-        if (problemStatus.containsKey(result))
-          problemStatus.put(result, Global.AuthorStatusType.PASS);
-
-      json.put("status", problemStatus);
-      json.put("result", "success");
-    } catch (AppException e) {
-      json.put("result", "error");
-      json.put("error_msg", e.getMessage());
     }
     return json;
   }
