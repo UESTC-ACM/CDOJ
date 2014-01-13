@@ -1,4 +1,14 @@
 markdown = (content) ->
+  marked.setOptions(
+    renderer: new marked.Renderer()
+    gfm: true
+    tables: true
+    breaks: false
+    pedantic: false
+    sanitize: true
+    smartLists: true
+    smartypants: false
+  )
   return marked(content)
 
 $ = jQuery
@@ -16,6 +26,16 @@ $.fn.unescapeCode = ->
     str = "<code>#{$el[0].innerHTML.unescapeHTML()}</code>"
     $el.replaceWith(str)
 
+$.fn.renderTable = ->
+  this.each (id, el)=>
+    $el = $(el)
+    $el.addClass("table").addClass("table-bordered").addClass("table-condensed").addClass("cdoj-markdown-table")
+
+$.fn.renderImage = ->
+  this.each (id, el)=>
+    $el = $(el)
+    # $el.addClass("img-thumbnail").addClass("cdoj-markdown-img")
+
 # render markdown content use marked
 $.fn.markdown = ->
   this.each (id, el)=>
@@ -29,3 +49,5 @@ $.fn.markdown = ->
     $el.empty().append(html)
     $el.find("code").unescapeCode()
     $el.find("pre").unescapePre()
+    $el.find("table").renderTable()
+    $el.find("img").renderImage()

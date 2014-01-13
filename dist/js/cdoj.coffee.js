@@ -389,6 +389,16 @@
   };
 
   markdown = function(content) {
+    marked.setOptions({
+      renderer: new marked.Renderer(),
+      gfm: true,
+      tables: true,
+      breaks: false,
+      pedantic: false,
+      sanitize: true,
+      smartLists: true,
+      smartypants: false
+    });
     return marked(content);
   };
 
@@ -414,6 +424,23 @@
     });
   };
 
+  $.fn.renderTable = function() {
+    var _this = this;
+    return this.each(function(id, el) {
+      var $el;
+      $el = $(el);
+      return $el.addClass("table").addClass("table-bordered").addClass("table-condensed").addClass("cdoj-markdown-table");
+    });
+  };
+
+  $.fn.renderImage = function() {
+    var _this = this;
+    return this.each(function(id, el) {
+      var $el;
+      return $el = $(el);
+    });
+  };
+
   $.fn.markdown = function() {
     var _this = this;
     return this.each(function(id, el) {
@@ -423,7 +450,9 @@
       html = $(marked(md));
       $el.empty().append(html);
       $el.find("code").unescapeCode();
-      return $el.find("pre").unescapePre();
+      $el.find("pre").unescapePre();
+      $el.find("table").renderTable();
+      return $el.find("img").renderImage();
     });
   };
 
@@ -1695,7 +1724,7 @@
               return $form.formValidate({
                 result: data,
                 onSuccess: function() {
-                  $modal.modal();
+                  $modal.modal('hide');
                   return userList.triggerRefresh();
                 }
               });

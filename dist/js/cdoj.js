@@ -24631,6 +24631,16 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
   };
 
   markdown = function(content) {
+    marked.setOptions({
+      renderer: new marked.Renderer(),
+      gfm: true,
+      tables: true,
+      breaks: false,
+      pedantic: false,
+      sanitize: true,
+      smartLists: true,
+      smartypants: false
+    });
     return marked(content);
   };
 
@@ -24656,6 +24666,23 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
     });
   };
 
+  $.fn.renderTable = function() {
+    var _this = this;
+    return this.each(function(id, el) {
+      var $el;
+      $el = $(el);
+      return $el.addClass("table").addClass("table-bordered").addClass("table-condensed").addClass("cdoj-markdown-table");
+    });
+  };
+
+  $.fn.renderImage = function() {
+    var _this = this;
+    return this.each(function(id, el) {
+      var $el;
+      return $el = $(el);
+    });
+  };
+
   $.fn.markdown = function() {
     var _this = this;
     return this.each(function(id, el) {
@@ -24665,7 +24692,9 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
       html = $(marked(md));
       $el.empty().append(html);
       $el.find("code").unescapeCode();
-      return $el.find("pre").unescapePre();
+      $el.find("pre").unescapePre();
+      $el.find("table").renderTable();
+      return $el.find("img").renderImage();
     });
   };
 
@@ -25937,7 +25966,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
               return $form.formValidate({
                 result: data,
                 onSuccess: function() {
-                  $modal.modal();
+                  $modal.modal('hide');
                   return userList.triggerRefresh();
                 }
               });

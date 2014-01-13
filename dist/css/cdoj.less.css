@@ -195,6 +195,11 @@ li.L9 {
 hr {
   border: 1px solid #ddd;
 }
+.cdoj-markdown-table {
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
 body,
 html,
 .row,

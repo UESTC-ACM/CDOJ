@@ -89,7 +89,7 @@ initUserList = ->
               $form.formValidate
                 result: data,
                 onSuccess: ->
-                  $modal.modal()
+                  $modal.modal('hide')
                   userList.triggerRefresh()
           )
           return false
