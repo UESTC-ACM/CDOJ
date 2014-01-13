@@ -24241,7 +24241,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
 }( window.jQuery );
 
 (function() {
-  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initArticleList, initContestEditor, initContestList, initContestPage, initContestStatusList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserActivate, initUserList, jsonMerge, jsonPost, markdown, openInNewTab, render;
+  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initArticleList, initContestEditor, initContestList, initContestPage, initContestStatusList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUI, initUser, initUserActivate, initUserList, jsonMerge, jsonPost, markdown, openInNewTab, render;
 
   OnlineJudgeReturnType = {
     OJ_WAIT: 0,
@@ -24929,7 +24929,6 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
     SearchModule.prototype.close = function() {
       var $advancedButton;
       $advancedButton = this.search.find("#advanced");
-      console.log($advancedButton);
       return $advancedButton.dropdown('toggle');
     };
 
@@ -25414,7 +25413,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
           return $form.formValidate({
             result: data,
             onSuccess: function() {
-              return window.location.reload();
+              return window.location.href = "/problem/show/" + problemId;
             }
           });
         });
@@ -25429,7 +25428,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
         },
         validation: {
           allowedExtensions: ["zip"],
-          sizeLimit: 100 * 1024 * 1024
+          sizeLimit: 100 * 1000 * 1000
         },
         multiple: false,
         callbacks: {
@@ -25441,6 +25440,14 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
               template = "<div class=\"alert alert-danger\">\n  " + data.error + "\n</div>";
             }
             return $editor.find("#uploader-info").empty().append(template);
+          },
+          onProgress: function(id, fileName, uploadedBytes, totalBytes) {
+            var template;
+            template = "<div class=\"alert alert-info\">\n  " + uploadedBytes + " bytes of " + totalBytes + "\n</div>";
+            return $editor.find("#uploader-info").empty().append(template);
+          },
+          onError: function(id, fileName, errorReason) {
+            return alert(errorReason);
           }
         }
       });
@@ -25763,6 +25770,13 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
     }
   };
 
+  initUI = function() {
+    var _this = this;
+    return $('.dropdown-menu').find('form').click(function(e) {
+      return e.stopPropagation();
+    });
+  };
+
   initUserActivate = function() {
     var $cdojActivationForm,
       _this = this;
@@ -25816,9 +25830,6 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
       });
     }
     if (this.user.userLogin === false) {
-      $('.dropdown-menu').find('form').click(function(e) {
-        return e.stopPropagation();
-      });
       $("#cdoj-login-button").click(function() {
         var $loginForm, info;
         $loginForm = $("#cdoj-login-form");
@@ -25981,6 +25992,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
   $ = jQuery;
 
   $(function() {
+    initUI();
     initLayout();
     initStatusList();
     initUserList();

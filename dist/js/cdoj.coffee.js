@@ -1,5 +1,5 @@
 (function() {
-  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initArticleList, initContestEditor, initContestList, initContestPage, initContestStatusList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserActivate, initUserList, jsonMerge, jsonPost, markdown, openInNewTab, render;
+  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initArticleList, initContestEditor, initContestList, initContestPage, initContestStatusList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUI, initUser, initUserActivate, initUserList, jsonMerge, jsonPost, markdown, openInNewTab, render;
 
   OnlineJudgeReturnType = {
     OJ_WAIT: 0,
@@ -687,7 +687,6 @@
     SearchModule.prototype.close = function() {
       var $advancedButton;
       $advancedButton = this.search.find("#advanced");
-      console.log($advancedButton);
       return $advancedButton.dropdown('toggle');
     };
 
@@ -1172,7 +1171,7 @@
           return $form.formValidate({
             result: data,
             onSuccess: function() {
-              return window.location.reload();
+              return window.location.href = "/problem/show/" + problemId;
             }
           });
         });
@@ -1187,7 +1186,7 @@
         },
         validation: {
           allowedExtensions: ["zip"],
-          sizeLimit: 100 * 1024 * 1024
+          sizeLimit: 100 * 1000 * 1000
         },
         multiple: false,
         callbacks: {
@@ -1199,6 +1198,14 @@
               template = "<div class=\"alert alert-danger\">\n  " + data.error + "\n</div>";
             }
             return $editor.find("#uploader-info").empty().append(template);
+          },
+          onProgress: function(id, fileName, uploadedBytes, totalBytes) {
+            var template;
+            template = "<div class=\"alert alert-info\">\n  " + uploadedBytes + " bytes of " + totalBytes + "\n</div>";
+            return $editor.find("#uploader-info").empty().append(template);
+          },
+          onError: function(id, fileName, errorReason) {
+            return alert(errorReason);
           }
         }
       });
@@ -1521,6 +1528,13 @@
     }
   };
 
+  initUI = function() {
+    var _this = this;
+    return $('.dropdown-menu').find('form').click(function(e) {
+      return e.stopPropagation();
+    });
+  };
+
   initUserActivate = function() {
     var $cdojActivationForm,
       _this = this;
@@ -1574,9 +1588,6 @@
       });
     }
     if (this.user.userLogin === false) {
-      $('.dropdown-menu').find('form').click(function(e) {
-        return e.stopPropagation();
-      });
       $("#cdoj-login-button").click(function() {
         var $loginForm, info;
         $loginForm = $("#cdoj-login-form");
@@ -1739,6 +1750,7 @@
   $ = jQuery;
 
   $(function() {
+    initUI();
     initLayout();
     initStatusList();
     initUserList();

@@ -24,8 +24,6 @@ initUser = ->
 
   #Set login && register && activate button when user not logined
   if @user.userLogin == false
-    $('.dropdown-menu').find('form').click (e)=>
-      e.stopPropagation()
     $("#cdoj-login-button").click =>
       $loginForm = $("#cdoj-login-form")
       info = $loginForm.getFormData()

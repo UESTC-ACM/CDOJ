@@ -52,7 +52,6 @@ class SearchModule
 
   close: ->
     $advancedButton = @search.find("#advanced")
-    console.log $advancedButton
     $advancedButton.dropdown('toggle')
 
 class ListModule

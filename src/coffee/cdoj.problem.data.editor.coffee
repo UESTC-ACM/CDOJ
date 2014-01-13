@@ -13,7 +13,7 @@ initProblemDataEditor = ->
           $form.formValidate
             result: data,
             onSuccess: ->
-              window.location.reload()
+              window.location.href = "/problem/show/#{problemId}"
       )
       return false
 
@@ -25,7 +25,7 @@ initProblemDataEditor = ->
         inputName: "uploadFile"
       validation:
         allowedExtensions: ["zip"],
-        sizeLimit: 100 * 1024 * 1024 # 100 MB
+        sizeLimit: 100 * 1000 * 1000 # 100 MB
       multiple: false
       callbacks:
         onComplete: (id, fileName, data) ->
@@ -42,4 +42,13 @@ initProblemDataEditor = ->
               </div>
               """
           $editor.find("#uploader-info").empty().append(template)
+        onProgress: (id, fileName, uploadedBytes, totalBytes) ->
+          template = """
+            <div class="alert alert-info">
+              #{uploadedBytes} bytes of #{totalBytes}
+            </div>
+          """
+          $editor.find("#uploader-info").empty().append(template)
+        onError: (id, fileName, errorReason) ->
+          alert(errorReason)
     )

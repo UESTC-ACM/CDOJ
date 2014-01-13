@@ -1,5 +1,6 @@
 $ = jQuery;
 $ ->
+  initUI()
   initLayout()
   initStatusList()
   initUserList()
