@@ -554,10 +554,16 @@ img {
 #cdoj-user-center-summary {
   padding-top: 20px;
 }
-.cdoj-user-status-label {
-  margin-right: 6px;
+.cdoj-label {
+  padding: .2em .6em .3em;
+  font-weight: bold;
+  line-height: 1;
+  width: 3em;
+  text-align: center;
+  float: left;
+  margin: .1em;
 }
-.cdoj-user-status-label a {
+.cdoj-label a {
   color: #ffffff;
 }
 .cdoj-submit-area {
