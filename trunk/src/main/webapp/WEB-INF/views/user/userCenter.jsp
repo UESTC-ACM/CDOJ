@@ -66,19 +66,19 @@
         <h3>Problems</h3>
         <hr />
         <c:forEach var="item" items="${problemStatus}">
-          <span
+          <div
             <c:choose>
             <c:when test="${item.value == 'NONE'}">
-              class="label cdoj-user-status-label label-default"
+              class="cdoj-label cdoj-user-status-label label-default"
             </c:when>
             <c:when test="${item.value == 'PASS'}">
-              class="label cdoj-user-status-label label-success"
+              class="cdoj-label cdoj-user-status-label label-success"
             </c:when>
             <c:otherwise>
-              class="label cdoj-user-status-label label-danger"
+              class="cdoj-label cdoj-user-status-label label-danger"
             </c:otherwise>
           </c:choose>>
-            <a href="/problem/show/${item.key}">${item.key}</a></span>
+            <a href="/problem/show/${item.key}">${item.key}</a></div>
         </c:forEach>
       </div>
     </div>
