@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserActivateDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminEditDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminEditorDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditDTO;
@@ -279,7 +281,53 @@ public class UserController extends BaseController {
         userDTO.setMotto(userEditDTO.getMotto());
 
         userService.updateUser(userDTO);
-        session.setAttribute("currentUser", userDTO);
+        json.put("result", "success");
+      } catch (FieldException e) {
+        putFieldErrorsIntoBindingResult(e, validateResult);
+        json.put("result", "field_error");
+        json.put("field", validateResult.getFieldErrors());
+      } catch (AppException e) {
+        json.put("result", "error");
+        json.put("error_msg", e.getMessage());
+      }
+    }
+    return json;
+  }
+
+  @RequestMapping("adminEdit")
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public @ResponseBody
+  Map<String, Object> adminEdit(HttpSession session,
+      @RequestBody @Valid UserAdminEditDTO userAdminEditDTO,
+      BindingResult validateResult) {
+    Map<String, Object> json = new HashMap<>();
+    if (validateResult.hasErrors()) {
+      json.put("result", "field_error");
+      json.put("field", validateResult.getFieldErrors());
+    } else {
+      try {
+        UserDTO userDTO = userService.getUserDTOByUserName(userAdminEditDTO.getUserName());
+        if (userDTO == null) {
+          throw new AppException("No such user.");
+        }
+        if (userAdminEditDTO.getNewPassword() != null) {
+          if (userAdminEditDTO.getNewPasswordRepeat() == null) {
+            throw new FieldException("newPasswordRepeat", "Please repeat your new password.");
+          }
+          if (!userAdminEditDTO.getNewPassword().equals(userAdminEditDTO.getNewPasswordRepeat())) {
+            throw new FieldException("newPasswordRepeat", "Password do not match.");
+          }
+          userDTO.setPassword(StringUtil.encodeSHA1(userAdminEditDTO.getNewPassword()));
+        }
+
+        userDTO.setNickName(userAdminEditDTO.getNickName());
+        userDTO.setSchool(userAdminEditDTO.getSchool());
+        userDTO.setDepartmentId(userAdminEditDTO.getDepartmentId());
+        userDTO.setStudentId(userAdminEditDTO.getStudentId());
+        userDTO.setMotto(userAdminEditDTO.getMotto());
+        userDTO.setType(userAdminEditDTO.getType());
+
+        userService.updateUser(userDTO);
         json.put("result", "success");
       } catch (FieldException e) {
         putFieldErrorsIntoBindingResult(e, validateResult);
@@ -345,6 +393,24 @@ public class UserController extends BaseController {
         json.put("result", "failed");
     } catch (AppException e) {
       System.out.println(e.getMessage());
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    }
+    return json;
+  }
+
+  @RequestMapping("secretProfile/{userName}")
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public @ResponseBody
+  Map<String, Object> secretProfile(@PathVariable("userName") String userName) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      UserAdminEditorDTO userAdminEditorDTO = userService.getUserAdminEditorDTOByUserName(userName);
+      if (userAdminEditorDTO == null) {
+        throw new AppException("No such user.");
+      }
+      json.put("user", userAdminEditorDTO);
+    } catch (AppException e) {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
     }

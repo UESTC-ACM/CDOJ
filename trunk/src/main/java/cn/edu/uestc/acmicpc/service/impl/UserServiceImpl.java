@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminEditorDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
@@ -80,7 +81,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
   }
 
   @Override
-  public List<UserListDTO> getUserListDTOList(UserCondition userCondition, PageInfo pageInfo)
+  public List<UserListDTO> getUserListDTOList(UserCondition userCondition,
+      PageInfo pageInfo)
       throws AppException {
     Condition condition = userCondition.getCondition();
     condition.setPageInfo(pageInfo);
@@ -91,22 +93,27 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public UserDTO getUserDTOByUserName(String userName) throws AppException {
-    return userDAO.getDTOByUniqueField(UserDTO.class, UserDTO.builder(), "userName", userName);
+    return userDAO.getDTOByUniqueField(UserDTO.class, UserDTO.builder(),
+        "userName", userName);
   }
 
   @Override
   public UserDTO getUserDTOByEmail(String email) throws AppException {
-    return userDAO.getDTOByUniqueField(UserDTO.class, UserDTO.builder(), "email", email);
+    return userDAO.getDTOByUniqueField(UserDTO.class, UserDTO.builder(),
+        "email", email);
   }
 
   @Override
   public UserDTO getUserDTOByUserId(Integer userId) throws AppException {
-    return userDAO.getDTOByUniqueField(UserDTO.class, UserDTO.builder(), "userId", userId);
+    return userDAO.getDTOByUniqueField(UserDTO.class, UserDTO.builder(),
+        "userId", userId);
   }
 
   @Override
-  public UserCenterDTO getUserCenterDTOByUserName(String userName) throws AppException {
-    return userDAO.getDTOByUniqueField(UserCenterDTO.class, UserCenterDTO.builder(), "userName",
+  public UserCenterDTO getUserCenterDTOByUserName(String userName)
+      throws AppException {
+    return userDAO.getDTOByUniqueField(UserCenterDTO.class,
+        UserCenterDTO.builder(), "userName",
         userName);
   }
 
@@ -119,6 +126,13 @@ public class UserServiceImpl extends AbstractService implements UserService {
   public void updateUserByUserId(Map<String, Object> properties, Integer userId)
       throws AppException {
     userDAO.updateEntitiesByField(properties, "userId", userId.toString());
+  }
+
+  @Override
+  public UserAdminEditorDTO getUserAdminEditorDTOByUserName(String userName)
+      throws AppException {
+    return userDAO.getDTOByUniqueField(UserAdminEditorDTO.class,
+        UserAdminEditorDTO.builder(), "userName", userName);
   }
 
 }
