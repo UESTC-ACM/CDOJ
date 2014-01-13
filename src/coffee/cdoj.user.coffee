@@ -15,12 +15,6 @@ getCurrentUser = ->
 
 initUser = ->
   @user = getCurrentUser()
-  #Set user information and bind user avatar on page
-  if @user.userLogin
-    $userAvatar = $("#cdoj-user-avatar")
-    $userAvatar.setAvatar
-      image: "http://www.acm.uestc.edu.cn/images/akari_small.jpg"
-      size: $userAvatar.width() if $userAvatar.width()
 
   #Set login && register && activate button when user not logined
   if @user.userLogin == false

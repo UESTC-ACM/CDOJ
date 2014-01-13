@@ -25772,8 +25772,16 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
 
   initUI = function() {
     var _this = this;
-    return $('.dropdown-menu').find('form').click(function(e) {
+    $('.dropdown-menu').find('form').click(function(e) {
       return e.stopPropagation();
+    });
+    return $("img[type='avatar']").each(function(id, el) {
+      var $el;
+      $el = $(el);
+      return $el.setAvatar({
+        image: "http://www.acm.uestc.edu.cn/images/akari_small.jpg",
+        size: $el.width() ? $el.width() : void 0
+      });
     });
   };
 
@@ -25819,16 +25827,8 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
   };
 
   initUser = function() {
-    var $userAvatar,
-      _this = this;
+    var _this = this;
     this.user = getCurrentUser();
-    if (this.user.userLogin) {
-      $userAvatar = $("#cdoj-user-avatar");
-      $userAvatar.setAvatar({
-        image: "http://www.acm.uestc.edu.cn/images/akari_small.jpg",
-        size: $userAvatar.width() ? $userAvatar.width() : void 0
-      });
-    }
     if (this.user.userLogin === false) {
       $("#cdoj-login-button").click(function() {
         var $loginForm, info;

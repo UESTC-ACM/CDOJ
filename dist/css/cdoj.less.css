@@ -545,6 +545,21 @@ img {
 #currentUser {
   font-size: 14px;
 }
+#cdoj-user-avatar-large {
+  width: 190px;
+  height: 190px;
+  min-height: 190px;
+  min-width: 190px;
+}
+#cdoj-user-center-summary {
+  padding-top: 20px;
+}
+.cdoj-user-status-label {
+  margin-right: 6px;
+}
+.cdoj-user-status-label a {
+  color: #ffffff;
+}
 .cdoj-submit-area {
   resize: none;
   width: 100%;
