@@ -34,8 +34,8 @@ initProblemList = ->
                           <button type="button" class="btn btn-default btn-sm problem-visible-state-editor" problem-id="#{data.problemId}" visible="#{data.isVisible}">
                             <i class="#{if data.isVisible then "fa fa-eye" else "fa fa-eye-slash"}"></i>
                           </button>
-                          <a href="/problem/editor/#{data.problemId}"  class="btn btn-default btn-sm problem-editor"><i class="fa fa-pencil"></i></a>
-                          <a href="/problem/dataEditor/#{data.problemId}" class="btn btn-default btn-sm problem-data-editor"><i class="fa fa-cog"></i></a>
+                          <a href="/problem/editor/#{data.problemId}" target=\"_blank\" class="btn btn-default btn-sm problem-editor"><i class="fa fa-pencil"></i></a>
+                          <a href="/problem/dataEditor/#{data.problemId}" target=\"_blank\" class="btn btn-default btn-sm problem-data-editor"><i class="fa fa-cog"></i></a>
                         </div>
                       </div>
 </td>
@@ -56,12 +56,12 @@ initProblemList = ->
         """
           <tr>
             <td style="text-align: right;">#{data.problemId}</td>
-            <td><a href="/problem/show/#{data.problemId}">#{data.title}</a><small>&nbsp- #{data.source}</small></td>
+            <td><a href="/problem/show/#{data.problemId}" target="_blank">#{data.title}</a><small>&nbsp- #{data.source}</small></td>
             <td class="#{if data.status == AuthorStatusType.PASS
                            panelAC
                          else if data.status == AuthorStatusType.FAIL
                            panelWA
-                         }" style="text-align: right;"><a href="/status/list?problemId=#{data.problemId}">x #{data.solved}</a></td>
+                         }" style="text-align: right;"><a href="/status/list?problemId=#{data.problemId}" target="_blank">x #{data.solved}</a></td>
             #{adminSpan()}
           </tr>
         """

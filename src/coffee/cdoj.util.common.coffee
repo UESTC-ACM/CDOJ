@@ -15,3 +15,7 @@ jsonMerge = (jsonA, jsonB) ->
       a = b
     return a
   )
+
+openInNewTab = (url) ->
+  win = window.open(url, "_blank")
+  win.focus()

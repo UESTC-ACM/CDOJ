@@ -14,10 +14,10 @@ initArticleList = ->
         "orderAsc": "false"
       formatter: (data) ->
         getReadMore = (hasMore, articleId) ->
-          if hasMore then "<a href=\"/article/show/#{articleId}\">Read more >></a>" else ""
+          if hasMore then "<a href=\"/article/show/#{articleId}\" target=\"_blank\">Read more >></a>" else ""
         """
           <div class="cdoj-article">
-            <h1><a href="/article/show/#{data.articleId}">#{data.title}</a></h1>
+            <h1><a href="/article/show/#{data.articleId}" target="_blank">#{data.title}</a></h1>
             <small>#{data.clicked} visited, create by #{data.ownerName}, last modified at <span class="cdoj-article-post-time">#{Date.create(data.time).relative()}</span></small>
             <div class="cdoj-article-summary">
               <div class="cdoj-article-summary-content"><textarea>#{data.content}</textarea></div>

@@ -35,7 +35,7 @@ initContestList = ->
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title">
-                  <a href="/contest/show/#{data.contestId}">#{data.title}</a>
+                  <a href="/contest/show/#{data.contestId}" target="_blank">#{data.title}</a>
                   <span class='pull-right admin-span'>#{adminSpan()}</span>
                 </h3>
               </div>
@@ -50,7 +50,7 @@ initContestList = ->
         if @user.userLogin && @user.currentUserType == AuthenticationType.ADMIN
           $(".contest-editor").click (e) =>
             $el = $(e.currentTarget)
-            window.location.href = "/contest/editor/#{$el.attr("contest-id")}"
+            openInNewTab "/contest/editor/#{$el.attr("contest-id")}"
             return false
           $(".contest-visible-state-editor").click (e) =>
             $el = $(e.currentTarget)

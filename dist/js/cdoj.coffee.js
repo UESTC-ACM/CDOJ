@@ -1,5 +1,5 @@
 (function() {
-  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initArticleList, initContestEditor, initContestList, initContestPage, initContestStatusList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserActivate, initUserList, jsonMerge, jsonPost, markdown, render;
+  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initArticleList, initContestEditor, initContestList, initContestPage, initContestStatusList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUser, initUserActivate, initUserList, jsonMerge, jsonPost, markdown, openInNewTab, render;
 
   OnlineJudgeReturnType = {
     OJ_WAIT: 0,
@@ -93,6 +93,12 @@
       }
       return a;
     });
+  };
+
+  openInNewTab = function(url) {
+    var win;
+    win = window.open(url, "_blank");
+    return win.focus();
   };
 
   $ = jQuery;
@@ -822,12 +828,12 @@
           var getReadMore;
           getReadMore = function(hasMore, articleId) {
             if (hasMore) {
-              return "<a href=\"/article/show/" + articleId + "\">Read more >></a>";
+              return "<a href=\"/article/show/" + articleId + "\" target=\"_blank\">Read more >></a>";
             } else {
               return "";
             }
           };
-          return "<div class=\"cdoj-article\">\n  <h1><a href=\"/article/show/" + data.articleId + "\">" + data.title + "</a></h1>\n  <small>" + data.clicked + " visited, create by " + data.ownerName + ", last modified at <span class=\"cdoj-article-post-time\">" + (Date.create(data.time).relative()) + "</span></small>\n  <div class=\"cdoj-article-summary\">\n    <div class=\"cdoj-article-summary-content\"><textarea>" + data.content + "</textarea></div>\n  </div>\n  <p>" + (getReadMore(data.hasMore, data.articleId)) + "</p>\n  <hr />\n</div>";
+          return "<div class=\"cdoj-article\">\n  <h1><a href=\"/article/show/" + data.articleId + "\" target=\"_blank\">" + data.title + "</a></h1>\n  <small>" + data.clicked + " visited, create by " + data.ownerName + ", last modified at <span class=\"cdoj-article-post-time\">" + (Date.create(data.time).relative()) + "</span></small>\n  <div class=\"cdoj-article-summary\">\n    <div class=\"cdoj-article-summary-content\"><textarea>" + data.content + "</textarea></div>\n  </div>\n  <p>" + (getReadMore(data.hasMore, data.articleId)) + "</p>\n  <hr />\n</div>";
         },
         after: function() {
           return $(".cdoj-article-summary-content").markdown();
@@ -1090,7 +1096,7 @@
             }
             return result;
           };
-          return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n      <h3 class=\"panel-title\">\n        <a href=\"/contest/show/" + data.contestId + "\">" + data.title + "</a>\n        <span class='pull-right admin-span'>" + (adminSpan()) + "</span>\n      </h3>\n    </div>\n    <div class=\"panel-body\">\n      <span>" + (Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "--" + (Date.create(data.time + data.length * 1000).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "</span>\n    </div>\n  </div>\n</div>";
+          return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n      <h3 class=\"panel-title\">\n        <a href=\"/contest/show/" + data.contestId + "\" target=\"_blank\">" + data.title + "</a>\n        <span class='pull-right admin-span'>" + (adminSpan()) + "</span>\n      </h3>\n    </div>\n    <div class=\"panel-body\">\n      <span>" + (Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "--" + (Date.create(data.time + data.length * 1000).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "</span>\n    </div>\n  </div>\n</div>";
         },
         after: function() {
           var _this = this;
@@ -1099,7 +1105,7 @@
             $(".contest-editor").click(function(e) {
               var $el;
               $el = $(e.currentTarget);
-              window.location.href = "/contest/editor/" + ($el.attr("contest-id"));
+              openInNewTab("/contest/editor/" + ($el.attr("contest-id")));
               return false;
             });
             return $(".contest-visible-state-editor").click(function(e) {
@@ -1248,7 +1254,7 @@
             var result;
             result = "";
             if (this.user.userLogin && this.user.currentUserType === AuthenticationType.ADMIN) {
-              result += "<td style=\"padding: 4px;\">\n<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-visible-state-editor\" problem-id=\"" + data.problemId + "\" visible=\"" + data.isVisible + "\">\n      <i class=\"" + (data.isVisible ? "fa fa-eye" : "fa fa-eye-slash") + "\"></i>\n    </button>\n    <a href=\"/problem/editor/" + data.problemId + "\"  class=\"btn btn-default btn-sm problem-editor\"><i class=\"fa fa-pencil\"></i></a>\n    <a href=\"/problem/dataEditor/" + data.problemId + "\" class=\"btn btn-default btn-sm problem-data-editor\"><i class=\"fa fa-cog\"></i></a>\n  </div>\n</div>\n</td>";
+              result += "<td style=\"padding: 4px;\">\n<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-visible-state-editor\" problem-id=\"" + data.problemId + "\" visible=\"" + data.isVisible + "\">\n      <i class=\"" + (data.isVisible ? "fa fa-eye" : "fa fa-eye-slash") + "\"></i>\n    </button>\n    <a href=\"/problem/editor/" + data.problemId + "\" target=\"_blank\" class=\"btn btn-default btn-sm problem-editor\"><i class=\"fa fa-pencil\"></i></a>\n    <a href=\"/problem/dataEditor/" + data.problemId + "\" target=\"_blank\" class=\"btn btn-default btn-sm problem-data-editor\"><i class=\"fa fa-cog\"></i></a>\n  </div>\n</div>\n</td>";
             }
             return result;
           };
@@ -1267,7 +1273,7 @@
             });
             return result;
           };
-          return "<tr>\n  <td style=\"text-align: right;\">" + data.problemId + "</td>\n  <td><a href=\"/problem/show/" + data.problemId + "\">" + data.title + "</a><small>&nbsp- " + data.source + "</small></td>\n  <td class=\"" + (data.status === AuthorStatusType.PASS ? panelAC : data.status === AuthorStatusType.FAIL ? panelWA : void 0) + "\" style=\"text-align: right;\"><a href=\"/status/list?problemId=" + data.problemId + "\">x " + data.solved + "</a></td>\n  " + (adminSpan()) + "\n</tr>";
+          return "<tr>\n  <td style=\"text-align: right;\">" + data.problemId + "</td>\n  <td><a href=\"/problem/show/" + data.problemId + "\" target=\"_blank\">" + data.title + "</a><small>&nbsp- " + data.source + "</small></td>\n  <td class=\"" + (data.status === AuthorStatusType.PASS ? panelAC : data.status === AuthorStatusType.FAIL ? panelWA : void 0) + "\" style=\"text-align: right;\"><a href=\"/status/list?problemId=" + data.problemId + "\" target=\"_blank\">x " + data.solved + "</a></td>\n  " + (adminSpan()) + "\n</tr>";
         },
         after: function() {
           var _this = this;
@@ -1432,39 +1438,7 @@
               return "" + length + " B";
             }
           };
-          return "<tr>\n  <td style=\"text-align: center;\">" + data.statusId + "</td>\n  <td style=\"text-align: center;\"><a href=\"/user/center/" + data.userName + "\">" + data.userName + "</a></td>\n  <td style=\"text-align: center;\"><a href=\"/problem/show/" + data.problemId + "\">" + data.problemId + "</a></td>\n  <td style=\"text-align: center;\" class=\"" + (getAlertClass(data.returnTypeId)) + "\">" + (getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)) + "</td>\n\n  " + (data.returnTypeId === 1 ? getCostInformation(data.timeCost, data.memoryCost) : "<td></td><td></td>") + "\n\n  <td style=\"text-align: center;\">" + data.language + "</td>\n\n  <td style=\"text-align: center;\">" + (getCodeInfo(data.length, data.language, data.statusId, data.userName)) + "</td>\n  <td style=\"text-align: center;\">" + (Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "</td>\n  <td></td>\n</tr>";
-          /*
-            <div class="col-md-12">
-              <div class="panel panel-default">
-                <div class="panel-body">
-                  <div class="media">
-                    <div class="pull-left">
-                      <div class="status-sign #{getAlertClass(data.returnTypeId)}">
-                        #{getStatusImage(data.returnTypeId)}
-                      </div>
-                    </div>
-                    <div class="media-body ">
-                      <h4 class="media-heading">
-                        <span>#{getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)}</span>
-                        #{if data.returnTypeId == 1 then getCostInformation(data.timeCost, data.memoryCost) else ""}
-                        <small class="pull-right">
-                          ##{data.statusId}
-                        </small>
-                        #{if data.contestId != undefined then getContestHref(data.contestId) else ""}
-                        <small class="pull-right">
-                          <a href="/problem/show/#{data.problemId}">Prob <i class="fa fa-puzzle-piece"></i>#{data.problemId}</a>,&nbsp;
-                        </small>
-                      </h4>
-                      <span><a href="/user/center/#{data.userName}"><i class="fa fa-user"></i>#{data.userName}</a></span>
-                      <span class="pull-right label label-default">#{Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")}</span>
-                      <span class="pull-right label label-success" style="margin-right: 8px">#{getCodeInfo(data.length, data.language, data.statusId, data.userName)}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          */
-
+          return "<tr>\n  <td style=\"text-align: center;\">" + data.statusId + "</td>\n  <td style=\"text-align: center;\"><a href=\"/user/center/" + data.userName + "\" target=\"_blank\">" + data.userName + "</a></td>\n  <td style=\"text-align: center;\"><a href=\"/problem/show/" + data.problemId + "\" target=\"_blank\">" + data.problemId + "</a></td>\n  <td style=\"text-align: center;\" class=\"" + (getAlertClass(data.returnTypeId)) + "\">" + (getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)) + "</td>\n\n  " + (data.returnTypeId === 1 ? getCostInformation(data.timeCost, data.memoryCost) : "<td></td><td></td>") + "\n\n  <td style=\"text-align: center;\">" + data.language + "</td>\n\n  <td style=\"text-align: center;\">" + (getCodeInfo(data.length, data.language, data.statusId, data.userName)) + "</td>\n  <td style=\"text-align: center;\">" + (Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "</td>\n  <td></td>\n</tr>";
         },
         after: function() {
           var _this = this;
@@ -1679,7 +1653,7 @@
             }
             return result;
           };
-          return "<div class=\"col-lg-6\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <a class=\"pull-left\" href=\"#\">\n          <img id=\"cdoj-users-avatar\" email=\"" + data.email + "\"/>\n        </a>\n        <div class=\"media-body\">\n          <h4 class=\"media-heading\"><a href=\"/user/center/" + data.userName + "\">" + data.nickName + " <small>" + data.userName + "</small></a></h4>\n          <span><i class=\"fa fa-map-marker\"></i>" + data.school + "</span>\n          <br/>\n          <span><a href=\"/status/list?userName=" + data.userName + "\">" + data.solved + "/" + data.tried + "</a></span>\n          " + (adminSpan()) + "\n        </div>\n      </div>\n    </div>\n    <div class=\"panel-footer\" style=\"overflow: hidden;white-space: nowrap;text-overflow: ellipsis;\">Motto: " + data.motto + "</div>\n  </div>\n</div>";
+          return "<div class=\"col-lg-6\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <a class=\"pull-left\" href=\"#\">\n          <img id=\"cdoj-users-avatar\" email=\"" + data.email + "\"/>\n        </a>\n        <div class=\"media-body\">\n          <h4 class=\"media-heading\"><a href=\"/user/center/" + data.userName + "\" target=\"_blank\">" + data.nickName + " <small>" + data.userName + "</small></a></h4>\n          <span><i class=\"fa fa-map-marker\"></i>" + data.school + "</span>\n          <br/>\n          <span><a href=\"/status/list?userName=" + data.userName + "\" target=\"_blank\">" + data.solved + "/" + data.tried + "</a></span>\n          " + (adminSpan()) + "\n        </div>\n      </div>\n    </div>\n    <div class=\"panel-footer\" style=\"overflow: hidden;white-space: nowrap;text-overflow: ellipsis;\">Motto: " + data.motto + "</div>\n  </div>\n</div>";
         },
         after: function() {
           var $form, $loading, $modal,

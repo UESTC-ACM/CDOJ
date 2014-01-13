@@ -64,8 +64,8 @@ initStatusList = ->
         """
           <tr>
             <td style="text-align: center;">#{data.statusId}</td>
-            <td style="text-align: center;"><a href="/user/center/#{data.userName}">#{data.userName}</a></td>
-            <td style="text-align: center;"><a href="/problem/show/#{data.problemId}">#{data.problemId}</a></td>
+            <td style="text-align: center;"><a href="/user/center/#{data.userName}" target="_blank">#{data.userName}</a></td>
+            <td style="text-align: center;"><a href="/problem/show/#{data.problemId}" target="_blank">#{data.problemId}</a></td>
             <td style="text-align: center;" class="#{getAlertClass(data.returnTypeId)}">#{getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)}</td>
 
             #{if data.returnTypeId == 1 then getCostInformation(data.timeCost, data.memoryCost) else "<td></td><td></td>"}
@@ -77,37 +77,6 @@ initStatusList = ->
             <td></td>
           </tr>
         """
-        ###
-          <div class="col-md-12">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <div class="media">
-                  <div class="pull-left">
-                    <div class="status-sign #{getAlertClass(data.returnTypeId)}">
-                      #{getStatusImage(data.returnTypeId)}
-                    </div>
-                  </div>
-                  <div class="media-body ">
-                    <h4 class="media-heading">
-                      <span>#{getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)}</span>
-                      #{if data.returnTypeId == 1 then getCostInformation(data.timeCost, data.memoryCost) else ""}
-                      <small class="pull-right">
-                        ##{data.statusId}
-                      </small>
-                      #{if data.contestId != undefined then getContestHref(data.contestId) else ""}
-                      <small class="pull-right">
-                        <a href="/problem/show/#{data.problemId}">Prob <i class="fa fa-puzzle-piece"></i>#{data.problemId}</a>,&nbsp;
-                      </small>
-                    </h4>
-                    <span><a href="/user/center/#{data.userName}"><i class="fa fa-user"></i>#{data.userName}</a></span>
-                    <span class="pull-right label label-default">#{Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")}</span>
-                    <span class="pull-right label label-success" style="margin-right: 8px">#{getCodeInfo(data.length, data.language, data.statusId, data.userName)}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ###
       after: ->
         $(".ce-link").click (e) =>
           $el = $(e.currentTarget)
