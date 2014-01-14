@@ -103,7 +103,6 @@ public class StatusController extends BaseController {
       if(currentUser == null ||
           currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
         statusCondition.isVisible = true;
-        statusCondition.contestId = -1;
       }
       Long count = statusService.count(statusCondition);
       Long recordPerPage = Global.RECORD_PER_PAGE;
