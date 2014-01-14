@@ -55,7 +55,7 @@ initUserList = ->
         # get userList avatars
         $("img#cdoj-users-avatar").setAvatar(
           size: 64,
-          image: "http://www.acm.uestc.edu.cn/images/akari_small.jpg"
+          #image: "http://www.acm.uestc.edu.cn/images/akari_small.jpg"
         )
         $modal = $("#cdoj-admin-profile-edit-modal")
         $form = $("#cdoj-admin-profile-edit-form")

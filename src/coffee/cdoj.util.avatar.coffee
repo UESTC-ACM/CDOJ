@@ -15,7 +15,8 @@ $ = jQuery
 $.fn.setAvatar = (userOption) ->
   options =
     size: 40
-    image: "http://www.acm.uestc.edu.cn/images/akari.jpg"
+    image: "retro"
+    #image: "http://www.acm.uestc.edu.cn/images/akari.jpg"
     rating: "pg"
   $.extend(options, userOption)
   this.each (id, el)=>

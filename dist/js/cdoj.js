@@ -24306,7 +24306,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
       _this = this;
     options = {
       size: 40,
-      image: "http://www.acm.uestc.edu.cn/images/akari.jpg",
+      image: "retro",
       rating: "pg"
     };
     $.extend(options, userOption);
@@ -25849,7 +25849,6 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
       var $el;
       $el = $(el);
       return $el.setAvatar({
-        image: "http://www.acm.uestc.edu.cn/images/akari_small.jpg",
         size: $el.width() ? $el.width() : void 0
       });
     });
@@ -26011,8 +26010,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
           var $form, $loading, $modal,
             _this = this;
           $("img#cdoj-users-avatar").setAvatar({
-            size: 64,
-            image: "http://www.acm.uestc.edu.cn/images/akari_small.jpg"
+            size: 64
           });
           $modal = $("#cdoj-admin-profile-edit-modal");
           $form = $("#cdoj-admin-profile-edit-form");
