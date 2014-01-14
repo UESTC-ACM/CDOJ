@@ -40,6 +40,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.settings.Global.AuthenticationType;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
@@ -231,14 +232,22 @@ public class UserController extends BaseController {
 
   @RequestMapping("center/{userName}")
   @LoginPermit(NeedLogin = false)
-  public String center(@PathVariable("userName") String userName,
+  public String center(HttpSession session,
+      @PathVariable("userName") String userName,
       ModelMap model) {
     try {
       UserCenterDTO userCenterDTO = userService.getUserCenterDTOByUserName(userName);
       if (userCenterDTO == null) {
         throw new AppException("No such user!");
       }
-
+      if (userCenterDTO.getType() == AuthenticationType.ADMIN.ordinal()) {
+        UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+        if(currentUser == null ||
+            currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
+          //Hide administrator from user center.
+          throw new AppException("No such user!");
+        }
+      }
       Map<Integer, Global.AuthorStatusType> problemStatus = new TreeMap<>();
 
       List<Integer> results = problemService.getAllVisibleProblemIds();

@@ -8,6 +8,7 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.settings.Global.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.settings.Global.OnlineJudgeResultType;
 
 /**
@@ -80,19 +81,29 @@ public class StatusCondition extends BaseCondition {
   @Exp(mapField = "problemByProblemId.isVisible", type = ConditionType.EQUALS)
   public Boolean isVisible;
 
+  public Boolean isAdmin;
+
   @Override
   public Condition getCondition() throws AppException {
     Condition condition = super.getCondition();
+    if (isAdmin == null || isAdmin == false) {
+      //Hide submission from administrator
+      condition.addEntry("userByUserId.type", ConditionType.NOT_EQUALS,
+          AuthenticationType.ADMIN.ordinal());
+    }
     if (contestId != null) {
       if (contestId == -1) {
-        condition.addEntry("contestByContestId", Condition.ConditionType.IS_NULL, null);
+        condition.addEntry("contestByContestId", Condition.ConditionType.IS_NULL,
+            null);
       } else {
-        condition.addEntry("contestByContestId", Condition.ConditionType.EQUALS, contestId);
+        condition.addEntry("contestByContestId", Condition.ConditionType.EQUALS,
+            contestId);
       }
     }
 
     if (userName != null && !userName.equals("")) {
-      condition.addEntry("userByUserId.userName", Condition.ConditionType.STRING_EQUALS, userName);
+      condition.addEntry("userByUserId.userName", Condition.ConditionType.STRING_EQUALS,
+          userName);
     }
 
     if (result != null && result != Global.OnlineJudgeResultType.OJ_ALL) {
