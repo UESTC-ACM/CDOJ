@@ -107,7 +107,6 @@ public class ProblemController extends BaseController {
         StatusCondition statusCondition = new StatusCondition();
         statusCondition.result = type;
         statusCondition.problemId = problemId;
-        statusCondition.contestId = -1;
         statusCondition.isVisible = true;
         problemStatistic.put(type, statusService.count(statusCondition));
       }
