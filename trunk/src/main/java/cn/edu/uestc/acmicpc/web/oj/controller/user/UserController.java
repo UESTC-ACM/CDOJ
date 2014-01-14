@@ -199,9 +199,15 @@ public class UserController extends BaseController {
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public @ResponseBody
-  Map<String, Object> search(@RequestBody UserCondition userCondition) {
+  Map<String, Object> search(HttpSession session,
+      @RequestBody UserCondition userCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
+      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+      if(currentUser == null ||
+          currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
+        userCondition.typeExclude = Global.AuthenticationType.ADMIN.ordinal();
+      }
       Long count = userService.count(userCondition);
       PageInfo pageInfo = buildPageInfo(count, userCondition.currentPage,
           Global.RECORD_PER_PAGE, "", null);

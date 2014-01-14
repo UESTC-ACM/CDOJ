@@ -48,6 +48,10 @@ public class Condition {
      */
     EQUALS("="),
     /**
+     * Be not equal to a specific value.
+     */
+    NOT_EQUALS("!="),
+    /**
      * Be greater than a specific value.
      */
     GREATER_THAN(">"),
@@ -103,7 +107,7 @@ public class Condition {
 
     /**
      * Creates an {@link Entry} entity according to {@link Condition} entity.
-     * 
+     *
      * @param condition
      *          DB query condition.
      * @return an {@link Entry} entity for DB query.
@@ -117,7 +121,7 @@ public class Condition {
 
     /**
      * Creates an {@link Entry} entity according to query string.
-     * 
+     *
      * @param fieldName
      *          field name of DB table.
      * @param conditionType
@@ -199,7 +203,7 @@ public class Condition {
 
   /**
    * Create a DB query condition object with specific {@link JoinedType}.
-   * 
+   *
    * @param joinedType
    *          DB joined type for query.
    * @see JoinedType
@@ -210,7 +214,7 @@ public class Condition {
 
   /**
    * Adds new order field into the order list.
-   * 
+   *
    * @param field
    *          new order field name
    * @param asc
@@ -264,7 +268,7 @@ public class Condition {
 
   /**
    * Builds DB query string and append it into builder.
-   * 
+   *
    * @return if this condition's HQL is empty, return {@code false}.
    */
   private String buildHQLString() {
@@ -316,7 +320,7 @@ public class Condition {
 
   /**
    * Gets DB query where clause by condition.
-   * 
+   *
    * @return DB query where clause.
    */
   public String toHQLString() {
@@ -340,7 +344,7 @@ public class Condition {
 
   /**
    * Gets HQL string with order by clause.
-   * 
+   *
    * @return HQL string we need.
    */
   public String toHQLStringWithOrders() {
