@@ -104,10 +104,14 @@ public class StatusController extends BaseController {
           currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
         statusCondition.isVisible = true;
         statusCondition.contestId = -1;
-          }
+      }
       Long count = statusService.count(statusCondition);
+      Long recordPerPage = Global.RECORD_PER_PAGE;
+      if (statusCondition.countPerPage != null) {
+        recordPerPage = statusCondition.countPerPage;
+      }
       PageInfo pageInfo = buildPageInfo(count, statusCondition.currentPage,
-          Global.RECORD_PER_PAGE, "", null);
+          recordPerPage, "", null);
       List<StatusListDTO> statusListDTOList = statusService.getStatusList(statusCondition,
           pageInfo);
       for (StatusListDTO statusListDTO : statusListDTOList) {

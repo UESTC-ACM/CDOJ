@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.util.settings;
 
+
 /**
  * Global enumerates and constants inside project.
  * <p/>
@@ -26,6 +27,39 @@ public class Global {
    * User serial key's length
    */
   public static final int USER_SERIAL_KEY_LENGTH = 128;
+
+  /**
+   * Online judge result type.
+   */
+  public enum OnlineJudgeResultType {
+    OJ_ALL("All"),                    // 0 - 18
+    OJ_AC("Accepted"),                // 1
+    OJ_PE("Presentation Error"),      // 2
+    OJ_TLE("Time Limit Exceeded"),    // 3
+    OJ_MLE("Memory Limit Exceeded"),  // 4
+    OJ_WA("Wrong Answer"),            // 5
+    OJ_OLE("Output Limit Exceeded"),  // 6
+    OJ_CE("Compilation Error"),       // 7
+    OJ_RE("Runtime Error"),           // 8 9 10 11 12 15
+    OJ_RF( "Restricted Function"),    // 13
+    OJ_SE("System Error"),            // 14
+    OJ_WAIT("Queuing");               // 0 18
+
+    private final String description;
+
+    /**
+     * Get enumerate value's description.
+     *
+     * @return description string for specific online judge return type
+     */
+    public String getDescription() {
+      return description;
+    }
+
+    private OnlineJudgeResultType(String description) {
+      this.description = description;
+    }
+  }
 
   /**
    * Online judge return type.

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDataEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDataShowDTO;
@@ -39,6 +41,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.settings.Global.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
@@ -95,6 +98,21 @@ public class ProblemController extends BaseController {
       if (problemShowDTO == null) {
         throw new AppException("No such problem.");
       }
+
+      Map<Global.OnlineJudgeResultType, Long> problemStatistic = new TreeMap<>();
+      for (Global.OnlineJudgeResultType type: Global.OnlineJudgeResultType.values()) {
+        if (type == OnlineJudgeResultType.OJ_WAIT) {
+          continue;
+        }
+        StatusCondition statusCondition = new StatusCondition();
+        statusCondition.result = type;
+        statusCondition.problemId = problemId;
+        statusCondition.contestId = -1;
+        statusCondition.isVisible = true;
+        problemStatistic.put(type, statusService.count(statusCondition));
+      }
+
+      model.put("problemStatistic", problemStatistic);
       model.put("targetProblem", problemShowDTO);
       model.put("brToken", "\n");
       model.put("languageList", languageService.getLanguageList());

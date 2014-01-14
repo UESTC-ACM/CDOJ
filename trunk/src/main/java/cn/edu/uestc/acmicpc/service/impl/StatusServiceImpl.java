@@ -18,7 +18,7 @@ import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.settings.Global;
-import cn.edu.uestc.acmicpc.util.settings.Global.OnlineJudgeReturnType;
+import cn.edu.uestc.acmicpc.util.settings.Global.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 /**
@@ -40,7 +40,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
       throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
-    statusCondition.resultId = Global.OnlineJudgeReturnType.OJ_AC.ordinal();
+    statusCondition.result = Global.OnlineJudgeResultType.OJ_AC;
     return (List<Integer>) statusDAO.findAll("problemByProblemId.problemId",
         statusCondition.getCondition());
   }
@@ -66,7 +66,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   public Long countProblemsUserAccepted(Integer userId) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
-    statusCondition.result.add(Global.OnlineJudgeReturnType.OJ_AC);
+    statusCondition.result = Global.OnlineJudgeResultType.OJ_AC;
     return statusDAO.customCount("distinct problemId", statusCondition.getCondition());
   }
 
@@ -81,7 +81,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   public Long countUsersAcceptedProblem(Integer problemId) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.problemId = problemId;
-    statusCondition.result.add(Global.OnlineJudgeReturnType.OJ_AC);
+    statusCondition.result = Global.OnlineJudgeResultType.OJ_AC;
     return statusDAO.customCount("distinct userId", statusCondition.getCondition());
   }
 
@@ -157,8 +157,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   @Override
   public List<StatusForJudgeDTO> getQueuingStatus() throws AppException {
     StatusCondition statusCondition = new StatusCondition();
-    statusCondition.result.add(OnlineJudgeReturnType.OJ_WAIT);
-    statusCondition.result.add(OnlineJudgeReturnType.OJ_REJUDGING);
+    statusCondition.result = OnlineJudgeResultType.OJ_WAIT;
     statusCondition.orderFields = "statusId";
     statusCondition.orderAsc = "true";
     return statusDAO.findAll(StatusForJudgeDTO.class,
@@ -182,4 +181,5 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     statusDAO.updateEntitiesByField(properties, "statusId", statusForJudgeDTO
         .getStatusId().toString());
   }
+
 }
