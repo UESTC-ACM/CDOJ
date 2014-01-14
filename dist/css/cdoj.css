@@ -7991,6 +7991,9 @@ img {
   max-width: 100%;
   height: auto;
 }
+#cdoj-best-solutions {
+  margin-left: 260px;
+}
 @media (max-width: 767px) {
   #cdoj-layout {
     padding-left: 36px;

@@ -25595,14 +25595,14 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
   };
 
   initProblemPage = function() {
-    var $currentUser, problemId,
+    var $currentUser, $statusList, problemId, statusList,
       _this = this;
     if ($("#problem-show").length > 0) {
       $currentUser = $("#currentUser");
       this.userLogin = $currentUser.length !== 0 ? true : false;
       problemId = $("#problem-title").attr("value");
       if (this.userLogin) {
-        return $("#submit-code").click(function() {
+        $("#submit-code").click(function() {
           var info;
           info = {
             codeContent: $("#code-content").val(),
@@ -25618,6 +25618,76 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
             }
           });
           return false;
+        });
+      }
+      $statusList = $("#cdoj-best-solutions");
+      if ($statusList.length !== 0) {
+        return statusList = new ListModule({
+          listContainer: $statusList,
+          requestUrl: "/status/search",
+          condition: {
+            "currentPage": null,
+            "countPerPage": 10,
+            "startId": void 0,
+            "endId": void 0,
+            "userName": void 0,
+            "problemId": problemId,
+            "languageId": void 0,
+            "contestId": void 0,
+            "result": "OJ_AC",
+            "orderFields": "timeCost,memoryCost,Length,statusId",
+            "orderAsc": "true,true,true,true"
+          },
+          formatter: function(data) {
+            var currentUser, getCodeInfo, getCostInformation, getReturnType;
+            getCostInformation = function(timeCost, memoryCost) {
+              return "<td style=\"text-align: center;\">" + memoryCost + " KB</td>\n<td style=\"text-align: center;\">" + timeCost + " MS</td>";
+            };
+            currentUser = getCurrentUser();
+            getReturnType = function(returnType, returnTypeId, statusId, userName) {
+              if (returnTypeId === 7) {
+                if (currentUser.userLogin && (currentUser.currentUserType === "1" || currentUser.currentUser === userName)) {
+                  return "<a href=\"#\" value=\"" + statusId + "\" class=\"ce-link\">" + returnType + "</a>";
+                } else {
+                  return returnType;
+                }
+              } else {
+                return returnType;
+              }
+            };
+            getCodeInfo = function(length, language, statusId, userName) {
+              if (currentUser.userLogin && (currentUser.currentUserType === "1" || currentUser.currentUser === userName)) {
+                return "<a href=\"#\" value=\"" + statusId + "\" class=\"code-link\">" + length + " B</a>";
+              } else {
+                return "" + length + " B";
+              }
+            };
+            return "<tr>\n  <td style=\"text-align: center;\">" + data.statusId + "</td>\n  <td style=\"text-align: center;\"><a href=\"/user/center/" + data.userName + "\" target=\"_blank\">" + data.userName + "</a></td>\n\n  " + (data.returnTypeId === 1 ? getCostInformation(data.timeCost, data.memoryCost) : "<td></td><td></td>") + "\n\n  <td style=\"text-align: center;\">" + data.language + "</td>\n\n  <td style=\"text-align: center;\">" + (getCodeInfo(data.length, data.language, data.statusId, data.userName)) + "</td>\n  <td style=\"text-align: center;\">" + (Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "</td>\n  <td></td>\n</tr>";
+          },
+          after: function() {
+            var _this = this;
+            return $(".code-link").click(function(e) {
+              var $el, statusId;
+              $el = $(e.currentTarget);
+              statusId = $el.attr("value");
+              $.post("/status/info/" + statusId, function(data) {
+                var $modal, code;
+                code = "";
+                if (data.result === "success") {
+                  code = data.code;
+                } else {
+                  code = data.error_msg;
+                }
+                code = code.trim().escapeHTML();
+                console.log(code);
+                $modal = $("#code-modal");
+                $modal.find(".modal-body").empty().append("<pre>" + code + "</pre>");
+                $modal.find(".modal-body").prettify();
+                return $modal.modal("toggle");
+              });
+              return false;
+            });
+          }
         });
       }
     }
@@ -25638,7 +25708,7 @@ var qq=function(a){"use strict";return{hide:function(){return a.style.display="n
           "problemId": void 0,
           "languageId": void 0,
           "contestId": void 0,
-          "result": [],
+          "result": "OJ_ALL",
           "orderFields": "statusId",
           "orderAsc": "false"
         },
