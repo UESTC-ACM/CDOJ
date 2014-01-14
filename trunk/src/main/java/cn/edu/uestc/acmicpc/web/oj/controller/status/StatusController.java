@@ -144,9 +144,18 @@ public class StatusController extends BaseController {
   @RequestMapping("count")
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public @ResponseBody
-  Map<String, Object> count(@RequestBody StatusCondition statusCondition) {
+  Map<String, Object> count(HttpSession session,
+      @RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try{
+      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+      if(currentUser == null ||
+          currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
+        statusCondition.isVisible = true;
+        statusCondition.isAdmin = false;
+      } else {
+        statusCondition.isAdmin = true;
+      }
       Long count = statusService.count(statusCondition);
 
       json.put("result", "success");
@@ -165,9 +174,18 @@ public class StatusController extends BaseController {
   @RequestMapping("rejudge")
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public @ResponseBody
-  Map<String, Object> rejudge(@RequestBody StatusCondition statusCondition) {
+  Map<String, Object> rejudge(HttpSession session,
+      @RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try{
+      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+      if(currentUser == null ||
+          currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
+        statusCondition.isVisible = true;
+        statusCondition.isAdmin = false;
+      } else {
+        statusCondition.isAdmin = true;
+      }
       statusService.rejudge(statusCondition);
 
       json.put("result", "success");
