@@ -30,6 +30,8 @@ import cn.edu.uestc.acmicpc.service.iface.CodeService;
 import cn.edu.uestc.acmicpc.service.iface.CompileInfoService;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
+import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
@@ -50,6 +52,22 @@ public class StatusController extends BaseController {
   private CompileInfoService compileInfoService;
   private ContestService contestService;
   private ContestProblemService contestProblemService;
+
+  @Autowired
+  public StatusController(DepartmentService departmentService, GlobalService globalService,
+                          StatusService statusService, ProblemService problemService,
+                          LanguageService languageService, CodeService codeService,
+                          CompileInfoService compileInfoService, ContestService contestService,
+                          ContestProblemService contestProblemService) {
+    super(departmentService, globalService);
+    this.statusService = statusService;
+    this.problemService = problemService;
+    this.languageService = languageService;
+    this.codeService = codeService;
+    this.compileInfoService = compileInfoService;
+    this.contestService = contestService;
+    this.contestProblemService = contestProblemService;
+  }
 
   @Autowired
   public void setContestProblemService(ContestProblemService contestProblemService) {
