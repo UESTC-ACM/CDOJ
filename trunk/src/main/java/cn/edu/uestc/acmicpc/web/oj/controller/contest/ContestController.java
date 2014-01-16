@@ -25,6 +25,8 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
+import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -46,17 +48,12 @@ public class ContestController extends BaseController{
   private ContestProblemService contestProblemService;
 
   @Autowired
-  public void setContestService(ContestService contestService) {
+  public ContestController(DepartmentService departmentService, GlobalService globalService,
+                           ContestService contestService, LanguageService languageService,
+                           ContestProblemService contestProblemService) {
+    super(departmentService, globalService);
     this.contestService = contestService;
-  }
-
-  @Autowired
-  public void setLanguageService(LanguageService languageService) {
     this.languageService = languageService;
-  }
-
-  @Autowired
-  public void setContestProblemService(ContestProblemService contestProblemService) {
     this.contestProblemService = contestProblemService;
   }
 

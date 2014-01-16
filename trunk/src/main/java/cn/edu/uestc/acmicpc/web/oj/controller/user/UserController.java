@@ -30,7 +30,9 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDTO;
+import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
@@ -55,27 +57,15 @@ public class UserController extends BaseController {
   private EmailService emailService;
 
   @Autowired
-  public void setUserService(UserService userService) {
+  public UserController(DepartmentService departmentService, GlobalService globalService,
+                        UserService userService, ProblemService problemService,
+                        StatusService statusService, UserSerialKeyService userSerialKeyService,
+                        EmailService emailService) {
+    super(departmentService, globalService);
     this.userService = userService;
-  }
-
-  @Autowired
-  public void setProblemService(ProblemService problemService) {
     this.problemService = problemService;
-  }
-
-  @Autowired
-  public void setStatusService(StatusService statusService) {
     this.statusService = statusService;
-  }
-
-  @Autowired
-  public void setUserSerialKeyService(UserSerialKeyService userSerialKeyService) {
     this.userSerialKeyService = userSerialKeyService;
-  }
-
-  @Autowired
-  public void setEmailService(EmailService emailService) {
     this.emailService = emailService;
   }
 

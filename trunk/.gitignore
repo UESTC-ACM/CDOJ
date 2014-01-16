@@ -14,3 +14,4 @@
 /cdoj.iml
 *.pyc
 /target
+/lib

@@ -13,8 +13,8 @@
     <jetty.version>9.1.0.M0</jetty.version>
     <org.aspect.version>1.5.4</org.aspect.version>
     <sitemesh.version>2.4.2</sitemesh.version>
-    <org.springframework.version>3.2.4.RELEASE</org.springframework.version>
-    <org.hibernate.version>4.2.4.Final</org.hibernate.version>
+    <org.springframework.version>4.0.0.RELEASE</org.springframework.version>
+    <org.hibernate.version>4.3.0.Final</org.hibernate.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <db.url>jdbc:mysql://localhost:3306/uestcojtest</db.url>

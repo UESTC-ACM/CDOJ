@@ -24,6 +24,8 @@ import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
+import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -41,12 +43,10 @@ public class ArticleController extends BaseController {
   private PictureService pictureService;
 
   @Autowired
-  public void setArticleService(ArticleService articleService) {
+  public ArticleController(DepartmentService departmentService, GlobalService globalService,
+                           ArticleService articleService, PictureService pictureService) {
+    super(departmentService, globalService);
     this.articleService = articleService;
-  }
-
-  @Autowired
-  public void setPictureService(PictureService pictureService) {
     this.pictureService = pictureService;
   }
 

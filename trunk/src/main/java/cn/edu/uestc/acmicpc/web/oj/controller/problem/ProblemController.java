@@ -31,7 +31,9 @@ import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
@@ -57,28 +59,16 @@ public class ProblemController extends BaseController {
   private FileService fileService;
 
   @Autowired
-  public void setFileService(FileService fileService) {
-    this.fileService = fileService;
-  }
-
-  @Autowired
-  public void setPictureService(PictureService pictureService) {
-    this.pictureService = pictureService;
-  }
-
-  @Autowired
-  public void setProblemService(ProblemService problemService) {
+  public ProblemController(DepartmentService departmentService, GlobalService globalService,
+                           ProblemService problemService, StatusService statusService,
+                           LanguageService languageService, PictureService pictureService,
+                           FileService fileService) {
+    super(departmentService, globalService);
     this.problemService = problemService;
-  }
-
-  @Autowired
-  public void setStatusService(StatusService statusService) {
     this.statusService = statusService;
-  }
-
-  @Autowired
-  public void setLanguageService(LanguageService languageService) {
     this.languageService = languageService;
+    this.pictureService = pictureService;
+    this.fileService = fileService;
   }
 
   /**

@@ -29,12 +29,8 @@ public class BaseController {
   protected GlobalService globalService;
 
   @Autowired
-  public void setDepartmentService(DepartmentService departmentService) {
+  protected BaseController(DepartmentService departmentService, GlobalService globalService) {
     this.departmentService = departmentService;
-  }
-
-  @Autowired
-  public void setGlobalService(GlobalService globalService) {
     this.globalService = globalService;
   }
 

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -34,7 +36,9 @@ public class PictureController extends BaseController {
   private PictureService pictureService;
 
   @Autowired
-  public void setPictureService(PictureService pictureService) {
+  public PictureController(DepartmentService departmentService, GlobalService globalService,
+                           PictureService pictureService) {
+    super(departmentService, globalService);
     this.pictureService = pictureService;
   }
 
