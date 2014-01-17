@@ -18,8 +18,10 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.judge.JudgeService;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
+import cn.edu.uestc.acmicpc.service.iface.FileService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
+import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
@@ -115,6 +117,18 @@ public class TestContext extends ApplicationContextConfig {
   @Primary
   public LanguageService mockLanguageService() {
     return mock(LanguageService.class);
+  }
+
+  @Bean
+  @Primary
+  public PictureService mockPictureService() {
+    return mock(PictureService.class);
+  }
+
+  @Bean
+  @Primary
+  public FileService mockFileService() {
+    return mock(FileService.class);
   }
 
   @Bean
