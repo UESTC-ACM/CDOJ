@@ -19,8 +19,10 @@ import org.testng.annotations.Test;
 import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.service.iface.FileService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
+import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.web.oj.controller.problem.ProblemController;
@@ -52,16 +54,20 @@ public class ProblemControllerTest extends ControllerTest {
   @Qualifier("mockDepartmentService")
   private DepartmentService departmentService;
 
+  @Autowired
+  @Qualifier("mockPictureService")
+  private PictureService pictureService;
+
+  @Autowired
+  @Qualifier("mockFileService")
+  private FileService fileService;
+
   @BeforeMethod
   public void init() {
     Mockito.reset(problemService, globalService,
         statusService, languageService, departmentService);
-    ProblemController problemController = new ProblemController();
-    problemController.setGlobalService(globalService);
-    problemController.setProblemService(problemService);
-    problemController.setStatusService(statusService);
-    problemController.setLanguageService(languageService);
-    problemController.setDepartmentService(departmentService);
+    ProblemController problemController = new ProblemController(departmentService, globalService,
+         problemService, statusService, languageService, pictureService, fileService);
     mockMvc = initControllers(problemController);
     session = new MockHttpSession(context.getServletContext(), UUID.randomUUID().toString());
   }
