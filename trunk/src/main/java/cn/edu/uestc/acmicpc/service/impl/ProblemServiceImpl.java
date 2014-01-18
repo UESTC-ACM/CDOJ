@@ -84,6 +84,15 @@ public class ProblemServiceImpl extends AbstractService implements
     problemDAO.updateEntitiesByField(field, value, "problemId", ids);
   }
 
+  @SuppressWarnings("unchecked")
+  @Override
+  public List<Object> query(String field, String ids) throws AppException {
+    ProblemCondition problemCondition = new ProblemCondition();
+    Condition condition = problemCondition.getCondition();
+    condition.addEntry("problemId", Condition.ConditionType.IN, ids);
+    return (List<Object>) problemDAO.findAll(field, condition);
+  }
+
   @Override
   public Integer createNewProblem() throws AppException {
     Problem problem = new Problem();

@@ -6,6 +6,7 @@ import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -24,15 +25,32 @@ public interface ContestService extends DatabaseService<Contest, Integer> {
   public List<Integer> getAllVisibleContestIds() throws AppException;
 
   /**
-   * Get {@link ContestDTO} entity by contest id.
+   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO} entity by contest id.
    *
-   * @param contestId
-   *          contest id.
-   * @return {@link ContestDTO} entity.
+   * @param contestId contest id.
+   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO} entity.
    * @throws AppException
    */
-  public ContestDTO getContestDTO(Integer contestId)
+  public ContestDTO getContestDTOByContestId(Integer contestId)
       throws AppException;
+
+  /**
+   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO} entity by contest id.
+   *
+   * @param contestId contest id.
+   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO} entity.
+   * @throws AppException
+   */
+  public ContestShowDTO getContestShowDTOByContestId(Integer contestId)
+      throws AppException;
+  /**
+   * Updates contest record by {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO} entity.
+   *
+   * @param contestDTO
+   *          {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO} entity.
+   * @throws AppException
+   */
+  public void updateContest(ContestDTO contestDTO) throws AppException;
 
   /**
    * Counts the number of contests fit in condition.
@@ -47,7 +65,7 @@ public interface ContestService extends DatabaseService<Contest, Integer> {
    * Get the contests fit in condition and page range.
    *
    * @param condition {@link ContestCondition} entity.
-   * @param pageInfo {@link PageInfo} entity.
+   * @param pageInfo  {@link PageInfo} entity.
    * @return List of {@link ContestListDTO} entities.
    * @throws AppException
    */
@@ -59,7 +77,7 @@ public interface ContestService extends DatabaseService<Contest, Integer> {
    * Modify one filed of multiply entities as value.
    *
    * @param field filed need to modified.
-   * @param ids entities' ID split by <code>,</code>.
+   * @param ids   entities' ID split by <code>,</code>.
    * @param value new value.
    * @throws AppException
    */
@@ -74,4 +92,12 @@ public interface ContestService extends DatabaseService<Contest, Integer> {
    * @throws AppException
    */
   public ContestEditorShowDTO getContestEditorShowDTO(Integer contestId) throws AppException;
+
+  /**
+   * Creates a new contest record.
+   *
+   * @return the new contest's id.
+   * @throws AppException
+   */
+  public Integer createNewContest() throws AppException;
 }

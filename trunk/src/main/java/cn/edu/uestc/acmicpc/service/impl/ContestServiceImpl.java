@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
+import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
@@ -44,12 +47,49 @@ public class ContestServiceImpl extends AbstractService implements
   }
 
   @Override
-  public ContestDTO getContestDTO(
+  public ContestDTO getContestDTOByContestId(
       Integer contestId)
       throws AppException {
     AppExceptionUtil.assertNotNull(contestId);
     return contestDAO.getDTOByUniqueField(ContestDTO.class,
         ContestDTO.builder(), "contestId", contestId);
+  }
+
+  @Override
+  public ContestShowDTO getContestShowDTOByContestId(Integer contestId) throws AppException {
+    AppExceptionUtil.assertNotNull(contestId);
+    return contestDAO.getDTOByUniqueField(ContestShowDTO.class,
+        ContestShowDTO.builder(), "contestId", contestId);
+  }
+
+  private void updateContestByContestDTO(Contest contest, ContestDTO contestDTO) {
+    if (contestDTO.getDescription() != null) {
+      contest.setDescription(contestDTO.getDescription());
+    }
+    if (contestDTO.getIsVisible() != null) {
+      contest.setIsVisible(contestDTO.getIsVisible());
+    }
+    if (contestDTO.getLength() != null) {
+      contest.setLength(contestDTO.getLength());
+    }
+    if (contestDTO.getTime() != null) {
+      contest.setTime(contestDTO.getTime());
+    }
+    if (contestDTO.getTitle() != null) {
+      contest.setTitle(contestDTO.getTitle());
+    }
+    if (contestDTO.getType() != null) {
+      contest.setType(contestDTO.getType());
+    }
+  }
+
+  @Override
+  public void updateContest(ContestDTO contestDTO) throws AppException {
+    Contest contest = contestDAO.get(contestDTO.getContestId());
+    AppExceptionUtil.assertNotNull(contest);
+    AppExceptionUtil.assertNotNull(contest.getContestId());
+    updateContestByContestDTO(contest, contestDTO);
+    contestDAO.update(contest);
   }
 
   @Override
@@ -84,6 +124,20 @@ public class ContestServiceImpl extends AbstractService implements
       throws AppException {
     return contestDAO.getDTOByUniqueField(ContestEditorShowDTO.class,
         ContestEditorShowDTO.builder(), "contestId", contestId);
+  }
+
+  @Override
+  public Integer createNewContest() throws AppException {
+    Contest contest = new Contest();
+    contest.setContestId(null);
+    contest.setDescription("");
+    contest.setIsVisible(false);
+    contest.setLength(5 * 60 * 60);
+    contest.setTime(new Timestamp(System.currentTimeMillis()));
+    contest.setTitle("");
+    contest.setType((byte) Global.ContestType.PUBLIC.ordinal());
+    contestDAO.add(contest);
+    return contest.getContestId();
   }
 
 }

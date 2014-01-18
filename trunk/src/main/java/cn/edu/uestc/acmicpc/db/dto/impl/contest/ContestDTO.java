@@ -7,47 +7,35 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
-import cn.edu.uestc.acmicpc.util.settings.Global;
 
 /**
  * DTO for contest entity.
  * <br/>
  * <code>@Fields({ "contestId", "title", "description", "time", "length", "type" })</code>
  */
-@Fields({ "contestId", "title", "description", "time", "length", "type" })
+@Fields({"contestId", "title", "description", "time", "length", "type", "isVisible"})
 public class ContestDTO implements BaseDTO<Contest> {
 
   private Integer contestId;
   private String title;
   private String description;
-  private String status;
-  private Timestamp startTime;
-  private Timestamp endTime;
-  private Timestamp currentTime;
-  private Long timeLeft;
+  private Timestamp time;
   private Integer length;
   private Byte type;
-  private String typeName;
+  private Boolean isVisible;
 
   public ContestDTO() {
   }
 
-  public ContestDTO(Integer contestId, String title,
-      String description,
-      String status, Timestamp startTime, Timestamp endTime,
-      Timestamp currentTime, Long timeLeft, Integer length, Byte type,
-      String typeName) {
+  public ContestDTO(Integer contestId, String title, String description, Timestamp time,
+                    Integer length, Byte type, Boolean isVisible) {
     this.contestId = contestId;
     this.title = title;
     this.description = description;
-    this.status = status;
-    this.startTime = startTime;
-    this.endTime = endTime;
-    this.currentTime = currentTime;
-    this.timeLeft = timeLeft;
     this.length = length;
-    this.setType(type);
-    this.setTypeName(typeName);
+    this.time = time;
+    this.type = type;
+    this.isVisible = isVisible;
   }
 
   public Integer getContestId() {
@@ -82,46 +70,6 @@ public class ContestDTO implements BaseDTO<Contest> {
     this.length = length;
   }
 
-  public String getStatus() {
-    return status;
-  }
-
-  public void setStatus(String status) {
-    this.status = status;
-  }
-
-  public Long getTimeLeft() {
-    return timeLeft;
-  }
-
-  public void setTimeLeft(Long timeLeft) {
-    this.timeLeft = timeLeft;
-  }
-
-  public Timestamp getStartTime() {
-    return startTime;
-  }
-
-  public void setStartTime(Timestamp startTime) {
-    this.startTime = startTime;
-  }
-
-  public Timestamp getEndTime() {
-    return endTime;
-  }
-
-  public void setEndTime(Timestamp endTime) {
-    this.endTime = endTime;
-  }
-
-  public Timestamp getCurrentTime() {
-    return currentTime;
-  }
-
-  public void setCurrentTime(Timestamp currentTime) {
-    this.currentTime = currentTime;
-  }
-
   public Byte getType() {
     return type;
   }
@@ -130,12 +78,20 @@ public class ContestDTO implements BaseDTO<Contest> {
     this.type = type;
   }
 
-  public String getTypeName() {
-    return typeName;
+  public Timestamp getTime() {
+    return time;
   }
 
-  public void setTypeName(String typeName) {
-    this.typeName = typeName;
+  public void setTime(Timestamp time) {
+    this.time = time;
+  }
+
+  public Boolean getIsVisible() {
+    return isVisible;
+  }
+
+  public void setIsVisible(Boolean isVisible) {
+    this.isVisible = isVisible;
   }
 
   public static Builder builder() {
@@ -147,20 +103,14 @@ public class ContestDTO implements BaseDTO<Contest> {
     private Integer contestId;
     private String title;
     private String description;
-    private Timestamp startTime;
-    private Timestamp endTime;
-    private Timestamp currentTime;
-    private Long timeLeft;
+    private Timestamp time;
     private Integer length;
-    private String status;
     private Byte type;
-    private String typeName;
+    private Boolean isVisible;
 
     @Override
     public ContestDTO build() {
-      return new ContestDTO(contestId, title, description,
-          status, startTime, endTime, currentTime, timeLeft, length, type,
-          typeName);
+      return new ContestDTO(contestId, title, description, time, length, type, isVisible);
     }
 
     @Override
@@ -169,20 +119,9 @@ public class ContestDTO implements BaseDTO<Contest> {
       title = (String) properties.get("title");
       description = (String) properties.get("description");
       length = (Integer) properties.get("length") * 1000;
-      startTime = (Timestamp) properties.get("time");
+      time = (Timestamp) properties.get("time");
       type = (Byte) properties.get("type");
-      typeName = Global.ContestType.values()[type].getDescription();
-
-      endTime = new Timestamp(startTime.getTime() + length);
-      currentTime = new Timestamp(System.currentTimeMillis());
-      timeLeft = Math.max(endTime.getTime() - currentTime.getTime(), 0L);
-      if (timeLeft > length) {
-        status = "Pending";
-      } else if (timeLeft > 0) {
-        status = "Running";
-      } else {
-        status = "Ended";
-      }
+      isVisible = (Boolean) properties.get("isVisible");
       return build();
     }
 
@@ -201,8 +140,8 @@ public class ContestDTO implements BaseDTO<Contest> {
       return this;
     }
 
-    public Builder setTimeLeft(Long timeLeft) {
-      this.timeLeft = timeLeft;
+    public Builder setTime(Timestamp time) {
+      this.time = time;
       return this;
     }
 
@@ -211,53 +150,13 @@ public class ContestDTO implements BaseDTO<Contest> {
       return this;
     }
 
-    public Builder setStatus(String status) {
-      this.status = status;
-      return this;
-    }
-
-    public Timestamp getStartTime() {
-      return startTime;
-    }
-
-    public Builder setStartTime(Timestamp startTime) {
-      this.startTime = startTime;
-      return this;
-    }
-
-    public Timestamp getEndTime() {
-      return endTime;
-    }
-
-    public Builder setEndTime(Timestamp endTime) {
-      this.endTime = endTime;
-      return this;
-    }
-
-    public Timestamp getCurrentTime() {
-      return currentTime;
-    }
-
-    public Builder setCurrentTime(Timestamp currentTime) {
-      this.currentTime = currentTime;
-      return this;
-    }
-
-    public Byte getType() {
-      return type;
-    }
-
     public Builder setType(Byte type) {
       this.type = type;
       return this;
     }
 
-    public String getTypeName() {
-      return typeName;
-    }
-
-    public Builder setTypeName(String typeName) {
-      this.typeName = typeName;
+    public Builder setIsVisible(Boolean isVisible) {
+      this.isVisible = isVisible;
       return this;
     }
   }

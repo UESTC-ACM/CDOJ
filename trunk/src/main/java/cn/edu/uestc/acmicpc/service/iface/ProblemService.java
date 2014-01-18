@@ -57,7 +57,7 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
       PageInfo pageInfo) throws AppException;
 
   /**
-   * Modify one filed of multiply entities as value.
+   * Modify one field of multiply entities as value.
    *
    * @param field filed need to modified.
    * @param ids entities' ID split by <code>,</code>.
@@ -65,6 +65,16 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
    * @throws AppException
    */
   public void operator(String field, String ids, String value) throws AppException;
+
+  /**
+   * Query one field of multiply entities.
+   *
+   * @param field filed need to modified.
+   * @param ids entities' ID split by <code>,</code>.
+   * @return List of queried field.
+   * @throws AppException
+   */
+  public List<Object> query(String field, String ids) throws AppException;
 
   /**
    * Creates a new problem record.
