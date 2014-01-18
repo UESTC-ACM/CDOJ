@@ -82,7 +82,11 @@ public class Condition {
     /**
      * Value is <strong>not</strong> {@code null}.
      */
-    IS_NOT_NULL("");
+    IS_NOT_NULL(""),
+    /**
+     * Value is in some set.
+     */
+    IN(" in ");
 
     private final String signal;
 
@@ -301,13 +305,13 @@ public class Condition {
         } else {
           builder.append(entry.getFieldName());
           builder.append(entry.getConditionType().getSignal());
-          builder.append("'");
           if (entry.getConditionType() == ConditionType.LIKE) {
-            builder.append("%").append(entry.getValue()).append("%");
+            builder.append("'%").append(entry.getValue()).append("%'");
+          } else if (entry.getConditionType() == ConditionType.IN) {
+            builder.append("(").append(entry.getValue()).append(")");
           } else {
-            builder.append(entry.getValue());
+            builder.append("'").append(entry.getValue()).append("'");
           }
-          builder.append("'");
         }
       }
     }

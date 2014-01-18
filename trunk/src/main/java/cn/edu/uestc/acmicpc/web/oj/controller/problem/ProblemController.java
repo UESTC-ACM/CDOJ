@@ -81,7 +81,7 @@ public class ProblemController extends BaseController {
   @RequestMapping("show/{problemId}")
   @LoginPermit(NeedLogin = false)
   public String show(@PathVariable("problemId") Integer problemId,
-      ModelMap model) {
+                     ModelMap model) {
     try {
       ProblemShowDTO problemShowDTO = problemService
           .getProblemShowDTO(problemId);
@@ -90,7 +90,7 @@ public class ProblemController extends BaseController {
       }
 
       Map<Global.OnlineJudgeResultType, Long> problemStatistic = new TreeMap<>();
-      for (Global.OnlineJudgeResultType type: Global.OnlineJudgeResultType.values()) {
+      for (Global.OnlineJudgeResultType type : Global.OnlineJudgeResultType.values()) {
         if (type == OnlineJudgeResultType.OJ_WAIT) {
           continue;
         }
@@ -134,9 +134,10 @@ public class ProblemController extends BaseController {
    */
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> search(HttpSession session,
-      @RequestBody ProblemCondition problemCondition) {
+                             @RequestBody ProblemCondition problemCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
@@ -159,8 +160,7 @@ public class ProblemController extends BaseController {
       for (ProblemListDTO problemListDTO : problemListDTOList) {
         if (problemStatus.get(problemListDTO.getProblemId()) == Global.AuthorStatusType.PASS) {
           problemListDTO.setStatus(1);
-        }
-        else if (problemStatus.containsKey(problemListDTO.getProblemId())) {
+        } else if (problemStatus.containsKey(problemListDTO.getProblemId())) {
           problemListDTO.setStatus(2);
         }
       }
@@ -184,20 +184,18 @@ public class ProblemController extends BaseController {
   /**
    * Modify special field of problem
    *
-   * @param targetId
-   *          problem id
-   * @param field
-   *          field want to modified
-   * @param value
-   *          value
+   * @param targetId problem id
+   * @param field    field want to modified
+   * @param value    value
    * @return JSON
    */
   @RequestMapping("operator/{id}/{field}/{value}")
   @LoginPermit(Global.AuthenticationType.ADMIN)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> operator(@PathVariable("id") String targetId,
-      @PathVariable("field") String field,
-      @PathVariable("value") String value) {
+                               @PathVariable("field") String field,
+                               @PathVariable("value") String value) {
     Map<String, Object> json = new HashMap<>();
     try {
       problemService.operator(field, targetId, value);
@@ -210,19 +208,35 @@ public class ProblemController extends BaseController {
     return json;
   }
 
+  @RequestMapping("query/{id}/{field}")
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> query(@PathVariable("id") String targetId,
+                            @PathVariable("field") String field) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      json.put("list", problemService.query(field, targetId));
+      json.put("result", "success");
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
   /**
    * Open problem editor
    *
-   * @param sProblemId
-   *          target problem id or "new"
-   * @param model
-   *          model
+   * @param sProblemId target problem id or "new"
+   * @param model      model
    * @return editor view
    */
   @RequestMapping("editor/{problemId}")
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public String editor(@PathVariable("problemId") String sProblemId,
-      ModelMap model) {
+                       ModelMap model) {
     try {
       if (sProblemId.compareTo("new") == 0) {
         model.put("action", "new");
@@ -250,17 +264,16 @@ public class ProblemController extends BaseController {
   /**
    * Edit problem
    *
-   * @param problemEditDTO
-   *          uploaded information
-   * @param validateResult
-   *          validate result
+   * @param problemEditDTO uploaded information
+   * @param validateResult validate result
    * @return
    */
   @RequestMapping("edit")
   @LoginPermit(Global.AuthenticationType.ADMIN)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> edit(@RequestBody @Valid ProblemEditDTO problemEditDTO,
-      BindingResult validateResult) {
+                           BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
@@ -321,7 +334,7 @@ public class ProblemController extends BaseController {
   @RequestMapping("dataEditor/{problemId}")
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public String dataEditor(@PathVariable("problemId") Integer problemId,
-      ModelMap model) {
+                           ModelMap model) {
     try {
       ProblemDataShowDTO targetProblem = problemService
           .getProblemDataShowDTO(problemId);
@@ -338,7 +351,8 @@ public class ProblemController extends BaseController {
   @RequestMapping(value = "uploadProblemDataFile/{problemId}",
       method = RequestMethod.POST)
   @LoginPermit(Global.AuthenticationType.ADMIN)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> uploadProblemDataFile(
       @PathVariable("problemId") Integer problemId,
       @RequestParam(value = "uploadFile", required = true) MultipartFile[] files) {
@@ -371,7 +385,8 @@ public class ProblemController extends BaseController {
 
   @RequestMapping("updateProblemData")
   @LoginPermit(Global.AuthenticationType.ADMIN)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> updateProblemData(
       @RequestBody @Valid ProblemDataEditDTO problemDataEditDTO,
       BindingResult validateResult) {

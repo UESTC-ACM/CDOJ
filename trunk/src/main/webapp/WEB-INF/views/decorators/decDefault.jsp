@@ -6,7 +6,7 @@
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="cdoj">
 <head>
 <page:applyDecorator name="head" page="/WEB-INF/views/common/header.jsp" />
 <decorator:head />

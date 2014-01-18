@@ -11,16 +11,16 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * DTO for contest problem entity.
  * <br/>
  * <code>@Fields({ "order", "problemId", "problemByProblemId.title",
- *  "problemByProblemId.isSpj",
- *  "problemByProblemId.javaTimeLimit", "problemByProblemId.javaMemoryLimit",
- *  "problemByProblemId.timeLimit", "problemByProblemId.memoryLimit",
- *  "problemByProblemId.description", "problemByProblemId.input",
- *  "problemByProblemId.output",
- *  "problemByProblemId.sampleInput", "problemByProblemId.sampleOutput",
- *  "problemByProblemId.hint",
- *  "problemByProblemId.source" })</code>
+ * "problemByProblemId.isSpj",
+ * "problemByProblemId.javaTimeLimit", "problemByProblemId.javaMemoryLimit",
+ * "problemByProblemId.timeLimit", "problemByProblemId.memoryLimit",
+ * "problemByProblemId.description", "problemByProblemId.input",
+ * "problemByProblemId.output",
+ * "problemByProblemId.sampleInput", "problemByProblemId.sampleOutput",
+ * "problemByProblemId.hint",
+ * "problemByProblemId.source" })</code>
  */
-@Fields({ "order", "problemId", "problemByProblemId.title",
+@Fields({"order", "problemId", "problemByProblemId.title",
     "problemByProblemId.isSpj",
     "problemByProblemId.javaTimeLimit", "problemByProblemId.javaMemoryLimit",
     "problemByProblemId.timeLimit", "problemByProblemId.memoryLimit",
@@ -28,7 +28,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
     "problemByProblemId.output",
     "problemByProblemId.sampleInput", "problemByProblemId.sampleOutput",
     "problemByProblemId.hint",
-    "problemByProblemId.source" })
+    "problemByProblemId.source"})
 public class ContestProblemDTO implements BaseDTO<ContestProblem> {
 
   private Integer order;
@@ -55,11 +55,11 @@ public class ContestProblemDTO implements BaseDTO<ContestProblem> {
   }
 
   public ContestProblemDTO(Integer order, Character orderCharacter,
-      Integer problemId, String title, Boolean isSpj, Integer solved,
-      Integer tried, Integer javaTimeLimit, Integer javaMemoryLimit,
-      Integer timeLimit,
-      Integer memoryLimit, String description, String input, String output,
-      String sampleInput, String sampleOutput, String hint, String source) {
+                           Integer problemId, String title, Boolean isSpj, Integer solved,
+                           Integer tried, Integer javaTimeLimit, Integer javaMemoryLimit,
+                           Integer timeLimit,
+                           Integer memoryLimit, String description, String input, String output,
+                           String sampleInput, String sampleOutput, String hint, String source) {
 
     this.order = order;
     this.orderCharacter = orderCharacter;

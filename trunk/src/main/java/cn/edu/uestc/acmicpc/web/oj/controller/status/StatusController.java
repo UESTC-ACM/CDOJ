@@ -245,7 +245,7 @@ public class StatusController extends BaseController {
             }
         if (submitDTO.getContestId() != null) {
           // Is this contest exist?
-          ContestDTO contestDTO = contestService.getContestDTO(submitDTO.getContestId());
+          ContestDTO contestDTO = contestService.getContestDTOByContestId(submitDTO.getContestId());
           if (contestDTO == null) {
             throw new AppException("Wrong contest id.");
           }
