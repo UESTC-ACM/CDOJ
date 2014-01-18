@@ -12,7 +12,6 @@ $ ->
   initProblemDataEditor()
   initContestList()
   initContestPage()
-  initContestEditor()
   initArticleEditor()
   initArticleList()
   render()

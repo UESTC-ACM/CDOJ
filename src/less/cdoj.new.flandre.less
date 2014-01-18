@@ -1,11 +1,12 @@
-#flandre-heading {
+.flandre-heading {
   padding: 2px 15px;
 }
-#flandre-editor,
-#flandre-preview {
+.flandre-editor,
+.flandre-preview {
   &:focus {
     outline: none;
   }
+  display: none;
   height: auto;
   max-height: 500px;
   overflow-y: auto;
@@ -18,14 +19,16 @@
   background-color: #fff;
   background-image: none;
 }
-#flandre-editor {
+.flandre-editor.flandre-show,
+.flandre-preview.flandre-show{
   display: block;
+}
+.flandre-editor {
   overflow-y:visible;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-#flandre-preview {
-  display: none;
+.flandre-preview {
   p:last-child {
     margin-bottom: 0;
   }

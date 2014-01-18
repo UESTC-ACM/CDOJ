@@ -32,18 +32,19 @@ module.exports = function(grunt) {
         src: ["src/js/jquery-2.0.3.js",
           "src/js/sugar-full.development.js",
           "src/js/underscore.js",
+          "src/js/angular.min.js",
           "src/js/prettify.js",
           "src/js/marked.js",
           "src/js/bootstrap.js",
           "src/js/md5.js",
           "src/js/jquery.elastic.source.js",
           "src/js/fineuploader-4.0.3.min.js",
-          "src/js/bootstrap-datepicker.js",
+          "src/js/bootstrap-datetimepicker.js",
           "dist/js/cdoj.coffee.js"],
         dest: "dist/js/cdoj.js"
       },
       css: {
-        src: ["src/css/bootstrap.css", "src/css/datepicker.css", "dist/css/cdoj.less.css"],
+        src: ["src/css/bootstrap.css", "src/css/datetimepicker.css", "dist/css/cdoj.less.css"],
         dest: "dist/css/cdoj.css"
       }
     },

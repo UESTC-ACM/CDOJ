@@ -1,3 +1,7 @@
+# Angular!
+# Global angular module
+cdoj = angular.module("cdoj", [])
+
 OnlineJudgeReturnType =
   OJ_WAIT: 0
   OJ_AC: 1

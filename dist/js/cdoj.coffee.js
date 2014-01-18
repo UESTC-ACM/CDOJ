@@ -1,5 +1,7 @@
 (function() {
-  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initArticleList, initContestEditor, initContestList, initContestPage, initContestStatusList, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUI, initUser, initUserActivate, initUserList, jsonMerge, jsonPost, markdown, openInNewTab, render;
+  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, cdoj, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initArticleList, initContestList, initContestPage, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUI, initUser, initUserActivate, initUserList, jsonMerge, jsonPost, openInNewTab, render;
+
+  cdoj = angular.module("cdoj", []);
 
   OnlineJudgeReturnType = {
     OJ_WAIT: 0,
@@ -386,20 +388,6 @@
     if (!isSuccess) {
       return options.onFail();
     }
-  };
-
-  markdown = function(content) {
-    marked.setOptions({
-      renderer: new marked.Renderer(),
-      gfm: true,
-      tables: true,
-      breaks: false,
-      pedantic: false,
-      sanitize: true,
-      smartLists: true,
-      smartypants: false
-    });
-    return marked(content);
   };
 
   $ = jQuery;
@@ -930,172 +918,6 @@
     }
   };
 
-  initContestStatusList = function(contestId) {
-    var $statusList, statusList;
-    $statusList = $("#contest-status-list");
-    if ($statusList.length !== 0) {
-      return statusList = new ListModule({
-        listContainer: $statusList,
-        requestUrl: "/status/search",
-        autoRefresh: true,
-        refreshInterval: 5000,
-        condition: {
-          "currentPage": null,
-          "startId": void 0,
-          "endId": void 0,
-          "userName": void 0,
-          "problemId": void 0,
-          "languageId": void 0,
-          "contestId": contestId,
-          "result": [],
-          "orderFields": "statusId",
-          "orderAsc": "false"
-        },
-        formatter: function(data) {
-          var currentUser, getAlertClass, getCodeInfo, getContestHref, getCostInformation, getReturnType, getStatusImage;
-          getStatusImage = function(id) {
-            switch (id) {
-              case 0:
-              case 16:
-              case 18:
-                return "<i class='fa fa-spinner fa-spin'></i>";
-              case 1:
-                return "<i class='fa fa-check-circle'></i>";
-              case 2:
-                return "<i class='fa fa-circle'></i>";
-              case 3:
-              case 4:
-              case 6:
-              case 13:
-                return "<i class='fa fa-ban'></i>";
-              case 5:
-                return "<i class='fa fa-times-circle'></i>";
-              case 7:
-                return "<i class='fa fa-warning'></i>";
-              case 8:
-              case 9:
-              case 10:
-              case 11:
-              case 12:
-              case 15:
-                return "<i class='fa fa-bug'></i>";
-              case 14:
-                return "<i class='fa fa-frown-o'></i>";
-              case 17:
-                return "<i class='fa fa-gear fa-spin'></i>";
-              default:
-                return "";
-            }
-          };
-          getAlertClass = function(id) {
-            switch (id) {
-              case 0:
-              case 16:
-              case 17:
-              case 18:
-                return "status-info";
-              case 1:
-                return "status-success";
-              default:
-                return "status-danger";
-            }
-          };
-          getContestHref = function(contestId) {
-            return "<small class=\"pull-right\">\n  <a href=\"/contest/show/" + contestId + "\">Contest <i class=\"fa fa-trophy\"></i>" + contestId + "</a>,&nbsp;\n</small>";
-          };
-          getCostInformation = function(timeCost, memoryCost) {
-            return "<small>\n  " + timeCost + " ms, " + memoryCost + " kb\n</small>";
-          };
-          currentUser = getCurrentUser();
-          getReturnType = function(returnType, returnTypeId, statusId, userName) {
-            if (returnTypeId === 7) {
-              if (currentUser.userLogin && (currentUser.currentUserType === "1" || currentUser.currentUser === userName)) {
-                return "<a href=\"#\" value=\"" + statusId + "\" class=\"ce-link\">" + returnType + "</a>";
-              } else {
-                return returnType;
-              }
-            } else {
-              return returnType;
-            }
-          };
-          getCodeInfo = function(length, language, statusId, userName) {
-            if (currentUser.userLogin && (currentUser.currentUserType === "1" || currentUser.currentUser === userName)) {
-              return "<a href=\"#\" value=\"" + statusId + "\" class=\"code-link\">" + data.length + " B, " + data.language + "</a>";
-            } else {
-              return "" + data.length + " B, " + data.language;
-            }
-          };
-          return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-body\">\n      <div class=\"media\">\n        <div class=\"pull-left\">\n          <div class=\"status-sign " + (getAlertClass(data.returnTypeId)) + "\">\n            " + (getStatusImage(data.returnTypeId)) + "\n          </div>\n        </div>\n        <div class=\"media-body \">\n          <h4 class=\"media-heading\">\n            <span>" + (getReturnType(data.returnType, data.returnTypeId, data.statusId, data.userName)) + "</span>\n            " + (data.returnTypeId === 1 ? getCostInformation(data.timeCost, data.memoryCost) : "") + "\n            <small class=\"pull-right\">\n              #" + data.statusId + "\n            </small>\n            " + (data.contestId !== void 0 ? getContestHref(data.contestId) : "") + "\n            <small class=\"pull-right\">\n              <a href=\"/problem/show/" + data.problemId + "\">Prob <i class=\"fa fa-puzzle-piece\"></i>" + data.problemId + "</a>,&nbsp;\n            </small>\n          </h4>\n          <span><a href=\"/user/center/" + data.userName + "\"><i class=\"fa fa-user\"></i>" + data.userName + "</a></span>\n          <span class=\"pull-right label label-default\">" + (Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "</span>\n          <span class=\"pull-right label label-success\" style=\"margin-right: 8px\">" + (getCodeInfo(data.length, data.language, data.statusId, data.userName)) + "</span>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
-        },
-        after: function() {
-          var _this = this;
-          $(".ce-link").click(function(e) {
-            var $el, statusId;
-            $el = $(e.currentTarget);
-            statusId = $el.attr("value");
-            $.post("/status/info/" + statusId, function(data) {
-              var $modal, compileInfo;
-              compileInfo = "";
-              if (data.result === "success") {
-                compileInfo = data.compileInfo;
-              } else {
-                compileInfo = data.error_msg;
-              }
-              compileInfo = compileInfo.trim();
-              $modal = $("#compile-info-modal");
-              $modal.find(".modal-body").empty().append("<pre>" + compileInfo + "</pre>");
-              $modal.find(".modal-body").prettify();
-              return $modal.modal("toggle");
-            });
-            return false;
-          });
-          return $(".code-link").click(function(e) {
-            var $el, statusId;
-            $el = $(e.currentTarget);
-            statusId = $el.attr("value");
-            $.post("/status/info/" + statusId, function(data) {
-              var $modal, code;
-              code = "";
-              if (data.result === "success") {
-                code = data.code;
-              } else {
-                code = data.error_msg;
-              }
-              code = code.trim().escapeHTML();
-              console.log(code);
-              $modal = $("#code-modal");
-              $modal.find(".modal-body").empty().append("<pre>" + code + "</pre>");
-              $modal.find(".modal-body").prettify();
-              return $modal.modal("toggle");
-            });
-            return false;
-          });
-        }
-      });
-    }
-  };
-
-  initContestEditor = function() {
-    var $editor, action, editors, editorsId;
-    $editor = $("#contest-editor");
-    if ($editor.length > 0) {
-      action = $("#contest-editor-title").attr("value");
-      editorsId = ["description"];
-      editors = [];
-      editorsId.each(function(value, id) {
-        return editors.push({
-          id: value,
-          editor: $("#" + value).flandre({
-            picture: {
-              uploadUrl: "/picture/uploadPicture/contest/" + action
-            }
-          })
-        });
-      });
-      return $('.datepicker').datepicker();
-    }
-  };
-
   initContestList = function() {
     var $contestList, contestList;
     $contestList = $("#contest-list");
@@ -1155,6 +977,86 @@
       });
     }
   };
+
+  cdoj.controller('ContestEditorController', function($scope, $http) {
+    var updateProblemTitle;
+    $scope.contest = {
+      action: 0,
+      contestId: 0,
+      title: 0,
+      type: 0,
+      time: 0,
+      lengthHours: 0,
+      lengthDays: 0,
+      lengthMinutes: 0,
+      description: 0,
+      problemList: 0
+    };
+    $scope.problemList = [];
+    $scope.$watch("problemList", function(newVal) {
+      return $scope.contest.problemList = _.map(newVal, function(val) {
+        return val.problemId;
+      }).join(",");
+    });
+    updateProblemTitle = function(problem) {
+      if (problem.problemId === "") {
+        return problem.title = "Invalid problem id!";
+      } else {
+        return $http.get("/problem/query/" + problem.problemId + "/title").then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            if (data.list.length === 1) {
+              return problem.title = data.list[0];
+            } else {
+              return problem.title = "No such problem!";
+            }
+          } else {
+            return problem.title = data.error_msg;
+          }
+        });
+      }
+    };
+    $scope.addProblem = function() {
+      var lastId, problem, problemId;
+      problemId = "";
+      if ($scope.problemList.length > 0) {
+        lastId = parseInt($scope.problemList.last().problemId);
+        if (!isNaN(lastId)) {
+          problemId = lastId + 1;
+        }
+      }
+      problem = {
+        problemId: problemId,
+        title: ""
+      };
+      updateProblemTitle(problem);
+      return $scope.problemList.add(problem);
+    };
+    $scope.removeProblem = function(index) {
+      return $scope.problemList.splice(index, 1);
+    };
+    $scope.updateProblemTitle = function(problem) {
+      if (problem.problemId === void 0) {
+        return problem.title = "Invalid problem id!";
+      } else {
+        return updateProblemTitle(problem);
+      }
+    };
+    return $scope.submit = function() {
+      var contestEditDTO,
+        _this = this;
+      contestEditDTO = angular.copy($scope.contest);
+      contestEditDTO.time = Date.create(contestEditDTO.time).getTime();
+      return $http.post("/contest/edit", contestEditDTO).success(function(data) {
+        if (data.result === "success") {
+          return window.location.href = "/contest/show/" + data.contestId;
+        } else {
+          return alert(data.error_msg);
+        }
+      });
+    };
+  });
 
   initProblemDataEditor = function() {
     var $dataUploadButton, $editor, dataUploader, problemId,
@@ -1612,6 +1514,95 @@
     });
   };
 
+  cdoj.directive("uiDatetimepicker", function() {
+    return {
+      restrict: 'A',
+      link: function($scope, $element, $attrs) {
+        return $element.datetimepicker();
+      }
+    };
+  });
+
+  cdoj.directive("uiFlandre", function() {
+    return {
+      restrict: "A",
+      scope: {
+        content: "=ngModel",
+        uploadUrl: "@uploadUrl"
+      },
+      controller: function($scope, $element) {
+        var $editor, pictureUploader;
+        $scope.mode = "edit";
+        $scope.previewContent = "";
+        $editor = $element.find(".flandre-editor");
+        $editor.elastic();
+        $scope.togglePreview = function() {
+          if ($scope.mode === "edit") {
+            $scope.previewContent = $scope.content;
+            return $scope.mode = "preview";
+          } else {
+            return $scope.mode = "edit";
+          }
+        };
+        return pictureUploader = new qq.FineUploaderBasic({
+          button: $element.find(".flandre-picture-uploader")[0],
+          request: {
+            endpoint: $scope.uploadUrl,
+            inputName: "uploadFile"
+          },
+          validation: {
+            allowedExtensions: ["jpeg", "jpg", "gif", "png"],
+            sizeLimit: 10 * 1000 * 1000
+          },
+          multiple: false,
+          callbacks: {
+            onComplete: function(id, fileName, data) {
+              var oldText, position, value;
+              if (data.success === "true") {
+                value = "![title](" + data.uploadedFileUrl + ")";
+                position = $editor.getCursorPosition();
+                oldText = $editor.val();
+                oldText = oldText.insert(value, position);
+                $scope.$apply(function() {
+                  return $scope.content = oldText;
+                });
+                return $editor.setSelection(position + 2, position + 7);
+              } else {
+                return console.log(data);
+              }
+            }
+          }
+        });
+      },
+      template: "<div class=\"panel panel-default\">\n  <div class=\"panel-heading flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\"\n                ng-click=\"togglePreview()\"\n                ng-class=\"{active: mode == 'preview'}\">Preview</button>\n      </div>\n      <div class=\"btn-group flandre-tools\">\n        <span class=\"btn btn-default btn-sm\"><i class=\"fa fa-smile-o\"></i></span>\n        <span class=\"btn btn-default btn-sm flandre-picture-uploader\"><i class=\"fa fa-picture-o\"></i></span>\n      </div>\n    </div>\n  </div>\n  <textarea class=\"tex2jax_ignore form-control flandre-editor\"\n            ng-class=\"{'flandre-show': mode == 'edit'}\"\n            ng-model=\"content\"></textarea>\n  <div class=\"flandre-preview\" ng-class=\"{'flandre-show': mode == 'preview'}\">\n    <div ui-markdown content=\"previewContent\"></div>\n  </div>\n</div>",
+      replace: true
+    };
+  });
+
+  cdoj.directive("uiMarkdown", function() {
+    return {
+      restrict: "A",
+      scope: {
+        content: "=content"
+      },
+      link: function($scope, $element, $attrs) {
+        var refresh;
+        refresh = function() {
+          $element.prettify();
+          return $element.mathjax();
+        };
+        refresh();
+        if ($scope.content !== void 0) {
+          return $scope.$watch("content", function(newVal) {
+            newVal = marked(newVal);
+            $element.empty().append(newVal);
+            return refresh();
+          });
+        }
+      }
+    };
+  });
+
   initUserActivate = function() {
     var $cdojActivationForm,
       _this = this;
@@ -1830,7 +1821,6 @@
     initProblemDataEditor();
     initContestList();
     initContestPage();
-    initContestEditor();
     initArticleEditor();
     initArticleList();
     return render();

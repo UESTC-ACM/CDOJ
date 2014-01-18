@@ -64,6 +64,7 @@ $.fn.setSelection = (selectionStart, selectionEnd) ->
 # "abcd|efg"
 # after call with ("ABCD", -2)
 # "abcdAB|CDefg"
+# TODO(mzry1992) remove it after refactor markdown editor
 $.fn.insertAfterCursor = (value, moveSteps) ->
   if this.length == 0 then return this
   position = this.getCursorPosition()
