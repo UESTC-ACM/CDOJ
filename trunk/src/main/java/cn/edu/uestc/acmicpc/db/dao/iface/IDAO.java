@@ -190,6 +190,14 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   void updateEntitiesByField(Map<String, Object> properties, String field, String values);
 
   /**
+   * Delete all records according field value.
+   *
+   * @param field specific field name
+   * @param value records need to delete
+   */
+  void deleteEntitiesByField(String field, String value) throws AppException;
+
+  /**
    * Update all records according field value.
    *
    * @param propertyField field for setting

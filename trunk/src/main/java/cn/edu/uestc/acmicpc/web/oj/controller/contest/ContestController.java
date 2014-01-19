@@ -26,6 +26,8 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDetailDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDataShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
@@ -33,8 +35,10 @@ import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
+import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
@@ -52,17 +56,19 @@ public class ContestController extends BaseController {
   private LanguageService languageService;
   private ContestProblemService contestProblemService;
   private PictureService pictureService;
+  private ProblemService problemService;
 
   @Autowired
   public ContestController(DepartmentService departmentService, GlobalService globalService,
                            ContestService contestService, LanguageService languageService,
                            ContestProblemService contestProblemService,
-                           PictureService pictureService) {
+                           PictureService pictureService, ProblemService problemService) {
     super(departmentService, globalService);
     this.contestService = contestService;
     this.languageService = languageService;
     this.contestProblemService = contestProblemService;
     this.pictureService = pictureService;
+    this.problemService = problemService;
   }
 
   /**
@@ -81,12 +87,12 @@ public class ContestController extends BaseController {
       if (contestShowDTO == null) {
         throw new AppException("NO such contest");
       }
-      List<ContestProblemDTO> contestProblemList = contestProblemService.
-          getContestProblemDTOListByContestId(contestId);
-      Collections.sort(contestProblemList, new Comparator<ContestProblemDTO>() {
+      List<ContestProblemDetailDTO> contestProblemList = contestProblemService.
+          getContestProblemDetailDTOListByContestId(contestId);
+      Collections.sort(contestProblemList, new Comparator<ContestProblemDetailDTO>() {
 
         @Override
-        public int compare(ContestProblemDTO a, ContestProblemDTO b) {
+        public int compare(ContestProblemDetailDTO a, ContestProblemDetailDTO b) {
           return a.getOrder().compareTo(b.getOrder());
         }
       });
@@ -269,6 +275,30 @@ public class ContestController extends BaseController {
           if (contestDTO == null) {
             throw new AppException("No such contest.");
           }
+        }
+
+        // Remove old contest problems
+        contestProblemService.removeContestProblemByContestId(contestDTO.getContestId());
+        // Add new contest problems
+        String[] problemList = contestEditDTO.getProblemList().split(",");
+        for (int order = 0; order < problemList.length; order++) {
+          Integer problemId = Integer.parseInt(problemList[order]);
+          // Check problem exists.
+          ProblemDataShowDTO problemDataShowDTO = problemService.getProblemDataShowDTO(problemId);
+          AppExceptionUtil.assertNotNull(problemDataShowDTO);
+          AppExceptionUtil.assertNotNull(problemDataShowDTO.getProblemId());
+
+          Integer contestProblemId = contestProblemService.createNewContestProblem(
+              ContestProblemDTO.builder()
+                  .setContestId(contestDTO.getContestId())
+                  .setOrder(order)
+                  .setProblemId(problemId)
+                  .build());
+
+          // Check problem added success.
+          ContestProblemDTO contestProblemDTO = contestProblemService.getContestProblemDTO(contestProblemId);
+          AppExceptionUtil.assertNotNull(contestProblemDTO);
+          AppExceptionUtil.assertNotNull(contestProblemDTO.getContestProblemId());
         }
 
         contestDTO.setType(contestEditDTO.getType());

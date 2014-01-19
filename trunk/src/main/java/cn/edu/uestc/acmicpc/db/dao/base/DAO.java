@@ -261,7 +261,27 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     }
     stringBuilder.append(" ").append(condition.toHQLString());
     String hql = stringBuilder.toString();
-    getQuery(hql, null).executeUpdate();
+    try {
+      getQuery(hql, null).executeUpdate();
+    } catch (Exception e) {
+      throw new AppException("Error while execute database query.");
+    }
+  }
+
+  /** TODO(fish): need it test. */
+  @Override
+  public void deleteEntitiesByField(String field, String values) throws AppException {
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append("delete ").append(getReferenceClass().getSimpleName());
+    // TODO wrap the field by ``
+    stringBuilder.append(" where ").append(field).append(" in (")
+        .append(values).append(")");
+    String hql = stringBuilder.toString();
+    try {
+      getQuery(hql, null).executeUpdate();
+    } catch (Exception e) {
+      throw new AppException("Error while execute database query.");
+    }
   }
 
   /** TODO(fish): need it test. */
