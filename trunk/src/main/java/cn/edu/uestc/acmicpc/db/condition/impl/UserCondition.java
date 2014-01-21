@@ -50,9 +50,4 @@ public class UserCondition extends BaseCondition {
   @Exp(type = ConditionType.LIKE)
   public String school;
 
-  /**
-   * Hide some user with specific type from user list.
-   */
-  @Exp(mapField = "type", type = ConditionType.NOT_EQUALS)
-  public Integer typeExclude;
 }
