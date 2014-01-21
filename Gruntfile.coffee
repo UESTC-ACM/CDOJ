@@ -3,6 +3,10 @@ module.exports = (grunt) ->
   grunt.initConfig
     pkg: grunt.file.readJSON "package.json"
 
+    less:
+      compile:
+        files:
+          "dist/css/cdoj.less.css": "src/less/cdoj.less"
     coffee:
       compileAngularProject:
         options:
@@ -74,6 +78,13 @@ module.exports = (grunt) ->
           "src/js/fineuploader-4.0.3.min.js"
         ]
         dest: "dist/js/cdoj.dependencies.min.js"
+      concatCss:
+        src: [
+          "src/css/bootstrap.css"
+          "src/css/datetimepicker.css"
+          "dist/css/cdoj.less.css"
+        ]
+        dest: "dist/css/cdoj.css"
 
     min:
       minimizeAngularProject:
@@ -92,31 +103,56 @@ module.exports = (grunt) ->
         ]
         dest: "temp/dependencies/cdoj.dependencies.min.js"
 
+    cssmin:
+      minimizeCss:
+        src: "dist/css/cdoj.css"
+        dest: "dist/css/cdoj.min.css"
+
+    watch: {
+      files: [
+        "src/*/*.*"
+      ]
+      tasks: [
+        "first"
+      ]
+    }
+
   grunt.loadNpmTasks "grunt-contrib-watch"
   grunt.loadNpmTasks "grunt-contrib-less"
   grunt.loadNpmTasks "grunt-contrib-coffee"
   grunt.loadNpmTasks "grunt-contrib-concat"
   grunt.loadNpmTasks "grunt-yui-compressor"
 
-  grunt.registerTask "js",[
+  grunt.registerTask "first", [
     # Angular project
     "coffee:compileAngularProject"
-    "min:minimizeAngularProject"
-
     "concat:concatAngularJs"
-    "concat:concatMinimizeAngularJs"
 
     # Old files
     "coffee:compileOldProject"
-    "min:minimizeOldProject"
-
-    "concat:concatMinimizeOldJs"
     "concat:concatOldJs"
 
     # Dependencies files
     "concat:concatDependencies"
-    "min:minimizeDependencies"
-
     "concat:concatMinimizedDependencies1"
+
+    # Css
+    "less:compile"
+    "concat:concatCss"
+  ]
+  grunt.registerTask "second", [
+    "cssmin:minimizeCss"
+
+    "min:minimizeDependencies"
     "concat:concatMinimizedDependencies2"
+
+    "min:minimizeAngularProject"
+    "concat:concatMinimizeAngularJs"
+
+    "min:minimizeOldProject"
+    "concat:concatMinimizeOldJs"
+  ]
+  grunt.registerTask "default", [
+    "first",
+    "second"
   ]

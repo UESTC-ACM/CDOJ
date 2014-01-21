@@ -20647,7 +20647,7 @@ var styleDirective = valueFn({
   cdoj.directive("uiDatetimepicker", function() {
     return {
       restrict: 'A',
-      link: function($scope, $element, $attrs) {
+      link: function($scope, $element) {
         console.log($element);
         return $element.datetimepicker();
       }
