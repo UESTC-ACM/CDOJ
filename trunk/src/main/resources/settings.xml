@@ -23,6 +23,12 @@
       <item name="judge" description="judge item">
         <prop name="name" value="mzry1992" />
       </item>
+      <item name="judge" description="judge item">
+        <prop name="name" value="gongbaoa" />
+      </item>
+      <item name="judge" description="judge item">
+        <prop name="name" value="kennethsnow" />
+      </item>
     </list>
   </setting>
   <setting name="email">

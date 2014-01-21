@@ -41,7 +41,6 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
     statusCondition.result = Global.OnlineJudgeResultType.OJ_AC;
-    statusCondition.isAdmin = true;
     return (List<Integer>) statusDAO.findAll("problemByProblemId.problemId",
         statusCondition.getCondition());
   }
@@ -52,7 +51,6 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
       throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
-    statusCondition.isAdmin = true;
     return (List<Integer>) statusDAO.findAll("problemByProblemId.problemId",
         statusCondition.getCondition());
   }
@@ -61,7 +59,6 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   public Long countProblemsUserTired(Integer userId) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
-    statusCondition.isAdmin = true;
     return statusDAO.customCount("distinct problemId", statusCondition.getCondition());
   }
 
@@ -70,7 +67,6 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
     statusCondition.result = Global.OnlineJudgeResultType.OJ_AC;
-    statusCondition.isAdmin = true;
     return statusDAO.customCount("distinct problemId", statusCondition.getCondition());
   }
 
@@ -164,7 +160,6 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     statusCondition.result = OnlineJudgeResultType.OJ_WAIT;
     statusCondition.orderFields = "statusId";
     statusCondition.orderAsc = "true";
-    statusCondition.isAdmin = true;
     return statusDAO.findAll(StatusForJudgeDTO.class,
         StatusForJudgeDTO.builder(), statusCondition.getCondition());
   }

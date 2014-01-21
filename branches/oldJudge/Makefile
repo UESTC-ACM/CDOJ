@@ -21,5 +21,9 @@ clean:
 install:
 	sudo cp $(TARGET) ../../trunk/src/main/webapp/WEB-INF/work/fish/
 	sudo cp $(TARGET) ../../trunk/src/main/webapp/WEB-INF/work/mzry1992/
+	sudo cp $(TARGET) ../../trunk/src/main/webapp/WEB-INF/work/gongbaoa/
+	sudo cp $(TARGET) ../../trunk/src/main/webapp/WEB-INF/work/kennethsnow/
 	sudo chmod 4755 ../../trunk/src/main/webapp/WEB-INF/work/fish/pyloncore
 	sudo chmod 4755 ../../trunk/src/main/webapp/WEB-INF/work/mzry1992/pyloncore
+	sudo chmod 4755 ../../trunk/src/main/webapp/WEB-INF/work/gongbaoa/pyloncore
+	sudo chmod 4755 ../../trunk/src/main/webapp/WEB-INF/work/kennethsnow/pyloncore
