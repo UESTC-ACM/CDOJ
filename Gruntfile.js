@@ -30,10 +30,8 @@ module.exports = function(grunt) {
       }
     },
     concat: {
-      js: {
+      others: {
         src: [
-          "src/js/angular.min.js",
-          "src/js/fineuploader-4.0.3.min.js",
           "src/js/jquery-2.0.3.js",
           "src/js/sugar-full.development.js",
           "src/js/underscore.js",
@@ -42,31 +40,30 @@ module.exports = function(grunt) {
           "src/js/bootstrap.js",
           "src/js/md5.js",
           "src/js/jquery.elastic.source.js",
-          "src/js/bootstrap-datetimepicker.js",
+          "src/js/bootstrap-datetimepicker.js"
+        ],
+        dest: "dist/js/others.js"
+      },
+      minied: {
+        src: [
+          "src/js/angular.min.js",
+          "src/js/fineuploader-4.0.3.min.js"
+        ],
+        dest: "dist/js/minied.js"
+      },
+      js: {
+        src: [
+          "dist/js/others.js",
+          "dist/js/minied.js",
           "dist/js/cdoj.coffee.js"
         ],
         dest: "dist/js/cdoj.js"
       },
-      jsBeforeMin: {
+      jsMin: {
         src: [
-          "src/js/jquery-2.0.3.js",
-          "src/js/sugar-full.development.js",
-          "src/js/underscore.js",
-          "src/js/prettify.js",
-          "src/js/marked.js",
-          "src/js/bootstrap.js",
-          "src/js/md5.js",
-          "src/js/jquery.elastic.source.js",
-          "src/js/bootstrap-datetimepicker.js",
-          "dist/js/cdoj.coffee.js"
-        ],
-        dest: "dist/js/cdoj.min.before.js"
-      },
-      jsAfterMin: {
-        src: [
-          "src/js/angular.min.js",
-          "src/js/fineuploader-4.0.3.min.js",
-          "dist/js/cdoj.min.after.js"
+          "dist/js/others.min.js",
+          "dist/js/minied.js",
+          "dist/js/cdoj.coffee.min.js"
         ],
         dest: "dist/js/cdoj.min.js"
       },
@@ -76,9 +73,13 @@ module.exports = function(grunt) {
       }
     },
     min: {
+      others: {
+        src: "dist/js/others.js",
+        dest: "dist/js/others.min.js"
+      },
       js: {
-        src: "dist/js/cdoj.min.before.js",
-        dest: "dist/js/cdoj.min.after.js"
+        src: "dist/js/cdoj.coffee.js",
+        dest: "dist/js/cdoj.coffee.min.js"
       }
     },
     cssmin: {
@@ -92,7 +93,14 @@ module.exports = function(grunt) {
         "src/less/*.less",
         "src/coffee/*.coffee"
       ],
-      tasks: ["less", "coffee", "concat"]
+      tasks: [
+        "less:compile",
+        "concat:css",
+
+        "coffee",
+        "concat:others",
+        "concat:js"
+      ]
     }
   });
 
@@ -108,11 +116,13 @@ module.exports = function(grunt) {
     "cssmin",
 
     "coffee",
+    "concat:others",
+    "concat:minied",
     "concat:js",
 
-    "concat:jsBeforeMin",
-    "min",
-    "concat:jsAfterMin"
+    "min:others",
+    "min:js",
+    "concat:jsMin"
   ]);
 
 };
