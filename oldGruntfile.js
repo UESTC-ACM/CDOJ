@@ -15,9 +15,9 @@ module.exports = function(grunt) {
       options: {
         join: true
       },
-      compile: {
+      old: {
         files: {
-          "dist/js/cdoj.coffee.js": [
+          "dist/js/cdoj.coffee.old.js": [
             "src/coffee/cdoj.global.coffee",
             "src/coffee/cdoj.util.*.coffee",
             "src/coffee/cdoj.editor.coffee",
@@ -25,6 +25,14 @@ module.exports = function(grunt) {
             "src/coffee/cdoj.layout.coffee",
             "src/coffee/cdoj.*.coffee",
             "src/coffee/cdoj.coffee"
+          ]
+        }
+      },
+      angular: {
+        files: {
+          "dist/js/cdoj.coffee.angular.js": [
+            "src/angular/global.coffee",
+            "src/angular/*.coffee"
           ]
         }
       }
@@ -46,7 +54,7 @@ module.exports = function(grunt) {
       },
       minied: {
         src: [
-          "src/js/angular.min.js",
+          //"src/js/angular.min.js",
           "src/js/fineuploader-4.0.3.min.js"
         ],
         dest: "dist/js/minied.js"

@@ -1,7 +1,5 @@
 (function() {
-  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, cdoj, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initArticleList, initContestList, initContestPage, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUI, initUser, initUserActivate, initUserList, jsonMerge, jsonPost, openInNewTab, render;
-
-  cdoj = angular.module("cdoj", []);
+  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initArticleList, initContestList, initContestPage, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUI, initUser, initUserActivate, initUserList, jsonMerge, jsonPost, openInNewTab, render;
 
   OnlineJudgeReturnType = {
     OJ_WAIT: 0,
@@ -978,86 +976,6 @@
     }
   };
 
-  cdoj.controller('ContestEditorController', function($scope, $http) {
-    var updateProblemTitle;
-    $scope.contest = {
-      action: 0,
-      contestId: 0,
-      title: 0,
-      type: 0,
-      time: 0,
-      lengthHours: 0,
-      lengthDays: 0,
-      lengthMinutes: 0,
-      description: 0,
-      problemList: 0
-    };
-    $scope.problemList = [];
-    $scope.$watch("problemList", function(newVal) {
-      return $scope.contest.problemList = _.map(newVal, function(val) {
-        return val.problemId;
-      }).join(",");
-    });
-    updateProblemTitle = function(problem) {
-      if (problem.problemId === "") {
-        return problem.title = "Invalid problem id!";
-      } else {
-        return $http.get("/problem/query/" + problem.problemId + "/title").then(function(response) {
-          var data;
-          data = response.data;
-          if (data.result === "success") {
-            if (data.list.length === 1) {
-              return problem.title = data.list[0];
-            } else {
-              return problem.title = "No such problem!";
-            }
-          } else {
-            return problem.title = data.error_msg;
-          }
-        });
-      }
-    };
-    $scope.addProblem = function() {
-      var lastId, problem, problemId;
-      problemId = "";
-      if ($scope.problemList.length > 0) {
-        lastId = parseInt($scope.problemList.last().problemId);
-        if (!isNaN(lastId)) {
-          problemId = lastId + 1;
-        }
-      }
-      problem = {
-        problemId: problemId,
-        title: ""
-      };
-      updateProblemTitle(problem);
-      return $scope.problemList.add(problem);
-    };
-    $scope.removeProblem = function(index) {
-      return $scope.problemList.splice(index, 1);
-    };
-    $scope.updateProblemTitle = function(problem) {
-      if (problem.problemId === void 0) {
-        return problem.title = "Invalid problem id!";
-      } else {
-        return updateProblemTitle(problem);
-      }
-    };
-    return $scope.submit = function() {
-      var contestEditDTO,
-        _this = this;
-      contestEditDTO = angular.copy($scope.contest);
-      contestEditDTO.time = Date.create(contestEditDTO.time).getTime();
-      return $http.post("/contest/edit", contestEditDTO).success(function(data) {
-        if (data.result === "success") {
-          return window.location.href = "/contest/show/" + data.contestId;
-        } else {
-          return alert(data.error_msg);
-        }
-      });
-    };
-  });
-
   initProblemDataEditor = function() {
     var $dataUploadButton, $editor, dataUploader, problemId,
       _this = this;
@@ -1513,95 +1431,6 @@
       });
     });
   };
-
-  cdoj.directive("uiDatetimepicker", function() {
-    return {
-      restrict: 'A',
-      link: function($scope, $element, $attrs) {
-        return $element.datetimepicker();
-      }
-    };
-  });
-
-  cdoj.directive("uiFlandre", function() {
-    return {
-      restrict: "A",
-      scope: {
-        content: "=ngModel",
-        uploadUrl: "@uploadUrl"
-      },
-      controller: function($scope, $element) {
-        var $editor, pictureUploader;
-        $scope.mode = "edit";
-        $scope.previewContent = "";
-        $editor = $element.find(".flandre-editor");
-        $editor.elastic();
-        $scope.togglePreview = function() {
-          if ($scope.mode === "edit") {
-            $scope.previewContent = $scope.content;
-            return $scope.mode = "preview";
-          } else {
-            return $scope.mode = "edit";
-          }
-        };
-        return pictureUploader = new qq.FineUploaderBasic({
-          button: $element.find(".flandre-picture-uploader")[0],
-          request: {
-            endpoint: $scope.uploadUrl,
-            inputName: "uploadFile"
-          },
-          validation: {
-            allowedExtensions: ["jpeg", "jpg", "gif", "png"],
-            sizeLimit: 10 * 1000 * 1000
-          },
-          multiple: false,
-          callbacks: {
-            onComplete: function(id, fileName, data) {
-              var oldText, position, value;
-              if (data.success === "true") {
-                value = "![title](" + data.uploadedFileUrl + ")";
-                position = $editor.getCursorPosition();
-                oldText = $editor.val();
-                oldText = oldText.insert(value, position);
-                $scope.$apply(function() {
-                  return $scope.content = oldText;
-                });
-                return $editor.setSelection(position + 2, position + 7);
-              } else {
-                return console.log(data);
-              }
-            }
-          }
-        });
-      },
-      template: "<div class=\"panel panel-default\">\n  <div class=\"panel-heading flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\"\n                ng-click=\"togglePreview()\"\n                ng-class=\"{active: mode == 'preview'}\">Preview</button>\n      </div>\n      <div class=\"btn-group flandre-tools\">\n        <span class=\"btn btn-default btn-sm\"><i class=\"fa fa-smile-o\"></i></span>\n        <span class=\"btn btn-default btn-sm flandre-picture-uploader\"><i class=\"fa fa-picture-o\"></i></span>\n      </div>\n    </div>\n  </div>\n  <textarea class=\"tex2jax_ignore form-control flandre-editor\"\n            ng-class=\"{'flandre-show': mode == 'edit'}\"\n            ng-model=\"content\"></textarea>\n  <div class=\"flandre-preview\" ng-class=\"{'flandre-show': mode == 'preview'}\">\n    <div ui-markdown content=\"previewContent\"></div>\n  </div>\n</div>",
-      replace: true
-    };
-  });
-
-  cdoj.directive("uiMarkdown", function() {
-    return {
-      restrict: "A",
-      scope: {
-        content: "=content"
-      },
-      link: function($scope, $element, $attrs) {
-        var refresh;
-        refresh = function() {
-          $element.prettify();
-          return $element.mathjax();
-        };
-        refresh();
-        if ($scope.content !== void 0) {
-          return $scope.$watch("content", function(newVal) {
-            newVal = marked(newVal);
-            $element.empty().append(newVal);
-            return refresh();
-          });
-        }
-      }
-    };
-  });
 
   initUserActivate = function() {
     var $cdojActivationForm,

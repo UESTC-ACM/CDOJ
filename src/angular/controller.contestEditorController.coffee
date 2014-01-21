@@ -1,5 +1,6 @@
 # Angular!
-cdoj.controller('ContestEditorController',
+cdoj.controller('ContestEditorController', [
+  "$scope", "$http",
   ($scope, $http) ->
     $scope.contest =
       action : 0
@@ -20,7 +21,7 @@ cdoj.controller('ContestEditorController',
       ).join(",")
     )
 
-    updateProblemTitle = (problem) ->
+    $scope.updateProblemTitle = (problem) ->
       if problem.problemId == ""
         problem.title = "Invalid problem id!"
       else
@@ -46,7 +47,7 @@ cdoj.controller('ContestEditorController',
       problem =
         problemId: problemId
         title: ""
-      updateProblemTitle(problem)
+      $scope.updateProblemTitle(problem)
       $scope.problemList.add(problem)
 
     $scope.removeProblem = (index) ->
@@ -56,7 +57,7 @@ cdoj.controller('ContestEditorController',
       if problem.problemId == undefined
         problem.title = "Invalid problem id!"
       else
-        updateProblemTitle(problem)
+        $scope.updateProblemTitle(problem)
 
     $scope.submit = ->
       contestEditDTO = angular.copy($scope.contest)
@@ -67,4 +68,4 @@ cdoj.controller('ContestEditorController',
         else
           # TODO
           alert data.error_msg
-)
+])
