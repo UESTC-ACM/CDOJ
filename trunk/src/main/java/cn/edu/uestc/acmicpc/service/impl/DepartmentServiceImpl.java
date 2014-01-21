@@ -40,7 +40,7 @@ public class DepartmentServiceImpl extends AbstractService implements Department
 
   @Override
   public String getDepartmentName(Integer departmentId) {
-    for (DepartmentDTO department: departmentDTOList)
+    for (DepartmentDTO department : departmentDTOList)
       if (department.getDepartmentId().equals(departmentId))
         return department.getName();
     return null;

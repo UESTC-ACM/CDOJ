@@ -18,7 +18,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Test cases for training entity.
  */
-@ContextConfiguration(classes = { IntegrationTestContext.class })
+@ContextConfiguration(classes = {IntegrationTestContext.class})
 public class TrainingEntityITTest extends AbstractTestNGSpringContextTests {
 
   @Test(enabled = false)

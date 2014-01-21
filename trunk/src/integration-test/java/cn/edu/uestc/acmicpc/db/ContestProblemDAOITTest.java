@@ -13,8 +13,10 @@ import cn.edu.uestc.acmicpc.db.dao.impl.ContestProblemDAO;
 import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
-/** Test case for {@link ContestProblemDAO}. */
-@ContextConfiguration(classes = { IntegrationTestContext.class })
+/**
+ * Test case for {@link ContestProblemDAO}.
+ */
+@ContextConfiguration(classes = {IntegrationTestContext.class})
 public class ContestProblemDAOITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired

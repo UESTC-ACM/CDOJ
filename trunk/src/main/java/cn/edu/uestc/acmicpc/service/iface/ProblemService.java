@@ -49,18 +49,18 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
    * Get the problems fit in condition and page range.
    *
    * @param condition {@link ProblemCondition} entity.
-   * @param pageInfo {@link PageInfo} entity.
+   * @param pageInfo  {@link PageInfo} entity.
    * @return List of {@link ProblemListDTO} entities.
    * @throws AppException
    */
   public List<ProblemListDTO> getProblemListDTOList(ProblemCondition condition,
-      PageInfo pageInfo) throws AppException;
+                                                    PageInfo pageInfo) throws AppException;
 
   /**
    * Modify one field of multiply entities as value.
    *
    * @param field filed need to modified.
-   * @param ids entities' ID split by <code>,</code>.
+   * @param ids   entities' ID split by <code>,</code>.
    * @param value new value.
    * @throws AppException
    */
@@ -70,7 +70,7 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
    * Query one field of multiply entities.
    *
    * @param field filed need to modified.
-   * @param ids entities' ID split by <code>,</code>.
+   * @param ids   entities' ID split by <code>,</code>.
    * @return List of queried field.
    * @throws AppException
    */
@@ -87,8 +87,7 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
   /**
    * Updates problem record by {@link ProblemDTO} entity.
    *
-   * @param problemDTO
-   *          {@link ProblemDTO} entity.
+   * @param problemDTO {@link ProblemDTO} entity.
    * @throws AppException
    */
   public void updateProblem(ProblemDTO problemDTO) throws AppException;
@@ -96,10 +95,8 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
   /**
    * Updates a problem record according to dirty fields and its id.
    *
-   * @param properties
-   *          problem property fields.
-   * @param problemId
-   *          problem's id.
+   * @param properties problem property fields.
+   * @param problemId  problem's id.
    * @throws AppException
    */
   public void updateProblemByProblemId(Map<String, Object> properties, Integer problemId)
@@ -108,8 +105,7 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
   /**
    * Get {@link ProblemShowDTO} entity by problem id.
    *
-   * @param problemId
-   *          problem's id.
+   * @param problemId problem's id.
    * @return {@link ProblemShowDTO} entity.
    * @throws AppException
    */
@@ -119,8 +115,7 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
   /**
    * Get {@link ProblemEditorShowDTO} entity by problem id.
    *
-   * @param problemId
-   *          problem's id.
+   * @param problemId problem's id.
    * @return {@link ProblemEditorShowDTO} entity.
    * @throws AppException
    */
@@ -130,8 +125,7 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
   /**
    * Get {@link ProblemDataShowDTO} entity by problem id.
    *
-   * @param problemId
-   *          problem's id.
+   * @param problemId problem's id.
    * @return {@link ProblemDataShowDTO} entity.
    * @throws AppException
    */

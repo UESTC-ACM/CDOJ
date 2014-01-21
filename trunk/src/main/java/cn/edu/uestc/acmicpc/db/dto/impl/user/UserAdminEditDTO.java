@@ -132,8 +132,8 @@ public class UserAdminEditDTO {
   }
 
   private UserAdminEditDTO(Integer userId, String userName, String nickName, String email, String school,
-                      String motto, Integer departmentId, String studentId, String newPassword,
-                      String newPasswordRepeat, Integer type) {
+                           String motto, Integer departmentId, String studentId, String newPassword,
+                           String newPasswordRepeat, Integer type) {
     this.userId = userId;
     this.userName = userName;
     this.nickName = nickName;

@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import cn.edu.uestc.acmicpc.judge.JudgeService;
 
-/** Integration test context configurations. */
+/**
+ * Integration test context configurations.
+ */
 @Configuration
 @ComponentScan(basePackages = {
     "cn.edu.uestc.acmicpc.db",

@@ -82,7 +82,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public List<UserListDTO> getUserListDTOList(UserCondition userCondition,
-      PageInfo pageInfo)
+                                              PageInfo pageInfo)
       throws AppException {
     Condition condition = userCondition.getCondition();
     condition.setPageInfo(pageInfo);

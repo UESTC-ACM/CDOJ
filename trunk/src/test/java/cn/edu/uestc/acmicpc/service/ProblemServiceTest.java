@@ -41,9 +41,11 @@ import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
-/** Test cases for {@link ProblemService}. */
+/**
+ * Test cases for {@link ProblemService}.
+ */
 @WebAppConfiguration
-@ContextConfiguration(classes = { TestContext.class })
+@ContextConfiguration(classes = {TestContext.class})
 public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
 
   @Autowired

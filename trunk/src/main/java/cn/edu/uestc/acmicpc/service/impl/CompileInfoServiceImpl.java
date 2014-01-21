@@ -23,7 +23,7 @@ public class CompileInfoServiceImpl extends AbstractService implements CompileIn
 
   @Override
   public String getCompileInfo(Integer compileInfoId) throws AppException {
-    return (String)compileInfoDAO.getEntityByUniqueField("compileInfoId", compileInfoId,
+    return (String) compileInfoDAO.getEntityByUniqueField("compileInfoId", compileInfoId,
         "content", true);
   }
 

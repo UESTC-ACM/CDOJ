@@ -13,7 +13,7 @@ public class BeanUtil {
   /**
    * Get specific bean by bean name and servletContext.
    *
-   * @param beanName bean's name
+   * @param beanName       bean's name
    * @param servletContext servlet application
    * @return specific bean
    */

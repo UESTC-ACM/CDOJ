@@ -13,10 +13,10 @@ import cn.edu.uestc.acmicpc.util.settings.Global;
  * DTO for status entity.
  * <br/>
  * <code>@Fields({ "statusId", "result", "memoryCost", "timeCost", "length", "time", "caseNumber", "codeId",
- *  "compileInfoId", "contestId", "languageId", "problemId", "userId" })</code>
+ * "compileInfoId", "contestId", "languageId", "problemId", "userId" })</code>
  */
-@Fields({ "statusId", "result", "memoryCost", "timeCost", "length", "time", "caseNumber", "codeId",
-    "compileInfoId", "contestId", "languageId", "problemId", "userId" })
+@Fields({"statusId", "result", "memoryCost", "timeCost", "length", "time", "caseNumber", "codeId",
+    "compileInfoId", "contestId", "languageId", "problemId", "userId"})
 public class StatusDTO implements BaseDTO<Status> {
 
   public StatusDTO() {

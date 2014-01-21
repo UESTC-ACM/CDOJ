@@ -16,9 +16,9 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * "difficulty"})</code>
  */
 @Fields({"problemId", "title", "description", "input", "output", "sampleInput",
-  "sampleOutput", "hint", "source", "timeLimit", "memoryLimit", "solved", "tried",
-  "isSpj", "isVisible", "outputLimit", "javaTimeLimit", "javaMemoryLimit", "dataCount",
-  "difficulty"})
+    "sampleOutput", "hint", "source", "timeLimit", "memoryLimit", "solved", "tried",
+    "isSpj", "isVisible", "outputLimit", "javaTimeLimit", "javaMemoryLimit", "dataCount",
+    "difficulty"})
 public class ProblemDTO implements BaseDTO<Problem> {
 
   private Integer problemId;
@@ -46,10 +46,10 @@ public class ProblemDTO implements BaseDTO<Problem> {
   }
 
   private ProblemDTO(Integer problemId, String title, String description, String input,
-      String output, String sampleInput, String sampleOutput, String hint, String source,
-      Integer timeLimit, Integer memoryLimit, Integer solved, Integer tried,Boolean isSpj,
-      Boolean isVisible, Integer outputLimit, Integer javaTimeLimit, Integer javaMemoryLimit,
-      Integer dataCount, Integer difficulty) {
+                     String output, String sampleInput, String sampleOutput, String hint, String source,
+                     Integer timeLimit, Integer memoryLimit, Integer solved, Integer tried, Boolean isSpj,
+                     Boolean isVisible, Integer outputLimit, Integer javaTimeLimit, Integer javaMemoryLimit,
+                     Integer dataCount, Integer difficulty) {
     this.problemId = problemId;
     this.title = title;
     this.description = description;
@@ -237,8 +237,10 @@ public class ProblemDTO implements BaseDTO<Problem> {
     return new Builder();
   }
 
-  /** Builder for {@link ProblemDTO}. */
-  public static class Builder implements BaseBuilder<ProblemDTO>{
+  /**
+   * Builder for {@link ProblemDTO}.
+   */
+  public static class Builder implements BaseBuilder<ProblemDTO> {
 
     private Builder() {
     }
@@ -272,7 +274,7 @@ public class ProblemDTO implements BaseDTO<Problem> {
     }
 
     @Override
-    public ProblemDTO build(Map<String, Object> properties){
+    public ProblemDTO build(Map<String, Object> properties) {
       problemId = (Integer) properties.get("problemId");
       title = (String) properties.get("title");
       description = (String) properties.get("description");

@@ -11,7 +11,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Test cases for DTO entities.
  */
-@ContextConfiguration(classes = { IntegrationTestContext.class })
+@ContextConfiguration(classes = {IntegrationTestContext.class})
 public class DTOITTest extends AbstractTestNGSpringContextTests {
 
   @Test

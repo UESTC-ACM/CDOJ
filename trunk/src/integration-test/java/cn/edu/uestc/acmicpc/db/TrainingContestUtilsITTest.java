@@ -21,11 +21,11 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Test cases for {@link TrainingContest}
- *
+ * <p/>
  * TODO(fish): remove ignore tags.
  */
 
-@ContextConfiguration(classes = { IntegrationTestContext.class })
+@ContextConfiguration(classes = {IntegrationTestContext.class})
 public class TrainingContestUtilsITTest extends AbstractTestNGSpringContextTests {
 
   @Test(enabled = false)

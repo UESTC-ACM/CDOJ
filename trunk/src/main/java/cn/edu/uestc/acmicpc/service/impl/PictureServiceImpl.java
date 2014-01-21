@@ -63,7 +63,7 @@ public class PictureServiceImpl extends AbstractService implements PictureServic
 
   @Override
   public FileInformationDTO uploadPictures(FileUploadDTO fileUploadDTO,
-      Integer userId) throws AppException {
+                                           Integer userId) throws AppException {
     String folder = settings.SETTING_USER_PICTURE_FOLDER + userId + "/";
     String path = settings.SETTING_USER_PICTURE_FOLDER_ABSOLUTE + userId + "/";
     List<MultipartFile> files = fileUploadDTO.getFiles();
@@ -92,7 +92,7 @@ public class PictureServiceImpl extends AbstractService implements PictureServic
 
   @Override
   public FileInformationDTO uploadPicture(FileUploadDTO fileUploadDTO,
-      String directory) throws AppException {
+                                          String directory) throws AppException {
     String folder = settings.SETTING_PICTURE_FOLDER + directory;
     String path = settings.SETTING_PICTURE_FOLDER_ABSOLUTE + directory;
     List<MultipartFile> files = fileUploadDTO.getFiles();
@@ -121,7 +121,7 @@ public class PictureServiceImpl extends AbstractService implements PictureServic
 
   @Override
   public String modifyPictureLocation(String content, String oldDirectory,
-      String newDirectory) throws AppException {
+                                      String newDirectory) throws AppException {
     String imagePatternString = "!\\[.*\\]\\(" + oldDirectory + "(\\S*)\\)";
     Pattern imagePattern = Pattern.compile(imagePatternString);
     Matcher matcher = imagePattern.matcher(content);
@@ -148,7 +148,7 @@ public class PictureServiceImpl extends AbstractService implements PictureServic
       }
     }
     String imageReplacePatternString = "!\\[.*\\]\\(" + newDirectory + "$1\\)";
-    content = content.replaceAll(imagePatternString,   imageReplacePatternString);
+    content = content.replaceAll(imagePatternString, imageReplacePatternString);
     return content;
   }
 

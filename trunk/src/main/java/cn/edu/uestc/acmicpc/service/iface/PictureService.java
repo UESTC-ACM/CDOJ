@@ -14,8 +14,7 @@ public interface PictureService {
   /**
    * Gets a user's all pictures.
    *
-   * @param userId
-   *          user id.
+   * @param userId user id.
    * @return picture's file name.
    * @throws AppException
    */
@@ -25,42 +24,36 @@ public interface PictureService {
   /**
    * Upload pictures.
    *
-   * @param fileUploadDTO
-   *          file upload DTO to for file uploading.
-   * @param userId
-   *          user id.
+   * @param fileUploadDTO file upload DTO to for file uploading.
+   * @param userId        user id.
    * @return a DTO containing file information the user uploaded.
    * @throws AppException
    */
   @Deprecated
   public FileInformationDTO uploadPictures(FileUploadDTO fileUploadDTO,
-      Integer userId) throws AppException;
+                                           Integer userId) throws AppException;
 
   /**
    * Upload picture into target directory.
    *
    * @param fileUploadDTO {@link FileUploadDTO} entity.
-   * @param directory
-   *          Directory, like "/problem/1/"
+   * @param directory     Directory, like "/problem/1/"
    * @return {@link FileInformationDTO} entity.
    * @throws AppException
    */
   public FileInformationDTO uploadPicture(FileUploadDTO fileUploadDTO,
-      String directory) throws AppException;
+                                          String directory) throws AppException;
 
   /**
    * When we add new problem/article, we upload images into /{category}/new/,
    * but after we save it we should move images into right place.
    *
-   * @param content
-   *          old article content
-   * @param oldDirectory
-   *          old directory, match the prefix
-   * @param newDirectory
-   *          new directory
+   * @param content      old article content
+   * @param oldDirectory old directory, match the prefix
+   * @param newDirectory new directory
    * @return modified content
    * @throws AppException
    */
   public String modifyPictureLocation(String content,
-      String oldDirectory, String newDirectory) throws AppException;
+                                      String oldDirectory, String newDirectory) throws AppException;
 }

@@ -53,7 +53,7 @@ public class ArticleController extends BaseController {
   @RequestMapping("show/{articleId}")
   @LoginPermit(NeedLogin = false)
   public String show(@PathVariable("articleId") Integer articleId,
-      HttpSession session, ModelMap model) {
+                     HttpSession session, ModelMap model) {
     try {
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
       ArticleDTO articleDTO = articleService.getArticleDTO(articleId);
@@ -76,9 +76,10 @@ public class ArticleController extends BaseController {
 
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> search(HttpSession session,
-      @RequestBody ArticleCondition articleCondition) {
+                             @RequestBody ArticleCondition articleCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
@@ -114,7 +115,7 @@ public class ArticleController extends BaseController {
   @RequestMapping("editor/{articleId}")
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public String editor(@PathVariable("articleId") String sArticleId,
-      ModelMap model) {
+                       ModelMap model) {
     try {
       if (sArticleId.compareTo("new") == 0) {
         model.put("action", "new");
@@ -141,10 +142,11 @@ public class ArticleController extends BaseController {
 
   @RequestMapping("edit")
   @LoginPermit(Global.AuthenticationType.ADMIN)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> edit(@RequestBody @Valid ArticleEditDTO articleEditDTO,
-      BindingResult validateResult,
-      HttpSession session) {
+                           BindingResult validateResult,
+                           HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
@@ -193,10 +195,11 @@ public class ArticleController extends BaseController {
 
   @RequestMapping("operator/{id}/{field}/{value}")
   @LoginPermit(Global.AuthenticationType.ADMIN)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> operator(@PathVariable("id") String targetId,
-      @PathVariable("field") String field,
-      @PathVariable("value") String value) {
+                               @PathVariable("field") String field,
+                               @PathVariable("value") String value) {
     Map<String, Object> json = new HashMap<>();
     try {
       articleService.operator(field, targetId, value);

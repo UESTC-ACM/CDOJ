@@ -12,7 +12,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * <br/>
  * <code>@Fields({ "departmentId", "name" })</code>
  */
-@Fields({ "departmentId", "name" })
+@Fields({"departmentId", "name"})
 public class DepartmentDTO implements BaseDTO<Department> {
 
   public DepartmentDTO() {

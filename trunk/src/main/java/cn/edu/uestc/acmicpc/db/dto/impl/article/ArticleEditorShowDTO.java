@@ -12,7 +12,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * <br/>
  * <code>@Fields({ "articleId", "title", "content"})</code>
  */
-@Fields({ "articleId", "title", "content"})
+@Fields({"articleId", "title", "content"})
 public class ArticleEditorShowDTO implements BaseDTO<Article> {
 
   public ArticleEditorShowDTO() {

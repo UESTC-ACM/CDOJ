@@ -12,7 +12,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * <br/>
  * <code>@Fields({ "languageId", "name", "extension", "param" })</code>
  */
-@Fields({ "languageId", "name", "extension", "param" })
+@Fields({"languageId", "name", "extension", "param"})
 public class LanguageDTO implements BaseDTO<Language> {
 
   public LanguageDTO() {

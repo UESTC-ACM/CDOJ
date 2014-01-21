@@ -18,16 +18,16 @@
     <item name="tempPath" description="work path name">/WEB-INF/work/</item>
     <list name="judges" description="judge list">
       <item name="judge" description="judge item">
-        <prop name="name" value="fish" />
+        <prop name="name" value="fish"/>
       </item>
       <item name="judge" description="judge item">
-        <prop name="name" value="mzry1992" />
+        <prop name="name" value="mzry1992"/>
       </item>
       <item name="judge" description="judge item">
-        <prop name="name" value="gongbaoa" />
+        <prop name="name" value="gongbaoa"/>
       </item>
       <item name="judge" description="judge item">
-        <prop name="name" value="kennethsnow" />
+        <prop name="name" value="kennethsnow"/>
       </item>
     </list>
   </setting>

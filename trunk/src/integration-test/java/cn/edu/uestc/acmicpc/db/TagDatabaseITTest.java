@@ -16,13 +16,13 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Test cases for {@link Tag}.
  */
-@ContextConfiguration(classes = { IntegrationTestContext.class })
+@ContextConfiguration(classes = {IntegrationTestContext.class})
 public class TagDatabaseITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired
   private ITagDAO tagDAO;
 
-  @SuppressWarnings({ "unchecked", "deprecation" })
+  @SuppressWarnings({"unchecked", "deprecation"})
   @Test
   public void testQuery_fetchAllTags() throws AppException {
     List<Tag> tags = (List<Tag>) tagDAO.findAll();

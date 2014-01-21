@@ -31,10 +31,8 @@ import cn.edu.uestc.acmicpc.web.dto.PageInfo;
  * <strong>WARN</strong>: This class is only a abstract class, please create
  * subclass by overriding {@code getReference} method.
  *
- * @param <Entity>
- *          Entity's type
- * @param <PK>
- *          Primary key's type
+ * @param <Entity> Entity's type
+ * @param <PK>     Primary key's type
  */
 @Repository
 public abstract class DAO<Entity extends Serializable, PK extends Serializable>
@@ -65,8 +63,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   /**
    * Build HQL with class name.
    *
-   * @param condition
-   *          DB condition entity.
+   * @param condition DB condition entity.
    * @return HQL with class name.
    */
   private String buildHQLString(Condition condition) {
@@ -77,8 +74,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   /**
    * Build HQL with class name, and the condition's order is considered..
    *
-   * @param condition
-   *          DB condition entity.
+   * @param condition DB condition entity.
    * @return HQL with class name.
    */
   private String buildHQLStringWithOrders(Condition condition) {
@@ -214,8 +210,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
 
   @Override
   public Object getEntityByUniqueField(String fieldName, Object value,
-      String propertyName,
-      boolean forceUnique) throws AppException {
+                                       String propertyName,
+                                       boolean forceUnique) throws AppException {
     Condition condition = new Condition();
     condition.addEntry(fieldName, ConditionType.EQUALS, value);
     List<?> results = findAll(propertyName, condition);
@@ -242,7 +238,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
 
   @Override
   public void updateEntitiesByCondition(Map<String, Object> properties,
-      Condition condition)
+                                        Condition condition)
       throws AppException {
     if (properties.isEmpty()) {
       return;
@@ -268,7 +264,9 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     }
   }
 
-  /** TODO(fish): need it test. */
+  /**
+   * TODO(fish): need it test.
+   */
   @Override
   public void deleteEntitiesByField(String field, String values) throws AppException {
     StringBuilder stringBuilder = new StringBuilder();
@@ -284,10 +282,12 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     }
   }
 
-  /** TODO(fish): need it test. */
+  /**
+   * TODO(fish): need it test.
+   */
   @Override
   public void updateEntitiesByField(Map<String, Object> properties,
-      String field, String values) {
+                                    String field, String values) {
     if (properties.isEmpty()) {
       return;
     }
@@ -305,7 +305,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
       if (value instanceof String) {
         value = ((String) value).replaceAll("'", "''");
         stringBuilder.append(" ").append(key).append("='")
-        .append(value).append("'");
+            .append(value).append("'");
       } else {
         stringBuilder.append(" ").append(key).append("=")
             .append(value);
@@ -320,7 +320,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
 
   @Override
   public void updateEntitiesByField(String propertyField, Object propertyValue,
-      String field, String values) {
+                                    String field, String values) {
     Map<String, Object> properties = new HashMap<>();
     properties.put(propertyField, propertyValue);
     updateEntitiesByField(properties, field, values);
@@ -368,15 +368,15 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
 
   @Override
   public <T extends BaseDTO<Entity>> List<T> findAll(Class<T> clazz,
-      BaseBuilder<T> builder,
-      Condition condition) throws AppException {
+                                                     BaseBuilder<T> builder,
+                                                     Condition condition) throws AppException {
     List<T> list = new ArrayList<>();
     AppExceptionUtil.assertTrue(clazz.isAnnotationPresent(Fields.class));
     String[] fields = clazz.getAnnotation(Fields.class).value();
     // TODO wrap the field by ``
     String queryField = ArrayUtil.join(fields, ",");
     List<?> result = findAll(queryField, condition);
-    for (Iterator<?> iterator = result.iterator(); iterator.hasNext();) {
+    for (Iterator<?> iterator = result.iterator(); iterator.hasNext(); ) {
       Object[] entity = (Object[]) iterator.next();
       Map<String, Object> properties = new HashMap<>();
       for (int i = 0; i < fields.length; i++) {
@@ -389,8 +389,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
 
   @Override
   public <T extends BaseDTO<Entity>> T getDTOByUniqueField(Class<T> clazz,
-      BaseBuilder<T> builder,
-      String field, Object value) throws AppException {
+                                                           BaseBuilder<T> builder,
+                                                           String field, Object value) throws AppException {
     Condition condition = new Condition();
     if (value instanceof String) {
       condition.addEntry(field, ConditionType.STRING_EQUALS, value);
@@ -409,7 +409,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
 
   @Override
   public void increment(String incrementField,
-      String field, String values) throws AppException {
+                        String field, String values) throws AppException {
     StringBuilder stringBuilder = new StringBuilder();
     // TODO wrap the field by ``
     stringBuilder.append("update ").append(getReferenceClass().getSimpleName())

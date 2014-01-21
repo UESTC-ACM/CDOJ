@@ -34,9 +34,11 @@ import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
-/** Test cases for {@link UserService}. */
+/**
+ * Test cases for {@link UserService}.
+ */
 @WebAppConfiguration
-@ContextConfiguration(classes = { TestContext.class })
+@ContextConfiguration(classes = {TestContext.class})
 public class UserServiceTest extends AbstractTestNGSpringContextTests {
 
   @Autowired

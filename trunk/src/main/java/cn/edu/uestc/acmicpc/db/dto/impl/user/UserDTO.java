@@ -12,23 +12,23 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
 /**
  * DTO for user entity. <br/>
  * <code>@Fields({ "userId", "userName", "studentId", "password", "school", "nickName", "email", "solved",
- *  "tried", "type", "motto", "lastLogin", "departmentId", "departmentByDepartmentId.name" })</code>
+ * "tried", "type", "motto", "lastLogin", "departmentId", "departmentByDepartmentId.name" })</code>
  */
-@Fields({ "userId", "userName", "studentId", "password", "school", "nickName",
+@Fields({"userId", "userName", "studentId", "password", "school", "nickName",
     "email", "solved",
     "tried", "type", "motto", "lastLogin", "departmentId",
-    "departmentByDepartmentId.name" })
+    "departmentByDepartmentId.name"})
 public class UserDTO implements BaseDTO<User> {
 
   public UserDTO() {
   }
 
   private UserDTO(Integer userId, String userName, String studentId,
-      String password,
-      String school, String nickName, String email, Integer solved,
-      Integer tried,
-      Integer type, String motto, Timestamp lastLogin, Integer departmentId,
-      String departmentName) {
+                  String password,
+                  String school, String nickName, String email, Integer solved,
+                  Integer tried,
+                  Integer type, String motto, Timestamp lastLogin, Integer departmentId,
+                  String departmentName) {
     this.userId = userId;
     this.userName = userName;
     this.studentId = studentId;

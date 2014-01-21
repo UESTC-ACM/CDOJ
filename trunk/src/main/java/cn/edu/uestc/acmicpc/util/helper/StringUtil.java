@@ -21,11 +21,12 @@ public class StringUtil {
   public static String trimAllSpace(String str) {
     return str == null ? str : str.replaceAll("^[\\s　]*|[\\s　]*$", "");
   }
+
   /**
    * get Setter or Getter name, return {@code null} if exception occurred.
    *
    * @param methodType method type for getter or setter
-   * @param name field name
+   * @param name       field name
    * @return method name
    */
   public static String getGetterOrSetter(MethodType methodType, String name) {
@@ -68,7 +69,7 @@ public class StringUtil {
    * <p/>
    * <strong>EXAMPLE</strong> repeat("hello#", 2) it means "hello#hello#"
    *
-   * @param s the basic string we should deal with
+   * @param s     the basic string we should deal with
    * @param count the time that we want to repeat
    * @return the result string we need to get
    */
@@ -164,7 +165,7 @@ public class StringUtil {
    * Check whether the file can match types list
    *
    * @param fileName file name
-   * @param types type list splitting with ';'
+   * @param types    type list splitting with ';'
    * @return if this file can be upload, return {@code true}
    */
   public static boolean containTypes(String fileName, String types) {
@@ -176,15 +177,15 @@ public class StringUtil {
   /**
    * Compare two string, skipping all white spaces.
    *
-   * @param first first string to be compared
+   * @param first  first string to be compared
    * @param second second string to be compared
    * @return if first string is smaller second string, return {@code -1}, if first string is larger
-   *         than second string, return {@code 1}, otherwise return {@code 0}.
+   * than second string, return {@code 1}, otherwise return {@code 0}.
    */
   public static int compareSkipSpaces(String first, String second) {
     char[] firstCharArray = first.toCharArray();
     char[] secondCharArray = second.toCharArray();
-    for (int i = 0, j = 0;;) {
+    for (int i = 0, j = 0; ; ) {
       if (i < firstCharArray.length && CharUtil.isWhiteSpace(firstCharArray[i])) {
         ++i;
       } else if (j < secondCharArray.length && CharUtil.isWhiteSpace(secondCharArray[j])) {
@@ -211,7 +212,7 @@ public class StringUtil {
   /**
    * Get status information description by case number.
    *
-   * @param type status type
+   * @param type        status type
    * @param currentCase current case number
    * @return target description
    */

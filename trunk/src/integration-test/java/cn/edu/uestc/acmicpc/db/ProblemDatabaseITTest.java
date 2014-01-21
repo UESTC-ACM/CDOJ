@@ -21,7 +21,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Test cases for {@link Problem}.
  */
-@ContextConfiguration(classes = { IntegrationTestContext.class })
+@ContextConfiguration(classes = {IntegrationTestContext.class})
 public class ProblemDatabaseITTest extends AbstractTestNGSpringContextTests {
 
   // TODO(fish): use problem service to query.
@@ -63,7 +63,7 @@ public class ProblemDatabaseITTest extends AbstractTestNGSpringContextTests {
     Assert.assertEquals(problemDAO.count(condition.getCondition()), Long.valueOf(2));
   }
 
-  @SuppressWarnings({ "unchecked", "deprecation" })
+  @SuppressWarnings({"unchecked", "deprecation"})
   @Test
   public void testProblemCondition_emptyTitle() throws AppException {
     Condition condition = new Condition();

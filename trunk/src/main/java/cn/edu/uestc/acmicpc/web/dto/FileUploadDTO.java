@@ -29,7 +29,8 @@ public class FileUploadDTO {
 
   public static class Builder {
 
-    public Builder(){}
+    public Builder() {
+    }
 
     public FileUploadDTO build() {
       return new FileUploadDTO(files);

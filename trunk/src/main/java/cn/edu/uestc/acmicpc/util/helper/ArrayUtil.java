@@ -9,7 +9,7 @@ public class ArrayUtil {
    * Join all objects into a string, splitting with {@code flag}.
    *
    * @param objects object array
-   * @param flag splitting flag
+   * @param flag    splitting flag
    * @return expected string
    */
   public static String join(Object[] objects, String flag) {
@@ -26,7 +26,7 @@ public class ArrayUtil {
    * Joins all strings into a string, splitting with {@code flag}.
    *
    * @param objects string array
-   * @param flag splitting flag
+   * @param flag    splitting flag
    * @return expected string
    */
   public static String join(String[] objects, String flag) {
@@ -37,12 +37,12 @@ public class ArrayUtil {
    * Transform any array into {@code Object} array.
    *
    * @param array array parameter
-   * @param <T> element type
+   * @param <T>   element type
    * @return expected array
    */
   public static <T> Object[] toArray(T[] array) {
     if (array == null || array.length < 1)
-      return new Object[] {};
+      return new Object[]{};
     Object[] result = new Object[array.length];
     System.arraycopy(array, 0, result, 0, result.length);
     return result;

@@ -73,6 +73,7 @@ public class StatusCondition extends BaseCondition {
 
   /**
    * Result.
+   *
    * @see OnlineJudgeResultType
    */
   public OnlineJudgeResultType result;
@@ -99,8 +100,8 @@ public class StatusCondition extends BaseCondition {
     }
 
     if (result != null && result != Global.OnlineJudgeResultType.OJ_ALL) {
-        Condition typeCondition = new Condition(JoinedType.OR);
-        switch (result) {
+      Condition typeCondition = new Condition(JoinedType.OR);
+      switch (result) {
         case OJ_WAIT:
           typeCondition.addEntry("result", ConditionType.EQUALS, 0);
           typeCondition.addEntry("result", ConditionType.EQUALS, 18);
@@ -142,8 +143,8 @@ public class StatusCondition extends BaseCondition {
           break;
         default:
           break;
-        }
-        condition.addEntry(typeCondition);
+      }
+      condition.addEntry(typeCondition);
     }
     return condition;
   }

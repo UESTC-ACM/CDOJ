@@ -144,10 +144,9 @@ public class Settings implements ApplicationContextAware {
 
   /**
    * initialize configuration mappings from configuration file.
-   * 
+   *
    * @throws cn.edu.uestc.acmicpc.util.exception.AppException
    * @throws IOException
-   * 
    */
   @SuppressWarnings("unchecked")
   @PostConstruct
@@ -210,9 +209,8 @@ public class Settings implements ApplicationContextAware {
 
   /**
    * parse item's information
-   * 
-   * @param node
-   *          item node
+   *
+   * @param node item node
    * @return item map
    * @throws AppException
    */
@@ -229,9 +227,8 @@ public class Settings implements ApplicationContextAware {
 
   /**
    * Get configuration value from <strong>settings.xml</strong>.
-   * 
-   * @param path
-   *          setting path
+   *
+   * @param path setting path
    * @return item value
    */
   private Object getConfig(String... path) {

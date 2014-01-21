@@ -43,6 +43,7 @@ public class ContestCondition extends BaseCondition {
 
   /**
    * Contest type.
+   *
    * @see ContestType
    */
   @Exp(type = Condition.ConditionType.EQUALS)

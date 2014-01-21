@@ -186,7 +186,7 @@ public class User implements Serializable {
   private String motto;
 
   @Column(name = "motto", nullable = false, insertable = true, updatable = true, length = 255,
-  precision = 0)
+      precision = 0)
   @Basic
   public String getMotto() {
     return motto;

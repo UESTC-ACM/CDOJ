@@ -11,10 +11,10 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * DTO used in problem data editor.
  * <br/>
  * <code>@Fields({ "problemId", "timeLimit", "memoryLimit", "outputLimit", "isSpj", "javaTimeLimit",
- *  "javaMemoryLimit", "dataCount" })</code>
+ * "javaMemoryLimit", "dataCount" })</code>
  */
-@Fields({ "problemId", "timeLimit", "memoryLimit", "outputLimit", "isSpj", "javaTimeLimit",
-    "javaMemoryLimit", "dataCount" })
+@Fields({"problemId", "timeLimit", "memoryLimit", "outputLimit", "isSpj", "javaTimeLimit",
+    "javaMemoryLimit", "dataCount"})
 public class ProblemDataShowDTO implements BaseDTO<Problem> {
 
   public ProblemDataShowDTO() {

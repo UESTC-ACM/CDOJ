@@ -91,7 +91,7 @@ public interface UserService extends DatabaseService<User, Integer> {
    * Get the users fit in condition and page range.
    *
    * @param condition {@link UserCondition} entity.
-   * @param pageInfo {@link PageInfo} entity.
+   * @param pageInfo  {@link PageInfo} entity.
    * @return List of {@link UserListDTO} entities.
    * @throws AppException
    */
@@ -102,7 +102,7 @@ public interface UserService extends DatabaseService<User, Integer> {
    * Update some fields of one user according the user id.
    *
    * @param properties field name and field value map.
-   * @param userId user's id.
+   * @param userId     user's id.
    * @throws AppException
    */
   public void updateUserByUserId(Map<String, Object> properties, Integer userId) throws AppException;

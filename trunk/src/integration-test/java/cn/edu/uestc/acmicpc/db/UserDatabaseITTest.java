@@ -17,13 +17,13 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Test cases for {@link User}.
  */
-@ContextConfiguration(classes = { IntegrationTestContext.class })
+@ContextConfiguration(classes = {IntegrationTestContext.class})
 public class UserDatabaseITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired
   private IUserDAO userDAO;
 
-  @SuppressWarnings({ "unchecked", "deprecation" })
+  @SuppressWarnings({"unchecked", "deprecation"})
   @Test
   public void testQuery_byName() throws AppException {
     UserCondition condition = new UserCondition();
@@ -36,7 +36,7 @@ public class UserDatabaseITTest extends AbstractTestNGSpringContextTests {
     Assert.assertEquals(users.get(1).getUserId(), Integer.valueOf(2));
   }
 
-  @SuppressWarnings({ "unchecked", "deprecation" })
+  @SuppressWarnings({"unchecked", "deprecation"})
   @Test
   public void testQuery_byDepartmentId() throws AppException {
     UserCondition condition = new UserCondition();

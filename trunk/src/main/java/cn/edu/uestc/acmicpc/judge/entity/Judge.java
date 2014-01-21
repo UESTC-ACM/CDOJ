@@ -86,16 +86,13 @@ public class Judge implements Runnable {
   /**
    * Build judge's core shell command line
    *
-   * @param problemId
-   *          problem's id
-   * @param currentTestCase
-   *          current test case number
-   * @param judgeItem
-   *          {@code judgeItem} entity
+   * @param problemId       problem's id
+   * @param currentTestCase current test case number
+   * @param judgeItem       {@code judgeItem} entity
    * @return command line we need
    */
   private String buildJudgeShellCommand(int problemId, int currentTestCase,
-      JudgeItem judgeItem) {
+                                        JudgeItem judgeItem) {
     StringBuilder stringBuilder = new StringBuilder();
 
     stringBuilder.append(workPath);
@@ -150,8 +147,7 @@ public class Judge implements Runnable {
   /**
    * Get process' call back string with shell command.
    *
-   * @param shellCommand
-   *          shell command line
+   * @param shellCommand shell command line
    * @return command's call back string
    */
   private String[] getCallBackString(String shellCommand) {
@@ -173,8 +169,7 @@ public class Judge implements Runnable {
   /**
    * Judge judgeItem by judge core.
    *
-   * @param judgeItem
-   *          judge item to be judged
+   * @param judgeItem judge item to be judged
    */
   void judge(JudgeItem judgeItem) {
     try {

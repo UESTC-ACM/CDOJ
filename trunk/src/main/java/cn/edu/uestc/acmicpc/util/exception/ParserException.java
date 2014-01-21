@@ -19,9 +19,8 @@ public class ParserException extends Exception implements Serializable {
 
   /**
    * Creates a new {@link ParserException} with its detail message.
-   * 
-   * @param message
-   *          message for error.
+   *
+   * @param message message for error.
    */
   public ParserException(String message) {
     super(message);

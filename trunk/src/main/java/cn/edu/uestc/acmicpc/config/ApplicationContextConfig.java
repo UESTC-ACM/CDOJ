@@ -104,7 +104,7 @@ public class ApplicationContextConfig {
 
     localSessionFactoryBean.setDataSource(this.dataSource());
     localSessionFactoryBean.setHibernateProperties(this.getHibernateProperties());
-    localSessionFactoryBean.setAnnotatedClasses(new Class<?>[] {
+    localSessionFactoryBean.setAnnotatedClasses(new Class<?>[]{
         Article.class,
         Code.class,
         CompileInfo.class,
@@ -166,8 +166,7 @@ public class ApplicationContextConfig {
   /**
    * Simply get property in PropertySource
    *
-   * @param name
-   *          property name
+   * @param name property name
    * @return property value
    */
   private String getProperty(final String name) {

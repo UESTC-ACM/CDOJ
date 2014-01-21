@@ -16,7 +16,7 @@ import com.jolbox.bonecp.BoneCPDataSource;
 /**
  * Test cases for AOP framework
  */
-@ContextConfiguration(classes = { IntegrationTestContext.class })
+@ContextConfiguration(classes = {IntegrationTestContext.class})
 public class AOPITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired

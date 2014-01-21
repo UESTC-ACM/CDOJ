@@ -44,7 +44,7 @@ public class LanguageServiceImpl extends AbstractService implements LanguageServ
   }
 
   private LanguageDTO getLanguage(Integer languageId) {
-    for (LanguageDTO languageDTO: languageDTOList)
+    for (LanguageDTO languageDTO : languageDTOList)
       if (languageDTO.getLanguageId().equals(languageId))
         return languageDTO;
     return null;

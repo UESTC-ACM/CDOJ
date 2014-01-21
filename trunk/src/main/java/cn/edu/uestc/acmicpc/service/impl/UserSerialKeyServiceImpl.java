@@ -46,7 +46,7 @@ public class UserSerialKeyServiceImpl extends AbstractService implements UserSer
     if (userSerialKeyDTO != null) {
       //less than 30 minutes
       if (new Date().getTime() - userSerialKeyDTO.getTime().getTime() <= 1800000) {
-        throw new AppException( "serial key can only be generated in every 30 minutes.");
+        throw new AppException("serial key can only be generated in every 30 minutes.");
       }
       userSerialKeyDTO.setSerialKey(serialKey);
       userSerialKeyDTO.setTime(new Timestamp(new Date().getTime()));

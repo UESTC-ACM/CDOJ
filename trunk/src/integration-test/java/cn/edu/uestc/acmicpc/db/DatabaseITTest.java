@@ -28,7 +28,7 @@ import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 /**
  * Simple database test class.
  */
-@ContextConfiguration(classes = { IntegrationTestContext.class })
+@ContextConfiguration(classes = {IntegrationTestContext.class})
 public class DatabaseITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired

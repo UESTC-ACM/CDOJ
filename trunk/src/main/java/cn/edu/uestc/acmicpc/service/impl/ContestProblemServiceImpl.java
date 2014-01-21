@@ -18,7 +18,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
 @Service
 @Primary
-public class ContestProblemServiceImpl extends AbstractService implements ContestProblemService{
+public class ContestProblemServiceImpl extends AbstractService implements ContestProblemService {
 
   private final IContestProblemDAO contestProblemDAO;
 
@@ -78,7 +78,7 @@ public class ContestProblemServiceImpl extends AbstractService implements Contes
 
   @Override
   public Boolean checkContestProblemInContest(Integer contestProblemId,
-      Integer contestId) throws AppException {
+                                              Integer contestId) throws AppException {
     ContestProblemCondition contestCondition = new ContestProblemCondition();
     contestCondition.contestId = contestId;
     contestCondition.problemId = contestProblemId;

@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
  */
 public class ReflectionUtil {
 
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @SuppressWarnings({"unchecked", "rawtypes"})
   public static Method getMethodByAnnotation(Class<?> clazz, Class annotation) {
     Method[] methods = clazz.getMethods();
     for (Method method : methods) {
@@ -20,7 +20,7 @@ public class ReflectionUtil {
   /**
    * Convert a string value to specific type.
    *
-   * @param value string value
+   * @param value      string value
    * @param targetType target type class
    * @return target value
    */

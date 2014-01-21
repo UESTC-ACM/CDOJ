@@ -78,7 +78,7 @@ public class ProblemTag implements Serializable {
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "problemId", referencedColumnName = "problemId", nullable = false,
-    insertable = false, updatable = false)
+      insertable = false, updatable = false)
   public Problem getProblemByProblemId() {
     return problemByProblemId;
   }
@@ -91,7 +91,7 @@ public class ProblemTag implements Serializable {
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "tagId", referencedColumnName = "tagId", nullable = false,
-    insertable = false, updatable = false)
+      insertable = false, updatable = false)
   public Tag getTagByTagId() {
     return tagByTagId;
   }

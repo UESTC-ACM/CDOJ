@@ -12,15 +12,17 @@ import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 /**
  * Conditions setting for {@link IDAO#findAll(Condition)},
  * {@link IDAO#findAll(String, Condition)} and {@link IDAO#count(Condition)}.
- * <p />
+ * <p/>
  * <strong>For Developers</strong>:
- * <p />
+ * <p/>
  * If this condition is stored as {@link Entry#getValue()}, we ignore the order
  * of it.
  */
 public class Condition {
 
-  /** Entries' joined type for DB query. */
+  /**
+   * Entries' joined type for DB query.
+   */
   public static enum JoinedType {
     AND("and"), OR("or");
 
@@ -112,8 +114,7 @@ public class Condition {
     /**
      * Creates an {@link Entry} entity according to {@link Condition} entity.
      *
-     * @param condition
-     *          DB query condition.
+     * @param condition DB query condition.
      * @return an {@link Entry} entity for DB query.
      * @throws AppException
      * @see Condition
@@ -126,13 +127,10 @@ public class Condition {
     /**
      * Creates an {@link Entry} entity according to query string.
      *
-     * @param fieldName
-     *          field name of DB table.
-     * @param conditionType
-     *          condition type for DB query, see {@link ConditionType} for more
-     *          details.
-     * @param value
-     *          field value as expected.
+     * @param fieldName     field name of DB table.
+     * @param conditionType condition type for DB query, see {@link ConditionType} for more
+     *                      details.
+     * @param value         field value as expected.
      * @return an {@link Entry} entity for DB query.
      * @throws AppException
      * @see ConditionType
@@ -190,7 +188,9 @@ public class Condition {
     return entries;
   }
 
-  /** DB query joined type. */
+  /**
+   * DB query joined type.
+   */
   private final JoinedType joinedType;
 
   /**
@@ -208,8 +208,7 @@ public class Condition {
   /**
    * Create a DB query condition object with specific {@link JoinedType}.
    *
-   * @param joinedType
-   *          DB joined type for query.
+   * @param joinedType DB joined type for query.
    * @see JoinedType
    */
   public Condition(JoinedType joinedType) {
@@ -219,10 +218,8 @@ public class Condition {
   /**
    * Adds new order field into the order list.
    *
-   * @param field
-   *          new order field name
-   * @param asc
-   *          whether new order field asc or not
+   * @param field new order field name
+   * @param asc   whether new order field asc or not
    * @return condition itself.
    * @throws AppException
    */

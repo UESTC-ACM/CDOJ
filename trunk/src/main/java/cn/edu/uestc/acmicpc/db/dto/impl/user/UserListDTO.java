@@ -14,8 +14,8 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * <code>@Fields({ "userId", "email", "userName", "nickName", "type", "school", "motto", "lastLogin", "solved",
  * "tried" })</code>
  */
-@Fields({ "userId", "email", "userName", "nickName", "type", "school", "motto", "lastLogin", "solved",
-  "tried" })
+@Fields({"userId", "email", "userName", "nickName", "type", "school", "motto", "lastLogin", "solved",
+    "tried"})
 public class UserListDTO implements BaseDTO<User> {
 
   private Integer userId;
@@ -33,7 +33,7 @@ public class UserListDTO implements BaseDTO<User> {
   }
 
   private UserListDTO(Integer userId, String email, String userName, String nickName,
-      Integer type, String school, String motto, Timestamp lastLogin, Integer solved, Integer tried) {
+                      Integer type, String school, String motto, Timestamp lastLogin, Integer solved, Integer tried) {
     this.userId = userId;
     this.email = email;
     this.userName = userName;

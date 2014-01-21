@@ -2,38 +2,38 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Unit test suite">
   <test name="Service tests" parallel="classes" thread-count="2"
-    time-out="60000">
+        time-out="60000">
     <classes>
-      <class name="cn.edu.uestc.acmicpc.service.UserServiceTest" />
-      <class name="cn.edu.uestc.acmicpc.service.ProblemServiceTest" />
+      <class name="cn.edu.uestc.acmicpc.service.UserServiceTest"/>
+      <class name="cn.edu.uestc.acmicpc.service.ProblemServiceTest"/>
     </classes>
   </test>
   <test name="Condition tests" parallel="classes" thread-count="2"
-    time-out="60000">
+        time-out="60000">
     <classes>
-      <class name="cn.edu.uestc.acmicpc.db.condition.base.ConditionTest" />
+      <class name="cn.edu.uestc.acmicpc.db.condition.base.ConditionTest"/>
     </classes>
   </test>
   <test name="Utility classes tests" parallel="classes"
-    thread-count="2" time-out="60000">
+        thread-count="2" time-out="60000">
     <classes>
-      <class name="cn.edu.uestc.acmicpc.util.ArrayUtilTest" />
-      <class name="cn.edu.uestc.acmicpc.util.CompareSkipSpacesTest" />
-      <class name="cn.edu.uestc.acmicpc.util.checker.ZipDataCheckerTest" />
+      <class name="cn.edu.uestc.acmicpc.util.ArrayUtilTest"/>
+      <class name="cn.edu.uestc.acmicpc.util.CompareSkipSpacesTest"/>
+      <class name="cn.edu.uestc.acmicpc.util.checker.ZipDataCheckerTest"/>
     </classes>
   </test>
   <test name="Web unit tests" parallel="classes" thread-count="2"
-    time-out="60000">
+        time-out="60000">
     <classes>
       <class
-        name="cn.edu.uestc.acmicpc.web.oj.controller.IndexControllerTest" />
-      <class name="cn.edu.uestc.acmicpc.web.oj.controller.UserControllerTest" />
+          name="cn.edu.uestc.acmicpc.web.oj.controller.IndexControllerTest"/>
+      <class name="cn.edu.uestc.acmicpc.web.oj.controller.UserControllerTest"/>
       <class
-        name="cn.edu.uestc.acmicpc.web.oj.controller.ProblemControllerTest" />
+          name="cn.edu.uestc.acmicpc.web.oj.controller.ProblemControllerTest"/>
     </classes>
   </test>
 
   <listeners>
-    <listener class-name="cn.edu.uestc.acmicpc.config.TestListener" />
+    <listener class-name="cn.edu.uestc.acmicpc.config.TestListener"/>
   </listeners>
 </suite>

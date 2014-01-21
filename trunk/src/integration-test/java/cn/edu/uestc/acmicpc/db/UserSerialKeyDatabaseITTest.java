@@ -17,7 +17,7 @@ import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 /**
  * Test cases for {@link UserSerialKey}.
  */
-@ContextConfiguration(classes = { IntegrationTestContext.class })
+@ContextConfiguration(classes = {IntegrationTestContext.class})
 public class UserSerialKeyDatabaseITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired

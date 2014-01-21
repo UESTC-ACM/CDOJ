@@ -21,7 +21,7 @@ public interface CompileInfoService extends DatabaseService<CompileInfo, Integer
    * Update compile info.
    *
    * @param compileInfoId compile info's id.
-   * @param content new content.
+   * @param content       new content.
    * @throws AppException
    */
   public void updateCompileInfoContent(Integer compileInfoId, String content) throws AppException;

@@ -11,12 +11,12 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * DTO used in problem page.
  * <br/>
  * <code>@Fields({ "problemId", "title", "isSpj", "timeLimit", "javaTimeLimit", "memoryLimit",
- *  "javaMemoryLimit", "solved", "tried", "description", "input", "output", "sampleInput",
- *  "sampleOutput", "hint", "source" })</code>
+ * "javaMemoryLimit", "solved", "tried", "description", "input", "output", "sampleInput",
+ * "sampleOutput", "hint", "source" })</code>
  */
-@Fields({ "problemId", "title", "isSpj", "timeLimit", "javaTimeLimit", "memoryLimit",
+@Fields({"problemId", "title", "isSpj", "timeLimit", "javaTimeLimit", "memoryLimit",
     "javaMemoryLimit", "solved", "tried", "description", "input", "output", "sampleInput",
-    "sampleOutput", "hint", "source" })
+    "sampleOutput", "hint", "source"})
 public class ProblemShowDTO implements BaseDTO<Problem> {
 
   public ProblemShowDTO() {

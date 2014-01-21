@@ -45,7 +45,7 @@ public interface ArticleService extends DatabaseService<Article, Integer> {
    * Get the articles fit in condition and page range.
    *
    * @param condition {@link ArticleCondition} entity.
-   * @param pageInfo {@link PageInfo} entity.
+   * @param pageInfo  {@link PageInfo} entity.
    * @return List of {@link ArticleListDTO} entities.
    * @throws AppException
    */
@@ -56,7 +56,7 @@ public interface ArticleService extends DatabaseService<Article, Integer> {
    * Modify one filed of multiply entities as value.
    *
    * @param field filed need to modified.
-   * @param ids entities' ID split by <code>,</code>.
+   * @param ids   entities' ID split by <code>,</code>.
    * @param value new value.
    * @throws AppException
    */

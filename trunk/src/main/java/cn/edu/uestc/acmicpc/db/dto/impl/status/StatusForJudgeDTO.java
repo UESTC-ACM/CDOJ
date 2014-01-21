@@ -11,32 +11,32 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * DTO used in judge service.
  * <br/>
  * <code>@Fields({ "statusId", "result", "caseNumber", "codeByCodeId.content",
- *  "problemId", "problemByProblemId.dataCount",
- *  "problemByProblemId.javaMemoryLimit", "problemByProblemId.javaTimeLimit",
- *  "problemByProblemId.memoryLimit", "problemByProblemId.timeLimit",
- *  "problemByProblemId.outputLimit", "problemByProblemId.isSpj", "languageId",
- *  "languageByLanguageId.extension", "languageByLanguageId.name",
- *  "memoryCost", "timeCost", "compileInfoId", "userId" })</code>
+ * "problemId", "problemByProblemId.dataCount",
+ * "problemByProblemId.javaMemoryLimit", "problemByProblemId.javaTimeLimit",
+ * "problemByProblemId.memoryLimit", "problemByProblemId.timeLimit",
+ * "problemByProblemId.outputLimit", "problemByProblemId.isSpj", "languageId",
+ * "languageByLanguageId.extension", "languageByLanguageId.name",
+ * "memoryCost", "timeCost", "compileInfoId", "userId" })</code>
  */
-@Fields({ "statusId", "result", "caseNumber", "codeByCodeId.content",
+@Fields({"statusId", "result", "caseNumber", "codeByCodeId.content",
     "problemId", "problemByProblemId.dataCount",
     "problemByProblemId.javaMemoryLimit", "problemByProblemId.javaTimeLimit",
     "problemByProblemId.memoryLimit", "problemByProblemId.timeLimit",
     "problemByProblemId.outputLimit", "problemByProblemId.isSpj", "languageId",
     "languageByLanguageId.extension", "languageByLanguageId.name",
-    "memoryCost", "timeCost", "compileInfoId", "userId" })
+    "memoryCost", "timeCost", "compileInfoId", "userId"})
 public class StatusForJudgeDTO implements BaseDTO<Status> {
 
   public StatusForJudgeDTO() {
   }
 
   private StatusForJudgeDTO(Integer statusId, Integer result,
-      Integer caseNumber, String codeContent,
-      Integer problemId, Integer dataCount, Integer javaMemoryLimit,
-      Integer javaTimeLimit, Integer memoryLimit, Integer timeLimit,
-      Integer outputLimit, Boolean isSpj, Integer languageId,
-      String languageExtension, String languageName, Integer memoryCost,
-      Integer timeCost, Integer compileInfoId, Integer userId) {
+                            Integer caseNumber, String codeContent,
+                            Integer problemId, Integer dataCount, Integer javaMemoryLimit,
+                            Integer javaTimeLimit, Integer memoryLimit, Integer timeLimit,
+                            Integer outputLimit, Boolean isSpj, Integer languageId,
+                            String languageExtension, String languageName, Integer memoryCost,
+                            Integer timeCost, Integer compileInfoId, Integer userId) {
     this.statusId = statusId;
     this.result = result;
     this.caseNumber = caseNumber;

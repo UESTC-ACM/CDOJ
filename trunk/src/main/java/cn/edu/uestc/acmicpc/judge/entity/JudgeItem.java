@@ -72,8 +72,7 @@ public class JudgeItem {
   /**
    * Update database for item.
    *
-   * @param updateStatus
-   *          if set {@code true}, update status' information.
+   * @param updateStatus if set {@code true}, update status' information.
    */
   public void update(boolean updateStatus) {
     try {
