@@ -121,9 +121,6 @@ public class StatusController extends BaseController {
       if(currentUser == null ||
           currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
         statusCondition.isVisible = true;
-        statusCondition.isAdmin = false;
-      } else {
-        statusCondition.isAdmin = true;
       }
       Long count = statusService.count(statusCondition);
       Long recordPerPage = Global.RECORD_PER_PAGE;
@@ -170,9 +167,6 @@ public class StatusController extends BaseController {
       if(currentUser == null ||
           currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
         statusCondition.isVisible = true;
-        statusCondition.isAdmin = false;
-      } else {
-        statusCondition.isAdmin = true;
       }
       Long count = statusService.count(statusCondition);
 
@@ -200,9 +194,6 @@ public class StatusController extends BaseController {
       if(currentUser == null ||
           currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
         statusCondition.isVisible = true;
-        statusCondition.isAdmin = false;
-      } else {
-        statusCondition.isAdmin = true;
       }
       statusService.rejudge(statusCondition);
 
