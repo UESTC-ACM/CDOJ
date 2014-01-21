@@ -12,21 +12,21 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * DTO used in status list.
  * <br/>
  * <code>@Fields({ "statusId", "userByUserId.userName", "problemId", "contestId",
- *  "result", "length",
- *  "languageByLanguageId.name", "timeCost", "memoryCost", "time", "caseNumber" })</code>
+ * "result", "length",
+ * "languageByLanguageId.name", "timeCost", "memoryCost", "time", "caseNumber" })</code>
  */
-@Fields({ "statusId", "userByUserId.userName", "problemId", "contestId",
+@Fields({"statusId", "userByUserId.userName", "problemId", "contestId",
     "result", "length",
-    "languageByLanguageId.name", "timeCost", "memoryCost", "time", "caseNumber" })
+    "languageByLanguageId.name", "timeCost", "memoryCost", "time", "caseNumber"})
 public class StatusListDTO implements BaseDTO<Status> {
 
   public StatusListDTO() {
   }
 
   private StatusListDTO(Integer statusId, String userName, Integer problemId,
-      Integer contestId, String returnType,
-      Integer returnTypeId, Integer length, String language, Integer timeCost,
-      Integer memoryCost, Timestamp time, Integer caseNumber) {
+                        Integer contestId, String returnType,
+                        Integer returnTypeId, Integer length, String language, Integer timeCost,
+                        Integer memoryCost, Timestamp time, Integer caseNumber) {
     this.statusId = statusId;
     this.userName = userName;
     this.problemId = problemId;

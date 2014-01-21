@@ -43,7 +43,7 @@ public class AuthenticationAspect {
 
     try {
       if (permit.NeedLogin()) {
-        UserDTO userDTO = (UserDTO)request.getSession().getAttribute("currentUser");
+        UserDTO userDTO = (UserDTO) request.getSession().getAttribute("currentUser");
         if (userDTO == null)
           throw new AppException("Permission denied");
         if (permit.value() != Global.AuthenticationType.NORMAL) {

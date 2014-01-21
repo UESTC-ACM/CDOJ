@@ -19,8 +19,7 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * list user's tried problem id.
    *
-   * @param userId
-   *          user's id.
+   * @param userId user's id.
    * @return problem id list.
    * @throws AppException
    */
@@ -29,8 +28,7 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * list user's accepted problem id.
    *
-   * @param userId
-   *          user's id.
+   * @param userId user's id.
    * @return problem id list.
    * @throws AppException
    */
@@ -39,8 +37,7 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * Counts user's tried problems.
    *
-   * @param userId
-   *          user's id.
+   * @param userId user's id.
    * @return number of problems this user has tried.
    * @throws AppException
    */
@@ -49,8 +46,7 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * Counts user's accepted problems.
    *
-   * @param userId
-   *          user's id.
+   * @param userId user's id.
    * @return number of problems this user get accepted.
    * @throws AppException
    */
@@ -59,8 +55,7 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * Counts users that tried specified problem.
    *
-   * @param problemId
-   *          problem's id.
+   * @param problemId problem's id.
    * @return number of users who tried this problem.
    * @throws AppException
    */
@@ -69,8 +64,7 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * Counts users that accepted specified problem.
    *
-   * @param problemId
-   *          problem's id.
+   * @param problemId problem's id.
    * @return number of users who get accepted for this problem.
    * @throws AppException
    */
@@ -89,12 +83,12 @@ public interface StatusService extends DatabaseService<Status, Integer> {
    * Get the status fit in condition and page range.
    *
    * @param condition {@link StatusCondition} entity.
-   * @param pageInfo {@link PageInfo} entity.
+   * @param pageInfo  {@link PageInfo} entity.
    * @return List of {@link StatusListDTO} entities.
    * @throws AppException
    */
   public List<StatusListDTO> getStatusList(StatusCondition condition,
-      PageInfo pageInfo) throws AppException;
+                                           PageInfo pageInfo) throws AppException;
 
   /**
    * Get the status that pending to judge.
@@ -107,8 +101,7 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * Updates status by {@link StatusForJudgeDTO} entity.
    *
-   * @param statusForJudgeDTO
-   *          {@link StatusForJudgeDTO} entity.
+   * @param statusForJudgeDTO {@link StatusForJudgeDTO} entity.
    * @throws AppException
    */
   public void updateStatusByStatusForJudgeDTO(StatusForJudgeDTO statusForJudgeDTO)
@@ -117,8 +110,7 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * Create a new status with a specific {@link StatusDTO}.
    *
-   * @param statusDTO
-   *         {@link StatusDTO} entity.
+   * @param statusDTO {@link StatusDTO} entity.
    * @throws AppException
    */
   public void createNewStatus(StatusDTO statusDTO) throws AppException;
@@ -126,8 +118,7 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * Gets {@link StatusInformationDTO} by status id.
    *
-   * @param statusId
-   *          status' id for query.
+   * @param statusId status' id for query.
    * @return status' information.
    * @throws AppException
    */
@@ -136,8 +127,7 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * Runs re-judge process with specific status condition.
    *
-   * @param statusCondition
-   *          {@link StatusCondition} entity.
+   * @param statusCondition {@link StatusCondition} entity.
    * @throws AppException
    */
   public void rejudge(StatusCondition statusCondition) throws AppException;

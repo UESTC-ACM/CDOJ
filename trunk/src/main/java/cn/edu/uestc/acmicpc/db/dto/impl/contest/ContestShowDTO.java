@@ -14,7 +14,7 @@ import cn.edu.uestc.acmicpc.util.settings.Global;
  * <br/>
  * <code>@Fields({ "contestId", "title", "description", "time", "length", "type" })</code>
  */
-@Fields({ "contestId", "title", "description", "time", "length", "type" })
+@Fields({"contestId", "title", "description", "time", "length", "type"})
 public class ContestShowDTO implements BaseDTO<Contest> {
 
   private Integer contestId;

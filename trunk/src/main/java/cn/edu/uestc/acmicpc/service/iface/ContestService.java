@@ -43,11 +43,11 @@ public interface ContestService extends DatabaseService<Contest, Integer> {
    */
   public ContestShowDTO getContestShowDTOByContestId(Integer contestId)
       throws AppException;
+
   /**
    * Updates contest record by {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO} entity.
    *
-   * @param contestDTO
-   *          {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO} entity.
+   * @param contestDTO {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO} entity.
    * @throws AppException
    */
   public void updateContest(ContestDTO contestDTO) throws AppException;

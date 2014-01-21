@@ -24,7 +24,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
  * Test cases for problem tried property.
  */
 
-@ContextConfiguration(classes = { IntegrationTestContext.class })
+@ContextConfiguration(classes = {IntegrationTestContext.class})
 public class TriedITTest extends AbstractTestNGSpringContextTests {
 
   @SuppressWarnings("unchecked")

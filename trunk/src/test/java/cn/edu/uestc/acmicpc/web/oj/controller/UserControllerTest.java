@@ -37,9 +37,11 @@ import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.web.oj.controller.user.UserController;
 import com.alibaba.fastjson.JSON;
 
-/** Mock test for {@link UserController}. */
+/**
+ * Mock test for {@link UserController}.
+ */
 @WebAppConfiguration
-@ContextConfiguration(classes = { TestContext.class })
+@ContextConfiguration(classes = {TestContext.class})
 public class UserControllerTest extends ControllerTest {
 
   private final String URL_LOGIN = "/user/login";
@@ -76,10 +78,10 @@ public class UserControllerTest extends ControllerTest {
 
   @BeforeMethod
   public void init() {
-    Mockito.reset(userService,globalService, departmentService,
+    Mockito.reset(userService, globalService, departmentService,
         problemService, statusService, userSerialKeyService, emailService);
     UserController userController = new UserController(departmentService, globalService,
-        userService,  problemService, statusService,  userSerialKeyService, emailService);
+        userService, problemService, statusService, userSerialKeyService, emailService);
     mockMvc = initControllers(userController);
     session = new MockHttpSession(context.getServletContext(), UUID.randomUUID().toString());
   }

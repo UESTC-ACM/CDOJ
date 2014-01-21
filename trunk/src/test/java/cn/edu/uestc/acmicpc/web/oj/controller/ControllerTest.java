@@ -20,7 +20,9 @@ import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.settings.Global.AuthenticationType;
 
-/** Abstract test to define constant variables for controller tests. */
+/**
+ * Abstract test to define constant variables for controller tests.
+ */
 public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
 
   protected MockMvc mockMvc;
@@ -36,7 +38,9 @@ public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
   @Autowired
   protected GlobalService globalService;
 
-  /** Application JSON type with UTF-8 character set. */
+  /**
+   * Application JSON type with UTF-8 character set.
+   */
   protected static final MediaType APPLICATION_JSON_UTF8 = new MediaType(
       MediaType.APPLICATION_JSON.getType(),
       MediaType.APPLICATION_JSON.getSubtype(),

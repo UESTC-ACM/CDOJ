@@ -13,7 +13,7 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 /**
  * Administrator controller for these pages:
  * <table>
- *   <tr><td>admin/index</td><td>dashboard</td></tr>
+ * <tr><td>admin/index</td><td>dashboard</td></tr>
  * </table>
  */
 @Controller
@@ -25,7 +25,7 @@ public class AdminController extends BaseController {
     super(departmentService, globalService);
   }
 
-  @RequestMapping(value={"index", "/"})
+  @RequestMapping(value = {"index", "/"})
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public String index() {
     return "admin/index";

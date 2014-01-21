@@ -14,8 +14,8 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * "difficulty"})</code>
  */
 @Fields({"problemId", "title", "source", "solved", "tried", "isSpj", "isVisible",
-  "difficulty"})
-public class ProblemListDTO implements BaseDTO<Problem>{
+    "difficulty"})
+public class ProblemListDTO implements BaseDTO<Problem> {
 
   private Integer problemId;
   private String title;
@@ -30,7 +30,7 @@ public class ProblemListDTO implements BaseDTO<Problem>{
   public ProblemListDTO() {
   }
 
-  private ProblemListDTO(Integer problemId, String title, String source,Integer solved,
+  private ProblemListDTO(Integer problemId, String title, String source, Integer solved,
                          Integer tried, Boolean isSpj, Boolean isVisible, Integer difficulty) {
     this.problemId = problemId;
     this.title = title;
@@ -118,15 +118,17 @@ public class ProblemListDTO implements BaseDTO<Problem>{
     return new Builder();
   }
 
-  /** Builder for {@link ProblemListDTO}. */
-  public static class Builder implements BaseBuilder<ProblemListDTO>{
+  /**
+   * Builder for {@link ProblemListDTO}.
+   */
+  public static class Builder implements BaseBuilder<ProblemListDTO> {
 
     private Builder() {
     }
 
     private Integer problemId;
-    private String title="";
-    private String source="";
+    private String title = "";
+    private String source = "";
     private Integer solved;
     private Integer tried;
     private Boolean isSpj;
@@ -134,7 +136,7 @@ public class ProblemListDTO implements BaseDTO<Problem>{
     private Integer difficulty;
 
     @Override
-    public ProblemListDTO build(){
+    public ProblemListDTO build() {
       return new ProblemListDTO(problemId, title, source, solved, tried, isSpj,
           isVisible, difficulty);
     }
@@ -152,42 +154,42 @@ public class ProblemListDTO implements BaseDTO<Problem>{
       return build();
     }
 
-    public Builder setProblemId(Integer problemID){
+    public Builder setProblemId(Integer problemID) {
       this.problemId = problemID;
       return this;
     }
 
-    public Builder setTitle(String title){
+    public Builder setTitle(String title) {
       this.title = title;
       return this;
     }
 
-    public Builder setSource(String source){
+    public Builder setSource(String source) {
       this.source = source;
       return this;
     }
 
-    public Builder setSolved(Integer solved){
+    public Builder setSolved(Integer solved) {
       this.solved = solved;
       return this;
     }
 
-    public Builder setTried(Integer tried){
+    public Builder setTried(Integer tried) {
       this.tried = tried;
       return this;
     }
 
-    public Builder setIsSpj(Boolean isSpj){
+    public Builder setIsSpj(Boolean isSpj) {
       this.isSpj = isSpj;
       return this;
     }
 
-    public Builder setIsVisible(Boolean isVisivle){
+    public Builder setIsVisible(Boolean isVisivle) {
       this.isVisible = isVisivle;
       return this;
     }
 
-    public Builder setDifficulty(Integer difficulty){
+    public Builder setDifficulty(Integer difficulty) {
       this.difficulty = difficulty;
       return this;
     }

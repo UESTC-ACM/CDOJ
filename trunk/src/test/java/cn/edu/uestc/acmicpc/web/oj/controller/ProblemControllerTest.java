@@ -27,9 +27,11 @@ import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.web.oj.controller.problem.ProblemController;
 
-/** Mock test for {@link ProblemController}. */
+/**
+ * Mock test for {@link ProblemController}.
+ */
 @WebAppConfiguration
-@ContextConfiguration(classes = { TestContext.class })
+@ContextConfiguration(classes = {TestContext.class})
 public class ProblemControllerTest extends ControllerTest {
 
   private final String URL_SHOW = "/problem/show";
@@ -67,7 +69,7 @@ public class ProblemControllerTest extends ControllerTest {
     Mockito.reset(problemService, globalService,
         statusService, languageService, departmentService);
     ProblemController problemController = new ProblemController(departmentService, globalService,
-         problemService, statusService, languageService, pictureService, fileService);
+        problemService, statusService, languageService, pictureService, fileService);
     mockMvc = initControllers(problemController);
     session = new MockHttpSession(context.getServletContext(), UUID.randomUUID().toString());
   }

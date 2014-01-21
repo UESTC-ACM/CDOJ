@@ -13,7 +13,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * <br/>
  * <code>@Fields({ "contestId", "title", "type", "time", "length", "isVisible" })</code>
  */
-@Fields({ "contestId", "title", "type", "time", "length", "isVisible" })
+@Fields({"contestId", "title", "type", "time", "length", "isVisible"})
 public class ContestListDTO implements BaseDTO<Contest> {
 
   private Integer contestId;
@@ -28,7 +28,7 @@ public class ContestListDTO implements BaseDTO<Contest> {
   }
 
   public ContestListDTO(Integer contestId, String title, String description,
-      Byte type, Timestamp time, Integer length, Boolean isVisible) {
+                        Byte type, Timestamp time, Integer length, Boolean isVisible) {
     this.contestId = contestId;
     this.title = title;
     this.description = description;

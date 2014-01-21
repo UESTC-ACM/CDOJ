@@ -92,7 +92,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
 
   @Override
   public List<StatusListDTO> getStatusList(StatusCondition statusCondition,
-      PageInfo pageInfo) throws AppException {
+                                           PageInfo pageInfo) throws AppException {
     Condition condition = statusCondition.getCondition();
     condition.setPageInfo(pageInfo);
     return statusDAO.findAll(StatusListDTO.class, StatusListDTO.builder(),

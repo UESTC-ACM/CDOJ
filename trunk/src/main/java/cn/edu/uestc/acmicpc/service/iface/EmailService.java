@@ -12,8 +12,8 @@ public interface EmailService {
    * Send email.
    *
    * @param emailAddress recipient address.
-   * @param title email title.
-   * @param content email content.
+   * @param title        email title.
+   * @param content      email content.
    * @return true if this operation success.
    * @throws AppException
    */

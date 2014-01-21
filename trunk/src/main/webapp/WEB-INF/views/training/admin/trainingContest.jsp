@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -32,29 +32,81 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <script src="<s:url value="/scripts/cdoj/cdoj.admin.training.trainingContest.js"/>"></script>
-    <title>Training contest</title>
-</head>
-<body>
+  <script src="<s:url value="
+  /scripts/cdoj/cdoj.admin.training.trainingContest.js"/>"></script>
+  <
+  title > Training
+  contest <
+  /
+  title >
+  <
+  /
+  head >
+      < body >
 
-<div class="row">
-    <div class="span10">
-        <div id="pageInfo">
-        </div>
+  < div
+  class
+  = "row" >
+      < div
+  class
+  = "span10" >
+      < div
+  id = "pageInfo" >
+      <
+  /
+  div >
 
-        <table id="trainingContestListTable" class="table table-striped table-bordered">
-            <thead>
-            <tr>
-                <th style="width: 30px;" class="orderButton" field="id">#</th>
-                <th class="orderButton" field="title">Contest title</th>
-                <th style="width: 60px;" class="orderButton" field="isPersonal">Type</th>
-            </tr>
-            </thead>
-            <tbody id="trainingContestList">
-            </tbody>
-        </table>
-    </div>
-</div>
+  < table
+  id = "trainingContestListTable"
+  class
+  = "table table-striped table-bordered" >
+      < thead >
+      < tr >
+      < th
+  style = "width: 30px;"
+  class
+  = "orderButton"
+  field = "id" >
+  #</
+  th >
+  < th
+  class
+  = "orderButton"
+  field = "title" > Contest
+  title <
+  /
+  th >
+  < th
+  style = "width: 60px;"
+  class
+  = "orderButton"
+  field = "isPersonal" > Type <
+  /
+  th >
+  <
+  /
+  tr >
+  <
+  /
+  thead >
+  < tbody
+  id = "trainingContestList" >
+      <
+  /
+  tbody >
+  <
+  /
+  table >
+  <
+  /
+  div >
+  <
+  /
+  div >
 
-</body>
-</html>
+  <
+  /
+  body >
+  <
+  /
+  html >

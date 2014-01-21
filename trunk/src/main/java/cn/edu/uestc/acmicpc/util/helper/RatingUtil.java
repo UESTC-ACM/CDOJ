@@ -24,7 +24,7 @@ public class RatingUtil {
 
   @Autowired
   public RatingUtil(ITrainingUserDAO trainingUserDAO,
-      ITrainingStatusDAO trainingStatusDAO) {
+                    ITrainingStatusDAO trainingStatusDAO) {
     this.trainingUserDAO = trainingUserDAO;
     this.trainingStatusDAO = trainingStatusDAO;
   }
@@ -110,7 +110,7 @@ public class RatingUtil {
 
   @SuppressWarnings("unused")
   private void updateTrainingUser(List<TrainingUser> trainingUsers, List<Integer> rank,
-      Double contestWeight) {
+                                  Double contestWeight) {
     if (trainingUsers.size() <= 1) {
       for (TrainingUser trainingUser : trainingUsers) {
         trainingUser.setRatingVary(0.0);
@@ -146,7 +146,7 @@ public class RatingUtil {
           eRank[i] +=
               0.5 * erf((trainingUser.getRating() - trainingUserA.getRating())
                   / Math.sqrt(2.0 * (square(trainingUserA.getVolatility()) + square(trainingUser
-                      .getVolatility())))) + 0.5;
+                  .getVolatility())))) + 0.5;
         }
       }
       Double[] aPerf = new Double[trainingUsers.size()];
@@ -278,9 +278,9 @@ public class RatingUtil {
           * s)
           * s)
           / (1.0 + (3.754408661907416 + (2.445134137142996 + (0.3224671290700398 + 0.007784695709041462 * s)
-              * s)
-              * s)
-              * s);
+          * s)
+          * s)
+          * s);
     } else if (x > 0.97575) {
       s = Math.sqrt(-2.0 * Math.log(1.0 - x));
       return -(2.938163982698783 + (4.374664141464968 - (2.549732539343734 + (2.400758277161838 + (0.3223964580411365 + 0.007784894002430293 * s)
@@ -289,23 +289,23 @@ public class RatingUtil {
           * s)
           * s)
           / (1.0 + (3.754408661907416 + (2.445134137142996 + (0.3224671290700398 + 0.007784695709041462 * s)
-              * s)
-              * s)
-              * s);
+          * s)
+          * s)
+          * s);
     } else {
       s = x - 0.5;
       r = s * s;
       return s
           * (2.506628277459239 - (30.66479806614716 - (138.3577518672690 - (275.9285104469687 - (220.9460984245205 - 39.69683028665376 * r)
-              * r)
-              * r)
-              * r)
-              * r)
+          * r)
+          * r)
+          * r)
+          * r)
           / (1.0 - (13.28068155288572 - (66.80131188771972 - (155.6989798598866 - (161.5858368580409 - 54.47609879822406 * r)
-              * r)
-              * r)
-              * r)
-              * r);
+          * r)
+          * r)
+          * r)
+          * r);
     }
   }
 }

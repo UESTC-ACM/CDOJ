@@ -39,7 +39,7 @@ public class XmlNode implements Iterable<XmlNode> {
    * Add new attribute into the attribute list, if the attribute list is {@code null} or there is
    * same attribute in the list, throw {@link AppException}.
    *
-   * @param key the name of the attribute we want to add
+   * @param key   the name of the attribute we want to add
    * @param value attribute innerText
    * @throws AppException
    */

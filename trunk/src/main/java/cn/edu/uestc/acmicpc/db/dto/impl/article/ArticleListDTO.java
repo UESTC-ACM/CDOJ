@@ -15,16 +15,16 @@ import cn.edu.uestc.acmicpc.util.settings.Global;
  * <code>@Fields({ "articleId", "title", "clicked", "time", "isVisible", "userByUserId.userName",
  * "userByUserId.email" })</code>
  */
-@Fields({ "articleId", "title", "clicked", "time", "isVisible", "userByUserId.userName",
-  "userByUserId.email", "content" })
+@Fields({"articleId", "title", "clicked", "time", "isVisible", "userByUserId.userName",
+    "userByUserId.email", "content"})
 public class ArticleListDTO implements BaseDTO<Article> {
 
   public ArticleListDTO() {
   }
 
   private ArticleListDTO(Integer articleId, String title,
-      Integer clicked, Timestamp time, Boolean isVisible, String ownerName,
-      String ownerEmail, String content, Boolean hasMore) {
+                         Integer clicked, Timestamp time, Boolean isVisible, String ownerName,
+                         String ownerEmail, String content, Boolean hasMore) {
     this.articleId = articleId;
     this.title = title;
     this.clicked = clicked;

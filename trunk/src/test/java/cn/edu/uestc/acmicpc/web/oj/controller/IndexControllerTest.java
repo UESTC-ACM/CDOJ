@@ -16,9 +16,11 @@ import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.config.WebMVCConfig;
 import cn.edu.uestc.acmicpc.web.oj.controller.index.IndexController;
 
-/** Test cases for {@link IndexController}. */
+/**
+ * Test cases for {@link IndexController}.
+ */
 @WebAppConfiguration
-@ContextConfiguration(classes = { TestContext.class, WebMVCConfig.class })
+@ContextConfiguration(classes = {TestContext.class, WebMVCConfig.class})
 public class IndexControllerTest extends ControllerTest {
 
   @Autowired

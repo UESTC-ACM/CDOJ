@@ -17,8 +17,10 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 
-/** Integration test cases for {@link UserService}. */
-@ContextConfiguration(classes = { IntegrationTestContext.class })
+/**
+ * Integration test cases for {@link UserService}.
+ */
+@ContextConfiguration(classes = {IntegrationTestContext.class})
 public class UserServiceITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired

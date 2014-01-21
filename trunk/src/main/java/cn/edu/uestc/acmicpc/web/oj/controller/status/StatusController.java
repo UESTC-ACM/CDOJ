@@ -112,13 +112,14 @@ public class StatusController extends BaseController {
 
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> search(HttpSession session,
-      @RequestBody StatusCondition statusCondition) {
+                             @RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
-    try{
+    try {
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-      if(currentUser == null ||
+      if (currentUser == null ||
           currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
         statusCondition.isVisible = true;
       }
@@ -133,7 +134,7 @@ public class StatusController extends BaseController {
           pageInfo);
       for (StatusListDTO statusListDTO : statusListDTOList) {
         statusListDTO.setReturnType(globalService.getReturnDescription(
-              statusListDTO.getReturnTypeId(), statusListDTO.getCaseNumber()));
+            statusListDTO.getReturnTypeId(), statusListDTO.getCaseNumber()));
         if (statusListDTO.getReturnTypeId() != Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
           statusListDTO.setTimeCost(null);
           statusListDTO.setMemoryCost(null);
@@ -145,10 +146,10 @@ public class StatusController extends BaseController {
       }
       json.put("result", "success");
       json.put("list", statusListDTOList);
-    }catch(AppException e){
+    } catch (AppException e) {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
-    }catch(Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
       json.put("result", "error");
       json.put("error_msg", "Unknown exception occurred.");
@@ -158,13 +159,14 @@ public class StatusController extends BaseController {
 
   @RequestMapping("count")
   @LoginPermit(Global.AuthenticationType.ADMIN)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> count(HttpSession session,
-      @RequestBody StatusCondition statusCondition) {
+                            @RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
-    try{
+    try {
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-      if(currentUser == null ||
+      if (currentUser == null ||
           currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
         statusCondition.isVisible = true;
       }
@@ -172,10 +174,10 @@ public class StatusController extends BaseController {
 
       json.put("result", "success");
       json.put("count", count);
-    }catch(AppException e){
+    } catch (AppException e) {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
-    }catch(Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
       json.put("result", "error");
       json.put("error_msg", "Unknown exception occurred.");
@@ -185,23 +187,24 @@ public class StatusController extends BaseController {
 
   @RequestMapping("rejudge")
   @LoginPermit(Global.AuthenticationType.ADMIN)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> rejudge(HttpSession session,
-      @RequestBody StatusCondition statusCondition) {
+                              @RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
-    try{
+    try {
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-      if(currentUser == null ||
+      if (currentUser == null ||
           currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
         statusCondition.isVisible = true;
       }
       statusService.rejudge(statusCondition);
 
       json.put("result", "success");
-    }catch(AppException e){
+    } catch (AppException e) {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
-    }catch(Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
       json.put("result", "error");
       json.put("error_msg", "Unknown exception occurred.");
@@ -211,10 +214,11 @@ public class StatusController extends BaseController {
 
   @RequestMapping("submit")
   @LoginPermit(NeedLogin = true)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> submit(HttpSession session,
-      @RequestBody @Valid SubmitDTO submitDTO,
-      BindingResult validateResult) {
+                             @RequestBody @Valid SubmitDTO submitDTO,
+                             BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
@@ -233,7 +237,7 @@ public class StatusController extends BaseController {
         if (!problemDTO.getIsVisible() &&
             currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
           throw new AppException("You have no permission to submit this problem.");
-            }
+        }
         if (submitDTO.getContestId() != null) {
           // Is this contest exist?
           ContestDTO contestDTO = contestService.getContestDTOByContestId(submitDTO.getContestId());
@@ -281,11 +285,12 @@ public class StatusController extends BaseController {
 
   @RequestMapping("info/{statusId}")
   @LoginPermit(NeedLogin = true)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> info(HttpSession session,
-      @PathVariable Integer statusId) {
+                           @PathVariable Integer statusId) {
     Map<String, Object> json = new HashMap<>();
-    try{
+    try {
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
       StatusInformationDTO statusInformationDTO = statusService.getStatusInformation(statusId);
       if (statusInformationDTO == null)
@@ -297,12 +302,12 @@ public class StatusController extends BaseController {
       json.put("code", statusInformationDTO.getCodeContent());
       if (statusInformationDTO.getCompileInfoId() != null) {
         json.put("compileInfo", compileInfoService.getCompileInfo(
-              statusInformationDTO.getCompileInfoId()));
+            statusInformationDTO.getCompileInfoId()));
       }
-    }catch(AppException e){
+    } catch (AppException e) {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
-    }catch(Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
       json.put("result", "error");
       json.put("error_msg", "Unknown exception occurred.");

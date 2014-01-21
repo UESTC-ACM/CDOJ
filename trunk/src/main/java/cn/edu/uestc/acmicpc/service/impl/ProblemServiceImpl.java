@@ -196,7 +196,7 @@ public class ProblemServiceImpl extends AbstractService implements
 
   @Override
   public void updateProblemByProblemId(Map<String, Object> properties,
-      Integer problemId) throws AppException {
+                                       Integer problemId) throws AppException {
     problemDAO.updateEntitiesByField(properties, "problemId",
         problemId.toString());
   }

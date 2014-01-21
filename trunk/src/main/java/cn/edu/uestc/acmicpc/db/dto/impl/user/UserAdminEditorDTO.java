@@ -12,7 +12,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * <code>@Fields({ "userName", "studentId", "school", "nickName", "email",
  * "type", "motto", "departmentId"})</code>
  */
-@Fields({ "userName", "studentId", "school", "nickName",
+@Fields({"userName", "studentId", "school", "nickName",
     "email", "type", "motto", "departmentId"})
 public class UserAdminEditorDTO implements BaseDTO<User> {
 
@@ -20,8 +20,8 @@ public class UserAdminEditorDTO implements BaseDTO<User> {
   }
 
   private UserAdminEditorDTO(String userName, String studentId,
-      String school, String nickName, String email,
-      Integer type, String motto, Integer departmentId) {
+                             String school, String nickName, String email,
+                             Integer type, String motto, Integer departmentId) {
     this.userName = userName;
     this.studentId = studentId;
     this.school = school;

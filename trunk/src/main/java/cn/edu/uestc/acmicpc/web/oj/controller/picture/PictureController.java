@@ -27,6 +27,7 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
 /**
  * Controller for picture operation
+ *
  * @author mzry1992
  */
 @Controller
@@ -45,7 +46,8 @@ public class PictureController extends BaseController {
   @Deprecated
   @RequestMapping("getUploadedPictures")
   @LoginPermit(NeedLogin = true)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> pictureList(HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
@@ -65,16 +67,17 @@ public class PictureController extends BaseController {
   @RequestMapping(value = "uploadProblemPicture",
       method = RequestMethod.POST)
   @LoginPermit(NeedLogin = true)
-  public @ResponseBody
-  Map<String, Object> uploadProblemPicture(@RequestParam(value="uploadFile", required=true)
-                                    MultipartFile[] files,
-                                    HttpSession session) {
+  public
+  @ResponseBody
+  Map<String, Object> uploadProblemPicture(@RequestParam(value = "uploadFile", required = true)
+                                           MultipartFile[] files,
+                                           HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
       FileInformationDTO fileInformationDTO = pictureService.uploadPictures(
           FileUploadDTO.builder()
-          .setFiles(Arrays.asList(files))
-          .build(),
+              .setFiles(Arrays.asList(files))
+              .build(),
           getCurrentUserID(session));
 
       json.put("success", "true");
@@ -92,17 +95,19 @@ public class PictureController extends BaseController {
 
   /**
    * Upload picture into "/images/{category}/{folder}/"
-   * @param files Uploaded files
+   *
+   * @param files    Uploaded files
    * @param category Category name in path
-   * @param folder Folder name in path
-   * @param session Current user session
+   * @param folder   Folder name in path
+   * @param session  Current user session
    * @return
    */
   @RequestMapping(value = "uploadPicture/{category}/{folder}",
       method = RequestMethod.POST)
   @LoginPermit(NeedLogin = true)
-  public @ResponseBody
-  Map<String, Object> uploadPicture(@RequestParam(value="uploadFile", required=true)
+  public
+  @ResponseBody
+  Map<String, Object> uploadPicture(@RequestParam(value = "uploadFile", required = true)
                                     MultipartFile[] files,
                                     @PathVariable("category") String category,
                                     @PathVariable("folder") String folder,
@@ -112,8 +117,8 @@ public class PictureController extends BaseController {
       String directory = category + "/" + folder + "/";
       FileInformationDTO fileInformationDTO = pictureService.uploadPicture(
           FileUploadDTO.builder()
-          .setFiles(Arrays.asList(files))
-          .build(),
+              .setFiles(Arrays.asList(files))
+              .build(),
           directory);
 
       json.put("success", "true");

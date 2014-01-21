@@ -33,6 +33,7 @@ public class UserCondition extends BaseCondition {
 
   /**
    * User's type.
+   *
    * @see AuthenticationType
    */
   @Exp(type = ConditionType.EQUALS)

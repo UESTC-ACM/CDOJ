@@ -31,7 +31,7 @@ public interface GlobalService {
    * Get return type description and replace <code>$case</code> by case number.
    *
    * @param returnTypeId return type's id.
-   * @param caseNumber current processed case number.
+   * @param caseNumber   current processed case number.
    * @return return type description.
    * @see OnlineJudgeReturnType
    */

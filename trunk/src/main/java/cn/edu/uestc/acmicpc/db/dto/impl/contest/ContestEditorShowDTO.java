@@ -13,15 +13,15 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * <br/>
  * <code>@Fields({ "contestId", "title", "description", "time", "length", "type" })</code>
  */
-@Fields({ "contestId", "title", "description", "time", "length", "type" })
+@Fields({"contestId", "title", "description", "time", "length", "type"})
 public class ContestEditorShowDTO implements BaseDTO<Contest> {
 
   public ContestEditorShowDTO() {
   }
 
   private ContestEditorShowDTO(Integer contestId, String title,
-      String description, Timestamp time, Integer length, Byte type,
-      Integer lengthDays, Integer lengthHours, Integer lengthMinutes) {
+                               String description, Timestamp time, Integer length, Byte type,
+                               Integer lengthDays, Integer lengthHours, Integer lengthMinutes) {
     this.contestId = contestId;
     this.title = title;
     this.description = description;

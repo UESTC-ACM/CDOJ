@@ -26,13 +26,10 @@ public class FieldException extends AppException implements Iterable<FieldError>
 
   /**
    * Creates a new {@link FieldException} with {@link FieldError} information
-   * 
-   * @param objectName
-   *          error object's name.
-   * @param field
-   *          error object's field.
-   * @param message
-   *          message for error.
+   *
+   * @param objectName error object's name.
+   * @param field      error object's field.
+   * @param message    message for error.
    */
   public FieldException(String objectName, String field, String message) {
     super("field_error");
@@ -41,11 +38,9 @@ public class FieldException extends AppException implements Iterable<FieldError>
 
   /**
    * Creates a new {@link FieldException} with {@link FieldError} information
-   * 
-   * @param field
-   *          error object's field.
-   * @param message
-   *          message for error.
+   *
+   * @param field   error object's field.
+   * @param message message for error.
    */
   public FieldException(String field, String message) {
     super("field_error");
@@ -54,13 +49,10 @@ public class FieldException extends AppException implements Iterable<FieldError>
 
   /**
    * Adds a single {@link FieldError} into this exception.
-   * 
-   * @param objectName
-   *          error object's name.
-   * @param field
-   *          error object's field.
-   * @param message
-   *          message for error.
+   *
+   * @param objectName error object's name.
+   * @param field      error object's field.
+   * @param message    message for error.
    */
   public void addErrors(String objectName, String field, String message) {
     errors.add(new FieldError(objectName, field, message));
@@ -68,9 +60,8 @@ public class FieldException extends AppException implements Iterable<FieldError>
 
   /**
    * Adds a group of {@link FieldError}s into error list.
-   * 
-   * @param errors
-   *          errors for this exception.
+   *
+   * @param errors errors for this exception.
    */
   public void addErrors(FieldError... errors) {
     if (errors != null) {

@@ -13,7 +13,7 @@ import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 /**
  * Util class test
  */
-@ContextConfiguration(classes = { IntegrationTestContext.class })
+@ContextConfiguration(classes = {IntegrationTestContext.class})
 public class UtilITTest extends AbstractTestNGSpringContextTests {
 
   private static String VJ_1Y = "^(\\d{1,2})\\s*:\\s*(\\d{2})\\s*:\\s*(\\d{2})$";

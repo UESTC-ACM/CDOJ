@@ -124,6 +124,6 @@ public class ConditionTest {
     condition.addOrder("userId", false);
     Assert.assertEquals(condition.toHQLStringWithOrders(),
         "where ((userId>='1' or userId<='5') and ((departmentId is not null)"
-        + " or userName like '%user%')) order by departmentId asc,userId desc");
+            + " or userName like '%user%')) order by departmentId asc,userId desc");
   }
 }

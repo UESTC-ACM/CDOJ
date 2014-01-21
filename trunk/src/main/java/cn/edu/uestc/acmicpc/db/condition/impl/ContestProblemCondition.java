@@ -8,7 +8,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 /**
  * Contest problem database condition entity.
  */
-public class ContestProblemCondition extends BaseCondition{
+public class ContestProblemCondition extends BaseCondition {
 
   public ContestProblemCondition() {
     super("contestProblemId");

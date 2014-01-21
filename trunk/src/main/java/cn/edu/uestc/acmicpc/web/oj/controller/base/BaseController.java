@@ -56,8 +56,8 @@ public class BaseController {
    * @param validateResult prev validate result
    */
   protected void putFieldErrorsIntoBindingResult(FieldException fieldException,
-      BindingResult validateResult) {
-    for (FieldError error: fieldException) {
+                                                 BindingResult validateResult) {
+    for (FieldError error : fieldException) {
       validateResult.addError(error);
     }
   }
@@ -70,10 +70,10 @@ public class BaseController {
    * {@code PageInfo pageInfo = buildPageInfo(articleDAO.count(), RECORD_PER_PAGE,
    * getContextPath("") + "/Problem", null);}
    *
-   * @param count total number of records
-   * @param currentPage current page number
-   * @param countPerPage number of records per page
-   * @param baseURL base URL
+   * @param count           total number of records
+   * @param currentPage     current page number
+   * @param countPerPage    number of records per page
+   * @param baseURL         base URL
    * @param displayDistance display distance for page numbers
    * @return return a PageInfo object and put the HTML content into request attribute list.
    */

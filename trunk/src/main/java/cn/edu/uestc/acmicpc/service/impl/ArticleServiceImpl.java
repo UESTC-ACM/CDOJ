@@ -50,7 +50,7 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
 
   @Override
   public List<ArticleListDTO> getArticleList(ArticleCondition articleCondition,
-      PageInfo pageInfo) throws AppException {
+                                             PageInfo pageInfo) throws AppException {
     Condition condition = articleCondition.getCondition();
     condition.setPageInfo(pageInfo);
     return articleDAO.findAll(ArticleListDTO.class, ArticleListDTO.builder(), condition);

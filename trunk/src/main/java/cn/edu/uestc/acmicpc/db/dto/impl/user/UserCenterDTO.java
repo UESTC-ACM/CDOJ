@@ -12,12 +12,12 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * DTO used in user center.
  * <br/>
  * <code>@Fields({"userId", "userName", "nickName", "email", "school", "departmentId",
- *  "departmentByDepartmentId.name", "studentId", "tried", "solved",
- *  "type", "motto", "lastLogin" })</code>
+ * "departmentByDepartmentId.name", "studentId", "tried", "solved",
+ * "type", "motto", "lastLogin" })</code>
  */
 @Fields({"userId", "userName", "nickName", "email", "school", "departmentId",
     "departmentByDepartmentId.name", "studentId", "tried", "solved",
-    "type", "motto", "lastLogin" })
+    "type", "motto", "lastLogin"})
 public class UserCenterDTO implements BaseDTO<User> {
 
   private Integer userId;

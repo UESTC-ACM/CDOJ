@@ -12,7 +12,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * <br/>
  * <code>@Fields({ "codeId", "content", "share" })</code>
  */
-@Fields({ "codeId", "content", "share" })
+@Fields({"codeId", "content", "share"})
 public class CodeDTO implements BaseDTO<Code> {
 
   public CodeDTO() {

@@ -13,7 +13,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * <br/>
  * <code>@Fields({ "userSerialKeyId", "time", "serialKey", "userId" })</code>
  */
-@Fields({ "userSerialKeyId", "time", "serialKey", "userId" })
+@Fields({"userSerialKeyId", "time", "serialKey", "userId"})
 public class UserSerialKeyDTO implements BaseDTO<UserSerialKey> {
 
   public UserSerialKeyDTO() {

@@ -18,7 +18,7 @@ public class FileUtil {
   /**
    * Save string into the specific file.
    *
-   * @param content string content
+   * @param content  string content
    * @param filePath file's path
    */
   public static void saveToFile(String content, String filePath) {
@@ -34,7 +34,7 @@ public class FileUtil {
   /**
    * Save inputStream's content into outputStream.
    *
-   * @param inputStream input stream to read
+   * @param inputStream  input stream to read
    * @param outputStream output stream to write
    * @throws IOException
    */
@@ -82,7 +82,7 @@ public class FileUtil {
    * Move a directory into specific location.
    *
    * @param fromDir origin directory location
-   * @param toDir destination location
+   * @param toDir   destination location
    * @throws IOException
    */
   public static void moveDirectory(File fromDir, File toDir) throws IOException {

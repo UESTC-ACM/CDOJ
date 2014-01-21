@@ -32,7 +32,7 @@ public class PageInfo {
   private String htmlString;
 
   private PageInfo(Long currentPage, Long countPerPage, Long totalPages, String baseURL, int displayDistance,
-      String htmlString) {
+                   String htmlString) {
     this.currentPage = currentPage;
     this.countPerPage = countPerPage;
     this.totalPages = totalPages;
@@ -92,9 +92,9 @@ public class PageInfo {
   /**
    * get a {@code li} tag formatted like {@code <li class="sytle"><a href="url">name</a></li>}
    *
-   * @param style the CSS style of {@code li} tag
-   * @param toPage the page to go
-   * @param name the name display on the pagination
+   * @param style   the CSS style of {@code li} tag
+   * @param toPage  the page to go
+   * @param name    the name display on the pagination
    * @param baseURL the baseURL to show
    * @return a {@code li} tag
    */
@@ -117,15 +117,15 @@ public class PageInfo {
   /**
    * Create a PageInfo object
    *
-   * @param count total number of records
-   * @param countPerPage number of records per page
-   * @param baseURL page's base URL
+   * @param count           total number of records
+   * @param countPerPage    number of records per page
+   * @param baseURL         page's base URL
    * @param displayDistance
-   * @param currentPage current page number to show
+   * @param currentPage     current page number to show
    * @return a specific PageInfo object
    */
   public static PageInfo create(Long count, Long countPerPage, String baseURL, int displayDistance,
-      Long currentPage) {
+                                Long currentPage) {
     countPerPage = countPerPage <= 0 ? 20 : countPerPage;
     currentPage = currentPage == null ? 1 : currentPage;
 

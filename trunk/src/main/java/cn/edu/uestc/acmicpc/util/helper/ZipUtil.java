@@ -21,7 +21,7 @@ public class ZipUtil {
    * contents in the {@code path}, and the {@code path} itself.
    *
    * @param zipFile zipFile object
-   * @param path target path
+   * @param path    target path
    * @param checker checker to validate ZIP files.
    * @throws AppException if exception occurred, convert them into {@code AppException} object.
    */

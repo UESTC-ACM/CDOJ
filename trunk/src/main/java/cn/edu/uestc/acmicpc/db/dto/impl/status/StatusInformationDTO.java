@@ -12,7 +12,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * <br/>
  * <code>@Fields({ "statusId", "userId", "codeByCodeId.content", "compileInfoId" })</code>
  */
-@Fields({ "statusId", "userId", "codeByCodeId.content", "compileInfoId" })
+@Fields({"statusId", "userId", "codeByCodeId.content", "compileInfoId"})
 public class StatusInformationDTO implements BaseDTO<Status> {
 
   public StatusInformationDTO() {

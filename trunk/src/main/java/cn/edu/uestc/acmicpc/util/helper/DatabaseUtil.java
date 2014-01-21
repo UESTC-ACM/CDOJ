@@ -16,7 +16,7 @@ public class DatabaseUtil {
   /**
    * Put all criterion in the criterion list into criteria object.
    *
-   * @param criteria criteria object
+   * @param criteria      criteria object
    * @param criterionList criterion list
    */
   public static void putCriterionIntoCriteria(Criteria criteria, Iterable<Criterion> criterionList) {

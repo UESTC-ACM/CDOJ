@@ -13,7 +13,9 @@ import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
-/** Test cases for {@link ZipDataChecker}. */
+/**
+ * Test cases for {@link ZipDataChecker}.
+ */
 public class ZipDataCheckerTest {
 
   private static final Logger LOGGER = LogManager.getLogger(ZipDataCheckerTest.class);
@@ -55,35 +57,35 @@ public class ZipDataCheckerTest {
 
   @Test
   public void testCheck_withoutSpjFile_oneCase() throws AppException {
-    when(directory.listFiles()).thenReturn(new File[] { dataInput1, dataOutput1 });
+    when(directory.listFiles()).thenReturn(new File[]{dataInput1, dataOutput1});
     checker.check(directory);
   }
 
   @Test
   public void testCheck_withoutSpjFile_moreCases() throws AppException {
     when(directory.listFiles()).thenReturn(
-        new File[] { dataInput1, dataInput2, dataOutput1, dataOutput2 });
+        new File[]{dataInput1, dataInput2, dataOutput1, dataOutput2});
     checker.check(directory);
   }
 
   @Test
   public void testCheck_withSpjFile_oneCase() throws AppException {
-    when(directory.listFiles()).thenReturn(new File[] { dataInput1, dataOutput1, spjFile });
+    when(directory.listFiles()).thenReturn(new File[]{dataInput1, dataOutput1, spjFile});
     checker.check(directory);
   }
 
   @Test
   public void testCheck_withSpjFile_moreCases() throws AppException {
     when(directory.listFiles()).thenReturn(
-        new File[] { dataInput1, dataOutput1, spjFile, dataInput2, dataOutput2, dataInput3,
-            dataOutput3 });
+        new File[]{dataInput1, dataOutput1, spjFile, dataInput2, dataOutput2, dataInput3,
+            dataOutput3});
     checker.check(directory);
   }
 
   @Test
   public void testCheck_withInvalidDataName() {
     when(directory.listFiles()).thenReturn(
-        new File[] { dataInput1, dataOutput1, spjFile, otherFile });
+        new File[]{dataInput1, dataOutput1, spjFile, otherFile});
     try {
       checker.check(directory);
       Assert.fail();
@@ -95,7 +97,7 @@ public class ZipDataCheckerTest {
   @Test
   public void testCheck_withDirectory() {
     when(directory.listFiles()).thenReturn(
-        new File[] { dataInput1, dataOutput1, spjFile, otherDirectory });
+        new File[]{dataInput1, dataOutput1, spjFile, otherDirectory});
     try {
       checker.check(directory);
       Assert.fail();
@@ -127,7 +129,7 @@ public class ZipDataCheckerTest {
   @Test
   public void testCheck_notSameInputsAndOutputs() {
     when(directory.listFiles()).thenReturn(
-        new File[] { dataInput1, dataOutput1, dataInput2 });
+        new File[]{dataInput1, dataOutput1, dataInput2});
     try {
       checker.check(directory);
       Assert.fail();
@@ -140,7 +142,7 @@ public class ZipDataCheckerTest {
   @Test
   public void testCheck_missMatchInputAndOutput() {
     when(directory.listFiles()).thenReturn(
-        new File[] { dataInput1, dataOutput1, dataInput2, dataOutput3 });
+        new File[]{dataInput1, dataOutput1, dataInput2, dataOutput3});
     try {
       checker.check(directory);
       Assert.fail();

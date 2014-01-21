@@ -26,9 +26,9 @@ public class ProblemEditDTO {
   }
 
   private ProblemEditDTO(Integer problemId, String action,
-      String title, String description, String input,
-      String output, String sampleInput, String sampleOutput,
-      String hint, String source) {
+                         String title, String description, String input,
+                         String output, String sampleInput, String sampleOutput,
+                         String hint, String source) {
     this.problemId = problemId;
     this.action = action;
     this.title = title;

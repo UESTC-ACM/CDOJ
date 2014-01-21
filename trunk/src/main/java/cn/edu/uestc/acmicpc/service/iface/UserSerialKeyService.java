@@ -24,7 +24,7 @@ public interface UserSerialKeyService extends DatabaseService<UserSerialKey, Int
    * @param userId user id
    * @return {@link UserSerialKeyDTO} entity.
    * @throws AppException if this user generated a user serial key in 30 minutes, throw a
-   * exception and do nothing.
+   *                      exception and do nothing.
    */
   public UserSerialKeyDTO generateUserSerialKey(Integer userId) throws AppException;
 

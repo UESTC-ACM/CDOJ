@@ -71,10 +71,11 @@ public class UserController extends BaseController {
 
   @RequestMapping("login")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> login(HttpSession session,
-      @RequestBody @Valid UserLoginDTO userLoginDTO,
-      BindingResult validateResult) {
+                            @RequestBody @Valid UserLoginDTO userLoginDTO,
+                            BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
@@ -104,7 +105,8 @@ public class UserController extends BaseController {
 
   @RequestMapping("logout")
   @LoginPermit(NeedLogin = true)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> logout(HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     session.removeAttribute("currentUser");
@@ -114,10 +116,11 @@ public class UserController extends BaseController {
 
   @RequestMapping("register")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> register(HttpSession session,
-      @RequestBody @Valid UserRegisterDTO userRegisterDTO,
-      BindingResult validateResult) {
+                               @RequestBody @Valid UserRegisterDTO userRegisterDTO,
+                               BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
@@ -136,7 +139,7 @@ public class UserController extends BaseController {
         if (!StringUtil.trimAllSpace(userRegisterDTO.getNickName())
             .equals(userRegisterDTO.getNickName())) {
           throw new FieldException("nickName", "Nick name should not have useless blank.");
-            }
+        }
         if (userService.getUserDTOByUserName(userRegisterDTO.getUserName()) != null) {
           throw new FieldException("userName", "User name has been used!");
         }
@@ -147,21 +150,21 @@ public class UserController extends BaseController {
           throw new FieldException("departmentId", "Please choose a validate department.");
 
         UserDTO userDTO = UserDTO.builder()
-          .setUserName(userRegisterDTO.getUserName())
-          .setStudentId(userRegisterDTO.getStudentId())
-          .setPassword(StringUtil.encodeSHA1(userRegisterDTO.getPassword()))
-          .setSchool(userRegisterDTO.getSchool())
-          .setNickName(userRegisterDTO.getNickName())
-          .setEmail(userRegisterDTO.getEmail())
-          .setSolved(0)
-          .setTried(0)
-          .setType(Global.AuthenticationType.NORMAL.ordinal())
-          .setDepartmentId(userRegisterDTO.getDepartmentId())
-          .setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000))
-          .setMotto(userRegisterDTO.getMotto())
-          .setDepartmentName(departmentService.getDepartmentName(
+            .setUserName(userRegisterDTO.getUserName())
+            .setStudentId(userRegisterDTO.getStudentId())
+            .setPassword(StringUtil.encodeSHA1(userRegisterDTO.getPassword()))
+            .setSchool(userRegisterDTO.getSchool())
+            .setNickName(userRegisterDTO.getNickName())
+            .setEmail(userRegisterDTO.getEmail())
+            .setSolved(0)
+            .setTried(0)
+            .setType(Global.AuthenticationType.NORMAL.ordinal())
+            .setDepartmentId(userRegisterDTO.getDepartmentId())
+            .setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000))
+            .setMotto(userRegisterDTO.getMotto())
+            .setDepartmentName(departmentService.getDepartmentName(
                 userRegisterDTO.getDepartmentId()))
-          .build();
+            .build();
         userService.createNewUser(userDTO);
 
         userDTO = userService.getUserDTOByUserName(userRegisterDTO.getUserName());
@@ -189,9 +192,10 @@ public class UserController extends BaseController {
 
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> search(HttpSession session,
-      @RequestBody UserCondition userCondition) {
+                             @RequestBody UserCondition userCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
@@ -205,7 +209,7 @@ public class UserController extends BaseController {
       }
       json.put("result", "success");
       json.put("list", userList);
-    }  catch (AppException e) {
+    } catch (AppException e) {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
     } catch (Exception e) {
@@ -219,8 +223,8 @@ public class UserController extends BaseController {
   @RequestMapping("center/{userName}")
   @LoginPermit(NeedLogin = false)
   public String center(HttpSession session,
-      @PathVariable("userName") String userName,
-      ModelMap model) {
+                       @PathVariable("userName") String userName,
+                       ModelMap model) {
     try {
       UserCenterDTO userCenterDTO = userService.getUserCenterDTOByUserName(userName);
       if (userCenterDTO == null) {
@@ -228,7 +232,7 @@ public class UserController extends BaseController {
       }
       if (userCenterDTO.getType() == AuthenticationType.ADMIN.ordinal()) {
         UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-        if(currentUser == null ||
+        if (currentUser == null ||
             currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
           //Hide administrator from user center.
           throw new AppException("No such user!");
@@ -260,17 +264,18 @@ public class UserController extends BaseController {
 
   @RequestMapping("edit")
   @LoginPermit(NeedLogin = true)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> edit(HttpSession session,
-      @RequestBody @Valid UserEditDTO userEditDTO,
-      BindingResult validateResult) {
+                           @RequestBody @Valid UserEditDTO userEditDTO,
+                           BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        UserDTO currentUser = (UserDTO)session.getAttribute("currentUser");
+        UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
 
         if (!currentUser.getUserName().equals(userEditDTO.getUserName())) {
           throw new AppException("You can only edit your information.");
@@ -282,7 +287,7 @@ public class UserController extends BaseController {
         if (!StringUtil.encodeSHA1(userEditDTO.getOldPassword())
             .equals(currentUser.getPassword())) {
           throw new FieldException("oldPassword", "Your passowrd is wrong, please try again.");
-            }
+        }
         if (userEditDTO.getNewPassword() != null) {
           if (userEditDTO.getNewPasswordRepeat() == null) {
             throw new FieldException("newPasswordRepeat", "Please repeat your new password.");
@@ -315,10 +320,11 @@ public class UserController extends BaseController {
 
   @RequestMapping("adminEdit")
   @LoginPermit(Global.AuthenticationType.ADMIN)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> adminEdit(HttpSession session,
-      @RequestBody @Valid UserAdminEditDTO userAdminEditDTO,
-      BindingResult validateResult) {
+                                @RequestBody @Valid UserAdminEditDTO userAdminEditDTO,
+                                BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
@@ -362,7 +368,8 @@ public class UserController extends BaseController {
 
   @RequestMapping("sendSerialKey/{userName}")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> sendSerialKey(@PathVariable("userName") String userName) {
     Map<String, Object> json = new HashMap<>();
     try {
@@ -385,7 +392,8 @@ public class UserController extends BaseController {
 
   @RequestMapping("secretProfile/{userName}")
   @LoginPermit(Global.AuthenticationType.ADMIN)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> secretProfile(@PathVariable("userName") String userName) {
     Map<String, Object> json = new HashMap<>();
     try {
@@ -404,8 +412,8 @@ public class UserController extends BaseController {
   @RequestMapping("activate/{userName}/{serialKey}")
   @LoginPermit(NeedLogin = false)
   public String activate(@PathVariable("userName") String userName,
-      @PathVariable("serialKey") String serialKey,
-      ModelMap model) {
+                         @PathVariable("serialKey") String serialKey,
+                         ModelMap model) {
     model.addAttribute("userName", userName);
     model.addAttribute("serialKey", serialKey);
     return "user/activate";
@@ -413,9 +421,10 @@ public class UserController extends BaseController {
 
   @RequestMapping("resetPassword")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody
+  public
+  @ResponseBody
   Map<String, Object> resetPassword(@RequestBody @Valid UserActivateDTO userActivateDTO,
-      BindingResult validateResult) {
+                                    BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");

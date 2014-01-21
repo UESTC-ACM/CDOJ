@@ -20,7 +20,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Test cases for conditions entities.
  */
-@ContextConfiguration(classes = { IntegrationTestContext.class })
+@ContextConfiguration(classes = {IntegrationTestContext.class})
 public class ConditionITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired
@@ -29,25 +29,25 @@ public class ConditionITTest extends AbstractTestNGSpringContextTests {
   @Autowired
   private IUserDAO userDAO;
 
-  @SuppressWarnings({ "unchecked", "deprecation" })
+  @SuppressWarnings({"unchecked", "deprecation"})
   @Test
   public void testCondition_emptyEntrySet() throws AppException {
     Condition condition = new Condition();
     List<User> users = (List<User>) userDAO.findAll(condition);
     Assert.assertEquals(6, users.size());
-    for (int i = 0 ; i < users.size(); i++) {
+    for (int i = 0; i < users.size(); i++) {
       Assert.assertEquals(users.get(i).getUserId(), Integer.valueOf(i + 1));
     }
   }
 
-  @SuppressWarnings({ "unchecked", "deprecation" })
+  @SuppressWarnings({"unchecked", "deprecation"})
   @Test
   public void testCondition_emptyEntrySetWithDescId() throws AppException {
     Condition condition = new Condition();
     condition.addOrder("userId", false);
     List<User> users = (List<User>) userDAO.findAll(condition);
     Assert.assertEquals(6, users.size());
-    for (int i = 0 ; i < users.size(); i++) {
+    for (int i = 0; i < users.size(); i++) {
       Assert.assertEquals(users.get(i).getUserId(), Integer.valueOf(users.size() - i));
     }
   }

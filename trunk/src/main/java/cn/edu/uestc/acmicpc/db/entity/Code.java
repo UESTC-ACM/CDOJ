@@ -66,7 +66,7 @@ public class Code implements Serializable {
   private Boolean share;
 
   @Column(name = "share", nullable = false, insertable = true, updatable = true, length = 0,
-  precision = 0)
+      precision = 0)
   @Basic
   public Boolean getShare() {
     return share;

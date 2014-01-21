@@ -22,7 +22,7 @@ import cn.edu.uestc.acmicpc.util.settings.Global;
 /**
  * Test cases for {@link Status}.
  */
-@ContextConfiguration(classes = { IntegrationTestContext.class })
+@ContextConfiguration(classes = {IntegrationTestContext.class})
 public class StatusDatabaseITTest extends AbstractTestNGSpringContextTests {
 
   // TODO(fish): add status service test.

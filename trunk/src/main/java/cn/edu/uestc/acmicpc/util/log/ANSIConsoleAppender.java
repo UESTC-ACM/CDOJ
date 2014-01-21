@@ -5,9 +5,11 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Priority;
 import org.apache.log4j.spi.LoggingEvent;
 
-/** Color-coded console appender for log4j. */
+/**
+ * Color-coded console appender for log4j.
+ */
 public class ANSIConsoleAppender extends ConsoleAppender {
-	
+
   @Override
   protected void subAppend(LoggingEvent event) {
     this.qw.write(getColor(event.getLevel()));
