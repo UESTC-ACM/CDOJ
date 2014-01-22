@@ -21,12 +21,40 @@
         </div>
       </div>
     </div>
-    <div id="article-list">
+    <div id="article-list"
+         ng-controller="ListController"
+         ng-init="condition={
+          currentPage: null,
+          startId: undefined,
+          endId: undefined,
+          keyword: undefined,
+          title: undefined,
+          orderFields: 'id',
+          orderAsc: 'false'
+         };
+         requestUrl='/article/search';">
       <div class="col-md-12">
-        <div id="page-info"></div>
+        <div ui-page-info
+             page-info="pageInfo"
+             condition="condition"
+             id="page-info">
+        </div>
       </div>
       <div class="col-md-12">
-        <div id="list-container">
+        <div class="cdoj-article" ng-repeat="article in list">
+          <h1><a href="/article/show/{{article.articleId}}" target="_blank">{{article.title}}</a>
+          </h1>
+          <small>{{article.clicked}} visited, create by {{article.ownerName}}, last modified at
+            <span class="cdoj-article-post-time">{{Date.create(article.time).relative()}}</span>
+          </small>
+          <div class="cdoj-article-summary">
+            <div class="cdoj-article-summary-content" ui-markdown content="article.content">
+            </div>
+          </div>
+          <p ui-readmore
+             has-more="article.hasMore"
+             article-id="article.articleId"></p>
+          <hr/>
         </div>
       </div>
     </div>

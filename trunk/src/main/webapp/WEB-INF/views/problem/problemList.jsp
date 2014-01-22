@@ -12,173 +12,244 @@ Admin problem list page
   <title>Problem</title>
 </head>
 <body>
-<div id="problem-list">
-  <div class="row">
-    <div class="col-md-12">
-      <div id="page-info">
-      </div>
-      <div id="advance-search">
-        <a href="#" id="advanced" data-toggle="dropdown"><i
-            class="fa fa-caret-square-o-down"></i></a>
-        <ul class="dropdown-menu cdoj-form-menu" role="menu"
-            aria-labelledby="advance-menu">
-          <li role="presentation" id="condition">
-            <form class="form">
-              <fieldset>
-                <legend>Problem Id</legend>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label for="startId">Form</label> <input
-                        type="text" name="startId" maxlength="6"
-                        value="" id="startId"
-                        class="form-control input-sm"/>
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label for="endId">To</label> <input type="text"
-                                                           name="endId" maxlength="6" value=""
-                                                           id="endId"
-                                                           class="form-control input-sm"/>
-                    </div>
+<div id="problem-list"
+     ng-controller="ListController"
+     ng-init="condition={
+        currentPage: null,
+        startId: undefined,
+        endId: undefined,
+        title: undefined,
+        source: undefined,
+        isSpj: undefined,
+        startDifficulty: undefined,
+        endDifficulty: undefined,
+        keyword: undefined,
+        orderFields: undefined,
+        orderAsc: undefined
+    };
+    requestUrl='/problem/search'">
+<div class="row">
+  <div class="col-md-12">
+    <div ui-page-info
+         page-info="pageInfo"
+         condition="condition"
+         id="page-info">
+    </div>
+    <div id="advance-search">
+      <a href="#" id="advanced" data-toggle="dropdown"><i
+          class="fa fa-caret-square-o-down"></i></a>
+      <ul class="dropdown-menu cdoj-form-menu"
+          role="menu"
+          aria-labelledby="advance-menu">
+        <li role="presentation" id="condition">
+          <form class="form">
+            <fieldset>
+              <legend>Problem Id</legend>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="startId">Form</label>
+                    <input type="number"
+                           ng-model="condition.startId"
+                           min="1"
+                           id="startId"
+                           class="form-control input-sm"/>
                   </div>
                 </div>
-              </fieldset>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="endId">To</label>
+                    <input type="number"
+                           ng-model="condition.endId"
+                           min="1"
+                           id="endId"
+                           class="form-control input-sm"/>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
 
-              <fieldset>
-                <legend>Difficulty</legend>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label for="startDifficulty">Form</label> <input
-                        type="text" name="startDifficulty"
-                        maxlength="6" value="" id="startDifficulty"
-                        class="form-control input-sm"/>
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label for="endDifficulty">To</label> <input
-                        type="text" name="endDifficulty" maxlength="6"
-                        value="" id="endDifficulty"
-                        class="form-control input-sm"/>
-                    </div>
+            <fieldset>
+              <legend>Difficulty</legend>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="startDifficulty">Form</label>
+                    <input type="number"
+                           ng-model="condition.startDifficulty"
+                           min="1"
+                           max="5"
+                           id="startDifficulty"
+                           class="form-control input-sm"/>
                   </div>
                 </div>
-              </fieldset>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="endDifficulty">To</label>
+                    <input type="number"
+                           ng-model="condition.endDifficulty"
+                           min="1"
+                           max="5"
+                           id="endDifficulty"
+                           class="form-control input-sm"/>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
 
-              <fieldset>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="form-group">
-                      <label for="title">Title</label> <input
-                        type="text" name="title" maxlength="100"
-                        value="" id="title"
-                        class="form-control input-sm"/>
-                    </div>
-                  </div>
-                  <div class="col-md-12">
-                    <div class="form-group">
-                      <label for="source">Source</label> <input
-                        type="text" name="source" maxlength="100"
-                        value="" id="source"
-                        class="form-control input-sm"/>
-                    </div>
+            <fieldset>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text"
+                           ng-model="condition.title"
+                           maxlength="100"
+                           id="title"
+                           class="form-control input-sm"/>
                   </div>
                 </div>
-              </fieldset>
-              <fieldset>
-                <legend>Is SPJ</legend>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="form-group">
-                      <label class="radio-inline"> <input
-                          type="radio" name="isSpj" value="all"
-                          checked=""/> All
-                      </label> <label class="radio-inline"> <input
-                        type="radio" name="isSpj" value="true"/> Yes
-                    </label> <label class="radio-inline"> <input
-                        type="radio" name="isSpj" value="false"/> No
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="source">Source</label>
+                    <input type="text"
+                           ng-model="condition.source"
+                           maxlength="100"
+                           id="source"
+                           class="form-control input-sm"/>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Is SPJ</legend>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="radio-inline">
+                      <input type="radio"
+                             ng-model="condition.isSpj"
+                             checked=""/> All
                     </label>
+                    <label class="radio-inline">
+                      <input type="radio"
+                             ng-model="condition.isSpj"
+                             value="true"/> Yes
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio"
+                             ng-model="condition.isSpj"
+                             value="false"/> No
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+            <c:if
+                test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
+              <fieldset>
+                <legend>Is Visible</legend>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label class="radio-inline">
+                        <input type="radio"
+                               ng-model="condition.isVisible"
+                               checked=""/> All
+                      </label>
+                      <label class="radio-inline">
+                        <input type="radio"
+                               ng-model="condition.isVisible"
+                               value="true"/> Yes
+                      </label>
+                      <label class="radio-inline">
+                        <input type="radio"
+                               ng-model="condition.isVisible"
+                               value="false"/> No
+                      </label>
                     </div>
                   </div>
                 </div>
               </fieldset>
-              <c:if
-                  test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
-                <fieldset>
-                  <legend>Is Visible</legend>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label class="radio-inline"> <input
-                            type="radio" name="isVisible" value="all"
-                            checked=""/> All
-                        </label> <label class="radio-inline"> <input
-                          type="radio" name="isVisible" value="true"/>
-                        Yes
-                      </label> <label class="radio-inline"> <input
-                          type="radio" name="isVisible" value="false"/>
-                        No
-                      </label>
-                      </div>
-                    </div>
-                  </div>
-                </fieldset>
-              </c:if>
-              <p class="pull-right">
-                <button type="submit" class="btn btn-primary btn-sm"
-                        id="search-button">Search
-                </button>
-                <button type="button" class="btn btn-danger btn-sm"
-                        id="reset-button">Reset
-                </button>
-              </p>
-            </form>
-          </li>
-        </ul>
-      </div>
+            </c:if>
+            <p class="pull-right">
+              <button type="button" class="btn btn-danger btn-sm" ng-click="reset()">Reset
+              </button>
+            </p>
+          </form>
+        </li>
+      </ul>
     </div>
   </div>
+</div>
 
-  <div class="row">
-    <c:choose>
-      <c:when
-          test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
-        <div class="col-md-12">
-          <table class="table">
-            <thead>
-            <tr>
-              <th style="width: 4em; text-align: right;">#</th>
-              <th><a href="/problem/editor/new">Add new
-                problem</a></th>
-              <th style="width: 5em; text-align: right;">Solved</th>
-              <th style="width: 105px;"></th>
-            </tr>
-            </thead>
-            <tbody id="list-container">
-            </tbody>
-          </table>
-        </div>
-      </c:when>
-      <c:otherwise>
-        <div class="col-md-12">
-          <table class="table">
-            <thead>
-            <tr>
-              <th style="width: 4em; text-align: right;">#</th>
-              <th></th>
-              <th style="width: 5em; text-align: right;">Solved</th>
-            </tr>
-            </thead>
-            <tbody id="list-container">
-            </tbody>
-          </table>
-        </div>
-      </c:otherwise>
-    </c:choose>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-condensed">
+      <c:choose>
+        <c:when
+            test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
+          <thead>
+          <tr>
+            <th style="width: 4em; text-align: right;">#</th>
+            <th><a href="/problem/editor/new">Add new
+              problem</a></th>
+            <th style="width: 5em; text-align: right;">Solved</th>
+            <th style="width: 105px;"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="problem in list">
+            <td style="text-align: right;">{{problem.problemId}}</td>
+            <td>
+              <a href="/problem/show/{{problem.problemId}}" target="_blank">{{problem.title}}</a>
+              <small>&nbsp- {{problem.source}}</small>
+            </td>
+            <td ng-class="{
+                panelAC: data.status == AuthorStatusType.PASS,
+                panelWA: data.status == AuthorStatusType.FAIL
+                         }" style="text-align: right;">
+              <a href="/status/list?problemId={{problem.problemId}}" target="_blank">x
+                {{problem.solved}}</a>
+            </td>
+            <td ui-problem-admin-span
+                problem-id="problem.problemId"
+                is-visible="problem.isVisible"
+                style="padding: 4px;">
+            </td>
+          </tr>
+          </tbody>
+        </c:when>
+        <c:otherwise>
+          <thead>
+          <tr>
+            <th style="width: 4em; text-align: right;">#</th>
+            <th></th>
+            <th style="width: 5em; text-align: right;">Solved</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="problem in list">
+            <td style="text-align: right;">{{problem.problemId}}</td>
+            <td>
+              <a href="/problem/show/{{problem.problemId}}"
+                 target="_blank">{{problem.title}}</a>
+              <small>&nbsp- {{problem.source}}</small>
+            </td>
+            <td ng-class="{
+                panelAC: data.status == AuthorStatusType.PASS,
+                panelWA: data.status == AuthorStatusType.FAIL
+                         }" style="text-align: right;">
+              <a href="/status/list?problemId={{problem.problemId}}" target="_blank">x
+                {{problem.solved}}</a>
+            </td>
+          </tr>
+          </tbody>
+        </c:otherwise>
+      </c:choose>
+    </table>
   </div>
+</div>
 </div>
 
 </body>

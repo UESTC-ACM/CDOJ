@@ -1,6 +1,8 @@
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
@@ -72,11 +74,11 @@ public class StatusCondition extends BaseCondition {
   public Integer contestId;
 
   /**
-   * Result.
+   * Results.
    *
    * @see OnlineJudgeResultType
    */
-  public OnlineJudgeResultType result;
+  public Set<OnlineJudgeResultType> results = new HashSet<>();
 
   @Exp(mapField = "problemByProblemId.isVisible", type = ConditionType.EQUALS)
   public Boolean isVisible;
@@ -99,50 +101,14 @@ public class StatusCondition extends BaseCondition {
           userName);
     }
 
-    if (result != null && result != Global.OnlineJudgeResultType.OJ_ALL) {
+    if (results != null && !results.contains(Global.OnlineJudgeResultType.OJ_ALL)) {
       Condition typeCondition = new Condition(JoinedType.OR);
-      switch (result) {
-        case OJ_WAIT:
-          typeCondition.addEntry("result", ConditionType.EQUALS, 0);
-          typeCondition.addEntry("result", ConditionType.EQUALS, 18);
-          break;
-        case OJ_AC:
-          typeCondition.addEntry("result", ConditionType.EQUALS, 1);
-          break;
-        case OJ_PE:
-          typeCondition.addEntry("result", ConditionType.EQUALS, 2);
-          break;
-        case OJ_TLE:
-          typeCondition.addEntry("result", ConditionType.EQUALS, 3);
-          break;
-        case OJ_MLE:
-          typeCondition.addEntry("result", ConditionType.EQUALS, 4);
-          break;
-        case OJ_WA:
-          typeCondition.addEntry("result", ConditionType.EQUALS, 5);
-          break;
-        case OJ_OLE:
-          typeCondition.addEntry("result", ConditionType.EQUALS, 6);
-          break;
-        case OJ_CE:
-          typeCondition.addEntry("result", ConditionType.EQUALS, 7);
-          break;
-        case OJ_RE:
-          typeCondition.addEntry("result", ConditionType.EQUALS, 8);
-          typeCondition.addEntry("result", ConditionType.EQUALS, 9);
-          typeCondition.addEntry("result", ConditionType.EQUALS, 10);
-          typeCondition.addEntry("result", ConditionType.EQUALS, 11);
-          typeCondition.addEntry("result", ConditionType.EQUALS, 12);
-          typeCondition.addEntry("result", ConditionType.EQUALS, 15);
-          break;
-        case OJ_RF:
-          typeCondition.addEntry("result", ConditionType.EQUALS, 13);
-          break;
-        case OJ_SE:
-          typeCondition.addEntry("result", ConditionType.EQUALS, 14);
-          break;
-        default:
-          break;
+      Set<Integer> affectedResults = new HashSet<>();
+      for (OnlineJudgeResultType result : results) {
+        affectedResults.addAll(result.getResults());
+      }
+      for (Integer result : affectedResults) {
+        typeCondition.addEntry("result", ConditionType.EQUALS, result);
       }
       condition.addEntry(typeCondition);
     }

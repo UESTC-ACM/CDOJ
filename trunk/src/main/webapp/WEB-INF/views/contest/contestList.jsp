@@ -1,8 +1,5 @@
 <%--
  Contest list page
-
- @author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
- @version 1
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator"
@@ -14,10 +11,25 @@
   <title>Contest</title>
 </head>
 <body>
-<div id="contest-list">
+<div id="contest-list"
+     ng-controller="ListController"
+     ng-init="condition={
+        currentPage: null,
+        startId: undefined,
+        endId: undefined,
+        keyword: undefined,
+        title: undefined,
+        orderFields: 'id',
+        orderAsc: 'false'
+    };
+    requestUrl='/contest/search'">
   <div class="row">
     <div class="col-md-12">
-      <div id="page-info"></div>
+      <div ui-page-info
+           page-info="pageInfo"
+           condition="condition"
+           id="page-info">
+      </div>
       <div id="advance-search">
         <a href="#" id="advanced" data-toggle="dropdown"><i
             class="fa fa-caret-square-o-down"></i></a>
@@ -30,18 +42,22 @@
                 <div class="row">
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label for="startId">Form</label> <input
-                        type="text" name="startId" maxlength="6"
-                        value="" id="startId"
-                        class="form-control input-sm"/>
+                      <label for="startId">Form</label>
+                      <input type="number"
+                             ng-model="condition.startId"
+                             min="1"
+                             id="startId"
+                             class="form-control input-sm"/>
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label for="endId">To</label> <input type="text"
-                                                           name="endId" maxlength="6" value=""
-                                                           id="endId"
-                                                           class="form-control input-sm"/>
+                      <label for="endId">To</label>
+                      <input type="number"
+                             ng-model="condition.endId"
+                             min="1"
+                             id="endId"
+                             class="form-control input-sm"/>
                     </div>
                   </div>
                 </div>
@@ -51,10 +67,12 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="title">Title</label> <input
-                        type="text" name="title" maxlength="100"
-                        value="" id="title"
-                        class="form-control input-sm"/>
+                      <label for="title">Title</label>
+                      <input type="text"
+                             ng-model="condition.title"
+                             maxlength="100"
+                             id="title"
+                             class="form-control input-sm"/>
                     </div>
                   </div>
                 </div>
@@ -66,27 +84,28 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
-                        <label class="radio-inline"> <input
-                            type="radio" name="isVisible" value="all"
-                            checked=""/> All
-                        </label> <label class="radio-inline"> <input
-                          type="radio" name="isVisible" value="true"/>
-                        Yes
-                      </label> <label class="radio-inline"> <input
-                          type="radio" name="isVisible" value="false"/>
-                        No
-                      </label>
+                        <label class="radio-inline">
+                          <input type="radio"
+                                 ng-model="condition.isVisible"
+                                 checked=""/> All
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio"
+                                 ng-model="condition.isVisible"
+                                 value="true"/> Yes
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio"
+                                 ng-model="condition.isVisible"
+                                 value="false"/> No
+                        </label>
                       </div>
                     </div>
                   </div>
                 </fieldset>
               </c:if>
               <p class="pull-right">
-                <button type="submit" class="btn btn-primary btn-sm"
-                        id="search-button">Search
-                </button>
-                <button type="button" class="btn btn-danger btn-sm"
-                        id="reset-button">Reset
+                <button type="button" class="btn btn-danger btn-sm" ng-click="reset()">Reset
                 </button>
               </p>
             </form>
@@ -96,19 +115,69 @@
   </div>
 
   <div class="row">
-    <c:if
-        test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
-      <div class="col-md-12" id="contest-admin-operation">
-        <div class="panel panel-danger">
-          <div class="panel-body">
-            <a href="/contest/editor/new" class="btn btn-success">
-              <i class="fa fa-plus"></i>Add new contest
-            </a>
-          </div>
-        </div>
-      </div>
-    </c:if>
-    <div id="list-container"></div>
+    <div class="col-md-12">
+      <table class="table table-condensed">
+        <c:choose>
+          <c:when
+              test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
+            <thead>
+            <tr>
+              <th style="width: 4em; text-align: right;">#</th>
+              <th><a href="/contest/editor/new">Add new contest</a></th>
+              <th style="width: 15em; text-align: right;">Start time</th>
+              <th style="width: 10em; text-align: right;">Length</th>
+              <th style="width: 105px;"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="contest in list">
+              <td style="text-align: right;">{{contest.contestId}}</td>
+              <td>
+                <a href="/contest/show/{{contest.contestId}}" target="_blank">{{contest.title}}</a>
+              </td>
+              <td style="text-align: right;"
+                  ui-time
+                  time="contest.time">
+              </td>
+              <td style="text-align: right;"
+                  ui-time-length
+                  length="contest.length"
+                  since="contest.time">
+              </td>
+              <td>
+              </td>
+            </tr>
+            </tbody>
+          </c:when>
+          <c:otherwise>
+            <thead>
+            <tr>
+              <th style="width: 4em; text-align: right;">#</th>
+              <th></th>
+              <th style="width: 5em; text-align: right;">Solved</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="problem in list">
+              <td style="text-align: right;">{{problem.problemId}}</td>
+              <td>
+                <a href="/problem/show/{{problem.problemId}}"
+                   target="_blank">{{problem.title}}</a>
+                <small>&nbsp- {{problem.source}}</small>
+              </td>
+              <td ng-class="{
+                panelAC: data.status == AuthorStatusType.PASS,
+                panelWA: data.status == AuthorStatusType.FAIL
+                         }" style="text-align: right;">
+                <a href="/status/list?problemId={{problem.problemId}}" target="_blank">x
+                  {{problem.solved}}</a>
+              </td>
+            </tr>
+            </tbody>
+          </c:otherwise>
+        </c:choose>
+      </table>
+    </div>
   </div>
 </div>
 </body>
