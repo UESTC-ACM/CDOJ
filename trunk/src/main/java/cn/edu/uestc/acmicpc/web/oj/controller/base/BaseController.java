@@ -73,14 +73,13 @@ public class BaseController {
    * @param count           total number of records
    * @param currentPage     current page number
    * @param countPerPage    number of records per page
-   * @param baseURL         base URL
    * @param displayDistance display distance for page numbers
    * @return return a PageInfo object and put the HTML content into request attribute list.
    */
-  protected PageInfo buildPageInfo(Long count, Long currentPage, Long countPerPage, String baseURL,
+  protected PageInfo buildPageInfo(Long count, Long currentPage, Long countPerPage,
                                    Integer displayDistance) {
-    return PageInfo.create(count, countPerPage, baseURL,
-        displayDistance == null ? 2 : displayDistance, currentPage);
+    return PageInfo.create(count, countPerPage, displayDistance == null ? 2 : displayDistance,
+        currentPage);
   }
 
 }

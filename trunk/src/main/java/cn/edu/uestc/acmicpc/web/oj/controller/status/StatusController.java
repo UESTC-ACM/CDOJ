@@ -129,7 +129,7 @@ public class StatusController extends BaseController {
         recordPerPage = statusCondition.countPerPage;
       }
       PageInfo pageInfo = buildPageInfo(count, statusCondition.currentPage,
-          recordPerPage, "", null);
+          recordPerPage, null);
       List<StatusListDTO> statusListDTOList = statusService.getStatusList(statusCondition,
           pageInfo);
       for (StatusListDTO statusListDTO : statusListDTOList) {
@@ -141,9 +141,7 @@ public class StatusController extends BaseController {
         }
       }
 
-      if (pageInfo.getTotalPages() != 1) {
-        json.put("pageInfo", pageInfo.getHtmlString());
-      }
+      json.put("pageInfo", pageInfo);
       json.put("result", "success");
       json.put("list", statusListDTOList);
     } catch (AppException e) {

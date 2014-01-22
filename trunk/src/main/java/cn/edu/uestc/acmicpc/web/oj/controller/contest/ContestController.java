@@ -142,13 +142,11 @@ public class ContestController extends BaseController {
       }
       Long count = contestService.count(contestCondition);
       PageInfo pageInfo = buildPageInfo(count, contestCondition.currentPage,
-          Global.RECORD_PER_PAGE, "", null);
+          Global.RECORD_PER_PAGE, null);
       List<ContestListDTO> contestListDTOList = contestService.
           getContestListDTOList(contestCondition, pageInfo);
 
-      if (pageInfo.getTotalPages() != 1) {
-        json.put("pageInfo", pageInfo.getHtmlString());
-      }
+      json.put("pageInfo", pageInfo);
       json.put("result", "success");
       json.put("list", contestListDTOList);
     } catch (AppException e) {
