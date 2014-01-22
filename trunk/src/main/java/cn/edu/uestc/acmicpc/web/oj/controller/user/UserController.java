@@ -42,7 +42,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
-import cn.edu.uestc.acmicpc.util.settings.Global.AuthenticationType;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
@@ -186,7 +185,7 @@ public class UserController extends BaseController {
 
   @RequestMapping("list")
   @LoginPermit(NeedLogin = false)
-  public String list(ModelMap model) {
+  public String list() {
     return "user/userList";
   }
 
@@ -194,19 +193,15 @@ public class UserController extends BaseController {
   @LoginPermit(NeedLogin = false)
   public
   @ResponseBody
-  Map<String, Object> search(HttpSession session,
-                             @RequestBody UserCondition userCondition) {
+  Map<String, Object> search(@RequestBody UserCondition userCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
       Long count = userService.count(userCondition);
       PageInfo pageInfo = buildPageInfo(count, userCondition.currentPage,
-          Global.RECORD_PER_PAGE, "", null);
+          Global.RECORD_PER_PAGE, null);
       List<UserListDTO> userList = userService.getUserListDTOList(userCondition, pageInfo);
 
-      if (pageInfo.getTotalPages() != 1) {
-        json.put("pageInfo", pageInfo.getHtmlString());
-      }
+      json.put("pageInfo", pageInfo);
       json.put("result", "success");
       json.put("list", userList);
     } catch (AppException e) {
@@ -222,21 +217,12 @@ public class UserController extends BaseController {
 
   @RequestMapping("center/{userName}")
   @LoginPermit(NeedLogin = false)
-  public String center(HttpSession session,
-                       @PathVariable("userName") String userName,
+  public String center(@PathVariable("userName") String userName,
                        ModelMap model) {
     try {
       UserCenterDTO userCenterDTO = userService.getUserCenterDTOByUserName(userName);
       if (userCenterDTO == null) {
         throw new AppException("No such user!");
-      }
-      if (userCenterDTO.getType() == AuthenticationType.ADMIN.ordinal()) {
-        UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-        if (currentUser == null ||
-            currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
-          //Hide administrator from user center.
-          throw new AppException("No such user!");
-        }
       }
       Map<Integer, Global.AuthorStatusType> problemStatus = new TreeMap<>();
 
@@ -322,8 +308,7 @@ public class UserController extends BaseController {
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public
   @ResponseBody
-  Map<String, Object> adminEdit(HttpSession session,
-                                @RequestBody @Valid UserAdminEditDTO userAdminEditDTO,
+  Map<String, Object> adminEdit(@RequestBody @Valid UserAdminEditDTO userAdminEditDTO,
                                 BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {

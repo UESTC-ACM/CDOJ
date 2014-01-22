@@ -91,14 +91,12 @@ public class ArticleController extends BaseController {
       }
       Long count = articleService.count(articleCondition);
       PageInfo pageInfo = buildPageInfo(count, articleCondition.currentPage,
-          Global.ARTICLE_PER_PAGE, "", null);
+          Global.ARTICLE_PER_PAGE, null);
 
       List<ArticleListDTO> articleListDTOList = articleService.getArticleList(
           articleCondition, pageInfo);
 
-      if (pageInfo.getTotalPages() != 1) {
-        json.put("pageInfo", pageInfo.getHtmlString());
-      }
+      json.put("pageInfo", pageInfo);
       json.put("result", "success");
       json.put("list", articleListDTOList);
     } catch (AppException e) {

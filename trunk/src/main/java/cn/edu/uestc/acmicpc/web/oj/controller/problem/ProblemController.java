@@ -149,7 +149,7 @@ public class ProblemController extends BaseController {
       }
       Long count = problemService.count(problemCondition);
       PageInfo pageInfo = buildPageInfo(count, problemCondition.currentPage,
-          Global.RECORD_PER_PAGE, "", null);
+          Global.RECORD_PER_PAGE, null);
 
       List<ProblemListDTO> problemListDTOList = problemService
           .getProblemListDTOList(
@@ -165,9 +165,7 @@ public class ProblemController extends BaseController {
         }
       }
 
-      if (pageInfo.getTotalPages() != 1) {
-        json.put("pageInfo", pageInfo.getHtmlString());
-      }
+      json.put("pageInfo", pageInfo);
       json.put("result", "success");
       json.put("list", problemListDTOList);
     } catch (AppException e) {
