@@ -93,10 +93,11 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * Get the status that pending to judge.
    *
+   * @param isFirstTime whether is the first time the scheduler called.
    * @return List of {@link StatusForJudgeDTO} entities.
    * @throws AppException
    */
-  public List<StatusForJudgeDTO> getQueuingStatus() throws AppException;
+  public List<StatusForJudgeDTO> getQueuingStatus(boolean isFirstTime) throws AppException;
 
   /**
    * Updates status by {@link StatusForJudgeDTO} entity.
