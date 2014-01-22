@@ -55,12 +55,13 @@ public class Scheduler implements Runnable, ApplicationContextAware {
 
   @Override
   public void run() {
+    searchForJudge(true);
     Timer timer = new Timer(true);
     timer.schedule(new TimerTask() {
 
       @Override
       public void run() {
-        searchForJudge();
+        searchForJudge(false);
       }
     }, 0, INTERVAL * 1000L);
   }
@@ -68,9 +69,9 @@ public class Scheduler implements Runnable, ApplicationContextAware {
   /**
    * Search status in queuing.
    */
-  private void searchForJudge() {
+  private void searchForJudge(boolean isFirstTime) {
     try {
-      List<StatusForJudgeDTO> statusList = statusService.getQueuingStatus();
+      List<StatusForJudgeDTO> statusList = statusService.getQueuingStatus(isFirstTime);
       for (StatusForJudgeDTO status : statusList) {
         status.setResult(Global.OnlineJudgeReturnType.OJ_JUDGING.ordinal());
         status.setCaseNumber(0);

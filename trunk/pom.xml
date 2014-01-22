@@ -532,7 +532,6 @@
           <suiteXmlFiles>
             <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
           </suiteXmlFiles>
-          <failsOnError>true</failsOnError>
         </configuration>
       </plugin>
       <plugin>
@@ -542,7 +541,6 @@
           <suiteXmlFiles>
             <suiteXmlFile>src/integration-test/resources/testng.xml</suiteXmlFile>
           </suiteXmlFiles>
-          <failsOnError>true</failsOnError>
         </configuration>
         <executions>
           <execution>

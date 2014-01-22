@@ -40,7 +40,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
       throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
-    statusCondition.result = Global.OnlineJudgeResultType.OJ_AC;
+    statusCondition.results.add(Global.OnlineJudgeResultType.OJ_AC);
     return (List<Integer>) statusDAO.findAll("problemByProblemId.problemId",
         statusCondition.getCondition());
   }
@@ -66,7 +66,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   public Long countProblemsUserAccepted(Integer userId) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
-    statusCondition.result = Global.OnlineJudgeResultType.OJ_AC;
+    statusCondition.results.add(Global.OnlineJudgeResultType.OJ_AC);
     return statusDAO.customCount("distinct problemId", statusCondition.getCondition());
   }
 
@@ -81,7 +81,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   public Long countUsersAcceptedProblem(Integer problemId) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.problemId = problemId;
-    statusCondition.result = Global.OnlineJudgeResultType.OJ_AC;
+    statusCondition.results.add(Global.OnlineJudgeResultType.OJ_AC);
     return statusDAO.customCount("distinct userId", statusCondition.getCondition());
   }
 
@@ -155,9 +155,12 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   }
 
   @Override
-  public List<StatusForJudgeDTO> getQueuingStatus() throws AppException {
+  public List<StatusForJudgeDTO> getQueuingStatus(boolean isFirstTime) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
-    statusCondition.result = OnlineJudgeResultType.OJ_WAIT;
+    statusCondition.results.add(OnlineJudgeResultType.OJ_WAIT);
+    if (isFirstTime) {
+     statusCondition.results.add(OnlineJudgeResultType.OJ_JUDGING);
+    }
     statusCondition.orderFields = "statusId";
     statusCondition.orderAsc = "true";
     return statusDAO.findAll(StatusForJudgeDTO.class,
