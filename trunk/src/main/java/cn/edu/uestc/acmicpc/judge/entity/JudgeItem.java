@@ -24,28 +24,20 @@ public class JudgeItem {
 
   private StatusForJudgeDTO status;
   private String compileInfo;
-  private CompileInfoService compileInfoService;
-  private StatusService statusService;
-  private UserService userService;
-  private ProblemService problemService;
+  private final CompileInfoService compileInfoService;
+  private final StatusService statusService;
+  private final UserService userService;
+  private final ProblemService problemService;
 
   @Autowired
-  public void setCompileInfoService(CompileInfoService compileInfoService) {
+  public JudgeItem(
+      CompileInfoService compileInfoService,
+      StatusService statusService,
+      UserService userService,
+      ProblemService problemService) {
     this.compileInfoService = compileInfoService;
-  }
-
-  @Autowired
-  public void setStatusService(StatusService statusService) {
     this.statusService = statusService;
-  }
-
-  @Autowired
-  public void setUserService(UserService userService) {
     this.userService = userService;
-  }
-
-  @Autowired
-  public void setProblemService(ProblemService problemService) {
     this.problemService = problemService;
   }
 

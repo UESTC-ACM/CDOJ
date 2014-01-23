@@ -37,7 +37,6 @@ public class Judge implements Runnable {
   /**
    * Judge's name.
    */
-  @SuppressWarnings("unused")
   private String judgeName;
   /**
    * Judge's work path.
