@@ -124,9 +124,9 @@
             <tr>
               <th style="width: 4em; text-align: right;">#</th>
               <th><a href="/contest/editor/new">Add new contest</a></th>
-              <th style="width: 15em; text-align: right;">Start time</th>
-              <th style="width: 10em; text-align: right;">Length</th>
-              <th style="width: 105px;"></th>
+              <th style="width: 12em; text-align: right;">Start time</th>
+              <th style="width: 9em; text-align: right;">Length</th>
+              <th style="width: 55px;"></th>
             </tr>
             </thead>
             <tbody>
@@ -141,10 +141,12 @@
               </td>
               <td style="text-align: right;"
                   ui-time-length
-                  length="contest.length"
-                  since="contest.time">
+                  length="contest.length">
               </td>
-              <td>
+              <td ui-contest-admin-span
+                  contest-id="contest.contestId"
+                  is-visible="contest.isVisible"
+                  style="padding: 4px;">
               </td>
             </tr>
             </tbody>
@@ -153,24 +155,24 @@
             <thead>
             <tr>
               <th style="width: 4em; text-align: right;">#</th>
-              <th></th>
-              <th style="width: 5em; text-align: right;">Solved</th>
+              <th><a href="/contest/editor/new">Add new contest</a></th>
+              <th style="width: 12em; text-align: right;">Start time</th>
+              <th style="width: 9em; text-align: right;">Length</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="problem in list">
-              <td style="text-align: right;">{{problem.problemId}}</td>
+            <tr ng-repeat="contest in list">
+              <td style="text-align: right;">{{contest.contestId}}</td>
               <td>
-                <a href="/problem/show/{{problem.problemId}}"
-                   target="_blank">{{problem.title}}</a>
-                <small>&nbsp- {{problem.source}}</small>
+                <a href="/contest/show/{{contest.contestId}}" target="_blank">{{contest.title}}</a>
               </td>
-              <td ng-class="{
-                panelAC: data.status == AuthorStatusType.PASS,
-                panelWA: data.status == AuthorStatusType.FAIL
-                         }" style="text-align: right;">
-                <a href="/status/list?problemId={{problem.problemId}}" target="_blank">x
-                  {{problem.solved}}</a>
+              <td style="text-align: right;"
+                  ui-time
+                  time="contest.time">
+              </td>
+              <td style="text-align: right;"
+                  ui-time-length
+                  length="contest.length">
               </td>
             </tr>
             </tbody>
