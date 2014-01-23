@@ -6,8 +6,11 @@ cdoj.directive("uiStatus",
   controller: [
     "$scope", "$http"
     ($scope, $http) ->
+      $scope.waitingForResponse = false
       if [0, 16, 17, 18].some($scope.status.returnTypeId)
         timmer = setInterval(->
+          if $scope.waitingForResponse == false then return
+          $scope.waitingForResponse = true
           condition =
             currentPage: null
             startId: $scope.status.statusId
@@ -27,6 +30,7 @@ cdoj.directive("uiStatus",
                 if [0, 16, 17, 18].none($scope.status.returnTypeId)
                   clearInterval(timmer)
                 console.log $scope.status
+                $scope.waitingForResponse = false
           )
         , 500)
   ]

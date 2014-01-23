@@ -20899,9 +20899,14 @@ var styleDirective = valueFn({
       controller: [
         "$scope", "$http", function($scope, $http) {
           var timmer;
-          if ([0, 16, 18].some($scope.status.returnTypeId)) {
+          $scope.waitingForResponse = false;
+          if ([0, 16, 17, 18].some($scope.status.returnTypeId)) {
             return timmer = setInterval(function() {
               var condition;
+              if ($scope.waitingForResponse === false) {
+                return;
+              }
+              $scope.waitingForResponse = true;
               condition = {
                 currentPage: null,
                 startId: $scope.status.statusId,
@@ -20919,10 +20924,11 @@ var styleDirective = valueFn({
                 data = response.data;
                 if (data.result === "success" && data.list.length === 1) {
                   $scope.status = data.list[0];
-                  if ([0, 16, 18].none($scope.status.returnTypeId)) {
+                  if ([0, 16, 17, 18].none($scope.status.returnTypeId)) {
                     clearInterval(timmer);
                   }
-                  return console.log($scope.status);
+                  console.log($scope.status);
+                  return $scope.waitingForResponse = false;
                 }
               });
             }, 500);
