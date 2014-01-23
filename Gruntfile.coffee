@@ -57,6 +57,7 @@ module.exports = (grunt) ->
         src: [
           "src/js/jquery-2.0.3.js"
           "src/js/sugar-full.development.js"
+          "src/js/string.js"
           "src/js/underscore.js"
           "src/js/prettify.js"
           "src/js/marked.js"

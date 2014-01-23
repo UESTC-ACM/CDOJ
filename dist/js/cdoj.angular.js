@@ -20563,7 +20563,7 @@ var styleDirective = valueFn({
 
   cdoj = angular.module("cdoj", []);
 
-  cdoj.controller('ContestEditorController', [
+  cdoj.controller("ContestEditorController", [
     "$scope", "$http", function($scope, $http) {
       $scope.contest = {
         action: 0,
@@ -20582,9 +20582,9 @@ var styleDirective = valueFn({
         return $scope.contest.problemList = _.map(newVal, function(val) {
           return val.problemId;
         }).join(",");
-      });
+      }, true);
       $scope.updateProblemTitle = function(problem) {
-        if (problem.problemId === "") {
+        if (problem.problemId === void 0) {
           return problem.title = "Invalid problem id!";
         } else {
           return $http.get("/problem/query/" + problem.problemId + "/title").then(function(response) {
@@ -20621,13 +20621,6 @@ var styleDirective = valueFn({
       $scope.removeProblem = function(index) {
         return $scope.problemList.splice(index, 1);
       };
-      $scope.updateProblemTitle = function(problem) {
-        if (problem.problemId === void 0) {
-          return problem.title = "Invalid problem id!";
-        } else {
-          return $scope.updateProblemTitle(problem);
-        }
-      };
       return $scope.submit = function() {
         var contestEditDTO,
           _this = this;
@@ -20643,6 +20636,60 @@ var styleDirective = valueFn({
       };
     }
   ]);
+
+  cdoj.controller("ListController", [
+    "$scope", "$http", function($scope, $http) {
+      $scope.condition = 0;
+      $scope.list = [];
+      $scope.pageInfo = {
+        countPerPage: 20,
+        currentPage: 1,
+        displayDistance: 2,
+        totalPages: 1
+      };
+      $scope.requestUrl = 0;
+      $scope.reset = function() {
+        _.each($scope.condition, function(value, index) {
+          return $scope.condition[index] = void 0;
+        });
+        return $scope.condition["currentPage"] = null;
+      };
+      return $scope.$watch("condition", function() {
+        var _this = this;
+        if ($scope.requestUrl !== 0) {
+          return $http.post($scope.requestUrl, $scope.condition).then(function(response) {
+            $scope.list = response.data.list;
+            return $scope.pageInfo = response.data.pageInfo;
+          });
+        }
+      }, true);
+    }
+  ]);
+
+  cdoj.directive("uiContestAdminSpan", function() {
+    return {
+      restrict: "A",
+      scope: {
+        contestId: "=",
+        isVisible: "="
+      },
+      controller: [
+        "$scope", "$http", function($scope, $http) {
+          return $scope.editVisible = function() {
+            var queryString,
+              _this = this;
+            queryString = "/contest/operator/" + $scope.contestId + "/isVisible/" + (!$scope.isVisible);
+            return $http.post(queryString).then(function(response) {
+              if (response.data.result === "success") {
+                return $scope.isVisible = !$scope.isVisible;
+              }
+            });
+          };
+        }
+      ],
+      template: "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm\" ng-click=\"editVisible()\" style=\"padding: 1px 5px;\">\n      <i class=\"fa\" ng-class=\"{\n        'fa-eye': isVisible == true,\n        'fa-eye-slash': isVisible == false\n      }\"></i>\n    </button>\n    <a href=\"/contest/editor/{{contestId}}\" target=\"_blank\"\n       class=\"btn btn-default btn-sm\" style=\"padding: 1px 5px;\"><i class=\"fa fa-pencil\"></i></a>\n  </div>\n</div>"
+    };
+  });
 
   cdoj.directive("uiDatetimepicker", function() {
     return {
@@ -20716,9 +20763,9 @@ var styleDirective = valueFn({
     return {
       restrict: "A",
       scope: {
-        content: "=content"
+        content: "="
       },
-      link: function($scope, $element, $attrs) {
+      link: function($scope, $element) {
         var refresh;
         refresh = function() {
           $element.prettify();
@@ -20733,6 +20780,221 @@ var styleDirective = valueFn({
           });
         }
       }
+    };
+  });
+
+  cdoj.directive("uiPageInfo", function() {
+    return {
+      restrict: "A",
+      scope: {
+        pageInfo: "=",
+        condition: "="
+      },
+      controller: [
+        "$scope", function($scope) {
+          $scope.pageList = [];
+          $scope.$watch("pageInfo", function() {
+            var beginPages, endPages;
+            if ($scope.pageInfo.totalPages > 1) {
+              beginPages = Math.max(1, $scope.pageInfo.currentPage - $scope.pageInfo.displayDistance);
+              endPages = Math.min($scope.pageInfo.totalPages, beginPages + $scope.pageInfo.displayDistance * 2);
+              beginPages = Math.max(1, endPages - $scope.pageInfo.displayDistance * 2);
+              return $scope.pageList = _.range(beginPages, endPages + 1).map(function(num) {
+                return {
+                  page: num,
+                  active: num === $scope.pageInfo.currentPage
+                };
+              });
+            }
+          });
+          return $scope.jump = function(target) {
+            return $scope.condition.currentPage = target;
+          };
+        }
+      ],
+      template: "<ul class=\"pagination pagination-sm\">\n  <li><a href=\"#\" ng-click=\"jump(1)\"><i class=\"fa fa-arrow-left\"></i></a></li>\n  <li ng-repeat=\"page in pageList\"\n      ng-class=\"{active: page.active}\">\n    <a href=\"#\" ng-click=\"jump(page.page)\">{{page.page}}</a>\n  </li>\n  <li><a href=\"#\" ng-click=\"jump(pageInfo.totalPages)\"><i class=\"fa fa-arrow-right\"></i></a></li>\n</ul>"
+    };
+  });
+
+  cdoj.directive("uiProblemAdminSpan", function() {
+    return {
+      restrict: "A",
+      scope: {
+        problemId: "=",
+        isVisible: "="
+      },
+      controller: [
+        "$scope", "$http", function($scope, $http) {
+          return $scope.editVisible = function() {
+            var queryString,
+              _this = this;
+            queryString = "/problem/operator/" + $scope.problemId + "/isVisible/" + (!$scope.isVisible);
+            return $http.post(queryString).then(function(response) {
+              if (response.data.result === "success") {
+                return $scope.isVisible = !$scope.isVisible;
+              }
+            });
+          };
+        }
+      ],
+      template: "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm\" ng-click=\"editVisible()\" style=\"padding: 1px 5px;\">\n      <i class=\"fa\" ng-class=\"{\n        'fa-eye': isVisible == true,\n        'fa-eye-slash': isVisible == false\n      }\"></i>\n    </button>\n    <a href=\"/problem/editor/{{problemId}}\" target=\"_blank\"\n       class=\"btn btn-default btn-sm\" style=\"padding: 1px 5px;\"><i class=\"fa fa-pencil\"></i></a>\n    <a href=\"/problem/dataEditor/{{problemId}}\" target=\"_blank\"\n       class=\"btn btn-default btn-sm\" style=\"padding: 1px 5px;\"><i class=\"fa fa-cog\"></i></a>\n  </div>\n</div>"
+    };
+  });
+
+  cdoj.directive("uiReadmore", function() {
+    return {
+      restrict: "A",
+      scope: {
+        hasMore: "=",
+        articleId: "="
+      },
+      link: function($scope, $element) {
+        if ($scope.hasMore) {
+          return $element.empty().append("<a href=\"/article/show/" + $scope.articleId + "\" target=\"_blank\">Read more >></a>");
+        }
+      }
+    };
+  });
+
+  cdoj.directive("uiRejudgeButton", function() {
+    return {
+      restrict: "A",
+      scope: {
+        condition: "="
+      },
+      controller: [
+        "$scope", "$http", function($scope, $http) {
+          return $scope.rejudge = function() {
+            return $http.post("/status/count", $scope.condition).then(function(response) {
+              var data;
+              data = response.data;
+              if (data.result === "success") {
+                if (confirm("Rejudge all " + data.count + " records")) {
+                  return $http.post("/status/rejudge", $scope.condition).then(function(response) {
+                    data = response.data;
+                    if (data.result === "success") {
+                      return alert("Done!");
+                    } else {
+                      return alert(data.error_msg);
+                    }
+                  });
+                }
+              } else {
+                return alert(data.error_msg);
+              }
+            });
+          };
+        }
+      ],
+      template: "<button type=\"button\" class=\"btn btn-danger btn-sm\" ng-click=\"rejudge()\">Rejudge</button>"
+    };
+  });
+
+  cdoj.directive("uiStatus", function() {
+    return {
+      restrict: "A",
+      scope: {
+        status: "="
+      },
+      controller: [
+        "$scope", "$http", function($scope, $http) {
+          var timmer;
+          if ([0, 16, 18].some($scope.status.returnTypeId)) {
+            return timmer = setInterval(function() {
+              var condition;
+              condition = {
+                currentPage: null,
+                startId: $scope.status.statusId,
+                endId: $scope.status.statusId,
+                userName: void 0,
+                problemId: void 0,
+                languageId: void 0,
+                contestId: void 0,
+                result: 'OJ_ALL',
+                orderFields: 'statusId',
+                orderAsc: 'false'
+              };
+              return $http.post("/status/search", condition).then(function(response) {
+                var data;
+                data = response.data;
+                if (data.result === "success" && data.list.length === 1) {
+                  $scope.status = data.list[0];
+                  if ([0, 16, 18].none($scope.status.returnTypeId)) {
+                    clearInterval(timmer);
+                  }
+                  return console.log($scope.status);
+                }
+              });
+            }, 500);
+          }
+        }
+      ],
+      template: "{{status.returnType}}"
+    };
+  });
+
+  cdoj.directive("uiTime", function() {
+    return {
+      restrict: "A",
+      scope: {
+        time: "="
+      },
+      controller: [
+        "$scope", function($scope) {
+          $scope.timeString = "";
+          $scope.$watch("time", function() {
+            return $scope.showRelativeTime();
+          });
+          $scope.showRelativeTime = function() {
+            return $scope.timeString = Date.create($scope.time).relative();
+          };
+          $scope.showRealTime = function() {
+            return $scope.timeString = Date.create($scope.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}");
+          };
+          return $scope.showRelativeTimeDelay = function() {
+            return setTimeout(function() {
+              return $scope.$apply(function() {
+                return $scope.showRelativeTime();
+              });
+            }, 400);
+          };
+        }
+      ],
+      template: "<div ng-mouseover=\"showRealTime()\" ng-mouseleave=\"showRelativeTimeDelay()\" style=\"width: 100%\">{{timeString}}</div>"
+    };
+  });
+
+  cdoj.directive("uiTimeLength", function() {
+    return {
+      restrict: "A",
+      scope: {
+        length: "="
+      },
+      controller: [
+        "$scope", function($scope) {
+          $scope.timeString = "";
+          $scope.$watch("length", function() {
+            return $scope.showTimeLength();
+          });
+          return $scope.showTimeLength = function() {
+            var days, hours, length, minute, second;
+            length = parseInt($scope.length);
+            second = length % 60;
+            length = (length - second) / 60;
+            minute = length % 60;
+            length = (length - minute) / 60;
+            hours = length % 24;
+            length = (length - hours) / 24;
+            days = length;
+            $scope.timeString = "";
+            if (days > 0) {
+              $scope.timeString = $scope.timeString + days + (" " + (days === 1 ? "day" : "days") + " ");
+            }
+            return $scope.timeString = $scope.timeString + "%d:%02d:%02d".sprintf(hours, minute, second);
+          };
+        }
+      ],
+      template: "<div>{{timeString}}</div>"
     };
   });
 

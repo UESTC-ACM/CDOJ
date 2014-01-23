@@ -3,9 +3,9 @@ cdoj.directive("uiMarkdown",
   ->
     restrict: "A"
     scope:
-      content: "=content"
+      content: "="
     link:
-      ($scope, $element, $attrs) ->
+      ($scope, $element) ->
         refresh = ()->
           $element.prettify()
           $element.mathjax()

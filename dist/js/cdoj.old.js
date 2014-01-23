@@ -1,5 +1,5 @@
 (function() {
-  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initArticleList, initContestList, initContestPage, initLayout, initProblemDataEditor, initProblemEditor, initProblemList, initProblemPage, initStatusList, initUI, initUser, initUserActivate, initUserList, jsonMerge, jsonPost, openInNewTab, render;
+  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initContestList, initContestPage, initLayout, initProblemDataEditor, initProblemEditor, initProblemPage, initStatusList, initUI, initUser, initUserActivate, initUserList, jsonMerge, jsonPost, openInNewTab, render;
 
   OnlineJudgeReturnType = {
     OJ_WAIT: 0,
@@ -822,40 +822,6 @@
     }
   };
 
-  initArticleList = function() {
-    var $articleList, articleList;
-    $articleList = $("#article-list");
-    if ($articleList.length !== 0) {
-      return articleList = new ListModule({
-        listContainer: $articleList,
-        requestUrl: "/article/search",
-        condition: {
-          "currentPage": null,
-          "startId": void 0,
-          "endId": void 0,
-          "keyword": void 0,
-          "title": void 0,
-          "orderFields": "id",
-          "orderAsc": "false"
-        },
-        formatter: function(data) {
-          var getReadMore;
-          getReadMore = function(hasMore, articleId) {
-            if (hasMore) {
-              return "<a href=\"/article/show/" + articleId + "\" target=\"_blank\">Read more >></a>";
-            } else {
-              return "";
-            }
-          };
-          return "<div class=\"cdoj-article\">\n  <h1><a href=\"/article/show/" + data.articleId + "\" target=\"_blank\">" + data.title + "</a></h1>\n  <small>" + data.clicked + " visited, create by " + data.ownerName + ", last modified at <span class=\"cdoj-article-post-time\">" + (Date.create(data.time).relative()) + "</span></small>\n  <div class=\"cdoj-article-summary\">\n    <div class=\"cdoj-article-summary-content\"><textarea>" + data.content + "</textarea></div>\n  </div>\n  <p>" + (getReadMore(data.hasMore, data.articleId)) + "</p>\n  <hr />\n</div>";
-        },
-        after: function() {
-          return $(".cdoj-article-summary-content").markdown();
-        }
-      });
-    }
-  };
-
   initContestPage = function() {
     var $contest, $processBar, contestId, contestProblemSummary, contestStatus, contestStatusTabHref, contestTab, contestType, currentTime, currentUser, endTime, startTime,
       _this = this;
@@ -1077,97 +1043,6 @@
           }
         });
         return false;
-      });
-    }
-  };
-
-  initProblemList = function() {
-    var $problemList, problemList;
-    $problemList = $("#problem-list");
-    if ($problemList.length !== 0) {
-      return problemList = new ListModule({
-        listContainer: $problemList,
-        requestUrl: "/problem/search",
-        condition: {
-          currentPage: null,
-          startId: void 0,
-          endId: void 0,
-          title: void 0,
-          source: void 0,
-          isSpj: void 0,
-          startDifficulty: void 0,
-          endDifficulty: void 0,
-          keyword: void 0,
-          orderFields: void 0,
-          orderAsc: void 0
-        },
-        formatter: function(data) {
-          var adminSpan, difficulty, panelAC, panelWA;
-          panelAC = "success";
-          panelWA = "danger";
-          this.user = getCurrentUser();
-          adminSpan = function() {
-            var result;
-            result = "";
-            if (this.user.userLogin && this.user.currentUserType === AuthenticationType.ADMIN) {
-              result += "<td style=\"padding: 4px;\">\n<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm problem-visible-state-editor\" problem-id=\"" + data.problemId + "\" visible=\"" + data.isVisible + "\">\n      <i class=\"" + (data.isVisible ? "fa fa-eye" : "fa fa-eye-slash") + "\"></i>\n    </button>\n    <a href=\"/problem/editor/" + data.problemId + "\" target=\"_blank\" class=\"btn btn-default btn-sm problem-editor\"><i class=\"fa fa-pencil\"></i></a>\n    <a href=\"/problem/dataEditor/" + data.problemId + "\" target=\"_blank\" class=\"btn btn-default btn-sm problem-data-editor\"><i class=\"fa fa-cog\"></i></a>\n  </div>\n</div>\n</td>";
-            }
-            return result;
-          };
-          difficulty = function(value) {
-            var result, star, starEmpty,
-              _this = this;
-            star = "<i class='fa fa-star'></i>";
-            starEmpty = "<i class='fa fa-star-o'></i>";
-            value = Math.max(1, Math.min(5, value));
-            result = "";
-            value.times(function() {
-              return result += star;
-            });
-            (5 - value).times(function() {
-              return result += starEmpty;
-            });
-            return result;
-          };
-          return "<tr>\n  <td style=\"text-align: right;\">" + data.problemId + "</td>\n  <td><a href=\"/problem/show/" + data.problemId + "\" target=\"_blank\">" + data.title + "</a><small>&nbsp- " + data.source + "</small></td>\n  <td class=\"" + (data.status === AuthorStatusType.PASS ? panelAC : data.status === AuthorStatusType.FAIL ? panelWA : void 0) + "\" style=\"text-align: right;\"><a href=\"/status/list?problemId=" + data.problemId + "\" target=\"_blank\">x " + data.solved + "</a></td>\n  " + (adminSpan()) + "\n</tr>";
-        },
-        after: function() {
-          var _this = this;
-          this.user = getCurrentUser();
-          if (this.user.userLogin && this.user.currentUserType === AuthenticationType.ADMIN) {
-            $(".difficulty-span").find("i").click(function(e) {
-              var $el, $pa, difficulty, problemId, queryString;
-              $el = $(e.currentTarget);
-              $pa = $el.parent();
-              problemId = $pa.attr("value");
-              difficulty = $el.index() + 1;
-              queryString = "/problem/operator/" + problemId + "/difficulty/" + difficulty;
-              $.post(queryString, function(data) {
-                if (data.result === "success") {
-                  $pa.find("i").removeClass("fa-star").removeClass("fa-star-o").addClass("fa-star-o");
-                  return difficulty.times(function(i) {
-                    return $($pa.find("i")[i]).removeClass("fa-star-o").addClass("fa-star");
-                  });
-                }
-              });
-              return false;
-            });
-            return $(".problem-visible-state-editor").click(function(e) {
-              var $el, queryString, visible;
-              $el = $(e.currentTarget);
-              visible = $el.attr("visible") === "true" ? true : false;
-              queryString = "/problem/operator/" + ($el.attr("problem-id")) + "/isVisible/" + (!visible);
-              $.post(queryString, function(data) {
-                if (data.result === "success") {
-                  visible = !visible;
-                  $el.attr("visible", visible);
-                  return $el.empty().append("<i class=\"" + (visible ? "fa fa-eye" : "fa fa-eye-slash") + "\"></i>");
-                }
-              });
-              return false;
-            });
-          }
-        }
       });
     }
   };
@@ -1640,18 +1515,14 @@
   $(function() {
     initUI();
     initLayout();
-    initStatusList();
     initUserList();
     initUser();
     initUserActivate();
-    initProblemList();
     initProblemPage();
     initProblemEditor();
     initProblemDataEditor();
-    initContestList();
     initContestPage();
     initArticleEditor();
-    initArticleList();
     return render();
   });
 

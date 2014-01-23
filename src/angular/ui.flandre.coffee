@@ -52,7 +52,7 @@ cdoj.directive("uiFlandre",
               # TODO
               console.log(data)
       )
-    ]
+  ]
   template: """
       <div class="panel panel-default">
         <div class="panel-heading flandre-heading">
