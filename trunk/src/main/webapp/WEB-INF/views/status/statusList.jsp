@@ -169,11 +169,16 @@ Admin problem list page
               }">
           </td>
 
-          <td></td>
-          <td></td>
+          <td style="text-align: center;">{{status.memoryCost}}
+            <span ng-hide="status.memoryCost == undefined"> KB</span>
+          </td>
+          <td style="text-align: center;">{{status.timeCost}}
+            <span ng-hide="status.memoryCost == undefined"> MS</span>
+          </td>
 
           <td style="text-align: center;">{{status.language}}</td>
-          <td style="text-align: center;"></td>
+          <td style="text-align: center;">
+          </td>
           <td style="text-align: center;"
               ui-time
               time="status.time"></td>
