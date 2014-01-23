@@ -11,10 +11,28 @@ Admin problem list page
   <title>Status</title>
 </head>
 <body>
-<div id="status-list">
+<div id="status-list"
+     ng-controller="ListController"
+     ng-init="condition={
+        currentPage: null,
+        startId: undefined,
+        endId: undefined,
+        userName: undefined,
+        problemId: undefined,
+        languageId: undefined,
+        contestId: undefined,
+        result: 'OJ_ALL',
+        orderFields: 'statusId',
+        orderAsc: 'false'
+     };
+     requestUrl='/status/search'">
   <div class="row">
     <div class="col-md-12">
-      <div id="page-info"></div>
+      <div ui-page-info
+           page-info="pageInfo"
+           condition="condition"
+           id="page-info">
+      </div>
       <div id="advance-search">
         <a href="#" id="advanced" data-toggle="dropdown"><i
             class="fa fa-caret-square-o-down"></i></a>
@@ -27,18 +45,22 @@ Admin problem list page
                 <div class="row">
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label for="startId">Form</label> <input
-                        type="text" name="startId" maxlength="6"
-                        value="" id="startId"
-                        class="form-control input-sm"/>
+                      <label for="startId">Form</label>
+                      <input type="number"
+                             ng-model="condition.startId"
+                             min="1"
+                             id="startId"
+                             class="form-control input-sm"/>
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label for="endId">To</label> <input type="text"
-                                                           name="endId" maxlength="6" value=""
-                                                           id="endId"
-                                                           class="form-control input-sm"/>
+                      <label for="endId">To</label>
+                      <input type="number"
+                             ng-model="condition.endId"
+                             min="1"
+                             id="endId"
+                             class="form-control input-sm"/>
                     </div>
                   </div>
                 </div>
@@ -47,55 +69,59 @@ Admin problem list page
                 <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="userName">User name</label> <input
-                        type="text" name="userName" maxlength="24"
-                        value="" id="userName"
-                        class="form-control input-sm"/>
+                      <label for="userName">User name</label>
+                      <input type="text"
+                             ng-model="condition.userName"
+                             maxlength="24"
+                             id="userName"
+                             class="form-control input-sm"/>
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="problemId">Problem ID</label> <input
-                        type="text" name="problemId" maxlength="6"
-                        value="" id="problemId"
-                        class="form-control input-sm"/>
+                      <label for="problemId">Problem ID</label>
+                      <input type="number"
+                             ng-model="condition.problemId"
+                             min="1"
+                             id="problemId"
+                             class="form-control input-sm"/>
                     </div>
                   </div>
                   <c:if
                       test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
                     <div class="col-md-12">
                       <div class="form-group">
-                        <label for="contestId">Contest ID</label> <input
-                          type="text" name="contestId" maxlength="6"
-                          value="" id="contestId"
-                          class="form-control input-sm"/>
+                        <label for="contestId">Contest ID</label>
+                        <input type="number"
+                               ng-model="condition.contestId"
+                               min="1"
+                               id="contestId"
+                               class="form-control input-sm"/>
                       </div>
                     </div>
                   </c:if>
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="keyword">Keyword</label> <input
-                        type="text" name="keyword" maxlength="100"
-                        value="" id="keyword"
-                        class="form-control input-sm"/>
+                      <label for="keyword">Keyword</label>
+                      <input type="text"
+                             ng-model="condition.keyword"
+                             maxlength="100"
+                             id="keyword"
+                             class="form-control input-sm"/>
                     </div>
                   </div>
                 </div>
               </fieldset>
-              <p class="pull-left">
-                <c:if
-                    test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
-                  <button type="button" class="btn btn-danger btn-sm"
-                          id="rejudge-button">Rejudge
-                  </button>
-                </c:if>
+              <c:if
+                  test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
+              <p class="pull-left"
+                 ui-rejudge-button
+                 condition="condition">
               </p>
+              </c:if>
               <p class="pull-right">
-                <button type="submit" class="btn btn-primary btn-sm"
-                        id="search-button">Search
-                </button>
                 <button type="button" class="btn btn-danger btn-sm"
-                        id="reset-button">Reset
+                        ng-click="reset()">Reset
                 </button>
               </p>
             </form>
@@ -106,7 +132,7 @@ Admin problem list page
 
   <div class="row">
     <div class="col-md-12">
-      <table class="table" style="min-width: 1000px;">
+      <table class="table table-condensed">
         <thead>
         <tr>
           <th style="text-align: center;">#</th>
@@ -126,7 +152,33 @@ Admin problem list page
           <th></th>
         </tr>
         </thead>
-        <tbody id="list-container">
+        <tbody>
+        <tr ng-repeat="status in list">
+          <td style="text-align: center;">{{status.statusId}}</td>
+          <td style="text-align: center;"><a href="/user/center/{{status.userName}}"
+                                             target="_blank">{{status.userName}}</a></td>
+          <td style="text-align: center;"><a href="/problem/show/{{status.problemId}}"
+                                             target="_blank">{{status.problemId}}</a></td>
+          <td style="text-align: center;"
+              ui-status
+              status="status"
+              ng-class="{
+                'status-info': [0, 16, 17, 18].some(status.returnTypeId),
+                'status-success': [1].some(status.returnTypeId),
+                'status-danger': [0, 1, 16, 17, 18].none(status.returnTypeId)
+              }">
+          </td>
+
+          <td></td>
+          <td></td>
+
+          <td style="text-align: center;">{{status.language}}</td>
+          <td style="text-align: center;"></td>
+          <td style="text-align: center;"
+              ui-time
+              time="status.time"></td>
+          <td></td>
+        </tr>
         </tbody>
       </table>
     </div>

@@ -195,7 +195,7 @@ Admin problem list page
             <th><a href="/problem/editor/new">Add new
               problem</a></th>
             <th style="width: 5em; text-align: right;">Solved</th>
-            <th style="width: 105px;"></th>
+            <th style="width: 75px;"></th>
           </tr>
           </thead>
           <tbody>
