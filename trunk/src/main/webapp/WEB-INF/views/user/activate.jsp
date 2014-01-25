@@ -11,21 +11,26 @@
   <title>Account activation</title>
 </head>
 <body>
-<div class="row">
+<div class="row"
+     ng-controller="PasswordResetController">
   <div class="col-md-12">
     <h1>Reset your password</h1>
   </div>
   <div class="col-md-12">
-    <form class="form-horizontal" id="cdoj-activation-form">
+    <form class="form-horizontal">
       <fieldset>
         <div class="form-group">
           <label class="control-label col-sm-4 col-md-3"
                  for="userName">User Name</label>
 
           <div class="col-sm-8 col-md-6">
-            <input type="text" name="userName" maxlength="24"
-                   value="<c:out value="${userName}"/>" id="userName"
-                   class="form-control input-sm" readonly="readonly"/>
+            <input type="text"
+                   ng-model="userActivateDTO.userName"
+                   maxlength="24"
+                   value="<c:out value="${userName}"/>"
+                   id="userName"
+                   class="form-control input-sm"
+                   readonly="readonly"/>
           </div>
         </div>
         <div class="form-group">
@@ -33,9 +38,13 @@
                  for="serialKey">Serial key</label>
 
           <div class="col-sm-8 col-md-6">
-            <input type="text" name="serialKey" maxlength="48"
-                   value="<c:out value="${serialKey}"/>" id="serialKey"
-                   class="form-control input-sm" readonly="readonly">
+            <input type="text"
+                   ng-model="userActivateDTO.serialKey"
+                   maxlength="48"
+                   value="<c:out value="${serialKey}"/>"
+                   id="serialKey"
+                   class="form-control input-sm"
+                   readonly="readonly">
           </div>
         </div>
         <div class="form-group">
@@ -43,8 +52,12 @@
                  for="password">Password</label>
 
           <div class="col-sm-8 col-md-6">
-            <input type="password" name="password" maxlength="20"
-                   id="password" class="form-control input-sm"/>
+            <input type="password"
+                   ng-model="userActivateDTO.password"
+                   id="password"
+                   ng-required="true"
+                   class="form-control input-sm"/>
+            <ui-validate-info value="fieldInfo" for="password"></ui-validate-info>
           </div>
         </div>
         <div class="form-group">
@@ -52,13 +65,19 @@
                  for="passwordRepeat">Repeat your password</label>
 
           <div class="col-sm-8 col-md-6">
-            <input type="password" name="passwordRepeat"
-                   maxlength="20" id="passwordRepeat"
+            <input type="password"
+                   ng-model="userActivateDTO.passwordRepeat"
+                   id="passwordRepeat"
+                   ng-required="true"
+                   equals="{{userActivateDTO.password}}"
                    class="form-control input-sm"/>
+            <ui-validate-info value="fieldInfo" for="passwordRepeat"></ui-validate-info>
           </div>
         </div>
         <div class="col-sm-8 col-md-6 col-sm-offset-4 col-md-offset-3">
-          <button type="submit" id="submit-button" class="btn btn-primary pull-right">Submit
+          <button type="submit"
+                  class="btn btn-primary pull-right"
+                  ng-click="submit()">Submit
           </button>
         </div>
       </fieldset>

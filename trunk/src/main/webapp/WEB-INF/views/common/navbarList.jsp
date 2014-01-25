@@ -34,12 +34,9 @@ Nav list on navbar
         <li><a
             href="<c:url value="/bbs/"/>"><i class="fa fa-comments"></i><span
             class="cdoj-menu-item">BBS</span></a></li>
-        <c:if
-            test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
-          <li id="menu-item-admin"><a
+          <li id="menu-item-admin" ng-show="$root.isAdmin"><a
               href="<c:url value="/admin/"/>"><i
               class="fa fa-wrench"></i><span class="cdoj-menu-item">Admin</span></a></li>
-        </c:if>
       </ul>
     </div>
   </div>

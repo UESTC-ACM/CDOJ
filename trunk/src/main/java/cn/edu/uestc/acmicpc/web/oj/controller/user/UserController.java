@@ -444,7 +444,7 @@ public class UserController extends BaseController {
             .equals(userActivateDTO.getSerialKey()))
           throw new FieldException("serialKey", "Serial Key is wrong!");
 
-        userDTO.setPassword(StringUtil.encodeSHA1(userActivateDTO.getPassword()));
+        userDTO.setPassword(userActivateDTO.getPassword());
         userService.updateUser(userDTO);
 
         userSerialKeyDTO.setSerialKey("This key has been used.");

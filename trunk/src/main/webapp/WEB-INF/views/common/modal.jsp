@@ -167,7 +167,8 @@ All modal will used on every page
 </div>
 
 <div class="modal fade" id="cdoj-activate-modal" tabindex="-1"
-     role="dialog">
+     role="dialog"
+    ng-controller="ActivateController">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -178,12 +179,15 @@ All modal will used on every page
       <div class="modal-body">
         <form class="form-horizontal" id="cdoj-activate-form">
           <div class="form-group">
-            <label class="control-label col-sm-4 " for="userName">User
-              Name</label>
-
+            <label class="control-label col-sm-4 "
+                   for="userName">User Name</label>
             <div class="col-sm-8">
-              <input type="text" name="userName" maxlength="24"
-                     value="" id="userName"
+              <input type="text"
+                     ng-model="userName"
+                     maxlength="24"
+                     id="userName"
+                     ng-required="true"
+                     ng-pattern="/^[a-zA-Z0-9_]{4,24}$/"
                      class="form-control input-sm"/>
             </div>
           </div>
@@ -194,7 +198,8 @@ All modal will used on every page
                 data-dismiss="modal">Close
         </button>
         <button type="button" class="btn btn-primary"
-                id="cdoj-activate-button">Send Email
+                ng-click="sendSerialKey()" ng-bind="buttonText"
+                ng-class="{disabled: onSend}">
         </button>
       </div>
     </div>
