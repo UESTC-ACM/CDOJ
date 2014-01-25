@@ -83,7 +83,7 @@ public class DatabaseITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testDAO_findAllByBuilder_withPageInfo() throws AppException {
     UserCondition userCondition = new UserCondition();
-    PageInfo pageInfo = PageInfo.create(103L, 3L, "", 0, 2L);
+    PageInfo pageInfo = PageInfo.create(103L, 3L, 0, 2L);
     Condition condition = userCondition.getCondition();
     condition.setPageInfo(pageInfo);
     List<UserListDTO> result = userDAO.findAll(UserListDTO.class, UserListDTO.builder(),

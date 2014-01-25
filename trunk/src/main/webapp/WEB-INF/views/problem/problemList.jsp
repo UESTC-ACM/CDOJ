@@ -200,17 +200,19 @@ Admin problem list page
           </thead>
           <tbody>
           <tr ng-repeat="problem in list">
-            <td style="text-align: right;">{{problem.problemId}}</td>
+            <td style="text-align: right;" ng-bind="problem.problemId"></td>
             <td>
-              <a href="/problem/show/{{problem.problemId}}" target="_blank">{{problem.title}}</a>
-              <small>&nbsp- {{problem.source}}</small>
+              <a href="/problem/show/{{problem.problemId}}"
+                 target="_blank"
+                 ng-bind="problem.title"></a>
+              <small>&nbsp- <span ng-bind="problem.source"></span></small>
             </td>
             <td ng-class="{
                 panelAC: data.status == AuthorStatusType.PASS,
                 panelWA: data.status == AuthorStatusType.FAIL
                          }" style="text-align: right;">
               <a href="/status/list?problemId={{problem.problemId}}" target="_blank">x
-                {{problem.solved}}</a>
+                <span ng-bind="problem.solved"></span></a>
             </td>
             <td ui-problem-admin-span
                 problem-id="problem.problemId"
@@ -230,18 +232,19 @@ Admin problem list page
           </thead>
           <tbody>
           <tr ng-repeat="problem in list">
-            <td style="text-align: right;">{{problem.problemId}}</td>
+            <td style="text-align: right;" ng-bind="problem.problemId"></td>
             <td>
               <a href="/problem/show/{{problem.problemId}}"
-                 target="_blank">{{problem.title}}</a>
-              <small>&nbsp- {{problem.source}}</small>
+                 target="_blank"
+                 ng-bind="problem.title"></a>
+              <small>&nbsp- <span ng-bind="problem.source"></span></small>
             </td>
             <td ng-class="{
                 panelAC: data.status == AuthorStatusType.PASS,
                 panelWA: data.status == AuthorStatusType.FAIL
                          }" style="text-align: right;">
               <a href="/status/list?problemId={{problem.problemId}}" target="_blank">x
-                {{problem.solved}}</a>
+                <span ng-bind="problem.solved"></span></a>
             </td>
           </tr>
           </tbody>

@@ -150,7 +150,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testSearch() throws AppException {
     ArgumentCaptor<Condition> captor = ArgumentCaptor.forClass(Condition.class);
-    PageInfo pageInfo = PageInfo.create(300L, Global.RECORD_PER_PAGE, "baseURL", 10, 2L);
+    PageInfo pageInfo = PageInfo.create(300L, Global.RECORD_PER_PAGE, 10, 2L);
     userService.getUserListDTOList(new UserCondition(), pageInfo);
     verify(userDAO).findAll(eq(UserListDTO.class),
         isA(UserListDTO.Builder.class), captor.capture());
