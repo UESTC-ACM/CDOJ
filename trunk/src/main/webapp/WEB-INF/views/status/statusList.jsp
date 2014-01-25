@@ -87,19 +87,17 @@ Admin problem list page
                              class="form-control input-sm"/>
                     </div>
                   </div>
-                  <c:if
-                      test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="contestId">Contest ID</label>
-                        <input type="number"
-                               ng-model="condition.contestId"
-                               min="1"
-                               id="contestId"
-                               class="form-control input-sm"/>
-                      </div>
+                  <div class="col-md-12"
+                       ng-show="$root.isAdmin">
+                    <div class="form-group">
+                      <label for="contestId">Contest ID</label>
+                      <input type="number"
+                             ng-model="condition.contestId"
+                             min="1"
+                             id="contestId"
+                             class="form-control input-sm"/>
                     </div>
-                  </c:if>
+                  </div>
                   <div class="col-md-12">
                     <div class="form-group">
                       <label for="keyword">Keyword</label>
@@ -112,13 +110,12 @@ Admin problem list page
                   </div>
                 </div>
               </fieldset>
-              <c:if
-                  test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
-                <p class="pull-left"
-                   ui-rejudge-button
-                   condition="condition">
-                </p>
-              </c:if>
+              <p class="pull-left"
+                 ui-rejudge-button
+                 ng-show="$root.isAdmin"
+                 condition="condition">
+              </p>
+
               <p class="pull-right">
                 <button type="button" class="btn btn-danger btn-sm"
                         ng-click="reset()">Reset
