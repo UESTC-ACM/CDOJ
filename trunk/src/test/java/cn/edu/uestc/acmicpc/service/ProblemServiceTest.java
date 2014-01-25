@@ -134,7 +134,7 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testGetProblemListDTOList() throws AppException {
     ArgumentCaptor<Condition> captor = ArgumentCaptor.forClass(Condition.class);
-    PageInfo pageInfo = PageInfo.create(300L, Global.RECORD_PER_PAGE, "baseURL", 10, 2L);
+    PageInfo pageInfo = PageInfo.create(300L, Global.RECORD_PER_PAGE, 10, 2L);
     problemService.getProblemListDTOList(new ProblemCondition(), pageInfo);
     verify(problemDAO).findAll(eq(ProblemListDTO.class),
         isA(ProblemListDTO.Builder.class), captor.capture());

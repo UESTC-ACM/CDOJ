@@ -82,13 +82,16 @@ public class UserController extends BaseController {
     } else {
       try {
         UserDTO userDTO = userService.getUserDTOByUserName(userLoginDTO.getUserName());
-        if (userDTO == null || !StringUtil.encodeSHA1(userLoginDTO.getPassword())
-            .equals(userDTO.getPassword()))
+        if (userDTO == null || !userLoginDTO.getPassword().equals(userDTO.getPassword())) {
           throw new FieldException("password", "User or password is wrong, please try again");
+        }
         userDTO.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
         userService.updateUser(userDTO);
 
         session.setAttribute("currentUser", userDTO);
+        json.put("userName", userDTO.getUserName());
+        json.put("type", userDTO.getType());
+        json.put("email", userDTO.getEmail());
         json.put("result", "success");
       } catch (FieldException e) {
         putFieldErrorsIntoBindingResult(e, validateResult);
@@ -151,7 +154,7 @@ public class UserController extends BaseController {
         UserDTO userDTO = UserDTO.builder()
             .setUserName(userRegisterDTO.getUserName())
             .setStudentId(userRegisterDTO.getStudentId())
-            .setPassword(StringUtil.encodeSHA1(userRegisterDTO.getPassword()))
+            .setPassword(userRegisterDTO.getPassword())
             .setSchool(userRegisterDTO.getSchool())
             .setNickName(userRegisterDTO.getNickName())
             .setEmail(userRegisterDTO.getEmail())
@@ -170,6 +173,9 @@ public class UserController extends BaseController {
         if (userDTO == null)
           throw new AppException("Register failed, please try again.");
         session.setAttribute("currentUser", userDTO);
+        json.put("userName", userDTO.getUserName());
+        json.put("type", userDTO.getType());
+        json.put("email", userDTO.getEmail());
         json.put("result", "success");
       } catch (FieldException e) {
         putFieldErrorsIntoBindingResult(e, validateResult);
