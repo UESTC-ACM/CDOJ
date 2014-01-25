@@ -1,4 +1,5 @@
 #!/bin/bash
+cd trunk
 if [ -f ./pre-commit.sh ]; then
   ./pre-commit.sh
   if [ $# -ne 0]; then
@@ -6,6 +7,6 @@ if [ -f ./pre-commit.sh ]; then
   fi
   exit 0
 fi
-echo -e "\e[1;31mPlease do push process in trunk folder.\e[0m"
+echo -e "\e[1;31mCan not find pre commit script.\e[0m"
 exit 1
 
