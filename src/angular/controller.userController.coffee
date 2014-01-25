@@ -130,4 +130,3 @@ cdoj.controller("UserController", [
           $rootScope.hasLogin = false
           $rootScope.currentUser = 0
 ])
-console.log CryptoJS.SHA1("wrongPassword").toString()

@@ -21278,11 +21278,15 @@ var styleDirective = valueFn({
         return $scope.condition["currentPage"] = null;
       };
       return $scope.$watch("condition", function() {
-        var _this = this;
+        var condition,
+          _this = this;
         if ($scope.requestUrl !== 0) {
-          return $http.post($scope.requestUrl, $scope.condition).then(function(response) {
+          condition = angular.copy($scope.condition);
+          return $http.post($scope.requestUrl, condition).then(function(response) {
             $scope.list = response.data.list;
-            return $scope.pageInfo = response.data.pageInfo;
+            $scope.pageInfo = response.data.pageInfo;
+            console.log(response.data);
+            return console.log(condition);
           });
         }
       }, true);
@@ -21387,8 +21391,6 @@ var styleDirective = valueFn({
       };
     }
   ]);
-
-  console.log(CryptoJS.SHA1("wrongPassword").toString());
 
   cdoj.directive("input", [
     "$timeout", function($timeout) {
@@ -21639,8 +21641,10 @@ var styleDirective = valueFn({
                   active: num === $scope.pageInfo.currentPage
                 };
               });
+            } else {
+              return $scope.pageList = "";
             }
-          });
+          }, true);
           return $scope.jump = function(target) {
             return $scope.condition.currentPage = target;
           };

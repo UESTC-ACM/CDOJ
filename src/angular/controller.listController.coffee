@@ -9,7 +9,6 @@ cdoj.controller("ListController", [
       displayDistance: 2
       totalPages: 1
     $scope.requestUrl = 0
-
     $scope.reset = ->
       _.each($scope.condition, (value, index) ->
         $scope.condition[index] = undefined
@@ -20,10 +19,12 @@ cdoj.controller("ListController", [
       "condition",
       () ->
         if $scope.requestUrl != 0
-          $http.post($scope.requestUrl, $scope.condition).then (response) =>
+          condition = angular.copy($scope.condition)
+          $http.post($scope.requestUrl, condition).then (response) =>
             $scope.list = response.data.list
             $scope.pageInfo = response.data.pageInfo
-      ,
-      true
+            console.log response.data
+            console.log condition
+      , true
     )
 ])

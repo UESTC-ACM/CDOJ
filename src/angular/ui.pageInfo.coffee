@@ -22,7 +22,9 @@ cdoj.directive("uiPageInfo",
               page: num
               active: num == $scope.pageInfo.currentPage
           )
-      )
+        else
+          $scope.pageList = ""
+      , true)
       $scope.jump = (target)->
         $scope.condition.currentPage = target
   ]
