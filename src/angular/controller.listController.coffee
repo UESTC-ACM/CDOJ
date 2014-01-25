@@ -1,6 +1,6 @@
 cdoj.controller("ListController", [
-  "$scope", "$http",
-  ($scope, $http) ->
+  "$scope", "$rootScope", "$http",
+  ($scope, $rootScope, $http) ->
     $scope.condition = 0
     $scope.list = []
     $scope.pageInfo =
@@ -17,14 +17,12 @@ cdoj.controller("ListController", [
 
     $scope.$watch(
       "condition",
-      () ->
-        if $scope.requestUrl != 0
-          condition = angular.copy($scope.condition)
-          $http.post($scope.requestUrl, condition).then (response) =>
-            $scope.list = response.data.list
-            $scope.pageInfo = response.data.pageInfo
-            console.log response.data
-            console.log condition
-      , true
+    () ->
+      if $scope.requestUrl != 0
+        condition = angular.copy($scope.condition)
+        $http.post($scope.requestUrl, condition).then (response) =>
+          $scope.list = response.data.list
+          $scope.pageInfo = response.data.pageInfo
+    , true
     )
 ])

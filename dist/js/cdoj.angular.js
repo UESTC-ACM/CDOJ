@@ -21261,7 +21261,7 @@ var styleDirective = valueFn({
   ]);
 
   cdoj.controller("ListController", [
-    "$scope", "$http", function($scope, $http) {
+    "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
       $scope.condition = 0;
       $scope.list = [];
       $scope.pageInfo = {
@@ -21284,9 +21284,7 @@ var styleDirective = valueFn({
           condition = angular.copy($scope.condition);
           return $http.post($scope.requestUrl, condition).then(function(response) {
             $scope.list = response.data.list;
-            $scope.pageInfo = response.data.pageInfo;
-            console.log(response.data);
-            return console.log(condition);
+            return $scope.pageInfo = response.data.pageInfo;
           });
         }
       }, true);
@@ -21338,6 +21336,7 @@ var styleDirective = valueFn({
     "$scope", "$rootScope", "$http", "$element", "$compile", function($scope, $rootScope, $http, $element, $compile) {
       $rootScope.hasLogin = false;
       $rootScope.currentUser = 0;
+      $rootScope.isAdmin = false;
       $scope.userLoginDTO = {
         userName: "",
         password: ""
@@ -21355,7 +21354,12 @@ var styleDirective = valueFn({
           view = $scope.views.loginView;
         }
         $element.html(view);
-        return $compile($element.contents())($scope);
+        $compile($element.contents())($scope);
+        if ($rootScope.hasLogin && $rootScope.currentUser.type === 1) {
+          return $rootScope.isAdmin = true;
+        } else {
+          return $rootScope.isAdmin = false;
+        }
       });
       $scope.login = function() {
         var password;
@@ -21364,7 +21368,6 @@ var styleDirective = valueFn({
         return $http.post("/user/login", $scope.userLoginDTO).then(function(response) {
           var data;
           data = response.data;
-          console.log(data);
           if (data.result === "success") {
             $rootScope.hasLogin = true;
             return $rootScope.currentUser = {
@@ -21792,7 +21795,7 @@ var styleDirective = valueFn({
           }
         }
       ],
-      template: "<a href=\"#\" ng-show=\"checkDisplayLink()\" ng-click=\"showCompileInfo()\">{{status.returnType}}</a>\n<span ng-hide=\"checkDisplayLink()\">{{status.returnType}}</span>"
+      template: "<a href=\"#\" ng-show=\"showHref\" ng-click=\"showCompileInfo()\">{{status.returnType}}</a>\n<span ng-hide=\"showHref\">{{status.returnType}}</span>"
     };
   });
 
@@ -21866,6 +21869,36 @@ var styleDirective = valueFn({
         }
       ],
       template: "<div>{{timeString}}</div>"
+    };
+  });
+
+  cdoj.directive("uiYesNoRadio", function() {
+    return {
+      restrict: "E",
+      scope: {
+        ngModel: "="
+      },
+      controller: [
+        "$scope", function($scope) {
+          $scope.options = [
+            {
+              key: "All",
+              value: void 0
+            }, {
+              key: "Yes",
+              value: true
+            }, {
+              key: "No",
+              value: false
+            }
+          ];
+          return $scope.select = function(value) {
+            return $scope.ngModel = value;
+          };
+        }
+      ],
+      replace: true,
+      template: "<div class=\"btn-group pull-right\" data-toggle=\"buttons\">\n  <button type=\"button\" class=\"btn  btn-info btn-sm\" ng-class=\"{active: option.value == ngModel}\"\n          ng-repeat=\"option in options\"\n          ng-click=\"select(option.value)\"\n          ng-bind=\"option.key\">\n  </button>\n</div>"
     };
   });
 

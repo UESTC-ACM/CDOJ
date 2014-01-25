@@ -3,6 +3,7 @@ cdoj.controller("UserController", [
   ($scope, $rootScope, $http, $element, $compile) ->
     $rootScope.hasLogin = false
     $rootScope.currentUser = 0
+    $rootScope.isAdmin = false
     $scope.userLoginDTO =
       userName: ""
       password: ""
@@ -106,13 +107,17 @@ cdoj.controller("UserController", [
         # recompile content
         $element.html(view)
         $compile($element.contents())($scope)
+
+        if $rootScope.hasLogin && $rootScope.currentUser.type == 1
+          $rootScope.isAdmin = true
+        else
+          $rootScope.isAdmin = false
     )
     $scope.login = ->
       password = CryptoJS.SHA1($scope.userLoginDTO.password).toString()
       $scope.userLoginDTO.password = password
       $http.post("/user/login", $scope.userLoginDTO).then (response)->
         data = response.data
-        console.log data
         if data.result == "success"
           $rootScope.hasLogin = true
           $rootScope.currentUser =

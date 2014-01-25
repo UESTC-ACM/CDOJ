@@ -53,7 +53,7 @@ cdoj.directive("uiStatus",
         , 500)
   ]
   template: """
-<a href="#" ng-show="checkDisplayLink()" ng-click="showCompileInfo()">{{status.returnType}}</a>
-<span ng-hide="checkDisplayLink()">{{status.returnType}}</span>
+<a href="#" ng-show="showHref" ng-click="showCompileInfo()">{{status.returnType}}</a>
+<span ng-hide="showHref">{{status.returnType}}</span>
     """
 )
