@@ -8,7 +8,8 @@ cdoj.controller("ActivateController", [
       if $scope.userName.length > 0
         $scope.buttonText = "Sending..."
         $scope.onSend = true
-        $http.post("/user/sendSerialKey/#{$scope.userName}").then (response)->
+        userName = angular.copy($scope.userName)
+        $http.post("/user/sendSerialKey/#{userName}").then (response)->
           data = response.data
           if data.result == "success"
             alert "We send you an Email with the url to reset your password right now, please check your mail box."

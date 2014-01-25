@@ -7,11 +7,12 @@ cdoj.controller("PasswordResetController",[
       password: ""
       passwordRepeat: ""
     $scope.submit = ->
-      password = CryptoJS.SHA1($scope.userActivateDTO.password).toString()
-      $scope.userActivateDTO.password = password
-      passwordRepeat = CryptoJS.SHA1($scope.userActivateDTO.passwordRepeat).toString()
-      $scope.userActivateDTO.passwordRepeat = passwordRepeat
-      $http.post("/user/resetPassword", $scope.userActivateDTO).then (response)->
+      userActivateDTO = angular.copy($scope.userActivateDTO)
+      password = CryptoJS.SHA1(userActivateDTO.password).toString()
+      userActivateDTO.password = password
+      passwordRepeat = CryptoJS.SHA1(userActivateDTO.passwordRepeat).toString()
+      userActivateDTO.passwordRepeat = passwordRepeat
+      $http.post("/user/resetPassword", userActivateDTO).then (response)->
         data = response.data
         if data.result == "success"
           alert("Success!")

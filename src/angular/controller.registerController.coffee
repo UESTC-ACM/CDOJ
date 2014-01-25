@@ -13,11 +13,12 @@ cdoj.controller("RegisterController", [
       userName: ""
     $scope.fieldInfo = []
     $scope.register = ->
-      password = CryptoJS.SHA1($scope.userRegisterDTO.password).toString()
-      $scope.userRegisterDTO.password = password
-      passwordRepeat = CryptoJS.SHA1($scope.userRegisterDTO.passwordRepeat).toString()
-      $scope.userRegisterDTO.passwordRepeat = passwordRepeat
-      $http.post("/user/register", $scope.userRegisterDTO).then (response)->
+      userRegisterDTO = angular.copy($scope.userRegisterDTO)
+      password = CryptoJS.SHA1(userRegisterDTO.password).toString()
+      userRegisterDTO.password = password
+      passwordRepeat = CryptoJS.SHA1(userRegisterDTO.passwordRepeat).toString()
+      userRegisterDTO.passwordRepeat = passwordRepeat
+      $http.post("/user/register", userRegisterDTO).then (response)->
         data = response.data
         if data.result == "success"
           $rootScope.hasLogin = true

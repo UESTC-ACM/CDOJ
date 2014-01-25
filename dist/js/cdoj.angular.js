@@ -21192,10 +21192,12 @@ var styleDirective = valueFn({
       $scope.buttonText = "Send Email";
       $scope.onSend = false;
       return $scope.sendSerialKey = function() {
+        var userName;
         if ($scope.userName.length > 0) {
           $scope.buttonText = "Sending...";
           $scope.onSend = true;
-          return $http.post("/user/sendSerialKey/" + $scope.userName).then(function(response) {
+          userName = angular.copy($scope.userName);
+          return $http.post("/user/sendSerialKey/" + userName).then(function(response) {
             var data;
             data = response.data;
             if (data.result === "success") {
@@ -21328,12 +21330,13 @@ var styleDirective = valueFn({
         passwordRepeat: ""
       };
       return $scope.submit = function() {
-        var password, passwordRepeat;
-        password = CryptoJS.SHA1($scope.userActivateDTO.password).toString();
-        $scope.userActivateDTO.password = password;
-        passwordRepeat = CryptoJS.SHA1($scope.userActivateDTO.passwordRepeat).toString();
-        $scope.userActivateDTO.passwordRepeat = passwordRepeat;
-        return $http.post("/user/resetPassword", $scope.userActivateDTO).then(function(response) {
+        var password, passwordRepeat, userActivateDTO;
+        userActivateDTO = angular.copy($scope.userActivateDTO);
+        password = CryptoJS.SHA1(userActivateDTO.password).toString();
+        userActivateDTO.password = password;
+        passwordRepeat = CryptoJS.SHA1(userActivateDTO.passwordRepeat).toString();
+        userActivateDTO.passwordRepeat = passwordRepeat;
+        return $http.post("/user/resetPassword", userActivateDTO).then(function(response) {
           var data;
           data = response.data;
           if (data.result === "success") {
@@ -21364,12 +21367,13 @@ var styleDirective = valueFn({
       };
       $scope.fieldInfo = [];
       return $scope.register = function() {
-        var password, passwordRepeat;
-        password = CryptoJS.SHA1($scope.userRegisterDTO.password).toString();
-        $scope.userRegisterDTO.password = password;
-        passwordRepeat = CryptoJS.SHA1($scope.userRegisterDTO.passwordRepeat).toString();
-        $scope.userRegisterDTO.passwordRepeat = passwordRepeat;
-        return $http.post("/user/register", $scope.userRegisterDTO).then(function(response) {
+        var password, passwordRepeat, userRegisterDTO;
+        userRegisterDTO = angular.copy($scope.userRegisterDTO);
+        password = CryptoJS.SHA1(userRegisterDTO.password).toString();
+        userRegisterDTO.password = password;
+        passwordRepeat = CryptoJS.SHA1(userRegisterDTO.passwordRepeat).toString();
+        userRegisterDTO.passwordRepeat = passwordRepeat;
+        return $http.post("/user/register", userRegisterDTO).then(function(response) {
           var data;
           data = response.data;
           if (data.result === "success") {
@@ -21420,10 +21424,11 @@ var styleDirective = valueFn({
         }
       });
       $scope.login = function() {
-        var password;
-        password = CryptoJS.SHA1($scope.userLoginDTO.password).toString();
-        $scope.userLoginDTO.password = password;
-        return $http.post("/user/login", $scope.userLoginDTO).then(function(response) {
+        var password, userLoginDTO;
+        userLoginDTO = angular.copy($scope.userLoginDTO);
+        password = CryptoJS.SHA1(userLoginDTO.password).toString();
+        userLoginDTO.password = password;
+        return $http.post("/user/login", userLoginDTO).then(function(response) {
           var data;
           data = response.data;
           if (data.result === "success") {

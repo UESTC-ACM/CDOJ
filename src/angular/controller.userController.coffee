@@ -114,9 +114,10 @@ cdoj.controller("UserController", [
           $rootScope.isAdmin = false
     )
     $scope.login = ->
-      password = CryptoJS.SHA1($scope.userLoginDTO.password).toString()
-      $scope.userLoginDTO.password = password
-      $http.post("/user/login", $scope.userLoginDTO).then (response)->
+      userLoginDTO = angular.copy($scope.userLoginDTO)
+      password = CryptoJS.SHA1(userLoginDTO.password).toString()
+      userLoginDTO.password = password
+      $http.post("/user/login", userLoginDTO).then (response)->
         data = response.data
         if data.result == "success"
           $rootScope.hasLogin = true
