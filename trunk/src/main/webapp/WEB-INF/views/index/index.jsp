@@ -15,7 +15,10 @@
         <div class="hero-titles">
           <h1 class="cdoj-codefont">CDOJ</h1>
 
-          <h2>Orz lyhypacm</h2>
+          <h2>stO Ruinshe Orz</h2>
+          <div class="alert alert-danger">
+            加密算法略有修改，部分用户登陆可能提示密码错误，自行找回密码即可。
+          </div>
         </div>
       </div>
     </div>
