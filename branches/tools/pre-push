@@ -2,7 +2,7 @@
 cd trunk
 if [ -f ./pre-commit.sh ]; then
   ./pre-commit.sh
-  if [ $# -ne 0]; then
+  if [ $? -ne 0 ]; then
     exit 1
   fi
   exit 0
