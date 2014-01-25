@@ -111,14 +111,14 @@ public class StringUtil {
       MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
       messageDigest.update(text.getBytes("UTF-8"));
       byte[] result = messageDigest.digest();
-      StringBuilder stringBuilder = new StringBuilder();
-      for (byte b : result) {
-        int i = b & 0xFF;
-        if (i < 0xF)
-          stringBuilder.append(0);
-        stringBuilder.append(Integer.toHexString(i));
+      char hexDigit[] = {'0', '1', '2', '3', '4', '5', '6', '7',
+          '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+      StringBuilder buf = new StringBuilder();
+      for (byte aResult : result) {
+        buf.append(hexDigit[(aResult >> 4) & 0x0f]);
+        buf.append(hexDigit[aResult & 0x0f]);
       }
-      return stringBuilder.toString();
+      return buf.toString();
     } catch (Exception e) {
       return "";
     }

@@ -28,13 +28,13 @@ public class UserRegisterDTO {
   /**
    * Input: password
    */
-  @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
+  @Length(min = 40, max = 40, message = "Please enter your password.")
   private String password;
 
   /**
    * Input: repeat password
    */
-  @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
+  @Length(min = 40, max = 40, message = "Please repeat your password.")
   private String passwordRepeat;
 
   /**
@@ -187,8 +187,8 @@ public class UserRegisterDTO {
 
     private Integer userId = 2;
     private String userName = "admin";
-    private String password = "password";
-    private String passwordRepeat = "password";
+    private String password = "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8";
+    private String passwordRepeat = "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8";
     private String nickName = "admin";
     private String email = "acm_admin@uestc.edu.cn";
     private String school = "UESTC";

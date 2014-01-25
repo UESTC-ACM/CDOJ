@@ -48,6 +48,8 @@ public class UserControllerTest extends ControllerTest {
   private final String URL_LOGOUT = "/user/logout";
   private final String URL_REGISTER = "/user/register";
 
+  private final String PASSWORD_ENCODED = "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8";
+
   @Autowired
   @Qualifier("mockUserService")
   private UserService userService;
@@ -90,11 +92,11 @@ public class UserControllerTest extends ControllerTest {
   public void testLogin_successful() throws Exception {
     UserLoginDTO userLoginDTO = UserLoginDTO.builder()
         .setUserName("admin")
-        .setPassword("password")
+        .setPassword(PASSWORD_ENCODED)
         .build();
     UserDTO userDTO = UserDTO.builder()
         .setUserName("admin")
-        .setPassword(StringUtil.encodeSHA1("password"))
+        .setPassword(PASSWORD_ENCODED)
         .build();
     when(userService.getUserDTOByUserName(userLoginDTO.getUserName())).thenReturn(userDTO);
     mockMvc.perform(post(URL_LOGIN)
@@ -110,7 +112,6 @@ public class UserControllerTest extends ControllerTest {
   public void testLogin_invalidUserName_null() throws Exception {
     UserLoginDTO userLoginDTO = UserLoginDTO.builder()
         .setUserName(null)
-        .setPassword("password")
         .build();
     mockMvc.perform(post(URL_LOGIN)
         .contentType(APPLICATION_JSON_UTF8)
@@ -129,7 +130,6 @@ public class UserControllerTest extends ControllerTest {
   public void testLogin_invalidUserName_empty() throws Exception {
     UserLoginDTO userLoginDTO = UserLoginDTO.builder()
         .setUserName("")
-        .setPassword("password")
         .build();
     mockMvc.perform(post(URL_LOGIN)
         .contentType(APPLICATION_JSON_UTF8)
@@ -149,7 +149,6 @@ public class UserControllerTest extends ControllerTest {
   public void testLogin_invalidUserName_tooShort() throws Exception {
     UserLoginDTO userLoginDTO = UserLoginDTO.builder()
         .setUserName(StringUtil.repeat("a", 3))
-        .setPassword("password")
         .build();
     mockMvc.perform(post(URL_LOGIN)
         .contentType(APPLICATION_JSON_UTF8)
@@ -169,7 +168,6 @@ public class UserControllerTest extends ControllerTest {
   public void testLogin_invalidUserName_tooLong() throws Exception {
     UserLoginDTO userLoginDTO = UserLoginDTO.builder()
         .setUserName(StringUtil.repeat("a", 25))
-        .setPassword("password")
         .build();
     mockMvc.perform(post(URL_LOGIN)
         .contentType(APPLICATION_JSON_UTF8)
@@ -189,7 +187,6 @@ public class UserControllerTest extends ControllerTest {
   public void testLogin_invalidUserName_invalid() throws Exception {
     UserLoginDTO userLoginDTO = UserLoginDTO.builder()
         .setUserName("%$#@5%")
-        .setPassword("password")
         .build();
     mockMvc.perform(post(URL_LOGIN)
         .contentType(APPLICATION_JSON_UTF8)
@@ -239,7 +236,7 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field", hasSize(1)))
         .andExpect(jsonPath("$.field[0].field", is("password")))
         .andExpect(jsonPath("$.field[0].objectName", is("userLoginDTO")))
-        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 6-20 characters.")));
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter your password.")));
     Assert.assertNull(session.getAttribute("currentUser"));
   }
 
@@ -258,7 +255,7 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field", hasSize(1)))
         .andExpect(jsonPath("$.field[0].field", is("password")))
         .andExpect(jsonPath("$.field[0].objectName", is("userLoginDTO")))
-        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 6-20 characters.")));
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter your password.")));
     Assert.assertNull(session.getAttribute("currentUser"));
   }
 
@@ -266,7 +263,7 @@ public class UserControllerTest extends ControllerTest {
   public void testLogin_invalidPassword_tooLong() throws Exception {
     UserLoginDTO userLoginDTO = UserLoginDTO.builder()
         .setUserName("admin")
-        .setPassword(StringUtil.repeat("a", 21))
+        .setPassword(StringUtil.repeat("a", 41))
         .build();
     mockMvc.perform(post(URL_LOGIN)
         .contentType(APPLICATION_JSON_UTF8)
@@ -277,7 +274,7 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field", hasSize(1)))
         .andExpect(jsonPath("$.field[0].field", is("password")))
         .andExpect(jsonPath("$.field[0].objectName", is("userLoginDTO")))
-        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 6-20 characters.")));
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter your password.")));
     Assert.assertNull(session.getAttribute("currentUser"));
   }
 
@@ -285,11 +282,11 @@ public class UserControllerTest extends ControllerTest {
   public void testLogin_failed_wrongUserNameOrPassword() throws Exception {
     UserLoginDTO userLoginDTO = UserLoginDTO.builder()
         .setUserName("admin")
-        .setPassword("wrongPassword")
+        .setPassword(StringUtil.encodeSHA1("wrongPassword"))
         .build();
     UserDTO userDTO = UserDTO.builder()
         .setUserName("admin")
-        .setPassword(StringUtil.encodeSHA1("password"))
+        .setPassword(PASSWORD_ENCODED)
         .build();
     when(userService.getUserDTOByUserName(userLoginDTO.getUserName())).thenReturn(userDTO);
     mockMvc.perform(post(URL_LOGIN)
@@ -345,7 +342,7 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field[*].objectName",
             containsInAnyOrder("userLoginDTO", "userLoginDTO")))
         .andExpect(jsonPath("$.field[*].defaultMessage", containsInAnyOrder(
-            "Please enter 6-20 characters.",
+            "Please enter your password.",
             "Please enter 4-24 characters consist of A-Z, a-z, 0-9 and '_'.")));
     Assert.assertNull(session.getAttribute("currentUser"));
   }
@@ -354,7 +351,7 @@ public class UserControllerTest extends ControllerTest {
   public void testLogin_failed_serviceError() throws Exception {
     UserLoginDTO userLoginDTO = UserLoginDTO.builder()
         .setUserName("admin")
-        .setPassword("password")
+        .setPassword(PASSWORD_ENCODED)
         .build();
     when(userService.getUserDTOByUserName(userLoginDTO.getUserName()))
         .thenThrow(new AppException("service error"));
@@ -524,9 +521,8 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field", hasSize(1)))
         .andExpect(jsonPath("$.field[0].field", is("password")))
         .andExpect(jsonPath("$.field[0].objectName", is("userRegisterDTO")))
-        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 6-20 characters.")));
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter your password.")));
   }
-
 
   @Test
   public void testRegister_failed_password_tooShort() throws Exception {
@@ -541,13 +537,13 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field", hasSize(1)))
         .andExpect(jsonPath("$.field[0].field", is("password")))
         .andExpect(jsonPath("$.field[0].objectName", is("userRegisterDTO")))
-        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 6-20 characters.")));
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter your password.")));
   }
 
   @Test
   public void testRegister_failed_password_tooLong() throws Exception {
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder()
-        .setPassword(StringUtil.repeat("a", 21))
+        .setPassword(StringUtil.repeat("a", 41))
         .build();
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
@@ -557,7 +553,7 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field", hasSize(1)))
         .andExpect(jsonPath("$.field[0].field", is("password")))
         .andExpect(jsonPath("$.field[0].objectName", is("userRegisterDTO")))
-        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 6-20 characters.")));
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter your password.")));
   }
 
   @Test
@@ -589,7 +585,7 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field", hasSize(1)))
         .andExpect(jsonPath("$.field[0].field", is("passwordRepeat")))
         .andExpect(jsonPath("$.field[0].objectName", is("userRegisterDTO")))
-        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 6-20 characters.")));
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please repeat your password.")));
   }
 
   @Test
@@ -605,13 +601,13 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field", hasSize(1)))
         .andExpect(jsonPath("$.field[0].field", is("passwordRepeat")))
         .andExpect(jsonPath("$.field[0].objectName", is("userRegisterDTO")))
-        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 6-20 characters.")));
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please repeat your password.")));
   }
 
   @Test
   public void testRegister_failed_passwordRepeat_tooLong() throws Exception {
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder()
-        .setPasswordRepeat(StringUtil.repeat("a", 21))
+        .setPasswordRepeat(StringUtil.repeat("a", 41))
         .build();
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
@@ -621,14 +617,14 @@ public class UserControllerTest extends ControllerTest {
         .andExpect(jsonPath("$.field", hasSize(1)))
         .andExpect(jsonPath("$.field[0].field", is("passwordRepeat")))
         .andExpect(jsonPath("$.field[0].objectName", is("userRegisterDTO")))
-        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please enter 6-20 characters.")));
+        .andExpect(jsonPath("$.field[0].defaultMessage", is("Please repeat your password.")));
   }
 
   @Test
   public void testRegister_failed_password_different() throws Exception {
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder()
-        .setPassword("12345678")
-        .setPasswordRepeat("123456789")
+        .setPassword(StringUtil.encodeSHA1("12345678"))
+        .setPasswordRepeat(StringUtil.encodeSHA1("123456789"))
         .build();
     mockMvc.perform(post(URL_REGISTER)
         .contentType(APPLICATION_JSON_UTF8)
@@ -986,7 +982,7 @@ public class UserControllerTest extends ControllerTest {
     UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder().build();
     UserLoginDTO userLoginDTO = UserLoginDTO.builder().build();
     UserDTO userDTO = UserDTO.builder()
-        .setPassword(StringUtil.encodeSHA1(userLoginDTO.getPassword()))
+        .setPassword(userLoginDTO.getPassword())
         .build();
     when(userService.getUserDTOByUserName(userRegisterDTO.getUserName()))
         .thenReturn(null).thenReturn(userDTO);

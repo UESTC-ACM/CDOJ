@@ -114,10 +114,10 @@ Admin problem list page
               </fieldset>
               <c:if
                   test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
-              <p class="pull-left"
-                 ui-rejudge-button
-                 condition="condition">
-              </p>
+                <p class="pull-left"
+                   ui-rejudge-button
+                   condition="condition">
+                </p>
               </c:if>
               <p class="pull-right">
                 <button type="button" class="btn btn-danger btn-sm"
@@ -154,11 +154,17 @@ Admin problem list page
         </thead>
         <tbody>
         <tr ng-repeat="status in list">
-          <td style="text-align: center;">{{status.statusId}}</td>
-          <td style="text-align: center;"><a href="/user/center/{{status.userName}}"
-                                             target="_blank">{{status.userName}}</a></td>
-          <td style="text-align: center;"><a href="/problem/show/{{status.problemId}}"
-                                             target="_blank">{{status.problemId}}</a></td>
+          <td style="text-align: center;" ng-bind="status.statusId"></td>
+          <td style="text-align: center;">
+            <a href="/user/center/{{status.userName}}"
+               target="_blank"
+               ng-bind="status.userName"></a>
+          </td>
+          <td style="text-align: center;">
+            <a href="/problem/show/{{status.problemId}}"
+               target="_blank"
+               ng-bind="status.problemId"></a>
+          </td>
           <td style="text-align: center;"
               ui-status
               status="status"
@@ -169,15 +175,17 @@ Admin problem list page
               }">
           </td>
 
-          <td style="text-align: center;">{{status.memoryCost}}
+          <td style="text-align: center;">
+            <span ng-bind="status.memoryCost"></span>
             <span ng-hide="status.memoryCost == undefined"> KB</span>
           </td>
-          <td style="text-align: center;">{{status.timeCost}}
+          <td style="text-align: center;">
+            <span ng-bind="status.timeCost"></span>
             <span ng-hide="status.memoryCost == undefined"> MS</span>
           </td>
 
-          <td style="text-align: center;">{{status.language}}</td>
-          <td style="text-align: center;">
+          <td style="text-align: center;" ng-bind="status.language"></td>
+          <td style="text-align: center;" ui-code-href status="status">
           </td>
           <td style="text-align: center;"
               ui-time

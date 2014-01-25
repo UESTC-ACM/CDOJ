@@ -1,7 +1,5 @@
 <%--
 	Index pages
-
-	@author <a href="mailto:muziriyun@gmail.com">mzry1992</a>
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -42,10 +40,17 @@
       </div>
       <div class="col-md-12">
         <div class="cdoj-article" ng-repeat="article in list">
-          <h1><a href="/article/show/{{article.articleId}}" target="_blank">{{article.title}}</a>
+          <h1><a href="/article/show/{{article.articleId}}"
+                 target="_blank"
+                 ng-bind="article.title"></a>
           </h1>
-          <small>{{article.clicked}} visited, create by {{article.ownerName}}, last modified at
-            <span class="cdoj-article-post-time">{{Date.create(article.time).relative()}}</span>
+          <small>
+            <span ng-bind="article.clicked"></span> visited, create by <span
+              ng-bind="article.ownerName"></span>, last modified at
+            <span class="cdoj-article-post-time"
+                  ui-time
+                  time="article.time"
+                  inline="true"></span>
           </small>
           <div class="cdoj-article-summary">
             <div class="cdoj-article-summary-content" ui-markdown content="article.content">

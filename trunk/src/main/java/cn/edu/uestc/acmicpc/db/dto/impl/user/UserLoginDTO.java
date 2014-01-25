@@ -22,7 +22,7 @@ public class UserLoginDTO {
    * Input: password
    */
   @NotNull(message = "Please enter your password.")
-  @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
+  @Length(min = 40, max = 40, message = "Please enter your password.")
   private String password;
 
   public String getUserName() {
@@ -63,7 +63,7 @@ public class UserLoginDTO {
     }
 
     private String userName = "admin";
-    private String password = "password";
+    private String password = "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8";
 
     public String getUserName() {
       return userName;
