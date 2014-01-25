@@ -35,7 +35,7 @@ cdoj.directive("uiPageInfo",
             ng-class="{active: page.active}">
           <a href="#" ng-click="jump(page.page)">{{page.page}}</a>
         </li>
-        <li ng-class="{disabled: beginPages == pageInfo.totalPages}" ng-show="pageInfo.totalPages > 1"><a href="#" ng-click="jump(pageInfo.totalPages)"><i class="fa fa-arrow-right"></i></a></li>
+        <li ng-class="{disabled: endPages == pageInfo.totalPages}" ng-show="pageInfo.totalPages > 1"><a href="#" ng-click="jump(pageInfo.totalPages)"><i class="fa fa-arrow-right"></i></a></li>
       </ul>
     """
 )

@@ -21442,6 +21442,36 @@ var styleDirective = valueFn({
     };
   });
 
+  cdoj.directive("uiAvatar", function() {
+    return {
+      restrict: "A",
+      scope: {
+        email: "=",
+        rating: "@",
+        image: "@",
+        size: "@"
+      },
+      controller: [
+        "$scope", "$element", function($scope, $element) {
+          return $scope.$watch("email", function() {
+            var url;
+            if ($scope.size === void 0) {
+              $scope.size = $element.width();
+            }
+            if ($scope.image === void 0) {
+              $scope.image = "retro";
+            }
+            if ($scope.rating === void 0) {
+              $scope.rating = "pg";
+            }
+            url = "http://www.gravatar.com/avatar/" + (hex_md5($scope.email)) + ".jpg?" + ($scope.size ? "s=" + $scope.size + "&" : "") + ($scope.rating ? "r=" + $scope.rating + "&" : "") + ($scope.image ? "d=" + encodeURIComponent($scope.image) : "");
+            return $element.attr("src", url);
+          });
+        }
+      ]
+    };
+  });
+
   cdoj.directive("uiCodeHref", function() {
     return {
       restrict: "A",
@@ -21653,7 +21683,7 @@ var styleDirective = valueFn({
           };
         }
       ],
-      template: "<ul class=\"pagination pagination-sm\">\n  <li ng-class=\"{disabled: beginPages == 1}\" ng-show=\"pageInfo.totalPages > 1\"><a href=\"#\" ng-click=\"jump(1)\"><i class=\"fa fa-arrow-left\"></i></a></li>\n  <li ng-repeat=\"page in pageList\"\n      ng-class=\"{active: page.active}\">\n    <a href=\"#\" ng-click=\"jump(page.page)\">{{page.page}}</a>\n  </li>\n  <li ng-class=\"{disabled: beginPages == pageInfo.totalPages}\" ng-show=\"pageInfo.totalPages > 1\"><a href=\"#\" ng-click=\"jump(pageInfo.totalPages)\"><i class=\"fa fa-arrow-right\"></i></a></li>\n</ul>"
+      template: "<ul class=\"pagination pagination-sm\">\n  <li ng-class=\"{disabled: beginPages == 1}\" ng-show=\"pageInfo.totalPages > 1\"><a href=\"#\" ng-click=\"jump(1)\"><i class=\"fa fa-arrow-left\"></i></a></li>\n  <li ng-repeat=\"page in pageList\"\n      ng-class=\"{active: page.active}\">\n    <a href=\"#\" ng-click=\"jump(page.page)\">{{page.page}}</a>\n  </li>\n  <li ng-class=\"{disabled: endPages == pageInfo.totalPages}\" ng-show=\"pageInfo.totalPages > 1\"><a href=\"#\" ng-click=\"jump(pageInfo.totalPages)\"><i class=\"fa fa-arrow-right\"></i></a></li>\n</ul>"
     };
   });
 
@@ -21742,8 +21772,12 @@ var styleDirective = valueFn({
           var timmer;
           $scope.showHref = false;
           $rootScope.$watch("hasLogin", function() {
-            if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
-              return $scope.showHref = true;
+            if ($scope.status.returnTypeId === 7) {
+              if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
+                return $scope.showHref = true;
+              } else {
+                return $scope.showHref = false;
+              }
             } else {
               return $scope.showHref = false;
             }

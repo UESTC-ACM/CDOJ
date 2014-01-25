@@ -9,8 +9,11 @@ cdoj.directive("uiStatus",
       $scope.showHref = false
       $rootScope.$watch("hasLogin",
       ->
-        if $rootScope.hasLogin && ($rootScope.currentUser.type == 1 || $rootScope.currentUser.userName == $scope.status.userName)
-          $scope.showHref = true
+        if $scope.status.returnTypeId == 7
+          if $rootScope.hasLogin && ($rootScope.currentUser.type == 1 || $rootScope.currentUser.userName == $scope.status.userName)
+            $scope.showHref = true
+          else
+            $scope.showHref = false
         else
           $scope.showHref = false
       )

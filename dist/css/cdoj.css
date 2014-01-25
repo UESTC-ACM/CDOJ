@@ -7970,7 +7970,7 @@ img {
 #advance-search {
   position: fixed;
   top: 16px;
-  right: 160px;
+  right: 175px;
   z-index: 1031;
 }
 @media (min-width: 768px) {
