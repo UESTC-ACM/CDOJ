@@ -16,56 +16,8 @@ getCurrentUser = ->
 initUser = ->
   @user = getCurrentUser()
 
-  #Set login && register && activate button when user not logined
-  if @user.userLogin == false
-    $("#cdoj-login-button").click =>
-      $loginForm = $("#cdoj-login-form")
-      info = $loginForm.getFormData()
-      jsonPost("/user/login"
-        info
-        (data) =>
-          $loginForm.formValidate
-            result: data,
-            onSuccess: ->
-              window.location.reload()
-      )
-      return false
-    $("#cdoj-register-button").click =>
-      $registerForm = $("#cdoj-register-form")
-      info = $registerForm.getFormData()
-      jsonPost("/user/register"
-        info
-        (data) =>
-          $registerForm.formValidate
-            result: data,
-            onSuccess: ->
-              window.location.reload()
-      )
-      return false
-    $("#cdoj-activate-button").click =>
-      $activateForm = $("#cdoj-activate-form")
-      info = $activateForm.getFormData()
-      $.post("/user/sendSerialKey/" + info.userName
-        (data) =>
-          if data.result == "success"
-            alert "We send you an Email with the url to reset your password right now, please check your mail box."
-            $("#cdoj-activate-modal").modal("hide");
-          else if data.result == "failed"
-            alert "Unknown error occurred."
-          else
-            alert data.error_msg;
-      )
-      return false
-
   #Set loginout button when user not logined
   if @user.userLogin
-    $("#cdoj-logout-button").click =>
-      $.post("/user/logout"
-        (data) =>
-          if data.result == "success"
-            window.location.reload()
-      )
-      return false
     $("#cdoj-profile-edit-button").click =>
       $profileEditForm = $("#cdoj-profile-edit-form")
       info = $profileEditForm.getFormData()

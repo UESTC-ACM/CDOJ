@@ -1,5 +1,5 @@
 (function() {
-  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initContestList, initContestPage, initLayout, initProblemDataEditor, initProblemEditor, initProblemPage, initUI, initUser, initUserActivate, initUserList, jsonMerge, jsonPost, openInNewTab, render;
+  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initContestList, initContestPage, initLayout, initProblemDataEditor, initProblemEditor, initProblemPage, initUI, initUser, initUserList, jsonMerge, jsonPost, openInNewTab, render;
 
   OnlineJudgeReturnType = {
     OJ_WAIT: 0,
@@ -1160,28 +1160,6 @@
     });
   };
 
-  initUserActivate = function() {
-    var $cdojActivationForm,
-      _this = this;
-    $cdojActivationForm = $("#cdoj-activation-form");
-    if ($cdojActivationForm.length !== 0) {
-      return $cdojActivationForm.find("#submit-button").click(function() {
-        var info;
-        info = $cdojActivationForm.getFormData();
-        jsonPost("/user/resetPassword", info, function(data) {
-          return $cdojActivationForm.formValidate({
-            result: data,
-            onSuccess: function() {
-              alert("Success!");
-              return window.location.href = "/";
-            }
-          });
-        });
-        return false;
-      });
-    }
-  };
-
   getCurrentUser = function() {
     var $currentUser;
     $currentUser = $("#currentUser");
@@ -1204,61 +1182,7 @@
   initUser = function() {
     var _this = this;
     this.user = getCurrentUser();
-    if (this.user.userLogin === false) {
-      $("#cdoj-login-button").click(function() {
-        var $loginForm, info;
-        $loginForm = $("#cdoj-login-form");
-        info = $loginForm.getFormData();
-        jsonPost("/user/login", info, function(data) {
-          return $loginForm.formValidate({
-            result: data,
-            onSuccess: function() {
-              return window.location.reload();
-            }
-          });
-        });
-        return false;
-      });
-      $("#cdoj-register-button").click(function() {
-        var $registerForm, info;
-        $registerForm = $("#cdoj-register-form");
-        info = $registerForm.getFormData();
-        jsonPost("/user/register", info, function(data) {
-          return $registerForm.formValidate({
-            result: data,
-            onSuccess: function() {
-              return window.location.reload();
-            }
-          });
-        });
-        return false;
-      });
-      $("#cdoj-activate-button").click(function() {
-        var $activateForm, info;
-        $activateForm = $("#cdoj-activate-form");
-        info = $activateForm.getFormData();
-        $.post("/user/sendSerialKey/" + info.userName, function(data) {
-          if (data.result === "success") {
-            alert("We send you an Email with the url to reset your password right now, please check your mail box.");
-            return $("#cdoj-activate-modal").modal("hide");
-          } else if (data.result === "failed") {
-            return alert("Unknown error occurred.");
-          } else {
-            return alert(data.error_msg);
-          }
-        });
-        return false;
-      });
-    }
     if (this.user.userLogin) {
-      $("#cdoj-logout-button").click(function() {
-        $.post("/user/logout", function(data) {
-          if (data.result === "success") {
-            return window.location.reload();
-          }
-        });
-        return false;
-      });
       return $("#cdoj-profile-edit-button").click(function() {
         var $profileEditForm, info;
         $profileEditForm = $("#cdoj-profile-edit-form");
@@ -1369,7 +1293,6 @@
     initUI();
     initLayout();
     initUserList();
-    initUserActivate();
     initProblemPage();
     initProblemEditor();
     initProblemDataEditor();

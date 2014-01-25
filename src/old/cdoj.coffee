@@ -3,7 +3,6 @@ $ ->
   initUI()
   initLayout()
   initUserList()
-  initUserActivate()
   initProblemPage()
   initProblemEditor()
   initProblemDataEditor()

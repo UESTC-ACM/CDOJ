@@ -21186,6 +21186,34 @@ var styleDirective = valueFn({
 
   cdoj = angular.module("cdoj", ["ngSanitize"]);
 
+  cdoj.controller("ActivateController", [
+    "$scope", "$http", "$element", function($scope, $http, $element) {
+      $scope.userName = "";
+      $scope.buttonText = "Send Email";
+      $scope.onSend = false;
+      return $scope.sendSerialKey = function() {
+        if ($scope.userName.length > 0) {
+          $scope.buttonText = "Sending...";
+          $scope.onSend = true;
+          return $http.post("/user/sendSerialKey/" + $scope.userName).then(function(response) {
+            var data;
+            data = response.data;
+            if (data.result === "success") {
+              alert("We send you an Email with the url to reset your password right now, please check your mail box.");
+              $element.modal("hide");
+            } else if (data.result === "failed") {
+              alert("Unknown error occurred.");
+            } else {
+              alert(data.error_msg);
+            }
+            $scope.buttonText = "Send Email";
+            return $scope.onSend = false;
+          });
+        }
+      };
+    }
+  ]);
+
   cdoj.controller("ContestEditorController", [
     "$scope", "$http", function($scope, $http) {
       $scope.contest = {
@@ -21288,6 +21316,36 @@ var styleDirective = valueFn({
           });
         }
       }, true);
+    }
+  ]);
+
+  cdoj.controller("PasswordResetController", [
+    "$scope", "$http", function($scope, $http) {
+      $scope.userActivateDTO = {
+        userName: "",
+        serialKey: "",
+        password: "",
+        passwordRepeat: ""
+      };
+      return $scope.submit = function() {
+        var password, passwordRepeat;
+        password = CryptoJS.SHA1($scope.userActivateDTO.password).toString();
+        $scope.userActivateDTO.password = password;
+        passwordRepeat = CryptoJS.SHA1($scope.userActivateDTO.passwordRepeat).toString();
+        $scope.userActivateDTO.passwordRepeat = passwordRepeat;
+        return $http.post("/user/resetPassword", $scope.userActivateDTO).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            alert("Success!");
+            return window.location.href = "/";
+          } else if (data.result === "field_error") {
+            return $scope.fieldInfo = data.field;
+          } else {
+            return alert(data.error_msg);
+          }
+        });
+      };
     }
   ]);
 
