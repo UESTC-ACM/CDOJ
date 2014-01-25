@@ -131,9 +131,11 @@
             </thead>
             <tbody>
             <tr ng-repeat="contest in list">
-              <td style="text-align: right;">{{contest.contestId}}</td>
+              <td style="text-align: right;" ng-bind="contest.contestId"></td>
               <td>
-                <a href="/contest/show/{{contest.contestId}}" target="_blank">{{contest.title}}</a>
+                <a href="/contest/show/{{contest.contestId}}"
+                   target="_blank"
+                   ng-bind="contest.title"></a>
               </td>
               <td style="text-align: right;"
                   ui-time
@@ -162,9 +164,11 @@
             </thead>
             <tbody>
             <tr ng-repeat="contest in list">
-              <td style="text-align: right;">{{contest.contestId}}</td>
+              <td style="text-align: right;" ng-bind="contest.contestId"></td>
               <td>
-                <a href="/contest/show/{{contest.contestId}}" target="_blank">{{contest.title}}</a>
+                <a href="/contest/show/{{contest.contestId}}"
+                   target="_blank"
+                   ng-bind="contest.title"></a>
               </td>
               <td style="text-align: right;"
                   ui-time

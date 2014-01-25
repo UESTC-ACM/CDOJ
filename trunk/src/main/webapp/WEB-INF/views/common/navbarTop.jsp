@@ -30,74 +30,23 @@ User menu on navbar
           </div>
         </li>
         <!-- User -->
-        <li><c:choose>
+        <c:choose>
           <c:when test="${sessionScope.currentUser == null}">
-            <a href="#" class="dropdown-toggle"
-               data-toggle="dropdown">Sign in</a>
-            <ul class="dropdown-menu cdoj-form-menu">
-              <li>
-                <form id="cdoj-login-form">
-                  <div class="input-group form-group input-group-sm">
-                        <span class="input-group-addon"><i
-                            class="fa fa-user"></i></span> <input type="text"
-                                                                  name="userName" maxlength="24"
-                                                                  value=""
-                                                                  id="userName" class="form-control"
-                                                                  placeholder="Username">
-                  </div>
-                  <div class="input-group form-group input-group-sm">
-                        <span class="input-group-addon"><i
-                            class="fa fa-key"></i></span> <input type="password"
-                                                                 name="password" maxlength="20"
-                                                                 id="password"
-                                                                 class="form-control"
-                                                                 placeholder="Password">
-                        <span class="input-group-btn">
-                          <button type="submit" id="cdoj-login-button"
-                                  class="btn btn-default">Login
-                          </button>
-                        </span>
-                  </div>
-                </form>
-              </li>
-              <li role="presentation" class="divider"></li>
-              <li><a href="#" data-toggle="modal"
-                     data-target="#cdoj-register-modal"><i
-                  class="fa fa-arrow-circle-right"></i>Register </a> <a
-                  href="#" data-toggle="modal"
-                  data-target="#cdoj-activate-modal"><i
-                  class="fa fa-arrow-circle-right"></i>Forget
-                password? </a></li>
-            </ul>
+            <li ng-controller="UserController"
+                ng-init="$root.hasLogin=false;">
+            </li>
           </c:when>
           <c:otherwise>
-            <div id="cdoj-user">
-              <img id="cdoj-user-avatar"
-                   email="<c:out value="${sessionScope.currentUser.email}"/>"
-                   type="avatar" data-toggle="dropdown" src="/images/avatar/default.jpg"/>
-              <ul class="dropdown-menu" role="menu"
-                  aria-labelledby="user-menu">
-                <li role="presentation"
-                    class="dropdown-header text-center"><span
-                    id="currentUser"
-                    type="<c:out value="${sessionScope.currentUser.type}"/>">
-                        <c:out
-                            value="${sessionScope.currentUser.userName}"/>
-                    </span></li>
-                <li role="presentation"><a
-                    href="<c:url value="/user/center/${sessionScope.currentUser.userName}"/>"><i
-                    class="fa fa-home"></i>User center</a></li>
-                <li role="presentation"><a href="#" data-toggle="modal"
-                                           data-target="#cdoj-profile-edit-modal"><i
-                    class="fa fa-wrench"></i>Edit profile</a></li>
-                <li role="presentation" class="divider"></li>
-                <li role="presentation"><a href="#"
-                                           id="cdoj-logout-button"><i
-                    class="fa fa-power-off"></i>Logout</a></li>
-              </ul>
-            </div>
+            <li ng-controller="UserController"
+                ng-init="$root.hasLogin=true;
+                $root.currentUser={
+                  userName: '${sessionScope.currentUser.userName}',
+                  type: ${sessionScope.currentUser.type},
+                  email: '${sessionScope.currentUser.email}'
+                };">
+            </li>
           </c:otherwise>
-        </c:choose></li>
+        </c:choose>
       </ul>
     </nav>
   </div>
