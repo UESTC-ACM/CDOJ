@@ -77,33 +77,12 @@
                   </div>
                 </div>
               </fieldset>
-              <c:if
-                  test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
-                <fieldset>
-                  <legend>Is Visible</legend>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label class="radio-inline">
-                          <input type="radio"
-                                 ng-model="condition.isVisible"
-                                 checked=""/> All
-                        </label>
-                        <label class="radio-inline">
-                          <input type="radio"
-                                 ng-model="condition.isVisible"
-                                 value="true"/> Yes
-                        </label>
-                        <label class="radio-inline">
-                          <input type="radio"
-                                 ng-model="condition.isVisible"
-                                 value="false"/> No
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </fieldset>
-              </c:if>
+              <div class="col-md-12" ng-show="$root.isAdmin">
+                <div class="form-group">
+                  <label>Is Visible</label>
+                  <ui-yes-no-radio ng-model="condition.isVisible"></ui-yes-no-radio>
+                </div>
+              </div>
               <p class="pull-right">
                 <button type="button" class="btn btn-danger btn-sm" ng-click="reset()">Reset
                 </button>
@@ -117,71 +96,39 @@
   <div class="row">
     <div class="col-md-12">
       <table class="table table-condensed">
-        <c:choose>
-          <c:when
-              test="${sessionScope.currentUser != null && sessionScope.currentUser.type == 1}">
-            <thead>
-            <tr>
-              <th style="width: 4em; text-align: right;">#</th>
-              <th><a href="/contest/editor/new">Add new contest</a></th>
-              <th style="width: 12em; text-align: right;">Start time</th>
-              <th style="width: 9em; text-align: right;">Length</th>
-              <th style="width: 55px;"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="contest in list">
-              <td style="text-align: right;" ng-bind="contest.contestId"></td>
-              <td>
-                <a href="/contest/show/{{contest.contestId}}"
-                   target="_blank"
-                   ng-bind="contest.title"></a>
-              </td>
-              <td style="text-align: right;"
-                  ui-time
-                  time="contest.time">
-              </td>
-              <td style="text-align: right;"
-                  ui-time-length
-                  length="contest.length">
-              </td>
-              <td ui-contest-admin-span
-                  contest-id="contest.contestId"
-                  is-visible="contest.isVisible"
-                  style="padding: 4px;">
-              </td>
-            </tr>
-            </tbody>
-          </c:when>
-          <c:otherwise>
-            <thead>
-            <tr>
-              <th style="width: 4em; text-align: right;">#</th>
-              <th><a href="/contest/editor/new">Add new contest</a></th>
-              <th style="width: 12em; text-align: right;">Start time</th>
-              <th style="width: 9em; text-align: right;">Length</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="contest in list">
-              <td style="text-align: right;" ng-bind="contest.contestId"></td>
-              <td>
-                <a href="/contest/show/{{contest.contestId}}"
-                   target="_blank"
-                   ng-bind="contest.title"></a>
-              </td>
-              <td style="text-align: right;"
-                  ui-time
-                  time="contest.time">
-              </td>
-              <td style="text-align: right;"
-                  ui-time-length
-                  length="contest.length">
-              </td>
-            </tr>
-            </tbody>
-          </c:otherwise>
-        </c:choose>
+        <thead>
+        <tr>
+          <th style="width: 4em; text-align: right;">#</th>
+          <th><a href="/contest/editor/new">Add new contest</a></th>
+          <th style="width: 12em; text-align: right;">Start time</th>
+          <th style="width: 9em; text-align: right;">Length</th>
+          <th style="width: 55px;" ng-show="$root.isAdmin"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="contest in list">
+          <td style="text-align: right;" ng-bind="contest.contestId"></td>
+          <td>
+            <a href="/contest/show/{{contest.contestId}}"
+               target="_blank"
+               ng-bind="contest.title"></a>
+          </td>
+          <td style="text-align: right;"
+              ui-time
+              time="contest.time">
+          </td>
+          <td style="text-align: right;"
+              ui-time-length
+              length="contest.length">
+          </td>
+          <td ui-contest-admin-span
+              contest-id="contest.contestId"
+              is-visible="contest.isVisible"
+              style="padding: 4px;"
+              ng-show="$root.isAdmin">
+          </td>
+        </tr>
+        </tbody>
       </table>
     </div>
   </div>
