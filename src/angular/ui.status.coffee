@@ -4,8 +4,31 @@ cdoj.directive("uiStatus",
   scope:
     status: "="
   controller: [
-    "$scope", "$http"
-    ($scope, $http) ->
+    "$scope", "$rootScope", "$http"
+    ($scope, $rootScope, $http) ->
+      $scope.showHref = false
+      $rootScope.$watch("hasLogin",
+      ->
+        if $rootScope.hasLogin && ($rootScope.currentUser.type == 1 || $rootScope.currentUser.userName == $scope.status.userName)
+          $scope.showHref = true
+        else
+          $scope.showHref = false
+      )
+      $scope.showCompileInfo = ->
+        statusId = $scope.status.statusId
+        $http.post("/status/info/#{statusId}").then(
+          (response) ->
+            data = response.data
+            compileInfo = ""
+            if data.result == "success"
+              compileInfo = data.compileInfo
+            else
+              compileInfo = data.error_msg
+            $modal = $("#compile-info-modal")
+            $modal.find(".modal-body").empty().append("<pre>#{compileInfo}</pre>")
+            $modal.find(".modal-body").prettify()
+            $modal.modal("toggle")
+        )
       if [0, 16, 17, 18].some($scope.status.returnTypeId)
         timmer = setInterval(->
           condition =
@@ -26,11 +49,11 @@ cdoj.directive("uiStatus",
                 $scope.status = data.list[0]
                 if [0, 16, 17, 18].none($scope.status.returnTypeId)
                   clearInterval(timmer)
-                console.log $scope.status
           )
         , 500)
   ]
   template: """
-{{status.returnType}}
+<a href="#" ng-show="checkDisplayLink()" ng-click="showCompileInfo()">{{status.returnType}}</a>
+<span ng-hide="checkDisplayLink()">{{status.returnType}}</span>
     """
 )

@@ -3,6 +3,7 @@ cdoj.directive("uiTime",
   restrict: "A"
   scope:
     time: "="
+    inline: "="
   controller: [
     "$scope",
     ($scope) ->
@@ -20,8 +21,16 @@ cdoj.directive("uiTime",
             $scope.showRelativeTime()
           )
         , 400)
+      $scope.getInline = ->
+        if $scope.inline
+          return "inline"
+        else
+          return "block"
   ]
   template: """
-    <div ng-mouseover="showRealTime()" ng-mouseleave="showRelativeTimeDelay()" style="width: 100%">{{timeString}}</div>
+    <div ng-mouseover="showRealTime()"
+         ng-mouseleave="showRelativeTimeDelay()"
+         style="width: 100%;"
+         ng-style="{display: getInline()}">{{timeString}}</div>
   """
 )

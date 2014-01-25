@@ -34,12 +34,14 @@ module.exports = (grunt) ->
       concatAngularJs:
         src: [
           "src/angular/angular.js"
+          "src/angular/angular-sanitize.js"
           "temp/angular/cdoj.angular.coffee.js"
         ]
         dest: "dist/js/cdoj.angular.js"
       concatMinimizeAngularJs:
         src: [
           "src/angular/angular.min.js"
+          "src/angular/angular-sanitize.min.js"
           "temp/angular/cdoj.angular.coffee.min.js"
         ]
         dest: "dist/js/cdoj.angular.min.js"
@@ -63,6 +65,7 @@ module.exports = (grunt) ->
           "src/js/marked.js"
           "src/js/bootstrap.js"
           "src/js/md5.js"
+          "src/js/sha1.js"
           "src/js/jquery.elastic.source.js"
           "src/js/bootstrap-datetimepicker.js"
         ]

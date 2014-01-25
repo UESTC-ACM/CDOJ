@@ -1516,7 +1516,6 @@
     initUI();
     initLayout();
     initUserList();
-    initUser();
     initUserActivate();
     initProblemPage();
     initProblemEditor();

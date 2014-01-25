@@ -220,13 +220,6 @@ h6,
 .cdoj-codefont {
   font-family: "Source Code Pro", Monaco, Menlo, Consolas, "Courier New", monospace;
 }
-.fa {
-  margin-right: 1em;
-}
-.input-group-addon .fa,
-.btn-toolbar .fa {
-  margin: 0;
-}
 a:hover {
   text-decoration: none;
 }
@@ -578,6 +571,10 @@ img {
 .cdoj-input {
   background-color: transparent;
   border: none;
+}
+input.ng-invalid.ng-dirty {
+  background-color: #ffccbf;
+  border-color: #ff3300;
 }
 .admin-span {
   margin-top: -6px;

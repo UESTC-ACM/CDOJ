@@ -1,2 +1,2 @@
 # Global angular module
-cdoj = angular.module("cdoj", [])
+cdoj = angular.module("cdoj", ["ngSanitize"])
