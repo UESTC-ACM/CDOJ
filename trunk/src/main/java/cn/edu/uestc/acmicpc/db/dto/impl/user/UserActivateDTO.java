@@ -10,24 +10,27 @@ import org.hibernate.validator.constraints.Length;
  */
 public class UserActivateDTO {
 
+  /**
+   * Input: user name
+   */
   @NotNull(message = "Please enter your user name.")
   @Pattern(regexp = "\\b^[a-zA-Z0-9_]{4,24}$\\b",
       message = "Please enter 4-24 characters consist of A-Z, a-z, 0-9 and '_'.")
   private String userName;
 
-  private String serialKey;
-
   /**
    * Input: password
    */
-  @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
+  @Length(min = 40, max = 40, message = "Please enter your password.")
   private String password;
 
   /**
    * Input: repeat password
    */
-  @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
+  @Length(min = 40, max = 40, message = "Please repeat your password.")
   private String passwordRepeat;
+
+  private String serialKey;
 
   public String getUserName() {
     return userName;

@@ -67,7 +67,7 @@ public class UserSerialKeyServiceImpl extends AbstractService implements UserSer
     if (userSerialKeyDTO.getUserSerialKeyId() == null)
       userSerialKey = new UserSerialKey();
     else
-      userSerialKey = userSerialKeyDAO.get(userSerialKeyDTO.getUserId());
+      userSerialKey = userSerialKeyDAO.get(userSerialKeyDTO.getUserSerialKeyId());
     userSerialKey.setTime(userSerialKeyDTO.getTime());
     userSerialKey.setSerialKey(userSerialKeyDTO.getSerialKey());
     userSerialKey.setUserId(userSerialKeyDTO.getUserId());
