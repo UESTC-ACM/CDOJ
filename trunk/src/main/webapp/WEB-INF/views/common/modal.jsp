@@ -168,7 +168,7 @@ All modal will used on every page
 
 <div class="modal fade" id="cdoj-activate-modal" tabindex="-1"
      role="dialog"
-    ng-controller="ActivateController">
+     ng-controller="ActivateController">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -206,8 +206,11 @@ All modal will used on every page
   </div>
 </div>
 
-<div class="modal fade" id="cdoj-profile-edit-modal" tabindex="-1"
-     role="dialog">
+<div class="modal fade"
+     id="cdoj-profile-edit-modal"
+     tabindex="-1"
+     role="dialog"
+     ng-controller="UserProfileEditController">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -216,121 +219,130 @@ All modal will used on every page
         <h4 class="modal-title">Edit profile</h4>
       </div>
       <div class="modal-body">
-        <form class="form-horizontal" id="cdoj-profile-edit-form">
+        <form class="form-horizontal">
           <fieldset>
             <div class="form-group">
               <label class="control-label col-sm-4 "
                      for="userName">User Name</label>
-
               <div class="col-sm-8">
-                <input type="text" name="userName" maxlength="24"
-                       value="<c:out value="${currentUser.userName}"/>"
-                       readonly="readonly" id="userName"
+                <input type="text"
+                       ng-model="userEditDTO.userName"
+                       maxlength="24"
+                       id="userName"
+                       ng-required="true"
+                       ng-pattern="/^[a-zA-Z0-9_]{4,24}$/"
+                       readonly
                        class="form-control input-sm"/>
+                <ui-validate-info value="fieldInfo" for="userName"></ui-validate-info>
               </div>
             </div>
-            <div class="form-group ">
+            <div class="form-group">
               <label class="control-label col-sm-4 "
                      for="newPassword">New password</label>
-
               <div class="col-sm-8">
-                <input type="password" name="newPassword"
-                       maxlength="20" id="newPassword"
+                <input type="password"
+                       ng-model="userEditDTO.newPassword"
+                       id="newPassword"
                        class="form-control input-sm"/>
+                <ui-validate-info value="fieldInfo" for="newPassword"></ui-validate-info>
               </div>
             </div>
             <div class="form-group ">
               <label class="control-label col-sm-4 "
-                     for="newPasswordRepeat">Repeat new
-                password</label>
-
+                     for="newPasswordRepeat">Repeat your new password</label>
               <div class="col-sm-8">
-                <input type="password" name="newPasswordRepeat"
-                       maxlength="20" id="newPasswordRepeat"
+                <input type="password"
+                       ng-model="userEditDTO.newPasswordRepeat"
+                       id="newPasswordRepeat"
+                       equals="{{userEditDTO.newPassword}}"
                        class="form-control input-sm"/>
+                <ui-validate-info value="fieldInfo" for="newPasswordRepeat"></ui-validate-info>
               </div>
             </div>
             <div class="form-group ">
               <label class="control-label col-sm-4 "
                      for="nickName">Nick name</label>
-
               <div class="col-sm-8">
-                <input type="text" name="nickName" maxlength="20"
-                       value="<c:out value="${currentUser.nickName}"/>"
-                       id="nickName" class="form-control input-sm"/>
+                <input type="text"
+                       ng-model="userEditDTO.nickName"
+                       maxlength="20"
+                       id="nickName"
+                       ng-required="true"
+                       ng-maxlength="20"
+                       ng-minlength="2"
+                       class="form-control input-sm"/>
+                <ui-validate-info value="fieldInfo" for="nickName"></ui-validate-info>
               </div>
             </div>
             <div class="form-group ">
               <label class="control-label col-sm-4 " for="email">Email</label>
-
               <div class="col-sm-8">
-                <input type="text" name="email" maxlength="100"
-                       value="<c:out value="${currentUser.email}"/>"
-                       id="email" readonly="readonly"
+                <input type="email"
+                       ng-model="userEditDTO.email"
+                       id="email"
+                       ng-required="true"
                        class="form-control input-sm"/>
+                <ui-validate-info value="fieldInfo" for="email"></ui-validate-info>
+                <spanp class="help-block">
+                  Your email will be used for <a href="http://en.gravatar.com/">Gravatar</a>
+                  service.
+                </spanp>
               </div>
             </div>
             <div class="form-group ">
               <label class="control-label col-sm-4 " for="school">School</label>
-
               <div class="col-sm-8">
-                <input type="text" name="school" maxlength="50"
-                       value="<c:out value="${currentUser.school}"/>"
-                       id="school" class="form-control input-sm"/>
+                <input type="text"
+                       ng-model="userEditDTO.school"
+                       id="school"
+                       ng-required="true"
+                       ng-maxlength="100"
+                       ng-minlength="1"
+                       class="form-control input-sm"/>
+                <ui-validate-info value="fieldInfo" for="school"></ui-validate-info>
               </div>
             </div>
             <div class="form-group ">
               <label class="control-label col-sm-4 "
                      for="departmentId">Department</label>
-
               <div class="col-sm-8">
-                <select name="departmentId" id="departmentId"
-                        class="form-control input-sm" value="3">
-                  <c:forEach var="department"
-                             items="${departmentList}">
-                    <c:choose>
-                      <c:when
-                          test="${currentUser.departmentId == department.departmentId}">
-                        <option value="${department.departmentId}"
-                                selected="selected"><c:out
-                            value="${department.name}"/></option>
-                      </c:when>
-                      <c:otherwise>
-                        <option value="${department.departmentId}"><c:out
-                            value="${department.name}"/></option>
-                      </c:otherwise>
-                    </c:choose>
-                  </c:forEach>
+                <select ng-model="userEditDTO.departmentId"
+                        ng-options="department.departmentId as department.name for department in departmentList"
+                        ng-init="departmentList=[
+                        <c:forEach var="department" items="${departmentList}" varStatus="status">
+                          {departmentId: ${department.departmentId}, name: '${department.name}'}
+                          <c:if test="${status.last == false}">,</c:if>
+                        </c:forEach>
+                        ];"
+                        id="departmentId"
+                        ng-required="true"
+                        class="form-control input-sm">
                 </select>
+                <ui-validate-info value="fieldInfo" for="departmentId"></ui-validate-info>
               </div>
             </div>
             <div class="form-group ">
               <label class="control-label col-sm-4 "
                      for="studentId">Student ID</label>
-
               <div class="col-sm-8">
-                <input type="text" name="studentId" maxlength="20"
-                       value="<c:out value="${currentUser.studentId}"/>"
-                       id="studentId" class="form-control input-sm"/>
+                <input type="text"
+                       ng-model="userEditDTO.studentId"
+                       id="studentId"
+                       ng-required="true"
+                       ng-maxlength="20"
+                       ng-minlength="1"
+                       class="form-control input-sm"/>
+                <ui-validate-info value="fieldInfo" for="studentId"></ui-validate-info>
               </div>
             </div>
             <div class="form-group ">
               <label class="control-label col-sm-4 " for="motto">Motto</label>
-
               <div class="col-sm-8">
-                <textarea class="form-control" rows="3"
-                          name="motto" id="motto"><c:out
-                    value="${currentUser.motto}" escapeXml="true"/></textarea>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-sm-4 "
-                     for="oldPassword">Password</label>
-
-              <div class="col-sm-8">
-                <input type="password" name="oldPassword"
-                       maxlength="20" id="oldPassword"
-                       class="form-control input-sm"/>
+                <textarea class="form-control"
+                          rows="3"
+                          ng-model="userEditDTO.motto"
+                          id="motto"></textarea>
+                <ui-validate-info value="fieldInfo" for="motto"></ui-validate-info>
               </div>
             </div>
           </fieldset>

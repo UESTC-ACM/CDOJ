@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminEditorDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
@@ -129,10 +129,10 @@ public class UserServiceImpl extends AbstractService implements UserService {
   }
 
   @Override
-  public UserAdminEditorDTO getUserAdminEditorDTOByUserName(String userName)
+  public UserEditorDTO getUserEditorDTOByUserName(String userName)
       throws AppException {
-    return userDAO.getDTOByUniqueField(UserAdminEditorDTO.class,
-        UserAdminEditorDTO.builder(), "userName", userName);
+    return userDAO.getDTOByUniqueField(UserEditorDTO.class,
+        UserEditorDTO.builder(), "userName", userName);
   }
 
 }
