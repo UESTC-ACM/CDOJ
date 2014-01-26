@@ -6,6 +6,7 @@
 <html>
 <head>
   <title>CDOJ</title>
+  <meta name="author" content="fish">
 </head>
 <body>
 <div id="cdoj-index">
