@@ -14,14 +14,14 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  */
 @Fields({"userName", "studentId", "school", "nickName",
     "email", "type", "motto", "departmentId"})
-public class UserAdminEditorDTO implements BaseDTO<User> {
+public class UserEditorDTO implements BaseDTO<User> {
 
-  public UserAdminEditorDTO() {
+  public UserEditorDTO() {
   }
 
-  private UserAdminEditorDTO(String userName, String studentId,
-                             String school, String nickName, String email,
-                             Integer type, String motto, Integer departmentId) {
+  private UserEditorDTO(String userName, String studentId,
+                        String school, String nickName, String email,
+                        Integer type, String motto, Integer departmentId) {
     this.userName = userName;
     this.studentId = studentId;
     this.school = school;
@@ -109,19 +109,19 @@ public class UserAdminEditorDTO implements BaseDTO<User> {
     return new Builder();
   }
 
-  public static class Builder implements BaseBuilder<UserAdminEditorDTO> {
+  public static class Builder implements BaseBuilder<UserEditorDTO> {
 
     private Builder() {
     }
 
     @Override
-    public UserAdminEditorDTO build() {
-      return new UserAdminEditorDTO(userName, studentId, school,
+    public UserEditorDTO build() {
+      return new UserEditorDTO(userName, studentId, school,
           nickName, email, type, motto, departmentId);
     }
 
     @Override
-    public UserAdminEditorDTO build(Map<String, Object> properties) {
+    public UserEditorDTO build(Map<String, Object> properties) {
       userName = (String) properties.get("userName");
       studentId = (String) properties.get("studentId");
       school = (String) properties.get("school");

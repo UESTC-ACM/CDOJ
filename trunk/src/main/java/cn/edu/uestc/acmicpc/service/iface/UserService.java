@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminEditorDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
@@ -36,13 +36,13 @@ public interface UserService extends DatabaseService<User, Integer> {
   public UserDTO getUserDTOByUserName(String userName) throws AppException;
 
   /**
-   * Get {@link UserAdminEditorDTO} by user name.
+   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDTO} by user name.
    *
    * @param userName user's name.
-   * @return {@link UserAdminEditorDTO} entity.
+   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDTO} entity.
    * @throws AppException
    */
-  public UserAdminEditorDTO getUserAdminEditorDTOByUserName(String userName) throws AppException;
+  public UserEditorDTO getUserEditorDTOByUserName(String userName) throws AppException;
 
   /**
    * Get {@link UserCenterDTO} by user name.
