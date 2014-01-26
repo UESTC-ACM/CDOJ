@@ -15,3 +15,8 @@
 *.pyc
 /target
 /lib
+/.gradle
+/gradle
+/gradlew
+/gradlew.bat
+
