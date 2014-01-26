@@ -1,6 +1,6 @@
 cdoj.controller("PasswordResetController",[
-  "$scope", "$http",
-  ($scope, $http) ->
+  "$scope", "$http", "$window"
+  ($scope, $http, $window) ->
     $scope.userActivateDTO =
       userName: ""
       serialKey: ""
@@ -15,10 +15,10 @@ cdoj.controller("PasswordResetController",[
       $http.post("/user/resetPassword", userActivateDTO).then (response)->
         data = response.data
         if data.result == "success"
-          alert("Success!")
-          window.location.href = "/"
+          $window.alert("Success!")
+          $window.location.href = "/"
         else if data.result == "field_error"
           $scope.fieldInfo = data.field
         else
-          alert data.error_msg
+          $window.alert data.error_msg
 ])

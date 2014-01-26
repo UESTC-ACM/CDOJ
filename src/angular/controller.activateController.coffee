@@ -1,6 +1,6 @@
 cdoj.controller("ActivateController", [
-  "$scope", "$http", "$element"
-  ($scope, $http, $element) ->
+  "$scope", "$http", "$element", "$window"
+  ($scope, $http, $element, $window) ->
     $scope.userName = ""
     $scope.buttonText = "Send Email"
     $scope.onSend = false
@@ -12,12 +12,12 @@ cdoj.controller("ActivateController", [
         $http.post("/user/sendSerialKey/#{userName}").then (response)->
           data = response.data
           if data.result == "success"
-            alert "We send you an Email with the url to reset your password right now, please check your mail box."
+            $window.alert "We send you an Email with the url to reset your password right now, please check your mail box."
             $element.modal("hide");
           else if data.result == "failed"
-            alert "Unknown error occurred."
+            $window.alert "Unknown error occurred."
           else
-            alert data.error_msg;
+            $window.alert data.error_msg;
           $scope.buttonText = "Send Email"
           $scope.onSend = false
 ])

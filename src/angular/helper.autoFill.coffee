@@ -1,4 +1,6 @@
-cdoj.directive("input", ["$timeout",
+# FIXME This statement doesn't work...
+###
+cdoj.directive("autoFill", ["$timeout",
   ($timeout)->
     restrict: "E"
     require: "?ngModel"
@@ -11,3 +13,4 @@ cdoj.directive("input", ["$timeout",
           $timeout($scope.check, 300)
         $scope.check()
 ])
+###

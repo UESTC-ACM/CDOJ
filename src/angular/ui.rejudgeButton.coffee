@@ -4,8 +4,8 @@ cdoj.directive("uiRejudgeButton",
   scope:
     condition: "="
   controller: [
-    "$scope", "$http",
-    ($scope, $http) ->
+    "$scope", "$http", "$window"
+    ($scope, $http, $window) ->
       $scope.rejudge = ->
         $http.post("/status/count", $scope.condition).then(
           (response)->
@@ -16,12 +16,12 @@ cdoj.directive("uiRejudgeButton",
                   (response)->
                     data = response.data
                     if data.result == "success"
-                      alert("Done!")
+                      $window.alert "Done!"
                     else
-                      alert(data.error_msg)
+                      $window.alert data.error_msg
                 )
             else
-              alert(data.error_msg)
+              $window.alert data.error_msg
         )
   ]
   template: """

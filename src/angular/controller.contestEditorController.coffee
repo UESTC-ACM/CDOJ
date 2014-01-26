@@ -1,6 +1,6 @@
 cdoj.controller("ContestEditorController", [
-  "$scope", "$http",
-  ($scope, $http) ->
+  "$scope", "$http", "$window"
+  ($scope, $http, $window) ->
     $scope.contest =
       action : 0
       contestId: 0
@@ -14,8 +14,8 @@ cdoj.controller("ContestEditorController", [
       problemList: 0
     $scope.problemList = []
 
-    $scope.$watch("problemList", (newVal) ->
-      $scope.contest.problemList = _.map(newVal, (val) ->
+    $scope.$watch("problemList", () ->
+      $scope.contest.problemList = _.map($scope.problemList, (val) ->
         return val.problemId
       ).join(",")
     , true)
@@ -55,10 +55,11 @@ cdoj.controller("ContestEditorController", [
     $scope.submit = ->
       contestEditDTO = angular.copy($scope.contest)
       contestEditDTO.time = Date.create(contestEditDTO.time).getTime()
+      console.log $scope.contest
       $http.post("/contest/edit", contestEditDTO).success (data)=>
         if data.result == "success"
-          window.location.href = "/contest/show/#{data.contestId}"
+          $window.location.href = "/contest/show/#{data.contestId}"
         else
           # TODO
-          alert data.error_msg
+          $window.alert data.error_msg
 ])

@@ -1,8 +1,9 @@
 cdoj.controller("UserController", [
-  "$scope", "$rootScope", "$http", "$element", "$compile"
-  ($scope, $rootScope, $http, $element, $compile) ->
+  "$scope", "$rootScope", "$http", "$element", "$compile", "$window", "UserProfile"
+  ($scope, $rootScope, $http, $element, $compile, $window, $userProfile) ->
     $rootScope.hasLogin = false
-    $rootScope.currentUser = 0
+    $rootScope.currentUser =
+      email: ""
     $rootScope.isAdmin = false
     $scope.userLoginDTO =
       userName: ""
@@ -85,7 +86,8 @@ cdoj.controller("UserController", [
                 </li>
                 <li role="presentation">
                   <a href="#" data-toggle="modal"
-                     data-target="#cdoj-profile-edit-modal">
+                     data-target="#cdoj-profile-edit-modal"
+                     ng-click="setupProfileEditor()">
                     <i class="fa fa-wrench"></i>Edit profile
                   </a>
                 </li>
@@ -117,8 +119,10 @@ cdoj.controller("UserController", [
       userLoginDTO = angular.copy($scope.userLoginDTO)
       password = CryptoJS.SHA1(userLoginDTO.password).toString()
       userLoginDTO.password = password
+      console.log userLoginDTO
       $http.post("/user/login", userLoginDTO).then (response)->
         data = response.data
+        console.log data
         if data.result == "success"
           $rootScope.hasLogin = true
           $rootScope.currentUser =
@@ -128,11 +132,14 @@ cdoj.controller("UserController", [
         else if data.result == "field_error"
           $scope.fieldInfo = data.field
         else
-          alert data.error_msg
+          $window.alert data.error_msg
     $scope.logout = ->
       $http.post("/user/logout").then (response)->
         data = response.data
         if data.result == "success"
           $rootScope.hasLogin = false
-          $rootScope.currentUser = 0
+          $rootScope.currentUser =
+            email: ""
+    $scope.setupProfileEditor = ->
+      $userProfile.setProfile $rootScope.currentUser.userName
 ])

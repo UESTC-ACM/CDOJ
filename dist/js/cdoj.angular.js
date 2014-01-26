@@ -21187,7 +21187,7 @@ var styleDirective = valueFn({
   cdoj = angular.module("cdoj", ["ngSanitize"]);
 
   cdoj.controller("ActivateController", [
-    "$scope", "$http", "$element", function($scope, $http, $element) {
+    "$scope", "$http", "$element", "$window", function($scope, $http, $element, $window) {
       $scope.userName = "";
       $scope.buttonText = "Send Email";
       $scope.onSend = false;
@@ -21201,12 +21201,12 @@ var styleDirective = valueFn({
             var data;
             data = response.data;
             if (data.result === "success") {
-              alert("We send you an Email with the url to reset your password right now, please check your mail box.");
+              $window.alert("We send you an Email with the url to reset your password right now, please check your mail box.");
               $element.modal("hide");
             } else if (data.result === "failed") {
-              alert("Unknown error occurred.");
+              $window.alert("Unknown error occurred.");
             } else {
-              alert(data.error_msg);
+              $window.alert(data.error_msg);
             }
             $scope.buttonText = "Send Email";
             return $scope.onSend = false;
@@ -21217,7 +21217,7 @@ var styleDirective = valueFn({
   ]);
 
   cdoj.controller("ContestEditorController", [
-    "$scope", "$http", function($scope, $http) {
+    "$scope", "$http", "$window", function($scope, $http, $window) {
       $scope.contest = {
         action: 0,
         contestId: 0,
@@ -21231,8 +21231,8 @@ var styleDirective = valueFn({
         problemList: 0
       };
       $scope.problemList = [];
-      $scope.$watch("problemList", function(newVal) {
-        return $scope.contest.problemList = _.map(newVal, function(val) {
+      $scope.$watch("problemList", function() {
+        return $scope.contest.problemList = _.map($scope.problemList, function(val) {
           return val.problemId;
         }).join(",");
       }, true);
@@ -21279,11 +21279,12 @@ var styleDirective = valueFn({
           _this = this;
         contestEditDTO = angular.copy($scope.contest);
         contestEditDTO.time = Date.create(contestEditDTO.time).getTime();
+        console.log($scope.contest);
         return $http.post("/contest/edit", contestEditDTO).success(function(data) {
           if (data.result === "success") {
-            return window.location.href = "/contest/show/" + data.contestId;
+            return $window.location.href = "/contest/show/" + data.contestId;
           } else {
-            return alert(data.error_msg);
+            return $window.alert(data.error_msg);
           }
         });
       };
@@ -21322,7 +21323,7 @@ var styleDirective = valueFn({
   ]);
 
   cdoj.controller("PasswordResetController", [
-    "$scope", "$http", function($scope, $http) {
+    "$scope", "$http", "$window", function($scope, $http, $window) {
       $scope.userActivateDTO = {
         userName: "",
         serialKey: "",
@@ -21340,12 +21341,12 @@ var styleDirective = valueFn({
           var data;
           data = response.data;
           if (data.result === "success") {
-            alert("Success!");
-            return window.location.href = "/";
+            $window.alert("Success!");
+            return $window.location.href = "/";
           } else if (data.result === "field_error") {
             return $scope.fieldInfo = data.field;
           } else {
-            return alert(data.error_msg);
+            return $window.alert(data.error_msg);
           }
         });
       };
@@ -21353,7 +21354,7 @@ var styleDirective = valueFn({
   ]);
 
   cdoj.controller("RegisterController", [
-    "$scope", "$rootScope", "$http", "$element", function($scope, $rootScope, $http, $element) {
+    "$scope", "$rootScope", "$http", "$element", "$window", function($scope, $rootScope, $http, $element, $window) {
       $scope.userRegisterDTO = {
         departmentId: 1,
         email: "",
@@ -21387,7 +21388,7 @@ var styleDirective = valueFn({
           } else if (data.result === "field_error") {
             return $scope.fieldInfo = data.field;
           } else {
-            return alert(data.error_msg);
+            return $window.alert(data.error_msg);
           }
         });
       };
@@ -21395,9 +21396,11 @@ var styleDirective = valueFn({
   ]);
 
   cdoj.controller("UserController", [
-    "$scope", "$rootScope", "$http", "$element", "$compile", function($scope, $rootScope, $http, $element, $compile) {
+    "$scope", "$rootScope", "$http", "$element", "$compile", "$window", "UserProfile", function($scope, $rootScope, $http, $element, $compile, $window, $userProfile) {
       $rootScope.hasLogin = false;
-      $rootScope.currentUser = 0;
+      $rootScope.currentUser = {
+        email: ""
+      };
       $rootScope.isAdmin = false;
       $scope.userLoginDTO = {
         userName: "",
@@ -21406,7 +21409,7 @@ var styleDirective = valueFn({
       $scope.fieldInfo = [];
       $scope.views = {
         loginView: "<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n  Sign in\n</a>\n<ul ui-dropdown-menu class=\"dropdown-menu cdoj-form-menu\" style=\"width: 340px;\">\n  <li>\n    <form>\n      <div class=\"input-group form-group input-group-sm\">\n        <span class=\"input-group-addon\">\n          <i class=\"fa fa-user\" style=\"width: 14px;\"></i>\n        </span>\n        <input type=\"text\"\n               ng-model=\"userLoginDTO.userName\"\n               maxlength=\"24\"\n               id=\"userName\"\n               class=\"form-control\"\n               ng-required=\"true\"\n               ng-pattern=\"/^[a-zA-Z0-9_]{4,24}$/\"\n               placeholder=\"Username\"/>\n      </div>\n      <div class=\"input-group form-group input-group-sm\">\n        <span class=\"input-group-addon\">\n          <i class=\"fa fa-key\" style=\"width: 14px;\"></i>\n        </span>\n        <input type=\"password\"\n               ng-model=\"userLoginDTO.password\"\n               id=\"password\"\n               ng-required=\"true\"\n               class=\"form-control\"\n               placeholder=\"Password\"/>\n        <span class=\"input-group-btn\">\n          <button type=\"submit\"\n                  class=\"btn btn-default\"\n                  ng-click=\"login()\">\n            Login\n          </button>\n        </span>\n      </div>\n      <ui-validate-info value=\"fieldInfo\" for=\"password\"></ui-validate-info>\n    </form>\n  </li>\n  <li role=\"presentation\" class=\"divider\"></li>\n  <li>\n    <a href=\"#\" data-toggle=\"modal\"\n       data-target=\"#cdoj-register-modal\">\n      <i class=\"fa fa-arrow-circle-right\" style=\"padding-right: 6px;\"></i>Register</a>\n    <a href=\"#\" data-toggle=\"modal\"\n       data-target=\"#cdoj-activate-modal\">\n      <i class=\"fa fa-arrow-circle-right\" style=\"padding-right: 6px;\"></i>Forget password? </a>\n  </li>\n</ul>",
-        userView: "<div id=\"cdoj-user\">\n  <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n    <img id=\"cdoj-user-avatar\"\n         ui-avatar\n         email=\"currentUser.email\"\n         src=\"/images/avatar/default.jpg\"/>\n  </a>\n  <ul class=\"dropdown-menu\"\n      role=\"menu\"\n      aria-labelledby=\"user-menu\">\n    <li role=\"presentation\"\n        class=\"dropdown-header text-center\">\n      <span id=\"currentUser\"\n            ng-bind=\"currentUser.userName\">\n        </span>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"/user/center/{{currentUser.userName}}\">\n        <i class=\"fa fa-home\"></i>User center\n      </a>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"#\" data-toggle=\"modal\"\n         data-target=\"#cdoj-profile-edit-modal\">\n        <i class=\"fa fa-wrench\"></i>Edit profile\n      </a>\n    </li>\n    <li role=\"presentation\" class=\"divider\"></li>\n    <li role=\"presentation\">\n      <a href=\"#\" id=\"cdoj-logout-button\" ng-click=\"logout()\">\n        <i class=\"fa fa-power-off\"></i>Logout\n      </a>\n    </li>\n  </ul>\n</div>"
+        userView: "<div id=\"cdoj-user\">\n  <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n    <img id=\"cdoj-user-avatar\"\n         ui-avatar\n         email=\"currentUser.email\"\n         src=\"/images/avatar/default.jpg\"/>\n  </a>\n  <ul class=\"dropdown-menu\"\n      role=\"menu\"\n      aria-labelledby=\"user-menu\">\n    <li role=\"presentation\"\n        class=\"dropdown-header text-center\">\n      <span id=\"currentUser\"\n            ng-bind=\"currentUser.userName\">\n        </span>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"/user/center/{{currentUser.userName}}\">\n        <i class=\"fa fa-home\"></i>User center\n      </a>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"#\" data-toggle=\"modal\"\n         data-target=\"#cdoj-profile-edit-modal\"\n         ng-click=\"setupProfileEditor()\">\n        <i class=\"fa fa-wrench\"></i>Edit profile\n      </a>\n    </li>\n    <li role=\"presentation\" class=\"divider\"></li>\n    <li role=\"presentation\">\n      <a href=\"#\" id=\"cdoj-logout-button\" ng-click=\"logout()\">\n        <i class=\"fa fa-power-off\"></i>Logout\n      </a>\n    </li>\n  </ul>\n</div>"
       };
       $rootScope.$watch("hasLogin", function() {
         var view;
@@ -21428,9 +21431,11 @@ var styleDirective = valueFn({
         userLoginDTO = angular.copy($scope.userLoginDTO);
         password = CryptoJS.SHA1(userLoginDTO.password).toString();
         userLoginDTO.password = password;
+        console.log(userLoginDTO);
         return $http.post("/user/login", userLoginDTO).then(function(response) {
           var data;
           data = response.data;
+          console.log(data);
           if (data.result === "success") {
             $rootScope.hasLogin = true;
             return $rootScope.currentUser = {
@@ -21441,44 +21446,78 @@ var styleDirective = valueFn({
           } else if (data.result === "field_error") {
             return $scope.fieldInfo = data.field;
           } else {
-            return alert(data.error_msg);
+            return $window.alert(data.error_msg);
           }
         });
       };
-      return $scope.logout = function() {
+      $scope.logout = function() {
         return $http.post("/user/logout").then(function(response) {
           var data;
           data = response.data;
           if (data.result === "success") {
             $rootScope.hasLogin = false;
-            return $rootScope.currentUser = 0;
+            return $rootScope.currentUser = {
+              email: ""
+            };
           }
         });
+      };
+      return $scope.setupProfileEditor = function() {
+        return $userProfile.setProfile($rootScope.currentUser.userName);
       };
     }
   ]);
 
-  cdoj.directive("input", [
-    "$timeout", function($timeout) {
+  cdoj.factory("UserProfile", [
+    "$http", "$window", function($http, $window) {
+      var userProfile;
+      userProfile = 0;
       return {
-        restrict: "E",
-        require: "?ngModel",
-        link: function($scope, $element, $attrs, $ngModel) {
-          if ($ngModel !== void 0) {
-            $scope.check = function() {
-              var val;
-              val = $element.val();
-              if ($ngModel.$viewValue !== val) {
-                $ngModel.$setViewValue(val);
-              }
-              return $timeout($scope.check, 300);
-            };
-            return $scope.check();
-          }
+        setProfile: function(userName) {
+          return $http.get("/user/profile/" + userName).then(function(response) {
+            var data;
+            data = response.data;
+            if (data.result === "success") {
+              return userProfile = data.user;
+            } else {
+              return $window.alert(data.error_msg);
+            }
+          });
+        },
+        getProfile: function() {
+          return userProfile;
         }
       };
     }
   ]);
+
+  cdoj.controller("UserProfileEditController", [
+    "$scope", "$http", "UserProfile", function($scope, $http, $userProfile) {
+      $scope.userEditDTO = 0;
+      return $scope.$watch(function() {
+        return $userProfile.getProfile();
+      }, function() {
+        return $scope.userEditDTO = $userProfile.getProfile();
+      }, true);
+    }
+  ]);
+
+  /*
+  cdoj.directive("autoFill", ["$timeout",
+    ($timeout)->
+      restrict: "E"
+      require: "?ngModel"
+      link: ($scope, $element, $attrs, $ngModel)->
+        if $ngModel != undefined
+          $scope.check = ->
+            val = $element.val()
+            if $ngModel.$viewValue != val
+              $ngModel.$setViewValue(val)
+            $timeout($scope.check, 300)
+          $scope.check()
+  ])
+  */
+
 
   cdoj.directive("equals", function() {
     return {
@@ -21611,7 +21650,6 @@ var styleDirective = valueFn({
     return {
       restrict: 'A',
       link: function($scope, $element) {
-        console.log($element);
         return $element.datetimepicker();
       }
     };
@@ -21797,7 +21835,7 @@ var styleDirective = valueFn({
         condition: "="
       },
       controller: [
-        "$scope", "$http", function($scope, $http) {
+        "$scope", "$http", "$window", function($scope, $http, $window) {
           return $scope.rejudge = function() {
             return $http.post("/status/count", $scope.condition).then(function(response) {
               var data;
@@ -21807,14 +21845,14 @@ var styleDirective = valueFn({
                   return $http.post("/status/rejudge", $scope.condition).then(function(response) {
                     data = response.data;
                     if (data.result === "success") {
-                      return alert("Done!");
+                      return $window.alert("Done!");
                     } else {
-                      return alert(data.error_msg);
+                      return $window.alert(data.error_msg);
                     }
                   });
                 }
               } else {
-                return alert(data.error_msg);
+                return $window.alert(data.error_msg);
               }
             });
           };
@@ -21969,6 +22007,31 @@ var styleDirective = valueFn({
     };
   });
 
+  cdoj.directive("uiValidateInfo", function() {
+    return {
+      restrict: "E",
+      scope: {
+        value: "=",
+        "for": "@"
+      },
+      link: function($scope) {
+        $scope.isInvalid = false;
+        $scope.message = "";
+        return $scope.$watch("value", function() {
+          var v;
+          v = _.findWhere($scope.value, {
+            field: $scope["for"]
+          });
+          if (v !== void 0) {
+            $scope.message = v.defaultMessage;
+            return $scope.isInvalid = true;
+          }
+        });
+      },
+      template: "<span class=\"help-block\" ng-show=\"isInvalid\" ng-bind=\"message\"></span>"
+    };
+  });
+
   cdoj.directive("uiYesNoRadio", function() {
     return {
       restrict: "E",
@@ -21996,31 +22059,6 @@ var styleDirective = valueFn({
       ],
       replace: true,
       template: "<div class=\"btn-group pull-right\" data-toggle=\"buttons\">\n  <button type=\"button\" class=\"btn  btn-info btn-sm\" ng-class=\"{active: option.value == ngModel}\"\n          ng-repeat=\"option in options\"\n          ng-click=\"select(option.value)\"\n          ng-bind=\"option.key\">\n  </button>\n</div>"
-    };
-  });
-
-  cdoj.directive("uiValidateInfo", function() {
-    return {
-      restrict: "E",
-      scope: {
-        value: "=",
-        "for": "@"
-      },
-      link: function($scope) {
-        $scope.isInvalid = false;
-        $scope.message = "";
-        return $scope.$watch("value", function() {
-          var v;
-          v = _.findWhere($scope.value, {
-            field: $scope["for"]
-          });
-          if (v !== void 0) {
-            $scope.message = v.defaultMessage;
-            return $scope.isInvalid = true;
-          }
-        });
-      },
-      template: "<span class=\"help-block\" ng-show=\"isInvalid\" ng-bind=\"message\"></span>"
     };
   });
 

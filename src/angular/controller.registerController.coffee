@@ -1,6 +1,6 @@
 cdoj.controller("RegisterController", [
-  "$scope", "$rootScope", "$http", "$element"
-  ($scope, $rootScope, $http, $element) ->
+  "$scope", "$rootScope", "$http", "$element", "$window"
+  ($scope, $rootScope, $http, $element, $window) ->
     $scope.userRegisterDTO =
       departmentId: 1
       email: ""
@@ -30,5 +30,5 @@ cdoj.controller("RegisterController", [
         else if data.result == "field_error"
           $scope.fieldInfo = data.field
         else
-          alert data.error_msg
+          $window.alert data.error_msg
 ])
