@@ -59,6 +59,7 @@ public class TestContext extends ApplicationContextConfig {
     return mock(HibernateTransactionManager.class);
   }
 
+  // real beans for testing.
   @Bean
   @Autowired
   public UserService realUserService(@Qualifier("mockUserDAO") IUserDAO userDAO) {
@@ -71,6 +72,7 @@ public class TestContext extends ApplicationContextConfig {
     return new ProblemServiceImpl(problemDAO);
   }
 
+  // mock beans, add a new type here, the bean should be reset in ControllerTest.
   @Bean
   @Primary
   public UserService mockUserService() {

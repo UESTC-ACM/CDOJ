@@ -11,9 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.UUID;
 
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -22,26 +20,21 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.TestContext;
+import cn.edu.uestc.acmicpc.config.WebMVCConfig;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDTO;
-import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
-import cn.edu.uestc.acmicpc.service.iface.EmailService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
-import cn.edu.uestc.acmicpc.service.iface.ProblemService;
-import cn.edu.uestc.acmicpc.service.iface.StatusService;
-import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
-import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.web.oj.controller.user.UserController;
+
 import com.alibaba.fastjson.JSON;
 
 /**
  * Mock test for {@link UserController}.
  */
 @WebAppConfiguration
-@ContextConfiguration(classes = {TestContext.class})
+@ContextConfiguration(classes = {TestContext.class, WebMVCConfig.class})
 public class UserControllerTest extends ControllerTest {
 
   private final String URL_LOGIN = "/user/login";
@@ -50,40 +43,12 @@ public class UserControllerTest extends ControllerTest {
 
   private final String PASSWORD_ENCODED = "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8";
 
-  @Autowired
-  @Qualifier("mockUserService")
-  private UserService userService;
-
-  @Autowired
-  @Qualifier("mockGlobalService")
-  private GlobalService globalService;
-
-  @Autowired
-  @Qualifier("mockDepartmentService")
-  private DepartmentService departmentService;
-
-  @Autowired
-  @Qualifier("mockProblemService")
-  private ProblemService problemService;
-
-  @Autowired
-  @Qualifier("mockStatusService")
-  private StatusService statusService;
-
-  @Autowired
-  @Qualifier("mockUserSerialKeyService")
-  private UserSerialKeyService userSerialKeyService;
-
-  @Autowired
-  @Qualifier("mockEmailService")
-  EmailService emailService;
+  @Autowired private UserController userController;
 
   @Override
   @BeforeMethod
   public void init() {
     super.init();
-    UserController userController = new UserController(departmentService, globalService,
-        userService, problemService, statusService, userSerialKeyService, emailService);
     mockMvc = initControllers(userController);
     session = new MockHttpSession(context.getServletContext(), UUID.randomUUID().toString());
   }
@@ -367,8 +332,8 @@ public class UserControllerTest extends ControllerTest {
 
   @Test
   public void testLogout_successful() throws Exception {
-    UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder().build();
-    session.putValue("currentUser", userRegisterDTO);
+    UserDTO currentUser = UserDTO.builder().build();
+    session.putValue("currentUser", currentUser);
     mockMvc.perform(post(URL_LOGOUT)
         .contentType(APPLICATION_JSON_UTF8)
         .session(session))
