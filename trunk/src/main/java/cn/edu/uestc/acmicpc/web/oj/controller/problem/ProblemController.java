@@ -115,7 +115,7 @@ public class ProblemController extends BaseController {
       /*
       Map<Global.OnlineJudgeResultType, Long> problemStatistic = new TreeMap<>();
       for (Global.OnlineJudgeResultType type : Global.OnlineJudgeResultType.values()) {
-        if (type == OnlineJudgeResultType.OJ_WAIT) {
+        if (type == Global.OnlineJudgeResultType.OJ_WAIT) {
           continue;
         }
         StatusCondition statusCondition = new StatusCondition();
@@ -126,8 +126,6 @@ public class ProblemController extends BaseController {
       }
 
       model.put("problemStatistic", problemStatistic);
-      model.put("targetProblem", problemShowDTO);
-      model.put("brToken", "\n");
       */
     } catch (AppException e) {
       return "error/404";
