@@ -345,6 +345,12 @@
           <stopPort>8005</stopPort>
           <stopKey>STOP</stopKey>
           <contextPath>/</contextPath>
+          <systemProperties>
+            <systemProperty>
+              <name>checkAliases</name>
+              <value>true</value>
+            </systemProperty>
+          </systemProperties>
         </configuration>
         <executions>
           <execution>
