@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,6 +24,7 @@ import cn.edu.uestc.acmicpc.config.WebMVCResource;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.department.DepartmentDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.language.LanguageDTO;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
@@ -46,6 +48,7 @@ public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
   protected MockHttpSession session;
   protected List<DepartmentDTO> departmentList = new ArrayList<DepartmentDTO>();
   protected List<AuthenticationType> authenticationTypeList = new ArrayList<AuthenticationType>();
+  @Mock protected List<LanguageDTO> languageList;
 
   @Autowired protected UserService userService;
   @Autowired protected ProblemService problemService;
@@ -79,6 +82,7 @@ public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
     }
     when(departmentService.getDepartmentList()).thenReturn(departmentList);
     when(globalService.getAuthenticationTypeList()).thenReturn(authenticationTypeList);
+    when(languageService.getLanguageList()).thenReturn(languageList);
   }
 
   @Autowired
