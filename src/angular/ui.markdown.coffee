@@ -14,9 +14,10 @@ cdoj.directive("uiMarkdown",
 
         if $scope.content != undefined
           $scope.$watch("content",
-          (newVal) ->
-            newVal = marked(newVal)
-            $element.empty().append(newVal)
+          ->
+            content = angular.copy($scope.content)
+            content = marked(content)
+            $element.empty().append(content)
             refresh()
-          )
+          , true)
 )

@@ -21353,6 +21353,75 @@ var styleDirective = valueFn({
     }
   ]);
 
+  cdoj.controller("ProblemController", [
+    "$scope", "$rootScope", "$http", "$window", function($scope, $rootScope, $http, $window) {
+      $scope.problem = {
+        description: "",
+        title: "",
+        isSpj: false,
+        timeLimit: 1000,
+        javaTimeLimit: 3000,
+        memoryLimit: "--",
+        javaMemoryLimit: "--",
+        solved: 0,
+        tried: 0,
+        input: "",
+        output: "",
+        sampleInput: "",
+        sampleOutput: "",
+        hint: "",
+        source: ""
+      };
+      $scope.submitDTO = {
+        codeContent: "",
+        languageId: 1,
+        contestId: 0,
+        problemId: 0
+      };
+      $scope.problemId = 0;
+      $scope.contest = null;
+      $scope.fieldInfo = [];
+      $scope.$watch("problemId", function() {
+        var problemId;
+        problemId = angular.copy($scope.problemId);
+        return $http.post("/problem/data/" + problemId).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            return $scope.problem = data.problem;
+          } else {
+            return alert(data.error_msg);
+          }
+        });
+      });
+      return $scope.submitCode = function() {
+        var submitDTO;
+        submitDTO = angular.copy($scope.submitDTO);
+        submitDTO.problemId = $scope.problemId;
+        submitDTO.contestId = $scope.contestId;
+        console.log(submitDTO);
+        if (submitDTO.codeContent === void 0) {
+          return;
+        }
+        if ($rootScope.hasLogin === false) {
+          return $window.alert("Please login first!");
+        } else {
+          return $http.post("/status/submit", submitDTO).then(function(response) {
+            var data;
+            data = response.data;
+            if (data.result === "success") {
+              return $window.location.href = "/status/list";
+            } else if (data.result === "field_error") {
+              return $scope.fieldInfo = data.field;
+            } else {
+              return $window.alert(data.error_msg);
+            }
+          });
+        }
+      };
+    }
+  ]);
+
   cdoj.controller("RegisterController", [
     "$scope", "$rootScope", "$http", "$element", "$window", function($scope, $rootScope, $http, $element, $window) {
       $scope.userRegisterDTO = {
@@ -21788,11 +21857,13 @@ var styleDirective = valueFn({
         };
         refresh();
         if ($scope.content !== void 0) {
-          return $scope.$watch("content", function(newVal) {
-            newVal = marked(newVal);
-            $element.empty().append(newVal);
+          return $scope.$watch("content", function() {
+            var content;
+            content = angular.copy($scope.content);
+            content = marked(content);
+            $element.empty().append(content);
             return refresh();
-          });
+          }, true);
         }
       }
     };
@@ -22108,6 +22179,36 @@ var styleDirective = valueFn({
       ],
       replace: true,
       template: "<div class=\"btn-group pull-right\" data-toggle=\"buttons\">\n  <button type=\"button\" class=\"btn  btn-info btn-sm\" ng-class=\"{active: option.value == ngModel}\"\n          ng-repeat=\"option in options\"\n          ng-click=\"select(option.value)\"\n          ng-bind=\"option.key\">\n  </button>\n</div>"
+    };
+  });
+
+  cdoj.directive("uiLanguageSelector", function() {
+    return {
+      restrict: "E",
+      scope: {
+        ngModel: "="
+      },
+      controller: [
+        "$scope", function($scope) {
+          $scope.options = [
+            {
+              key: "C",
+              value: 1
+            }, {
+              key: "C++",
+              value: 2
+            }, {
+              key: "Java",
+              value: 3
+            }
+          ];
+          return $scope.select = function(value) {
+            return $scope.ngModel = value;
+          };
+        }
+      ],
+      replace: true,
+      template: "<div class=\"btn-group\" data-toggle=\"buttons\">\n  <button type=\"button\" class=\"btn  btn-default\" ng-class=\"{active: option.value == ngModel}\"\n          ng-repeat=\"option in options\"\n          ng-click=\"select(option.value)\"\n          ng-bind=\"option.key\">\n  </button>\n</div>"
     };
   });
 

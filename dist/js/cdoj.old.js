@@ -1247,7 +1247,6 @@
     initUI();
     initLayout();
     initUserList();
-    initProblemPage();
     initProblemEditor();
     initProblemDataEditor();
     initContestPage();
