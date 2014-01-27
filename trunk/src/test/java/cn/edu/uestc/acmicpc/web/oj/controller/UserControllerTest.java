@@ -78,10 +78,10 @@ public class UserControllerTest extends ControllerTest {
   @Qualifier("mockEmailService")
   EmailService emailService;
 
+  @Override
   @BeforeMethod
   public void init() {
-    Mockito.reset(userService, globalService, departmentService,
-        problemService, statusService, userSerialKeyService, emailService);
+    super.init();
     UserController userController = new UserController(departmentService, globalService,
         userService, problemService, statusService, userSerialKeyService, emailService);
     mockMvc = initControllers(userController);

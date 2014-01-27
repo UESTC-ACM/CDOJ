@@ -64,10 +64,10 @@ public class ProblemControllerTest extends ControllerTest {
   @Qualifier("mockFileService")
   private FileService fileService;
 
+  @Override
   @BeforeMethod
   public void init() {
-    Mockito.reset(problemService, globalService,
-        statusService, languageService, departmentService);
+    super.init();
     ProblemController problemController = new ProblemController(departmentService, globalService,
         problemService, statusService, languageService, pictureService, fileService);
     mockMvc = initControllers(problemController);

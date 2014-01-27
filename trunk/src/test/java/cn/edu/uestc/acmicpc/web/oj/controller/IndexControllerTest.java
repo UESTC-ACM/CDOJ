@@ -29,7 +29,7 @@ public class IndexControllerTest extends ControllerTest {
   @Override
   @BeforeMethod
   public void init() {
-    Mockito.reset(departmentService);
+    super.init();
     mockMvc = initControllers(indexController);
   }
 
