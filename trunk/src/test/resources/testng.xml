@@ -1,35 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Unit test suite">
-  <test name="Service tests" parallel="classes" thread-count="2"
-        time-out="60000">
+  <test name="UserServiceTest" time-out="60000">
     <classes>
       <class name="cn.edu.uestc.acmicpc.service.UserServiceTest"/>
+    </classes>
+  </test>
+  <test name="ProblemServiceTest" time-out="60000">
+    <classes>
       <class name="cn.edu.uestc.acmicpc.service.ProblemServiceTest"/>
     </classes>
   </test>
-  <test name="Condition tests" parallel="classes" thread-count="2"
-        time-out="60000">
+  <test name="ConditionTest" time-out="60000">
     <classes>
       <class name="cn.edu.uestc.acmicpc.db.condition.base.ConditionTest"/>
     </classes>
   </test>
-  <test name="Utility classes tests" parallel="classes"
-        thread-count="2" time-out="60000">
+  <test name="ArrayUtilTest" time-out="60000">
     <classes>
       <class name="cn.edu.uestc.acmicpc.util.ArrayUtilTest"/>
+    </classes>
+  </test>
+  <test name="CompareSkipSpacesTest" time-out="60000">
+    <classes>
       <class name="cn.edu.uestc.acmicpc.util.CompareSkipSpacesTest"/>
+    </classes>
+  </test>
+  <test name="ZipDataCheckerTest" time-out="60000">
+    <classes>
       <class name="cn.edu.uestc.acmicpc.util.checker.ZipDataCheckerTest"/>
     </classes>
   </test>
-  <test name="Web unit tests" parallel="classes" thread-count="2"
-        time-out="60000">
+  <test name="IndexControllerTest" time-out="60000">
     <classes>
-      <class
-          name="cn.edu.uestc.acmicpc.web.oj.controller.IndexControllerTest"/>
+      <class name="cn.edu.uestc.acmicpc.web.oj.controller.IndexControllerTest"/>
+    </classes>
+  </test>
+  <test name="UserControllerTest" time-out="60000">
+    <classes>
       <class name="cn.edu.uestc.acmicpc.web.oj.controller.UserControllerTest"/>
-      <class
-          name="cn.edu.uestc.acmicpc.web.oj.controller.ProblemControllerTest"/>
+    </classes>
+  </test>
+  <test name="ProblemControllerTest" time-out="60000">
+    <classes>
+      <class name="cn.edu.uestc.acmicpc.web.oj.controller.ProblemControllerTest"/>
     </classes>
   </test>
 
