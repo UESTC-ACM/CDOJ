@@ -8084,7 +8084,7 @@ img {
   background-color: transparent;
   border: none;
 }
-input.ng-invalid.ng-dirty {
+input.ng-invalid {
   background-color: #ffccbf;
   border-color: #ff3300;
 }

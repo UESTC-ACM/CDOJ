@@ -14,6 +14,8 @@ cdoj.controller("RegisterController", [
     $scope.fieldInfo = []
     $scope.register = ->
       userRegisterDTO = angular.copy($scope.userRegisterDTO)
+      if userRegisterDTO.password == undefined then return
+      if userRegisterDTO.passwordRepeat == undefined then return
       password = CryptoJS.SHA1(userRegisterDTO.password).toString()
       userRegisterDTO.password = password
       passwordRepeat = CryptoJS.SHA1(userRegisterDTO.passwordRepeat).toString()

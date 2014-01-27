@@ -1,5 +1,5 @@
 (function() {
-  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getCurrentUser, getEmotionUrl, getParam, initArticleEditor, initContestList, initContestPage, initLayout, initProblemDataEditor, initProblemEditor, initProblemPage, initUI, initUser, initUserList, jsonMerge, jsonPost, openInNewTab, render;
+  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getEmotionUrl, getParam, initArticleEditor, initContestList, initContestPage, initLayout, initProblemDataEditor, initProblemEditor, initProblemPage, initUI, initUserList, jsonMerge, jsonPost, openInNewTab, render;
 
   OnlineJudgeReturnType = {
     OJ_WAIT: 0,
@@ -1158,52 +1158,6 @@
         size: $el.width() ? $el.width() : void 0
       });
     });
-  };
-
-  getCurrentUser = function() {
-    var $currentUser;
-    $currentUser = $("#currentUser");
-    this.userLogin = $currentUser.length !== 0 ? true : false;
-    if (this.userLogin) {
-      this.currentUser = $currentUser[0].innerHTML.trim();
-      this.currentUserType = $currentUser.attr("type");
-      return {
-        userLogin: true,
-        currentUser: this.currentUser,
-        currentUserType: this.currentUserType
-      };
-    } else {
-      return {
-        userLogin: false
-      };
-    }
-  };
-
-  initUser = function() {
-    var _this = this;
-    this.user = getCurrentUser();
-    if (this.user.userLogin) {
-      return $("#cdoj-profile-edit-button").click(function() {
-        var $profileEditForm, info;
-        $profileEditForm = $("#cdoj-profile-edit-form");
-        info = $profileEditForm.getFormData();
-        if (info.newPassword === "") {
-          delete info["newPassword"];
-        }
-        if (info.newPasswordRepeat === "") {
-          delete info["newPasswordRepeat"];
-        }
-        jsonPost("/user/edit", info, function(data) {
-          return $profileEditForm.formValidate({
-            result: data,
-            onSuccess: function() {
-              return window.location.reload();
-            }
-          });
-        });
-        return false;
-      });
-    }
   };
 
   initUserList = function() {

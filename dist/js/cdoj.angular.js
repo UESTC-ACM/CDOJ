@@ -21370,6 +21370,12 @@ var styleDirective = valueFn({
       return $scope.register = function() {
         var password, passwordRepeat, userRegisterDTO;
         userRegisterDTO = angular.copy($scope.userRegisterDTO);
+        if (userRegisterDTO.password === void 0) {
+          return;
+        }
+        if (userRegisterDTO.passwordRepeat === void 0) {
+          return;
+        }
         password = CryptoJS.SHA1(userRegisterDTO.password).toString();
         userRegisterDTO.password = password;
         passwordRepeat = CryptoJS.SHA1(userRegisterDTO.passwordRepeat).toString();
@@ -21408,7 +21414,7 @@ var styleDirective = valueFn({
       };
       $scope.fieldInfo = [];
       $scope.views = {
-        loginView: "<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n  Sign in\n</a>\n<ul ui-dropdown-menu class=\"dropdown-menu cdoj-form-menu\" style=\"width: 340px;\">\n  <li>\n    <form>\n      <div class=\"input-group form-group input-group-sm\">\n        <span class=\"input-group-addon\">\n          <i class=\"fa fa-user\" style=\"width: 14px;\"></i>\n        </span>\n        <input type=\"text\"\n               ng-model=\"userLoginDTO.userName\"\n               maxlength=\"24\"\n               id=\"userName\"\n               class=\"form-control\"\n               ng-required=\"true\"\n               ng-pattern=\"/^[a-zA-Z0-9_]{4,24}$/\"\n               placeholder=\"Username\"/>\n      </div>\n      <div class=\"input-group form-group input-group-sm\">\n        <span class=\"input-group-addon\">\n          <i class=\"fa fa-key\" style=\"width: 14px;\"></i>\n        </span>\n        <input type=\"password\"\n               ng-model=\"userLoginDTO.password\"\n               id=\"password\"\n               ng-required=\"true\"\n               class=\"form-control\"\n               placeholder=\"Password\"/>\n        <span class=\"input-group-btn\">\n          <button type=\"submit\"\n                  class=\"btn btn-default\"\n                  ng-click=\"login()\">\n            Login\n          </button>\n        </span>\n      </div>\n      <ui-validate-info value=\"fieldInfo\" for=\"password\"></ui-validate-info>\n    </form>\n  </li>\n  <li role=\"presentation\" class=\"divider\"></li>\n  <li>\n    <a href=\"#\" data-toggle=\"modal\"\n       data-target=\"#cdoj-register-modal\">\n      <i class=\"fa fa-arrow-circle-right\" style=\"padding-right: 6px;\"></i>Register</a>\n    <a href=\"#\" data-toggle=\"modal\"\n       data-target=\"#cdoj-activate-modal\">\n      <i class=\"fa fa-arrow-circle-right\" style=\"padding-right: 6px;\"></i>Forget password? </a>\n  </li>\n</ul>",
+        loginView: "<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n  Sign in\n</a>\n<ul ui-dropdown-menu class=\"dropdown-menu cdoj-form-menu\" style=\"width: 340px;\">\n  <li>\n    <form>\n      <div class=\"input-group form-group input-group-sm\">\n        <span class=\"input-group-addon\">\n          <i class=\"fa fa-user\" style=\"width: 14px;\"></i>\n        </span>\n        <input type=\"text\"\n               ng-model=\"userLoginDTO.userName\"\n               maxlength=\"24\"\n               id=\"userName\"\n               class=\"form-control\"\n               ng-required=\"true\"\n               ng-pattern=\"/^[a-zA-Z0-9_]{4,24}$/\"\n               placeholder=\"Username\"/>\n      </div>\n      <div class=\"input-group form-group input-group-sm\">\n        <span class=\"input-group-addon\">\n          <i class=\"fa fa-key\" style=\"width: 14px;\"></i>\n        </span>\n        <input type=\"password\"\n               ng-model=\"userLoginDTO.password\"\n               id=\"password\"\n               ng-required=\"true\"\n               ng-minlength=\"6\"\n               ng-maxlength=\"24\"\n               class=\"form-control\"\n               placeholder=\"Password\"/>\n        <span class=\"input-group-btn\">\n          <button type=\"submit\"\n                  class=\"btn btn-default\"\n                  ng-click=\"login()\">\n            Login\n          </button>\n        </span>\n      </div>\n      <ui-validate-info value=\"fieldInfo\" for=\"password\"></ui-validate-info>\n    </form>\n  </li>\n  <li role=\"presentation\" class=\"divider\"></li>\n  <li>\n    <a href=\"#\" data-toggle=\"modal\"\n       data-target=\"#cdoj-register-modal\">\n      <i class=\"fa fa-arrow-circle-right\" style=\"padding-right: 6px;\"></i>Register</a>\n    <a href=\"#\" data-toggle=\"modal\"\n       data-target=\"#cdoj-activate-modal\">\n      <i class=\"fa fa-arrow-circle-right\" style=\"padding-right: 6px;\"></i>Forget password? </a>\n  </li>\n</ul>",
         userView: "<div id=\"cdoj-user\">\n  <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n    <img id=\"cdoj-user-avatar\"\n         ui-avatar\n         email=\"currentUser.email\"\n         src=\"/images/avatar/default.jpg\"/>\n  </a>\n  <ul class=\"dropdown-menu\"\n      role=\"menu\"\n      aria-labelledby=\"user-menu\">\n    <li role=\"presentation\"\n        class=\"dropdown-header text-center\">\n      <span id=\"currentUser\"\n            ng-bind=\"currentUser.userName\">\n        </span>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"/user/center/{{currentUser.userName}}\">\n        <i class=\"fa fa-home\"></i>User center\n      </a>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"#\" data-toggle=\"modal\"\n         data-target=\"#cdoj-profile-edit-modal\"\n         ng-click=\"setupProfileEditor()\">\n        <i class=\"fa fa-wrench\"></i>Edit profile\n      </a>\n    </li>\n    <li role=\"presentation\" class=\"divider\"></li>\n    <li role=\"presentation\">\n      <a href=\"#\" id=\"cdoj-logout-button\" ng-click=\"logout()\">\n        <i class=\"fa fa-power-off\"></i>Logout\n      </a>\n    </li>\n  </ul>\n</div>"
       };
       $rootScope.$watch("hasLogin", function() {
@@ -21429,9 +21435,11 @@ var styleDirective = valueFn({
       $scope.login = function() {
         var password, userLoginDTO;
         userLoginDTO = angular.copy($scope.userLoginDTO);
+        if (userLoginDTO.password === void 0) {
+          return;
+        }
         password = CryptoJS.SHA1(userLoginDTO.password).toString();
         userLoginDTO.password = password;
-        console.log(userLoginDTO);
         return $http.post("/user/login", userLoginDTO).then(function(response) {
           var data;
           data = response.data;
@@ -21468,6 +21476,52 @@ var styleDirective = valueFn({
     }
   ]);
 
+  cdoj.controller("UserProfileEditController", [
+    "$scope", "$http", "$element", "$window", "UserProfile", function($scope, $http, $element, $window, $userProfile) {
+      $scope.userEditDTO = 0;
+      $scope.$watch(function() {
+        return $userProfile.getProfile();
+      }, function() {
+        return $scope.userEditDTO = $userProfile.getProfile();
+      }, true);
+      return $scope.edit = function() {
+        var newPassword, newPasswordRepeat, oldPassword, userEditDTO;
+        userEditDTO = angular.copy($scope.userEditDTO);
+        if (userEditDTO.newPassword === "") {
+          userEditDTO.newPassword = void 0;
+        }
+        if (userEditDTO.newPasswordRepeat === "") {
+          userEditDTO.newPasswordRepeat = void 0;
+        }
+        if (userEditDTO.newPassword === void 0 && userEditDTO.newPasswordRepeat === void 0) {
+          userEditDTO = _.omit(userEditDTO, "newPassword");
+          userEditDTO = _.omit(userEditDTO, "newPassowrdRepeat");
+        } else {
+          newPassword = CryptoJS.SHA1(userEditDTO.newPassword).toString();
+          userEditDTO.newPassword = newPassword;
+          newPasswordRepeat = CryptoJS.SHA1(userEditDTO.newPasswordRepeat).toString();
+          userEditDTO.newPasswordRepeat = newPasswordRepeat;
+        }
+        if (userEditDTO.oldPassword === void 0) {
+          return;
+        }
+        oldPassword = CryptoJS.SHA1(userEditDTO.oldPassword).toString();
+        userEditDTO.oldPassword = oldPassword;
+        return $http.post("/user/edit", userEditDTO).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            return $element.modal("hide");
+          } else if (data.result === "field_error") {
+            return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        });
+      };
+    }
+  ]);
+
   cdoj.factory("UserProfile", [
     "$http", "$window", function($http, $window) {
       var userProfile;
@@ -21488,17 +21542,6 @@ var styleDirective = valueFn({
           return userProfile;
         }
       };
-    }
-  ]);
-
-  cdoj.controller("UserProfileEditController", [
-    "$scope", "$http", "UserProfile", function($scope, $http, $userProfile) {
-      $scope.userEditDTO = 0;
-      return $scope.$watch(function() {
-        return $userProfile.getProfile();
-      }, function() {
-        return $scope.userEditDTO = $userProfile.getProfile();
-      }, true);
     }
   ]);
 
@@ -21531,13 +21574,19 @@ var styleDirective = valueFn({
         $scope.$watch($attrs.ngModel, function() {
           return validate();
         });
-        $attrs.$observe("equals", function(val) {
+        $attrs.$observe("equals", function() {
           return validate();
         });
         return validate = function() {
           var val1, val2;
-          val1 = $ngModel.$viewValue;
-          val2 = $attrs.equals;
+          val1 = angular.copy($ngModel.$viewValue);
+          val2 = angular.copy($attrs.equals);
+          if (val2 === void 0) {
+            val2 = "";
+          }
+          if (val1 === void 0) {
+            val1 = "";
+          }
           return $ngModel.$setValidity("equals", val1 === val2);
         };
       }

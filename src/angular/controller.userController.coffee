@@ -38,6 +38,8 @@ cdoj.controller("UserController", [
                          ng-model="userLoginDTO.password"
                          id="password"
                          ng-required="true"
+                         ng-minlength="6"
+                         ng-maxlength="24"
                          class="form-control"
                          placeholder="Password"/>
                   <span class="input-group-btn">
@@ -117,9 +119,9 @@ cdoj.controller("UserController", [
     )
     $scope.login = ->
       userLoginDTO = angular.copy($scope.userLoginDTO)
+      if userLoginDTO.password == undefined then return
       password = CryptoJS.SHA1(userLoginDTO.password).toString()
       userLoginDTO.password = password
-      console.log userLoginDTO
       $http.post("/user/login", userLoginDTO).then (response)->
         data = response.data
         console.log data
