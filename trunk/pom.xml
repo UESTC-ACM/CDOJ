@@ -345,6 +345,9 @@
           <stopPort>8005</stopPort>
           <stopKey>STOP</stopKey>
           <contextPath>/</contextPath>
+          <webAppConfig>
+            <defaultsDescriptor>src/main/resources/webdefault.xml</defaultsDescriptor>
+          </webAppConfig>
         </configuration>
         <executions>
           <execution>
