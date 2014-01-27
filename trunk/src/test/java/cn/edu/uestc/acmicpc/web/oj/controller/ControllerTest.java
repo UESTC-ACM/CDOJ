@@ -3,10 +3,13 @@ package cn.edu.uestc.acmicpc.web.oj.controller;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
+import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
@@ -47,6 +50,14 @@ public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
       Charset.forName("utf8"));
 
   protected void init() {
+    for (Field field : this.getClass().getDeclaredFields()) {
+      if (field.isAnnotationPresent(Mock.class)) {
+        try {
+          Mockito.reset(field.get(this));
+        } catch (IllegalAccessException ignored) {
+        }
+      }
+    }
     when(departmentService.getDepartmentList()).thenReturn(departmentList);
     when(globalService.getAuthenticationTypeList()).thenReturn(authenticationTypeList);
   }
