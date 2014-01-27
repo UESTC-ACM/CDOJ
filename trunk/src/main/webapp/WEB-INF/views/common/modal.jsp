@@ -48,6 +48,8 @@ All modal will used on every page
                        ng-model="userRegisterDTO.password"
                        id="password"
                        ng-required="true"
+                       ng-minlength="6"
+                       ng-maxlength="24"
                        class="form-control input-sm"/>
                 <ui-validate-info value="fieldInfo" for="password"></ui-validate-info>
               </div>
@@ -60,6 +62,8 @@ All modal will used on every page
                        ng-model="userRegisterDTO.passwordRepeat"
                        id="passwordRepeat"
                        ng-required="true"
+                       ng-minlength="6"
+                       ng-maxlength="24"
                        equals="{{userRegisterDTO.password}}"
                        class="form-control input-sm"/>
                 <ui-validate-info value="fieldInfo" for="passwordRepeat"></ui-validate-info>
@@ -242,18 +246,24 @@ All modal will used on every page
               <div class="col-sm-8">
                 <input type="password"
                        ng-model="userEditDTO.newPassword"
+                       ng-required="false"
                        id="newPassword"
+                       ng-minlength="6"
+                       ng-maxlength="24"
                        class="form-control input-sm"/>
                 <ui-validate-info value="fieldInfo" for="newPassword"></ui-validate-info>
               </div>
             </div>
             <div class="form-group ">
               <label class="control-label col-sm-4 "
-                     for="newPasswordRepeat">Repeat your new password</label>
+                     for="newPasswordRepeat">Repeat new password</label>
               <div class="col-sm-8">
                 <input type="password"
                        ng-model="userEditDTO.newPasswordRepeat"
+                       ng-required="false"
                        id="newPasswordRepeat"
+                       ng-minlength="6"
+                       ng-maxlength="24"
                        equals="{{userEditDTO.newPassword}}"
                        class="form-control input-sm"/>
                 <ui-validate-info value="fieldInfo" for="newPasswordRepeat"></ui-validate-info>
@@ -345,6 +355,20 @@ All modal will used on every page
                 <ui-validate-info value="fieldInfo" for="motto"></ui-validate-info>
               </div>
             </div>
+            <div class="form-group">
+              <label class="control-label col-sm-4 "
+                     for="oldPassword">Password</label>
+              <div class="col-sm-8">
+                <input type="password"
+                       ng-model="userEditDTO.oldPassword"
+                       id="oldPassword"
+                       ng-required="true"
+                       ng-minlength="6"
+                       ng-maxlength="24"
+                       class="form-control input-sm"/>
+                <ui-validate-info value="fieldInfo" for="oldPassword"></ui-validate-info>
+              </div>
+            </div>
           </fieldset>
         </form>
       </div>
@@ -353,7 +377,7 @@ All modal will used on every page
                 data-dismiss="modal">Close
         </button>
         <button type="button" class="btn btn-primary"
-                id="cdoj-profile-edit-button">Edit
+                ng-click="edit()">Edit
         </button>
       </div>
     </div>
