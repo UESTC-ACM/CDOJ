@@ -16,6 +16,7 @@
           <h1 class="cdoj-codefont">CDOJ</h1>
 
           <h2>stO Ruinshe Orz</h2>
+
           <div class="alert alert-danger">
             加密算法略有修改，部分用户登陆可能提示密码错误，自行找回密码即可。
           </div>
@@ -48,8 +49,8 @@
                  ng-bind="article.title"></a>
           </h1>
           <small>
-            <span ng-bind="article.clicked"></span> visited, create by <span
-              ng-bind="article.ownerName"></span>, last modified at
+            <span ng-bind="article.clicked"></span> visited, create by
+            <span ng-bind="article.ownerName"></span>, last modified at
             <span class="cdoj-article-post-time"
                   ui-time
                   time="article.time"
