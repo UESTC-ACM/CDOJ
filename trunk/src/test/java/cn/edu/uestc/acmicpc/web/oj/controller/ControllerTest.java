@@ -8,38 +8,57 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.config.WebMVCResource;
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.department.DepartmentDTO;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
+import cn.edu.uestc.acmicpc.service.iface.EmailService;
+import cn.edu.uestc.acmicpc.service.iface.FileService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
+import cn.edu.uestc.acmicpc.service.iface.LanguageService;
+import cn.edu.uestc.acmicpc.service.iface.PictureService;
+import cn.edu.uestc.acmicpc.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
+import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.settings.Global.AuthenticationType;
 
 /**
  * Abstract test to define constant variables for controller tests.
  */
+@WebAppConfiguration
+@ContextConfiguration(classes = {TestContext.class})
 public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
 
   protected MockMvc mockMvc;
   protected MockHttpSession session;
-
   protected List<DepartmentDTO> departmentList = new ArrayList<DepartmentDTO>();
-
-  @Autowired
-  protected DepartmentService departmentService;
-
   protected List<AuthenticationType> authenticationTypeList = new ArrayList<AuthenticationType>();
 
-  @Autowired
-  protected GlobalService globalService;
+  @Autowired protected UserService userService;
+  @Autowired protected ProblemService problemService;
+  @Autowired protected StatusService statusService;
+  @Autowired protected UserSerialKeyService userSerialKeyService;
+  @Autowired protected GlobalService globalService;
+  @Autowired protected EmailService emailService;
+  @Autowired protected DepartmentService departmentService;
+  @Autowired protected LanguageService languageService;
+  @Autowired protected PictureService pictureService;
+  @Autowired protected FileService fileService;
+  @Autowired protected IUserDAO userDAO;
+  @Autowired protected IProblemDAO problemDAO;
 
   /**
    * Application JSON type with UTF-8 character set.
@@ -50,11 +69,11 @@ public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
       Charset.forName("utf8"));
 
   protected void init() {
-    for (Field field : this.getClass().getDeclaredFields()) {
-      if (field.isAnnotationPresent(Mock.class)) {
+    for (Field field : ControllerTest.class.getDeclaredFields()) {
+      if (field.isAnnotationPresent(Autowired.class)) {
         try {
           Mockito.reset(field.get(this));
-        } catch (IllegalAccessException ignored) {
+        } catch (Exception ignored) {
         }
       }
     }

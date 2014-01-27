@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -23,8 +22,7 @@ import cn.edu.uestc.acmicpc.web.oj.controller.index.IndexController;
 @ContextConfiguration(classes = {TestContext.class, WebMVCConfig.class})
 public class IndexControllerTest extends ControllerTest {
 
-  @Autowired
-  private IndexController indexController;
+  @Autowired private IndexController indexController;
 
   @Override
   @BeforeMethod
