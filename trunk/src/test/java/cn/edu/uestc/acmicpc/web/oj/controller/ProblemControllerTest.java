@@ -19,7 +19,7 @@ import org.testng.annotations.Test;
 
 import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.config.WebMVCConfig;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.web.oj.controller.problem.ProblemController;
 
 /**
@@ -46,8 +46,8 @@ public class ProblemControllerTest extends ControllerTest {
   @Test
   // TODO(Ruinshe) Now I get problem data use /problem/data/{problemId}, see ProblemController.java for more details.
   public void testShow_successful() throws Exception {
-    ProblemShowDTO problemShowDTO = ProblemShowDTO.builder().setProblemId(1000).build();
-    when(problemService.getProblemShowDTO(anyInt())).thenReturn(problemShowDTO);
+    ProblemDTO problemDTO = ProblemDTO.builder().setProblemId(1000).build();
+    when(problemService.checkProblemExists(anyInt())).thenReturn(true);
     /*when(statusService.count(Mockito.<StatusCondition>any())).thenReturn(100L);
     Map<OnlineJudgeResultType, Long> problemStatistic = new TreeMap<>();
     for (OnlineJudgeResultType type : OnlineJudgeResultType.values()) {
@@ -56,20 +56,19 @@ public class ProblemControllerTest extends ControllerTest {
       }
       problemStatistic.put(type, 100L);
     }*/
-    mockMvc.perform(post(URL_SHOW + "/{problemId}", problemShowDTO.getProblemId()))
+    mockMvc.perform(post(URL_SHOW + "/{problemId}", problemDTO.getProblemId()))
         .andExpect(status().isOk())
         .andExpect(view().name("problem/problemShow"))
-        .andExpect(model().attribute("problemId", problemShowDTO.getProblemId()))
-        .andExpect(model().attribute("title", problemShowDTO.getTitle()));
+        .andExpect(model().attribute("problemId", problemDTO.getProblemId()))
         //.andExpect(model().attribute("problemStatistic", problemStatistic))
         //.andExpect(model().attribute("targetProblem", problemShowDTO))
         //.andExpect(model().attribute("brToken", "\n"))
-        //.andExpect(model().attribute("languageList", languageList));
+        .andExpect(model().attribute("languageList", languageList));
   }
 
   @Test
   public void testShow_problemNotFound() throws Exception {
-    when(problemService.getProblemShowDTO(anyInt())).thenReturn(null);
+    when(problemService.checkProblemExists(anyInt())).thenReturn(false);
     mockMvc.perform(post(URL_SHOW + "/{problemId}", 1000))
         .andExpect(status().isOk())
         .andExpect(view().name("error/404"));
