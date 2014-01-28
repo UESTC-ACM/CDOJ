@@ -27,7 +27,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDetailDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDataShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
@@ -282,9 +281,7 @@ public class ContestController extends BaseController {
         for (int order = 0; order < problemList.length; order++) {
           Integer problemId = Integer.parseInt(problemList[order]);
           // Check problem exists.
-          ProblemDataShowDTO problemDataShowDTO = problemService.getProblemDataShowDTO(problemId);
-          AppExceptionUtil.assertNotNull(problemDataShowDTO);
-          AppExceptionUtil.assertNotNull(problemDataShowDTO.getProblemId());
+          AppExceptionUtil.assertTrue(problemService.checkProblemExists(problemId));
 
           Integer contestProblemId = contestProblemService.createNewContestProblem(
               ContestProblemDTO.builder()

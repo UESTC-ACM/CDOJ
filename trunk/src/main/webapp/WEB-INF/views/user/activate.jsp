@@ -12,7 +12,11 @@
 </head>
 <body>
 <div class="row"
-     ng-controller="PasswordResetController">
+     ng-controller="PasswordResetController"
+     ng-init="
+     userActivateDTO.userName = '${userName}';
+     userActivateDTO.serialKey = '${serialKey}';
+     ">
   <div class="col-md-12">
     <h1>Reset your password</h1>
   </div>
@@ -27,7 +31,6 @@
             <input type="text"
                    ng-model="userActivateDTO.userName"
                    maxlength="24"
-                   value="<c:out value="${userName}"/>"
                    id="userName"
                    class="form-control input-sm"
                    readonly="readonly"/>
@@ -41,7 +44,6 @@
             <input type="text"
                    ng-model="userActivateDTO.serialKey"
                    maxlength="48"
-                   value="<c:out value="${serialKey}"/>"
                    id="serialKey"
                    class="form-control input-sm"
                    readonly="readonly">

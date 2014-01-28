@@ -153,7 +153,7 @@ Admin problem list page
           <th><a href="/problem/editor/new">Add new
             problem</a></th>
           <th style="width: 5em; text-align: right;">Solved</th>
-          <th style="width: 75px;" ng-show="$root.isAdmin"></th>
+          <th style="width: 55px;" ng-show="$root.isAdmin"></th>
         </tr>
         </thead>
         <tbody>

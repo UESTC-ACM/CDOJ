@@ -33,12 +33,12 @@ public class FileServiceImpl extends AbstractService implements FileService {
     this.settings = settings;
   }
 
-  private String getDataZipFileName(Integer problemId) {
+  private String getDataZipFileName(String problemId) {
     return settings.SETTING_UPLOAD_FOLDER + "/problem_" + problemId + ".zip";
   }
 
   @Override
-  public Integer uploadProblemDataFile(FileUploadDTO fileUploadDTO, Integer problemId)
+  public Integer uploadProblemDataFile(FileUploadDTO fileUploadDTO, String problemId)
       throws AppException {
     List<MultipartFile> files = fileUploadDTO.getFiles();
     if (files == null || files.size() > 1)
@@ -67,10 +67,7 @@ public class FileServiceImpl extends AbstractService implements FileService {
     }
   }
 
-  @Override
-  public Integer moveProblemDataFile(Integer problemId) throws AppException {
-    String dataPath = settings.JUDGE_DATA_PATH + "/" + problemId;
-    String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/" + problemId;
+  private Integer moveProblemDataFile(String tempDirectory, String dataPath) throws AppException {
     File currentFile = new File(tempDirectory);
     File targetFile = new File(dataPath);
     // If the uploaded file list is empty, that means we don't need update
@@ -122,6 +119,13 @@ public class FileServiceImpl extends AbstractService implements FileService {
         throw new AppException("Cannot remove spj source file");
     }
     return dataCount;
+  }
+
+  @Override
+  public Integer moveProblemDataFile(String uploadFolder, Integer problemId) throws AppException {
+    String dataPath = settings.JUDGE_DATA_PATH + "/" + problemId;
+    String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/" + uploadFolder;
+    return moveProblemDataFile(tempDirectory, dataPath);
   }
 
   @Override

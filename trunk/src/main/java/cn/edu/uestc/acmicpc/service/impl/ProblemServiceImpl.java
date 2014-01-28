@@ -10,10 +10,7 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDataShowDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -170,28 +167,16 @@ public class ProblemServiceImpl extends AbstractService implements
     problemDAO.update(problem);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
-  public ProblemShowDTO getProblemShowDTO(Integer problemId)
-      throws AppException {
-    return problemDAO.getDTOByUniqueField(ProblemShowDTO.class,
-        ProblemShowDTO.builder(),
-        "problemId", problemId);
-  }
-
-  @Override
-  public ProblemEditorShowDTO getProblemEditorShowDTO(Integer problemId)
-      throws AppException {
-    return problemDAO.getDTOByUniqueField(ProblemEditorShowDTO.class,
-        ProblemEditorShowDTO.builder(),
-        "problemId", problemId);
-  }
-
-  @Override
-  public ProblemDataShowDTO getProblemDataShowDTO(Integer problemId)
-      throws AppException {
-    return problemDAO.getDTOByUniqueField(ProblemDataShowDTO.class,
-        ProblemDataShowDTO.builder(),
-        "problemId", problemId);
+  public Boolean checkProblemExists(Integer problemId) throws AppException {
+    AppExceptionUtil.assertNotNull(problemId);
+    ProblemCondition problemCondition = new ProblemCondition();
+    problemCondition.startId = problemId;
+    problemCondition.endId = problemId;
+    List<Integer> result = (List<Integer>) problemDAO.findAll("problemId",
+        problemCondition.getCondition());
+    return result.size() == 1 && result.get(0).equals(problemId);
   }
 
   @Override
