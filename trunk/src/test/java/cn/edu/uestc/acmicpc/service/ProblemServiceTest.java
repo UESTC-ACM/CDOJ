@@ -29,10 +29,7 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDataShowDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
@@ -152,36 +149,6 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
     List<Entry> entries = condition.getEntries();
     Assert.assertEquals(Entry.of("isVisible",
         ConditionType.STRING_EQUALS, "1"), entries.get(0));
-  }
-
-  @Test
-  public void testGetProblemShowDTO() throws AppException {
-    ProblemShowDTO problemShowDTO = ProblemShowDTO.builder().build();
-    when(problemDAO.getDTOByUniqueField(eq(ProblemShowDTO.class), Mockito.<ProblemShowDTO.Builder>any(),
-        eq("problemId"), eq(problemShowDTO.getProblemId()))).thenReturn(problemShowDTO);
-    Assert.assertEquals(problemService.getProblemShowDTO(problemShowDTO.getProblemId()), problemShowDTO);
-    verify(problemDAO).getDTOByUniqueField(eq(ProblemShowDTO.class), Mockito.<ProblemShowDTO.Builder>any(),
-        eq("problemId"), eq(problemShowDTO.getProblemId()));
-  }
-
-  @Test
-  public void testGetProblemEditorShowDTO() throws AppException {
-    ProblemEditorShowDTO problemEditorShowDTO = ProblemEditorShowDTO.builder().build();
-    when(problemDAO.getDTOByUniqueField(eq(ProblemEditorShowDTO.class), Mockito.<ProblemEditorShowDTO.Builder>any(),
-        eq("problemId"), eq(problemEditorShowDTO.getProblemId()))).thenReturn(problemEditorShowDTO);
-    Assert.assertEquals(problemService.getProblemEditorShowDTO(problemEditorShowDTO.getProblemId()), problemEditorShowDTO);
-    verify(problemDAO).getDTOByUniqueField(eq(ProblemEditorShowDTO.class), Mockito.<ProblemEditorShowDTO.Builder>any(),
-        eq("problemId"), eq(problemEditorShowDTO.getProblemId()));
-  }
-
-  @Test
-  public void testGetProblemDataShowDTO() throws AppException {
-    ProblemDataShowDTO problemDataShowDTO = ProblemDataShowDTO.builder().build();
-    when(problemDAO.getDTOByUniqueField(eq(ProblemDataShowDTO.class), Mockito.<ProblemDataShowDTO.Builder>any(),
-        eq("problemId"), eq(problemDataShowDTO.getProblemId()))).thenReturn(problemDataShowDTO);
-    Assert.assertEquals(problemService.getProblemDataShowDTO(problemDataShowDTO.getProblemId()), problemDataShowDTO);
-    verify(problemDAO).getDTOByUniqueField(eq(ProblemDataShowDTO.class), Mockito.<ProblemDataShowDTO.Builder>any(),
-        eq("problemId"), eq(problemDataShowDTO.getProblemId()));
   }
 
 }
