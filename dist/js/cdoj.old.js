@@ -1,5 +1,5 @@
 (function() {
-  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getEmotionUrl, getParam, initArticleEditor, initContestList, initContestPage, initLayout, initProblemDataEditor, initProblemEditor, initProblemPage, initUI, initUserList, jsonMerge, jsonPost, openInNewTab, render;
+  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getEmotionUrl, getParam, initArticleEditor, initContestList, initContestPage, initLayout, initProblemPage, initUI, initUserList, jsonMerge, jsonPost, openInNewTab, render;
 
   OnlineJudgeReturnType = {
     OJ_WAIT: 0,
@@ -942,111 +942,6 @@
     }
   };
 
-  initProblemDataEditor = function() {
-    var $dataUploadButton, $editor, dataUploader, problemId,
-      _this = this;
-    $editor = $("#problem-data-editor");
-    if ($editor.length > 0) {
-      problemId = $editor.find("#problem-data-editor-title").attr("value");
-      $editor.find("#submit").click(function() {
-        var $form, info;
-        $form = $editor.find("#problem-data-form");
-        info = $form.getFormData();
-        info["problemId"] = problemId;
-        jsonPost("/problem/updateProblemData", info, function(data) {
-          return $form.formValidate({
-            result: data,
-            onSuccess: function() {
-              return window.location.href = "/problem/show/" + problemId;
-            }
-          });
-        });
-        return false;
-      });
-      $dataUploadButton = $editor.find("#problem-data-uploader");
-      return dataUploader = new qq.FineUploaderBasic({
-        button: $dataUploadButton[0],
-        request: {
-          endpoint: "/problem/uploadProblemDataFile/" + problemId,
-          inputName: "uploadFile"
-        },
-        validation: {
-          allowedExtensions: ["zip"],
-          sizeLimit: 100 * 1000 * 1000
-        },
-        multiple: false,
-        callbacks: {
-          onComplete: function(id, fileName, data) {
-            var template;
-            if (data.success === "true") {
-              template = "<div class=\"alert alert-success\">\n  Total data: " + data.total + "\n</div>";
-            } else {
-              template = "<div class=\"alert alert-danger\">\n  " + data.error + "\n</div>";
-            }
-            return $editor.find("#uploader-info").empty().append(template);
-          },
-          onProgress: function(id, fileName, uploadedBytes, totalBytes) {
-            var template;
-            template = "<div class=\"alert alert-info\">\n  " + uploadedBytes + " bytes of " + totalBytes + "\n</div>";
-            return $editor.find("#uploader-info").empty().append(template);
-          },
-          onError: function(id, fileName, errorReason) {
-            return alert(errorReason);
-          }
-        }
-      });
-    }
-  };
-
-  initProblemEditor = function() {
-    var $editor, action, editors, editorsId,
-      _this = this;
-    $editor = $("#problem-editor");
-    if ($editor.length > 0) {
-      action = $("#problem-editor-title").attr("value");
-      editorsId = ["description", "input", "output", "hint"];
-      editors = [];
-      editorsId.each(function(value, id) {
-        return editors.push({
-          id: value,
-          editor: $("#" + value).flandre({
-            picture: {
-              uploadUrl: "/picture/uploadPicture/problem/" + action
-            }
-          })
-        });
-      });
-      return $("#submit").click(function() {
-        var info;
-        info = {
-          sampleInput: $("textarea#sample-input").val(),
-          sampleOutput: $("textarea#sample-output").val(),
-          title: $("#title").val(),
-          source: $("#source").val()
-        };
-        editors.each(function(value, id) {
-          return info[value.id] = value.editor.getText();
-        });
-        if (action === "new") {
-          info["action"] = "new";
-        } else {
-          info["action"] = "edit";
-          info["problemId"] = action;
-        }
-        jsonPost("/problem/edit", info, function(data) {
-          if (data.result === "success") {
-            return window.location.href = "/problem/show/" + data.problemId;
-          } else if (data.result === "field_error") {
-            return alert("Please enter a valid title!");
-          } else {
-            return alert(data.error_msg);
-          }
-        });
-        return false;
-      });
-    }
-  };
-
   initProblemPage = function() {
     var $currentUser, $statusList, problemId, statusList,
       _this = this;
@@ -1247,8 +1142,6 @@
     initUI();
     initLayout();
     initUserList();
-    initProblemEditor();
-    initProblemDataEditor();
     initContestPage();
     initArticleEditor();
     return render();

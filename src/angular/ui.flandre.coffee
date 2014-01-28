@@ -4,16 +4,13 @@ cdoj.directive("uiFlandre",
   restrict: "A"
   scope:
     content: "=ngModel"
-    uploadUrl: "@uploadUrl"
+    uploadUrl: "@"
   controller: [
     "$scope", "$element",
     ($scope, $element) ->
       $scope.mode = "edit"
       $scope.previewContent = ""
       $editor = $element.find(".flandre-editor")
-
-      # Auto expend editor's height
-      $editor.elastic()
 
       # Preview button
       $scope.togglePreview = ->
@@ -69,6 +66,7 @@ cdoj.directive("uiFlandre",
           </div>
         </div>
         <textarea class="tex2jax_ignore form-control flandre-editor"
+                  msd-elastic
                   ng-class="{'flandre-show': mode == 'edit'}"
                   ng-model="content"></textarea>
         <div class="flandre-preview" ng-class="{'flandre-show': mode == 'preview'}">

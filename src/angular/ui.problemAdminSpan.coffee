@@ -25,8 +25,6 @@ cdoj.directive("uiProblemAdminSpan",
                   </button>
                   <a href="/problem/editor/{{problemId}}" target="_blank"
                      class="btn btn-default btn-sm" style="padding: 1px 5px;"><i class="fa fa-pencil"></i></a>
-                  <a href="/problem/dataEditor/{{problemId}}" target="_blank"
-                     class="btn btn-default btn-sm" style="padding: 1px 5px;"><i class="fa fa-cog"></i></a>
                 </div>
               </div>
     """

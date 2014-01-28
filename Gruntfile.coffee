@@ -35,6 +35,8 @@ module.exports = (grunt) ->
         src: [
           "src/angular/angular.js"
           "src/angular/angular-sanitize.js"
+          "src/angular/angular-elastic.js"
+          "src/angular/ui-bootstrap-tpls-0.10.0.js"
           "temp/angular/cdoj.angular.coffee.js"
         ]
         dest: "dist/js/cdoj.angular.js"
@@ -42,6 +44,8 @@ module.exports = (grunt) ->
         src: [
           "src/angular/angular.min.js"
           "src/angular/angular-sanitize.min.js"
+          "src/angular/angular-elastic.js"
+          "src/angular/ui-bootstrap-tpls-0.10.0.min.js"
           "temp/angular/cdoj.angular.coffee.min.js"
         ]
         dest: "dist/js/cdoj.angular.min.js"
@@ -66,7 +70,6 @@ module.exports = (grunt) ->
           "src/js/bootstrap.js"
           "src/js/md5.js"
           "src/js/sha1.js"
-          "src/js/jquery.elastic.source.js"
           "src/js/bootstrap-datetimepicker.js"
         ]
         dest: "temp/dependencies/cdoj.dependencies.js"
