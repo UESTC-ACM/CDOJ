@@ -9,7 +9,7 @@ Problem statement
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <title><c:out value="${title}"/></title>
+  <title>Problem <c:out value="${problemId}"/></title>
 </head>
 <body>
 
@@ -27,10 +27,6 @@ Problem statement
   <div class="col-md-12" ng-show="$root.isAdmin">
     <a href="/problem/editor/{{problem.problemId}}">
       <i class="fa fa-pencil no-margin-right"></i> Edit
-    </a>
-    <br/>
-    <a href="/problem/dataEditor/{{problem.problemId}}">
-      <i class="fa fa-cog no-margin-right"></i> Data manage
     </a>
   </div>
 
@@ -131,7 +127,13 @@ Problem statement
             <ui-validate-info value="fieldInfo" for="codeContent"></ui-validate-info>
           </div>
           <div class="panel-footer">
-            <ui-language-selector ng-model="submitDTO.languageId"></ui-language-selector>
+            <div class="btn-group">
+              <c:forEach var="language" items="${languageList}">
+                <button type="button" class="btn btn-default"
+                        ng-model="submitDTO.languageId"
+                        btn-radio="${language.languageId}">${language.name}</button>
+              </c:forEach>
+            </div>
             <button type="button"
                     class="btn btn-danger pull-right"
                     ng-click="submitCode()">Submit

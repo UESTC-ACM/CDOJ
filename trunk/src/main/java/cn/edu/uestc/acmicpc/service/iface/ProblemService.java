@@ -5,10 +5,7 @@ import java.util.Map;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDataShowDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -103,32 +100,11 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
       throws AppException;
 
   /**
-   * Get {@link ProblemShowDTO} entity by problem id.
+   * Check whether a problem exists.
    *
    * @param problemId problem's id.
-   * @return {@link ProblemShowDTO} entity.
+   * @return true if this problem exists.
    * @throws AppException
    */
-  public ProblemShowDTO getProblemShowDTO(Integer problemId)
-      throws AppException;
-
-  /**
-   * Get {@link ProblemEditorShowDTO} entity by problem id.
-   *
-   * @param problemId problem's id.
-   * @return {@link ProblemEditorShowDTO} entity.
-   * @throws AppException
-   */
-  public ProblemEditorShowDTO getProblemEditorShowDTO(Integer problemId)
-      throws AppException;
-
-  /**
-   * Get {@link ProblemDataShowDTO} entity by problem id.
-   *
-   * @param problemId problem's id.
-   * @return {@link ProblemDataShowDTO} entity.
-   * @throws AppException
-   */
-  public ProblemDataShowDTO getProblemDataShowDTO(Integer problemId)
-      throws AppException;
+  public Boolean checkProblemExists(Integer problemId) throws AppException;
 }

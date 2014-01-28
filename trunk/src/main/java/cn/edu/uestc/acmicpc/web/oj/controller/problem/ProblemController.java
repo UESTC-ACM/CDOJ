@@ -22,12 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDataEditDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDataShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
@@ -75,12 +71,12 @@ public class ProblemController extends BaseController {
   Map<String, Object> data(@PathVariable("problemId") Integer problemId) {
     Map<String, Object> json = new HashMap<>();
     try {
-      ProblemShowDTO problemShowDTO = problemService.getProblemShowDTO(problemId);
-      if (problemShowDTO == null) {
+      ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(problemId);
+      if (problemDTO == null) {
         throw new AppException("No such problem.");
       }
 
-      json.put("problem", problemShowDTO);
+      json.put("problem", problemDTO);
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
@@ -105,13 +101,11 @@ public class ProblemController extends BaseController {
   public String show(@PathVariable("problemId") Integer problemId,
                      ModelMap model) {
     try {
-      ProblemShowDTO problemShowDTO = problemService.getProblemShowDTO(problemId);
-      if (problemShowDTO == null) {
+      if (!problemService.checkProblemExists(problemId)) {
         throw new AppException("No such problem.");
       }
       model.put("problemId", problemId);
-      model.put("title", problemShowDTO.getTitle());
-
+      model.put("languageList", languageService.getLanguageList());
       /*
       Map<Global.OnlineJudgeResultType, Long> problemStatistic = new TreeMap<>();
       for (Global.OnlineJudgeResultType type : Global.OnlineJudgeResultType.values()) {
@@ -177,7 +171,7 @@ public class ProblemController extends BaseController {
           .getProblemListDTOList(
               problemCondition, pageInfo);
 
-      Map<Integer, Global.AuthorStatusType> problemStatus = GetProblemStatus(currentUser);
+      Map<Integer, Global.AuthorStatusType> problemStatus = getProblemStatus(currentUser);
 
       for (ProblemListDTO problemListDTO : problemListDTOList) {
         if (problemStatus.get(problemListDTO.getProblemId()) == Global.AuthorStatusType.PASS) {
@@ -267,12 +261,10 @@ public class ProblemController extends BaseController {
         } catch (NumberFormatException e) {
           throw new AppException("Parse problem id error.");
         }
-        ProblemEditorShowDTO targetProblem = problemService
-            .getProblemEditorShowDTO(problemId);
-        if (targetProblem == null)
+        if (!problemService.checkProblemExists(problemId)) {
           throw new AppException("No such problem.");
-        model.put("action", "edit");
-        model.put("targetProblem", targetProblem);
+        }
+        model.put("action", problemId);
       }
     } catch (AppException e) {
       model.put("message", e.getMessage());
@@ -306,9 +298,9 @@ public class ProblemController extends BaseController {
         if (problemEditDTO.getAction().compareTo("new") == 0) {
           Integer problemId = problemService.createNewProblem();
           problemDTO = problemService.getProblemDTOByProblemId(problemId);
-          if (problemDTO == null
-              || !problemDTO.getProblemId().equals(problemId))
+          if (problemDTO == null || !problemDTO.getProblemId().equals(problemId)) {
             throw new AppException("Error while creating problem.");
+          }
           // Move pictures
           String oldDirectory = "/images/problem/new/";
           String newDirectory = "/images/problem/" + problemId + "/";
@@ -321,8 +313,7 @@ public class ProblemController extends BaseController {
           problemEditDTO.setHint(pictureService.modifyPictureLocation(
               problemEditDTO.getHint(), oldDirectory, newDirectory));
         } else {
-          problemDTO = problemService.getProblemDTOByProblemId(problemEditDTO
-              .getProblemId());
+          problemDTO = problemService.getProblemDTOByProblemId(problemEditDTO.getProblemId());
           if (problemDTO == null)
             throw new AppException("No such problem.");
         }
@@ -335,6 +326,25 @@ public class ProblemController extends BaseController {
         problemDTO.setSampleOutput(problemEditDTO.getSampleOutput());
         problemDTO.setHint(problemEditDTO.getHint());
         problemDTO.setSource(problemEditDTO.getSource());
+
+        problemDTO.setTimeLimit(problemEditDTO.getTimeLimit());
+        problemDTO.setJavaTimeLimit(problemEditDTO.getJavaTimeLimit());
+        problemDTO.setMemoryLimit(problemEditDTO.getMemoryLimit());
+        problemDTO.setJavaMemoryLimit(problemEditDTO.getJavaMemoryLimit());
+        problemDTO.setOutputLimit(problemEditDTO.getOutputLimit());
+        problemDTO.setIsSpj(problemEditDTO.getIsSpj());
+
+        Integer dataCount;
+        if (problemEditDTO.getAction().equals("new")) {
+          dataCount = fileService.moveProblemDataFile("new",
+              problemDTO.getProblemId());
+        } else {
+          dataCount = fileService.moveProblemDataFile(problemDTO.getProblemId().toString(),
+              problemDTO.getProblemId());
+        }
+        if (dataCount != 0) {
+          problemDTO.setDataCount(dataCount);
+        }
 
         problemService.updateProblem(problemDTO);
         json.put("result", "success");
@@ -351,45 +361,33 @@ public class ProblemController extends BaseController {
     return json;
   }
 
-  @RequestMapping("dataEditor/{problemId}")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
-  public String dataEditor(@PathVariable("problemId") Integer problemId,
-                           ModelMap model) {
-    try {
-      ProblemDataShowDTO targetProblem = problemService
-          .getProblemDataShowDTO(problemId);
-      if (targetProblem == null)
-        throw new AppException("No such problem.");
-      model.put("targetProblem", targetProblem);
-    } catch (AppException e) {
-      model.put("message", e.getMessage());
-      return "error/error";
-    }
-    return "problem/problemDataEditor";
-  }
-
   @RequestMapping(value = "uploadProblemDataFile/{problemId}",
       method = RequestMethod.POST)
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public
   @ResponseBody
   Map<String, Object> uploadProblemDataFile(
-      @PathVariable("problemId") Integer problemId,
+      @PathVariable("problemId") String sProblemId,
       @RequestParam(value = "uploadFile", required = true) MultipartFile[] files) {
     Map<String, Object> json = new HashMap<>();
     try {
-      if (problemId == null)
-        throw new AppException("Error, target problem id is null!");
-      ProblemDTO problemDTO = problemService
-          .getProblemDTOByProblemId(problemId);
-      if (problemDTO == null)
-        throw new AppException("Error, target problem doesn't exist!");
+      if (!sProblemId.equals("new")) {
+        Integer problemId;
+        try {
+          problemId = Integer.parseInt(sProblemId);
+        } catch (NumberFormatException e) {
+          throw new AppException("Parse problem id error.");
+        }
+        if (!problemService.checkProblemExists(problemId)) {
+          throw new AppException("No such problem.");
+        }
+      }
 
       Integer dataCount = fileService.uploadProblemDataFile(
           FileUploadDTO.builder()
               .setFiles(Arrays.asList(files))
               .build(),
-          problemId);
+          sProblemId);
 
       json.put("total", dataCount);
       json.put("success", "true");
@@ -403,71 +401,7 @@ public class ProblemController extends BaseController {
     return json;
   }
 
-  @RequestMapping("updateProblemData")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> updateProblemData(
-      @RequestBody @Valid ProblemDataEditDTO problemDataEditDTO,
-      BindingResult validateResult) {
-    Map<String, Object> json = new HashMap<>();
-    if (validateResult.hasErrors()) {
-      json.put("result", "field_error");
-      json.put("field", validateResult.getFieldErrors());
-    } else {
-      try {
-        if (problemDataEditDTO.getTimeLimit() < 0 ||
-            problemDataEditDTO.getTimeLimit() > 60000)
-          throw new FieldException("timeLimit",
-              "Time limit should between 0 and 60000");
-        if (problemDataEditDTO.getJavaTimeLimit() < 0 ||
-            problemDataEditDTO.getJavaTimeLimit() > 60000)
-          throw new FieldException("javaTimeLimit",
-              "Time limit should between 0 and 60000");
-        if (problemDataEditDTO.getMemoryLimit() < 0 ||
-            problemDataEditDTO.getMemoryLimit() > 262144)
-          throw new FieldException("memoryLimit",
-              "Memory limit should between 0 and 262144");
-        if (problemDataEditDTO.getJavaMemoryLimit() < 0 ||
-            problemDataEditDTO.getJavaMemoryLimit() > 262144)
-          throw new FieldException("javaMemoryLimit",
-              "Memory limit should between 0 and 262144");
-        if (problemDataEditDTO.getOutputLimit() < 0 ||
-            problemDataEditDTO.getOutputLimit() > 262144)
-          throw new FieldException("outputLimit",
-              "Output limit should between 0 and 262144");
-        ProblemDTO problemDTO = problemService
-            .getProblemDTOByProblemId(problemDataEditDTO.getProblemId());
-        if (problemDTO == null)
-          throw new AppException("No such problem.");
-
-        problemDTO.setTimeLimit(problemDataEditDTO.getTimeLimit());
-        problemDTO.setJavaTimeLimit(problemDataEditDTO.getJavaTimeLimit());
-        problemDTO.setMemoryLimit(problemDataEditDTO.getMemoryLimit());
-        problemDTO.setJavaMemoryLimit(problemDataEditDTO.getJavaMemoryLimit());
-        problemDTO.setOutputLimit(problemDataEditDTO.getOutputLimit());
-        problemDTO.setIsSpj(problemDataEditDTO.getIsSpj());
-
-        Integer dataCount = fileService.moveProblemDataFile(problemDTO
-            .getProblemId());
-        if (dataCount != 0)
-          problemDTO.setDataCount(dataCount);
-
-        problemService.updateProblem(problemDTO);
-        json.put("result", "success");
-      } catch (FieldException e) {
-        putFieldErrorsIntoBindingResult(e, validateResult);
-        json.put("result", "field_error");
-        json.put("field", validateResult.getFieldErrors());
-      } catch (AppException e) {
-        json.put("result", "error");
-        json.put("error_msg", e.getMessage());
-      }
-    }
-    return json;
-  }
-
-  private Map<Integer, Global.AuthorStatusType> GetProblemStatus(
+  private Map<Integer, Global.AuthorStatusType> getProblemStatus(
       UserDTO currentUser) {
     Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
     try {

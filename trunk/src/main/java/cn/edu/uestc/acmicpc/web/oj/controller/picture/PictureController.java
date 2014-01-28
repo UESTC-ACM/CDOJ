@@ -1,11 +1,8 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.picture;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,63 +40,12 @@ public class PictureController extends BaseController {
     this.pictureService = pictureService;
   }
 
-  @Deprecated
-  @RequestMapping("getUploadedPictures")
-  @LoginPermit(NeedLogin = true)
-  public
-  @ResponseBody
-  Map<String, Object> pictureList(HttpSession session) {
-    Map<String, Object> json = new HashMap<>();
-    try {
-      ArrayList<String> pictures = pictureService.getPictures(getCurrentUserID(session));
-      json.put("success", "true");
-      json.put("pictures", pictures);
-    } catch (AppException e) {
-      json.put("error", e.getMessage());
-    } catch (Exception e) {
-      e.printStackTrace();
-      json.put("error", "Unknown exception occurred.");
-    }
-    return json;
-  }
-
-  @Deprecated
-  @RequestMapping(value = "uploadProblemPicture",
-      method = RequestMethod.POST)
-  @LoginPermit(NeedLogin = true)
-  public
-  @ResponseBody
-  Map<String, Object> uploadProblemPicture(@RequestParam(value = "uploadFile", required = true)
-                                           MultipartFile[] files,
-                                           HttpSession session) {
-    Map<String, Object> json = new HashMap<>();
-    try {
-      FileInformationDTO fileInformationDTO = pictureService.uploadPictures(
-          FileUploadDTO.builder()
-              .setFiles(Arrays.asList(files))
-              .build(),
-          getCurrentUserID(session));
-
-      json.put("success", "true");
-      json.put("uploadedFile", fileInformationDTO.getFileName());
-      json.put("uploadedFileUrl", fileInformationDTO.getFileURL());
-    } catch (AppException e) {
-      e.printStackTrace();
-      json.put("error", e.getMessage());
-    } catch (Exception e) {
-      e.printStackTrace();
-      json.put("error", "Unknown exception occurred.");
-    }
-    return json;
-  }
-
   /**
    * Upload picture into "/images/{category}/{folder}/"
    *
    * @param files    Uploaded files
    * @param category Category name in path
    * @param folder   Folder name in path
-   * @param session  Current user session
    * @return
    */
   @RequestMapping(value = "uploadPicture/{category}/{folder}",
@@ -110,8 +56,7 @@ public class PictureController extends BaseController {
   Map<String, Object> uploadPicture(@RequestParam(value = "uploadFile", required = true)
                                     MultipartFile[] files,
                                     @PathVariable("category") String category,
-                                    @PathVariable("folder") String folder,
-                                    HttpSession session) {
+                                    @PathVariable("folder") String folder) {
     Map<String, Object> json = new HashMap<>();
     try {
       String directory = category + "/" + folder + "/";
