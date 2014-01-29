@@ -36,7 +36,7 @@ Admin problem list page
       <div id="advance-search">
         <a href="#" id="advanced" data-toggle="dropdown"><i
             class="fa fa-caret-square-o-down"></i></a>
-        <ul class="dropdown-menu cdoj-form-menu" role="menu"
+        <ul ui-dropdown-menu class="dropdown-menu cdoj-form-menu" role="menu"
             aria-labelledby="advance-menu">
           <li role="presentation" id="condition">
             <form class="form">
