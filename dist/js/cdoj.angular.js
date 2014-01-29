@@ -26114,6 +26114,74 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
     };
   });
 
+  cdoj.directive("uiUserAdminSpan", function() {
+    return {
+      restrict: "E",
+      scope: {
+        user: "="
+      },
+      controller: [
+        "$scope", "$http", "$modal", "$window", function($scope, $http, $modal, $window) {
+          return $scope.showEditor = function() {
+            var userName;
+            userName = angular.copy($scope.user.userName);
+            return $http.get("/user/profile/" + userName).then(function(response) {
+              var data;
+              data = response.data;
+              if (data.result === "success") {
+                return $modal.open({
+                  templateUrl: "userAdminModalContent.html",
+                  controller: [
+                    "$scope", "$http", "$modalInstance", function($scope, $http, $modalInstance) {
+                      $scope.userEditDTO = data.user;
+                      $scope.fieldInfo = [];
+                      $scope.edit = function() {
+                        var newPassword, newPasswordRepeat, userEditDTO;
+                        userEditDTO = angular.copy($scope.userEditDTO);
+                        if (userEditDTO.newPassword === "") {
+                          userEditDTO.newPassword = void 0;
+                        }
+                        if (userEditDTO.newPasswordRepeat === "") {
+                          userEditDTO.newPasswordRepeat = void 0;
+                        }
+                        if (userEditDTO.newPassword === void 0 && userEditDTO.newPasswordRepeat === void 0) {
+                          userEditDTO = _.omit(userEditDTO, "newPassword");
+                          userEditDTO = _.omit(userEditDTO, "newPassowrdRepeat");
+                        } else {
+                          newPassword = CryptoJS.SHA1(userEditDTO.newPassword).toString();
+                          userEditDTO.newPassword = newPassword;
+                          newPasswordRepeat = CryptoJS.SHA1(userEditDTO.newPasswordRepeat).toString();
+                          userEditDTO.newPasswordRepeat = newPasswordRepeat;
+                        }
+                        console.log(userEditDTO);
+                        return $http.post("/user/adminEdit", userEditDTO).then(function(response) {
+                          data = response.data;
+                          if (data.result === "success") {
+                            return $modalInstance.close();
+                          } else if (data.result === "field_error") {
+                            return $scope.fieldInfo = data.field;
+                          } else {
+                            return $window.alert(data.error_msg);
+                          }
+                        });
+                      };
+                      return $scope.close = function() {
+                        return $modalInstance.dismiss("close");
+                      };
+                    }
+                  ]
+                });
+              } else {
+                return $window.alert(data.error_msg);
+              }
+            });
+          };
+        }
+      ],
+      template: "<div class=\"btn-toolbar\" role=\"toolbar\" style=\"position: absolute; top: 12px; right: 30px;\"\n     ng-show=\"$root.isAdmin\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm\" ng-click=\"showEditor()\">\n      <i class=\"fa fa-pencil\"></i>\n    </button>\n  </div>\n</div>"
+    };
+  });
+
   cdoj.directive("uiValidateInfo", function() {
     return {
       restrict: "E",

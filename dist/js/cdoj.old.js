@@ -1,5 +1,5 @@
 (function() {
-  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, ListModule, OnlineJudgeReturnType, SearchModule, avatar, emotionTable, emotionsPerRow, formatEmotionId, getEmotionUrl, getParam, initArticleEditor, initContestList, initContestPage, initLayout, initProblemPage, initUI, initUserList, jsonMerge, jsonPost, openInNewTab, render;
+  var $, AuthenticationType, AuthorStatusType, ContestStatus, ContestType, Flandre, OnlineJudgeReturnType, avatar, emotionTable, emotionsPerRow, formatEmotionId, getEmotionUrl, getParam, initArticleEditor, initContestPage, initLayout, initProblemPage, initUI, initUserList, jsonMerge, jsonPost, openInNewTab, render;
 
   OnlineJudgeReturnType = {
     OJ_WAIT: 0,
@@ -614,142 +614,6 @@
     return flandre;
   };
 
-  SearchModule = (function() {
-    function SearchModule(father) {
-      var $advancedResetButton, $advancedSearchButton, $conditionForm, $rejudgeButton, initCondition,
-        _this = this;
-      this.father = father;
-      this.search = this.father.searchGroup;
-      initCondition = this.father.options.condition;
-      $conditionForm = this.search.find("#condition");
-      $advancedSearchButton = $conditionForm.find("#search-button");
-      $advancedResetButton = $conditionForm.find("#reset-button");
-      $advancedSearchButton.click(function() {
-        var currentCondition;
-        currentCondition = Object.merge(initCondition, $conditionForm.getFormData());
-        _this.father.options.condition = currentCondition;
-        _this.father.refresh(currentCondition);
-        _this.close();
-        return false;
-      });
-      $advancedResetButton.click(function() {
-        $conditionForm.resetFormData();
-        return false;
-      });
-      $rejudgeButton = $conditionForm.find("#rejudge-button");
-      if ($rejudgeButton.length > 0) {
-        $rejudgeButton.click(function() {
-          var currentCondition;
-          currentCondition = Object.merge(initCondition, $conditionForm.getFormData());
-          jsonPost("/status/count", currentCondition, function(datas) {
-            if (datas.result === "success") {
-              if (confirm("Rejudge all " + datas.count + " records")) {
-                return jsonPost("/status/rejudge", currentCondition, function(datas) {
-                  if (datas.result === "success") {
-                    return alert("Done!");
-                  } else {
-                    return alert(datas.error_msg);
-                  }
-                });
-              }
-            } else {
-              return alert(datas.error_msg);
-            }
-          });
-          _this.father.options.condition = currentCondition;
-          _this.father.refresh(currentCondition);
-          _this.close();
-          return false;
-        });
-      }
-    }
-
-    SearchModule.prototype.set = function(data) {
-      var $conditionForm;
-      $conditionForm = this.search.find("#condition");
-      return $conditionForm.setFormData(data);
-    };
-
-    SearchModule.prototype.close = function() {
-      var $advancedButton;
-      $advancedButton = this.search.find("#advanced");
-      return $advancedButton.dropdown('toggle');
-    };
-
-    return SearchModule;
-
-  })();
-
-  ListModule = (function() {
-    /*
-      options:
-        listContainer: list container
-        requestUrl: search request url
-        condition: defalut condition
-        format: list item format
-        after: function will be called after datas apeended
-    */
-
-    function ListModule(options) {
-      var params, self;
-      this.options = options;
-      this.listContainer = this.options.listContainer;
-      this.searchGroup = this.listContainer.find("#advance-search");
-      this.searchModule = new SearchModule(this);
-      this.pageInfo = this.listContainer.find("#page-info");
-      this.refreshLock = 0;
-      params = getParam();
-      this.searchModule.set(params);
-      this.options.condition = jsonMerge(this.options.condition, params);
-      this.refresh(this.options.condition);
-      self = this;
-      if (this.options.autoRefresh === true) {
-        setInterval(function() {
-          return self.triggerRefresh();
-        }, this.options.refreshInterval === void 0 ? 1000 : this.options.refreshInterval);
-      }
-    }
-
-    ListModule.prototype.triggerRefresh = function() {
-      return this.refresh(this.options.condition);
-    };
-
-    ListModule.prototype.refresh = function(condition) {
-      var _this = this;
-      if (this.refreshLock === 0) {
-        this.refreshLock = 1;
-        this.list = this.listContainer.find("#list-container");
-        jsonPost(this.options.requestUrl, condition, function(datas) {
-          _this.pageInfo.empty();
-          if (datas.pageInfo !== void 0) {
-            _this.pageInfo.append(datas.pageInfo);
-            _this.pageInfo.find("a").click(function(e) {
-              var $el;
-              $el = $(e.currentTarget);
-              if ($el.attr("href") === void 0) {
-                return false;
-              }
-              condition.currentPage = $el.attr("href");
-              _this.refresh(condition);
-              return false;
-            });
-          }
-          _this.list.empty();
-          datas.list.each(function(data) {
-            return _this.list.append(_this.options.formatter(data));
-          });
-          if (_this.options.after !== void 0) {
-            _this.options.after();
-          }
-          return _this.refreshLock = 0;
-        });
-      }
-    };
-
-    return ListModule;
-
-  })();
-
   initLayout = function() {
     var $cdojContainer, $cdojNavbar, $cdojNavbarMenu, $cdojUser, $mzry1992Container, $mzry1992Header, currentUrl, current_position, pos, _i, _len, _ref;
     $cdojNavbar = $("#cdoj-navbar");
@@ -879,66 +743,6 @@
         });
       }
       initContestStatusList(contestId);
-    }
-  };
-
-  initContestList = function() {
-    var $contestList, contestList;
-    $contestList = $("#contest-list");
-    if ($contestList.length !== 0) {
-      return contestList = new ListModule({
-        listContainer: $contestList,
-        requestUrl: "/contest/search",
-        condition: {
-          "currentPage": null,
-          "startId": void 0,
-          "endId": void 0,
-          "keyword": void 0,
-          "title": void 0,
-          "orderFields": "id",
-          "orderAsc": "false"
-        },
-        formatter: function(data) {
-          var adminSpan;
-          console.log(data);
-          this.user = getCurrentUser();
-          adminSpan = function() {
-            var result;
-            result = "";
-            if (this.user.userLogin && this.user.currentUserType === AuthenticationType.ADMIN) {
-              result += "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm contest-visible-state-editor\" contest-id=\"" + data.contestId + "\" visible=\"" + data.isVisible + "\">\n      <i class=\"" + (data.isVisible ? "fa fa-eye" : "fa fa-eye-slash") + "\"></i>\n    </button>\n    <button type=\"button\" class=\"btn btn-default btn-sm contest-editor\" contest-id=\"" + data.contestId + "\"><i class=\"fa fa-pencil\"></i></button>\n  </div>\n</div>";
-            }
-            return result;
-          };
-          return "<div class=\"col-md-12\">\n  <div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n      <h3 class=\"panel-title\">\n        <a href=\"/contest/show/" + data.contestId + "\" target=\"_blank\">" + data.title + "</a>\n        <span class='pull-right admin-span'>" + (adminSpan()) + "</span>\n      </h3>\n    </div>\n    <div class=\"panel-body\">\n      <span>" + (Date.create(data.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "--" + (Date.create(data.time + data.length * 1000).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")) + "</span>\n    </div>\n  </div>\n</div>";
-        },
-        after: function() {
-          var _this = this;
-          this.user = getCurrentUser();
-          if (this.user.userLogin && this.user.currentUserType === AuthenticationType.ADMIN) {
-            $(".contest-editor").click(function(e) {
-              var $el;
-              $el = $(e.currentTarget);
-              openInNewTab("/contest/editor/" + ($el.attr("contest-id")));
-              return false;
-            });
-            return $(".contest-visible-state-editor").click(function(e) {
-              var $el, queryString, visible;
-              $el = $(e.currentTarget);
-              visible = $el.attr("visible") === "true" ? true : false;
-              queryString = "/contest/operator/" + ($el.attr("contest-id")) + "/isVisible/" + (!visible);
-              $.post(queryString, function(data) {
-                if (data.result === "success") {
-                  visible = !visible;
-                  $el.attr("visible", visible);
-                  return $el.empty().append("<i class=\"" + (visible ? "fa fa-eye" : "fa fa-eye-slash") + "\"></i>");
-                }
-              });
-              return false;
-            });
-          }
-        }
-      });
     }
   };
 
@@ -1141,7 +945,6 @@
   $(function() {
     initUI();
     initLayout();
-    initUserList();
     initContestPage();
     initArticleEditor();
     return render();
