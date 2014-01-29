@@ -122,4 +122,13 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
     articleDAO.increment("clicked", "articleId", articleId.toString());
   }
 
+  @Override
+  public Boolean checkArticleExists(Integer articleId) throws AppException {
+    AppExceptionUtil.assertNotNull(articleId);
+    ArticleCondition articleCondition = new ArticleCondition();
+    articleCondition.startId = articleId;
+    articleCondition.endId = articleId;
+    return articleDAO.count(articleCondition.getCondition()) == 1;
+  }
+
 }

@@ -22,13 +22,13 @@ import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
@@ -50,23 +50,60 @@ public class ArticleController extends BaseController {
     this.pictureService = pictureService;
   }
 
+  @RequestMapping("data/{type}/{articleId}")
+  @LoginPermit(NeedLogin = false)
+  public
+  @ResponseBody
+  Map<String, Object> data(@PathVariable("type") String type,
+                           @PathVariable("articleId") Integer articleId,
+                           HttpSession session) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      if (!articleService.checkArticleExists(articleId)) {
+        throw new AppException("No such article.");
+      }
+      switch (type) {
+        case "ArticleDTO":
+          ArticleDTO articleDTO = articleService.getArticleDTO(articleId);
+          AppExceptionUtil.assertNotNull(articleDTO, "No such article.");
+          articleService.incrementClicked(articleDTO.getArticleId());
+          json.put("article", articleDTO);
+          break;
+        case "ArticleEditorShowDTO":
+          ArticleEditorShowDTO articleEditorShowDTO = articleService.getArticleEditorShowDTO(articleId);
+          AppExceptionUtil.assertNotNull(articleEditorShowDTO, "No such article.");
+          json.put("article", articleEditorShowDTO);
+          break;
+        default:
+          throw new AppException("Unsupported data type.");
+      }
+
+      json.put("result", "success");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
   @RequestMapping("show/{articleId}")
   @LoginPermit(NeedLogin = false)
   public String show(@PathVariable("articleId") Integer articleId,
-                     HttpSession session, ModelMap model) {
+                     HttpSession session,
+                     ModelMap model) {
     try {
-      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-      ArticleDTO articleDTO = articleService.getArticleDTO(articleId);
-      if (articleDTO == null)
-        throw new AppException("Wrong article ID.");
-      if (articleDTO.getIsVisible() == false) {
-        if (currentUser == null ||
-            currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
-          throw new AppException("You have no permission to view this articl.");
-        }
+      if (!articleService.checkArticleExists(articleId)) {
+        throw new AppException("No such article.");
       }
-      articleService.incrementClicked(articleDTO.getArticleId());
-      model.put("targetArticle", articleDTO);
+      ArticleDTO articleDTO = articleService.getArticleDTO(articleId);
+      if (!articleDTO.getIsVisible() && !isAdmin(session)) {
+        throw new AppException("No such article.");
+      }
+      model.put("articleId", articleId);
     } catch (AppException e) {
       model.put("message", e.getMessage());
       return "error/error";
@@ -82,11 +119,7 @@ public class ArticleController extends BaseController {
                              @RequestBody ArticleCondition articleCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-      if (currentUser != null
-          && currentUser.getType() == Global.AuthenticationType.ADMIN.ordinal()) {
-        // We can put some special condition here
-      } else {
+      if (!isAdmin(session)) {
         articleCondition.isVisible = true;
       }
       Long count = articleService.count(articleCondition);
@@ -124,12 +157,10 @@ public class ArticleController extends BaseController {
         } catch (NumberFormatException e) {
           throw new AppException("Parse article id error.");
         }
-        ArticleEditorShowDTO targetArticle = articleService
-            .getArticleEditorShowDTO(articleId);
-        if (targetArticle == null)
+        if (!articleService.checkArticleExists(articleId)) {
           throw new AppException("No such article.");
-        model.put("action", "edit");
-        model.put("targetArticle", targetArticle);
+        }
+        model.put("action", articleId);
       }
     } catch (AppException e) {
       model.put("message", e.getMessage());
@@ -151,15 +182,16 @@ public class ArticleController extends BaseController {
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        if (StringUtil.trimAllSpace(articleEditDTO.getTitle()).equals(""))
+        if (StringUtil.trimAllSpace(articleEditDTO.getTitle()).equals("")) {
           throw new FieldException("title", "Please enter a validate title.");
+        }
         ArticleDTO articleDTO;
-        if (articleEditDTO.getAction().compareTo("new") == 0) {
+        if (articleEditDTO.getAction().equals("new")) {
           Integer articleId = articleService.createNewArticle();
           articleDTO = articleService.getArticleDTO(articleId);
-          if (articleDTO == null
-              || !articleDTO.getArticleId().equals(articleId))
+          if (articleDTO == null || !articleDTO.getArticleId().equals(articleId)) {
             throw new AppException("Error while creating article.");
+          }
           // Move pictures
           String oldDirectory = "/images/article/new/";
           String newDirectory = "/images/article/" + articleId + "/";
@@ -168,8 +200,9 @@ public class ArticleController extends BaseController {
         } else {
           articleDTO = articleService.getArticleDTO(articleEditDTO
               .getArticleId());
-          if (articleDTO == null)
+          if (articleDTO == null) {
             throw new AppException("No such article.");
+          }
         }
 
         articleDTO.setTitle(articleEditDTO.getTitle());

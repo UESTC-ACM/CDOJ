@@ -69,41 +69,6 @@ public class StatusController extends BaseController {
     this.contestProblemService = contestProblemService;
   }
 
-  @Autowired
-  public void setContestProblemService(ContestProblemService contestProblemService) {
-    this.contestProblemService = contestProblemService;
-  }
-
-  @Autowired
-  public void setCompileInfoService(CompileInfoService compileInfoService) {
-    this.compileInfoService = compileInfoService;
-  }
-
-  @Autowired
-  public void setContestService(ContestService contestService) {
-    this.contestService = contestService;
-  }
-
-  @Autowired
-  public void setCodeService(CodeService codeService) {
-    this.codeService = codeService;
-  }
-
-  @Autowired
-  public void setLanguageService(LanguageService languageService) {
-    this.languageService = languageService;
-  }
-
-  @Autowired
-  public void setProblemService(ProblemService problemService) {
-    this.problemService = problemService;
-  }
-
-  @Autowired
-  public void setStatusService(StatusService statusService) {
-    this.statusService = statusService;
-  }
-
   @RequestMapping("list")
   @LoginPermit(NeedLogin = false)
   public String list() {
@@ -118,9 +83,7 @@ public class StatusController extends BaseController {
                              @RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-      if (currentUser == null ||
-          currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
+      if (!isAdmin(session)) {
         statusCondition.isVisible = true;
       }
       Long count = statusService.count(statusCondition);
@@ -159,15 +122,9 @@ public class StatusController extends BaseController {
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public
   @ResponseBody
-  Map<String, Object> count(HttpSession session,
-                            @RequestBody StatusCondition statusCondition) {
+  Map<String, Object> count(@RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-      if (currentUser == null ||
-          currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
-        statusCondition.isVisible = true;
-      }
       Long count = statusService.count(statusCondition);
 
       json.put("result", "success");
@@ -187,15 +144,9 @@ public class StatusController extends BaseController {
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public
   @ResponseBody
-  Map<String, Object> rejudge(HttpSession session,
-                              @RequestBody StatusCondition statusCondition) {
+  Map<String, Object> rejudge(@RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-      if (currentUser == null ||
-          currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
-        statusCondition.isVisible = true;
-      }
       statusService.rejudge(statusCondition);
 
       json.put("result", "success");
@@ -289,13 +240,13 @@ public class StatusController extends BaseController {
                            @PathVariable Integer statusId) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
       StatusInformationDTO statusInformationDTO = statusService.getStatusInformation(statusId);
-      if (statusInformationDTO == null)
+      if (statusInformationDTO == null) {
         throw new AppException("No such status.");
-      if (currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal() &&
-          !statusInformationDTO.getUserId().equals(currentUser.getUserId()))
+      }
+      if (!isAdmin(session)) {
         throw new AppException("You have no permission to view this code.");
+      }
       json.put("result", "success");
       json.put("code", statusInformationDTO.getCodeContent());
       if (statusInformationDTO.getCompileInfoId() != null) {
