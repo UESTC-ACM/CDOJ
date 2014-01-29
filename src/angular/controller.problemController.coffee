@@ -32,6 +32,7 @@ cdoj.controller("ProblemController", [
         data = response.data
         if data.result == "success"
           $scope.problem = data.problem
+          $rootScope.title = $scope.problem.title
         else
           alert data.error_msg
     )

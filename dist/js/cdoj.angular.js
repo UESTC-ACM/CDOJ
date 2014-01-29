@@ -25094,6 +25094,72 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
     }
   ]);
 
+  cdoj.controller("ArticleController", [
+    "$scope", "$rootScope", "$http", "$window", function($scope, $rootScope, $http, $window) {
+      $scope.article = {
+        content: "",
+        title: ""
+      };
+      $scope.articleId = 0;
+      return $scope.$watch("articleId", function() {
+        var articleId;
+        articleId = angular.copy($scope.articleId);
+        return $http.get("/article/data/ArticleDTO/" + articleId).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            $scope.article = data.article;
+            return $rootScope.title = $scope.article.title;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        });
+      });
+    }
+  ]);
+
+  cdoj.controller("ArticleEditorController", [
+    "$scope", "$http", "$window", function($scope, $http, $window) {
+      $scope.article = {
+        content: "",
+        title: ""
+      };
+      $scope.action = "new";
+      $scope.fieldInfo = [];
+      $scope.$watch("action", function() {
+        var articleId;
+        if ($scope.action !== "new") {
+          articleId = angular.copy($scope.action);
+          return $http.get("/article/data/ArticleEditorShowDTO/" + articleId).then(function(response) {
+            var data;
+            data = response.data;
+            if (data.result === "success") {
+              return $scope.article = data.article;
+            } else {
+              return $window.alert(data.error_msg);
+            }
+          });
+        }
+      });
+      return $scope.submit = function() {
+        var articleEditDTO;
+        articleEditDTO = angular.copy($scope.article);
+        articleEditDTO.action = angular.copy($scope.action);
+        return $http.post("/article/edit", articleEditDTO).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            return $window.location.href = "/article/show/" + data.articleId;
+          } else if (data.result === "field_error") {
+            return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        });
+      };
+    }
+  ]);
+
   cdoj.controller("ContestEditorController", [
     "$scope", "$http", "$window", function($scope, $http, $window) {
       $scope.contest = {
@@ -25266,7 +25332,8 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
           var data;
           data = response.data;
           if (data.result === "success") {
-            return $scope.problem = data.problem;
+            $scope.problem = data.problem;
+            return $rootScope.title = $scope.problem.title;
           } else {
             return alert(data.error_msg);
           }
@@ -25331,7 +25398,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
             if (data.result === "success") {
               return $scope.problem = data.problem;
             } else {
-              return alert(data.error_msg);
+              return $window.alert(data.error_msg);
             }
           });
         }

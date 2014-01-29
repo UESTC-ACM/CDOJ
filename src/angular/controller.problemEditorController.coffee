@@ -28,7 +28,7 @@ cdoj.controller("ProblemEditorController", [
           if data.result == "success"
             $scope.problem = data.problem
           else
-            alert data.error_msg
+            $window.alert data.error_msg
     )
     $scope.submit = ->
       problemEditDTO = angular.copy($scope.problem)
