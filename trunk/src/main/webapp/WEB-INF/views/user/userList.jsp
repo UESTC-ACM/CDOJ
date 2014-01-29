@@ -11,10 +11,31 @@ User list page
   <title>User</title>
 </head>
 <body>
-<div id="user-list">
+<div id="user-list"
+     ng-controller="ListController"
+     ng-init="condition={
+        currentPage: null,
+        startId: undefined,
+        endId: undefined,
+        userName: undefined,
+        nickName: undefined,
+        type: undefined,
+        school: undefined,
+        departmentId: undefined,
+        orderFields: 'solved,tried,id',
+        orderAsc: 'false,false,true'
+     };
+     requestUrl='/user/search';
+     authenticationTypeList = [
+
+     ];">
   <div class="row">
     <div class="col-md-12">
-      <div id="page-info"></div>
+      <div ui-page-info
+           page-info="pageInfo"
+           condition="condition"
+           id="page-info">
+      </div>
       <div id="advance-search">
         <a href="#" id="advanced" data-toggle="dropdown"><i
             class="fa fa-caret-square-o-down"></i></a>
@@ -27,18 +48,22 @@ User list page
                 <div class="row">
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label for="startId">Form</label> <input
-                        type="text" name="startId" maxlength="6"
-                        value="" id="startId"
-                        class="form-control input-sm"/>
+                      <label for="startId">Form</label>
+                      <input type="number"
+                             ng-model="condition.startId"
+                             min="1"
+                             id="startId"
+                             class="form-control input-sm"/>
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label for="endId">To</label> <input type="text"
-                                                           name="endId" maxlength="6" value=""
-                                                           id="endId"
-                                                           class="form-control input-sm"/>
+                      <label for="endId">To</label>
+                      <input type="number"
+                             ng-model="condition.endId"
+                             min="1"
+                             id="endId"
+                             class="form-control input-sm"/>
                     </div>
                   </div>
                 </div>
@@ -47,63 +72,85 @@ User list page
                 <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="userName">User name</label> <input
-                        type="text" name="userName" maxlength="24"
-                        value="" id="userName"
-                        class="form-control input-sm"/>
+                      <label for="userName">User name</label>
+                      <input type="text"
+                             ng-model="condition.userName"
+                             maxlength="24"
+                             id="userName"
+                             class="form-control input-sm"/>
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="type">Type</label> <select
-                        name="type" id="type"
-                        class="form-control input-sm">
-                      <c:forEach var="authenticationType"
-                                 items="${authenticationTypeList}">
-                        <option
-                            value="${authenticationType.ordinal()}"><c:out
-                            value="${authenticationType.description}"/></option>
-                      </c:forEach>
-                    </select>
+                      <label for="nickName">Nick name</label>
+                      <input type="text"
+                             ng-model="condition.nickName"
+                             maxlength="24"
+                             id="nickName"
+                             class="form-control input-sm"/>
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="keyword">Keyword</label> <input
-                        type="text" name="keyword" maxlength="100"
-                        value="" id="keyword"
-                        class="form-control input-sm"/>
+                      <label for="type">Type</label>
+                      <select ng-model="condition.type"
+                              ng-options="authenticationType.ordinal as authenticationType.description for authenticationType in authenticationTypeList"
+                              ng-init="authenticationTypeList=[
+                                <c:forEach var="authenticationType" items="${authenticationTypeList}" varStatus="status">
+                                  {ordinal: ${authenticationType.ordinal()}, description: '${authenticationType.description}'}
+                                  <c:if test="${status.last == false}">,</c:if>
+                                </c:forEach>
+                                ];"
+                              id="type"
+                              ng-required="true"
+                              class="form-control input-sm">
+                        <option value="">-- choose type --</option>
+                      </select>
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="school">School</label> <input
-                        type="text" name="school" maxlength="100"
-                        value="" id="school"
-                        class="form-control input-sm"/>
+                      <label for="keyword">Keyword</label>
+                      <input type="text"
+                             ng-model="condition.keyword"
+                             maxlength="100"
+                             id="keyword"
+                             class="form-control input-sm"/>
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="type">Department</label> <select
-                        name="departmentId" id="departmentId"
-                        class="form-control input-sm">
-                      <c:forEach var="department"
-                                 items="${departmentList}">
-                        <option value="${department.departmentId}"><c:out
-                            value="${department.name}"/></option>
-                      </c:forEach>
-                    </select>
+                      <label for="school">School</label>
+                      <input type="text"
+                             ng-model="condition.school"
+                             maxlength="100"
+                             id="school"
+                             class="form-control input-sm"/>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="type">Department</label>
+                      <select ng-model="condition.departmentId"
+                              ng-options="department.departmentId as department.name for department in departmentList"
+                              ng-init="departmentList=[
+                                <c:forEach var="department" items="${departmentList}" varStatus="status">
+                                  {departmentId: ${department.departmentId}, name: '${department.name}'}
+                                  <c:if test="${status.last == false}">,</c:if>
+                                </c:forEach>
+                                ];"
+                              id="departmentId"
+                              ng-required="true"
+                              class="form-control input-sm">
+                        <option value="">-- choose department --</option>
+                      </select>
                     </div>
                   </div>
                 </div>
               </fieldset>
               <p class="pull-right">
-                <button type="submit" class="btn btn-primary btn-sm"
-                        id="search-button">Search
-                </button>
                 <button type="button" class="btn btn-danger btn-sm"
-                        id="reset-button">Reset
+                        ng-click="reset()">Reset
                 </button>
               </p>
             </form>
@@ -113,148 +160,214 @@ User list page
   </div>
 
   <div class="row">
-    <div id="list-container"></div>
+    <div class="col-lg-6" ng-repeat="user in list">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="media">
+            <a class="pull-left" href="#">
+              <img id="cdoj-users-avatar"
+                   ui-avatar
+                   email="user.email"/>
+            </a>
+
+            <div class="media-body">
+              <h4 class="media-heading">
+                <a href="/user/center/{{user.userName}}" target="_blank">
+                  <span ng-bind="user.nickName"></span>
+                  <small ng-bind="user.userName"></small>
+                </a>
+              </h4>
+              <span>
+                <i class="fa fa-map-marker"></i>
+                <span ng-bind="user.school"></span>
+              </span>
+              <br/>
+              <span>
+                <a href="/status/list?userName={{user.userName}}" target="_blank">
+                  <span ng-bind="user.solved"></span>/<span ng-bind="user.tried"></span>
+                </a>
+              </span>
+              <ui-user-admin-span user="user"></ui-user-admin-span>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer"
+             style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+          Motto: <span ng-bind="user.motto"></span></div>
+      </div>
+    </div>
   </div>
 </div>
 
-<c:choose>
-  <c:when test="${sessionScope.currentUser == null}">
-  </c:when>
-  <c:otherwise>
-    <div class="modal fade" id="cdoj-admin-profile-edit-modal" tabindex="-1"
-         role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"
-                    aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Edit profile</h4>
-          </div>
-          <div class="modal-body">
-            <div id="cdoj-admin-profile-edit-form-onloading">
-              <h1>Loading...</h1>
-            </div>
-            <form class="form-horizontal" id="cdoj-admin-profile-edit-form" style="display: none;">
-              <fieldset>
-                <div class="form-group">
-                  <label class="control-label col-sm-4 "
-                         for="userName">User Name</label>
-
-                  <div class="col-sm-8">
-                    <input type="text" name="userName" maxlength="24"
-                           readonly="readonly" id="userName"
-                           class="form-control input-sm"/>
-                  </div>
-                </div>
-                <div class="form-group ">
-                  <label class="control-label col-sm-4 "
-                         for="newPassword">New password</label>
-
-                  <div class="col-sm-8">
-                    <input type="password" name="newPassword"
-                           maxlength="20" id="newPassword"
-                           class="form-control input-sm"/>
-                  </div>
-                </div>
-                <div class="form-group ">
-                  <label class="control-label col-sm-4 "
-                         for="newPasswordRepeat">Repeat new
-                    password</label>
-
-                  <div class="col-sm-8">
-                    <input type="password" name="newPasswordRepeat"
-                           maxlength="20" id="newPasswordRepeat"
-                           class="form-control input-sm"/>
-                  </div>
-                </div>
-                <div class="form-group ">
-                  <label class="control-label col-sm-4 "
-                         for="nickName">Nick name</label>
-
-                  <div class="col-sm-8">
-                    <input type="text" name="nickName" maxlength="20"
-                           id="nickName" class="form-control input-sm"/>
-                  </div>
-                </div>
-                <div class="form-group ">
-                  <label class="control-label col-sm-4 " for="email">Email</label>
-
-                  <div class="col-sm-8">
-                    <input type="text" name="email" maxlength="100"
-                           id="email" readonly="readonly"
-                           class="form-control input-sm"/>
-                  </div>
-                </div>
-                <div class="form-group ">
-                  <label class="control-label col-sm-4 " for="school">School</label>
-
-                  <div class="col-sm-8">
-                    <input type="text" name="school" maxlength="50"
-                           id="school" class="form-control input-sm"/>
-                  </div>
-                </div>
-                <div class="form-group ">
-                  <label class="control-label col-sm-4 "
-                         for="departmentId">Department</label>
-
-                  <div class="col-sm-8">
-                    <select name="departmentId" id="departmentId"
-                            class="form-control input-sm">
-                      <c:forEach var="department"
-                                 items="${departmentList}">
-                        <option value="${department.departmentId}"><c:out
-                            value="${department.name}"/></option>
-                      </c:forEach>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group ">
-                  <label class="control-label col-sm-4 "
-                         for="studentId">Student ID</label>
-
-                  <div class="col-sm-8">
-                    <input type="text" name="studentId" maxlength="20"
-                           id="studentId" class="form-control input-sm"/>
-                  </div>
-                </div>
-                <div class="form-group ">
-                  <label class="control-label col-sm-4 " for="motto">Motto</label>
-
-                  <div class="col-sm-8">
-                    <textarea class="form-control" rows="3"
-                              name="motto" id="motto"></textarea>
-                  </div>
-                </div>
-                <div class="form-group ">
-                  <label class="control-label col-sm-4 "
-                         for="type">User type</label>
-
-                  <div class="col-sm-8">
-                    <select name="type" id="type"
-                            class="form-control input-sm">
-                      <c:forEach var="userType" varStatus="status"
-                                 items="${authenticationTypeList}">
-                        <option value="${status.index}"><c:out
-                            value="${userType.description}"/></option>
-                      </c:forEach>
-                    </select>
-                  </div>
-                </div>
-              </fieldset>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default"
-                    data-dismiss="modal">Close
-            </button>
-            <button type="button" class="btn btn-primary"
-                    id="cdoj-admin-profile-edit-button">Edit
-            </button>
+<script type="text/ng-template" id="userAdminModalContent.html">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Edit</h4>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal">
+      <fieldset>
+        <div class="form-group">
+          <label class="control-label col-sm-4 "
+                 for="userName">User Name</label>
+          <div class="col-sm-8">
+            <input type="text"
+                   ng-model="userEditDTO.userName"
+                   maxlength="24"
+                   id="userName"
+                   ng-required="true"
+                   ng-pattern="/^[a-zA-Z0-9_]{4,24}$/"
+                   readonly
+                   class="form-control input-sm"/>
+            <ui-validate-info value="fieldInfo" for="userName"></ui-validate-info>
           </div>
         </div>
-      </div>
-    </div>
-  </c:otherwise>
-</c:choose>
+        <div class="form-group">
+          <label class="control-label col-sm-4 "
+                 for="newPassword">New password</label>
+          <div class="col-sm-8">
+            <input type="password"
+                   ng-model="userEditDTO.newPassword"
+                   ng-required="false"
+                   id="newPassword"
+                   ng-minlength="6"
+                   ng-maxlength="24"
+                   class="form-control input-sm"/>
+            <ui-validate-info value="fieldInfo" for="newPassword"></ui-validate-info>
+          </div>
+        </div>
+        <div class="form-group ">
+          <label class="control-label col-sm-4 "
+                 for="newPasswordRepeat">Repeat new password</label>
+          <div class="col-sm-8">
+            <input type="password"
+                   ng-model="userEditDTO.newPasswordRepeat"
+                   ng-required="false"
+                   id="newPasswordRepeat"
+                   ng-minlength="6"
+                   ng-maxlength="24"
+                   equals="{{userEditDTO.newPassword}}"
+                   class="form-control input-sm"/>
+            <ui-validate-info value="fieldInfo" for="newPasswordRepeat"></ui-validate-info>
+          </div>
+        </div>
+        <div class="form-group ">
+          <label class="control-label col-sm-4 "
+                 for="nickName">Nick name</label>
+          <div class="col-sm-8">
+            <input type="text"
+                   ng-model="userEditDTO.nickName"
+                   maxlength="20"
+                   id="nickName"
+                   ng-required="true"
+                   ng-maxlength="20"
+                   ng-minlength="2"
+                   class="form-control input-sm"/>
+            <ui-validate-info value="fieldInfo" for="nickName"></ui-validate-info>
+          </div>
+        </div>
+        <div class="form-group ">
+          <label class="control-label col-sm-4 " for="email">Email</label>
+          <div class="col-sm-8">
+            <input type="email"
+                   ng-model="userEditDTO.email"
+                   id="email"
+                   ng-required="true"
+                   class="form-control input-sm"/>
+            <ui-validate-info value="fieldInfo" for="email"></ui-validate-info>
+            <spanp class="help-block">
+              Your email will be used for <a href="http://en.gravatar.com/">Gravatar</a>
+              service.
+            </spanp>
+          </div>
+        </div>
+        <div class="form-group ">
+          <label class="control-label col-sm-4 " for="school">School</label>
+          <div class="col-sm-8">
+            <input type="text"
+                   ng-model="userEditDTO.school"
+                   id="school"
+                   ng-required="true"
+                   ng-maxlength="100"
+                   ng-minlength="1"
+                   class="form-control input-sm"/>
+            <ui-validate-info value="fieldInfo" for="school"></ui-validate-info>
+          </div>
+        </div>
+        <div class="form-group ">
+          <label class="control-label col-sm-4 "
+                 for="departmentId">Department</label>
+          <div class="col-sm-8">
+            <select ng-model="userEditDTO.departmentId"
+                    ng-options="department.departmentId as department.name for department in departmentList"
+                    ng-init="departmentList=[
+                        <c:forEach var="department" items="${departmentList}" varStatus="status">
+                          {departmentId: ${department.departmentId}, name: '${department.name}'}
+                          <c:if test="${status.last == false}">,</c:if>
+                        </c:forEach>
+                        ];"
+                    id="departmentId"
+                    ng-required="true"
+                    class="form-control input-sm">
+            </select>
+            <ui-validate-info value="fieldInfo" for="departmentId"></ui-validate-info>
+          </div>
+        </div>
+        <div class="form-group ">
+          <label class="control-label col-sm-4 "
+                 for="departmentId">Type</label>
+          <div class="col-sm-8">
+            <select ng-model="userEditDTO.type"
+                    ng-options="authenticationType.ordinal as authenticationType.description for authenticationType in authenticationTypeList"
+                    ng-init="authenticationTypeList=[
+                                <c:forEach var="authenticationType" items="${authenticationTypeList}" varStatus="status">
+                                  {ordinal: ${authenticationType.ordinal()}, description: '${authenticationType.description}'}
+                                  <c:if test="${status.last == false}">,</c:if>
+                                </c:forEach>
+                                ];"
+                    id="type"
+                    ng-required="true"
+                    class="form-control input-sm">
+            </select>
+            <ui-validate-info value="fieldInfo" for="type"></ui-validate-info>
+          </div>
+        </div>
+        <div class="form-group ">
+          <label class="control-label col-sm-4 "
+                 for="studentId">Student ID</label>
+          <div class="col-sm-8">
+            <input type="text"
+                   ng-model="userEditDTO.studentId"
+                   id="studentId"
+                   ng-required="true"
+                   ng-maxlength="20"
+                   ng-minlength="1"
+                   class="form-control input-sm"/>
+            <ui-validate-info value="fieldInfo" for="studentId"></ui-validate-info>
+          </div>
+        </div>
+        <div class="form-group ">
+          <label class="control-label col-sm-4 " for="motto">Motto</label>
+          <div class="col-sm-8">
+            <textarea class="form-control"
+                      rows="3"
+                      ng-model="userEditDTO.motto"
+                      id="motto"></textarea>
+            <ui-validate-info value="fieldInfo" for="motto"></ui-validate-info>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default"
+            ng-click="close()">Close
+    </button>
+    <button type="button" class="btn btn-primary"
+            ng-click="edit()">Edit
+    </button>
+  </div>
+</script>
 </body>
 </html>

@@ -32,6 +32,12 @@ public class UserCondition extends BaseCondition {
   public String userName;
 
   /**
+   * Nick name (partly matches).
+   */
+  @Exp(type = ConditionType.LIKE)
+  public String nickName;
+
+  /**
    * User's type.
    *
    * @see AuthenticationType
