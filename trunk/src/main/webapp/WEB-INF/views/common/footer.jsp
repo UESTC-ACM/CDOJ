@@ -12,7 +12,7 @@ Footer part of all pages.
 <head>
   <script src="<c:url value="/plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"/>"></script>
   <script src="<c:url value="/plugins/cdoj/dist/js/cdoj.dependencies.js"/>"></script>
-  <script src="<c:url value="/plugins/cdoj/dist/js/cdoj.old.js"/>"></script>
+  <script src="<c:url value="/plugins/cdoj/dist/js/cdoj.jquery.js"/>"></script>
   <script src="<c:url value="/plugins/cdoj/dist/js/cdoj.angular.js"/>"></script>
 </head>
 <body>
