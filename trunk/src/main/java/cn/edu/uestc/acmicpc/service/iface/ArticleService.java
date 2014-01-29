@@ -86,4 +86,13 @@ public interface ArticleService extends DatabaseService<Article, Integer> {
    * @throws AppException
    */
   public void incrementClicked(Integer articleId) throws AppException;
+
+  /**
+   * Check whether a problem exists.
+   *
+   * @param articleId article's id.
+   * @return true if specified article exists.
+   * @throws AppException
+   */
+  public Boolean checkArticleExists(Integer articleId) throws AppException;
 }
