@@ -47,7 +47,8 @@ public class ProblemControllerTest extends ControllerTest {
   // TODO(Ruinshe) Now I get problem data use /problem/data/{problemId}, see ProblemController.java for more details.
   public void testShow_successful() throws Exception {
     ProblemDTO problemDTO = ProblemDTO.builder().setProblemId(1000).build();
-    when(problemService.checkProblemExists(anyInt())).thenReturn(true);
+    when(problemService.checkProblemExists(1000)).thenReturn(true);
+    when(problemService.getProblemDTOByProblemId(1000)).thenReturn(problemDTO);
     /*when(statusService.count(Mockito.<StatusCondition>any())).thenReturn(100L);
     Map<OnlineJudgeResultType, Long> problemStatistic = new TreeMap<>();
     for (OnlineJudgeResultType type : OnlineJudgeResultType.values()) {

@@ -148,8 +148,9 @@ public class UserController extends BaseController {
         if (userService.getUserDTOByEmail(userRegisterDTO.getEmail()) != null) {
           throw new FieldException("email", "Email has benn used!");
         }
-        if (departmentService.getDepartmentName(userRegisterDTO.getDepartmentId()) == null)
+        if (departmentService.getDepartmentName(userRegisterDTO.getDepartmentId()) == null) {
           throw new FieldException("departmentId", "Please choose a validate department.");
+        }
 
         UserDTO userDTO = UserDTO.builder()
             .setUserName(userRegisterDTO.getUserName())
@@ -170,8 +171,9 @@ public class UserController extends BaseController {
         userService.createNewUser(userDTO);
 
         userDTO = userService.getUserDTOByUserName(userRegisterDTO.getUserName());
-        if (userDTO == null)
+        if (userDTO == null) {
           throw new AppException("Register failed, please try again.");
+        }
         session.setAttribute("currentUser", userDTO);
         json.put("userName", userDTO.getUserName());
         json.put("type", userDTO.getType());
@@ -233,19 +235,21 @@ public class UserController extends BaseController {
       Map<Integer, Global.AuthorStatusType> problemStatus = new TreeMap<>();
 
       List<Integer> results = problemService.getAllVisibleProblemIds();
-      for (Integer result : results)
+      for (Integer result : results) {
         problemStatus.put(result, Global.AuthorStatusType.NONE);
-
+      }
       results = statusService.findAllUserTriedProblemIds(userCenterDTO.getUserId());
-      for (Integer result : results)
-        if (problemStatus.containsKey(result))
+      for (Integer result : results) {
+        if (problemStatus.containsKey(result)) {
           problemStatus.put(result, Global.AuthorStatusType.FAIL);
-
+        }
+      }
       results = statusService.findAllUserAcceptedProblemIds(userCenterDTO.getUserId());
-      for (Integer result : results)
-        if (problemStatus.containsKey(result))
+      for (Integer result : results) {
+        if (problemStatus.containsKey(result)) {
           problemStatus.put(result, Global.AuthorStatusType.PASS);
-
+        }
+      }
       model.put("problemStatus", problemStatus);
       model.put("targetUser", userCenterDTO);
     } catch (AppException e) {
@@ -364,14 +368,16 @@ public class UserController extends BaseController {
     Map<String, Object> json = new HashMap<>();
     try {
       UserDTO userDTO = userService.getUserDTOByUserName(userName);
-      if (userDTO == null)
+      if (userDTO == null) {
         throw new AppException("No such user!");
+      }
       UserSerialKeyDTO userSerialKeyDTO = userSerialKeyService.generateUserSerialKey(userDTO.getUserId());
 
-      if (emailService.sendUserSerialKey(userSerialKeyDTO))
+      if (emailService.sendUserSerialKey(userSerialKeyDTO)) {
         json.put("result", "success");
-      else
+      } else {
         json.put("result", "failed");
+      }
     } catch (AppException e) {
       System.out.println(e.getMessage());
       json.put("result", "error");
@@ -440,17 +446,19 @@ public class UserController extends BaseController {
           throw new FieldException("passwordRepeat", "Password do not match.");
         }
         UserDTO userDTO = userService.getUserDTOByUserName(userActivateDTO.getUserName());
-        if (userDTO == null)
+        if (userDTO == null) {
           throw new FieldException("userName", "No such user.");
+        }
         UserSerialKeyDTO userSerialKeyDTO = userSerialKeyService.findUserSerialKeyDTOByUserId(
             userDTO.getUserId());
         if (userSerialKeyDTO == null ||
-            new Date().getTime() - userSerialKeyDTO.getTime().getTime() > 1800000)
+            new Date().getTime() - userSerialKeyDTO.getTime().getTime() > 1800000) {
           throw new FieldException("serialKey",
               "Serial Key exceed time limit! Please regenerate a new key.");
-        if (!StringUtil.encodeSHA1(userSerialKeyDTO.getSerialKey())
-            .equals(userActivateDTO.getSerialKey()))
+        }
+        if (!StringUtil.encodeSHA1(userSerialKeyDTO.getSerialKey()).equals(userActivateDTO.getSerialKey())) {
           throw new FieldException("serialKey", "Serial Key is wrong!");
+        }
 
         userDTO.setPassword(userActivateDTO.getPassword());
         userService.updateUser(userDTO);

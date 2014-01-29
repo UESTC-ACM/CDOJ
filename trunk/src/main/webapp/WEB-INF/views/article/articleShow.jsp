@@ -8,22 +8,23 @@ Problem statement
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <title>${targetArticle.title}</title>
+  <title>{{$root.title}}</title>
 </head>
 <body>
-<div id="article-show">
+<div id="article-show"
+     ng-controller="ArticleController"
+     ng-init="articleId=${articleId};">
   <div class="row">
     <div class="col-md-12">
-      <h1>${targetArticle.title}</h1>
-      <c:if test="${currentUser.type == 1}">
-        <a
-            href="<c:url value="/article/editor/${targetArticle.articleId}"/>"><i
-            class="fa fa-pencil"></i> Edit</a>
-      </c:if>
+      <h1 ng-bind="article.title"></h1>
+    </div>
+    <div class="col-md-12" ng-show="$root.isAdmin">
+      <a href="/article/editor/{{article.articleId}}">
+        <i class="fa fa-pencil no-margin-right"></i> Edit
+      </a>
     </div>
 
-    <div class="col-md-12" id="article-content" type="markdown">
-      <textarea>${targetArticle.content}</textarea>
+    <div class="col-md-12" ui-markdown content="article.content">
     </div>
   </div>
 </div>
