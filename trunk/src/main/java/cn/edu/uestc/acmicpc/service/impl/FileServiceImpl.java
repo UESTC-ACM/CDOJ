@@ -103,6 +103,12 @@ public class FileServiceImpl extends AbstractService implements FileService {
         if (!fromFile.renameTo(toFile))
           throw new AppException("Cannot rename file: " + file + ".out");
       }
+      if (foundSpj) {
+        File fromFile = new File(tempDirectory + "/spj.cc");
+        File toFile = new File(dataPath + "/spj.cc");
+        if (!fromFile.renameTo(toFile))
+          throw new AppException("Cannot rename SPJ.cc");
+      }
       FileUtil.clearDirectory(tempDirectory);
     }
 
@@ -111,12 +117,12 @@ public class FileServiceImpl extends AbstractService implements FileService {
       try {
         Process process = runtime.exec(String.format("g++ %s/spj.cc -o %s/spj -O2", dataPath, dataPath));
         process.waitFor();
+        if (process.exitValue() != 0) {
+          throw new AppException("Error while compile spj.cc");
+        }
       } catch (Exception e) {
         throw new AppException("Error while compile spj.cc");
       }
-      File source = new File(String.format("%s/spj.cc", dataPath));
-      if (!source.delete())
-        throw new AppException("Cannot remove spj source file");
     }
     return dataCount;
   }
