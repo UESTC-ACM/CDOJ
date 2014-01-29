@@ -39,7 +39,7 @@ module.exports = (grunt) ->
         src: [
           "src/angular/angular.min.js"
           "src/angular/angular-sanitize.min.js"
-          "src/angular/angular-elastic.js"
+          "src/angular/angular-elastic.min.js"
           "src/angular/ui-bootstrap-tpls-0.10.0.min.js"
           "temp/angular/cdoj.angular.coffee.min.js"
         ]
@@ -104,7 +104,6 @@ module.exports = (grunt) ->
           "temp/dependencies/cdoj.dependencies.js"
         ]
         dest: "temp/dependencies/cdoj.dependencies.min.js"
-
     cssmin:
       minimizeCss:
         src: "dist/css/cdoj.css"
