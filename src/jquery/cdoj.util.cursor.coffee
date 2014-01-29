@@ -59,16 +59,3 @@ $.fn.setSelection = (selectionStart, selectionEnd) ->
     input.focus()
     input.setSelectionRange(selectionStart, selectionEnd)
   return this
-
-# Insert value after cursor, and move cursor with finalPosition steps
-# "abcd|efg"
-# after call with ("ABCD", -2)
-# "abcdAB|CDefg"
-# TODO(mzry1992) remove it after refactor markdown editor
-$.fn.insertAfterCursor = (value, moveSteps) ->
-  if this.length == 0 then return this
-  position = this.getCursorPosition()
-  oldText = this.val()
-  oldText = oldText.insert(value, position)
-  this.val(oldText)
-  this.setCursorPosition(position + value.length + moveSteps)

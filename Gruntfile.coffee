@@ -16,18 +16,13 @@ module.exports = (grunt) ->
             "src/angular/global.coffee"
             "src/angular/*.coffee"
           ]
-      compileOldProject:
+      compileJQueryProject:
         options:
           join: true
         files:
-          "temp/old/cdoj.old.coffee.js": [
-            "src/old/cdoj.global.coffee"
-            "src/old/cdoj.util.*.coffee"
-            "src/old/cdoj.editor.coffee"
-            "src/old/cdoj.class.*.coffee"
-            "src/old/cdoj.layout.coffee"
-            "src/old/cdoj.*.coffee"
-            "src/old/cdoj.coffee"
+          "temp/jquery/cdoj.jquery.coffee.js": [
+            "src/jquery/cdoj.global.coffee"
+            "src/jquery/cdoj.util.*.coffee"
           ]
 
     concat:
@@ -49,16 +44,16 @@ module.exports = (grunt) ->
           "temp/angular/cdoj.angular.coffee.min.js"
         ]
         dest: "dist/js/cdoj.angular.min.js"
-      concatOldJs:
+      concatJQueryJs:
         src: [
-          "temp/old/cdoj.old.coffee.js"
+          "temp/jquery/cdoj.jquery.coffee.js"
         ]
-        dest: "dist/js/cdoj.old.js"
-      concatMinimizeOldJs:
+        dest: "dist/js/cdoj.jquery.js"
+      concatMinimizeJQueryJs:
         src: [
-          "temp/old/cdoj.old.coffee.min.js"
+          "temp/jquery/cdoj.jquery.coffee.min.js"
         ]
-        dest: "dist/js/cdoj.old.min.js"
+        dest: "dist/js/cdoj.jquery.min.js"
       concatDependencies:
         src: [
           "src/js/jquery-2.0.3.js"
@@ -99,11 +94,11 @@ module.exports = (grunt) ->
           "temp/angular/cdoj.angular.coffee.js"
         ]
         dest: "temp/angular/cdoj.angular.coffee.min.js"
-      minimizeOldProject:
+      minimizeJQueryProject:
         src: [
-          "temp/old/cdoj.old.coffee.js"
+          "temp/jquery/cdoj.jquery.coffee.js"
         ]
-        dest: "temp/old/cdoj.old.coffee.min.js"
+        dest: "temp/jquery/cdoj.jquery.coffee.min.js"
       minimizeDependencies:
         src: [
           "temp/dependencies/cdoj.dependencies.js"
@@ -135,9 +130,9 @@ module.exports = (grunt) ->
     "coffee:compileAngularProject"
     "concat:concatAngularJs"
 
-    # Old files
-    "coffee:compileOldProject"
-    "concat:concatOldJs"
+    # JQuery files
+    "coffee:compileJQueryProject"
+    "concat:concatJQueryJs"
 
     # Dependencies files
     "concat:concatDependencies"
@@ -156,8 +151,8 @@ module.exports = (grunt) ->
     "min:minimizeAngularProject"
     "concat:concatMinimizeAngularJs"
 
-    "min:minimizeOldProject"
-    "concat:concatMinimizeOldJs"
+    "min:minimizeJQueryProject"
+    "concat:concatMinimizeJQueryJs"
   ]
   grunt.registerTask "default", [
     "first",
