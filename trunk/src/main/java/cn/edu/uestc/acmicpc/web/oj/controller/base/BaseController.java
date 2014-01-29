@@ -49,6 +49,11 @@ public class BaseController {
     return userDTO.getUserId();
   }
 
+  protected Boolean isAdmin(HttpSession session) throws AppException {
+    UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
+    return userDTO != null && userDTO.getType() == Global.AuthenticationType.ADMIN.ordinal();
+  }
+
   /**
    * Put field errors into binding result
    *

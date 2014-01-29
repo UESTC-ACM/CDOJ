@@ -174,9 +174,7 @@ public class ProblemServiceImpl extends AbstractService implements
     ProblemCondition problemCondition = new ProblemCondition();
     problemCondition.startId = problemId;
     problemCondition.endId = problemId;
-    List<Integer> result = (List<Integer>) problemDAO.findAll("problemId",
-        problemCondition.getCondition());
-    return result.size() == 1 && result.get(0).equals(problemId);
+    return problemDAO.count(problemCondition.getCondition()) == 1;
   }
 
   @Override

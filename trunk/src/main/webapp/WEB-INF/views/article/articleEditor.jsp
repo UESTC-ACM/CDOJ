@@ -11,38 +11,43 @@
   <c:if test="${action eq 'new'}">
     <title>New article</title>
   </c:if>
-  <c:if test="${action eq 'edit'}">
-    <title>Edit article - article${targetArticle.articleId}</title>
+  <c:if test="${not (action eq 'new')}">
+    <title>Edit article - article${action}</title>
   </c:if>
 </head>
 <body>
-<div id="article-editor">
+<div id="article-editor"
+     ng-controller="ArticleEditorController"
+     ng-init="action='${action}'">
   <div class="row">
     <c:if test="${action eq 'new'}">
-      <div class="col-md-12" id="article-editor-title" value="new">
+      <div class="col-md-12">
         <h1>New article</h1>
       </div>
     </c:if>
-    <c:if test="${action eq 'edit'}">
-      <div class="col-md-12" id="article-editor-title"
-           value="${targetArticle.articleId}">
-        <h1>Edit problem ${targetArticle.articleId}</h1>
+    <c:if test="${not (action eq 'new')}">
+      <div class="col-md-12">
+        <h1>Edit article <span ng-bind="action"></span></h1>
       </div>
     </c:if>
     <div class="form-group">
       <div class="col-sm-12">
-        <input type="text" name="title" maxlength="50"
-               value="${targetArticle.title}" id="title"
+        <input type="text"
+               ng-model="article.title"
+               ng-require="true"
+               ng-maxlength="50"
                class="form-control" placeholder="Enter title here"/>
+        <ui-validate-info value="fieldInfo" for="title"></ui-validate-info>
       </div>
     </div>
     <div class="col-md-12">
-      <div id="content">
-        <c:out value="${targetArticle.content}" escapeXml="true"/>
+      <div ng-model="article.content"
+           ui-flandre
+           upload-url="/picture/uploadPicture/article/${action}">
       </div>
     </div>
     <div class="col-md-12 text-center">
-      <button type="button" class="btn btn-primary" id="submit">Submit</button>
+      <button type="button" class="btn btn-primary" ng-click="submit()">Submit</button>
     </div>
   </div>
 </div>

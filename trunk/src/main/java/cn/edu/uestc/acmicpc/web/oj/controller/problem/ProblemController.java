@@ -68,11 +68,15 @@ public class ProblemController extends BaseController {
   @LoginPermit(NeedLogin = false)
   public
   @ResponseBody
-  Map<String, Object> data(@PathVariable("problemId") Integer problemId) {
+  Map<String, Object> data(@PathVariable("problemId") Integer problemId,
+                           HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
       ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(problemId);
       if (problemDTO == null) {
+        throw new AppException("No such problem.");
+      }
+      if (!problemDTO.getIsVisible() && !isAdmin(session)) {
         throw new AppException("No such problem.");
       }
 
@@ -99,9 +103,14 @@ public class ProblemController extends BaseController {
   @RequestMapping("show/{problemId}")
   @LoginPermit(NeedLogin = false)
   public String show(@PathVariable("problemId") Integer problemId,
-                     ModelMap model) {
+                     ModelMap model,
+                     HttpSession session) {
     try {
       if (!problemService.checkProblemExists(problemId)) {
+        throw new AppException("No such problem.");
+      }
+      ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(problemId);
+      if (!problemDTO.getIsVisible() && !isAdmin(session)) {
         throw new AppException("No such problem.");
       }
       model.put("problemId", problemId);
@@ -156,11 +165,7 @@ public class ProblemController extends BaseController {
                              @RequestBody ProblemCondition problemCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-      if (currentUser != null
-          && currentUser.getType() == Global.AuthenticationType.ADMIN.ordinal()) {
-        // We can put some special condition here
-      } else {
+      if (!isAdmin(session)) {
         problemCondition.isVisible = true;
       }
       Long count = problemService.count(problemCondition);
@@ -171,6 +176,7 @@ public class ProblemController extends BaseController {
           .getProblemListDTOList(
               problemCondition, pageInfo);
 
+      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
       Map<Integer, Global.AuthorStatusType> problemStatus = getProblemStatus(currentUser);
 
       for (ProblemListDTO problemListDTO : problemListDTOList) {

@@ -98,6 +98,7 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
   public void testUpdateProblem_problemNotFound() throws AppException {
     ProblemDTO problemDTO = ProblemDTO.builder().build();
     when(problemDAO.get(problemDTO.getProblemId())).thenReturn(null);
+
     problemService.updateProblem(problemDTO);
     Assert.fail();
   }

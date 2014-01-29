@@ -27,7 +27,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDetailDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
@@ -134,9 +133,7 @@ public class ContestController extends BaseController {
                              @RequestBody ContestCondition contestCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-      if (currentUser == null ||
-          currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
+      if (!isAdmin(session)) {
         contestCondition.isVisible = true;
       }
       Long count = contestService.count(contestCondition);
