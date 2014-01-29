@@ -31,10 +31,10 @@ public class UserAdminEditDTO {
 
   private String motto;
 
-  @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
+  @Length(min = 40, max = 40, message = "Please enter new password.")
   private String newPassword;
 
-  @Length(min = 6, max = 20, message = "Please enter 6-20 characters.")
+  @Length(min = 40, max = 40, message = "Please repeat new password.")
   private String newPasswordRepeat;
 
   @NotNull(message = "Please select the user type.")

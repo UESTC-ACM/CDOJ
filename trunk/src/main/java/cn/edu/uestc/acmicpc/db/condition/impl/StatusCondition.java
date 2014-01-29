@@ -97,7 +97,7 @@ public class StatusCondition extends BaseCondition {
     }
 
     if (userName != null && !userName.equals("")) {
-      condition.addEntry("userByUserId.userName", Condition.ConditionType.STRING_EQUALS,
+      condition.addEntry("userByUserId.userName", ConditionType.LIKE,
           userName);
     }
 
