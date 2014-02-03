@@ -69,22 +69,23 @@ public class ContestController extends BaseController {
     this.problemService = problemService;
   }
 
-  /**
-   * Show a contest.
-   *
-   * @param contestId
-   * @param model
-   * @return
-   */
-  @RequestMapping("show/{contestId}")
+
+  @RequestMapping("data/{contestId}")
   @LoginPermit(NeedLogin = false)
-  public String show(@PathVariable("contestId") Integer contestId, ModelMap model) {
+  public
+  @ResponseBody
+  Map<String, Object> data(@PathVariable("contestId") Integer contestId,
+                           HttpSession session) {
+    Map<String, Object> json = new HashMap<>();
     try {
-      ContestShowDTO contestShowDTO = contestService.
-          getContestShowDTOByContestId(contestId);
+      ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(contestId);
       if (contestShowDTO == null) {
-        throw new AppException("NO such contest");
+        throw new AppException("No such contest.");
       }
+      if (!contestShowDTO.getIsVisible() && !isAdmin(session)) {
+        throw new AppException("No such contest.");
+      }
+
       List<ContestProblemDetailDTO> contestProblemList = contestProblemService.
           getContestProblemDetailDTOListByContestId(contestId);
       Collections.sort(contestProblemList, new Comparator<ContestProblemDetailDTO>() {
@@ -94,9 +95,29 @@ public class ContestController extends BaseController {
           return a.getOrder().compareTo(b.getOrder());
         }
       });
-      model.put("targetContest", contestShowDTO);
-      model.put("brToken", "\n");
-      model.put("contestProblems", contestProblemList);
+
+      json.put("contest", contestShowDTO);
+      json.put("problemList", contestProblemList);
+      json.put("result", "success");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  @RequestMapping("show/{contestId}")
+  @LoginPermit(NeedLogin = false)
+  public String show(@PathVariable("contestId") Integer contestId, ModelMap model) {
+    try {
+      if (!contestService.checkContestExists(contestId)) {
+        throw new AppException("NO such contest");
+      }
+      model.put("contestId", contestId);
       model.put("languageList", languageService.getLanguageList());
     } catch (AppException e) {
       return "error/404";
@@ -107,24 +128,12 @@ public class ContestController extends BaseController {
     return "contest/contestShow";
   }
 
-  /**
-   * Show contest list.
-   *
-   * @return String
-   */
   @RequestMapping("list")
   @LoginPermit(NeedLogin = false)
   public String list() {
     return "contest/contestList";
   }
 
-  /**
-   * Search contest
-   *
-   * @param session
-   * @param contestCondition
-   * @return
-   */
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public
@@ -156,14 +165,6 @@ public class ContestController extends BaseController {
     return json;
   }
 
-  /**
-   * Modify special field of contest
-   *
-   * @param targetId contest id
-   * @param field    field want to modified
-   * @param value    value
-   * @return JSON
-   */
   @RequestMapping("operator/{id}/{field}/{value}")
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public
@@ -183,13 +184,6 @@ public class ContestController extends BaseController {
     return json;
   }
 
-  /**
-   * Open contest editor
-   *
-   * @param sContestId target contest id or "new"
-   * @param model      model
-   * @return editor view
-   */
   @RequestMapping("editor/{contestId}")
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public String editor(@PathVariable("contestId") String sContestId,
@@ -229,13 +223,6 @@ public class ContestController extends BaseController {
     return "/contest/contestEditor";
   }
 
-  /**
-   * Edit contest
-   *
-   * @param contestEditDTO uploaded information
-   * @param validateResult validate result
-   * @return
-   */
   @RequestMapping("edit")
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public
