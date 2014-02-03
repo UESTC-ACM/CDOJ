@@ -45,6 +45,15 @@ public interface ContestService extends DatabaseService<Contest, Integer> {
       throws AppException;
 
   /**
+   * Check if specified contest exists.
+   *
+   * @param contestId contest's id.
+   * @return true if this contest exists.
+   * @throws AppException
+   */
+  public Boolean checkContestExists(Integer contestId) throws AppException;
+
+  /**
    * Updates contest record by {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO} entity.
    *
    * @param contestDTO {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO} entity.
