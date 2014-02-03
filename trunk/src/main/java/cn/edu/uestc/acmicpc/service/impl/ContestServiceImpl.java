@@ -62,6 +62,14 @@ public class ContestServiceImpl extends AbstractService implements
         ContestShowDTO.builder(), "contestId", contestId);
   }
 
+  @Override
+  public Boolean checkContestExists(Integer contestId) throws AppException {
+    ContestCondition contestCondition = new ContestCondition();
+    contestCondition.startId = contestId;
+    contestCondition.endId = contestId;
+    return contestDAO.count(contestCondition.getCondition()) == 1;
+  }
+
   private void updateContestByContestDTO(Contest contest, ContestDTO contestDTO) {
     if (contestDTO.getDescription() != null) {
       contest.setDescription(contestDTO.getDescription());
