@@ -24142,6 +24142,7 @@ angular.module('ui.bootstrap.tabs', [])
         scope.$watch('active', function(active) {
           // Note this watcher also initializes and assigns scope.active to the
           // attrs.active expression.
+          console.log(scope.active);
           setActive(scope.$parent, active);
           if (active) {
             tabsetCtrl.select(scope);
@@ -25160,6 +25161,50 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
     }
   ]);
 
+  cdoj.controller("ContestController", [
+    "$scope", "$rootScope", "$http", "$window", function($scope, $rootScope, $http, $window) {
+      $scope.contestId = 0;
+      $scope.contest = {
+        title: ""
+      };
+      $scope.problemList = [];
+      $scope.currentProblem = {
+        description: "",
+        title: "",
+        input: "",
+        output: "",
+        sampleInput: "",
+        sampleOutput: "",
+        hint: "",
+        source: ""
+      };
+      $scope.$watch("contestId", function() {
+        var contestId;
+        contestId = angular.copy($scope.contestId);
+        return $http.get("/contest/data/" + contestId).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            $scope.contest = data.contest;
+            $scope.problemList = data.problemList;
+            $rootScope.title = data.contest.title;
+            if (data.problemList.length > 0) {
+              return $scope.currentProblem = data.problemList[0];
+            }
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        });
+      });
+      return $scope.chooseProblem = function(order) {
+        $scope.showProblem = true;
+        return $scope.currentProblem = _.findWhere($scope.problemList, {
+          order: order
+        });
+      };
+    }
+  ]);
+
   cdoj.controller("ContestEditorController", [
     "$scope", "$http", "$window", function($scope, $http, $window) {
       $scope.contest = {
@@ -26113,24 +26158,47 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
       restrict: "A",
       scope: {
         time: "=",
-        inline: "="
+        inline: "=",
+        format: "@",
+        show: "@",
+        change: "@"
       },
       controller: [
         "$scope", function($scope) {
           $scope.timeString = "";
-          $scope.$watch("time", function() {
-            return $scope.showRelativeTime();
-          });
           $scope.showRelativeTime = function() {
             return $scope.timeString = Date.create($scope.time).relative();
           };
           $scope.showRealTime = function() {
             return $scope.timeString = Date.create($scope.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}");
           };
-          $scope.showRelativeTimeDelay = function() {
+          $scope.showTime = function() {
+            if ($scope.show === "real") {
+              return $scope.showRealTime();
+            } else {
+              return $scope.showRelativeTime();
+            }
+          };
+          $scope.$watch("time", function() {
+            return $scope.showTime();
+          });
+          $scope.mouseOver = function() {
+            if ($scope.change === "false") {
+              return;
+            }
+            if ($scope.show === "real") {
+              return $scope.showRelativeTime();
+            } else {
+              return $scope.showRealTime();
+            }
+          };
+          $scope.mouseLeave = function() {
+            if ($scope.change === "false") {
+              return;
+            }
             return setTimeout(function() {
               return $scope.$apply(function() {
-                return $scope.showRelativeTime();
+                return $scope.showTime();
               });
             }, 400);
           };
@@ -26143,7 +26211,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
           };
         }
       ],
-      template: "<div ng-mouseover=\"showRealTime()\"\n     ng-mouseleave=\"showRelativeTimeDelay()\"\n     style=\"width: 100%;\"\n     ng-style=\"{display: getInline()}\">{{timeString}}</div>"
+      template: "<div ng-mouseover=\"mouseOver()\"\n     ng-mouseleave=\"mouseLeave()\"\n     style=\"width: 100%;\"\n     ng-style=\"{display: getInline()}\">{{timeString}}</div>"
     };
   });
 
