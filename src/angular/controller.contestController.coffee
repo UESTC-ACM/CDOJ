@@ -1,6 +1,6 @@
 cdoj.controller("ContestController", [
-  "$scope", "$rootScope", "$http", "$window"
-  ($scope, $rootScope, $http, $window) ->
+  "$scope", "$rootScope", "$http", "$window", "$modal"
+  ($scope, $rootScope, $http, $window, $modal) ->
     $scope.contestId = 0
     $scope.contest =
       title: ""
@@ -28,7 +28,28 @@ cdoj.controller("ContestController", [
         else
           $window.alert data.error_msg
     )
+    $scope.showProblemTab = ->
+      # TODO Dirty code!
+      $scope.$$childHead.tabs[1].select()
+    $scope.showStatusTab = ->
+      # TODO Dirty code!
+      $scope.$$childHead.tabs[3].select()
     $scope.chooseProblem = (order)->
-      $scope.showProblem = true
+      $scope.showProblemTab()
       $scope.currentProblem = _.findWhere($scope.problemList, order: order)
+    $scope.openSubmitModal = ->
+      $modal.open(
+        templateUrl: "submitModal.html"
+        controller: "SubmitModalController"
+        resolve:
+          submitDTO: ->
+            codeContent: ""
+            problemId: $scope.currentProblem.problemId
+            contestId: $scope.contest.contestId
+            languageId: 2 #default C++
+          title: ->
+            "#{$scope.currentProblem.orderCharacter} - #{$scope.currentProblem.title}"
+      ).result.then (result)->
+        if result == "success"
+          $scope.showStatusTab()
 ])

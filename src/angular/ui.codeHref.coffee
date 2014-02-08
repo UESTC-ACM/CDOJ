@@ -4,8 +4,8 @@ cdoj.directive("uiCodeHref",
   scope:
     status: "="
   controller: [
-    "$scope", "$rootScope", "$http"
-    ($scope, $rootScope, $http) ->
+    "$scope", "$rootScope", "$http", "$modal"
+    ($scope, $rootScope, $http, $modal) ->
       $scope.showHref = false
       $rootScope.$watch("hasLogin",
       ->
@@ -16,28 +16,53 @@ cdoj.directive("uiCodeHref",
       )
       $scope.showCode = ->
         statusId = $scope.status.statusId
-        $http.post("/status/info/#{statusId}").then(
-          (response) ->
-            data = response.data
-            compileInfo = ""
-            if data.result == "success"
-              compileInfo = data.compileInfo
-            else
-              compileInfo = data.error_msg
-            code = ""
-            if data.result == "success"
-              code = data.code
-            else
-              code = data.error_msg
-            code = code.escapeHTML();
-            $modal = $("#code-modal")
-            $modal.find(".modal-body").empty().append("<pre>#{code}</pre>")
-            $modal.find(".modal-body").prettify()
-            $modal.modal("toggle")
+        $modal.open(
+          templateUrl: "codeModal.html"
+          controller: "CodeModalController"
+          resolve:
+            statusId: -> statusId
         )
   ]
   template: """
 <a href="#" ng-show="showHref" ng-click="showCode()">{{status.length}} B</a>
 <span ng-hide="showHref">{{status.length}} B</span>
     """
+)
+cdoj.controller("CodeModalController", [
+  "$scope", "$http", "$modalInstance", "statusId"
+  ($scope, $http, $modalInstance, statusId)->
+    $scope.code="Loading..."
+    $http.post("/status/info/#{statusId}").then(
+      (response) ->
+        data = response.data
+        compileInfo = ""
+        if data.result == "success"
+          compileInfo = data.compileInfo
+        else
+          compileInfo = data.error_msg
+        code = ""
+        if data.result == "success"
+          code = data.code
+        else
+          code = data.error_msg
+        $scope.code = code;
+    )
+])
+cdoj.directive("uiCode",
+->
+  restrict: "E"
+  scope:
+    code: "="
+  controller: [
+    "$scope"
+    ($scope, $element)->
+      $scope.prettifiedCode = ""
+      $scope.$watch("code", ->
+        $scope.prettifiedCode = prettyPrintOne($scope.code.trim().escapeHTML())
+      )
+  ]
+  template: """
+<pre ng-bind-html="prettifiedCode"></pre>
+"""
+  replace: true
 )

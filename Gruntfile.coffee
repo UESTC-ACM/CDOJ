@@ -7,6 +7,7 @@ module.exports = (grunt) ->
       compile:
         files:
           "dist/css/cdoj.less.css": "src/less/cdoj.less"
+
     coffee:
       compileAngularProject:
         options:
@@ -109,14 +110,13 @@ module.exports = (grunt) ->
         src: "dist/css/cdoj.css"
         dest: "dist/css/cdoj.min.css"
 
-    watch: {
+    watch:
       files: [
         "src/*/*.*"
       ]
       tasks: [
         "first"
       ]
-    }
 
   grunt.loadNpmTasks "grunt-contrib-watch"
   grunt.loadNpmTasks "grunt-contrib-less"

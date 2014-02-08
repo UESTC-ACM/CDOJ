@@ -4,10 +4,10 @@ cdoj.directive("uiStatus",
   scope:
     status: "="
   controller: [
-    "$scope", "$rootScope", "$http"
-    ($scope, $rootScope, $http) ->
+    "$scope", "$rootScope", "$http", "$modal"
+    ($scope, $rootScope, $http, $modal) ->
       $scope.showHref = false
-      $rootScope.$watch("hasLogin",
+      $rootScope.$watch("hasLogin + status",
       ->
         if $scope.status.returnTypeId == 7
           if $rootScope.hasLogin && ($rootScope.currentUser.type == 1 || $rootScope.currentUser.userName == $scope.status.userName)
@@ -16,21 +16,14 @@ cdoj.directive("uiStatus",
             $scope.showHref = false
         else
           $scope.showHref = false
-      )
+      , true)
       $scope.showCompileInfo = ->
         statusId = $scope.status.statusId
-        $http.post("/status/info/#{statusId}").then(
-          (response) ->
-            data = response.data
-            compileInfo = ""
-            if data.result == "success"
-              compileInfo = data.compileInfo
-            else
-              compileInfo = data.error_msg
-            $modal = $("#compile-info-modal")
-            $modal.find(".modal-body").empty().append("<pre>#{compileInfo}</pre>")
-            $modal.find(".modal-body").prettify()
-            $modal.modal("toggle")
+        $modal.open(
+          templateUrl: "compileInfoModal.html"
+          controller: "CompileInfoModalController"
+          resolve:
+            statusId: -> statusId
         )
       if [0, 16, 17, 18].some($scope.status.returnTypeId)
         timmer = setInterval(->
@@ -60,3 +53,19 @@ cdoj.directive("uiStatus",
 <span ng-hide="showHref">{{status.returnType}}</span>
     """
 )
+cdoj.controller("CompileInfoModalController", [
+  "$scope", "$http", "$modalInstance", "statusId"
+  ($scope, $http, $modalInstance, statusId)->
+    $scope.compileInfo="Loading..."
+    $http.post("/status/info/#{statusId}").then(
+      (response) ->
+        data = response.data
+        compileInfo = ""
+        if data.result == "success"
+          compileInfo = data.compileInfo
+        else
+          compileInfo = data.error_msg
+        $scope.compileInfo = compileInfo
+    )
+])
+

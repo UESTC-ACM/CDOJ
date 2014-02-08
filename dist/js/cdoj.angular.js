@@ -24142,7 +24142,6 @@ angular.module('ui.bootstrap.tabs', [])
         scope.$watch('active', function(active) {
           // Note this watcher also initializes and assigns scope.active to the
           // attrs.active expression.
-          console.log(scope.active);
           setActive(scope.$parent, active);
           if (active) {
             tabsetCtrl.select(scope);
@@ -25162,7 +25161,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
   ]);
 
   cdoj.controller("ContestController", [
-    "$scope", "$rootScope", "$http", "$window", function($scope, $rootScope, $http, $window) {
+    "$scope", "$rootScope", "$http", "$window", "$modal", function($scope, $rootScope, $http, $window, $modal) {
       $scope.contestId = 0;
       $scope.contest = {
         title: ""
@@ -25196,10 +25195,39 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
           }
         });
       });
-      return $scope.chooseProblem = function(order) {
-        $scope.showProblem = true;
+      $scope.showProblemTab = function() {
+        return $scope.$$childHead.tabs[1].select();
+      };
+      $scope.showStatusTab = function() {
+        return $scope.$$childHead.tabs[3].select();
+      };
+      $scope.chooseProblem = function(order) {
+        $scope.showProblemTab();
         return $scope.currentProblem = _.findWhere($scope.problemList, {
           order: order
+        });
+      };
+      return $scope.openSubmitModal = function() {
+        return $modal.open({
+          templateUrl: "submitModal.html",
+          controller: "SubmitModalController",
+          resolve: {
+            submitDTO: function() {
+              return {
+                codeContent: "",
+                problemId: $scope.currentProblem.problemId,
+                contestId: $scope.contest.contestId,
+                languageId: 2
+              };
+            },
+            title: function() {
+              return "" + $scope.currentProblem.orderCharacter + " - " + $scope.currentProblem.title;
+            }
+          }
+        }).result.then(function(result) {
+          if (result === "success") {
+            return $scope.showStatusTab();
+          }
         });
       };
     }
@@ -25515,6 +25543,37 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
     }
   ]);
 
+  cdoj.controller("SubmitModalController", [
+    "$scope", "$rootScope", "$window", "$http", "$modalInstance", "submitDTO", "title", function($scope, $rootScope, $window, $http, $modalInstance, submitDTO, title) {
+      $scope.submitDTO = submitDTO;
+      $scope.title = title;
+      $scope.submit = function() {
+        submitDTO = angular.copy($scope.submitDTO);
+        if (submitDTO.codeContent === void 0) {
+          return;
+        }
+        if ($rootScope.hasLogin === false) {
+          return $window.alert("Please login first!");
+        } else {
+          return $http.post("/status/submit", submitDTO).then(function(response) {
+            var data;
+            data = response.data;
+            if (data.result === "success") {
+              return $modalInstance.close("success");
+            } else if (data.result === "field_error") {
+              return $scope.fieldInfo = data.field;
+            } else {
+              return $window.alert(data.error_msg);
+            }
+          });
+        }
+      };
+      return $scope.close = function() {
+        return $modalInstance.dismiss("close");
+      };
+    }
+  ]);
+
   cdoj.controller("UserController", [
     "$scope", "$rootScope", "$http", "$element", "$compile", "$window", "UserProfile", function($scope, $rootScope, $http, $element, $compile, $window, $userProfile) {
       $rootScope.hasLogin = false;
@@ -25744,7 +25803,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
         status: "="
       },
       controller: [
-        "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
+        "$scope", "$rootScope", "$http", "$modal", function($scope, $rootScope, $http, $modal) {
           $scope.showHref = false;
           $rootScope.$watch("hasLogin", function() {
             if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
@@ -25756,31 +25815,61 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
           return $scope.showCode = function() {
             var statusId;
             statusId = $scope.status.statusId;
-            return $http.post("/status/info/" + statusId).then(function(response) {
-              var $modal, code, compileInfo, data;
-              data = response.data;
-              compileInfo = "";
-              if (data.result === "success") {
-                compileInfo = data.compileInfo;
-              } else {
-                compileInfo = data.error_msg;
+            return $modal.open({
+              templateUrl: "codeModal.html",
+              controller: "CodeModalController",
+              resolve: {
+                statusId: function() {
+                  return statusId;
+                }
               }
-              code = "";
-              if (data.result === "success") {
-                code = data.code;
-              } else {
-                code = data.error_msg;
-              }
-              code = code.escapeHTML();
-              $modal = $("#code-modal");
-              $modal.find(".modal-body").empty().append("<pre>" + code + "</pre>");
-              $modal.find(".modal-body").prettify();
-              return $modal.modal("toggle");
             });
           };
         }
       ],
       template: "<a href=\"#\" ng-show=\"showHref\" ng-click=\"showCode()\">{{status.length}} B</a>\n<span ng-hide=\"showHref\">{{status.length}} B</span>"
+    };
+  });
+
+  cdoj.controller("CodeModalController", [
+    "$scope", "$http", "$modalInstance", "statusId", function($scope, $http, $modalInstance, statusId) {
+      $scope.code = "Loading...";
+      return $http.post("/status/info/" + statusId).then(function(response) {
+        var code, compileInfo, data;
+        data = response.data;
+        compileInfo = "";
+        if (data.result === "success") {
+          compileInfo = data.compileInfo;
+        } else {
+          compileInfo = data.error_msg;
+        }
+        code = "";
+        if (data.result === "success") {
+          code = data.code;
+        } else {
+          code = data.error_msg;
+        }
+        return $scope.code = code;
+      });
+    }
+  ]);
+
+  cdoj.directive("uiCode", function() {
+    return {
+      restrict: "E",
+      scope: {
+        code: "="
+      },
+      controller: [
+        "$scope", function($scope, $element) {
+          $scope.prettifiedCode = "";
+          return $scope.$watch("code", function() {
+            return $scope.prettifiedCode = prettyPrintOne($scope.code.trim().escapeHTML());
+          });
+        }
+      ],
+      template: "<pre ng-bind-html=\"prettifiedCode\"></pre>",
+      replace: true
     };
   });
 
@@ -26088,10 +26177,10 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
         status: "="
       },
       controller: [
-        "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
+        "$scope", "$rootScope", "$http", "$modal", function($scope, $rootScope, $http, $modal) {
           var timmer;
           $scope.showHref = false;
-          $rootScope.$watch("hasLogin", function() {
+          $rootScope.$watch("hasLogin + status", function() {
             if ($scope.status.returnTypeId === 7) {
               if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
                 return $scope.showHref = true;
@@ -26101,23 +26190,18 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
             } else {
               return $scope.showHref = false;
             }
-          });
+          }, true);
           $scope.showCompileInfo = function() {
             var statusId;
             statusId = $scope.status.statusId;
-            return $http.post("/status/info/" + statusId).then(function(response) {
-              var $modal, compileInfo, data;
-              data = response.data;
-              compileInfo = "";
-              if (data.result === "success") {
-                compileInfo = data.compileInfo;
-              } else {
-                compileInfo = data.error_msg;
+            return $modal.open({
+              templateUrl: "compileInfoModal.html",
+              controller: "CompileInfoModalController",
+              resolve: {
+                statusId: function() {
+                  return statusId;
+                }
               }
-              $modal = $("#compile-info-modal");
-              $modal.find(".modal-body").empty().append("<pre>" + compileInfo + "</pre>");
-              $modal.find(".modal-body").prettify();
-              return $modal.modal("toggle");
             });
           };
           if ([0, 16, 17, 18].some($scope.status.returnTypeId)) {
@@ -26152,6 +26236,23 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
       template: "<a href=\"#\" ng-show=\"showHref\" ng-click=\"showCompileInfo()\">{{status.returnType}}</a>\n<span ng-hide=\"showHref\">{{status.returnType}}</span>"
     };
   });
+
+  cdoj.controller("CompileInfoModalController", [
+    "$scope", "$http", "$modalInstance", "statusId", function($scope, $http, $modalInstance, statusId) {
+      $scope.compileInfo = "Loading...";
+      return $http.post("/status/info/" + statusId).then(function(response) {
+        var compileInfo, data;
+        data = response.data;
+        compileInfo = "";
+        if (data.result === "success") {
+          compileInfo = data.compileInfo;
+        } else {
+          compileInfo = data.error_msg;
+        }
+        return $scope.compileInfo = compileInfo;
+      });
+    }
+  ]);
 
   cdoj.directive("uiTime", function() {
     return {

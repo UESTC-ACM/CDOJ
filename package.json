@@ -2,7 +2,7 @@
   "name": "cdoj-UI",
   "version": "1.0.0",
   "description": "Styles and js for cdoj",
-  "main": "Gruntfile.js",
+  "main": "Gruntfile.coffee",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
