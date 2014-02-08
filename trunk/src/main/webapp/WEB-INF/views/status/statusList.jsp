@@ -20,7 +20,7 @@ Admin problem list page
         userName: undefined,
         problemId: undefined,
         languageId: undefined,
-        contestId: undefined,
+        contestId: -1,
         result: 'OJ_ALL',
         orderFields: 'statusId',
         orderAsc: 'false'
@@ -93,7 +93,6 @@ Admin problem list page
                       <label for="contestId">Contest ID</label>
                       <input type="number"
                              ng-model="condition.contestId"
-                             min="1"
                              id="contestId"
                              class="form-control input-sm"/>
                     </div>
@@ -146,7 +145,6 @@ Admin problem list page
           <th style="width: 11em; text-align: center;">Submit
             Time
           </th>
-          <th></th>
         </tr>
         </thead>
         <tbody>
@@ -187,7 +185,6 @@ Admin problem list page
           <td style="text-align: center;"
               ui-time
               time="status.time"></td>
-          <td></td>
         </tr>
         </tbody>
       </table>

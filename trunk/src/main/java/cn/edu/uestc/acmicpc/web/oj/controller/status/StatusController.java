@@ -85,6 +85,15 @@ public class StatusController extends BaseController {
     try {
       if (!isAdmin(session)) {
         statusCondition.isVisible = true;
+        if (statusCondition.contestId != -1) {
+          UserDTO currentUser = getCurrentUser(session);
+          if (currentUser == null) {
+            // Return nothing
+            statusCondition.userId = 0;
+          } else {
+            statusCondition.userId = currentUser.getUserId();
+          }
+        }
       }
       Long count = statusService.count(statusCondition);
       Long recordPerPage = Global.RECORD_PER_PAGE;
