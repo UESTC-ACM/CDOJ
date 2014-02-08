@@ -44,9 +44,8 @@ public class BaseController {
     return globalService.getAuthenticationTypeList();
   }
 
-  protected Integer getCurrentUserID(HttpSession session) throws AppException {
-    UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
-    return userDTO.getUserId();
+  protected UserDTO getCurrentUser(HttpSession session) throws AppException {
+    return (UserDTO) session.getAttribute("currentUser");
   }
 
   protected Boolean isAdmin(HttpSession session) throws AppException {

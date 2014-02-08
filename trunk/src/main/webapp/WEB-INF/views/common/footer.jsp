@@ -11,9 +11,9 @@ Footer part of all pages.
 <html>
 <head>
   <script src="<c:url value="/plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"/>"></script>
-  <script src="<c:url value="/plugins/cdoj/dist/js/cdoj.dependencies.min.js"/>"></script>
-  <script src="<c:url value="/plugins/cdoj/dist/js/cdoj.jquery.min.js"/>"></script>
-  <script src="<c:url value="/plugins/cdoj/dist/js/cdoj.angular.min.js"/>"></script>
+  <script src="<c:url value="/plugins/cdoj/dist/js/cdoj.dependencies.js"/>"></script>
+  <script src="<c:url value="/plugins/cdoj/dist/js/cdoj.jquery.js"/>"></script>
+  <script src="<c:url value="/plugins/cdoj/dist/js/cdoj.angular.js"/>"></script>
 </head>
 <body>
 </body>

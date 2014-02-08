@@ -11,35 +11,21 @@
   <title></title>
 </head>
 <body>
-<!-- Code Modal -->
-<div class="modal fade" id="code-modal" tabindex="-1" role="dialog"
-     aria-labelledby="codeModal" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body"></div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default">Copy</button>
-        <button type="button" class="btn btn-default">Download</button>
-      </div>
-    </div>
-    <!-- /.modal-content -->
+<script type="text/ng-template" id="codeModal.html">
+  <div class="modal-body">
+    <ui-code code="code"></ui-code>
   </div>
-  <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default">Copy</button>
+    <button type="button" class="btn btn-default">Download</button>
+  </div>
+</script>
 
-<!-- Compile Info Modal -->
-<div class="modal fade" id="compile-info-modal" tabindex="-1"
-     role="dialog" aria-labelledby="compileInfoModal" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body"></div>
-    </div>
-    <!-- /.modal-content -->
+<script type="text/ng-template" id="compileInfoModal.html">
+  <div class="modal-body">
+    <pre ng-bind="compileInfo"></pre>
   </div>
-  <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
+</script>
 
 </body>
 </html>

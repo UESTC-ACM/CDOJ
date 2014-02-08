@@ -71,7 +71,7 @@ public class ContestController extends BaseController {
 
 
   @RequestMapping("data/{contestId}")
-  @LoginPermit(NeedLogin = false)
+  @LoginPermit(NeedLogin = true)
   public
   @ResponseBody
   Map<String, Object> data(@PathVariable("contestId") Integer contestId,
@@ -111,7 +111,7 @@ public class ContestController extends BaseController {
   }
 
   @RequestMapping("show/{contestId}")
-  @LoginPermit(NeedLogin = false)
+  @LoginPermit(NeedLogin = true)
   public String show(@PathVariable("contestId") Integer contestId, ModelMap model) {
     try {
       if (!contestService.checkContestExists(contestId)) {
@@ -235,8 +235,9 @@ public class ContestController extends BaseController {
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        if (StringUtil.trimAllSpace(contestEditDTO.getTitle()).equals(""))
+        if (StringUtil.trimAllSpace(contestEditDTO.getTitle()).equals("")) {
           throw new FieldException("title", "Please enter a validate title.");
+        }
         ContestDTO contestDTO;
         if (contestEditDTO.getAction().compareTo("new") == 0) {
           Integer contestId = contestService.createNewContest();
