@@ -52,4 +52,31 @@ cdoj.controller("ContestController", [
       ).result.then (result)->
         if result == "success"
           $scope.showStatusTab()
+          angular.element("#status-list").scope().refresh()
 ])
+cdoj.directive("uiContestProblemHref"
+->
+  restrict: "E"
+  scope:
+    problemId: "="
+    problemList: "="
+  controller: [
+    "$scope"
+    ($scope)->
+      $scope.order = -1
+      $scope.orderCharacter = "-"
+      $scope.$watch("problemId + problemList", ->
+        target = _.findWhere($scope.problemList, "problemId": $scope.problemId)
+        if target != undefined
+          $scope.orderCharacter = target.orderCharacter
+          $scope.order = target.order
+      )
+      $scope.select = ->
+        if $scope.order != -1
+          angular.element("#contest-show").scope().chooseProblem($scope.order)
+  ]
+  template: """
+<a href="#" ng-bind="orderCharacter" ng-click="select()"></a>
+"""
+  replace: true
+)

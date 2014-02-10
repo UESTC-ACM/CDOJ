@@ -25064,6 +25064,20 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 
   cdoj = angular.module("cdoj", ["ngSanitize", "monospaced.elastic", "ui.bootstrap"]);
 
+  cdoj.run([
+    "$rootScope", "$http", function($rootScope, $http) {
+      return $http.get("/globalData").then(function(response) {
+        var data;
+        data = response.data;
+        if (data.result === "error") {
+          return alert(data.error_msg);
+        } else {
+          return _.extend($rootScope, data);
+        }
+      });
+    }
+  ]);
+
   cdoj.controller("ActivateController", [
     "$scope", "$http", "$element", "$window", function($scope, $http, $element, $window) {
       $scope.userName = "";
@@ -25226,12 +25240,46 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
           }
         }).result.then(function(result) {
           if (result === "success") {
-            return $scope.showStatusTab();
+            $scope.showStatusTab();
+            return angular.element("#status-list").scope().refresh();
           }
         });
       };
     }
   ]);
+
+  cdoj.directive("uiContestProblemHref", function() {
+    return {
+      restrict: "E",
+      scope: {
+        problemId: "=",
+        problemList: "="
+      },
+      controller: [
+        "$scope", function($scope) {
+          $scope.order = -1;
+          $scope.orderCharacter = "-";
+          $scope.$watch("problemId + problemList", function() {
+            var target;
+            target = _.findWhere($scope.problemList, {
+              "problemId": $scope.problemId
+            });
+            if (target !== void 0) {
+              $scope.orderCharacter = target.orderCharacter;
+              return $scope.order = target.order;
+            }
+          });
+          return $scope.select = function() {
+            if ($scope.order !== -1) {
+              return angular.element("#contest-show").scope().chooseProblem($scope.order);
+            }
+          };
+        }
+      ],
+      template: "<a href=\"#\" ng-bind=\"orderCharacter\" ng-click=\"select()\"></a>",
+      replace: true
+    };
+  });
 
   cdoj.controller("ContestEditorController", [
     "$scope", "$http", "$window", function($scope, $http, $window) {
@@ -25325,7 +25373,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
         });
         return $scope.condition["currentPage"] = null;
       };
-      return $scope.$watch("condition", function() {
+      $scope.refresh = function() {
         var condition,
           _this = this;
         if ($scope.requestUrl !== 0) {
@@ -25335,6 +25383,12 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
             return $scope.pageInfo = response.data.pageInfo;
           });
         }
+      };
+      $rootScope.$watch("currentUser", function() {
+        return $scope.refresh();
+      }, true);
+      return $scope.$watch("condition", function() {
+        return $scope.refresh();
       }, true);
     }
   ]);
@@ -26178,9 +26232,9 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
       },
       controller: [
         "$scope", "$rootScope", "$http", "$modal", function($scope, $rootScope, $http, $modal) {
-          var timmer;
+          var checkShowHref, timmer;
           $scope.showHref = false;
-          $rootScope.$watch("hasLogin + status", function() {
+          checkShowHref = function() {
             if ($scope.status.returnTypeId === 7) {
               if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
                 return $scope.showHref = true;
@@ -26190,7 +26244,10 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
             } else {
               return $scope.showHref = false;
             }
-          }, true);
+          };
+          $rootScope.$watch("hasLogin", function() {
+            return checkShowHref();
+          });
           $scope.showCompileInfo = function() {
             var statusId;
             statusId = $scope.status.statusId;
@@ -26224,6 +26281,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
                 data = response.data;
                 if (data.result === "success" && data.list.length === 1) {
                   $scope.status = data.list[0];
+                  checkShowHref();
                   if ([0, 16, 17, 18].none($scope.status.returnTypeId)) {
                     return clearInterval(timmer);
                   }

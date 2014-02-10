@@ -14,15 +14,17 @@ cdoj.controller("ListController", [
         $scope.condition[index] = undefined
       )
       $scope.condition["currentPage"] = null
-
-    $scope.$watch(
-      "condition",
-    () ->
+    $scope.refresh = ->
       if $scope.requestUrl != 0
         condition = angular.copy($scope.condition)
         $http.post($scope.requestUrl, condition).then (response) =>
           $scope.list = response.data.list
           $scope.pageInfo = response.data.pageInfo
+    $rootScope.$watch("currentUser", ->
+      $scope.refresh()
+    , true)
+    $scope.$watch("condition", ->
+      $scope.refresh()
     , true
     )
 ])

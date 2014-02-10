@@ -7,8 +7,7 @@ cdoj.directive("uiStatus",
     "$scope", "$rootScope", "$http", "$modal"
     ($scope, $rootScope, $http, $modal) ->
       $scope.showHref = false
-      $rootScope.$watch("hasLogin + status",
-      ->
+      checkShowHref = ->
         if $scope.status.returnTypeId == 7
           if $rootScope.hasLogin && ($rootScope.currentUser.type == 1 || $rootScope.currentUser.userName == $scope.status.userName)
             $scope.showHref = true
@@ -16,7 +15,10 @@ cdoj.directive("uiStatus",
             $scope.showHref = false
         else
           $scope.showHref = false
-      , true)
+      $rootScope.$watch("hasLogin",
+      ->
+        checkShowHref()
+      )
       $scope.showCompileInfo = ->
         statusId = $scope.status.statusId
         $modal.open(
@@ -43,6 +45,7 @@ cdoj.directive("uiStatus",
               data = response.data
               if data.result == "success" and data.list.length == 1
                 $scope.status = data.list[0]
+                checkShowHref()
                 if [0, 16, 17, 18].none($scope.status.returnTypeId)
                   clearInterval(timmer)
           )
