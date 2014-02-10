@@ -1,5 +1,7 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +46,18 @@ public class ContestProblemServiceImpl extends AbstractService implements Contes
       throws AppException {
     ContestProblemCondition contestCondition = new ContestProblemCondition();
     contestCondition.contestId = contestId;
-    return contestProblemDAO.findAll(ContestProblemDetailDTO.class, ContestProblemDetailDTO.builder(),
+    List<ContestProblemDetailDTO> contestProblemList = contestProblemDAO.findAll(ContestProblemDetailDTO.class, ContestProblemDetailDTO.builder(),
         contestCondition.getCondition());
+
+    Collections.sort(contestProblemList, new Comparator<ContestProblemDetailDTO>() {
+
+      @Override
+      public int compare(ContestProblemDetailDTO a, ContestProblemDetailDTO b) {
+        return a.getOrder().compareTo(b.getOrder());
+      }
+    });
+
+    return contestProblemList;
   }
 
   @Override
@@ -55,8 +67,18 @@ public class ContestProblemServiceImpl extends AbstractService implements Contes
     contestCondition.contestId = contestId;
     contestCondition.orderFields = "order";
     contestCondition.orderAsc = "true";
-    return contestProblemDAO.findAll(ContestProblemSummaryDTO.class, ContestProblemSummaryDTO.builder(),
+    List<ContestProblemSummaryDTO> contestProblemList = contestProblemDAO.findAll(ContestProblemSummaryDTO.class, ContestProblemSummaryDTO.builder(),
         contestCondition.getCondition());
+
+    Collections.sort(contestProblemList, new Comparator<ContestProblemSummaryDTO>() {
+
+      @Override
+      public int compare(ContestProblemSummaryDTO a, ContestProblemSummaryDTO b) {
+        return a.getOrder().compareTo(b.getOrder());
+      }
+    });
+
+    return contestProblemList;
   }
 
   @Override

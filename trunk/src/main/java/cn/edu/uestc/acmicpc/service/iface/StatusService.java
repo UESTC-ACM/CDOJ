@@ -91,6 +91,15 @@ public interface StatusService extends DatabaseService<Status, Integer> {
                                            PageInfo pageInfo) throws AppException;
 
   /**
+   * Get the status fit in condition.
+   *
+   * @param condition {@link StatusCondition} entity.
+   * @return List of {@link StatusListDTO} entities.
+   * @throws AppException
+   */
+  public List<StatusListDTO> getStatusList(StatusCondition condition) throws AppException;
+
+  /**
    * Get the status that pending to judge.
    *
    * @param isFirstTime whether is the first time the scheduler called.
