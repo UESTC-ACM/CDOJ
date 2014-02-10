@@ -45,7 +45,6 @@
       <div class="col-md-12">
         <div class="cdoj-article" ng-repeat="article in list">
           <h1><a href="/article/show/{{article.articleId}}"
-                 target="_blank"
                  ng-bind="article.title"></a>
           </h1>
           <small>

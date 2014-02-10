@@ -104,8 +104,7 @@ public class ApplicationContextConfig {
 
     localSessionFactoryBean.setDataSource(this.dataSource());
     localSessionFactoryBean.setHibernateProperties(this.getHibernateProperties());
-    localSessionFactoryBean.setAnnotatedClasses(new Class<?>[]{
-        Article.class,
+    localSessionFactoryBean.setAnnotatedClasses(Article.class,
         Code.class,
         CompileInfo.class,
         Contest.class,
@@ -123,8 +122,7 @@ public class ApplicationContextConfig {
         TrainingStatus.class,
         TrainingUser.class,
         User.class,
-        UserSerialKey.class
-    });
+        UserSerialKey.class);
 
     return localSessionFactoryBean;
   }

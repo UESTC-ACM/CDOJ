@@ -15,7 +15,8 @@
 <body>
 
 <div ng-controller="ContestController"
-     ng-init="contestId=${contestId};">
+     ng-init="contestId=${contestId};"
+     id="contest-show">
 <div class="row">
 <div class="col-md-12">
   <h1 ng-bind="contest.title" class="text-center"></h1>
@@ -171,7 +172,7 @@
         problemId: undefined,
         languageId: undefined,
         contestId: ${contestId},
-        result: 'OJ_ALL',
+        result: 0,
         orderFields: 'statusId',
         orderAsc: 'false'
      };
@@ -183,72 +184,6 @@
              condition="condition"
              id="page-info">
         </div>
-        <div id="advance-search">
-          <a href="#" id="advanced" data-toggle="dropdown"><i
-              class="fa fa-caret-square-o-down"></i></a>
-          <ul ui-dropdown-menu class="dropdown-menu cdoj-form-menu" role="menu"
-              aria-labelledby="advance-menu">
-            <li role="presentation" id="condition">
-              <form class="form">
-                <fieldset>
-                  <div class="row">
-                    <div class="col-md-12" ng-show="$root.isAdmin">
-                      <div class="form-group">
-                        <label for="userName">User name</label>
-                        <input type="text"
-                               ng-model="condition.userName"
-                               maxlength="24"
-                               id="userName"
-                               class="form-control input-sm"/>
-                      </div>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="problemId">Problem ID</label>
-                        <input type="number"
-                               ng-model="condition.problemId"
-                               min="1"
-                               id="problemId"
-                               class="form-control input-sm"/>
-                      </div>
-                    </div>
-                    <div class="col-md-12"
-                         ng-show="$root.isAdmin">
-                      <div class="form-group">
-                        <label for="contestId">Contest ID</label>
-                        <input type="number"
-                               ng-model="condition.contestId"
-                               min="1"
-                               id="contestId"
-                               class="form-control input-sm"/>
-                      </div>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="keyword">Keyword</label>
-                        <input type="text"
-                               ng-model="condition.keyword"
-                               maxlength="100"
-                               id="keyword"
-                               class="form-control input-sm"/>
-                      </div>
-                    </div>
-                  </div>
-                </fieldset>
-                <p class="pull-left"
-                   ui-rejudge-button
-                   ng-show="$root.isAdmin"
-                   condition="condition">
-                </p>
-
-                <p class="pull-right">
-                  <button type="button" class="btn btn-danger btn-sm"
-                          ng-click="reset()">Reset
-                  </button>
-                </p>
-              </form>
-          </ul>
-        </div>
       </div>
     </div>
 
@@ -259,10 +194,11 @@
           <tr>
             <th style="text-align: center;" ng-show="$root.isAdmin">User</th>
             <th style="text-align: center;">Prob</th>
-            <th style="width: 19em; text-align: center;">Result <a
-                id="status-refresh-button" href="#"> <i
-                class="fa fa-refresh"></i>
-            </a></th>
+            <th style="width: 19em; text-align: center;">Result
+              <a id="status-refresh-button" href="#" ng-click="refresh()">
+                <i class="fa fa-refresh"></i>
+              </a>
+            </th>
             <th style="text-align: center;">Memory</th>
             <th style="text-align: center;">Time</th>
             <th style="text-align: center;">Language</th>
@@ -270,20 +206,48 @@
             <th style="width: 11em; text-align: center;">Submit
               Time
             </th>
-            <th></th>
           </tr>
           </thead>
           <tbody>
+          <tr>
+            <td ng-show="$root.isAdmin">
+              <input type="text"
+                     style="width: 100%;"
+                     ng-model="condition.userName"/>
+            </td>
+            <td>
+              <select style="width: 100%;"
+                      ng-model="condition.problemId"
+                      ng-options="problem.problemId as problem.orderCharacter for problem in problemList">
+                <option value="">All</option>
+              </select>
+            </td>
+            <td>
+              <select style="width: 100%;"
+                      ng-model="condition.result"
+                      ng-options="result.onlineJudgeResultTypeId as result.description for result in $root.resultTypeList">
+              </select>
+            </td>
+            <td></td>
+            <td></td>
+            <td>
+              <select style="width: 100%;"
+                      ng-model="condition.languageId"
+                      ng-options="language.languageId as language.name for language in $root.languageList">
+                <option value="">All</option>
+              </select>
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
           <tr ng-repeat="status in list">
             <td style="text-align: center;" ng-show="$root.isAdmin">
               <a href="/user/center/{{status.userName}}"
-                 target="_blank"
                  ng-bind="status.userName"></a>
             </td>
             <td style="text-align: center;">
-              <a href="/problem/show/{{status.problemId}}"
-                 target="_blank"
-                 ng-bind="status.problemId"></a>
+              <ui-contest-problem-href problem-id="status.problemId"
+                                       problem-list="problemList"></ui-contest-problem-href>
             </td>
             <td style="text-align: center;"
                 ui-status
@@ -310,7 +274,6 @@
             <td style="text-align: center;"
                 ui-time
                 time="status.time"></td>
-            <td></td>
           </tr>
           </tbody>
         </table>
@@ -343,14 +306,13 @@
       </div>
     </form>
     <div class="btn-group">
-      <c:forEach var="language" items="${languageList}">
-
-      <button type="button" class="btn btn-default"
+      <button type="button"
+              ng-repeat="language in $root.languageList"
+              class="btn btn-default"
               ng-model="submitDTO.languageId"
-              btn-radio="${language.languageId}">${language.name}</button>
-
-            </c:forEach>
-          </div>
+              btn-radio="language.languageId"
+              ng-bind="language.name"></button>
+    </div>
   </div>
   <div class="modal-footer">
     <button class="btn btn-default" ng-click="submit()">Submit</button>

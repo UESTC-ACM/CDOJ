@@ -29,9 +29,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDetailDTO;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
-import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
-import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
@@ -51,27 +48,20 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 public class ContestController extends BaseController {
 
   private ContestService contestService;
-  private LanguageService languageService;
   private ContestProblemService contestProblemService;
   private PictureService pictureService;
   private ProblemService problemService;
 
   @Autowired
-  public ContestController(DepartmentService departmentService, GlobalService globalService,
-                           ContestService contestService, LanguageService languageService,
-                           ContestProblemService contestProblemService,
-                           PictureService pictureService, ProblemService problemService) {
-    super(departmentService, globalService);
+  public ContestController(ContestService contestService, ContestProblemService contestProblemService, PictureService pictureService, ProblemService problemService) {
     this.contestService = contestService;
-    this.languageService = languageService;
     this.contestProblemService = contestProblemService;
     this.pictureService = pictureService;
     this.problemService = problemService;
   }
 
-
   @RequestMapping("data/{contestId}")
-  @LoginPermit(NeedLogin = true)
+  @LoginPermit(NeedLogin = false)
   public
   @ResponseBody
   Map<String, Object> data(@PathVariable("contestId") Integer contestId,
@@ -111,14 +101,13 @@ public class ContestController extends BaseController {
   }
 
   @RequestMapping("show/{contestId}")
-  @LoginPermit(NeedLogin = true)
+  @LoginPermit(NeedLogin = false)
   public String show(@PathVariable("contestId") Integer contestId, ModelMap model) {
     try {
       if (!contestService.checkContestExists(contestId)) {
-        throw new AppException("NO such contest");
+        throw new AppException("No such contest");
       }
       model.put("contestId", contestId);
-      model.put("languageList", languageService.getLanguageList());
     } catch (AppException e) {
       return "error/404";
     } catch (Exception e) {
@@ -215,7 +204,6 @@ public class ContestController extends BaseController {
             contestProblemService.getContestProblemSummaryDTOListByContestId(contestId));
       }
 
-      model.put("contestTypeList", globalService.getContestTypeList());
     } catch (AppException e) {
       model.put("message", e.getMessage());
       return "error/error";

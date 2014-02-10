@@ -1,11 +1,8 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.admin;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
@@ -20,9 +17,7 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 @RequestMapping("/admin")
 public class AdminController extends BaseController {
 
-  @Autowired
-  public AdminController(DepartmentService departmentService, GlobalService globalService) {
-    super(departmentService, globalService);
+  public AdminController() {
   }
 
   @RequestMapping(value = {"index", "/"})
