@@ -169,7 +169,6 @@ Admin problem editor page
           <div class="col-sm-6">
             <div class="input-group input-group-sm">
               <input type="number"
-                     name="dataCount"
                      ng-model="problem.dataCount"
                      id="dataCount"
                      class="form-control"

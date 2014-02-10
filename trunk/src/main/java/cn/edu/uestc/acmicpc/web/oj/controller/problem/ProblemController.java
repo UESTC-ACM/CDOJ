@@ -25,10 +25,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
-import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
-import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
@@ -47,19 +44,13 @@ public class ProblemController extends BaseController {
 
   private ProblemService problemService;
   private StatusService statusService;
-  private LanguageService languageService;
   private PictureService pictureService;
   private FileService fileService;
 
   @Autowired
-  public ProblemController(DepartmentService departmentService, GlobalService globalService,
-                           ProblemService problemService, StatusService statusService,
-                           LanguageService languageService, PictureService pictureService,
-                           FileService fileService) {
-    super(departmentService, globalService);
+  public ProblemController(ProblemService problemService, StatusService statusService, PictureService pictureService, FileService fileService) {
     this.problemService = problemService;
     this.statusService = statusService;
-    this.languageService = languageService;
     this.pictureService = pictureService;
     this.fileService = fileService;
   }
@@ -114,7 +105,6 @@ public class ProblemController extends BaseController {
         throw new AppException("No such problem.");
       }
       model.put("problemId", problemId);
-      model.put("languageList", languageService.getLanguageList());
       /*
       Map<Global.OnlineJudgeResultType, Long> problemStatistic = new TreeMap<>();
       for (Global.OnlineJudgeResultType type : Global.OnlineJudgeResultType.values()) {

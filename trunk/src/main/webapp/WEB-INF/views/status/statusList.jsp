@@ -134,10 +134,11 @@ Admin problem list page
           <th style="text-align: center;">#</th>
           <th style="text-align: center;">User</th>
           <th style="text-align: center;">Prob</th>
-          <th style="width: 19em; text-align: center;">Result <a
-              id="status-refresh-button" href="#"> <i
-              class="fa fa-refresh"></i>
-          </a></th>
+          <th style="width: 19em; text-align: center;">Result
+            <a id="status-refresh-button" href="#" ng-click="refresh()">
+              <i class="fa fa-refresh"></i>
+            </a>
+          </th>
           <th style="text-align: center;">Memory</th>
           <th style="text-align: center;">Time</th>
           <th style="text-align: center;">Language</th>
@@ -152,12 +153,10 @@ Admin problem list page
           <td style="text-align: center;" ng-bind="status.statusId"></td>
           <td style="text-align: center;">
             <a href="/user/center/{{status.userName}}"
-               target="_blank"
                ng-bind="status.userName"></a>
           </td>
           <td style="text-align: center;">
             <a href="/problem/show/{{status.problemId}}"
-               target="_blank"
                ng-bind="status.problemId"></a>
           </td>
           <td style="text-align: center;"

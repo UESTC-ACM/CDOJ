@@ -30,23 +30,8 @@ User menu on navbar
           </div>
         </li>
         <!-- User -->
-        <c:choose>
-          <c:when test="${sessionScope.currentUser == null}">
-            <li ng-controller="UserController"
-                ng-init="$root.hasLogin=false;">
-            </li>
-          </c:when>
-          <c:otherwise>
-            <li ng-controller="UserController"
-                ng-init="$root.hasLogin=true;
-                $root.currentUser={
-                  userName: '${sessionScope.currentUser.userName}',
-                  type: ${sessionScope.currentUser.type},
-                  email: '${sessionScope.currentUser.email}'
-                };">
-            </li>
-          </c:otherwise>
-        </c:choose>
+        <li ng-controller="UserController">
+        </li>
       </ul>
     </nav>
   </div>

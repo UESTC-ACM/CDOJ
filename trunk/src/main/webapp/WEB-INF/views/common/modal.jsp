@@ -117,13 +117,7 @@ All modal will used on every page
                      for="departmentId">Department</label>
               <div class="col-sm-8">
                 <select ng-model="userRegisterDTO.departmentId"
-                        ng-options="department.departmentId as department.name for department in departmentList"
-                        ng-init="departmentList=[
-                        <c:forEach var="department" items="${departmentList}" varStatus="status">
-                          {departmentId: ${department.departmentId}, name: '${department.name}'}
-                          <c:if test="${status.last == false}">,</c:if>
-                        </c:forEach>
-                        ];"
+                        ng-options="department.departmentId as department.name for department in $root.departmentList"
                         id="departmentId"
                         ng-required="true"
                         class="form-control input-sm">
@@ -317,13 +311,7 @@ All modal will used on every page
                      for="departmentId">Department</label>
               <div class="col-sm-8">
                 <select ng-model="userEditDTO.departmentId"
-                        ng-options="department.departmentId as department.name for department in departmentList"
-                        ng-init="departmentList=[
-                        <c:forEach var="department" items="${departmentList}" varStatus="status">
-                          {departmentId: ${department.departmentId}, name: '${department.name}'}
-                          <c:if test="${status.last == false}">,</c:if>
-                        </c:forEach>
-                        ];"
+                        ng-options="department.departmentId as department.name for department in $root.departmentList"
                         id="departmentId"
                         ng-required="true"
                         class="form-control input-sm">

@@ -161,7 +161,6 @@ Admin problem list page
           <td style="text-align: right;" ng-bind="problem.problemId"></td>
           <td>
             <a href="/problem/show/{{problem.problemId}}"
-               target="_blank"
                ng-bind="problem.title"></a>
             <small>&nbsp- <span ng-bind="problem.source"></span></small>
           </td>
@@ -169,7 +168,7 @@ Admin problem list page
                 panelAC: data.status == AuthorStatusType.PASS,
                 panelWA: data.status == AuthorStatusType.FAIL
                          }" style="text-align: right;">
-            <a href="/status/list?problemId={{problem.problemId}}" target="_blank">x
+            <a href="/status/list?problemId={{problem.problemId}}">x
               <span ng-bind="problem.solved"></span>
             </a>
           </td>

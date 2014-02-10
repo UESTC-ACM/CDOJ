@@ -32,7 +32,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDTO;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
@@ -54,18 +53,16 @@ public class UserController extends BaseController {
   private StatusService statusService;
   private UserSerialKeyService userSerialKeyService;
   private EmailService emailService;
+  private DepartmentService departmentService;
 
   @Autowired
-  public UserController(DepartmentService departmentService, GlobalService globalService,
-                        UserService userService, ProblemService problemService,
-                        StatusService statusService, UserSerialKeyService userSerialKeyService,
-                        EmailService emailService) {
-    super(departmentService, globalService);
+  public UserController(UserService userService, ProblemService problemService, StatusService statusService, UserSerialKeyService userSerialKeyService, EmailService emailService, DepartmentService departmentService) {
     this.userService = userService;
     this.problemService = problemService;
     this.statusService = statusService;
     this.userSerialKeyService = userSerialKeyService;
     this.emailService = emailService;
+    this.departmentService = departmentService;
   }
 
   @RequestMapping("login")
