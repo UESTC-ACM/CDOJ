@@ -283,7 +283,49 @@
 
 </tab>
 <tab heading="Rank">
-  Rank
+  <div class="row">
+    <div class="col-md-12">
+      <table id="rank-list" class="table">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 55px;">Rank</th>
+            <th class="text-center">ID</th>
+            <th class="text-center" style="width: 65px;">Solved</th>
+            <th class="text-center" style="width: 75px;">Penalty</th>
+            <th class="text-center"
+                ng-repeat="problem in problemList"
+                style="width: 70px;">
+                  <a href="#" ng-click="chooseProblem(problem.order)"
+                     ng-bind="problem.orderCharacter"></a>
+                </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="user in rankList" class="text-center">
+            <td class="rank" ng-bind="user.rank" style="vertical-align:middle;"></td>
+            <td class="user-name">
+              <span ng-bind="user.userName"></span>
+              <br/>
+              <span>({{user.nickName}})</span>
+            </td>
+            <td class="solved" ng-bind="user.solved" style="vertical-align:middle;"></td>
+            <td class="penalty" penalty="user.penalty" ui-penalty style="vertical-align:middle;"></td>
+            <td class="item"
+                ng-repeat="item in user.itemList"
+                ng-class="{
+                  'rank-list-first-blood': item.firstBlood,
+                  'rank-list-solved': item.firstBlood == false && item.solved,
+                  'rank-list-tried': item.solved == false && item.tried > 0
+                }">
+              <span ng-if="item.solved == true" length="item.solvedTime" ui-time-length></span>
+              <br/>
+              <span ng-if="item.tried > 0">(-{{item.tried}})</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </tab>
 </tabset>
 </div>
