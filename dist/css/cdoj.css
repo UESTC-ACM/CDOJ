@@ -7559,6 +7559,54 @@ td.visible-print {
   font-weight: 600;
   src: local('Source Code Pro Semibold'), local('SourceCodePro-Semibold'), url(/font/windows/SourceCodePro-Semibold.woff) format('woff');
 }
+#cdoj-users-avatar {
+  width: 64px;
+  height: 64px;
+  min-height: 64px;
+  min-width: 64px;
+}
+#currentUser {
+  font-size: 14px;
+}
+#cdoj-user-avatar-large {
+  width: 190px;
+  height: 190px;
+  min-height: 190px;
+  min-width: 190px;
+}
+#cdoj-user-center-summary {
+  padding-top: 20px;
+}
+.cdoj-label {
+  padding: .2em .6em .3em;
+  font-weight: bold;
+  line-height: 1;
+  width: 3em;
+  text-align: center;
+  float: left;
+  margin: .1em;
+}
+.cdoj-label a {
+  color: #ffffff;
+}
+#rank-list td {
+  border: 2px white solid;
+}
+#rank-list td.rank,
+#rank-list td.user-name,
+#rank-list td.solved,
+#rank-list td.penalty {
+  background-color: #b1d3ec;
+}
+#rank-list td.rank-list-first-blood {
+  background-color: #00b266;
+}
+#rank-list td.rank-list-solved {
+  background-color: #b1ecd3;
+}
+#rank-list td.rank-list-tried {
+  background-color: #ffccbf;
+}
 /* Hemisu Light */
 /* Original theme - http://noahfrederick.com/vim-color-scheme-hemisu/ */
 /* Pretty printing styles. Used with prettify.js. */
@@ -7704,13 +7752,51 @@ li.L7,
 li.L9 {
   /* */
 }
-hr {
-  border: 1px solid #ddd;
+.flandre-heading {
+  padding: 2px 15px;
 }
-.cdoj-markdown-table {
-  width: auto;
-  margin-left: auto;
-  margin-right: auto;
+.flandre-editor,
+.flandre-preview {
+  display: none;
+  height: auto;
+  max-height: 500px;
+  overflow-y: auto;
+  width: 100%;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fff;
+  background-image: none;
+}
+.flandre-editor:focus,
+.flandre-preview:focus {
+  outline: none;
+}
+.flandre-editor.flandre-show,
+.flandre-preview.flandre-show {
+  display: block;
+}
+.flandre-editor {
+  overflow-y: visible;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.flandre-preview p:last-child {
+  margin-bottom: 0;
+}
+.modal-title ul > li > a {
+  padding: 2px 6px;
+}
+.status-info {
+  color: #3a87ad;
+}
+.status-success {
+  color: #468847;
+}
+.status-danger {
+  color: #b94a48;
 }
 body,
 html,
@@ -7764,18 +7850,6 @@ html,
   background-color: transparent;
   padding: 0;
 }
-.status-sign i {
-  font-size: 48px;
-}
-.status-info {
-  color: #3a87ad;
-}
-.status-success {
-  color: #468847;
-}
-.status-danger {
-  color: #b94a48;
-}
 .hero {
   text-align: center;
   margin: 6em auto 3em;
@@ -7801,42 +7875,6 @@ small {
   html,
   .row {
     font-size: 12px;
-  }
-}
-#cdoj-layout {
-  margin-top: 50px;
-}
-body {
-  background-color: #f8f8f8;
-}
-#cdoj-container {
-  padding: 0 15px;
-}
-#cdoj-layout {
-  padding-left: 165px;
-}
-img {
-  max-width: 100%;
-  height: auto;
-}
-#cdoj-best-solutions {
-  margin-left: 260px;
-}
-@media (max-width: 767px) {
-  #cdoj-layout {
-    padding-left: 36px;
-  }
-  .cdoj-form-menu {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    left: 15px;
-    bottom: 15px;
-    overflow-y: auto;
-  }
-  body,
-  html {
-    overflow-x: hidden;
   }
 }
 #cdoj-navbar-top {
@@ -8048,36 +8086,6 @@ img {
     min-width: 50px;
   }
 }
-#cdoj-users-avatar {
-  width: 64px;
-  height: 64px;
-  min-height: 64px;
-  min-width: 64px;
-}
-#currentUser {
-  font-size: 14px;
-}
-#cdoj-user-avatar-large {
-  width: 190px;
-  height: 190px;
-  min-height: 190px;
-  min-width: 190px;
-}
-#cdoj-user-center-summary {
-  padding-top: 20px;
-}
-.cdoj-label {
-  padding: .2em .6em .3em;
-  font-weight: bold;
-  line-height: 1;
-  width: 3em;
-  text-align: center;
-  float: left;
-  margin: .1em;
-}
-.cdoj-label a {
-  color: #ffffff;
-}
 .cdoj-submit-area {
   resize: none;
   width: 100%;
@@ -8092,59 +8100,6 @@ input.ng-invalid {
   background-color: #ffccbf;
   border-color: #ff3300;
 }
-.admin-span {
-  margin-top: -6px;
-  margin-left: 15px;
-}
-.panel-body {
-  padding: 12px;
-}
-#page-info {
-  margin: 10px 0;
-}
-#page-info .pagination {
-  margin: 0;
-}
-.no-margin-right {
-  margin-right: 0;
-}
-.flandre-heading {
-  padding: 2px 15px;
-}
-.flandre-editor,
-.flandre-preview {
-  display: none;
-  height: auto;
-  max-height: 500px;
-  overflow-y: auto;
-  width: 100%;
-  padding: 6px 12px;
-  font-size: 14px;
-  line-height: 1.428571429;
-  color: #555;
-  vertical-align: middle;
-  background-color: #fff;
-  background-image: none;
-}
-.flandre-editor:focus,
-.flandre-preview:focus {
-  outline: none;
-}
-.flandre-editor.flandre-show,
-.flandre-preview.flandre-show {
-  display: block;
-}
-.flandre-editor {
-  overflow-y: visible;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-.flandre-preview p:last-child {
-  margin-bottom: 0;
-}
-.modal-title ul > li > a {
-  padding: 2px 6px;
-}
 .cdoj-article .cdoj-article-summary {
   border-left: 4px solid #1f8dd6;
   padding-left: 1em;
@@ -8153,4 +8108,64 @@ input.ng-invalid {
 #article-content {
   padding-top: 1em;
   margin-top: 1em;
+}
+#cdoj-layout {
+  margin-top: 50px;
+}
+body {
+  background-color: #f8f8f8;
+}
+#cdoj-container {
+  padding: 0 15px;
+}
+#cdoj-layout {
+  padding-left: 165px;
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+#cdoj-best-solutions {
+  margin-left: 260px;
+}
+@media (max-width: 767px) {
+  #cdoj-layout {
+    padding-left: 36px;
+  }
+  .cdoj-form-menu {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    left: 15px;
+    bottom: 15px;
+    overflow-y: auto;
+  }
+  body,
+  html {
+    overflow-x: hidden;
+  }
+}
+hr {
+  border: 1px solid #ddd;
+}
+.cdoj-markdown-table {
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+.admin-span {
+  margin-top: -6px;
+  margin-left: 15px;
+}
+.panel-body {
+  padding: 12px;
+}
+.no-margin-right {
+  margin-right: 0;
+}
+#page-info {
+  margin: 10px 0;
+}
+#page-info .pagination {
+  margin: 0;
 }

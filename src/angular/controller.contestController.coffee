@@ -1,6 +1,6 @@
 cdoj.controller("ContestController", [
-  "$scope", "$rootScope", "$http", "$window", "$modal"
-  ($scope, $rootScope, $http, $window, $modal) ->
+  "$scope", "$rootScope", "$http", "$window", "$modal", "$interval"
+  ($scope, $rootScope, $http, $window, $modal, $interval) ->
     $scope.contestId = 0
     $scope.contest =
       title: ""
@@ -27,7 +27,22 @@ cdoj.controller("ContestController", [
             $scope.currentProblem = data.problemList[0]
         else
           $window.alert data.error_msg
+      refreshRankList()
     )
+
+    refreshRankList = ->
+      contestId = angular.copy($scope.contestId)
+      console.log contestId
+      $http.get("/contest/rankList/#{contestId}").then (response)->
+        data = response.data
+        if data.result == "success"
+          $scope.rankList = data.rankList.rankList
+          _.each($scope.problemList, (value, index)->
+            value.tried = data.rankList.problemList[index].tried
+            value.solved = data.rankList.problemList[index].solved
+          )
+    rankListTimer = $interval(refreshRankList, 10000)
+
     $scope.showProblemTab = ->
       # TODO Dirty code!
       $scope.$$childHead.tabs[1].select()

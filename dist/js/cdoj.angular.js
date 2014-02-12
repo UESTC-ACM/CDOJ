@@ -25175,7 +25175,8 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
   ]);
 
   cdoj.controller("ContestController", [
-    "$scope", "$rootScope", "$http", "$window", "$modal", function($scope, $rootScope, $http, $window, $modal) {
+    "$scope", "$rootScope", "$http", "$window", "$modal", "$interval", function($scope, $rootScope, $http, $window, $modal, $interval) {
+      var rankListTimer, refreshRankList;
       $scope.contestId = 0;
       $scope.contest = {
         title: ""
@@ -25194,7 +25195,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
       $scope.$watch("contestId", function() {
         var contestId;
         contestId = angular.copy($scope.contestId);
-        return $http.get("/contest/data/" + contestId).then(function(response) {
+        $http.get("/contest/data/" + contestId).then(function(response) {
           var data;
           data = response.data;
           if (data.result === "success") {
@@ -25208,7 +25209,25 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
             return $window.alert(data.error_msg);
           }
         });
+        return refreshRankList();
       });
+      refreshRankList = function() {
+        var contestId;
+        contestId = angular.copy($scope.contestId);
+        console.log(contestId);
+        return $http.get("/contest/rankList/" + contestId).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            $scope.rankList = data.rankList.rankList;
+            return _.each($scope.problemList, function(value, index) {
+              value.tried = data.rankList.problemList[index].tried;
+              return value.solved = data.rankList.problemList[index].solved;
+            });
+          }
+        });
+      };
+      rankListTimer = $interval(refreshRankList, 10000);
       $scope.showProblemTab = function() {
         return $scope.$$childHead.tabs[1].select();
       };
@@ -26404,7 +26423,49 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
           };
         }
       ],
-      template: "<div>{{timeString}}</div>"
+      template: "{{timeString}}"
+    };
+  });
+
+  cdoj.directive("uiPenalty", function() {
+    return {
+      restrict: "A",
+      scope: {
+        penalty: "="
+      },
+      controller: [
+        "$scope", function($scope) {
+          $scope.timeString = "";
+          $scope.$watch("penalty", function() {
+            return $scope.showPenaltyMinutes();
+          });
+          $scope.showPenaltyMinutes = function() {
+            return $scope.timeString = Math.round($scope.penalty / 60);
+          };
+          $scope.showPenalty = function() {
+            var hours, length, minute, second;
+            length = parseInt($scope.penalty);
+            second = length % 60;
+            length = (length - second) / 60;
+            minute = length % 60;
+            length = (length - minute) / 60;
+            hours = length;
+            $scope.timeString = "";
+            return $scope.timeString = $scope.timeString + "%d:%02d:%02d".sprintf(hours, minute, second);
+          };
+          $scope.mouseOver = function() {
+            return $scope.showPenalty();
+          };
+          return $scope.mouseLeave = function() {
+            return setTimeout(function() {
+              return $scope.$apply(function() {
+                return $scope.showPenaltyMinutes();
+              });
+            }, 400);
+          };
+        }
+      ],
+      template: "<span ng-mouseover=\"mouseOver()\" ng-mouseleave=\"mouseLeave()\">{{timeString}}</span>"
     };
   });
 
