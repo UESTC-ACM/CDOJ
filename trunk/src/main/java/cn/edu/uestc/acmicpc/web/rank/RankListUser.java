@@ -5,6 +5,7 @@ package cn.edu.uestc.acmicpc.web.rank;
  */
 public class RankListUser implements Comparable<RankListUser> {
   public String userName;
+  public String nickName;
   public Integer rank;
   public Integer solved;
   public Integer tried;
