@@ -94,17 +94,11 @@ User list page
                     <div class="form-group">
                       <label for="type">Type</label>
                       <select ng-model="condition.type"
-                              ng-options="authenticationType.ordinal as authenticationType.description for authenticationType in authenticationTypeList"
-                              ng-init="authenticationTypeList=[
-                                <c:forEach var="authenticationType" items="${authenticationTypeList}" varStatus="status">
-                                  {ordinal: ${authenticationType.ordinal()}, description: '${authenticationType.description}'}
-                                  <c:if test="${status.last == false}">,</c:if>
-                                </c:forEach>
-                                ];"
+                              ng-options="type.authenticationTypeId as type.description for type in $root.authenticationTypeList"
                               id="type"
                               ng-required="true"
                               class="form-control input-sm">
-                        <option value="">-- choose type --</option>
+                        <option value="">All</option>
                       </select>
                     </div>
                   </div>
@@ -132,17 +126,11 @@ User list page
                     <div class="form-group">
                       <label for="type">Department</label>
                       <select ng-model="condition.departmentId"
-                              ng-options="department.departmentId as department.name for department in departmentList"
-                              ng-init="departmentList=[
-                                <c:forEach var="department" items="${departmentList}" varStatus="status">
-                                  {departmentId: ${department.departmentId}, name: '${department.name}'}
-                                  <c:if test="${status.last == false}">,</c:if>
-                                </c:forEach>
-                                ];"
+                              ng-options="department.departmentId as department.name for department in $root.departmentList"
                               id="departmentId"
                               ng-required="true"
                               class="form-control input-sm">
-                        <option value="">-- choose department --</option>
+                        <option value="">All</option>
                       </select>
                     </div>
                   </div>
@@ -172,7 +160,7 @@ User list page
 
             <div class="media-body">
               <h4 class="media-heading">
-                <a href="/user/center/{{user.userName}}" target="_blank">
+                <a href="/user/center/{{user.userName}}">
                   <span ng-bind="user.nickName"></span>
                   <small ng-bind="user.userName"></small>
                 </a>
@@ -183,7 +171,7 @@ User list page
               </span>
               <br/>
               <span>
-                <a href="/status/list?userName={{user.userName}}" target="_blank">
+                <a href="/status/list?userName={{user.userName}}">
                   <span ng-bind="user.solved"></span>/<span ng-bind="user.tried"></span>
                 </a>
               </span>
@@ -300,13 +288,7 @@ User list page
                  for="departmentId">Department</label>
           <div class="col-sm-8">
             <select ng-model="userEditDTO.departmentId"
-                    ng-options="department.departmentId as department.name for department in departmentList"
-                    ng-init="departmentList=[
-                        <c:forEach var="department" items="${departmentList}" varStatus="status">
-                          {departmentId: ${department.departmentId}, name: '${department.name}'}
-                          <c:if test="${status.last == false}">,</c:if>
-                        </c:forEach>
-                        ];"
+                    ng-options="department.departmentId as department.name for department in $root.departmentList"
                     id="departmentId"
                     ng-required="true"
                     class="form-control input-sm">
@@ -319,13 +301,7 @@ User list page
                  for="departmentId">Type</label>
           <div class="col-sm-8">
             <select ng-model="userEditDTO.type"
-                    ng-options="authenticationType.ordinal as authenticationType.description for authenticationType in authenticationTypeList"
-                    ng-init="authenticationTypeList=[
-                                <c:forEach var="authenticationType" items="${authenticationTypeList}" varStatus="status">
-                                  {ordinal: ${authenticationType.ordinal()}, description: '${authenticationType.description}'}
-                                  <c:if test="${status.last == false}">,</c:if>
-                                </c:forEach>
-                                ];"
+                    ng-options="type.authenticationTypeId as type.description for type in $root.authenticationTypeList"
                     id="type"
                     ng-required="true"
                     class="form-control input-sm">

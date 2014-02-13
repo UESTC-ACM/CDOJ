@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.code.CodeDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
@@ -30,7 +31,6 @@ import cn.edu.uestc.acmicpc.service.iface.CodeService;
 import cn.edu.uestc.acmicpc.service.iface.CompileInfoService;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
-import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
@@ -47,26 +47,23 @@ public class StatusController extends BaseController {
 
   private StatusService statusService;
   private ProblemService problemService;
-  private LanguageService languageService;
   private CodeService codeService;
   private CompileInfoService compileInfoService;
   private ContestService contestService;
   private ContestProblemService contestProblemService;
+  private GlobalService globalService;
+  private LanguageService languageService;
 
   @Autowired
-  public StatusController(DepartmentService departmentService, GlobalService globalService,
-                          StatusService statusService, ProblemService problemService,
-                          LanguageService languageService, CodeService codeService,
-                          CompileInfoService compileInfoService, ContestService contestService,
-                          ContestProblemService contestProblemService) {
-    super(departmentService, globalService);
+  public StatusController(StatusService statusService, ProblemService problemService, CodeService codeService, CompileInfoService compileInfoService, ContestService contestService, ContestProblemService contestProblemService, GlobalService globalService, LanguageService languageService) {
     this.statusService = statusService;
     this.problemService = problemService;
-    this.languageService = languageService;
     this.codeService = codeService;
     this.compileInfoService = compileInfoService;
     this.contestService = contestService;
     this.contestProblemService = contestProblemService;
+    this.globalService = globalService;
+    this.languageService = languageService;
   }
 
   @RequestMapping("list")
@@ -85,6 +82,21 @@ public class StatusController extends BaseController {
     try {
       if (!isAdmin(session)) {
         statusCondition.isVisible = true;
+        if (statusCondition.contestId != -1) {
+          ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(statusCondition.contestId);
+          if (contestShowDTO == null) {
+            throw new AppException("No such contest.");
+          }
+          UserDTO currentUser = getCurrentUser(session);
+          if (currentUser == null) {
+            // Return nothing
+            statusCondition.userId = 0;
+          } else {
+            statusCondition.userId = currentUser.getUserId();
+          }
+          statusCondition.startTime = contestShowDTO.getStartTime();
+          statusCondition.endTime = contestShowDTO.getEndTime();
+        }
       }
       Long count = statusService.count(statusCondition);
       Long recordPerPage = Global.RECORD_PER_PAGE;

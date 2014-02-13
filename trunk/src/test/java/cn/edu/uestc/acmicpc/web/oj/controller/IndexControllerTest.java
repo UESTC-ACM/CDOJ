@@ -36,8 +36,6 @@ public class IndexControllerTest extends ControllerTest {
     mockMvc.perform(get("/"))
         .andExpect(status().isOk())
         .andExpect(view().name("index/index"))
-        .andExpect(model().attribute("message", "home page."))
-        .andExpect(model().attribute("departmentList", departmentList))
-        .andExpect(model().attribute("authenticationTypeList", authenticationTypeList));
+        .andExpect(model().attribute("message", "home page."));
   }
 }

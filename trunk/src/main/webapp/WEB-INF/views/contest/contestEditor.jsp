@@ -26,7 +26,7 @@
         action:'${action}',
         contestId:'${targetContest.contestId}',
         title:'${targetContest.title}',
-        type:'${targetContest.type}',
+        type:${targetContest.type},
         time:'<fmt:formatDate value="${targetContest.time}"
                     type="date" pattern="yyyy-MM-dd HH:mm" />',
         lengthDays:${targetContest.lengthDays},
@@ -55,7 +55,6 @@
       <div class="form-group">
         <input type="text"
                ng-model="contest.title"
-               name="title"
                required
                ng-minlength="1"
                ng-maxlength="50"
@@ -73,18 +72,13 @@
           </label>
 
           <div class="col-sm-10">
-            <div class="btn-group" data-toggle="buttons">
-              <c:forEach var="contestType"
-                         items="${contestTypeList}" varStatus="status">
-                <label class="btn btn-default"
-                       ng-class="{ 'active' : contest.type == ${status.index} }">
-                  <input type="radio"
-                         ng-model="contest.type"
-                         name="type"
-                         value="<c:out value="${status.index}"/>"/>
-                  <c:out value="${contestType.description}"/>
-                </label>
-              </c:forEach>
+            <div class="btn-group">
+              <button type="button"
+                      class="btn btn-default"
+                      ng-repeat="contestType in $root.contestTypeList"
+                      ng-model="contest.type"
+                      btn-radio="contestType.contestTypeId"
+                      ng-bind="contestType.description"></button>
             </div>
           </div>
         </div>
@@ -162,7 +156,7 @@
                          ng-change="updateProblemTitle(problem)"
                       />
                 </td>
-                <td>{{problem.title}}</td>
+                <td ng-bind="problem.title"></td>
               </tr>
               </tbody>
             </table>

@@ -2,6 +2,9 @@ package cn.edu.uestc.acmicpc.service.iface;
 
 import java.util.List;
 
+import cn.edu.uestc.acmicpc.util.dto.AuthenticationTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.ContestTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.OnlineJudgeResultTypeDTO;
 import cn.edu.uestc.acmicpc.util.settings.Global.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.settings.Global.ContestType;
 import cn.edu.uestc.acmicpc.util.settings.Global.OnlineJudgeReturnType;
@@ -16,7 +19,14 @@ public interface GlobalService {
    *
    * @return list of all {@link AuthenticationType} entities.
    */
-  public List<AuthenticationType> getAuthenticationTypeList();
+  public List<AuthenticationTypeDTO> getAuthenticationTypeList();
+
+  /**
+   * Get all {@link cn.edu.uestc.acmicpc.util.settings.Global.OnlineJudgeResultType} entities.
+   *
+   * @return list of all {@link cn.edu.uestc.acmicpc.util.settings.Global.OnlineJudgeResultType} entities.
+   */
+  public List<OnlineJudgeResultTypeDTO> getOnlineJudgeResultTypeList();
 
   /**
    * Get authentication name by authentication type.
@@ -42,5 +52,5 @@ public interface GlobalService {
    *
    * @return list of all {@link ContestType} entities.
    */
-  public List<ContestType> getContestTypeList();
+  public List<ContestTypeDTO> getContestTypeList();
 }

@@ -1,8 +1,6 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.contest;
 
 import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
+import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestEditorShowDTO;
@@ -27,13 +26,13 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDetailDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemSummaryDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
-import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
-import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
@@ -42,6 +41,8 @@ import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
+import cn.edu.uestc.acmicpc.web.rank.RankListBuilder;
+import cn.edu.uestc.acmicpc.web.rank.RankListStatus;
 
 /**
  * @author liverliu
@@ -51,24 +52,80 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 public class ContestController extends BaseController {
 
   private ContestService contestService;
-  private LanguageService languageService;
   private ContestProblemService contestProblemService;
   private PictureService pictureService;
   private ProblemService problemService;
+  private StatusService statusService;
 
   @Autowired
-  public ContestController(DepartmentService departmentService, GlobalService globalService,
-                           ContestService contestService, LanguageService languageService,
+  public ContestController(ContestService contestService,
                            ContestProblemService contestProblemService,
-                           PictureService pictureService, ProblemService problemService) {
-    super(departmentService, globalService);
+                           PictureService pictureService,
+                           ProblemService problemService,
+                           StatusService statusService) {
     this.contestService = contestService;
-    this.languageService = languageService;
     this.contestProblemService = contestProblemService;
     this.pictureService = pictureService;
     this.problemService = problemService;
+    this.statusService = statusService;
   }
 
+  @RequestMapping("rankList/{contestId}")
+  @LoginPermit(NeedLogin = false)
+  public
+  @ResponseBody
+  Map<String, Object> rankList(@PathVariable("contestId") Integer contestId,
+                           HttpSession session) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(contestId);
+      if (contestShowDTO == null) {
+        throw new AppException("No such contest.");
+      }
+      if (!contestShowDTO.getIsVisible() && !isAdmin(session)) {
+        throw new AppException("No such contest.");
+      }
+
+      List<ContestProblemSummaryDTO> contestProblemList = contestProblemService.
+          getContestProblemSummaryDTOListByContestId(contestId);
+
+      StatusCondition statusCondition = new StatusCondition();
+      statusCondition.contestId = contestShowDTO.getContestId();
+      // Sort by time
+      statusCondition.orderFields = "time";
+      statusCondition.orderAsc = "true";
+      List<StatusListDTO> statusList = statusService.getStatusList(statusCondition);
+
+      RankListBuilder rankListBuilder = new RankListBuilder();
+      for (ContestProblemSummaryDTO problem: contestProblemList) {
+        rankListBuilder.addRankListProblem(problem.getProblemId().toString());
+      }
+      for (StatusListDTO status: statusList) {
+        if (contestShowDTO.getStartTime().after(status.getTime()) ||
+            contestShowDTO.getEndTime().before(status.getTime())) {
+          // Out of time.
+          continue;
+        }
+        rankListBuilder.addStatus(new RankListStatus(
+            1, // Total tried
+            status.getReturnTypeId(), // Return type id
+            status.getProblemId().toString(), // Problem id
+            status.getUserName(), // User name
+            status.getTime().getTime() - contestShowDTO.getStartTime().getTime())); // Time
+      }
+
+      json.put("rankList", rankListBuilder.build());
+      json.put("result", "success");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
 
   @RequestMapping("data/{contestId}")
   @LoginPermit(NeedLogin = false)
@@ -88,13 +145,6 @@ public class ContestController extends BaseController {
 
       List<ContestProblemDetailDTO> contestProblemList = contestProblemService.
           getContestProblemDetailDTOListByContestId(contestId);
-      Collections.sort(contestProblemList, new Comparator<ContestProblemDetailDTO>() {
-
-        @Override
-        public int compare(ContestProblemDetailDTO a, ContestProblemDetailDTO b) {
-          return a.getOrder().compareTo(b.getOrder());
-        }
-      });
 
       json.put("contest", contestShowDTO);
       json.put("problemList", contestProblemList);
@@ -115,10 +165,9 @@ public class ContestController extends BaseController {
   public String show(@PathVariable("contestId") Integer contestId, ModelMap model) {
     try {
       if (!contestService.checkContestExists(contestId)) {
-        throw new AppException("NO such contest");
+        throw new AppException("No such contest");
       }
       model.put("contestId", contestId);
-      model.put("languageList", languageService.getLanguageList());
     } catch (AppException e) {
       return "error/404";
     } catch (Exception e) {
@@ -215,7 +264,6 @@ public class ContestController extends BaseController {
             contestProblemService.getContestProblemSummaryDTOListByContestId(contestId));
       }
 
-      model.put("contestTypeList", globalService.getContestTypeList());
     } catch (AppException e) {
       model.put("message", e.getMessage());
       return "error/error";
@@ -235,8 +283,9 @@ public class ContestController extends BaseController {
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        if (StringUtil.trimAllSpace(contestEditDTO.getTitle()).equals(""))
+        if (StringUtil.trimAllSpace(contestEditDTO.getTitle()).equals("")) {
           throw new FieldException("title", "Please enter a validate title.");
+        }
         ContestDTO contestDTO;
         if (contestEditDTO.getAction().compareTo("new") == 0) {
           Integer contestId = contestService.createNewContest();

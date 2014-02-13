@@ -80,6 +80,13 @@ public class StatusCondition extends BaseCondition {
    */
   public Set<OnlineJudgeResultType> results = new HashSet<>();
 
+  /**
+   * Single result.
+   *
+   * @see cn.edu.uestc.acmicpc.util.settings.Global.OnlineJudgeResultType
+   */
+  public OnlineJudgeResultType result;
+
   @Exp(mapField = "problemByProblemId.isVisible", type = ConditionType.EQUALS)
   public Boolean isVisible;
 
@@ -101,7 +108,10 @@ public class StatusCondition extends BaseCondition {
           userName);
     }
 
-    if (results != null && !results.contains(Global.OnlineJudgeResultType.OJ_ALL)) {
+    if (result != null) {
+      results.add(result);
+    }
+    if (!results.contains(Global.OnlineJudgeResultType.OJ_ALL)) {
       Condition typeCondition = new Condition(JoinedType.OR);
       Set<Integer> affectedResults = new HashSet<>();
       for (OnlineJudgeResultType result : results) {

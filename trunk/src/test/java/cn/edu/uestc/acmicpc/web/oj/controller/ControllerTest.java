@@ -35,7 +35,7 @@ import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
-import cn.edu.uestc.acmicpc.util.settings.Global.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.dto.AuthenticationTypeDTO;
 
 /**
  * Abstract test to define constant variables for controller tests.
@@ -47,7 +47,7 @@ public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
   protected MockMvc mockMvc;
   protected MockHttpSession session;
   protected List<DepartmentDTO> departmentList = new ArrayList<DepartmentDTO>();
-  protected List<AuthenticationType> authenticationTypeList = new ArrayList<AuthenticationType>();
+  protected List<AuthenticationTypeDTO> authenticationTypeList = new ArrayList<AuthenticationTypeDTO>();
   @Mock protected List<LanguageDTO> languageList;
 
   @Autowired protected UserService userService;

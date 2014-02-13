@@ -99,6 +99,11 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
         condition);
   }
 
+  @Override
+  public List<StatusListDTO> getStatusList(StatusCondition condition) throws AppException {
+    return statusDAO.findAll(StatusListDTO.class, StatusListDTO.builder(), condition.getCondition());
+  }
+
   private void updateStatusByStatusDTO(Status status, StatusDTO statusDTO) {
     if (statusDTO.getResult() != null)
       status.setResult(statusDTO.getResult());

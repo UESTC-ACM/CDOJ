@@ -23,8 +23,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleListDTO;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
-import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -43,9 +41,7 @@ public class ArticleController extends BaseController {
   private PictureService pictureService;
 
   @Autowired
-  public ArticleController(DepartmentService departmentService, GlobalService globalService,
-                           ArticleService articleService, PictureService pictureService) {
-    super(departmentService, globalService);
+  public ArticleController(ArticleService articleService, PictureService pictureService) {
     this.articleService = articleService;
     this.pictureService = pictureService;
   }

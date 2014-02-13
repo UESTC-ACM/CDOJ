@@ -20,7 +20,7 @@ Admin problem list page
         userName: undefined,
         problemId: undefined,
         languageId: undefined,
-        contestId: undefined,
+        contestId: -1,
         result: 'OJ_ALL',
         orderFields: 'statusId',
         orderAsc: 'false'
@@ -93,7 +93,6 @@ Admin problem list page
                       <label for="contestId">Contest ID</label>
                       <input type="number"
                              ng-model="condition.contestId"
-                             min="1"
                              id="contestId"
                              class="form-control input-sm"/>
                     </div>
@@ -135,10 +134,11 @@ Admin problem list page
           <th style="text-align: center;">#</th>
           <th style="text-align: center;">User</th>
           <th style="text-align: center;">Prob</th>
-          <th style="width: 19em; text-align: center;">Result <a
-              id="status-refresh-button" href="#"> <i
-              class="fa fa-refresh"></i>
-          </a></th>
+          <th style="width: 19em; text-align: center;">Result
+            <a id="status-refresh-button" href="#" ng-click="refresh()">
+              <i class="fa fa-refresh"></i>
+            </a>
+          </th>
           <th style="text-align: center;">Memory</th>
           <th style="text-align: center;">Time</th>
           <th style="text-align: center;">Language</th>
@@ -146,7 +146,6 @@ Admin problem list page
           <th style="width: 11em; text-align: center;">Submit
             Time
           </th>
-          <th></th>
         </tr>
         </thead>
         <tbody>
@@ -154,12 +153,10 @@ Admin problem list page
           <td style="text-align: center;" ng-bind="status.statusId"></td>
           <td style="text-align: center;">
             <a href="/user/center/{{status.userName}}"
-               target="_blank"
                ng-bind="status.userName"></a>
           </td>
           <td style="text-align: center;">
             <a href="/problem/show/{{status.problemId}}"
-               target="_blank"
                ng-bind="status.problemId"></a>
           </td>
           <td style="text-align: center;"
@@ -187,7 +184,6 @@ Admin problem list page
           <td style="text-align: center;"
               ui-time
               time="status.time"></td>
-          <td></td>
         </tr>
         </tbody>
       </table>

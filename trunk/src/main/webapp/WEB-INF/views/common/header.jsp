@@ -21,7 +21,7 @@ Common header
         href="<c:url value="/plugins/Font-Awesome/css/font-awesome-ie7.min.css"/>"/>
   <![endif]-->
   <link rel="stylesheet"
-        href="<c:url value="/plugins/cdoj/dist/css/cdoj.min.css"/>"/>
+        href="<c:url value="/plugins/cdoj/dist/css/cdoj.css"/>"/>
   <script type="text/javascript">
 
     var _gaq = _gaq || [];

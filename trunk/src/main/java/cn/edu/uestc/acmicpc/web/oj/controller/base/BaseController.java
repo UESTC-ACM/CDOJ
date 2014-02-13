@@ -1,19 +1,12 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.base;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.department.DepartmentDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
-import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.settings.Global;
@@ -25,28 +18,8 @@ import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 @Controller
 public class BaseController {
 
-  protected DepartmentService departmentService;
-  protected GlobalService globalService;
-
-  @Autowired
-  protected BaseController(DepartmentService departmentService, GlobalService globalService) {
-    this.departmentService = departmentService;
-    this.globalService = globalService;
-  }
-
-  @ModelAttribute("departmentList")
-  protected List<DepartmentDTO> getDepartmentList() {
-    return departmentService.getDepartmentList();
-  }
-
-  @ModelAttribute("authenticationTypeList")
-  protected List<Global.AuthenticationType> getAuthenticationTypeList() {
-    return globalService.getAuthenticationTypeList();
-  }
-
-  protected Integer getCurrentUserID(HttpSession session) throws AppException {
-    UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
-    return userDTO.getUserId();
+  protected UserDTO getCurrentUser(HttpSession session) throws AppException {
+    return (UserDTO) session.getAttribute("currentUser");
   }
 
   protected Boolean isAdmin(HttpSession session) throws AppException {

@@ -147,73 +147,7 @@ Problem statement
       </div>
     </div>
   </div>
-  <%--
-    <c:if test="${currentUser != null}">
-    </c:if>
 
-    <div class="tab-pane" id="tab-problem-status">
-      <div class="col-md-12">
-        <div class="media">
-
-          <div class="pull-left">
-            <table class="table table-bordered">
-              </tbody>
-              <c:forEach var="statistic" items="${problemStatistic}">
-                <tr>
-                  <td style="width: 180px; text-align: right;">${statistic.key.description}</td>
-                  <td style="width: 70px;"><c:choose>
-                    <c:when test="${statistic.value == 0}">
-                      ${statistic.value}
-                    </c:when>
-                    <c:otherwise>
-                      <a target="_blank"
-                         href="/status/list?problemId=${targetProblem.problemId}&result=${statistic.key}">
-                          ${statistic.value} </a>
-                    </c:otherwise>
-                  </c:choose></td>
-                </tr>
-              </c:forEach>
-              </tbody>
-            </table>
-          </div>
-          <div class="media-body" id="cdoj-best-solutions">
-            <div class="row">
-              <div class="col-md-12">
-                <table class="table">
-                  <thead>
-                  <tr>
-                    <th style="text-align: center;">#</th>
-                    <th style="text-align: center;">User</th>
-                    <th style="text-align: center;">Memory</th>
-                    <th style="text-align: center;">Time</th>
-                    <th style="text-align: center;">Language</th>
-                    <th style="text-align: center;">Length</th>
-                    <th style="width: 11em; text-align: center;">Submit
-                      Time
-                    </th>
-                    <th></th>
-                  </tr>
-                  </thead>
-                  <tbody id="list-container">
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div id="page-info"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="tab-pane" id="tab-problem-discus"></div>
-  </div>
-  </div>
-  </div>
-                         --%>
 </div>
 </body>
 </html>
