@@ -51,8 +51,6 @@ if __name__ == '__main__':
   base_dir =  os.getcwd()
   test_dir = base_dir + '/src/test/java'
   addTestCases(suite, test_dir)
-  test_dir = base_dir + '/src/integration-test/java'
-  addTestCases(suite, test_dir)
   result = test_util.TestRunner().run(suite)
   quit(len(result.errors) + len(result.failures))
 
