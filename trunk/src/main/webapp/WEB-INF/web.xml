@@ -10,6 +10,12 @@
 
   <listener>
     <listener-class>
+      cn.edu.uestc.acmicpc.web.listener.onlineuserslistener.OnlineUsersListener
+    </listener-class>
+  </listener>
+
+  <listener>
+    <listener-class>
       org.springframework.web.context.ContextLoaderListener
     </listener-class>
   </listener>
