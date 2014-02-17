@@ -1,3 +1,4 @@
+<%@ page import="cn.edu.uestc.acmicpc.service.impl.OnlineUsersServiceImpl" %>
 <%--
 Nav list on navbar
 --%>
@@ -11,6 +12,12 @@ Nav list on navbar
   <title></title>
 </head>
 <body>
+<% int temp; %>
+<jsp:useBean id="onlineuser" class="cn.edu.uestc.acmicpc.service.impl.OnlineUsersServiceImpl" scope="page"/>
+<%
+  OnlineUsersServiceImpl onlineUsersService = new OnlineUsersServiceImpl();
+  temp=onlineUsersService.getOnlineNumber();
+%>
 <div id="cdoj-navbar-menu" class="row">
   <div class="col-md-12">
     <div class="cdoj-menu">
@@ -38,6 +45,10 @@ Nav list on navbar
     </div>
   </div>
 </div>
-
+<p style="color=green;font-size=10px;background=red">
+  <a style="left" href="<c:url value="/onlineusers/list"/>">
+    online users:<% out.print(temp);%>
+  </a>
+</p>
 </body>
 </html>
