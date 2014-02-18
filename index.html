@@ -13,13 +13,13 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>Cdoj by UESTC-ACM</title>
+    <title>CDOJ by UESTC-ACM</title>
   </head>
 
   <body>
     <header>
       <div class="inner">
-        <h1>Cdoj</h1>
+        <h1>CDOJ</h1>
         <h2>UESTC ACM/ICPC Online Judge</h2>
         <a href="https://github.com/UESTC-ACM/CDOJ" class="button"><small>View project on</small>GitHub</a>
       </div>
@@ -29,36 +29,117 @@
       <div class="inner clearfix">
         <section id="main-content">
           <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+<a name="welcome-to-cdoj-home-page" class="anchor" href="#welcome-to-cdoj-home-page"><span class="octicon octicon-link"></span></a>Welcome to CDOJ Home page.</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>This is a online judge system for <code>ACM/ICPC</code>, and it currently runs at <a href="http://acm.uestc.edu.cn/">UESTC ACM Online Judge</a>.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<h3>
+<a name="how-to-run-the-project-in-your-own-computer" class="anchor" href="#how-to-run-the-project-in-your-own-computer"><span class="octicon octicon-link"></span></a>How to run the project in your own computer?</h3>
+
+<p>First of all, you need a <code>i686 Linux</code> and install <code>openjdk7</code>, <code>maven</code> and <code>mysql</code> in your PC.</p>
+
+<p>Then you can fetch sources from our repository, and run the commond below.</p>
+
+<pre><code># Go to main directory of project.
+cd path/to/the/sources
+cd trunk
+
+# Set up database
+# Note: please set 'root'(without quotes) as root password of mysql.
+mysql -uroot -p &lt; src/main/sql/uestcoj.sql
+# Then you need patch all patch sql files.
+mysql -uroot -proot &lt; src/main/sql/patches/&lt;id&gt;.sql
+
+# Test project
+mvn test
+
+# Run jetty server
+mvn jetty:run
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>After that, you can visit <a href="http://localhost:8080/">localhost:8080</a> to get running demo.</p>
 
 <h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<a name="how-to-help-to-enhance-our-project" class="anchor" href="#how-to-help-to-enhance-our-project"><span class="octicon octicon-link"></span></a>How to help to enhance our project?</h3>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<h4>
+<a name="version-control-system" class="anchor" href="#version-control-system"><span class="octicon octicon-link"></span></a>Version control system</h4>
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<p>We use <code>git</code> to do version control. For <strong>ALL</strong> developers, the first thing you should do is <strong>forking</strong> this project, and you can get the backup of this project in your own project list. Then you should set the upstream url for you own project:</p>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<pre><code>git remote add upstream https://github.com/UESTC-ACM/CDOJ.git
+git pull upstream master
+</code></pre>
+
+<p>When you need push your commits, please use <code>Pull Request</code> to do that, and we will review the changes.</p>
+
+<h4>
+<a name="workflow-overview" class="anchor" href="#workflow-overview"><span class="octicon octicon-link"></span></a>Workflow overview</h4>
+
+<p><code>Set upstream</code> -&gt; <code>Pull newest code from upstream</code> -&gt; <code>Modify code</code> -&gt; <code>Pull newest code from upstream</code> -&gt; <code>Pull request to merge your code to master branch</code> -&gt; <code>Admin accepted</code>.</p>
+
+<p>Before you send out a pull request, please use <code>git pull upstream master</code> sync your workspace.</p>
+
+<p>NOTE: <strong>DON'T</strong> work on <code>master</code> branch, please checkout a new branch with a name that can simply describe your working purpose for your working.</p>
+
+<h4>
+<a name="project-tools" class="anchor" href="#project-tools"><span class="octicon octicon-link"></span></a>Project tools</h4>
+
+<h5>
+<a name="pre-commit-tool" class="anchor" href="#pre-commit-tool"><span class="octicon octicon-link"></span></a>Pre commit tool</h5>
+
+<p>Please use <code>pre-commit.sh</code> before you send out a pull request.</p>
+
+<pre><code>./pre-commit.sh
+</code></pre>
+
+<h5>
+<a name="plugin-install-tool" class="anchor" href="#plugin-install-tool"><span class="octicon octicon-link"></span></a>Plugin install tool</h5>
+
+<p>Please use <code>install-plugin.sh</code> <strong>after merge from upstream</strong>.</p>
+
+<pre><code>./install-plugin.sh
+</code></pre>
+
+<h5>
+<a name="dto-builder" class="anchor" href="#dto-builder"><span class="octicon octicon-link"></span></a>DTO builder</h5>
+
+<h6>
+<a name="tool-path" class="anchor" href="#tool-path"><span class="octicon octicon-link"></span></a>Tool path</h6>
+
+<p><code>/branches/tools/gen_dto.py</code></p>
+
+<h6>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h6>
+
+<p>User command line:</p>
+
+<pre><code>./gen_dto.py --entity=&lt;entity name&gt; --package=&lt;package name&gt; --class=&lt;class name&gt; \
+--fields=&lt;fields&gt; --types=&lt;types&gt;
+</code></pre>
+
+<p>Or you can also use this command line:</p>
+
+<pre><code>./gen_dto.py -e &lt;entity name&gt; -p &lt;package name&gt; -c &lt;class name&gt; -f &lt;fields&gt; -t &lt;types&gt;
+</code></pre>
+
+<h6>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h6>
+
+<pre><code>./gen_dto.py -e User -p user -c UserDTO -f userId,userName -t Integer,String
+</code></pre>
+
+<h6>
+<a name="be-careful" class="anchor" href="#be-careful"><span class="octicon octicon-link"></span></a>Be careful</h6>
+
+<p>the <code>types</code> and <code>fields</code> are joined by <code>,</code> and there are no white spaces in <code>types</code> and <code>fields</code>.</p>
 
 <h3>
 <a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>Project owners: Ruins He(<a href="https://github.com/lyhypacm" class="user-mention">@lyhypacm</a>), Jianjin Fan(<a href="https://github.com/pfctgeorge" class="user-mention">@pfctgeorge</a>) and Yun Li(mzry1992).</p>
 
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>Other contributors: fpy(<a href="https://github.com/iv404" class="user-mention">@iv404</a>).</p>
         </section>
 
         <aside id="sidebar">
