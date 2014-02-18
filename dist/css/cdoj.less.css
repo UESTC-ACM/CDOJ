@@ -473,6 +473,10 @@ small {
 .cdoj-menu .nav-stacked > li + li {
   margin-top: 0;
 }
+.cdoj-menu .actv {
+  border-radius: 0;
+  background: #6caad9;
+}
 .cdoj-menu li a:hover,
 .cdoj-menu li a:focus {
   border-radius: 0;

@@ -25359,19 +25359,18 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
         return $scope.problemList.splice(index, 1);
       };
       return $scope.submit = function() {
-        var contestEditDTO;
+        var contestEditDTO,
+          _this = this;
         contestEditDTO = angular.copy($scope.contest);
         contestEditDTO.time = Date.create(contestEditDTO.time).getTime();
         console.log($scope.contest);
-        return $http.post("/contest/edit", contestEditDTO).success((function(_this) {
-          return function(data) {
-            if (data.result === "success") {
-              return $window.location.href = "/contest/show/" + data.contestId;
-            } else {
-              return $window.alert(data.error_msg);
-            }
-          };
-        })(this));
+        return $http.post("/contest/edit", contestEditDTO).success(function(data) {
+          if (data.result === "success") {
+            return $window.location.href = "/contest/show/" + data.contestId;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        });
       };
     }
   ]);
@@ -25394,15 +25393,14 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
         return $scope.condition["currentPage"] = null;
       };
       $scope.refresh = function() {
-        var condition;
+        var condition,
+          _this = this;
         if ($scope.requestUrl !== 0) {
           condition = angular.copy($scope.condition);
-          return $http.post($scope.requestUrl, condition).then((function(_this) {
-            return function(response) {
-              $scope.list = response.data.list;
-              return $scope.pageInfo = response.data.pageInfo;
-            };
-          })(this));
+          return $http.post($scope.requestUrl, condition).then(function(response) {
+            $scope.list = response.data.list;
+            return $scope.pageInfo = response.data.pageInfo;
+          });
         }
       };
       $rootScope.$watch("currentUser", function() {
@@ -25411,6 +25409,14 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
       return $scope.$watch("condition", function() {
         return $scope.refresh();
       }, true);
+    }
+  ]);
+
+  cdoj.controller("navBarController", [
+    "$scope", "$window", function($scope, $window) {
+      return $scope.isActive = function(viewLocation) {
+        return viewLocation === $window.location.pathname.split("/")[1];
+      };
     }
   ]);
 
@@ -25793,7 +25799,6 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
     }
   ]);
 
-
   /*
   cdoj.directive("autoFill", ["$timeout",
     ($timeout)->
@@ -25808,7 +25813,8 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
             $timeout($scope.check, 300)
           $scope.check()
   ])
-   */
+  */
+
 
   cdoj.directive("equals", function() {
     return {
@@ -25958,15 +25964,14 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
       controller: [
         "$scope", "$http", function($scope, $http) {
           return $scope.editVisible = function() {
-            var queryString;
+            var queryString,
+              _this = this;
             queryString = "/contest/operator/" + $scope.contestId + "/isVisible/" + (!$scope.isVisible);
-            return $http.post(queryString).then((function(_this) {
-              return function(response) {
-                if (response.data.result === "success") {
-                  return $scope.isVisible = !$scope.isVisible;
-                }
-              };
-            })(this));
+            return $http.post(queryString).then(function(response) {
+              if (response.data.result === "success") {
+                return $scope.isVisible = !$scope.isVisible;
+              }
+            });
           };
         }
       ],
@@ -25987,11 +25992,10 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
     return {
       restrict: "A",
       link: function($scope, $element) {
-        return $element.find('form').click((function(_this) {
-          return function(e) {
-            return e.stopPropagation();
-          };
-        })(this));
+        var _this = this;
+        return $element.find('form').click(function(e) {
+          return e.stopPropagation();
+        });
       }
     };
   });
@@ -26128,15 +26132,14 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
       controller: [
         "$scope", "$http", function($scope, $http) {
           return $scope.editVisible = function() {
-            var queryString;
+            var queryString,
+              _this = this;
             queryString = "/problem/operator/" + $scope.problemId + "/isVisible/" + (!$scope.isVisible);
-            return $http.post(queryString).then((function(_this) {
-              return function(response) {
-                if (response.data.result === "success") {
-                  return $scope.isVisible = !$scope.isVisible;
-                }
-              };
-            })(this));
+            return $http.post(queryString).then(function(response) {
+              if (response.data.result === "success") {
+                return $scope.isVisible = !$scope.isVisible;
+              }
+            });
           };
         }
       ],
