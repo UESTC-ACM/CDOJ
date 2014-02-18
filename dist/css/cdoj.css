@@ -7988,7 +7988,7 @@ small {
 .cdoj-menu li a:hover,
 .cdoj-menu li a:focus {
   border-radius: 0;
-  background: #ff3300;
+  background: #0066b2;
 }
 .cdoj-menu li.cdoj-menu-selected {
   background: #0066b2;
