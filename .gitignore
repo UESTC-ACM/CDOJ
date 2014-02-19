@@ -4,3 +4,6 @@
 nohup.out
 *.pyc
 *.py~
+trunk/build/
+/.idea
+*.iml
