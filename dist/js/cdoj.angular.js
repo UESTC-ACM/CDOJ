@@ -25489,8 +25489,20 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
           data = response.data;
           if (data.result === "success") {
             $scope.problem = data.problem;
-            _sampleInput = JSON.parse($scope.problem.sampleInput);
-            _sampleOutput = JSON.parse($scope.problem.sampleOutput);
+            _sampleInput = $scope.problem.sampleInput;
+            try {
+              _sampleInput = JSON.parse(_sampleInput);
+            } catch (_error) {}
+            if (!(_sampleInput instanceof Array)) {
+              _sampleInput = [_sampleInput];
+            }
+            _sampleOutput = $scope.problem.sampleOutput;
+            try {
+              _sampleOutput = JSON.parse(_sampleOutput);
+            } catch (_error) {}
+            if (!(_sampleOutput instanceof Array)) {
+              _sampleOutput = [_sampleOutput];
+            }
             if (_sampleInput.length !== _sampleOutput.length) {
               alert("Sample input has not same number of cases with sample output!");
             } else {
@@ -25499,8 +25511,8 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
                 _results = [];
                 for (i = _i = 0, _ref = _sampleInput.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
                   _results.push({
-                    input: _sampleInput[i],
-                    output: _sampleOutput[i]
+                    input: _sampleInput[i].toString(),
+                    output: _sampleOutput[i].toString()
                   });
                 }
                 return _results;
