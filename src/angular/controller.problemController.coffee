@@ -32,6 +32,14 @@ cdoj.controller("ProblemController", [
         data = response.data
         if data.result == "success"
           $scope.problem = data.problem
+
+          _sampleInput = JSON.parse $scope.problem.sampleInput
+          _sampleOutput = JSON.parse $scope.problem.sampleOutput
+          if _sampleInput.length != _sampleOutput.length
+            alert "Sample input has not same number of cases with sample output!"
+          else
+            $scope.samples = ({input: _sampleInput[i], output: _sampleOutput[i]} for i in [0.._sampleInput.length-1])
+
           $rootScope.title = $scope.problem.title
         else
           alert data.error_msg
