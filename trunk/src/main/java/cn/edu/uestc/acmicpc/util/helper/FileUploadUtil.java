@@ -1,29 +1,30 @@
-package cn.edu.uestc.acmicpc.service.impl;
-
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.helper.StringUtil;
-import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
-import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
-import org.springframework.web.multipart.MultipartFile;
+package cn.edu.uestc.acmicpc.util.helper;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Abstract service for file uploading.
- */
-public class AbstractFileUploadService extends AbstractService {
+import org.springframework.web.multipart.MultipartFile;
 
-  public FileInformationDTO uploadFile(FileUploadDTO fileUploadDTO,
-                                       String basePath,
-                                       String absoluteBasePath,
-                                       String directory) throws AppException {
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
+import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
+
+
+/**
+ * File uploading util methods.
+ */
+public class FileUploadUtil {
+
+  public static FileInformationDTO uploadFile(FileUploadDTO fileUploadDTO,
+                                              String basePath,
+                                              String absoluteBasePath,
+                                              String directory) throws AppException {
     if (!directory.endsWith("/")) {
       directory += "/";
     }
     String folder = basePath + directory;
-    String absolutePath = absoluteBasePath  + directory;
+    String absolutePath = absoluteBasePath + directory;
     List<MultipartFile> files = fileUploadDTO.getFiles();
     if (files == null || files.size() > 1) {
       throw new AppException("Fetch uploaded file error.");
@@ -31,7 +32,7 @@ public class AbstractFileUploadService extends AbstractService {
     MultipartFile file = files.get(0);
     File dir = new File(absolutePath);
     if (!dir.exists() || !dir.mkdirs()) {
-        throw new AppException("Error while make directory " + dir.getName() + ".");
+      throw new AppException("Error while make directory " + dir.getName() + ".");
     }
 
     String newName = StringUtil.generateFileName(file.getOriginalFilename());
