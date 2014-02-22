@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,17 +12,16 @@ import javax.imageio.stream.ImageInputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.helper.StringUtil;
+import cn.edu.uestc.acmicpc.util.helper.FileUploadUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 
 @Service
-public class PictureServiceImpl extends AbstractFileUploadService implements PictureService {
+public class PictureServiceImpl extends AbstractService implements PictureService {
 
   private final Settings settings;
 
@@ -64,14 +62,14 @@ public class PictureServiceImpl extends AbstractFileUploadService implements Pic
   @Override
   public FileInformationDTO uploadPictures(FileUploadDTO fileUploadDTO,
                                            Integer userId) throws AppException {
-    return uploadFile(fileUploadDTO, settings.SETTING_USER_PICTURE_FOLDER,
+    return FileUploadUtil.uploadFile(fileUploadDTO, settings.SETTING_USER_PICTURE_FOLDER,
         settings.SETTING_USER_PICTURE_FOLDER_ABSOLUTE, userId.toString() + "/");
   }
 
   @Override
   public FileInformationDTO uploadPicture(FileUploadDTO fileUploadDTO,
                                           String directory) throws AppException {
-    return uploadFile(fileUploadDTO, settings.SETTING_PICTURE_FOLDER,
+    return FileUploadUtil.uploadFile(fileUploadDTO, settings.SETTING_PICTURE_FOLDER,
         settings.SETTING_PICTURE_FOLDER_ABSOLUTE, directory);
   }
 
