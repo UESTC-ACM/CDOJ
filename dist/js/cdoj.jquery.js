@@ -167,29 +167,31 @@
   $ = jQuery;
 
   $.fn.mathjax = function() {
-    var _this = this;
     MathJax.Hub.Config({
       tex2jax: {
         inlineMath: [['$', '$'], ['\\[', '\\]']]
       }
     });
-    return this.each(function(id, el) {
-      return MathJax.Hub.Queue(["Typeset", MathJax.Hub, el]);
-    });
+    return this.each((function(_this) {
+      return function(id, el) {
+        return MathJax.Hub.Queue(["Typeset", MathJax.Hub, el]);
+      };
+    })(this));
   };
 
   $ = jQuery;
 
   $.fn.prettify = function() {
-    var _this = this;
-    return this.find("pre").each(function(id, el) {
-      var $el, text;
-      $el = $(el);
-      if ($el.attr("type") !== "no-prettify") {
-        text = prettyPrintOne($el[0].innerText.escapeHTML());
-        return $el.empty().append(text);
-      }
-    });
+    return this.find("pre").each((function(_this) {
+      return function(id, el) {
+        var $el, text;
+        $el = $(el);
+        if ($el.attr("type") !== "no-prettify") {
+          text = prettyPrintOne($el[0].innerText.escapeHTML());
+          return $el.empty().append(text);
+        }
+      };
+    })(this));
   };
 
 }).call(this);
