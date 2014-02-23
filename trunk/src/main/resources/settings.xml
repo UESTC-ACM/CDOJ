@@ -2,7 +2,7 @@
 <!DOCTYPE cdoj-settings SYSTEM "cdoj-settings.dtd">
 <cdoj-settings>
   <setting name="setting">
-    <item name="host" description="OJ host">http://127.0.0.1:8080</item>
+    <item name="host" description="OJ host">http://acm.uestc.edu.cn</item>
     <item name="encoding" description="default encoding">UTF-8</item>
     <item name="uploadSize" description="upload file size(in MB)">100</item>
     <item name="uploadTypes" description="upload file's types">
@@ -11,6 +11,7 @@
     <item name="uploadFolder" description="upload files store folder">/uploads/</item>
     <item name="pictureFolder" description="Pictures folder">/images/</item>
     <item name="userPictureFolder" description="user' pictures store folder">/images/user/</item>
+    <item name="contestZipFolder" description="contest's archive zip store folder">/uploads/contests/</item>
   </setting>
   <setting name="judge">
     <item name="judgeCore" description="judge core name">pyloncore</item>
@@ -38,3 +39,4 @@
     <item name="smtpServer" description="smtp server address">smtp.163.com</item>
   </setting>
 </cdoj-settings>
+

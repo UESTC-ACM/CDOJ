@@ -131,11 +131,12 @@ Problem statement
             </div>
             <div class="panel-footer">
               <div class="btn-group">
-                <c:forEach var="language" items="${languageList}">
-                  <button type="button" class="btn btn-default"
-                          ng-model="submitDTO.languageId"
-                          btn-radio="${language.languageId}">${language.name}</button>
-                </c:forEach>
+                <button type="button"
+                        ng-repeat="language in $root.languageList"
+                        class="btn btn-default"
+                        ng-model="submitDTO.languageId"
+                        btn-radio="language.languageId"
+                        ng-bind="language.name"></button>
               </div>
               <button type="button"
                       class="btn btn-danger pull-right"
@@ -151,4 +152,3 @@ Problem statement
 </div>
 </body>
 </html>
-

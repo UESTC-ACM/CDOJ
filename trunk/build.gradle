@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'jetty'
 
 group = 'cn.edu.uestc.acmicpc'
 version = '2.0'
@@ -9,11 +10,10 @@ description = """UESTC Online Judge"""
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-
-
 repositories {
   mavenCentral();
 }
+
 dependencies {
   compile group: 'org.ow2.asm', name: 'asm', version:'4.1'
   compile group: 'org.ow2.asm', name: 'asm-tree', version:'4.1'
@@ -48,7 +48,7 @@ dependencies {
   compile group: 'com.jolbox', name: 'bonecp', version:'0.8.0-rc1'
   compile group: 'org.aspectj', name: 'aspectjweaver', version:'1.7.1'
   compile group: 'org.aspectj', name: 'aspectjrt', version:'1.7.1'
-  compile group: 'com.alibaba', name: 'fastjson', version:'1.1.27'
+  compile group: 'com.alibaba', name: 'fastjson', version:'1.1.38'
   compile group: 'log4j', name: 'log4j', version:'1.2.17'
   compile group: 'org.slf4j', name: 'slf4j-log4j12', version:'1.7.5'
   compile group: 'javax.servlet', name: 'jsp-api', version:'2.0'

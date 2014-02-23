@@ -81,6 +81,16 @@ public class Settings implements ApplicationContextAware {
   public String SETTING_USER_PICTURE_FOLDER_ABSOLUTE;
 
   /**
+   * Contest info zip store folder
+   */
+  public String SETTING_CONTEST_ZIP_FOLDER;
+
+  /**
+   * Contest info zip store folder in absolute folder format
+   */
+  public String SETTING_CONTEST_ZIP_FOLDER_ABSOLUTE;
+
+  /**
    * Setting file's absolute path
    */
   public String SETTING_ABSOLUTE_PATH;
@@ -193,6 +203,8 @@ public class Settings implements ApplicationContextAware {
     SETTING_PICTURE_FOLDER_ABSOLUTE = getAbsolutePath(SETTING_PICTURE_FOLDER);
     SETTING_USER_PICTURE_FOLDER = (String) getConfig("setting", "userPictureFolder", "value");
     SETTING_USER_PICTURE_FOLDER_ABSOLUTE = getAbsolutePath(SETTING_USER_PICTURE_FOLDER);
+    SETTING_CONTEST_ZIP_FOLDER = (String) getConfig("setting", "contestZipFolder", "value");
+    SETTING_CONTEST_ZIP_FOLDER_ABSOLUTE = getAbsolutePath(SETTING_CONTEST_ZIP_FOLDER);
 
     JUDGE_JUDGE_CORE = (String) getConfig("judge", "judgeCore", "value");
     JUDGE_DATA_PATH = getAbsolutePath((String) getConfig("judge", "dataPath", "value"));
