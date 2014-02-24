@@ -6,6 +6,7 @@ before_script:
   - mysql -e 'create database uestcoj;'
   - cd trunk
   - scripts/setup_travis.sh
+  - mvn checkstyle:checkstyle
 
 script:
   - python2 src/test/python/check_controller_not_contain_daos.py
