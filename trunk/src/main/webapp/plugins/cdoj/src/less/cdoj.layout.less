@@ -1,0 +1,37 @@
+#cdoj-layout {
+  margin-top: @cdoj-navbar-top-height;
+}
+body {
+  background-color: @cdoj-background;
+}
+#cdoj-container {
+  padding: 0 15px;
+}
+#cdoj-layout {
+  padding-left: @cdoj-navbar-width;
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+#cdoj-best-solutions {
+  margin-left: 260px;
+}
+@media (max-width: @screen-xs-max) {
+  #cdoj-layout {
+    padding-left: @cdoj-navbar-width-tiny;
+  }
+
+  .cdoj-form-menu {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    left: 15px;
+    bottom: 15px;
+    overflow-y: auto;
+  }
+
+  body, html {
+    overflow-x: hidden;
+  }
+}
