@@ -5,9 +5,6 @@ jdk:
 before_install:
   - sudo apt-get update
 
-install:
-  - sudo apt-get install python2
-
 before_script:
   - mysql -e 'create database uestcoj;'
   - cd trunk
