@@ -28,8 +28,10 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDetailDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemSummaryDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
@@ -56,18 +58,78 @@ public class ContestController extends BaseController {
   private PictureService pictureService;
   private ProblemService problemService;
   private StatusService statusService;
+  private GlobalService globalService;
 
   @Autowired
   public ContestController(ContestService contestService,
                            ContestProblemService contestProblemService,
                            PictureService pictureService,
                            ProblemService problemService,
-                           StatusService statusService) {
+                           StatusService statusService,
+                           GlobalService globalService) {
     this.contestService = contestService;
     this.contestProblemService = contestProblemService;
     this.pictureService = pictureService;
     this.problemService = problemService;
     this.statusService = statusService;
+    this.globalService = globalService;
+  }
+
+  @RequestMapping("status/{contestId}/{lastFetched}")
+  @LoginPermit(NeedLogin = false)
+  public
+  @ResponseBody
+  Map<String, Object> status(@PathVariable("contestId") Integer contestId,
+                                   @PathVariable("lastFetched") Integer lastFetched,
+                                   HttpSession session) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      UserDTO currentUser = getCurrentUser(session);
+      ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(contestId);
+      if (contestShowDTO == null) {
+        throw new AppException("No such contest.");
+      }
+      if (!contestShowDTO.getIsVisible() && currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
+        throw new AppException("No such contest.");
+      }
+
+      StatusCondition statusCondition = new StatusCondition();
+      statusCondition.contestId = contestShowDTO.getContestId();
+      // Sort by time
+      statusCondition.orderFields = "time";
+      statusCondition.orderAsc = "true";
+      statusCondition.startId = lastFetched + 1;
+      List<StatusListDTO> statusList = statusService.getStatusList(statusCondition);
+      if (currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
+        for (StatusListDTO status: statusList) {
+          if (!status.getUserName().equals(currentUser.getUserName())) {
+            // Stash sensitive information
+            status.setLength(null);
+            status.setTimeCost(null);
+            status.setMemoryCost(null);
+            status.setCaseNumber(null);
+            status.setLanguage(null);
+          } else {
+            status.setReturnType(globalService.getReturnDescription(status.getReturnTypeId(),
+                status.getCaseNumber()));
+            if (status.getReturnTypeId() != Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
+              status.setTimeCost(null);
+              status.setMemoryCost(null);
+            }
+          }
+        }
+      }
+
+      json.put("result", "success");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
   }
 
   @RequestMapping("rankList/{contestId}")
@@ -111,6 +173,7 @@ public class ContestController extends BaseController {
             status.getReturnTypeId(), // Return type id
             status.getProblemId().toString(), // Problem id
             status.getUserName(), // User name
+            status.getNickName(), // Nick name
             status.getTime().getTime() - contestShowDTO.getStartTime().getTime())); // Time
       }
 
