@@ -2,9 +2,6 @@ language: java
 jdk:
   - openjdk7
 
-before_install:
-  - sudo apt-get update
-
 before_script:
   - mysql -e 'create database uestcoj;'
   - cd trunk
