@@ -77,7 +77,6 @@ public class DatabaseITTest extends AbstractTestNGSpringContextTests {
     Assert.assertEquals(dto.getTried(), Integer.valueOf(0));
     Assert.assertEquals(dto.getType(), Integer.valueOf(1));
     Assert.assertEquals(dto.getSchool(), "UESTC");
-    Assert.assertEquals(dto.getLastLogin(), new Timestamp(1359523046000L));
   }
 
   @Test
@@ -113,7 +112,6 @@ public class DatabaseITTest extends AbstractTestNGSpringContextTests {
     Assert.assertEquals(userDTO.getTried(), Integer.valueOf(0));
     Assert.assertEquals(userDTO.getType(), Integer.valueOf(1));
     Assert.assertEquals(userDTO.getSchool(), "UESTC");
-    Assert.assertEquals(userDTO.getLastLogin(), new Timestamp(1359523046000L));
   }
 
   @Test
@@ -128,7 +126,6 @@ public class DatabaseITTest extends AbstractTestNGSpringContextTests {
     Assert.assertEquals(userDTO.getTried(), Integer.valueOf(0));
     Assert.assertEquals(userDTO.getType(), Integer.valueOf(1));
     Assert.assertEquals(userDTO.getSchool(), "UESTC");
-    Assert.assertEquals(userDTO.getLastLogin(), new Timestamp(1359523046000L));
   }
 
   @Test
