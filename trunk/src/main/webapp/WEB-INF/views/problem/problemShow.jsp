@@ -94,13 +94,13 @@ Problem statement
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr ng-repeat="sample in samples">
               <td>
-              <pre class="sample" ng-bind="problem.sampleInput">
+              <pre class="sample" ng-bind="sample.input">
               </pre>
               </td>
               <td>
-              <pre class="sample" ng-bind="problem.sampleOutput">
+              <pre class="sample" ng-bind="sample.output">
               </pre>
               </td>
             </tr>
