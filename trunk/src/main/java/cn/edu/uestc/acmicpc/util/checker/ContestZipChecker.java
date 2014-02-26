@@ -1,11 +1,11 @@
 package cn.edu.uestc.acmicpc.util.checker;
 
+import java.io.File;
+import java.util.Arrays;
+
 import cn.edu.uestc.acmicpc.util.checker.base.Checker;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-
-import java.io.File;
-import java.util.*;
 
 /**
  * Data checker for data.zip files.
