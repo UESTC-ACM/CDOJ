@@ -8,3 +8,5 @@ trunk/build/
 /.idea
 *.iml
 /out
+*.ipr
+*.iws
