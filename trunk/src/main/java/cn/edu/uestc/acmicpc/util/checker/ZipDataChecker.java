@@ -62,6 +62,10 @@ public class ZipDataChecker implements Checker<File> {
       throw new AppException("Some data files has not input file or output file.");
     }
 
+    if (fileSet.size() == 0) {
+      throw new AppException("No test data.");
+    }
+
     for (String outputFile : outputFileList) {
       if (!fileSet.contains(outputFile)) {
         throw new AppException("Some data files has not input file or output file.");
