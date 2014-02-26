@@ -11,7 +11,6 @@
     <item name="uploadFolder" description="upload files store folder">/uploads/</item>
     <item name="pictureFolder" description="Pictures folder">/images/</item>
     <item name="userPictureFolder" description="user' pictures store folder">/images/user/</item>
-    <item name="contestZipFolder" description="contest's archive zip store folder">/uploads/contests/</item>
   </setting>
   <setting name="judge">
     <item name="judgeCore" description="judge core name">pyloncore</item>
