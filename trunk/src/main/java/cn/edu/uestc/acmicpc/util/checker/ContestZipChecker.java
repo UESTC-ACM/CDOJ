@@ -16,11 +16,10 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
  * Only a XML File named "contestInfo.xml" in the root directory.</li>
  * <li>
  * In each sub-directory contains all information and test data of one problem</li>
- * <li>
- * For each problem, its directory should named with capital alphabet startw with A.</li>
+ * </li>
  * <li>
  * In a sub-directory, a XML File named "problemInfo.xml" and input/output data named
- * "*.in" and "*.out" </li>
+ * with "*.in" and "*.out" </li>
  * </ul>
  * <p/>
  * <strong>For administrators</strong>:
@@ -36,16 +35,11 @@ public class ContestZipChecker implements Checker<File> {
     Arrays.sort(files);
 
     boolean hasContestInfo = false;
-    Character nextProblemAlias = 'A';
     for (File current : files) {
       if ("contestInfo.xml".equals(current.getName())) {
         hasContestInfo = true;
       } else if (current.isDirectory()) {
-        if (!nextProblemAlias.toString().equals(current.getName())) {
-          throw new AppException("Wrong problem alias.");
-        }
         checkProblemSubDirectory(current);
-        nextProblemAlias ++;
       } else {
         throw new AppException("Contest information directory contains unknown type files.");
       }
