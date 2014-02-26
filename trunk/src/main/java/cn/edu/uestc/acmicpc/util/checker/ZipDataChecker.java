@@ -38,6 +38,9 @@ public class ZipDataChecker implements Checker<File> {
   public void check(File file) throws AppException {
     AppExceptionUtil.assertNotNull(file);
     File[] files = file.listFiles();
+    if (files == null) {
+      throw new AppException("Data file is invalid.");
+    }
 
     Set<String> fileSet = new HashSet<>();
     List<String> outputFileList = new LinkedList<>();
