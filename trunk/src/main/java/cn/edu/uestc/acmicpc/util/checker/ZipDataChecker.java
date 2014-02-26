@@ -43,7 +43,7 @@ public class ZipDataChecker implements Checker<File> {
     List<String> outputFileList = new LinkedList<>();
     for (File current : files) {
       if (current.isDirectory()) {
-        throw new AppException("Data file contains directory.");
+        throw new AppException("Problem information contains sub-directory.");
       }
       if (current.getName().endsWith(".in")) {
         fileSet.add(FileUtil.getFileName(current));
@@ -51,8 +51,10 @@ public class ZipDataChecker implements Checker<File> {
         outputFileList.add(FileUtil.getFileName(current));
       } else if (current.getName().equals("spj.cc")) {
         // spj checker, ignored
+      } else if (current.getName().equals("problemInfo.xml")) {
+        // problem info, ignored by default
       } else {
-        throw new AppException("Data file contains unknown file type.");
+        throw new AppException("Problem information directory contains unknown file type.");
       }
     }
 
