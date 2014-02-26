@@ -2,7 +2,6 @@ package cn.edu.uestc.acmicpc.util.checker;
 
 import cn.edu.uestc.acmicpc.util.checker.base.Checker;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.helper.FileUtil;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
 import java.io.File;
@@ -45,8 +44,7 @@ public class ContestZipChecker implements Checker<File> {
         if (!nextProblemAlias.toString().equals(current.getName())) {
           throw new AppException("Wrong problem alias.");
         }
-        File[] filesInSubDirectory = current.listFiles();
-        checkProblemSubDirectory(filesInSubDirectory);
+        checkProblemSubDirectory(current);
         nextProblemAlias ++;
       } else {
         throw new AppException("Contest information directory contains unknown type files.");
@@ -58,44 +56,22 @@ public class ContestZipChecker implements Checker<File> {
     }
   }
 
-  private void checkProblemSubDirectory(File[] files) throws AppException {
+  private void checkProblemSubDirectory(File dir) throws AppException {
+    AppExceptionUtil.assertNotNull(dir);
+    File[] files = dir.listFiles();
     boolean hasProblemInfo = false;
-    Set<String> inputFileNames = new HashSet<>();
-    Set<String> outputFileNames = new HashSet<>();
-
     for (File current : files) {
-      if (current.isDirectory()) {
-        throw new AppException("Problem information directory can't contains sub-directory.");
-      }
       String fileName = current.getName();
       if ("problemInfo.xml".equals(fileName)) {
         hasProblemInfo = true;
-      } else if ("spj.cc".equals(fileName)) {
-        // spj checker, ignored
-      } else if (fileName.endsWith(".in")) {
-        inputFileNames.add(FileUtil.getFileName(current));
-      } else if (fileName.endsWith(".out")) {
-        outputFileNames.add(FileUtil.getFileName(current));
-      } else {
-        throw new AppException("Problem information directory contains unknown type file.");
       }
     }
 
     if (!hasProblemInfo) {
-      throw new AppException("No description file in problelem information directory.");
+      throw new AppException("No description file in problem information directory.");
     }
 
-    if (inputFileNames.size() != outputFileNames.size()) {
-      throw new AppException("Some data files has not input file or output file.");
-    }
-    if (inputFileNames.size() == 0) {
-      throw new AppException("No test data files.");
-    }
-    for (String inputFileName : inputFileNames) {
-      if (!outputFileNames.contains(inputFileName)) {
-        throw new AppException("Some data files has not input file or output file.");
-      }
-    }
+    new ZipDataChecker().check(dir);
   }
 
 }
