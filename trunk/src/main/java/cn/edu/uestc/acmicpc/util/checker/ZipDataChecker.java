@@ -8,6 +8,7 @@ import java.util.Set;
 
 import cn.edu.uestc.acmicpc.util.checker.base.Checker;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.helper.FileUtil;
 
 /**
@@ -35,10 +36,8 @@ public class ZipDataChecker implements Checker<File> {
 
   @Override
   public void check(File file) throws AppException {
+    AppExceptionUtil.assertNotNull(file);
     File[] files = file.listFiles();
-    if (files == null) {
-      throw new AppException("Data file is invalid.");
-    }
 
     Set<String> fileSet = new HashSet<>();
     List<String> outputFileList = new LinkedList<>();

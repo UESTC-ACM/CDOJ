@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.util.checker;
 import cn.edu.uestc.acmicpc.util.checker.base.Checker;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.FileUtil;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
 import java.io.File;
 import java.util.*;
@@ -31,11 +32,9 @@ public class ContestZipChecker implements Checker<File> {
 
   @Override
   public void check(File file) throws AppException {
+    AppExceptionUtil.assertNotNull(file);
     File[] files = file.listFiles();
     Arrays.sort(files);
-    if (files == null) {
-      throw new AppException("Contest archive file is invalid.");
-    }
 
     boolean hasContestInfo = false;
     Character nextProblemAlias = 'A';
