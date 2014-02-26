@@ -7,3 +7,4 @@ nohup.out
 trunk/build/
 /.idea
 *.iml
+/out
