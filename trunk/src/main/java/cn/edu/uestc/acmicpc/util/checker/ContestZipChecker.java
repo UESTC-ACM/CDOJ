@@ -28,6 +28,8 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
  */
 public class ContestZipChecker implements Checker<File> {
 
+  private final ZipDataChecker zipDataChecker = new ZipDataChecker();
+
   @Override
   public void check(File file) throws AppException {
     AppExceptionUtil.assertNotNull(file);
@@ -65,7 +67,7 @@ public class ContestZipChecker implements Checker<File> {
       throw new AppException("No description file in problem information directory.");
     }
 
-    new ZipDataChecker().check(dir);
+    zipDataChecker.check(dir);
   }
 
 }
