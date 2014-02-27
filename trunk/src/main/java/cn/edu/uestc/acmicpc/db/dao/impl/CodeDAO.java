@@ -1,10 +1,10 @@
 package cn.edu.uestc.acmicpc.db.dao.impl;
 
-import org.springframework.stereotype.Repository;
-
 import cn.edu.uestc.acmicpc.db.dao.base.DAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.ICodeDAO;
 import cn.edu.uestc.acmicpc.db.entity.Code;
+
+import org.springframework.stereotype.Repository;
 
 /**
  * DAO for code entity.

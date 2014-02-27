@@ -1,9 +1,9 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import java.util.List;
-
 import cn.edu.uestc.acmicpc.db.dto.impl.department.DepartmentDTO;
 import cn.edu.uestc.acmicpc.db.entity.Department;
+
+import java.util.List;
 
 /**
  * Department service interface.

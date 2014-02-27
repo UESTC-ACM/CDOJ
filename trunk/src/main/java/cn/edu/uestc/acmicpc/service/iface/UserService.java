@@ -1,8 +1,5 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import java.util.List;
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
@@ -11,6 +8,9 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * User service interface.

@@ -1,8 +1,8 @@
 package cn.edu.uestc.acmicpc.web.dto;
 
-import java.util.List;
-
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * DTO post from file upload form.

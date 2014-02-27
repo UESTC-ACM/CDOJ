@@ -1,17 +1,17 @@
 package cn.edu.uestc.acmicpc.util.helper;
 
-import java.util.List;
+import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
+import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
+import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
-import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
-import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
+import java.util.List;
 
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)

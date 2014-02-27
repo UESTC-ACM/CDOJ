@@ -1,11 +1,11 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.user;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 /**
  * DTO post from user register form.

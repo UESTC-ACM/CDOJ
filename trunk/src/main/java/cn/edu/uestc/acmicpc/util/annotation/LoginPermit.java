@@ -1,9 +1,9 @@
 package cn.edu.uestc.acmicpc.util.annotation;
 
+import cn.edu.uestc.acmicpc.util.settings.Global;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-
-import cn.edu.uestc.acmicpc.util.settings.Global;
 
 /**
  * Login permission controller.

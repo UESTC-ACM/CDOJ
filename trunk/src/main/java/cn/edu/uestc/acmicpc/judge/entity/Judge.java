@@ -1,10 +1,8 @@
 package cn.edu.uestc.acmicpc.judge.entity;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.concurrent.BlockingQueue;
+import cn.edu.uestc.acmicpc.util.helper.FileUtil;
+import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.settings.Settings;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -13,9 +11,11 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import cn.edu.uestc.acmicpc.util.helper.FileUtil;
-import cn.edu.uestc.acmicpc.util.settings.Global;
-import cn.edu.uestc.acmicpc.util.settings.Settings;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Problem judge component.
