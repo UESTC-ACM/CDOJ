@@ -1,13 +1,13 @@
 package cn.edu.uestc.acmicpc.db.dao.iface;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Global DAO interface.

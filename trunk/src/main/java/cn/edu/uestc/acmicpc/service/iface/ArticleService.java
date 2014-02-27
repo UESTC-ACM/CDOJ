@@ -1,7 +1,5 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import java.util.List;
-
 import cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditorShowDTO;
@@ -9,6 +7,8 @@ import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleListDTO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
+import java.util.List;
 
 /**
  * Article service interface.

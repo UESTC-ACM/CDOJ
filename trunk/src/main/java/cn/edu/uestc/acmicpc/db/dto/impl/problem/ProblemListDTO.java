@@ -1,11 +1,11 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.problem;
 
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
+
+import java.util.Map;
 
 /**
  * DTO used in problem list.

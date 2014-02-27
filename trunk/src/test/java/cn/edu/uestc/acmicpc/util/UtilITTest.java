@@ -1,14 +1,14 @@
 package cn.edu.uestc.acmicpc.util;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Util class test

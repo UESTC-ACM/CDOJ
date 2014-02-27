@@ -1,16 +1,16 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.dto.AuthenticationTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.ContestTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.OnlineJudgeResultTypeDTO;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
+
+import org.springframework.stereotype.Service;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Implementation for {@link GlobalService}.

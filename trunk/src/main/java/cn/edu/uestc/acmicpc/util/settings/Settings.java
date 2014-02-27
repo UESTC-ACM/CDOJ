@@ -1,13 +1,9 @@
 package cn.edu.uestc.acmicpc.util.settings;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.helper.StringUtil;
+import cn.edu.uestc.acmicpc.web.xml.XmlNode;
+import cn.edu.uestc.acmicpc.web.xml.XmlParser;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +17,13 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Repository;
 
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.helper.StringUtil;
-import cn.edu.uestc.acmicpc.web.xml.XmlNode;
-import cn.edu.uestc.acmicpc.web.xml.XmlParser;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
 
 /**
  * Global static class to get configuration parameters from

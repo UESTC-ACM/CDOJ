@@ -3,7 +3,7 @@ package cn.edu.uestc.acmicpc.util.checker;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -11,7 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import cn.edu.uestc.acmicpc.util.exception.AppException;
+import java.io.File;
 
 /**
  * Test cases for {@link ZipDataChecker}.

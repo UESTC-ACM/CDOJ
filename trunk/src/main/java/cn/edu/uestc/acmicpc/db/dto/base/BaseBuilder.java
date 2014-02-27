@@ -1,8 +1,8 @@
 package cn.edu.uestc.acmicpc.db.dto.base;
 
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
+
+import java.util.Map;
 
 /**
  * DTO builder interface.

@@ -1,15 +1,15 @@
 package cn.edu.uestc.acmicpc.util.helper;
 
+import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
-import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 
 /**
  * Object global methods.
