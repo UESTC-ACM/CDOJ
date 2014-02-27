@@ -178,4 +178,14 @@ public class Contest implements Serializable {
   public void setArticlesByContestId(Collection<Article> articlesByContestId) {
     this.articlesByContestId = articlesByContestId;
   }
+
+  public Contest() {
+    setContestId(null);
+    setDescription("");
+    setIsVisible(false);
+    setLength(5 * 60 * 60);
+    setTime(new Timestamp(System.currentTimeMillis()));
+    setTitle("");
+    setType((byte) Global.ContestType.PUBLIC.ordinal());
+  }
 }

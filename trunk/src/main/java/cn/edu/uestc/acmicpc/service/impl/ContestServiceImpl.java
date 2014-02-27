@@ -137,13 +137,6 @@ public class ContestServiceImpl extends AbstractService implements
   @Override
   public Integer createNewContest() throws AppException {
     Contest contest = new Contest();
-    contest.setContestId(null);
-    contest.setDescription("");
-    contest.setIsVisible(false);
-    contest.setLength(5 * 60 * 60);
-    contest.setTime(new Timestamp(System.currentTimeMillis()));
-    contest.setTitle("");
-    contest.setType((byte) Global.ContestType.PUBLIC.ordinal());
     contestDAO.add(contest);
     return contest.getContestId();
   }
