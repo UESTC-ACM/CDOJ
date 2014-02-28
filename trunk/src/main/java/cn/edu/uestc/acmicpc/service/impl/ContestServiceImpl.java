@@ -1,12 +1,5 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import java.sql.Timestamp;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
-
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
@@ -19,6 +12,13 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
+import java.util.List;
 
 @Service
 @Primary

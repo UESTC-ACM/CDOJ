@@ -1,13 +1,13 @@
 package cn.edu.uestc.acmicpc.db.condition.base;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Conditions setting for {@link IDAO#findAll(Condition)},

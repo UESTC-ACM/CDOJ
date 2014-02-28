@@ -1,11 +1,11 @@
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
-import java.sql.Timestamp;
-
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.settings.Global.ContestType;
+
+import java.sql.Timestamp;
 
 /**
  * Contest database condition entity.

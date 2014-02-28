@@ -1,12 +1,12 @@
 package cn.edu.uestc.acmicpc.util.exception;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
 
 import org.springframework.validation.FieldError;
 
-import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Application exception to describe errors on UI fields.

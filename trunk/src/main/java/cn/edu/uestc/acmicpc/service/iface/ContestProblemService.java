@@ -1,12 +1,12 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import java.util.List;
-
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDetailDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemSummaryDTO;
 import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+
+import java.util.List;
 
 /**
  * ContestProblem service interface.

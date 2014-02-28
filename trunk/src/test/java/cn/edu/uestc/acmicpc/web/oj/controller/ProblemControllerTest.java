@@ -8,7 +8,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import java.util.UUID;
+import cn.edu.uestc.acmicpc.config.TestContext;
+import cn.edu.uestc.acmicpc.config.WebMVCConfig;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
+import cn.edu.uestc.acmicpc.web.oj.controller.problem.ProblemController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
@@ -17,10 +20,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import cn.edu.uestc.acmicpc.config.TestContext;
-import cn.edu.uestc.acmicpc.config.WebMVCConfig;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
-import cn.edu.uestc.acmicpc.web.oj.controller.problem.ProblemController;
+import java.util.UUID;
 
 /**
  * Mock test for {@link ProblemController}.

@@ -1,7 +1,5 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import java.util.List;
-
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestEditorShowDTO;
@@ -10,6 +8,8 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
+import java.util.List;
 
 /**
  * Contest service interface.

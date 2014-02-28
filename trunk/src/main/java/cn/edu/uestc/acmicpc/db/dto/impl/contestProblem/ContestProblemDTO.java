@@ -1,11 +1,11 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.contestProblem;
 
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
+
+import java.util.Map;
 
 @Fields({"contestProblemId", "contestId", "order", "problemId"})
 public class ContestProblemDTO implements BaseDTO<ContestProblem> {

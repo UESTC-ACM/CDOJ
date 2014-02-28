@@ -14,9 +14,10 @@
     <module name="AvoidStarImport">
     </module>
     <module name="ImportOrder">
-      <property name="groups" value="/^javax?\./,org,cn.edu,*"/>
+      <property name="groups" value="cn.edu.uestc.acmicpc,org,*,/^javax?\./,"/>
       <property name="ordered" value="true"/>
       <property name="option" value="top"/>
+      <property name="separated" value="true"/>
     </module>
     <module name="RedundantImport"/>
     <module name="UnusedImports">

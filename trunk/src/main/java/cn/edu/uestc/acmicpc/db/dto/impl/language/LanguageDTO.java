@@ -1,11 +1,11 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.language;
 
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Language;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
+
+import java.util.Map;
 
 /**
  * DTO for language entity.

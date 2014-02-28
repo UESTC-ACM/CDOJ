@@ -1,12 +1,12 @@
 package cn.edu.uestc.acmicpc.web.xml;
 
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Basic node object used by xml parser.
