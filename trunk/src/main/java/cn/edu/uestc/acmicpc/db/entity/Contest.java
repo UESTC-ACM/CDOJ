@@ -1,6 +1,7 @@
 package cn.edu.uestc.acmicpc.db.entity;
 
 import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+import cn.edu.uestc.acmicpc.util.settings.Global;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -24,6 +25,8 @@ import javax.persistence.Version;
 public class Contest implements Serializable {
 
   private static final long serialVersionUID = -3631561809657861853L;
+
+  private static final Integer defaultContestLength = 300;
   private Integer contestId;
 
   private Integer version = 0;
@@ -183,7 +186,7 @@ public class Contest implements Serializable {
     setContestId(null);
     setDescription("");
     setIsVisible(false);
-    setLength(5 * 60 * 60);
+    setLength(defaultContestLength);
     setTime(new Timestamp(System.currentTimeMillis()));
     setTitle("");
     setType((byte) Global.ContestType.PUBLIC.ordinal());
