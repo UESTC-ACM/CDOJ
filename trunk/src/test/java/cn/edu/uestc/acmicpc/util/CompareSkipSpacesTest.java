@@ -1,9 +1,9 @@
 package cn.edu.uestc.acmicpc.util;
 
+import cn.edu.uestc.acmicpc.util.helper.StringUtil;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 
 /**
  * All test cases for {@code StringUtil.compareSkipSpaces} methods.

@@ -1,11 +1,11 @@
 package cn.edu.uestc.acmicpc.util.helper;
 
+import cn.edu.uestc.acmicpc.util.settings.Global;
+
 import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import cn.edu.uestc.acmicpc.util.settings.Global;
 
 /**
  * global static class to deal with strings

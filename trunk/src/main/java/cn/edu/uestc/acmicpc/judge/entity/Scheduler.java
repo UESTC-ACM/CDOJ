@@ -1,9 +1,9 @@
 package cn.edu.uestc.acmicpc.judge.entity;
 
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.BlockingQueue;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDTO;
+import cn.edu.uestc.acmicpc.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.settings.Global;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -15,10 +15,10 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDTO;
-import cn.edu.uestc.acmicpc.service.iface.StatusService;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Judge queue scheduler.

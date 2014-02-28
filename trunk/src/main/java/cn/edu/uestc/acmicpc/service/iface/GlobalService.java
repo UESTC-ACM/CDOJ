@@ -1,13 +1,13 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import java.util.List;
-
 import cn.edu.uestc.acmicpc.util.dto.AuthenticationTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.ContestTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.OnlineJudgeResultTypeDTO;
 import cn.edu.uestc.acmicpc.util.settings.Global.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.settings.Global.ContestType;
 import cn.edu.uestc.acmicpc.util.settings.Global.OnlineJudgeReturnType;
+
+import java.util.List;
 
 /**
  * Global service interface.

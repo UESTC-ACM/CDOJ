@@ -1,9 +1,5 @@
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
-import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
-
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
@@ -11,6 +7,10 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.util.settings.Global.OnlineJudgeResultType;
+
+import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Status database condition entity.

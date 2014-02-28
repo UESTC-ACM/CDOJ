@@ -1,14 +1,14 @@
 package cn.edu.uestc.acmicpc.util.helper;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 
 /**

@@ -1,9 +1,9 @@
 package cn.edu.uestc.acmicpc.util.helper;
 
-import javax.servlet.ServletContext;
-
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import javax.servlet.ServletContext;
 
 /**
  * Manage methods for Spring Beans.

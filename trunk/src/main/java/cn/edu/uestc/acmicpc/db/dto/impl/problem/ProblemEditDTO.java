@@ -1,10 +1,10 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.problem;
 
 
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * DTO post from problem editor.

@@ -1,15 +1,15 @@
 package cn.edu.uestc.acmicpc.db.dao.impl;
 
-import java.util.List;
+import cn.edu.uestc.acmicpc.db.dao.base.DAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.entity.User;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import cn.edu.uestc.acmicpc.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.db.entity.User;
+import java.util.List;
 
 /**
  * DAO for user entity.

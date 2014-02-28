@@ -1,12 +1,12 @@
 package cn.edu.uestc.acmicpc.web.rank;
 
+import cn.edu.uestc.acmicpc.util.settings.Global;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import cn.edu.uestc.acmicpc.util.settings.Global;
 
 /**
  * Description

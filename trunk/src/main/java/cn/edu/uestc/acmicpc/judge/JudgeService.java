@@ -1,20 +1,19 @@
 package cn.edu.uestc.acmicpc.judge;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
+import cn.edu.uestc.acmicpc.judge.entity.Judge;
+import cn.edu.uestc.acmicpc.judge.entity.JudgeItem;
+import cn.edu.uestc.acmicpc.judge.entity.Scheduler;
+import cn.edu.uestc.acmicpc.util.settings.Settings;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import cn.edu.uestc.acmicpc.judge.entity.Judge;
-import cn.edu.uestc.acmicpc.judge.entity.JudgeItem;
-import cn.edu.uestc.acmicpc.judge.entity.Scheduler;
-import cn.edu.uestc.acmicpc.util.settings.Settings;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 /**
  * Judge main service, use multi-thread architecture to process judge

@@ -1,9 +1,9 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.user;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
-import org.hibernate.validator.constraints.Length;
 
 /**
  * DTO post from user activate form.
