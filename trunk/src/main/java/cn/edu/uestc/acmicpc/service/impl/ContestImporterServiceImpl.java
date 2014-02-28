@@ -16,12 +16,19 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.zip.ZipFile;
 
 @Service
 public class ContestImporterServiceImpl extends AbstractService implements ContestImporterService {
 
   private final Settings settings;
+
+  private static final String[] contestBasicInfoTagNames = new String[] {
+      "title", "length", "type", "startTime", "description", "visible"
+  };
 
   @Autowired
   public ContestImporterServiceImpl(Settings settings) {
@@ -50,9 +57,15 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
     }
 
     Contest contest = new Contest();
+    Set<String> tagSet = new HashSet<>(Arrays.asList(contestBasicInfoTagNames));
     for (XmlNode node : root.getChildList()) {
       String tagName = node.getTagName().trim();
       String innerText = node.getInnerText().trim();
+      if (tagSet.contains(tagName)) {
+        tagSet.remove(tagName);
+      } else {
+        throw new AppException("Tag name can't occurred multiple times in contest information file.");
+      }
       if ("title".equals(tagName)) {
         contest.setTitle(innerText);
       } else if ("length".equals(tagName)) {
@@ -68,6 +81,9 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
           contest.setIsVisible(true);
         }
       }
+    }
+    if (!tagSet.isEmpty()) {
+      throw new AppException(String.format("Tags %s not occurred.", tagSet));
     }
     return contest;
   }
