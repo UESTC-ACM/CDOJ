@@ -27,6 +27,7 @@ public class Contest implements Serializable {
   private static final long serialVersionUID = -3631561809657861853L;
 
   private static final Integer defaultContestLength = 300;
+
   private Integer contestId;
 
   private Integer version = 0;
