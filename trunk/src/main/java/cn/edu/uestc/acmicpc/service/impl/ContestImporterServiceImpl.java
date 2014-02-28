@@ -1,12 +1,5 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.zip.ZipFile;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.service.iface.ContestImporterService;
 import cn.edu.uestc.acmicpc.util.checker.ContestZipChecker;
@@ -17,6 +10,13 @@ import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
 import cn.edu.uestc.acmicpc.web.xml.XmlNode;
 import cn.edu.uestc.acmicpc.web.xml.XmlParser;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.zip.ZipFile;
 
 @Service
 public class ContestImporterServiceImpl extends AbstractService implements ContestImporterService {
