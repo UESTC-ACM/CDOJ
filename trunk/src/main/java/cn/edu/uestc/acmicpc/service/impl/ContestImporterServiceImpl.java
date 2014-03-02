@@ -77,9 +77,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       } else if ("description".equals(tagName)) {
         contest.setDescription(innerText);
       } else if ("visible".equals(tagName)) {
-        if ("true".equals(innerText)) {
-          contest.setIsVisible(true);
-        }
+        contest.setIsVisible(Boolean.parseBoolean(innerText));
       } else if ("problems".equals(tagName)) {
         parseContestProblems(node);
       }
