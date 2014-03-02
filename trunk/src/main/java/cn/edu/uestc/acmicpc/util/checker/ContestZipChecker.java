@@ -41,6 +41,10 @@ public class ContestZipChecker implements Checker<File> {
       if ("contestInfo.xml".equals(current.getName())) {
         hasContestInfo = true;
       } else if (current.isDirectory()) {
+        if (current.getName().startsWith(".") ||
+            current.getName().startsWith("_")) {
+          continue;
+        }
         checkProblemSubDirectory(current);
       } else {
         throw new AppException("Contest information directory contains unknown type files.");
