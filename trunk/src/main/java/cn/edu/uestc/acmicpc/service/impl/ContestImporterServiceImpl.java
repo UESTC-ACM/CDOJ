@@ -1,6 +1,9 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
+import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
+import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.service.iface.ContestImporterService;
 import cn.edu.uestc.acmicpc.util.checker.ContestZipChecker;
@@ -29,6 +32,10 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
 
   private final Settings settings;
 
+  private final IContestDAO contestDAO;
+
+  private final IProblemDAO problemDAO;
+
   private static final String[] contestBasicInfoTagNames = new String[] {
       "title", "length", "type", "startTime", "description", "visible", "problems"
   };
@@ -43,8 +50,10 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
   };
 
   @Autowired
-  public ContestImporterServiceImpl(Settings settings) {
+  public ContestImporterServiceImpl(Settings settings, IContestDAO contestDAO, IProblemDAO problemDAO) {
     this.settings = settings;
+    this.contestDAO = contestDAO;
+    this.problemDAO = problemDAO;
   }
 
   private void parseContestZipArchive(FileInformationDTO fileInformationDTO) throws AppException {
@@ -70,6 +79,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
 
     Contest contest = new Contest();
     Set<String> tagSet = new HashSet<>(Arrays.asList(contestBasicInfoTagNames));
+    Collection<Problem> contestProblems = null;
     for (XmlNode node : root.getChildList()) {
       String tagName = node.getTagName().trim();
       String innerText = node.getInnerText().trim();
@@ -91,12 +101,28 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       } else if ("visible".equals(tagName)) {
         contest.setIsVisible(Boolean.parseBoolean(innerText));
       } else if ("problems".equals(tagName)) {
-        parseContestProblems(node, directory);
+        contestProblems = parseContestProblems(node, directory);
       }
     }
     if (!tagSet.isEmpty()) {
       throw new AppException(String.format("Tags %s not occurred.", tagSet));
     }
+
+    if (contestProblems == null) {
+      throw new AppException("No contest problems declared.");
+    }
+
+    contestDAO.add(contest);
+    int problemOrder = 1;
+    for (Problem problem : contestProblems) {
+      problemDAO.add(problem);
+      ContestProblem contestProblem = new ContestProblem();
+      contestProblem.setContestByContestId(contest);
+      contestProblem.setProblemByProblemId(problem);
+      contestProblem.setOrder(problemOrder);
+      problemOrder ++;
+    }
+
     return contest;
   }
 
