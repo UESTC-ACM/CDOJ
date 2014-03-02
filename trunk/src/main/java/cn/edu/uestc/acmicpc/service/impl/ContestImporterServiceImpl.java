@@ -27,7 +27,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
   private final Settings settings;
 
   private static final String[] contestBasicInfoTagNames = new String[] {
-      "title", "length", "type", "startTime", "description", "visible"
+      "title", "length", "type", "startTime", "description", "visible", "problems"
   };
 
   @Autowired
@@ -80,6 +80,8 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
         if ("true".equals(innerText)) {
           contest.setIsVisible(true);
         }
+      } else if ("problems".equals(tagName)) {
+        parseContestProblems(node);
       }
     }
     if (!tagSet.isEmpty()) {
