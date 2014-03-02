@@ -1,6 +1,7 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.entity.Contest;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.service.iface.ContestImporterService;
 import cn.edu.uestc.acmicpc.util.checker.ContestZipChecker;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.zip.ZipFile;
@@ -28,6 +31,15 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
 
   private static final String[] contestBasicInfoTagNames = new String[] {
       "title", "length", "type", "startTime", "description", "visible", "problems"
+  };
+
+  private static final String[] problemBasicInfoTagNames = new String[] {
+      "title", "description", "timeLimit", "memoryLimit", "input", "output",
+      "sampleInput", "sampleOutput", "source"
+  };
+
+  private static final String[] problemAdditionalInfoTagNames = new String[] {
+      "javaTimeLimit", "javaMemoryLimit", "hint", "specialJudge"
   };
 
   @Autowired
@@ -79,7 +91,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       } else if ("visible".equals(tagName)) {
         contest.setIsVisible(Boolean.parseBoolean(innerText));
       } else if ("problems".equals(tagName)) {
-        parseContestProblems(node);
+        parseContestProblems(node, directory);
       }
     }
     if (!tagSet.isEmpty()) {
@@ -105,4 +117,83 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
     }
     return (byte) contestType.ordinal();
   }
+
+  private Collection<Problem> parseContestProblems(XmlNode problemsNode, String rootDirectory) throws AppException {
+    if (problemsNode == null) {
+      throw new AppException("Invalid XmlNode.");
+    }
+    Collection<Problem> contestProblems = new ArrayList<>();
+    for (XmlNode node : problemsNode.getChildList()) {
+      Problem problem = parseContestProblem(rootDirectory + "/" + node.getInnerText().trim());
+      contestProblems.add(problem);
+    }
+    return contestProblems;
+  }
+
+  private Problem parseContestProblem(String directory) throws AppException {
+    XmlParser xmlParser = new XmlParser(directory + "/" + "problemInfo.xml");
+    XmlNode root;
+    try {
+      root = xmlParser.parse().getChildList().get(0);
+    } catch (IndexOutOfBoundsException e) {
+      throw new AppException("No root node in problem information file.");
+    }
+
+    Problem problem = new Problem();
+    Set<String> basicTagSet = new HashSet<>(Arrays.asList(problemBasicInfoTagNames));
+    Set<String> additionalTagSet = new HashSet<>(Arrays.asList(problemAdditionalInfoTagNames));
+    for (XmlNode node : root.getChildList()) {
+      String tagName = node.getTagName().trim();
+      String innerText = node.getInnerText().trim();
+      if (basicTagSet.contains(tagName)) {
+        basicTagSet.remove(tagName);
+      } else if (additionalTagSet.contains(tagName)) {
+        additionalTagSet.remove(tagName);
+      } else {
+        throw new AppException("Tag name can't occurred multiple times in contest information file.");
+      }
+      if ("title".equals(tagName)) {
+        problem.setTitle(innerText);
+      } else if ("description".equals(tagName)) {
+        problem.setDescription(innerText);
+      } else if ("input".equals(tagName)) {
+        problem.setInput(innerText);
+      } else if ("output".equals(tagName)) {
+        problem.setOutput(innerText);
+      } else if ("sampleInput".equals(tagName)) {
+        problem.setSampleInput(innerText);
+      } else if ("sampleOutput".equals(tagName)) {
+        problem.setSampleOutput(innerText);
+      } else if ("timeLimit".equals(tagName)) {
+        problem.setTimeLimit(Integer.parseInt(innerText));
+      } else if ("memoryLimit".equals(tagName)) {
+        problem.setMemoryLimit(Integer.parseInt(innerText));
+      } else if ("javaTimeLimit".equals(tagName)) {
+        problem.setJavaTimeLimit(Integer.parseInt(innerText));
+      } else if ("javaMemoryLimit".equals(tagName)) {
+        problem.setJavaMemoryLimit(Integer.parseInt(innerText));
+      } else if ("source".equals(tagName)) {
+        problem.setSource(innerText);
+      } else if ("hint".equals(tagName)) {
+        problem.setHint(innerText);
+      } else if ("specialJudge".equals(tagName)) {
+        problem.setIsSpj(Boolean.getBoolean(tagName));
+      }
+    }
+    if (!basicTagSet.isEmpty()) {
+      throw new AppException(String.format("Tags %s not occurred.", basicTagSet));
+    }
+    problem.setIsVisible(false);
+    if (additionalTagSet.contains("specialJudge")) {
+      problem.setIsSpj(false);
+    }
+    if (additionalTagSet.contains("javaTimeLimit")) {
+      problem.setJavaTimeLimit(problem.getTimeLimit() * 3);
+    }
+    if (additionalTagSet.contains("javaMemoryLimit")) {
+      problem.setJavaMemoryLimit(problem.getMemoryLimit());
+    }
+    return problem;
+  }
+
 }
