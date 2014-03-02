@@ -105,7 +105,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       }
     }
     if (!tagSet.isEmpty()) {
-      throw new AppException(String.format("Tags %s not occurred.", tagSet));
+      throw new AppException(String.format("Tags %s not occurred in problem information file.", tagSet));
     }
 
     if (contestProblems == null) {
@@ -176,7 +176,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       } else if (additionalTagSet.contains(tagName)) {
         additionalTagSet.remove(tagName);
       } else {
-        throw new AppException("Tag name can't occurred multiple times in contest information file.");
+        throw new AppException("Tag name can't occurred multiple times in problem information file.");
       }
       if ("title".equals(tagName)) {
         problem.setTitle(innerText);
@@ -207,7 +207,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       }
     }
     if (!basicTagSet.isEmpty()) {
-      throw new AppException(String.format("Tags %s not occurred.", basicTagSet));
+      throw new AppException(String.format("Tags %s not occurred in problem information file.", basicTagSet));
     }
     problem.setIsVisible(false);
     if (additionalTagSet.contains("specialJudge")) {
