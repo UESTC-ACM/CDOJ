@@ -50,7 +50,8 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
   };
 
   @Autowired
-  public ContestImporterServiceImpl(Settings settings, IContestDAO contestDAO, IProblemDAO problemDAO) {
+  public ContestImporterServiceImpl(Settings settings, IContestDAO contestDAO,
+                                    IProblemDAO problemDAO) {
     this.settings = settings;
     this.contestDAO = contestDAO;
     this.problemDAO = problemDAO;
@@ -63,7 +64,8 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
     } catch (IOException e) {
       throw new AppException("Create zipFile object failed.");
     }
-    String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/" + fileInformationDTO.getFileName();
+    String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/"
+         + fileInformationDTO.getFileName();
     ZipUtil.unzipFile(zipFile, tempDirectory, new ContestZipChecker());
     Contest contest = parseContestInfo(tempDirectory);
   }
@@ -86,7 +88,8 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       if (tagSet.contains(tagName)) {
         tagSet.remove(tagName);
       } else {
-        throw new AppException("Tag name can't occurred multiple times in contest information file.");
+        throw new AppException("Tag name can't occurred multiple times in " +
+            "contest information file.");
       }
       if ("title".equals(tagName)) {
         contest.setTitle(innerText);
@@ -105,7 +108,8 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       }
     }
     if (!tagSet.isEmpty()) {
-      throw new AppException(String.format("Tags %s not occurred in problem information file.", tagSet));
+      throw new AppException(String.format("Tags %s not occurred in problem information file.",
+          tagSet));
     }
 
     if (contestProblems == null) {
@@ -144,7 +148,8 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
     return (byte) contestType.ordinal();
   }
 
-  private Collection<Problem> parseContestProblems(XmlNode problemsNode, String rootDirectory) throws AppException {
+  private Collection<Problem> parseContestProblems(XmlNode problemsNode, String rootDirectory)
+      throws AppException {
     if (problemsNode == null) {
       throw new AppException("Invalid XmlNode.");
     }
@@ -176,7 +181,8 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       } else if (additionalTagSet.contains(tagName)) {
         additionalTagSet.remove(tagName);
       } else {
-        throw new AppException("Tag name can't occurred multiple times in problem information file.");
+        throw new AppException("Tag name can't occurred multiple times in " +
+            "problem information file.");
       }
       if ("title".equals(tagName)) {
         problem.setTitle(innerText);
@@ -207,7 +213,8 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       }
     }
     if (!basicTagSet.isEmpty()) {
-      throw new AppException(String.format("Tags %s not occurred in problem information file.", basicTagSet));
+      throw new AppException(String.format("Tags %s not occurred in problem information file.",
+          basicTagSet));
     }
     problem.setIsVisible(false);
     if (additionalTagSet.contains("specialJudge")) {
