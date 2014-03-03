@@ -15,8 +15,6 @@ import cn.edu.uestc.acmicpc.service.iface.OnlineUsersService;
  * Service for {@link cn.edu.uestc.acmicpc.web.oj.listener.onlineusers.OnlineUsersListener}
  */
 @Service
-@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-@Lazy(false)
 public class OnlineUsersServiceImpl extends AbstractService implements OnlineUsersService{
   private static final Set<String> userPool = new HashSet<>();
 

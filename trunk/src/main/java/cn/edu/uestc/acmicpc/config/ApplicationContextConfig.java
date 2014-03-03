@@ -22,8 +22,6 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.judge.JudgeService;
-import cn.edu.uestc.acmicpc.service.iface.OnlineUsersService;
-import cn.edu.uestc.acmicpc.service.impl.OnlineUsersServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -70,18 +68,6 @@ public class ApplicationContextConfig {
   @Lazy(false)
   public JudgeService judgeService() {
     return new JudgeService();
-  }
-
-  /**
-   * Bean: Online users Service
-   *
-   * @return onlineUsersService bean
-   */
-  @Bean(name = "onlineUsersService")
-  @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-  @Lazy(false)
-  public OnlineUsersService onlineUsersService() {
-    return new OnlineUsersServiceImpl();
   }
 
   /**
