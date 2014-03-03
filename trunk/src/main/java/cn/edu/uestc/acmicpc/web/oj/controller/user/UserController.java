@@ -9,6 +9,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserProblemStatusDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDTO;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
@@ -37,6 +38,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -223,6 +225,17 @@ public class UserController extends BaseController {
   @LoginPermit(NeedLogin = false)
   public String center(@PathVariable("userName") String userName,
                        ModelMap model) {
+    model.put("targetUserName", userName);
+    return "user/userCenter";
+  }
+
+  @RequestMapping("userCenterData/{userName}")
+  @LoginPermit(NeedLogin = false)
+  public
+  @ResponseBody
+  Map<String, Object> userCenterData(HttpSession session,
+                           @PathVariable("userName") String userName) {
+    Map<String, Object> json = new HashMap<>();
     try {
       UserCenterDTO userCenterDTO = userService.getUserCenterDTOByUserName(userName);
       if (userCenterDTO == null) {
@@ -246,12 +259,20 @@ public class UserController extends BaseController {
           problemStatus.put(result, Global.AuthorStatusType.PASS);
         }
       }
-      model.put("problemStatus", problemStatus);
-      model.put("targetUser", userCenterDTO);
+
+      List<UserProblemStatusDTO> problemStatusList = new LinkedList<>();
+      for (Map.Entry<Integer, Global.AuthorStatusType> status : problemStatus.entrySet()) {
+        problemStatusList.add(new UserProblemStatusDTO(status.getKey(), status.getValue().ordinal()));
+      }
+
+      json.put("problemStatus", problemStatusList);
+      json.put("targetUser", userCenterDTO);
+      json.put("result", "success");
     } catch (AppException e) {
-      return "error/404";
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
     }
-    return "user/userCenter";
+    return json;
   }
 
   @RequestMapping("edit")
