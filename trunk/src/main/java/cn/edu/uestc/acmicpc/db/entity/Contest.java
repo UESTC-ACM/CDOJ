@@ -184,12 +184,12 @@ public class Contest implements Serializable {
   }
 
   public Contest() {
-    setContestId(null);
-    setDescription("");
-    setIsVisible(false);
-    setLength(defaultContestLength);
-    setTime(new Timestamp(System.currentTimeMillis()));
-    setTitle("");
-    setType((byte) Global.ContestType.PUBLIC.ordinal());
+    contestId = null;
+    description = "";
+    isVisible = false;
+    length = defaultContestLength;
+    time = new Timestamp(System.currentTimeMillis());
+    title = "";
+    type = (byte) Global.ContestType.PUBLIC.ordinal();
   }
 }
