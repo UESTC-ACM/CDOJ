@@ -92,20 +92,24 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
         throw new AppException("Tag name can't occurred multiple times in " +
             "contest information file.");
       }
-      if ("title".equals(tagName)) {
-        contest.setTitle(innerText);
-      } else if ("length".equals(tagName)) {
-        contest.setLength(Integer.parseInt(innerText));
-      } else if ("type".equals(tagName)) {
-        contest.setType(getContestTypeByte(innerText));
-      } else if ("startTime".equals(tagName)) {
-        contest.setTime(Timestamp.valueOf(innerText));
-      } else if ("description".equals(tagName)) {
-        contest.setDescription(innerText);
-      } else if ("visible".equals(tagName)) {
-        contest.setIsVisible(Boolean.parseBoolean(innerText));
-      } else if ("problems".equals(tagName)) {
-        contestProblems = parseContestProblems(node, directory);
+      try {
+        if ("title".equals(tagName)) {
+          contest.setTitle(innerText);
+        } else if ("length".equals(tagName)) {
+          contest.setLength(Integer.parseInt(innerText));
+        } else if ("type".equals(tagName)) {
+          contest.setType(getContestTypeByte(innerText));
+        } else if ("startTime".equals(tagName)) {
+          contest.setTime(Timestamp.valueOf(innerText));
+        } else if ("description".equals(tagName)) {
+          contest.setDescription(innerText);
+        } else if ("visible".equals(tagName)) {
+          contest.setIsVisible(Boolean.parseBoolean(innerText));
+        } else if ("problems".equals(tagName)) {
+          contestProblems = parseContestProblems(node, directory);
+        }
+      } catch (Exception e) {
+        throw new AppException("Exception thrown when parse contest information.");
       }
     }
     if (!tagSet.isEmpty()) {
@@ -183,32 +187,36 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
         throw new AppException("Tag name can't occurred multiple times in " +
             "problem information file.");
       }
-      if ("title".equals(tagName)) {
-        problem.setTitle(innerText);
-      } else if ("description".equals(tagName)) {
-        problem.setDescription(innerText);
-      } else if ("input".equals(tagName)) {
-        problem.setInput(innerText);
-      } else if ("output".equals(tagName)) {
-        problem.setOutput(innerText);
-      } else if ("sampleInput".equals(tagName)) {
-        problem.setSampleInput(innerText);
-      } else if ("sampleOutput".equals(tagName)) {
-        problem.setSampleOutput(innerText);
-      } else if ("timeLimit".equals(tagName)) {
-        problem.setTimeLimit(Integer.parseInt(innerText));
-      } else if ("memoryLimit".equals(tagName)) {
-        problem.setMemoryLimit(Integer.parseInt(innerText));
-      } else if ("javaTimeLimit".equals(tagName)) {
-        problem.setJavaTimeLimit(Integer.parseInt(innerText));
-      } else if ("javaMemoryLimit".equals(tagName)) {
-        problem.setJavaMemoryLimit(Integer.parseInt(innerText));
-      } else if ("source".equals(tagName)) {
-        problem.setSource(innerText);
-      } else if ("hint".equals(tagName)) {
-        problem.setHint(innerText);
-      } else if ("specialJudge".equals(tagName)) {
-        problem.setIsSpj(Boolean.getBoolean(tagName));
+      try {
+        if ("title".equals(tagName)) {
+          problem.setTitle(innerText);
+        } else if ("description".equals(tagName)) {
+          problem.setDescription(innerText);
+        } else if ("input".equals(tagName)) {
+          problem.setInput(innerText);
+        } else if ("output".equals(tagName)) {
+          problem.setOutput(innerText);
+        } else if ("sampleInput".equals(tagName)) {
+          problem.setSampleInput(innerText);
+        } else if ("sampleOutput".equals(tagName)) {
+          problem.setSampleOutput(innerText);
+        } else if ("timeLimit".equals(tagName)) {
+          problem.setTimeLimit(Integer.parseInt(innerText));
+        } else if ("memoryLimit".equals(tagName)) {
+          problem.setMemoryLimit(Integer.parseInt(innerText));
+        } else if ("javaTimeLimit".equals(tagName)) {
+          problem.setJavaTimeLimit(Integer.parseInt(innerText));
+        } else if ("javaMemoryLimit".equals(tagName)) {
+          problem.setJavaMemoryLimit(Integer.parseInt(innerText));
+        } else if ("source".equals(tagName)) {
+          problem.setSource(innerText);
+        } else if ("hint".equals(tagName)) {
+          problem.setHint(innerText);
+        } else if ("specialJudge".equals(tagName)) {
+          problem.setIsSpj(Boolean.getBoolean(tagName));
+        }
+      } catch (Exception e) {
+        throw new AppException("Exception thrown when parse contest problem information");
       }
     }
     if (!basicTagSet.isEmpty()) {
