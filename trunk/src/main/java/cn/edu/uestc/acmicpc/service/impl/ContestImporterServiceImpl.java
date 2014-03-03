@@ -129,7 +129,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       contestProblem.setContestByContestId(contest);
       contestProblem.setProblemByProblemId(problem);
       contestProblem.setOrder(problemOrder);
-      problemOrder ++;
+      problemOrder++;
     }
 
     return contest;
