@@ -58,7 +58,8 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
     this.problemDAO = problemDAO;
   }
 
-  private void parseContestZipArchive(FileInformationDTO fileInformationDTO) throws AppException {
+  @Override
+  public Contest parseContestZipArchive(FileInformationDTO fileInformationDTO) throws AppException {
     ZipFile zipFile;
     try {
       zipFile = new ZipFile(fileInformationDTO.getFileName());
@@ -69,6 +70,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
          + fileInformationDTO.getFileName();
     ZipUtil.unzipFile(zipFile, tempDirectory, new ContestZipChecker());
     Contest contest = parseContestInfo(tempDirectory);
+    return contest;
   }
 
   private Contest parseContestInfo(String directory) throws AppException {
