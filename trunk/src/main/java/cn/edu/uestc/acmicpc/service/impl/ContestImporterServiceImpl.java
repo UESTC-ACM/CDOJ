@@ -8,6 +8,7 @@ import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.service.iface.ContestImporterService;
 import cn.edu.uestc.acmicpc.util.checker.ContestZipChecker;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.helper.ZipUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
@@ -150,9 +151,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
 
   private Collection<Problem> parseContestProblems(XmlNode problemsNode, String rootDirectory)
       throws AppException {
-    if (problemsNode == null) {
-      throw new AppException("Invalid XmlNode.");
-    }
+    AppExceptionUtil.assertNotNull(problemsNode);
     Collection<Problem> contestProblems = new ArrayList<>();
     for (XmlNode node : problemsNode.getChildList()) {
       Problem problem = parseContestProblem(rootDirectory + "/" + node.getInnerText().trim());
