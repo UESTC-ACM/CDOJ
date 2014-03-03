@@ -31,8 +31,7 @@ Nav list on navbar
         <li id="menu-item-user" ng-class="{actv: isActive('user')}"><a
             href="<c:url value="/user/list"/>"><i class="fa fa-user"></i><span
             class="cdoj-menu-item">Users</span></a></li>
-        <li><a
-            href="<c:url value="/bbs/"/>"><i class="fa fa-comments"></i><span
+        <li><a href="/bbs/"><i class="fa fa-comments"></i><span
             class="cdoj-menu-item">BBS</span></a></li>
       </ul>
     </div>
