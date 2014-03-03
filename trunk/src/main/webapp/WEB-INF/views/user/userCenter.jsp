@@ -9,55 +9,47 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <title><c:out value="${targetUser.userName}"/></title>
+  <title><c:out value="${targetUserName}"/></title>
 </head>
 <body>
-<div id="cdoj-user-center">
+<div id="cdoj-user-center"
+     ng-controller="UserCenterController"
+     ng-init="targetUserName='${targetUserName}'">
   <div class="row">
     <div class="col-md-12">
       <div class="media" id="cdoj-user-center-summary">
-        <a class="pull-left" href="#"> <img
-            class="media-object img-thumbnail"
-            id="cdoj-user-avatar-large"
-            email="<c:out value="${targetUser.email}"/>" type="avatar">
+        <a class="pull-left" href="#">
+          <img id="cdoj-user-avatar-large"
+               ui-avatar
+               email="targetUser.email"
+               class="media-object img-thumbnail"/>
         </a>
 
         <div class="media-body">
-          <h2 class="media-heading">
-            <c:out value="${targetUser.userName}"/>
+          <h2 class="media-heading" ng-bind="targetUser.userName">
           </h2>
           <dl class="dl-horizontal">
             <dt>Nick name</dt>
-            <dd>
-              <c:out value="${targetUser.nickName}"/>
+            <dd ng-bind="targetUser.nickName">
             </dd>
             <dt>School</dt>
-            <dd>
-              <c:out value="${targetUser.school}"/>
+            <dd ng-bind="targetUser.school">
             </dd>
             <dt>Department</dt>
-            <dd>
-              <c:out value="${targetUser.department}"/>
+            <dd ng-bind="targetUser.department">
             </dd>
-            <c:if
-                test="${sessionScope.currentUser.userId == targetUser.userId}">
               <dt>Student ID</dt>
-              <dd>
-                <c:out value="${targetUser.studentId}"/>
+              <dd ng-bind="targetUser.studentId">
               </dd>
               <dt>Email</dt>
-              <dd>
-                <c:out value="${targetUser.email}"/>
+              <dd ng-bind="targetUser.email">
               </dd>
-            </c:if>
             <dt>Motto</dt>
-            <dd>
-              <c:out value="${targetUser.motto}"/>
+            <dd ng-bind="targetUser.motto">
             </dd>
             <dt>Last login</dt>
-            <dd class="cdoj-time" type="milliseconds" isUTC="true">
-              <fmt:formatDate value="${targetUser.lastLogin}"
-                              type="date" pattern="yyyy-MM-dd HH:mm:ss"/>
+            <dd ui-time
+                time="targetUser.lastLogin">
             </dd>
           </dl>
         </div>
@@ -66,21 +58,16 @@
     <div class="col-md-12">
       <h3>Problems</h3>
       <hr/>
-      <c:forEach var="item" items="${problemStatus}">
-        <div
-            <c:choose>
-              <c:when test="${item.value == 'NONE'}">
-                class="cdoj-label cdoj-user-status-label label-default"
-              </c:when>
-              <c:when test="${item.value == 'PASS'}">
-                class="cdoj-label cdoj-user-status-label label-success"
-              </c:when>
-              <c:otherwise>
-                class="cdoj-label cdoj-user-status-label label-danger"
-              </c:otherwise>
-            </c:choose>>
-          <a href="/problem/show/${item.key}">${item.key}</a></div>
-      </c:forEach>
+        <div ng-repeat="status in problemStatus"
+             class="cdoj-label cdoj-user-status-label"
+             ng-class="{
+               'label-default': status.status == 0,
+               'label-success': status.status == 1,
+               'label-danger': status.status == 2
+             }"
+            >
+          <a href="/problem/show/{{status.problemId}}" ng-bind="status.problemId"></a>
+        </div>
     </div>
   </div>
 </div>
