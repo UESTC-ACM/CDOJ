@@ -11,6 +11,7 @@ import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.util.checker.ContestZipChecker;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+import cn.edu.uestc.acmicpc.util.helper.FileUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.helper.ZipUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
@@ -102,7 +103,15 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
     String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/"
          + fileInformationDTO.getFileName();
     ZipUtil.unzipFile(zipFile, tempDirectory, new ContestZipChecker());
-    return parseContestInfo(tempDirectory);
+    ContestDTO contestDTO;
+    try {
+      contestDTO = parseContestInfo(tempDirectory);
+    } catch (AppException e) {
+      throw new AppException(e.getMessage());
+    } finally {
+      FileUtil.clearDirectory(tempDirectory);
+    }
+    return contestDTO;
   }
 
   private ContestDTO parseContestInfo(String directory) throws AppException {
