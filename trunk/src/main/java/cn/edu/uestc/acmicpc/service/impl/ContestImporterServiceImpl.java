@@ -139,7 +139,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
             contest.setLength(Integer.parseInt(innerText));
             break;
           case "type":
-            contest.setType(getContestTypeByte(innerText));
+            contest.setType(getContestType(innerText));
             break;
           case "startTime":
             contest.setTime(Timestamp.valueOf(innerText));
@@ -185,7 +185,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
     return contest;
   }
 
-  private static Byte getContestTypeByte(String contestTypeString) {
+  private static Byte getContestType(String contestTypeString) {
     Global.ContestType contestType;
     switch (contestTypeString) {
       case "Private":
