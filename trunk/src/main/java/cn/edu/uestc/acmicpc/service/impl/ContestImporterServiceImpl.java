@@ -1,11 +1,13 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
-import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
-import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.service.iface.ContestImporterService;
+import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
+import cn.edu.uestc.acmicpc.service.iface.FileService;
+import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.util.checker.ContestZipChecker;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
@@ -21,11 +23,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipFile;
 
@@ -36,7 +40,14 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
 
   private final IContestDAO contestDAO;
 
-  private final IProblemDAO problemDAO;
+
+  private final FileService fileService;
+
+  private final ProblemService problemService;
+
+  private final ContestProblemService contestProblemService;
+
+  private final ArrayList<String> problemDataDirectories;
 
   private static final String[] contestBasicInfoTagNames = new String[] {
       "title", "length", "type", "startTime", "description", "visible", "problems"
@@ -51,12 +62,34 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       "javaTimeLimit", "javaMemoryLimit", "hint", "specialJudge"
   };
 
+  private static final Map<String, String> problemTagsSetter;
+  static {
+    problemTagsSetter = new HashMap<>();
+    problemTagsSetter.put("title", "setTitle");
+    problemTagsSetter.put("description", "setDescription");
+    problemTagsSetter.put("input", "setInput");
+    problemTagsSetter.put("output", "setOutput");
+    problemTagsSetter.put("sampleInput", "setSampleInput");
+    problemTagsSetter.put("sampleOutput", "setSampleOutput");
+    problemTagsSetter.put("timeLimit", "setTimeLimit");
+    problemTagsSetter.put("javaTimeLimit", "setJavaTimeLimit");
+    problemTagsSetter.put("memoryLimit", "setMemoryLimit");
+    problemTagsSetter.put("javaMemoryLimit", "setJavaMemoryLimit");
+    problemTagsSetter.put("source", "setSource");
+    problemTagsSetter.put("specialJudge", "setIsSpj");
+    problemTagsSetter.put("hint", "setHint");
+  }
+
   @Autowired
   public ContestImporterServiceImpl(Settings settings, IContestDAO contestDAO,
-                                    IProblemDAO problemDAO) {
+                                    FileService fileService, ProblemService problemService,
+                                    ContestProblemService contestProblemService) {
     this.settings = settings;
     this.contestDAO = contestDAO;
-    this.problemDAO = problemDAO;
+    this.fileService = fileService;
+    this.problemService = problemService;
+    this.contestProblemService = contestProblemService;
+    this.problemDataDirectories = new ArrayList<>();
   }
 
   @Override
@@ -70,8 +103,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
     String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/"
          + fileInformationDTO.getFileName();
     ZipUtil.unzipFile(zipFile, tempDirectory, new ContestZipChecker());
-    Contest contest = parseContestInfo(tempDirectory);
-    return contest;
+    return parseContestInfo(tempDirectory);
   }
 
   private Contest parseContestInfo(String directory) throws AppException {
@@ -85,7 +117,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
 
     Contest contest = new Contest();
     Set<String> tagSet = new HashSet<>(Arrays.asList(contestBasicInfoTagNames));
-    Collection<Problem> contestProblems = null;
+    ArrayList<ProblemDTO> contestProblems = null;
     for (XmlNode node : root.getChildList()) {
       String tagName = node.getTagName().trim();
       String innerText = node.getInnerText().trim();
@@ -100,23 +132,31 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       }
 
       try {
-        if ("title".equals(tagName)) {
-          contest.setTitle(innerText);
-        } else if ("length".equals(tagName)) {
-          contest.setLength(Integer.parseInt(innerText));
-        } else if ("type".equals(tagName)) {
-          contest.setType(getContestTypeByte(innerText));
-        } else if ("startTime".equals(tagName)) {
-          contest.setTime(Timestamp.valueOf(innerText));
-        } else if ("description".equals(tagName)) {
-          contest.setDescription(innerText);
-        } else if ("visible".equals(tagName)) {
-          contest.setIsVisible(Boolean.parseBoolean(innerText));
-        } else if ("problems".equals(tagName)) {
-          contestProblems = parseContestProblems(node, directory);
+        switch (tagName) {
+          case "title":
+            contest.setTitle(innerText);
+            break;
+          case "length":
+            contest.setLength(Integer.parseInt(innerText));
+            break;
+          case "type":
+            contest.setType(getContestTypeByte(innerText));
+            break;
+          case "startTime":
+            contest.setTime(Timestamp.valueOf(innerText));
+            break;
+          case "description":
+            contest.setDescription(innerText);
+            break;
+          case "visible":
+            contest.setIsVisible(Boolean.parseBoolean(innerText));
+            break;
+          case "problems":
+            contestProblems = parseContestProblems(node, directory);
+            break;
         }
       } catch (Exception e) {
-        throw new AppException("Exception thrown when parse contest information.");
+        throw new AppException(e.getMessage());
       }
     }
     if (!tagSet.isEmpty()) {
@@ -128,14 +168,18 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       throw new AppException("No contest problems declared.");
     }
 
+    problemService.createProblems(contestProblems);
     contestDAO.add(contest);
-    int problemOrder = 1;
-    for (Problem problem : contestProblems) {
-      problemDAO.add(problem);
-      ContestProblem contestProblem = new ContestProblem();
-      contestProblem.setContestByContestId(contest);
-      contestProblem.setProblemByProblemId(problem);
-      contestProblem.setOrder(problemOrder);
+    Integer problemOrder = 0;
+    for (int i = 0;i < contestProblems.size();i++) {
+      Integer problemId = contestProblems.get(i).getProblemId();
+      String problemDataDirectory = problemDataDirectories.get(i);
+      ContestProblemDTO contestProblemDTO = new ContestProblemDTO();
+      contestProblemDTO.setProblemId(problemId);
+      contestProblemDTO.setContestId(contest.getContestId());
+      contestProblemDTO.setOrder(problemOrder);
+      contestProblemService.createNewContestProblem(contestProblemDTO);
+      fileService.moveProblemDataFile(problemDataDirectory, problemId);
       problemOrder++;
     }
 
@@ -160,18 +204,20 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
     return (byte) contestType.ordinal();
   }
 
-  private Collection<Problem> parseContestProblems(XmlNode problemsNode, String rootDirectory)
+  private ArrayList<ProblemDTO> parseContestProblems(XmlNode problemsNode, String rootDirectory)
       throws AppException {
     AppExceptionUtil.assertNotNull(problemsNode);
-    Collection<Problem> contestProblems = new ArrayList<>();
+    ArrayList<ProblemDTO> contestProblems = new ArrayList<>();
     for (XmlNode node : problemsNode.getChildList()) {
-      Problem problem = parseContestProblem(rootDirectory + "/" + node.getInnerText().trim());
+      String problemDirectory = rootDirectory + "/" + node.getInnerText().trim();
+      ProblemDTO problem = parseContestProblem(problemDirectory);
+      problemDataDirectories.add(problemDirectory.replaceFirst(settings.SETTING_UPLOAD_FOLDER, ""));
       contestProblems.add(problem);
     }
     return contestProblems;
   }
 
-  private Problem parseContestProblem(String directory) throws AppException {
+  private ProblemDTO parseContestProblem(String directory) throws AppException {
     XmlParser xmlParser = new XmlParser(directory + "/" + "problemInfo.xml");
     XmlNode root;
     try {
@@ -180,7 +226,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       throw new AppException("No root node in problem information file.");
     }
 
-    Problem problem = new Problem();
+    ProblemDTO problemDTO = new ProblemDTO();
     Set<String> basicTagSet = new HashSet<>(Arrays.asList(problemBasicInfoTagNames));
     Set<String> additionalTagSet = new HashSet<>(Arrays.asList(problemAdditionalInfoTagNames));
     for (XmlNode node : root.getChildList()) {
@@ -199,32 +245,15 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       }
 
       try {
-        if ("title".equals(tagName)) {
-          problem.setTitle(innerText);
-        } else if ("description".equals(tagName)) {
-          problem.setDescription(innerText);
-        } else if ("input".equals(tagName)) {
-          problem.setInput(innerText);
-        } else if ("output".equals(tagName)) {
-          problem.setOutput(innerText);
-        } else if ("sampleInput".equals(tagName)) {
-          problem.setSampleInput(innerText);
-        } else if ("sampleOutput".equals(tagName)) {
-          problem.setSampleOutput(innerText);
-        } else if ("timeLimit".equals(tagName)) {
-          problem.setTimeLimit(Integer.parseInt(innerText));
-        } else if ("memoryLimit".equals(tagName)) {
-          problem.setMemoryLimit(Integer.parseInt(innerText));
-        } else if ("javaTimeLimit".equals(tagName)) {
-          problem.setJavaTimeLimit(Integer.parseInt(innerText));
-        } else if ("javaMemoryLimit".equals(tagName)) {
-          problem.setJavaMemoryLimit(Integer.parseInt(innerText));
-        } else if ("source".equals(tagName)) {
-          problem.setSource(innerText);
-        } else if ("hint".equals(tagName)) {
-          problem.setHint(innerText);
-        } else if ("specialJudge".equals(tagName)) {
-          problem.setIsSpj(Boolean.getBoolean(tagName));
+        String setter = problemTagsSetter.get(tagName);
+        if (setter.endsWith("Limit")) {
+            Method method = problemDTO.getClass().getMethod(setter, Integer.class);
+            method.invoke(problemDTO, Integer.parseInt(innerText));
+        } else if (setter.equals("specialJudge")) {
+          problemDTO.setIsVisible(Boolean.parseBoolean(innerText));
+        } else {
+          Method method = problemDTO.getClass().getMethod(setter, String.class);
+          method.invoke(problemDTO, innerText);
         }
       } catch (Exception e) {
         throw new AppException("Exception thrown when parse contest problem information");
@@ -235,17 +264,18 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       throw new AppException(String.format("Tags %s not occurred in problem information file.",
           basicTagSet));
     }
-    problem.setIsVisible(false);
+
+    problemDTO.setIsVisible(false);
     if (additionalTagSet.contains("specialJudge")) {
-      problem.setIsSpj(false);
+      problemDTO.setIsSpj(false);
     }
     if (additionalTagSet.contains("javaTimeLimit")) {
-      problem.setJavaTimeLimit(problem.getTimeLimit() * 3);
+      problemDTO.setJavaTimeLimit(problemDTO.getTimeLimit() * 3);
     }
     if (additionalTagSet.contains("javaMemoryLimit")) {
-      problem.setJavaMemoryLimit(problem.getMemoryLimit());
+      problemDTO.setJavaMemoryLimit(problemDTO.getMemoryLimit());
     }
-    return problem;
+    return problemDTO;
   }
 
 }
