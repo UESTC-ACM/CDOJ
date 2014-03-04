@@ -101,11 +101,11 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
       throws AppException;
 
   /**
-   * Create problems from by problemDTOs.
+   * Create problems by problemDTOs.
    *
+   * @param problemDTOs a series of {@link cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO} entity.
    * @return List of problemDTOs with problemId.
-   * @param problemDTOS a series of {@link cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO} entity.
-   *
+   * @throws AppException
    */
   public ArrayList<ProblemDTO> createProblems(ArrayList<ProblemDTO> problemDTOs) throws AppException;
 
