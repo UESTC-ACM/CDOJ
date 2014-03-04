@@ -1,11 +1,11 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
-import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.service.iface.ContestImporterService;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
+import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.util.checker.ContestZipChecker;
@@ -38,11 +38,11 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
 
   private final Settings settings;
 
-  private final IContestDAO contestDAO;
-
   private final FileService fileService;
 
   private final ProblemService problemService;
+
+  private final ContestService contestService;
 
   private final ContestProblemService contestProblemService;
 
@@ -80,19 +80,19 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
   }
 
   @Autowired
-  public ContestImporterServiceImpl(Settings settings, IContestDAO contestDAO,
-                                    FileService fileService, ProblemService problemService,
+  public ContestImporterServiceImpl(Settings settings, FileService fileService,
+                                    ProblemService problemService, ContestService contestService,
                                     ContestProblemService contestProblemService) {
     this.settings = settings;
-    this.contestDAO = contestDAO;
     this.fileService = fileService;
     this.problemService = problemService;
+    this.contestService = contestService;
     this.contestProblemService = contestProblemService;
     this.problemDataDirectories = new ArrayList<>();
   }
 
   @Override
-  public Contest parseContestZipArchive(FileInformationDTO fileInformationDTO) throws AppException {
+  public ContestDTO parseContestZipArchive(FileInformationDTO fileInformationDTO) throws AppException {
     ZipFile zipFile;
     try {
       zipFile = new ZipFile(fileInformationDTO.getFileName());
@@ -105,7 +105,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
     return parseContestInfo(tempDirectory);
   }
 
-  private Contest parseContestInfo(String directory) throws AppException {
+  private ContestDTO parseContestInfo(String directory) throws AppException {
     XmlParser xmlParser = new XmlParser(directory + "/" + "contestInfo.xml");
     XmlNode root;
     try {
@@ -114,7 +114,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       throw new AppException("No root node in contest information file.");
     }
 
-    Contest contest = new Contest();
+    ContestDTO contestDTO = new ContestDTO();
     Set<String> tagSet = new HashSet<>(Arrays.asList(contestBasicInfoTagNames));
     ArrayList<ProblemDTO> contestProblems = null;
     for (XmlNode node : root.getChildList()) {
@@ -133,22 +133,22 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       try {
         switch (tagName) {
           case "title":
-            contest.setTitle(innerText);
+            contestDTO.setTitle(innerText);
             break;
           case "length":
-            contest.setLength(Integer.parseInt(innerText));
+            contestDTO.setLength(Integer.parseInt(innerText));
             break;
           case "type":
-            contest.setType(getContestType(innerText));
+            contestDTO.setType(getContestType(innerText));
             break;
           case "startTime":
-            contest.setTime(Timestamp.valueOf(innerText));
+            contestDTO.setTime(Timestamp.valueOf(innerText));
             break;
           case "description":
-            contest.setDescription(innerText);
+            contestDTO.setDescription(innerText);
             break;
           case "visible":
-            contest.setIsVisible(Boolean.parseBoolean(innerText));
+            contestDTO.setIsVisible(Boolean.parseBoolean(innerText));
             break;
           case "problems":
             contestProblems = parseContestProblems(node, directory);
@@ -168,21 +168,24 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
     }
 
     problemService.createProblems(contestProblems);
-    contestDAO.add(contest);
+    Integer contestId = contestService.createNewContest();
+    contestDTO.setContestId(contestId);
+
+    contestService.updateContest(contestDTO);
     Integer problemOrder = 0;
     for (int i = 0; i < contestProblems.size(); i++) {
       Integer problemId = contestProblems.get(i).getProblemId();
       String problemDataDirectory = problemDataDirectories.get(i);
       ContestProblemDTO contestProblemDTO = new ContestProblemDTO();
       contestProblemDTO.setProblemId(problemId);
-      contestProblemDTO.setContestId(contest.getContestId());
+      contestProblemDTO.setContestId(contestId);
       contestProblemDTO.setOrder(problemOrder);
       contestProblemService.createNewContestProblem(contestProblemDTO);
       fileService.moveProblemDataFile(problemDataDirectory, problemId);
       problemOrder++;
     }
 
-    return contest;
+    return contestDTO;
   }
 
   private static Byte getContestType(String contestTypeString) {
