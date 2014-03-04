@@ -14,6 +14,7 @@ import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -165,6 +166,23 @@ public class ProblemServiceImpl extends AbstractService implements
     AppExceptionUtil.assertNotNull(problem.getProblemId());
     updateProblemByProblemDTO(problem, problemDTO);
     problemDAO.update(problem);
+  }
+
+  @Override
+  public ArrayList<ProblemDTO> createProblems(ArrayList<ProblemDTO> problemDTOs) throws AppException {
+    for (ProblemDTO problemDTO : problemDTOs) {
+      Integer problemId = problemDTO.getProblemId();
+      if (problemId != null) {
+        if (!checkProblemExists(problemId)) {
+          throw new AppException("No problem #" + problemId + ".");
+        }
+      } else {
+        problemId = createNewProblem();
+        problemDTO.setProblemId(problemId);
+        updateProblem(problemDTO);
+      }
+    }
+    return problemDTOs;
   }
 
   @SuppressWarnings("unchecked")
