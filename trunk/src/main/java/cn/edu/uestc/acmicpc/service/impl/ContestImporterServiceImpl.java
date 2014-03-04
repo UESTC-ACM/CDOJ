@@ -9,6 +9,7 @@ import cn.edu.uestc.acmicpc.service.iface.ContestImporterService;
 import cn.edu.uestc.acmicpc.util.checker.ContestZipChecker;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.helper.ZipUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
@@ -94,6 +95,10 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
         throw new AppException("Tag name can't occurred multiple times in " +
             "contest information file.");
       }
+      if (StringUtil.isNullOrEmpty(innerText)) {
+        throw new AppException(String.format("Invalid value in tag %s", tagName));
+      }
+
       try {
         if ("title".equals(tagName)) {
           contest.setTitle(innerText);
@@ -189,6 +194,10 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
         throw new AppException("Tag name can't occurred multiple times in " +
             "problem information file.");
       }
+      if (StringUtil.isNullOrEmpty(innerText)) {
+        throw new AppException(String.format("Invalid value in tag %s", tagName));
+      }
+
       try {
         if ("title".equals(tagName)) {
           problem.setTitle(innerText);
@@ -221,6 +230,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
         throw new AppException("Exception thrown when parse contest problem information");
       }
     }
+
     if (!basicTagSet.isEmpty()) {
       throw new AppException(String.format("Tags %s not occurred in problem information file.",
           basicTagSet));
