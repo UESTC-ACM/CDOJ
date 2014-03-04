@@ -40,7 +40,6 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
 
   private final IContestDAO contestDAO;
 
-
   private final FileService fileService;
 
   private final ProblemService problemService;
@@ -171,7 +170,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
     problemService.createProblems(contestProblems);
     contestDAO.add(contest);
     Integer problemOrder = 0;
-    for (int i = 0;i < contestProblems.size();i++) {
+    for (int i = 0; i < contestProblems.size(); i++) {
       Integer problemId = contestProblems.get(i).getProblemId();
       String problemDataDirectory = problemDataDirectories.get(i);
       ContestProblemDTO contestProblemDTO = new ContestProblemDTO();
