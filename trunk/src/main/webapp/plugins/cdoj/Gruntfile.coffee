@@ -22,7 +22,6 @@ module.exports = (grunt) ->
           join: true
         files:
           "temp/jquery/cdoj.jquery.coffee.js": [
-            "src/jquery/cdoj.global.coffee"
             "src/jquery/cdoj.util.*.coffee"
           ]
 
