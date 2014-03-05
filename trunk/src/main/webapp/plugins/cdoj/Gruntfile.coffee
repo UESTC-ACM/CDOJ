@@ -14,8 +14,8 @@ module.exports = (grunt) ->
           join: true
         files:
           "temp/angular/cdoj.angular.coffee.js": [
-            "src/angular/global.coffee"
-            "src/angular/*.coffee"
+            "src/angular/app.coffee"
+            "src/angular/controller/*.coffee"
           ]
       compileJQueryProject:
         options:
