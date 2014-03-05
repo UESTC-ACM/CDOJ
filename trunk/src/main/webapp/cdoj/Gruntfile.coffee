@@ -6,6 +6,7 @@ module.exports = (grunt) ->
     watch:
       files: [
         "src/*/*.*"
+        "src/*/*/*.*"
       ]
       tasks: [
         "compileFull"
@@ -34,24 +35,22 @@ module.exports = (grunt) ->
           "temp/css/cdoj.css"
         ]
         dest: "dist/css/cdoj.css"
-      cdojMinimize:
+      cdojJsFull:
         src: [
-          "bower_components/bootstrap/dist/css/bootstrap.min.css"
-          "temp/css/cdoj.min.css"
-        ]
-        dest: "dist/css/cdoj.min.css"
-
-    cssmin:
-      cdojMinimize:
-        src: "temp/css/cdoj.css"
-        dest: "temp/css/cdoj.min.css"
-
-    min:
-      cdojMinimize:
-        src: [
+          "bower_components/angular/angular.js"
+          "bower_components/angular-bootstrap/ui-bootstrap-tpls.js"
+          "bower_components/angular-route/angular-route.js"
+          "bower_components/angular-sanitize/angular-sanitize.js"
+          "bower_components/jquery/dist/jquery.js"
+          "bower_components/bootstrap/dist/js/bootstrap.js"
+          "bower_components/CryptoJS/src/core.js"
+          "bower_components/CryptoJS/src/md5.js"
+          "bower_components/CryptoJS/src/sha1.js"
+          "bower_components/sugar/release/sugar-full.development.js"
+          "bower_components/underscore/underscore.js"
           "temp/angular/cdoj.angular.js"
         ]
-        dest: "temp/angular/cdoj.angular.min.js"
+        dest: "dist/js/cdoj.js"
 
   grunt.loadNpmTasks "grunt-contrib-watch"
   grunt.loadNpmTasks "grunt-contrib-less"
@@ -64,12 +63,9 @@ module.exports = (grunt) ->
     "concat:cdojFull"
 
     "coffee:cdojAngularFull"
+    "concat:cdojJsFull"
   ]
   grunt.registerTask "minifyResult", [
-    "cssmin:cdojMinimize"
-    "concat:cdojMinimize"
-
-    "min:cdojMinimize"
   ]
   grunt.registerTask "default", [
     "compileFull",

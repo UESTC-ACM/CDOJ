@@ -12,7 +12,7 @@
         href="/plugins/Font-Awesome/css/font-awesome-ie7.min.css"/>
   <![endif]-->
   <link rel="stylesheet"
-        href="/plugins/cdoj/dist/css/cdoj.css"/>
+        href="/cdoj/dist/css/cdoj.css"/>
 
   <title>{{$root.title}} - UESTC Online Judge</title>
 
@@ -51,9 +51,9 @@
             </div>
           </div>
         </li>
-        <!-- User -->
+        <!-- User
         <li ng-controller="UserController">
-        </li>
+        </li>    -->
       </ul>
     </nav>
   </div>
@@ -61,7 +61,7 @@
 
 <div id="cdoj-layout">
   <div id="cdoj-navbar">
-    <div id="cdoj-navbar-menu" class="row" ng-controller="navBarController">
+    <div id="cdoj-navbar-menu" class="row">
       <div class="col-md-12">
         <div class="cdoj-menu">
           <ul class="nav nav-pills nav-stacked">
@@ -86,8 +86,6 @@
 </div>
 
 <script src="/plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script src="/plugins/cdoj/dist/js/cdoj.dependencies.js"></script>
-<script src="/plugins/cdoj/dist/js/cdoj.jquery.js"></script>
-<script src="/plugins/cdoj/dist/js/cdoj.angular.js"></script>
+<script src="/cdoj/dist/js/cdoj.js"></script>
 </body>
 </html>
