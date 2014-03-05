@@ -25686,6 +25686,29 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
     }
   ]);
 
+  cdoj.controller("UserCenterController", [
+    "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
+      $scope.targetUserName = "";
+      $scope.targetUser = {
+        email: ""
+      };
+      return $scope.$watch("targetUserName", function() {
+        var targetUserName;
+        targetUserName = angular.copy($scope.targetUserName);
+        return $http.get("/user/userCenterData/" + targetUserName).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            $scope.targetUser = data.targetUser;
+            return $scope.problemStatus = data.problemStatus;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        });
+      });
+    }
+  ]);
+
   cdoj.controller("UserController", [
     "$scope", "$rootScope", "$http", "$element", "$compile", "$window", "UserProfile", function($scope, $rootScope, $http, $element, $compile, $window, $userProfile) {
       $rootScope.hasLogin = false;
