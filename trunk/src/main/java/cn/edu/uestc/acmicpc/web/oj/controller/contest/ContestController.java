@@ -88,18 +88,19 @@ public class ContestController extends BaseController {
       if (contestShowDTO == null) {
         throw new AppException("No such contest.");
       }
-      if (!contestShowDTO.getIsVisible() && currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
+      if (!contestShowDTO.getIsVisible() && !isAdmin(session)) {
         throw new AppException("No such contest.");
       }
 
       StatusCondition statusCondition = new StatusCondition();
       statusCondition.contestId = contestShowDTO.getContestId();
+      statusCondition.isForAdmin = isAdmin(session);
       // Sort by time
       statusCondition.orderFields = "time";
       statusCondition.orderAsc = "true";
       statusCondition.startId = lastFetched + 1;
       List<StatusListDTO> statusList = statusService.getStatusList(statusCondition);
-      if (currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
+      if (!isAdmin(session)) {
         for (StatusListDTO status: statusList) {
           if (!status.getUserName().equals(currentUser.getUserName())) {
             // Stash sensitive information
@@ -152,6 +153,7 @@ public class ContestController extends BaseController {
 
       StatusCondition statusCondition = new StatusCondition();
       statusCondition.contestId = contestShowDTO.getContestId();
+      statusCondition.isForAdmin = isAdmin(session);
       // Sort by time
       statusCondition.orderFields = "time";
       statusCondition.orderAsc = "true";

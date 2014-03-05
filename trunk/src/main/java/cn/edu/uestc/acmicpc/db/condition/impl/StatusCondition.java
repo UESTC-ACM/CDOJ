@@ -76,6 +76,12 @@ public class StatusCondition extends BaseCondition {
   public Integer contestId;
 
   /**
+   * If it's for administrators, we will show all submissions, otherwise, we only
+   * show normal users' submissions.
+   */
+  public boolean isForAdmin = false;
+
+  /**
    * Results.
    *
    * @see OnlineJudgeResultType
@@ -110,8 +116,10 @@ public class StatusCondition extends BaseCondition {
           userName);
     }
 
-    condition.addEntry("userByUserId.type", ConditionType.EQUALS,
-        AuthenticationType.ADMIN.ordinal());
+    if (!isForAdmin) {
+      condition.addEntry("userByUserId.type", ConditionType.EQUALS,
+          AuthenticationType.NORMAL.ordinal());
+    }
 
     if (result != null) {
       results.add(result);
