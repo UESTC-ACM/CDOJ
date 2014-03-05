@@ -1,8 +1,8 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import java.util.Set;
-
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+
+import java.util.Set;
 
 /**
  * OnlineUsers service interface.

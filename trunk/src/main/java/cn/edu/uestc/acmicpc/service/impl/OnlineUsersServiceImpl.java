@@ -1,15 +1,12 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
-
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.OnlineUsersService;
+
+import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Service for {@link cn.edu.uestc.acmicpc.web.oj.listener.onlineusers.OnlineUsersListener}
