@@ -158,16 +158,16 @@ Admin problem list page
         </thead>
         <tbody>
         <tr ng-repeat="problem in list">
-          <td style="text-align: right;" ng-bind="problem.problemId"></td>
+          <td ng-class="{
+                success: problem.status == $root.AuthorStatusType.PASS,
+                danger: problem.status == $root.AuthorStatusType.FAIL
+                         }" style="text-align: right;" ng-bind="problem.problemId"></td>
           <td>
             <a href="/problem/show/{{problem.problemId}}"
                ng-bind="problem.title"></a>
             <small>&nbsp- <span ng-bind="problem.source"></span></small>
           </td>
-          <td ng-class="{
-                panelAC: data.status == AuthorStatusType.PASS,
-                panelWA: data.status == AuthorStatusType.FAIL
-                         }" style="text-align: right;">
+          <td style="text-align: right;">
             <a href="/status/list?problemId={{problem.problemId}}">x
               <span ng-bind="problem.solved"></span>
             </a>
