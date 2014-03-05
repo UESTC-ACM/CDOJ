@@ -80,6 +80,7 @@ public class StatusController extends BaseController {
     Map<String, Object> json = new HashMap<>();
     try {
       if (!isAdmin(session)) {
+        statusCondition.isForAdmin = true;
         statusCondition.isVisible = true;
         if (statusCondition.contestId != -1) {
           ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(statusCondition.contestId);
@@ -96,6 +97,8 @@ public class StatusController extends BaseController {
           statusCondition.startTime = contestShowDTO.getStartTime();
           statusCondition.endTime = contestShowDTO.getEndTime();
         }
+      } else {
+        statusCondition.isForAdmin = false;
       }
       Long count = statusService.count(statusCondition);
       Long recordPerPage = Global.RECORD_PER_PAGE;
