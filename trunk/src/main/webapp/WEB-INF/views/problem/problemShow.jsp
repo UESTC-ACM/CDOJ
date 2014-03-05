@@ -39,7 +39,7 @@ Problem statement
           <li class="active"><a href="#tab-problem-show" data-toggle="tab">Problem</a></li>
           <li><a href="#tab-problem-submit" data-toggle="tab">Submit</a></li>
           <li><a href="#tab-problem-status" data-toggle="tab">Status</a></li>
-          <li class="disabled"><a href="#">Discus</a></li>
+          <li class="disabled"><a href="#">Discuss</a></li>
         </ul>
       </div>
     </div>
@@ -120,7 +120,31 @@ Problem statement
           </div>
         </div>
       </div>
-
+      <div class="tab-pane" id="tab-problem-status">
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <textarea class="cdoj-submit-area"
+                        ng-model="submitDTO.codeContent"></textarea>
+              <ui-validate-info value="fieldInfo" for="codeContent"></ui-validate-info>
+            </div>
+            <div class="panel-footer">
+              <div class="btn-group">
+                <button type="button"
+                        ng-repeat="language in $root.languageList"
+                        class="btn btn-default"
+                        ng-model="submitDTO.languageId"
+                        btn-radio="language.languageId"
+                        ng-bind="language.name"></button>
+              </div>
+              <button type="button"
+                      class="btn btn-danger pull-right"
+                      ng-click="submitCode()">Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="tab-pane" id="tab-problem-submit">
         <div class="col-md-12">
           <div class="panel panel-default">
