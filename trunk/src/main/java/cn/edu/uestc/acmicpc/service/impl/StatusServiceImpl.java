@@ -36,21 +36,23 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Integer> findAllUserAcceptedProblemIds(Integer userId)
+  public List<Integer> findAllUserAcceptedProblemIds(Integer userId, Boolean isAdmin)
       throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
     statusCondition.results.add(Global.OnlineJudgeResultType.OJ_AC);
+    statusCondition.isForAdmin = isAdmin;
     return (List<Integer>) statusDAO.findAll("problemByProblemId.problemId",
         statusCondition.getCondition());
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Integer> findAllUserTriedProblemIds(Integer userId)
+  public List<Integer> findAllUserTriedProblemIds(Integer userId, Boolean isAdmin)
       throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
+    statusCondition.isForAdmin = isAdmin;
     return (List<Integer>) statusDAO.findAll("problemByProblemId.problemId",
         statusCondition.getCondition());
   }
