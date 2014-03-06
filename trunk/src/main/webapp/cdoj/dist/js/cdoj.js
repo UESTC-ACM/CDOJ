@@ -62956,6 +62956,12 @@ if (typeof exports === 'object') {
       }).when("/user/list", {
         templateUrl: "template/user/list.html",
         controller: "UserListController"
+      }).when("/user/center/:userName", {
+        templateUrl: "template/user/center.html",
+        controller: "UserCenterController"
+      }).when("/user/activate/:userName/:serialKey", {
+        templateUrl: "template/user/activation.html",
+        controller: "PasswordResetController"
       });
     }
   ]);
@@ -63283,6 +63289,38 @@ if (typeof exports === 'object') {
     }
   ]);
 
+  cdoj.controller("PasswordResetController", [
+    "$scope", "$http", "$window", "$routeParams", function($scope, $http, $window, $routeParams) {
+      $scope.userActivateDTO = {
+        userName: $routeParams.userName,
+        serialKey: $routeParams.serialKey,
+        password: "",
+        passwordRepeat: ""
+      };
+      $scope.filedInfo = [];
+      return $scope.submit = function() {
+        var password, passwordRepeat, userActivateDTO;
+        userActivateDTO = angular.copy($scope.userActivateDTO);
+        password = CryptoJS.SHA1(userActivateDTO.password).toString();
+        userActivateDTO.password = password;
+        passwordRepeat = CryptoJS.SHA1(userActivateDTO.passwordRepeat).toString();
+        userActivateDTO.passwordRepeat = passwordRepeat;
+        return $http.post("/user/resetPassword", userActivateDTO).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            $window.alert("Success!");
+            return $window.location.href = "/";
+          } else if (data.result === "field_error") {
+            return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        });
+      };
+    }
+  ]);
+
   cdoj.controller("ProblemEditorController", [
     "$scope", "$http", "$window", "$routeParams", function($scope, $http, $window, $routeParams) {
       var problemId;
@@ -63535,6 +63573,26 @@ if (typeof exports === 'object') {
       return $scope.dismiss = function() {
         return $modalInstance.dismiss("close");
       };
+    }
+  ]);
+
+  cdoj.controller("UserCenterController", [
+    "$scope", "$rootScope", "$http", "$routeParams", function($scope, $rootScope, $http, $routeParams) {
+      var targetUserName;
+      $scope.targetUser = {
+        email: ""
+      };
+      targetUserName = angular.copy($routeParams.userName);
+      return $http.get("/user/userCenterData/" + targetUserName).then(function(response) {
+        var data;
+        data = response.data;
+        if (data.result === "success") {
+          $scope.targetUser = data.targetUser;
+          return $scope.problemStatus = data.problemStatus;
+        } else {
+          return $window.alert(data.error_msg);
+        }
+      });
     }
   ]);
 

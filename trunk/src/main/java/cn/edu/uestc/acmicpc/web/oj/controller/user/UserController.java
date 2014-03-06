@@ -474,7 +474,7 @@ public class UserController extends BaseController {
               "Serial Key exceed time limit! Please regenerate a new key.");
         }
         if (!StringUtil.encodeSHA1(userSerialKeyDTO.getSerialKey()).equals(userActivateDTO.getSerialKey())) {
-          throw new FieldException("serialKey", "Serial Key is wrong!");
+          throw new FieldException("serialKey", "Serial Key is wrong or has been used!");
         }
 
         userDTO.setPassword(userActivateDTO.getPassword());

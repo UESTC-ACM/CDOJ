@@ -52,5 +52,11 @@ cdoj
       ).when("/user/list",
         templateUrl: "template/user/list.html"
         controller: "UserListController"
+      ).when("/user/center/:userName",
+        templateUrl: "template/user/center.html"
+        controller: "UserCenterController"
+      ).when("/user/activate/:userName/:serialKey",
+        templateUrl: "template/user/activation.html"
+        controller: "PasswordResetController"
       )
   ])

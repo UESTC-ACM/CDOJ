@@ -83,7 +83,7 @@ public class EmailServiceImpl extends AbstractService implements EmailService {
       throw new AppException("No such user!");
     }
     String url = settings.SETTING_HOST
-        + "/user/activate/" + userDTO.getUserName()
+        + "/#/user/activate/" + userDTO.getUserName()
         + "/" + StringUtil.encodeSHA1(userSerialKey.getSerialKey());
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("Dear ").append(userDTO.getUserName()).append(" :\n\n");

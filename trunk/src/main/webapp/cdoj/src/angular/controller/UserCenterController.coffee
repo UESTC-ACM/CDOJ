@@ -1,12 +1,11 @@
-cdoj.controller("UserCenterController", [
-  "$scope", "$rootScope", "$http"
-  ($scope, $rootScope, $http) ->
-    $scope.targetUserName = ""
-    $scope.targetUser =
-      email: ""
+cdoj
+.controller("UserCenterController", [
+    "$scope", "$rootScope", "$http", "$routeParams"
+    ($scope, $rootScope, $http, $routeParams) ->
+      $scope.targetUser =
+        email: ""
 
-    $scope.$watch("targetUserName", ->
-      targetUserName = angular.copy($scope.targetUserName)
+      targetUserName = angular.copy($routeParams.userName)
       $http.get("/user/userCenterData/#{targetUserName}").then (response)->
         data = response.data
         if data.result == "success"
@@ -14,5 +13,4 @@ cdoj.controller("UserCenterController", [
           $scope.problemStatus = data.problemStatus
         else
           $window.alert data.error_msg
-    )
-])
+  ])
