@@ -6,7 +6,7 @@ import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class ConditionITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testCondition_emptyEntrySet() throws AppException {
     Condition condition = new Condition();
-    List<User> users = (List<User>) userDAO.findAll(condition);
+    List<UserDTO> users = userDAO.findAll(UserDTO.class, UserDTO.builder(), condition);
     Assert.assertEquals(6, users.size());
     for (int i = 0; i < users.size(); i++) {
       Assert.assertEquals(users.get(i).getUserId(), Integer.valueOf(i + 1));
@@ -45,7 +45,7 @@ public class ConditionITTest extends AbstractTestNGSpringContextTests {
   public void testCondition_emptyEntrySetWithDescId() throws AppException {
     Condition condition = new Condition();
     condition.addOrder("userId", false);
-    List<User> users = (List<User>) userDAO.findAll(condition);
+    List<UserDTO> users = userDAO.findAll(UserDTO.class, UserDTO.builder(), condition);
     Assert.assertEquals(6, users.size());
     for (int i = 0; i < users.size(); i++) {
       Assert.assertEquals(users.get(i).getUserId(), Integer.valueOf(users.size() - i));

@@ -92,9 +92,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     return query;
   }
 
-  @Override
   @Deprecated
-  public List<?> findAll(Condition condition) throws AppException {
+  private List<?> findAll(Condition condition) throws AppException {
     if (condition == null) {
       condition = new Condition();
     }
@@ -327,17 +326,6 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
-  @Deprecated
-  public void deleteEntitiesByCondition(Condition condition)
-      throws AppException {
-    StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append("delete ").append(getReferenceClass().getSimpleName());
-    stringBuilder.append(" ").append(condition.toHQLString());
-    String hql = stringBuilder.toString();
-    getQuery(hql, null).executeUpdate();
-  }
-
-  @Override
   public void flush() {
     getSession().flush();
   }
@@ -350,20 +338,6 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   @Override
   public int executeSQL(String sql) {
     return getSession().createSQLQuery(sql).executeUpdate();
-  }
-
-  @Override
-  @Deprecated
-  public void delete(PK key) throws AppException {
-    AppExceptionUtil.assertNotNull(key);
-    Entity entity = get(key);
-    AppExceptionUtil.assertNotNull(entity);
-    try {
-      getSession().delete(entity);
-    } catch (HibernateException e) {
-      LOGGER.error(e);
-      throw new AppException("Invoke delete method error.");
-    }
   }
 
   @Override
