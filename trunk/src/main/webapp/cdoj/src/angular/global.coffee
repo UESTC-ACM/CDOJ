@@ -40,3 +40,13 @@ GlobalVariables =
     NONE: 0
     PASS: 1
     FAIL: 2
+
+GlobalConditions =
+  articleCondition:
+    currentPage: null,
+    startId: undefined,
+    endId: undefined,
+    keyword: undefined,
+    title: undefined,
+    orderFields: 'id',
+    orderAsc: 'false'
