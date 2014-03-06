@@ -22,7 +22,7 @@ cdoj
                 first-text="&laquo;"
                 last-text="&raquo;"></pagination>
   </div>
-  <div class="col-md-12" ng-transclude></div>
+  <div ng-transclude></div>
 </div>
 """
   )

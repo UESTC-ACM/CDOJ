@@ -57041,7 +57041,7 @@ if (typeof exports === 'object') {
         requestUrl: "@"
       },
       controller: "ListController",
-      template: "<div>\n  <div class=\"col-md-12\">\n    <pagination total-items=\"pageInfo.totalItems\"\n                items-per-page=\"itemsPerPage\"\n                page=\"condition.currentPage\"\n                max-size=\"showPages\"\n                class=\"pagination-sm\"\n                boundary-links=\"true\"\n                previous-text=\"&lsaquo;\"\n                next-text=\"&rsaquo;\"\n                first-text=\"&laquo;\"\n                last-text=\"&raquo;\"></pagination>\n  </div>\n  <div class=\"col-md-12\" ng-transclude></div>\n</div>"
+      template: "<div>\n  <div class=\"col-md-12\">\n    <pagination total-items=\"pageInfo.totalItems\"\n                items-per-page=\"itemsPerPage\"\n                page=\"condition.currentPage\"\n                max-size=\"showPages\"\n                class=\"pagination-sm\"\n                boundary-links=\"true\"\n                previous-text=\"&lsaquo;\"\n                next-text=\"&rsaquo;\"\n                first-text=\"&laquo;\"\n                last-text=\"&raquo;\"></pagination>\n  </div>\n  <div ng-transclude></div>\n</div>"
     };
   });
 
