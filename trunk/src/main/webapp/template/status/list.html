@@ -50,7 +50,8 @@
           </select>
         </td>
         <td></td>
-        <td></td>
+        <td class="text-center" ui-rejudge-button condition="$root.statusCondition">
+        </td>
       </tr>
       <tr ng-repeat="status in list">
         <td style="text-align: center;" ng-bind="status.statusId"></td>
