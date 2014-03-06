@@ -57273,15 +57273,18 @@ if (typeof exports === 'object') {
   cdoj.directive("uiRejudgeButton", function() {
     return {
       restrict: "A",
+      scope: {
+        condition: "="
+      },
       controller: [
         "$scope", "$rootScope", "$http", "$window", function($scope, $rootScope, $http, $window) {
           return $scope.rejudge = function() {
-            return $http.post("/status/count", $rootScope.statusCondition).then(function(response) {
+            return $http.post("/status/count", $scope.condition).then(function(response) {
               var data;
               data = response.data;
               if (data.result === "success") {
                 if (confirm("Rejudge all " + data.count + " records")) {
-                  return $http.post("/status/rejudge", $rootScope.condition).then(function(response) {
+                  return $http.post("/status/rejudge", $scope.condition).then(function(response) {
                     data = response.data;
                     if (data.result === "success") {
                       return $window.alert("Done!");

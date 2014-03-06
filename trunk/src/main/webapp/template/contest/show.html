@@ -105,18 +105,18 @@
           <td ng-show="$root.isAdmin">
             <input type="text"
                    style="width: 100%;"
-                   ng-model="condition.userName"/>
+                   ng-model="contestStatusCondition.userName"/>
           </td>
           <td>
             <select style="width: 100%;"
-                    ng-model="condition.problemId"
+                    ng-model="contestStatusCondition.problemId"
                     ng-options="problem.problemId as problem.orderCharacter for problem in problemList">
               <option value="">All</option>
             </select>
           </td>
           <td>
             <select style="width: 100%;"
-                    ng-model="condition.result"
+                    ng-model="contestStatusCondition.result"
                     ng-options="result.onlineJudgeResultTypeId as result.description for result in $root.resultTypeList">
             </select>
           </td>
@@ -124,13 +124,14 @@
           <td></td>
           <td>
             <select style="width: 100%;"
-                    ng-model="condition.languageId"
+                    ng-model="contestStatusCondition.languageId"
                     ng-options="language.languageId as language.name for language in $root.languageList">
               <option value="">All</option>
             </select>
           </td>
           <td></td>
-          <td></td>
+          <td class="text-center" ui-rejudge-button condition="contestStatusCondition">
+          </td>
         </tr>
         <tr ng-repeat="status in list">
           <td style="text-align: center;" ng-show="$root.isAdmin">
