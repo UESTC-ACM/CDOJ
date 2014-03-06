@@ -6,10 +6,11 @@ cdoj
         content: ""
         title: ""
       $scope.fieldInfo = []
+      $scope.action = $routeParams.action
 
-      if $routeParams.action != "new"
-        $scope.title = "Edit article " + $routeParams.action
-        articleId = angular.copy($routeParams.action)
+      if $scope.action != "new"
+        $scope.title = "Edit article " + $scope.action
+        articleId = angular.copy($scope.action)
         $http.get("/article/data/ArticleEditorShowDTO/#{articleId}").then (response)->
           data = response.data
           if data.result == "success"

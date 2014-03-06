@@ -46,7 +46,7 @@ module.exports = (grunt) ->
           "bower_components/angular-elastic/elastic.js"
           "bower_components/jquery/dist/jquery.js"
           "bower_components/bootstrap/dist/js/bootstrap.js"
-          "bower_components/fineuploader-s3/custom.fineuploader.js"
+          "bower_components/fine-uploader/_build/fineuploader.js"
           "bower_components/CryptoJS/src/core.js"
           "bower_components/CryptoJS/src/md5.js"
           "bower_components/CryptoJS/src/sha1.js"

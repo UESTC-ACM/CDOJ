@@ -35,5 +35,8 @@ cdoj
       ).when("/problem/show/:problemId",
         templateUrl: "template/problem/show.html"
         controller: "ProblemShowController"
+      ).when("/problem/editor/:action",
+        templateUrl: "template/problem/editor.html"
+        controller: "ProblemEditorController"
       )
   ])
