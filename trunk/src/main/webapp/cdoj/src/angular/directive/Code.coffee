@@ -4,16 +4,13 @@ cdoj
     restrict: "E"
     scope:
       code: "="
-    controller: [
-      "$scope"
-      ($scope, $element)->
-        $scope.prettifiedCode = ""
-        $scope.$watch("code", ->
-          $scope.prettifiedCode = prettyPrintOne($scope.code.trim().escapeHTML())
-        )
-    ]
+    link: ($scope, $element)->
+      $scope.$watch("code", ->
+        result = prettyPrintOne($scope.code.trim().escapeHTML())
+        $($element).empty().append(result)
+      )
     template: """
-<pre ng-bind-html="prettifiedCode"></pre>
+<pre></pre>
 """
     replace: true
   )

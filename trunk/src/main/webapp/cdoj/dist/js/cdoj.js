@@ -63033,6 +63033,23 @@ if (typeof exports === 'object') {
     }
   ]);
 
+  cdoj.controller("CompileInfoModalController", [
+    "$scope", "$http", "$modalInstance", "statusId", function($scope, $http, $modalInstance, statusId) {
+      $scope.compileInfo = "Loading...";
+      return $http.post("/status/info/" + statusId).then(function(response) {
+        var compileInfo, data;
+        data = response.data;
+        compileInfo = "";
+        if (data.result === "success") {
+          compileInfo = data.compileInfo;
+        } else {
+          compileInfo = data.error_msg;
+        }
+        return $scope.compileInfo = compileInfo;
+      });
+    }
+  ]);
+
   cdoj.controller("ContestListController", [
     "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
       return $rootScope.title = "Contest list";
@@ -63663,15 +63680,14 @@ if (typeof exports === 'object') {
       scope: {
         code: "="
       },
-      controller: [
-        "$scope", function($scope, $element) {
-          $scope.prettifiedCode = "";
-          return $scope.$watch("code", function() {
-            return $scope.prettifiedCode = prettyPrintOne($scope.code.trim().escapeHTML());
-          });
-        }
-      ],
-      template: "<pre ng-bind-html=\"prettifiedCode\"></pre>",
+      link: function($scope, $element) {
+        return $scope.$watch("code", function() {
+          var result;
+          result = prettyPrintOne($scope.code.trim().escapeHTML());
+          return $($element).empty().append(result);
+        });
+      },
+      template: "<pre></pre>",
       replace: true
     };
   });
@@ -64082,6 +64098,37 @@ if (typeof exports === 'object') {
     };
   });
 
+  cdoj.directive("uiRejudgeButton", function() {
+    return {
+      restrict: "A",
+      controller: [
+        "$scope", "$rootScope", "$http", "$window", function($scope, $rootScope, $http, $window) {
+          return $scope.rejudge = function() {
+            return $http.post("/status/count", $rootScope.statusCondition).then(function(response) {
+              var data;
+              data = response.data;
+              if (data.result === "success") {
+                if (confirm("Rejudge all " + data.count + " records")) {
+                  return $http.post("/status/rejudge", $rootScope.condition).then(function(response) {
+                    data = response.data;
+                    if (data.result === "success") {
+                      return $window.alert("Done!");
+                    } else {
+                      return $window.alert(data.error_msg);
+                    }
+                  });
+                }
+              } else {
+                return $window.alert(data.error_msg);
+              }
+            });
+          };
+        }
+      ],
+      template: "<a href=\"javascript:void(0);\"\n   ng-show=\"$root.isAdmin\"\n   class=\"btn btn-danger btn-xs\"\n   ng-click=\"rejudge()\">Rejudge</a>"
+    };
+  });
+
   cdoj.directive("uiStatus", function() {
     return {
       restrict: "A",
@@ -64110,7 +64157,7 @@ if (typeof exports === 'object') {
             var statusId;
             statusId = $scope.status.statusId;
             return $modal.open({
-              templateUrl: "compileInfoModal.html",
+              templateUrl: "template/modal/compile-info-modal.html",
               controller: "CompileInfoModalController",
               resolve: {
                 statusId: function() {
@@ -64145,23 +64192,6 @@ if (typeof exports === 'object') {
       template: "<a href=\"javascript:void(0);\" ng-show=\"showHref\" ng-click=\"showCompileInfo()\">{{status.returnType}}</a>\n<span ng-hide=\"showHref\">{{status.returnType}}</span>"
     };
   });
-
-  cdoj.controller("CompileInfoModalController", [
-    "$scope", "$http", "$modalInstance", "statusId", function($scope, $http, $modalInstance, statusId) {
-      $scope.compileInfo = "Loading...";
-      return $http.post("/status/info/" + statusId).then(function(response) {
-        var compileInfo, data;
-        data = response.data;
-        compileInfo = "";
-        if (data.result === "success") {
-          compileInfo = data.compileInfo;
-        } else {
-          compileInfo = data.error_msg;
-        }
-        return $scope.compileInfo = compileInfo;
-      });
-    }
-  ]);
 
   cdoj.directive("uiTime", function() {
     return {

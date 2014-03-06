@@ -23,7 +23,7 @@ cdoj
         $scope.showCompileInfo = ->
           statusId = $scope.status.statusId
           $modal.open(
-            templateUrl: "compileInfoModal.html"
+            templateUrl: "template/modal/compile-info-modal.html"
             controller: "CompileInfoModalController"
             resolve:
               statusId: ->
@@ -51,19 +51,4 @@ cdoj
 <span ng-hide="showHref">{{status.returnType}}</span>
     """
   )
-cdoj.controller("CompileInfoModalController", [
-  "$scope", "$http", "$modalInstance", "statusId"
-  ($scope, $http, $modalInstance, statusId)->
-    $scope.compileInfo = "Loading..."
-    $http.post("/status/info/#{statusId}").then(
-      (response) ->
-        data = response.data
-        compileInfo = ""
-        if data.result == "success"
-          compileInfo = data.compileInfo
-        else
-          compileInfo = data.error_msg
-        $scope.compileInfo = compileInfo
-    )
-])
 
