@@ -41,8 +41,8 @@ cdoj.controller("ProblemShowController", [
             "#{$scope.problem.title}"
       ).result.then (result)->
         if result == "success"
-          $window.location.href = "#/status/list"
+          $window.location.href = "#/status/list?problemId=#{$scope.problem.problemId}"
     $scope.gotoStatusList = ->
       # TODO
-      $window.location.href = "#/status/list"
+      $window.location.href = "#/status/list?problemId=#{$scope.problem.problemId}"
 ])

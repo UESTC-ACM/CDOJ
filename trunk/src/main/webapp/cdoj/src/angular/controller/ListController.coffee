@@ -1,19 +1,17 @@
 cdoj
 .controller("ListController", [
-    "$scope", "$rootScope", "$http", "$window"
-    ($scope, $rootScope, $http, $window) ->
+    "$scope", "$rootScope", "$http", "$window", "$routeParams"
+    ($scope, $rootScope, $http, $window, $routeParams) ->
       $scope.pageInfo =
         countPerPage: 20
         currentPage: 1
         displayDistance: 2
         totalPages: 1
       $scope.itemsPerPage = 20
-      $scope.showPages = 7
-      $scope.reset = ->
-        _.each($scope.condition, (value, index) ->
-          $scope.condition[index] = undefined
-        )
-        $scope.condition["currentPage"] = null
+      $scope.showPages = 10
+
+      _.each $scope.condition, (val, key)->
+        $scope.condition[key] = $routeParams[key] if angular.isDefined $routeParams[key]
       $scope.refresh = ->
         if $scope.requestUrl != 0
           condition = angular.copy($scope.condition)

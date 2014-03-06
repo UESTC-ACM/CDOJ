@@ -56199,7 +56199,7 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("ListController", [
-    "$scope", "$rootScope", "$http", "$window", function($scope, $rootScope, $http, $window) {
+    "$scope", "$rootScope", "$http", "$window", "$routeParams", function($scope, $rootScope, $http, $window, $routeParams) {
       $scope.pageInfo = {
         countPerPage: 20,
         currentPage: 1,
@@ -56207,13 +56207,12 @@ if (typeof exports === 'object') {
         totalPages: 1
       };
       $scope.itemsPerPage = 20;
-      $scope.showPages = 7;
-      $scope.reset = function() {
-        _.each($scope.condition, function(value, index) {
-          return $scope.condition[index] = void 0;
-        });
-        return $scope.condition["currentPage"] = null;
-      };
+      $scope.showPages = 10;
+      _.each($scope.condition, function(val, key) {
+        if (angular.isDefined($routeParams[key])) {
+          return $scope.condition[key] = $routeParams[key];
+        }
+      });
       $scope.refresh = function() {
         var condition;
         if ($scope.requestUrl !== 0) {
@@ -56385,12 +56384,12 @@ if (typeof exports === 'object') {
           }
         }).result.then(function(result) {
           if (result === "success") {
-            return $window.location.href = "#/status/list";
+            return $window.location.href = "#/status/list?problemId=" + $scope.problem.problemId;
           }
         });
       };
       return $scope.gotoStatusList = function() {
-        return $window.location.href = "#/status/list";
+        return $window.location.href = "#/status/list?problemId=" + $scope.problem.problemId;
       };
     }
   ]);

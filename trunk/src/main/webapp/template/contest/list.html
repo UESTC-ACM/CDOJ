@@ -13,6 +13,18 @@
         </tr>
         </thead>
         <tbody>
+        <tr>
+          <td>
+            <input type="number"
+                   style="width: 100%;"
+                   ng-model="$root.contestCondition.startId"/>
+          </td>
+          <td>
+            <input type="text"
+                   style=""
+                   ng-model="$root.contestCondition.keyword"/>
+          </td>
+        </tr>
         <tr ng-repeat="contest in list">
           <td style="text-align: right;" ng-bind="contest.contestId"></td>
           <td>
