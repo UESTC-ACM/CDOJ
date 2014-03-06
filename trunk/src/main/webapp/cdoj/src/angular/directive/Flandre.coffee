@@ -6,8 +6,8 @@ cdoj.directive("uiFlandre",
     content: "=ngModel"
     uploadUrl: "@"
   controller: [
-    "$scope", "$element",
-    ($scope, $element) ->
+    "$scope", "$element", "$window"
+    ($scope, $element, $window) ->
       $scope.mode = "edit"
       $scope.previewContent = ""
       $editor = $element.find(".flandre-editor")
@@ -23,6 +23,7 @@ cdoj.directive("uiFlandre",
           $scope.mode = "edit"
 
       # Upload picture
+      ###
       pictureUploader = new qq.FineUploaderBasic(
         button: $element.find(".flandre-picture-uploader")[0]
         request:
@@ -46,9 +47,9 @@ cdoj.directive("uiFlandre",
               #   ^^^^^
               $editor.setSelection(position + 2, position + 7)
             else
-              # TODO
-              console.log(data)
+              $window.alert data.error_msg
       )
+      ###
   ]
   template: """
       <div class="panel panel-default">
@@ -70,7 +71,7 @@ cdoj.directive("uiFlandre",
                   ng-class="{'flandre-show': mode == 'edit'}"
                   ng-model="content"></textarea>
         <div class="flandre-preview" ng-class="{'flandre-show': mode == 'preview'}">
-          <div ui-markdown content="previewContent"></div>
+          <markdown content="previewContent"></markdown>
         </div>
       </div>
       """

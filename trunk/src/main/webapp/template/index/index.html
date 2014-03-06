@@ -16,7 +16,7 @@
     <list condition="$root.articleCondition"
           request-url="/article/search">
       <div class="cdoj-article" ng-repeat="article in list">
-        <h1><a href="/article/show/{{article.articleId}}"
+        <h1><a href="#/article/show/{{article.articleId}}"
                ng-bind="article.title"></a>
         </h1>
         <small>
