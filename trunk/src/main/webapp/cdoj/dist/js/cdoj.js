@@ -64861,7 +64861,6 @@ if (typeof exports === 'object') {
         var contestEditDTO;
         contestEditDTO = angular.copy($scope.contest);
         contestEditDTO.time = Date.create(contestEditDTO.time).getTime();
-        console.log($scope.contest);
         return $http.post("/contest/edit", contestEditDTO).success((function(_this) {
           return function(data) {
             if (data.result === "success") {
