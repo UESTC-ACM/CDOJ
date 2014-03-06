@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Conditions setting for {@link IDAO#findAll(Condition)},
- * {@link IDAO#findAll(String, Condition)} and {@link IDAO#count(Condition)}.
+ * Conditions setting for {@link IDAO#findAll(String, Condition)}
+ * and {@link IDAO#count(Condition)}.
  * <p/>
  * <strong>For Developers</strong>:
  * <p/>
