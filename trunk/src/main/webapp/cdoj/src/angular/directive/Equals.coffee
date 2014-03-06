@@ -1,5 +1,5 @@
 cdoj.directive("equals",
-()->
+->
   restrict: "A"
   require: "?ngModel"
   link: ($scope, $element, $attrs, $ngModel)->

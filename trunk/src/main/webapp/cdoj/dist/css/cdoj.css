@@ -6441,9 +6441,6 @@ hr {
 .no-margin-right {
   margin-right: 0;
 }
-#page-info {
-  margin: 10px 0;
-}
-#page-info .pagination {
+.pagination {
   margin: 0;
 }
