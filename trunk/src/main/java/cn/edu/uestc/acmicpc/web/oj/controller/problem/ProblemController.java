@@ -109,7 +109,7 @@ public class ProblemController extends BaseController {
               problemCondition, pageInfo);
 
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-      Map<Integer, Global.AuthorStatusType> problemStatus = getProblemStatus(currentUser);
+      Map<Integer, Global.AuthorStatusType> problemStatus = getProblemStatus(currentUser, session);
 
       for (ProblemListDTO problemListDTO : problemListDTOList) {
         if (problemStatus.get(problemListDTO.getProblemId()) == Global.AuthorStatusType.PASS) {
@@ -306,18 +306,18 @@ public class ProblemController extends BaseController {
     return json;
   }
 
-  private Map<Integer, Global.AuthorStatusType> getProblemStatus(
-      UserDTO currentUser) {
+  private Map<Integer, Global.AuthorStatusType> getProblemStatus(UserDTO currentUser,
+                                                                 HttpSession session) {
     Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
     try {
       if (currentUser != null) {
         List<Integer> triedProblems = statusService.
-            findAllUserTriedProblemIds(currentUser.getUserId());
+            findAllUserTriedProblemIds(currentUser.getUserId(), isAdmin(session));
         for (Integer result : triedProblems) {
           problemStatus.put(result, Global.AuthorStatusType.FAIL);
         }
         List<Integer> acceptedProblems = statusService.
-            findAllUserAcceptedProblemIds(currentUser.getUserId());
+            findAllUserAcceptedProblemIds(currentUser.getUserId(), isAdmin(session));
         for (Integer result : acceptedProblems) {
           problemStatus.put(result, Global.AuthorStatusType.PASS);
         }

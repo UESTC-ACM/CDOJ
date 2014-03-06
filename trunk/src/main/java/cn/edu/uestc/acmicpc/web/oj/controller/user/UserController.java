@@ -219,7 +219,7 @@ public class UserController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> userCenterData(HttpSession session,
-                           @PathVariable("userName") String userName) {
+                                     @PathVariable("userName") String userName) {
     Map<String, Object> json = new HashMap<>();
     try {
       UserCenterDTO userCenterDTO = userService.getUserCenterDTOByUserName(userName);
@@ -232,13 +232,15 @@ public class UserController extends BaseController {
       for (Integer result : results) {
         problemStatus.put(result, Global.AuthorStatusType.NONE);
       }
-      results = statusService.findAllUserTriedProblemIds(userCenterDTO.getUserId());
+      results = statusService.findAllUserTriedProblemIds(userCenterDTO.getUserId(),
+          isAdmin(session));
       for (Integer result : results) {
         if (problemStatus.containsKey(result)) {
           problemStatus.put(result, Global.AuthorStatusType.FAIL);
         }
       }
-      results = statusService.findAllUserAcceptedProblemIds(userCenterDTO.getUserId());
+      results = statusService.findAllUserAcceptedProblemIds(userCenterDTO.getUserId(),
+          isAdmin(session));
       for (Integer result : results) {
         if (problemStatus.containsKey(result)) {
           problemStatus.put(result, Global.AuthorStatusType.PASS);
