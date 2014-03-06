@@ -35,6 +35,10 @@ cdoj
               currentPage: null
               startId: $scope.status.statusId
               endId: $scope.status.statusId
+              userName: undefined
+              problemId: undefined
+              languageId: undefined
+              contestId: -1
             $http.post("/status/search", condition).then(
               (response)->
                 data = response.data

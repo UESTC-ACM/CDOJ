@@ -64721,7 +64721,6 @@ if (typeof exports === 'object') {
       return $http.get("/article/data/ArticleDTO/" + articleId).then(function(response) {
         var data;
         data = response.data;
-        console.log(data);
         if (data.result === "success") {
           $scope.article = data.article;
           return $rootScope.title = $scope.article.title;
@@ -66110,7 +66109,11 @@ if (typeof exports === 'object') {
               condition = {
                 currentPage: null,
                 startId: $scope.status.statusId,
-                endId: $scope.status.statusId
+                endId: $scope.status.statusId,
+                userName: void 0,
+                problemId: void 0,
+                languageId: void 0,
+                contestId: -1
               };
               return $http.post("/status/search", condition).then(function(response) {
                 var data;

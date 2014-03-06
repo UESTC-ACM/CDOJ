@@ -9,7 +9,6 @@ cdoj
       articleId = angular.copy($routeParams.articleId)
       $http.get("/article/data/ArticleDTO/#{articleId}").then (response)->
         data = response.data
-        console.log data
         if data.result == "success"
           $scope.article = data.article
           $rootScope.title = $scope.article.title
