@@ -129,9 +129,13 @@ public class ContestTeamInfo implements Serializable {
   @Column(name = "studentId", nullable = false, insertable = true, updatable = true, length = 100,
       precision = 0)
   @Basic
-  public String getStudentId() { return studentId; }
+  public String getStudentId() {
+    return studentId;
+  }
 
-  public void setStudentId(String studentId) { this.studentId = studentId; }
+  public void setStudentId(String studentId) {
+    this.studentId = studentId;
+  }
 
   private String phone = "";
 
