@@ -23,9 +23,8 @@ cdoj.directive("uiFlandre",
           $scope.mode = "edit"
 
       # Upload picture
-      ###
       pictureUploader = new qq.FineUploaderBasic(
-        button: $element.find(".flandre-picture-uploader")[0]
+        button: $($element).find(".flandre-picture-uploader")[0]
         request:
           endpoint: $scope.uploadUrl
           inputName: "uploadFile"
@@ -35,6 +34,7 @@ cdoj.directive("uiFlandre",
         multiple: false
         callbacks:
           onComplete: (id, fileName, data) ->
+            console.log data
             if data.success == "true"
               value = "![title](#{data.uploadedFileUrl})"
               position = $editor.getCursorPosition()
@@ -49,7 +49,6 @@ cdoj.directive("uiFlandre",
             else
               $window.alert data.error_msg
       )
-      ###
   ]
   template: """
       <div class="panel panel-default">

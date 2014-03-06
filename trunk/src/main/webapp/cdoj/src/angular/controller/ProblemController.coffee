@@ -7,7 +7,7 @@ cdoj.controller("ProblemShowController", [
       isSpj: false
       timeLimit: 1000
       javaTimeLimit: 3000
-      memoryLimit: "--"
+      memoryLimit: 65536
       javaMemoryLimit: "--"
       solved: 0
       tried: 0
@@ -17,14 +17,6 @@ cdoj.controller("ProblemShowController", [
       sampleOutput: ""
       hint: ""
       source: ""
-    $scope.submitDTO =
-      codeContent: ""
-      languageId: 1
-      contestId: 0
-      problemId: 0
-    $scope.problemId = 0
-    $scope.contest = null
-    $scope.fieldInfo = []
 
     problemId = angular.copy($routeParams.problemId)
     $http.post("/problem/data/#{problemId}").then (response)->
@@ -49,5 +41,8 @@ cdoj.controller("ProblemShowController", [
             "#{$scope.problem.title}"
       ).result.then (result)->
         if result == "success"
-          console.log "fuck"
+          $window.location.href = "#/status/list"
+    $scope.gotoStatusList = ->
+      # TODO
+      $window.location.href = "#/status/list"
 ])
