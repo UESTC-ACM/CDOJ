@@ -365,6 +365,7 @@ CREATE  TABLE IF NOT EXISTS `uestcojtest`.`contestTeamInfo` (
   `sex` VARCHAR(3) NOT NULL DEFAULT '' ,
   `department` VARCHAR(50) NOT NULL DEFAULT '' ,
   `grade` VARCHAR(50) NOT NULL DEFAULT '' ,
+  `studentId` VARCHAR(100) NOT NULL DEFAULT '' ,
   `phone` VARCHAR(100) NOT NULL DEFAULT '' ,
   `size` VARCHAR(50) NOT NULL DEFAULT '' ,
   `email` VARCHAR(300) NOT NULL DEFAULT '' ,
