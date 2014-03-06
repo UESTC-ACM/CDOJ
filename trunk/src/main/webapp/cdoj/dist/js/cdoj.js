@@ -62890,6 +62890,18 @@ if (typeof exports === 'object') {
       result: "OJ_ALL",
       orderFields: "statusId",
       orderAsc: "false"
+    },
+    userCondition: {
+      currentPage: null,
+      startId: void 0,
+      endId: void 0,
+      userName: void 0,
+      nickName: void 0,
+      type: void 0,
+      school: void 0,
+      departmentId: void 0,
+      orderFields: "solved,tried,id",
+      orderAsc: "false,false,true"
     }
   };
 
@@ -62941,6 +62953,9 @@ if (typeof exports === 'object') {
       }).when("/status/list", {
         templateUrl: "template/status/list.html",
         controller: "StatusListController"
+      }).when("/user/list", {
+        templateUrl: "template/user/list.html",
+        controller: "UserListController"
       });
     }
   ]);
@@ -63478,6 +63493,51 @@ if (typeof exports === 'object') {
     }
   ]);
 
+  cdoj.controller("UserAdminModalController", [
+    "$scope", "$http", "$modalInstance", "UserProfile", function($scope, $http, $modalInstance, $userProfile) {
+      $scope.userEditDTO = 0;
+      $scope.$watch(function() {
+        return $userProfile.getProfile();
+      }, function() {
+        return $scope.userEditDTO = $userProfile.getProfile();
+      }, true);
+      $scope.fieldInfo = [];
+      $scope.edit = function() {
+        var newPassword, newPasswordRepeat, userEditDTO;
+        userEditDTO = angular.copy($scope.userEditDTO);
+        if (userEditDTO.newPassword === "") {
+          userEditDTO.newPassword = void 0;
+        }
+        if (userEditDTO.newPasswordRepeat === "") {
+          userEditDTO.newPasswordRepeat = void 0;
+        }
+        if (angular.isUndefined(userEditDTO.newPassword && angular.isUndefined(userEditDTO.newPasswordRepeat))) {
+          userEditDTO = _.omit(userEditDTO, "newPassword");
+          userEditDTO = _.omit(userEditDTO, "newPassowrdRepeat");
+        } else {
+          newPassword = CryptoJS.SHA1(userEditDTO.newPassword).toString();
+          userEditDTO.newPassword = newPassword;
+          newPasswordRepeat = CryptoJS.SHA1(userEditDTO.newPasswordRepeat).toString();
+          userEditDTO.newPasswordRepeat = newPasswordRepeat;
+        }
+        return $http.post("/user/adminEdit", userEditDTO).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            return $modalInstance.close();
+          } else if (data.result === "field_error") {
+            return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        });
+      };
+      return $scope.dismiss = function() {
+        return $modalInstance.dismiss("close");
+      };
+    }
+  ]);
+
   cdoj.controller("UserController", [
     "$scope", "$rootScope", "$http", "$element", "$compile", "$window", "UserProfile", "$modal", function($scope, $rootScope, $http, $element, $compile, $window, $userProfile, $modal) {
       $rootScope.hasLogin = false;
@@ -63571,6 +63631,12 @@ if (typeof exports === 'object') {
     }
   ]);
 
+  cdoj.controller("UserListController", [
+    "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
+      return $rootScope.title = "User list";
+    }
+  ]);
+
   cdoj.controller("UserProfileEditorController", [
     "$scope", "$http", "$modalInstance", "$window", "UserProfile", function($scope, $http, $modalInstance, $window, $userProfile) {
       $scope.userEditDTO = 0;
@@ -63579,6 +63645,7 @@ if (typeof exports === 'object') {
       }, function() {
         return $scope.userEditDTO = $userProfile.getProfile();
       }, true);
+      $scope.fieldInfo = [];
       $scope.edit = function() {
         var newPassword, newPasswordRepeat, oldPassword, userEditDTO;
         userEditDTO = angular.copy($scope.userEditDTO);
@@ -64287,6 +64354,28 @@ if (typeof exports === 'object') {
         }
       ],
       template: "{{timeString}}"
+    };
+  });
+
+  cdoj.directive("uiUserAdminSpan", function() {
+    return {
+      restrict: "E",
+      scope: {
+        user: "="
+      },
+      controller: [
+        "$scope", "$http", "$modal", "$window", "UserProfile", function($scope, $http, $modal, $window, $userProfile) {
+          return $scope.showEditor = function() {
+            var userAdminModal;
+            $userProfile.setProfile($scope.user.userName);
+            return userAdminModal = $modal.open({
+              templateUrl: "template/modal/user-admin-modal.html",
+              controller: "UserAdminModalController"
+            });
+          };
+        }
+      ],
+      template: "<div class=\"btn-toolbar\" role=\"toolbar\" style=\"position: absolute; top: 12px; right: 30px;\"\n     ng-show=\"$root.isAdmin\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm\" ng-click=\"showEditor()\">\n      <i class=\"fa fa-pencil\"></i>\n    </button>\n  </div>\n</div>"
     };
   });
 

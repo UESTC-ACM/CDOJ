@@ -49,5 +49,8 @@ cdoj
       ).when("/status/list",
         templateUrl: "template/status/list.html"
         controller: "StatusListController"
+      ).when("/user/list",
+        templateUrl: "template/user/list.html"
+        controller: "UserListController"
       )
   ])
