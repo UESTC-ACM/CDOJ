@@ -12,7 +12,7 @@ cdoj
       $scope.fieldInfo = []
       $scope.views =
         loginView: """
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
             Sign in
           </a>
           <ul ui-dropdown-menu class="dropdown-menu cdoj-form-menu" style="width: 340px;">
@@ -56,16 +56,16 @@ cdoj
             </li>
             <li role="presentation" class="divider"></li>
             <li>
-              <a href="#" ng-click="openRegisterModal()">
+              <a href="javascript:void(0);" ng-click="openRegisterModal()">
                 <i class="fa fa-arrow-circle-right" style="padding-right: 6px;"></i>Register</a>
-              <a href="#" ng-click="openForgetPasswordModal()">
+              <a href="javascript:void(0);" ng-click="openForgetPasswordModal()">
                 <i class="fa fa-arrow-circle-right" style="padding-right: 6px;"></i>Forget password? </a>
             </li>
           </ul>
       """
         userView: """
             <div id="cdoj-user">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
                 <img id="cdoj-user-avatar"
                      ui-avatar
                      email="currentUser.email"
@@ -86,7 +86,7 @@ cdoj
                   </a>
                 </li>
                 <li role="presentation">
-                  <a href="#" data-toggle="modal"
+                  <a href="javascript:void(0);" data-toggle="modal"
                      data-target="#cdoj-profile-edit-modal"
                      ng-click="openUserProfileEditor()">
                     <i class="fa fa-wrench"></i>Edit profile
@@ -94,7 +94,7 @@ cdoj
                 </li>
                 <li role="presentation" class="divider"></li>
                 <li role="presentation">
-                  <a href="#" id="cdoj-logout-button" ng-click="logout()">
+                  <a href="javascript:void(0);" id="cdoj-logout-button" ng-click="logout()">
                     <i class="fa fa-power-off"></i>Logout
                   </a>
                 </li>

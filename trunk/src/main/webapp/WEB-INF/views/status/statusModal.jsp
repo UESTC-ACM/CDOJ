@@ -12,19 +12,11 @@
 </head>
 <body>
 <script type="text/ng-template" id="codeModal.html">
-  <div class="modal-body">
-    <ui-code code="code"></ui-code>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-default">Copy</button>
-    <button type="button" class="btn btn-default">Download</button>
-  </div>
+
 </script>
 
 <script type="text/ng-template" id="compileInfoModal.html">
-  <div class="modal-body">
-    <pre ng-bind="compileInfo"></pre>
-  </div>
+
 </script>
 
 </body>
