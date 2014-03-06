@@ -1,7 +1,7 @@
 cdoj
-.controller("UserProfileEditorController", [
-    "$scope", "$http", "$modalInstance", "$window", "UserProfile"
-    ($scope, $http, $modalInstance, $window, $userProfile)->
+.controller("UserAdminModalController", [
+    "$scope", "$http", "$modalInstance", "UserProfile"
+    ($scope, $http, $modalInstance, $userProfile)->
       $scope.userEditDTO = 0
       $scope.$watch(
         ->
@@ -24,10 +24,8 @@ cdoj
           userEditDTO.newPassword = newPassword
           newPasswordRepeat = CryptoJS.SHA1(userEditDTO.newPasswordRepeat).toString()
           userEditDTO.newPasswordRepeat = newPasswordRepeat
-        if angular.isUndefined userEditDTO.oldPassword then return
-        oldPassword = CryptoJS.SHA1(userEditDTO.oldPassword).toString()
-        userEditDTO.oldPassword = oldPassword
-        $http.post("/user/edit", userEditDTO).then (response)->
+
+        $http.post("/user/adminEdit", userEditDTO).then (response)->
           data = response.data
           if data.result == "success"
             $modalInstance.close()
@@ -36,5 +34,5 @@ cdoj
           else
             $window.alert data.error_msg
       $scope.dismiss = ->
-        $modalInstance.dismiss()
+        $modalInstance.dismiss("close")
   ])

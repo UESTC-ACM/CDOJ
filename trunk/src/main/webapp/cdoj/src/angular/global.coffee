@@ -81,3 +81,14 @@ GlobalConditions =
     result: "OJ_ALL"
     orderFields: "statusId"
     orderAsc: "false"
+  userCondition:
+    currentPage: null
+    startId: undefined
+    endId: undefined
+    userName: undefined
+    nickName: undefined
+    type: undefined
+    school: undefined
+    departmentId: undefined
+    orderFields: "solved,tried,id"
+    orderAsc: "false,false,true"
