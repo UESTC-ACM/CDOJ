@@ -2,10 +2,13 @@ language: java
 jdk:
   - openjdk7
 
-before_script:
+install:
   - mysql -e 'create database uestcoj;'
   - cd trunk
   - scripts/setup_travis.sh
+  - mvn install -DskipTests=true
+
+before_script:
   - mvn checkstyle:checkstyle
 
 script:
