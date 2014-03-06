@@ -7,6 +7,7 @@ cdoj
         currentPage: 1
         displayDistance: 2
         totalPages: 1
+      $scope.itemsPerPage = 20
       $scope.showPages = 7
       $scope.reset = ->
         _.each($scope.condition, (value, index) ->
@@ -20,7 +21,7 @@ cdoj
             data = response.data
             if data.result == "success"
               $scope.$$nextSibling.list = response.data.list
-              $scope.pageInfo = response.data.pageInfo
+              $scope.pageInfo = data.pageInfo
             else
               $window.alert data.error_msg
       $rootScope.$watch("currentUser", ->

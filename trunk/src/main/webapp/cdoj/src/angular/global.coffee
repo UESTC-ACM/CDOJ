@@ -43,10 +43,22 @@ GlobalVariables =
 
 GlobalConditions =
   articleCondition:
-    currentPage: null,
-    startId: undefined,
-    endId: undefined,
-    keyword: undefined,
-    title: undefined,
-    orderFields: 'id',
-    orderAsc: 'false'
+    currentPage: null
+    startId: undefined
+    endId: undefined
+    keyword: undefined
+    title: undefined
+    orderFields: "id"
+    orderAsc: "false"
+  problemCondition:
+    currentPage: null
+    startId: undefined
+    endId: undefined
+    title: undefined
+    source: undefined
+    isSpj: undefined
+    startDifficulty: undefined
+    endDifficulty: undefined
+    keyword: undefined
+    orderFields: "id"
+    orderAsc: "true"
