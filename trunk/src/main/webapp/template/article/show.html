@@ -1,0 +1,14 @@
+<div id="article-show">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 ng-bind="article.title"></h1>
+    </div>
+    <div class="col-md-12" ng-show="$root.isAdmin">
+      <a href="#/article/editor/{{article.articleId}}">
+        <i class="fa fa-pencil no-margin-right"></i> Edit
+      </a>
+    </div>
+    <div class="col-md-12"><markdown content="article.content"></markdown></div>
+    </div>
+  </div>
+</div>
