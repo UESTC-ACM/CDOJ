@@ -1,15 +1,8 @@
 package cn.edu.uestc.acmicpc.web.oj.listener.onlineusers;
 
-import javax.servlet.http.HttpSessionAttributeListener;
-import javax.servlet.http.HttpSessionBindingEvent;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.OnlineUsersService;
 import cn.edu.uestc.acmicpc.util.helper.BeanUtil;
-import cn.edu.uestc.acmicpc.web.oj.controller.springbean.SpringBeanController;
 
 import org.springframework.stereotype.Component;
 
