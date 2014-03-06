@@ -28,7 +28,6 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -189,12 +188,6 @@ public class UserController extends BaseController {
     return json;
   }
 
-  @RequestMapping("list")
-  @LoginPermit(NeedLogin = false)
-  public String list() {
-    return "user/userList";
-  }
-
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public
@@ -219,14 +212,6 @@ public class UserController extends BaseController {
       json.put("error_msg", "Unknown exception occurred.");
     }
     return json;
-  }
-
-  @RequestMapping("center/{userName}")
-  @LoginPermit(NeedLogin = false)
-  public String center(@PathVariable("userName") String userName,
-                       ModelMap model) {
-    model.put("targetUserName", userName);
-    return "user/userCenter";
   }
 
   @RequestMapping("userCenterData/{userName}")
@@ -429,16 +414,6 @@ public class UserController extends BaseController {
       json.put("error_msg", e.getMessage());
     }
     return json;
-  }
-
-  @RequestMapping("activate/{userName}/{serialKey}")
-  @LoginPermit(NeedLogin = false)
-  public String activate(@PathVariable("userName") String userName,
-                         @PathVariable("serialKey") String serialKey,
-                         ModelMap model) {
-    model.addAttribute("userName", userName);
-    model.addAttribute("serialKey", serialKey);
-    return "user/activate";
   }
 
   @RequestMapping("resetPassword")

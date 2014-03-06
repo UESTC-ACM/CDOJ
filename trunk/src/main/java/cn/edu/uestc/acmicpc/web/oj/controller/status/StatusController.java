@@ -65,12 +65,6 @@ public class StatusController extends BaseController {
     this.languageService = languageService;
   }
 
-  @RequestMapping("list")
-  @LoginPermit(NeedLogin = false)
-  public String list() {
-    return "status/statusList";
-  }
-
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public

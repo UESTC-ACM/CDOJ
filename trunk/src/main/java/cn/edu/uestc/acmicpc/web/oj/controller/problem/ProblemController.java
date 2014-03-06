@@ -20,7 +20,6 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -81,62 +80,6 @@ public class ProblemController extends BaseController {
       json.put("error_msg", "Unknown exception occurred.");
     }
     return json;
-  }
-
-  /**
-   * Show a problem
-   *
-   * @param problemId
-   * @param model
-   * @return String
-   */
-  @RequestMapping("show/{problemId}")
-  @LoginPermit(NeedLogin = false)
-  public String show(@PathVariable("problemId") Integer problemId,
-                     ModelMap model,
-                     HttpSession session) {
-    try {
-      if (!problemService.checkProblemExists(problemId)) {
-        throw new AppException("No such problem.");
-      }
-      ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(problemId);
-      if (!problemDTO.getIsVisible() && !isAdmin(session)) {
-        throw new AppException("No such problem.");
-      }
-      model.put("problemId", problemId);
-      /*
-      Map<Global.OnlineJudgeResultType, Long> problemStatistic = new TreeMap<>();
-      for (Global.OnlineJudgeResultType type : Global.OnlineJudgeResultType.values()) {
-        if (type == Global.OnlineJudgeResultType.OJ_WAIT) {
-          continue;
-        }
-        StatusCondition statusCondition = new StatusCondition();
-        statusCondition.results.add(type);
-        statusCondition.problemId = problemId;
-        statusCondition.isVisible = true;
-        problemStatistic.put(type, statusService.count(statusCondition));
-      }
-
-      model.put("problemStatistic", problemStatistic);
-      */
-    } catch (AppException e) {
-      return "error/404";
-    } catch (Exception e) {
-      e.printStackTrace();
-      return "error/404";
-    }
-    return "problem/problemShow";
-  }
-
-  /**
-   * Show problem list
-   *
-   * @return String
-   */
-  @RequestMapping("list")
-  @LoginPermit(NeedLogin = false)
-  public String list() {
-    return "problem/problemList";
   }
 
   /**
@@ -233,39 +176,6 @@ public class ProblemController extends BaseController {
       json.put("error_msg", "Unknown exception occurred.");
     }
     return json;
-  }
-
-  /**
-   * Open problem editor
-   *
-   * @param sProblemId target problem id or "new"
-   * @param model      model
-   * @return editor view
-   */
-  @RequestMapping("editor/{problemId}")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
-  public String editor(@PathVariable("problemId") String sProblemId,
-                       ModelMap model) {
-    try {
-      if (sProblemId.compareTo("new") == 0) {
-        model.put("action", "new");
-      } else {
-        Integer problemId;
-        try {
-          problemId = Integer.parseInt(sProblemId);
-        } catch (NumberFormatException e) {
-          throw new AppException("Parse problem id error.");
-        }
-        if (!problemService.checkProblemExists(problemId)) {
-          throw new AppException("No such problem.");
-        }
-        model.put("action", problemId);
-      }
-    } catch (AppException e) {
-      model.put("message", e.getMessage());
-      return "error/error";
-    }
-    return "/problem/problemEditor";
   }
 
   /**

@@ -78,7 +78,6 @@ cdoj
       $scope.submit = ->
         contestEditDTO = angular.copy($scope.contest)
         contestEditDTO.time = Date.create(contestEditDTO.time).getTime()
-        console.log $scope.contest
         $http.post("/contest/edit", contestEditDTO).success (data)=>
           if data.result == "success"
             $window.location.href = "#/contest/show/#{data.contestId}"
