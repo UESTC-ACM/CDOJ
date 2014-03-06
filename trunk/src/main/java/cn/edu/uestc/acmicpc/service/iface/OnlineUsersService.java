@@ -1,8 +1,9 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
+import java.util.Set;
+
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 
-import java.util.Set;
 
 /**
  * OnlineUsers service interface.
@@ -10,14 +11,14 @@ import java.util.Set;
 public interface OnlineUsersService {
 
   /**
-   * Update the online users when some user logins.
+   * Update the online users when a user logins.
    *
    * @param userDTO {@link UserDTO} entity.
    */
   public void addOnlineUsers(UserDTO userDTO);
 
   /**
-   * Update the online users when some user logouts.
+   * Update the online users when a user logouts.
    *
    * @param userDTO {@link UserDTO} entity.
    */
@@ -28,12 +29,12 @@ public interface OnlineUsersService {
    *
    * @return total number of online users.
    */
-  public Integer getOnlineNumber();
+  public Integer getNumberOfOnlineUsers();
 
   /**
    * Get the list of online users.
    *
    * @return the list of online users.
    */
-  public Set<String> getOnlineList();
+  public Set<UserDTO> getOnlineList();
 }

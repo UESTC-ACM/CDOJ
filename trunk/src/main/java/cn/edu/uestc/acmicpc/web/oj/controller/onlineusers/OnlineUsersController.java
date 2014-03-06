@@ -25,9 +25,7 @@ public class OnlineUsersController extends BaseController {
   
   @RequestMapping("list")
   @LoginPermit(NeedLogin = false)
-  public String list(ModelMap model) {
-    model.put("onlineNumber", onlineUsersService.getOnlineNumber());
-    model.put("onlineList", onlineUsersService.getOnlineList());
+  public String list() {
     return "onlineusers/onlineusersList";
   }
 

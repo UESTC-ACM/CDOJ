@@ -13,24 +13,24 @@ import java.util.Set;
  */
 @Service
 public class OnlineUsersServiceImpl extends AbstractService implements OnlineUsersService{
-  private static final Set<String> userPool = new HashSet<>();
+  private static final Set<UserDTO> userPool = new HashSet<>();
 
   public OnlineUsersServiceImpl() {
   }
 
   public synchronized void addOnlineUsers(UserDTO user) {
-    userPool.add(user.getUserName());
+    userPool.add(user);
   }
 
   public synchronized void removeOnlineUsers(UserDTO user) {
-    userPool.remove(user.getUserName());
+    userPool.remove(user);
   }
 
-  public Integer getOnlineNumber() {
+  public Integer getNumberOfOnlineUsers() {
     return userPool.size();
   }
 
-  public Set<String> getOnlineList() {
+  public Set<UserDTO> getOnlineList() {
     return userPool;
   }
 }
