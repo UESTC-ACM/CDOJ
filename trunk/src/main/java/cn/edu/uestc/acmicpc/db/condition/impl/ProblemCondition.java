@@ -83,9 +83,11 @@ public class ProblemCondition extends BaseCondition {
     }
     //TODO(mzry1992) check this statement
     if (keyword != null) {
-      condition.addEntry("title", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));
-      condition.addEntry("description", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));
-      condition.addEntry("source", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));
+      Condition keywordCondition = new Condition(Condition.JoinedType.OR);
+      keywordCondition.addEntry("title", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));
+      keywordCondition.addEntry("description", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));
+      keywordCondition.addEntry("source", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));
+      condition.addEntry(keywordCondition);
     }
     return condition;
   }
