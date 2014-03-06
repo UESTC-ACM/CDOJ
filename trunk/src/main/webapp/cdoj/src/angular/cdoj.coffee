@@ -1,3 +1,5 @@
+_.mixin(_.str.exports());
+
 cdoj = angular.module('cdoj', [
   "ui.bootstrap"
   "ngRoute"
@@ -38,5 +40,11 @@ cdoj
       ).when("/problem/editor/:action",
         templateUrl: "template/problem/editor.html"
         controller: "ProblemEditorController"
+      ).when("/contest/list",
+        templateUrl: "template/contest/list.html"
+        controller: "ContestListController"
+      ).when("/contest/show/:contestId",
+        templateUrl: "template/contest/show.html"
+        controller: "ContestShowController"
       )
   ])
