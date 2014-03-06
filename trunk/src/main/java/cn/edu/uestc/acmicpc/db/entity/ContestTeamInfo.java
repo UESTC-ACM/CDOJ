@@ -124,6 +124,15 @@ public class ContestTeamInfo implements Serializable {
     this.grade = grade;
   }
 
+  private String studentId = "";
+
+  @Column(name = "studentId", nullable = false, insertable = true, updatable = true, length = 100,
+      precision = 0)
+  @Basic
+  public String getStudentId() { return studentId; }
+
+  public void setStudentId(String studentId) { this.studentId = studentId; }
+
   private String phone = "";
 
   @Column(name = "phone", nullable = false, insertable = true, updatable = true, length = 100,
