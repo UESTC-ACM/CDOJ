@@ -4,7 +4,7 @@ define([
 	"./css/var/cssExpand",
 	"./css/var/isHidden",
 	"./css/defaultDisplay",
-	"./data/var/data_priv",
+	"./effects/support",
 
 	"./core/init",
 	"./effects/Tween",
@@ -12,7 +12,7 @@ define([
 	"./css",
 	"./deferred",
 	"./traversing"
-], function( jQuery, pnum, cssExpand, isHidden, defaultDisplay, data_priv ) {
+], function( jQuery, pnum, cssExpand, isHidden, defaultDisplay, support ) {
 
 var
 	fxNow, timerId,
@@ -82,8 +82,8 @@ function createFxNow() {
 // Generate parameters to create a standard animation
 function genFx( type, includeWidth ) {
 	var which,
-		i = 0,
-		attrs = { height: type };
+		attrs = { height: type },
+		i = 0;
 
 	// if we include width, step value is 1 to do all cssExpand values,
 	// if we don't include width, step value is 2 to skip over Left and Right
@@ -116,12 +116,12 @@ function createTween( value, prop, animation ) {
 
 function defaultPrefilter( elem, props, opts ) {
 	/* jshint validthis: true */
-	var prop, value, toggle, tween, hooks, oldfire, display,
+	var prop, value, toggle, tween, hooks, oldfire, display, dDisplay,
 		anim = this,
 		orig = {},
 		style = elem.style,
 		hidden = elem.nodeType && isHidden( elem ),
-		dataShow = data_priv.get( elem, "fxshow" );
+		dataShow = jQuery._data( elem, "fxshow" );
 
 	// handle queue: false promises
 	if ( !opts.queue ) {
@@ -152,7 +152,7 @@ function defaultPrefilter( elem, props, opts ) {
 	// height/width overflow pass
 	if ( elem.nodeType === 1 && ( "height" in props || "width" in props ) ) {
 		// Make sure that nothing sneaks out
-		// Record all 3 overflow attributes because IE9-10 do not
+		// Record all 3 overflow attributes because IE does not
 		// change the overflow attribute when overflowX and
 		// overflowY are set to the same value
 		opts.overflow = [ style.overflow, style.overflowX, style.overflowY ];
@@ -160,24 +160,32 @@ function defaultPrefilter( elem, props, opts ) {
 		// Set display property to inline-block for height/width
 		// animations on inline elements that are having width/height animated
 		display = jQuery.css( elem, "display" );
-		// Get default display if display is currently "none"
+		dDisplay = defaultDisplay( elem.nodeName );
 		if ( display === "none" ) {
-			display = defaultDisplay( elem.nodeName );
+			display = dDisplay;
 		}
 		if ( display === "inline" &&
 				jQuery.css( elem, "float" ) === "none" ) {
 
-			style.display = "inline-block";
+			// inline-level elements accept inline-block;
+			// block-level elements need to be inline with layout
+			if ( !support.inlineBlockNeedsLayout || dDisplay === "inline" ) {
+				style.display = "inline-block";
+			} else {
+				style.zoom = 1;
+			}
 		}
 	}
 
 	if ( opts.overflow ) {
 		style.overflow = "hidden";
-		anim.always(function() {
-			style.overflow = opts.overflow[ 0 ];
-			style.overflowX = opts.overflow[ 1 ];
-			style.overflowY = opts.overflow[ 2 ];
-		});
+		if ( !support.shrinkWrapBlocks() ) {
+			anim.always(function() {
+				style.overflow = opts.overflow[ 0 ];
+				style.overflowX = opts.overflow[ 1 ];
+				style.overflowY = opts.overflow[ 2 ];
+			});
+		}
 	}
 
 	// show/hide pass
@@ -205,7 +213,7 @@ function defaultPrefilter( elem, props, opts ) {
 				hidden = dataShow.hidden;
 			}
 		} else {
-			dataShow = data_priv.access( elem, "fxshow", {} );
+			dataShow = jQuery._data( elem, "fxshow", {} );
 		}
 
 		// store state if its toggle - enables .stop().toggle() to "reverse"
@@ -221,8 +229,7 @@ function defaultPrefilter( elem, props, opts ) {
 		}
 		anim.done(function() {
 			var prop;
-
-			data_priv.remove( elem, "fxshow" );
+			jQuery._removeData( elem, "fxshow" );
 			for ( prop in orig ) {
 				jQuery.style( elem, prop, orig[ prop ] );
 			}
@@ -383,7 +390,6 @@ function Animation( elem, properties, options ) {
 }
 
 jQuery.Animation = jQuery.extend( Animation, {
-
 	tweener: function( props, callback ) {
 		if ( jQuery.isFunction( props ) ) {
 			callback = props;
@@ -461,7 +467,7 @@ jQuery.fn.extend({
 				var anim = Animation( this, jQuery.extend( {}, prop ), optall );
 
 				// Empty animations, or finishing resolves immediately
-				if ( empty || data_priv.get( this, "finish" ) ) {
+				if ( empty || jQuery._data( this, "finish" ) ) {
 					anim.stop( true );
 				}
 			};
@@ -491,7 +497,7 @@ jQuery.fn.extend({
 			var dequeue = true,
 				index = type != null && type + "queueHooks",
 				timers = jQuery.timers,
-				data = data_priv.get( this );
+				data = jQuery._data( this );
 
 			if ( index ) {
 				if ( data[ index ] && data[ index ].stop ) {
@@ -527,7 +533,7 @@ jQuery.fn.extend({
 		}
 		return this.each(function() {
 			var index,
-				data = data_priv.get( this ),
+				data = jQuery._data( this ),
 				queue = data[ type + "queue" ],
 				hooks = data[ type + "queueHooks" ],
 				timers = jQuery.timers,
@@ -590,8 +596,8 @@ jQuery.each({
 jQuery.timers = [];
 jQuery.fx.tick = function() {
 	var timer,
-		i = 0,
-		timers = jQuery.timers;
+		timers = jQuery.timers,
+		i = 0;
 
 	fxNow = jQuery.now();
 

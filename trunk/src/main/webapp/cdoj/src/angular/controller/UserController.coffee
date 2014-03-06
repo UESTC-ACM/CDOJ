@@ -1,16 +1,17 @@
-cdoj.controller("UserController", [
-  "$scope", "$rootScope", "$http", "$element", "$compile", "$window", "UserProfile"
-  ($scope, $rootScope, $http, $element, $compile, $window, $userProfile) ->
-    $rootScope.hasLogin = false
-    $rootScope.currentUser =
-      email: ""
-    $rootScope.isAdmin = false
-    $scope.userLoginDTO =
-      userName: ""
-      password: ""
-    $scope.fieldInfo = []
-    $scope.views =
-      loginView: """
+cdoj
+.controller("UserController", [
+    "$scope", "$rootScope", "$http", "$element", "$compile", "$window", "UserProfile", "$modal"
+    ($scope, $rootScope, $http, $element, $compile, $window, $userProfile, $modal) ->
+      $rootScope.hasLogin = false
+      $rootScope.currentUser =
+        email: ""
+      $rootScope.isAdmin = false
+      $scope.userLoginDTO =
+        userName: ""
+        password: ""
+      $scope.fieldInfo = []
+      $scope.views =
+        loginView: """
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             Sign in
           </a>
@@ -55,16 +56,14 @@ cdoj.controller("UserController", [
             </li>
             <li role="presentation" class="divider"></li>
             <li>
-              <a href="#" data-toggle="modal"
-                 data-target="#cdoj-register-modal">
+              <a href="#" ng-click="openRegisterModal()">
                 <i class="fa fa-arrow-circle-right" style="padding-right: 6px;"></i>Register</a>
-              <a href="#" data-toggle="modal"
-                 data-target="#cdoj-activate-modal">
+              <a href="#" ng-click="openForgetPasswordModal()">
                 <i class="fa fa-arrow-circle-right" style="padding-right: 6px;"></i>Forget password? </a>
             </li>
           </ul>
       """
-      userView: """
+        userView: """
             <div id="cdoj-user">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <img id="cdoj-user-avatar"
@@ -89,7 +88,7 @@ cdoj.controller("UserController", [
                 <li role="presentation">
                   <a href="#" data-toggle="modal"
                      data-target="#cdoj-profile-edit-modal"
-                     ng-click="setupProfileEditor()">
+                     ng-click="openUserProfileEditor()">
                     <i class="fa fa-wrench"></i>Edit profile
                   </a>
                 </li>
@@ -102,7 +101,7 @@ cdoj.controller("UserController", [
               </ul>
             </div>
       """
-    $rootScope.$watch("hasLogin",
+      $rootScope.$watch("hasLogin",
       ->
         if $rootScope.hasLogin
           view = $scope.views.userView
@@ -116,32 +115,49 @@ cdoj.controller("UserController", [
           $rootScope.isAdmin = true
         else
           $rootScope.isAdmin = false
-    )
-    $scope.login = ->
-      userLoginDTO = angular.copy($scope.userLoginDTO)
-      if userLoginDTO.password == undefined then return
-      password = CryptoJS.SHA1(userLoginDTO.password).toString()
-      userLoginDTO.password = password
-      $http.post("/user/login", userLoginDTO).then (response)->
-        data = response.data
-        console.log data
-        if data.result == "success"
-          $rootScope.hasLogin = true
-          $rootScope.currentUser =
-            userName: data.userName
-            email: data.email
-            type: data.type
-        else if data.result == "field_error"
-          $scope.fieldInfo = data.field
-        else
-          $window.alert data.error_msg
-    $scope.logout = ->
-      $http.post("/user/logout").then (response)->
-        data = response.data
-        if data.result == "success"
-          $rootScope.hasLogin = false
-          $rootScope.currentUser =
-            email: ""
-    $scope.setupProfileEditor = ->
-      $userProfile.setProfile $rootScope.currentUser.userName
-])
+      )
+
+      $scope.login = ->
+        userLoginDTO = angular.copy($scope.userLoginDTO)
+        if angular.isUndefined userLoginDTO.password then return
+        password = CryptoJS.SHA1(userLoginDTO.password).toString()
+        userLoginDTO.password = password
+        $http.post("/user/login", userLoginDTO).then (response)->
+          data = response.data
+          if data.result == "success"
+            $rootScope.hasLogin = true
+            $rootScope.currentUser =
+              userName: data.userName
+              email: data.email
+              type: data.type
+          else if data.result == "field_error"
+            $scope.fieldInfo = data.field
+          else
+            $window.alert data.error_msg
+
+      $scope.logout = ->
+        $http.post("/user/logout").then (response)->
+          data = response.data
+          if data.result == "success"
+            $rootScope.hasLogin = false
+            $rootScope.currentUser =
+              email: ""
+
+      $scope.openRegisterModal = ->
+        registerModal = $modal.open(
+          templateUrl: "template/modal/register-modal.html"
+          controller: "RegisterModalController"
+        )
+
+      $scope.openForgetPasswordModal = ->
+        forgetPasswordModal = $modal.open(
+          templateUrl: "template/modal/forget-password-modal.html"
+          controller: "ForgetPasswordModalController"
+        )
+      $scope.openUserProfileEditor = ->
+        $userProfile.setProfile $rootScope.currentUser.userName
+        userProfileEditor = $modal.open(
+          templateUrl: "template/modal/profile-edit-modal.html"
+          controller: "UserProfileEditorController"
+        )
+  ])

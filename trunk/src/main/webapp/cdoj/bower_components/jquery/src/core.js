@@ -1,5 +1,5 @@
 define([
-	"./var/arr",
+	"./var/deletedIds",
 	"./var/slice",
 	"./var/concat",
 	"./var/push",
@@ -9,12 +9,9 @@ define([
 	"./var/hasOwn",
 	"./var/trim",
 	"./var/support"
-], function( arr, slice, concat, push, indexOf, class2type, toString, hasOwn, trim, support ) {
+], function( deletedIds, slice, concat, push, indexOf, class2type, toString, hasOwn, trim, support ) {
 
 var
-	// Use the correct document accordingly with window argument (sandbox)
-	document = window.document,
-
 	version = "@VERSION",
 
 	// Define a local copy of jQuery
@@ -23,6 +20,9 @@ var
 		// Need init if jQuery is called (just allow error to be thrown if not included)
 		return new jQuery.fn.init( selector, context );
 	},
+
+	// Make sure we trim BOM and NBSP (here's looking at you, Safari 5.0 and IE)
+	rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,
 
 	// Matches dashed string for camelizing
 	rmsPrefix = /^-ms-/,
@@ -114,12 +114,12 @@ jQuery.fn = jQuery.prototype = {
 	// For internal use only.
 	// Behaves like an Array's method, not like a jQuery method.
 	push: push,
-	sort: arr.sort,
-	splice: arr.splice
+	sort: deletedIds.sort,
+	splice: deletedIds.splice
 };
 
 jQuery.extend = jQuery.fn.extend = function() {
-	var options, name, src, copy, copyIsArray, clone,
+	var src, copyIsArray, copy, name, options, clone,
 		target = arguments[0] || {},
 		i = 1,
 		length = arguments.length,
@@ -203,10 +203,13 @@ jQuery.extend({
 		return jQuery.type(obj) === "function";
 	},
 
-	isArray: Array.isArray,
+	isArray: Array.isArray || function( obj ) {
+		return jQuery.type(obj) === "array";
+	},
 
 	isWindow: function( obj ) {
-		return obj != null && obj === obj.window;
+		/* jshint eqeqeq: false */
+		return obj != null && obj == obj.window;
 	},
 
 	isNumeric: function( obj ) {
@@ -214,33 +217,6 @@ jQuery.extend({
 		// ...but misinterprets leading-number strings, particularly hex literals ("0x...")
 		// subtraction forces infinities to NaN
 		return obj - parseFloat( obj ) >= 0;
-	},
-
-	isPlainObject: function( obj ) {
-		// Not plain objects:
-		// - Any object or value whose internal [[Class]] property is not "[object Object]"
-		// - DOM nodes
-		// - window
-		if ( jQuery.type( obj ) !== "object" || obj.nodeType || jQuery.isWindow( obj ) ) {
-			return false;
-		}
-
-		// Support: Firefox <20
-		// The try/catch suppresses exceptions thrown when attempting to access
-		// the "constructor" property of certain host objects, ie. |window.location|
-		// https://bugzilla.mozilla.org/show_bug.cgi?id=814622
-		try {
-			if ( obj.constructor &&
-					!hasOwn.call( obj.constructor.prototype, "isPrototypeOf" ) ) {
-				return false;
-			}
-		} catch ( e ) {
-			return false;
-		}
-
-		// If the function hasn't returned already, we're confident that
-		// |obj| is a plain object, created by {} or constructed with new Object
-		return true;
 	},
 
 	isEmptyObject: function( obj ) {
@@ -251,36 +227,63 @@ jQuery.extend({
 		return true;
 	},
 
+	isPlainObject: function( obj ) {
+		var key;
+
+		// Must be an Object.
+		// Because of IE, we also have to check the presence of the constructor property.
+		// Make sure that DOM nodes and window objects don't pass through, as well
+		if ( !obj || jQuery.type(obj) !== "object" || obj.nodeType || jQuery.isWindow( obj ) ) {
+			return false;
+		}
+
+		try {
+			// Not own constructor property must be Object
+			if ( obj.constructor &&
+				!hasOwn.call(obj, "constructor") &&
+				!hasOwn.call(obj.constructor.prototype, "isPrototypeOf") ) {
+				return false;
+			}
+		} catch ( e ) {
+			// IE8,9 Will throw exceptions on certain host objects #9897
+			return false;
+		}
+
+		// Support: IE<9
+		// Handle iteration over inherited properties before own properties.
+		if ( support.ownLast ) {
+			for ( key in obj ) {
+				return hasOwn.call( obj, key );
+			}
+		}
+
+		// Own properties are enumerated firstly, so to speed up,
+		// if last one is own, then all properties are own.
+		for ( key in obj ) {}
+
+		return key === undefined || hasOwn.call( obj, key );
+	},
+
 	type: function( obj ) {
 		if ( obj == null ) {
 			return obj + "";
 		}
-		// Support: Android < 4.0, iOS < 6 (functionish RegExp)
 		return typeof obj === "object" || typeof obj === "function" ?
 			class2type[ toString.call(obj) ] || "object" :
 			typeof obj;
 	},
 
 	// Evaluates a script in a global context
-	globalEval: function( code ) {
-		var script,
-			indirect = eval;
-
-		code = jQuery.trim( code );
-
-		if ( code ) {
-			// If the code includes a valid, prologue position
-			// strict mode pragma, execute code by injecting a
-			// script tag into the document.
-			if ( code.indexOf("use strict") === 1 ) {
-				script = document.createElement("script");
-				script.text = code;
-				document.head.appendChild( script ).parentNode.removeChild( script );
-			} else {
-			// Otherwise, avoid the DOM node creation, insertion
-			// and removal by using an indirect global eval
-				indirect( code );
-			}
+	// Workarounds based on findings by Jim Driscoll
+	// http://weblogs.java.net/blog/driscoll/archive/2009/09/08/eval-javascript-global-context
+	globalEval: function( data ) {
+		if ( data && jQuery.trim( data ) ) {
+			// We use execScript on Internet Explorer
+			// We use an anonymous function so that context is window
+			// rather than jQuery in Firefox
+			( window.execScript || function( data ) {
+				window[ "eval" ].call( window, data );
+			} )( data );
 		}
 	},
 
@@ -344,9 +347,20 @@ jQuery.extend({
 		return obj;
 	},
 
-	trim: function( text ) {
-		return text == null ? "" : trim.call( text );
-	},
+	// Use native String.trim function wherever possible
+	trim: trim && !trim.call("\uFEFF\xA0") ?
+		function( text ) {
+			return text == null ?
+				"" :
+				trim.call( text );
+		} :
+
+		// Otherwise use our own trimming functionality
+		function( text ) {
+			return text == null ?
+				"" :
+				( text + "" ).replace( rtrim, "" );
+		},
 
 	// results is for internal usage only
 	makeArray: function( arr, results ) {
@@ -367,7 +381,25 @@ jQuery.extend({
 	},
 
 	inArray: function( elem, arr, i ) {
-		return arr == null ? -1 : indexOf.call( arr, elem, i );
+		var len;
+
+		if ( arr ) {
+			if ( indexOf ) {
+				return indexOf.call( arr, elem, i );
+			}
+
+			len = arr.length;
+			i = i ? i < 0 ? Math.max( 0, len + i ) : i : 0;
+
+			for ( ; i < len; i++ ) {
+				// Skip accessing in sparse arrays
+				if ( i in arr && arr[ i ] === elem ) {
+					return i;
+				}
+			}
+		}
+
+		return -1;
 	},
 
 	merge: function( first, second ) {
@@ -375,8 +407,16 @@ jQuery.extend({
 			j = 0,
 			i = first.length;
 
-		for ( ; j < len; j++ ) {
-			first[ i++ ] = second[ j ];
+		while ( j < len ) {
+			first[ i++ ] = second[ j++ ];
+		}
+
+		// Support: IE<9
+		// Workaround casting of .length to NaN on otherwise arraylike objects (e.g., NodeLists)
+		if ( len !== len ) {
+			while ( second[j] !== undefined ) {
+				first[ i++ ] = second[ j++ ];
+			}
 		}
 
 		first.length = i;
@@ -442,7 +482,7 @@ jQuery.extend({
 	// Bind a function to a context, optionally partially applying any
 	// arguments.
 	proxy: function( fn, context ) {
-		var tmp, args, proxy;
+		var args, proxy, tmp;
 
 		if ( typeof context === "string" ) {
 			tmp = fn[ context ];
@@ -468,7 +508,9 @@ jQuery.extend({
 		return proxy;
 	},
 
-	now: Date.now,
+	now: function() {
+		return +( new Date() );
+	},
 
 	// jQuery.support is not used in Core but other projects attach their
 	// properties to it so it needs to exist.
