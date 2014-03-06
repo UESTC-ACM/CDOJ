@@ -49019,7 +49019,7 @@ Date.addLocale('zh-TW', {
 }).call(this);
 
 (function() {
-  var GlobalVariables, ProblemListController, cdoj;
+  var GlobalVariables, cdoj;
 
   GlobalVariables = {
     OnlineJudgeReturnType: {
@@ -49072,15 +49072,40 @@ Date.addLocale('zh-TW', {
     "$routeProvider", function($routeProvider) {
       return $routeProvider.when("/problem/list", {
         templateUrl: "template/problem/list.html",
-        controller: ProblemListController
+        controller: "ProblemListController"
       });
     }
   ]);
 
-  ProblemListController = function($scope, $rootScope, $http) {
-    return $rootScope.title = "Problem list";
-  };
+  cdoj.controller("ProblemListController", [
+    "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
+      return $rootScope.title = "Problem list";
+    }
+  ]);
 
-  ProblemListController.$inject = ["$scope", "$rootScope", "$http"];
+  cdoj.directive("activeLink", [
+    "$location", function($location) {
+      return {
+        restrict: "A",
+        link: function($scope, $element, $attr) {
+          var position;
+          position = $attr.activeLink;
+          $scope.location = $location;
+          return $scope.$watch("location.path()", function(newPath) {
+            var currentPosition;
+            currentPosition = newPath.split("/")[1];
+            if (angular.isUndefined(currentPosition)) {
+              currentPosition = "";
+            }
+            if (currentPosition === position) {
+              return $element.addClass("active");
+            } else {
+              return $element.removeClass("active");
+            }
+          });
+        }
+      };
+    }
+  ]);
 
 }).call(this);

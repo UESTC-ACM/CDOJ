@@ -21,6 +21,7 @@ module.exports = (grunt) ->
             "src/angular/global.coffee"
             "src/angular/cdoj.coffee"
             "src/angular/controller/*.coffee"
+            "src/angular/directive/*.coffee"
           ]
 
     less:
