@@ -12,6 +12,18 @@
         </tr>
         </thead>
         <tbody>
+        <tr>
+          <td>
+            <input type="number"
+                   style="width: 100%;"
+                   ng-model="$root.problemCondition.startId"/>
+          </td>
+          <td>
+            <input type="text"
+                   style=""
+                   ng-model="$root.problemCondition.keyword"/>
+          </td>
+        </tr>
         <tr ng-repeat="problem in list">
           <td ng-class="{
         success: problem.status == $root.AuthorStatusType.PASS,

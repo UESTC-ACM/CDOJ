@@ -73,7 +73,11 @@ cdoj
               </a>
               <ul class="dropdown-menu"
                   role="menu"
-                  aria-labelledby="user-menu">
+                  aria-labelledby="user-menu"
+                  style="top: 48px;
+border-radius: none;
+border-top-left-radius: 0;
+border-top-right-radius: 0;">
                 <li role="presentation"
                     class="dropdown-header text-center">
                   <span id="currentUser"
