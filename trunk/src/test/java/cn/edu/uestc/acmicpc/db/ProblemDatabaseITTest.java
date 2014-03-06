@@ -6,6 +6,7 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.Entry;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -68,7 +69,8 @@ public class ProblemDatabaseITTest extends AbstractTestNGSpringContextTests {
   public void testProblemCondition_emptyTitle() throws AppException {
     Condition condition = new Condition();
     condition.addEntry(Entry.of("title", ConditionType.STRING_EQUALS, ""));
-    List<Problem> problems = (List<Problem>) problemDAO.findAll(condition);
+    List<ProblemDTO> problems =
+        problemDAO.findAll(ProblemDTO.class, ProblemDTO.builder(), condition);
     Assert.assertEquals(problems.size(), 1);
     Assert.assertEquals(problems.get(0).getProblemId(), Integer.valueOf(5));
   }

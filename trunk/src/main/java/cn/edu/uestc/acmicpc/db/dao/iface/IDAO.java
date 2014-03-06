@@ -63,18 +63,6 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   List<?> findAll() throws AppException;
 
   /**
-   * List all entities in tables by conditions.
-   *
-   * @param condition extra conditions for query
-   * @return expected entity list
-   * @throws AppException
-   * @deprecated this method is not supported in new API, please use
-   * {@link IDAO#findAll(Class, BaseBuilder, Condition)}
-   */
-  @Deprecated
-  List<?> findAll(Condition condition) throws AppException;
-
-  /**
    * List all entities in tables by HQL.
    *
    * @param hql HQL string for query.
@@ -187,16 +175,6 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   void updateEntitiesByField(String propertyField, Object propertyValue, String field, String values);
 
   /**
-   * Delete all records according condition entity.
-   *
-   * @param condition specific condition entity
-   * @throws AppException
-   * @deprecated design-in issue, new API is not supported delete method.
-   */
-  @Deprecated
-  void deleteEntitiesByCondition(Condition condition) throws AppException;
-
-  /**
    * Execute SQL immediately.
    */
   void flush();
@@ -216,16 +194,6 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @return number of rows effected
    */
   int executeSQL(String sql);
-
-  /**
-   * Delete entity by key.
-   *
-   * @param key entity's key
-   * @throws AppException
-   * @deprecated design-in issue, new API is not supported delete method.
-   */
-  @Deprecated
-  void delete(PK key) throws AppException;
 
   /**
    * List all entity in condition for specific DTO type.
