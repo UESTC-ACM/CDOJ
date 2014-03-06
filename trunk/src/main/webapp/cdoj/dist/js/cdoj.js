@@ -63813,8 +63813,21 @@ if (typeof exports === 'object') {
       endId: void 0,
       keyword: void 0,
       title: void 0,
-      orderFields: 'id',
-      orderAsc: 'false'
+      orderFields: "id",
+      orderAsc: "false"
+    },
+    problemCondition: {
+      currentPage: null,
+      startId: void 0,
+      endId: void 0,
+      title: void 0,
+      source: void 0,
+      isSpj: void 0,
+      startDifficulty: void 0,
+      endDifficulty: void 0,
+      keyword: void 0,
+      orderFields: "id",
+      orderAsc: "true"
     }
   };
 
@@ -63971,6 +63984,7 @@ if (typeof exports === 'object') {
         displayDistance: 2,
         totalPages: 1
       };
+      $scope.itemsPerPage = 20;
       $scope.showPages = 7;
       $scope.reset = function() {
         _.each($scope.condition, function(value, index) {
@@ -63988,7 +64002,7 @@ if (typeof exports === 'object') {
               data = response.data;
               if (data.result === "success") {
                 $scope.$$nextSibling.list = response.data.list;
-                return $scope.pageInfo = response.data.pageInfo;
+                return $scope.pageInfo = data.pageInfo;
               } else {
                 return $window.alert(data.error_msg);
               }
@@ -64369,7 +64383,7 @@ if (typeof exports === 'object') {
         requestUrl: "@"
       },
       controller: "ListController",
-      template: "<div>\n  <div class=\"col-md-12\">\n    <pagination total-items=\"pageInfo.totalPages\"\n                page=\"condition.currentPage\"\n                max-size=\"showPages\"\n                class=\"pagination-sm\"\n                boundary-links=\"true\"\n                previous-text=\"&lsaquo;\"\n                next-text=\"&rsaquo;\"\n                first-text=\"&laquo;\"\n                last-text=\"&raquo;\"></pagination>\n  </div>\n  <div class=\"col-md-12\" ng-transclude></div>\n</div>"
+      template: "<div>\n  <div class=\"col-md-12\">\n    <pagination total-items=\"pageInfo.totalItems\"\n                items-per-page=\"itemsPerPage\"\n                page=\"condition.currentPage\"\n                max-size=\"showPages\"\n                class=\"pagination-sm\"\n                boundary-links=\"true\"\n                previous-text=\"&lsaquo;\"\n                next-text=\"&rsaquo;\"\n                first-text=\"&laquo;\"\n                last-text=\"&raquo;\"></pagination>\n  </div>\n  <div class=\"col-md-12\" ng-transclude></div>\n</div>"
     };
   });
 
@@ -64407,6 +64421,36 @@ if (typeof exports === 'object') {
         }
       },
       template: "<div></div>"
+    };
+  });
+
+  cdoj.directive("uiProblemAdminSpan", function() {
+    return {
+      restrict: "A",
+      scope: {
+        problemId: "=",
+        isVisible: "="
+      },
+      controller: [
+        "$scope", "$http", "$window", function($scope, $http, $window) {
+          return $scope.editVisible = function() {
+            var queryString;
+            queryString = "/problem/operator/" + $scope.problemId + "/isVisible/" + (!$scope.isVisible);
+            return $http.post(queryString).then((function(_this) {
+              return function(response) {
+                var data;
+                data = response.data;
+                if (data.result === "success") {
+                  return $scope.isVisible = !$scope.isVisible;
+                } else {
+                  return $window.alert(data.error_msg);
+                }
+              };
+            })(this));
+          };
+        }
+      ],
+      template: "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm\" ng-click=\"editVisible()\" style=\"padding: 1px 5px;\">\n      <i class=\"fa\" ng-class=\"{\n        'fa-eye': isVisible == true,\n        'fa-eye-slash': isVisible == false\n      }\"></i>\n    </button>\n    <a href=\"#/problem/editor/{{problemId}}\"\n       class=\"btn btn-default btn-sm\" style=\"padding: 1px 5px;\"><i class=\"fa fa-pencil\"></i></a>\n  </div>\n</div>"
     };
   });
 

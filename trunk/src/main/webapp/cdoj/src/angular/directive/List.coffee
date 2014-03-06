@@ -11,7 +11,8 @@ cdoj
     template: """
 <div>
   <div class="col-md-12">
-    <pagination total-items="pageInfo.totalPages"
+    <pagination total-items="pageInfo.totalItems"
+                items-per-page="itemsPerPage"
                 page="condition.currentPage"
                 max-size="showPages"
                 class="pagination-sm"

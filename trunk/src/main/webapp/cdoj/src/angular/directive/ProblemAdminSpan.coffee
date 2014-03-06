@@ -5,14 +5,16 @@ cdoj.directive("uiProblemAdminSpan",
     problemId: "="
     isVisible: "="
   controller: [
-    "$scope", "$http",
-    ($scope, $http) ->
+    "$scope", "$http", "$window"
+    ($scope, $http, $window) ->
       $scope.editVisible = ->
         queryString = "/problem/operator/#{$scope.problemId}/isVisible/#{!$scope.isVisible}"
         $http.post(queryString).then (response)=>
-          if response.data.result == "success"
+          data = response.data
+          if data.result == "success"
             $scope.isVisible = !$scope.isVisible
-          # TODO error
+          else
+            $window.alert data.error_msg
   ]
   template: """
               <div class="btn-toolbar" role="toolbar">
@@ -23,7 +25,7 @@ cdoj.directive("uiProblemAdminSpan",
                       'fa-eye-slash': isVisible == false
                     }"></i>
                   </button>
-                  <a href="/problem/editor/{{problemId}}" target="_blank"
+                  <a href="#/problem/editor/{{problemId}}"
                      class="btn btn-default btn-sm" style="padding: 1px 5px;"><i class="fa fa-pencil"></i></a>
                 </div>
               </div>

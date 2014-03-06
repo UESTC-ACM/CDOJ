@@ -18,15 +18,21 @@ public class PageInfo {
    */
   private Long totalPages;
   /**
+   * Total items
+   */
+  private Long totalItems;
+  /**
    * The minimal/maximal page will show before/after current page is current-displayDist/current+displayDist
    */
   private int displayDistance;
 
-  private PageInfo(Long currentPage, Long countPerPage, Long totalPages, int displayDistance) {
+  private PageInfo(Long currentPage, Long countPerPage, Long totalPages, int displayDistance,
+                   Long totalItems) {
     this.currentPage = currentPage;
     this.countPerPage = countPerPage;
     this.totalPages = totalPages;
     this.displayDistance = displayDistance;
+    this.totalItems = totalItems;
   }
 
   public Long getCurrentPage() {
@@ -61,6 +67,14 @@ public class PageInfo {
     this.displayDistance = displayDistance;
   }
 
+  public Long getTotalItems() {
+    return totalItems;
+  }
+
+  public void setTotalItems(Long totalItems) {
+    this.totalItems = totalItems;
+  }
+
   /**
    * Create a PageInfo object
    *
@@ -79,6 +93,6 @@ public class PageInfo {
     totalPages = Math.max(1, totalPages);
     currentPage = Math.min(totalPages, Math.max(1, currentPage));
 
-    return new PageInfo(currentPage, countPerPage, totalPages, displayDistance);
+    return new PageInfo(currentPage, countPerPage, totalPages, displayDistance, count);
   }
 }
