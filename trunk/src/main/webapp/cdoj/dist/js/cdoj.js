@@ -63862,6 +63862,9 @@ if (typeof exports === 'object') {
       }).when("/problem/list", {
         templateUrl: "template/problem/list.html",
         controller: "ProblemListController"
+      }).when("/problem/show/:problemId", {
+        templateUrl: "template/problem/show.html",
+        controller: "ProblemShowController"
       });
     }
   ]);
@@ -64019,6 +64022,72 @@ if (typeof exports === 'object') {
     }
   ]);
 
+  cdoj.controller("ProblemShowController", [
+    "$scope", "$rootScope", "$http", "$window", "$routeParams", "$modal", function($scope, $rootScope, $http, $window, $routeParams, $modal) {
+      var problemId;
+      $scope.problem = {
+        description: "",
+        title: "",
+        isSpj: false,
+        timeLimit: 1000,
+        javaTimeLimit: 3000,
+        memoryLimit: "--",
+        javaMemoryLimit: "--",
+        solved: 0,
+        tried: 0,
+        input: "",
+        output: "",
+        sampleInput: "",
+        sampleOutput: "",
+        hint: "",
+        source: ""
+      };
+      $scope.submitDTO = {
+        codeContent: "",
+        languageId: 1,
+        contestId: 0,
+        problemId: 0
+      };
+      $scope.problemId = 0;
+      $scope.contest = null;
+      $scope.fieldInfo = [];
+      problemId = angular.copy($routeParams.problemId);
+      $http.post("/problem/data/" + problemId).then(function(response) {
+        var data;
+        data = response.data;
+        if (data.result === "success") {
+          $scope.problem = data.problem;
+          return $rootScope.title = $scope.problem.title;
+        } else {
+          return alert(data.error_msg);
+        }
+      });
+      return $scope.openSubmitModal = function() {
+        return $modal.open({
+          templateUrl: "template/modal/submit-modal.html",
+          controller: "SubmitModalController",
+          resolve: {
+            submitDTO: function() {
+              return {
+                codeContent: "",
+                problemId: $scope.problem.problemId,
+                contestId: null,
+                languageId: 2
+              };
+            },
+            title: function() {
+              return "" + $scope.problem.title;
+            }
+          }
+        }).result.then(function(result) {
+          if (result === "success") {
+            return console.log("fuck");
+          }
+        });
+      };
+    }
+  ]);
+
   cdoj.controller("ProblemListController", [
     "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
       return $rootScope.title = "Problem list";
@@ -64072,6 +64141,37 @@ if (typeof exports === 'object') {
       };
       return $scope.dismiss = function() {
         return $modalInstance.dismiss();
+      };
+    }
+  ]);
+
+  cdoj.controller("SubmitModalController", [
+    "$scope", "$rootScope", "$window", "$http", "$modalInstance", "submitDTO", "title", function($scope, $rootScope, $window, $http, $modalInstance, submitDTO, title) {
+      $scope.submitDTO = submitDTO;
+      $scope.title = title;
+      $scope.submit = function() {
+        submitDTO = angular.copy($scope.submitDTO);
+        if (angular.isUndefined(submitDTO.codeContent)) {
+          return;
+        }
+        if ($rootScope.hasLogin === false) {
+          return $window.alert("Please login first!");
+        } else {
+          return $http.post("/status/submit", submitDTO).then(function(response) {
+            var data;
+            data = response.data;
+            if (data.result === "success") {
+              return $modalInstance.close("success");
+            } else if (data.result === "field_error") {
+              return $scope.fieldInfo = data.field;
+            } else {
+              return $window.alert(data.error_msg);
+            }
+          });
+        }
+      };
+      return $scope.close = function() {
+        return $modalInstance.dismiss("close");
       };
     }
   ]);
@@ -64421,6 +64521,52 @@ if (typeof exports === 'object') {
         }
       },
       template: "<div></div>"
+    };
+  });
+
+  cdoj.directive("problem", function() {
+    return {
+      restrict: "E",
+      replace: true,
+      transclude: true,
+      scope: {
+        problem: "="
+      },
+      link: function($scope) {
+        return $scope.$watch("problem", function() {
+          var i, _sampleInput, _sampleOutput;
+          _sampleInput = $scope.problem.sampleInput;
+          try {
+            _sampleInput = JSON.parse(_sampleInput);
+          } catch (_error) {}
+          if (!(_sampleInput instanceof Array)) {
+            _sampleInput = [_sampleInput];
+          }
+          _sampleOutput = $scope.problem.sampleOutput;
+          try {
+            _sampleOutput = JSON.parse(_sampleOutput);
+          } catch (_error) {}
+          if (!(_sampleOutput instanceof Array)) {
+            _sampleOutput = [_sampleOutput];
+          }
+          if (_sampleInput.length !== _sampleOutput.length) {
+            return alert("Sample input has not same number of cases with sample output!");
+          } else {
+            return $scope.samples = (function() {
+              var _i, _ref, _results;
+              _results = [];
+              for (i = _i = 0, _ref = _sampleInput.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+                _results.push({
+                  input: _sampleInput[i].toString(),
+                  output: _sampleOutput[i].toString()
+                });
+              }
+              return _results;
+            })();
+          }
+        }, true);
+      },
+      templateUrl: "template/problem/problem.html"
     };
   });
 

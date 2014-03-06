@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <h4 ng-bind="title"></h4>
+</div>
+<div class="modal-body">
+  <form>
+    <div class="form-group">
+      <textarea class="cdoj-submit-area"
+                ng-model="submitDTO.codeContent"></textarea>
+      <ui-validate-info value="fieldInfo" for="codeContent"></ui-validate-info>
+    </div>
+  </form>
+  <div class="btn-group">
+    <button type="button"
+            ng-repeat="language in $root.languageList"
+            class="btn btn-default"
+            ng-model="submitDTO.languageId"
+            btn-radio="language.languageId"
+            ng-bind="language.name"></button>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-default" ng-click="submit()">Submit</button>
+  <button class="btn btn-default" ng-click="close()">Cancel</button>
+</div>
