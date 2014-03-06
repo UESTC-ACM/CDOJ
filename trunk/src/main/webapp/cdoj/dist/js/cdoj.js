@@ -62878,6 +62878,18 @@ if (typeof exports === 'object') {
       title: void 0,
       orderFields: "id",
       orderAsc: "false"
+    },
+    statusCondition: {
+      currentPage: null,
+      startId: void 0,
+      endId: void 0,
+      userName: void 0,
+      problemId: void 0,
+      languageId: void 0,
+      contestId: -1,
+      result: "OJ_ALL",
+      orderFields: "statusId",
+      orderAsc: "false"
     }
   };
 
@@ -62926,6 +62938,9 @@ if (typeof exports === 'object') {
       }).when("/contest/show/:contestId", {
         templateUrl: "template/contest/show.html",
         controller: "ContestShowController"
+      }).when("/status/list", {
+        templateUrl: "template/status/list.html",
+        controller: "StatusListController"
       });
     }
   ]);
@@ -62995,11 +63010,156 @@ if (typeof exports === 'object') {
     }
   ]);
 
+  cdoj.controller("CodeModalController", [
+    "$scope", "$http", "$modalInstance", "statusId", function($scope, $http, $modalInstance, statusId) {
+      $scope.code = "Loading...";
+      return $http.post("/status/info/" + statusId).then(function(response) {
+        var code, compileInfo, data;
+        data = response.data;
+        compileInfo = "";
+        if (data.result === "success") {
+          compileInfo = data.compileInfo;
+        } else {
+          compileInfo = data.error_msg;
+        }
+        code = "";
+        if (data.result === "success") {
+          code = data.code;
+        } else {
+          code = data.error_msg;
+        }
+        return $scope.code = code;
+      });
+    }
+  ]);
+
   cdoj.controller("ContestListController", [
     "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
       return $rootScope.title = "Contest list";
     }
   ]);
+
+  cdoj.controller("ContestShowController", [
+    "$scope", "$rootScope", "$http", "$window", "$modal", "$interval", "$routeParams", function($scope, $rootScope, $http, $window, $modal, $interval, $routeParams) {
+      var contestId, rankListTimer, refreshRankList;
+      $scope.contestId = 0;
+      $scope.contest = {
+        title: ""
+      };
+      $scope.problemList = [];
+      $scope.currentProblem = {
+        description: "",
+        title: "",
+        input: "",
+        output: "",
+        sampleInput: "",
+        sampleOutput: "",
+        hint: "",
+        source: ""
+      };
+      contestId = angular.copy($routeParams.contestId);
+      $http.get("/contest/data/" + contestId).then(function(response) {
+        var data;
+        data = response.data;
+        if (data.result === "success") {
+          $scope.contest = data.contest;
+          $scope.problemList = data.problemList;
+          $rootScope.title = data.contest.title;
+          if (data.problemList.length > 0) {
+            return $scope.currentProblem = data.problemList[0];
+          }
+        } else {
+          return $window.alert(data.error_msg);
+        }
+      });
+      refreshRankList = function() {
+        contestId = angular.copy($scope.contestId);
+        console.log(contestId);
+        return $http.get("/contest/rankList/" + contestId).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            $scope.rankList = data.rankList.rankList;
+            return _.each($scope.problemList, function(value, index) {
+              value.tried = data.rankList.problemList[index].tried;
+              return value.solved = data.rankList.problemList[index].solved;
+            });
+          }
+        });
+      };
+      refreshRankList();
+      rankListTimer = $interval(refreshRankList, 10000);
+      $scope.showProblemTab = function() {
+        return $scope.$$childHead.tabs[1].select();
+      };
+      $scope.showStatusTab = function() {
+        return $scope.$$childHead.tabs[3].select();
+      };
+      $scope.chooseProblem = function(order) {
+        $scope.showProblemTab();
+        return $scope.currentProblem = _.findWhere($scope.problemList, {
+          order: order
+        });
+      };
+      return $scope.openSubmitModal = function() {
+        return $modal.open({
+          templateUrl: "submitModal.html",
+          controller: "SubmitModalController",
+          resolve: {
+            submitDTO: function() {
+              return {
+                codeContent: "",
+                problemId: $scope.currentProblem.problemId,
+                contestId: $scope.contest.contestId,
+                languageId: 2
+              };
+            },
+            title: function() {
+              return "" + $scope.currentProblem.orderCharacter + " - " + $scope.currentProblem.title;
+            }
+          }
+        }).result.then(function(result) {
+          if (result === "success") {
+            $scope.showStatusTab();
+            return angular.element("#status-list").scope().refresh();
+          }
+        });
+      };
+    }
+  ]);
+
+  cdoj.directive("uiContestProblemHref", function() {
+    return {
+      restrict: "E",
+      scope: {
+        problemId: "=",
+        problemList: "="
+      },
+      controller: [
+        "$scope", function($scope) {
+          $scope.order = -1;
+          $scope.orderCharacter = "-";
+          $scope.$watch("problemId + problemList", function() {
+            var target;
+            target = _.findWhere($scope.problemList, {
+              "problemId": $scope.problemId
+            });
+            if (target !== void 0) {
+              $scope.orderCharacter = target.orderCharacter;
+              return $scope.order = target.order;
+            }
+          });
+          return $scope.select = function() {
+            if ($scope.order !== -1) {
+              return angular.element("#contest-show").scope().chooseProblem($scope.order);
+            }
+          };
+        }
+      ],
+      template: "<a href=\"javascript:void(0);\" ng-bind=\"orderCharacter\" ng-click=\"select()\"></a>",
+      replace: true
+    };
+  });
 
   cdoj.controller("ForgetPasswordModalController", [
     "$scope", "$http", "$modalInstance", "$window", function($scope, $http, $modalInstance, $window) {
@@ -63263,6 +63423,12 @@ if (typeof exports === 'object') {
     }
   ]);
 
+  cdoj.controller("StatusListController", [
+    "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
+      return $rootScope.title = "Status list";
+    }
+  ]);
+
   cdoj.controller("SubmitModalController", [
     "$scope", "$rootScope", "$window", "$http", "$modalInstance", "submitDTO", "title", function($scope, $rootScope, $window, $http, $modalInstance, submitDTO, title) {
       $scope.submitDTO = submitDTO;
@@ -63307,8 +63473,8 @@ if (typeof exports === 'object') {
       };
       $scope.fieldInfo = [];
       $scope.views = {
-        loginView: "<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n  Sign in\n</a>\n<ul ui-dropdown-menu class=\"dropdown-menu cdoj-form-menu\" style=\"width: 340px;\">\n  <li>\n    <form>\n      <div class=\"input-group form-group input-group-sm\">\n        <span class=\"input-group-addon\">\n          <i class=\"fa fa-user\" style=\"width: 14px;\"></i>\n        </span>\n        <input type=\"text\"\n               ng-model=\"userLoginDTO.userName\"\n               maxlength=\"24\"\n               id=\"userName\"\n               class=\"form-control\"\n               ng-required=\"true\"\n               ng-pattern=\"/^[a-zA-Z0-9_]{4,24}$/\"\n               placeholder=\"Username\"/>\n      </div>\n      <div class=\"input-group form-group input-group-sm\">\n        <span class=\"input-group-addon\">\n          <i class=\"fa fa-key\" style=\"width: 14px;\"></i>\n        </span>\n        <input type=\"password\"\n               ng-model=\"userLoginDTO.password\"\n               id=\"password\"\n               ng-required=\"true\"\n               ng-minlength=\"6\"\n               ng-maxlength=\"24\"\n               class=\"form-control\"\n               placeholder=\"Password\"/>\n        <span class=\"input-group-btn\">\n          <button type=\"submit\"\n                  class=\"btn btn-default\"\n                  ng-click=\"login()\">\n            Login\n          </button>\n        </span>\n      </div>\n      <ui-validate-info value=\"fieldInfo\" for=\"password\"></ui-validate-info>\n    </form>\n  </li>\n  <li role=\"presentation\" class=\"divider\"></li>\n  <li>\n    <a href=\"#\" ng-click=\"openRegisterModal()\">\n      <i class=\"fa fa-arrow-circle-right\" style=\"padding-right: 6px;\"></i>Register</a>\n    <a href=\"#\" ng-click=\"openForgetPasswordModal()\">\n      <i class=\"fa fa-arrow-circle-right\" style=\"padding-right: 6px;\"></i>Forget password? </a>\n  </li>\n</ul>",
-        userView: "<div id=\"cdoj-user\">\n  <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n    <img id=\"cdoj-user-avatar\"\n         ui-avatar\n         email=\"currentUser.email\"\n         src=\"/images/avatar/default.jpg\"/>\n  </a>\n  <ul class=\"dropdown-menu\"\n      role=\"menu\"\n      aria-labelledby=\"user-menu\">\n    <li role=\"presentation\"\n        class=\"dropdown-header text-center\">\n      <span id=\"currentUser\"\n            ng-bind=\"currentUser.userName\">\n        </span>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"/user/center/{{currentUser.userName}}\">\n        <i class=\"fa fa-home\"></i>User center\n      </a>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"#\" data-toggle=\"modal\"\n         data-target=\"#cdoj-profile-edit-modal\"\n         ng-click=\"openUserProfileEditor()\">\n        <i class=\"fa fa-wrench\"></i>Edit profile\n      </a>\n    </li>\n    <li role=\"presentation\" class=\"divider\"></li>\n    <li role=\"presentation\">\n      <a href=\"#\" id=\"cdoj-logout-button\" ng-click=\"logout()\">\n        <i class=\"fa fa-power-off\"></i>Logout\n      </a>\n    </li>\n  </ul>\n</div>"
+        loginView: "<a href=\"javascript:void(0);\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n  Sign in\n</a>\n<ul ui-dropdown-menu class=\"dropdown-menu cdoj-form-menu\" style=\"width: 340px;\">\n  <li>\n    <form>\n      <div class=\"input-group form-group input-group-sm\">\n        <span class=\"input-group-addon\">\n          <i class=\"fa fa-user\" style=\"width: 14px;\"></i>\n        </span>\n        <input type=\"text\"\n               ng-model=\"userLoginDTO.userName\"\n               maxlength=\"24\"\n               id=\"userName\"\n               class=\"form-control\"\n               ng-required=\"true\"\n               ng-pattern=\"/^[a-zA-Z0-9_]{4,24}$/\"\n               placeholder=\"Username\"/>\n      </div>\n      <div class=\"input-group form-group input-group-sm\">\n        <span class=\"input-group-addon\">\n          <i class=\"fa fa-key\" style=\"width: 14px;\"></i>\n        </span>\n        <input type=\"password\"\n               ng-model=\"userLoginDTO.password\"\n               id=\"password\"\n               ng-required=\"true\"\n               ng-minlength=\"6\"\n               ng-maxlength=\"24\"\n               class=\"form-control\"\n               placeholder=\"Password\"/>\n        <span class=\"input-group-btn\">\n          <button type=\"submit\"\n                  class=\"btn btn-default\"\n                  ng-click=\"login()\">\n            Login\n          </button>\n        </span>\n      </div>\n      <ui-validate-info value=\"fieldInfo\" for=\"password\"></ui-validate-info>\n    </form>\n  </li>\n  <li role=\"presentation\" class=\"divider\"></li>\n  <li>\n    <a href=\"javascript:void(0);\" ng-click=\"openRegisterModal()\">\n      <i class=\"fa fa-arrow-circle-right\" style=\"padding-right: 6px;\"></i>Register</a>\n    <a href=\"javascript:void(0);\" ng-click=\"openForgetPasswordModal()\">\n      <i class=\"fa fa-arrow-circle-right\" style=\"padding-right: 6px;\"></i>Forget password? </a>\n  </li>\n</ul>",
+        userView: "<div id=\"cdoj-user\">\n  <a href=\"javascript:void(0);\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n    <img id=\"cdoj-user-avatar\"\n         ui-avatar\n         email=\"currentUser.email\"\n         src=\"/images/avatar/default.jpg\"/>\n  </a>\n  <ul class=\"dropdown-menu\"\n      role=\"menu\"\n      aria-labelledby=\"user-menu\">\n    <li role=\"presentation\"\n        class=\"dropdown-header text-center\">\n      <span id=\"currentUser\"\n            ng-bind=\"currentUser.userName\">\n        </span>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"/user/center/{{currentUser.userName}}\">\n        <i class=\"fa fa-home\"></i>User center\n      </a>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"javascript:void(0);\" data-toggle=\"modal\"\n         data-target=\"#cdoj-profile-edit-modal\"\n         ng-click=\"openUserProfileEditor()\">\n        <i class=\"fa fa-wrench\"></i>Edit profile\n      </a>\n    </li>\n    <li role=\"presentation\" class=\"divider\"></li>\n    <li role=\"presentation\">\n      <a href=\"javascript:void(0);\" id=\"cdoj-logout-button\" ng-click=\"logout()\">\n        <i class=\"fa fa-power-off\"></i>Logout\n      </a>\n    </li>\n  </ul>\n</div>"
       };
       $rootScope.$watch("hasLogin", function() {
         var view;
@@ -63488,6 +63654,60 @@ if (typeof exports === 'object') {
           });
         }
       ]
+    };
+  });
+
+  cdoj.directive("uiCode", function() {
+    return {
+      restrict: "E",
+      scope: {
+        code: "="
+      },
+      controller: [
+        "$scope", function($scope, $element) {
+          $scope.prettifiedCode = "";
+          return $scope.$watch("code", function() {
+            return $scope.prettifiedCode = prettyPrintOne($scope.code.trim().escapeHTML());
+          });
+        }
+      ],
+      template: "<pre ng-bind-html=\"prettifiedCode\"></pre>",
+      replace: true
+    };
+  });
+
+  cdoj.directive("uiCodeHref", function() {
+    return {
+      restrict: "A",
+      scope: {
+        status: "="
+      },
+      controller: [
+        "$scope", "$rootScope", "$http", "$modal", function($scope, $rootScope, $http, $modal) {
+          $scope.showHref = false;
+          $rootScope.$watch("hasLogin", function() {
+            if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
+              return $scope.showHref = true;
+            } else {
+              return $scope.showHref = false;
+            }
+          });
+          return $scope.showCode = function() {
+            var statusId;
+            statusId = $scope.status.statusId;
+            return $modal.open({
+              templateUrl: "template/modal/code-modal.html",
+              controller: "CodeModalController",
+              resolve: {
+                statusId: function() {
+                  return statusId;
+                }
+              }
+            });
+          };
+        }
+      ],
+      template: "<a href=\"javascript:void(0);\" ng-show=\"showHref\" ng-click=\"showCode()\">{{status.length}} B</a>\n<span ng-hide=\"showHref\">{{status.length}} B</span>"
     };
   });
 
@@ -63856,11 +64076,92 @@ if (typeof exports === 'object') {
       },
       link: function($scope, $element) {
         if ($scope.hasMore) {
-          return $element.empty().append("<a href=\"/article/show/" + $scope.articleId + "\" target=\"_blank\">Read more >></a>");
+          return $element.empty().append("<a href=\"#/article/show/" + $scope.articleId + "\">Read more >></a>");
         }
       }
     };
   });
+
+  cdoj.directive("uiStatus", function() {
+    return {
+      restrict: "A",
+      scope: {
+        status: "="
+      },
+      controller: [
+        "$scope", "$rootScope", "$http", "$modal", function($scope, $rootScope, $http, $modal) {
+          var checkShowHref, timmer;
+          $scope.showHref = false;
+          checkShowHref = function() {
+            if ($scope.status.returnTypeId === 7) {
+              if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
+                return $scope.showHref = true;
+              } else {
+                return $scope.showHref = false;
+              }
+            } else {
+              return $scope.showHref = false;
+            }
+          };
+          $rootScope.$watch("hasLogin", function() {
+            return checkShowHref();
+          });
+          $scope.showCompileInfo = function() {
+            var statusId;
+            statusId = $scope.status.statusId;
+            return $modal.open({
+              templateUrl: "compileInfoModal.html",
+              controller: "CompileInfoModalController",
+              resolve: {
+                statusId: function() {
+                  return statusId;
+                }
+              }
+            });
+          };
+          if ([0, 16, 17, 18].some($scope.status.returnTypeId)) {
+            return timmer = setInterval(function() {
+              var condition;
+              condition = {
+                currentPage: null,
+                startId: $scope.status.statusId,
+                endId: $scope.status.statusId
+              };
+              return $http.post("/status/search", condition).then(function(response) {
+                var data;
+                data = response.data;
+                if (data.result === "success" && data.list.length === 1) {
+                  $scope.status = data.list[0];
+                  checkShowHref();
+                  if ([0, 16, 17, 18].none($scope.status.returnTypeId)) {
+                    return clearInterval(timmer);
+                  }
+                }
+              });
+            }, 500);
+          }
+        }
+      ],
+      template: "<a href=\"javascript:void(0);\" ng-show=\"showHref\" ng-click=\"showCompileInfo()\">{{status.returnType}}</a>\n<span ng-hide=\"showHref\">{{status.returnType}}</span>"
+    };
+  });
+
+  cdoj.controller("CompileInfoModalController", [
+    "$scope", "$http", "$modalInstance", "statusId", function($scope, $http, $modalInstance, statusId) {
+      $scope.compileInfo = "Loading...";
+      return $http.post("/status/info/" + statusId).then(function(response) {
+        var compileInfo, data;
+        data = response.data;
+        compileInfo = "";
+        if (data.result === "success") {
+          compileInfo = data.compileInfo;
+        } else {
+          compileInfo = data.error_msg;
+        }
+        return $scope.compileInfo = compileInfo;
+      });
+    }
+  ]);
 
   cdoj.directive("uiTime", function() {
     return {

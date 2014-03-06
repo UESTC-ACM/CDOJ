@@ -70,3 +70,14 @@ GlobalConditions =
     title: undefined
     orderFields: "id"
     orderAsc: "false"
+  statusCondition:
+    currentPage: null
+    startId: undefined
+    endId: undefined
+    userName: undefined
+    problemId: undefined
+    languageId: undefined
+    contestId: -1
+    result: "OJ_ALL"
+    orderFields: "statusId"
+    orderAsc: "false"
