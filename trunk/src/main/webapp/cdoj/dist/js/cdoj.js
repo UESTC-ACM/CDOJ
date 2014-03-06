@@ -63058,7 +63058,7 @@ if (typeof exports === 'object') {
 
   cdoj.controller("ContestShowController", [
     "$scope", "$rootScope", "$http", "$window", "$modal", "$interval", "$routeParams", function($scope, $rootScope, $http, $window, $modal, $interval, $routeParams) {
-      var contestId, rankListTimer, refreshRankList;
+      var rankListTimer, refreshRankList;
       $scope.contestId = 0;
       $scope.contest = {
         title: ""
@@ -63074,8 +63074,10 @@ if (typeof exports === 'object') {
         hint: "",
         source: ""
       };
-      contestId = angular.copy($routeParams.contestId);
-      $http.get("/contest/data/" + contestId).then(function(response) {
+      $scope.contestId = angular.copy($routeParams.contestId);
+      $scope.contestStatusCondition = angular.copy($rootScope.statusCondition);
+      $scope.contestStatusCondition.contestId = $scope.contestId;
+      $http.get("/contest/data/" + $scope.contestId).then(function(response) {
         var data;
         data = response.data;
         if (data.result === "success") {
@@ -63090,8 +63092,8 @@ if (typeof exports === 'object') {
         }
       });
       refreshRankList = function() {
+        var contestId;
         contestId = angular.copy($scope.contestId);
-        console.log(contestId);
         return $http.get("/contest/rankList/" + contestId).then(function(response) {
           var data;
           data = response.data;
@@ -63120,7 +63122,7 @@ if (typeof exports === 'object') {
       };
       return $scope.openSubmitModal = function() {
         return $modal.open({
-          templateUrl: "submitModal.html",
+          templateUrl: "template/modal/submit-modal.html",
           controller: "SubmitModalController",
           resolve: {
             submitDTO: function() {
@@ -63137,8 +63139,7 @@ if (typeof exports === 'object') {
           }
         }).result.then(function(result) {
           if (result === "success") {
-            $scope.showStatusTab();
-            return angular.element("#status-list").scope().refresh();
+            return $scope.showStatusTab();
           }
         });
       };
@@ -63267,66 +63268,6 @@ if (typeof exports === 'object') {
     }
   ]);
 
-  cdoj.controller("ProblemShowController", [
-    "$scope", "$rootScope", "$http", "$window", "$routeParams", "$modal", function($scope, $rootScope, $http, $window, $routeParams, $modal) {
-      var problemId;
-      $scope.problem = {
-        description: "",
-        title: "",
-        isSpj: false,
-        timeLimit: 1000,
-        javaTimeLimit: 3000,
-        memoryLimit: 65536,
-        javaMemoryLimit: "--",
-        solved: 0,
-        tried: 0,
-        input: "",
-        output: "",
-        sampleInput: "",
-        sampleOutput: "",
-        hint: "",
-        source: ""
-      };
-      problemId = angular.copy($routeParams.problemId);
-      $http.post("/problem/data/" + problemId).then(function(response) {
-        var data;
-        data = response.data;
-        if (data.result === "success") {
-          $scope.problem = data.problem;
-          return $rootScope.title = $scope.problem.title;
-        } else {
-          return alert(data.error_msg);
-        }
-      });
-      $scope.openSubmitModal = function() {
-        return $modal.open({
-          templateUrl: "template/modal/submit-modal.html",
-          controller: "SubmitModalController",
-          resolve: {
-            submitDTO: function() {
-              return {
-                codeContent: "",
-                problemId: $scope.problem.problemId,
-                contestId: null,
-                languageId: 2
-              };
-            },
-            title: function() {
-              return "" + $scope.problem.title;
-            }
-          }
-        }).result.then(function(result) {
-          if (result === "success") {
-            return $window.location.href = "#/status/list";
-          }
-        });
-      };
-      return $scope.gotoStatusList = function() {
-        return $window.location.href = "#/status/list";
-      };
-    }
-  ]);
-
   cdoj.controller("ProblemEditorController", [
     "$scope", "$http", "$window", "$routeParams", function($scope, $http, $window, $routeParams) {
       var problemId;
@@ -63386,6 +63327,66 @@ if (typeof exports === 'object') {
   cdoj.controller("ProblemListController", [
     "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
       return $rootScope.title = "Problem list";
+    }
+  ]);
+
+  cdoj.controller("ProblemShowController", [
+    "$scope", "$rootScope", "$http", "$window", "$routeParams", "$modal", function($scope, $rootScope, $http, $window, $routeParams, $modal) {
+      var problemId;
+      $scope.problem = {
+        description: "",
+        title: "",
+        isSpj: false,
+        timeLimit: 1000,
+        javaTimeLimit: 3000,
+        memoryLimit: 65536,
+        javaMemoryLimit: "--",
+        solved: 0,
+        tried: 0,
+        input: "",
+        output: "",
+        sampleInput: "",
+        sampleOutput: "",
+        hint: "",
+        source: ""
+      };
+      problemId = angular.copy($routeParams.problemId);
+      $http.post("/problem/data/" + problemId).then(function(response) {
+        var data;
+        data = response.data;
+        if (data.result === "success") {
+          $scope.problem = data.problem;
+          return $rootScope.title = $scope.problem.title;
+        } else {
+          return alert(data.error_msg);
+        }
+      });
+      $scope.openSubmitModal = function() {
+        return $modal.open({
+          templateUrl: "template/modal/submit-modal.html",
+          controller: "SubmitModalController",
+          resolve: {
+            submitDTO: function() {
+              return {
+                codeContent: "",
+                problemId: $scope.problem.problemId,
+                contestId: null,
+                languageId: 2
+              };
+            },
+            title: function() {
+              return "" + $scope.problem.title;
+            }
+          }
+        }).result.then(function(result) {
+          if (result === "success") {
+            return $window.location.href = "#/status/list";
+          }
+        });
+      };
+      return $scope.gotoStatusList = function() {
+        return $window.location.href = "#/status/list";
+      };
     }
   ]);
 

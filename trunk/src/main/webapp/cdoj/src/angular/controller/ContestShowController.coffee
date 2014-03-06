@@ -16,8 +16,10 @@ cdoj
         hint: ""
         source: ""
 
-      contestId = angular.copy($routeParams.contestId)
-      $http.get("/contest/data/#{contestId}").then (response)->
+      $scope.contestId = angular.copy($routeParams.contestId)
+      $scope.contestStatusCondition = angular.copy($rootScope.statusCondition)
+      $scope.contestStatusCondition.contestId = $scope.contestId
+      $http.get("/contest/data/#{$scope.contestId}").then (response)->
         data = response.data
         if data.result == "success"
           $scope.contest = data.contest
@@ -30,7 +32,6 @@ cdoj
 
       refreshRankList = ->
         contestId = angular.copy($scope.contestId)
-        console.log contestId
         $http.get("/contest/rankList/#{contestId}").then (response)->
           data = response.data
           if data.result == "success"
@@ -48,12 +49,13 @@ cdoj
       $scope.showStatusTab = ->
         # TODO Dirty code!
         $scope.$$childHead.tabs[3].select()
+        #angular.element("#status-list").scope().refresh()
       $scope.chooseProblem = (order)->
         $scope.showProblemTab()
         $scope.currentProblem = _.findWhere($scope.problemList, order: order)
       $scope.openSubmitModal = ->
         $modal.open(
-          templateUrl: "submitModal.html"
+          templateUrl: "template/modal/submit-modal.html"
           controller: "SubmitModalController"
           resolve:
             submitDTO: ->
@@ -66,7 +68,6 @@ cdoj
         ).result.then (result)->
           if result == "success"
             $scope.showStatusTab()
-            angular.element("#status-list").scope().refresh()
   ])
 cdoj.directive("uiContestProblemHref"
   ->
