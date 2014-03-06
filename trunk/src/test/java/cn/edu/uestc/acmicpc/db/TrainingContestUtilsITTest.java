@@ -63,14 +63,6 @@ public class TrainingContestUtilsITTest extends AbstractTestNGSpringContextTests
 //    }
   }
 
-  @Test(enabled = false)
-  @Deprecated
-  public void testDeleteByCondition() throws AppException {
-//    trainingStatusCondition.clear();
-//    trainingStatusCondition.setTrainingContestId(5);
-    trainingStatusDAO.deleteEntitiesByCondition(trainingStatusCondition.getCondition());
-  }
-
   @SuppressWarnings("unchecked")
   @Test(enabled = false)
   @Deprecated
@@ -85,13 +77,10 @@ public class TrainingContestUtilsITTest extends AbstractTestNGSpringContextTests
   @Autowired
   private IUserDAO userDAO;
 
-  @Autowired
   private TrainingStatusCondition trainingStatusCondition;
 
-  @Autowired
   private TrainingContestCondition trainingContestCondition;
 
-  @Autowired
   private TrainingUserCondition trainingUserCondition;
 
   @Autowired
