@@ -62,3 +62,11 @@ GlobalConditions =
     keyword: undefined
     orderFields: "id"
     orderAsc: "true"
+  contestCondition:
+    currentPage: null
+    startId: undefined
+    endId: undefined
+    keyword: undefined
+    title: undefined
+    orderFields: "id"
+    orderAsc: "false"

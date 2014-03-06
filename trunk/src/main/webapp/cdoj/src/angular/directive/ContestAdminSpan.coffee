@@ -5,14 +5,16 @@ cdoj.directive("uiContestAdminSpan",
     contestId: "="
     isVisible: "="
   controller: [
-    "$scope", "$http",
-    ($scope, $http) ->
+    "$scope", "$http", "$window"
+    ($scope, $http, $window) ->
       $scope.editVisible = ->
         queryString = "/contest/operator/#{$scope.contestId}/isVisible/#{!$scope.isVisible}"
         $http.post(queryString).then (response)=>
-          if response.data.result == "success"
+          data = response.data
+          if data.result == "success"
             $scope.isVisible = !$scope.isVisible
-    # TODO error
+          else
+            $window.alert data.error_msg
   ]
   template: """
               <div class="btn-toolbar" role="toolbar">
@@ -23,7 +25,7 @@ cdoj.directive("uiContestAdminSpan",
                       'fa-eye-slash': isVisible == false
                     }"></i>
                   </button>
-                  <a href="/contest/editor/{{contestId}}" target="_blank"
+                  <a href="#/contest/editor/{{contestId}}"
                      class="btn btn-default btn-sm" style="padding: 1px 5px;"><i class="fa fa-pencil"></i></a>
                 </div>
               </div>

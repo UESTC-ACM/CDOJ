@@ -52,6 +52,7 @@ module.exports = (grunt) ->
           "bower_components/CryptoJS/src/sha1.js"
           "bower_components/sugar/release/sugar-full.development.js"
           "bower_components/underscore/underscore.js"
+          "bower_components/underscore.string/lib/underscore.string.js"
           "bower_components/google-code-prettify/src/prettify.js"
           "bower_components/marked/lib/marked.js"
           "temp/angular/cdoj.angular.js"
