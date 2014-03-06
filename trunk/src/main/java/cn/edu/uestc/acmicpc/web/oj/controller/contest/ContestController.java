@@ -224,29 +224,6 @@ public class ContestController extends BaseController {
     return json;
   }
 
-  @RequestMapping("show/{contestId}")
-  @LoginPermit(NeedLogin = false)
-  public String show(@PathVariable("contestId") Integer contestId, ModelMap model) {
-    try {
-      if (!contestService.checkContestExists(contestId)) {
-        throw new AppException("No such contest");
-      }
-      model.put("contestId", contestId);
-    } catch (AppException e) {
-      return "error/404";
-    } catch (Exception e) {
-      e.printStackTrace();
-      return "error/404";
-    }
-    return "contest/contestShow";
-  }
-
-  @RequestMapping("list")
-  @LoginPermit(NeedLogin = false)
-  public String list() {
-    return "contest/contestList";
-  }
-
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public

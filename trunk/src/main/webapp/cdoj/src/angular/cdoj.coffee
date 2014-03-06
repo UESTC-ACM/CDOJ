@@ -46,6 +46,9 @@ cdoj
       ).when("/contest/show/:contestId",
         templateUrl: "template/contest/show.html"
         controller: "ContestShowController"
+      ).when("/contest/editor/:action",
+        templateUrl: "template/contest/editor.html"
+        controller: "ContestEditorController"
       ).when("/status/list",
         templateUrl: "template/status/list.html"
         controller: "StatusListController"
