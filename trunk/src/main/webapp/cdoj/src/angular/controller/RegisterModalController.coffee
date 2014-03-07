@@ -12,6 +12,12 @@ cdoj
         school: ""
         studentId: ""
         userName: ""
+        sex: 0
+        size: 2
+        phone: ""
+        grade: 3
+        name: ""
+
       $scope.fieldInfo = []
       $scope.register = ->
         userRegisterDTO = angular.copy($scope.userRegisterDTO)

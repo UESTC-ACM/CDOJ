@@ -3,7 +3,10 @@ package cn.edu.uestc.acmicpc.service.impl;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.dto.AuthenticationTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.ContestTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.GenderTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.GradeTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.OnlineJudgeResultTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.TShirtsSizeTypeDTO;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 
@@ -32,6 +35,33 @@ public class GlobalServiceImpl extends AbstractService implements GlobalService 
     List<OnlineJudgeResultTypeDTO> result = new LinkedList<>();
     for (Global.OnlineJudgeResultType onlineJudgeResultType: Global.OnlineJudgeResultType.values()) {
       result.add(new OnlineJudgeResultTypeDTO(onlineJudgeResultType.ordinal(), onlineJudgeResultType.getDescription()));
+    }
+    return result;
+  }
+
+  @Override
+  public List<GenderTypeDTO> getGenderTypeList() {
+    List<GenderTypeDTO> result = new LinkedList<>();
+    for (Global.Gender gender: Global.Gender.values()) {
+      result.add(new GenderTypeDTO(gender.ordinal(), gender.getDescription()));
+    }
+    return result;
+  }
+
+  @Override
+  public List<GradeTypeDTO> getGradeTypeList() {
+    List<GradeTypeDTO> result = new LinkedList<>();
+    for (Global.Grade grade: Global.Grade.values()) {
+      result.add(new GradeTypeDTO(grade.ordinal(), grade.getDescription()));
+    }
+    return result;
+  }
+
+  @Override
+  public List<TShirtsSizeTypeDTO> getTShirtsSizeTypeList() {
+    List<TShirtsSizeTypeDTO> result = new LinkedList<>();
+    for (Global.TShirtsSize tShirtsSize: Global.TShirtsSize.values()) {
+      result.add(new TShirtsSizeTypeDTO(tShirtsSize.ordinal(), tShirtsSize.getDescription()));
     }
     return result;
   }

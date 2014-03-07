@@ -33,30 +33,57 @@ public class UserServiceImpl extends AbstractService implements UserService {
   }
 
   private void updateUserByUserDTO(User user, UserDTO userDTO) {
-    if (userDTO.getUserName() != null)
+    if (userDTO.getUserName() != null) {
       user.setUserName(userDTO.getUserName());
-    if (userDTO.getStudentId() != null)
+    }
+    if (userDTO.getStudentId() != null) {
       user.setStudentId(userDTO.getStudentId());
-    if (userDTO.getPassword() != null)
+    }
+    if (userDTO.getPassword() != null) {
       user.setPassword(userDTO.getPassword());
-    if (userDTO.getSchool() != null)
+    }
+    if (userDTO.getSchool() != null) {
       user.setSchool(userDTO.getSchool());
-    if (userDTO.getNickName() != null)
+    }
+    if (userDTO.getNickName() != null) {
       user.setNickName(userDTO.getNickName());
-    if (userDTO.getEmail() != null)
+    }
+    if (userDTO.getEmail() != null) {
       user.setEmail(userDTO.getEmail());
-    if (userDTO.getSolved() != null)
+    }
+    if (userDTO.getSolved() != null) {
       user.setSolved(userDTO.getSolved());
-    if (userDTO.getTried() != null)
+    }
+    if (userDTO.getTried() != null) {
       user.setTried(userDTO.getTried());
-    if (userDTO.getType() != null)
+    }
+    if (userDTO.getType() != null) {
       user.setType(userDTO.getType());
-    if (userDTO.getDepartmentId() != null)
+    }
+    if (userDTO.getDepartmentId() != null) {
       user.setDepartmentId(userDTO.getDepartmentId());
-    if (userDTO.getLastLogin() != null)
+    }
+    if (userDTO.getLastLogin() != null) {
       user.setLastLogin(userDTO.getLastLogin());
-    if (userDTO.getMotto() != null)
+    }
+    if (userDTO.getMotto() != null) {
       user.setMotto(userDTO.getMotto());
+    }
+    if (userDTO.getName() != null) {
+      user.setName(userDTO.getName());
+    }
+    if (userDTO.getSex() != null) {
+      user.setSex(userDTO.getSex());
+    }
+    if (userDTO.getGrade() != null) {
+      user.setGrade(userDTO.getGrade());
+    }
+    if (userDTO.getPhone() != null) {
+      user.setPhone(userDTO.getPhone());
+    }
+    if (userDTO.getSize() != null) {
+      user.setSize(userDTO.getSize());
+    }
   }
 
   @Override
