@@ -4,6 +4,7 @@ html,
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: @cdoj-font;
 }
+
 .cdoj-codefont {
   font-family: @cdoj-codefont;
 }
@@ -13,18 +14,21 @@ a {
     text-decoration: none;
   }
 }
+
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   font-weight: 600;
 }
+
 body,
 html,
 .row {
   font-size: 14px;
 }
+
 .muted {
-  color:
-    #999;
+  color: #999;
 }
+
 .sample {
   font-family: @cdoj-codefont;
   margin: 0;
@@ -32,6 +36,7 @@ html,
   background-color: transparent;
   padding: 0;
 }
+
 .hero {
   text-align: center;
   margin: 6em auto 3em;
@@ -39,7 +44,7 @@ html,
     font-size: 800%;
     margin: 0;
     padding: 0;
-    color: @cdoj-blue;
+    color: @cdoj-blue0;
     font-weight: 100;
   }
   h2 {
@@ -53,10 +58,23 @@ html,
 small {
   font-size: 70%;
 }
+
 @media (max-width: @screen-xs-max) {
   body,
   html,
   .row {
     font-size: 12px;
   }
+}
+
+.font-primary {
+  color: @font-primary;
+}
+
+.font-danger {
+  color: @font-danger;
+}
+
+.font-success {
+  color: @font-success;
 }

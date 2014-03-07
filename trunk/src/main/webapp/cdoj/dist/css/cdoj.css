@@ -2376,8 +2376,11 @@ input[type="button"].btn-block {
 @font-face {
   font-family: 'Glyphicons Halflings';
 
-  src: url('../fonts/glyphicons-halflings-regular.eot');
-  src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+  src: url('/font/all/glyphicons-halflings-regular.eot');
+  src: url('/font/all/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
+  url('/font/all/glyphicons-halflings-regular.woff') format('woff'),
+  url('/font/all/glyphicons-halflings-regular.ttf') format('truetype'),
+  url('/font/all/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 .glyphicon {
   position: relative;
@@ -6478,15 +6481,6 @@ li.L9 {
 .modal-title ul > li > a {
   padding: 2px 6px;
 }
-.status-info {
-  color: #3a87ad;
-}
-.status-success {
-  color: #468847;
-}
-.status-danger {
-  color: #b94a48;
-}
 body,
 html,
 .row,
@@ -6547,7 +6541,7 @@ html,
   font-size: 800%;
   margin: 0;
   padding: 0;
-  color: #1f8dd6;
+  color: #0066b2;
   font-weight: 100;
 }
 .hero h2 {
@@ -6565,6 +6559,15 @@ small {
   .row {
     font-size: 12px;
   }
+}
+.font-primary {
+  color: #3a87ad;
+}
+.font-danger {
+  color: #b94a48;
+}
+.font-success {
+  color: #468847;
 }
 #cdoj-navbar-top {
   position: fixed;
@@ -6794,7 +6797,7 @@ input.ng-invalid {
   border-color: #ff3300;
 }
 .cdoj-article .cdoj-article-summary {
-  border-left: 4px solid #1f8dd6;
+  border-left: 4px solid #0066b2;
   padding-left: 1em;
   margin-top: 1em;
 }

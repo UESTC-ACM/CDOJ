@@ -135,7 +135,7 @@ public class Global {
    * Contest type for contest entity
    */
   public enum ContestType {
-    PUBLIC("public"), PRIVATE("private"), DIY("DIY"), INVITED("invited");
+    PUBLIC("Public"), PRIVATE("Private"), DIY("DIY"), INVITED("Invited");
 
     private final String description;
 
@@ -154,45 +154,10 @@ public class Global {
   }
 
   /**
-   * Training contest type.
-   */
-  public enum TrainingContestType {
-    NORMAL("normal"), ADJUST("adjust"), CF("cf"), TC("tc"), TEAM("team"), OTHERS("others"),
-    UNRATED("unrated"), ABSENT("absent");
-
-    private final String description;
-
-    private TrainingContestType(String description) {
-      this.description = description;
-    }
-
-    public String getDescription() {
-      return description;
-    }
-  }
-
-  /**
-   * Training user type.
-   */
-  public enum TrainingUserType {
-    PERSONAL("Personal"), TEAM("Team");
-
-    private final String description;
-
-    private TrainingUserType(String description) {
-      this.description = description;
-    }
-
-    public String getDescription() {
-      return description;
-    }
-  }
-
-  /**
    * User's authentication type(`type` column in user entity).
    */
   public enum AuthenticationType {
-    NORMAL("normal user"), ADMIN("administrator"), CONSTANT("constant user");
+    NORMAL("Normal user"), ADMIN("Administrator"), CONSTANT("Constant user");
 
     private final String description;
 
