@@ -41,7 +41,7 @@ public class IndexController extends BaseController {
   @LoginPermit(NeedLogin = false)
   public String index(ModelMap model) {
     model.put("message", "home page.");
-    return "index/index";
+    return "index";
   }
 
   @RequestMapping(value="globalData")

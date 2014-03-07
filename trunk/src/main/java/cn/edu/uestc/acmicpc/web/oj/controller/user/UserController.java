@@ -28,7 +28,6 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -189,12 +188,6 @@ public class UserController extends BaseController {
     return json;
   }
 
-  @RequestMapping("list")
-  @LoginPermit(NeedLogin = false)
-  public String list() {
-    return "user/userList";
-  }
-
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public
@@ -221,20 +214,12 @@ public class UserController extends BaseController {
     return json;
   }
 
-  @RequestMapping("center/{userName}")
-  @LoginPermit(NeedLogin = false)
-  public String center(@PathVariable("userName") String userName,
-                       ModelMap model) {
-    model.put("targetUserName", userName);
-    return "user/userCenter";
-  }
-
   @RequestMapping("userCenterData/{userName}")
   @LoginPermit(NeedLogin = false)
   public
   @ResponseBody
   Map<String, Object> userCenterData(HttpSession session,
-                           @PathVariable("userName") String userName) {
+                                     @PathVariable("userName") String userName) {
     Map<String, Object> json = new HashMap<>();
     try {
       UserCenterDTO userCenterDTO = userService.getUserCenterDTOByUserName(userName);
@@ -247,13 +232,15 @@ public class UserController extends BaseController {
       for (Integer result : results) {
         problemStatus.put(result, Global.AuthorStatusType.NONE);
       }
-      results = statusService.findAllUserTriedProblemIds(userCenterDTO.getUserId());
+      results = statusService.findAllUserTriedProblemIds(userCenterDTO.getUserId(),
+          isAdmin(session));
       for (Integer result : results) {
         if (problemStatus.containsKey(result)) {
           problemStatus.put(result, Global.AuthorStatusType.FAIL);
         }
       }
-      results = statusService.findAllUserAcceptedProblemIds(userCenterDTO.getUserId());
+      results = statusService.findAllUserAcceptedProblemIds(userCenterDTO.getUserId(),
+          isAdmin(session));
       for (Integer result : results) {
         if (problemStatus.containsKey(result)) {
           problemStatus.put(result, Global.AuthorStatusType.PASS);
@@ -431,16 +418,6 @@ public class UserController extends BaseController {
     return json;
   }
 
-  @RequestMapping("activate/{userName}/{serialKey}")
-  @LoginPermit(NeedLogin = false)
-  public String activate(@PathVariable("userName") String userName,
-                         @PathVariable("serialKey") String serialKey,
-                         ModelMap model) {
-    model.addAttribute("userName", userName);
-    model.addAttribute("serialKey", serialKey);
-    return "user/activate";
-  }
-
   @RequestMapping("resetPassword")
   @LoginPermit(NeedLogin = false)
   public
@@ -474,7 +451,7 @@ public class UserController extends BaseController {
               "Serial Key exceed time limit! Please regenerate a new key.");
         }
         if (!StringUtil.encodeSHA1(userSerialKeyDTO.getSerialKey()).equals(userActivateDTO.getSerialKey())) {
-          throw new FieldException("serialKey", "Serial Key is wrong!");
+          throw new FieldException("serialKey", "Serial Key is wrong or has been used!");
         }
 
         userDTO.setPassword(userActivateDTO.getPassword());

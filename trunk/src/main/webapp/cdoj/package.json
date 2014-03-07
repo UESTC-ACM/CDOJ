@@ -1,0 +1,22 @@
+{
+  "name": "cdoj-UI",
+  "version": "1.0.0",
+  "description": "Styles and js for cdoj",
+  "main": "Gruntfile.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "mzry1992",
+  "license": "BSD",
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-cmd-concat": "*",
+    "grunt-contrib-coffee": "*",
+		"grunt-contrib-watch": "*",
+		"grunt-contrib-less": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-yui-compressor": "*",
+    "bower": "*"
+  }
+}
