@@ -1,0 +1,9 @@
+name: "UESTC Online Judge System"
+description: "UESTC ACM/ICPC Online Judge system"
+
+url: "http://uestc-acm.github.io/CDOJ"
+
+markdown: rdiscount
+permalink: pretty
+pygments: true
+
