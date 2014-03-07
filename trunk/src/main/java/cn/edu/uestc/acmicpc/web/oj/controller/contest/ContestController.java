@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
@@ -76,8 +77,8 @@ public class ContestController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> status(@PathVariable("contestId") Integer contestId,
-                                   @PathVariable("lastFetched") Integer lastFetched,
-                                   HttpSession session) {
+                             @PathVariable("lastFetched") Integer lastFetched,
+                             HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
       UserDTO currentUser = getCurrentUser(session);
@@ -98,7 +99,7 @@ public class ContestController extends BaseController {
       statusCondition.startId = lastFetched + 1;
       List<StatusListDTO> statusList = statusService.getStatusList(statusCondition);
       if (!isAdmin(session)) {
-        for (StatusListDTO status: statusList) {
+        for (StatusListDTO status : statusList) {
           if (!status.getUserName().equals(currentUser.getUserName())) {
             // Stash sensitive information
             status.setLength(null);
@@ -134,7 +135,7 @@ public class ContestController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> rankList(@PathVariable("contestId") Integer contestId,
-                           HttpSession session) {
+                               HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
       ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(contestId);
@@ -157,10 +158,10 @@ public class ContestController extends BaseController {
       List<StatusListDTO> statusList = statusService.getStatusList(statusCondition);
 
       RankListBuilder rankListBuilder = new RankListBuilder();
-      for (ContestProblemSummaryDTO problem: contestProblemList) {
+      for (ContestProblemSummaryDTO problem : contestProblemList) {
         rankListBuilder.addRankListProblem(problem.getProblemId().toString());
       }
-      for (StatusListDTO status: statusList) {
+      for (StatusListDTO status : statusList) {
         if (contestShowDTO.getStartTime().after(status.getTime()) ||
             contestShowDTO.getEndTime().before(status.getTime())) {
           // Out of time.
@@ -307,20 +308,37 @@ public class ContestController extends BaseController {
           }
         }
 
-        // Remove old contest problems
-        contestProblemService.removeContestProblemByContestId(contestDTO.getContestId());
-        // Add new contest problems
+        // Parser contest problem list
+        List<Integer> problemIdList = new LinkedList<>();
+        // Split problem list
         String[] problemList = contestEditDTO.getProblemList().split(",");
-        for (int order = 0; order < problemList.length; order++) {
-          Integer problemId = Integer.parseInt(problemList[order]);
+        // Add new contest problems
+        for (String problemIdString : problemList) {
+          if (problemIdString.length() == 0)  {
+            continue;
+          }
+          Integer problemId;
+          try {
+            problemId = Integer.parseInt(problemIdString);
+          } catch (NumberFormatException e) {
+            throw new AppException("Problem format error.");
+          }
           // Check problem exists.
           AppExceptionUtil.assertTrue(problemService.checkProblemExists(problemId));
 
+          // Add problem id if success
+          problemIdList.add(problemId);
+        }
+
+        // Remove old contest problems
+        contestProblemService.removeContestProblemByContestId(contestDTO.getContestId());
+        // Add new contest problems
+        for (int order = 0; order < problemIdList.size(); order++) {
           Integer contestProblemId = contestProblemService.createNewContestProblem(
               ContestProblemDTO.builder()
                   .setContestId(contestDTO.getContestId())
                   .setOrder(order)
-                  .setProblemId(problemId)
+                  .setProblemId(problemIdList.get(order))
                   .build());
 
           // Check problem added success.
