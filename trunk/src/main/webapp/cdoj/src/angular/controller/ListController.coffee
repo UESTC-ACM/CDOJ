@@ -11,7 +11,11 @@ cdoj
       $scope.showPages = 10
 
       _.each $scope.condition, (val, key)->
-        $scope.condition[key] = $routeParams[key] if angular.isDefined $routeParams[key]
+        if angular.isDefined $routeParams[key]
+          if not isNaN(parseInt($routeParams[key]))
+            $scope.condition[key] = parseInt($routeParams[key])
+          else
+            $scope.condition[key] = $routeParams[key]
       $scope.refresh = ->
         if $scope.requestUrl != 0
           condition = angular.copy($scope.condition)

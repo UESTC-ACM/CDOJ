@@ -56213,7 +56213,11 @@ if (typeof exports === 'object') {
       $scope.showPages = 10;
       _.each($scope.condition, function(val, key) {
         if (angular.isDefined($routeParams[key])) {
-          return $scope.condition[key] = $routeParams[key];
+          if (!isNaN(parseInt($routeParams[key]))) {
+            return $scope.condition[key] = parseInt($routeParams[key]);
+          } else {
+            return $scope.condition[key] = $routeParams[key];
+          }
         }
       });
       $scope.refresh = function() {
