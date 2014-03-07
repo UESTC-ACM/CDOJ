@@ -164,6 +164,11 @@ public class UserController extends BaseController {
             .setMotto(userRegisterDTO.getMotto())
             .setDepartmentName(departmentService.getDepartmentName(
                 userRegisterDTO.getDepartmentId()))
+            .setName(userRegisterDTO.getName())
+            .setSex(userRegisterDTO.getSex())
+            .setGrade(userRegisterDTO.getGrade())
+            .setPhone(userRegisterDTO.getPhone())
+            .setSize(userRegisterDTO.getSize())
             .build();
         userService.createNewUser(userDTO);
 
@@ -302,6 +307,11 @@ public class UserController extends BaseController {
         userDTO.setDepartmentId(userEditDTO.getDepartmentId());
         userDTO.setStudentId(userEditDTO.getStudentId());
         userDTO.setMotto(userEditDTO.getMotto());
+        userDTO.setName(userEditDTO.getName());
+        userDTO.setSex(userEditDTO.getSex());
+        userDTO.setGrade(userEditDTO.getGrade());
+        userDTO.setPhone(userEditDTO.getPhone());
+        userDTO.setSize(userEditDTO.getSize());
 
         userService.updateUser(userDTO);
         json.put("result", "success");
@@ -349,6 +359,11 @@ public class UserController extends BaseController {
         userDTO.setStudentId(userAdminEditDTO.getStudentId());
         userDTO.setMotto(userAdminEditDTO.getMotto());
         userDTO.setType(userAdminEditDTO.getType());
+        userDTO.setName(userAdminEditDTO.getName());
+        userDTO.setSex(userAdminEditDTO.getSex());
+        userDTO.setGrade(userAdminEditDTO.getGrade());
+        userDTO.setPhone(userAdminEditDTO.getPhone());
+        userDTO.setSize(userAdminEditDTO.getSize());
 
         userService.updateUser(userDTO);
         json.put("result", "success");
