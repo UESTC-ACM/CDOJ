@@ -153,6 +153,10 @@ public class ContestTeamInfoDTO implements BaseDTO<ContestTeamInfo> {
     this.state = state;
   }
 
+  public static Builder builder() {
+    return new Builder();
+  }
+
   public static class Builder implements BaseBuilder<ContestTeamInfoDTO> {
 
     private Integer teamId;
