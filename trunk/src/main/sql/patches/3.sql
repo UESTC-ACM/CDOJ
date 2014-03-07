@@ -10,6 +10,8 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`team` (
   `leaderId` INT NOT NULL ,
   PRIMARY KEY (`teamId`) ,
   INDEX `leaderId_idx` (`leaderId` ASC) ,
+  UNIQUE INDEX `teamName_UNIQUE` (`teamName` ASC) ,
+  UNIQUE INDEX `teamId_UNIQUE` (`teamId` ASC) ,
   CONSTRAINT `FK_team_leaderId_on_user`
     FOREIGN KEY (`leaderId` )
     REFERENCES `uestcoj`.`user` (`userId` )
@@ -26,6 +28,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`teamUser` (
   PRIMARY KEY (`teamUserId`) ,
   INDEX `teamId_idx` (`teamId` ASC) ,
   INDEX `userId_idx` (`userId` ASC) ,
+  UNIQUE INDEX `teamUserId_UNIQUE` (`teamUserId` ASC) ,
   CONSTRAINT `FK_team_teamId_on_team`
     FOREIGN KEY (`teamId` )
     REFERENCES `uestcoj`.`team` (`teamId` )
@@ -47,6 +50,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`contestTeam` (
   PRIMARY KEY (`contestTeamId`) ,
   INDEX `FK_contestTeam_contestId_on_contest_idx` (`contestId` ASC) ,
   INDEX `FK_contestTeam_teamId_on_team_idx` (`teamId` ASC) ,
+  UNIQUE INDEX `contestTeamId_UNIQUE` (`contestTeamId` ASC) ,
   CONSTRAINT `FK_contestTeam_contestId_on_contest`
     FOREIGN KEY (`contestId` )
     REFERENCES `uestcoj`.`contest` (`contestId` )
