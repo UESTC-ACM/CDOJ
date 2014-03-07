@@ -52,12 +52,20 @@
             }">
           </td>
           <td style="text-align: center"
-              ng-bind="contest.typeName"
               ng-class="{
                 'font-success': contest.type == $root.ContestType.PUBLIC,
                 'font-danger': contest.type == $root.ContestType.PRIVATE || contest.type == $root.ContestType.INVITED,
                 'font-primary': contest.type == $root.ContestType.DIY
-              }"></td>
+              }">
+            <span ng-bind="contest.typeName"
+                  ng-show="contest.type != $root.ContestType.INVITED || contest.status != $root.ContestStatus.PENDING">
+            </span>
+            <a href="#/contest/register/{{contest.contestId}}"
+               class="pull-right"
+               ng-hide="contest.type != $root.ContestType.INVITED || contest.status != $root.ContestStatus.PENDING">
+              <i class="fa fa-hand-o-right"></i>Register
+            </a>
+          </td>
           <td ui-contest-admin-span
               contest-id="contest.contestId"
               is-visible="contest.isVisible"
