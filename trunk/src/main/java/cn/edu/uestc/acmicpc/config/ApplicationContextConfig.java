@@ -5,7 +5,6 @@ import cn.edu.uestc.acmicpc.db.entity.Code;
 import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
-import cn.edu.uestc.acmicpc.db.entity.ContestTeamInfo;
 import cn.edu.uestc.acmicpc.db.entity.ContestUser;
 import cn.edu.uestc.acmicpc.db.entity.Department;
 import cn.edu.uestc.acmicpc.db.entity.Language;
@@ -110,7 +109,6 @@ public class ApplicationContextConfig {
         CompileInfo.class,
         Contest.class,
         ContestProblem.class,
-        ContestTeamInfo.class,
         ContestUser.class,
         Department.class,
         Language.class,
