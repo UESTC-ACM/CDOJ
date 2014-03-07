@@ -65,12 +65,6 @@ public class StatusController extends BaseController {
     this.languageService = languageService;
   }
 
-  @RequestMapping("list")
-  @LoginPermit(NeedLogin = false)
-  public String list() {
-    return "status/statusList";
-  }
-
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public
@@ -139,6 +133,8 @@ public class StatusController extends BaseController {
   Map<String, Object> count(@RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
+      // Current user is administrator
+      statusCondition.isForAdmin = true;
       Long count = statusService.count(statusCondition);
 
       json.put("result", "success");
@@ -161,6 +157,8 @@ public class StatusController extends BaseController {
   Map<String, Object> rejudge(@RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
+      // Current user is administrator
+      statusCondition.isForAdmin = true;
       statusService.rejudge(statusCondition);
 
       json.put("result", "success");

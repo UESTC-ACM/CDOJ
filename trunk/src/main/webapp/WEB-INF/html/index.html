@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="cdoj">
+<head>
+  <link rel="icon" type="image/png" href="/images/logo/favicon128.png">
+  <meta http-equiv=Content-Type content="text/html;charset=utf-8"/>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <link rel="stylesheet"
+        href="/plugins/Font-Awesome/css/font-awesome.min.css"/>
+  <!--[if IE 7]>
+  <link rel="stylesheet"
+        href="/plugins/Font-Awesome/css/font-awesome-ie7.min.css"/>
+  <![endif]-->
+  <link rel="stylesheet"
+        href="/cdoj/dist/css/cdoj.css"/>
+
+  <title ng-bind="$root.finalTitle"></title>
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-47734287-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function () {
+      var ga = document.createElement('script');
+      ga.type = 'text/javascript';
+      ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+</head>
+
+<body>
+<header id="cdoj-navbar-top">
+  <div class="container">
+    <nav>
+      <ul class="nav navbar-nav navbar-right">
+        <!-- Search -->
+        <li>
+          <div class="input-group input-group-sm" id="cdoj-search">
+            <input type="text" class="form-control">
+
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-default"
+                      tabindex="-1">
+                <span id="cdoj-search-icon"><i class="fa fa-search"></i></span>
+                <span id="cdoj-search-text">Search</span>
+              </button>
+            </div>
+          </div>
+        </li>
+        <li ng-controller="UserController">
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div id="cdoj-layout">
+  <div id="cdoj-navbar">
+    <div id="cdoj-navbar-menu" class="row">
+      <div class="col-md-12">
+        <div class="cdoj-menu">
+          <ul class="nav nav-pills nav-stacked">
+            <li class="cdoj-menu-heading"><span class="cdoj-menu-item">CDOJ</span></li>
+
+            <li active-link="">
+              <a href="/"><i class="fa fa-home"></i><span class="cdoj-menu-item">Home</span></a>
+            </li>
+            <li active-link="problem">
+              <a href="#/problem/list">
+                <i class="fa fa-puzzle-piece"></i><span class="cdoj-menu-item">Problems</span>
+              </a>
+            </li>
+            <li active-link="contest">
+              <a href="#/contest/list">
+                <i class="fa fa-trophy"></i><span class="cdoj-menu-item">Contests</span>
+              </a>
+            </li>
+            <li active-link="status">
+              <a href="#/status/list">
+                <i class="fa fa-refresh"></i><span class="cdoj-menu-item">Status</span>
+              </a>
+            </li>
+            <li active-link="user">
+              <a href="#/user/list">
+                <i class="fa fa-user"></i><span class="cdoj-menu-item">Users</span>
+              </a>
+            </li>
+            <li>
+              <a href="/bbs/">
+                <i class="fa fa-comments"></i><span class="cdoj-menu-item">BBS</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="cdoj-container"
+       ng-view>
+  </div>
+</div>
+
+<script src="/plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="/cdoj/dist/js/cdoj.js"></script>
+</body>
+</html>

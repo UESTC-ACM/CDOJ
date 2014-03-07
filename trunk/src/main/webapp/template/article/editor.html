@@ -1,0 +1,26 @@
+<div id="article-editor">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 ng-bind="title"></h1>
+    </div>
+    <div class="col-sm-12">
+      <div class="form-group">
+        <input type="text"
+               ng-model="article.title"
+               ng-require="true"
+               ng-maxlength="50"
+               class="form-control" placeholder="Enter title here"/>
+        <ui-validate-info value="fieldInfo" for="title"></ui-validate-info>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div ng-model="article.content"
+           ui-flandre
+           upload-url="/picture/uploadPicture/article/{{action}}">
+      </div>
+    </div>
+    <div class="col-md-12 text-center">
+      <button type="button" class="btn btn-primary" ng-click="submit()">Submit</button>
+    </div>
+  </div>
+</div>
