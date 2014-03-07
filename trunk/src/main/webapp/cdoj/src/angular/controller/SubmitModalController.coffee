@@ -10,6 +10,7 @@ cdoj
         if angular.isUndefined submitDTO.codeContent then return
         if $rootScope.hasLogin == false
           $window.alert "Please login first!"
+          $modalInstance.dismiss("close")
         else
           $http.post("/status/submit", submitDTO).then (response)->
             data = response.data

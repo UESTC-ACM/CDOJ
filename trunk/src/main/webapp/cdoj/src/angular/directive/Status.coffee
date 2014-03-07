@@ -29,26 +29,32 @@ cdoj
               statusId: ->
                 statusId
           )
+        removeStatusTimer = ->
+          clearInterval(refreshStatusTimer)
+        refreshStatus = ->
+          console.log "refresh: " + refreshStatusTimer
+          condition =
+            currentPage: null
+            startId: $scope.status.statusId
+            endId: $scope.status.statusId
+            userName: undefined
+            problemId: undefined
+            languageId: undefined
+            contestId: -1
+          $http.post("/status/search", condition).then(
+            (response)->
+              data = response.data
+              if data.result == "success" and data.list.length == 1
+                $scope.status = data.list[0]
+                checkShowHref()
+                if [0, 16, 17, 18].none($scope.status.returnTypeId)
+                  removeStatusTimer()
+          )
         if [0, 16, 17, 18].some($scope.status.returnTypeId)
-          timmer = setInterval(->
-            condition =
-              currentPage: null
-              startId: $scope.status.statusId
-              endId: $scope.status.statusId
-              userName: undefined
-              problemId: undefined
-              languageId: undefined
-              contestId: -1
-            $http.post("/status/search", condition).then(
-              (response)->
-                data = response.data
-                if data.result == "success" and data.list.length == 1
-                  $scope.status = data.list[0]
-                  checkShowHref()
-                  if [0, 16, 17, 18].none($scope.status.returnTypeId)
-                    clearInterval(timmer)
-            )
-          , 500)
+          refreshStatusTimer = setInterval(refreshStatus, 1000)
+        $scope.$on("$locationChangeStart", ->
+          removeStatusTimer()
+        )
     ]
     template: """
 <a href="javascript:void(0);" ng-show="showHref" ng-click="showCompileInfo()">{{status.returnType}}</a>
