@@ -505,6 +505,8 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`team` (
   `leaderId` INT NOT NULL ,
   PRIMARY KEY (`teamId`) ,
   INDEX `leaderId_idx` (`leaderId` ASC) ,
+  UNIQUE INDEX `teamName_UNIQUE` (`teamName` ASC) ,
+  UNIQUE INDEX `teamId_UNIQUE` (`teamId` ASC) ,
   CONSTRAINT `FK_team_leaderId_on_user`
     FOREIGN KEY (`leaderId` )
     REFERENCES `uestcoj`.`user` (`userId` )
@@ -525,6 +527,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`teamUser` (
   PRIMARY KEY (`teamUserId`) ,
   INDEX `teamId_idx` (`teamId` ASC) ,
   INDEX `userId_idx` (`userId` ASC) ,
+  UNIQUE INDEX `teamUserId_UNIQUE` (`teamUserId` ASC) ,
   CONSTRAINT `FK_team_teamId_on_team`
     FOREIGN KEY (`teamId` )
     REFERENCES `uestcoj`.`team` (`teamId` )
@@ -550,6 +553,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`contestTeam` (
   PRIMARY KEY (`contestTeamId`) ,
   INDEX `FK_contestTeam_contestId_on_contest_idx` (`contestId` ASC) ,
   INDEX `FK_contestTeam_teamId_on_team_idx` (`teamId` ASC) ,
+  UNIQUE INDEX `contestTeamId_UNIQUE` (`contestTeamId` ASC) ,
   CONSTRAINT `FK_contestTeam_contestId_on_contest`
     FOREIGN KEY (`contestId` )
     REFERENCES `uestcoj`.`contest` (`contestId` )
@@ -600,8 +604,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uestcoj`;
-INSERT INTO `uestcoj`.`user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`, `motto`, `name`, `sex`, `grade`, `phone`, `size`) VALUES (1, 'administrator', '2010013100008', 1, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'administrator', 'acm@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0, '', 'Admin', 0, 0, '123456', 0);
-
+INSERT INTO `uestcoj`.`user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`, `motto`, `name`, `sex`, `grade`, `phone`, `size`) VALUES (1, 'administrator', '2010013100008', 1, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'administrator', 'acm@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0, NULL, NULL, NULL, NULL, NULL, NULL);
 
 COMMIT;
 
@@ -628,3 +631,4 @@ INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`, `O
 INSERT INTO `uestcoj`.`language` (`languageId`, `name`, `extension`, `param`, `OPTLOCK`) VALUES (3, 'Java', '.java', '', 0);
 
 COMMIT;
+
