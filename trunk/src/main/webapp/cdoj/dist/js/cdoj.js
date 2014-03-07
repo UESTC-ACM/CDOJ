@@ -64651,6 +64651,9 @@ if (typeof exports === 'object') {
       }).when("/contest/editor/:action", {
         templateUrl: "template/contest/editor.html",
         controller: "ContestEditorController"
+      }).when("/contest/register/:contestId", {
+        templateUrl: "template/contest/register.html",
+        controller: "ContestRegisterController"
       }).when("/status/list", {
         templateUrl: "template/status/list.html",
         controller: "StatusListController"
@@ -64663,6 +64666,9 @@ if (typeof exports === 'object') {
       }).when("/user/activate/:userName/:serialKey", {
         templateUrl: "template/user/activation.html",
         controller: "PasswordResetController"
+      }).when("/team/list", {
+        templateUrl: "template/team/list.html",
+        controller: "TeamListController"
       });
     }
   ]);
@@ -64878,6 +64884,8 @@ if (typeof exports === 'object') {
       return $rootScope.title = "Contest list";
     }
   ]);
+
+  cdoj.controller("ContestRegisterController", ["$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {}]);
 
   cdoj.controller("ContestShowController", [
     "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", function($scope, $rootScope, $http, $window, $modal, $routeParams) {
@@ -65262,7 +65270,12 @@ if (typeof exports === 'object') {
         passwordRepeat: "",
         school: "",
         studentId: "",
-        userName: ""
+        userName: "",
+        sex: 0,
+        size: 2,
+        phone: "",
+        grade: 3,
+        name: ""
       };
       $scope.fieldInfo = [];
       $scope.register = function() {
@@ -65340,8 +65353,36 @@ if (typeof exports === 'object') {
     }
   ]);
 
+  cdoj.controller("TeamListController", [
+    "$scope", "$rootScope", "$http", "$window", function($scope, $rootScope, $http, $window) {
+      $scope.hideMemberPanel = true;
+      $scope.teamDTO = {
+        teamName: ""
+      };
+      return $scope.toggleMemberPanel = function() {
+        var teamName;
+        teamName = angular.copy($scope.teamDTO.teamName);
+        if (teamName === "") {
+          return $window.alert("Please enter a valid team name.");
+        } else if ($scope.hideMemberPanel) {
+          return $http.get("/team/checkTeamExists/" + teamName).then(function(response) {
+            var data;
+            data = response.data;
+            if (data.result === "error") {
+              return $window.alert(data.error_msg);
+            } else if (data.result === false) {
+              return $scope.hideMemberPanel = false;
+            } else {
+              return $window.alert("Team name has been used!");
+            }
+          });
+        }
+      };
+    }
+  ]);
+
   cdoj.controller("UserAdminModalController", [
-    "$scope", "$http", "$modalInstance", "UserProfile", function($scope, $http, $modalInstance, $userProfile) {
+    "$scope", "$http", "$modalInstance", "UserProfile", "$window", function($scope, $http, $modalInstance, $userProfile, $window) {
       $scope.userEditDTO = 0;
       $scope.$watch(function() {
         return $userProfile.getProfile();
@@ -65371,6 +65412,7 @@ if (typeof exports === 'object') {
           var data;
           data = response.data;
           if (data.result === "success") {
+            $window.alert("Success!");
             return $modalInstance.close();
           } else if (data.result === "field_error") {
             return $scope.fieldInfo = data.field;
@@ -65540,6 +65582,7 @@ if (typeof exports === 'object') {
           var data;
           data = response.data;
           if (data.result === "success") {
+            $window.alert("Success!");
             return $modalInstance.close();
           } else if (data.result === "field_error") {
             return $scope.fieldInfo = data.field;

@@ -4,7 +4,12 @@
     <form class="form-inline" role="form">
       <div class="form-group">
         <label>Team name:</label>
-        <input type="text" class="form-control input-sm" id="teamName">
+        <input type="text"
+               class="form-control input-sm"
+               ng-model="teamDTO.teamName"
+               maxlength="50"
+               ng-required="true"
+               id="teamName">
       </div>
       <button class="btn btn-success btn-sm"
               ng-click="toggleMemberPanel()">
