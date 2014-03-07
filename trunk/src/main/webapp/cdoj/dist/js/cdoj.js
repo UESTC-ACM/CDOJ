@@ -56030,7 +56030,7 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("ContestShowController", [
-    "$scope", "$rootScope", "$http", "$window", "$modal", "$interval", "$routeParams", function($scope, $rootScope, $http, $window, $modal, $interval, $routeParams) {
+    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", function($scope, $rootScope, $http, $window, $modal, $routeParams) {
       var rankListTimer, refreshRankList;
       $scope.contestId = 0;
       $scope.contest = {
@@ -56080,7 +56080,10 @@ if (typeof exports === 'object') {
         });
       };
       refreshRankList();
-      rankListTimer = $interval(refreshRankList, 10000);
+      rankListTimer = setInterval(refreshRankList, 5000);
+      $scope.$on("$destroy", function() {
+        return clearInterval(rankListTimer);
+      });
       $scope.showProblemTab = function() {
         return $scope.$$childHead.tabs[1].select();
       };
@@ -56461,7 +56464,8 @@ if (typeof exports === 'object') {
           return;
         }
         if ($rootScope.hasLogin === false) {
-          return $window.alert("Please login first!");
+          $window.alert("Please login first!");
+          return $modalInstance.dismiss("close");
         } else {
           return $http.post("/status/submit", submitDTO).then(function(response) {
             var data;
@@ -57311,7 +57315,7 @@ if (typeof exports === 'object') {
       },
       controller: [
         "$scope", "$rootScope", "$http", "$modal", function($scope, $rootScope, $http, $modal) {
-          var checkShowHref, timmer;
+          var checkShowHref, refreshStatus, refreshStatusTimer, removeStatusTimer;
           $scope.showHref = false;
           checkShowHref = function() {
             if ($scope.status.returnTypeId === 7) {
@@ -57340,31 +57344,39 @@ if (typeof exports === 'object') {
               }
             });
           };
-          if ([0, 16, 17, 18].some($scope.status.returnTypeId)) {
-            return timmer = setInterval(function() {
-              var condition;
-              condition = {
-                currentPage: null,
-                startId: $scope.status.statusId,
-                endId: $scope.status.statusId,
-                userName: void 0,
-                problemId: void 0,
-                languageId: void 0,
-                contestId: -1
-              };
-              return $http.post("/status/search", condition).then(function(response) {
-                var data;
-                data = response.data;
-                if (data.result === "success" && data.list.length === 1) {
-                  $scope.status = data.list[0];
-                  checkShowHref();
-                  if ([0, 16, 17, 18].none($scope.status.returnTypeId)) {
-                    return clearInterval(timmer);
-                  }
+          removeStatusTimer = function() {
+            return clearInterval(refreshStatusTimer);
+          };
+          refreshStatus = function() {
+            var condition;
+            console.log("refresh: " + refreshStatusTimer);
+            condition = {
+              currentPage: null,
+              startId: $scope.status.statusId,
+              endId: $scope.status.statusId,
+              userName: void 0,
+              problemId: void 0,
+              languageId: void 0,
+              contestId: -1
+            };
+            return $http.post("/status/search", condition).then(function(response) {
+              var data;
+              data = response.data;
+              if (data.result === "success" && data.list.length === 1) {
+                $scope.status = data.list[0];
+                checkShowHref();
+                if ([0, 16, 17, 18].none($scope.status.returnTypeId)) {
+                  return removeStatusTimer();
                 }
-              });
-            }, 500);
+              }
+            });
+          };
+          if ([0, 16, 17, 18].some($scope.status.returnTypeId)) {
+            refreshStatusTimer = setInterval(refreshStatus, 1000);
           }
+          return $scope.$on("$locationChangeStart", function() {
+            return removeStatusTimer();
+          });
         }
       ],
       template: "<a href=\"javascript:void(0);\" ng-show=\"showHref\" ng-click=\"showCompileInfo()\">{{status.returnType}}</a>\n<span ng-hide=\"showHref\">{{status.returnType}}</span>"
