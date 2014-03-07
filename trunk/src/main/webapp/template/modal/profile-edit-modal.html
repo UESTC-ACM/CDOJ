@@ -8,6 +8,7 @@
       <div class="form-group">
         <label class="control-label col-sm-4 "
                for="oldPassword">Password</label>
+
         <div class="col-sm-8">
           <input type="password"
                  ng-model="userEditDTO.oldPassword"
@@ -22,6 +23,7 @@
       <div class="form-group">
         <label class="control-label col-sm-4 "
                for="userName">User Name</label>
+
         <div class="col-sm-8">
           <input type="text"
                  ng-model="userEditDTO.userName"
@@ -37,6 +39,7 @@
       <div class="form-group">
         <label class="control-label col-sm-4 "
                for="newPassword">New password</label>
+
         <div class="col-sm-8">
           <input type="password"
                  ng-model="userEditDTO.newPassword"
@@ -51,6 +54,7 @@
       <div class="form-group ">
         <label class="control-label col-sm-4 "
                for="newPasswordRepeat">Repeat new password</label>
+
         <div class="col-sm-8">
           <input type="password"
                  ng-model="userEditDTO.newPasswordRepeat"
@@ -66,6 +70,7 @@
       <div class="form-group ">
         <label class="control-label col-sm-4 "
                for="nickName">Nick name</label>
+
         <div class="col-sm-8">
           <input type="text"
                  ng-model="userEditDTO.nickName"
@@ -80,6 +85,7 @@
       </div>
       <div class="form-group ">
         <label class="control-label col-sm-4 " for="email">Email</label>
+
         <div class="col-sm-8">
           <input type="email"
                  ng-model="userEditDTO.email"
@@ -95,6 +101,7 @@
       </div>
       <div class="form-group ">
         <label class="control-label col-sm-4 " for="motto">Motto</label>
+
         <div class="col-sm-8">
           <textarea class="form-control"
                     rows="3"
@@ -104,8 +111,69 @@
         </div>
       </div>
 
+    </fieldset>
+    <fieldset>
+      <legend>Personal information</legend>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 " for="name">Name</label>
+
+        <div class="col-sm-8">
+          <input type="text"
+                 ng-model="userEditDTO.name"
+                 id="name"
+                 ng-required="true"
+                 ng-maxlength="50"
+                 ng-minlength="1"
+                 class="form-control input-sm"/>
+          <ui-validate-info value="fieldInfo" for="name"></ui-validate-info>
+        </div>
+      </div>
+
+      <div class="form-group ">
+        <label class="control-label col-sm-4 "
+               for="sex">Gender</label>
+
+        <div class="col-sm-8">
+          <select ng-model="userEditDTO.sex"
+                  ng-options="gender.genderTypeId as gender.description for gender in $root.genderTypeList"
+                  id="sex"
+                  ng-required="true"
+                  class="form-control input-sm">
+          </select>
+          <ui-validate-info value="fieldInfo" for="sex"></ui-validate-info>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 "
+               for="size">T-Shirts size</label>
+
+        <div class="col-sm-8">
+          <select ng-model="userEditDTO.size"
+                  ng-options="size.sizeTypeId as size.description for size in $root.tShirtsSizeTypeList"
+                  id="size"
+                  ng-required="true"
+                  class="form-control input-sm">
+          </select>
+          <ui-validate-info value="fieldInfo" for="size"></ui-validate-info>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 " for="phone">Phone number</label>
+
+        <div class="col-sm-8">
+          <input type="text"
+                 ng-model="userEditDTO.phone"
+                 id="phone"
+                 ng-required="true"
+                 ng-maxlength="45"
+                 ng-minlength="1"
+                 class="form-control input-sm"/>
+          <ui-validate-info value="fieldInfo" for="phone"></ui-validate-info>
+        </div>
+      </div>
       <div class="form-group ">
         <label class="control-label col-sm-4 " for="school">School</label>
+
         <div class="col-sm-8">
           <input type="text"
                  ng-model="userEditDTO.school"
@@ -120,6 +188,7 @@
       <div class="form-group ">
         <label class="control-label col-sm-4 "
                for="departmentId">Department</label>
+
         <div class="col-sm-8">
           <select ng-model="userEditDTO.departmentId"
                   ng-options="department.departmentId as department.name for department in $root.departmentList"
@@ -130,9 +199,25 @@
           <ui-validate-info value="fieldInfo" for="departmentId"></ui-validate-info>
         </div>
       </div>
+
+      <div class="form-group ">
+        <label class="control-label col-sm-4 "
+               for="grade">Grade</label>
+
+        <div class="col-sm-8">
+          <select ng-model="userEditDTO.grade"
+                  ng-options="grade.gradeTypeId as grade.description for grade in $root.gradeTypeList"
+                  id="grade"
+                  ng-required="true"
+                  class="form-control input-sm">
+          </select>
+          <ui-validate-info value="fieldInfo" for="size"></ui-validate-info>
+        </div>
+      </div>
       <div class="form-group ">
         <label class="control-label col-sm-4 "
                for="studentId">Student ID</label>
+
         <div class="col-sm-8">
           <input type="text"
                  ng-model="userEditDTO.studentId"
