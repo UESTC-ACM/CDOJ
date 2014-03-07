@@ -54,6 +54,9 @@ public class IndexController extends BaseController {
       result.put("languageList", languageService.getLanguageList());
       result.put("resultTypeList", globalService.getOnlineJudgeResultTypeList());
       result.put("contestTypeList", globalService.getContestTypeList());
+      result.put("genderTypeList", globalService.getGenderTypeList());
+      result.put("gradeTypeList", globalService.getGradeTypeList());
+      result.put("tShirtsSizeTypeList", globalService.getTShirtsSizeTypeList());
       UserDTO currentUser = getCurrentUser(session);
       if (currentUser == null) {
         result.put("hasLogin", false);
