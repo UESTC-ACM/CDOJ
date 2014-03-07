@@ -1,7 +1,7 @@
 cdoj
 .controller("ContestShowController", [
-    "$scope", "$rootScope", "$http", "$window", "$modal", "$interval", "$routeParams"
-    ($scope, $rootScope, $http, $window, $modal, $interval, $routeParams) ->
+    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams"
+    ($scope, $rootScope, $http, $window, $modal, $routeParams) ->
       $scope.contestId = 0
       $scope.contest =
         title: ""
@@ -41,7 +41,10 @@ cdoj
               value.solved = data.rankList.problemList[index].solved
             )
       refreshRankList()
-      rankListTimer = $interval(refreshRankList, 10000)
+      rankListTimer = setInterval(refreshRankList, 5000)
+      $scope.$on("$destroy", ->
+        clearInterval(rankListTimer)
+      )
 
       $scope.showProblemTab = ->
         # TODO Dirty code!

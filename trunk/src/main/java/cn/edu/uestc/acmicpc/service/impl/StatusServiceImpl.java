@@ -168,6 +168,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     if (isFirstTime) {
      statusCondition.results.add(OnlineJudgeResultType.OJ_JUDGING);
     }
+    statusCondition.isForAdmin = true;
     statusCondition.orderFields = "statusId";
     statusCondition.orderAsc = "true";
     return statusDAO.findAll(StatusForJudgeDTO.class,
