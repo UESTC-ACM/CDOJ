@@ -4,6 +4,21 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 ALTER TABLE `uestcoj`.`user`  ADD COLUMN `name` VARCHAR(50) NOT NULL  AFTER `motto` , ADD COLUMN `sex` INT(11) NOT NULL  AFTER `name` , ADD COLUMN `grade` INT(11) NOT NULL  AFTER `sex` , ADD COLUMN `phone` VARCHAR(45) NOT NULL  AFTER `grade` , ADD COLUMN `size` INT(11) NOT NULL  AFTER `phone` ;
 
+CREATE  TABLE IF NOT EXISTS `uestcoj`.`team` (
+  `teamId` INT NOT NULL ,
+  `teamName` VARCHAR(45) NOT NULL ,
+  `leaderId` INT NOT NULL ,
+  PRIMARY KEY (`teamId`) ,
+  INDEX `leaderId_idx` (`leaderId` ASC) ,
+  CONSTRAINT `FK_team_leaderId_on_user`
+    FOREIGN KEY (`leaderId` )
+    REFERENCES `uestcoj`.`user` (`userId` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_bin;
+
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`teamUser` (
   `teamUserId` INT(11) NOT NULL ,
   `userId` INT(11) NOT NULL ,
