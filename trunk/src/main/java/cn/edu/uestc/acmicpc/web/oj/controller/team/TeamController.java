@@ -8,6 +8,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.service.iface.TeamService;
 import cn.edu.uestc.acmicpc.service.iface.TeamUserService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
@@ -38,12 +39,15 @@ public class TeamController extends BaseController {
   private TeamService teamService;
   private UserService userService;
   private TeamUserService teamUserService;
+  private MessageService messageService;
 
   @Autowired
-  public TeamController(TeamService teamService, UserService userService, TeamUserService teamUserService) {
+  public TeamController(TeamService teamService, UserService userService,
+                        TeamUserService teamUserService, MessageService messageService) {
     this.teamService = teamService;
     this.userService = userService;
     this.teamUserService = teamUserService;
+    this.messageService = messageService;
   }
 
   @RequestMapping("search")
@@ -54,7 +58,7 @@ public class TeamController extends BaseController {
                              HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO userDTO =  getCurrentUser(session);
+      UserDTO userDTO = getCurrentUser(session);
       teamCondition.userId = userDTO.getUserId();
 
       Long count = teamService.count(teamCondition);
@@ -63,7 +67,7 @@ public class TeamController extends BaseController {
       List<TeamListDTO> teamList = teamService.getTeamList(teamCondition, pageInfo);
       // At most 20 records
       List<Integer> teamIdList = new LinkedList<>();
-      for (TeamListDTO teamListDTO: teamList) {
+      for (TeamListDTO teamListDTO : teamList) {
         teamIdList.add(teamListDTO.getTeamId());
       }
       TeamUserCondition teamUserCondition = new TeamUserCondition();
@@ -71,9 +75,9 @@ public class TeamController extends BaseController {
       teamUserCondition.orderAsc = "true";
       teamUserCondition.teamIdList = ArrayUtil.join(teamIdList.toArray(), ",");
       List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamUserCondition);
-      for (TeamListDTO teamListDTO: teamList) {
+      for (TeamListDTO teamListDTO : teamList) {
         teamListDTO.setTeamUsers(new LinkedList<TeamUserListDTO>());
-        for (TeamUserListDTO teamUserListDTO: teamUserList) {
+        for (TeamUserListDTO teamUserListDTO : teamUserList) {
           if (teamListDTO.getTeamId().compareTo(teamUserListDTO.getTeamId()) == 0) {
             teamListDTO.getTeamUsers().add(teamUserListDTO);
           }
@@ -102,7 +106,7 @@ public class TeamController extends BaseController {
       }
       String userList[] = teamEditDTO.getMemberList().split(",");
       List<Integer> userIdList = new LinkedList<>();
-      for (String userIdString: userList) {
+      for (String userIdString : userList) {
         if (userIdString.length() == 0) {
           continue;
         }
@@ -127,7 +131,7 @@ public class TeamController extends BaseController {
           }
         }
       }
-      UserDTO userDTO =  getCurrentUser(session);
+      UserDTO userDTO = getCurrentUser(session);
       if (userIdList.get(0).compareTo(userDTO.getUserId()) != 0) {
         throw new AppException("You are not the team leader.");
       }
@@ -138,12 +142,18 @@ public class TeamController extends BaseController {
           || teamDTO.getLeaderId().compareTo(userIdList.get(0)) != 0) {
         throw new AppException("Error while creating team.");
       }
-      for (Integer userId: userIdList) {
+      for (Integer userId : userIdList) {
+        UserDTO memberDTO = userService.getUserDTOByUserId(userId);
+        AppExceptionUtil.assertNotNull(memberDTO, "No such user.");
         Integer teamUserId = teamUserService.createNewTeamUser(TeamUserDTO.builder()
             .setTeamId(teamId)
             .setUserId(userId)
             .build());
         TeamUserDTO teamUserDTO = teamUserService.getTeamUserDTO(teamUserId);
+        // Send a notification
+        if (memberDTO.getUserId().compareTo(userDTO.getUserId()) != 0) {
+          messageService.sendTeamInvitation(userDTO, memberDTO, teamDTO);
+        }
         AppExceptionUtil.assertNotNull(teamUserDTO, "Error while creating team user.");
       }
 
