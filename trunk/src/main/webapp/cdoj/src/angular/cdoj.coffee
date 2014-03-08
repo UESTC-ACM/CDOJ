@@ -7,17 +7,23 @@ cdoj = angular.module('cdoj', [
 ])
 cdoj
 .run([
-  "$rootScope", "$http"
-  ($rootScope, $http)->
+  "$rootScope", "$http", "$interval"
+  ($rootScope, $http, $interval)->
     _.extend($rootScope, GlobalVariables)
     _.extend($rootScope, GlobalConditions)
     $http.get("/globalData").then (response)->
       data = response.data
-      if data.result == "error"
-        alert(data.error_msg)
-      else
-        _.extend($rootScope, data)
+      _.extend($rootScope, data)
     $rootScope.finalTitle = "UESTC Online Judge"
+
+    fetchUserData = ->
+      $http.get("/userData").then (response)->
+        data = response.data
+        if data.result == "success"
+          _.extend($rootScope, data)
+
+    fetchUserData()
+    $interval(fetchUserData, 5000)
 ])
 .config([
     "$routeProvider",

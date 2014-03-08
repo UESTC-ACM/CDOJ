@@ -1,10 +1,15 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
+import cn.edu.uestc.acmicpc.db.condition.impl.MessageCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.Message;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
+import java.util.List;
 
 /**
  * Message service interface
@@ -32,10 +37,30 @@ public interface MessageService extends DatabaseService<Message, Integer> {
   /**
    * Send a team invitation.
    *
-   * @param sender invitation sender
+   * @param sender   invitation sender
    * @param receiver invitation receiver
-   * @param teamDTO team information
+   * @param teamDTO  team information
    * @throws AppException
    */
   public void sendTeamInvitation(UserDTO sender, UserDTO receiver, TeamDTO teamDTO) throws AppException;
+
+  /**
+   * Counts the number of messages fit in condition.
+   *
+   * @param condition {@link MessageCondition} entity.
+   * @return total number of users fit in the condition.
+   * @throws AppException
+   */
+  public Long count(MessageCondition condition) throws AppException;
+
+  /**
+   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDTO} list
+   *
+   * @param messageCondition condition
+   * @param pageInfo         page info
+   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDTO} list
+   * @throws AppException
+   */
+  public List<MessageForReceiverDTO> getMessageForReceiverDTOList(MessageCondition messageCondition
+      , PageInfo pageInfo) throws AppException;
 }
