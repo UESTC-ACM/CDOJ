@@ -19,6 +19,15 @@ public class TeamListDTO implements BaseDTO<Team> {
   private String teamName;
   private Integer leaderId;
   private List<TeamUserListDTO> teamUsers;
+  private List<TeamUserListDTO> invitedUsers;
+
+  public List<TeamUserListDTO> getInvitedUsers() {
+    return invitedUsers;
+  }
+
+  public void setInvitedUsers(List<TeamUserListDTO> invitedUsers) {
+    this.invitedUsers = invitedUsers;
+  }
 
   public List<TeamUserListDTO> getTeamUsers() {
     return teamUsers;

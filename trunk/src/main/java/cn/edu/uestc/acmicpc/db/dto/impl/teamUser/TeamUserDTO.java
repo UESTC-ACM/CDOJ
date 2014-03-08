@@ -7,21 +7,31 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
 import java.util.Map;
 
-@Fields({ "teamUserId", "teamId", "userId" })
+@Fields({ "teamUserId", "teamId", "userId", "allow" })
 public class TeamUserDTO implements BaseDTO<TeamUser> {
 
   public TeamUserDTO() {
   }
 
-  private TeamUserDTO(Integer teamUserId, Integer teamId, Integer userId) {
+  private TeamUserDTO(Integer teamUserId, Integer teamId, Integer userId, Boolean allow) {
     this.teamUserId = teamUserId;
     this.teamId = teamId;
     this.userId = userId;
+    this.allow = allow;
   }
 
   private Integer teamUserId;
   private Integer teamId;
   private Integer userId;
+  private Boolean allow;
+
+  public Boolean getAllow() {
+    return allow;
+  }
+
+  public void setAllow(Boolean allow) {
+    this.allow = allow;
+  }
 
   public Integer getTeamUserId() {
     return teamUserId;
@@ -58,7 +68,7 @@ public class TeamUserDTO implements BaseDTO<TeamUser> {
 
     @Override
     public TeamUserDTO build() {
-      return new TeamUserDTO(teamUserId, teamId, userId);
+      return new TeamUserDTO(teamUserId, teamId, userId, allow);
     }
 
     @Override
@@ -66,13 +76,14 @@ public class TeamUserDTO implements BaseDTO<TeamUser> {
       teamUserId = (Integer) properties.get("teamUserId");
       teamId = (Integer) properties.get("teamId");
       userId = (Integer) properties.get("userId");
+      allow = (Boolean) properties.get("allow");
       return build();
-
     }
 
     private Integer teamUserId;
     private Integer teamId;
     private Integer userId;
+    private Boolean allow;
 
     public Integer getTeamUserId() {
       return teamUserId;
@@ -98,6 +109,11 @@ public class TeamUserDTO implements BaseDTO<TeamUser> {
 
     public Builder setUserId(Integer userId) {
       this.userId = userId;
+      return this;
+    }
+
+    public Builder setAllow(Boolean allow) {
+      this.allow = allow;
       return this;
     }
   }

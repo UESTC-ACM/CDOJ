@@ -64673,9 +64673,6 @@ if (typeof exports === 'object') {
       }).when("/user/activate/:userName/:serialKey", {
         templateUrl: "template/user/activation.html",
         controller: "PasswordResetController"
-      }).when("/user/team/:userName", {
-        templateUrl: "template/team/list.html",
-        controller: "TeamListController"
       });
     }
   ]);
@@ -65441,29 +65438,16 @@ if (typeof exports === 'object') {
     }
   ]);
 
-  cdoj.controller("TeamListController", [
-    "$scope", "$rootScope", "$http", "$window", function($scope, $rootScope, $http, $window) {
-      $scope.hideMemberPanel = true;
+  cdoj.controller("TeamEditorModalController", [
+    "$scope", "$rootScope", "$http", "$window", "$modalInstance", function($scope, $rootScope, $http, $window, $modalInstance) {
       $scope.teamDTO = {
         teamName: "",
         memberList: ""
       };
-      $scope.newMember = "";
-      $scope.memberList = [];
-      $scope.toggleMemberPanel = function() {
-        var teamName;
-        if ($rootScope.hasLogin === false) {
-          return $window.alert("Please login first!");
-        } else {
-          teamName = angular.copy($scope.teamDTO.teamName);
-          if (teamName === "") {
-            return $window.alert("Please enter a valid team name.");
-          } else if ($scope.hideMemberPanel) {
-            $scope.addMember($rootScope.currentUser.userName);
-            return $scope.hideMemberPanel = false;
-          }
-        }
+      $scope.newMember = {
+        userName: ""
       };
+      $scope.memberList = [];
       $scope.searchUser = function(keyword) {
         var condition;
         condition = {
@@ -65481,7 +65465,7 @@ if (typeof exports === 'object') {
       };
       $scope.addMemberClick = function() {
         if ($scope.memberList.length < 3) {
-          return $scope.addMember($scope.newMember);
+          return $scope.addMember($scope.newMember.userName);
         }
       };
       $scope.addMember = function(userName) {
@@ -65492,6 +65476,7 @@ if (typeof exports === 'object') {
         return $http.post("/user/typeAheadSearch", condition).then(function(response) {
           var data, result;
           data = response.data;
+          console.log(condition, data);
           if (data.result === "success") {
             result = data.list;
             if (result.size === 0 || result[0].userName !== userName) {
@@ -65510,12 +65495,13 @@ if (typeof exports === 'object') {
           }
         });
       };
+      $scope.addMember($rootScope.currentUser.userName);
       $scope.removeMember = function(index) {
         if (index >= 1 && index < 3) {
           return $scope.memberList.splice(index, 1);
         }
       };
-      return $scope.createTeam = function() {
+      $scope.createTeam = function() {
         var teamDTO;
         if ($scope.memberList.length < 1 || $scope.memberList.length > 3) {
           return $window.alert("Member number should between 1 and 3.");
@@ -65528,14 +65514,15 @@ if (typeof exports === 'object') {
             var data;
             data = response.data;
             if (data.result === "success") {
-              $scope.hideMemberPanel = true;
-              $scope.teamDTO.teamName = "";
-              return $scope.memberList = [];
+              return $modalInstance.close();
             } else {
               return $window.alert(data.error_msg);
             }
           });
         }
+      };
+      return $scope.dismiss = function() {
+        return $modalInstance.dismiss();
       };
     }
   ]);
@@ -65587,22 +65574,31 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("UserCenterController", [
-    "$scope", "$rootScope", "$http", "$routeParams", function($scope, $rootScope, $http, $routeParams) {
+    "$scope", "$rootScope", "$http", "$routeParams", "$modal", function($scope, $rootScope, $http, $routeParams, $modal) {
       var targetUserName;
       $scope.targetUser = {
         email: ""
       };
+      $scope.teamCondition = angular.copy($rootScope.teamCondition);
       targetUserName = angular.copy($routeParams.userName);
-      return $http.get("/user/userCenterData/" + targetUserName).then(function(response) {
+      $http.get("/user/userCenterData/" + targetUserName).then(function(response) {
         var data;
         data = response.data;
         if (data.result === "success") {
           $scope.targetUser = data.targetUser;
-          return $scope.problemStatus = data.problemStatus;
+          $scope.problemStatus = data.problemStatus;
+          return $scope.teamCondition.userId = data.targetUser.userId;
         } else {
           return $window.alert(data.error_msg);
         }
       });
+      return $scope.showTeamEditor = function() {
+        var teamEditor;
+        return teamEditor = $modal.open({
+          templateUrl: "template/modal/team-editor-modal.html",
+          controller: "TeamEditorModalController"
+        });
+      };
     }
   ]);
 

@@ -1,24 +1,13 @@
 cdoj
-.controller("TeamListController", [
-    "$scope", "$rootScope", "$http", "$window"
-    ($scope, $rootScope, $http, $window)->
-      $scope.hideMemberPanel = true
+.controller("TeamEditorModalController", [
+    "$scope", "$rootScope", "$http", "$window", "$modalInstance"
+    ($scope, $rootScope, $http, $window, $modalInstance)->
       $scope.teamDTO =
         teamName: ""
         memberList: ""
-      $scope.newMember = ""
+      $scope.newMember =
+        userName: ""
       $scope.memberList = []
-
-      $scope.toggleMemberPanel = ->
-        if $rootScope.hasLogin == false
-          $window.alert "Please login first!"
-        else
-          teamName = angular.copy($scope.teamDTO.teamName)
-          if teamName == ""
-            $window.alert "Please enter a valid team name."
-          else if $scope.hideMemberPanel
-            $scope.addMember($rootScope.currentUser.userName)
-            $scope.hideMemberPanel = false
 
       $scope.searchUser = (keyword)->
         condition =
@@ -29,16 +18,15 @@ cdoj
             return data.list
           else
             $window.alert data.error_msg
-
       $scope.addMemberClick = ->
         if $scope.memberList.length < 3
-          $scope.addMember($scope.newMember)
-
+          $scope.addMember($scope.newMember.userName)
       $scope.addMember = (userName)->
         condition =
           userName: userName
         $http.post("/user/typeAheadSearch", condition).then (response)->
           data = response.data
+          console.log condition, data
           if data.result == "success"
             result = data.list
             if result.size == 0 || result[0].userName != userName
@@ -51,6 +39,7 @@ cdoj
                 $scope.memberList.add result[0]
           else
             $window.alert data.error_msg
+      $scope.addMember($rootScope.currentUser.userName)
       $scope.removeMember = (index)->
         if index >= 1 && index < 3
           $scope.memberList.splice(index, 1);
@@ -65,11 +54,9 @@ cdoj
           $http.post("/team/createTeam", teamDTO).then (response)->
             data = response.data
             if data.result == "success"
-              $scope.hideMemberPanel = true
-              $scope.teamDTO.teamName = ""
-              $scope.memberList = []
-              # TODO
+              $modalInstance.close()
             else
               $window.alert data.error_msg
-
+      $scope.dismiss = ->
+        $modalInstance.dismiss()
 ])

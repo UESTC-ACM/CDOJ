@@ -16,6 +16,7 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
+import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
@@ -51,40 +52,43 @@ public class TeamController extends BaseController {
   }
 
   @RequestMapping("search")
-  @LoginPermit(NeedLogin = true)
+  @LoginPermit(NeedLogin = false)
   public
   @ResponseBody
-  Map<String, Object> search(@RequestBody TeamCondition teamCondition,
-                             HttpSession session) {
+  Map<String, Object> search(@RequestBody TeamCondition teamCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO userDTO = getCurrentUser(session);
-      teamCondition.userId = userDTO.getUserId();
-
-      Long count = teamService.count(teamCondition);
-      PageInfo pageInfo = buildPageInfo(count, teamCondition.currentPage,
-          Global.RECORD_PER_PAGE, null);
-      List<TeamListDTO> teamList = teamService.getTeamList(teamCondition, pageInfo);
-      // At most 20 records
-      List<Integer> teamIdList = new LinkedList<>();
-      for (TeamListDTO teamListDTO : teamList) {
-        teamIdList.add(teamListDTO.getTeamId());
-      }
-      TeamUserCondition teamUserCondition = new TeamUserCondition();
-      teamUserCondition.orderFields = "id";
-      teamUserCondition.orderAsc = "true";
-      teamUserCondition.teamIdList = ArrayUtil.join(teamIdList.toArray(), ",");
-      List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamUserCondition);
-      for (TeamListDTO teamListDTO : teamList) {
-        teamListDTO.setTeamUsers(new LinkedList<TeamUserListDTO>());
-        for (TeamUserListDTO teamUserListDTO : teamUserList) {
-          if (teamListDTO.getTeamId().compareTo(teamUserListDTO.getTeamId()) == 0) {
-            teamListDTO.getTeamUsers().add(teamUserListDTO);
+      if (teamCondition.userId != null) {
+        Long count = teamService.count(teamCondition);
+        PageInfo pageInfo = buildPageInfo(count, teamCondition.currentPage,
+            Global.RECORD_PER_PAGE, null);
+        List<TeamListDTO> teamList = teamService.getTeamList(teamCondition, pageInfo);
+        // At most 20 records
+        List<Integer> teamIdList = new LinkedList<>();
+        for (TeamListDTO teamListDTO : teamList) {
+          teamIdList.add(teamListDTO.getTeamId());
+        }
+        TeamUserCondition teamUserCondition = new TeamUserCondition();
+        teamUserCondition.orderFields = "id";
+        teamUserCondition.orderAsc = "true";
+        teamUserCondition.teamIdList = ArrayUtil.join(teamIdList.toArray(), ",");
+        List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamUserCondition);
+        for (TeamListDTO teamListDTO : teamList) {
+          teamListDTO.setTeamUsers(new LinkedList<TeamUserListDTO>());
+          teamListDTO.setInvitedUsers(new LinkedList<TeamUserListDTO>());
+          for (TeamUserListDTO teamUserListDTO : teamUserList) {
+            if (teamListDTO.getTeamId().compareTo(teamUserListDTO.getTeamId()) == 0) {
+              if (teamUserListDTO.getAllow()) {
+                teamListDTO.getTeamUsers().add(teamUserListDTO);
+              } else {
+                teamListDTO.getInvitedUsers().add(teamUserListDTO);
+              }
+            }
           }
         }
-      }
 
-      json.put("list", teamList);
+        json.put("list", teamList);
+      }
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
@@ -101,6 +105,11 @@ public class TeamController extends BaseController {
                                  HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
+      AppExceptionUtil.assertNotNull(teamEditDTO.getTeamName(), "Please input a valid team name.");
+      teamEditDTO.setTeamName(StringUtil.trimAllSpace(teamEditDTO.getTeamName()));
+      AppExceptionUtil.assertTrue(
+          teamEditDTO.getTeamName().length() > 0 && teamEditDTO.getTeamName().length() < 50
+          , "Please input a valid team name.");
       if (teamService.checkTeamExists(teamEditDTO.getTeamName())) {
         throw new AppException("Team name has been used!");
       }
@@ -148,6 +157,7 @@ public class TeamController extends BaseController {
         Integer teamUserId = teamUserService.createNewTeamUser(TeamUserDTO.builder()
             .setTeamId(teamId)
             .setUserId(userId)
+            .setAllow(userId.equals(userDTO.getUserId()))
             .build());
         TeamUserDTO teamUserDTO = teamUserService.getTeamUserDTO(teamUserId);
         // Send a notification
