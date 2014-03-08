@@ -6251,7 +6251,7 @@ button.close {
   font-weight: 600;
   src: local('Source Code Pro Semibold'), local('SourceCodePro-Semibold'), url(/font/windows/SourceCodePro-Semibold.woff) format('woff');
 }
-#cdoj-users-avatar {
+.cdoj-users-avatar {
   width: 64px;
   height: 64px;
   min-height: 64px;

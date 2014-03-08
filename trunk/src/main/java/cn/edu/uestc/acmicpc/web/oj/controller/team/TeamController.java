@@ -1,10 +1,12 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.team;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamCondition;
+import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.TeamService;
 import cn.edu.uestc.acmicpc.service.iface.TeamUserService;
@@ -12,6 +14,7 @@ import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
@@ -58,6 +61,24 @@ public class TeamController extends BaseController {
       PageInfo pageInfo = buildPageInfo(count, teamCondition.currentPage,
           Global.RECORD_PER_PAGE, null);
       List<TeamListDTO> teamList = teamService.getTeamList(teamCondition, pageInfo);
+      // At most 20 records
+      List<Integer> teamIdList = new LinkedList<>();
+      for (TeamListDTO teamListDTO: teamList) {
+        teamIdList.add(teamListDTO.getTeamId());
+      }
+      TeamUserCondition teamUserCondition = new TeamUserCondition();
+      teamUserCondition.orderFields = "id";
+      teamUserCondition.orderAsc = "true";
+      teamUserCondition.teamIdList = ArrayUtil.join(teamIdList.toArray(), ",");
+      List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamUserCondition);
+      for (TeamListDTO teamListDTO: teamList) {
+        teamListDTO.setTeamUsers(new LinkedList<TeamUserListDTO>());
+        for (TeamUserListDTO teamUserListDTO: teamUserList) {
+          if (teamListDTO.getTeamId().compareTo(teamUserListDTO.getTeamId()) == 0) {
+            teamListDTO.getTeamUsers().add(teamUserListDTO);
+          }
+        }
+      }
 
       json.put("list", teamList);
       json.put("result", "success");

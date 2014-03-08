@@ -60,4 +60,16 @@ public interface TeamService extends DatabaseService<Team, Integer> {
    */
   public List<TeamListDTO> getTeamList(TeamCondition condition,
                                        PageInfo pageInfo) throws AppException;
+
+  /**
+   * Get HQL query by {@link cn.edu.uestc.acmicpc.db.condition.impl.TeamCondition} entity
+   * Example:
+   * <code>from Team team, TeamUser teamUser
+   * where team.teamId = teamUser.teamId and teamUser.userId = 2 and team.teamName like '%Izayoi%' order by team.teamId desc</code>
+   *
+   * @param teamCondition {@link cn.edu.uestc.acmicpc.db.condition.impl.TeamCondition} entity
+   * @return HQL query
+   * @throws AppException
+   */
+  public String getHQLString(TeamCondition teamCondition) throws AppException;
 }

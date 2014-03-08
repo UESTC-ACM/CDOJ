@@ -2,9 +2,11 @@ package cn.edu.uestc.acmicpc.db.dto.impl.team;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
 import cn.edu.uestc.acmicpc.db.entity.Team;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,6 +18,15 @@ public class TeamListDTO implements BaseDTO<Team> {
   private Integer teamId;
   private String teamName;
   private Integer leaderId;
+  private List<TeamUserListDTO> teamUsers;
+
+  public List<TeamUserListDTO> getTeamUsers() {
+    return teamUsers;
+  }
+
+  public void setTeamUsers(List<TeamUserListDTO> teamUsers) {
+    this.teamUsers = teamUsers;
+  }
 
   public Integer getTeamId() {
     return teamId;

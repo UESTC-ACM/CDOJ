@@ -69,7 +69,7 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
     }
   }
 
-  private String getHQLString(TeamCondition teamCondition) throws AppException {
+  public String getHQLString(TeamCondition teamCondition) throws AppException {
     StringBuilder hqlBuilder = new StringBuilder();
     hqlBuilder.append("from Team team, TeamUser teamUser ")
         .append("where team.teamId = teamUser.teamId and teamUser.userId = ").append(teamCondition.userId);
