@@ -65060,6 +65060,87 @@ if (typeof exports === 'object') {
     }
   ]);
 
+  cdoj.controller("HeaderController", [
+    "$scope", "$rootScope", "$http", "$element", "$compile", "$window", "UserProfile", "$modal", function($scope, $rootScope, $http, $element, $compile, $window, $userProfile, $modal) {
+      $rootScope.hasLogin = false;
+      $rootScope.currentUser = {
+        email: ""
+      };
+      $rootScope.isAdmin = false;
+      $scope.userLoginDTO = {
+        userName: "",
+        password: ""
+      };
+      $scope.fieldInfo = [];
+      $rootScope.$watch("hasLogin", function() {
+        if ($rootScope.hasLogin && $rootScope.currentUser.type === 1) {
+          return $rootScope.isAdmin = true;
+        } else {
+          return $rootScope.isAdmin = false;
+        }
+      });
+      $scope.login = function() {
+        var password, userLoginDTO;
+        userLoginDTO = angular.copy($scope.userLoginDTO);
+        if (angular.isUndefined(userLoginDTO.password)) {
+          return;
+        }
+        password = CryptoJS.SHA1(userLoginDTO.password).toString();
+        userLoginDTO.password = password;
+        return $http.post("/user/login", userLoginDTO).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            $rootScope.hasLogin = true;
+            return $rootScope.currentUser = {
+              userName: data.userName,
+              email: data.email,
+              type: data.type
+            };
+          } else if (data.result === "field_error") {
+            return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        });
+      };
+      $scope.logout = function() {
+        return $http.post("/user/logout").then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            $rootScope.hasLogin = false;
+            return $rootScope.currentUser = {
+              email: ""
+            };
+          }
+        });
+      };
+      $scope.openRegisterModal = function() {
+        var registerModal;
+        return registerModal = $modal.open({
+          templateUrl: "template/modal/register-modal.html",
+          controller: "RegisterModalController"
+        });
+      };
+      $scope.openForgetPasswordModal = function() {
+        var forgetPasswordModal;
+        return forgetPasswordModal = $modal.open({
+          templateUrl: "template/modal/forget-password-modal.html",
+          controller: "ForgetPasswordModalController"
+        });
+      };
+      return $scope.openUserProfileEditor = function() {
+        var userProfileEditor;
+        $userProfile.setProfile($rootScope.currentUser.userName);
+        return userProfileEditor = $modal.open({
+          templateUrl: "template/modal/profile-edit-modal.html",
+          controller: "UserProfileEditorController"
+        });
+      };
+    }
+  ]);
+
   cdoj.controller("IndexController", [
     "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
       return $rootScope.title = "Home";
@@ -65522,99 +65603,6 @@ if (typeof exports === 'object') {
           return $window.alert(data.error_msg);
         }
       });
-    }
-  ]);
-
-  cdoj.controller("UserController", [
-    "$scope", "$rootScope", "$http", "$element", "$compile", "$window", "UserProfile", "$modal", function($scope, $rootScope, $http, $element, $compile, $window, $userProfile, $modal) {
-      $rootScope.hasLogin = false;
-      $rootScope.currentUser = {
-        email: ""
-      };
-      $rootScope.isAdmin = false;
-      $scope.userLoginDTO = {
-        userName: "",
-        password: ""
-      };
-      $scope.fieldInfo = [];
-      $scope.views = {
-        loginView: "<a href=\"javascript:void(0);\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n  Sign in\n</a>\n<ul ui-dropdown-menu class=\"dropdown-menu cdoj-form-menu\" style=\"width: 340px;\">\n  <li>\n    <form>\n      <div class=\"input-group form-group input-group-sm\">\n        <span class=\"input-group-addon\">\n          <i class=\"fa fa-user\" style=\"width: 14px;\"></i>\n        </span>\n        <input type=\"text\"\n               ng-model=\"userLoginDTO.userName\"\n               maxlength=\"24\"\n               id=\"userName\"\n               class=\"form-control\"\n               ng-required=\"true\"\n               ng-pattern=\"/^[a-zA-Z0-9_]{4,24}$/\"\n               placeholder=\"Username\"/>\n      </div>\n      <div class=\"input-group form-group input-group-sm\">\n        <span class=\"input-group-addon\">\n          <i class=\"fa fa-key\" style=\"width: 14px;\"></i>\n        </span>\n        <input type=\"password\"\n               ng-model=\"userLoginDTO.password\"\n               id=\"password\"\n               ng-required=\"true\"\n               ng-minlength=\"6\"\n               ng-maxlength=\"24\"\n               class=\"form-control\"\n               placeholder=\"Password\"/>\n        <span class=\"input-group-btn\">\n          <button type=\"submit\"\n                  class=\"btn btn-default\"\n                  ng-click=\"login()\">\n            Login\n          </button>\n        </span>\n      </div>\n      <ui-validate-info value=\"fieldInfo\" for=\"password\"></ui-validate-info>\n    </form>\n  </li>\n  <li role=\"presentation\" class=\"divider\"></li>\n  <li>\n    <a href=\"javascript:void(0);\" ng-click=\"openRegisterModal()\">\n      <i class=\"fa fa-arrow-circle-right\" style=\"padding-right: 6px;\"></i>Register</a>\n    <a href=\"javascript:void(0);\" ng-click=\"openForgetPasswordModal()\">\n      <i class=\"fa fa-arrow-circle-right\" style=\"padding-right: 6px;\"></i>Forget password? </a>\n  </li>\n</ul>",
-        userView: "<div id=\"cdoj-user\">\n  <a href=\"javascript:void(0);\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n    <img id=\"cdoj-user-avatar\"\n         ui-avatar\n         email=\"currentUser.email\"\n         src=\"/images/avatar/default.jpg\"/>\n  </a>\n  <ul class=\"dropdown-menu\"\n      role=\"menu\"\n      aria-labelledby=\"user-menu\"\n      style=\"top: 48px;\nborder-radius: none;\nborder-top-left-radius: 0;\nborder-top-right-radius: 0;\">\n    <li role=\"presentation\"\n        class=\"dropdown-header text-center\">\n      <span id=\"currentUser\"\n            ng-bind=\"currentUser.userName\">\n        </span>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"#/user/center/{{currentUser.userName}}\">\n        <i class=\"fa fa-home\"></i>User center\n      </a>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"javascript:void(0);\" data-toggle=\"modal\"\n         data-target=\"#cdoj-profile-edit-modal\"\n         ng-click=\"openUserProfileEditor()\">\n        <i class=\"fa fa-wrench\"></i>Edit profile\n      </a>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"#/user/team/{{currentUser.userName}}\">\n        <i class=\"fa fa-group\"></i><span class=\"cdoj-menu-item\">Teams</span>\n      </a>\n    </li>\n    <li role=\"presentation\" class=\"divider\"></li>\n    <li role=\"presentation\">\n      <a href=\"javascript:void(0);\" id=\"cdoj-logout-button\" ng-click=\"logout()\">\n        <i class=\"fa fa-power-off\"></i>Logout\n      </a>\n    </li>\n  </ul>\n</div>"
-      };
-      $rootScope.$watch("hasLogin", function() {
-        var view;
-        if ($rootScope.hasLogin) {
-          view = $scope.views.userView;
-        } else {
-          view = $scope.views.loginView;
-        }
-        $element.html(view);
-        $compile($element.contents())($scope);
-        if ($rootScope.hasLogin && $rootScope.currentUser.type === 1) {
-          return $rootScope.isAdmin = true;
-        } else {
-          return $rootScope.isAdmin = false;
-        }
-      });
-      $scope.login = function() {
-        var password, userLoginDTO;
-        userLoginDTO = angular.copy($scope.userLoginDTO);
-        if (angular.isUndefined(userLoginDTO.password)) {
-          return;
-        }
-        password = CryptoJS.SHA1(userLoginDTO.password).toString();
-        userLoginDTO.password = password;
-        return $http.post("/user/login", userLoginDTO).then(function(response) {
-          var data;
-          data = response.data;
-          if (data.result === "success") {
-            $rootScope.hasLogin = true;
-            return $rootScope.currentUser = {
-              userName: data.userName,
-              email: data.email,
-              type: data.type
-            };
-          } else if (data.result === "field_error") {
-            return $scope.fieldInfo = data.field;
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        });
-      };
-      $scope.logout = function() {
-        return $http.post("/user/logout").then(function(response) {
-          var data;
-          data = response.data;
-          if (data.result === "success") {
-            $rootScope.hasLogin = false;
-            return $rootScope.currentUser = {
-              email: ""
-            };
-          }
-        });
-      };
-      $scope.openRegisterModal = function() {
-        var registerModal;
-        return registerModal = $modal.open({
-          templateUrl: "template/modal/register-modal.html",
-          controller: "RegisterModalController"
-        });
-      };
-      $scope.openForgetPasswordModal = function() {
-        var forgetPasswordModal;
-        return forgetPasswordModal = $modal.open({
-          templateUrl: "template/modal/forget-password-modal.html",
-          controller: "ForgetPasswordModalController"
-        });
-      };
-      return $scope.openUserProfileEditor = function() {
-        var userProfileEditor;
-        $userProfile.setProfile($rootScope.currentUser.userName);
-        return userProfileEditor = $modal.open({
-          templateUrl: "template/modal/profile-edit-modal.html",
-          controller: "UserProfileEditorController"
-        });
-      };
     }
   ]);
 
