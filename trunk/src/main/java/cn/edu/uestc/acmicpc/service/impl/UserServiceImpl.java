@@ -7,6 +7,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -109,13 +110,18 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public List<UserListDTO> getUserListDTOList(UserCondition userCondition,
-                                              PageInfo pageInfo)
-      throws AppException {
+                                              PageInfo pageInfo) throws AppException {
     Condition condition = userCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return userDAO.findAll(UserListDTO.class,
-        UserListDTO.builder(),
-        condition);
+    return userDAO.findAll(UserListDTO.class, UserListDTO.builder(), condition);
+  }
+
+  @Override
+  public List<UserTypeAheadDTO> getUserTypeAheadDTOList(UserCondition userCondition,
+                                                        PageInfo pageInfo) throws AppException {
+    Condition condition = userCondition.getCondition();
+    condition.setPageInfo(pageInfo);
+    return userDAO.findAll(UserTypeAheadDTO.class, UserTypeAheadDTO.builder(), condition);
   }
 
   @Override
@@ -153,6 +159,18 @@ public class UserServiceImpl extends AbstractService implements UserService {
   public void updateUserByUserId(Map<String, Object> properties, Integer userId)
       throws AppException {
     userDAO.updateEntitiesByField(properties, "userId", userId.toString());
+  }
+
+  @Override
+  public Boolean checkUserExists(String userName) throws AppException {
+    UserDTO userDTO = getUserDTOByUserName(userName);
+    return userDTO != null;
+  }
+
+  @Override
+  public Boolean checkUserExists(Integer userId) throws AppException {
+    UserDTO userDTO = getUserDTOByUserId(userId);
+    return userDTO != null;
   }
 
   @Override

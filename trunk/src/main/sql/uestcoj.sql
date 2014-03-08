@@ -500,7 +500,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `uestcoj`.`team` ;
 
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`team` (
-  `teamId` INT NOT NULL ,
+  `teamId` INT NOT NULL AUTO_INCREMENT ,
   `teamName` VARCHAR(45) NOT NULL ,
   `leaderId` INT NOT NULL ,
   PRIMARY KEY (`teamId`) ,
@@ -521,7 +521,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `uestcoj`.`teamUser` ;
 
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`teamUser` (
-  `teamUserId` INT NOT NULL ,
+  `teamUserId` INT NOT NULL AUTO_INCREMENT ,
   `userId` INT NOT NULL ,
   `teamId` INT NOT NULL ,
   PRIMARY KEY (`teamUserId`) ,
@@ -547,7 +547,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `uestcoj`.`contestTeam` ;
 
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`contestTeam` (
-  `contestTeamId` INT NOT NULL ,
+  `contestTeamId` INT NOT NULL AUTO_INCREMENT ,
   `contestId` INT NOT NULL ,
   `teamId` INT NOT NULL ,
   PRIMARY KEY (`contestTeamId`) ,

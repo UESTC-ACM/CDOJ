@@ -1,25 +1,79 @@
 <div class="row">
   <div class="col-md-12"
-       style="margin-top: 15px; margin-bottom: 15px; text-align: right;">
-    <form class="form-inline" role="form">
-      <div class="form-group">
-        <label>Team name:</label>
-        <input type="text"
-               class="form-control input-sm"
-               ng-model="teamDTO.teamName"
-               maxlength="50"
-               ng-required="true"
-               id="teamName">
+       style="margin-top: 15px; margin-bottom: 15px;">
+    <div class="pull-right" style="width: 410px;">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="input-group pull-right">
+            <span class="input-group-addon">Team name</span>
+            <input type="text"
+                   class="form-control input-sm"
+                   ng-model="teamDTO.teamName"
+                   maxlength="50"
+                   ng-required="true"
+                   id="teamName">
+            <span class="input-group-btn">
+              <button class="btn btn-success btn-sm"
+                      type="button"
+                      ng-click="toggleMemberPanel()"
+                      ng-show="hideMemberPanel">Create new team
+              </button>
+              <button class="btn btn-danger btn-sm"
+                      type="button"
+                      ng-click="createTeam()"
+                      ng-hide="hideMemberPanel">Create!
+              </button>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-12"
+             ng-hide="hideMemberPanel">
+          <div class="row">
+            <div class="col-md-12">
+              <ul class="media-list" style="margin-top: 15px;">
+                <li class="media" ng-repeat="member in memberList">
+                  <div class="pull-left">
+                    <img ui-avatar
+                         email="member.email"
+                         width="44"
+                         height="44"
+                         class="media-object"
+                         style="width: 44px; height: 44px;"/>
+                  </div>
+                  <div class="media-body">
+                    <h4 class="media-heading">
+                      <span ng-bind="member.userName"></span>
+                      <span ng-show="$index == 0" class="font-danger">(Team leader)</span>
+                      <span ng-show="$index != 0" class="font-primary">(Team member)</span>
+                      <a href="javascript:void(0);"
+                         class="pull-right"
+                         ng-show="$index != 0"
+                         ng-click="removeMember($index)"><i class="fa fa-times"></i></a>
+                    </h4>
+                    <span ng-bind="member.nickName"></span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-12" ng-show="memberList.length < 3">
+              <div class="input-group">
+                <input type="text"
+                       class="form-control input-sm"
+                       ng-model="newMember"
+                       ng-require="true"
+                       typeahead="user.userName for user in searchUser($viewValue) | filter:$viewValue"
+                       typeahead-template-url="template/user/typeAhead.html">
+                <span class="input-group-btn">
+                  <button class="btn btn-default btn-sm" type="button"
+                          ng-click="addMemberClick()">Add member
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <button class="btn btn-success btn-sm"
-              ng-click="toggleMemberPanel()">
-        Create new team!
-      </button>
-    </form>
+    </div>
   </div>
-  <div class="col-md-12"
-       style="text-align: right;"
-       collapse="hideMemberPanel">
-    Fuck
-  </div>
+
 </div>

@@ -1,0 +1,17 @@
+<a>
+  <div class="media">
+    <div class="pull-left">
+      <img ui-avatar
+           email="match.model.email"
+           width="44"
+           height="44"
+           class="media-object"
+           style="width: 44px; height: 44px;"/>
+    </div>
+
+    <div class="media-body">
+      <h4 class="media-heading" bind-html-unsafe="match.label | typeaheadHighlight:query"></h4>
+      <span bind-html-unsafe="match.model.nickName | typeaheadHighlight:query"></span>
+    </div>
+  </div>
+</a>

@@ -5,7 +5,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 ALTER TABLE `uestcoj`.`user`  ADD COLUMN `name` VARCHAR(50) NOT NULL DEFAULT '' AFTER `motto` , ADD COLUMN `sex` INT(11) NOT NULL DEFAULT 0  AFTER `name` , ADD COLUMN `grade` INT(11) NOT NULL DEFAULT 0  AFTER `sex` , ADD COLUMN `phone` VARCHAR(45) NOT NULL DEFAULT ''  AFTER `grade` , ADD COLUMN `size` INT(11) NOT NULL DEFAULT 0 AFTER `phone` ;
 
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`team` (
-  `teamId` INT NOT NULL ,
+  `teamId` INT NOT NULL AUTO_INCREMENT ,
   `teamName` VARCHAR(45) NOT NULL ,
   `leaderId` INT NOT NULL ,
   PRIMARY KEY (`teamId`) ,
@@ -22,7 +22,7 @@ DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
 
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`teamUser` (
-  `teamUserId` INT(11) NOT NULL ,
+  `teamUserId` INT(11) NOT NULL AUTO_INCREMENT ,
   `userId` INT(11) NOT NULL ,
   `teamId` INT(11) NOT NULL ,
   PRIMARY KEY (`teamUserId`) ,
@@ -44,7 +44,7 @@ DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
 
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`contestTeam` (
-  `contestTeamId` INT(11) NOT NULL ,
+  `contestTeamId` INT(11) NOT NULL AUTO_INCREMENT ,
   `contestId` INT(11) NOT NULL ,
   `teamId` INT(11) NOT NULL ,
   PRIMARY KEY (`contestTeamId`) ,
