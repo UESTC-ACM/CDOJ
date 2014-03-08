@@ -13,6 +13,11 @@ public class TeamCondition extends BaseCondition {
     super("teamId");
   }
 
+  @Exp(mapField = "teamName", type = Condition.ConditionType.LIKE)
+  public String teamName;
+
+  public Integer userId;
+
   @Override
   public Condition getCondition() throws AppException {
     Condition condition = super.getCondition();

@@ -64600,6 +64600,13 @@ if (typeof exports === 'object') {
       departmentId: void 0,
       orderFields: "solved,tried,id",
       orderAsc: "false,false,true"
+    },
+    teamCondition: {
+      currentPage: null,
+      userId: void 0,
+      teamName: void 0,
+      orderFields: "team.teamId",
+      orderAsc: "false"
     }
   };
 

@@ -92,3 +92,9 @@ GlobalConditions =
     departmentId: undefined
     orderFields: "solved,tried,id"
     orderAsc: "false,false,true"
+  teamCondition:
+    currentPage: null
+    userId: undefined
+    teamName: undefined
+    orderFields: "team.teamId"
+    orderAsc: "false"
