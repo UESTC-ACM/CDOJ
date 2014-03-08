@@ -1,12 +1,12 @@
 <div class="row">
   <list condition="$root.userCondition"
         request-url="/user/search">
-    <div class="col-lg-6" ng-repeat="user in list">
+    <div class="col-md-6" ng-repeat="user in list">
       <div class="panel panel-default">
         <div class="panel-body">
           <div class="media">
             <a class="pull-left" href="#">
-              <img id="cdoj-users-avatar"
+              <img class="cdoj-users-avatar"
                    ui-avatar
                    email="user.email"/>
             </a>

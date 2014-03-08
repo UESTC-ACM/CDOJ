@@ -1,8 +1,12 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
+import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
 import cn.edu.uestc.acmicpc.db.entity.TeamUser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+
+import java.util.List;
 
 /**
  * Team user service interface.
@@ -26,4 +30,6 @@ public interface TeamUserService extends DatabaseService<TeamUser, Integer> {
    * @throws AppException
    */
   public TeamUserDTO getTeamUserDTO(Integer teamUserId) throws AppException;
+
+  public List<TeamUserListDTO> getTeamUserList(TeamUserCondition teamUserCondition) throws AppException;
 }
