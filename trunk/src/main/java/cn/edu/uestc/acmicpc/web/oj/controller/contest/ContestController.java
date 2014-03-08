@@ -292,7 +292,7 @@ public class ContestController extends BaseController {
           Integer contestId = contestService.createNewContest();
           contestDTO = contestService.getContestDTOByContestId(contestId);
           if (contestDTO == null
-              || !contestDTO.getContestId().equals(contestId)) {
+              || contestDTO.getContestId().compareTo(contestId) != 0) {
             throw new AppException("Error while creating contest.");
           }
           // Move pictures

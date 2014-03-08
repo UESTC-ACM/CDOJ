@@ -1,7 +1,9 @@
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.settings.Global.AuthenticationType;
 
 /**
@@ -57,4 +59,17 @@ public class UserCondition extends BaseCondition {
   @Exp(type = ConditionType.LIKE)
   public String school;
 
+  public String keyword;
+
+  @Override
+  public Condition getCondition() throws AppException {
+    Condition condition = super.getCondition();
+    if (keyword != null) {
+      Condition keywordCondition = new Condition(Condition.JoinedType.OR);
+      keywordCondition.addEntry("userName", ConditionType.LIKE, keyword);
+      keywordCondition.addEntry("nickName", ConditionType.LIKE, keyword);
+      condition.addEntry(keywordCondition);
+    }
+    return condition;
+  }
 }

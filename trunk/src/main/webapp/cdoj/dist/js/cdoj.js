@@ -64666,7 +64666,7 @@ if (typeof exports === 'object') {
       }).when("/user/activate/:userName/:serialKey", {
         templateUrl: "template/user/activation.html",
         controller: "PasswordResetController"
-      }).when("/team/list", {
+      }).when("/user/team/:userName", {
         templateUrl: "template/team/list.html",
         controller: "TeamListController"
       });
@@ -65357,23 +65357,94 @@ if (typeof exports === 'object') {
     "$scope", "$rootScope", "$http", "$window", function($scope, $rootScope, $http, $window) {
       $scope.hideMemberPanel = true;
       $scope.teamDTO = {
-        teamName: ""
+        teamName: "",
+        memberList: ""
       };
-      return $scope.toggleMemberPanel = function() {
+      $scope.newMember = "";
+      $scope.memberList = [];
+      $scope.toggleMemberPanel = function() {
         var teamName;
-        teamName = angular.copy($scope.teamDTO.teamName);
-        if (teamName === "") {
-          return $window.alert("Please enter a valid team name.");
-        } else if ($scope.hideMemberPanel) {
-          return $http.get("/team/checkTeamExists/" + teamName).then(function(response) {
+        if ($rootScope.hasLogin === false) {
+          return $window.alert("Please login first!");
+        } else {
+          teamName = angular.copy($scope.teamDTO.teamName);
+          if (teamName === "") {
+            return $window.alert("Please enter a valid team name.");
+          } else if ($scope.hideMemberPanel) {
+            $scope.addMember($rootScope.currentUser.userName);
+            return $scope.hideMemberPanel = false;
+          }
+        }
+      };
+      $scope.searchUser = function(keyword) {
+        var condition;
+        condition = {
+          keyword: keyword
+        };
+        return $http.post("/user/typeAheadSearch", condition).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            return data.list;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        });
+      };
+      $scope.addMemberClick = function() {
+        if ($scope.memberList.length < 3) {
+          return $scope.addMember($scope.newMember);
+        }
+      };
+      $scope.addMember = function(userName) {
+        var condition;
+        condition = {
+          userName: userName
+        };
+        return $http.post("/user/typeAheadSearch", condition).then(function(response) {
+          var data, result;
+          data = response.data;
+          if (data.result === "success") {
+            result = data.list;
+            if (result.size === 0 || result[0].userName !== userName) {
+              return $window.alert("No such user!");
+            } else {
+              if (_.where($scope.memberList, {
+                userId: result[0].userId
+              }).length > 0) {
+                return $window.alert("You can not add the same member twice");
+              } else {
+                return $scope.memberList.add(result[0]);
+              }
+            }
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        });
+      };
+      $scope.removeMember = function(index) {
+        if (index >= 1 && index < 3) {
+          return $scope.memberList.splice(index, 1);
+        }
+      };
+      return $scope.createTeam = function() {
+        var teamDTO;
+        if ($scope.memberList.length < 1 || $scope.memberList.length > 3) {
+          return $window.alert("Member number should between 1 and 3.");
+        } else {
+          teamDTO = angular.copy($scope.teamDTO);
+          teamDTO.memberList = _.map($scope.memberList, function(val) {
+            return val.userId;
+          }).join(",");
+          return $http.post("/team/createTeam", teamDTO).then(function(response) {
             var data;
             data = response.data;
-            if (data.result === "error") {
-              return $window.alert(data.error_msg);
-            } else if (data.result === false) {
-              return $scope.hideMemberPanel = false;
+            if (data.result === "success") {
+              $scope.hideMemberPanel = true;
+              $scope.teamDTO.teamName = "";
+              return $scope.memberList = [];
             } else {
-              return $window.alert("Team name has been used!");
+              return $window.alert(data.error_msg);
             }
           });
         }
@@ -65461,7 +65532,7 @@ if (typeof exports === 'object') {
       $scope.fieldInfo = [];
       $scope.views = {
         loginView: "<a href=\"javascript:void(0);\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n  Sign in\n</a>\n<ul ui-dropdown-menu class=\"dropdown-menu cdoj-form-menu\" style=\"width: 340px;\">\n  <li>\n    <form>\n      <div class=\"input-group form-group input-group-sm\">\n        <span class=\"input-group-addon\">\n          <i class=\"fa fa-user\" style=\"width: 14px;\"></i>\n        </span>\n        <input type=\"text\"\n               ng-model=\"userLoginDTO.userName\"\n               maxlength=\"24\"\n               id=\"userName\"\n               class=\"form-control\"\n               ng-required=\"true\"\n               ng-pattern=\"/^[a-zA-Z0-9_]{4,24}$/\"\n               placeholder=\"Username\"/>\n      </div>\n      <div class=\"input-group form-group input-group-sm\">\n        <span class=\"input-group-addon\">\n          <i class=\"fa fa-key\" style=\"width: 14px;\"></i>\n        </span>\n        <input type=\"password\"\n               ng-model=\"userLoginDTO.password\"\n               id=\"password\"\n               ng-required=\"true\"\n               ng-minlength=\"6\"\n               ng-maxlength=\"24\"\n               class=\"form-control\"\n               placeholder=\"Password\"/>\n        <span class=\"input-group-btn\">\n          <button type=\"submit\"\n                  class=\"btn btn-default\"\n                  ng-click=\"login()\">\n            Login\n          </button>\n        </span>\n      </div>\n      <ui-validate-info value=\"fieldInfo\" for=\"password\"></ui-validate-info>\n    </form>\n  </li>\n  <li role=\"presentation\" class=\"divider\"></li>\n  <li>\n    <a href=\"javascript:void(0);\" ng-click=\"openRegisterModal()\">\n      <i class=\"fa fa-arrow-circle-right\" style=\"padding-right: 6px;\"></i>Register</a>\n    <a href=\"javascript:void(0);\" ng-click=\"openForgetPasswordModal()\">\n      <i class=\"fa fa-arrow-circle-right\" style=\"padding-right: 6px;\"></i>Forget password? </a>\n  </li>\n</ul>",
-        userView: "<div id=\"cdoj-user\">\n  <a href=\"javascript:void(0);\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n    <img id=\"cdoj-user-avatar\"\n         ui-avatar\n         email=\"currentUser.email\"\n         src=\"/images/avatar/default.jpg\"/>\n  </a>\n  <ul class=\"dropdown-menu\"\n      role=\"menu\"\n      aria-labelledby=\"user-menu\"\n      style=\"top: 48px;\nborder-radius: none;\nborder-top-left-radius: 0;\nborder-top-right-radius: 0;\">\n    <li role=\"presentation\"\n        class=\"dropdown-header text-center\">\n      <span id=\"currentUser\"\n            ng-bind=\"currentUser.userName\">\n        </span>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"/user/center/{{currentUser.userName}}\">\n        <i class=\"fa fa-home\"></i>User center\n      </a>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"javascript:void(0);\" data-toggle=\"modal\"\n         data-target=\"#cdoj-profile-edit-modal\"\n         ng-click=\"openUserProfileEditor()\">\n        <i class=\"fa fa-wrench\"></i>Edit profile\n      </a>\n    </li>\n    <li role=\"presentation\" class=\"divider\"></li>\n    <li role=\"presentation\">\n      <a href=\"javascript:void(0);\" id=\"cdoj-logout-button\" ng-click=\"logout()\">\n        <i class=\"fa fa-power-off\"></i>Logout\n      </a>\n    </li>\n  </ul>\n</div>"
+        userView: "<div id=\"cdoj-user\">\n  <a href=\"javascript:void(0);\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n    <img id=\"cdoj-user-avatar\"\n         ui-avatar\n         email=\"currentUser.email\"\n         src=\"/images/avatar/default.jpg\"/>\n  </a>\n  <ul class=\"dropdown-menu\"\n      role=\"menu\"\n      aria-labelledby=\"user-menu\"\n      style=\"top: 48px;\nborder-radius: none;\nborder-top-left-radius: 0;\nborder-top-right-radius: 0;\">\n    <li role=\"presentation\"\n        class=\"dropdown-header text-center\">\n      <span id=\"currentUser\"\n            ng-bind=\"currentUser.userName\">\n        </span>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"#/user/center/{{currentUser.userName}}\">\n        <i class=\"fa fa-home\"></i>User center\n      </a>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"javascript:void(0);\" data-toggle=\"modal\"\n         data-target=\"#cdoj-profile-edit-modal\"\n         ng-click=\"openUserProfileEditor()\">\n        <i class=\"fa fa-wrench\"></i>Edit profile\n      </a>\n    </li>\n    <li role=\"presentation\">\n      <a href=\"#/user/team/{{currentUser.userName}}\">\n        <i class=\"fa fa-group\"></i><span class=\"cdoj-menu-item\">Teams</span>\n      </a>\n    </li>\n    <li role=\"presentation\" class=\"divider\"></li>\n    <li role=\"presentation\">\n      <a href=\"javascript:void(0);\" id=\"cdoj-logout-button\" ng-click=\"logout()\">\n        <i class=\"fa fa-power-off\"></i>Logout\n      </a>\n    </li>\n  </ul>\n</div>"
       };
       $rootScope.$watch("hasLogin", function() {
         var view;

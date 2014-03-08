@@ -85,7 +85,7 @@ border-top-right-radius: 0;">
                     </span>
                 </li>
                 <li role="presentation">
-                  <a href="/user/center/{{currentUser.userName}}">
+                  <a href="#/user/center/{{currentUser.userName}}">
                     <i class="fa fa-home"></i>User center
                   </a>
                 </li>
@@ -94,6 +94,11 @@ border-top-right-radius: 0;">
                      data-target="#cdoj-profile-edit-modal"
                      ng-click="openUserProfileEditor()">
                     <i class="fa fa-wrench"></i>Edit profile
+                  </a>
+                </li>
+                <li role="presentation">
+                  <a href="#/user/team/{{currentUser.userName}}">
+                    <i class="fa fa-group"></i><span class="cdoj-menu-item">Teams</span>
                   </a>
                 </li>
                 <li role="presentation" class="divider"></li>

@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.ITeamDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
+import cn.edu.uestc.acmicpc.db.entity.Team;
 import cn.edu.uestc.acmicpc.service.iface.TeamService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
@@ -24,7 +25,7 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
 
   @Override
   public ITeamDAO getDAO() {
-    return null;
+    return teamDAO;
   }
 
   @Override
@@ -36,5 +37,20 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
       return true;
     }
     return false;
+  }
+
+  @Override
+  public Integer createNewTeam(String teamName, Integer leaderId) throws AppException {
+    Team team = new Team();
+    team.setTeamId(null);
+    team.setTeamName(teamName);
+    team.setLeaderId(leaderId);
+    teamDAO.add(team);
+    return team.getTeamId();
+  }
+
+  @Override
+  public TeamDTO getTeamDTOByTeamId(Integer teamId) throws AppException {
+    return teamDAO.getDTOByUniqueField(TeamDTO.class, TeamDTO.builder(), "teamId", teamId);
   }
 }

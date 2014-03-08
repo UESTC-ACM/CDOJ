@@ -267,6 +267,11 @@ public class Condition {
     entries.add(entry);
   }
 
+  private String escape(Object value) {
+    String result = String.format("%s", value);
+    result = result.replaceAll("'", "''");
+    return result;
+  }
   /**
    * Builds DB query string and append it into builder.
    *
@@ -303,11 +308,11 @@ public class Condition {
           builder.append(entry.getFieldName());
           builder.append(entry.getConditionType().getSignal());
           if (entry.getConditionType() == ConditionType.LIKE) {
-            builder.append("'%").append(entry.getValue()).append("%'");
+            builder.append("'%").append(escape(entry.getValue())).append("%'");
           } else if (entry.getConditionType() == ConditionType.IN) {
             builder.append("(").append(entry.getValue()).append(")");
           } else {
-            builder.append("'").append(entry.getValue()).append("'");
+            builder.append("'").append(escape(entry.getValue())).append("'");
           }
         }
       }

@@ -11,6 +11,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserProblemStatusDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDTO;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
@@ -204,6 +205,33 @@ public class UserController extends BaseController {
       PageInfo pageInfo = buildPageInfo(count, userCondition.currentPage,
           Global.RECORD_PER_PAGE, null);
       List<UserListDTO> userList = userService.getUserListDTOList(userCondition, pageInfo);
+
+      json.put("pageInfo", pageInfo);
+      json.put("result", "success");
+      json.put("list", userList);
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      json.put("result", "error");
+      e.printStackTrace();
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  @RequestMapping("typeAheadSearch")
+  @LoginPermit(NeedLogin = false)
+  public
+  @ResponseBody
+  Map<String, Object> typeAheadSearch(@RequestBody UserCondition userCondition) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      Long count = userService.count(userCondition);
+      PageInfo pageInfo = buildPageInfo(count, 1L,
+          6L, null);
+      List<UserTypeAheadDTO> userList = userService.getUserTypeAheadDTOList(userCondition,
+          pageInfo);
 
       json.put("pageInfo", pageInfo);
       json.put("result", "success");
