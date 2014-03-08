@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.web.oj.controller.team;
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamEditDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.TeamService;
@@ -11,6 +12,8 @@ import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +52,14 @@ public class TeamController extends BaseController {
     Map<String, Object> json = new HashMap<>();
     try {
       UserDTO userDTO =  getCurrentUser(session);
+      teamCondition.userId = userDTO.getUserId();
 
+      Long count = teamService.count(teamCondition);
+      PageInfo pageInfo = buildPageInfo(count, teamCondition.currentPage,
+          Global.RECORD_PER_PAGE, null);
+      List<TeamListDTO> teamList = teamService.getTeamList(teamCondition, pageInfo);
+
+      json.put("list", teamList);
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");

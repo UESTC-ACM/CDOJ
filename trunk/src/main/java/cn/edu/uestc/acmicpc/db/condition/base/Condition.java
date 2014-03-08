@@ -348,14 +348,8 @@ public class Condition {
     return pageInfo;
   }
 
-  /**
-   * Gets HQL string with order by clause.
-   *
-   * @return HQL string we need.
-   */
-  public String toHQLStringWithOrders() {
+  public String getOrdersString() {
     StringBuilder builder = new StringBuilder();
-    builder.append(toHQLString());
     if (!orders.isEmpty()) {
       builder.append(" order by");
       boolean first = true;
@@ -368,6 +362,18 @@ public class Condition {
         }
       }
     }
+    return builder.toString();
+  }
+
+  /**
+   * Gets HQL string with order by clause.
+   *
+   * @return HQL string we need.
+   */
+  public String toHQLStringWithOrders() {
+    StringBuilder builder = new StringBuilder();
+    builder.append(toHQLString());
+    builder.append(getOrdersString());
     return builder.toString();
   }
 

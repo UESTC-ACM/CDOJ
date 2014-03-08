@@ -112,15 +112,24 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     if (condition == null) {
       condition = new Condition();
     }
+    return customCount(fieldName, buildHQLString(condition));
+  }
+
+  @Override
+  public Long customCount(String fieldName, String hqlCondition) throws AppException {
     try {
-      // TODO wrap the field by ``
       String hql = "select count(" + fieldName + ") "
-          + buildHQLString(condition);
+          + hqlCondition;
       return (Long) getQuery(hql, null).uniqueResult();
     } catch (HibernateException e) {
       LOGGER.error(e);
       throw new AppException("Invoke count method error.");
     }
+  }
+
+  @Override
+  public Long count(String hqlCondition) throws AppException {
+    return customCount("*", hqlCondition);
   }
 
   @Override
@@ -179,6 +188,23 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
+  public List<?> findAll(String fields, String hqlCondition, PageInfo pageInfo) throws AppException {
+    try {
+      String hql;
+      if (fields == null) {
+        hql = hqlCondition;
+      } else {
+        // TODO wrap the field by ``
+        hql = "select " + fields + " " + hqlCondition;
+      }
+      return getQuery(hql, pageInfo).list();
+    } catch (HibernateException e) {
+      LOGGER.error(e);
+      throw new AppException("Invoke findAll method error.");
+    }
+  }
+
+  @Override
   public List<?> findAll(String fields, Condition condition)
       throws AppException {
     try {
@@ -198,7 +224,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
 
   @Override
   public Long count() throws AppException {
-    return count(null);
+    return count((Condition) null);
   }
 
   @Override
@@ -338,6 +364,27 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   @Override
   public int executeSQL(String sql) {
     return getSession().createSQLQuery(sql).executeUpdate();
+  }
+
+  @Override
+  public <T extends BaseDTO<Entity>> List<T> findAll(Class<T> clazz,
+                                                     BaseBuilder<T> builder,
+                                                     String hql, PageInfo pageInfo) throws AppException {
+    List<T> list = new ArrayList<>();
+    AppExceptionUtil.assertTrue(clazz.isAnnotationPresent(Fields.class));
+    String[] fields = clazz.getAnnotation(Fields.class).value();
+    // TODO wrap the field by ``
+    String queryField = ArrayUtil.join(fields, ",");
+    List<?> result = findAll(queryField, hql, pageInfo);
+    for (Iterator<?> iterator = result.iterator(); iterator.hasNext(); ) {
+      Object[] entity = (Object[]) iterator.next();
+      Map<String, Object> properties = new HashMap<>();
+      for (int i = 0; i < fields.length; i++) {
+        properties.put(fields[i], entity[i]);
+      }
+      list.add(builder.build(properties));
+    }
+    return list;
   }
 
   @Override
