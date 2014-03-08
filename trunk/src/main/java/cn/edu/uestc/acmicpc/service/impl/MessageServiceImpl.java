@@ -1,7 +1,10 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
+import cn.edu.uestc.acmicpc.db.condition.impl.MessageCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IMessageDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.Message;
@@ -9,11 +12,13 @@ import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
+import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Description
@@ -81,5 +86,18 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
         .build());
     MessageDTO messageDTO = getMessageDTO(messageId);
     AppExceptionUtil.assertNotNull(messageDTO, "Error while sending notification.");
+  }
+
+  @Override
+  public Long count(MessageCondition condition) throws AppException {
+    return messageDAO.count(condition.getCondition());
+  }
+
+  @Override
+  public List<MessageForReceiverDTO> getMessageForReceiverDTOList(MessageCondition messageCondition
+      , PageInfo pageInfo) throws AppException {
+    Condition condition = messageCondition.getCondition();
+    condition.setPageInfo(pageInfo);
+    return messageDAO.findAll(MessageForReceiverDTO.class, MessageForReceiverDTO.builder(), condition);
   }
 }

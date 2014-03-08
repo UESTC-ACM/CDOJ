@@ -1,9 +1,11 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.index;
 
+import cn.edu.uestc.acmicpc.db.condition.impl.MessageCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
+import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
@@ -29,12 +31,15 @@ public class IndexController extends BaseController {
   private DepartmentService departmentService;
   private GlobalService globalService;
   private LanguageService languageService;
+  private MessageService messageService;
 
   @Autowired
-  public IndexController(DepartmentService departmentService, GlobalService globalService, LanguageService languageService) {
+  public IndexController(DepartmentService departmentService, GlobalService globalService,
+                         LanguageService languageService, MessageService messageService) {
     this.departmentService = departmentService;
     this.globalService = globalService;
     this.languageService = languageService;
+    this.messageService = messageService;
   }
 
   @RequestMapping(value = {"index", "/"}, method = RequestMethod.GET)
@@ -44,30 +49,43 @@ public class IndexController extends BaseController {
     return "index";
   }
 
-  @RequestMapping(value="globalData")
+  @RequestMapping(value="userData")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> globalData(HttpSession session) {
+  public @ResponseBody Map<String, Object> userData(HttpSession session) {
     Map<String, Object> result = new HashMap<>();
     try {
-      result.put("departmentList", departmentService.getDepartmentList());
-      result.put("authenticationTypeList", globalService.getAuthenticationTypeList());
-      result.put("languageList", languageService.getLanguageList());
-      result.put("resultTypeList", globalService.getOnlineJudgeResultTypeList());
-      result.put("contestTypeList", globalService.getContestTypeList());
-      result.put("genderTypeList", globalService.getGenderTypeList());
-      result.put("gradeTypeList", globalService.getGradeTypeList());
-      result.put("tShirtsSizeTypeList", globalService.getTShirtsSizeTypeList());
       UserDTO currentUser = getCurrentUser(session);
       if (currentUser == null) {
         result.put("hasLogin", false);
       } else {
         result.put("hasLogin", true);
         result.put("currentUser", currentUser);
+        MessageCondition messageCondition = new MessageCondition();
+        messageCondition.receiverId = currentUser.getUserId();
+        messageCondition.isOpened = false;
+        result.put("unreadMessages", messageService.count(messageCondition));
       }
+      result.put("result", "success");
     } catch (AppException e) {
       result.put("result", "error");
       result.put("error_msg", e.getMessage());
     }
+    return result;
+  }
+
+  @RequestMapping(value="globalData")
+  @LoginPermit(NeedLogin = false)
+  public @ResponseBody Map<String, Object> globalData(HttpSession session) {
+    Map<String, Object> result = new HashMap<>();
+    result.put("departmentList", departmentService.getDepartmentList());
+    result.put("authenticationTypeList", globalService.getAuthenticationTypeList());
+    result.put("languageList", languageService.getLanguageList());
+    result.put("resultTypeList", globalService.getOnlineJudgeResultTypeList());
+    result.put("contestTypeList", globalService.getContestTypeList());
+    result.put("genderTypeList", globalService.getGenderTypeList());
+    result.put("gradeTypeList", globalService.getGradeTypeList());
+    result.put("tShirtsSizeTypeList", globalService.getTShirtsSizeTypeList());
+    result.put("result", "success");
     return result;
   }
 }

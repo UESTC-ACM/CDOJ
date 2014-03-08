@@ -64615,19 +64615,27 @@ if (typeof exports === 'object') {
   cdoj = angular.module('cdoj', ["ui.bootstrap", "ngRoute", "monospaced.elastic"]);
 
   cdoj.run([
-    "$rootScope", "$http", function($rootScope, $http) {
+    "$rootScope", "$http", "$interval", function($rootScope, $http, $interval) {
+      var fetchUserData;
       _.extend($rootScope, GlobalVariables);
       _.extend($rootScope, GlobalConditions);
       $http.get("/globalData").then(function(response) {
         var data;
         data = response.data;
-        if (data.result === "error") {
-          return alert(data.error_msg);
-        } else {
-          return _.extend($rootScope, data);
-        }
+        return _.extend($rootScope, data);
       });
-      return $rootScope.finalTitle = "UESTC Online Judge";
+      $rootScope.finalTitle = "UESTC Online Judge";
+      fetchUserData = function() {
+        return $http.get("/userData").then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            return _.extend($rootScope, data);
+          }
+        });
+      };
+      fetchUserData();
+      return $interval(fetchUserData, 5000);
     }
   ]).config([
     "$routeProvider", function($routeProvider) {
