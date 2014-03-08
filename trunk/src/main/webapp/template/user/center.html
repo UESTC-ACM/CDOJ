@@ -40,18 +40,63 @@
       </div>
     </div>
     <div class="col-md-12">
-      <h3>Problems</h3>
-      <hr/>
-      <div ng-repeat="status in problemStatus"
-           class="cdoj-label cdoj-user-status-label"
-           ng-class="{
+      <tabset>
+        <tab heading="Problems">
+          <div style="margin-top: 15px">
+            <div ng-repeat="status in problemStatus"
+                 class="cdoj-label cdoj-user-status-label"
+                 ng-class="{
                'label-default': status.status == 0,
                'label-success': status.status == 1,
                'label-danger': status.status == 2
-             }"
-          >
-        <a href="#/problem/show/{{status.problemId}}" ng-bind="status.problemId"></a>
-      </div>
+             }">
+              <a href="#/problem/show/{{status.problemId}}" ng-bind="status.problemId"></a>
+            </div>
+          </div>
+        </tab>
+        <tab heading="Teams">
+          <div style="margin: 0 -15px;">
+            <div class="col-md-12 text-right"
+                 style="margin-top: 15px;"
+                 ng-show="$root.hasLogin && $root.currentUser.userId == targetUser.userId">
+              <button class="btn btn-danger btn-sm"
+                      ng-click="showTeamEditor()"><i class="fa fa-group"></i>Create new team</button>
+            </div>
+            <list condition="teamCondition"
+                  request-url="/team/search">
+              <div class="col-md-6" ng-repeat="team in list">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <b ng-bind="team.teamName"></b>
+                  </div>
+                  <div class="panel-body">
+                    <ul class="media-list">
+                      <li class="media" ng-repeat="member in team.teamUsers">
+                        <div class="pull-left">
+                          <img ui-avatar
+                               email="member.email"
+                               width="44"
+                               height="44"
+                               class="media-object"
+                               style="width: 44px; height: 44px;"/>
+                        </div>
+                        <div class="media-body">
+                          <h4 class="media-heading">
+                            <span ng-bind="member.userName"></span>
+                            <span ng-show="$index == 0" class="font-danger">(Team leader)</span>
+                            <span ng-show="$index != 0" class="font-primary">(Team member)</span>
+                          </h4>
+                          <span ng-bind="member.nickName"></span>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </list>
+          </div>
+        </tab>
+      </tabset>
     </div>
   </div>
 </div>

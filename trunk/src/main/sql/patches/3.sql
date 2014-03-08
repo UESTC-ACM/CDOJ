@@ -25,6 +25,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`teamUser` (
   `teamUserId` INT(11) NOT NULL AUTO_INCREMENT ,
   `userId` INT(11) NOT NULL ,
   `teamId` INT(11) NOT NULL ,
+  `allow` TINYINT(1) NOT NULL ,
   PRIMARY KEY (`teamUserId`) ,
   INDEX `teamId_idx` (`teamId` ASC) ,
   INDEX `userId_idx` (`userId` ASC) ,

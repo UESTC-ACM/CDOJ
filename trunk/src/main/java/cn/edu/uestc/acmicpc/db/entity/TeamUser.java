@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.db.entity;
 import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,6 +35,19 @@ public class TeamUser implements Serializable {
 
   public void setTeamUserId(Integer teamUserId) {
     this.teamUserId = teamUserId;
+  }
+
+  private Boolean allow;
+
+  @Column(name = "allow", nullable = false, insertable = true, updatable = true, length = 0,
+      precision = 0)
+  @Basic
+  public Boolean getAllow() {
+    return allow;
+  }
+
+  public void setAllow(Boolean allow) {
+    this.allow = allow;
   }
 
   private Integer userId;

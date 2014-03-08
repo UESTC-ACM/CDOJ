@@ -7,7 +7,8 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
 import java.util.Map;
 
-@Fields({"teamId", "userId", "userByUserId.userName", "userByUserId.email", "userByUserId.nickName"})
+@Fields({"teamId", "userId", "userByUserId.userName", "userByUserId.email", "userByUserId.nickName"
+    , "allow"})
 public class TeamUserListDTO implements BaseDTO<TeamUser> {
 
   private Integer teamId;
@@ -15,6 +16,15 @@ public class TeamUserListDTO implements BaseDTO<TeamUser> {
   private String userName;
   private String email;
   private String nickName;
+  private Boolean allow;
+
+  public Boolean getAllow() {
+    return allow;
+  }
+
+  public void setAllow(Boolean allow) {
+    this.allow = allow;
+  }
 
   public String getNickName() {
     return nickName;
@@ -24,13 +34,15 @@ public class TeamUserListDTO implements BaseDTO<TeamUser> {
     this.nickName = nickName;
   }
 
-  public TeamUserListDTO(Integer teamId, Integer userId, String userName, String email, String nickName) {
+  public TeamUserListDTO(Integer teamId, Integer userId, String userName, String email,
+                         String nickName, Boolean allow) {
 
     this.teamId = teamId;
     this.userId = userId;
     this.userName = userName;
     this.email = email;
     this.nickName = nickName;
+    this.allow = allow;
   }
 
   public Integer getTeamId() {
@@ -77,7 +89,7 @@ public class TeamUserListDTO implements BaseDTO<TeamUser> {
 
     @Override
     public TeamUserListDTO build() {
-      return new TeamUserListDTO(teamId, userId, userName, email, nickName);
+      return new TeamUserListDTO(teamId, userId, userName, email, nickName, allow);
     }
 
     @Override
@@ -87,6 +99,7 @@ public class TeamUserListDTO implements BaseDTO<TeamUser> {
       userName = (String) properties.get("userByUserId.userName");
       email = (String) properties.get("userByUserId.email");
       nickName = (String) properties.get("userByUserId.nickName");
+      allow = (Boolean) properties.get("allow");
       return build();
     }
 
@@ -95,6 +108,7 @@ public class TeamUserListDTO implements BaseDTO<TeamUser> {
     private String userName;
     private String email;
     private String nickName;
+    private Boolean allow;
 
     public Builder setTeamId(Integer teamId) {
       this.teamId = teamId;
@@ -118,6 +132,11 @@ public class TeamUserListDTO implements BaseDTO<TeamUser> {
 
     public Builder setNickName(String nickName) {
       this.nickName = nickName;
+      return this;
+    }
+
+    public Builder setAllow(Boolean allow) {
+      this.allow = allow;
       return this;
     }
   }

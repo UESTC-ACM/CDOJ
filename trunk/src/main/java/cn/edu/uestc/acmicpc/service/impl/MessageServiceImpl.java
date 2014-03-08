@@ -61,15 +61,14 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
   @Override
   public void sendTeamInvitation(UserDTO sender, UserDTO receiver, TeamDTO teamDTO)
       throws AppException {
-    StringBuilder messageTitle = new StringBuilder();
-    messageTitle.append(sender.getUserName())
-        .append(" has invited you to join team ")
-        .append(teamDTO.getTeamName())
-        .append(".");
     String url = settings.SETTING_HOST
         + "/#/user/team/" + receiver.getUserName();
     StringBuilder messageContent = new StringBuilder();
-    messageContent.append("See ")
+    messageContent.append(sender.getUserName())
+        .append(" has invited you to join team ")
+        .append(teamDTO.getTeamName())
+        .append(".\n")
+        .append("See ")
         .append(url)
         .append(" for more details.");
     Integer messageId = createNewMessage(MessageDTO.builder()
@@ -77,7 +76,7 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
         .setReceiverId(receiver.getUserId())
         .setTime(new Timestamp(System.currentTimeMillis()))
         .setIsOpened(false)
-        .setTitle(messageTitle.toString())
+        .setTitle("Team invitation.")
         .setContent(messageContent.toString())
         .build());
     MessageDTO messageDTO = getMessageDTO(messageId);
