@@ -18,6 +18,8 @@ public class TeamCondition extends BaseCondition {
 
   public Integer userId;
 
+  public Boolean allow;
+
   @Override
   public Condition getCondition() throws AppException {
     Condition condition = super.getCondition();

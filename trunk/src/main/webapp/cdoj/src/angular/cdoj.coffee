@@ -25,6 +25,15 @@ cdoj
 
     fetchUserData()
     $interval(fetchUserData, 5000)
+
+    $rootScope.$watch("hasLogin",
+    ->
+      if $rootScope.hasLogin && $rootScope.currentUser.type == 1
+        $rootScope.isAdmin = true
+      else
+        $rootScope.isAdmin = false
+      $rootScope.$broadcast("refresh")
+    )
 ])
 .config([
     "$routeProvider",

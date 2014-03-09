@@ -23,6 +23,7 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -60,6 +61,9 @@ public class TeamController extends BaseController {
     Map<String, Object> json = new HashMap<>();
     try {
       if (teamCondition.userId != null) {
+        if (!isAdmin(session)) {
+          teamCondition.allow = true;
+        }
         // Search teams
         Long count = teamService.count(teamCondition);
         PageInfo pageInfo = buildPageInfo(count, teamCondition.currentPage,
@@ -100,6 +104,30 @@ public class TeamController extends BaseController {
 
         json.put("list", teamList);
       }
+      json.put("result", "success");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    }
+    return json;
+  }
+
+  @RequestMapping("changeAllowState/{userId}/{teamId}/{value}")
+  @LoginPermit(NeedLogin = true)
+  public
+  @ResponseBody
+  Map<String, Object> changeAllowState(@PathVariable("userId") Integer userId,
+                                       @PathVariable("teamId") Integer teamId,
+                                       @PathVariable("value") Boolean value,
+                                       HttpSession session) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      AppExceptionUtil.assertTrue(checkPermission(session, userId));
+      TeamDTO teamDTO = teamService.getTeamDTOByTeamId(teamId);
+      if (teamDTO.getLeaderId().equals(userId)) {
+        throw new AppException("Can not change team leader's state.");
+      }
+      teamUserService.changeAllowState(userId, teamId, value);
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");

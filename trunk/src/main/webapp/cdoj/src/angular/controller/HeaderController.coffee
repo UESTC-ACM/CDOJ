@@ -10,13 +10,6 @@ cdoj
         userName: ""
         password: ""
       $scope.fieldInfo = []
-      $rootScope.$watch("hasLogin",
-      ->
-        if $rootScope.hasLogin && $rootScope.currentUser.type == 1
-          $rootScope.isAdmin = true
-        else
-          $rootScope.isAdmin = false
-      )
 
       $scope.login = ->
         userLoginDTO = angular.copy($scope.userLoginDTO)

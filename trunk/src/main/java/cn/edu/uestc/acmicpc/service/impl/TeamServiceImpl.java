@@ -73,6 +73,9 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
     StringBuilder hqlBuilder = new StringBuilder();
     hqlBuilder.append("from Team team, TeamUser teamUser ")
         .append("where team.teamId = teamUser.teamId and teamUser.userId = ").append(teamCondition.userId);
+    if (teamCondition.allow != null) {
+      hqlBuilder.append(" and teamUser.allow = ").append(teamCondition.allow);
+    }
     if (teamCondition.teamName != null) {
       hqlBuilder.append(" and team.teamName like '%").append(teamCondition.teamName).append("%'");
     }

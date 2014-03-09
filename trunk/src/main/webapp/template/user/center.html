@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="media" id="cdoj-user-center-summary">
-        <a class="pull-left" href="#">
+        <a class="pull-left" href="javascript:void(0);">
           <img id="cdoj-user-avatar-large"
                ui-avatar
                email="targetUser.email"
@@ -74,9 +74,10 @@
                       <input bs-switch
                              ng-model="team.allow"
                              type="checkbox"
-                             switch-active="{{ isActive }}"
+                             switch-toggle="joinIn(team)"
+                             switch-active="true"
                              switch-size="small"
-                             switch-animate="true"
+                             switch-animate="false"
                              switch-label=""
                              switch-icon=""
                              switch-on-label="Allow"
