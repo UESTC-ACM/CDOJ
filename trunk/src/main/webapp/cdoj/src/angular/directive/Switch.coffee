@@ -19,6 +19,7 @@ angular.module("frapontillo.bootstrap-switch").directive "bsSwitch", [
     template: "<input>"
     replace: true
     scope:
+      switchToggle: "&"
       switchActive: "@"
       switchSize: "@"
       switchOn: "@"
@@ -71,6 +72,7 @@ angular.module("frapontillo.bootstrap-switch").directive "bsSwitch", [
         element.on "switch-change", (e, data) ->
           scope.$apply ->
             controller.$setViewValue data.value
+            scope.switchToggle()
 
       scope.getSizeClass = ->
         (if attrs.switchSize then "switch-" + attrs.switchSize else "")

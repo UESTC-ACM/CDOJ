@@ -312,7 +312,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
    */
   @Override
   public void updateEntitiesByField(Map<String, Object> properties,
-                                    String field, String values) {
+                                    String field, String values) throws AppException {
     if (properties.isEmpty()) {
       return;
     }
@@ -340,15 +340,26 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     stringBuilder.append(" where ").append(field).append(" in (")
         .append(values).append(")");
     String hql = stringBuilder.toString();
-    getQuery(hql, null).executeUpdate();
+    try {
+      getQuery(hql, null).executeUpdate();
+    } catch (Exception e) {
+      throw new AppException("Error while execute database query.");
+    }
   }
 
   @Override
   public void updateEntitiesByField(String propertyField, Object propertyValue,
-                                    String field, String values) {
+                                    String field, String values) throws AppException {
     Map<String, Object> properties = new HashMap<>();
     properties.put(propertyField, propertyValue);
     updateEntitiesByField(properties, field, values);
+  }
+
+  @Override
+  public void updateEntitiesByCondition(String propertyField, Object propertyValue, Condition condition) throws AppException {
+    Map<String, Object> properties = new HashMap<>();
+    properties.put(propertyField, propertyValue);
+    updateEntitiesByCondition(properties, condition);
   }
 
   @Override

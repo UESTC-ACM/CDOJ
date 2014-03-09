@@ -65030,7 +65030,15 @@ if (typeof exports === 'object') {
         });
       };
       fetchUserData();
-      return $interval(fetchUserData, 5000);
+      $interval(fetchUserData, 5000);
+      return $rootScope.$watch("hasLogin", function() {
+        if ($rootScope.hasLogin && $rootScope.currentUser.type === 1) {
+          $rootScope.isAdmin = true;
+        } else {
+          $rootScope.isAdmin = false;
+        }
+        return $rootScope.$broadcast("refresh");
+      });
     }
   ]).config([
     "$routeProvider", function($routeProvider) {
@@ -65472,13 +65480,6 @@ if (typeof exports === 'object') {
         password: ""
       };
       $scope.fieldInfo = [];
-      $rootScope.$watch("hasLogin", function() {
-        if ($rootScope.hasLogin && $rootScope.currentUser.type === 1) {
-          return $rootScope.isAdmin = true;
-        } else {
-          return $rootScope.isAdmin = false;
-        }
-      });
       $scope.login = function() {
         var password, userLoginDTO;
         userLoginDTO = angular.copy($scope.userLoginDTO);
@@ -65557,6 +65558,9 @@ if (typeof exports === 'object') {
       };
       $scope.itemsPerPage = 20;
       $scope.showPages = 10;
+      $scope.$on("refresh", function() {
+        return $scope.refresh();
+      });
       _.each($scope.condition, function(val, key) {
         if (angular.isDefined($routeParams[key])) {
           if (!isNaN(parseInt($routeParams[key]))) {
@@ -65584,9 +65588,6 @@ if (typeof exports === 'object') {
           })(this));
         }
       };
-      $rootScope.$watch("currentUser", function() {
-        return $scope.refresh();
-      }, true);
       return $scope.$watch("condition", function() {
         return $scope.refresh();
       }, true);
@@ -66007,11 +66008,16 @@ if (typeof exports === 'object') {
           return $window.alert(data.error_msg);
         }
       });
-      return $scope.showTeamEditor = function() {
+      $scope.showTeamEditor = function() {
         var teamEditor;
         return teamEditor = $modal.open({
           templateUrl: "template/modal/team-editor-modal.html",
           controller: "TeamEditorModalController"
+        });
+      };
+      return $scope.joinIn = function(team) {
+        return $http.get("/team/changeAllowState/" + $scope.targetUser.userId + "/" + team.teamId + "/" + team.allow).then(function() {
+          return $rootScope.$broadcast("refresh");
         });
       };
     }
@@ -66778,6 +66784,7 @@ if (typeof exports === 'object') {
         template: "<input>",
         replace: true,
         scope: {
+          switchToggle: "&",
           switchActive: "@",
           switchSize: "@",
           switchOn: "@",
@@ -66834,7 +66841,8 @@ if (typeof exports === 'object') {
           listenToView = function() {
             return element.on("switch-change", function(e, data) {
               return scope.$apply(function() {
-                return controller.$setViewValue(data.value);
+                controller.$setViewValue(data.value);
+                return scope.switchToggle();
               });
             });
           };

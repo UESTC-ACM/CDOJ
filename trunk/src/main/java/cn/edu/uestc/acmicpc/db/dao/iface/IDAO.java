@@ -188,7 +188,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param field      specific field name
    * @param values     records need to update
    */
-  void updateEntitiesByField(Map<String, Object> properties, String field, String values);
+  void updateEntitiesByField(Map<String, Object> properties, String field, String values) throws AppException;
 
   /**
    * Delete all records according field value.
@@ -206,7 +206,16 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param field         specific field name
    * @param values        records need to update
    */
-  void updateEntitiesByField(String propertyField, Object propertyValue, String field, String values);
+  void updateEntitiesByField(String propertyField, Object propertyValue, String field, String values) throws AppException;
+
+  /**
+   * Update all records according condition entity.
+   *
+   * @param propertyField field for setting
+   * @param propertyValue field value
+   * @param condition specific condition entity
+   */
+  void updateEntitiesByCondition(String propertyField, Object propertyValue, Condition condition) throws AppException;
 
   /**
    * Execute SQL immediately.

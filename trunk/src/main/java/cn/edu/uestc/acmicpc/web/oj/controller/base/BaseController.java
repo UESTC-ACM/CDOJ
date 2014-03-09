@@ -31,6 +31,11 @@ public class BaseController {
     UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
     return userDTO != null && (userDTO.getUserId().equals(userId) || userDTO.getType() == Global.AuthenticationType.ADMIN.ordinal());
   }
+
+  protected Boolean checkPermission(HttpSession session, String userName) throws AppException {
+    UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
+    return userDTO != null && (userDTO.getUserName().equals(userName) || userDTO.getType() == Global.AuthenticationType.ADMIN.ordinal());
+  }
   /**
    * Put field errors into binding result
    *

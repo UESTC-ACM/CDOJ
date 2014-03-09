@@ -14,4 +14,10 @@ public class TeamUserCondition extends BaseCondition {
 
   @Exp(mapField = "teamId", type = Condition.ConditionType.IN)
   public String teamIdList;
+
+  @Exp(mapField = "userId", type = Condition.ConditionType.EQUALS)
+  public Integer userId;
+
+  @Exp(mapField = "teamId", type = Condition.ConditionType.EQUALS)
+  public Integer teamId;
 }

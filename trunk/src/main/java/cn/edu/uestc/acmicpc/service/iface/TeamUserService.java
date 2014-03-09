@@ -32,4 +32,6 @@ public interface TeamUserService extends DatabaseService<TeamUser, Integer> {
   public TeamUserDTO getTeamUserDTO(Integer teamUserId) throws AppException;
 
   public List<TeamUserListDTO> getTeamUserList(TeamUserCondition teamUserCondition) throws AppException;
+
+  public void changeAllowState(Integer userId, Integer teamId, Boolean value) throws AppException;
 }
