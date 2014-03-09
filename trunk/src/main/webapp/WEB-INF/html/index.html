@@ -58,12 +58,13 @@
         </li>
         <li ng-show="$root.hasLogin"
             style="font-size: 20px;">
-          <a href="javascript:void(0);">
+          <a href="javascript:void(0);"
+             style="padding-right: 24px">
             <i class="fa fa-bell"></i>
             <span class="label label-danger"
                   style="position: absolute;
                   top: 6px;
-                  right: 3px;
+                  right: 12px;
                   font-size: 10px;"
                   ng-show="$root.unreadMessages > 0"
                   ng-bind="$root.unreadMessages"></span>

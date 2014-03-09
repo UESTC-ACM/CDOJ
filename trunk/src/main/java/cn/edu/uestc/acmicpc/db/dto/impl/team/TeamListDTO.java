@@ -20,6 +20,15 @@ public class TeamListDTO implements BaseDTO<Team> {
   private Integer leaderId;
   private List<TeamUserListDTO> teamUsers;
   private List<TeamUserListDTO> invitedUsers;
+  private Boolean allow;
+
+  public Boolean getAllow() {
+    return allow;
+  }
+
+  public void setAllow(Boolean allow) {
+    this.allow = allow;
+  }
 
   public List<TeamUserListDTO> getInvitedUsers() {
     return invitedUsers;
