@@ -21,10 +21,6 @@ cdoj
           $scope.messagesTabTitle = "#{$scope.targetUser.userName}'s messages"
           $scope.messageCondition.userId = $scope.currentUser.userId
 
-      $scope.$on("refresh", ->
-        $window.location.reload()
-      )
-
       currentTab = angular.copy($routeParams.tab)
       $scope.activeProblemsTab = false
       $scope.activeTeamsTab = false

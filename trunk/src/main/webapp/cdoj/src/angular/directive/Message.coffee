@@ -9,13 +9,13 @@ cdoj
       "$scope", "$modal",
       ($scope, $modal)->
         $scope.readMessage = ->
+          $scope.$broadcast("refresh")
           $modal.open(
             templateUrl: "template/modal/message-modal.html"
             controller: "MessageModalController"
             resolve:
               message: -> $scope.message
           )
-          console.log "fuck"
     ]
     template: """
 <a href="javascript:void(0);"

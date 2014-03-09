@@ -66027,9 +66027,6 @@ if (typeof exports === 'object') {
           return $scope.messageCondition.userId = $scope.currentUser.userId;
         }
       };
-      $scope.$on("refresh", function() {
-        return $window.location.reload();
-      });
       currentTab = angular.copy($routeParams.tab);
       $scope.activeProblemsTab = false;
       $scope.activeTeamsTab = false;
@@ -66522,7 +66519,8 @@ if (typeof exports === 'object') {
       controller: [
         "$scope", "$modal", function($scope, $modal) {
           return $scope.readMessage = function() {
-            $modal.open({
+            $scope.$broadcast("refresh");
+            return $modal.open({
               templateUrl: "template/modal/message-modal.html",
               controller: "MessageModalController",
               resolve: {
@@ -66531,7 +66529,6 @@ if (typeof exports === 'object') {
                 }
               }
             });
-            return console.log("fuck");
           };
         }
       ],
