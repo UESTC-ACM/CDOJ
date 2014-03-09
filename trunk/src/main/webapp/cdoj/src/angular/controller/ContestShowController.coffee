@@ -48,6 +48,7 @@ cdoj
 
       $scope.showProblemTab = ->
         # TODO Dirty code!
+        # TODO See user center controller
         $scope.$$childHead.tabs[1].select()
       $scope.showStatusTab = ->
         # TODO Dirty code!

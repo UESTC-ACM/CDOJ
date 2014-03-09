@@ -11,6 +11,7 @@ import cn.edu.uestc.acmicpc.db.entity.Message;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -66,16 +67,16 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
   @Override
   public void sendTeamInvitation(UserDTO sender, UserDTO receiver, TeamDTO teamDTO)
       throws AppException {
-    String url = settings.SETTING_HOST
-        + "/#/user/team/" + receiver.getUserName();
+    String userCenterUrl = settings.SETTING_HOST
+        + "/#/user/center/" + receiver.getUserName() + "/teams";
     StringBuilder messageContent = new StringBuilder();
-    messageContent.append(sender.getUserName())
+    messageContent.append(StringUtil.getAtLink(sender.getUserName(), sender.getUserId()))
         .append(" has invited you to join team ")
         .append(teamDTO.getTeamName())
-        .append(".\n")
-        .append("See ")
-        .append(url)
-        .append(" for more details.");
+        .append(".\n\n")
+        .append("See [your teams](")
+        .append(userCenterUrl)
+        .append(") for more details.");
     Integer messageId = createNewMessage(MessageDTO.builder()
         .setSenderId(sender.getUserId())
         .setReceiverId(receiver.getUserId())

@@ -8,6 +8,7 @@ import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +50,11 @@ public class IndexController extends BaseController {
     return "index";
   }
 
-  @RequestMapping(value="userData")
+  @RequestMapping(value = "userData")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> userData(HttpSession session) {
+  public
+  @ResponseBody
+  Map<String, Object> userData(HttpSession session) {
     Map<String, Object> result = new HashMap<>();
     try {
       UserDTO currentUser = getCurrentUser(session);
@@ -63,7 +66,15 @@ public class IndexController extends BaseController {
         MessageCondition messageCondition = new MessageCondition();
         messageCondition.receiverId = currentUser.getUserId();
         messageCondition.isOpened = false;
-        result.put("unreadMessages", messageService.count(messageCondition));
+        messageCondition.orderFields = "time";
+        messageCondition.orderAsc = "false";
+        Long totalUnreadMessage = messageService.count(messageCondition);
+        result.put("totalUnreadMessages", totalUnreadMessage);
+        // Show first 10 unread messages
+        PageInfo pageInfo = buildPageInfo(totalUnreadMessage, 1L,
+            10L, null);
+        result.put("unreadMessages", messageService.getMessageForReceiverDTOList(messageCondition,
+            pageInfo));
       }
       result.put("result", "success");
     } catch (AppException e) {
@@ -73,9 +84,11 @@ public class IndexController extends BaseController {
     return result;
   }
 
-  @RequestMapping(value="globalData")
+  @RequestMapping(value = "globalData")
   @LoginPermit(NeedLogin = false)
-  public @ResponseBody Map<String, Object> globalData(HttpSession session) {
+  public
+  @ResponseBody
+  Map<String, Object> globalData(HttpSession session) {
     Map<String, Object> result = new HashMap<>();
     result.put("departmentList", departmentService.getDepartmentList());
     result.put("authenticationTypeList", globalService.getAuthenticationTypeList());

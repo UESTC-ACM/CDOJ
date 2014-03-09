@@ -8,7 +8,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
 import java.sql.Timestamp;
 import java.util.Map;
 
-@Fields({ "messageId", "senderId", "senderBySenderId.senderEmail", "senderBySenderId.senderUserName"
+@Fields({ "messageId", "senderId", "userBySenderId.email", "userBySenderId.userName"
     , "title", "content", "time", "isOpened" })
 public class MessageForReceiverDTO implements BaseDTO<Message> {
 
@@ -121,8 +121,8 @@ public class MessageForReceiverDTO implements BaseDTO<Message> {
     public MessageForReceiverDTO build(Map<String, Object> properties) {
       messageId = (Integer) properties.get("messageId");
       senderId = (Integer) properties.get("senderId");
-      senderEmail = (String) properties.get("senderBySenderId.senderEmail");
-      senderUserName = (String) properties.get("senderBySenderId.senderUserName");
+      senderEmail = (String) properties.get("userBySenderId.email");
+      senderUserName = (String) properties.get("userBySenderId.userName");
       title = (String) properties.get("title");
       content = (String) properties.get("content");
       time = (Timestamp) properties.get("time");

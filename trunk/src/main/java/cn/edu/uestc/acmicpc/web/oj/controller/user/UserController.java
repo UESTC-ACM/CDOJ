@@ -21,6 +21,7 @@ import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
@@ -220,11 +221,37 @@ public class UserController extends BaseController {
     return json;
   }
 
-  @RequestMapping("typeAheadSearch")
+  @RequestMapping("typeAheadItem/{userName}")
+  public
+  @ResponseBody
+  Map<String, Object> typeAheadResult(@PathVariable("userName") String userName) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      UserDTO userDTO = userService.getUserDTOByUserName(userName);
+      AppExceptionUtil.assertNotNull(userDTO, "No such user!");
+      json.put("result", "success");
+      json.put("user", UserTypeAheadDTO.builder()
+          .setUserId(userDTO.getUserId())
+          .setUserName(userDTO.getUserName())
+          .setNickName(userDTO.getNickName())
+          .setEmail(userDTO.getEmail())
+          .build());
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      json.put("result", "error");
+      e.printStackTrace();
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  @RequestMapping("typeAheadList")
   @LoginPermit(NeedLogin = false)
   public
   @ResponseBody
-  Map<String, Object> typeAheadSearch(@RequestBody UserCondition userCondition) {
+  Map<String, Object> typeAheadList(@RequestBody UserCondition userCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
       Long count = userService.count(userCondition);

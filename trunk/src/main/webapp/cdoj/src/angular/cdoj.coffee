@@ -33,6 +33,7 @@ cdoj
       else
         $rootScope.isAdmin = false
       $rootScope.$broadcast("refresh")
+      fetchUserData()
     )
 ])
 .config([
@@ -74,6 +75,9 @@ cdoj
       ).when("/user/list",
         templateUrl: "template/user/list.html"
         controller: "UserListController"
+      ).when("/user/center/:userName/:tab",
+        templateUrl: "template/user/center.html"
+        controller: "UserCenterController"
       ).when("/user/center/:userName",
         templateUrl: "template/user/center.html"
         controller: "UserCenterController"

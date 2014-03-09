@@ -54,25 +54,60 @@
 
         <li ng-show="$root.hasLogin"
             style="font-size: 20px;">
-          <a href="#/user/center/{{currentUser.userName}}" style="padding-right: 0"><i class="fa fa-home"></i></a>
+          <a href="#/user/center/{{currentUser.userName}}"><i class="fa fa-home"></i></a>
         </li>
         <li ng-show="$root.hasLogin"
             style="font-size: 20px;">
           <a href="javascript:void(0);"
-             style="padding-right: 24px">
+             class="dropdown-toggle">
             <i class="fa fa-bell"></i>
             <span class="label label-danger"
                   style="position: absolute;
                   top: 6px;
-                  right: 12px;
+                  right: 4px;
                   font-size: 10px;"
-                  ng-show="$root.unreadMessages > 0"
-                  ng-bind="$root.unreadMessages"></span>
+                  ng-show="$root.totalUnreadMessages > 0"
+                  ng-bind="$root.totalUnreadMessages"></span>
           </a>
+          <ul class="dropdown-menu" style="width: 330px;">
+            <li role="presentation" class="dropdown-header">
+              Notification
+            </li>
+            <li role="presentation" ng-repeat="message in $root.unreadMessages">
+              <div class="media" style="padding: 0 6px 0 6px;">
+                <div class="pull-left">
+                  <img class="media-object"
+                       ui-avatar
+                       email="message.senderEmail"
+                       style="width: 54px; height: 54px;">
+                </div>
+                <div class="media-body">
+                  <p>
+                    <a href="#/user/center/{{message.senderUserName}}"
+                       ng-bind="message.senderUserName"></a>
+                    :
+                    <a href="javascript:void(0);"
+                       ng-click="readMessage(message)"
+                       ng-bind="message.title"></a>
+                  </p>
+                  <span class="muted" style="font-size: 12px;">
+                    <i class="fa fa-clock-o"></i>
+                    <span ui-time time="message.time" inline="true" change="false"></span>
+                  </span>
+                </div>
+              </div>
+            </li>
+            <li role="presentation" class="divider"></li>
+            <li role="presentation">
+              <a href="#/user/center/{{currentUser.userName}}/messages">
+                View more notifications
+              </a>
+            </li>
+          </ul>
         </li>
         <li ng-show="$root.hasLogin">
-          <div id="cdoj-user">
-            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+          <div id="cdoj-user" style="margin-left: 15px;">
+            <a href="javascript:void(0);" class="dropdown-toggle">
               <img id="cdoj-user-avatar"
                    ui-avatar
                    email="currentUser.email"
@@ -85,10 +120,7 @@
 border-top-left-radius: 0;
 border-top-right-radius: 0;">
               <li role="presentation"
-                  class="dropdown-header text-center">
-                  <span id="currentUser"
-                        ng-bind="currentUser.userName">
-                    </span>
+                  class="dropdown-header" ng-bind="currentUser.userName">
               </li>
               <li role="presentation">
                 <a href="#/user/center/{{currentUser.userName}}">
