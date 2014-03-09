@@ -65002,6 +65002,17 @@ if (typeof exports === 'object') {
       teamName: void 0,
       orderFields: "team.teamId",
       orderAsc: "false"
+    },
+    messageCondition: {
+      currentPage: null,
+      senderId: null,
+      receiverId: null,
+      isOpened: null,
+      userId: null,
+      userAId: null,
+      userBId: null,
+      orderFields: "time",
+      orderAsc: "false"
     }
   };
 
@@ -65601,6 +65612,22 @@ if (typeof exports === 'object') {
     }
   ]);
 
+  cdoj.controller("MessageModalController", [
+    "$scope", "$http", "$modalInstance", "message", "$window", function($scope, $http, $modalInstance, message, $window) {
+      $scope.message = message;
+      $scope.message.content = "Loading...";
+      return $http.get("/message/fetch/" + $scope.message.messageId).then(function(response) {
+        var data;
+        data = response.data;
+        if (data.result === "success") {
+          return _.extend($scope.message, data.message);
+        } else {
+          return $window.alert(data.error_msg);
+        }
+      });
+    }
+  ]);
+
   cdoj.controller("PasswordResetController", [
     "$scope", "$http", "$window", "$routeParams", function($scope, $http, $window, $routeParams) {
       $scope.userActivateDTO = {
@@ -65982,6 +66009,7 @@ if (typeof exports === 'object') {
         email: ""
       };
       $scope.teamCondition = angular.copy($rootScope.teamCondition);
+      $scope.messageCondition = angular.copy($rootScope.messageCondition);
       $scope.editPermission = false;
       checkPermission = function() {
         if ($rootScope.hasLogin === false) {
@@ -65989,10 +66017,14 @@ if (typeof exports === 'object') {
         } else if ($rootScope.currentUser.userId === $scope.targetUser.userId) {
           $scope.editPermission = true;
         }
+        $scope.messageCondition = angular.copy($rootScope.messageCondition);
         if ($scope.editPermission === false) {
-          return $scope.messagesTabTitle = "Your messages with " + $scope.targetUser.userName;
+          $scope.messagesTabTitle = "Your messages with " + $scope.targetUser.userName;
+          $scope.messageCondition.userAId = $scope.currentUser.userId;
+          return $scope.messageCondition.userBId = $scope.targetUser.userId;
         } else {
-          return $scope.messagesTabTitle = "" + $scope.targetUser.userName + "'s messages";
+          $scope.messagesTabTitle = "" + $scope.targetUser.userName + "'s messages";
+          return $scope.messageCondition.userId = $scope.currentUser.userId;
         }
       };
       $scope.$on("refresh", function() {
@@ -66459,6 +66491,7 @@ if (typeof exports === 'object') {
           return $scope.$watch("content", function() {
             var content;
             content = angular.copy($scope.content);
+            content = content.replace(/@([a-zA-Z0-9_]{4,24})\([0-9]+\)/, "[@$1](/#/user/center/$1)");
             content = marked(content);
             $element.empty().append(content);
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, $element[0]]);
@@ -66476,6 +66509,33 @@ if (typeof exports === 'object') {
         }
       },
       template: "<div></div>"
+    };
+  });
+
+  cdoj.directive("messagelink", function() {
+    return {
+      restrict: "EA",
+      scope: {
+        message: "="
+      },
+      replace: true,
+      controller: [
+        "$scope", "$modal", function($scope, $modal) {
+          return $scope.readMessage = function() {
+            $modal.open({
+              templateUrl: "template/modal/message-modal.html",
+              controller: "MessageModalController",
+              resolve: {
+                message: function() {
+                  return $scope.message;
+                }
+              }
+            });
+            return console.log("fuck");
+          };
+        }
+      ],
+      template: "<a href=\"javascript:void(0);\"\n   ng-click=\"readMessage()\"\n   ng-bind=\"message.title\"></a>"
     };
   });
 

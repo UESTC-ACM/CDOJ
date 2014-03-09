@@ -152,8 +152,42 @@
             <div class="col-md-12">
               <h4 ng-bind="messagesTabTitle"></h4>
             </div>
-          </div>
+            <list condition="messageCondition"
+                  request-url="/message/search">
+              <div class="col-md-12">
+                <ul class="media-list">
+                  <li class="media" ng-repeat="message in list">
+                    <a class="pull-left" href="#">
+                      <img class="media-object"
+                           ui-avatar
+                           email="message.senderEmail"
+                           style="width: 64px; height: 64px;">
+                    </a>
+                    <a class="pull-left" href="#">
+                      <img class="media-object"
+                           ui-avatar
+                           email="message.receiverEmail"
+                           style="width: 64px; height: 64px;">
+                    </a>
 
+                    <div class="media-body">
+                      <h4 class="media-heading">
+                        From <span ng-bind="message.senderUserName"></span> to <span
+                          ng-bind="message.receiverUserName"></span>:
+                      </h4>
+                      <p style="margin-bottom: 0">
+                        <messagelink message="message"></messagelink>
+                      </p>
+                      <span class="muted">
+                        <i class="fa fa-clock-o"></i>
+                        <span ui-time time="message.time" inline="true" change="false"></span>
+                      </span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </list>
+          </div>
         </tab>
       </tabset>
     </div>

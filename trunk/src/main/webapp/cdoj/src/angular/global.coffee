@@ -98,3 +98,13 @@ GlobalConditions =
     teamName: undefined
     orderFields: "team.teamId"
     orderAsc: "false"
+  messageCondition:
+    currentPage: null
+    senderId: null
+    receiverId: null
+    isOpened: null
+    userId: null
+    userAId: null
+    userBId: null
+    orderFields: "time"
+    orderAsc: "false"

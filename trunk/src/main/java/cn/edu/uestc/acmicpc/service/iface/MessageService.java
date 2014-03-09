@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.service.iface;
 import cn.edu.uestc.acmicpc.db.condition.impl.MessageCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.Message;
@@ -63,4 +64,14 @@ public interface MessageService extends DatabaseService<Message, Integer> {
    */
   public List<MessageForReceiverDTO> getMessageForReceiverDTOList(MessageCondition messageCondition
       , PageInfo pageInfo) throws AppException;
+
+  /**
+   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDTO} list
+   *
+   * @param messageCondition condition
+   * @param pageInfo         page info
+   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDTO} list
+   * @throws AppException
+   */
+  public List<MessageForUserDTO> getMessageForUserDTOList(MessageCondition messageCondition, PageInfo pageInfo) throws AppException;
 }

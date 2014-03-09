@@ -8,25 +8,21 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
 import java.sql.Timestamp;
 import java.util.Map;
 
-@Fields({ "messageId", "senderId", "userBySenderId.email", "userBySenderId.userName"
-    , "title", "time", "isOpened" })
-public class MessageForReceiverDTO implements BaseDTO<Message> {
+@Fields({"messageId", "senderId", "userBySenderId.email", "userBySenderId.userName"
+    , "receiverId", "userByReceiverId.email", "userByReceiverId.userName", "title", "time",
+    "isOpened"})
+public class MessageForUserDTO implements BaseDTO<Message> {
 
-  public MessageForReceiverDTO() {
-  }
-
-  public MessageForReceiverDTO(Integer messageId, Integer senderId, String senderEmail,
-                               String senderUserName, String title, Timestamp time,
-                               Boolean isOpened) {
-
-    this.messageId = messageId;
-    this.senderId = senderId;
-    this.senderEmail = senderEmail;
-    this.senderUserName = senderUserName;
-    this.title = title;
-    this.time = time;
-    this.isOpened = isOpened;
-  }
+  private Integer messageId;
+  private Integer senderId;
+  private String senderEmail;
+  private String senderUserName;
+  private Integer receiverId;
+  private String receiverEmail;
+  private String receiverUserName;
+  private String title;
+  private Timestamp time;
+  private Boolean isOpened;
 
   public Integer getMessageId() {
     return messageId;
@@ -60,6 +56,30 @@ public class MessageForReceiverDTO implements BaseDTO<Message> {
     this.senderUserName = senderUserName;
   }
 
+  public Integer getReceiverId() {
+    return receiverId;
+  }
+
+  public void setReceiverId(Integer receiverId) {
+    this.receiverId = receiverId;
+  }
+
+  public String getReceiverEmail() {
+    return receiverEmail;
+  }
+
+  public void setReceiverEmail(String receiverEmail) {
+    this.receiverEmail = receiverEmail;
+  }
+
+  public String getReceiverUserName() {
+    return receiverUserName;
+  }
+
+  public void setReceiverUserName(String receiverUserName) {
+    this.receiverUserName = receiverUserName;
+  }
+
   public String getTitle() {
     return title;
   }
@@ -84,35 +104,47 @@ public class MessageForReceiverDTO implements BaseDTO<Message> {
     this.isOpened = isOpened;
   }
 
-  private Integer messageId;
-  private Integer senderId;
-  private String senderEmail;
-  private String senderUserName;
-  private String title;
-  private Timestamp time;
-  private Boolean isOpened;
+  public MessageForUserDTO(Integer messageId, Integer senderId, String senderEmail,
+                           String senderUserName, Integer receiverId, String receiverEmail,
+                           String receiverUserName, String title, Timestamp time,
+                           Boolean isOpened) {
+
+    this.messageId = messageId;
+    this.senderId = senderId;
+    this.senderEmail = senderEmail;
+    this.senderUserName = senderUserName;
+    this.receiverId = receiverId;
+    this.receiverEmail = receiverEmail;
+    this.receiverUserName = receiverUserName;
+    this.title = title;
+    this.time = time;
+    this.isOpened = isOpened;
+  }
 
   public static Builder builder() {
     return new Builder();
   }
 
-  public static class Builder implements BaseBuilder<MessageForReceiverDTO> {
+  public static class Builder implements BaseBuilder<MessageForUserDTO> {
 
     private Builder() {
     }
 
     @Override
-    public MessageForReceiverDTO build() {
-      return new MessageForReceiverDTO(messageId, senderId, senderEmail, senderUserName, title,
-          time, isOpened);
+    public MessageForUserDTO build() {
+      return new MessageForUserDTO(messageId, senderId, senderEmail, senderUserName, receiverId,
+          receiverEmail, receiverUserName, title, time, isOpened);
     }
 
     @Override
-    public MessageForReceiverDTO build(Map<String, Object> properties) {
+    public MessageForUserDTO build(Map<String, Object> properties) {
       messageId = (Integer) properties.get("messageId");
       senderId = (Integer) properties.get("senderId");
       senderEmail = (String) properties.get("userBySenderId.email");
       senderUserName = (String) properties.get("userBySenderId.userName");
+      receiverId = (Integer) properties.get("receiverId");
+      receiverEmail = (String) properties.get("userByReceiverId.email");
+      receiverUserName = (String) properties.get("userByReceiverId.userName");
       title = (String) properties.get("title");
       time = (Timestamp) properties.get("time");
       isOpened = (Boolean) properties.get("isOpened");
@@ -123,6 +155,9 @@ public class MessageForReceiverDTO implements BaseDTO<Message> {
     private Integer senderId;
     private String senderEmail;
     private String senderUserName;
+    private Integer receiverId;
+    private String receiverEmail;
+    private String receiverUserName;
     private String title;
     private Timestamp time;
     private Boolean isOpened;
@@ -144,6 +179,21 @@ public class MessageForReceiverDTO implements BaseDTO<Message> {
 
     public Builder setSenderUserName(String senderUserName) {
       this.senderUserName = senderUserName;
+      return this;
+    }
+
+    public Builder setReceiverId(Integer receiverId) {
+      this.receiverId = receiverId;
+      return this;
+    }
+
+    public Builder setReceiverEmail(String receiverEmail) {
+      this.receiverEmail = receiverEmail;
+      return this;
+    }
+
+    public Builder setReceiverUserName(String receiverUserName) {
+      this.receiverUserName = receiverUserName;
       return this;
     }
 
