@@ -49,6 +49,9 @@ public class MessageController extends BaseController {
           !currentUser.getUserId().equals(messageDTO.getReceiverId())) {
         throw new AppException("Permission denied.");
       }
+      if (!messageDTO.getIsOpened()) {
+        messageService.read(messageDTO.getMessageId());
+      }
       json.put("message", messageDTO);
       json.put("result", "success");
     } catch (AppException e) {

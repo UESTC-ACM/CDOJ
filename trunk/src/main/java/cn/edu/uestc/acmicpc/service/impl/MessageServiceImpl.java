@@ -109,4 +109,9 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
     condition.setPageInfo(pageInfo);
     return messageDAO.findAll(MessageForUserDTO.class, MessageForUserDTO.builder(), condition);
   }
+
+  @Override
+  public void read(Integer messageId) throws AppException {
+    messageDAO.updateEntitiesByField("isOpened", true, "messageId", messageId.toString());
+  }
 }

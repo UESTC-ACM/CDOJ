@@ -74,4 +74,12 @@ public interface MessageService extends DatabaseService<Message, Integer> {
    * @throws AppException
    */
   public List<MessageForUserDTO> getMessageForUserDTOList(MessageCondition messageCondition, PageInfo pageInfo) throws AppException;
+
+  /**
+   * Mark one message as opened.
+   *
+   * @param messageId message's id
+   * @throws AppException
+   */
+  public void read(Integer messageId) throws AppException;
 }
