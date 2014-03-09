@@ -23,6 +23,17 @@ public class StringUtil {
   }
 
   /**
+   * Create @user link
+   *
+   * @param userName user's name
+   * @param userId user's id
+   * @return result
+   */
+  public static String getAtLink(String userName, Integer userId) {
+    return "@" + userName + "(" + userId + ")";
+  }
+
+  /**
    * get Setter or Getter name, return {@code null} if exception occurred.
    *
    * @param methodType method type for getter or setter

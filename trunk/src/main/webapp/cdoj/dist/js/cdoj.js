@@ -65037,7 +65037,8 @@ if (typeof exports === 'object') {
         } else {
           $rootScope.isAdmin = false;
         }
-        return $rootScope.$broadcast("refresh");
+        $rootScope.$broadcast("refresh");
+        return fetchUserData();
       });
     }
   ]).config([
@@ -65078,6 +65079,9 @@ if (typeof exports === 'object') {
       }).when("/user/list", {
         templateUrl: "template/user/list.html",
         controller: "UserListController"
+      }).when("/user/center/:userName/:tab", {
+        templateUrl: "template/user/center.html",
+        controller: "UserCenterController"
       }).when("/user/center/:userName", {
         templateUrl: "template/user/center.html",
         controller: "UserCenterController"
@@ -65531,13 +65535,16 @@ if (typeof exports === 'object') {
           controller: "ForgetPasswordModalController"
         });
       };
-      return $scope.openUserProfileEditor = function() {
+      $scope.openUserProfileEditor = function() {
         var userProfileEditor;
         $userProfile.setProfile($rootScope.currentUser.userName);
         return userProfileEditor = $modal.open({
           templateUrl: "template/modal/profile-edit-modal.html",
           controller: "UserProfileEditorController"
         });
+      };
+      return $scope.readMessage = function(message) {
+        return console.log(message);
       };
     }
   ]);
@@ -65857,7 +65864,7 @@ if (typeof exports === 'object') {
         condition = {
           keyword: keyword
         };
-        return $http.post("/user/typeAheadSearch", condition).then(function(response) {
+        return $http.post("/user/typeAheadList", condition).then(function(response) {
           var data;
           data = response.data;
           if (data.result === "success") {
@@ -65873,26 +65880,17 @@ if (typeof exports === 'object') {
         }
       };
       $scope.addMember = function(userName) {
-        var condition;
-        condition = {
-          userName: userName
-        };
-        return $http.post("/user/typeAheadSearch", condition).then(function(response) {
+        return $http.get("/user/typeAheadItem/" + userName).then(function(response) {
           var data, result;
           data = response.data;
-          console.log(condition, data);
           if (data.result === "success") {
-            result = data.list;
-            if (result.size === 0 || result[0].userName !== userName) {
-              return $window.alert("No such user!");
+            result = data.user;
+            if (_.where($scope.memberList, {
+              userId: result.userId
+            }).length > 0) {
+              return $window.alert("You can not add the same member twice");
             } else {
-              if (_.where($scope.memberList, {
-                userId: result[0].userId
-              }).length > 0) {
-                return $window.alert("You can not add the same member twice");
-              } else {
-                return $scope.memberList.add(result[0]);
-              }
+              return $scope.memberList.add(result);
             }
           } else {
             return $window.alert(data.error_msg);
@@ -65978,8 +65976,8 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("UserCenterController", [
-    "$scope", "$rootScope", "$http", "$routeParams", "$modal", function($scope, $rootScope, $http, $routeParams, $modal) {
-      var checkPermission, targetUserName;
+    "$scope", "$rootScope", "$http", "$routeParams", "$modal", "$window", function($scope, $rootScope, $http, $routeParams, $modal, $window) {
+      var checkPermission, currentTab, targetUserName;
       $scope.targetUser = {
         email: ""
       };
@@ -65987,14 +65985,30 @@ if (typeof exports === 'object') {
       $scope.editPermission = false;
       checkPermission = function() {
         if ($rootScope.hasLogin === false) {
-          return $scope.editPermission = false;
+          $scope.editPermission = false;
         } else if ($rootScope.currentUser.userId === $scope.targetUser.userId) {
-          return $scope.editPermission = true;
+          $scope.editPermission = true;
+        }
+        if ($scope.editPermission === false) {
+          return $scope.messagesTabTitle = "Your messages with " + $scope.targetUser.userName;
+        } else {
+          return $scope.messagesTabTitle = "" + $scope.targetUser.userName + "'s messages";
         }
       };
-      $rootScope.$watch("hasLogin", function() {
-        return checkPermission();
+      $scope.$on("refresh", function() {
+        return $window.location.reload();
       });
+      currentTab = angular.copy($routeParams.tab);
+      $scope.activeProblemsTab = false;
+      $scope.activeTeamsTab = false;
+      $scope.activeMessagesTab = false;
+      if (currentTab === "teams") {
+        $scope.activeTeamsTab = true;
+      } else if (currentTab === "messages") {
+        $scope.activeMessagesTab = true;
+      } else {
+        $scope.activeProblemsTab = true;
+      }
       targetUserName = angular.copy($routeParams.userName);
       $http.get("/user/userCenterData/" + targetUserName).then(function(response) {
         var data;

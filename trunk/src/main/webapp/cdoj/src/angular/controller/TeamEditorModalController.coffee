@@ -12,7 +12,7 @@ cdoj
       $scope.searchUser = (keyword)->
         condition =
           keyword: keyword
-        $http.post("/user/typeAheadSearch", condition).then (response)->
+        $http.post("/user/typeAheadList", condition).then (response)->
           data = response.data
           if data.result == "success"
             return data.list
@@ -22,21 +22,15 @@ cdoj
         if $scope.memberList.length < 3
           $scope.addMember($scope.newMember.userName)
       $scope.addMember = (userName)->
-        condition =
-          userName: userName
-        $http.post("/user/typeAheadSearch", condition).then (response)->
+        $http.get("/user/typeAheadItem/#{userName}").then (response)->
           data = response.data
-          console.log condition, data
           if data.result == "success"
-            result = data.list
-            if result.size == 0 || result[0].userName != userName
-              $window.alert "No such user!"
+            result = data.user
+            # Check if exists
+            if _.where($scope.memberList, {userId: result.userId}).length > 0
+              $window.alert "You can not add the same member twice"
             else
-              # Check if exists
-              if _.where($scope.memberList, {userId: result[0].userId}).length > 0
-                $window.alert "You can not add the same member twice"
-              else
-                $scope.memberList.add result[0]
+              $scope.memberList.add result
           else
             $window.alert data.error_msg
       $scope.addMember($rootScope.currentUser.userName)
@@ -49,7 +43,7 @@ cdoj
         else
           teamDTO = angular.copy($scope.teamDTO)
           teamDTO.memberList = _.map($scope.memberList,(val) ->
-                return val.userId
+            return val.userId
           ).join(",")
           $http.post("/team/createTeam", teamDTO).then (response)->
             data = response.data
@@ -59,4 +53,4 @@ cdoj
               $window.alert data.error_msg
       $scope.dismiss = ->
         $modalInstance.dismiss()
-])
+  ])

@@ -54,4 +54,7 @@ cdoj
           templateUrl: "template/modal/profile-edit-modal.html"
           controller: "UserProfileEditorController"
         )
+
+      $scope.readMessage = (message)->
+        console.log message
   ])

@@ -1,7 +1,7 @@
 cdoj
 .controller("UserCenterController", [
-    "$scope", "$rootScope", "$http", "$routeParams", "$modal"
-    ($scope, $rootScope, $http, $routeParams, $modal) ->
+    "$scope", "$rootScope", "$http", "$routeParams", "$modal", "$window"
+    ($scope, $rootScope, $http, $routeParams, $modal, $window) ->
       $scope.targetUser =
         email: ""
       $scope.teamCondition = angular.copy($rootScope.teamCondition)
@@ -11,9 +11,25 @@ cdoj
           $scope.editPermission = false
         else if $rootScope.currentUser.userId == $scope.targetUser.userId
           $scope.editPermission = true
-      $rootScope.$watch("hasLogin", ->
-        checkPermission()
+        if $scope.editPermission == false
+          $scope.messagesTabTitle = "Your messages with #{$scope.targetUser.userName}"
+        else
+          $scope.messagesTabTitle = "#{$scope.targetUser.userName}'s messages"
+
+      $scope.$on("refresh", ->
+        $window.location.reload()
       )
+
+      currentTab = angular.copy($routeParams.tab)
+      $scope.activeProblemsTab = false
+      $scope.activeTeamsTab = false
+      $scope.activeMessagesTab = false
+      if currentTab == "teams"
+        $scope.activeTeamsTab = true
+      else if currentTab == "messages"
+        $scope.activeMessagesTab = true
+      else
+        $scope.activeProblemsTab = true
 
       targetUserName = angular.copy($routeParams.userName)
       $http.get("/user/userCenterData/#{targetUserName}").then (response)->

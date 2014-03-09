@@ -6795,6 +6795,16 @@ small {
 #cdoj-navbar-top .dropdown-menu li a:hover {
   background-color: #ff3300;
 }
+#cdoj-navbar-top .dropdown-menu li .media p {
+  font-size: 12px;
+  height: 34px;
+  margin-bottom: 0;
+}
+#cdoj-navbar-top .dropdown-menu li .media p a {
+  display: inline;
+  padding: 0;
+  white-space: normal;
+}
 #cdoj-navbar-top .container {
   margin: 0;
   width: 100%;
