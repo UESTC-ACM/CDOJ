@@ -23,7 +23,7 @@ cdoj
 
           hours = length
           $scope.timeString = ""
-          $scope.timeString = $scope.timeString + "%d:%02d:%02d".sprintf(hours, minute, second)
+          $scope.timeString = $scope.timeString + _.sprintf("%d:%02d:%02d", hours, minute, second)
 
         $scope.mouseOver = ->
           $scope.showPenalty()

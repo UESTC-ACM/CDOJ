@@ -34,6 +34,7 @@ module.exports = (grunt) ->
       cdojFull:
         src: [
           "bower_components/bootstrap/dist/css/bootstrap.css"
+          "bower_components/bootstrap-switch/build/css/bootstrap3/bootstrap-switch.css"
           "bower_components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.css"
           "temp/css/cdoj.css"
         ]
@@ -47,6 +48,7 @@ module.exports = (grunt) ->
           "bower_components/angular-elastic/elastic.js"
           "bower_components/jquery/dist/jquery.js"
           "bower_components/bootstrap/dist/js/bootstrap.js"
+          "bower_components/bootstrap-switch/build/js/bootstrap-switch.js"
           "bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"
           "bower_components/fine-uploader/_build/fineuploader.js"
           "bower_components/CryptoJS/src/core.js"

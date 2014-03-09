@@ -55,14 +55,17 @@ public class TeamController extends BaseController {
   @LoginPermit(NeedLogin = false)
   public
   @ResponseBody
-  Map<String, Object> search(@RequestBody TeamCondition teamCondition) {
+  Map<String, Object> search(@RequestBody TeamCondition teamCondition,
+                             HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
       if (teamCondition.userId != null) {
+        // Search teams
         Long count = teamService.count(teamCondition);
         PageInfo pageInfo = buildPageInfo(count, teamCondition.currentPage,
             Global.RECORD_PER_PAGE, null);
         List<TeamListDTO> teamList = teamService.getTeamList(teamCondition, pageInfo);
+
         // At most 20 records
         List<Integer> teamIdList = new LinkedList<>();
         for (TeamListDTO teamListDTO : teamList) {
@@ -72,16 +75,24 @@ public class TeamController extends BaseController {
         teamUserCondition.orderFields = "id";
         teamUserCondition.orderAsc = "true";
         teamUserCondition.teamIdList = ArrayUtil.join(teamIdList.toArray(), ",");
+        // Search team users
         List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamUserCondition);
+
+        // Put users into teams
         for (TeamListDTO teamListDTO : teamList) {
           teamListDTO.setTeamUsers(new LinkedList<TeamUserListDTO>());
           teamListDTO.setInvitedUsers(new LinkedList<TeamUserListDTO>());
           for (TeamUserListDTO teamUserListDTO : teamUserList) {
             if (teamListDTO.getTeamId().compareTo(teamUserListDTO.getTeamId()) == 0) {
+              // Put users into current users / inactive users
               if (teamUserListDTO.getAllow()) {
                 teamListDTO.getTeamUsers().add(teamUserListDTO);
-              } else {
+              } else if (checkPermission(session, teamCondition.userId)) {
                 teamListDTO.getInvitedUsers().add(teamUserListDTO);
+              }
+
+              if (checkPermission(session, teamCondition.userId) && teamUserListDTO.getUserId().equals(teamCondition.userId)) {
+                teamListDTO.setAllow(teamUserListDTO.getAllow());
               }
             }
           }
