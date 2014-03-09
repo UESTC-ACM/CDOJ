@@ -5,16 +5,21 @@ cdoj
       $scope.targetUser =
         email: ""
       $scope.teamCondition = angular.copy($rootScope.teamCondition)
+      $scope.messageCondition = angular.copy($rootScope.messageCondition)
       $scope.editPermission = false
       checkPermission = ->
         if $rootScope.hasLogin == false
           $scope.editPermission = false
         else if $rootScope.currentUser.userId == $scope.targetUser.userId
           $scope.editPermission = true
+        $scope.messageCondition = angular.copy($rootScope.messageCondition)
         if $scope.editPermission == false
           $scope.messagesTabTitle = "Your messages with #{$scope.targetUser.userName}"
+          $scope.messageCondition.userAId = $scope.currentUser.userId
+          $scope.messageCondition.userBId = $scope.targetUser.userId
         else
           $scope.messagesTabTitle = "#{$scope.targetUser.userName}'s messages"
+          $scope.messageCondition.userId = $scope.currentUser.userId
 
       $scope.$on("refresh", ->
         $window.location.reload()

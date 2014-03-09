@@ -5,6 +5,7 @@ import cn.edu.uestc.acmicpc.db.condition.impl.MessageCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IMessageDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.Message;
@@ -100,5 +101,12 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
     Condition condition = messageCondition.getCondition();
     condition.setPageInfo(pageInfo);
     return messageDAO.findAll(MessageForReceiverDTO.class, MessageForReceiverDTO.builder(), condition);
+  }
+
+  @Override
+  public List<MessageForUserDTO> getMessageForUserDTOList(MessageCondition messageCondition, PageInfo pageInfo) throws AppException {
+    Condition condition = messageCondition.getCondition();
+    condition.setPageInfo(pageInfo);
+    return messageDAO.findAll(MessageForUserDTO.class, MessageForUserDTO.builder(), condition);
   }
 }

@@ -6897,19 +6897,6 @@ small {
   border-bottom: 1px solid #101010;
   border-right: 1px solid #101010;
 }
-#advance-search {
-  position: fixed;
-  top: 16px;
-  right: 175px;
-  z-index: 1031;
-}
-@media (min-width: 768px) {
-  #advance-search .dropdown-menu {
-    right: -40px;
-    left: inherit;
-    width: 360px;
-  }
-}
 @media (max-width: 767px) {
   #cdoj-navbar {
     margin-left: -36px;
@@ -6931,6 +6918,9 @@ small {
   #cdoj-navbar-top .navbar-right {
     float: right !important;
   }
+  #cdoj-navbar-top .navbar-nav li {
+    float: left;
+  }
   #cdoj-navbar-top .navbar-nav li a {
     padding-top: 15px;
     padding-bottom: 15px;
@@ -6940,7 +6930,7 @@ small {
   }
   #cdoj-navbar-top .navbar-nav #cdoj-search {
     width: auto;
-    margin-right: 76px;
+    margin-right: 189px;
   }
   #cdoj-navbar-top .navbar-nav li a.dropdown-toggle {
     position: fixed;
