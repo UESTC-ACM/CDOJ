@@ -155,21 +155,25 @@
             <list condition="messageCondition"
                   request-url="/message/search">
               <div class="col-md-12">
-                <ul class="media-list">
-                  <li class="media" ng-repeat="message in list">
-                    <a class="pull-left" href="#">
+                <div ng-repeat="message in list"
+                     class="alert "
+                     ng-class="{
+                     'alert-info': message.isOpened == true,
+                     'alert-danger': message.isOpened == false,
+                     }">
+                  <div class="media">
+                    <a class="pull-left" href="/#/user/center/{{message.senderUserName}}">
                       <img class="media-object"
                            ui-avatar
                            email="message.senderEmail"
                            style="width: 64px; height: 64px;">
                     </a>
-                    <a class="pull-left" href="#">
+                    <a class="pull-left" href="/#/user/center/{{message.receiverUserName}}">
                       <img class="media-object"
                            ui-avatar
                            email="message.receiverEmail"
                            style="width: 64px; height: 64px;">
                     </a>
-
                     <div class="media-body">
                       <h4 class="media-heading">
                         From <span ng-bind="message.senderUserName"></span> to <span
@@ -183,8 +187,8 @@
                         <span ui-time time="message.time" inline="true" change="false"></span>
                       </span>
                     </div>
-                  </li>
-                </ul>
+                  </div>
+                </div>
               </div>
             </list>
           </div>

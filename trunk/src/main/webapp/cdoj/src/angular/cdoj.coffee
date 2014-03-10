@@ -26,6 +26,13 @@ cdoj
     fetchUserData()
     $interval(fetchUserData, 5000)
 
+    $rootScope.$on("refreshUserData", ->
+      fetchUserData()
+    )
+    $rootScope.$on("refresh", ->
+      $rootScope.$broadcast("refreshUserData")
+    )
+
     $rootScope.$watch("hasLogin",
     ->
       if $rootScope.hasLogin && $rootScope.currentUser.type == 1
@@ -33,7 +40,6 @@ cdoj
       else
         $rootScope.isAdmin = false
       $rootScope.$broadcast("refresh")
-      fetchUserData()
     )
 ])
 .config([
