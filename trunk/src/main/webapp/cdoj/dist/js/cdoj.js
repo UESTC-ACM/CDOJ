@@ -65042,14 +65042,19 @@ if (typeof exports === 'object') {
       };
       fetchUserData();
       $interval(fetchUserData, 5000);
+      $rootScope.$on("refreshUserData", function() {
+        return fetchUserData();
+      });
+      $rootScope.$on("refresh", function() {
+        return $rootScope.$broadcast("refreshUserData");
+      });
       return $rootScope.$watch("hasLogin", function() {
         if ($rootScope.hasLogin && $rootScope.currentUser.type === 1) {
           $rootScope.isAdmin = true;
         } else {
           $rootScope.isAdmin = false;
         }
-        $rootScope.$broadcast("refresh");
-        return fetchUserData();
+        return $rootScope.$broadcast("refresh");
       });
     }
   ]).config([
@@ -65613,13 +65618,16 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("MessageModalController", [
-    "$scope", "$http", "$modalInstance", "message", "$window", function($scope, $http, $modalInstance, message, $window) {
+    "$scope", "$rootScope", "$http", "$modalInstance", "message", "$window", function($scope, $rootScope, $http, $modalInstance, message, $window) {
       $scope.message = message;
       $scope.message.content = "Loading...";
       return $http.get("/message/fetch/" + $scope.message.messageId).then(function(response) {
         var data;
         data = response.data;
         if (data.result === "success") {
+          if ($scope.message.isOpened === false) {
+            $rootScope.$broadcast("refresh");
+          }
           return _.extend($scope.message, data.message);
         } else {
           return $window.alert(data.error_msg);
