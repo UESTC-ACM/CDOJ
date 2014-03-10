@@ -5,6 +5,7 @@ cdoj
       $scope.contestId = 0
       $scope.contest =
         title: ""
+        description: ""
       $scope.problemList = []
       $scope.currentProblem =
         description: ""
@@ -29,6 +30,7 @@ cdoj
             $scope.currentProblem = data.problemList[0]
         else
           $window.alert data.error_msg
+          clearInterval rankListTimer
 
       refreshRankList = ->
         contestId = angular.copy($scope.contestId)
@@ -40,6 +42,9 @@ cdoj
               value.tried = data.rankList.problemList[index].tried
               value.solved = data.rankList.problemList[index].solved
             )
+          else
+            clearInterval rankListTimer
+
       refreshRankList()
       rankListTimer = setInterval(refreshRankList, 5000)
       $scope.$on("$destroy", ->

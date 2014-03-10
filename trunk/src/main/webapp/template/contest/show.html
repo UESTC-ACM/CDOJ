@@ -9,7 +9,7 @@
 <tab heading="Overview">
   <div class="row">
     <div class="col-md-12">
-      <dl class="dl-horizontal">
+      <dl class="dl-horizontal" style="margin-top: 15px;">
         <dt>Current Time:</dt>
         <dd ui-time
             time="contest.currentTime"
@@ -30,6 +30,10 @@
         <dt>Contest Status:</dt>
         <dd ng-bind="contest.status"></dd>
       </dl>
+    </div>
+    <div class="col-md-12">
+      <markdown content="contest.description">
+      </markdown>
     </div>
     <div class="col-md-12">
       <table class="table table-striped table-condensed">
