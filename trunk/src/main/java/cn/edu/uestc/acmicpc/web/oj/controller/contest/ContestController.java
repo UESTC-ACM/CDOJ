@@ -145,6 +145,9 @@ public class ContestController extends BaseController {
       if (!contestShowDTO.getIsVisible() && !isAdmin(session)) {
         throw new AppException("No such contest.");
       }
+      if (contestShowDTO.getStatus().equals("Pending") && !isAdmin(session)) {
+        throw new AppException("Contest not start yet.");
+      }
 
       List<ContestProblemSummaryDTO> contestProblemList = contestProblemService.
           getContestProblemSummaryDTOListByContestId(contestId);
@@ -203,6 +206,9 @@ public class ContestController extends BaseController {
       }
       if (!contestShowDTO.getIsVisible() && !isAdmin(session)) {
         throw new AppException("No such contest.");
+      }
+      if (contestShowDTO.getStatus().equals("Pending") && !isAdmin(session)) {
+        throw new AppException("Contest not start yet.");
       }
 
       List<ContestProblemDetailDTO> contestProblemList = contestProblemService.

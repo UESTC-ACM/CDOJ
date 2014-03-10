@@ -65327,7 +65327,8 @@ if (typeof exports === 'object') {
       var rankListTimer, refreshRankList;
       $scope.contestId = 0;
       $scope.contest = {
-        title: ""
+        title: "",
+        description: ""
       };
       $scope.problemList = [];
       $scope.currentProblem = {
@@ -65354,7 +65355,8 @@ if (typeof exports === 'object') {
             return $scope.currentProblem = data.problemList[0];
           }
         } else {
-          return $window.alert(data.error_msg);
+          $window.alert(data.error_msg);
+          return clearInterval(rankListTimer);
         }
       });
       refreshRankList = function() {
@@ -65369,6 +65371,8 @@ if (typeof exports === 'object') {
               value.tried = data.rankList.problemList[index].tried;
               return value.solved = data.rankList.problemList[index].solved;
             });
+          } else {
+            return clearInterval(rankListTimer);
           }
         });
       };
@@ -66272,8 +66276,13 @@ if (typeof exports === 'object') {
   cdoj.directive("uiDatetimepicker", function() {
     return {
       restrict: 'A',
-      link: function($scope, $element) {
-        return $($element).datetimepicker();
+      require: "ngModel",
+      link: function($scope, $element, $attrs, $controller) {
+        return $($element).datetimepicker().on("changeDate", function(e) {
+          return $scope.$apply(function() {
+            return $controller.$setViewValue(e.date.valueOf());
+          });
+        });
       }
     };
   });
