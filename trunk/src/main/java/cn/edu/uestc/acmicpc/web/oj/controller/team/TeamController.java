@@ -52,6 +52,24 @@ public class TeamController extends BaseController {
     this.messageService = messageService;
   }
 
+
+  @RequestMapping("typeAHeadSearch")
+  @LoginPermit(NeedLogin = true)
+  public
+  @ResponseBody
+  Map<String, Object> typeAHeadSearch(@RequestBody TeamCondition teamCondition,
+                                      HttpSession session) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      UserDTO currentUser = getCurrentUser(session);
+      json.put("result", "success");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    }
+    return json;
+  }
+
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public

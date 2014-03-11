@@ -65086,9 +65086,6 @@ if (typeof exports === 'object') {
       }).when("/contest/editor/:action", {
         templateUrl: "template/contest/editor.html",
         controller: "ContestEditorController"
-      }).when("/contest/register/:contestId", {
-        templateUrl: "template/contest/register.html",
-        controller: "ContestRegisterController"
       }).when("/status/list", {
         templateUrl: "template/status/list.html",
         controller: "StatusListController"
@@ -65315,12 +65312,35 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("ContestListController", [
-    "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
-      return $rootScope.title = "Contest list";
+    "$scope", "$rootScope", "$window", "$http", "$modal", function($scope, $rootScope, $window, $http, $modal) {
+      return $scope.registerContest = function(contest) {
+        if ($rootScope.hasLogin === false) {
+          return $window.alert("Please login first!");
+        } else {
+          return $modal.open({
+            templateUrl: "template/modal/contest-register-modal.html",
+            controller: "ContestRegisterModalController",
+            resolve: {
+              contest: function() {
+                return contest;
+              }
+            }
+          });
+        }
+      };
     }
   ]);
 
-  cdoj.controller("ContestRegisterController", ["$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {}]);
+  cdoj.controller("ContestRegisterModalController", [
+    "$scope", "$rootScope", "$modalInstance", "$http", "contest", function($scope, $rootScope, $modalInstance, $http, contest) {
+      $scope.contest = contest;
+      $scope.teamName = "";
+      return $scope.searchTeam = function() {
+        console.log(contest);
+        return [];
+      };
+    }
+  ]);
 
   cdoj.controller("ContestShowController", [
     "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", function($scope, $rootScope, $http, $window, $modal, $routeParams) {
