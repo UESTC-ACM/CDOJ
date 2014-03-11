@@ -11,13 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
 
 @Service
 public class PictureServiceImpl extends AbstractService implements PictureService {
@@ -27,42 +22,6 @@ public class PictureServiceImpl extends AbstractService implements PictureServic
   @Autowired
   public PictureServiceImpl(Settings settings) {
     this.settings = settings;
-  }
-
-  @Override
-  public ArrayList<String> getPictures(Integer userId) throws AppException {
-    //TODO(mzry1992) use database
-    String folder = settings.SETTING_USER_PICTURE_FOLDER + userId + "/";
-    String path = settings.SETTING_USER_PICTURE_FOLDER_ABSOLUTE + userId + "/";
-    File dir = new File(path);
-    if (!dir.exists())
-      if (!dir.mkdirs())
-        throw new AppException("Error while make picture directory!");
-    File files[] = dir.listFiles();
-    if (files == null)
-      throw new AppException("Error while list pictures!");
-    ArrayList<String> pictures = new ArrayList<>();
-    pictures.clear();
-    for (File file : files) {
-      String fileName = file.getName();
-      ImageInputStream iis = null;
-      try {
-        iis = ImageIO.createImageInputStream(file);
-      } catch (IOException e) {
-        throw new AppException("Error while create image input stream.");
-      }
-      Iterator<?> iter = ImageIO.getImageReaders(iis);
-      if (iter.hasNext())
-        pictures.add(folder + fileName);
-    }
-    return pictures;
-  }
-
-  @Override
-  public FileInformationDTO uploadPictures(FileUploadDTO fileUploadDTO,
-                                           Integer userId) throws AppException {
-    return FileUploadUtil.uploadFile(fileUploadDTO, settings.SETTING_USER_PICTURE_FOLDER,
-        settings.SETTING_USER_PICTURE_FOLDER_ABSOLUTE, userId.toString() + "/");
   }
 
   @Override
