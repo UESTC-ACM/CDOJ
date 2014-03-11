@@ -35,7 +35,7 @@ public class AuthenticationAspect {
   }
 
   @Around("@annotation(cn.edu.uestc.acmicpc.util.annotation.LoginPermit)")
-  public Object checkAuth(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+  public Map<String, Object> checkAuth(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
     MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
     Method method = methodSignature.getMethod();
     LoginPermit permit = method.getAnnotation(LoginPermit.class);
@@ -51,16 +51,13 @@ public class AuthenticationAspect {
           }
         }
       }
-      return proceedingJoinPoint.proceed();
+      Map<String, Object> result = (Map<String, Object>) proceedingJoinPoint.proceed();
+      return result;
     } catch (AppException e) {
-      if (method.getReturnType() == String.class)
-        return "redirect:/error/authenticationError";
-      else {
-        Map<String, Object> json = new HashMap<>();
-        json.put("result", "error");
-        json.put("error_msg", e.getMessage());
-        return json;
-      }
+      Map<String, Object> json = new HashMap<>();
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+      return json;
     }
   }
 

@@ -16,6 +16,9 @@ public class TeamCondition extends BaseCondition {
   @Exp(mapField = "teamName", type = Condition.ConditionType.LIKE)
   public String teamName;
 
+  @Exp(mapField = "leaderId", type = Condition.ConditionType.EQUALS)
+  public Integer leaderId;
+
   public Integer userId;
 
   public Boolean allow;
