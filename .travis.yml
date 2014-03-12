@@ -3,17 +3,8 @@ jdk:
   - openjdk7
 
 install:
-  - mysql -e 'create database uestcoj;'
   - cd trunk
-  - scripts/setup_travis.sh
-  - mvn install -DskipTests=true
-
-before_script:
-  - mvn checkstyle:checkstyle
 
 script:
-  - python2 src/test/python/check_controller_not_contain_daos.py
-  - python2 src/test/python/check_dtos_not_contain_entities.py
-  - python2 src/test/python/check_testing_code_all_not_use_junit.py
-  - mvn test
+  - gradle -PdbUser=travis -PdbPassword="" build
 

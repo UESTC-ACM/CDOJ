@@ -1,3 +1,4 @@
+DROP SCHEMA IF EXISTS `uestcojtest`;
 CREATE SCHEMA IF NOT EXISTS `uestcojtest` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin ;
 USE `uestcojtest` ;
 
