@@ -2,6 +2,7 @@ apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'jetty'
 apply plugin: 'checkstyle'
+apply plugin: "jacoco"
 
 group = 'cn.edu.uestc.acmicpc'
 version = '2.0'
@@ -172,5 +173,9 @@ test {
     jettyStop.execute()
   }
   useTestNG()
+}
+
+jacoco {
+ toolVersion = "0.6.5.201403032054"
 }
 
