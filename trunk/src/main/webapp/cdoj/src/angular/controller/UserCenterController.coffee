@@ -49,7 +49,4 @@ cdoj
           controller: "TeamEditorModalController"
         )
 
-      $scope.joinIn = (team)->
-        $http.get("/team/changeAllowState/#{$scope.targetUser.userId}/#{team.teamId}/#{team.allow}").then ->
-          $rootScope.$broadcast("refresh")
   ])

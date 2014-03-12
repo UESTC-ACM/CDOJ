@@ -62,6 +62,19 @@ public class ContestUser implements Serializable {
     this.status = status;
   }
 
+  private String comment;
+
+  @Column(name = "comment", nullable = false, insertable = true, updatable = true, length = 255,
+      precision = 0)
+  @Basic
+  public String getComment() {
+    return comment;
+  }
+
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
+
   private Integer contestId;
 
   @Column(name = "contestId", nullable = false, insertable = true, updatable = true, length = 10,

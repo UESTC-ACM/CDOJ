@@ -58,4 +58,12 @@ public class TeamUserServiceImpl extends AbstractService implements TeamUserServ
     teamUserCondition.teamId = teamId;
     teamUserDAO.updateEntitiesByCondition("allow", value, teamUserCondition.getCondition());
   }
+
+  @Override
+  public List<TeamUserListDTO> getTeamUserList(Integer teamId) throws AppException {
+    TeamUserCondition teamUserCondition = new TeamUserCondition();
+    teamUserCondition.teamId = teamId;
+    return teamUserDAO.findAll(TeamUserListDTO.class, TeamUserListDTO.builder(),
+        teamUserCondition.getCondition());
+  }
 }

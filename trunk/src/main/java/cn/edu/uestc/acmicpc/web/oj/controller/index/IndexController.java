@@ -97,6 +97,7 @@ public class IndexController extends BaseController {
     result.put("genderTypeList", globalService.getGenderTypeList());
     result.put("gradeTypeList", globalService.getGradeTypeList());
     result.put("tShirtsSizeTypeList", globalService.getTShirtsSizeTypeList());
+    result.put("contestRegistryStatusList", globalService.getContestRegistryStatusList());
     result.put("result", "success");
     return result;
   }

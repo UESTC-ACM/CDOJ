@@ -13,10 +13,10 @@ public class TeamCondition extends BaseCondition {
     super("teamId");
   }
 
-  @Exp(mapField = "teamName", type = Condition.ConditionType.LIKE)
+  public Integer teamId;
+
   public String teamName;
 
-  @Exp(mapField = "leaderId", type = Condition.ConditionType.EQUALS)
   public Integer leaderId;
 
   public Integer userId;

@@ -1,7 +1,9 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.contest;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
+import cn.edu.uestc.acmicpc.db.condition.impl.ContestTeamCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
@@ -9,18 +11,27 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDetailDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemSummaryDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReviewDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
+import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.service.iface.TeamService;
+import cn.edu.uestc.acmicpc.service.iface.TeamUserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
+import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -56,6 +67,9 @@ public class ContestController extends BaseController {
   private ProblemService problemService;
   private StatusService statusService;
   private GlobalService globalService;
+  private TeamService teamService;
+  private TeamUserService teamUserService;
+  private ContestTeamService contestTeamService;
 
   @Autowired
   public ContestController(ContestService contestService,
@@ -63,13 +77,140 @@ public class ContestController extends BaseController {
                            PictureService pictureService,
                            ProblemService problemService,
                            StatusService statusService,
-                           GlobalService globalService) {
+                           GlobalService globalService,
+                           TeamService teamService,
+                           TeamUserService teamUserService,
+                           ContestTeamService contestTeamService) {
     this.contestService = contestService;
     this.contestProblemService = contestProblemService;
     this.pictureService = pictureService;
     this.problemService = problemService;
     this.statusService = statusService;
     this.globalService = globalService;
+    this.teamService = teamService;
+    this.teamUserService = teamUserService;
+    this.contestService = contestService;
+    this.contestTeamService = contestTeamService;
+  }
+
+  @RequestMapping("registryReview")
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> registryReview(@RequestBody ContestTeamReviewDTO contestTeamReviewDTO) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      ContestTeamDTO contestTeamDTO = contestTeamService.getContestTeamDTO(contestTeamReviewDTO.getContestTeamId());
+      contestTeamDTO.setStatus(contestTeamReviewDTO.getStatus());
+      contestTeamDTO.setComment(contestTeamReviewDTO.getComment());
+      contestTeamService.updateContestTeam(contestTeamDTO);
+      json.put("result", "success");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  @RequestMapping("registryStatusList")
+  @LoginPermit(NeedLogin = false)
+  public
+  @ResponseBody
+  Map<String, Object> registerStatusList(@RequestBody ContestTeamCondition contestTeamCondition) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      Long count = contestTeamService.count(contestTeamCondition);
+      PageInfo pageInfo = buildPageInfo(count, contestTeamCondition.currentPage,
+          Global.RECORD_PER_PAGE, null);
+      List<ContestTeamListDTO> contestTeamList = contestTeamService.getContestTeamList(
+          contestTeamCondition, pageInfo);
+
+      // At most 20 records
+      List<Integer> teamIdList = new LinkedList<>();
+      for (ContestTeamListDTO team: contestTeamList) {
+        teamIdList.add(team.getTeamId());
+      }
+      TeamUserCondition teamUserCondition = new TeamUserCondition();
+      teamUserCondition.orderFields = "id";
+      teamUserCondition.orderAsc = "true";
+      teamUserCondition.teamIdList = ArrayUtil.join(teamIdList.toArray(), ",");
+      // Search team users
+      List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamUserCondition);
+
+      // Put users into teams
+      for (ContestTeamListDTO team: contestTeamList) {
+        team.setTeamUsers(new LinkedList<TeamUserListDTO>());
+        for (TeamUserListDTO teamUserListDTO : teamUserList) {
+          if (team.getTeamId().compareTo(teamUserListDTO.getTeamId()) == 0) {
+            // Put users into current users / inactive users
+            if (teamUserListDTO.getAllow()) {
+              team.getTeamUsers().add(teamUserListDTO);
+            }
+          }
+        }
+      }
+
+      json.put("pageInfo", pageInfo);
+      json.put("list", contestTeamList);
+      json.put("result", "success");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  @RequestMapping("register/{teamId}/{contestId}")
+  @LoginPermit(NeedLogin = true)
+  public
+  @ResponseBody
+  Map<String, Object> register(@PathVariable("teamId") Integer teamId,
+                               @PathVariable("contestId") Integer contestId,
+                               HttpSession session) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      TeamDTO teamDTO = teamService.getTeamDTOByTeamId(teamId);
+      if (teamDTO == null || !teamDTO.getTeamId().equals(teamId)) {
+        throw new AppException("Team not found!");
+      }
+      ContestDTO contestDTO = contestService.getContestDTOByContestId(contestId);
+      if (contestDTO == null || !contestDTO.getContestId().equals(contestId)) {
+        throw new AppException("Contest not found!");
+      }
+      UserDTO currentUser = getCurrentUser(session);
+      if (!currentUser.getUserId().equals(teamDTO.getLeaderId())) {
+        throw new AppException("You are not the team leader of team " + teamDTO.getTeamName() + ".");
+      }
+      List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamId);
+      for (TeamUserListDTO teamUserDTO: teamUserList) {
+        if (contestTeamService.whetherUserHasBeenRegistered(teamUserDTO.getUserId(),
+            contestDTO.getContestId())) {
+          throw new AppException("User " + teamUserDTO.getUserName() +
+              " has been register into this contest in another team!");
+        }
+      }
+      Integer contestTeamId = contestTeamService.createNewContestTeam(contestId, teamId);
+      if (contestTeamId == null) {
+        throw new AppException("Error while register team.");
+      }
+      json.put("result", "success");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
   }
 
   @RequestMapping("status/{contestId}/{lastFetched}")
@@ -320,7 +461,7 @@ public class ContestController extends BaseController {
         String[] problemList = contestEditDTO.getProblemList().split(",");
         // Add new contest problems
         for (String problemIdString : problemList) {
-          if (problemIdString.length() == 0)  {
+          if (problemIdString.length() == 0) {
             continue;
           }
           Integer problemId;

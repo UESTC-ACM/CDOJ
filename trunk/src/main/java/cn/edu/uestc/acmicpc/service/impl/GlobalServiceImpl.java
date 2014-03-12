@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.util.dto.AuthenticationTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.ContestRegistryStatusDTO;
 import cn.edu.uestc.acmicpc.util.dto.ContestTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.GenderTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.GradeTypeDTO;
@@ -71,6 +72,16 @@ public class GlobalServiceImpl extends AbstractService implements GlobalService 
     List<ContestTypeDTO> result = new LinkedList<>();
     for (Global.ContestType contestType: Global.ContestType.values()) {
       result.add(new ContestTypeDTO(contestType.ordinal(), contestType.getDescription()));
+    }
+    return result;
+  }
+
+  @Override
+  public List<ContestRegistryStatusDTO> getContestRegistryStatusList() {
+    List<ContestRegistryStatusDTO> result = new LinkedList<>();
+    for (Global.ContestRegistryStatus contestRegistryStatus: Global.ContestRegistryStatus.values()) {
+      result.add(new ContestRegistryStatusDTO(contestRegistryStatus.ordinal(),
+          contestRegistryStatus.getDescription()));
     }
     return result;
   }

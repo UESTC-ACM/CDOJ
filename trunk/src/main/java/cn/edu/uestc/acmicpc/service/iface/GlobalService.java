@@ -1,6 +1,7 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.util.dto.AuthenticationTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.ContestRegistryStatusDTO;
 import cn.edu.uestc.acmicpc.util.dto.ContestTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.GenderTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.GradeTypeDTO;
@@ -66,4 +67,6 @@ public interface GlobalService {
    * @return list of all {@link ContestType} entities.
    */
   public List<ContestTypeDTO> getContestTypeList();
+
+  public List<ContestRegistryStatusDTO> getContestRegistryStatusList();
 }

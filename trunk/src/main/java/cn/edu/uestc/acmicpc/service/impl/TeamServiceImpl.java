@@ -1,10 +1,10 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITeamDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamTypeAHeadDTO;
 import cn.edu.uestc.acmicpc.db.entity.Team;
 import cn.edu.uestc.acmicpc.service.iface.TeamService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -62,35 +62,71 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
 
   @Override
   public Long count(TeamCondition teamCondition) throws AppException {
-    if (teamCondition.userId == null) {
-      return teamDAO.count(teamCondition.getCondition());
-    } else {
-      return teamDAO.count(getHQLString(teamCondition));
-    }
+    return teamDAO.count(getHQLString(teamCondition));
   }
 
   public String getHQLString(TeamCondition teamCondition) throws AppException {
     StringBuilder hqlBuilder = new StringBuilder();
-    hqlBuilder.append("from Team team, TeamUser teamUser ")
-        .append("where team.teamId = teamUser.teamId and teamUser.userId = ").append(teamCondition.userId);
+    hqlBuilder.append("from Team team");
+    if (teamCondition.userId != null) {
+      hqlBuilder.append(", TeamUser teamUser");
+    }
+    hqlBuilder.append(" where");
+    Boolean needAnd = false;
+    if (teamCondition.userId != null) {
+      needAnd = true;
+      hqlBuilder.append(" team.teamId = teamUser.teamId and teamUser.userId = ").append(teamCondition.userId);
+    }
+    if (teamCondition.teamId != null) {
+      if (needAnd) {
+        hqlBuilder.append(" and");
+      }
+      needAnd = true;
+      hqlBuilder.append(" team.teamId = ").append(teamCondition.teamId);
+    }
     if (teamCondition.allow != null) {
-      hqlBuilder.append(" and teamUser.allow = ").append(teamCondition.allow);
+      if (needAnd) {
+        hqlBuilder.append(" and");
+      }
+      needAnd = true;
+      hqlBuilder.append(" teamUser.allow = ").append(teamCondition.allow);
     }
     if (teamCondition.teamName != null) {
-      hqlBuilder.append(" and team.teamName like '%").append(teamCondition.teamName).append("%'");
+      if (needAnd) {
+        hqlBuilder.append(" and");
+      }
+      needAnd = true;
+      hqlBuilder.append(" team.teamName like '%").append(teamCondition.teamName).append("%'");
+    }
+    if (teamCondition.leaderId != null) {
+      if (needAnd) {
+        hqlBuilder.append(" and");
+      }
+      hqlBuilder.append(" team.leaderId = ").append(teamCondition.leaderId);
     }
     hqlBuilder.append(teamCondition.getCondition().getOrdersString());
     return hqlBuilder.toString();
   }
 
   @Override
-  public List<TeamListDTO> getTeamList(TeamCondition teamCondition, PageInfo pageInfo) throws AppException {
-    if (teamCondition.userId == null) {
-      Condition condition = teamCondition.getCondition();
-      condition.setPageInfo(pageInfo);
-      return teamDAO.findAll(TeamListDTO.class, TeamListDTO.builder(), condition);
-    } else {
-      return teamDAO.findAll(TeamListDTO.class, TeamListDTO.builder(), getHQLString(teamCondition), pageInfo);
-    }
+  public List<TeamTypeAHeadDTO> getTeamTypeAHeadList(TeamCondition teamCondition,
+                                                     PageInfo pageInfo) throws AppException {
+    return teamDAO.findAll(TeamTypeAHeadDTO.class, TeamTypeAHeadDTO.builder(),
+        getHQLString(teamCondition), pageInfo);
+  }
+
+  @Override
+  public Integer getTeamIdByTeamName(String teamName) throws AppException {
+    TeamDTO teamDTO = teamDAO.getDTOByUniqueField(TeamDTO.class, TeamDTO.builder(), "teamName",
+        teamName);
+    AppExceptionUtil.assertNotNull(teamDTO, "Team not found.");
+    return teamDTO.getTeamId();
+  }
+
+  @Override
+  public List<TeamListDTO> getTeamList(TeamCondition teamCondition, PageInfo pageInfo)
+      throws AppException {
+    return teamDAO.findAll(TeamListDTO.class, TeamListDTO.builder(), getHQLString(teamCondition),
+        pageInfo);
   }
 }

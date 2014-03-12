@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.service.iface;
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamTypeAHeadDTO;
 import cn.edu.uestc.acmicpc.db.entity.Team;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -72,4 +73,24 @@ public interface TeamService extends DatabaseService<Team, Integer> {
    * @throws AppException
    */
   public String getHQLString(TeamCondition teamCondition) throws AppException;
+
+  /**
+   * Get the teams fit in condition and page range.(for type-ahead list)
+   *
+   * @param teamCondition {@link TeamCondition} entity.
+   * @param pageInfo  {@link PageInfo} entity.
+   * @return List of {@link cn.edu.uestc.acmicpc.db.dto.impl.team.TeamTypeAHeadDTO} entities.
+   * @throws AppException
+   */
+  public List<TeamTypeAHeadDTO> getTeamTypeAHeadList(TeamCondition teamCondition,
+                                                     PageInfo pageInfo) throws AppException;
+
+  /**
+   * Get team id by team name
+   *
+   * @param teamName team's name
+   * @return team's id
+   * @throws AppException
+   */
+  public Integer getTeamIdByTeamName(String teamName) throws AppException;
 }
