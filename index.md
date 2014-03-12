@@ -8,7 +8,7 @@ This is a online judge system for `ACM/ICPC`, and it currently runs at [UESTC AC
 
 ### How to run the project in your own computer?
 
-First of all, you need a `i686 Linux` and install `openjdk7`, `maven` and `mysql` in your PC.
+First of all, you need a `i686 Linux` and install `openjdk7`, `gradle` and `mysql` in your PC.
 
 Then you can fetch sources from our repository, and run the commond below.
 
@@ -17,16 +17,15 @@ Then you can fetch sources from our repository, and run the commond below.
     cd trunk
     
     # Set up database
-    # Note: please set 'root'(without quotes) as root password of mysql.
+    # Note: please change the user name if needed
     mysql -uroot -p < src/main/sql/uestcoj.sql
-    # Then you need patch all patch sql files.
-    mysql -uroot -p < src/main/sql/patches/<id>.sql
     
-    # Test project
-    mvn test
+    # Build project
+    # Note: please change user name and password
+    gradle -PdbUser=user -PdbPassword=password build
     
     # Run jetty server
-    mvn jetty:run
+    gradle jettyRun
 
 After that, you can visit [localhost:8080](http://localhost:8080/) to get running demo.
 
