@@ -64937,6 +64937,11 @@ if (typeof exports === 'object') {
       NONE: 0,
       PASS: 1,
       FAIL: 2
+    },
+    ContestRegistryStatus: {
+      PENDING: 0,
+      ACCEPTED: 1,
+      REFUSED: 2
     }
   };
 
@@ -64999,6 +65004,7 @@ if (typeof exports === 'object') {
     teamCondition: {
       currentPage: null,
       userId: void 0,
+      leaderId: void 0,
       teamName: void 0,
       orderFields: "team.teamId",
       orderAsc: "false"
@@ -65012,6 +65018,14 @@ if (typeof exports === 'object') {
       userAId: null,
       userBId: null,
       orderFields: "time",
+      orderAsc: "false"
+    },
+    contestTeamCondition: {
+      currentPage: null,
+      contestId: null,
+      teamId: null,
+      status: null,
+      orderFields: "contestTeamId",
       orderAsc: "false"
     }
   };
@@ -65086,6 +65100,9 @@ if (typeof exports === 'object') {
       }).when("/contest/editor/:action", {
         templateUrl: "template/contest/editor.html",
         controller: "ContestEditorController"
+      }).when("/contest/register/:contestId", {
+        templateUrl: "template/contest/register.html",
+        controller: "ContestRegisterController"
       }).when("/status/list", {
         templateUrl: "template/status/list.html",
         controller: "StatusListController"
@@ -65312,33 +65329,167 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("ContestListController", [
-    "$scope", "$rootScope", "$window", "$http", "$modal", function($scope, $rootScope, $window, $http, $modal) {
-      return $scope.registerContest = function(contest) {
+    "$scope", "$rootScope", "$window", function($scope, $rootScope, $window) {
+      return $scope.toRegisterPage = function(contest) {
         if ($rootScope.hasLogin === false) {
           return $window.alert("Please login first!");
         } else {
-          return $modal.open({
-            templateUrl: "template/modal/contest-register-modal.html",
-            controller: "ContestRegisterModalController",
-            resolve: {
-              contest: function() {
-                return contest;
-              }
-            }
-          });
+          return $window.location.href = "/#/contest/register/" + contest.contestId;
         }
       };
     }
   ]);
 
-  cdoj.controller("ContestRegisterModalController", [
-    "$scope", "$rootScope", "$modalInstance", "$http", "contest", function($scope, $rootScope, $modalInstance, $http, contest) {
-      $scope.contest = contest;
-      $scope.teamName = "";
-      return $scope.searchTeam = function() {
-        console.log(contest);
-        return [];
+  cdoj.controller("ContestRegisterController", [
+    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", function($scope, $rootScope, $http, $window, $modal, $routeParams) {
+      var contestCondition, contestId;
+      if ($rootScope.hasLogin === false) {
+        $window.location.href = "/#/contest/list";
+      }
+      contestId = $routeParams.contestId;
+      $scope.contest = 0;
+      contestCondition = angular.copy($rootScope.contestCondition);
+      contestCondition.startId = contestCondition.endId = contestId;
+      $http.post("/contest/search", contestCondition).then(function(response) {
+        var data;
+        data = response.data;
+        if (data.result === "success") {
+          if (data.list.length === 1) {
+            return $scope.contest = data.list[0];
+          } else {
+            return $window.alert("Wrong contest id.");
+          }
+        } else {
+          return $window.alert(data.error_msg);
+        }
+      });
+      $scope.contestTeamCondition = angular.copy($rootScope.contestTeamCondition);
+      $scope.contestTeamCondition.contestId = contestId;
+      $scope.team = {
+        teamName: "",
+        invitedUsers: [],
+        leaderId: null,
+        teamId: null,
+        teamUsers: []
       };
+      $scope.searchTeam = function(teamName) {
+        var teamCondition;
+        teamCondition = angular.copy($rootScope.teamCondition);
+        teamCondition.teamName = teamName;
+        teamCondition.userId = $rootScope.currentUser.userId;
+        teamCondition.allow = true;
+        return $http.post("/team/typeAHeadSearch", teamCondition).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            return data.list;
+          } else {
+            return [];
+          }
+        });
+      };
+      $scope.showRegisterButton = false;
+      $scope.selectTeam = function() {
+        return $http.get("/team/typeAHeadItem/" + $scope.team.teamName).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            $scope.team = data.team;
+            return $scope.showRegisterButton = true;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        });
+      };
+      $scope.register = function() {
+        return $http.get("/contest/register/" + $scope.team.teamId + "/" + $scope.contest.contestId).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            $window.alert("Register success! please wait for verify");
+            return $rootScope.$broadcast("refresh");
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        });
+      };
+      return $scope.review = function(team) {
+        return $modal.open({
+          templateUrl: "template/modal/contest-registry-review-modal.html",
+          controller: "ContestRegistryReviewModalController",
+          resolve: {
+            team: function() {
+              return team;
+            }
+          }
+        });
+      };
+    }
+  ]);
+
+  cdoj.controller("ContestRegistryReviewModalController", [
+    "$scope", "$rootScope", "$http", "$modalInstance", "team", "$window", function($scope, $rootScope, $http, $modalInstance, team, $window) {
+      $scope.team = team;
+      $scope.review = {
+        result: ""
+      };
+      _.each($scope.team.teamUsers, function(teamUser) {
+        return $http.get("/user/profile/" + teamUser.userName).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            _.extend(teamUser, data.user);
+            teamUser.sex = _.findWhere($rootScope.genderTypeList, {
+              genderTypeId: data.user.sex
+            }).description;
+            teamUser.departmentId = _.findWhere($rootScope.departmentList, {
+              departmentId: data.user.departmentId
+            }).name;
+            teamUser.grade = _.findWhere($rootScope.gradeTypeList, {
+              gradeTypeId: data.user.grade
+            }).description;
+            teamUser.size = _.findWhere($rootScope.tShirtsSizeTypeList, {
+              sizeTypeId: data.user.size
+            }).description;
+            return teamUser.type = _.findWhere($rootScope.authenticationTypeList, {
+              authenticationTypeId: data.user.type
+            }).description;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        });
+      });
+      $scope.review = function(dto) {
+        return $http.post("/contest/registryReview", dto).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            $window.alert("Success!");
+            $scope.team.status = dto.status;
+            if (dto.status === $rootScope.ContestRegistryStatus.ACCEPTED) {
+              $scope.team.statusName = "Accepted";
+            } else {
+              $scope.team.statusName = "Refused";
+            }
+            return $modalInstance.close();
+          }
+        });
+      };
+      $scope.accept = function() {
+        return $scope.review({
+          contestTeamId: $scope.team.contestTeamId,
+          status: $rootScope.ContestRegistryStatus.ACCEPTED,
+          comment: $scope.review.result
+        });
+      };
+      $scope.refuse = function() {
+        return $scope.review({
+          contestTeamId: $scope.team.contestTeamId,
+          status: $rootScope.ContestRegistryStatus.REFUSED,
+          comment: $scope.review.result
+        });
+      };
+      return $scope.reasonList = [];
     }
   ]);
 
@@ -66083,16 +66234,11 @@ if (typeof exports === 'object') {
           return $window.alert(data.error_msg);
         }
       });
-      $scope.showTeamEditor = function() {
+      return $scope.showTeamEditor = function() {
         var teamEditor;
         return teamEditor = $modal.open({
           templateUrl: "template/modal/team-editor-modal.html",
           controller: "TeamEditorModalController"
-        });
-      };
-      return $scope.joinIn = function(team) {
-        return $http.get("/team/changeAllowState/" + $scope.targetUser.userId + "/" + team.teamId + "/" + team.allow).then(function() {
-          return $rootScope.$broadcast("refresh");
         });
       };
     }
@@ -66974,6 +67120,41 @@ if (typeof exports === 'object') {
       };
     }
   ]);
+
+  cdoj.directive("team", function() {
+    return {
+      restrict: "E",
+      replace: true,
+      templateUrl: "template/team/team.html",
+      scope: {
+        user: "=",
+        team: "="
+      },
+      controller: [
+        "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
+          $scope.editPermission = false;
+          if ($rootScope.hasLogin) {
+            if ($rootScope.currentUser.userId === $scope.user.userId || $rootScope.isAdmin) {
+              $scope.editPermission = true;
+            }
+          }
+          return $scope.joinIn = function(team) {
+            return $http.get("/team/changeAllowState/" + $scope.user.userId + "/" + team.teamId + "/" + team.allow).then(function() {
+              return $http.get("/team/typeAHeadItem/" + $scope.team.teamName).then(function(response) {
+                var data;
+                data = response.data;
+                if (data.result === "success") {
+                  return $scope.team = data.team;
+                } else {
+                  return $window.alert(data.error_msg);
+                }
+              });
+            });
+          };
+        }
+      ]
+    };
+  });
 
   cdoj.directive("uiTime", function() {
     return {

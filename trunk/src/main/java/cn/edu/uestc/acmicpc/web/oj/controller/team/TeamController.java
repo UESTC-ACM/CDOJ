@@ -52,22 +52,90 @@ public class TeamController extends BaseController {
     this.messageService = messageService;
   }
 
-
-  @RequestMapping("typeAHeadSearch")
+  @RequestMapping("typeAHeadItem/{teamName}")
   @LoginPermit(NeedLogin = true)
   public
   @ResponseBody
-  Map<String, Object> typeAHeadSearch(@RequestBody TeamCondition teamCondition,
-                                      HttpSession session) {
+  Map<String, Object> typeAHeadItem(@PathVariable("teamName") String teamName,
+                                    HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO currentUser = getCurrentUser(session);
+      Integer teamId = teamService.getTeamIdByTeamName(teamName);
+      TeamCondition teamCondition = new TeamCondition();
+      teamCondition.teamId = teamId;
+      PageInfo pageInfo = buildPageInfo(1L, 1L, 1L, null);
+      List<TeamListDTO> teamList = getTeamListDTO(teamCondition, pageInfo, session);
+      if (teamList == null || teamList.size() != 1) {
+        throw new AppException("Fetch team error.");
+      }
+      json.put("team", teamList.get(0));
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
     }
     return json;
+  }
+
+  @RequestMapping("typeAHeadSearch")
+  @LoginPermit(NeedLogin = true)
+  public
+  @ResponseBody
+  Map<String, Object> typeAHeadSearch(@RequestBody TeamCondition teamCondition) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      if (teamCondition.teamName == null) {
+        teamCondition.teamName = "";
+      }
+      // Search teams
+      Long count = teamService.count(teamCondition);
+      PageInfo pageInfo = buildPageInfo(count, 1L,
+          6L, null);
+      json.put("list", teamService.getTeamTypeAHeadList(teamCondition, pageInfo));
+      json.put("result", "success");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    }
+    return json;
+  }
+
+  private List<TeamListDTO> getTeamListDTO(TeamCondition teamCondition, PageInfo pageInfo,
+                                           HttpSession session) throws AppException {
+    List<TeamListDTO> teamList = teamService.getTeamList(teamCondition, pageInfo);
+
+    // At most 20 records
+    List<Integer> teamIdList = new LinkedList<>();
+    for (TeamListDTO teamListDTO : teamList) {
+      teamIdList.add(teamListDTO.getTeamId());
+    }
+    TeamUserCondition teamUserCondition = new TeamUserCondition();
+    teamUserCondition.orderFields = "id";
+    teamUserCondition.orderAsc = "true";
+    teamUserCondition.teamIdList = ArrayUtil.join(teamIdList.toArray(), ",");
+    // Search team users
+    List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamUserCondition);
+
+    // Put users into teams
+    for (TeamListDTO teamListDTO : teamList) {
+      teamListDTO.setTeamUsers(new LinkedList<TeamUserListDTO>());
+      teamListDTO.setInvitedUsers(new LinkedList<TeamUserListDTO>());
+      for (TeamUserListDTO teamUserListDTO : teamUserList) {
+        if (teamListDTO.getTeamId().compareTo(teamUserListDTO.getTeamId()) == 0) {
+          // Put users into current users / inactive users
+          if (teamUserListDTO.getAllow()) {
+            teamListDTO.getTeamUsers().add(teamUserListDTO);
+          } else if (checkPermission(session, teamCondition.userId)) {
+            teamListDTO.getInvitedUsers().add(teamUserListDTO);
+          }
+
+          if (checkPermission(session, teamCondition.userId) && teamUserListDTO.getUserId().equals(teamCondition.userId)) {
+            teamListDTO.setAllow(teamUserListDTO.getAllow());
+          }
+        }
+      }
+    }
+    return teamList;
   }
 
   @RequestMapping("search")
@@ -86,41 +154,9 @@ public class TeamController extends BaseController {
         Long count = teamService.count(teamCondition);
         PageInfo pageInfo = buildPageInfo(count, teamCondition.currentPage,
             Global.RECORD_PER_PAGE, null);
-        List<TeamListDTO> teamList = teamService.getTeamList(teamCondition, pageInfo);
 
-        // At most 20 records
-        List<Integer> teamIdList = new LinkedList<>();
-        for (TeamListDTO teamListDTO : teamList) {
-          teamIdList.add(teamListDTO.getTeamId());
-        }
-        TeamUserCondition teamUserCondition = new TeamUserCondition();
-        teamUserCondition.orderFields = "id";
-        teamUserCondition.orderAsc = "true";
-        teamUserCondition.teamIdList = ArrayUtil.join(teamIdList.toArray(), ",");
-        // Search team users
-        List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamUserCondition);
-
-        // Put users into teams
-        for (TeamListDTO teamListDTO : teamList) {
-          teamListDTO.setTeamUsers(new LinkedList<TeamUserListDTO>());
-          teamListDTO.setInvitedUsers(new LinkedList<TeamUserListDTO>());
-          for (TeamUserListDTO teamUserListDTO : teamUserList) {
-            if (teamListDTO.getTeamId().compareTo(teamUserListDTO.getTeamId()) == 0) {
-              // Put users into current users / inactive users
-              if (teamUserListDTO.getAllow()) {
-                teamListDTO.getTeamUsers().add(teamUserListDTO);
-              } else if (checkPermission(session, teamCondition.userId)) {
-                teamListDTO.getInvitedUsers().add(teamUserListDTO);
-              }
-
-              if (checkPermission(session, teamCondition.userId) && teamUserListDTO.getUserId().equals(teamCondition.userId)) {
-                teamListDTO.setAllow(teamUserListDTO.getAllow());
-              }
-            }
-          }
-        }
-
-        json.put("list", teamList);
+        json.put("pageInfo", pageInfo);
+        json.put("list", getTeamListDTO(teamCondition, pageInfo, session));
       }
       json.put("result", "success");
     } catch (AppException e) {

@@ -227,4 +227,21 @@ public class Global {
       return description;
     }
   }
+
+  /**
+   * Contest register request status
+   */
+  public enum ContestRegistryStatus {
+    PENDING("Pending"), ACCEPTED("Accepted"), REFUSED("Refused");
+
+    private final String description;
+
+    private ContestRegistryStatus(String description) {
+      this.description = description;
+    }
+
+    public String getDescription() {
+      return description;
+    }
+  }
 }

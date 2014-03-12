@@ -1,0 +1,75 @@
+<div class="modal-header">
+  <h3>Team <span ng-bind="team.teamName"></span></h3>
+</div>
+<div class="modal-body">
+  <table class="table table-condensed" ng-repeat="user in team.teamUsers">
+    <thead>
+    <tr>
+      <th style="width: 100px;"></th>
+      <th ng-show="$index == 0">Team leader</th>
+      <th ng-show="$index != 0">Team member</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>User name</td>
+      <td ng-bind="user.userName"></td>
+    </tr>
+    <tr>
+      <td>Nick name</td>
+      <td ng-bind="user.nickName"></td>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td ng-bind="user.name"></td>
+    </tr>
+    <tr>
+      <td>Gender</td>
+      <td ng-bind="user.sex"></td>
+    </tr>
+    <tr>
+      <td>T-shirts size</td>
+      <td ng-bind="user.size"></td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td ng-bind="user.email"></td>
+    </tr>
+    <tr>
+      <td>Phone</td>
+      <td ng-bind="user.phone"></td>
+    </tr>
+    <tr>
+      <td>School</td>
+      <td ng-bind="user.school"></td>
+    </tr>
+    <tr>
+      <td>Department</td>
+      <td ng-bind="user.departmentId"></td>
+    </tr>
+    <tr>
+      <td>Grade</td>
+      <td ng-bind="user.grade"></td>
+    </tr>
+    <tr>
+      <td>Student ID</td>
+      <td ng-bind="user.studentId"></td>
+    </tr>
+    <tr>
+      <td>Type</td>
+      <td ng-bind="user.type"></td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="form-group ">
+    <input type="text"
+           ng-model="review.result"
+           typeahead="reason for reason in reasonList"
+           placeholder="Refuse reason"
+           class="form-control">
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-success" ng-click="accept()">Accept</button>
+  <button class="btn btn-danger" ng-click="refuse()">Refuse</button>
+</div>

@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.db.entity;
 import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,6 +59,32 @@ public class ContestTeam implements Serializable {
 
   public void setTeamId(Integer teamId) {
     this.teamId = teamId;
+  }
+
+  private int status;
+
+  @Column(name = "status", nullable = false, insertable = true, updatable = true, length = 3,
+      precision = 0)
+  @Basic
+  public int getStatus() {
+    return status;
+  }
+
+  public void setStatus(int status) {
+    this.status = status;
+  }
+
+  private String comment;
+
+  @Column(name = "comment", nullable = false, insertable = true, updatable = true, length = 255,
+      precision = 0)
+  @Basic
+  public String getComment() {
+    return comment;
+  }
+
+  public void setComment(String comment) {
+    this.comment = comment;
   }
 
   private Contest contestByContestId;

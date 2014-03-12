@@ -1,15 +1,10 @@
 cdoj
 .controller("ContestListController", [
-    "$scope", "$rootScope", "$window", "$http", "$modal"
-    ($scope, $rootScope, $window, $http, $modal)->
-      $scope.registerContest = (contest)->
+    "$scope", "$rootScope", "$window"
+    ($scope, $rootScope, $window)->
+      $scope.toRegisterPage = (contest)->
         if $rootScope.hasLogin == false
           $window.alert "Please login first!"
         else
-          $modal.open(
-            templateUrl: "template/modal/contest-register-modal.html"
-            controller: "ContestRegisterModalController"
-            resolve:
-              contest: -> contest
-          )
+          $window.location.href = "/#/contest/register/#{contest.contestId}"
   ])

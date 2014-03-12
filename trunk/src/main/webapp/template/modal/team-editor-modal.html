@@ -50,12 +50,12 @@
              class="form-control input-sm"
              ng-model="newMember.userName"
              typeahead="user.userName for user in searchUser($viewValue) | filter:$viewValue"
-             typeahead-template-url="template/user/typeAhead.html">
-                <span class="input-group-btn">
-                  <button class="btn btn-default btn-sm" type="button"
-                          ng-click="addMemberClick()">Add member
-                  </button>
-                </span>
+             typeahead-template-url="template/user/typeAhead.html"/>
+      <span class="input-group-btn">
+        <button class="btn btn-default btn-sm" type="button"
+                ng-click="addMemberClick()">Add member
+        </button>
+      </span>
     </div>
   </div>
 </div>
