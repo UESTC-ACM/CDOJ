@@ -16,7 +16,6 @@ targetCompatibility = 1.7
 [jettyRunWar, jettyRun]*.contextPath = '/'
 project.stopPort = 8005
 project.stopKey = 'stop'
-jettyRun.daemon = true
 
 task checkControllerDoNotContainDaos(type: Exec) {
   commandLine "python", "src/test/python/check_controller_not_contain_daos.py"
@@ -168,6 +167,7 @@ dependencies {
 
 test {
   doFirst {
+    jettyRun.daemon = true
     jettyRun.execute()
   }
   doLast {
