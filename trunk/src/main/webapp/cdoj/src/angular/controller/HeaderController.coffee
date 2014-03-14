@@ -37,12 +37,6 @@ cdoj
             $rootScope.currentUser =
               email: ""
 
-      $scope.openRegisterModal = ->
-        registerModal = $modal.open(
-          templateUrl: "template/modal/register-modal.html"
-          controller: "RegisterModalController"
-        )
-
       $scope.openForgetPasswordModal = ->
         forgetPasswordModal = $modal.open(
           templateUrl: "template/modal/forget-password-modal.html"
