@@ -14,8 +14,11 @@ cdoj
         if v != undefined
           $scope.message = v.defaultMessage
           $scope.isInvalid = true
+        else
+          $scope.message = ""
+          $scope.isInvalid = false
       )
     template: """
-      <span class="help-block" ng-show="isInvalid" ng-bind="message"></span>
+      <span class="validate-info" ng-show="isInvalid" ng-bind="message"></span>
     """
   )

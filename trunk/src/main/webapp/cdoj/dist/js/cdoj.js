@@ -65118,6 +65118,9 @@ if (typeof exports === 'object') {
       }).when("/user/activate/:userName/:serialKey", {
         templateUrl: "template/user/activation.html",
         controller: "PasswordResetController"
+      }).when("/user/register", {
+        templateUrl: "template/user/register.html",
+        controller: "UserRegisterController"
       });
     }
   ]);
@@ -65712,13 +65715,6 @@ if (typeof exports === 'object') {
           }
         });
       };
-      $scope.openRegisterModal = function() {
-        var registerModal;
-        return registerModal = $modal.open({
-          templateUrl: "template/modal/register-modal.html",
-          controller: "RegisterModalController"
-        });
-      };
       $scope.openForgetPasswordModal = function() {
         var forgetPasswordModal;
         return forgetPasswordModal = $modal.open({
@@ -65961,62 +65957,6 @@ if (typeof exports === 'object') {
       };
       return $scope.gotoStatusList = function() {
         return $window.location.href = "#/status/list?problemId=" + $scope.problem.problemId;
-      };
-    }
-  ]);
-
-  cdoj.controller("RegisterModalController", [
-    "$scope", "$rootScope", "$http", "$modalInstance", "$window", function($scope, $rootScope, $http, $modalInstance, $window) {
-      $scope.userRegisterDTO = {
-        departmentId: 1,
-        email: "",
-        motto: "",
-        nickName: "",
-        password: "",
-        passwordRepeat: "",
-        school: "",
-        studentId: "",
-        userName: "",
-        sex: 0,
-        size: 2,
-        phone: "",
-        grade: 3,
-        name: ""
-      };
-      $scope.fieldInfo = [];
-      $scope.register = function() {
-        var password, passwordRepeat, userRegisterDTO;
-        userRegisterDTO = angular.copy($scope.userRegisterDTO);
-        if (angular.isUndefined(userRegisterDTO.password)) {
-          return;
-        }
-        if (angular.isUndefined(userRegisterDTO.passwordRepeat)) {
-          return;
-        }
-        password = CryptoJS.SHA1(userRegisterDTO.password).toString();
-        userRegisterDTO.password = password;
-        passwordRepeat = CryptoJS.SHA1(userRegisterDTO.passwordRepeat).toString();
-        userRegisterDTO.passwordRepeat = passwordRepeat;
-        return $http.post("/user/register", userRegisterDTO).then(function(response) {
-          var data;
-          data = response.data;
-          if (data.result === "success") {
-            $rootScope.hasLogin = true;
-            $rootScope.currentUser = {
-              userName: data.userName,
-              email: data.email,
-              type: data.type
-            };
-            return $modalInstance.close();
-          } else if (data.result === "field_error") {
-            return $scope.fieldInfo = data.field;
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        });
-      };
-      return $scope.dismiss = function() {
-        return $modalInstance.dismiss();
       };
     }
   ]);
@@ -66297,6 +66237,61 @@ if (typeof exports === 'object') {
       };
       return $scope.dismiss = function() {
         return $modalInstance.dismiss();
+      };
+    }
+  ]);
+
+  cdoj.controller("UserRegisterController", [
+    "$scope", "$rootScope", "$http", "$window", function($scope, $rootScope, $http, $window) {
+      $scope.userRegisterDTO = {
+        departmentId: 1,
+        email: "",
+        motto: "",
+        nickName: "",
+        password: "",
+        passwordRepeat: "",
+        school: "",
+        studentId: "",
+        userName: "",
+        sex: 0,
+        size: 2,
+        phone: "",
+        grade: 3,
+        name: ""
+      };
+      $scope.fieldInfo = [];
+      return $scope.register = function() {
+        var password, passwordRepeat, userRegisterDTO;
+        userRegisterDTO = angular.copy($scope.userRegisterDTO);
+        if (angular.isUndefined(userRegisterDTO.password)) {
+          return;
+        }
+        if (angular.isUndefined(userRegisterDTO.passwordRepeat)) {
+          return;
+        }
+        password = CryptoJS.SHA1(userRegisterDTO.password).toString();
+        userRegisterDTO.password = password;
+        passwordRepeat = CryptoJS.SHA1(userRegisterDTO.passwordRepeat).toString();
+        userRegisterDTO.passwordRepeat = passwordRepeat;
+        return $http.post("/user/register", userRegisterDTO).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            $rootScope.hasLogin = true;
+            $rootScope.currentUser = {
+              userName: data.userName,
+              email: data.email,
+              type: data.type
+            };
+            $rootScope.$broadcast("refreshUserData");
+            return $window.history.back();
+          } else if (data.result === "field_error") {
+            $window.scrollTo(0, 0);
+            return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        });
       };
     }
   ]);
@@ -67292,10 +67287,13 @@ if (typeof exports === 'object') {
           if (v !== void 0) {
             $scope.message = v.defaultMessage;
             return $scope.isInvalid = true;
+          } else {
+            $scope.message = "";
+            return $scope.isInvalid = false;
           }
         });
       },
-      template: "<span class=\"help-block\" ng-show=\"isInvalid\" ng-bind=\"message\"></span>"
+      template: "<span class=\"validate-info\" ng-show=\"isInvalid\" ng-bind=\"message\"></span>"
     };
   });
 
