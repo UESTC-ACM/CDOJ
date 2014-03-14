@@ -256,7 +256,7 @@ public class StatusController extends BaseController {
       if (statusInformationDTO == null) {
         throw new AppException("No such status.");
       }
-      if (!isAdmin(session)) {
+      if (!checkPermission(session, statusInformationDTO.getUserId())) {
         throw new AppException("You have no permission to view this code.");
       }
       json.put("result", "success");
