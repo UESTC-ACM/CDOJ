@@ -104,6 +104,10 @@ public class TeamController extends BaseController {
                                            HttpSession session) throws AppException {
     List<TeamListDTO> teamList = teamService.getTeamList(teamCondition, pageInfo);
 
+    if (teamList.size() == 0) {
+      return teamList;
+    }
+
     // At most 20 records
     List<Integer> teamIdList = new LinkedList<>();
     for (TeamListDTO teamListDTO : teamList) {
@@ -147,7 +151,7 @@ public class TeamController extends BaseController {
     Map<String, Object> json = new HashMap<>();
     try {
       if (teamCondition.userId != null) {
-        if (!isAdmin(session)) {
+        if (!checkPermission(session, teamCondition.userId)) {
           teamCondition.allow = true;
         }
         // Search teams
