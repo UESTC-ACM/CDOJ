@@ -41,6 +41,11 @@ GlobalVariables =
     PASS: 1
     FAIL: 2
 
+  ContestRegistryStatus:
+    PENDING: 0
+    ACCEPTED: 1
+    REFUSED: 2
+
 GlobalConditions =
   articleCondition:
     currentPage: null
@@ -92,3 +97,27 @@ GlobalConditions =
     departmentId: undefined
     orderFields: "solved,tried,id"
     orderAsc: "false,false,true"
+  teamCondition:
+    currentPage: null
+    userId: undefined
+    leaderId: undefined
+    teamName: undefined
+    orderFields: "team.teamId"
+    orderAsc: "false"
+  messageCondition:
+    currentPage: null
+    senderId: null
+    receiverId: null
+    isOpened: null
+    userId: null
+    userAId: null
+    userBId: null
+    orderFields: "time"
+    orderAsc: "false"
+  contestTeamCondition:
+    currentPage: null
+    contestId: null
+    teamId: null
+    status: null
+    orderFields: "contestTeamId"
+    orderAsc: "false"

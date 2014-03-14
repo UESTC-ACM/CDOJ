@@ -11,6 +11,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserProblemStatusDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDTO;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
@@ -20,6 +21,7 @@ import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
@@ -164,6 +166,11 @@ public class UserController extends BaseController {
             .setMotto(userRegisterDTO.getMotto())
             .setDepartmentName(departmentService.getDepartmentName(
                 userRegisterDTO.getDepartmentId()))
+            .setName(userRegisterDTO.getName())
+            .setSex(userRegisterDTO.getSex())
+            .setGrade(userRegisterDTO.getGrade())
+            .setPhone(userRegisterDTO.getPhone())
+            .setSize(userRegisterDTO.getSize())
             .build();
         userService.createNewUser(userDTO);
 
@@ -199,6 +206,59 @@ public class UserController extends BaseController {
       PageInfo pageInfo = buildPageInfo(count, userCondition.currentPage,
           Global.RECORD_PER_PAGE, null);
       List<UserListDTO> userList = userService.getUserListDTOList(userCondition, pageInfo);
+
+      json.put("pageInfo", pageInfo);
+      json.put("result", "success");
+      json.put("list", userList);
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      json.put("result", "error");
+      e.printStackTrace();
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  @RequestMapping("typeAheadItem/{userName}")
+  public
+  @ResponseBody
+  Map<String, Object> typeAheadResult(@PathVariable("userName") String userName) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      UserDTO userDTO = userService.getUserDTOByUserName(userName);
+      AppExceptionUtil.assertNotNull(userDTO, "No such user!");
+      json.put("result", "success");
+      json.put("user", UserTypeAheadDTO.builder()
+          .setUserId(userDTO.getUserId())
+          .setUserName(userDTO.getUserName())
+          .setNickName(userDTO.getNickName())
+          .setEmail(userDTO.getEmail())
+          .build());
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      json.put("result", "error");
+      e.printStackTrace();
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  @RequestMapping("typeAheadList")
+  @LoginPermit(NeedLogin = false)
+  public
+  @ResponseBody
+  Map<String, Object> typeAheadList(@RequestBody UserCondition userCondition) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      Long count = userService.count(userCondition);
+      PageInfo pageInfo = buildPageInfo(count, 1L,
+          6L, null);
+      List<UserTypeAheadDTO> userList = userService.getUserTypeAheadDTOList(userCondition,
+          pageInfo);
 
       json.put("pageInfo", pageInfo);
       json.put("result", "success");
@@ -302,6 +362,11 @@ public class UserController extends BaseController {
         userDTO.setDepartmentId(userEditDTO.getDepartmentId());
         userDTO.setStudentId(userEditDTO.getStudentId());
         userDTO.setMotto(userEditDTO.getMotto());
+        userDTO.setName(userEditDTO.getName());
+        userDTO.setSex(userEditDTO.getSex());
+        userDTO.setGrade(userEditDTO.getGrade());
+        userDTO.setPhone(userEditDTO.getPhone());
+        userDTO.setSize(userEditDTO.getSize());
 
         userService.updateUser(userDTO);
         json.put("result", "success");
@@ -349,6 +414,11 @@ public class UserController extends BaseController {
         userDTO.setStudentId(userAdminEditDTO.getStudentId());
         userDTO.setMotto(userAdminEditDTO.getMotto());
         userDTO.setType(userAdminEditDTO.getType());
+        userDTO.setName(userAdminEditDTO.getName());
+        userDTO.setSex(userAdminEditDTO.getSex());
+        userDTO.setGrade(userAdminEditDTO.getGrade());
+        userDTO.setPhone(userAdminEditDTO.getPhone());
+        userDTO.setSize(userAdminEditDTO.getSize());
 
         userService.updateUser(userDTO);
         json.put("result", "success");

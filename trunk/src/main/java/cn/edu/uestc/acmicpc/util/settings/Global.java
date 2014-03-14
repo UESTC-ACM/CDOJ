@@ -175,4 +175,73 @@ public class Global {
     }
   }
 
+  /**
+   * User's gender type
+   */
+  public enum Gender {
+    MALE("Male"), FEMALE("Female");
+
+    private final String description;
+
+    private Gender(String description) {
+      this.description = description;
+    }
+
+    public String getDescription() {
+      return description;
+    }
+  }
+
+  /**
+   * User's grade type
+   */
+  public enum Grade {
+    SENIOR_ONE("Senior one"), SENIOR_TWO("Senior two"), SENIOR_THREE("Senior three"),
+    FRESHMAN("Freshman"), SOPHOMORE("Sophomore"), JUNIOR("Junior"),
+    FOURTH_YEAR_OF_UNIVERSITY("Fourth year of university"), GRADUATE("Graduate");
+
+    private final String description;
+
+    private Grade(String description) {
+      this.description = description;
+    }
+
+    public String getDescription() {
+      return description;
+    }
+  }
+
+  /**
+   * User's t-shirts size type
+   */
+  public enum TShirtsSize {
+    XS("XS"), S("S"), M("M"), L("L"), XL("XL"), XXL("XXL");
+
+    private final String description;
+
+    private TShirtsSize(String description) {
+      this.description = description;
+    }
+
+    public String getDescription() {
+      return description;
+    }
+  }
+
+  /**
+   * Contest register request status
+   */
+  public enum ContestRegistryStatus {
+    PENDING("Pending"), ACCEPTED("Accepted"), REFUSED("Refused");
+
+    private final String description;
+
+    private ContestRegistryStatus(String description) {
+      this.description = description;
+    }
+
+    public String getDescription() {
+      return description;
+    }
+  }
 }

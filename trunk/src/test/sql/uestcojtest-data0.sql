@@ -25,12 +25,18 @@ COMMIT;
 
 START TRANSACTION;
 USE `uestcojtest`;
-INSERT INTO `user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`) VALUES (1, 'administrator', '2010013100008', 1, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'administrator', 'acm@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0);
-INSERT INTO `user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`) VALUES (2, 'admin', '2010013100008', 1, '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'UESTC', 'admin', 'acm_admin@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0);
-INSERT INTO `user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`) VALUES (3, 'user_id3', '2010013100008', 2, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'user_id3', 'user_id3@uestc.edu.cn', 0, 0, 2, '2013-01-30 13:17:26', 0);
-INSERT INTO `user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`) VALUES (4, 'user4', '2010013100008', 1, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'user4', 'user4@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0);
-INSERT INTO `user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`) VALUES (5, 'user5', '2010013100008', 1, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'user5', 'user5@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0);
-INSERT INTO `user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`) VALUES (6, 'user6', '2010013100008', 1, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'user6', 'user6@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0);
+INSERT INTO `user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`, `motto`, `name`, `sex`, `grade`, `phone`, `size`) 
+VALUES (1, 'administrator', '2010013100008', 1, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'administrator', 'acm@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0, 'fuck', 'aa', 0, 0, '123', 0);
+INSERT INTO `user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`, `motto`, `name`, `sex`, `grade`, `phone`, `size`) 
+VALUES (2, 'admin', '2010013100008', 1, '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'UESTC', 'admin', 'acm_admin@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0, 'fuck', 'aa', 0, 0, '123', 0);
+INSERT INTO `user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`, `motto`, `name`, `sex`, `grade`, `phone`, `size`) 
+VALUES (3, 'user_id3', '2010013100008', 2, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'user_id3', 'user_id3@uestc.edu.cn', 0, 0, 2, '2013-01-30 13:17:26', 0, 'fuck', 'aa', 0, 0, '123', 0);
+INSERT INTO `user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`, `motto`, `name`, `sex`, `grade`, `phone`, `size`) 
+VALUES (4, 'user4', '2010013100008', 1, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'user4', 'user4@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0, 'fuck', 'aa', 0, 0, '123', 0);
+INSERT INTO `user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`, `motto`, `name`, `sex`, `grade`, `phone`, `size`) 
+VALUES (5, 'user5', '2010013100008', 1, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'user5', 'user5@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0, 'fuck', 'aa', 0, 0, '123', 0);
+INSERT INTO `user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`, `motto`, `name`, `sex`, `grade`, `phone`, `size`) 
+VALUES (6, 'user6', '2010013100008', 1, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'user6', 'user6@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0, 'fuck', 'aa', 0, 0, '123', 0);
 
 COMMIT;
 
@@ -70,17 +76,23 @@ COMMIT;
 
 START TRANSACTION;
 USE `uestcojtest`;
-INSERT INTO `status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) VALUES (1, 1, 1, 1, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 1, NULL, NULL);
-INSERT INTO `status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) VALUES (2, 1, 1, 2, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 2, NULL, NULL);
-INSERT INTO `status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) VALUES (3, 1, 1, 3, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 3, NULL, NULL);
-INSERT INTO `status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) VALUES (4, 2, 1, 4, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 4, NULL, NULL);
-INSERT INTO `status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) VALUES (5, 2, 1, 7, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 5, 1, NULL);
+INSERT INTO `status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) 
+VALUES (1, 1, 1, 1, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 1, NULL, NULL);
+INSERT INTO `status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) 
+VALUES (2, 1, 1, 2, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 2, NULL, NULL);
+INSERT INTO `status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) 
+VALUES (3, 1, 1, 3, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 3, NULL, NULL);
+INSERT INTO `status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) 
+VALUES (4, 2, 1, 4, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 4, NULL, NULL);
+INSERT INTO `status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) 
+VALUES (5, 2, 1, 7, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 5, 1, NULL);
 
 COMMIT;
 
 START TRANSACTION;
 USE `uestcojtest`;
-INSERT INTO `contest` (`contestId`, `title`, `description`, `type`, `time`, `length`, `isVisible`, `OPTLOCK`) VALUES (1, 'title', 'descrip', 1, '2013-01-01 00:00:00', 300, 1, NULL);
+INSERT INTO `contest` (`contestId`, `title`, `description`, `type`, `time`, `length`, `isVisible`, `OPTLOCK`) 
+VALUES (1, 'title', 'descrip', 1, '2013-01-01 00:00:00', 300, 1, NULL);
 
 COMMIT;
 

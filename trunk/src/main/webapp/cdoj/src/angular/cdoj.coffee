@@ -4,20 +4,43 @@ cdoj = angular.module('cdoj', [
   "ui.bootstrap"
   "ngRoute"
   "monospaced.elastic"
+  "frapontillo.bootstrap-switch"
 ])
 cdoj
 .run([
-  "$rootScope", "$http"
-  ($rootScope, $http)->
+  "$rootScope", "$http", "$interval"
+  ($rootScope, $http, $interval)->
     _.extend($rootScope, GlobalVariables)
     _.extend($rootScope, GlobalConditions)
     $http.get("/globalData").then (response)->
       data = response.data
-      if data.result == "error"
-        alert(data.error_msg)
-      else
-        _.extend($rootScope, data)
+      _.extend($rootScope, data)
     $rootScope.finalTitle = "UESTC Online Judge"
+
+    fetchUserData = ->
+      $http.get("/userData").then (response)->
+        data = response.data
+        if data.result == "success"
+          _.extend($rootScope, data)
+
+    fetchUserData()
+    $interval(fetchUserData, 5000)
+
+    $rootScope.$on("refreshUserData", ->
+      fetchUserData()
+    )
+    $rootScope.$on("refresh", ->
+      $rootScope.$broadcast("refreshUserData")
+    )
+
+    $rootScope.$watch("hasLogin",
+    ->
+      if $rootScope.hasLogin && $rootScope.currentUser.type == 1
+        $rootScope.isAdmin = true
+      else
+        $rootScope.isAdmin = false
+      $rootScope.$broadcast("refresh")
+    )
 ])
 .config([
     "$routeProvider",
@@ -58,6 +81,9 @@ cdoj
       ).when("/user/list",
         templateUrl: "template/user/list.html"
         controller: "UserListController"
+      ).when("/user/center/:userName/:tab",
+        templateUrl: "template/user/center.html"
+        controller: "UserCenterController"
       ).when("/user/center/:userName",
         templateUrl: "template/user/center.html"
         controller: "UserCenterController"

@@ -183,6 +183,17 @@ public class Contest implements Serializable {
     this.articlesByContestId = articlesByContestId;
   }
 
+  private Collection<ContestTeam> contestTeamsByContestId;
+
+  @OneToMany(mappedBy = "contestByContestId", cascade = CascadeType.ALL)
+  public Collection<ContestTeam> getContestTeamsByContestId() {
+    return contestTeamsByContestId;
+  }
+
+  public void setContestTeamsByContestId(Collection<ContestTeam> contestTeamsByContestId) {
+    this.contestTeamsByContestId = contestTeamsByContestId;
+  }
+
   public Contest() {
     contestId = null;
     description = "";

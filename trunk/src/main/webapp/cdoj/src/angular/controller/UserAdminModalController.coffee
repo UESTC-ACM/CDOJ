@@ -1,7 +1,7 @@
 cdoj
 .controller("UserAdminModalController", [
-    "$scope", "$http", "$modalInstance", "UserProfile"
-    ($scope, $http, $modalInstance, $userProfile)->
+    "$scope", "$http", "$modalInstance", "UserProfile", "$window"
+    ($scope, $http, $modalInstance, $userProfile, $window)->
       $scope.userEditDTO = 0
       $scope.$watch(
         ->
@@ -28,6 +28,7 @@ cdoj
         $http.post("/user/adminEdit", userEditDTO).then (response)->
           data = response.data
           if data.result == "success"
+            $window.alert "Success!"
             $modalInstance.close()
           else if data.result == "field_error"
             $scope.fieldInfo = data.field
