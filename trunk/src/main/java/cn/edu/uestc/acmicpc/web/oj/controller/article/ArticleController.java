@@ -1,22 +1,5 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.article;
 
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditDTO;
@@ -32,6 +15,21 @@ import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/article")
@@ -86,27 +84,6 @@ public class ArticleController extends BaseController {
     return json;
   }
 
-  @RequestMapping("show/{articleId}")
-  @LoginPermit(NeedLogin = false)
-  public String show(@PathVariable("articleId") Integer articleId,
-                     HttpSession session,
-                     ModelMap model) {
-    try {
-      if (!articleService.checkArticleExists(articleId)) {
-        throw new AppException("No such article.");
-      }
-      ArticleDTO articleDTO = articleService.getArticleDTO(articleId);
-      if (!articleDTO.getIsVisible() && !isAdmin(session)) {
-        throw new AppException("No such article.");
-      }
-      model.put("articleId", articleId);
-    } catch (AppException e) {
-      model.put("message", e.getMessage());
-      return "error/error";
-    }
-    return "article/articleShow";
-  }
-
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public
@@ -137,32 +114,6 @@ public class ArticleController extends BaseController {
       json.put("error_msg", "Unknown exception occurred.");
     }
     return json;
-  }
-
-  @RequestMapping("editor/{articleId}")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
-  public String editor(@PathVariable("articleId") String sArticleId,
-                       ModelMap model) {
-    try {
-      if (sArticleId.compareTo("new") == 0) {
-        model.put("action", "new");
-      } else {
-        Integer articleId;
-        try {
-          articleId = Integer.parseInt(sArticleId);
-        } catch (NumberFormatException e) {
-          throw new AppException("Parse article id error.");
-        }
-        if (!articleService.checkArticleExists(articleId)) {
-          throw new AppException("No such article.");
-        }
-        model.put("action", articleId);
-      }
-    } catch (AppException e) {
-      model.put("message", e.getMessage());
-      return "error/error";
-    }
-    return "/article/articleEditor";
   }
 
   @RequestMapping("edit")

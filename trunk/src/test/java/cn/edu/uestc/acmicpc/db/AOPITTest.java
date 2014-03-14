@@ -1,16 +1,17 @@
 package cn.edu.uestc.acmicpc.db;
 
+import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
+import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
 import com.jolbox.bonecp.BoneCPDataSource;
 
 /**
@@ -44,7 +45,7 @@ public class AOPITTest extends AbstractTestNGSpringContextTests {
     userDAO.findAll("from CompileInfo");
     userDAO.findAll("from Contest");
     userDAO.findAll("from ContestProblem");
-    userDAO.findAll("from ContestTeamInfo");
+    userDAO.findAll("from ContestTeam");
     userDAO.findAll("from ContestUser");
     userDAO.findAll("from Department");
     userDAO.findAll("from Language");
@@ -54,6 +55,8 @@ public class AOPITTest extends AbstractTestNGSpringContextTests {
     userDAO.findAll("from ProblemTag");
     userDAO.findAll("from Status");
     userDAO.findAll("from Tag");
+    userDAO.findAll("from Team");
+    userDAO.findAll("from TeamUser");
     userDAO.findAll("from TrainingContest");
     userDAO.findAll("from TrainingStatus");
     userDAO.findAll("from TrainingUser");

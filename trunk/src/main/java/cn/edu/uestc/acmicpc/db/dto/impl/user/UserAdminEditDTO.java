@@ -1,8 +1,8 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.user;
 
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * DTO post from user editor.
@@ -39,6 +39,63 @@ public class UserAdminEditDTO {
 
   @NotNull(message = "Please select the user type.")
   private Integer type;
+
+  @NotNull(message = "Please enter your name.")
+  @Length(min = 1, max = 50, message = "Please enter 1-50 characters.")
+  private String name;
+
+  @NotNull(message = "Please select your gender.")
+  private Integer sex;
+
+  @NotNull(message = "Please select your grade.")
+  private Integer grade;
+
+  @NotNull(message = "Please enter your phone number.")
+  @Length(min = 1, max = 45, message = "Please enter 1-45 characters.")
+  private String phone;
+
+  @NotNull(message = "Please select your T-Shirts size.")
+  private Integer size;
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Integer getSex() {
+    return sex;
+  }
+
+  public void setSex(Integer sex) {
+    this.sex = sex;
+  }
+
+  public Integer getGrade() {
+    return grade;
+  }
+
+  public void setGrade(Integer grade) {
+    this.grade = grade;
+  }
+
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
+  public Integer getSize() {
+    return size;
+  }
+
+  public void setSize(Integer size) {
+    this.size = size;
+  }
 
   public Integer getUserId() {
     return userId;
@@ -133,7 +190,8 @@ public class UserAdminEditDTO {
 
   private UserAdminEditDTO(Integer userId, String userName, String nickName, String email, String school,
                            String motto, Integer departmentId, String studentId, String newPassword,
-                           String newPasswordRepeat, Integer type) {
+                           String newPasswordRepeat, Integer type, String name, Integer sex,
+                           Integer grade, String phone, Integer size) {
     this.userId = userId;
     this.userName = userName;
     this.nickName = nickName;
@@ -145,6 +203,11 @@ public class UserAdminEditDTO {
     this.newPassword = newPassword;
     this.newPasswordRepeat = newPasswordRepeat;
     this.type = type;
+    this.name = name;
+    this.sex = sex;
+    this.grade = grade;
+    this.phone = phone;
+    this.size = size;
   }
 
   public static Builder builder() {
@@ -158,7 +221,7 @@ public class UserAdminEditDTO {
 
     public UserAdminEditDTO build() {
       return new UserAdminEditDTO(userId, userName, nickName, email, school, motto, departmentId,
-          studentId, newPassword, newPasswordRepeat, type);
+          studentId, newPassword, newPasswordRepeat, type, name, sex, grade, phone, size);
     }
 
     private Integer userId;
@@ -172,6 +235,11 @@ public class UserAdminEditDTO {
     private String newPassword;
     private String newPasswordRepeat;
     private Integer type;
+    private String name = "a";
+    private Integer sex = 0;
+    private Integer grade = 0;
+    private String phone = "123";
+    private Integer size = 0;
 
     public Integer getUserId() {
       return userId;
@@ -269,6 +337,51 @@ public class UserAdminEditDTO {
 
     public Builder setType(Integer type) {
       this.type = type;
+      return this;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public Builder setName(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public Integer getSex() {
+      return sex;
+    }
+
+    public Builder setSex(Integer sex) {
+      this.sex = sex;
+      return this;
+    }
+
+    public Integer getGrade() {
+      return grade;
+    }
+
+    public Builder setGrade(Integer grade) {
+      this.grade = grade;
+      return this;
+    }
+
+    public String getPhone() {
+      return phone;
+    }
+
+    public Builder setPhone(String phone) {
+      this.phone = phone;
+      return this;
+    }
+
+    public Integer getSize() {
+      return size;
+    }
+
+    public Builder setSize(Integer size) {
+      this.size = size;
       return this;
     }
   }

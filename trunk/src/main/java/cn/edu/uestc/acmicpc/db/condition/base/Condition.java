@@ -1,17 +1,17 @@
 package cn.edu.uestc.acmicpc.db.condition.base;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Conditions setting for {@link IDAO#findAll(Condition)},
- * {@link IDAO#findAll(String, Condition)} and {@link IDAO#count(Condition)}.
+ * Conditions setting for {@link IDAO#findAll(String, Condition)}
+ * and {@link IDAO#count(Condition)}.
  * <p/>
  * <strong>For Developers</strong>:
  * <p/>
@@ -267,6 +267,11 @@ public class Condition {
     entries.add(entry);
   }
 
+  private String escape(Object value) {
+    String result = String.format("%s", value);
+    result = result.replaceAll("'", "''");
+    return result;
+  }
   /**
    * Builds DB query string and append it into builder.
    *
@@ -303,11 +308,11 @@ public class Condition {
           builder.append(entry.getFieldName());
           builder.append(entry.getConditionType().getSignal());
           if (entry.getConditionType() == ConditionType.LIKE) {
-            builder.append("'%").append(entry.getValue()).append("%'");
+            builder.append("'%").append(escape(entry.getValue())).append("%'");
           } else if (entry.getConditionType() == ConditionType.IN) {
             builder.append("(").append(entry.getValue()).append(")");
           } else {
-            builder.append("'").append(entry.getValue()).append("'");
+            builder.append("'").append(escape(entry.getValue())).append("'");
           }
         }
       }
@@ -343,14 +348,8 @@ public class Condition {
     return pageInfo;
   }
 
-  /**
-   * Gets HQL string with order by clause.
-   *
-   * @return HQL string we need.
-   */
-  public String toHQLStringWithOrders() {
+  public String getOrdersString() {
     StringBuilder builder = new StringBuilder();
-    builder.append(toHQLString());
     if (!orders.isEmpty()) {
       builder.append(" order by");
       boolean first = true;
@@ -363,6 +362,18 @@ public class Condition {
         }
       }
     }
+    return builder.toString();
+  }
+
+  /**
+   * Gets HQL string with order by clause.
+   *
+   * @return HQL string we need.
+   */
+  public String toHQLStringWithOrders() {
+    StringBuilder builder = new StringBuilder();
+    builder.append(toHQLString());
+    builder.append(getOrdersString());
     return builder.toString();
   }
 

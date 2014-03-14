@@ -1,14 +1,15 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import java.util.List;
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Problem service interface.
@@ -100,6 +101,15 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
       throws AppException;
 
   /**
+   * Create problems by problemDTOs.
+   *
+   * @param problemDTOs a series of {@link cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO} entity.
+   * @return List of problemDTOs with problemId.
+   * @throws AppException
+   */
+  public ArrayList<ProblemDTO> createProblems(ArrayList<ProblemDTO> problemDTOs) throws AppException;
+
+  /**
    * Check whether a problem exists.
    *
    * @param problemId problem's id.
@@ -107,4 +117,5 @@ public interface ProblemService extends DatabaseService<Problem, Integer> {
    * @throws AppException
    */
   public Boolean checkProblemExists(Integer problemId) throws AppException;
+
 }

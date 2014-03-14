@@ -1,12 +1,19 @@
+DROP SCHEMA IF EXISTS `uestcojtest`;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
 CREATE SCHEMA IF NOT EXISTS `uestcojtest` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin ;
 USE `uestcojtest` ;
 
 -- -----------------------------------------------------
 -- Table `uestcojtest`.`department`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`department` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`department` (
   `departmentId` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(50) NOT NULL DEFAULT '' ,
+  `name` VARCHAR(50) NOT NULL DEFAULT '' COMMENT 'department\'s name' ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`departmentId`) ,
   UNIQUE INDEX `departmentId_UNIQUE` (`departmentId` ASC) )
@@ -16,21 +23,28 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `uestcojtest`.`user`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`user` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`user` (
   `userId` INT NOT NULL AUTO_INCREMENT ,
   `userName` VARCHAR(24) NOT NULL ,
   `studentId` VARCHAR(50) NOT NULL ,
   `departmentId` INT NOT NULL ,
-  `password` VARCHAR(40) NOT NULL ,
+  `password` VARCHAR(40) NOT NULL COMMENT 'need to validate\nuse SHA1 encoding' ,
   `school` VARCHAR(100) NOT NULL DEFAULT '' ,
-  `nickName` VARCHAR(50) NOT NULL ,
-  `email` VARCHAR(100) NOT NULL ,
+  `nickName` VARCHAR(50) NOT NULL COMMENT 'length >= 3' ,
+  `email` VARCHAR(100) NOT NULL COMMENT 'need to validate' ,
   `solved` INT NOT NULL DEFAULT 0 ,
   `tried` INT NOT NULL DEFAULT 0 ,
   `type` INT NOT NULL DEFAULT 0 ,
   `lastLogin` DATETIME NOT NULL ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
   `motto` VARCHAR(255) NOT NULL DEFAULT '这个人很屌，什么都没写。。。' ,
+  `name` VARCHAR(50) NOT NULL ,
+  `sex` INT NOT NULL ,
+  `grade` INT NOT NULL ,
+  `phone` VARCHAR(45) NOT NULL ,
+  `size` INT NOT NULL ,
   PRIMARY KEY (`userId`) ,
   UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) ,
   UNIQUE INDEX `userName_UNIQUE` (`userName` ASC) ,
@@ -47,6 +61,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `uestcojtest`.`problem`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`problem` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`problem` (
   `problemId` INT NOT NULL AUTO_INCREMENT ,
   `title` VARCHAR(50) NOT NULL ,
@@ -77,9 +93,11 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `uestcojtest`.`contest`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`contest` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`contest` (
   `contestId` INT NOT NULL AUTO_INCREMENT ,
-  `title` VARCHAR(50) NOT NULL ,
+  `title` VARCHAR(50) NOT NULL COMMENT 'length >= 3' ,
   `description` VARCHAR(200) NOT NULL DEFAULT '' ,
   `type` TINYINT NOT NULL DEFAULT 0 ,
   `time` DATETIME NOT NULL ,
@@ -94,13 +112,15 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `uestcojtest`.`article`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`article` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`article` (
   `articleId` INT NOT NULL AUTO_INCREMENT ,
   `title` VARCHAR(50) NOT NULL ,
   `content` TEXT NOT NULL ,
   `time` DATETIME NOT NULL ,
   `clicked` INT NOT NULL DEFAULT 0 ,
-  `order` INT NOT NULL DEFAULT 0 ,
+  `order` INT NOT NULL DEFAULT 0 COMMENT 'set order to top and move' ,
   `type` INT NOT NULL DEFAULT 0 ,
   `isVisible` TINYINT(1) NOT NULL DEFAULT 0 ,
   `parentId` INT NULL DEFAULT NULL ,
@@ -140,6 +160,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `uestcojtest`.`message`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`message` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`message` (
   `messageId` INT NOT NULL AUTO_INCREMENT ,
   `senderId` INT NOT NULL ,
@@ -169,12 +191,15 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `uestcojtest`.`contestUser`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`contestUser` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`contestUser` (
   `contestUserId` INT NOT NULL AUTO_INCREMENT ,
   `contestId` INT NOT NULL ,
   `userId` INT NOT NULL ,
-  `status` TINYINT(4) NOT NULL ,
+  `status` TINYINT(4) NOT NULL COMMENT '0 - wait for validating\n1 - accepted\n2 - refused' ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
+  `comment` VARCHAR(255) NOT NULL, 
   PRIMARY KEY (`contestUserId`) ,
   UNIQUE INDEX `contestUserId_UNIQUE` (`contestUserId` ASC) ,
   INDEX `FK_contestId_on_contest_idx` (`contestId` ASC) ,
@@ -195,6 +220,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `uestcojtest`.`contestProblem`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`contestProblem` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`contestProblem` (
   `contestProblemId` INT NOT NULL AUTO_INCREMENT ,
   `contestId` INT NOT NULL ,
@@ -221,6 +248,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `uestcojtest`.`tag`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`tag` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`tag` (
   `tagId` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(50) NOT NULL ,
@@ -234,6 +263,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `uestcojtest`.`problemTag`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`problemTag` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`problemTag` (
   `problemTagId` INT NOT NULL AUTO_INCREMENT ,
   `problemId` INT NOT NULL ,
@@ -259,6 +290,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `uestcojtest`.`language`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`language` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`language` (
   `languageId` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(50) NOT NULL ,
@@ -273,6 +306,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `uestcojtest`.`code`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`code` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`code` (
   `codeId` INT NOT NULL AUTO_INCREMENT ,
   `content` TEXT NOT NULL ,
@@ -286,6 +321,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `uestcojtest`.`compileInfo`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`compileInfo` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`compileInfo` (
   `compileInfoId` INT NOT NULL AUTO_INCREMENT ,
   `content` TEXT NOT NULL ,
@@ -298,6 +335,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `uestcojtest`.`status`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`status` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`status` (
   `statusId` INT NOT NULL AUTO_INCREMENT ,
   `userId` INT NOT NULL ,
@@ -355,30 +394,10 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `uestcojtest`.`contestTeamInfo`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`contestTeamInfo` (
-  `teamId` INT NOT NULL AUTO_INCREMENT ,
-  `userId` INT NOT NULL ,
-  `name` VARCHAR(50) NOT NULL DEFAULT '' ,
-  `coderName` VARCHAR(150) NOT NULL DEFAULT '' ,
-  `sex` VARCHAR(3) NOT NULL DEFAULT '' ,
-  `department` VARCHAR(50) NOT NULL DEFAULT '' ,
-  `grade` VARCHAR(50) NOT NULL DEFAULT '' ,
-  `phone` VARCHAR(100) NOT NULL DEFAULT '' ,
-  `size` VARCHAR(50) NOT NULL DEFAULT '' ,
-  `email` VARCHAR(300) NOT NULL DEFAULT '' ,
-  `school` VARCHAR(100) NOT NULL DEFAULT '' ,
-  `state` TINYINT(4) NOT NULL DEFAULT 0 ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  PRIMARY KEY (`teamId`) ,
-  UNIQUE INDEX `teamId_UNIQUE` (`teamId` ASC) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `uestcojtest`.`userSerialKey`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`userSerialKey` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`userSerialKey` (
   `userSerialKeyId` INT NOT NULL AUTO_INCREMENT ,
   `userId` INT NOT NULL ,
@@ -399,6 +418,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `uestcojtest`.`trainingContest`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`trainingContest` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`trainingContest` (
   `trainingContestId` INT NOT NULL AUTO_INCREMENT ,
   `isPersonal` TINYINT(1) NOT NULL ,
@@ -413,6 +434,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `uestcojtest`.`trainingUser`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`trainingUser` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`trainingUser` (
   `trainingUserId` INT NOT NULL AUTO_INCREMENT ,
   `rating` DOUBLE NOT NULL ,
@@ -422,8 +445,8 @@ CREATE  TABLE IF NOT EXISTS `uestcojtest`.`trainingUser` (
   `OPTLOCK` INT NULL ,
   `name` VARCHAR(45) NOT NULL ,
   `allow` TINYINT(1) NOT NULL ,
-  `ratingVary` DOUBLE NOT NULL DEFAULT 0.0,
-  `volatilityVary` DOUBLE NOT NULL DEFAULT 0.0,
+  `ratingVary` DOUBLE NOT NULL DEFAULT 0 ,
+  `volatilityVary` DOUBLE NOT NULL DEFAULT 0 ,
   `competitions` INT NOT NULL ,
   `member` VARCHAR(128) NOT NULL ,
   PRIMARY KEY (`trainingUserId`) ,
@@ -441,6 +464,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `uestcojtest`.`trainingStatus`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`trainingStatus` ;
+
 CREATE  TABLE IF NOT EXISTS `uestcojtest`.`trainingStatus` (
   `trainingStatusId` INT NOT NULL AUTO_INCREMENT ,
   `trainingContestId` INT NOT NULL ,
@@ -469,3 +494,86 @@ CREATE  TABLE IF NOT EXISTS `uestcojtest`.`trainingStatus` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `uestcojtest`.`team`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`team` ;
+
+CREATE  TABLE IF NOT EXISTS `uestcojtest`.`team` (
+  `teamId` INT NOT NULL AUTO_INCREMENT ,
+  `teamName` VARCHAR(45) NOT NULL ,
+  `leaderId` INT NOT NULL ,
+  PRIMARY KEY (`teamId`) ,
+  INDEX `leaderId_idx` (`leaderId` ASC) ,
+  UNIQUE INDEX `teamName_UNIQUE` (`teamName` ASC) ,
+  UNIQUE INDEX `teamId_UNIQUE` (`teamId` ASC) ,
+  CONSTRAINT `FK_team_leaderId_on_user`
+    FOREIGN KEY (`leaderId` )
+    REFERENCES `uestcojtest`.`user` (`userId` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `uestcojtest`.`teamUser`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`teamUser` ;
+
+CREATE  TABLE IF NOT EXISTS `uestcojtest`.`teamUser` (
+  `teamUserId` INT NOT NULL AUTO_INCREMENT ,
+  `userId` INT NOT NULL ,
+  `teamId` INT NOT NULL ,
+  `allow` TINYINT(1) NOT NULL ,
+  PRIMARY KEY (`teamUserId`) ,
+  INDEX `teamId_idx` (`teamId` ASC) ,
+  INDEX `userId_idx` (`userId` ASC) ,
+  UNIQUE INDEX `teamUserId_UNIQUE` (`teamUserId` ASC) ,
+  CONSTRAINT `FK_team_teamId_on_team`
+    FOREIGN KEY (`teamId` )
+    REFERENCES `uestcojtest`.`team` (`teamId` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `FK_team_userId_on_user`
+    FOREIGN KEY (`userId` )
+    REFERENCES `uestcojtest`.`user` (`userId` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `uestcojtest`.`contestTeam`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcojtest`.`contestTeam` ;
+
+CREATE  TABLE IF NOT EXISTS `uestcojtest`.`contestTeam` (
+  `contestTeamId` INT NOT NULL AUTO_INCREMENT ,
+  `contestId` INT NOT NULL ,
+  `teamId` INT NOT NULL ,
+  `status` TINYINT(4) NOT NULL COMMENT '0 - wait for validating\n1 - accepted\n2 - refused' ,
+  `comment` VARCHAR(255) NOT NULL, 
+  PRIMARY KEY (`contestTeamId`) ,
+  INDEX `FK_contestTeam_contestId_on_contest_idx` (`contestId` ASC) ,
+  INDEX `FK_contestTeam_teamId_on_team_idx` (`teamId` ASC) ,
+  UNIQUE INDEX `contestTeamId_UNIQUE` (`contestTeamId` ASC) ,
+  CONSTRAINT `FK_contestTeam_contestId_on_contest`
+    FOREIGN KEY (`contestId` )
+    REFERENCES `uestcojtest`.`contest` (`contestId` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `FK_contestTeam_teamId_on_team`
+    FOREIGN KEY (`teamId` )
+    REFERENCES `uestcojtest`.`team` (`teamId` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+USE `uestcojtest` ;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

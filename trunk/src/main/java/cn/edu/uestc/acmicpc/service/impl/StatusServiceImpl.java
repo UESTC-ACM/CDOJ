@@ -1,12 +1,5 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
@@ -20,6 +13,13 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.util.settings.Global.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation for {@link StatusService}.
@@ -36,21 +36,23 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Integer> findAllUserAcceptedProblemIds(Integer userId)
+  public List<Integer> findAllUserAcceptedProblemIds(Integer userId, Boolean isAdmin)
       throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
     statusCondition.results.add(Global.OnlineJudgeResultType.OJ_AC);
+    statusCondition.isForAdmin = isAdmin;
     return (List<Integer>) statusDAO.findAll("problemByProblemId.problemId",
         statusCondition.getCondition());
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Integer> findAllUserTriedProblemIds(Integer userId)
+  public List<Integer> findAllUserTriedProblemIds(Integer userId, Boolean isAdmin)
       throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
+    statusCondition.isForAdmin = isAdmin;
     return (List<Integer>) statusDAO.findAll("problemByProblemId.problemId",
         statusCondition.getCondition());
   }
@@ -166,6 +168,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     if (isFirstTime) {
      statusCondition.results.add(OnlineJudgeResultType.OJ_JUDGING);
     }
+    statusCondition.isForAdmin = true;
     statusCondition.orderFields = "statusId";
     statusCondition.orderAsc = "true";
     return statusDAO.findAll(StatusForJudgeDTO.class,

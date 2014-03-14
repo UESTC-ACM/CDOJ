@@ -1,11 +1,5 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
@@ -13,11 +7,18 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation for {@link UserService}.
@@ -33,30 +34,57 @@ public class UserServiceImpl extends AbstractService implements UserService {
   }
 
   private void updateUserByUserDTO(User user, UserDTO userDTO) {
-    if (userDTO.getUserName() != null)
+    if (userDTO.getUserName() != null) {
       user.setUserName(userDTO.getUserName());
-    if (userDTO.getStudentId() != null)
+    }
+    if (userDTO.getStudentId() != null) {
       user.setStudentId(userDTO.getStudentId());
-    if (userDTO.getPassword() != null)
+    }
+    if (userDTO.getPassword() != null) {
       user.setPassword(userDTO.getPassword());
-    if (userDTO.getSchool() != null)
+    }
+    if (userDTO.getSchool() != null) {
       user.setSchool(userDTO.getSchool());
-    if (userDTO.getNickName() != null)
+    }
+    if (userDTO.getNickName() != null) {
       user.setNickName(userDTO.getNickName());
-    if (userDTO.getEmail() != null)
+    }
+    if (userDTO.getEmail() != null) {
       user.setEmail(userDTO.getEmail());
-    if (userDTO.getSolved() != null)
+    }
+    if (userDTO.getSolved() != null) {
       user.setSolved(userDTO.getSolved());
-    if (userDTO.getTried() != null)
+    }
+    if (userDTO.getTried() != null) {
       user.setTried(userDTO.getTried());
-    if (userDTO.getType() != null)
+    }
+    if (userDTO.getType() != null) {
       user.setType(userDTO.getType());
-    if (userDTO.getDepartmentId() != null)
+    }
+    if (userDTO.getDepartmentId() != null) {
       user.setDepartmentId(userDTO.getDepartmentId());
-    if (userDTO.getLastLogin() != null)
+    }
+    if (userDTO.getLastLogin() != null) {
       user.setLastLogin(userDTO.getLastLogin());
-    if (userDTO.getMotto() != null)
+    }
+    if (userDTO.getMotto() != null) {
       user.setMotto(userDTO.getMotto());
+    }
+    if (userDTO.getName() != null) {
+      user.setName(userDTO.getName());
+    }
+    if (userDTO.getSex() != null) {
+      user.setSex(userDTO.getSex());
+    }
+    if (userDTO.getGrade() != null) {
+      user.setGrade(userDTO.getGrade());
+    }
+    if (userDTO.getPhone() != null) {
+      user.setPhone(userDTO.getPhone());
+    }
+    if (userDTO.getSize() != null) {
+      user.setSize(userDTO.getSize());
+    }
   }
 
   @Override
@@ -82,13 +110,18 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public List<UserListDTO> getUserListDTOList(UserCondition userCondition,
-                                              PageInfo pageInfo)
-      throws AppException {
+                                              PageInfo pageInfo) throws AppException {
     Condition condition = userCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return userDAO.findAll(UserListDTO.class,
-        UserListDTO.builder(),
-        condition);
+    return userDAO.findAll(UserListDTO.class, UserListDTO.builder(), condition);
+  }
+
+  @Override
+  public List<UserTypeAheadDTO> getUserTypeAheadDTOList(UserCondition userCondition,
+                                                        PageInfo pageInfo) throws AppException {
+    Condition condition = userCondition.getCondition();
+    condition.setPageInfo(pageInfo);
+    return userDAO.findAll(UserTypeAheadDTO.class, UserTypeAheadDTO.builder(), condition);
   }
 
   @Override
@@ -126,6 +159,18 @@ public class UserServiceImpl extends AbstractService implements UserService {
   public void updateUserByUserId(Map<String, Object> properties, Integer userId)
       throws AppException {
     userDAO.updateEntitiesByField(properties, "userId", userId.toString());
+  }
+
+  @Override
+  public Boolean checkUserExists(String userName) throws AppException {
+    UserDTO userDTO = getUserDTOByUserName(userName);
+    return userDTO != null;
+  }
+
+  @Override
+  public Boolean checkUserExists(Integer userId) throws AppException {
+    UserDTO userDTO = getUserDTOByUserId(userId);
+    return userDTO != null;
   }
 
   @Override

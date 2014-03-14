@@ -1,7 +1,5 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import java.util.ArrayList;
-
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
@@ -10,28 +8,6 @@ import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
  * Picture service interface.
  */
 public interface PictureService {
-
-  /**
-   * Gets a user's all pictures.
-   *
-   * @param userId user id.
-   * @return picture's file name.
-   * @throws AppException
-   */
-  @Deprecated
-  public ArrayList<String> getPictures(Integer userId) throws AppException;
-
-  /**
-   * Upload pictures.
-   *
-   * @param fileUploadDTO file upload DTO to for file uploading.
-   * @param userId        user id.
-   * @return a DTO containing file information the user uploaded.
-   * @throws AppException
-   */
-  @Deprecated
-  public FileInformationDTO uploadPictures(FileUploadDTO fileUploadDTO,
-                                           Integer userId) throws AppException;
 
   /**
    * Upload picture into target directory.

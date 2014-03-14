@@ -1,22 +1,5 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.status;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.code.CodeDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
@@ -40,6 +23,22 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/status")
@@ -66,12 +65,6 @@ public class StatusController extends BaseController {
     this.languageService = languageService;
   }
 
-  @RequestMapping("list")
-  @LoginPermit(NeedLogin = false)
-  public String list() {
-    return "status/statusList";
-  }
-
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public
@@ -81,6 +74,7 @@ public class StatusController extends BaseController {
     Map<String, Object> json = new HashMap<>();
     try {
       if (!isAdmin(session)) {
+        statusCondition.isForAdmin = false;
         statusCondition.isVisible = true;
         if (statusCondition.contestId != -1) {
           ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(statusCondition.contestId);
@@ -97,6 +91,8 @@ public class StatusController extends BaseController {
           statusCondition.startTime = contestShowDTO.getStartTime();
           statusCondition.endTime = contestShowDTO.getEndTime();
         }
+      } else {
+        statusCondition.isForAdmin = true;
       }
       Long count = statusService.count(statusCondition);
       Long recordPerPage = Global.RECORD_PER_PAGE;
@@ -137,6 +133,8 @@ public class StatusController extends BaseController {
   Map<String, Object> count(@RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
+      // Current user is administrator
+      statusCondition.isForAdmin = true;
       Long count = statusService.count(statusCondition);
 
       json.put("result", "success");
@@ -159,6 +157,8 @@ public class StatusController extends BaseController {
   Map<String, Object> rejudge(@RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
+      // Current user is administrator
+      statusCondition.isForAdmin = true;
       statusService.rejudge(statusCondition);
 
       json.put("result", "success");

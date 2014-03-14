@@ -1,11 +1,11 @@
 package cn.edu.uestc.acmicpc.db.condition.impl;
 
-import java.sql.Timestamp;
-
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.settings.Global.ContestType;
+
+import java.sql.Timestamp;
 
 /**
  * Contest database condition entity.
@@ -76,8 +76,10 @@ public class ContestCondition extends BaseCondition {
   public Condition getCondition() throws AppException {
     Condition condition = super.getCondition();
     if (keyword != null) {
-      condition.addEntry("title", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));
-      condition.addEntry("description", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));
+      Condition keywordCondition = new Condition(Condition.JoinedType.OR);
+      keywordCondition.addEntry("title", Condition.ConditionType.LIKE, keyword);
+      keywordCondition.addEntry("description", Condition.ConditionType.LIKE, keyword);
+      condition.addEntry(keywordCondition);
     }
     return condition;
   }

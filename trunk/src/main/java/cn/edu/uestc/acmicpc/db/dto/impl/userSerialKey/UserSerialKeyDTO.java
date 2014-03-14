@@ -1,12 +1,12 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey;
 
-import java.sql.Timestamp;
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
+
+import java.sql.Timestamp;
+import java.util.Map;
 
 /**
  * DTO for user serial key entity.

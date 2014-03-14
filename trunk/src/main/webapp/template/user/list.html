@@ -1,0 +1,41 @@
+<div class="row">
+  <list condition="$root.userCondition"
+        request-url="/user/search">
+    <div class="col-md-6" ng-repeat="user in list">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="media">
+            <a class="pull-left" href="javascript:void(0);">
+              <img class="cdoj-users-avatar"
+                   ui-avatar
+                   email="user.email"/>
+            </a>
+
+            <div class="media-body">
+              <h4 class="media-heading">
+                <a href="#/user/center/{{user.userName}}">
+                  <span ng-bind="user.nickName"></span>
+                  <small ng-bind="user.userName"></small>
+                </a>
+              </h4>
+              <span>
+                <i class="fa fa-map-marker"></i>
+                <span ng-bind="user.school"></span>
+              </span>
+              <br/>
+              <span>
+                <a href="#/status/list?userName={{user.userName}}">
+                  <span ng-bind="user.solved"></span>/<span ng-bind="user.tried"></span>
+                </a>
+              </span>
+              <ui-user-admin-span user="user"></ui-user-admin-span>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer"
+             style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+          Motto: <span ng-bind="user.motto"></span></div>
+      </div>
+    </div>
+  </list>
+</div>

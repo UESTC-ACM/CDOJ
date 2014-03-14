@@ -1,16 +1,20 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import java.util.LinkedList;
-import java.util.List;
+import cn.edu.uestc.acmicpc.service.iface.GlobalService;
+import cn.edu.uestc.acmicpc.util.dto.AuthenticationTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.ContestRegistryStatusDTO;
+import cn.edu.uestc.acmicpc.util.dto.ContestTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.GenderTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.GradeTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.OnlineJudgeResultTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.TShirtsSizeTypeDTO;
+import cn.edu.uestc.acmicpc.util.helper.StringUtil;
+import cn.edu.uestc.acmicpc.util.settings.Global;
 
 import org.springframework.stereotype.Service;
 
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
-import cn.edu.uestc.acmicpc.util.dto.AuthenticationTypeDTO;
-import cn.edu.uestc.acmicpc.util.dto.ContestTypeDTO;
-import cn.edu.uestc.acmicpc.util.dto.OnlineJudgeResultTypeDTO;
-import cn.edu.uestc.acmicpc.util.helper.StringUtil;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Implementation for {@link GlobalService}.
@@ -37,10 +41,47 @@ public class GlobalServiceImpl extends AbstractService implements GlobalService 
   }
 
   @Override
+  public List<GenderTypeDTO> getGenderTypeList() {
+    List<GenderTypeDTO> result = new LinkedList<>();
+    for (Global.Gender gender: Global.Gender.values()) {
+      result.add(new GenderTypeDTO(gender.ordinal(), gender.getDescription()));
+    }
+    return result;
+  }
+
+  @Override
+  public List<GradeTypeDTO> getGradeTypeList() {
+    List<GradeTypeDTO> result = new LinkedList<>();
+    for (Global.Grade grade: Global.Grade.values()) {
+      result.add(new GradeTypeDTO(grade.ordinal(), grade.getDescription()));
+    }
+    return result;
+  }
+
+  @Override
+  public List<TShirtsSizeTypeDTO> getTShirtsSizeTypeList() {
+    List<TShirtsSizeTypeDTO> result = new LinkedList<>();
+    for (Global.TShirtsSize tShirtsSize: Global.TShirtsSize.values()) {
+      result.add(new TShirtsSizeTypeDTO(tShirtsSize.ordinal(), tShirtsSize.getDescription()));
+    }
+    return result;
+  }
+
+  @Override
   public List<ContestTypeDTO> getContestTypeList() {
     List<ContestTypeDTO> result = new LinkedList<>();
     for (Global.ContestType contestType: Global.ContestType.values()) {
       result.add(new ContestTypeDTO(contestType.ordinal(), contestType.getDescription()));
+    }
+    return result;
+  }
+
+  @Override
+  public List<ContestRegistryStatusDTO> getContestRegistryStatusList() {
+    List<ContestRegistryStatusDTO> result = new LinkedList<>();
+    for (Global.ContestRegistryStatus contestRegistryStatus: Global.ContestRegistryStatus.values()) {
+      result.add(new ContestRegistryStatusDTO(contestRegistryStatus.ordinal(),
+          contestRegistryStatus.getDescription()));
     }
     return result;
   }

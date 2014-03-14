@@ -81,11 +81,12 @@ public class ProblemCondition extends BaseCondition {
         condition.addEntry("title", Condition.ConditionType.STRING_EQUALS, "_%");
       }
     }
-    //TODO(mzry1992) check this statement
     if (keyword != null) {
-      condition.addEntry("title", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));
-      condition.addEntry("description", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));
-      condition.addEntry("source", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));
+      Condition keywordCondition = new Condition(Condition.JoinedType.OR);
+      keywordCondition.addEntry("title", Condition.ConditionType.LIKE, keyword);
+      keywordCondition.addEntry("description", Condition.ConditionType.LIKE, keyword);
+      keywordCondition.addEntry("source", Condition.ConditionType.LIKE, keyword);
+      condition.addEntry(keywordCondition);
     }
     return condition;
   }

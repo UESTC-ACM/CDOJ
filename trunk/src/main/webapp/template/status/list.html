@@ -1,0 +1,97 @@
+<div class="row">
+  <list condition="$root.statusCondition"
+        request-url="/status/search">
+    <div class="col-md-12">
+      <table class="table table-condensed">
+        <thead>
+        <tr>
+          <th style="text-align: center;">#</th>
+          <th style="text-align: center;">User</th>
+          <th style="text-align: center;">Prob</th>
+          <th style="width: 19em; text-align: center;">Result
+            <a id="status-refresh-button" href="javascript:void(0);" ng-click="refresh()">
+              <i class="fa fa-refresh"></i>
+            </a>
+          </th>
+          <th style="text-align: center;">Memory</th>
+          <th style="text-align: center;">Time</th>
+          <th style="text-align: center;">Language</th>
+          <th style="text-align: center;">Length</th>
+          <th style="width: 11em; text-align: center;">Submit
+            Time
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td></td>
+          <td>
+            <input type="text"
+                   style="width: 100%;"
+                   ng-model="$root.statusCondition.userName"/>
+          </td>
+          <td>
+            <input type="number"
+                   style="width: 100%;"
+                   ng-model="$root.statusCondition.problemId"/>
+          </td>
+          <td>
+            <select style="width: 100%;"
+                    ng-model="$root.statusCondition.result"
+                    ng-options="result.onlineJudgeResultTypeId as result.description for result in $root.resultTypeList">
+            </select>
+          </td>
+          <td></td>
+          <td></td>
+          <td>
+            <select style="width: 100%;"
+                    ng-model="$root.statusCondition.languageId"
+                    ng-options="language.languageId as language.name for language in $root.languageList">
+              <option value="">All</option>
+            </select>
+          </td>
+          <td></td>
+          <td class="text-center" ui-rejudge-button condition="$root.statusCondition">
+          </td>
+        </tr>
+        <tr ng-repeat="status in list">
+          <td style="text-align: center;" ng-bind="status.statusId"></td>
+          <td style="text-align: center;">
+            <a href="#/user/center/{{status.userName}}"
+               ng-bind="status.userName"></a>
+          </td>
+          <td style="text-align: center;">
+            <a href="#/problem/show/{{status.problemId}}"
+               ng-bind="status.problemId"></a>
+          </td>
+          <td style="text-align: center;"
+              ui-status
+              status="status"
+              ng-class="{
+                'font-primary': [0, 16, 17, 18].some(status.returnTypeId),
+                'font-success': [1].some(status.returnTypeId),
+                'font-danger': [0, 1, 16, 17, 18].none(status.returnTypeId)
+              }">
+          </td>
+
+          <td style="text-align: center;">
+            <span ng-bind="status.memoryCost"></span>
+            <span ng-hide="status.memoryCost == undefined"> KB</span>
+          </td>
+          <td style="text-align: center;">
+            <span ng-bind="status.timeCost"></span>
+            <span ng-hide="status.memoryCost == undefined"> MS</span>
+          </td>
+
+          <td style="text-align: center;" ng-bind="status.language"></td>
+          <td style="text-align: center;" ui-code-href status="status">
+          </td>
+          <td style="text-align: center;"
+              ui-time
+              time="status.time"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </list>
+</div>

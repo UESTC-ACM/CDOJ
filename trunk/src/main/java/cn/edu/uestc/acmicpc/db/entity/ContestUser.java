@@ -1,7 +1,8 @@
 package cn.edu.uestc.acmicpc.db.entity;
 
-import java.io.Serializable;
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
+import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,8 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 
 /**
  * Mappings between contests and users.
@@ -61,6 +60,19 @@ public class ContestUser implements Serializable {
 
   public void setStatus(Byte status) {
     this.status = status;
+  }
+
+  private String comment;
+
+  @Column(name = "comment", nullable = false, insertable = true, updatable = true, length = 255,
+      precision = 0)
+  @Basic
+  public String getComment() {
+    return comment;
+  }
+
+  public void setComment(String comment) {
+    this.comment = comment;
   }
 
   private Integer contestId;

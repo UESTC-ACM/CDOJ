@@ -1,0 +1,126 @@
+<div id="cdoj-user-center">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="media" id="cdoj-user-center-summary">
+        <a class="pull-left" href="javascript:void(0);">
+          <img id="cdoj-user-avatar-large"
+               ui-avatar
+               email="targetUser.email"
+               class="media-object img-thumbnail"/>
+        </a>
+
+        <div class="media-body">
+          <h2 class="media-heading" ng-bind="targetUser.userName">
+          </h2>
+          <dl class="dl-horizontal">
+            <dt>Nick name</dt>
+            <dd ng-bind="targetUser.nickName">
+            </dd>
+            <dt>School</dt>
+            <dd ng-bind="targetUser.school">
+            </dd>
+            <dt>Department</dt>
+            <dd ng-bind="targetUser.department">
+            </dd>
+            <dt>Student ID</dt>
+            <dd ng-bind="targetUser.studentId">
+            </dd>
+            <dt>Email</dt>
+            <dd ng-bind="targetUser.email">
+            </dd>
+            <dt>Motto</dt>
+            <dd ng-bind="targetUser.motto">
+            </dd>
+            <dt>Last login</dt>
+            <dd ui-time
+                time="targetUser.lastLogin">
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12" id="user-center-tab">
+      <tabset>
+        <tab heading="Problems"
+             active="activeProblemsTab">
+          <div style="margin-top: 15px">
+            <div ng-repeat="status in problemStatus"
+                 class="cdoj-label cdoj-user-status-label"
+                 ng-class="{
+               'label-default': status.status == 0,
+               'label-success': status.status == 1,
+               'label-danger': status.status == 2
+             }">
+              <a href="#/problem/show/{{status.problemId}}" ng-bind="status.problemId"></a>
+            </div>
+          </div>
+        </tab>
+        <tab heading="Teams"
+             active="activeTeamsTab">
+          <div style="margin: 0 -15px;">
+            <div class="col-md-12 text-right"
+                 style="margin-top: 15px;"
+                 ng-show="editPermission">
+              <button class="btn btn-danger btn-sm"
+                      ng-click="showTeamEditor()"><i class="fa fa-group"></i>Create new team
+              </button>
+            </div>
+            <list condition="teamCondition"
+                  request-url="/team/search">
+              <div class="col-md-12" ng-repeat="team in list">
+                <team team="team" user="targetUser"></team>
+              </div>
+            </list>
+          </div>
+        </tab>
+        <tab heading="Messages"
+             active="activeMessagesTab">
+          <div style="margin: 0 -15px;">
+            <div class="col-md-12">
+              <h4 ng-bind="messagesTabTitle"></h4>
+            </div>
+            <list condition="messageCondition"
+                  request-url="/message/search">
+              <div class="col-md-12">
+                <div ng-repeat="message in list"
+                     class="alert "
+                     ng-class="{
+                     'alert-info': message.isOpened == true,
+                     'alert-danger': message.isOpened == false,
+                     }">
+                  <div class="media">
+                    <a class="pull-left" href="/#/user/center/{{message.senderUserName}}">
+                      <img class="media-object"
+                           ui-avatar
+                           email="message.senderEmail"
+                           style="width: 64px; height: 64px;">
+                    </a>
+                    <a class="pull-left" href="/#/user/center/{{message.receiverUserName}}">
+                      <img class="media-object"
+                           ui-avatar
+                           email="message.receiverEmail"
+                           style="width: 64px; height: 64px;">
+                    </a>
+                    <div class="media-body">
+                      <h4 class="media-heading">
+                        From <span ng-bind="message.senderUserName"></span> to <span
+                          ng-bind="message.receiverUserName"></span>:
+                      </h4>
+                      <p style="margin-bottom: 0">
+                        <messagelink message="message"></messagelink>
+                      </p>
+                      <span class="muted">
+                        <i class="fa fa-clock-o"></i>
+                        <span ui-time time="message.time" inline="true" change="false"></span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </list>
+          </div>
+        </tab>
+      </tabset>
+    </div>
+  </div>
+</div>

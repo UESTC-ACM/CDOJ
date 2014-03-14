@@ -1,13 +1,13 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.user;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
+
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * DTO for user entity. <br/>
@@ -17,18 +17,16 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
 @Fields({"userId", "userName", "studentId", "password", "school", "nickName",
     "email", "solved",
     "tried", "type", "motto", "lastLogin", "departmentId",
-    "departmentByDepartmentId.name"})
+    "departmentByDepartmentId.name", "name", "sex", "grade", "phone", "size"})
 public class UserDTO implements BaseDTO<User> {
 
   public UserDTO() {
   }
 
-  private UserDTO(Integer userId, String userName, String studentId,
-                  String password,
-                  String school, String nickName, String email, Integer solved,
-                  Integer tried,
-                  Integer type, String motto, Timestamp lastLogin, Integer departmentId,
-                  String departmentName) {
+  public UserDTO(Integer userId, String userName, String studentId, String password, String school,
+                 String nickName, String email, Integer solved, Integer tried, Integer type,
+                 String motto, Timestamp lastLogin, Integer departmentId, String departmentName,
+                 String name, Integer sex, Integer grade, String phone, Integer size) {
     this.userId = userId;
     this.userName = userName;
     this.studentId = studentId;
@@ -43,6 +41,11 @@ public class UserDTO implements BaseDTO<User> {
     this.lastLogin = lastLogin;
     this.departmentId = departmentId;
     this.departmentName = departmentName;
+    this.name = name;
+    this.sex = sex;
+    this.grade = grade;
+    this.phone = phone;
+    this.size = size;
   }
 
   private Integer userId;
@@ -59,6 +62,51 @@ public class UserDTO implements BaseDTO<User> {
   private Timestamp lastLogin;
   private Integer departmentId;
   private String departmentName;
+  private String name;
+  private Integer sex;
+  private Integer grade;
+  private String phone;
+  private Integer size;
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Integer getSex() {
+    return sex;
+  }
+
+  public void setSex(Integer sex) {
+    this.sex = sex;
+  }
+
+  public Integer getGrade() {
+    return grade;
+  }
+
+  public void setGrade(Integer grade) {
+    this.grade = grade;
+  }
+
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
+  public Integer getSize() {
+    return size;
+  }
+
+  public void setSize(Integer size) {
+    this.size = size;
+  }
 
   public Integer getUserId() {
     return userId;
@@ -185,7 +233,7 @@ public class UserDTO implements BaseDTO<User> {
     public UserDTO build() {
       return new UserDTO(userId, userName, studentId, password, school,
           nickName, email, solved,
-          tried, type, motto, lastLogin, departmentId, departmentName);
+          tried, type, motto, lastLogin, departmentId, departmentName, name, sex, grade, phone, size);
     }
 
     @Override
@@ -204,6 +252,11 @@ public class UserDTO implements BaseDTO<User> {
       lastLogin = (Timestamp) properties.get("lastLogin");
       departmentId = (Integer) properties.get("departmentId");
       departmentName = (String) properties.get("departmentByDepartmentId.name");
+      name = (String) properties.get("name");
+      sex = (Integer) properties.get("sex");
+      grade = (Integer) properties.get("grade");
+      phone = (String) properties.get("phone");
+      size = (Integer) properties.get("size");
       return build();
 
     }
@@ -222,6 +275,11 @@ public class UserDTO implements BaseDTO<User> {
     private Timestamp lastLogin = new Timestamp(new Date().getTime());
     private Integer departmentId = 1;
     private String departmentName = "department";
+    private String name = "a";
+    private Integer sex = 0;
+    private Integer grade = 0;
+    private String phone = "123";
+    private Integer size = 0;
 
     public Integer getUserId() {
       return userId;
@@ -346,6 +404,51 @@ public class UserDTO implements BaseDTO<User> {
 
     public Builder setDepartmentName(String departmentName) {
       this.departmentName = departmentName;
+      return this;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public Builder setName(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public Integer getSex() {
+      return sex;
+    }
+
+    public Builder setSex(Integer sex) {
+      this.sex = sex;
+      return this;
+    }
+
+    public Integer getGrade() {
+      return grade;
+    }
+
+    public Builder setGrade(Integer grade) {
+      this.grade = grade;
+      return this;
+    }
+
+    public String getPhone() {
+      return phone;
+    }
+
+    public Builder setPhone(String phone) {
+      this.phone = phone;
+      return this;
+    }
+
+    public Integer getSize() {
+      return size;
+    }
+
+    public Builder setSize(Integer size) {
+      this.size = size;
       return this;
     }
   }

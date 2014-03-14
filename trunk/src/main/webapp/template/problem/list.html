@@ -1,0 +1,53 @@
+<div class="row">
+  <list condition="$root.problemCondition"
+        request-url="/problem/search">
+    <div class="col-md-12">
+      <table class="table table-condensed">
+        <thead>
+        <tr>
+          <th style="width: 4em; text-align: right;">#</th>
+          <th><a href="#/problem/editor/new" ng-show="$root.isAdmin">Add new problem</a></th>
+          <th style="width: 5em; text-align: right;">Solved</th>
+          <th style="width: 55px;" ng-show="$root.isAdmin"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>
+            <input type="number"
+                   style="width: 100%;"
+                   ng-model="$root.problemCondition.startId"/>
+          </td>
+          <td>
+            <input type="text"
+                   style=""
+                   ng-model="$root.problemCondition.keyword"/>
+          </td>
+        </tr>
+        <tr ng-repeat="problem in list">
+          <td ng-class="{
+        success: problem.status == $root.AuthorStatusType.PASS,
+        danger: problem.status == $root.AuthorStatusType.FAIL
+      }" style="text-align: right;" ng-bind="problem.problemId"></td>
+          <td>
+            <a href="#/problem/show/{{problem.problemId}}"
+               ng-bind="problem.title"></a>
+            <small>&nbsp- <span ng-bind="problem.source"></span></small>
+          </td>
+          <td style="text-align: right;">
+            <a href="#/status/list?problemId={{problem.problemId}}">x
+              <span ng-bind="problem.solved"></span>
+            </a>
+          </td>
+          <td ui-problem-admin-span
+              problem-id="problem.problemId"
+              is-visible="problem.isVisible"
+              ng-show="$root.isAdmin"
+              style="padding: 4px;">
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </list>
+</div>

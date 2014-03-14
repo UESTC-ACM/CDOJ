@@ -1,12 +1,12 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.status;
 
-import java.sql.Timestamp;
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
+
+import java.sql.Timestamp;
+import java.util.Map;
 
 /**
  * DTO used in status list.
@@ -15,20 +15,22 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
  * "result", "length",
  * "languageByLanguageId.name", "timeCost", "memoryCost", "time", "caseNumber" })</code>
  */
-@Fields({"statusId", "userByUserId.userName", "problemId", "contestId",
-    "result", "length",
-    "languageByLanguageId.name", "timeCost", "memoryCost", "time", "caseNumber"})
+@Fields({"statusId", "userByUserId.userName", "userByUserId.nickName", "problemId", "contestId",
+    "result", "length", "languageByLanguageId.name", "timeCost", "memoryCost", "time", "caseNumber"})
 public class StatusListDTO implements BaseDTO<Status> {
+
+  private String nickName;
 
   public StatusListDTO() {
   }
 
-  private StatusListDTO(Integer statusId, String userName, Integer problemId,
-                        Integer contestId, String returnType,
-                        Integer returnTypeId, Integer length, String language, Integer timeCost,
-                        Integer memoryCost, Timestamp time, Integer caseNumber) {
+  private StatusListDTO(Integer statusId, String userName, String nickName, Integer problemId,
+                        Integer contestId, String returnType, Integer returnTypeId, Integer length,
+                        String language, Integer timeCost, Integer memoryCost, Timestamp time,
+                        Integer caseNumber) {
     this.statusId = statusId;
     this.userName = userName;
+    this.nickName = nickName;
     this.problemId = problemId;
     this.contestId = contestId;
     this.returnType = returnType;
@@ -53,6 +55,14 @@ public class StatusListDTO implements BaseDTO<Status> {
   private Integer memoryCost;
   private Timestamp time;
   private Integer caseNumber;
+
+  public String getNickName() {
+    return nickName;
+  }
+
+  public void setNickName(String nickName) {
+    this.nickName = nickName;
+  }
 
   public Integer getStatusId() {
     return statusId;
@@ -156,20 +166,22 @@ public class StatusListDTO implements BaseDTO<Status> {
 
   public static class Builder implements BaseBuilder<StatusListDTO> {
 
+    private String nickName;
+
     private Builder() {
     }
 
     @Override
     public StatusListDTO build() {
-      return new StatusListDTO(statusId, userName, problemId, contestId, returnType,
-          returnTypeId, length,
-          language, timeCost, memoryCost, time, caseNumber);
+      return new StatusListDTO(statusId, userName, nickName, problemId, contestId, returnType,
+          returnTypeId, length, language, timeCost, memoryCost, time, caseNumber);
     }
 
     @Override
     public StatusListDTO build(Map<String, Object> properties) {
       statusId = (Integer) properties.get("statusId");
       userName = (String) properties.get("userByUserId.userName");
+      nickName = (String) properties.get("userByUserId.nickName");
       problemId = (Integer) properties.get("problemId");
       contestId = (Integer) properties.get("contestId");
       returnTypeId = (Integer) properties.get("result");
@@ -196,6 +208,10 @@ public class StatusListDTO implements BaseDTO<Status> {
     private Timestamp time;
     private Integer caseNumber;
 
+    public Builder setNickName(String nickName) {
+      this.nickName = nickName;
+      return this;
+    }
     public Integer getStatusId() {
       return statusId;
     }

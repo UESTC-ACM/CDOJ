@@ -1,6 +1,27 @@
 package cn.edu.uestc.acmicpc.config;
 
-import java.util.Properties;
+import cn.edu.uestc.acmicpc.db.entity.Article;
+import cn.edu.uestc.acmicpc.db.entity.Code;
+import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
+import cn.edu.uestc.acmicpc.db.entity.Contest;
+import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
+import cn.edu.uestc.acmicpc.db.entity.ContestTeam;
+import cn.edu.uestc.acmicpc.db.entity.ContestUser;
+import cn.edu.uestc.acmicpc.db.entity.Department;
+import cn.edu.uestc.acmicpc.db.entity.Language;
+import cn.edu.uestc.acmicpc.db.entity.Message;
+import cn.edu.uestc.acmicpc.db.entity.Problem;
+import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
+import cn.edu.uestc.acmicpc.db.entity.Status;
+import cn.edu.uestc.acmicpc.db.entity.Tag;
+import cn.edu.uestc.acmicpc.db.entity.Team;
+import cn.edu.uestc.acmicpc.db.entity.TeamUser;
+import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
+import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
+import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
+import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
+import cn.edu.uestc.acmicpc.judge.JudgeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -15,27 +36,9 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import cn.edu.uestc.acmicpc.db.entity.Article;
-import cn.edu.uestc.acmicpc.db.entity.Code;
-import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
-import cn.edu.uestc.acmicpc.db.entity.Contest;
-import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
-import cn.edu.uestc.acmicpc.db.entity.ContestTeamInfo;
-import cn.edu.uestc.acmicpc.db.entity.ContestUser;
-import cn.edu.uestc.acmicpc.db.entity.Department;
-import cn.edu.uestc.acmicpc.db.entity.Language;
-import cn.edu.uestc.acmicpc.db.entity.Message;
-import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
-import cn.edu.uestc.acmicpc.db.entity.Status;
-import cn.edu.uestc.acmicpc.db.entity.Tag;
-import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
-import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
-import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
-import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
-import cn.edu.uestc.acmicpc.judge.JudgeService;
 import com.jolbox.bonecp.BoneCPDataSource;
+
+import java.util.Properties;
 
 /**
  * Application Context Configuration
@@ -109,7 +112,7 @@ public class ApplicationContextConfig {
         CompileInfo.class,
         Contest.class,
         ContestProblem.class,
-        ContestTeamInfo.class,
+        ContestTeam.class,
         ContestUser.class,
         Department.class,
         Language.class,
@@ -118,6 +121,8 @@ public class ApplicationContextConfig {
         ProblemTag.class,
         Status.class,
         Tag.class,
+        Team.class,
+        TeamUser.class,
         TrainingContest.class,
         TrainingStatus.class,
         TrainingUser.class,

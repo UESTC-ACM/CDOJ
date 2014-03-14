@@ -1,11 +1,11 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.user;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 /**
  * DTO post from user register form.
@@ -71,6 +71,63 @@ public class UserRegisterDTO {
   @NotNull(message = "Please enter your student ID.")
   @Length(min = 1, max = 20, message = "Please enter 1-20 characters.")
   private String studentId;
+
+  @NotNull(message = "Please enter your name.")
+  @Length(min = 1, max = 50, message = "Please enter 1-50 characters.")
+  private String name;
+
+  @NotNull(message = "Please select your gender.")
+  private Integer sex;
+
+  @NotNull(message = "Please select your grade.")
+  private Integer grade;
+
+  @NotNull(message = "Please enter your phone number.")
+  @Length(min = 1, max = 45, message = "Please enter 1-45 characters.")
+  private String phone;
+
+  @NotNull(message = "Please select your T-Shirts size.")
+  private Integer size;
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Integer getSex() {
+    return sex;
+  }
+
+  public void setSex(Integer sex) {
+    this.sex = sex;
+  }
+
+  public Integer getGrade() {
+    return grade;
+  }
+
+  public void setGrade(Integer grade) {
+    this.grade = grade;
+  }
+
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
+  public Integer getSize() {
+    return size;
+  }
+
+  public void setSize(Integer size) {
+    this.size = size;
+  }
 
   public Integer getUserId() {
     return userId;
@@ -155,9 +212,10 @@ public class UserRegisterDTO {
   public UserRegisterDTO() {
   }
 
-  private UserRegisterDTO(Integer userId, String userName, String password, String passwordRepeat,
-                          String nickName, String email, String school, String motto,
-                          Integer departmentId, String studentId) {
+  public UserRegisterDTO(Integer userId, String userName, String password, String passwordRepeat,
+                         String nickName, String email, String school, String motto,
+                         Integer departmentId, String studentId, String name, Integer sex,
+                         Integer grade, String phone, Integer size) {
     this.userId = userId;
     this.userName = userName;
     this.password = password;
@@ -168,8 +226,12 @@ public class UserRegisterDTO {
     this.motto = motto;
     this.departmentId = departmentId;
     this.studentId = studentId;
+    this.name = name;
+    this.sex = sex;
+    this.grade = grade;
+    this.phone = phone;
+    this.size = size;
   }
-
 
   public static Builder builder() {
     return new Builder();
@@ -182,7 +244,7 @@ public class UserRegisterDTO {
 
     public UserRegisterDTO build() {
       return new UserRegisterDTO(userId, userName, password, passwordRepeat, nickName, email,
-          school, motto, departmentId, studentId);
+          school, motto, departmentId, studentId, name, sex, grade, phone, size);
     }
 
     private Integer userId = 2;
@@ -195,6 +257,11 @@ public class UserRegisterDTO {
     private String motto;
     private Integer departmentId = 1;
     private String studentId = "2010013100008";
+    private String name = "a";
+    private Integer sex = 0;
+    private Integer grade = 0;
+    private String phone = "123";
+    private Integer size = 0;
 
     public Integer getUserId() {
       return userId;
@@ -283,6 +350,51 @@ public class UserRegisterDTO {
 
     public Builder setStudentId(String studentId) {
       this.studentId = studentId;
+      return this;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public Builder setName(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public Integer getSex() {
+      return sex;
+    }
+
+    public Builder setSex(Integer sex) {
+      this.sex = sex;
+      return this;
+    }
+
+    public Integer getGrade() {
+      return grade;
+    }
+
+    public Builder setGrade(Integer grade) {
+      this.grade = grade;
+      return this;
+    }
+
+    public String getPhone() {
+      return phone;
+    }
+
+    public Builder setPhone(String phone) {
+      this.phone = phone;
+      return this;
+    }
+
+    public Integer getSize() {
+      return size;
+    }
+
+    public Builder setSize(Integer size) {
+      this.size = size;
       return this;
     }
   }

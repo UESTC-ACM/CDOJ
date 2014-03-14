@@ -1,0 +1,92 @@
+// Media queries breakpoints
+// --------------------------------------------------
+
+// Extra small screen / phone
+// Note: Deprecated @screen-xs and @screen-phone as of v3.0.1
+@screen-xs:                  480px;
+@screen-xs-min:              @screen-xs;
+@screen-phone:               @screen-xs-min;
+
+// Small screen / tablet
+// Note: Deprecated @screen-sm and @screen-tablet as of v3.0.1
+@screen-sm:                  768px;
+@screen-sm-min:              @screen-sm;
+@screen-tablet:              @screen-sm-min;
+
+// Medium screen / desktop
+// Note: Deprecated @screen-md and @screen-desktop as of v3.0.1
+@screen-md:                  992px;
+@screen-md-min:              @screen-md;
+@screen-desktop:             @screen-md-min;
+
+// Large screen / wide desktop
+// Note: Deprecated @screen-lg and @screen-lg-desktop as of v3.0.1
+@screen-lg:                  1200px;
+@screen-lg-min:              @screen-lg;
+@screen-lg-desktop:          @screen-lg-min;
+
+// So media queries don't overlap when required, provide a maximum
+@screen-xs-max:              (@screen-sm-min - 1);
+@screen-sm-max:              (@screen-md-min - 1);
+@screen-md-max:              (@screen-lg-min - 1);
+
+// CDOJ
+
+// Navbar width for normal screen
+@cdoj-navbar-width: 165px;
+@cdoj-navbar-width-tiny: 36px;
+
+// Color
+@cdoj-background: #F8F8F8;
+
+// New color
+@cdoj-red: #B94A48;
+@cdoj-red0: #FF3300;
+@cdoj-red1: #FF9980;
+@cdoj-red2: #FFCCBF;
+@cdoj-red3: #AA4F39;
+@cdoj-red4: #55281C;
+@cdoj-red5: #BF7360;
+@cdoj-red6: #DFB3A7;
+
+@cdoj-green: #468847;
+@cdoj-green0: #00B266;
+@cdoj-green1: #6CD9AA;
+@cdoj-green2: #B1ECD3;
+@cdoj-green3: #287755;
+@cdoj-green4: #143B2A;
+@cdoj-green5: #4C9978;
+@cdoj-green6: #7CA594;
+
+@cdoj-yellow0: #FF8000;
+@cdoj-yellow1: #FFC080;
+@cdoj-yellow2: #FFDFBF;
+@cdoj-yellow3: #AA7239;
+@cdoj-yellow4: #55391C;
+@cdoj-yellow5: #BF9060;
+@cdoj-yellow6: #DFC3A7;
+
+@cdoj-blue0: #0066B2;
+@cdoj-blue1: #6CAAD9;
+@cdoj-blue2: #B1D3EC;
+@cdoj-blue3: #285577;
+@cdoj-blue4: #142A3B;
+@cdoj-blue5: #4C7899;
+@cdoj-blue6: #7C94A5;
+
+@google-primary: rgb(66, 133, 244);
+@google-danger: rgb(221, 75, 57);
+@google-warning: rgb(244, 180, 0);
+@google-info: rgb(91, 192, 222);
+@google-success: rgb(101, 176, 69);
+
+@font-primary: #3a87ad;
+@font-success: #468847;
+@font-danger: #b94a48;
+
+// navbar
+@cdoj-navbar-top-height: 50px;
+
+// Font
+@cdoj-font: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif !important;
+@cdoj-codefont: "Source Code Pro", Monaco, Menlo, Consolas, "Courier New", monospace;

@@ -1,7 +1,17 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import java.util.Properties;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDTO;
+import cn.edu.uestc.acmicpc.service.iface.EmailService;
+import cn.edu.uestc.acmicpc.service.iface.UserService;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.helper.StringUtil;
+import cn.edu.uestc.acmicpc.util.settings.Settings;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Properties;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -10,17 +20,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDTO;
-import cn.edu.uestc.acmicpc.service.iface.EmailService;
-import cn.edu.uestc.acmicpc.service.iface.UserService;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.helper.StringUtil;
-import cn.edu.uestc.acmicpc.util.settings.Settings;
 
 /**
  * Implementation for {@link EmailService}
@@ -84,7 +83,7 @@ public class EmailServiceImpl extends AbstractService implements EmailService {
       throw new AppException("No such user!");
     }
     String url = settings.SETTING_HOST
-        + "/user/activate/" + userDTO.getUserName()
+        + "/#/user/activate/" + userDTO.getUserName()
         + "/" + StringUtil.encodeSHA1(userSerialKey.getSerialKey());
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("Dear ").append(userDTO.getUserName()).append(" :\n\n");

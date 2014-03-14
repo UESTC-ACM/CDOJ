@@ -1,13 +1,14 @@
 package cn.edu.uestc.acmicpc.db.dao.iface;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Global DAO interface.
@@ -63,18 +64,6 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   List<?> findAll() throws AppException;
 
   /**
-   * List all entities in tables by conditions.
-   *
-   * @param condition extra conditions for query
-   * @return expected entity list
-   * @throws AppException
-   * @deprecated this method is not supported in new API, please use
-   * {@link IDAO#findAll(Class, BaseBuilder, Condition)}
-   */
-  @Deprecated
-  List<?> findAll(Condition condition) throws AppException;
-
-  /**
    * List all entities in tables by HQL.
    *
    * @param hql HQL string for query.
@@ -97,12 +86,35 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   List<?> findAll(String fields, Condition condition) throws AppException;
 
   /**
+   * List all entities in tables by fields name and condition statement.
+   * <p/>
+   * <strong>For developers:</strong> The return list's element type is
+   * {@link Object}[], every element of the array is the field value.
+   *
+   * @param fields    fields name for query.
+   * @param condition condition entity for DB query.
+   * @param pageInfo page constraint.
+   * @return result list.
+   * @throws AppException
+   */
+  List<?> findAll(String fields, String condition, PageInfo pageInfo) throws AppException;
+
+  /**
    * Count the number of records in the table.
    *
    * @return number of records we query
    * @throws AppException
    */
   Long count() throws AppException;
+
+  /**
+   * Count the number of records in the table by conditions.
+   *
+   * @param hqlCondition hql statement
+   * @return number of records we query
+   * @throws AppException
+   */
+  Long count(String hqlCondition) throws AppException;
 
   /**
    * Count the number of records in the table by conditions.
@@ -150,6 +162,16 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   Long customCount(String fieldName, Condition condition) throws AppException;
 
   /**
+   * Count number of entities for custom counting.
+   *
+   * @param fieldName count field's name
+   * @param hqlCondition user custom hql statement
+   * @return number of records for database query result
+   * @throws AppException
+   */
+  Long customCount(String fieldName, String hqlCondition) throws AppException;
+
+  /**
    * Update all records according condition entity.
    *
    * @param properties properties for setting
@@ -166,7 +188,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param field      specific field name
    * @param values     records need to update
    */
-  void updateEntitiesByField(Map<String, Object> properties, String field, String values);
+  void updateEntitiesByField(Map<String, Object> properties, String field, String values) throws AppException;
 
   /**
    * Delete all records according field value.
@@ -184,17 +206,16 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @param field         specific field name
    * @param values        records need to update
    */
-  void updateEntitiesByField(String propertyField, Object propertyValue, String field, String values);
+  void updateEntitiesByField(String propertyField, Object propertyValue, String field, String values) throws AppException;
 
   /**
-   * Delete all records according condition entity.
+   * Update all records according condition entity.
    *
+   * @param propertyField field for setting
+   * @param propertyValue field value
    * @param condition specific condition entity
-   * @throws AppException
-   * @deprecated design-in issue, new API is not supported delete method.
    */
-  @Deprecated
-  void deleteEntitiesByCondition(Condition condition) throws AppException;
+  void updateEntitiesByCondition(String propertyField, Object propertyValue, Condition condition) throws AppException;
 
   /**
    * Execute SQL immediately.
@@ -218,16 +239,6 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   int executeSQL(String sql);
 
   /**
-   * Delete entity by key.
-   *
-   * @param key entity's key
-   * @throws AppException
-   * @deprecated design-in issue, new API is not supported delete method.
-   */
-  @Deprecated
-  void delete(PK key) throws AppException;
-
-  /**
    * List all entity in condition for specific DTO type.
    *
    * @param clazz     DTO class type.
@@ -239,6 +250,19 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
   <T extends BaseDTO<Entity>> List<T> findAll(Class<T> clazz, BaseBuilder<T> builder,
                                               Condition condition) throws AppException;
 
+
+  /**
+   * List all entity for specific DTO type by HQL.
+   *
+   * @param clazz     DTO class type.
+   * @param builder   DTO's builder, should extends from {@link BaseBuilder}.
+   * @param hql HQL statement.
+   * @return DTO list for this query.
+   * @throws AppException
+   */
+  <T extends BaseDTO<Entity>> List<T> findAll(Class<T> clazz,
+                                              BaseBuilder<T> builder,
+                                              String hql, PageInfo pageInfo) throws AppException;
   /**
    * Get unique DTO entity by unique field.
    *

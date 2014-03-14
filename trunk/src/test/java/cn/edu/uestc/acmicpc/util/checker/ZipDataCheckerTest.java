@@ -3,7 +3,7 @@ package cn.edu.uestc.acmicpc.util.checker;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -11,7 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import cn.edu.uestc.acmicpc.util.exception.AppException;
+import java.io.File;
 
 /**
  * Test cases for {@link ZipDataChecker}.
@@ -90,7 +90,7 @@ public class ZipDataCheckerTest {
       checker.check(directory);
       Assert.fail();
     } catch (AppException e) {
-      Assert.assertEquals(new AppException("Data file contains unknown file type."), e);
+      Assert.assertEquals(new AppException("Problem information directory contains unknown file type."), e);
     }
   }
 
@@ -102,7 +102,7 @@ public class ZipDataCheckerTest {
       checker.check(directory);
       Assert.fail();
     } catch (AppException e) {
-      Assert.assertEquals(e, new AppException("Data file contains directory."));
+      Assert.assertEquals(e, new AppException("Problem information contains sub-directory."));
     }
   }
 
@@ -111,7 +111,7 @@ public class ZipDataCheckerTest {
     try {
       checker.check(null);
       Assert.fail();
-    } catch (NullPointerException expected) {
+    } catch (AppException expected) {
       LOGGER.info("expected", expected);
     }
   }

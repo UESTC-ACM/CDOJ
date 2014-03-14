@@ -1,25 +1,5 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.problem;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditDTO;
@@ -37,6 +17,24 @@ import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/problem")
@@ -85,62 +83,6 @@ public class ProblemController extends BaseController {
   }
 
   /**
-   * Show a problem
-   *
-   * @param problemId
-   * @param model
-   * @return String
-   */
-  @RequestMapping("show/{problemId}")
-  @LoginPermit(NeedLogin = false)
-  public String show(@PathVariable("problemId") Integer problemId,
-                     ModelMap model,
-                     HttpSession session) {
-    try {
-      if (!problemService.checkProblemExists(problemId)) {
-        throw new AppException("No such problem.");
-      }
-      ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(problemId);
-      if (!problemDTO.getIsVisible() && !isAdmin(session)) {
-        throw new AppException("No such problem.");
-      }
-      model.put("problemId", problemId);
-      /*
-      Map<Global.OnlineJudgeResultType, Long> problemStatistic = new TreeMap<>();
-      for (Global.OnlineJudgeResultType type : Global.OnlineJudgeResultType.values()) {
-        if (type == Global.OnlineJudgeResultType.OJ_WAIT) {
-          continue;
-        }
-        StatusCondition statusCondition = new StatusCondition();
-        statusCondition.results.add(type);
-        statusCondition.problemId = problemId;
-        statusCondition.isVisible = true;
-        problemStatistic.put(type, statusService.count(statusCondition));
-      }
-
-      model.put("problemStatistic", problemStatistic);
-      */
-    } catch (AppException e) {
-      return "error/404";
-    } catch (Exception e) {
-      e.printStackTrace();
-      return "error/404";
-    }
-    return "problem/problemShow";
-  }
-
-  /**
-   * Show problem list
-   *
-   * @return String
-   */
-  @RequestMapping("list")
-  @LoginPermit(NeedLogin = false)
-  public String list() {
-    return "problem/problemList";
-  }
-
-  /**
    * Search problem
    *
    * @param session
@@ -167,7 +109,7 @@ public class ProblemController extends BaseController {
               problemCondition, pageInfo);
 
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-      Map<Integer, Global.AuthorStatusType> problemStatus = getProblemStatus(currentUser);
+      Map<Integer, Global.AuthorStatusType> problemStatus = getProblemStatus(currentUser, session);
 
       for (ProblemListDTO problemListDTO : problemListDTOList) {
         if (problemStatus.get(problemListDTO.getProblemId()) == Global.AuthorStatusType.PASS) {
@@ -234,39 +176,6 @@ public class ProblemController extends BaseController {
       json.put("error_msg", "Unknown exception occurred.");
     }
     return json;
-  }
-
-  /**
-   * Open problem editor
-   *
-   * @param sProblemId target problem id or "new"
-   * @param model      model
-   * @return editor view
-   */
-  @RequestMapping("editor/{problemId}")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
-  public String editor(@PathVariable("problemId") String sProblemId,
-                       ModelMap model) {
-    try {
-      if (sProblemId.compareTo("new") == 0) {
-        model.put("action", "new");
-      } else {
-        Integer problemId;
-        try {
-          problemId = Integer.parseInt(sProblemId);
-        } catch (NumberFormatException e) {
-          throw new AppException("Parse problem id error.");
-        }
-        if (!problemService.checkProblemExists(problemId)) {
-          throw new AppException("No such problem.");
-        }
-        model.put("action", problemId);
-      }
-    } catch (AppException e) {
-      model.put("message", e.getMessage());
-      return "error/error";
-    }
-    return "/problem/problemEditor";
   }
 
   /**
@@ -397,18 +306,18 @@ public class ProblemController extends BaseController {
     return json;
   }
 
-  private Map<Integer, Global.AuthorStatusType> getProblemStatus(
-      UserDTO currentUser) {
+  private Map<Integer, Global.AuthorStatusType> getProblemStatus(UserDTO currentUser,
+                                                                 HttpSession session) {
     Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
     try {
       if (currentUser != null) {
         List<Integer> triedProblems = statusService.
-            findAllUserTriedProblemIds(currentUser.getUserId());
+            findAllUserTriedProblemIds(currentUser.getUserId(), isAdmin(session));
         for (Integer result : triedProblems) {
           problemStatus.put(result, Global.AuthorStatusType.FAIL);
         }
         List<Integer> acceptedProblems = statusService.
-            findAllUserAcceptedProblemIds(currentUser.getUserId());
+            findAllUserAcceptedProblemIds(currentUser.getUserId(), isAdmin(session));
         for (Integer result : acceptedProblems) {
           problemStatus.put(result, Global.AuthorStatusType.PASS);
         }

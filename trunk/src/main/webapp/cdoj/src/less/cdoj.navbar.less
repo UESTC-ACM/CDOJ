@@ -1,0 +1,240 @@
+#cdoj-navbar-top {
+  position: fixed;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+  top: 0;
+
+  #cdoj-search-icon {
+    display: none;
+  }
+  #cdoj-search-text {
+    display: block;
+  }
+
+  background-color: @cdoj-blue0;
+  border-bottom: 1px solid #000;
+  margin-left: @cdoj-navbar-width;
+  li {
+    a, a:hover {
+      color: @cdoj-blue2;
+      background-color: @cdoj-blue0;
+    }
+  }
+  .active, .open {
+    a, a:hover {
+      color: #fff;
+      background-color: @cdoj-blue4;
+    }
+  }
+  .dropdown-menu {
+    li {
+      a {
+        display: block;
+        padding: 3px 20px;
+        clear: both;
+        font-weight: normal;
+        line-height: 1.428571429;
+        color: #333;
+        background-color: inherit;
+        white-space: nowrap;
+
+        &:hover {
+          background-color: @cdoj-red0;
+        }
+      }
+      .media {
+        p {
+          font-size: 12px;
+          height: 34px;
+          margin-bottom: 0;
+          a {
+            display: inline;
+            padding: 0;
+            white-space: normal;
+          }
+        }
+      }
+    }
+  }
+  .container {
+    margin: 0;
+    width: 100%;
+  }
+  #cdoj-user {
+    #cdoj-user-avatar {
+      .image-size(50px);
+    }
+  }
+  #cdoj-search {
+    width: 300px;
+    padding: 10px 15px;
+  }
+  .nav {
+    margin: 0px;
+  }
+}
+
+.cdoj-form-menu {
+  form {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.428571429;
+    color: #333;
+    white-space: nowrap;
+  }
+  min-width: 240px;
+}
+
+#cdoj-navbar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: #fff;
+  overflow-y: auto;
+  -webkit-overflow-scroll: touch;
+  color: #ffffff;
+
+  margin-left: -@cdoj-navbar-width;
+  width: @cdoj-navbar-width;
+  left: @cdoj-navbar-width;
+
+  .row {
+    margin: 0;
+    .col-md-12 {
+      padding: 0;
+    }
+  }
+}
+
+.cdoj-menu {
+  a {
+    color: #000;
+    border: none;
+    white-space: normal;
+    padding: 0.6em 0 0.6em 0.6em;
+    font-size: 24px;
+  }
+  .fa {
+    font-size: 24px;
+    margin: 0;
+    height: 24px;
+    width: 24px;
+  }
+  .nav-stacked > li + li {
+    margin-top: 0;
+  }
+  .active {
+    border-radius: 0;
+    background: @cdoj-blue1;
+  }
+  li a:hover,
+  li a:focus {
+    border-radius: 0;
+    background: @cdoj-blue0;
+  }
+  li.cdoj-menu-selected {
+    background: @cdoj-blue0;
+    a {
+      color: #fff;
+    }
+    a:hover,
+    a:focus {
+      background: none;
+    }
+  }
+  li.cdoj-menu-heading {
+    font-family: @cdoj-codefont;
+    font-size: 36px;
+    text-align: center;
+    height: @cdoj-navbar-top-height + 1;
+    background-color: @cdoj-blue1;
+    border-bottom: 1px solid #101010;
+    border-right: 1px solid #101010;
+  }
+}
+
+@media (max-width: @screen-xs-max) {
+  #cdoj-navbar {
+    margin-left: -@cdoj-navbar-width-tiny;
+    width: @cdoj-navbar-width-tiny;
+    left: @cdoj-navbar-width-tiny;
+  }
+
+  #cdoj-navbar-top {
+    margin-left: @cdoj-navbar-width-tiny;
+
+    #cdoj-search-icon {
+      display: block;
+      i.fa {
+        margin-right: 0;
+      }
+    }
+    #cdoj-search-text {
+      display: none;
+    }
+
+    .navbar-right {
+      float: right !important;
+    }
+    .navbar-nav {
+      li {
+        float: left;
+        a {
+          padding-top: 15px;
+          padding-bottom: 15px;
+        }
+        .dropdown-menu {
+          .divider {
+            background-color: @cdoj-blue3;
+          }
+        }
+      }
+      #cdoj-search {
+        width: auto;
+        margin-right: 189px;
+      }
+      li {
+        a.dropdown-toggle {
+          position: fixed;
+          right: 15px;
+          top: 0;
+          z-index: 1040;
+          display: inline;
+        }
+      }
+    }
+  }
+  .cdoj-menu-item {
+    display: none;
+  }
+  .cdoj-menu {
+    li {
+      a {
+        padding: 12px 6px;
+      }
+    }
+  }
+
+  #advance-search {
+    right: 132px;
+    .dropdown-menu {
+      top: 37px;
+    }
+  }
+
+  #cdoj-user {
+    #cdoj-user-avatar {
+      position: fixed;
+      right: 15px;
+      top: 0;
+      z-index: 1040;
+      display: inline;
+      padding: 0;
+      .image-size(50px)
+    }
+  }
+}

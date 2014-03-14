@@ -1,9 +1,11 @@
 package cn.edu.uestc.acmicpc.db.entity;
 
+import cn.edu.uestc.acmicpc.util.annotation.KeyField;
+import cn.edu.uestc.acmicpc.util.settings.Global;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
-
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,8 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-
 /**
  * Contest information.
  */
@@ -25,6 +25,9 @@ import cn.edu.uestc.acmicpc.util.annotation.KeyField;
 public class Contest implements Serializable {
 
   private static final long serialVersionUID = -3631561809657861853L;
+
+  private static final Integer defaultContestLength = 300;
+
   private Integer contestId;
 
   private Integer version = 0;
@@ -178,5 +181,26 @@ public class Contest implements Serializable {
 
   public void setArticlesByContestId(Collection<Article> articlesByContestId) {
     this.articlesByContestId = articlesByContestId;
+  }
+
+  private Collection<ContestTeam> contestTeamsByContestId;
+
+  @OneToMany(mappedBy = "contestByContestId", cascade = CascadeType.ALL)
+  public Collection<ContestTeam> getContestTeamsByContestId() {
+    return contestTeamsByContestId;
+  }
+
+  public void setContestTeamsByContestId(Collection<ContestTeam> contestTeamsByContestId) {
+    this.contestTeamsByContestId = contestTeamsByContestId;
+  }
+
+  public Contest() {
+    contestId = null;
+    description = "";
+    isVisible = false;
+    length = defaultContestLength;
+    time = new Timestamp(System.currentTimeMillis());
+    title = "";
+    type = (byte) Global.ContestType.PUBLIC.ordinal();
   }
 }

@@ -8,4 +8,5 @@ public class RankListItem {
   public Integer tried;
   public Long solvedTime;
   public Long penalty;
+  public Boolean firstBlood;
 }

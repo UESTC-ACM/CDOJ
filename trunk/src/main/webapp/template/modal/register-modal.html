@@ -1,0 +1,223 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="dismiss()">&times;</button>
+  <h4 class="modal-title">Register</h4>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal">
+    <fieldset>
+      <div class="form-group">
+        <label class="control-label col-sm-4 "
+               for="userName">User Name</label>
+
+        <div class="col-sm-8">
+          <input type="text"
+                 ng-model="userRegisterDTO.userName"
+                 maxlength="24"
+                 id="userName"
+                 ng-required="true"
+                 ng-pattern="/^[a-zA-Z0-9_]{4,24}$/"
+                 class="form-control input-sm"/>
+          <ui-validate-info value="fieldInfo" for="userName"></ui-validate-info>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-4 "
+               for="password">Password</label>
+
+        <div class="col-sm-8">
+          <input type="password"
+                 ng-model="userRegisterDTO.password"
+                 id="password"
+                 ng-required="true"
+                 ng-minlength="6"
+                 ng-maxlength="24"
+                 class="form-control input-sm"/>
+          <ui-validate-info value="fieldInfo" for="password"></ui-validate-info>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 "
+               for="passwordRepeat">Repeat your password</label>
+
+        <div class="col-sm-8">
+          <input type="password"
+                 ng-model="userRegisterDTO.passwordRepeat"
+                 id="passwordRepeat"
+                 ng-required="true"
+                 ng-minlength="6"
+                 ng-maxlength="24"
+                 equals="{{userRegisterDTO.password}}"
+                 class="form-control input-sm"/>
+          <ui-validate-info value="fieldInfo" for="passwordRepeat"></ui-validate-info>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 "
+               for="nickName">Nick name</label>
+
+        <div class="col-sm-8">
+          <input type="text"
+                 ng-model="userRegisterDTO.nickName"
+                 maxlength="20"
+                 id="nickName"
+                 ng-required="true"
+                 ng-maxlength="20"
+                 ng-minlength="2"
+                 class="form-control input-sm"/>
+          <ui-validate-info value="fieldInfo" for="nickName"></ui-validate-info>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 " for="email">Email</label>
+
+        <div class="col-sm-8">
+          <input type="email"
+                 ng-model="userRegisterDTO.email"
+                 id="email"
+                 ng-required="true"
+                 class="form-control input-sm"/>
+          <ui-validate-info value="fieldInfo" for="email"></ui-validate-info>
+          <spanp class="help-block">
+            Your email will be used for <a href="http://en.gravatar.com/">Gravatar</a>
+            service.
+          </spanp>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 " for="motto">Motto</label>
+
+        <div class="col-sm-8">
+          <textarea class="form-control"
+                    rows="3"
+                    ng-model="userRegisterDTO.motto"
+                    id="motto"></textarea>
+          <ui-validate-info value="fieldInfo" for="motto"></ui-validate-info>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Personal information</legend>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 " for="name">Name</label>
+
+        <div class="col-sm-8">
+          <input type="text"
+                 ng-model="userRegisterDTO.name"
+                 id="name"
+                 ng-required="true"
+                 ng-maxlength="50"
+                 ng-minlength="1"
+                 class="form-control input-sm"/>
+          <ui-validate-info value="fieldInfo" for="name"></ui-validate-info>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 "
+               for="sex">Gender</label>
+
+        <div class="col-sm-8">
+          <select ng-model="userRegisterDTO.sex"
+                  ng-options="gender.genderTypeId as gender.description for gender in $root.genderTypeList"
+                  id="sex"
+                  ng-required="true"
+                  class="form-control input-sm">
+          </select>
+          <ui-validate-info value="fieldInfo" for="sex"></ui-validate-info>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 "
+               for="size">T-Shirts size</label>
+
+        <div class="col-sm-8">
+          <select ng-model="userRegisterDTO.size"
+                  ng-options="size.sizeTypeId as size.description for size in $root.tShirtsSizeTypeList"
+                  id="size"
+                  ng-required="true"
+                  class="form-control input-sm">
+          </select>
+          <ui-validate-info value="fieldInfo" for="size"></ui-validate-info>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 " for="phone">Phone number</label>
+
+        <div class="col-sm-8">
+          <input type="text"
+                 ng-model="userRegisterDTO.phone"
+                 id="phone"
+                 ng-required="true"
+                 ng-maxlength="45"
+                 ng-minlength="1"
+                 class="form-control input-sm"/>
+          <ui-validate-info value="fieldInfo" for="phone"></ui-validate-info>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 " for="school">School</label>
+
+        <div class="col-sm-8">
+          <input type="text"
+                 ng-model="userRegisterDTO.school"
+                 id="school"
+                 ng-required="true"
+                 ng-maxlength="100"
+                 ng-minlength="1"
+                 class="form-control input-sm"/>
+          <ui-validate-info value="fieldInfo" for="school"></ui-validate-info>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 "
+               for="departmentId">Department</label>
+
+        <div class="col-sm-8">
+          <select ng-model="userRegisterDTO.departmentId"
+                  ng-options="department.departmentId as department.name for department in $root.departmentList"
+                  id="departmentId"
+                  ng-required="true"
+                  class="form-control input-sm">
+          </select>
+          <ui-validate-info value="fieldInfo" for="departmentId"></ui-validate-info>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 "
+               for="grade">Grade</label>
+
+        <div class="col-sm-8">
+          <select ng-model="userRegisterDTO.grade"
+                  ng-options="grade.gradeTypeId as grade.description for grade in $root.gradeTypeList"
+                  id="grade"
+                  ng-required="true"
+                  class="form-control input-sm">
+          </select>
+          <ui-validate-info value="fieldInfo" for="size"></ui-validate-info>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 "
+               for="studentId">Student ID</label>
+
+        <div class="col-sm-8">
+          <input type="text"
+                 ng-model="userRegisterDTO.studentId"
+                 id="studentId"
+                 ng-required="true"
+                 ng-maxlength="20"
+                 ng-minlength="1"
+                 class="form-control input-sm"/>
+          <ui-validate-info value="fieldInfo" for="studentId"></ui-validate-info>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default"
+          ng-click="dismiss()">Close
+  </button>
+  <button type="button" class="btn btn-primary"
+          ng-click="register()">Register
+  </button>
+</div>

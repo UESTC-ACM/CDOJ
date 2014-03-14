@@ -1,14 +1,15 @@
 package cn.edu.uestc.acmicpc.util.checker;
 
+import cn.edu.uestc.acmicpc.util.checker.base.Checker;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
+import cn.edu.uestc.acmicpc.util.helper.FileUtil;
+
 import java.io.File;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
-import cn.edu.uestc.acmicpc.util.checker.base.Checker;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.helper.FileUtil;
 
 /**
  * Data checker for data.zip files.
@@ -35,6 +36,7 @@ public class ZipDataChecker implements Checker<File> {
 
   @Override
   public void check(File file) throws AppException {
+    AppExceptionUtil.assertNotNull(file);
     File[] files = file.listFiles();
     if (files == null) {
       throw new AppException("Data file is invalid.");
@@ -44,7 +46,7 @@ public class ZipDataChecker implements Checker<File> {
     List<String> outputFileList = new LinkedList<>();
     for (File current : files) {
       if (current.isDirectory()) {
-        throw new AppException("Data file contains directory.");
+        throw new AppException("Problem information contains sub-directory.");
       }
       if (current.getName().endsWith(".in")) {
         fileSet.add(FileUtil.getFileName(current));
@@ -52,13 +54,19 @@ public class ZipDataChecker implements Checker<File> {
         outputFileList.add(FileUtil.getFileName(current));
       } else if (current.getName().equals("spj.cc")) {
         // spj checker, ignored
+      } else if (current.getName().equals("problemInfo.xml")) {
+        // problem info, ignored by default
       } else {
-        throw new AppException("Data file contains unknown file type.");
+        throw new AppException("Problem information directory contains unknown file type.");
       }
     }
 
     if (outputFileList.size() != fileSet.size()) {
       throw new AppException("Some data files has not input file or output file.");
+    }
+
+    if (fileSet.size() == 0) {
+      throw new AppException("No test data.");
     }
 
     for (String outputFile : outputFileList) {

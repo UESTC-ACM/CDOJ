@@ -1,0 +1,65 @@
+<div class="modal-header">
+  <h4>Create new team</h4>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal">
+    <fieldset>
+      <div class="form-group">
+        <label class="control-label col-sm-4 "
+               for="teamName">Team Name</label>
+
+        <div class="col-sm-8">
+          <input type="text"
+                 ng-model="teamDTO.teamName"
+                 maxlength="50"
+                 id="teamName"
+                 ng-required="true"
+                 class="form-control input-sm"/>
+          <ui-validate-info value="fieldInfo" for="teamName"></ui-validate-info>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+  <ul class="media-list" style="margin-top: 15px;">
+    <li class="media" ng-repeat="member in memberList">
+      <div class="pull-left">
+        <img ui-avatar
+             email="member.email"
+             width="44"
+             height="44"
+             class="media-object"
+             style="width: 44px; height: 44px;"/>
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading">
+          <span ng-bind="member.userName"></span>
+          <span ng-show="$index == 0" class="font-danger">(Team leader)</span>
+          <span ng-show="$index != 0" class="font-primary">(Team member)</span>
+          <a href="javascript:void(0);"
+             class="pull-right"
+             ng-show="$index != 0"
+             ng-click="removeMember($index)"><i class="fa fa-times"></i></a>
+        </h4>
+        <span ng-bind="member.nickName"></span>
+      </div>
+    </li>
+  </ul>
+  <div ng-show="memberList.length < 3">
+    <div class="input-group">
+      <input type="text"
+             class="form-control input-sm"
+             ng-model="newMember.userName"
+             typeahead="user.userName for user in searchUser($viewValue) | filter:$viewValue"
+             typeahead-template-url="template/user/typeAhead.html"/>
+      <span class="input-group-btn">
+        <button class="btn btn-default btn-sm" type="button"
+                ng-click="addMemberClick()">Add member
+        </button>
+      </span>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-default" ng-click="dismiss()">Cancel</button>
+  <button class="btn btn-primary" ng-click="createTeam()">Create</button>
+</div>

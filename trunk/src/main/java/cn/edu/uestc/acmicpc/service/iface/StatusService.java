@@ -1,7 +1,5 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import java.util.List;
-
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDTO;
@@ -10,6 +8,8 @@ import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
+import java.util.List;
 
 /**
  * Status service interface.
@@ -20,19 +20,23 @@ public interface StatusService extends DatabaseService<Status, Integer> {
    * list user's tried problem id.
    *
    * @param userId user's id.
+   * @param isAdmin current user is administrator
    * @return problem id list.
    * @throws AppException
    */
-  public List<Integer> findAllUserTriedProblemIds(Integer userId) throws AppException;
+  public List<Integer> findAllUserTriedProblemIds(Integer userId,
+                                                  Boolean isAdmin) throws AppException;
 
   /**
    * list user's accepted problem id.
    *
    * @param userId user's id.
+   * @param isAdmin current user is administrator
    * @return problem id list.
    * @throws AppException
    */
-  public List<Integer> findAllUserAcceptedProblemIds(Integer userId) throws AppException;
+  public List<Integer> findAllUserAcceptedProblemIds(Integer userId,
+                                                     Boolean isAdmin) throws AppException;
 
   /**
    * Counts user's tried problems.

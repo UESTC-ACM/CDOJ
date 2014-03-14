@@ -1,16 +1,16 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.base;
 
-import javax.servlet.http.HttpSession;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * BaseController
@@ -27,6 +27,15 @@ public class BaseController {
     return userDTO != null && userDTO.getType() == Global.AuthenticationType.ADMIN.ordinal();
   }
 
+  protected Boolean checkPermission(HttpSession session, Integer userId) throws AppException {
+    UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
+    return userDTO != null && (userDTO.getUserId().equals(userId) || userDTO.getType() == Global.AuthenticationType.ADMIN.ordinal());
+  }
+
+  protected Boolean checkPermission(HttpSession session, String userName) throws AppException {
+    UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
+    return userDTO != null && (userDTO.getUserName().equals(userName) || userDTO.getType() == Global.AuthenticationType.ADMIN.ordinal());
+  }
   /**
    * Put field errors into binding result
    *

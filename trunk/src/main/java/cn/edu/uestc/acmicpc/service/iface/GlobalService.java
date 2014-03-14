@@ -1,13 +1,17 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import java.util.List;
-
 import cn.edu.uestc.acmicpc.util.dto.AuthenticationTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.ContestRegistryStatusDTO;
 import cn.edu.uestc.acmicpc.util.dto.ContestTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.GenderTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.GradeTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.OnlineJudgeResultTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.TShirtsSizeTypeDTO;
 import cn.edu.uestc.acmicpc.util.settings.Global.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.settings.Global.ContestType;
 import cn.edu.uestc.acmicpc.util.settings.Global.OnlineJudgeReturnType;
+
+import java.util.List;
 
 /**
  * Global service interface.
@@ -28,6 +32,16 @@ public interface GlobalService {
    */
   public List<OnlineJudgeResultTypeDTO> getOnlineJudgeResultTypeList();
 
+  /**
+   * Get all {@link cn.edu.uestc.acmicpc.util.settings.Global.Gender} entities
+   *
+   * @return list of all {@link cn.edu.uestc.acmicpc.util.settings.Global.Gender} entities
+   */
+  public List<GenderTypeDTO> getGenderTypeList();
+
+  public List<GradeTypeDTO> getGradeTypeList();
+
+  public List<TShirtsSizeTypeDTO> getTShirtsSizeTypeList();
   /**
    * Get authentication name by authentication type.
    *
@@ -53,4 +67,6 @@ public interface GlobalService {
    * @return list of all {@link ContestType} entities.
    */
   public List<ContestTypeDTO> getContestTypeList();
+
+  public List<ContestRegistryStatusDTO> getContestRegistryStatusList();
 }

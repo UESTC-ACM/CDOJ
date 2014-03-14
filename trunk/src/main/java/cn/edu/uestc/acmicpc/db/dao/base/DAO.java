@@ -1,18 +1,5 @@
 package cn.edu.uestc.acmicpc.db.dao.base;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.springframework.stereotype.Repository;
-
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
@@ -24,6 +11,19 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.helper.DatabaseUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.springframework.stereotype.Repository;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Global DAO implementation.
@@ -92,9 +92,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     return query;
   }
 
-  @Override
   @Deprecated
-  public List<?> findAll(Condition condition) throws AppException {
+  private List<?> findAll(Condition condition) throws AppException {
     if (condition == null) {
       condition = new Condition();
     }
@@ -113,15 +112,24 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     if (condition == null) {
       condition = new Condition();
     }
+    return customCount(fieldName, buildHQLString(condition));
+  }
+
+  @Override
+  public Long customCount(String fieldName, String hqlCondition) throws AppException {
     try {
-      // TODO wrap the field by ``
       String hql = "select count(" + fieldName + ") "
-          + buildHQLString(condition);
+          + hqlCondition;
       return (Long) getQuery(hql, null).uniqueResult();
     } catch (HibernateException e) {
       LOGGER.error(e);
       throw new AppException("Invoke count method error.");
     }
+  }
+
+  @Override
+  public Long count(String hqlCondition) throws AppException {
+    return customCount("*", hqlCondition);
   }
 
   @Override
@@ -180,6 +188,23 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
+  public List<?> findAll(String fields, String hqlCondition, PageInfo pageInfo) throws AppException {
+    try {
+      String hql;
+      if (fields == null) {
+        hql = hqlCondition;
+      } else {
+        // TODO wrap the field by ``
+        hql = "select " + fields + " " + hqlCondition;
+      }
+      return getQuery(hql, pageInfo).list();
+    } catch (HibernateException e) {
+      LOGGER.error(e);
+      throw new AppException("Invoke findAll method error.");
+    }
+  }
+
+  @Override
   public List<?> findAll(String fields, Condition condition)
       throws AppException {
     try {
@@ -199,7 +224,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
 
   @Override
   public Long count() throws AppException {
-    return count(null);
+    return count((Condition) null);
   }
 
   @Override
@@ -287,7 +312,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
    */
   @Override
   public void updateEntitiesByField(Map<String, Object> properties,
-                                    String field, String values) {
+                                    String field, String values) throws AppException {
     if (properties.isEmpty()) {
       return;
     }
@@ -315,26 +340,26 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     stringBuilder.append(" where ").append(field).append(" in (")
         .append(values).append(")");
     String hql = stringBuilder.toString();
-    getQuery(hql, null).executeUpdate();
+    try {
+      getQuery(hql, null).executeUpdate();
+    } catch (Exception e) {
+      throw new AppException("Error while execute database query.");
+    }
   }
 
   @Override
   public void updateEntitiesByField(String propertyField, Object propertyValue,
-                                    String field, String values) {
+                                    String field, String values) throws AppException {
     Map<String, Object> properties = new HashMap<>();
     properties.put(propertyField, propertyValue);
     updateEntitiesByField(properties, field, values);
   }
 
   @Override
-  @Deprecated
-  public void deleteEntitiesByCondition(Condition condition)
-      throws AppException {
-    StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append("delete ").append(getReferenceClass().getSimpleName());
-    stringBuilder.append(" ").append(condition.toHQLString());
-    String hql = stringBuilder.toString();
-    getQuery(hql, null).executeUpdate();
+  public void updateEntitiesByCondition(String propertyField, Object propertyValue, Condition condition) throws AppException {
+    Map<String, Object> properties = new HashMap<>();
+    properties.put(propertyField, propertyValue);
+    updateEntitiesByCondition(properties, condition);
   }
 
   @Override
@@ -353,17 +378,24 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
-  @Deprecated
-  public void delete(PK key) throws AppException {
-    AppExceptionUtil.assertNotNull(key);
-    Entity entity = get(key);
-    AppExceptionUtil.assertNotNull(entity);
-    try {
-      getSession().delete(entity);
-    } catch (HibernateException e) {
-      LOGGER.error(e);
-      throw new AppException("Invoke delete method error.");
+  public <T extends BaseDTO<Entity>> List<T> findAll(Class<T> clazz,
+                                                     BaseBuilder<T> builder,
+                                                     String hql, PageInfo pageInfo) throws AppException {
+    List<T> list = new ArrayList<>();
+    AppExceptionUtil.assertTrue(clazz.isAnnotationPresent(Fields.class));
+    String[] fields = clazz.getAnnotation(Fields.class).value();
+    // TODO wrap the field by ``
+    String queryField = ArrayUtil.join(fields, ",");
+    List<?> result = findAll(queryField, hql, pageInfo);
+    for (Iterator<?> iterator = result.iterator(); iterator.hasNext(); ) {
+      Object[] entity = (Object[]) iterator.next();
+      Map<String, Object> properties = new HashMap<>();
+      for (int i = 0; i < fields.length; i++) {
+        properties.put(fields[i], entity[i]);
+      }
+      list.add(builder.build(properties));
     }
+    return list;
   }
 
   @Override

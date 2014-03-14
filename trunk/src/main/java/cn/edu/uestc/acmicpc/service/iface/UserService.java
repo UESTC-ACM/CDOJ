@@ -1,16 +1,17 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import java.util.List;
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * User service interface.
@@ -99,6 +100,17 @@ public interface UserService extends DatabaseService<User, Integer> {
       throws AppException;
 
   /**
+   * Get the users fit in condition and page range.
+   *
+   * @param condition {@link UserCondition} entity.
+   * @param pageInfo  {@link PageInfo} entity.
+   * @return List of {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDTO} entities
+   * @throws AppException
+   */
+  public List<UserTypeAheadDTO> getUserTypeAheadDTOList(UserCondition condition, PageInfo pageInfo)
+    throws AppException;
+
+  /**
    * Update some fields of one user according the user id.
    *
    * @param properties field name and field value map.
@@ -107,4 +119,19 @@ public interface UserService extends DatabaseService<User, Integer> {
    */
   public void updateUserByUserId(Map<String, Object> properties, Integer userId) throws AppException;
 
+  /**
+   * Check whether a user exists.
+   * @param userName user's name
+   * @return true if exists
+   * @throws AppException
+   */
+  public Boolean checkUserExists(String userName) throws AppException;
+
+  /**
+   * Check whether a user exists.
+   * @param userId user's id
+   * @return true if exists
+   * @throws AppException
+   */
+  public Boolean checkUserExists(Integer userId) throws AppException;
 }

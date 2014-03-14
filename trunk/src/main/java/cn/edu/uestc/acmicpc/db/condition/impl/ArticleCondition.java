@@ -84,9 +84,11 @@ public class ArticleCondition extends BaseCondition {
       condition.addEntry("userByUserId.userName", Condition.ConditionType.STRING_EQUALS, userName);
     }
     if (keyword != null) {
-      condition.addEntry("title", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));
-      condition.addEntry("content", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));
-      condition.addEntry("author", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));
+      Condition keywordCondition = new Condition(Condition.JoinedType.OR);
+      keywordCondition.addEntry("title", Condition.ConditionType.LIKE, keyword);
+      keywordCondition.addEntry("content", Condition.ConditionType.LIKE, keyword);
+      keywordCondition.addEntry("author", Condition.ConditionType.LIKE, keyword);
+      condition.addEntry(keywordCondition);
     }
     return condition;
   }

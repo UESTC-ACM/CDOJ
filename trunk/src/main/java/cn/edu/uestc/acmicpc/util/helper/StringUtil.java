@@ -1,11 +1,11 @@
 package cn.edu.uestc.acmicpc.util.helper;
 
+import cn.edu.uestc.acmicpc.util.settings.Global;
+
 import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import cn.edu.uestc.acmicpc.util.settings.Global;
 
 /**
  * global static class to deal with strings
@@ -20,6 +20,17 @@ public class StringUtil {
    */
   public static String trimAllSpace(String str) {
     return str == null ? str : str.replaceAll("^[\\s　]*|[\\s　]*$", "");
+  }
+
+  /**
+   * Create @user link
+   *
+   * @param userName user's name
+   * @param userId user's id
+   * @return result
+   */
+  public static String getAtLink(String userName, Integer userId) {
+    return "@" + userName + "(" + userId + ")";
   }
 
   /**

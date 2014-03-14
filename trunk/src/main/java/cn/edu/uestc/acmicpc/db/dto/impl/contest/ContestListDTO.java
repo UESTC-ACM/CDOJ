@@ -1,12 +1,13 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.contest;
 
-import java.sql.Timestamp;
-import java.util.Map;
-
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
+import cn.edu.uestc.acmicpc.util.settings.Global;
+
+import java.sql.Timestamp;
+import java.util.Map;
 
 /**
  * DTO used in contest list.
@@ -23,12 +24,15 @@ public class ContestListDTO implements BaseDTO<Contest> {
   private Timestamp time;
   private Integer length;
   private Boolean isVisible;
+  private String typeName;
+  private String status;
 
   public ContestListDTO() {
   }
 
-  public ContestListDTO(Integer contestId, String title, String description,
-                        Byte type, Timestamp time, Integer length, Boolean isVisible) {
+  public ContestListDTO(Integer contestId, String title, String description, Byte type,
+                        Timestamp time, Integer length, Boolean isVisible, String typeName,
+                        String status) {
     this.contestId = contestId;
     this.title = title;
     this.description = description;
@@ -36,6 +40,8 @@ public class ContestListDTO implements BaseDTO<Contest> {
     this.time = time;
     this.length = length;
     this.isVisible = isVisible;
+    this.typeName = typeName;
+    this.status = status;
   }
 
   public Integer getContestId() {
@@ -94,6 +100,22 @@ public class ContestListDTO implements BaseDTO<Contest> {
     this.isVisible = isVisible;
   }
 
+  public String getTypeName() {
+    return typeName;
+  }
+
+  public void setTypeName(String typeName) {
+    this.typeName = typeName;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
   public static Builder builder() {
     return new Builder();
   }
@@ -107,11 +129,13 @@ public class ContestListDTO implements BaseDTO<Contest> {
     private Timestamp time;
     private Integer length;
     private Boolean isVisible;
+    private String typeName;
+    private String status;
 
     @Override
     public ContestListDTO build() {
       return new ContestListDTO(contestId, title, description, type, time,
-          length, isVisible);
+          length, isVisible, typeName, status);
     }
 
     @Override
@@ -123,6 +147,18 @@ public class ContestListDTO implements BaseDTO<Contest> {
       time = (Timestamp) properties.get("time");
       length = (Integer) properties.get("length");
       isVisible = (Boolean) properties.get("isVisible");
+      typeName = Global.ContestType.values()[type].getDescription();
+
+      Timestamp endTime = new Timestamp(time.getTime() + length);
+      Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+      Long timeLeft = Math.max(endTime.getTime() - currentTime.getTime(), 0L);
+      if (timeLeft > length) {
+        status = "Pending";
+      } else if (timeLeft > 0) {
+        status = "Running";
+      } else {
+        status = "Ended";
+      }
       return build();
     }
 
@@ -158,6 +194,16 @@ public class ContestListDTO implements BaseDTO<Contest> {
 
     public Builder setIsVisible(Boolean isVisible) {
       this.isVisible = isVisible;
+      return this;
+    }
+
+    public Builder setTypeName(String typeName) {
+      this.typeName = typeName;
+      return this;
+    }
+
+    public Builder setStatus(String status) {
+      this.status = status;
       return this;
     }
   }

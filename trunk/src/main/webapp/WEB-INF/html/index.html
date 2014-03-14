@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="cdoj">
+<head>
+  <link rel="icon" type="image/png" href="/images/logo/favicon128.png">
+  <meta http-equiv=Content-Type content="text/html;charset=utf-8"/>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <link rel="stylesheet"
+        href="/plugins/Font-Awesome/css/font-awesome.min.css"/>
+  <!--[if IE 7]>
+  <link rel="stylesheet"
+        href="/plugins/Font-Awesome/css/font-awesome-ie7.min.css"/>
+  <![endif]-->
+  <link rel="stylesheet"
+        href="/cdoj/dist/css/cdoj.css"/>
+
+  <title ng-bind="$root.finalTitle"></title>
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-47734287-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function () {
+      var ga = document.createElement('script');
+      ga.type = 'text/javascript';
+      ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+</head>
+
+<body>
+<header id="cdoj-navbar-top">
+  <div class="container" ng-controller="HeaderController">
+    <nav>
+      <ul class="nav navbar-nav navbar-right">
+        <!-- Search
+        <li>
+          <div class="input-group input-group-sm" id="cdoj-search">
+            <input type="text" class="form-control">
+
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-default"
+                      tabindex="-1">
+                <span id="cdoj-search-icon"><i class="fa fa-search"></i></span>
+                <span id="cdoj-search-text">Search</span>
+              </button>
+            </div>
+          </div>
+        </li>-->
+
+        <li ng-show="$root.hasLogin"
+            style="font-size: 20px;">
+          <a href="#/user/center/{{currentUser.userName}}"><i class="fa fa-home"></i></a>
+        </li>
+        <li ng-show="$root.hasLogin"
+            style="font-size: 20px;">
+          <a href="javascript:void(0);"
+             class="dropdown-toggle">
+            <i class="fa fa-bell"></i>
+            <span class="label label-danger"
+                  style="position: absolute;
+                  top: 6px;
+                  right: 4px;
+                  font-size: 10px;"
+                  ng-show="$root.totalUnreadMessages > 0"
+                  ng-bind="$root.totalUnreadMessages"></span>
+          </a>
+          <ul class="dropdown-menu" style="width: 330px;">
+            <li role="presentation" class="dropdown-header">
+              Notification
+            </li>
+            <li role="presentation" ng-repeat="message in $root.unreadMessages">
+              <div class="media" style="padding: 0 6px 0 6px;">
+                <div class="pull-left">
+                  <img class="media-object"
+                       ui-avatar
+                       email="message.senderEmail"
+                       style="width: 54px; height: 54px;">
+                </div>
+                <div class="media-body">
+                  <p>
+                    <a href="#/user/center/{{message.senderUserName}}"
+                       ng-bind="message.senderUserName"></a>
+                    :
+                    <messagelink message="message"></messagelink>
+                  </p>
+                  <span class="muted" style="font-size: 12px;">
+                    <i class="fa fa-clock-o"></i>
+                    <span ui-time time="message.time" inline="true" change="false"></span>
+                  </span>
+                </div>
+              </div>
+            </li>
+            <li role="presentation" class="divider"></li>
+            <li role="presentation">
+              <a href="#/user/center/{{currentUser.userName}}/messages">
+                View more notifications
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li ng-show="$root.hasLogin">
+          <div id="cdoj-user" style="margin-left: 15px;">
+            <a href="javascript:void(0);" class="dropdown-toggle">
+              <img id="cdoj-user-avatar"
+                   ui-avatar
+                   email="currentUser.email"
+                   src="/images/avatar/default.jpg"/>
+            </a>
+            <ul class="dropdown-menu"
+                role="menu"
+                aria-labelledby="user-menu"
+                style="top: 48px;
+border-top-left-radius: 0;
+border-top-right-radius: 0;">
+              <li role="presentation"
+                  class="dropdown-header" ng-bind="currentUser.userName">
+              </li>
+              <li role="presentation">
+                <a href="#/user/center/{{currentUser.userName}}">
+                  <i class="fa fa-home"></i>User center
+                </a>
+              </li>
+              <li role="presentation">
+                <a href="javascript:void(0);" data-toggle="modal"
+                   data-target="#cdoj-profile-edit-modal"
+                   ng-click="openUserProfileEditor()">
+                  <i class="fa fa-wrench"></i>Edit profile
+                </a>
+              </li>
+              <li role="presentation" class="divider"></li>
+              <li role="presentation">
+                <a href="javascript:void(0);" id="cdoj-logout-button" ng-click="logout()">
+                  <i class="fa fa-power-off"></i>Logout
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li ng-hide="$root.hasLogin">
+          <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+            Sign in
+          </a>
+          <ul ui-dropdown-menu class="dropdown-menu cdoj-form-menu" style="width: 340px;">
+            <li>
+              <form>
+                <div class="input-group form-group input-group-sm">
+                  <span class="input-group-addon">
+                    <i class="fa fa-user" style="width: 14px;"></i>
+                  </span>
+                  <input type="text"
+                         ng-model="userLoginDTO.userName"
+                         maxlength="24"
+                         id="userName"
+                         class="form-control"
+                         ng-required="true"
+                         ng-pattern="/^[a-zA-Z0-9_]{4,24}$/"
+                         placeholder="Username"/>
+                </div>
+                <div class="input-group form-group input-group-sm">
+                  <span class="input-group-addon">
+                    <i class="fa fa-key" style="width: 14px;"></i>
+                  </span>
+                  <input type="password"
+                         ng-model="userLoginDTO.password"
+                         id="password"
+                         ng-required="true"
+                         ng-minlength="6"
+                         ng-maxlength="24"
+                         class="form-control"
+                         placeholder="Password"/>
+                  <span class="input-group-btn">
+                    <button type="submit"
+                            class="btn btn-default"
+                            ng-click="login()">
+                      Login
+                    </button>
+                  </span>
+                </div>
+                <ui-validate-info value="fieldInfo" for="password"></ui-validate-info>
+              </form>
+            </li>
+            <li role="presentation" class="divider"></li>
+            <li>
+              <a href="javascript:void(0);" ng-click="openRegisterModal()">
+                <i class="fa fa-arrow-circle-right" style="padding-right: 6px;"></i>Register</a>
+              <a href="javascript:void(0);" ng-click="openForgetPasswordModal()">
+                <i class="fa fa-arrow-circle-right" style="padding-right: 6px;"></i>Forget password?
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div id="cdoj-layout">
+  <div id="cdoj-navbar">
+    <div id="cdoj-navbar-menu" class="row">
+      <div class="col-md-12">
+        <div class="cdoj-menu">
+          <ul class="nav nav-pills nav-stacked">
+            <li class="cdoj-menu-heading"><span class="cdoj-menu-item">CDOJ</span></li>
+
+            <li active-link="">
+              <a href="/"><i class="fa fa-home"></i><span class="cdoj-menu-item">Home</span></a>
+            </li>
+            <li active-link="problem">
+              <a href="#/problem/list">
+                <i class="fa fa-puzzle-piece"></i><span class="cdoj-menu-item">Problems</span>
+              </a>
+            </li>
+            <li active-link="contest">
+              <a href="#/contest/list">
+                <i class="fa fa-trophy"></i><span class="cdoj-menu-item">Contests</span>
+              </a>
+            </li>
+            <li active-link="status">
+              <a href="#/status/list">
+                <i class="fa fa-refresh"></i><span class="cdoj-menu-item">Status</span>
+              </a>
+            </li>
+            <li active-link="user">
+              <a href="#/user/list">
+                <i class="fa fa-user"></i><span class="cdoj-menu-item">Users</span>
+              </a>
+            </li>
+            <li>
+              <a href="/bbs/">
+                <i class="fa fa-comments"></i><span class="cdoj-menu-item">BBS</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="cdoj-container"
+       ng-view>
+  </div>
+</div>
+
+<script src="/plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="/cdoj/dist/js/cdoj.js"></script>
+</body>
+</html>

@@ -1,6 +1,11 @@
 package cn.edu.uestc.acmicpc.db;
 
-import java.util.List;
+import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
+import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
+import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -8,11 +13,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
-import cn.edu.uestc.acmicpc.db.entity.User;
-import cn.edu.uestc.acmicpc.util.exception.AppException;
+import java.util.List;
 
 /**
  * Test cases for {@link User}.
@@ -28,7 +29,8 @@ public class UserDatabaseITTest extends AbstractTestNGSpringContextTests {
   public void testQuery_byName() throws AppException {
     UserCondition condition = new UserCondition();
     condition.userName = "admin";
-    List<User> users = (List<User>) userDAO.findAll(condition.getCondition());
+    List<UserDTO> users =
+        userDAO.findAll(UserDTO.class, UserDTO.builder(), condition.getCondition());
     Assert.assertEquals(users.size(), 2);
     Assert.assertEquals(users.get(0).getUserName(), "administrator");
     Assert.assertEquals(users.get(0).getUserId(), Integer.valueOf(1));
@@ -42,7 +44,8 @@ public class UserDatabaseITTest extends AbstractTestNGSpringContextTests {
     UserCondition condition = new UserCondition();
     condition.endId = 3;
     condition.departmentId = 1;
-    List<User> users = (List<User>) userDAO.findAll(condition.getCondition());
+    List<UserDTO> users =
+        userDAO.findAll(UserDTO.class, UserDTO.builder(), condition.getCondition());
     Assert.assertEquals(2, users.size());
     Assert.assertEquals(users.get(0).getUserName(), "administrator");
     Assert.assertEquals(users.get(1).getUserName(), "admin");

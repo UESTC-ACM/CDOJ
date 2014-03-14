@@ -1,24 +1,5 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.user;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserActivateDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminEditDTO;
@@ -28,7 +9,9 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserProblemStatusDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDTO;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
@@ -38,11 +21,30 @@ import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/user")
@@ -164,6 +166,11 @@ public class UserController extends BaseController {
             .setMotto(userRegisterDTO.getMotto())
             .setDepartmentName(departmentService.getDepartmentName(
                 userRegisterDTO.getDepartmentId()))
+            .setName(userRegisterDTO.getName())
+            .setSex(userRegisterDTO.getSex())
+            .setGrade(userRegisterDTO.getGrade())
+            .setPhone(userRegisterDTO.getPhone())
+            .setSize(userRegisterDTO.getSize())
             .build();
         userService.createNewUser(userDTO);
 
@@ -186,12 +193,6 @@ public class UserController extends BaseController {
       }
     }
     return json;
-  }
-
-  @RequestMapping("list")
-  @LoginPermit(NeedLogin = false)
-  public String list() {
-    return "user/userList";
   }
 
   @RequestMapping("search")
@@ -220,10 +221,66 @@ public class UserController extends BaseController {
     return json;
   }
 
-  @RequestMapping("center/{userName}")
+  @RequestMapping("typeAheadItem/{userName}")
+  public
+  @ResponseBody
+  Map<String, Object> typeAheadResult(@PathVariable("userName") String userName) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      UserDTO userDTO = userService.getUserDTOByUserName(userName);
+      AppExceptionUtil.assertNotNull(userDTO, "No such user!");
+      json.put("result", "success");
+      json.put("user", UserTypeAheadDTO.builder()
+          .setUserId(userDTO.getUserId())
+          .setUserName(userDTO.getUserName())
+          .setNickName(userDTO.getNickName())
+          .setEmail(userDTO.getEmail())
+          .build());
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      json.put("result", "error");
+      e.printStackTrace();
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  @RequestMapping("typeAheadList")
   @LoginPermit(NeedLogin = false)
-  public String center(@PathVariable("userName") String userName,
-                       ModelMap model) {
+  public
+  @ResponseBody
+  Map<String, Object> typeAheadList(@RequestBody UserCondition userCondition) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      Long count = userService.count(userCondition);
+      PageInfo pageInfo = buildPageInfo(count, 1L,
+          6L, null);
+      List<UserTypeAheadDTO> userList = userService.getUserTypeAheadDTOList(userCondition,
+          pageInfo);
+
+      json.put("pageInfo", pageInfo);
+      json.put("result", "success");
+      json.put("list", userList);
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      json.put("result", "error");
+      e.printStackTrace();
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  @RequestMapping("userCenterData/{userName}")
+  @LoginPermit(NeedLogin = false)
+  public
+  @ResponseBody
+  Map<String, Object> userCenterData(HttpSession session,
+                                     @PathVariable("userName") String userName) {
+    Map<String, Object> json = new HashMap<>();
     try {
       UserCenterDTO userCenterDTO = userService.getUserCenterDTOByUserName(userName);
       if (userCenterDTO == null) {
@@ -235,24 +292,34 @@ public class UserController extends BaseController {
       for (Integer result : results) {
         problemStatus.put(result, Global.AuthorStatusType.NONE);
       }
-      results = statusService.findAllUserTriedProblemIds(userCenterDTO.getUserId());
+      results = statusService.findAllUserTriedProblemIds(userCenterDTO.getUserId(),
+          isAdmin(session));
       for (Integer result : results) {
         if (problemStatus.containsKey(result)) {
           problemStatus.put(result, Global.AuthorStatusType.FAIL);
         }
       }
-      results = statusService.findAllUserAcceptedProblemIds(userCenterDTO.getUserId());
+      results = statusService.findAllUserAcceptedProblemIds(userCenterDTO.getUserId(),
+          isAdmin(session));
       for (Integer result : results) {
         if (problemStatus.containsKey(result)) {
           problemStatus.put(result, Global.AuthorStatusType.PASS);
         }
       }
-      model.put("problemStatus", problemStatus);
-      model.put("targetUser", userCenterDTO);
+
+      List<UserProblemStatusDTO> problemStatusList = new LinkedList<>();
+      for (Map.Entry<Integer, Global.AuthorStatusType> status : problemStatus.entrySet()) {
+        problemStatusList.add(new UserProblemStatusDTO(status.getKey(), status.getValue().ordinal()));
+      }
+
+      json.put("problemStatus", problemStatusList);
+      json.put("targetUser", userCenterDTO);
+      json.put("result", "success");
     } catch (AppException e) {
-      return "error/404";
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
     }
-    return "user/userCenter";
+    return json;
   }
 
   @RequestMapping("edit")
@@ -295,6 +362,11 @@ public class UserController extends BaseController {
         userDTO.setDepartmentId(userEditDTO.getDepartmentId());
         userDTO.setStudentId(userEditDTO.getStudentId());
         userDTO.setMotto(userEditDTO.getMotto());
+        userDTO.setName(userEditDTO.getName());
+        userDTO.setSex(userEditDTO.getSex());
+        userDTO.setGrade(userEditDTO.getGrade());
+        userDTO.setPhone(userEditDTO.getPhone());
+        userDTO.setSize(userEditDTO.getSize());
 
         userService.updateUser(userDTO);
         json.put("result", "success");
@@ -342,6 +414,11 @@ public class UserController extends BaseController {
         userDTO.setStudentId(userAdminEditDTO.getStudentId());
         userDTO.setMotto(userAdminEditDTO.getMotto());
         userDTO.setType(userAdminEditDTO.getType());
+        userDTO.setName(userAdminEditDTO.getName());
+        userDTO.setSex(userAdminEditDTO.getSex());
+        userDTO.setGrade(userAdminEditDTO.getGrade());
+        userDTO.setPhone(userAdminEditDTO.getPhone());
+        userDTO.setSize(userAdminEditDTO.getSize());
 
         userService.updateUser(userDTO);
         json.put("result", "success");
@@ -411,16 +488,6 @@ public class UserController extends BaseController {
     return json;
   }
 
-  @RequestMapping("activate/{userName}/{serialKey}")
-  @LoginPermit(NeedLogin = false)
-  public String activate(@PathVariable("userName") String userName,
-                         @PathVariable("serialKey") String serialKey,
-                         ModelMap model) {
-    model.addAttribute("userName", userName);
-    model.addAttribute("serialKey", serialKey);
-    return "user/activate";
-  }
-
   @RequestMapping("resetPassword")
   @LoginPermit(NeedLogin = false)
   public
@@ -454,7 +521,7 @@ public class UserController extends BaseController {
               "Serial Key exceed time limit! Please regenerate a new key.");
         }
         if (!StringUtil.encodeSHA1(userSerialKeyDTO.getSerialKey()).equals(userActivateDTO.getSerialKey())) {
-          throw new FieldException("serialKey", "Serial Key is wrong!");
+          throw new FieldException("serialKey", "Serial Key is wrong or has been used!");
         }
 
         userDTO.setPassword(userActivateDTO.getPassword());
