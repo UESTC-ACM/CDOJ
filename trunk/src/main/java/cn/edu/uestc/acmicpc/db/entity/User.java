@@ -195,6 +195,71 @@ public class User implements Serializable {
     this.motto = motto;
   }
 
+  private String name;
+
+  @Column(name = "name", nullable = false, insertable = true, updatable = true, length = 50,
+      precision = 0)
+  @Basic
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  private String phone;
+
+  @Column(name = "phone", nullable = false, insertable = true, updatable = true, length = 45,
+      precision = 0)
+  @Basic
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
+  private Integer sex = 0;
+
+  @Column(name = "sex", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  @Basic
+  public Integer getSex() {
+    return sex;
+  }
+
+  public void setSex(Integer sex) {
+    this.sex = sex;
+  }
+
+  private Integer grade = 0;
+
+  @Column(name = "grade", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  @Basic
+  public Integer getGrade() {
+    return grade;
+  }
+
+  public void setGrade(Integer grade) {
+    this.grade = grade;
+  }
+
+  private Integer size = 0;
+
+  @Column(name = "size", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  @Basic
+  public Integer getSize() {
+    return size;
+  }
+
+  public void setSize(Integer size) {
+    this.size = size;
+  }
+
   private Integer departmentId;
 
   @Column(name = "departmentId", nullable = false, insertable = true, updatable = true,
@@ -285,4 +350,16 @@ public class User implements Serializable {
   public void setArticlesByUserId(Collection<Article> articlesByUserId) {
     this.articlesByUserId = articlesByUserId;
   }
+
+  private Collection<TeamUser> teamUsersByUserId;
+
+  @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
+  public Collection<TeamUser> getTeamUsersByUserId() {
+    return teamUsersByUserId;
+  }
+
+  public void setTeamUsersByUserId(Collection<TeamUser> teamUsersByUserId) {
+    this.teamUsersByUserId = teamUsersByUserId;
+  }
+
 }

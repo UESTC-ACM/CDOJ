@@ -1,6 +1,10 @@
 cdoj
 .controller("ContestListController", [
-    "$scope", "$rootScope", "$http"
-    ($scope, $rootScope, $http)->
-      $rootScope.title = "Contest list"
+    "$scope", "$rootScope", "$window"
+    ($scope, $rootScope, $window)->
+      $scope.toRegisterPage = (contest)->
+        if $rootScope.hasLogin == false
+          $window.alert "Please login first!"
+        else
+          $window.location.href = "/#/contest/register/#{contest.contestId}"
   ])

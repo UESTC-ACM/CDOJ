@@ -1,0 +1,74 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <b ng-bind="team.teamName"></b>
+    <span class="pull-right"
+          ng-show="editPermission && team.leaderId != user.userId">
+      <input bs-switch
+             ng-model="team.allow"
+             type="checkbox"
+             switch-toggle="joinIn(team)"
+             switch-active="true"
+             switch-size="small"
+             switch-animate="false"
+             switch-label=""
+             switch-icon=""
+             switch-on-label="Allow"
+             switch-off-label="Quit"
+             switch-on="success"
+             switch-off="danger"/>
+    </span>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-4" ng-repeat="member in team.teamUsers">
+        <h5 style="margin-top: 0;">
+          <span ng-show="$index == 0" class="font-primary">Leader</span>
+          <span ng-show="$index != 0" class="font-success">Member</span>
+        </h5>
+
+        <div class="media">
+          <div class="pull-left">
+            <img ui-avatar
+                 email="member.email"
+                 width="44"
+                 height="44"
+                 class="media-object"
+                 style="width: 44px; height: 44px;"/>
+          </div>
+
+          <div class="media-body">
+            <h4 class="media-heading">
+              <span ng-bind="member.userName"></span>
+            </h4>
+            <span ng-bind="member.nickName"></span>
+          </div>
+        </div>
+      </div>
+      <div ng-show="team.invitedUsers.length > 0 && editPermission">
+        <div class="col-md-4" ng-repeat="member in team.invitedUsers">
+          <h5 style="margin-top: 0;">
+            <span class="font-danger">Inactive</span>
+          </h5>
+
+          <div class="media">
+            <div class="pull-left">
+              <img ui-avatar
+                   email="member.email"
+                   width="44"
+                   height="44"
+                   class="media-object"
+                   style="width: 44px; height: 44px;"/>
+            </div>
+
+            <div class="media-body">
+              <h4 class="media-heading">
+                <span ng-bind="member.userName"></span>
+              </h4>
+              <span ng-bind="member.nickName"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

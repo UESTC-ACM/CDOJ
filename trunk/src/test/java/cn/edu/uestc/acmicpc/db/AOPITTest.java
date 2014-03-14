@@ -45,7 +45,7 @@ public class AOPITTest extends AbstractTestNGSpringContextTests {
     userDAO.findAll("from CompileInfo");
     userDAO.findAll("from Contest");
     userDAO.findAll("from ContestProblem");
-    userDAO.findAll("from ContestTeamInfo");
+    userDAO.findAll("from ContestTeam");
     userDAO.findAll("from ContestUser");
     userDAO.findAll("from Department");
     userDAO.findAll("from Language");
@@ -55,6 +55,8 @@ public class AOPITTest extends AbstractTestNGSpringContextTests {
     userDAO.findAll("from ProblemTag");
     userDAO.findAll("from Status");
     userDAO.findAll("from Tag");
+    userDAO.findAll("from Team");
+    userDAO.findAll("from TeamUser");
     userDAO.findAll("from TrainingContest");
     userDAO.findAll("from TrainingStatus");
     userDAO.findAll("from TrainingUser");

@@ -21,6 +21,21 @@
           <ui-validate-info value="fieldInfo" for="userName"></ui-validate-info>
         </div>
       </div>
+
+      <div class="form-group ">
+        <label class="control-label col-sm-4 "
+               for="departmentId">Type</label>
+
+        <div class="col-sm-8">
+          <select ng-model="userEditDTO.type"
+                  ng-options="type.authenticationTypeId as type.description for type in $root.authenticationTypeList"
+                  id="type"
+                  ng-required="true"
+                  class="form-control input-sm">
+          </select>
+          <ui-validate-info value="fieldInfo" for="type"></ui-validate-info>
+        </div>
+      </div>
       <div class="form-group">
         <label class="control-label col-sm-4 "
                for="newPassword">New password</label>
@@ -85,6 +100,77 @@
         </div>
       </div>
       <div class="form-group ">
+        <label class="control-label col-sm-4 " for="motto">Motto</label>
+
+        <div class="col-sm-8">
+          <textarea class="form-control"
+                    rows="3"
+                    ng-model="userEditDTO.motto"
+                    id="motto"></textarea>
+          <ui-validate-info value="fieldInfo" for="motto"></ui-validate-info>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Personal information</legend>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 " for="name">Name</label>
+
+        <div class="col-sm-8">
+          <input type="text"
+                 ng-model="userEditDTO.name"
+                 id="name"
+                 ng-required="true"
+                 ng-maxlength="50"
+                 ng-minlength="1"
+                 class="form-control input-sm"/>
+          <ui-validate-info value="fieldInfo" for="name"></ui-validate-info>
+        </div>
+      </div>
+
+      <div class="form-group ">
+        <label class="control-label col-sm-4 "
+               for="sex">Gender</label>
+
+        <div class="col-sm-8">
+          <select ng-model="userEditDTO.sex"
+                  ng-options="gender.genderTypeId as gender.description for gender in $root.genderTypeList"
+                  id="sex"
+                  ng-required="true"
+                  class="form-control input-sm">
+          </select>
+          <ui-validate-info value="fieldInfo" for="sex"></ui-validate-info>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 "
+               for="size">T-Shirts size</label>
+
+        <div class="col-sm-8">
+          <select ng-model="userEditDTO.size"
+                  ng-options="size.sizeTypeId as size.description for size in $root.tShirtsSizeTypeList"
+                  id="size"
+                  ng-required="true"
+                  class="form-control input-sm">
+          </select>
+          <ui-validate-info value="fieldInfo" for="size"></ui-validate-info>
+        </div>
+      </div>
+      <div class="form-group ">
+        <label class="control-label col-sm-4 " for="phone">Phone number</label>
+
+        <div class="col-sm-8">
+          <input type="text"
+                 ng-model="userEditDTO.phone"
+                 id="phone"
+                 ng-required="true"
+                 ng-maxlength="45"
+                 ng-minlength="1"
+                 class="form-control input-sm"/>
+          <ui-validate-info value="fieldInfo" for="phone"></ui-validate-info>
+        </div>
+      </div>
+      <div class="form-group ">
         <label class="control-label col-sm-4 " for="school">School</label>
 
         <div class="col-sm-8">
@@ -112,18 +198,19 @@
           <ui-validate-info value="fieldInfo" for="departmentId"></ui-validate-info>
         </div>
       </div>
+
       <div class="form-group ">
         <label class="control-label col-sm-4 "
-               for="departmentId">Type</label>
+               for="grade">Grade</label>
 
         <div class="col-sm-8">
-          <select ng-model="userEditDTO.type"
-                  ng-options="type.authenticationTypeId as type.description for type in $root.authenticationTypeList"
-                  id="type"
+          <select ng-model="userEditDTO.grade"
+                  ng-options="grade.gradeTypeId as grade.description for grade in $root.gradeTypeList"
+                  id="grade"
                   ng-required="true"
                   class="form-control input-sm">
           </select>
-          <ui-validate-info value="fieldInfo" for="type"></ui-validate-info>
+          <ui-validate-info value="fieldInfo" for="size"></ui-validate-info>
         </div>
       </div>
       <div class="form-group ">
@@ -139,17 +226,6 @@
                  ng-minlength="1"
                  class="form-control input-sm"/>
           <ui-validate-info value="fieldInfo" for="studentId"></ui-validate-info>
-        </div>
-      </div>
-      <div class="form-group ">
-        <label class="control-label col-sm-4 " for="motto">Motto</label>
-
-        <div class="col-sm-8">
-          <textarea class="form-control"
-                    rows="3"
-                    ng-model="userEditDTO.motto"
-                    id="motto"></textarea>
-          <ui-validate-info value="fieldInfo" for="motto"></ui-validate-info>
         </div>
       </div>
     </fieldset>

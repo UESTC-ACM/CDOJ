@@ -77,8 +77,8 @@ public class ContestCondition extends BaseCondition {
     Condition condition = super.getCondition();
     if (keyword != null) {
       Condition keywordCondition = new Condition(Condition.JoinedType.OR);
-      keywordCondition.addEntry("title", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));
-      keywordCondition.addEntry("description", Condition.ConditionType.STRING_EQUALS, String.format("%%%s%%", keyword));
+      keywordCondition.addEntry("title", Condition.ConditionType.LIKE, keyword);
+      keywordCondition.addEntry("description", Condition.ConditionType.LIKE, keyword);
       condition.addEntry(keywordCondition);
     }
     return condition;

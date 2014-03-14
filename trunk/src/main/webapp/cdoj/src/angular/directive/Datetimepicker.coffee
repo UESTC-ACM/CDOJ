@@ -2,6 +2,10 @@ cdoj
 .directive("uiDatetimepicker",
   ->
     restrict: 'A'
-    link: ($scope, $element) ->
-      $($element).datetimepicker()
+    require: "ngModel"
+    link: ($scope, $element, $attrs, $controller) ->
+      $($element).datetimepicker().on("changeDate", (e)->
+        $scope.$apply ->
+          $controller.$setViewValue e.date.valueOf()
+      )
   )

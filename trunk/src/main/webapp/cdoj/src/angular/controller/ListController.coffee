@@ -10,6 +10,9 @@ cdoj
       $scope.itemsPerPage = 20
       $scope.showPages = 10
 
+      $scope.$on("refresh", ->
+        $scope.refresh()
+      )
       _.each $scope.condition, (val, key)->
         if angular.isDefined $routeParams[key]
           if not isNaN(parseInt($routeParams[key]))
@@ -26,9 +29,6 @@ cdoj
               $scope.pageInfo = data.pageInfo
             else
               $window.alert data.error_msg
-      $rootScope.$watch("currentUser", ->
-        $scope.refresh()
-      , true)
       $scope.$watch("condition", ->
         $scope.refresh()
       , true

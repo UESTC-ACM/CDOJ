@@ -30,6 +30,7 @@ cdoj
         $http.post("/user/edit", userEditDTO).then (response)->
           data = response.data
           if data.result == "success"
+            $window.alert "Success!"
             $modalInstance.close()
           else if data.result == "field_error"
             $scope.fieldInfo = data.field
