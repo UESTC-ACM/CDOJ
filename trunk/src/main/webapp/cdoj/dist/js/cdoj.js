@@ -65118,6 +65118,9 @@ if (typeof exports === 'object') {
       }).when("/user/activate/:userName/:serialKey", {
         templateUrl: "template/user/activation.html",
         controller: "PasswordResetController"
+      }).when("/user/register", {
+        templateUrl: "template/user/register.html",
+        controller: "UserRegisterController"
       });
     }
   ]);
@@ -65664,7 +65667,7 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("HeaderController", [
-    "$scope", "$rootScope", "$http", "$element", "$compile", "$window", "UserProfile", "$modal", function($scope, $rootScope, $http, $element, $compile, $window, $userProfile, $modal) {
+    "$scope", "$rootScope", "$http", "$element", "$compile", "$window", "$modal", function($scope, $rootScope, $http, $element, $compile, $window, $modal) {
       $rootScope.hasLogin = false;
       $rootScope.currentUser = {
         email: ""
@@ -65712,26 +65715,11 @@ if (typeof exports === 'object') {
           }
         });
       };
-      $scope.openRegisterModal = function() {
-        var registerModal;
-        return registerModal = $modal.open({
-          templateUrl: "template/modal/register-modal.html",
-          controller: "RegisterModalController"
-        });
-      };
       $scope.openForgetPasswordModal = function() {
         var forgetPasswordModal;
         return forgetPasswordModal = $modal.open({
           templateUrl: "template/modal/forget-password-modal.html",
           controller: "ForgetPasswordModalController"
-        });
-      };
-      $scope.openUserProfileEditor = function() {
-        var userProfileEditor;
-        $userProfile.setProfile($rootScope.currentUser.userName);
-        return userProfileEditor = $modal.open({
-          templateUrl: "template/modal/profile-edit-modal.html",
-          controller: "UserProfileEditorController"
         });
       };
       return $scope.readMessage = function(message) {
@@ -65965,62 +65953,6 @@ if (typeof exports === 'object') {
     }
   ]);
 
-  cdoj.controller("RegisterModalController", [
-    "$scope", "$rootScope", "$http", "$modalInstance", "$window", function($scope, $rootScope, $http, $modalInstance, $window) {
-      $scope.userRegisterDTO = {
-        departmentId: 1,
-        email: "",
-        motto: "",
-        nickName: "",
-        password: "",
-        passwordRepeat: "",
-        school: "",
-        studentId: "",
-        userName: "",
-        sex: 0,
-        size: 2,
-        phone: "",
-        grade: 3,
-        name: ""
-      };
-      $scope.fieldInfo = [];
-      $scope.register = function() {
-        var password, passwordRepeat, userRegisterDTO;
-        userRegisterDTO = angular.copy($scope.userRegisterDTO);
-        if (angular.isUndefined(userRegisterDTO.password)) {
-          return;
-        }
-        if (angular.isUndefined(userRegisterDTO.passwordRepeat)) {
-          return;
-        }
-        password = CryptoJS.SHA1(userRegisterDTO.password).toString();
-        userRegisterDTO.password = password;
-        passwordRepeat = CryptoJS.SHA1(userRegisterDTO.passwordRepeat).toString();
-        userRegisterDTO.passwordRepeat = passwordRepeat;
-        return $http.post("/user/register", userRegisterDTO).then(function(response) {
-          var data;
-          data = response.data;
-          if (data.result === "success") {
-            $rootScope.hasLogin = true;
-            $rootScope.currentUser = {
-              userName: data.userName,
-              email: data.email,
-              type: data.type
-            };
-            return $modalInstance.close();
-          } else if (data.result === "field_error") {
-            return $scope.fieldInfo = data.field;
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        });
-      };
-      return $scope.dismiss = function() {
-        return $modalInstance.dismiss();
-      };
-    }
-  ]);
-
   cdoj.controller("StatusListController", [
     "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
       return $rootScope.title = "Status list";
@@ -66186,7 +66118,7 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("UserCenterController", [
-    "$scope", "$rootScope", "$http", "$routeParams", "$modal", "$window", function($scope, $rootScope, $http, $routeParams, $modal, $window) {
+    "$scope", "$rootScope", "$http", "$routeParams", "$modal", "$window", "UserProfile", function($scope, $rootScope, $http, $routeParams, $modal, $window, $userProfile) {
       var checkPermission, currentTab, targetUserName;
       $scope.targetUser = {
         email: ""
@@ -66204,20 +66136,24 @@ if (typeof exports === 'object') {
         if ($scope.editPermission === false) {
           $scope.messagesTabTitle = "Your messages with " + $scope.targetUser.userName;
           $scope.messageCondition.userAId = $scope.currentUser.userId;
-          return $scope.messageCondition.userBId = $scope.targetUser.userId;
+          $scope.messageCondition.userBId = $scope.targetUser.userId;
         } else {
           $scope.messagesTabTitle = "" + $scope.targetUser.userName + "'s messages";
-          return $scope.messageCondition.userId = $scope.currentUser.userId;
+          $scope.messageCondition.userId = $scope.currentUser.userId;
         }
+        return $scope.$broadcast("userCenter:permissionChange");
       };
       currentTab = angular.copy($routeParams.tab);
       $scope.activeProblemsTab = false;
       $scope.activeTeamsTab = false;
       $scope.activeMessagesTab = false;
+      $scope.activeEditTab = false;
       if (currentTab === "teams") {
         $scope.activeTeamsTab = true;
       } else if (currentTab === "messages") {
         $scope.activeMessagesTab = true;
+      } else if (currentTab === "edit") {
+        $scope.activeEditTab = true;
       } else {
         $scope.activeProblemsTab = true;
       }
@@ -66234,32 +66170,24 @@ if (typeof exports === 'object') {
           return $window.alert(data.error_msg);
         }
       });
-      return $scope.showTeamEditor = function() {
+      $scope.showTeamEditor = function() {
         var teamEditor;
         return teamEditor = $modal.open({
           templateUrl: "template/modal/team-editor-modal.html",
           controller: "TeamEditorModalController"
         });
       };
-    }
-  ]);
-
-  cdoj.controller("UserListController", [
-    "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
-      return $rootScope.title = "User list";
-    }
-  ]);
-
-  cdoj.controller("UserProfileEditorController", [
-    "$scope", "$http", "$modalInstance", "$window", "UserProfile", function($scope, $http, $modalInstance, $window, $userProfile) {
       $scope.userEditDTO = 0;
-      $scope.$watch(function() {
-        return $userProfile.getProfile();
-      }, function() {
-        return $scope.userEditDTO = $userProfile.getProfile();
-      }, true);
+      $scope.$on("userCenter:permissionChange", function() {
+        if ($scope.editPermission) {
+          $userProfile.setProfile($scope.targetUser.userName);
+          return $scope.$on("UserProfile:success", function() {
+            return $scope.userEditDTO = $userProfile.getProfile();
+          });
+        }
+      });
       $scope.fieldInfo = [];
-      $scope.edit = function() {
+      return $scope.edit = function() {
         var newPassword, newPasswordRepeat, oldPassword, userEditDTO;
         userEditDTO = angular.copy($scope.userEditDTO);
         if (userEditDTO.newPassword === "") {
@@ -66287,16 +66215,75 @@ if (typeof exports === 'object') {
           data = response.data;
           if (data.result === "success") {
             $window.alert("Success!");
-            return $modalInstance.close();
+            return $window.location.href = "/#/user/center/" + $scope.targetUser.userName;
           } else if (data.result === "field_error") {
+            $window.scrollTo(0, 0);
             return $scope.fieldInfo = data.field;
           } else {
             return $window.alert(data.error_msg);
           }
         });
       };
-      return $scope.dismiss = function() {
-        return $modalInstance.dismiss();
+    }
+  ]);
+
+  cdoj.controller("UserListController", [
+    "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
+      return $rootScope.title = "User list";
+    }
+  ]);
+
+  cdoj.controller("UserRegisterController", [
+    "$scope", "$rootScope", "$http", "$window", function($scope, $rootScope, $http, $window) {
+      $scope.userRegisterDTO = {
+        departmentId: 1,
+        email: "",
+        motto: "",
+        nickName: "",
+        password: "",
+        passwordRepeat: "",
+        school: "",
+        studentId: "",
+        userName: "",
+        sex: 0,
+        size: 2,
+        phone: "",
+        grade: 3,
+        name: ""
+      };
+      $scope.fieldInfo = [];
+      return $scope.register = function() {
+        var password, passwordRepeat, userRegisterDTO;
+        userRegisterDTO = angular.copy($scope.userRegisterDTO);
+        if (angular.isUndefined(userRegisterDTO.password)) {
+          return;
+        }
+        if (angular.isUndefined(userRegisterDTO.passwordRepeat)) {
+          return;
+        }
+        password = CryptoJS.SHA1(userRegisterDTO.password).toString();
+        userRegisterDTO.password = password;
+        passwordRepeat = CryptoJS.SHA1(userRegisterDTO.passwordRepeat).toString();
+        userRegisterDTO.passwordRepeat = passwordRepeat;
+        return $http.post("/user/register", userRegisterDTO).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            $rootScope.hasLogin = true;
+            $rootScope.currentUser = {
+              userName: data.userName,
+              email: data.email,
+              type: data.type
+            };
+            $rootScope.$broadcast("refreshUserData");
+            return $window.history.back();
+          } else if (data.result === "field_error") {
+            $window.scrollTo(0, 0);
+            return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        });
       };
     }
   ]);
@@ -67292,15 +67279,18 @@ if (typeof exports === 'object') {
           if (v !== void 0) {
             $scope.message = v.defaultMessage;
             return $scope.isInvalid = true;
+          } else {
+            $scope.message = "";
+            return $scope.isInvalid = false;
           }
         });
       },
-      template: "<span class=\"help-block\" ng-show=\"isInvalid\" ng-bind=\"message\"></span>"
+      template: "<span class=\"validate-info\" ng-show=\"isInvalid\" ng-bind=\"message\"></span>"
     };
   });
 
   cdoj.factory("UserProfile", [
-    "$http", "$window", function($http, $window) {
+    "$http", "$window", "$rootScope", function($http, $window, $rootScope) {
       var userProfile;
       userProfile = 0;
       return {
@@ -67309,7 +67299,8 @@ if (typeof exports === 'object') {
             var data;
             data = response.data;
             if (data.result === "success") {
-              return userProfile = data.user;
+              userProfile = data.user;
+              return $rootScope.$broadcast("UserProfile:success");
             } else {
               return $window.alert(data.error_msg);
             }

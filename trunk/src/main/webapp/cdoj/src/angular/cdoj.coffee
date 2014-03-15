@@ -90,5 +90,8 @@ cdoj
       ).when("/user/activate/:userName/:serialKey",
         templateUrl: "template/user/activation.html"
         controller: "PasswordResetController"
+      ).when("/user/register",
+        templateUrl: "template/user/register.html"
+        controller: "UserRegisterController"
       )
   ])
