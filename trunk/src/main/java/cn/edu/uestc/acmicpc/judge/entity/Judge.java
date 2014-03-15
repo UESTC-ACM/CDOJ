@@ -171,6 +171,7 @@ public class Judge implements Runnable {
    * @param judgeItem judge item to be judged
    */
   void judge(JudgeItem judgeItem) {
+    LOGGER.info("Start judging status#" + judgeItem.getStatusForJudgeDTO().getStatusId());
     try {
       int numberOfTestCase = judgeItem.getStatusForJudgeDTO().getDataCount();
       boolean isAccepted = true;
