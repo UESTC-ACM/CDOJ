@@ -1,6 +1,6 @@
 cdoj.factory("UserProfile", [
-  "$http", "$window"
-  ($http, $window)->
+  "$http", "$window", "$rootScope"
+  ($http, $window, $rootScope)->
     userProfile = 0
 
     setProfile: (userName)->
@@ -8,6 +8,7 @@ cdoj.factory("UserProfile", [
         data = response.data
         if data.result == "success"
           userProfile = data.user
+          $rootScope.$broadcast("UserProfile:success")
         else
           $window.alert data.error_msg
     getProfile: -> userProfile

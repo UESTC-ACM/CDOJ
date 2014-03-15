@@ -1,7 +1,7 @@
 cdoj
 .controller("UserCenterController", [
-    "$scope", "$rootScope", "$http", "$routeParams", "$modal", "$window"
-    ($scope, $rootScope, $http, $routeParams, $modal, $window) ->
+    "$scope", "$rootScope", "$http", "$routeParams", "$modal", "$window", "UserProfile"
+    ($scope, $rootScope, $http, $routeParams, $modal, $window, $userProfile) ->
       $scope.targetUser =
         email: ""
       $scope.teamCondition = angular.copy($rootScope.teamCondition)
@@ -20,15 +20,19 @@ cdoj
         else
           $scope.messagesTabTitle = "#{$scope.targetUser.userName}'s messages"
           $scope.messageCondition.userId = $scope.currentUser.userId
+        $scope.$broadcast("userCenter:permissionChange")
 
       currentTab = angular.copy($routeParams.tab)
       $scope.activeProblemsTab = false
       $scope.activeTeamsTab = false
       $scope.activeMessagesTab = false
+      $scope.activeEditTab = false
       if currentTab == "teams"
         $scope.activeTeamsTab = true
       else if currentTab == "messages"
         $scope.activeMessagesTab = true
+      else if currentTab == "edit"
+        $scope.activeEditTab = true
       else
         $scope.activeProblemsTab = true
 
@@ -49,4 +53,38 @@ cdoj
           controller: "TeamEditorModalController"
         )
 
+      $scope.userEditDTO = 0
+      $scope.$on("userCenter:permissionChange", ->
+        if $scope.editPermission
+          $userProfile.setProfile $scope.targetUser.userName
+          $scope.$on("UserProfile:success", ->
+            $scope.userEditDTO = $userProfile.getProfile()
+          )
+      )
+      $scope.fieldInfo = []
+      $scope.edit = ->
+        userEditDTO = angular.copy($scope.userEditDTO)
+        userEditDTO.newPassword = undefined if userEditDTO.newPassword == ""
+        userEditDTO.newPasswordRepeat = undefined if userEditDTO.newPasswordRepeat == ""
+        if angular.isUndefined userEditDTO.newPassword && angular.isUndefined userEditDTO.newPasswordRepeat
+          userEditDTO = _.omit(userEditDTO, "newPassword")
+          userEditDTO = _.omit(userEditDTO, "newPassowrdRepeat")
+        else
+          newPassword = CryptoJS.SHA1(userEditDTO.newPassword).toString()
+          userEditDTO.newPassword = newPassword
+          newPasswordRepeat = CryptoJS.SHA1(userEditDTO.newPasswordRepeat).toString()
+          userEditDTO.newPasswordRepeat = newPasswordRepeat
+        if angular.isUndefined userEditDTO.oldPassword then return
+        oldPassword = CryptoJS.SHA1(userEditDTO.oldPassword).toString()
+        userEditDTO.oldPassword = oldPassword
+        $http.post("/user/edit", userEditDTO).then (response)->
+          data = response.data
+          if data.result == "success"
+            $window.alert "Success!"
+            $window.location.href = "/#/user/center/#{$scope.targetUser.userName}"
+          else if data.result == "field_error"
+            $window.scrollTo(0,0)
+            $scope.fieldInfo = data.field
+          else
+            $window.alert data.error_msg
   ])
