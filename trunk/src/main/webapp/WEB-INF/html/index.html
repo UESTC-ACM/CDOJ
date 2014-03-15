@@ -36,7 +36,7 @@
 <header id="cdoj-navbar-top">
   <div class="container" ng-controller="HeaderController">
     <nav>
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-right" style="min-height: 50px;">
         <li ng-show="$root.hasLogin"
             style="font-size: 20px;">
           <a href="#/user/center/{{currentUser.userName}}"><i class="fa fa-home"></i></a>
@@ -130,7 +130,7 @@ border-top-right-radius: 0;">
           </div>
         </li>
         <li ng-hide="$root.hasLogin">
-          <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+          <a href="javascript:void(0);" class="dropdown-toggle">
             Sign in
           </a>
           <ul ui-dropdown-menu class="dropdown-menu cdoj-form-menu" style="width: 340px;">
