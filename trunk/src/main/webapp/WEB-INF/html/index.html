@@ -37,21 +37,6 @@
   <div class="container" ng-controller="HeaderController">
     <nav>
       <ul class="nav navbar-nav navbar-right">
-        <!-- Search
-        <li>
-          <div class="input-group input-group-sm" id="cdoj-search">
-            <input type="text" class="form-control">
-
-            <div class="input-group-btn">
-              <button type="button" class="btn btn-default"
-                      tabindex="-1">
-                <span id="cdoj-search-icon"><i class="fa fa-search"></i></span>
-                <span id="cdoj-search-text">Search</span>
-              </button>
-            </div>
-          </div>
-        </li>-->
-
         <li ng-show="$root.hasLogin"
             style="font-size: 20px;">
           <a href="#/user/center/{{currentUser.userName}}"><i class="fa fa-home"></i></a>
@@ -126,9 +111,12 @@ border-top-right-radius: 0;">
                 </a>
               </li>
               <li role="presentation">
-                <a href="javascript:void(0);" data-toggle="modal"
-                   data-target="#cdoj-profile-edit-modal"
-                   ng-click="openUserProfileEditor()">
+                <a href="#/user/center/{{currentUser.userName}}/teams">
+                  <i class="fa fa-group"></i>Teams
+                </a>
+              </li>
+              <li role="presentation">
+                <a href="#/user/center/{{currentUser.userName}}/edit">
                   <i class="fa fa-wrench"></i>Edit profile
                 </a>
               </li>
@@ -186,7 +174,7 @@ border-top-right-radius: 0;">
             </li>
             <li role="presentation" class="divider"></li>
             <li>
-              <a href="javascript:void(0);" ng-click="openRegisterModal()">
+              <a href="/#/user/register">
                 <i class="fa fa-arrow-circle-right" style="padding-right: 6px;"></i>Register</a>
               <a href="javascript:void(0);" ng-click="openForgetPasswordModal()">
                 <i class="fa fa-arrow-circle-right" style="padding-right: 6px;"></i>Forget password?
