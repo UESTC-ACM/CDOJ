@@ -55,19 +55,19 @@ public class StatusCondition extends BaseCondition {
   /**
    * Submit user id.
    */
-  @Exp(mapField = "userByUserId", type = Condition.ConditionType.EQUALS)
+  @Exp(mapField = "userId", type = Condition.ConditionType.EQUALS)
   public Integer userId;
 
   /**
    * Problem id.
    */
-  @Exp(mapField = "problemByProblemId", type = Condition.ConditionType.EQUALS)
+  @Exp(mapField = "problemId", type = Condition.ConditionType.EQUALS)
   public Integer problemId;
 
   /**
    * Language.
    */
-  @Exp(mapField = "languageByLanguageId", type = Condition.ConditionType.EQUALS)
+  @Exp(mapField = "languageId", type = Condition.ConditionType.EQUALS)
   public Integer languageId;
 
   /**
@@ -103,10 +103,10 @@ public class StatusCondition extends BaseCondition {
     Condition condition = super.getCondition();
     if (contestId != null) {
       if (contestId == -1) {
-        condition.addEntry("contestByContestId", Condition.ConditionType.IS_NULL,
+        condition.addEntry("contestId", Condition.ConditionType.IS_NULL,
             null);
       } else {
-        condition.addEntry("contestByContestId", Condition.ConditionType.EQUALS,
+        condition.addEntry("contestId", Condition.ConditionType.EQUALS,
             contestId);
       }
     }
