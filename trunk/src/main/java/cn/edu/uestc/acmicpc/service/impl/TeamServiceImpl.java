@@ -124,6 +124,11 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
   }
 
   @Override
+  public void deleteTeam(TeamDTO teamDTO) throws AppException {
+    teamDAO.deleteEntitiesByField("teamId", teamDTO.getTeamId().toString());
+  }
+
+  @Override
   public List<TeamListDTO> getTeamList(TeamCondition teamCondition, PageInfo pageInfo)
       throws AppException {
     return teamDAO.findAll(TeamListDTO.class, TeamListDTO.builder(), getHQLString(teamCondition),

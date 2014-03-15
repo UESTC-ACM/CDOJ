@@ -71,7 +71,7 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
     String userCenterUrl = settings.SETTING_HOST
         + "/#/user/center/" + receiver.getUserName() + "/teams";
     StringBuilder messageContent = new StringBuilder();
-    messageContent.append(StringUtil.getAtLink(sender.getUserName(), sender.getUserId()))
+    messageContent.append(StringUtil.getAtLink(sender.getUserName()))
         .append(" has invited you to join team ")
         .append(teamDTO.getTeamName())
         .append(".\n\n")

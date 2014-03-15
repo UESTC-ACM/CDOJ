@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.web.oj.controller.team;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamListDTO;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -194,11 +196,92 @@ public class TeamController extends BaseController {
     return json;
   }
 
+  @RequestMapping("deleteTeam")
+  @LoginPermit(NeedLogin = true)
+  public
+  @ResponseBody
+  Map<String, Object> deleteTeam(@RequestBody TeamEditDTO teamEditDTO,
+                                 HttpSession session) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      TeamDTO teamDTO = teamService.getTeamDTOByTeamId(teamEditDTO.getTeamId());
+      if (teamDTO == null) {
+        throw new AppException("Team not found.");
+      }
+      if (!checkPermission(session, teamDTO.getLeaderId())) {
+        throw new AppException("Permission denied");
+      }
+      UserDTO currentUser = getCurrentUser(session);
+
+      List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamDTO.getTeamId());
+      for (TeamUserListDTO teamUser: teamUserList) {
+        if (currentUser.getUserId().equals(teamUser.getUserId())) {
+          continue;
+        }
+        messageService.createNewMessage(MessageDTO.builder()
+            .setSenderId(currentUser.getUserId())
+            .setReceiverId(teamUser.getUserId())
+            .setIsOpened(false)
+            .setTime(new Timestamp(System.currentTimeMillis()))
+            .setTitle("Team " + teamDTO.getTeamName() + " has been fallen out.")
+            .setContent("Team " + teamDTO.getTeamName() + " has been fallen out by " + StringUtil.getAtLink(currentUser.getUserName()) + ".")
+            .build()
+        );
+      }
+      teamService.deleteTeam(teamDTO);
+      json.put("result", "success");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    }
+    return json;
+  }
+
   @RequestMapping("createTeam")
   @LoginPermit(NeedLogin = true)
   public
   @ResponseBody
   Map<String, Object> createTeam(@RequestBody TeamEditDTO teamEditDTO,
+                                 HttpSession session) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      AppExceptionUtil.assertNotNull(teamEditDTO.getTeamName(), "Please input a valid team name.");
+      teamEditDTO.setTeamName(StringUtil.trimAllSpace(teamEditDTO.getTeamName()));
+      AppExceptionUtil.assertTrue(
+          teamEditDTO.getTeamName().length() > 0 && teamEditDTO.getTeamName().length() < 50
+          , "Please input a valid team name.");
+      if (teamService.checkTeamExists(teamEditDTO.getTeamName())) {
+        throw new AppException("Team name has been used!");
+      }
+
+      UserDTO currentUser = getCurrentUser(session);
+      Integer teamId = teamService.createNewTeam(teamEditDTO.getTeamName(), currentUser.getUserId());
+      TeamDTO teamDTO = teamService.getTeamDTOByTeamId(teamId);
+      if (teamDTO == null) {
+        throw new AppException("Error while creating team.");
+      }
+
+      Integer teamUserId = teamUserService.createNewTeamUser(TeamUserDTO.builder()
+          .setTeamId(teamId)
+          .setUserId(currentUser.getUserId())
+          .setAllow(true)
+          .build());
+      TeamUserDTO teamUserDTO = teamUserService.getTeamUserDTO(teamUserId);
+      AppExceptionUtil.assertNotNull(teamUserDTO, "Error while creating team user.");
+
+      json.put("result", "success");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    }
+    return json;
+  }
+
+  @RequestMapping("createTeam_temp")
+  @LoginPermit(NeedLogin = true)
+  public
+  @ResponseBody
+  Map<String, Object> temp_createTeam(@RequestBody TeamEditDTO teamEditDTO,
                                  HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {

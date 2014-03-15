@@ -1,13 +1,15 @@
 cdoj
 .controller("TeamEditorModalController", [
-    "$scope", "$rootScope", "$http", "$window", "$modalInstance"
-    ($scope, $rootScope, $http, $window, $modalInstance)->
+    "$scope", "$rootScope", "$http", "$window", "$modalInstance", "team"
+    ($scope, $rootScope, $http, $window, $modalInstance, team)->
       $scope.teamDTO =
-        teamName: ""
+        teamId: team.teamId
+        teamName: team.teamName
         memberList: ""
       $scope.newMember =
         userName: ""
-      $scope.memberList = []
+      $scope.memberList = [].concat(team.teamUsers, team.invitedUsers)
+      console.log $scope.memberList
 
       $scope.searchUser = (keyword)->
         condition =
@@ -33,11 +35,11 @@ cdoj
               $scope.memberList.add result
           else
             $window.alert data.error_msg
-      $scope.addMember($rootScope.currentUser.userName)
       $scope.removeMember = (index)->
         if index >= 1 && index < 3
           $scope.memberList.splice(index, 1);
-      $scope.createTeam = ->
+
+      $scope.editTeam = ->
         if $scope.memberList.length < 1 || $scope.memberList.length > 3
           $window.alert "Member number should between 1 and 3."
         else
@@ -45,12 +47,24 @@ cdoj
           teamDTO.memberList = _.map($scope.memberList,(val) ->
             return val.userId
           ).join(",")
-          $http.post("/team/createTeam", teamDTO).then (response)->
+          $http.post("/team/editTeam", teamDTO).then (response)->
             data = response.data
             if data.result == "success"
               $modalInstance.close()
             else
               $window.alert data.error_msg
+      $scope.deleteTeam = ->
+        if $window.confirm ("This action will delete team #{$scope.teamDTO.teamName} forever, are you sure?")
+          teamDTO = angular.copy($scope.teamDTO)
+          $http.post("/team/deleteTeam", teamDTO).then (response)->
+            data = response.data
+            if data.result == "success"
+              $window.alert "Done!"
+              $modalInstance.close()
+              $rootScope.$broadcast("refreshList")
+            else
+              $window.alert data.error_msg
+
       $scope.dismiss = ->
         $modalInstance.dismiss()
   ])

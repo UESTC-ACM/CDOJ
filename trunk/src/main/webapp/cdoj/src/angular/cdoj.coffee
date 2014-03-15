@@ -30,6 +30,7 @@ cdoj
       fetchUserData()
     )
     $rootScope.$on("refresh", ->
+      $rootScope.$broadcast("refreshList")
       $rootScope.$broadcast("refreshUserData")
     )
 

@@ -10,7 +10,7 @@ cdoj
       $scope.itemsPerPage = 20
       $scope.showPages = 10
 
-      $scope.$on("refresh", ->
+      $scope.$on("refreshList", ->
         $scope.refresh()
       )
       _.each $scope.condition, (val, key)->
