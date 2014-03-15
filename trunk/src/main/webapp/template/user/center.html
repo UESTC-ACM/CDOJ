@@ -10,32 +10,37 @@
     </a>
 
     <div class="media-body">
-      <h2 class="media-heading" ng-bind="targetUser.userName">
+      <h2 class="media-heading" ng-bind="targetUser.nickName">
       </h2>
-      <dl class="dl-horizontal">
-        <dt>Nick name</dt>
-        <dd ng-bind="targetUser.nickName">
-        </dd>
-        <dt>School</dt>
-        <dd ng-bind="targetUser.school">
-        </dd>
-        <dt>Department</dt>
-        <dd ng-bind="targetUser.department">
-        </dd>
-        <dt>Student ID</dt>
-        <dd ng-bind="targetUser.studentId">
-        </dd>
-        <dt>Email</dt>
-        <dd ng-bind="targetUser.email">
-        </dd>
-        <dt>Motto</dt>
-        <dd ng-bind="targetUser.motto">
-        </dd>
-        <dt>Last login</dt>
-        <dd ui-time
-            time="targetUser.lastLogin">
-        </dd>
-      </dl>
+      <h4 class="muted" ng-bind="targetUser.userName"></h4>
+      <hr style="margin: 6px 0;"/>
+      <div>
+        <i class="fa fa-map-marker muted text-center" style="width: 20px;"></i>
+        <span ng-bind="targetUser.school"></span>
+      </div>
+      <div>
+        <i class="fa fa-users muted text-center" style="width: 20px;"></i>
+        <span ng-bind="targetUser.department"></span>
+      </div>
+      <div>
+        <i class="fa fa-puzzle-piece muted text-center" style="width: 20px;"></i>
+        <a href="#/status/list?userName={{user.userName}}">
+          <span class="font-success" ng-bind="targetUser.solved"></span>
+          &nbsp;/&nbsp;
+          <span class="font-danger" ng-bind="targetUser.tried"></span>
+        </a>
+      </div>
+      <div>
+        <i class="fa fa-clock-o muted text-center" style="width: 20px;"></i>
+        <span ui-time
+              time="targetUser.lastLogin"
+              inline="true"></span>
+      </div>
+      <div>
+        <i class="fa fa-quote-left muted text-center" style="width: 20px;"></i>
+        <span ng-bind="targetUser.motto"></span>
+        <i class="fa fa-quote-right muted text-center" style="width: 20px;"></i>
+      </div>
     </div>
   </div>
 </div>
