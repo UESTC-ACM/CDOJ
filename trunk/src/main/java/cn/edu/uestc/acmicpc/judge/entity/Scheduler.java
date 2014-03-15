@@ -79,6 +79,7 @@ public class Scheduler implements Runnable, ApplicationContextAware {
         judgeItem.setStatusForJudgeDTO(status);
         statusService.updateStatusByStatusForJudgeDTO(status);
         judgeQueue.put(judgeItem);
+        LOGGER.info("Put status#" + status.getStatusId() + " into judge queue.");
       }
     } catch (AppException e) {
       LOGGER.error(e);
