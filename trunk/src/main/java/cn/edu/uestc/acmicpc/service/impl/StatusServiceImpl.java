@@ -157,6 +157,13 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     Map<String, Object> properties = new HashMap<>();
     properties.put("result",
         Global.OnlineJudgeReturnType.OJ_REJUDGING.ordinal());
+    if (statusCondition.isVisible != null) {
+      statusCondition.isVisible = null;
+    }
+    if (statusCondition.userName != null) {
+      statusCondition.userName = null;
+    }
+    statusCondition.isForAdmin = true;
     statusDAO.updateEntitiesByCondition(properties,
         statusCondition.getCondition());
   }
