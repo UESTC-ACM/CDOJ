@@ -65060,6 +65060,7 @@ if (typeof exports === 'object') {
         return fetchUserData();
       });
       $rootScope.$on("refresh", function() {
+        $rootScope.$broadcast("refreshList");
         return $rootScope.$broadcast("refreshUserData");
       });
       return $rootScope.$watch("hasLogin", function() {
@@ -65744,7 +65745,7 @@ if (typeof exports === 'object') {
       };
       $scope.itemsPerPage = 20;
       $scope.showPages = 10;
-      $scope.$on("refresh", function() {
+      $scope.$on("refreshList", function() {
         return $scope.refresh();
       });
       _.each($scope.condition, function(val, key) {
@@ -65992,15 +65993,16 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("TeamEditorModalController", [
-    "$scope", "$rootScope", "$http", "$window", "$modalInstance", function($scope, $rootScope, $http, $window, $modalInstance) {
+    "$scope", "$rootScope", "$http", "$window", "$modalInstance", "team", function($scope, $rootScope, $http, $window, $modalInstance, team) {
       $scope.teamDTO = {
-        teamName: "",
+        teamId: team.teamId,
+        teamName: team.teamName,
         memberList: ""
       };
       $scope.newMember = {
         userName: ""
       };
-      $scope.memberList = [];
+      $scope.memberList = [].concat(team.teamUsers, team.invitedUsers);
       $scope.searchUser = function(keyword) {
         var condition;
         condition = {
@@ -66018,47 +66020,72 @@ if (typeof exports === 'object') {
       };
       $scope.addMemberClick = function() {
         if ($scope.memberList.length < 3) {
-          return $scope.addMember($scope.newMember.userName);
-        }
-      };
-      $scope.addMember = function(userName) {
-        return $http.get("/user/typeAheadItem/" + userName).then(function(response) {
-          var data, result;
-          data = response.data;
-          if (data.result === "success") {
-            result = data.user;
-            if (_.where($scope.memberList, {
-              userId: result.userId
-            }).length > 0) {
-              return $window.alert("You can not add the same member twice");
+          return $http.get("/user/typeAheadItem/" + $scope.newMember.userName).then(function(response) {
+            var data, result;
+            data = response.data;
+            if (data.result === "success") {
+              result = data.user;
+              if (_.where($scope.memberList, {
+                userId: result.userId
+              }).length > 0) {
+                return $window.alert("You can not add the same member twice");
+              } else {
+                return $scope.addMember(result);
+              }
             } else {
-              return $scope.memberList.add(result);
+              return $window.alert(data.error_msg);
             }
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        });
-      };
-      $scope.addMember($rootScope.currentUser.userName);
-      $scope.removeMember = function(index) {
-        if (index >= 1 && index < 3) {
-          return $scope.memberList.splice(index, 1);
+          });
         }
       };
-      $scope.createTeam = function() {
+      $scope.addMember = function(user) {
         var teamDTO;
-        if ($scope.memberList.length < 1 || $scope.memberList.length > 3) {
-          return $window.alert("Member number should between 1 and 3.");
-        } else {
+        if ($scope.memberList.length >= 3) {
+          return $window.alert("Member number should no more than 3.");
+        } else if ($window.confirm("Are you sure that invite " + user.userName + " into team " + $scope.teamDTO.teamName + "?")) {
           teamDTO = angular.copy($scope.teamDTO);
-          teamDTO.memberList = _.map($scope.memberList, function(val) {
-            return val.userId;
-          }).join(",");
-          return $http.post("/team/createTeam", teamDTO).then(function(response) {
+          teamDTO.memberList = "" + user.userId;
+          return $http.post("/team/addMember", teamDTO).then(function(response) {
             var data;
             data = response.data;
             if (data.result === "success") {
-              return $modalInstance.close();
+              return $scope.memberList.add(user);
+            } else {
+              return $window.alert(data.error_msg);
+            }
+          });
+        }
+      };
+      $scope.removeMember = function(index) {
+        var teamDTO, user;
+        if (index >= 1 && index < 3) {
+          user = $scope.memberList[index];
+          if ($window.confirm("Are you sure that remove " + user.userName + " from team " + $scope.teamDTO.teamName + "?")) {
+            teamDTO = angular.copy($scope.teamDTO);
+            teamDTO.memberList = "" + user.userId;
+            return $http.post("/team/removeMember", teamDTO).then(function(response) {
+              var data;
+              data = response.data;
+              if (data.result === "success") {
+                return $scope.memberList.splice(index, 1);
+              } else {
+                return $window.alert(data.error_msg);
+              }
+            });
+          }
+        }
+      };
+      $scope.deleteTeam = function() {
+        var teamDTO;
+        if ($window.confirm("This action will delete team " + $scope.teamDTO.teamName + " forever, are you sure?")) {
+          teamDTO = angular.copy($scope.teamDTO);
+          return $http.post("/team/deleteTeam", teamDTO).then(function(response) {
+            var data;
+            data = response.data;
+            if (data.result === "success") {
+              $window.alert("Done!");
+              $modalInstance.close();
+              return $rootScope.$broadcast("refreshList");
             } else {
               return $window.alert(data.error_msg);
             }
@@ -66143,6 +66170,9 @@ if (typeof exports === 'object') {
         }
         return $scope.$broadcast("userCenter:permissionChange");
       };
+      $scope.$on("refresh", function() {
+        return $window.location.reload();
+      });
       currentTab = angular.copy($routeParams.tab);
       $scope.activeProblemsTab = false;
       $scope.activeTeamsTab = false;
@@ -66170,13 +66200,6 @@ if (typeof exports === 'object') {
           return $window.alert(data.error_msg);
         }
       });
-      $scope.showTeamEditor = function() {
-        var teamEditor;
-        return teamEditor = $modal.open({
-          templateUrl: "template/modal/team-editor-modal.html",
-          controller: "TeamEditorModalController"
-        });
-      };
       $scope.userEditDTO = 0;
       $scope.$on("userCenter:permissionChange", function() {
         if ($scope.editPermission) {
@@ -66187,7 +66210,7 @@ if (typeof exports === 'object') {
         }
       });
       $scope.fieldInfo = [];
-      return $scope.edit = function() {
+      $scope.edit = function() {
         var newPassword, newPasswordRepeat, oldPassword, userEditDTO;
         userEditDTO = angular.copy($scope.userEditDTO);
         if (userEditDTO.newPassword === "") {
@@ -66215,10 +66238,26 @@ if (typeof exports === 'object') {
           data = response.data;
           if (data.result === "success") {
             $window.alert("Success!");
-            return $window.location.href = "/#/user/center/" + $scope.targetUser.userName;
+            return $scope.$broadcast("refresh");
           } else if (data.result === "field_error") {
             $window.scrollTo(0, 0);
             return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        });
+      };
+      $scope.newTeam = {
+        teamName: ""
+      };
+      return $scope.createNewTeam = function() {
+        var teamDTO;
+        teamDTO = angular.copy($scope.newTeam);
+        return $http.post("/team/createTeam", teamDTO).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            return $scope.$broadcast("refreshList");
           } else {
             return $window.alert(data.error_msg);
           }
@@ -66658,7 +66697,7 @@ if (typeof exports === 'object') {
           return $scope.$watch("content", function() {
             var content;
             content = angular.copy($scope.content);
-            content = content.replace(/@([a-zA-Z0-9_]{4,24})\([0-9]+\)/, "[@$1](/#/user/center/$1)");
+            content = content.replace(/@([a-zA-Z0-9_]{4,24})/, "[@$1](/#/user/center/$1)");
             content = marked(content);
             $element.empty().append(content);
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, $element[0]]);
@@ -67118,14 +67157,14 @@ if (typeof exports === 'object') {
         team: "="
       },
       controller: [
-        "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
+        "$scope", "$rootScope", "$http", "$modal", function($scope, $rootScope, $http, $modal) {
           $scope.editPermission = false;
           if ($rootScope.hasLogin) {
             if ($rootScope.currentUser.userId === $scope.user.userId || $rootScope.isAdmin) {
               $scope.editPermission = true;
             }
           }
-          return $scope.joinIn = function(team) {
+          $scope.joinIn = function(team) {
             return $http.get("/team/changeAllowState/" + $scope.user.userId + "/" + team.teamId + "/" + team.allow).then(function() {
               return $http.get("/team/typeAHeadItem/" + $scope.team.teamName).then(function(response) {
                 var data;
@@ -67136,6 +67175,18 @@ if (typeof exports === 'object') {
                   return $window.alert(data.error_msg);
                 }
               });
+            });
+          };
+          return $scope.showTeamEditor = function(team) {
+            var teamEditor;
+            return teamEditor = $modal.open({
+              templateUrl: "template/modal/team-editor-modal.html",
+              controller: "TeamEditorModalController",
+              resolve: {
+                team: function() {
+                  return team;
+                }
+              }
             });
           };
         }

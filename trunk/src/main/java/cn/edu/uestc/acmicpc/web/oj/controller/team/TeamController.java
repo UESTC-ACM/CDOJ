@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.web.oj.controller.team;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamListDTO;
@@ -18,6 +19,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,14 +45,17 @@ public class TeamController extends BaseController {
   private UserService userService;
   private TeamUserService teamUserService;
   private MessageService messageService;
+  private Settings settings;
 
   @Autowired
   public TeamController(TeamService teamService, UserService userService,
-                        TeamUserService teamUserService, MessageService messageService) {
+                        TeamUserService teamUserService, MessageService messageService,
+                        Settings settings) {
     this.teamService = teamService;
     this.userService = userService;
     this.teamUserService = teamUserService;
     this.messageService = messageService;
+    this.settings = settings;
   }
 
   @RequestMapping("typeAHeadItem/{teamName}")
@@ -194,6 +200,47 @@ public class TeamController extends BaseController {
     return json;
   }
 
+  @RequestMapping("deleteTeam")
+  @LoginPermit(NeedLogin = true)
+  public
+  @ResponseBody
+  Map<String, Object> deleteTeam(@RequestBody TeamEditDTO teamEditDTO,
+                                 HttpSession session) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      TeamDTO teamDTO = teamService.getTeamDTOByTeamId(teamEditDTO.getTeamId());
+      if (teamDTO == null) {
+        throw new AppException("Team not found.");
+      }
+      if (!checkPermission(session, teamDTO.getLeaderId())) {
+        throw new AppException("Permission denied");
+      }
+      UserDTO currentUser = getCurrentUser(session);
+
+      List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamDTO.getTeamId());
+      for (TeamUserListDTO teamUser : teamUserList) {
+        if (currentUser.getUserId().equals(teamUser.getUserId())) {
+          continue;
+        }
+        messageService.createNewMessage(MessageDTO.builder()
+            .setSenderId(currentUser.getUserId())
+            .setReceiverId(teamUser.getUserId())
+            .setIsOpened(false)
+            .setTime(new Timestamp(System.currentTimeMillis()))
+            .setTitle("Team " + teamDTO.getTeamName() + " has been fallen out.")
+            .setContent("Team " + teamDTO.getTeamName() + " has been fallen out by " + StringUtil.getAtLink(currentUser.getUserName()) + ".")
+            .build()
+        );
+      }
+      teamService.deleteTeam(teamDTO);
+      json.put("result", "success");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    }
+    return json;
+  }
+
   @RequestMapping("createTeam")
   @LoginPermit(NeedLogin = true)
   public
@@ -210,59 +257,162 @@ public class TeamController extends BaseController {
       if (teamService.checkTeamExists(teamEditDTO.getTeamName())) {
         throw new AppException("Team name has been used!");
       }
-      String userList[] = teamEditDTO.getMemberList().split(",");
-      List<Integer> userIdList = new LinkedList<>();
-      for (String userIdString : userList) {
-        if (userIdString.length() == 0) {
-          continue;
-        }
-        Integer userId;
-        try {
-          userId = Integer.parseInt(userIdString);
-        } catch (NumberFormatException e) {
-          throw new AppException("User format error.");
-        }
 
-        // Check user exists.
-        AppExceptionUtil.assertTrue(userService.checkUserExists(userId));
-        userIdList.add(userId);
-      }
-      if (userIdList.size() < 1 || userIdList.size() > 3) {
-        throw new AppException("Member number should between 1 and 3.");
-      }
-      for (Integer id1 = 0; id1 < userIdList.size(); id1++) {
-        for (Integer id2 = id1 + 1; id2 < userIdList.size(); id2++) {
-          if (userIdList.get(id1).compareTo(userIdList.get(id2)) == 0) {
-            throw new AppException("You can not add the same member twice");
-          }
-        }
-      }
-      UserDTO userDTO = getCurrentUser(session);
-      if (userIdList.get(0).compareTo(userDTO.getUserId()) != 0) {
-        throw new AppException("You are not the team leader.");
-      }
-
-      Integer teamId = teamService.createNewTeam(teamEditDTO.getTeamName(), userIdList.get(0));
+      UserDTO currentUser = getCurrentUser(session);
+      Integer teamId = teamService.createNewTeam(teamEditDTO.getTeamName(), currentUser.getUserId());
       TeamDTO teamDTO = teamService.getTeamDTOByTeamId(teamId);
-      if (teamDTO == null || teamDTO.getTeamId().compareTo(teamId) != 0
-          || teamDTO.getLeaderId().compareTo(userIdList.get(0)) != 0) {
+      if (teamDTO == null) {
         throw new AppException("Error while creating team.");
       }
-      for (Integer userId : userIdList) {
-        UserDTO memberDTO = userService.getUserDTOByUserId(userId);
-        AppExceptionUtil.assertNotNull(memberDTO, "No such user.");
-        Integer teamUserId = teamUserService.createNewTeamUser(TeamUserDTO.builder()
-            .setTeamId(teamId)
-            .setUserId(userId)
-            .setAllow(userId.equals(userDTO.getUserId()))
-            .build());
-        TeamUserDTO teamUserDTO = teamUserService.getTeamUserDTO(teamUserId);
-        // Send a notification
-        if (memberDTO.getUserId().compareTo(userDTO.getUserId()) != 0) {
-          messageService.sendTeamInvitation(userDTO, memberDTO, teamDTO);
-        }
-        AppExceptionUtil.assertNotNull(teamUserDTO, "Error while creating team user.");
+
+      Integer teamUserId = teamUserService.createNewTeamUser(TeamUserDTO.builder()
+          .setTeamId(teamId)
+          .setUserId(currentUser.getUserId())
+          .setAllow(true)
+          .build());
+      TeamUserDTO teamUserDTO = teamUserService.getTeamUserDTO(teamUserId);
+      AppExceptionUtil.assertNotNull(teamUserDTO, "Error while creating team user.");
+
+      json.put("result", "success");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    }
+    return json;
+  }
+
+  @RequestMapping("removeMember")
+  @LoginPermit(NeedLogin = true)
+  public
+  @ResponseBody
+  Map<String, Object> removeMember(@RequestBody TeamEditDTO teamEditDTO,
+                                   HttpSession session) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      TeamDTO teamDTO = teamService.getTeamDTOByTeamId(teamEditDTO.getTeamId());
+      if (teamDTO == null) {
+        throw new AppException("Team not found.");
       }
+      if (!checkPermission(session, teamDTO.getLeaderId())) {
+        throw new AppException("Permission denied");
+      }
+      List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamDTO.getTeamId());
+      if (teamUserList.size() == 3) {
+        throw new AppException("Member number should between 1 and 3.");
+      }
+      Integer userId;
+      try {
+        userId = Integer.parseInt(teamEditDTO.getMemberList());
+      } catch (NumberFormatException e) {
+        throw new AppException("User format error.");
+      }
+      UserDTO userDTO = userService.getUserDTOByUserId(userId);
+      // Check user exists.
+      AppExceptionUtil.assertNotNull(userDTO, "User not found!");
+
+      for (TeamUserListDTO teamUser : teamUserList) {
+        if (teamUser.getUserId().equals(userId)) {
+          teamUserService.removeTeamUser(teamUser.getTeamUserId());
+
+          // Send a notification
+          UserDTO currentUser = getCurrentUser(session);
+
+          String userCenterUrl = settings.SETTING_HOST
+              + "/#/user/center/" + userDTO.getUserName() + "/teams";
+          StringBuilder messageContent = new StringBuilder();
+          messageContent.append(StringUtil.getAtLink(currentUser.getUserName()))
+              .append(" has remove you from team ")
+              .append(teamDTO.getTeamName())
+              .append(".\n\n")
+              .append("See [your teams](")
+              .append(userCenterUrl)
+              .append(") for more details.");
+          Integer messageId = messageService.createNewMessage(MessageDTO.builder()
+              .setSenderId(currentUser.getUserId())
+              .setReceiverId(userDTO.getUserId())
+              .setTime(new Timestamp(System.currentTimeMillis()))
+              .setIsOpened(false)
+              .setTitle("Team notification.")
+              .setContent(messageContent.toString())
+              .build());
+          MessageDTO messageDTO = messageService.getMessageDTO(messageId);
+          AppExceptionUtil.assertNotNull(messageDTO, "Error while sending notification.");
+        }
+      }
+
+      json.put("result", "success");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    }
+    return json;
+  }
+
+  @RequestMapping("addMember")
+  @LoginPermit(NeedLogin = true)
+  public
+  @ResponseBody
+  Map<String, Object> addMember(@RequestBody TeamEditDTO teamEditDTO,
+                                HttpSession session) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      TeamDTO teamDTO = teamService.getTeamDTOByTeamId(teamEditDTO.getTeamId());
+      if (teamDTO == null) {
+        throw new AppException("Team not found.");
+      }
+      if (!checkPermission(session, teamDTO.getLeaderId())) {
+        throw new AppException("Permission denied");
+      }
+      List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamDTO.getTeamId());
+      if (teamUserList.size() == 3) {
+        throw new AppException("Member number should between 1 and 3.");
+      }
+      Integer userId;
+      try {
+        userId = Integer.parseInt(teamEditDTO.getMemberList());
+      } catch (NumberFormatException e) {
+        throw new AppException("User format error.");
+      }
+      UserDTO userDTO = userService.getUserDTOByUserId(userId);
+      // Check user exists.
+      AppExceptionUtil.assertNotNull(userDTO, "User not found!");
+
+      for (TeamUserListDTO teamUser : teamUserList) {
+        if (teamUser.getUserId().equals(userId)) {
+          throw new AppException("You can not add the same member twice");
+        }
+      }
+
+      Integer teamUserId = teamUserService.createNewTeamUser(TeamUserDTO.builder()
+          .setTeamId(teamDTO.getTeamId())
+          .setUserId(userId)
+          .setAllow(false)
+          .build());
+      TeamUserDTO teamUserDTO = teamUserService.getTeamUserDTO(teamUserId);
+      AppExceptionUtil.assertNotNull(teamUserDTO, "Error while creating team user.");
+      // Send a notification
+      UserDTO currentUser = getCurrentUser(session);
+
+      String userCenterUrl = settings.SETTING_HOST
+          + "/#/user/center/" + userDTO.getUserName() + "/teams";
+      StringBuilder messageContent = new StringBuilder();
+      messageContent.append(StringUtil.getAtLink(currentUser.getUserName()))
+          .append(" has invited you to join team ")
+          .append(teamDTO.getTeamName())
+          .append(".\n\n")
+          .append("See [your teams](")
+          .append(userCenterUrl)
+          .append(") for more details.");
+      Integer messageId = messageService.createNewMessage(MessageDTO.builder()
+          .setSenderId(currentUser.getUserId())
+          .setReceiverId(userDTO.getUserId())
+          .setTime(new Timestamp(System.currentTimeMillis()))
+          .setIsOpened(false)
+          .setTitle("Team invitation.")
+          .setContent(messageContent.toString())
+          .build());
+      MessageDTO messageDTO = messageService.getMessageDTO(messageId);
+      AppExceptionUtil.assertNotNull(messageDTO, "Error while sending notification.");
 
       json.put("result", "success");
     } catch (AppException e) {

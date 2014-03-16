@@ -2,6 +2,10 @@
   <div class="panel-heading">
     <b ng-bind="team.teamName"></b>
     <span class="pull-right"
+          ng-show="editPermission && team.leaderId == user.userId">
+      <button class="btn btn-primary btn-xs" ng-click="showTeamEditor(team)">Edit</button>
+    </span>
+    <span class="pull-right"
           ng-show="editPermission && team.leaderId != user.userId">
       <input bs-switch
              ng-model="team.allow"

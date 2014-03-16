@@ -66,4 +66,9 @@ public class TeamUserServiceImpl extends AbstractService implements TeamUserServ
     return teamUserDAO.findAll(TeamUserListDTO.class, TeamUserListDTO.builder(),
         teamUserCondition.getCondition());
   }
+
+  @Override
+  public void removeTeamUser(Integer teamUserId) throws AppException {
+    teamUserDAO.deleteEntitiesByField("teamUserId", teamUserId.toString());
+  }
 }

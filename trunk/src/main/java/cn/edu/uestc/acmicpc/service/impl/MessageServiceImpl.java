@@ -6,20 +6,16 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IMessageDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.Message;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -63,31 +59,6 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
     AppExceptionUtil.assertNotNull(messageId);
     return messageDAO.getDTOByUniqueField(MessageDTO.class, MessageDTO.builder(), "messageId",
         messageId);
-  }
-
-  @Override
-  public void sendTeamInvitation(UserDTO sender, UserDTO receiver, TeamDTO teamDTO)
-      throws AppException {
-    String userCenterUrl = settings.SETTING_HOST
-        + "/#/user/center/" + receiver.getUserName() + "/teams";
-    StringBuilder messageContent = new StringBuilder();
-    messageContent.append(StringUtil.getAtLink(sender.getUserName(), sender.getUserId()))
-        .append(" has invited you to join team ")
-        .append(teamDTO.getTeamName())
-        .append(".\n\n")
-        .append("See [your teams](")
-        .append(userCenterUrl)
-        .append(") for more details.");
-    Integer messageId = createNewMessage(MessageDTO.builder()
-        .setSenderId(sender.getUserId())
-        .setReceiverId(receiver.getUserId())
-        .setTime(new Timestamp(System.currentTimeMillis()))
-        .setIsOpened(false)
-        .setTitle("Team invitation.")
-        .setContent(messageContent.toString())
-        .build());
-    MessageDTO messageDTO = getMessageDTO(messageId);
-    AppExceptionUtil.assertNotNull(messageDTO, "Error while sending notification.");
   }
 
   @Override
