@@ -9,7 +9,6 @@ cdoj
       $scope.newMember =
         userName: ""
       $scope.memberList = [].concat(team.teamUsers, team.invitedUsers)
-      console.log $scope.memberList
 
       $scope.searchUser = (keyword)->
         condition =
@@ -22,37 +21,41 @@ cdoj
             $window.alert data.error_msg
       $scope.addMemberClick = ->
         if $scope.memberList.length < 3
-          $scope.addMember($scope.newMember.userName)
-      $scope.addMember = (userName)->
-        $http.get("/user/typeAheadItem/#{userName}").then (response)->
-          data = response.data
-          if data.result == "success"
-            result = data.user
-            # Check if exists
-            if _.where($scope.memberList, {userId: result.userId}).length > 0
-              $window.alert "You can not add the same member twice"
-            else
-              $scope.memberList.add result
-          else
-            $window.alert data.error_msg
-      $scope.removeMember = (index)->
-        if index >= 1 && index < 3
-          $scope.memberList.splice(index, 1);
-
-      $scope.editTeam = ->
-        if $scope.memberList.length < 1 || $scope.memberList.length > 3
-          $window.alert "Member number should between 1 and 3."
-        else
-          teamDTO = angular.copy($scope.teamDTO)
-          teamDTO.memberList = _.map($scope.memberList,(val) ->
-            return val.userId
-          ).join(",")
-          $http.post("/team/editTeam", teamDTO).then (response)->
+          $http.get("/user/typeAheadItem/#{$scope.newMember.userName}").then (response)->
             data = response.data
             if data.result == "success"
-              $modalInstance.close()
+              result = data.user
+              # Check if exists
+              if _.where($scope.memberList, {userId: result.userId}).length > 0
+                $window.alert "You can not add the same member twice"
+              else
+                $scope.addMember result
             else
               $window.alert data.error_msg
+      $scope.addMember = (user)->
+        if $scope.memberList.length >= 3
+          $window.alert "Member number should no more than 3."
+        else if $window.confirm "Are you sure that invite #{user.userName} into team #{$scope.teamDTO.teamName}?"
+          teamDTO = angular.copy($scope.teamDTO)
+          teamDTO.memberList = "#{user.userId}"
+          $http.post("/team/addMember", teamDTO).then (response)->
+            data = response.data
+            if data.result == "success"
+              $scope.memberList.add user
+            else
+              $window.alert data.error_msg
+      $scope.removeMember = (index)->
+        if index >= 1 && index < 3
+          user = $scope.memberList[index]
+          if $window.confirm "Are you sure that remove #{user.userName} from team #{$scope.teamDTO.teamName}?"
+            teamDTO = angular.copy($scope.teamDTO)
+            teamDTO.memberList = "#{user.userId}"
+            $http.post("/team/removeMember", teamDTO).then (response)->
+              data = response.data
+              if data.result == "success"
+                $scope.memberList.splice(index, 1);
+              else
+                $window.alert data.error_msg
       $scope.deleteTeam = ->
         if $window.confirm ("This action will delete team #{$scope.teamDTO.teamName} forever, are you sure?")
           teamDTO = angular.copy($scope.teamDTO)
@@ -64,7 +67,6 @@ cdoj
               $rootScope.$broadcast("refreshList")
             else
               $window.alert data.error_msg
-
       $scope.dismiss = ->
         $modalInstance.dismiss()
   ])
