@@ -66003,7 +66003,6 @@ if (typeof exports === 'object') {
         userName: ""
       };
       $scope.memberList = [].concat(team.teamUsers, team.invitedUsers);
-      console.log($scope.memberList);
       $scope.searchUser = function(keyword) {
         var condition;
         condition = {
@@ -66021,50 +66020,59 @@ if (typeof exports === 'object') {
       };
       $scope.addMemberClick = function() {
         if ($scope.memberList.length < 3) {
-          return $scope.addMember($scope.newMember.userName);
-        }
-      };
-      $scope.addMember = function(userName) {
-        return $http.get("/user/typeAheadItem/" + userName).then(function(response) {
-          var data, result;
-          data = response.data;
-          if (data.result === "success") {
-            result = data.user;
-            if (_.where($scope.memberList, {
-              userId: result.userId
-            }).length > 0) {
-              return $window.alert("You can not add the same member twice");
-            } else {
-              return $scope.memberList.add(result);
-            }
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        });
-      };
-      $scope.removeMember = function(index) {
-        if (index >= 1 && index < 3) {
-          return $scope.memberList.splice(index, 1);
-        }
-      };
-      $scope.editTeam = function() {
-        var teamDTO;
-        if ($scope.memberList.length < 1 || $scope.memberList.length > 3) {
-          return $window.alert("Member number should between 1 and 3.");
-        } else {
-          teamDTO = angular.copy($scope.teamDTO);
-          teamDTO.memberList = _.map($scope.memberList, function(val) {
-            return val.userId;
-          }).join(",");
-          return $http.post("/team/editTeam", teamDTO).then(function(response) {
-            var data;
+          return $http.get("/user/typeAheadItem/" + $scope.newMember.userName).then(function(response) {
+            var data, result;
             data = response.data;
             if (data.result === "success") {
-              return $modalInstance.close();
+              result = data.user;
+              if (_.where($scope.memberList, {
+                userId: result.userId
+              }).length > 0) {
+                return $window.alert("You can not add the same member twice");
+              } else {
+                return $scope.addMember(result);
+              }
             } else {
               return $window.alert(data.error_msg);
             }
           });
+        }
+      };
+      $scope.addMember = function(user) {
+        var teamDTO;
+        if ($scope.memberList.length >= 3) {
+          return $window.alert("Member number should no more than 3.");
+        } else if ($window.confirm("Are you sure that invite " + user.userName + " into team " + $scope.teamDTO.teamName + "?")) {
+          teamDTO = angular.copy($scope.teamDTO);
+          teamDTO.memberList = "" + user.userId;
+          return $http.post("/team/addMember", teamDTO).then(function(response) {
+            var data;
+            data = response.data;
+            if (data.result === "success") {
+              return $scope.memberList.add(user);
+            } else {
+              return $window.alert(data.error_msg);
+            }
+          });
+        }
+      };
+      $scope.removeMember = function(index) {
+        var teamDTO, user;
+        if (index >= 1 && index < 3) {
+          user = $scope.memberList[index];
+          if ($window.confirm("Are you sure that remove " + user.userName + " from team " + $scope.teamDTO.teamName + "?")) {
+            teamDTO = angular.copy($scope.teamDTO);
+            teamDTO.memberList = "" + user.userId;
+            return $http.post("/team/removeMember", teamDTO).then(function(response) {
+              var data;
+              data = response.data;
+              if (data.result === "success") {
+                return $scope.memberList.splice(index, 1);
+              } else {
+                return $window.alert(data.error_msg);
+              }
+            });
+          }
         }
       };
       $scope.deleteTeam = function() {
@@ -66689,7 +66697,7 @@ if (typeof exports === 'object') {
           return $scope.$watch("content", function() {
             var content;
             content = angular.copy($scope.content);
-            content = content.replace(/@([a-zA-Z0-9_]{4,24})\([0-9]+\)/, "[@$1](/#/user/center/$1)");
+            content = content.replace(/@([a-zA-Z0-9_]{4,24})/, "[@$1](/#/user/center/$1)");
             content = marked(content);
             $element.empty().append(content);
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, $element[0]]);

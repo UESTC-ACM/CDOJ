@@ -58,7 +58,9 @@ public class UserController extends BaseController {
   private DepartmentService departmentService;
 
   @Autowired
-  public UserController(UserService userService, ProblemService problemService, StatusService statusService, UserSerialKeyService userSerialKeyService, EmailService emailService, DepartmentService departmentService) {
+  public UserController(UserService userService, ProblemService problemService,
+                        StatusService statusService, UserSerialKeyService userSerialKeyService,
+                        EmailService emailService, DepartmentService departmentService) {
     this.userService = userService;
     this.problemService = problemService;
     this.statusService = statusService;

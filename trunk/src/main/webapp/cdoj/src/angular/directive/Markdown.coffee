@@ -18,7 +18,7 @@ cdoj
         ->
           content = angular.copy($scope.content)
           # replace
-          content = content.replace /@([a-zA-Z0-9_]{4,24})\([0-9]+\)/, "[@$1](/#/user/center/$1)"
+          content = content.replace /@([a-zA-Z0-9_]{4,24})/, "[@$1](/#/user/center/$1)"
           content = marked(content)
           $element.empty().append(content)
           MathJax.Hub.Queue(["Typeset", MathJax.Hub, $element[0]]);
