@@ -10,7 +10,7 @@ cdoj
     controller: "ListController"
     template: """
 <div>
-  <div class="col-md-12">
+  <div class="col-md-12" ng-show="pageInfo.totalItems > itemsPerPage">
     <pagination total-items="pageInfo.totalItems"
                 items-per-page="itemsPerPage"
                 page="condition.currentPage"
