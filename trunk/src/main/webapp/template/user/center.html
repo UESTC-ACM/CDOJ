@@ -44,7 +44,7 @@
     </div>
   </div>
 </div>
-<div class="col-md-12" id="user-center-tab">
+<div class="col-md-12" style="margin-top: 15px;">
 <tabset>
 <tab heading="Problems"
      active="activeProblemsTab">
@@ -63,12 +63,22 @@
 <tab heading="Teams"
      active="activeTeamsTab">
   <div style="margin: 0 -15px;">
-    <div class="col-md-12 text-right"
+    <div class="col-md-12"
          style="margin-top: 15px;"
          ng-show="editPermission">
-      <button class="btn btn-danger btn-sm"
-              ng-click="showTeamEditor()"><i class="fa fa-group"></i>Create new team
-      </button>
+
+      <div class="input-group pull-right" style="max-width: 350px;">
+        <input type="text"
+               class="form-control input-sm"
+               ng-model="newTeam.teamName"
+               placeholder="Team name"/>
+          <span class="input-group-btn">
+            <button class="btn btn-danger btn-sm" type="button"
+                    ng-click="createNewTeam()"><i class="fa fa-group"></i>Create new team
+            </button>
+          </span>
+      </div>
+
     </div>
     <list condition="teamCondition"
           request-url="/team/search">

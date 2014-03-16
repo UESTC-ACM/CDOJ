@@ -21,6 +21,9 @@ cdoj
           $scope.messagesTabTitle = "#{$scope.targetUser.userName}'s messages"
           $scope.messageCondition.userId = $scope.currentUser.userId
         $scope.$broadcast("userCenter:permissionChange")
+      $scope.$on("refresh", ->
+        $window.location.reload()
+      )
 
       currentTab = angular.copy($routeParams.tab)
       $scope.activeProblemsTab = false
@@ -46,12 +49,6 @@ cdoj
           checkPermission()
         else
           $window.alert data.error_msg
-
-      $scope.showTeamEditor = ->
-        teamEditor = $modal.open(
-          templateUrl: "template/modal/team-editor-modal.html"
-          controller: "TeamEditorModalController"
-        )
 
       $scope.userEditDTO = 0
       $scope.$on("userCenter:permissionChange", ->
@@ -81,10 +78,21 @@ cdoj
           data = response.data
           if data.result == "success"
             $window.alert "Success!"
-            $window.location.href = "/#/user/center/#{$scope.targetUser.userName}"
+            $scope.$broadcast("refresh")
           else if data.result == "field_error"
             $window.scrollTo(0,0)
             $scope.fieldInfo = data.field
+          else
+            $window.alert data.error_msg
+
+      $scope.newTeam =
+        teamName: ""
+      $scope.createNewTeam = ->
+        teamDTO = angular.copy($scope.newTeam)
+        $http.post("/team/createTeam", teamDTO).then (response)->
+          data = response.data
+          if data.result == "success"
+            $scope.$broadcast("refreshList")
           else
             $window.alert data.error_msg
   ])

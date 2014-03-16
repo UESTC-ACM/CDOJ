@@ -4,8 +4,6 @@ import cn.edu.uestc.acmicpc.db.condition.impl.MessageCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.Message;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -34,16 +32,6 @@ public interface MessageService extends DatabaseService<Message, Integer> {
    * @throws AppException
    */
   public MessageDTO getMessageDTO(Integer messageId) throws AppException;
-
-  /**
-   * Send a team invitation.
-   *
-   * @param sender   invitation sender
-   * @param receiver invitation receiver
-   * @param teamDTO  team information
-   * @throws AppException
-   */
-  public void sendTeamInvitation(UserDTO sender, UserDTO receiver, TeamDTO teamDTO) throws AppException;
 
   /**
    * Counts the number of messages fit in condition.
