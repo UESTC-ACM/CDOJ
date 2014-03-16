@@ -1,13 +1,14 @@
 cdoj
 .controller("TeamEditorModalController", [
-    "$scope", "$rootScope", "$http", "$window", "$modalInstance"
-    ($scope, $rootScope, $http, $window, $modalInstance)->
+    "$scope", "$rootScope", "$http", "$window", "$modalInstance", "team"
+    ($scope, $rootScope, $http, $window, $modalInstance, team)->
       $scope.teamDTO =
-        teamName: ""
+        teamId: team.teamId
+        teamName: team.teamName
         memberList: ""
       $scope.newMember =
         userName: ""
-      $scope.memberList = []
+      $scope.memberList = [].concat(team.teamUsers, team.invitedUsers)
 
       $scope.searchUser = (keyword)->
         condition =
@@ -20,35 +21,50 @@ cdoj
             $window.alert data.error_msg
       $scope.addMemberClick = ->
         if $scope.memberList.length < 3
-          $scope.addMember($scope.newMember.userName)
-      $scope.addMember = (userName)->
-        $http.get("/user/typeAheadItem/#{userName}").then (response)->
-          data = response.data
-          if data.result == "success"
-            result = data.user
-            # Check if exists
-            if _.where($scope.memberList, {userId: result.userId}).length > 0
-              $window.alert "You can not add the same member twice"
-            else
-              $scope.memberList.add result
-          else
-            $window.alert data.error_msg
-      $scope.addMember($rootScope.currentUser.userName)
-      $scope.removeMember = (index)->
-        if index >= 1 && index < 3
-          $scope.memberList.splice(index, 1);
-      $scope.createTeam = ->
-        if $scope.memberList.length < 1 || $scope.memberList.length > 3
-          $window.alert "Member number should between 1 and 3."
-        else
-          teamDTO = angular.copy($scope.teamDTO)
-          teamDTO.memberList = _.map($scope.memberList,(val) ->
-            return val.userId
-          ).join(",")
-          $http.post("/team/createTeam", teamDTO).then (response)->
+          $http.get("/user/typeAheadItem/#{$scope.newMember.userName}").then (response)->
             data = response.data
             if data.result == "success"
+              result = data.user
+              # Check if exists
+              if _.where($scope.memberList, {userId: result.userId}).length > 0
+                $window.alert "You can not add the same member twice"
+              else
+                $scope.addMember result
+            else
+              $window.alert data.error_msg
+      $scope.addMember = (user)->
+        if $scope.memberList.length >= 3
+          $window.alert "Member number should no more than 3."
+        else if $window.confirm "Are you sure that invite #{user.userName} into team #{$scope.teamDTO.teamName}?"
+          teamDTO = angular.copy($scope.teamDTO)
+          teamDTO.memberList = "#{user.userId}"
+          $http.post("/team/addMember", teamDTO).then (response)->
+            data = response.data
+            if data.result == "success"
+              $scope.memberList.add user
+            else
+              $window.alert data.error_msg
+      $scope.removeMember = (index)->
+        if index >= 1 && index < 3
+          user = $scope.memberList[index]
+          if $window.confirm "Are you sure that remove #{user.userName} from team #{$scope.teamDTO.teamName}?"
+            teamDTO = angular.copy($scope.teamDTO)
+            teamDTO.memberList = "#{user.userId}"
+            $http.post("/team/removeMember", teamDTO).then (response)->
+              data = response.data
+              if data.result == "success"
+                $scope.memberList.splice(index, 1);
+              else
+                $window.alert data.error_msg
+      $scope.deleteTeam = ->
+        if $window.confirm ("This action will delete team #{$scope.teamDTO.teamName} forever, are you sure?")
+          teamDTO = angular.copy($scope.teamDTO)
+          $http.post("/team/deleteTeam", teamDTO).then (response)->
+            data = response.data
+            if data.result == "success"
+              $window.alert "Done!"
               $modalInstance.close()
+              $rootScope.$broadcast("refreshList")
             else
               $window.alert data.error_msg
       $scope.dismiss = ->

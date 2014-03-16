@@ -77,11 +77,11 @@ public class MessageController extends BaseController {
       if (currentUser != null) {
         Boolean valid = false;
         if (messageCondition.userId != null) {
-          if (isAdmin(session) || currentUser.getUserId().equals(messageCondition.userId)) {
+          if (checkPermission(session, messageCondition.userId)) {
             valid = true;
           }
         } else {
-          if (isAdmin(session) || currentUser.getUserId().equals(messageCondition.userAId)) {
+          if (checkPermission(session, messageCondition.userAId)) {
             valid = true;
           }
         }

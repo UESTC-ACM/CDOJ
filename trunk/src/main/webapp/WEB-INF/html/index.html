@@ -36,22 +36,7 @@
 <header id="cdoj-navbar-top">
   <div class="container" ng-controller="HeaderController">
     <nav>
-      <ul class="nav navbar-nav navbar-right">
-        <!-- Search
-        <li>
-          <div class="input-group input-group-sm" id="cdoj-search">
-            <input type="text" class="form-control">
-
-            <div class="input-group-btn">
-              <button type="button" class="btn btn-default"
-                      tabindex="-1">
-                <span id="cdoj-search-icon"><i class="fa fa-search"></i></span>
-                <span id="cdoj-search-text">Search</span>
-              </button>
-            </div>
-          </div>
-        </li>-->
-
+      <ul class="nav navbar-nav navbar-right" style="min-height: 50px;">
         <li ng-show="$root.hasLogin"
             style="font-size: 20px;">
           <a href="#/user/center/{{currentUser.userName}}"><i class="fa fa-home"></i></a>
@@ -126,9 +111,12 @@ border-top-right-radius: 0;">
                 </a>
               </li>
               <li role="presentation">
-                <a href="javascript:void(0);" data-toggle="modal"
-                   data-target="#cdoj-profile-edit-modal"
-                   ng-click="openUserProfileEditor()">
+                <a href="#/user/center/{{currentUser.userName}}/teams">
+                  <i class="fa fa-group"></i>Teams
+                </a>
+              </li>
+              <li role="presentation">
+                <a href="#/user/center/{{currentUser.userName}}/edit">
                   <i class="fa fa-wrench"></i>Edit profile
                 </a>
               </li>
@@ -142,7 +130,7 @@ border-top-right-radius: 0;">
           </div>
         </li>
         <li ng-hide="$root.hasLogin">
-          <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+          <a href="javascript:void(0);" class="dropdown-toggle">
             Sign in
           </a>
           <ul ui-dropdown-menu class="dropdown-menu cdoj-form-menu" style="width: 340px;">
@@ -186,7 +174,7 @@ border-top-right-radius: 0;">
             </li>
             <li role="presentation" class="divider"></li>
             <li>
-              <a href="javascript:void(0);" ng-click="openRegisterModal()">
+              <a href="/#/user/register">
                 <i class="fa fa-arrow-circle-right" style="padding-right: 6px;"></i>Register</a>
               <a href="javascript:void(0);" ng-click="openForgetPasswordModal()">
                 <i class="fa fa-arrow-circle-right" style="padding-right: 6px;"></i>Forget password?
@@ -240,8 +228,23 @@ border-top-right-radius: 0;">
       </div>
     </div>
   </div>
-  <div id="cdoj-container"
-       ng-view>
+  <div id="cdoj-container">
+    <div ng-view style="min-height: 600px;"></div>
+    <div class="row">
+      <div class="col-md-12" style="font-size: 10px;">
+        <hr style="margin: 0;"/>
+        <p class="muted">
+          UESTC Online Judge
+        </p>
+        <p class="muted">
+          Copyright (C) 2014
+          Ruins He(<a href="https://github.com/lyhypacm">@lyhypacm</a>),
+          Jianjin Fan(<a href="https://github.com/pfctgeorge">@pfctgeorge</a>) and
+          Yun Li(<a href="https://github.com/mzry1992">@mzry1992</a>).
+          <a href="http://uestc-acm.github.io/CDOJ/">Project home</a>
+        </p>
+      </div>
+    </div>
   </div>
 </div>
 

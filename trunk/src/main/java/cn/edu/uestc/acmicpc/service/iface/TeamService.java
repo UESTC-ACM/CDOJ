@@ -93,4 +93,12 @@ public interface TeamService extends DatabaseService<Team, Integer> {
    * @throws AppException
    */
   public Integer getTeamIdByTeamName(String teamName) throws AppException;
+
+  /**
+   * Delete team in database.
+   *
+   * @param teamDTO {@link TeamDTO} entity
+   * @throws AppException
+   */
+  public void deleteTeam(TeamDTO teamDTO) throws AppException;
 }

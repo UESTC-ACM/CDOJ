@@ -8,8 +8,8 @@ cdoj
       user: "="
       team: "="
     controller: [
-      "$scope", "$rootScope", "$http",
-      ($scope, $rootScope, $http)->
+      "$scope", "$rootScope", "$http", "$modal"
+      ($scope, $rootScope, $http, $modal)->
         $scope.editPermission = false
         if $rootScope.hasLogin
           if $rootScope.currentUser.userId == $scope.user.userId || $rootScope.isAdmin
@@ -22,5 +22,12 @@ cdoj
                 $scope.team = data.team
               else
                 $window.alert data.error_msg
+        $scope.showTeamEditor = (team)->
+          teamEditor = $modal.open(
+            templateUrl: "template/modal/team-editor-modal.html"
+            controller: "TeamEditorModalController"
+            resolve:
+              team: -> team
+          )
     ]
   )

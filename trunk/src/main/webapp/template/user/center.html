@@ -1,126 +1,387 @@
 <div id="cdoj-user-center">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="media" id="cdoj-user-center-summary">
-        <a class="pull-left" href="javascript:void(0);">
-          <img id="cdoj-user-avatar-large"
-               ui-avatar
-               email="targetUser.email"
-               class="media-object img-thumbnail"/>
-        </a>
+<div class="row">
+<div class="col-md-12">
+  <div class="media" id="cdoj-user-center-summary">
+    <a class="pull-left" href="javascript:void(0);">
+      <img id="cdoj-user-avatar-large"
+           ui-avatar
+           email="targetUser.email"
+           class="media-object img-thumbnail"/>
+    </a>
 
-        <div class="media-body">
-          <h2 class="media-heading" ng-bind="targetUser.userName">
-          </h2>
-          <dl class="dl-horizontal">
-            <dt>Nick name</dt>
-            <dd ng-bind="targetUser.nickName">
-            </dd>
-            <dt>School</dt>
-            <dd ng-bind="targetUser.school">
-            </dd>
-            <dt>Department</dt>
-            <dd ng-bind="targetUser.department">
-            </dd>
-            <dt>Student ID</dt>
-            <dd ng-bind="targetUser.studentId">
-            </dd>
-            <dt>Email</dt>
-            <dd ng-bind="targetUser.email">
-            </dd>
-            <dt>Motto</dt>
-            <dd ng-bind="targetUser.motto">
-            </dd>
-            <dt>Last login</dt>
-            <dd ui-time
-                time="targetUser.lastLogin">
-            </dd>
-          </dl>
-        </div>
+    <div class="media-body">
+      <h2 class="media-heading" ng-bind="targetUser.nickName">
+      </h2>
+      <h4 class="muted" ng-bind="targetUser.userName"></h4>
+      <hr style="margin: 6px 0;"/>
+      <div>
+        <i class="fa fa-map-marker muted text-center" style="width: 20px;"></i>
+        <span ng-bind="targetUser.school"></span>
+      </div>
+      <div>
+        <i class="fa fa-users muted text-center" style="width: 20px;"></i>
+        <span ng-bind="targetUser.department"></span>
+      </div>
+      <div>
+        <i class="fa fa-puzzle-piece muted text-center" style="width: 20px;"></i>
+        <a href="#/status/list?userName={{user.userName}}">
+          <span class="font-success" ng-bind="targetUser.solved"></span>
+          &nbsp;/&nbsp;
+          <span class="font-danger" ng-bind="targetUser.tried"></span>
+        </a>
+      </div>
+      <div>
+        <i class="fa fa-clock-o muted text-center" style="width: 20px;"></i>
+        <span ui-time
+              time="targetUser.lastLogin"
+              inline="true"></span>
+      </div>
+      <div>
+        <i class="fa fa-quote-left muted text-center" style="width: 20px;"></i>
+        <span ng-bind="targetUser.motto"></span>
+        <i class="fa fa-quote-right muted text-center" style="width: 20px;"></i>
       </div>
     </div>
-    <div class="col-md-12" id="user-center-tab">
-      <tabset>
-        <tab heading="Problems"
-             active="activeProblemsTab">
-          <div style="margin-top: 15px">
-            <div ng-repeat="status in problemStatus"
-                 class="cdoj-label cdoj-user-status-label"
-                 ng-class="{
+  </div>
+</div>
+<div class="col-md-12" style="margin-top: 15px;">
+<tabset>
+<tab heading="Problems"
+     active="activeProblemsTab">
+  <div style="margin-top: 15px">
+    <div ng-repeat="status in problemStatus"
+         class="cdoj-label cdoj-user-status-label"
+         ng-class="{
                'label-default': status.status == 0,
                'label-success': status.status == 1,
                'label-danger': status.status == 2
              }">
-              <a href="#/problem/show/{{status.problemId}}" ng-bind="status.problemId"></a>
-            </div>
-          </div>
-        </tab>
-        <tab heading="Teams"
-             active="activeTeamsTab">
-          <div style="margin: 0 -15px;">
-            <div class="col-md-12 text-right"
-                 style="margin-top: 15px;"
-                 ng-show="editPermission">
-              <button class="btn btn-danger btn-sm"
-                      ng-click="showTeamEditor()"><i class="fa fa-group"></i>Create new team
-              </button>
-            </div>
-            <list condition="teamCondition"
-                  request-url="/team/search">
-              <div class="col-md-12" ng-repeat="team in list">
-                <team team="team" user="targetUser"></team>
-              </div>
-            </list>
-          </div>
-        </tab>
-        <tab heading="Messages"
-             active="activeMessagesTab">
-          <div style="margin: 0 -15px;">
-            <div class="col-md-12">
-              <h4 ng-bind="messagesTabTitle"></h4>
-            </div>
-            <list condition="messageCondition"
-                  request-url="/message/search">
-              <div class="col-md-12">
-                <div ng-repeat="message in list"
-                     class="alert "
-                     ng-class="{
+      <a href="#/problem/show/{{status.problemId}}" ng-bind="status.problemId"></a>
+    </div>
+  </div>
+</tab>
+<tab heading="Teams"
+     active="activeTeamsTab">
+  <div style="margin: 0 -15px;">
+    <div class="col-md-12"
+         style="margin-top: 15px;"
+         ng-show="editPermission">
+
+      <div class="input-group pull-right" style="max-width: 350px;">
+        <input type="text"
+               class="form-control input-sm"
+               ng-model="newTeam.teamName"
+               placeholder="Team name"/>
+          <span class="input-group-btn">
+            <button class="btn btn-danger btn-sm" type="button"
+                    ng-click="createNewTeam()"><i class="fa fa-group"></i>Create new team
+            </button>
+          </span>
+      </div>
+
+    </div>
+    <list condition="teamCondition"
+          request-url="/team/search">
+      <div class="col-md-12" ng-repeat="team in list">
+        <team team="team" user="targetUser"></team>
+      </div>
+    </list>
+  </div>
+</tab>
+<tab heading="Messages"
+     active="activeMessagesTab">
+  <div style="margin: 0 -15px;">
+    <div class="col-md-12">
+      <h4 ng-bind="messagesTabTitle"></h4>
+    </div>
+    <list condition="messageCondition"
+          request-url="/message/search">
+      <div class="col-md-12">
+        <div ng-repeat="message in list"
+             class="alert "
+             ng-class="{
                      'alert-info': message.isOpened == true,
                      'alert-danger': message.isOpened == false,
                      }">
-                  <div class="media">
-                    <a class="pull-left" href="/#/user/center/{{message.senderUserName}}">
-                      <img class="media-object"
-                           ui-avatar
-                           email="message.senderEmail"
-                           style="width: 64px; height: 64px;">
-                    </a>
-                    <a class="pull-left" href="/#/user/center/{{message.receiverUserName}}">
-                      <img class="media-object"
-                           ui-avatar
-                           email="message.receiverEmail"
-                           style="width: 64px; height: 64px;">
-                    </a>
-                    <div class="media-body">
-                      <h4 class="media-heading">
-                        From <span ng-bind="message.senderUserName"></span> to <span
-                          ng-bind="message.receiverUserName"></span>:
-                      </h4>
-                      <p style="margin-bottom: 0">
-                        <messagelink message="message"></messagelink>
-                      </p>
+          <div class="media">
+            <a class="pull-left" href="/#/user/center/{{message.senderUserName}}">
+              <img class="media-object"
+                   ui-avatar
+                   email="message.senderEmail"
+                   style="width: 64px; height: 64px;">
+            </a>
+            <a class="pull-left" href="/#/user/center/{{message.receiverUserName}}">
+              <img class="media-object"
+                   ui-avatar
+                   email="message.receiverEmail"
+                   style="width: 64px; height: 64px;">
+            </a>
+
+            <div class="media-body">
+              <h4 class="media-heading">
+                From <span ng-bind="message.senderUserName"></span> to <span
+                  ng-bind="message.receiverUserName"></span>:
+              </h4>
+
+              <p style="margin-bottom: 0">
+                <messagelink message="message"></messagelink>
+              </p>
                       <span class="muted">
                         <i class="fa fa-clock-o"></i>
                         <span ui-time time="message.time" inline="true" change="false"></span>
                       </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </list>
+            </div>
           </div>
-        </tab>
-      </tabset>
+        </div>
+      </div>
+    </list>
+  </div>
+</tab>
+<tab heading="Edit"
+     active="activeEditTab"
+     ng-show="editPermission">
+<div style="margin: 0 -15px;">
+<div class="col-md-12" style="margin-top: 15px;">
+<form class="form-horizontal">
+<fieldset>
+  <legend>Edit</legend>
+  <div class="form-group">
+    <label class="control-label col-sm-4 col-md-3"
+           for="oldPassword">Password</label>
+
+    <div class="col-sm-8 col-md-5">
+      <input type="password"
+             ng-model="userEditDTO.oldPassword"
+             id="oldPassword"
+             ng-required="true"
+             ng-minlength="6"
+             ng-maxlength="24"
+             class="form-control input-sm"/>
+      <ui-validate-info value="fieldInfo" for="oldPassword"></ui-validate-info>
     </div>
   </div>
+  <div class="form-group">
+    <label class="control-label col-sm-4 col-md-3"
+           for="userName">User Name</label>
+
+    <div class="col-sm-8 col-md-5">
+      <input type="text"
+             ng-model="userEditDTO.userName"
+             maxlength="24"
+             id="userName"
+             ng-required="true"
+             ng-pattern="/^[a-zA-Z0-9_]{4,24}$/"
+             readonly
+             class="form-control input-sm"/>
+      <ui-validate-info value="fieldInfo" for="userName"></ui-validate-info>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-4 col-md-3"
+           for="newPassword">New password</label>
+
+    <div class="col-sm-8 col-md-5">
+      <input type="password"
+             ng-model="userEditDTO.newPassword"
+             ng-required="false"
+             id="newPassword"
+             ng-minlength="6"
+             ng-maxlength="24"
+             class="form-control input-sm"/>
+      <ui-validate-info value="fieldInfo" for="newPassword"></ui-validate-info>
+    </div>
+  </div>
+  <div class="form-group ">
+    <label class="control-label col-sm-4 col-md-3"
+           for="newPasswordRepeat">Repeat new password</label>
+
+    <div class="col-sm-8 col-md-5">
+      <input type="password"
+             ng-model="userEditDTO.newPasswordRepeat"
+             ng-required="false"
+             id="newPasswordRepeat"
+             ng-minlength="6"
+             ng-maxlength="24"
+             equals="{{userEditDTO.newPassword}}"
+             class="form-control input-sm"/>
+      <ui-validate-info value="fieldInfo" for="newPasswordRepeat"></ui-validate-info>
+    </div>
+  </div>
+  <div class="form-group ">
+    <label class="control-label col-sm-4 col-md-3"
+           for="nickName">Nick name</label>
+
+    <div class="col-sm-8 col-md-5">
+      <input type="text"
+             ng-model="userEditDTO.nickName"
+             maxlength="20"
+             id="nickName"
+             ng-required="true"
+             ng-maxlength="20"
+             ng-minlength="2"
+             class="form-control input-sm"/>
+      <ui-validate-info value="fieldInfo" for="nickName"></ui-validate-info>
+    </div>
+  </div>
+  <div class="form-group ">
+    <label class="control-label col-sm-4 col-md-3" for="email">Email</label>
+
+    <div class="col-sm-8 col-md-5">
+      <input type="email"
+             ng-model="userEditDTO.email"
+             id="email"
+             ng-required="true"
+             class="form-control input-sm"/>
+      <ui-validate-info value="fieldInfo" for="email"></ui-validate-info>
+      <spanp class="help-block">
+        Your email will be used for <a href="http://en.gravatar.com/">Gravatar</a>
+        service.
+      </spanp>
+    </div>
+  </div>
+  <div class="form-group ">
+    <label class="control-label col-sm-4 col-md-3" for="motto">Motto</label>
+
+    <div class="col-sm-8 col-md-5">
+      <textarea class="form-control"
+                rows="3"
+                ng-model="userEditDTO.motto"
+                id="motto"></textarea>
+      <ui-validate-info value="fieldInfo" for="motto"></ui-validate-info>
+    </div>
+  </div>
+
+</fieldset>
+<fieldset>
+  <legend>Personal information</legend>
+  <div class="form-group ">
+    <label class="control-label col-sm-4 col-md-3" for="name">Name</label>
+
+    <div class="col-sm-8 col-md-5">
+      <input type="text"
+             ng-model="userEditDTO.name"
+             id="name"
+             ng-required="true"
+             ng-maxlength="50"
+             ng-minlength="1"
+             class="form-control input-sm"/>
+      <ui-validate-info value="fieldInfo" for="name"></ui-validate-info>
+    </div>
+  </div>
+
+  <div class="form-group ">
+    <label class="control-label col-sm-4 col-md-3"
+           for="sex">Gender</label>
+
+    <div class="col-sm-8 col-md-5">
+      <select ng-model="userEditDTO.sex"
+              ng-options="gender.genderTypeId as gender.description for gender in $root.genderTypeList"
+              id="sex"
+              ng-required="true"
+              class="form-control input-sm">
+      </select>
+      <ui-validate-info value="fieldInfo" for="sex"></ui-validate-info>
+    </div>
+  </div>
+  <div class="form-group ">
+    <label class="control-label col-sm-4 col-md-3"
+           for="size">T-Shirts size</label>
+
+    <div class="col-sm-8 col-md-5">
+      <select ng-model="userEditDTO.size"
+              ng-options="size.sizeTypeId as size.description for size in $root.tShirtsSizeTypeList"
+              id="size"
+              ng-required="true"
+              class="form-control input-sm">
+      </select>
+      <ui-validate-info value="fieldInfo" for="size"></ui-validate-info>
+    </div>
+  </div>
+  <div class="form-group ">
+    <label class="control-label col-sm-4 col-md-3" for="phone">Phone number</label>
+
+    <div class="col-sm-8 col-md-5">
+      <input type="text"
+             ng-model="userEditDTO.phone"
+             id="phone"
+             ng-required="true"
+             ng-maxlength="45"
+             ng-minlength="1"
+             class="form-control input-sm"/>
+      <ui-validate-info value="fieldInfo" for="phone"></ui-validate-info>
+    </div>
+  </div>
+  <div class="form-group ">
+    <label class="control-label col-sm-4 col-md-3" for="school">School</label>
+
+    <div class="col-sm-8 col-md-5">
+      <input type="text"
+             ng-model="userEditDTO.school"
+             id="school"
+             ng-required="true"
+             ng-maxlength="100"
+             ng-minlength="1"
+             class="form-control input-sm"/>
+      <ui-validate-info value="fieldInfo" for="school"></ui-validate-info>
+    </div>
+  </div>
+  <div class="form-group ">
+    <label class="control-label col-sm-4 col-md-3"
+           for="departmentId">Department</label>
+
+    <div class="col-sm-8 col-md-5">
+      <select ng-model="userEditDTO.departmentId"
+              ng-options="department.departmentId as department.name for department in $root.departmentList"
+              id="departmentId"
+              ng-required="true"
+              class="form-control input-sm">
+      </select>
+      <ui-validate-info value="fieldInfo" for="departmentId"></ui-validate-info>
+    </div>
+  </div>
+
+  <div class="form-group ">
+    <label class="control-label col-sm-4 col-md-3"
+           for="grade">Grade</label>
+
+    <div class="col-sm-8 col-md-5">
+      <select ng-model="userEditDTO.grade"
+              ng-options="grade.gradeTypeId as grade.description for grade in $root.gradeTypeList"
+              id="grade"
+              ng-required="true"
+              class="form-control input-sm">
+      </select>
+      <ui-validate-info value="fieldInfo" for="size"></ui-validate-info>
+    </div>
+  </div>
+  <div class="form-group ">
+    <label class="control-label col-sm-4 col-md-3"
+           for="studentId">Student ID</label>
+
+    <div class="col-sm-8 col-md-5">
+      <input type="text"
+             ng-model="userEditDTO.studentId"
+             id="studentId"
+             ng-required="true"
+             ng-maxlength="20"
+             ng-minlength="1"
+             class="form-control input-sm"/>
+      <ui-validate-info value="fieldInfo" for="studentId"></ui-validate-info>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-4 col-sm-8 col-md-offset-3 col-md-5">
+      <button type="button" class="btn btn-primary"
+              ng-click="edit()">Edit
+      </button>
+    </div>
+  </div>
+</fieldset>
+</form>
+</div>
+</div>
+</tab>
+</tabset>
+</div>
+</div>
 </div>

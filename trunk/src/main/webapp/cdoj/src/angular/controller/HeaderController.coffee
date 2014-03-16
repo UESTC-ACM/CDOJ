@@ -1,7 +1,7 @@
 cdoj
 .controller("HeaderController", [
-    "$scope", "$rootScope", "$http", "$element", "$compile", "$window", "UserProfile", "$modal"
-    ($scope, $rootScope, $http, $element, $compile, $window, $userProfile, $modal) ->
+    "$scope", "$rootScope", "$http", "$element", "$compile", "$window", "$modal"
+    ($scope, $rootScope, $http, $element, $compile, $window, $modal) ->
       $rootScope.hasLogin = false
       $rootScope.currentUser =
         email: ""
@@ -37,24 +37,11 @@ cdoj
             $rootScope.currentUser =
               email: ""
 
-      $scope.openRegisterModal = ->
-        registerModal = $modal.open(
-          templateUrl: "template/modal/register-modal.html"
-          controller: "RegisterModalController"
-        )
-
       $scope.openForgetPasswordModal = ->
         forgetPasswordModal = $modal.open(
           templateUrl: "template/modal/forget-password-modal.html"
           controller: "ForgetPasswordModalController"
         )
-      $scope.openUserProfileEditor = ->
-        $userProfile.setProfile $rootScope.currentUser.userName
-        userProfileEditor = $modal.open(
-          templateUrl: "template/modal/profile-edit-modal.html"
-          controller: "UserProfileEditorController"
-        )
-
       $scope.readMessage = (message)->
         console.log message
   ])

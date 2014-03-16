@@ -29,8 +29,8 @@ public class StringUtil {
    * @param userId user's id
    * @return result
    */
-  public static String getAtLink(String userName, Integer userId) {
-    return "@" + userName + "(" + userId + ")";
+  public static String getAtLink(String userName) {
+    return "@" + userName + " ";
   }
 
   /**

@@ -18,6 +18,7 @@ import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.settings.Global;
@@ -52,9 +53,14 @@ public class StatusController extends BaseController {
   private ContestProblemService contestProblemService;
   private GlobalService globalService;
   private LanguageService languageService;
+  private UserService userService;
 
   @Autowired
-  public StatusController(StatusService statusService, ProblemService problemService, CodeService codeService, CompileInfoService compileInfoService, ContestService contestService, ContestProblemService contestProblemService, GlobalService globalService, LanguageService languageService) {
+  public StatusController(StatusService statusService, ProblemService problemService,
+                          CodeService codeService, CompileInfoService compileInfoService,
+                          ContestService contestService, ContestProblemService contestProblemService,
+                          GlobalService globalService, LanguageService languageService,
+                          UserService userService) {
     this.statusService = statusService;
     this.problemService = problemService;
     this.codeService = codeService;
@@ -63,6 +69,7 @@ public class StatusController extends BaseController {
     this.contestProblemService = contestProblemService;
     this.globalService = globalService;
     this.languageService = languageService;
+    this.userService = userService;
   }
 
   @RequestMapping("search")
@@ -157,8 +164,13 @@ public class StatusController extends BaseController {
   Map<String, Object> rejudge(@RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
-      // Current user is administrator
-      statusCondition.isForAdmin = true;
+      if (statusCondition.userName != null) {
+        UserDTO userDTO = userService.getUserDTOByUserName(statusCondition.userName);
+        if (userDTO == null) {
+          throw new AppException("User not found for given uesr name.");
+        }
+        statusCondition.userId = userDTO.getUserId();
+      }
       statusService.rejudge(statusCondition);
 
       json.put("result", "success");
@@ -256,7 +268,7 @@ public class StatusController extends BaseController {
       if (statusInformationDTO == null) {
         throw new AppException("No such status.");
       }
-      if (!isAdmin(session)) {
+      if (!checkPermission(session, statusInformationDTO.getUserId())) {
         throw new AppException("You have no permission to view this code.");
       }
       json.put("result", "success");

@@ -25,7 +25,9 @@
               <br/>
               <span>
                 <a href="#/status/list?userName={{user.userName}}">
-                  <span ng-bind="user.solved"></span>/<span ng-bind="user.tried"></span>
+                  <span class="font-success" ng-bind="user.solved"></span>
+                  &nbsp;/&nbsp;
+                  <span class="font-danger" ng-bind="user.tried"></span>
                 </a>
               </span>
               <ui-user-admin-span user="user"></ui-user-admin-span>

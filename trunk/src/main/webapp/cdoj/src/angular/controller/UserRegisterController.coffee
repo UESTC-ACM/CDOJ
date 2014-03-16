@@ -1,7 +1,7 @@
 cdoj
-.controller("RegisterModalController", [
-    "$scope", "$rootScope", "$http", "$modalInstance", "$window"
-    ($scope, $rootScope, $http, $modalInstance, $window) ->
+.controller("UserRegisterController", [
+    "$scope", "$rootScope", "$http", "$window"
+    ($scope, $rootScope, $http, $window) ->
       $scope.userRegisterDTO =
         departmentId: 1
         email: ""
@@ -35,11 +35,11 @@ cdoj
               userName: data.userName
               email: data.email
               type: data.type
-            $modalInstance.close()
+            $rootScope.$broadcast("refreshUserData")
+            $window.history.back();
           else if data.result == "field_error"
+            $window.scrollTo(0,0)
             $scope.fieldInfo = data.field
           else
             $window.alert data.error_msg
-      $scope.dismiss = ->
-        $modalInstance.dismiss()
   ])
