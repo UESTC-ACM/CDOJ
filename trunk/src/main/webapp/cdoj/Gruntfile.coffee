@@ -50,6 +50,7 @@ module.exports = (grunt) ->
           "bower_components/bootstrap/dist/js/bootstrap.js"
           "bower_components/bootstrap-switch/build/js/bootstrap-switch.js"
           "bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"
+          "bower_components/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"
           "bower_components/fine-uploader/_build/fineuploader.js"
           "bower_components/CryptoJS/src/core.js"
           "bower_components/CryptoJS/src/md5.js"
