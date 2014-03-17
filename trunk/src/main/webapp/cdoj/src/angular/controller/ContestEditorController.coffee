@@ -1,7 +1,7 @@
 cdoj
 .controller("ContestEditorController", [
-    "$scope", "$http", "$window", "$routeParams"
-    ($scope, $http, $window, $routeParams) ->
+    "$scope", "$rootScope", "$http", "$window", "$routeParams"
+    ($scope, $rootScope, $http, $window, $routeParams) ->
       $scope.contest =
         problemList: ""
       $scope.problemList = []
@@ -35,6 +35,12 @@ cdoj
           else
             $window.alert data.error_msg
       else
+        $scope.contest.action = $scope.action
+        $scope.contest.type = $rootScope.ContestType.PUBLIC
+        $scope.contest.time = Date.create().format("{yyyy}-{MM}-{dd} {hh}:{mm}")
+        $scope.contest.lengthMinutes = 0
+        $scope.contest.lengthHours = 5
+        $scope.contest.lengthDays = 0
         $scope.title = "New contest"
 
       $scope.$watch("problemList", () ->
