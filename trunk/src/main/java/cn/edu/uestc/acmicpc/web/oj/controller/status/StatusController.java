@@ -142,6 +142,7 @@ public class StatusController extends BaseController {
     try {
       // Current user is administrator
       statusCondition.isForAdmin = true;
+      statusCondition.result = Global.OnlineJudgeResultType.OJ_NOT_AC;
       Long count = statusService.count(statusCondition);
 
       json.put("result", "success");
@@ -167,10 +168,11 @@ public class StatusController extends BaseController {
       if (statusCondition.userName != null) {
         UserDTO userDTO = userService.getUserDTOByUserName(statusCondition.userName);
         if (userDTO == null) {
-          throw new AppException("User not found for given uesr name.");
+          throw new AppException("User not found for given user name.");
         }
         statusCondition.userId = userDTO.getUserId();
       }
+      statusCondition.result = Global.OnlineJudgeResultType.OJ_NOT_AC;
       statusService.rejudge(statusCondition);
 
       json.put("result", "success");
