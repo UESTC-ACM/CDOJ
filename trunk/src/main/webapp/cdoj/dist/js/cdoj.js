@@ -64985,7 +64985,7 @@ if (typeof exports === 'object') {
       problemId: void 0,
       languageId: void 0,
       contestId: -1,
-      result: "OJ_ALL",
+      result: 0,
       orderFields: "statusId",
       orderAsc: "false"
     },
@@ -66526,14 +66526,14 @@ if (typeof exports === 'object') {
   $ = jQuery;
 
   $.fn.getCursorPosition = function() {
-    if (this.lengh === 0) {
+    if (this.length === 0) {
       return -1;
     }
     return $(this).getSelectionStart();
   };
 
   $.fn.setCursorPosition = function(position) {
-    if (this.lengh === 0) {
+    if (this.length === 0) {
       return this;
     }
     return $(this).setSelection(position, position);
@@ -66541,7 +66541,7 @@ if (typeof exports === 'object') {
 
   $.fn.getSelection = function() {
     var e, s;
-    if (this.lengh === 0) {
+    if (this.length === 0) {
       return -1;
     }
     s = $(this).getSelectionStart();
@@ -66551,7 +66551,7 @@ if (typeof exports === 'object') {
 
   $.fn.getSelectionStart = function() {
     var input, pos, r;
-    if (this.lengh === 0) {
+    if (this.length === 0) {
       return -1;
     }
     input = this[0];
@@ -66571,7 +66571,7 @@ if (typeof exports === 'object') {
 
   $.fn.getSelectionEnd = function() {
     var input, pos, r;
-    if (this.lengh === 0) {
+    if (this.length === 0) {
       return -1;
     }
     input = this[0];
@@ -66591,7 +66591,7 @@ if (typeof exports === 'object') {
 
   $.fn.setSelection = function(selectionStart, selectionEnd) {
     var input, range;
-    if (this.lengh === 0) {
+    if (this.length === 0) {
       return this;
     }
     input = this[0];
@@ -66620,7 +66620,8 @@ if (typeof exports === 'object') {
           var $editor, pictureUploader;
           $scope.mode = "edit";
           $scope.previewContent = "";
-          $editor = $element.find(".flandre-editor");
+          $editor = $($element).find(".flandre-editor");
+          console.log($editor);
           $scope.togglePreview = function() {
             if ($scope.mode === "edit") {
               $scope.previewContent = $scope.content;

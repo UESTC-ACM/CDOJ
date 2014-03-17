@@ -83,7 +83,7 @@ GlobalConditions =
     problemId: undefined
     languageId: undefined
     contestId: -1
-    result: "OJ_ALL"
+    result: 0
     orderFields: "statusId"
     orderAsc: "false"
   userCondition:
