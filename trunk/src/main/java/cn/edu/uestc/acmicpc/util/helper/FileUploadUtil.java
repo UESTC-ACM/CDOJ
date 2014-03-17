@@ -31,8 +31,10 @@ public class FileUploadUtil {
     }
     MultipartFile file = files.get(0);
     File dir = new File(absolutePath);
-    if (!dir.exists() || !dir.mkdirs()) {
-      throw new AppException("Error while make directory " + dir.getName() + ".");
+    if (!dir.exists()) {
+      if (!dir.mkdirs()) {
+        throw new AppException("Error while make directory " + dir.getName() + ".");
+      }
     }
 
     String newName = StringUtil.generateFileName(file.getOriginalFilename());
