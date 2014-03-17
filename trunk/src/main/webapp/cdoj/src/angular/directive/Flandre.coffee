@@ -2,21 +2,21 @@
 # From http://www.jquery4u.com/snippets/6-jquery-cursor-functions/
 $ = jQuery
 $.fn.getCursorPosition = ->
-  if this.lengh == 0 then return -1
+  if this.length == 0 then return -1
   return $(this).getSelectionStart()
 
 $.fn.setCursorPosition = (position) ->
-  if this.lengh == 0 then return this
+  if this.length == 0 then return this
   return $(this).setSelection(position, position)
 
 $.fn.getSelection = ->
-  if this.lengh == 0 then return -1
+  if this.length == 0 then return -1
   s = $(this).getSelectionStart()
   e = $(this).getSelectionEnd()
   return this[0].value.substring(s,e)
 
 $.fn.getSelectionStart = ->
-  if this.lengh == 0 then return -1
+  if this.length == 0 then return -1
   input = this[0]
 
   pos = input.value.length
@@ -31,7 +31,7 @@ $.fn.getSelectionStart = ->
   return pos
 
 $.fn.getSelectionEnd = ->
-  if this.lengh == 0 then return -1
+  if this.length == 0 then return -1
   input = this[0]
 
   pos = input.value.length
@@ -46,7 +46,7 @@ $.fn.getSelectionEnd = ->
   return pos
 
 $.fn.setSelection = (selectionStart, selectionEnd) ->
-  if this.lengh == 0 then return this
+  if this.length == 0 then return this
   input = this[0]
 
   if input.createTextRange
@@ -72,7 +72,8 @@ cdoj.directive("uiFlandre",
     ($scope, $element, $window) ->
       $scope.mode = "edit"
       $scope.previewContent = ""
-      $editor = $element.find(".flandre-editor")
+      $editor = $($element).find(".flandre-editor")
+      console.log $editor
 
       # Preview button
       $scope.togglePreview = ->
