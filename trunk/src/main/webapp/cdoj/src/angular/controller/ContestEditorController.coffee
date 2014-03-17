@@ -18,7 +18,7 @@ cdoj
             $scope.contest.contestId = data.contest.contestId
             $scope.contest.title = data.contest.title
             $scope.contest.type = data.contest.type
-            $scope.contest.time = Date.create(data.contest.startTime).format("{yyyy}-{MM}-{dd} {hh}:{mm}")
+            $scope.contest.time = Date.create(data.contest.startTime).format("{yyyy}-{MM}-{dd} {HH}:{mm}")
             length = Math.floor(data.contest.length / 1000)
             length = Math.floor(length / 60)
             $scope.contest.lengthMinutes = length % 60
@@ -37,7 +37,7 @@ cdoj
       else
         $scope.contest.action = $scope.action
         $scope.contest.type = $rootScope.ContestType.PUBLIC
-        $scope.contest.time = Date.create().format("{yyyy}-{MM}-{dd} {hh}:{mm}")
+        $scope.contest.time = Date.create().format("{yyyy}-{MM}-{dd} {HH}:{mm}")
         $scope.contest.lengthMinutes = 0
         $scope.contest.lengthHours = 5
         $scope.contest.lengthDays = 0
@@ -84,6 +84,8 @@ cdoj
       $scope.submit = ->
         contestEditDTO = angular.copy($scope.contest)
         contestEditDTO.time = Date.create(contestEditDTO.time).getTime()
+        # Date time picker use UTC locale!!!
+        contestEditDTO.time = contestEditDTO.time - 8 * 60 * 60 * 1000
         $http.post("/contest/edit", contestEditDTO).success (data)=>
           if data.result == "success"
             $window.location.href = "#/contest/show/#{data.contestId}"
