@@ -442,6 +442,9 @@ public class ContestController extends BaseController {
               || contestDTO.getContestId().compareTo(contestId) != 0) {
             throw new AppException("Error while creating contest.");
           }
+          if (contestEditDTO.getDescription() == null) {
+            contestEditDTO.setDescription("");
+          }
           // Move pictures
           String oldDirectory = "/images/contest/new/";
           String newDirectory = "/images/contest/" + contestId + "/";
