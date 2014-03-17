@@ -40863,6 +40863,23 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
 
 }(window.jQuery);
 
+/**
+ * Simplified Chinese translation for bootstrap-datetimepicker
+ * Yuan Cheung <advanimal@gmail.com>
+ */
+;(function($){
+	$.fn.datetimepicker.dates['zh-CN'] = {
+				days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+			daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+			daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],
+			months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+			monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+			today: "今日",
+		suffix: [],
+		meridiem: []
+	};
+}(jQuery));
+
 /*!
 * Fine Uploader
 *
@@ -65250,7 +65267,7 @@ if (typeof exports === 'object') {
             $scope.contest.contestId = data.contest.contestId;
             $scope.contest.title = data.contest.title;
             $scope.contest.type = data.contest.type;
-            $scope.contest.time = Date.create(data.contest.startTime).format("{yyyy}-{MM}-{dd} {hh}:{mm}");
+            $scope.contest.time = Date.create(data.contest.startTime).format("{yyyy}-{MM}-{dd} {HH}:{mm}");
             length = Math.floor(data.contest.length / 1000);
             length = Math.floor(length / 60);
             $scope.contest.lengthMinutes = length % 60;
@@ -65272,7 +65289,7 @@ if (typeof exports === 'object') {
       } else {
         $scope.contest.action = $scope.action;
         $scope.contest.type = $rootScope.ContestType.PUBLIC;
-        $scope.contest.time = Date.create().format("{yyyy}-{MM}-{dd} {hh}:{mm}");
+        $scope.contest.time = Date.create().format("{yyyy}-{MM}-{dd} {HH}:{mm}");
         $scope.contest.lengthMinutes = 0;
         $scope.contest.lengthHours = 5;
         $scope.contest.lengthDays = 0;
@@ -65325,6 +65342,7 @@ if (typeof exports === 'object') {
         var contestEditDTO;
         contestEditDTO = angular.copy($scope.contest);
         contestEditDTO.time = Date.create(contestEditDTO.time).getTime();
+        contestEditDTO.time = contestEditDTO.time - 8 * 60 * 60 * 1000;
         return $http.post("/contest/edit", contestEditDTO).success((function(_this) {
           return function(data) {
             if (data.result === "success") {
