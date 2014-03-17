@@ -129,26 +129,28 @@ public class ContestController extends BaseController {
       List<ContestTeamListDTO> contestTeamList = contestTeamService.getContestTeamList(
           contestTeamCondition, pageInfo);
 
-      // At most 20 records
-      List<Integer> teamIdList = new LinkedList<>();
-      for (ContestTeamListDTO team: contestTeamList) {
-        teamIdList.add(team.getTeamId());
-      }
-      TeamUserCondition teamUserCondition = new TeamUserCondition();
-      teamUserCondition.orderFields = "id";
-      teamUserCondition.orderAsc = "true";
-      teamUserCondition.teamIdList = ArrayUtil.join(teamIdList.toArray(), ",");
-      // Search team users
-      List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamUserCondition);
+      if (contestTeamList.size() > 0) {
+        // At most 20 records
+        List<Integer> teamIdList = new LinkedList<>();
+        for (ContestTeamListDTO team : contestTeamList) {
+          teamIdList.add(team.getTeamId());
+        }
+        TeamUserCondition teamUserCondition = new TeamUserCondition();
+        teamUserCondition.orderFields = "id";
+        teamUserCondition.orderAsc = "true";
+        teamUserCondition.teamIdList = ArrayUtil.join(teamIdList.toArray(), ",");
+        // Search team users
+        List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamUserCondition);
 
-      // Put users into teams
-      for (ContestTeamListDTO team: contestTeamList) {
-        team.setTeamUsers(new LinkedList<TeamUserListDTO>());
-        for (TeamUserListDTO teamUserListDTO : teamUserList) {
-          if (team.getTeamId().compareTo(teamUserListDTO.getTeamId()) == 0) {
-            // Put users into current users / inactive users
-            if (teamUserListDTO.getAllow()) {
-              team.getTeamUsers().add(teamUserListDTO);
+        // Put users into teams
+        for (ContestTeamListDTO team : contestTeamList) {
+          team.setTeamUsers(new LinkedList<TeamUserListDTO>());
+          for (TeamUserListDTO teamUserListDTO : teamUserList) {
+            if (team.getTeamId().compareTo(teamUserListDTO.getTeamId()) == 0) {
+              // Put users into current users / inactive users
+              if (teamUserListDTO.getAllow()) {
+                team.getTeamUsers().add(teamUserListDTO);
+              }
             }
           }
         }
@@ -190,7 +192,7 @@ public class ContestController extends BaseController {
         throw new AppException("You are not the team leader of team " + teamDTO.getTeamName() + ".");
       }
       List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamId);
-      for (TeamUserListDTO teamUserDTO: teamUserList) {
+      for (TeamUserListDTO teamUserDTO : teamUserList) {
         if (contestTeamService.whetherUserHasBeenRegistered(teamUserDTO.getUserId(),
             contestDTO.getContestId())) {
           throw new AppException("User " + teamUserDTO.getUserName() +
