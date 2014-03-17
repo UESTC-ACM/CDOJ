@@ -23,9 +23,6 @@ cdoj
         if data.result == "success"
           _.extend($rootScope, data)
 
-    fetchUserData()
-    $interval(fetchUserData, 5000)
-
     $rootScope.$on("refreshUserData", ->
       fetchUserData()
     )
@@ -42,6 +39,20 @@ cdoj
         $rootScope.isAdmin = false
       $rootScope.$broadcast("refresh")
     )
+
+    fetchOnlineUsersData = ->
+      $http.get("/onlineUsersData").then (response) ->
+        data = response.data
+        if data.result == "success"
+          _.extend($rootScope, data)
+
+    fetchUserDataAndOnlineUsersData = ->
+      fetchUserData()
+      fetchOnlineUsersData()
+
+    fetchUserDataAndOnlineUsersData()
+    $interval(fetchUserDataAndOnlineUsersData, 5000)
+
 ])
 .config([
     "$routeProvider",
