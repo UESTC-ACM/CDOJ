@@ -65342,7 +65342,6 @@ if (typeof exports === 'object') {
         var contestEditDTO;
         contestEditDTO = angular.copy($scope.contest);
         contestEditDTO.time = Date.create(contestEditDTO.time).getTime();
-        contestEditDTO.time = contestEditDTO.time - 8 * 60 * 60 * 1000;
         return $http.post("/contest/edit", contestEditDTO).success((function(_this) {
           return function(data) {
             if (data.result === "success") {
@@ -66489,7 +66488,9 @@ if (typeof exports === 'object') {
       link: function($scope, $element, $attrs, $controller) {
         return $($element).datetimepicker().on("changeDate", function(e) {
           return $scope.$apply(function() {
-            return $controller.$setViewValue(e.date.valueOf());
+            var time;
+            time = e.date.valueOf() - 8 * 60 * 60 * 1000;
+            return $controller.$setViewValue(time);
           });
         });
       }
