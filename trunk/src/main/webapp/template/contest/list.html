@@ -60,8 +60,7 @@
             <span ng-bind="contest.typeName"
                   ng-show="contest.type != $root.ContestType.INVITED || contest.status != $root.ContestStatus.PENDING">
             </span>
-            <a href="javascript:void(0);"
-               ng-click="toRegisterPage(contest)"
+            <a href="/#/contest/register/{{contest.contestId}}"
                class="pull-right"
                ng-hide="contest.type != $root.ContestType.INVITED || contest.status != $root.ContestStatus.PENDING">
               <i class="fa fa-hand-o-right"></i>Register

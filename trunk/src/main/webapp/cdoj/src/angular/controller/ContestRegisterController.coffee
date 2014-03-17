@@ -2,8 +2,6 @@ cdoj
 .controller("ContestRegisterController", [
     "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams"
     ($scope, $rootScope, $http, $window, $modal, $routeParams)->
-      if $rootScope.hasLogin == false
-        $window.location.href = "/#/contest/list"
       contestId = $routeParams.contestId
       $scope.contest = 0
       contestCondition = angular.copy($rootScope.contestCondition)

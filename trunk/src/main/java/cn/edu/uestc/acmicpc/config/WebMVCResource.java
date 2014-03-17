@@ -5,6 +5,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 
 import java.util.LinkedList;
@@ -27,6 +28,7 @@ public class WebMVCResource {
   public static HttpMessageConverter<?>[] messageConverters() {
     HttpMessageConverter<?>[] converters = new HttpMessageConverter<?>[1];
     FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
+    fastJsonHttpMessageConverter.setFeatures(SerializerFeature.DisableCircularReferenceDetect);
     List<MediaType> mediaTypes = new LinkedList<>();
     mediaTypes.add(MediaType.APPLICATION_JSON);
     fastJsonHttpMessageConverter.setSupportedMediaTypes(mediaTypes);
