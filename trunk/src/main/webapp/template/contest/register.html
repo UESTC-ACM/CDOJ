@@ -2,7 +2,10 @@
   <div class="col-md-12">
     <h1 ng-bind="contest.title"></h1>
   </div>
-  <div class="col-md-12" style="margin-bottom: 8px;">
+  <div class="col-md-12" style="margin-bottom: 8px;" ng-hide="$root.hasLogin">
+    注册比赛之前，请先登录。
+  </div>
+  <div class="col-md-12" style="margin-bottom: 8px;" ng-show="$root.hasLogin">
     <p>
       如果你还没有建立队伍，请到<a href="/#/user/center/{{$root.currentUser.userName}}/teams">这里</a>新建一个队伍。
     </p>
@@ -53,8 +56,9 @@
     <button class="btn btn-default"
             ng-click="register()">Register</button>
   </div>
+
   <div class="col-md-12">
-    <h3>Registrant</h3>
+    <h3>Registrants</h3>
     <hr style="margin: 0;"/>
   </div>
   <list condition="contestTeamCondition"

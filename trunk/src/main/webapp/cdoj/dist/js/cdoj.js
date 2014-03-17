@@ -65358,22 +65358,13 @@ if (typeof exports === 'object') {
 
   cdoj.controller("ContestListController", [
     "$scope", "$rootScope", "$window", function($scope, $rootScope, $window) {
-      return $scope.toRegisterPage = function(contest) {
-        if ($rootScope.hasLogin === false) {
-          return $window.alert("Please login first!");
-        } else {
-          return $window.location.href = "/#/contest/register/" + contest.contestId;
-        }
-      };
+      return void 0;
     }
   ]);
 
   cdoj.controller("ContestRegisterController", [
     "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", function($scope, $rootScope, $http, $window, $modal, $routeParams) {
       var contestCondition, contestId;
-      if ($rootScope.hasLogin === false) {
-        $window.location.href = "/#/contest/list";
-      }
       contestId = $routeParams.contestId;
       $scope.contest = 0;
       contestCondition = angular.copy($rootScope.contestCondition);

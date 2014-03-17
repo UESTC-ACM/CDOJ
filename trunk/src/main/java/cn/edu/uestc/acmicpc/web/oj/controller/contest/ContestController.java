@@ -14,6 +14,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemSummaryDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReviewDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
@@ -22,6 +23,7 @@ import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
+import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
@@ -47,6 +49,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -70,6 +73,7 @@ public class ContestController extends BaseController {
   private TeamService teamService;
   private TeamUserService teamUserService;
   private ContestTeamService contestTeamService;
+  private MessageService messageService;
 
   @Autowired
   public ContestController(ContestService contestService,
@@ -80,7 +84,8 @@ public class ContestController extends BaseController {
                            GlobalService globalService,
                            TeamService teamService,
                            TeamUserService teamUserService,
-                           ContestTeamService contestTeamService) {
+                           ContestTeamService contestTeamService,
+                           MessageService messageService) {
     this.contestService = contestService;
     this.contestProblemService = contestProblemService;
     this.pictureService = pictureService;
@@ -91,6 +96,7 @@ public class ContestController extends BaseController {
     this.teamUserService = teamUserService;
     this.contestService = contestService;
     this.contestTeamService = contestTeamService;
+    this.messageService = messageService;
   }
 
   @RequestMapping("registryReview")
@@ -102,8 +108,32 @@ public class ContestController extends BaseController {
     try {
       ContestTeamDTO contestTeamDTO = contestTeamService.getContestTeamDTO(contestTeamReviewDTO.getContestTeamId());
       contestTeamDTO.setStatus(contestTeamReviewDTO.getStatus());
+      if (contestTeamReviewDTO.getComment() == null) {
+        contestTeamReviewDTO.setComment("");
+      }
       contestTeamDTO.setComment(contestTeamReviewDTO.getComment());
       contestTeamService.updateContestTeam(contestTeamDTO);
+
+      String messageTitle;
+      StringBuilder messageContentBuilder = new StringBuilder();
+      if (contestTeamReviewDTO.getStatus() == Global.ContestRegistryStatus.REFUSED.ordinal()) {
+        messageTitle = "Contest register request refused.";
+        messageContentBuilder.append("You register request has been refused, reason: ")
+            .append(contestTeamReviewDTO.getComment())
+            .append("\n\n")
+            .append("Please fix the issue and register again.");
+      } else {
+        messageTitle = "Contest register request accepted.";
+        messageContentBuilder.append("You register request has been accepted.");
+      }
+      messageService.createNewMessage(MessageDTO.builder()
+          .setSenderId(1) // Administrator
+          .setReceiverId(contestTeamDTO.getLeaderId())
+          .setTime(new Timestamp(System.currentTimeMillis()))
+          .setIsOpened(false)
+          .setTitle(messageTitle)
+          .setContent(messageContentBuilder.toString())
+          .build());
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
