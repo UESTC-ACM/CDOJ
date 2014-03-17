@@ -6,6 +6,7 @@ import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
+import cn.edu.uestc.acmicpc.service.iface.OnlineUsersService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -33,14 +34,17 @@ public class IndexController extends BaseController {
   private GlobalService globalService;
   private LanguageService languageService;
   private MessageService messageService;
+  private OnlineUsersService onlineUsersService;
 
   @Autowired
   public IndexController(DepartmentService departmentService, GlobalService globalService,
-                         LanguageService languageService, MessageService messageService) {
+                         LanguageService languageService, MessageService messageService,
+                         OnlineUsersService onlineUsersService) {
     this.departmentService = departmentService;
     this.globalService = globalService;
     this.languageService = languageService;
     this.messageService = messageService;
+    this.onlineUsersService = onlineUsersService;
   }
 
   @RequestMapping(value = {"index", "/"}, method = RequestMethod.GET)
@@ -80,6 +84,18 @@ public class IndexController extends BaseController {
       result.put("result", "error");
       result.put("error_msg", e.getMessage());
     }
+    return result;
+  }
+
+  @RequestMapping(value = "onlineUsersData")
+  @LoginPermit(NeedLogin = false)
+  public
+  @ResponseBody
+  Map<String, Object> onlineUsersData(HttpSession session) {
+    Map<String, Object> result = new HashMap<>();
+    Integer onlineUsersCount = onlineUsersService.getNumberOfOnlineUsers();
+    result.put("onlineUsersCount", onlineUsersCount);
+    result.put("result", "success");
     return result;
   }
 

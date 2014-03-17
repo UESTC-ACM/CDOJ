@@ -65053,7 +65053,7 @@ if (typeof exports === 'object') {
 
   cdoj.run([
     "$rootScope", "$http", "$interval", function($rootScope, $http, $interval) {
-      var fetchUserData;
+      var fetchOnlineUsersData, fetchUserData, fetchUserDataAndOnlineUsersData;
       _.extend($rootScope, GlobalVariables);
       _.extend($rootScope, GlobalConditions);
       $http.get("/globalData").then(function(response) {
@@ -65071,8 +65071,6 @@ if (typeof exports === 'object') {
           }
         });
       };
-      fetchUserData();
-      $interval(fetchUserData, 5000);
       $rootScope.$on("refreshUserData", function() {
         return fetchUserData();
       });
@@ -65080,7 +65078,7 @@ if (typeof exports === 'object') {
         $rootScope.$broadcast("refreshList");
         return $rootScope.$broadcast("refreshUserData");
       });
-      return $rootScope.$watch("hasLogin", function() {
+      $rootScope.$watch("hasLogin", function() {
         if ($rootScope.hasLogin && $rootScope.currentUser.type === 1) {
           $rootScope.isAdmin = true;
         } else {
@@ -65088,6 +65086,21 @@ if (typeof exports === 'object') {
         }
         return $rootScope.$broadcast("refresh");
       });
+      fetchOnlineUsersData = function() {
+        return $http.get("/onlineUsersData").then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            return _.extend($rootScope, data);
+          }
+        });
+      };
+      fetchUserDataAndOnlineUsersData = function() {
+        fetchUserData();
+        return fetchOnlineUsersData();
+      };
+      fetchUserDataAndOnlineUsersData();
+      return $interval(fetchUserDataAndOnlineUsersData, 5000);
     }
   ]).config([
     "$routeProvider", function($routeProvider) {
