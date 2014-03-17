@@ -66055,7 +66055,8 @@ if (typeof exports === 'object') {
             var data;
             data = response.data;
             if (data.result === "success") {
-              return $scope.memberList.add(user);
+              $scope.memberList.add(user);
+              return $rootScope.$broadcast("refreshList");
             } else {
               return $window.alert(data.error_msg);
             }
@@ -66073,7 +66074,8 @@ if (typeof exports === 'object') {
               var data;
               data = response.data;
               if (data.result === "success") {
-                return $scope.memberList.splice(index, 1);
+                $scope.memberList.splice(index, 1);
+                return $rootScope.$broadcast("refreshList");
               } else {
                 return $window.alert(data.error_msg);
               }
