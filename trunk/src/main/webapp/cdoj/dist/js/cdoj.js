@@ -66974,7 +66974,7 @@ if (typeof exports === 'object') {
       controller: [
         "$scope", "$rootScope", "$http", "$window", function($scope, $rootScope, $http, $window) {
           return $scope.rejudge = function() {
-            return $http.post("/status/count", $scope.condition).then(function(response) {
+            return $http.post("/status/rejudgeStatusCount", $scope.condition).then(function(response) {
               var data;
               data = response.data;
               if (data.result === "success") {
