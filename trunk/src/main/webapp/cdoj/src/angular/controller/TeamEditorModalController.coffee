@@ -42,6 +42,7 @@ cdoj
             data = response.data
             if data.result == "success"
               $scope.memberList.add user
+              $rootScope.$broadcast("refreshList")
             else
               $window.alert data.error_msg
       $scope.removeMember = (index)->
@@ -54,6 +55,7 @@ cdoj
               data = response.data
               if data.result == "success"
                 $scope.memberList.splice(index, 1);
+                $rootScope.$broadcast("refreshList")
               else
                 $window.alert data.error_msg
       $scope.deleteTeam = ->
