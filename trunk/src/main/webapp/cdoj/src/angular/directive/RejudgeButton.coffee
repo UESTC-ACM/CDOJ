@@ -7,7 +7,7 @@ cdoj.directive("uiRejudgeButton",
     "$scope", "$rootScope", "$http", "$window"
     ($scope, $rootScope, $http, $window) ->
       $scope.rejudge = ->
-        $http.post("/status/count", $scope.condition).then (response)->
+        $http.post("/status/rejudgeStatusCount", $scope.condition).then (response)->
           data = response.data
           if data.result == "success"
             if confirm("Rejudge all #{data.count} records")

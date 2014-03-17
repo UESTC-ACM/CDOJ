@@ -133,11 +133,11 @@ public class StatusController extends BaseController {
     return json;
   }
 
-  @RequestMapping("count")
+  @RequestMapping("rejudgeStatusCount")
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public
   @ResponseBody
-  Map<String, Object> count(@RequestBody StatusCondition statusCondition) {
+  Map<String, Object> rejudgeStatusCount(@RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
       // Current user is administrator
