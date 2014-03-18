@@ -1,6 +1,7 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 
 /**
@@ -38,4 +39,13 @@ public interface FileService {
    * @throws AppException
    */
   public Integer moveProblemDataFile(String uploadFolder, Integer problemId) throws AppException;
+
+
+  /**
+   * Upload contest archive ZIP file and return its FileInformationDTO.
+   * @param fileUploadDTO {@link FileUploadDTO} entity.
+   * @return the FileInformationDTO of the archive file.
+   * @throws AppException
+   */
+  public FileInformationDTO uploadContestArchive(FileUploadDTO fileUploadDTO) throws AppException;
 }
