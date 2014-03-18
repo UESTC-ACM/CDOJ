@@ -65103,6 +65103,14 @@ if (typeof exports === 'object') {
       return $interval(fetchUserDataAndOnlineUsersData, 5000);
     }
   ]).config([
+    "$httpProvider", function($httpProvider) {
+      if (!$httpProvider.defaults.headers.get) {
+        $httpProvider.defaults.headers.get = {};
+      }
+      $httpProvider.defaults.headers.get["Cache-Control"] = "no-cache";
+      return $httpProvider.defaults.headers.get["Pragma"] = "no-cache";
+    }
+  ]).config([
     "$routeProvider", function($routeProvider) {
       return $routeProvider.when("/", {
         templateUrl: "template/index/index.html",
