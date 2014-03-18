@@ -19,9 +19,11 @@ import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.service.iface.ContestImporterService;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
+import cn.edu.uestc.acmicpc.service.iface.FileService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
@@ -36,6 +38,8 @@ import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
+import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 import cn.edu.uestc.acmicpc.web.rank.RankListBuilder;
@@ -47,9 +51,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,6 +74,8 @@ public class ContestController extends BaseController {
 
   private ContestService contestService;
   private ContestProblemService contestProblemService;
+  private ContestImporterService contestImporterService;
+  private FileService fileService;
   private PictureService pictureService;
   private ProblemService problemService;
   private StatusService statusService;
@@ -78,6 +88,8 @@ public class ContestController extends BaseController {
   @Autowired
   public ContestController(ContestService contestService,
                            ContestProblemService contestProblemService,
+                           ContestImporterService contestImporterService,
+                           FileService fileService,
                            PictureService pictureService,
                            ProblemService problemService,
                            StatusService statusService,
@@ -88,6 +100,8 @@ public class ContestController extends BaseController {
                            MessageService messageService) {
     this.contestService = contestService;
     this.contestProblemService = contestProblemService;
+    this.contestImporterService = contestImporterService;
+    this.fileService = fileService;
     this.pictureService = pictureService;
     this.problemService = problemService;
     this.statusService = statusService;
@@ -550,6 +564,32 @@ public class ContestController extends BaseController {
         json.put("result", "error");
         json.put("error_msg", e.getMessage());
       }
+    }
+    return json;
+  }
+
+  @RequestMapping(value = "createContestByArchiveFile",
+      method = RequestMethod.POST)
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> createContestByArchiveFile(
+      @RequestParam(value = "uploadFile", required = true) MultipartFile[] files) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      FileInformationDTO fileInformationDTO = fileService.uploadContestArchive(
+          FileUploadDTO.builder()
+              .setFiles(Arrays.asList(files))
+              .build()
+      );
+      contestImporterService.parseContestZipArchive(fileInformationDTO);
+      json.put("success", "true");
+    } catch (AppException e) {
+      e.printStackTrace();
+      json.put("error", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("error", "Unknown exception occurred.");
     }
     return json;
   }
