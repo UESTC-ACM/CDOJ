@@ -7,6 +7,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.helper.FileUtil;
 import cn.edu.uestc.acmicpc.util.helper.ZipUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
+import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,6 +133,30 @@ public class FileServiceImpl extends AbstractService implements FileService {
     String dataPath = settings.JUDGE_DATA_PATH + "/" + problemId;
     String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/" + uploadFolder;
     return moveProblemDataFile(tempDirectory, dataPath);
+  }
+
+  @Override
+  public FileInformationDTO uploadContestArchive(FileUploadDTO fileUploadDTO) throws AppException {
+    List<MultipartFile> files = fileUploadDTO.getFiles();
+    if (files == null || files.size() > 1) {
+      throw new AppException("Fetch uploaded file error.");
+    }
+    MultipartFile file = files.get(0);
+    File targetFile = new File(getContestArchiveZipFileName());
+    if (targetFile.exists() && !targetFile.delete())
+      throw new AppException("Internal exception: target file exists and can not be deleted.");
+    try {
+      file.transferTo(targetFile);
+    } catch (IOException e) {
+      throw new AppException("Error while save files");
+    }
+    return FileInformationDTO.builder()
+        .setFileName(file.getOriginalFilename())
+        .build();
+  }
+
+  private String getContestArchiveZipFileName() {
+    return settings.SETTING_UPLOAD_FOLDER + "/contest_" + System.currentTimeMillis() + ".zip";
   }
 
   @Override
