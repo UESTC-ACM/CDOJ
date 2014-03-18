@@ -201,7 +201,7 @@ public class ContestListDTO implements BaseDTO<Contest> {
       description = (String) properties.get("description");
       type = (Byte) properties.get("type");
       time = (Timestamp) properties.get("time");
-      length = (Integer) properties.get("length");
+      length = (Integer) properties.get("length") * 1000;
       isVisible = (Boolean) properties.get("isVisible");
       typeName = Global.ContestType.values()[type].getDescription();
 

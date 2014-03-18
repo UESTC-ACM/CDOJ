@@ -80662,12 +80662,13 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("ContestShowController", [
-    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", function($scope, $rootScope, $http, $window, $modal, $routeParams) {
-      var rankListTimer, refreshRankList;
+    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$interval", "$timeout", function($scope, $rootScope, $http, $window, $modal, $routeParams, $interval, $timeout) {
+      var currentTimeTimer, rankListTimer, refreshRankList, updateTime;
       $scope.contestId = 0;
       $scope.contest = {
         title: "",
-        description: ""
+        description: "",
+        currentTime: new Date().getTime()
       };
       $scope.problemList = [];
       $scope.currentProblem = {
@@ -80680,51 +80681,60 @@ if (typeof exports === 'object') {
         hint: "",
         source: ""
       };
+      $scope.progressbar = {
+        max: 100,
+        value: 0,
+        type: "success",
+        active: true
+      };
       $scope.contestId = angular.copy($routeParams.contestId);
-      $scope.contestStatusCondition = angular.copy($rootScope.statusCondition);
-      $scope.contestStatusCondition.contestId = $scope.contestId;
       $http.get("/contest/data/" + $scope.contestId).then(function(response) {
         var data;
         data = response.data;
         if (data.result === "success") {
           $scope.contest = data.contest;
+          console.log($scope.contest);
           $scope.problemList = data.problemList;
-          $rootScope.title = data.contest.title;
           if (data.problemList.length > 0) {
             return $scope.currentProblem = data.problemList[0];
           }
         } else {
-          $window.alert(data.error_msg);
-          return clearInterval(rankListTimer);
+          return $window.alert(data.error_msg);
         }
       });
-      refreshRankList = function() {
-        var contestId;
-        contestId = angular.copy($scope.contestId);
-        return $http.get("/contest/rankList/" + contestId).then(function(response) {
-          var data;
-          data = response.data;
-          if (data.result === "success") {
-            $scope.rankList = data.rankList.rankList;
-            return _.each($scope.problemList, function(value, index) {
-              value.tried = data.rankList.problemList[index].tried;
-              return value.solved = data.rankList.problemList[index].solved;
-            });
-          } else {
-            return clearInterval(rankListTimer);
+      currentTimeTimer = void 0;
+      updateTime = function() {
+        var active, current, type;
+        $scope.contest.currentTime = $scope.contest.currentTime + 1000;
+        if ($scope.contest.status === $rootScope.ContestStatus.PENDING) {
+          current = 0;
+          type = "primary";
+          active = true;
+          if ($scope.contest.currentTime >= $scope.contest.startTime) {
+            $timeout(function() {
+              return $window.location.reload();
+            }, 500);
           }
-        });
+        } else if ($scope.contest.status === $rootScope.ContestStatus.RUNNING) {
+          current = $scope.contest.currentTime - $scope.contest.startTime;
+          type = "danger";
+          active = true;
+        } else {
+          current = $scope.contest.length;
+          type = "success";
+          active = false;
+        }
+        $scope.progressbar.value = current * 100 / $scope.contest.length;
+        $scope.progressbar.type = type;
+        return $scope.progressbar.active = active;
       };
-      refreshRankList();
-      rankListTimer = setInterval(refreshRankList, 5000);
+      currentTimeTimer = $interval(updateTime, 1000);
       $scope.$on("$destroy", function() {
-        return clearInterval(rankListTimer);
+        $interval.cancel(currentTimeTimer);
+        return $interval.cancel(rankListTimer);
       });
       $scope.showProblemTab = function() {
-        return $scope.$$childHead.tabs[1].select();
-      };
-      $scope.showStatusTab = function() {
-        return $scope.$$childHead.tabs[3].select();
+        return $scope.$$childHead.$$nextSibling.$$nextSibling.tabs[1].select();
       };
       $scope.chooseProblem = function(order) {
         $scope.showProblemTab();
@@ -80732,7 +80742,14 @@ if (typeof exports === 'object') {
           order: order
         });
       };
-      return $scope.openSubmitModal = function() {
+      $scope.$on("contestShow:showProblemTab", function(e, order) {
+        return $scope.chooseProblem(order);
+      });
+      $scope.showStatusTab = function() {
+        $scope.$$childHead.$$nextSibling.$$nextSibling.tabs[3].select();
+        return $scope.refreshStatus();
+      };
+      $scope.openSubmitModal = function() {
         return $modal.open({
           templateUrl: "template/modal/submit-modal.html",
           controller: "SubmitModalController",
@@ -80755,6 +80772,30 @@ if (typeof exports === 'object') {
           }
         });
       };
+      $scope.contestStatusCondition = angular.copy($rootScope.statusCondition);
+      $scope.contestStatusCondition.contestId = $scope.contestId;
+      $scope.refreshStatus = function() {
+        return $scope.$broadcast("refreshList");
+      };
+      refreshRankList = function() {
+        var contestId;
+        contestId = angular.copy($scope.contestId);
+        return $http.get("/contest/rankList/" + contestId).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            $scope.rankList = data.rankList.rankList;
+            return _.each($scope.problemList, function(value, index) {
+              value.tried = data.rankList.problemList[index].tried;
+              return value.solved = data.rankList.problemList[index].solved;
+            });
+          } else {
+            return clearInterval(rankListTimer);
+          }
+        });
+      };
+      refreshRankList();
+      return rankListTimer = $interval(refreshRankList, 5000);
     }
   ]);
 
@@ -80781,7 +80822,7 @@ if (typeof exports === 'object') {
           });
           return $scope.select = function() {
             if ($scope.order !== -1) {
-              return angular.element("#contest-show").scope().chooseProblem($scope.order);
+              return $scope.$emit("contestShow:showProblemTab", $scope.order);
             }
           };
         }
@@ -82595,7 +82636,7 @@ if (typeof exports === 'object') {
           });
           return $scope.showTimeLength = function() {
             var days, hours, length, minute, second;
-            length = parseInt($scope.length);
+            length = Math.floor(parseInt($scope.length) / 1000);
             second = length % 60;
             length = (length - second) / 60;
             minute = length % 60;
