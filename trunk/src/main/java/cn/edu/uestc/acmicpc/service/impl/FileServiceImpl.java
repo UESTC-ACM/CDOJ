@@ -42,12 +42,14 @@ public class FileServiceImpl extends AbstractService implements FileService {
   public Integer uploadProblemDataFile(FileUploadDTO fileUploadDTO, String problemId)
       throws AppException {
     List<MultipartFile> files = fileUploadDTO.getFiles();
-    if (files == null || files.size() > 1)
+    if (files == null || files.size() > 1) {
       throw new AppException("Fetch uploaded file error.");
+    }
     MultipartFile file = files.get(0);
     File targetFile = new File(getDataZipFileName(problemId));
-    if (targetFile.exists() && !targetFile.delete())
+    if (targetFile.exists() && !targetFile.delete()) {
       throw new AppException("Internal exception: target file exists and can not be deleted.");
+    }
     try {
       file.transferTo(targetFile);
     } catch (IOException e) {
@@ -97,18 +99,21 @@ public class FileServiceImpl extends AbstractService implements FileService {
       for (String file : fileMap.keySet()) {
         File fromFile = new File(tempDirectory + '/' + file + ".in");
         File toFile = new File(dataPath + '/' + fileMap.get(file) + ".in");
-        if (!fromFile.renameTo(toFile))
+        if (!fromFile.renameTo(toFile)) {
           throw new AppException("Cannot rename file: " + file + ".in");
+        }
         fromFile = new File(tempDirectory + '/' + file + ".out");
         toFile = new File(dataPath + '/' + fileMap.get(file) + ".out");
-        if (!fromFile.renameTo(toFile))
+        if (!fromFile.renameTo(toFile)) {
           throw new AppException("Cannot rename file: " + file + ".out");
+        }
       }
       if (foundSpj) {
         File fromFile = new File(tempDirectory + "/spj.cc");
         File toFile = new File(dataPath + "/spj.cc");
-        if (!fromFile.renameTo(toFile))
+        if (!fromFile.renameTo(toFile)) {
           throw new AppException("Cannot rename SPJ.cc");
+        }
       }
       FileUtil.clearDirectory(tempDirectory);
     }
@@ -143,8 +148,9 @@ public class FileServiceImpl extends AbstractService implements FileService {
     }
     MultipartFile file = files.get(0);
     File targetFile = new File(getContestArchiveZipFileName());
-    if (targetFile.exists() && !targetFile.delete())
+    if (targetFile.exists() && !targetFile.delete()) {
       throw new AppException("Internal exception: target file exists and can not be deleted.");
+    }
     try {
       file.transferTo(targetFile);
     } catch (IOException e) {
@@ -163,8 +169,9 @@ public class FileServiceImpl extends AbstractService implements FileService {
   public void moveFile(String source, String target) throws AppException {
     File sourceFile = new File(settings.SETTING_ABSOLUTE_PATH + source);
     File targetFile = new File(settings.SETTING_ABSOLUTE_PATH + target);
-    if (!sourceFile.renameTo(targetFile))
+    if (!sourceFile.renameTo(targetFile)) {
       throw new AppException("Can not move file!");
+    }
   }
 
 }
