@@ -77,6 +77,36 @@ public class TeamListDTO implements BaseDTO<Team> {
     this.leaderId = leaderId;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    TeamListDTO that = (TeamListDTO) o;
+
+    if (allow != null ? !allow.equals(that.allow) : that.allow != null) return false;
+    if (invitedUsers != null ? !invitedUsers.equals(that.invitedUsers) : that.invitedUsers != null)
+      return false;
+    if (leaderId != null ? !leaderId.equals(that.leaderId) : that.leaderId != null) return false;
+    if (teamId != null ? !teamId.equals(that.teamId) : that.teamId != null) return false;
+    if (teamName != null ? !teamName.equals(that.teamName) : that.teamName != null) return false;
+    if (teamUsers != null ? !teamUsers.equals(that.teamUsers) : that.teamUsers != null)
+      return false;
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = teamId != null ? teamId.hashCode() : 0;
+    result = 31 * result + (teamName != null ? teamName.hashCode() : 0);
+    result = 31 * result + (leaderId != null ? leaderId.hashCode() : 0);
+    result = 31 * result + (teamUsers != null ? teamUsers.hashCode() : 0);
+    result = 31 * result + (invitedUsers != null ? invitedUsers.hashCode() : 0);
+    result = 31 * result + (allow != null ? allow.hashCode() : 0);
+    return result;
+  }
+
   public static Builder builder() {
     return new Builder();
   }
