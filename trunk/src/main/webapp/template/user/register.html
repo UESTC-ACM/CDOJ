@@ -14,6 +14,7 @@
              id="userName"
              ng-required="true"
              ng-pattern="/^[a-zA-Z0-9_]{4,24}$/"
+             auto-fill-sync
              class="form-control input-sm"/>
       <ui-validate-info value="fieldInfo" for="userName"></ui-validate-info>
     </div>
@@ -29,6 +30,7 @@
              ng-required="true"
              ng-minlength="6"
              ng-maxlength="24"
+             auto-fill-sync
              class="form-control input-sm"/>
       <ui-validate-info value="fieldInfo" for="password"></ui-validate-info>
     </div>
@@ -44,6 +46,7 @@
              ng-required="true"
              ng-minlength="6"
              ng-maxlength="24"
+             auto-fill-sync
              equals="{{userRegisterDTO.password}}"
              class="form-control input-sm"/>
       <ui-validate-info value="fieldInfo" for="passwordRepeat"></ui-validate-info>
@@ -61,6 +64,7 @@
              ng-required="true"
              ng-maxlength="20"
              ng-minlength="2"
+             auto-fill-sync
              class="form-control input-sm"/>
       <ui-validate-info value="fieldInfo" for="nickName"></ui-validate-info>
     </div>
@@ -74,6 +78,7 @@
              ng-model="userRegisterDTO.email"
              id="email"
              ng-required="true"
+             auto-fill-sync
              class="form-control input-sm"/>
       <ui-validate-info value="fieldInfo" for="email"></ui-validate-info>
       <spanp class="help-block">
@@ -108,6 +113,7 @@
              ng-required="true"
              ng-maxlength="50"
              ng-minlength="1"
+             auto-fill-sync
              class="form-control input-sm"/>
       <ui-validate-info value="fieldInfo" for="name"></ui-validate-info>
     </div>
@@ -151,6 +157,7 @@
              ng-required="true"
              ng-maxlength="45"
              ng-minlength="1"
+             auto-fill-sync
              class="form-control input-sm"/>
       <ui-validate-info value="fieldInfo" for="phone"></ui-validate-info>
     </div>
@@ -166,6 +173,7 @@
              ng-required="true"
              ng-maxlength="100"
              ng-minlength="1"
+             auto-fill-sync
              class="form-control input-sm"/>
       <ui-validate-info value="fieldInfo" for="school"></ui-validate-info>
     </div>
@@ -209,6 +217,7 @@
              ng-required="true"
              ng-maxlength="20"
              ng-minlength="1"
+             auto-fill-sync
              class="form-control input-sm"/>
       <ui-validate-info value="fieldInfo" for="studentId"></ui-validate-info>
     </div>
