@@ -65390,7 +65390,52 @@ if (typeof exports === 'object') {
     }
   ]);
 
-  cdoj.controller("AddContestModalController", ["$scope", "$rootScope", "$modalInstance", function($scope, $rootScope, $modalInstance) {}]);
+  cdoj.controller("AddContestModalController", [
+    "$scope", "$rootScope", "$modalInstance", "$window", function($scope, $rootScope, $modalInstance, $window) {
+      $scope.$on("$routeChangeStart", function() {
+        return $modalInstance.close();
+      });
+      return $scope.$on("contestUploader:complete", function(e, contestId) {
+        console.log("Fuck");
+        return $window.location.href = "/#/contest/show/" + contestId;
+      });
+    }
+  ]);
+
+  cdoj.directive("uiContestUploader", [
+    "$window", function($window) {
+      return {
+        restrict: "E",
+        replace: true,
+        link: function($scope, $element) {
+          var contestUploader;
+          return contestUploader = new qq.FineUploaderBasic({
+            button: $($element)[0],
+            request: {
+              endpoint: "/contest/createContestByArchiveFile",
+              inputName: "uploadFile"
+            },
+            validation: {
+              allowedExtensions: ["zip"],
+              sizeLimit: 100 * 1000 * 1000
+            },
+            multiple: false,
+            callbacks: {
+              onComplete: function(id, fileName, data) {
+                console.log(data);
+                if (data.success === "true") {
+                  return $scope.$emit("contestUploader:complete", data.contestId);
+                } else {
+                  return $window.alert(data.error_msg);
+                }
+              }
+            }
+          });
+        },
+        template: "<button class=\"btn btn-danger\">Upload zip file</button>"
+      };
+    }
+  ]);
 
   cdoj.controller("ContestRegisterController", [
     "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", function($scope, $rootScope, $http, $window, $modal, $routeParams) {
