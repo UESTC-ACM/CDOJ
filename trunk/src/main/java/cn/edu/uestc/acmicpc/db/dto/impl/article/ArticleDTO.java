@@ -150,25 +150,45 @@ public class ArticleDTO implements BaseDTO<Article> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     ArticleDTO that = (ArticleDTO) o;
 
-    if (articleId != null ? !articleId.equals(that.articleId) : that.articleId != null)
+    if (articleId != null ? !articleId.equals(that.articleId) : that.articleId != null) {
       return false;
-    if (content != null ? !content.equals(that.content) : that.content != null) return false;
-    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null)
+    }
+    if (content != null ? !content.equals(that.content) : that.content != null) {
       return false;
-    if (isVisible != null ? !isVisible.equals(that.isVisible) : that.isVisible != null)
+    }
+    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null) {
       return false;
-    if (order != null ? !order.equals(that.order) : that.order != null) return false;
-    if (parentId != null ? !parentId.equals(that.parentId) : that.parentId != null) return false;
-    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null)
+    }
+    if (isVisible != null ? !isVisible.equals(that.isVisible) : that.isVisible != null) {
       return false;
-    if (title != null ? !title.equals(that.title) : that.title != null) return false;
-    if (type != null ? !type.equals(that.type) : that.type != null) return false;
-    if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+    }
+    if (order != null ? !order.equals(that.order) : that.order != null) {
+      return false;
+    }
+    if (parentId != null ? !parentId.equals(that.parentId) : that.parentId != null) {
+      return false;
+    }
+    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null) {
+      return false;
+    }
+    if (title != null ? !title.equals(that.title) : that.title != null) {
+      return false;
+    }
+    if (type != null ? !type.equals(that.type) : that.type != null) {
+      return false;
+    }
+    if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
+      return false;
+    }
 
     return true;
   }

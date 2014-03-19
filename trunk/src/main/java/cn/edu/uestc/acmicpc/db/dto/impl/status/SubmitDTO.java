@@ -63,19 +63,27 @@ public class SubmitDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     SubmitDTO submitDTO = (SubmitDTO) o;
 
-    if (codeContent != null ? !codeContent.equals(submitDTO.codeContent) : submitDTO.codeContent != null)
+    if (codeContent != null ? !codeContent.equals(submitDTO.codeContent) : submitDTO.codeContent != null) {
       return false;
-    if (contestId != null ? !contestId.equals(submitDTO.contestId) : submitDTO.contestId != null)
+    }
+    if (contestId != null ? !contestId.equals(submitDTO.contestId) : submitDTO.contestId != null) {
       return false;
-    if (languageId != null ? !languageId.equals(submitDTO.languageId) : submitDTO.languageId != null)
+    }
+    if (languageId != null ? !languageId.equals(submitDTO.languageId) : submitDTO.languageId != null) {
       return false;
-    if (problemId != null ? !problemId.equals(submitDTO.problemId) : submitDTO.problemId != null)
+    }
+    if (problemId != null ? !problemId.equals(submitDTO.problemId) : submitDTO.problemId != null) {
       return false;
+    }
 
     return true;
   }

@@ -18,7 +18,8 @@ public class ContestUserDTO implements BaseDTO<ContestUser> {
   private Integer userId;
   private Byte status;
 
-  public ContestUserDTO() {}
+  public ContestUserDTO() {
+  }
 
   public ContestUserDTO(Integer contestUserId, Integer contestId, Integer userId,
                         Byte status) {
@@ -62,17 +63,27 @@ public class ContestUserDTO implements BaseDTO<ContestUser> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     ContestUserDTO that = (ContestUserDTO) o;
 
-    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null)
+    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null) {
       return false;
-    if (contestUserId != null ? !contestUserId.equals(that.contestUserId) : that.contestUserId != null)
+    }
+    if (contestUserId != null ? !contestUserId.equals(that.contestUserId) : that.contestUserId != null) {
       return false;
-    if (status != null ? !status.equals(that.status) : that.status != null) return false;
-    if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+    }
+    if (status != null ? !status.equals(that.status) : that.status != null) {
+      return false;
+    }
+    if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
+      return false;
+    }
 
     return true;
   }

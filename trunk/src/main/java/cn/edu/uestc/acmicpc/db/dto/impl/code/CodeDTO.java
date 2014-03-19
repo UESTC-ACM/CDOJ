@@ -54,14 +54,24 @@ public class CodeDTO implements BaseDTO<Code> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     CodeDTO codeDTO = (CodeDTO) o;
 
-    if (codeId != null ? !codeId.equals(codeDTO.codeId) : codeDTO.codeId != null) return false;
-    if (content != null ? !content.equals(codeDTO.content) : codeDTO.content != null) return false;
-    if (share != null ? !share.equals(codeDTO.share) : codeDTO.share != null) return false;
+    if (codeId != null ? !codeId.equals(codeDTO.codeId) : codeDTO.codeId != null) {
+      return false;
+    }
+    if (content != null ? !content.equals(codeDTO.content) : codeDTO.content != null) {
+      return false;
+    }
+    if (share != null ? !share.equals(codeDTO.share) : codeDTO.share != null) {
+      return false;
+    }
 
     return true;
   }

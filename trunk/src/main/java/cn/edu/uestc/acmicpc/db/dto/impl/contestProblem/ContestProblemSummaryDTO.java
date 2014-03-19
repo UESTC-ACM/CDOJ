@@ -67,16 +67,27 @@ public class ContestProblemSummaryDTO implements BaseDTO<ContestProblem> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     ContestProblemSummaryDTO that = (ContestProblemSummaryDTO) o;
 
-    if (order != null ? !order.equals(that.order) : that.order != null) return false;
-    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null)
+    if (order != null ? !order.equals(that.order) : that.order != null) {
       return false;
-    if (source != null ? !source.equals(that.source) : that.source != null) return false;
-    if (title != null ? !title.equals(that.title) : that.title != null) return false;
+    }
+    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null) {
+      return false;
+    }
+    if (source != null ? !source.equals(that.source) : that.source != null) {
+      return false;
+    }
+    if (title != null ? !title.equals(that.title) : that.title != null) {
+      return false;
+    }
 
     return true;
   }
@@ -124,6 +135,7 @@ public class ContestProblemSummaryDTO implements BaseDTO<ContestProblem> {
       this.order = order;
       return this;
     }
+
     public Builder setTitle(String title) {
       this.title = title;
       return this;
