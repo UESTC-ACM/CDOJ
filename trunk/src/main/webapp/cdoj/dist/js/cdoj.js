@@ -66389,6 +66389,25 @@ if (typeof exports === 'object') {
     }
   ]);
 
+  cdoj.directive("autoFillSync", [
+    "$timeout", function($timeout) {
+      return {
+        require: "ngModel",
+        link: function($scope, $elem, $attrs, $ngModel) {
+          var origVal;
+          origVal = $elem.val();
+          return $timeout(function() {
+            var newVal;
+            newVal = $elem.val();
+            if ($ngModel.$pristine && origVal !== newVal) {
+              return $ngModel.$setViewValue(newVal);
+            }
+          }, 500);
+        }
+      };
+    }
+  ]);
+
   cdoj.directive("uiAvatar", function() {
     return {
       restrict: "A",
