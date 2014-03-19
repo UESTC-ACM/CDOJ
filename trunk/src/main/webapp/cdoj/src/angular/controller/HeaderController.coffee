@@ -12,8 +12,10 @@ cdoj
       $scope.fieldInfo = []
 
       $scope.login = ->
+        # Force update form
+        $scope.userLoginDTO.userName = $("#userName").val()
+        $scope.userLoginDTO.password = $("#password").val()
         userLoginDTO = angular.copy($scope.userLoginDTO)
-        if angular.isUndefined userLoginDTO.password then return
         password = CryptoJS.SHA1(userLoginDTO.password).toString()
         userLoginDTO.password = password
         $http.post("/user/login", userLoginDTO).then (response)->
