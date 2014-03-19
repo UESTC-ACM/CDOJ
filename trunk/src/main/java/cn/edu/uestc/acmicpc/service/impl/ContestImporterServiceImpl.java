@@ -101,7 +101,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
       throw new AppException("Create zipFile object failed.");
     }
     String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/"
-         + fileInformationDTO.getFileName();
+        + fileInformationDTO.getFileName().replaceAll(".zip", "");
     ZipUtil.unzipFile(zipFile, tempDirectory, new ContestZipChecker());
     ContestDTO contestDTO;
     try {
