@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * DTO for team list
  */
-@Fields({ "team.teamId", "team.teamName", "team.leaderId"})
+@Fields({"team.teamId", "team.teamName", "team.leaderId"})
 public class TeamListDTO implements BaseDTO<Team> {
 
   private Integer teamId;
@@ -79,19 +79,33 @@ public class TeamListDTO implements BaseDTO<Team> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     TeamListDTO that = (TeamListDTO) o;
 
-    if (allow != null ? !allow.equals(that.allow) : that.allow != null) return false;
-    if (invitedUsers != null ? !invitedUsers.equals(that.invitedUsers) : that.invitedUsers != null)
+    if (allow != null ? !allow.equals(that.allow) : that.allow != null) {
       return false;
-    if (leaderId != null ? !leaderId.equals(that.leaderId) : that.leaderId != null) return false;
-    if (teamId != null ? !teamId.equals(that.teamId) : that.teamId != null) return false;
-    if (teamName != null ? !teamName.equals(that.teamName) : that.teamName != null) return false;
-    if (teamUsers != null ? !teamUsers.equals(that.teamUsers) : that.teamUsers != null)
+    }
+    if (invitedUsers != null ? !invitedUsers.equals(that.invitedUsers) : that.invitedUsers != null) {
       return false;
+    }
+    if (leaderId != null ? !leaderId.equals(that.leaderId) : that.leaderId != null) {
+      return false;
+    }
+    if (teamId != null ? !teamId.equals(that.teamId) : that.teamId != null) {
+      return false;
+    }
+    if (teamName != null ? !teamName.equals(that.teamName) : that.teamName != null) {
+      return false;
+    }
+    if (teamUsers != null ? !teamUsers.equals(that.teamUsers) : that.teamUsers != null) {
+      return false;
+    }
 
     return true;
   }

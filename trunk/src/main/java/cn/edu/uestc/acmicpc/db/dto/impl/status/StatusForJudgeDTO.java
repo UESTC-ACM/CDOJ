@@ -232,44 +232,72 @@ public class StatusForJudgeDTO implements BaseDTO<Status> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     StatusForJudgeDTO that = (StatusForJudgeDTO) o;
 
-    if (caseNumber != null ? !caseNumber.equals(that.caseNumber) : that.caseNumber != null)
+    if (caseNumber != null ? !caseNumber.equals(that.caseNumber) : that.caseNumber != null) {
       return false;
-    if (codeContent != null ? !codeContent.equals(that.codeContent) : that.codeContent != null)
+    }
+    if (codeContent != null ? !codeContent.equals(that.codeContent) : that.codeContent != null) {
       return false;
-    if (compileInfoId != null ? !compileInfoId.equals(that.compileInfoId) : that.compileInfoId != null)
+    }
+    if (compileInfoId != null ? !compileInfoId.equals(that.compileInfoId) : that.compileInfoId != null) {
       return false;
-    if (dataCount != null ? !dataCount.equals(that.dataCount) : that.dataCount != null)
+    }
+    if (dataCount != null ? !dataCount.equals(that.dataCount) : that.dataCount != null) {
       return false;
-    if (isSpj != null ? !isSpj.equals(that.isSpj) : that.isSpj != null) return false;
-    if (javaMemoryLimit != null ? !javaMemoryLimit.equals(that.javaMemoryLimit) : that.javaMemoryLimit != null)
+    }
+    if (isSpj != null ? !isSpj.equals(that.isSpj) : that.isSpj != null) {
       return false;
-    if (javaTimeLimit != null ? !javaTimeLimit.equals(that.javaTimeLimit) : that.javaTimeLimit != null)
+    }
+    if (javaMemoryLimit != null ? !javaMemoryLimit.equals(that.javaMemoryLimit) : that.javaMemoryLimit != null) {
       return false;
-    if (languageExtension != null ? !languageExtension.equals(that.languageExtension) : that.languageExtension != null)
+    }
+    if (javaTimeLimit != null ? !javaTimeLimit.equals(that.javaTimeLimit) : that.javaTimeLimit != null) {
       return false;
-    if (languageId != null ? !languageId.equals(that.languageId) : that.languageId != null)
+    }
+    if (languageExtension != null ? !languageExtension.equals(that.languageExtension) : that.languageExtension != null) {
       return false;
-    if (languageName != null ? !languageName.equals(that.languageName) : that.languageName != null)
+    }
+    if (languageId != null ? !languageId.equals(that.languageId) : that.languageId != null) {
       return false;
-    if (memoryCost != null ? !memoryCost.equals(that.memoryCost) : that.memoryCost != null)
+    }
+    if (languageName != null ? !languageName.equals(that.languageName) : that.languageName != null) {
       return false;
-    if (memoryLimit != null ? !memoryLimit.equals(that.memoryLimit) : that.memoryLimit != null)
+    }
+    if (memoryCost != null ? !memoryCost.equals(that.memoryCost) : that.memoryCost != null) {
       return false;
-    if (outputLimit != null ? !outputLimit.equals(that.outputLimit) : that.outputLimit != null)
+    }
+    if (memoryLimit != null ? !memoryLimit.equals(that.memoryLimit) : that.memoryLimit != null) {
       return false;
-    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null)
+    }
+    if (outputLimit != null ? !outputLimit.equals(that.outputLimit) : that.outputLimit != null) {
       return false;
-    if (result != null ? !result.equals(that.result) : that.result != null) return false;
-    if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) return false;
-    if (timeCost != null ? !timeCost.equals(that.timeCost) : that.timeCost != null) return false;
-    if (timeLimit != null ? !timeLimit.equals(that.timeLimit) : that.timeLimit != null)
+    }
+    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null) {
       return false;
-    if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+    }
+    if (result != null ? !result.equals(that.result) : that.result != null) {
+      return false;
+    }
+    if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) {
+      return false;
+    }
+    if (timeCost != null ? !timeCost.equals(that.timeCost) : that.timeCost != null) {
+      return false;
+    }
+    if (timeLimit != null ? !timeLimit.equals(that.timeLimit) : that.timeLimit != null) {
+      return false;
+    }
+    if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
+      return false;
+    }
 
     return true;
   }

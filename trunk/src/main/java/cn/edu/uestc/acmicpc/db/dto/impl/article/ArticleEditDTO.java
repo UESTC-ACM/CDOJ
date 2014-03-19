@@ -57,16 +57,27 @@ public class ArticleEditDTO implements BaseDTO<Article> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     ArticleEditDTO that = (ArticleEditDTO) o;
 
-    if (action != null ? !action.equals(that.action) : that.action != null) return false;
-    if (articleId != null ? !articleId.equals(that.articleId) : that.articleId != null)
+    if (action != null ? !action.equals(that.action) : that.action != null) {
       return false;
-    if (content != null ? !content.equals(that.content) : that.content != null) return false;
-    if (title != null ? !title.equals(that.title) : that.title != null) return false;
+    }
+    if (articleId != null ? !articleId.equals(that.articleId) : that.articleId != null) {
+      return false;
+    }
+    if (content != null ? !content.equals(that.content) : that.content != null) {
+      return false;
+    }
+    if (title != null ? !title.equals(that.title) : that.title != null) {
+      return false;
+    }
 
     return true;
   }

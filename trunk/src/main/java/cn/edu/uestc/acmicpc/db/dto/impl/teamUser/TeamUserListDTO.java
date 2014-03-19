@@ -88,19 +88,36 @@ public class TeamUserListDTO implements BaseDTO<TeamUser> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     TeamUserListDTO that = (TeamUserListDTO) o;
 
-    if (allow != null ? !allow.equals(that.allow) : that.allow != null) return false;
-    if (email != null ? !email.equals(that.email) : that.email != null) return false;
-    if (nickName != null ? !nickName.equals(that.nickName) : that.nickName != null) return false;
-    if (teamId != null ? !teamId.equals(that.teamId) : that.teamId != null) return false;
-    if (teamUserId != null ? !teamUserId.equals(that.teamUserId) : that.teamUserId != null)
+    if (allow != null ? !allow.equals(that.allow) : that.allow != null) {
       return false;
-    if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
-    if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
+    }
+    if (email != null ? !email.equals(that.email) : that.email != null) {
+      return false;
+    }
+    if (nickName != null ? !nickName.equals(that.nickName) : that.nickName != null) {
+      return false;
+    }
+    if (teamId != null ? !teamId.equals(that.teamId) : that.teamId != null) {
+      return false;
+    }
+    if (teamUserId != null ? !teamUserId.equals(that.teamUserId) : that.teamUserId != null) {
+      return false;
+    }
+    if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
+      return false;
+    }
+    if (userName != null ? !userName.equals(that.userName) : that.userName != null) {
+      return false;
+    }
 
     return true;
   }

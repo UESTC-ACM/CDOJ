@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
 import java.util.Map;
 
-@Fields({ "teamId", "teamName", "leaderId" })
+@Fields({"teamId", "teamName", "leaderId"})
 public class TeamDTO implements BaseDTO<Team> {
 
   public TeamDTO() {
@@ -49,16 +49,24 @@ public class TeamDTO implements BaseDTO<Team> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     TeamDTO teamDTO = (TeamDTO) o;
 
-    if (leaderId != null ? !leaderId.equals(teamDTO.leaderId) : teamDTO.leaderId != null)
+    if (leaderId != null ? !leaderId.equals(teamDTO.leaderId) : teamDTO.leaderId != null) {
       return false;
-    if (teamId != null ? !teamId.equals(teamDTO.teamId) : teamDTO.teamId != null) return false;
-    if (teamName != null ? !teamName.equals(teamDTO.teamName) : teamDTO.teamName != null)
+    }
+    if (teamId != null ? !teamId.equals(teamDTO.teamId) : teamDTO.teamId != null) {
       return false;
+    }
+    if (teamName != null ? !teamName.equals(teamDTO.teamName) : teamDTO.teamName != null) {
+      return false;
+    }
 
     return true;
   }

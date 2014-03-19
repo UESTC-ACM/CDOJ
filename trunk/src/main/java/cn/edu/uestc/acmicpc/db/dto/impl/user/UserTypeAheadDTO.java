@@ -30,6 +30,10 @@ public class UserTypeAheadDTO implements BaseDTO<User> {
     this.nickName = nickName;
   }
 
+  public static Builder builder() {
+    return new Builder();
+  }
+
   public Integer getUserId() {
     return userId;
   }
@@ -64,15 +68,27 @@ public class UserTypeAheadDTO implements BaseDTO<User> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     UserTypeAheadDTO that = (UserTypeAheadDTO) o;
 
-    if (email != null ? !email.equals(that.email) : that.email != null) return false;
-    if (nickName != null ? !nickName.equals(that.nickName) : that.nickName != null) return false;
-    if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
-    if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
+    if (email != null ? !email.equals(that.email) : that.email != null) {
+      return false;
+    }
+    if (nickName != null ? !nickName.equals(that.nickName) : that.nickName != null) {
+      return false;
+    }
+    if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
+      return false;
+    }
+    if (userName != null ? !userName.equals(that.userName) : that.userName != null) {
+      return false;
+    }
 
     return true;
   }
@@ -86,19 +102,15 @@ public class UserTypeAheadDTO implements BaseDTO<User> {
     return result;
   }
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
   public static class Builder implements BaseBuilder<UserTypeAheadDTO> {
-
-    private Builder() {
-    }
 
     private Integer userId;
     private String email;
     private String userName;
     private String nickName;
+
+    private Builder() {
+    }
 
     @Override
     public UserTypeAheadDTO build() {

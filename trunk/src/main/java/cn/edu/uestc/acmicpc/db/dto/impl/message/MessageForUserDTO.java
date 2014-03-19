@@ -123,27 +123,45 @@ public class MessageForUserDTO implements BaseDTO<Message> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     MessageForUserDTO that = (MessageForUserDTO) o;
 
-    if (isOpened != null ? !isOpened.equals(that.isOpened) : that.isOpened != null) return false;
-    if (messageId != null ? !messageId.equals(that.messageId) : that.messageId != null)
+    if (isOpened != null ? !isOpened.equals(that.isOpened) : that.isOpened != null) {
       return false;
-    if (receiverEmail != null ? !receiverEmail.equals(that.receiverEmail) : that.receiverEmail != null)
+    }
+    if (messageId != null ? !messageId.equals(that.messageId) : that.messageId != null) {
       return false;
-    if (receiverId != null ? !receiverId.equals(that.receiverId) : that.receiverId != null)
+    }
+    if (receiverEmail != null ? !receiverEmail.equals(that.receiverEmail) : that.receiverEmail != null) {
       return false;
-    if (receiverUserName != null ? !receiverUserName.equals(that.receiverUserName) : that.receiverUserName != null)
+    }
+    if (receiverId != null ? !receiverId.equals(that.receiverId) : that.receiverId != null) {
       return false;
-    if (senderEmail != null ? !senderEmail.equals(that.senderEmail) : that.senderEmail != null)
+    }
+    if (receiverUserName != null ? !receiverUserName.equals(that.receiverUserName) : that.receiverUserName != null) {
       return false;
-    if (senderId != null ? !senderId.equals(that.senderId) : that.senderId != null) return false;
-    if (senderUserName != null ? !senderUserName.equals(that.senderUserName) : that.senderUserName != null)
+    }
+    if (senderEmail != null ? !senderEmail.equals(that.senderEmail) : that.senderEmail != null) {
       return false;
-    if (time != null ? !time.equals(that.time) : that.time != null) return false;
-    if (title != null ? !title.equals(that.title) : that.title != null) return false;
+    }
+    if (senderId != null ? !senderId.equals(that.senderId) : that.senderId != null) {
+      return false;
+    }
+    if (senderUserName != null ? !senderUserName.equals(that.senderUserName) : that.senderUserName != null) {
+      return false;
+    }
+    if (time != null ? !time.equals(that.time) : that.time != null) {
+      return false;
+    }
+    if (title != null ? !title.equals(that.title) : that.title != null) {
+      return false;
+    }
 
     return true;
   }

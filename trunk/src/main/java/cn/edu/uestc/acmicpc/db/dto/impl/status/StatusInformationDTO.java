@@ -65,17 +65,27 @@ public class StatusInformationDTO implements BaseDTO<Status> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     StatusInformationDTO that = (StatusInformationDTO) o;
 
-    if (codeContent != null ? !codeContent.equals(that.codeContent) : that.codeContent != null)
+    if (codeContent != null ? !codeContent.equals(that.codeContent) : that.codeContent != null) {
       return false;
-    if (compileInfoId != null ? !compileInfoId.equals(that.compileInfoId) : that.compileInfoId != null)
+    }
+    if (compileInfoId != null ? !compileInfoId.equals(that.compileInfoId) : that.compileInfoId != null) {
       return false;
-    if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) return false;
-    if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+    }
+    if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) {
+      return false;
+    }
+    if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
+      return false;
+    }
 
     return true;
   }

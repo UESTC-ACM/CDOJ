@@ -227,30 +227,69 @@ public class UserDTO implements BaseDTO<User> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     UserDTO userDTO = (UserDTO) o;
 
-    if (departmentId != null ? !departmentId.equals(userDTO.departmentId) : userDTO.departmentId != null) return false;
-    if (departmentName != null ? !departmentName.equals(userDTO.departmentName) : userDTO.departmentName != null)
+    if (departmentId != null ? !departmentId.equals(userDTO.departmentId) : userDTO.departmentId != null) {
       return false;
-    if (email != null ? !email.equals(userDTO.email) : userDTO.email != null) return false;
-    if (grade != null ? !grade.equals(userDTO.grade) : userDTO.grade != null) return false;
-    if (motto != null ? !motto.equals(userDTO.motto) : userDTO.motto != null) return false;
-    if (name != null ? !name.equals(userDTO.name) : userDTO.name != null) return false;
-    if (nickName != null ? !nickName.equals(userDTO.nickName) : userDTO.nickName != null) return false;
-    if (password != null ? !password.equals(userDTO.password) : userDTO.password != null) return false;
-    if (phone != null ? !phone.equals(userDTO.phone) : userDTO.phone != null) return false;
-    if (school != null ? !school.equals(userDTO.school) : userDTO.school != null) return false;
-    if (sex != null ? !sex.equals(userDTO.sex) : userDTO.sex != null) return false;
-    if (size != null ? !size.equals(userDTO.size) : userDTO.size != null) return false;
-    if (solved != null ? !solved.equals(userDTO.solved) : userDTO.solved != null) return false;
-    if (studentId != null ? !studentId.equals(userDTO.studentId) : userDTO.studentId != null) return false;
-    if (tried != null ? !tried.equals(userDTO.tried) : userDTO.tried != null) return false;
-    if (type != null ? !type.equals(userDTO.type) : userDTO.type != null) return false;
-    if (userId != null ? !userId.equals(userDTO.userId) : userDTO.userId != null) return false;
-    if (userName != null ? !userName.equals(userDTO.userName) : userDTO.userName != null) return false;
+    }
+    if (departmentName != null ? !departmentName.equals(userDTO.departmentName) : userDTO.departmentName != null) {
+      return false;
+    }
+    if (email != null ? !email.equals(userDTO.email) : userDTO.email != null) {
+      return false;
+    }
+    if (grade != null ? !grade.equals(userDTO.grade) : userDTO.grade != null) {
+      return false;
+    }
+    if (motto != null ? !motto.equals(userDTO.motto) : userDTO.motto != null) {
+      return false;
+    }
+    if (name != null ? !name.equals(userDTO.name) : userDTO.name != null) {
+      return false;
+    }
+    if (nickName != null ? !nickName.equals(userDTO.nickName) : userDTO.nickName != null) {
+      return false;
+    }
+    if (password != null ? !password.equals(userDTO.password) : userDTO.password != null) {
+      return false;
+    }
+    if (phone != null ? !phone.equals(userDTO.phone) : userDTO.phone != null) {
+      return false;
+    }
+    if (school != null ? !school.equals(userDTO.school) : userDTO.school != null) {
+      return false;
+    }
+    if (sex != null ? !sex.equals(userDTO.sex) : userDTO.sex != null) {
+      return false;
+    }
+    if (size != null ? !size.equals(userDTO.size) : userDTO.size != null) {
+      return false;
+    }
+    if (solved != null ? !solved.equals(userDTO.solved) : userDTO.solved != null) {
+      return false;
+    }
+    if (studentId != null ? !studentId.equals(userDTO.studentId) : userDTO.studentId != null) {
+      return false;
+    }
+    if (tried != null ? !tried.equals(userDTO.tried) : userDTO.tried != null) {
+      return false;
+    }
+    if (type != null ? !type.equals(userDTO.type) : userDTO.type != null) {
+      return false;
+    }
+    if (userId != null ? !userId.equals(userDTO.userId) : userDTO.userId != null) {
+      return false;
+    }
+    if (userName != null ? !userName.equals(userDTO.userName) : userDTO.userName != null) {
+      return false;
+    }
 
     return true;
   }
