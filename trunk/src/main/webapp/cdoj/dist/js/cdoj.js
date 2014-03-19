@@ -65377,10 +65377,20 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("ContestListController", [
-    "$scope", "$rootScope", "$window", function($scope, $rootScope, $window) {
-      return void 0;
+    "$scope", "$rootScope", "$window", "$modal", function($scope, $rootScope, $window, $modal) {
+      return $scope.showAddContestModal = function() {
+        if ($rootScope.isAdmin === false) {
+          return;
+        }
+        return $modal.open({
+          templateUrl: "template/modal/add-contest-modal.html",
+          controller: "AddContestModalController"
+        });
+      };
     }
   ]);
+
+  cdoj.controller("AddContestModalController", ["$scope", "$rootScope", "$modalInstance", function($scope, $rootScope, $modalInstance) {}]);
 
   cdoj.controller("ContestRegisterController", [
     "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", function($scope, $rootScope, $http, $window, $modal, $routeParams) {
