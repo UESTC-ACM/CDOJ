@@ -145,7 +145,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
             contestDTO.setTitle(innerText);
             break;
           case "length":
-            contestDTO.setLength(Integer.parseInt(innerText));
+            contestDTO.setLength(Integer.parseInt(innerText) * 60);
             break;
           case "type":
             contestDTO.setType(getContestType(innerText));
