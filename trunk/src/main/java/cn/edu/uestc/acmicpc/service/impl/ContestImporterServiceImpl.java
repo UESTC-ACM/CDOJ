@@ -96,7 +96,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
   public ContestDTO parseContestZipArchive(FileInformationDTO fileInformationDTO) throws AppException {
     ZipFile zipFile;
     try {
-      zipFile = new ZipFile(fileInformationDTO.getFileName());
+      zipFile = new ZipFile(settings.SETTING_UPLOAD_FOLDER + fileInformationDTO.getFileName());
     } catch (IOException e) {
       throw new AppException("Create zipFile object failed.");
     }
