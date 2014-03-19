@@ -65716,10 +65716,9 @@ if (typeof exports === 'object') {
       $scope.fieldInfo = [];
       $scope.login = function() {
         var password, userLoginDTO;
+        $scope.userLoginDTO.userName = $("#userName").val();
+        $scope.userLoginDTO.password = $("#password").val();
         userLoginDTO = angular.copy($scope.userLoginDTO);
-        if (angular.isUndefined(userLoginDTO.password)) {
-          return;
-        }
         password = CryptoJS.SHA1(userLoginDTO.password).toString();
         userLoginDTO.password = password;
         return $http.post("/user/login", userLoginDTO).then(function(response) {
@@ -66394,12 +66393,10 @@ if (typeof exports === 'object') {
       return {
         require: "ngModel",
         link: function($scope, $elem, $attrs, $ngModel) {
-          var origVal;
-          origVal = $elem.val();
           return $timeout(function() {
             var newVal;
             newVal = $elem.val();
-            if ($ngModel.$pristine && origVal !== newVal) {
+            if ($ngModel.$pristine) {
               return $ngModel.$setViewValue(newVal);
             }
           }, 500);
