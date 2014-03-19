@@ -157,7 +157,7 @@ public class FileServiceImpl extends AbstractService implements FileService {
       throw new AppException("Error while save files");
     }
     return FileInformationDTO.builder()
-        .setFileName(file.getOriginalFilename())
+        .setFileName(targetFile.getName())
         .build();
   }
 
