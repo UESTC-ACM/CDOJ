@@ -582,8 +582,9 @@ public class ContestController extends BaseController {
               .setFiles(Arrays.asList(files))
               .build()
       );
-      contestImporterService.parseContestZipArchive(fileInformationDTO);
+      ContestDTO contestDTO = contestImporterService.parseContestZipArchive(fileInformationDTO);
       json.put("success", "true");
+      json.put("contestId", contestDTO.getContestId());
     } catch (AppException e) {
       e.printStackTrace();
       json.put("error", e.getMessage());
