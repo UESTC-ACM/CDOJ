@@ -96,12 +96,12 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
   public ContestDTO parseContestZipArchive(FileInformationDTO fileInformationDTO) throws AppException {
     ZipFile zipFile;
     try {
-      zipFile = new ZipFile(fileInformationDTO.getFileName());
+      zipFile = new ZipFile(settings.SETTING_UPLOAD_FOLDER + fileInformationDTO.getFileName());
     } catch (IOException e) {
       throw new AppException("Create zipFile object failed.");
     }
     String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/"
-         + fileInformationDTO.getFileName();
+        + fileInformationDTO.getFileName().replaceAll(".zip", "");
     ZipUtil.unzipFile(zipFile, tempDirectory, new ContestZipChecker());
     ContestDTO contestDTO;
     try {
@@ -145,7 +145,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
             contestDTO.setTitle(innerText);
             break;
           case "length":
-            contestDTO.setLength(Integer.parseInt(innerText));
+            contestDTO.setLength(Integer.parseInt(innerText) * 60);
             break;
           case "type":
             contestDTO.setType(getContestType(innerText));
