@@ -59,18 +59,27 @@ public class ContestProblemDTO implements BaseDTO<ContestProblem> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     ContestProblemDTO that = (ContestProblemDTO) o;
 
-    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null)
+    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null) {
       return false;
-    if (contestProblemId != null ? !contestProblemId.equals(that.contestProblemId) : that.contestProblemId != null)
+    }
+    if (contestProblemId != null ? !contestProblemId.equals(that.contestProblemId) : that.contestProblemId != null) {
       return false;
-    if (order != null ? !order.equals(that.order) : that.order != null) return false;
-    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null)
+    }
+    if (order != null ? !order.equals(that.order) : that.order != null) {
       return false;
+    }
+    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null) {
+      return false;
+    }
 
     return true;
   }

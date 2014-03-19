@@ -162,30 +162,54 @@ public class StatusListDTO implements BaseDTO<Status> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     StatusListDTO that = (StatusListDTO) o;
 
-    if (caseNumber != null ? !caseNumber.equals(that.caseNumber) : that.caseNumber != null)
+    if (caseNumber != null ? !caseNumber.equals(that.caseNumber) : that.caseNumber != null) {
       return false;
-    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null)
+    }
+    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null) {
       return false;
-    if (language != null ? !language.equals(that.language) : that.language != null) return false;
-    if (length != null ? !length.equals(that.length) : that.length != null) return false;
-    if (memoryCost != null ? !memoryCost.equals(that.memoryCost) : that.memoryCost != null)
+    }
+    if (language != null ? !language.equals(that.language) : that.language != null) {
       return false;
-    if (nickName != null ? !nickName.equals(that.nickName) : that.nickName != null) return false;
-    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null)
+    }
+    if (length != null ? !length.equals(that.length) : that.length != null) {
       return false;
-    if (returnType != null ? !returnType.equals(that.returnType) : that.returnType != null)
+    }
+    if (memoryCost != null ? !memoryCost.equals(that.memoryCost) : that.memoryCost != null) {
       return false;
-    if (returnTypeId != null ? !returnTypeId.equals(that.returnTypeId) : that.returnTypeId != null)
+    }
+    if (nickName != null ? !nickName.equals(that.nickName) : that.nickName != null) {
       return false;
-    if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) return false;
-    if (time != null ? !time.equals(that.time) : that.time != null) return false;
-    if (timeCost != null ? !timeCost.equals(that.timeCost) : that.timeCost != null) return false;
-    if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
+    }
+    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null) {
+      return false;
+    }
+    if (returnType != null ? !returnType.equals(that.returnType) : that.returnType != null) {
+      return false;
+    }
+    if (returnTypeId != null ? !returnTypeId.equals(that.returnTypeId) : that.returnTypeId != null) {
+      return false;
+    }
+    if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) {
+      return false;
+    }
+    if (time != null ? !time.equals(that.time) : that.time != null) {
+      return false;
+    }
+    if (timeCost != null ? !timeCost.equals(that.timeCost) : that.timeCost != null) {
+      return false;
+    }
+    if (userName != null ? !userName.equals(that.userName) : that.userName != null) {
+      return false;
+    }
 
     return true;
   }
@@ -260,6 +284,7 @@ public class StatusListDTO implements BaseDTO<Status> {
       this.nickName = nickName;
       return this;
     }
+
     public Integer getStatusId() {
       return statusId;
     }

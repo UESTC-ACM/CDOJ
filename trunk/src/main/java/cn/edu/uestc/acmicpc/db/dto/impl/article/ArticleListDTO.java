@@ -120,22 +120,36 @@ public class ArticleListDTO implements BaseDTO<Article> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     ArticleListDTO that = (ArticleListDTO) o;
 
-    if (articleId != null ? !articleId.equals(that.articleId) : that.articleId != null)
+    if (articleId != null ? !articleId.equals(that.articleId) : that.articleId != null) {
       return false;
-    if (content != null ? !content.equals(that.content) : that.content != null) return false;
-    if (isVisible != null ? !isVisible.equals(that.isVisible) : that.isVisible != null)
+    }
+    if (content != null ? !content.equals(that.content) : that.content != null) {
       return false;
-    if (ownerEmail != null ? !ownerEmail.equals(that.ownerEmail) : that.ownerEmail != null)
+    }
+    if (isVisible != null ? !isVisible.equals(that.isVisible) : that.isVisible != null) {
       return false;
-    if (ownerName != null ? !ownerName.equals(that.ownerName) : that.ownerName != null)
+    }
+    if (ownerEmail != null ? !ownerEmail.equals(that.ownerEmail) : that.ownerEmail != null) {
       return false;
-    if (time != null ? !time.equals(that.time) : that.time != null) return false;
-    if (title != null ? !title.equals(that.title) : that.title != null) return false;
+    }
+    if (ownerName != null ? !ownerName.equals(that.ownerName) : that.ownerName != null) {
+      return false;
+    }
+    if (time != null ? !time.equals(that.time) : that.time != null) {
+      return false;
+    }
+    if (title != null ? !title.equals(that.title) : that.title != null) {
+      return false;
+    }
 
     return true;
   }

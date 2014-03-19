@@ -227,38 +227,69 @@ public class ContestProblemDetailDTO implements BaseDTO<ContestProblem> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     ContestProblemDetailDTO that = (ContestProblemDetailDTO) o;
 
-    if (description != null ? !description.equals(that.description) : that.description != null)
+    if (description != null ? !description.equals(that.description) : that.description != null) {
       return false;
-    if (hint != null ? !hint.equals(that.hint) : that.hint != null) return false;
-    if (input != null ? !input.equals(that.input) : that.input != null) return false;
-    if (isSpj != null ? !isSpj.equals(that.isSpj) : that.isSpj != null) return false;
-    if (javaMemoryLimit != null ? !javaMemoryLimit.equals(that.javaMemoryLimit) : that.javaMemoryLimit != null)
+    }
+    if (hint != null ? !hint.equals(that.hint) : that.hint != null) {
       return false;
-    if (javaTimeLimit != null ? !javaTimeLimit.equals(that.javaTimeLimit) : that.javaTimeLimit != null)
+    }
+    if (input != null ? !input.equals(that.input) : that.input != null) {
       return false;
-    if (memoryLimit != null ? !memoryLimit.equals(that.memoryLimit) : that.memoryLimit != null)
+    }
+    if (isSpj != null ? !isSpj.equals(that.isSpj) : that.isSpj != null) {
       return false;
-    if (order != null ? !order.equals(that.order) : that.order != null) return false;
-    if (orderCharacter != null ? !orderCharacter.equals(that.orderCharacter) : that.orderCharacter != null)
+    }
+    if (javaMemoryLimit != null ? !javaMemoryLimit.equals(that.javaMemoryLimit) : that.javaMemoryLimit != null) {
       return false;
-    if (output != null ? !output.equals(that.output) : that.output != null) return false;
-    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null)
+    }
+    if (javaTimeLimit != null ? !javaTimeLimit.equals(that.javaTimeLimit) : that.javaTimeLimit != null) {
       return false;
-    if (sampleInput != null ? !sampleInput.equals(that.sampleInput) : that.sampleInput != null)
+    }
+    if (memoryLimit != null ? !memoryLimit.equals(that.memoryLimit) : that.memoryLimit != null) {
       return false;
-    if (sampleOutput != null ? !sampleOutput.equals(that.sampleOutput) : that.sampleOutput != null)
+    }
+    if (order != null ? !order.equals(that.order) : that.order != null) {
       return false;
-    if (solved != null ? !solved.equals(that.solved) : that.solved != null) return false;
-    if (source != null ? !source.equals(that.source) : that.source != null) return false;
-    if (timeLimit != null ? !timeLimit.equals(that.timeLimit) : that.timeLimit != null)
+    }
+    if (orderCharacter != null ? !orderCharacter.equals(that.orderCharacter) : that.orderCharacter != null) {
       return false;
-    if (title != null ? !title.equals(that.title) : that.title != null) return false;
-    if (tried != null ? !tried.equals(that.tried) : that.tried != null) return false;
+    }
+    if (output != null ? !output.equals(that.output) : that.output != null) {
+      return false;
+    }
+    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null) {
+      return false;
+    }
+    if (sampleInput != null ? !sampleInput.equals(that.sampleInput) : that.sampleInput != null) {
+      return false;
+    }
+    if (sampleOutput != null ? !sampleOutput.equals(that.sampleOutput) : that.sampleOutput != null) {
+      return false;
+    }
+    if (solved != null ? !solved.equals(that.solved) : that.solved != null) {
+      return false;
+    }
+    if (source != null ? !source.equals(that.source) : that.source != null) {
+      return false;
+    }
+    if (timeLimit != null ? !timeLimit.equals(that.timeLimit) : that.timeLimit != null) {
+      return false;
+    }
+    if (title != null ? !title.equals(that.title) : that.title != null) {
+      return false;
+    }
+    if (tried != null ? !tried.equals(that.tried) : that.tried != null) {
+      return false;
+    }
 
     return true;
   }

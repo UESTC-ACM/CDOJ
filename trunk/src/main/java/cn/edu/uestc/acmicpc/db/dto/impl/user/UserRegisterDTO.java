@@ -235,29 +235,60 @@ public class UserRegisterDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     UserRegisterDTO that = (UserRegisterDTO) o;
 
-    if (departmentId != null ? !departmentId.equals(that.departmentId) : that.departmentId != null)
+    if (departmentId != null ? !departmentId.equals(that.departmentId) : that.departmentId != null) {
       return false;
-    if (email != null ? !email.equals(that.email) : that.email != null) return false;
-    if (grade != null ? !grade.equals(that.grade) : that.grade != null) return false;
-    if (motto != null ? !motto.equals(that.motto) : that.motto != null) return false;
-    if (name != null ? !name.equals(that.name) : that.name != null) return false;
-    if (nickName != null ? !nickName.equals(that.nickName) : that.nickName != null) return false;
-    if (password != null ? !password.equals(that.password) : that.password != null) return false;
-    if (passwordRepeat != null ? !passwordRepeat.equals(that.passwordRepeat) : that.passwordRepeat != null)
+    }
+    if (email != null ? !email.equals(that.email) : that.email != null) {
       return false;
-    if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
-    if (school != null ? !school.equals(that.school) : that.school != null) return false;
-    if (sex != null ? !sex.equals(that.sex) : that.sex != null) return false;
-    if (size != null ? !size.equals(that.size) : that.size != null) return false;
-    if (studentId != null ? !studentId.equals(that.studentId) : that.studentId != null)
+    }
+    if (grade != null ? !grade.equals(that.grade) : that.grade != null) {
       return false;
-    if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
-    if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
+    }
+    if (motto != null ? !motto.equals(that.motto) : that.motto != null) {
+      return false;
+    }
+    if (name != null ? !name.equals(that.name) : that.name != null) {
+      return false;
+    }
+    if (nickName != null ? !nickName.equals(that.nickName) : that.nickName != null) {
+      return false;
+    }
+    if (password != null ? !password.equals(that.password) : that.password != null) {
+      return false;
+    }
+    if (passwordRepeat != null ? !passwordRepeat.equals(that.passwordRepeat) : that.passwordRepeat != null) {
+      return false;
+    }
+    if (phone != null ? !phone.equals(that.phone) : that.phone != null) {
+      return false;
+    }
+    if (school != null ? !school.equals(that.school) : that.school != null) {
+      return false;
+    }
+    if (sex != null ? !sex.equals(that.sex) : that.sex != null) {
+      return false;
+    }
+    if (size != null ? !size.equals(that.size) : that.size != null) {
+      return false;
+    }
+    if (studentId != null ? !studentId.equals(that.studentId) : that.studentId != null) {
+      return false;
+    }
+    if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
+      return false;
+    }
+    if (userName != null ? !userName.equals(that.userName) : that.userName != null) {
+      return false;
+    }
 
     return true;
   }

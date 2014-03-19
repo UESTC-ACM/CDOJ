@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
 import java.util.Map;
 
-@Fields({ "teamUserId", "teamId", "userId", "allow" })
+@Fields({"teamUserId", "teamId", "userId", "allow"})
 public class TeamUserDTO implements BaseDTO<TeamUser> {
 
   public TeamUserDTO() {
@@ -59,16 +59,27 @@ public class TeamUserDTO implements BaseDTO<TeamUser> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     TeamUserDTO that = (TeamUserDTO) o;
 
-    if (allow != null ? !allow.equals(that.allow) : that.allow != null) return false;
-    if (teamId != null ? !teamId.equals(that.teamId) : that.teamId != null) return false;
-    if (teamUserId != null ? !teamUserId.equals(that.teamUserId) : that.teamUserId != null)
+    if (allow != null ? !allow.equals(that.allow) : that.allow != null) {
       return false;
-    if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+    }
+    if (teamId != null ? !teamId.equals(that.teamId) : that.teamId != null) {
+      return false;
+    }
+    if (teamUserId != null ? !teamUserId.equals(that.teamUserId) : that.teamUserId != null) {
+      return false;
+    }
+    if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
+      return false;
+    }
 
     return true;
   }

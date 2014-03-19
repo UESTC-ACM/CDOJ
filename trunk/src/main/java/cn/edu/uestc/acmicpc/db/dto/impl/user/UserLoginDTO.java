@@ -51,13 +51,21 @@ public class UserLoginDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     UserLoginDTO that = (UserLoginDTO) o;
 
-    if (password != null ? !password.equals(that.password) : that.password != null) return false;
-    if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
+    if (password != null ? !password.equals(that.password) : that.password != null) {
+      return false;
+    }
+    if (userName != null ? !userName.equals(that.userName) : that.userName != null) {
+      return false;
+    }
 
     return true;
   }

@@ -117,25 +117,42 @@ public class ContestEditorShowDTO implements BaseDTO<Contest> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     ContestEditorShowDTO that = (ContestEditorShowDTO) o;
 
-    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null)
+    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null) {
       return false;
-    if (description != null ? !description.equals(that.description) : that.description != null)
+    }
+    if (description != null ? !description.equals(that.description) : that.description != null) {
       return false;
-    if (length != null ? !length.equals(that.length) : that.length != null) return false;
-    if (lengthDays != null ? !lengthDays.equals(that.lengthDays) : that.lengthDays != null)
+    }
+    if (length != null ? !length.equals(that.length) : that.length != null) {
       return false;
-    if (lengthHours != null ? !lengthHours.equals(that.lengthHours) : that.lengthHours != null)
+    }
+    if (lengthDays != null ? !lengthDays.equals(that.lengthDays) : that.lengthDays != null) {
       return false;
-    if (lengthMinutes != null ? !lengthMinutes.equals(that.lengthMinutes) : that.lengthMinutes != null)
+    }
+    if (lengthHours != null ? !lengthHours.equals(that.lengthHours) : that.lengthHours != null) {
       return false;
-    if (time != null ? !time.equals(that.time) : that.time != null) return false;
-    if (title != null ? !title.equals(that.title) : that.title != null) return false;
-    if (type != null ? !type.equals(that.type) : that.type != null) return false;
+    }
+    if (lengthMinutes != null ? !lengthMinutes.equals(that.lengthMinutes) : that.lengthMinutes != null) {
+      return false;
+    }
+    if (time != null ? !time.equals(that.time) : that.time != null) {
+      return false;
+    }
+    if (title != null ? !title.equals(that.title) : that.title != null) {
+      return false;
+    }
+    if (type != null ? !type.equals(that.type) : that.type != null) {
+      return false;
+    }
 
     return true;
   }
