@@ -235,43 +235,75 @@ public class ProblemDTO implements BaseDTO<Problem> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     ProblemDTO that = (ProblemDTO) o;
 
-    if (dataCount != null ? !dataCount.equals(that.dataCount) : that.dataCount != null)
+    if (dataCount != null ? !dataCount.equals(that.dataCount) : that.dataCount != null) {
       return false;
-    if (description != null ? !description.equals(that.description) : that.description != null)
+    }
+    if (description != null ? !description.equals(that.description) : that.description != null) {
       return false;
-    if (difficulty != null ? !difficulty.equals(that.difficulty) : that.difficulty != null)
+    }
+    if (difficulty != null ? !difficulty.equals(that.difficulty) : that.difficulty != null) {
       return false;
-    if (hint != null ? !hint.equals(that.hint) : that.hint != null) return false;
-    if (input != null ? !input.equals(that.input) : that.input != null) return false;
-    if (isSpj != null ? !isSpj.equals(that.isSpj) : that.isSpj != null) return false;
-    if (isVisible != null ? !isVisible.equals(that.isVisible) : that.isVisible != null)
+    }
+    if (hint != null ? !hint.equals(that.hint) : that.hint != null) {
       return false;
-    if (javaMemoryLimit != null ? !javaMemoryLimit.equals(that.javaMemoryLimit) : that.javaMemoryLimit != null)
+    }
+    if (input != null ? !input.equals(that.input) : that.input != null) {
       return false;
-    if (javaTimeLimit != null ? !javaTimeLimit.equals(that.javaTimeLimit) : that.javaTimeLimit != null)
+    }
+    if (isSpj != null ? !isSpj.equals(that.isSpj) : that.isSpj != null) {
       return false;
-    if (memoryLimit != null ? !memoryLimit.equals(that.memoryLimit) : that.memoryLimit != null)
+    }
+    if (isVisible != null ? !isVisible.equals(that.isVisible) : that.isVisible != null) {
       return false;
-    if (output != null ? !output.equals(that.output) : that.output != null) return false;
-    if (outputLimit != null ? !outputLimit.equals(that.outputLimit) : that.outputLimit != null)
+    }
+    if (javaMemoryLimit != null ? !javaMemoryLimit.equals(that.javaMemoryLimit) : that.javaMemoryLimit != null) {
       return false;
-    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null)
+    }
+    if (javaTimeLimit != null ? !javaTimeLimit.equals(that.javaTimeLimit) : that.javaTimeLimit != null) {
       return false;
-    if (sampleInput != null ? !sampleInput.equals(that.sampleInput) : that.sampleInput != null)
+    }
+    if (memoryLimit != null ? !memoryLimit.equals(that.memoryLimit) : that.memoryLimit != null) {
       return false;
-    if (sampleOutput != null ? !sampleOutput.equals(that.sampleOutput) : that.sampleOutput != null)
+    }
+    if (output != null ? !output.equals(that.output) : that.output != null) {
       return false;
-    if (solved != null ? !solved.equals(that.solved) : that.solved != null) return false;
-    if (source != null ? !source.equals(that.source) : that.source != null) return false;
-    if (timeLimit != null ? !timeLimit.equals(that.timeLimit) : that.timeLimit != null)
+    }
+    if (outputLimit != null ? !outputLimit.equals(that.outputLimit) : that.outputLimit != null) {
       return false;
-    if (title != null ? !title.equals(that.title) : that.title != null) return false;
-    if (tried != null ? !tried.equals(that.tried) : that.tried != null) return false;
+    }
+    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null) {
+      return false;
+    }
+    if (sampleInput != null ? !sampleInput.equals(that.sampleInput) : that.sampleInput != null) {
+      return false;
+    }
+    if (sampleOutput != null ? !sampleOutput.equals(that.sampleOutput) : that.sampleOutput != null) {
+      return false;
+    }
+    if (solved != null ? !solved.equals(that.solved) : that.solved != null) {
+      return false;
+    }
+    if (source != null ? !source.equals(that.source) : that.source != null) {
+      return false;
+    }
+    if (timeLimit != null ? !timeLimit.equals(that.timeLimit) : that.timeLimit != null) {
+      return false;
+    }
+    if (title != null ? !title.equals(that.title) : that.title != null) {
+      return false;
+    }
+    if (tried != null ? !tried.equals(that.tried) : that.tried != null) {
+      return false;
+    }
 
     return true;
   }

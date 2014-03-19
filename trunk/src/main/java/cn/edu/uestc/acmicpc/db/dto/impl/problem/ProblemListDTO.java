@@ -116,23 +116,42 @@ public class ProblemListDTO implements BaseDTO<Problem> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     ProblemListDTO that = (ProblemListDTO) o;
 
-    if (difficulty != null ? !difficulty.equals(that.difficulty) : that.difficulty != null)
+    if (difficulty != null ? !difficulty.equals(that.difficulty) : that.difficulty != null) {
       return false;
-    if (isSpj != null ? !isSpj.equals(that.isSpj) : that.isSpj != null) return false;
-    if (isVisible != null ? !isVisible.equals(that.isVisible) : that.isVisible != null)
+    }
+    if (isSpj != null ? !isSpj.equals(that.isSpj) : that.isSpj != null) {
       return false;
-    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null)
+    }
+    if (isVisible != null ? !isVisible.equals(that.isVisible) : that.isVisible != null) {
       return false;
-    if (solved != null ? !solved.equals(that.solved) : that.solved != null) return false;
-    if (source != null ? !source.equals(that.source) : that.source != null) return false;
-    if (status != null ? !status.equals(that.status) : that.status != null) return false;
-    if (title != null ? !title.equals(that.title) : that.title != null) return false;
-    if (tried != null ? !tried.equals(that.tried) : that.tried != null) return false;
+    }
+    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null) {
+      return false;
+    }
+    if (solved != null ? !solved.equals(that.solved) : that.solved != null) {
+      return false;
+    }
+    if (source != null ? !source.equals(that.source) : that.source != null) {
+      return false;
+    }
+    if (status != null ? !status.equals(that.status) : that.status != null) {
+      return false;
+    }
+    if (title != null ? !title.equals(that.title) : that.title != null) {
+      return false;
+    }
+    if (tried != null ? !tried.equals(that.tried) : that.tried != null) {
+      return false;
+    }
 
     return true;
   }

@@ -161,32 +161,54 @@ public class StatusDTO implements BaseDTO<Status> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     StatusDTO statusDTO = (StatusDTO) o;
 
-    if (caseNumber != null ? !caseNumber.equals(statusDTO.caseNumber) : statusDTO.caseNumber != null)
+    if (caseNumber != null ? !caseNumber.equals(statusDTO.caseNumber) : statusDTO.caseNumber != null) {
       return false;
-    if (codeId != null ? !codeId.equals(statusDTO.codeId) : statusDTO.codeId != null) return false;
-    if (compileInfoId != null ? !compileInfoId.equals(statusDTO.compileInfoId) : statusDTO.compileInfoId != null)
+    }
+    if (codeId != null ? !codeId.equals(statusDTO.codeId) : statusDTO.codeId != null) {
       return false;
-    if (contestId != null ? !contestId.equals(statusDTO.contestId) : statusDTO.contestId != null)
+    }
+    if (compileInfoId != null ? !compileInfoId.equals(statusDTO.compileInfoId) : statusDTO.compileInfoId != null) {
       return false;
-    if (languageId != null ? !languageId.equals(statusDTO.languageId) : statusDTO.languageId != null)
+    }
+    if (contestId != null ? !contestId.equals(statusDTO.contestId) : statusDTO.contestId != null) {
       return false;
-    if (length != null ? !length.equals(statusDTO.length) : statusDTO.length != null) return false;
-    if (memoryCost != null ? !memoryCost.equals(statusDTO.memoryCost) : statusDTO.memoryCost != null)
+    }
+    if (languageId != null ? !languageId.equals(statusDTO.languageId) : statusDTO.languageId != null) {
       return false;
-    if (problemId != null ? !problemId.equals(statusDTO.problemId) : statusDTO.problemId != null)
+    }
+    if (length != null ? !length.equals(statusDTO.length) : statusDTO.length != null) {
       return false;
-    if (result != null ? !result.equals(statusDTO.result) : statusDTO.result != null) return false;
-    if (statusId != null ? !statusId.equals(statusDTO.statusId) : statusDTO.statusId != null)
+    }
+    if (memoryCost != null ? !memoryCost.equals(statusDTO.memoryCost) : statusDTO.memoryCost != null) {
       return false;
-    if (time != null ? !time.equals(statusDTO.time) : statusDTO.time != null) return false;
-    if (timeCost != null ? !timeCost.equals(statusDTO.timeCost) : statusDTO.timeCost != null)
+    }
+    if (problemId != null ? !problemId.equals(statusDTO.problemId) : statusDTO.problemId != null) {
       return false;
-    if (userId != null ? !userId.equals(statusDTO.userId) : statusDTO.userId != null) return false;
+    }
+    if (result != null ? !result.equals(statusDTO.result) : statusDTO.result != null) {
+      return false;
+    }
+    if (statusId != null ? !statusId.equals(statusDTO.statusId) : statusDTO.statusId != null) {
+      return false;
+    }
+    if (time != null ? !time.equals(statusDTO.time) : statusDTO.time != null) {
+      return false;
+    }
+    if (timeCost != null ? !timeCost.equals(statusDTO.timeCost) : statusDTO.timeCost != null) {
+      return false;
+    }
+    if (userId != null ? !userId.equals(statusDTO.userId) : statusDTO.userId != null) {
+      return false;
+    }
 
     return true;
   }

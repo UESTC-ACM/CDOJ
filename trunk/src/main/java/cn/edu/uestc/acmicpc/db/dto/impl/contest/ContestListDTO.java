@@ -118,23 +118,42 @@ public class ContestListDTO implements BaseDTO<Contest> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     ContestListDTO that = (ContestListDTO) o;
 
-    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null)
+    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null) {
       return false;
-    if (description != null ? !description.equals(that.description) : that.description != null)
+    }
+    if (description != null ? !description.equals(that.description) : that.description != null) {
       return false;
-    if (isVisible != null ? !isVisible.equals(that.isVisible) : that.isVisible != null)
+    }
+    if (isVisible != null ? !isVisible.equals(that.isVisible) : that.isVisible != null) {
       return false;
-    if (length != null ? !length.equals(that.length) : that.length != null) return false;
-    if (status != null ? !status.equals(that.status) : that.status != null) return false;
-    if (time != null ? !time.equals(that.time) : that.time != null) return false;
-    if (title != null ? !title.equals(that.title) : that.title != null) return false;
-    if (type != null ? !type.equals(that.type) : that.type != null) return false;
-    if (typeName != null ? !typeName.equals(that.typeName) : that.typeName != null) return false;
+    }
+    if (length != null ? !length.equals(that.length) : that.length != null) {
+      return false;
+    }
+    if (status != null ? !status.equals(that.status) : that.status != null) {
+      return false;
+    }
+    if (time != null ? !time.equals(that.time) : that.time != null) {
+      return false;
+    }
+    if (title != null ? !title.equals(that.title) : that.title != null) {
+      return false;
+    }
+    if (type != null ? !type.equals(that.type) : that.type != null) {
+      return false;
+    }
+    if (typeName != null ? !typeName.equals(that.typeName) : that.typeName != null) {
+      return false;
+    }
 
     return true;
   }

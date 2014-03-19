@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
 import java.util.Map;
 
-@Fields({ "contestTeamId", "contestId", "teamId", "status", "comment", "teamByTeamId.leaderId" })
+@Fields({"contestTeamId", "contestId", "teamId", "status", "comment", "teamByTeamId.leaderId"})
 public class ContestTeamDTO implements BaseDTO<ContestTeam> {
 
   public ContestTeamDTO() {

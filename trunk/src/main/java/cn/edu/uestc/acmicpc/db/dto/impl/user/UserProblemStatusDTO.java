@@ -14,14 +14,21 @@ public class UserProblemStatusDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     UserProblemStatusDTO that = (UserProblemStatusDTO) o;
 
-    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null)
+    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null) {
       return false;
-    if (status != null ? !status.equals(that.status) : that.status != null) return false;
+    }
+    if (status != null ? !status.equals(that.status) : that.status != null) {
+      return false;
+    }
 
     return true;
   }

@@ -44,14 +44,21 @@ public class DepartmentDTO implements BaseDTO<Department> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     DepartmentDTO that = (DepartmentDTO) o;
 
-    if (departmentId != null ? !departmentId.equals(that.departmentId) : that.departmentId != null)
+    if (departmentId != null ? !departmentId.equals(that.departmentId) : that.departmentId != null) {
       return false;
-    if (name != null ? !name.equals(that.name) : that.name != null) return false;
+    }
+    if (name != null ? !name.equals(that.name) : that.name != null) {
+      return false;
+    }
 
     return true;
   }
