@@ -18,15 +18,18 @@ project.stopPort = 8005
 project.stopKey = 'stop'
 
 task checkControllerDoNotContainDaos(type: Exec) {
-  commandLine "python", "src/test/python/check_controller_not_contain_daos.py"
+  commandLine "python",
+      file("src/test/python/check_controller_not_contain_daos.py").absolutePath
 }
 
 task checkDtosDoNotContainEntities(type: Exec) {
-  commandLine "python", "src/test/python/check_dtos_not_contain_entities.py"
+  commandLine "python",
+      file("src/test/python/check_dtos_not_contain_entities.py").absolutePath
 }
 
 task checkTestingCodeAllDoNotUseJunit(type: Exec) {
-  commandLine "python", "src/test/python/check_testing_code_all_not_use_junit.py"
+  commandLine "python",
+      file("src/test/python/check_testing_code_all_not_use_junit.py").absolutePath
 }
 
 task createSchema(type: Exec) {
@@ -35,7 +38,7 @@ task createSchema(type: Exec) {
   } else {
     commandLine "mysql", "-u$dbUser", "-p$dbPassword"
   }
-  standardInput = new FileInputStream(new File("src/test/sql/uestcojtest.sql"))
+  standardInput = new FileInputStream(file("src/test/sql/uestcojtest.sql"))
 }
 
 task generateData(type: Exec) {
@@ -44,7 +47,7 @@ task generateData(type: Exec) {
   } else {
     commandLine "mysql", "-u$dbUser", "-p$dbPassword"
   }
-  standardInput = new FileInputStream(new File("src/test/sql/uestcojtest-data0.sql"))
+  standardInput = new FileInputStream(file("src/test/sql/uestcojtest-data0.sql"))
 }
 
 task generateMainPropertyFile(type: Exec) {
