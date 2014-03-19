@@ -145,8 +145,6 @@ border-top-right-radius: 0;">
                          maxlength="24"
                          id="userName"
                          class="form-control"
-                         ng-required="true"
-                         ng-pattern="/^[a-zA-Z0-9_]{4,24}$/"
                          placeholder="Username"/>
                 </div>
                 <div class="input-group form-group input-group-sm">
@@ -156,9 +154,6 @@ border-top-right-radius: 0;">
                   <input type="password"
                          ng-model="userLoginDTO.password"
                          id="password"
-                         ng-required="true"
-                         ng-minlength="6"
-                         ng-maxlength="24"
                          class="form-control"
                          placeholder="Password"/>
                   <span class="input-group-btn">
