@@ -164,7 +164,8 @@ public class ContestController extends BaseController {
   @LoginPermit(NeedLogin = false)
   public
   @ResponseBody
-  Map<String, Object> registerStatusList(@RequestBody ContestTeamCondition contestTeamCondition) {
+  Map<String, Object> registerStatusList(@RequestBody ContestTeamCondition contestTeamCondition,
+                                         HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
       Long count = contestTeamService.count(contestTeamCondition);
@@ -189,11 +190,14 @@ public class ContestController extends BaseController {
         // Put users into teams
         for (ContestTeamListDTO team : contestTeamList) {
           team.setTeamUsers(new LinkedList<TeamUserListDTO>());
+          team.setInvitedUsers(new LinkedList<TeamUserListDTO>());
           for (TeamUserListDTO teamUserListDTO : teamUserList) {
             if (team.getTeamId().compareTo(teamUserListDTO.getTeamId()) == 0) {
               // Put users into current users / inactive users
               if (teamUserListDTO.getAllow()) {
                 team.getTeamUsers().add(teamUserListDTO);
+              } else if (isAdmin(session)) {
+                team.getInvitedUsers().add(teamUserListDTO);
               }
             }
           }
