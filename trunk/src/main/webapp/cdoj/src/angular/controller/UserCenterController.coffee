@@ -30,12 +30,15 @@ cdoj
       $scope.activeTeamsTab = false
       $scope.activeMessagesTab = false
       $scope.activeEditTab = false
+      $scope.activeBlogTab = false
       if currentTab == "teams"
         $scope.activeTeamsTab = true
       else if currentTab == "messages"
         $scope.activeMessagesTab = true
       else if currentTab == "edit"
         $scope.activeEditTab = true
+      else if currentTab == "blog"
+        $scope.activeBlogTab = true
       else
         $scope.activeProblemsTab = true
 

@@ -60,14 +60,29 @@
     </div>
   </div>
 </tab>
+<tab heading="Blog"
+     active="activeBlogTab">
+  <div style="margin: 0 -15px;">
+    <div class="col-md-12"
+         style="margin-top: 15px; margin-bottom: 15px;"
+         ng-show="$root.hasLogin">
+
+      <a class="btn btn-danger btn-sm pull-right" type="button"
+         href="/#/article/editor/{{$root.currentUser.userName}}/new">
+        <i class="fa fa-pencil"></i>Write new article
+      </a>
+    </div>
+  </div>
+</tab>
 <tab heading="Teams"
      active="activeTeamsTab">
   <div style="margin: 0 -15px;">
     <div class="col-md-12"
-         style="margin-top: 15px;"
+         style="margin-top: 15px; margin-bottom: 15px;"
          ng-show="editPermission">
 
-      <div class="input-group pull-right" style="max-width: 350px;">
+      <div class="input-group pull-right"
+           style="max-width: 350px;">
         <input type="text"
                class="form-control input-sm"
                ng-model="newTeam.teamName"

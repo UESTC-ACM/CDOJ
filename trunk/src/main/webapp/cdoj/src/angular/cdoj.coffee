@@ -70,12 +70,6 @@ cdoj
       $routeProvider.when("/",
         templateUrl: "template/index/index.html"
         $controller: "IndexController"
-      ).when("/article/show/:articleId",
-        templateUrl: "template/article/show.html"
-        controller: "ArticleShowController"
-      ).when("/article/editor/:action",
-        templateUrl: "template/article/editor.html"
-        controller: "ArticleEditorController"
       ).when("/problem/list",
         templateUrl: "template/problem/list.html"
         controller: "ProblemListController"
@@ -115,5 +109,11 @@ cdoj
       ).when("/user/register",
         templateUrl: "template/user/register.html"
         controller: "UserRegisterController"
+      ).when("/article/show/:articleId",
+        templateUrl: "template/article/show.html"
+        controller: "ArticleShowController"
+      ).when("/article/editor/:userName/:action",
+        templateUrl: "template/article/editor.html"
+        controller: "ArticleEditorController"
       )
   ])
