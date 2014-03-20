@@ -67,7 +67,7 @@ public interface ArticleService extends DatabaseService<Article, Integer> {
    * @return the newly created article's id.
    * @throws AppException
    */
-  public Integer createNewArticle() throws AppException;
+  public Integer createNewArticle(Integer authorId) throws AppException;
 
   /**
    * Increment clicked of specific article by 1.

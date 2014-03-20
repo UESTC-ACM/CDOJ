@@ -26,7 +26,8 @@ cdoj
 
       $scope.submit = ->
         articleEditDTO = angular.copy($scope.article)
-        articleEditDTO.action = angular.copy($routeParams.action)
+        articleEditDTO.action = angular.copy($scope.action)
+        articleEditDTO.userName = angular.copy($scope.userName)
         $http.post("/article/edit", articleEditDTO).then (response)->
           data = response.data
           if data.result == "success"

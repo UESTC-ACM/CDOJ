@@ -4,6 +4,7 @@ import cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
@@ -103,7 +104,7 @@ public class ArticleController extends BaseController {
   }
 
   @RequestMapping("edit")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
+  @LoginPermit(NeedLogin = true)
   public
   @ResponseBody
   Map<String, Object> edit(@RequestBody @Valid ArticleEditDTO articleEditDTO,
@@ -115,19 +116,24 @@ public class ArticleController extends BaseController {
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
+        UserDTO currentUser = getCurrentUser(session);
+        if (!isAdmin(session) && !currentUser.getUserName().equals(articleEditDTO.getUserName())) {
+          throw new AppException("Permission denied");
+        }
+
         if (StringUtil.trimAllSpace(articleEditDTO.getTitle()).equals("")) {
           throw new FieldException("title", "Please enter a validate title.");
         }
         ArticleDTO articleDTO;
         if (articleEditDTO.getAction().equals("new")) {
-          Integer articleId = articleService.createNewArticle();
+          Integer articleId = articleService.createNewArticle(currentUser.getUserId());
           articleDTO = articleService.getArticleDTO(articleId);
           if (articleDTO == null || !articleDTO.getArticleId().equals(articleId)) {
             throw new AppException("Error while creating article.");
           }
           // Move pictures
-          String oldDirectory = "/images/article/new/";
-          String newDirectory = "/images/article/" + articleId + "/";
+          String oldDirectory = "/images/article/" + articleEditDTO.getUserName() + "/new/";
+          String newDirectory = "/images/article/" + articleEditDTO.getUserName() + "/" + articleId + "/";
           articleEditDTO.setContent(pictureService.modifyPictureLocation(
               articleEditDTO.getContent(), oldDirectory, newDirectory));
         } else {
@@ -141,6 +147,7 @@ public class ArticleController extends BaseController {
         articleDTO.setTitle(articleEditDTO.getTitle());
         articleDTO.setContent(articleEditDTO.getContent());
         articleDTO.setTime(new Timestamp(System.currentTimeMillis()));
+        articleDTO.setType(Global.ArticleType.ARTICLE.ordinal());
 
         articleService.updateArticle(articleDTO);
         json.put("result", "success");
