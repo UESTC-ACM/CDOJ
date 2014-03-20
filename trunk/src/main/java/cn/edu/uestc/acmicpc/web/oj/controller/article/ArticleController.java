@@ -82,6 +82,8 @@ public class ArticleController extends BaseController {
       if (!isAdmin(session)) {
         articleCondition.isVisible = true;
       }
+      articleCondition.problemId = null;
+      articleCondition.contestId = null;
       Long count = articleService.count(articleCondition);
       PageInfo pageInfo = buildPageInfo(count, articleCondition.currentPage,
           Global.ARTICLE_PER_PAGE, null);

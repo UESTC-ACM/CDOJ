@@ -69,7 +69,7 @@ cdoj
     ($routeProvider)->
       $routeProvider.when("/",
         templateUrl: "template/index/index.html"
-        $controller: "IndexController"
+        controller: "IndexController"
       ).when("/problem/list",
         templateUrl: "template/problem/list.html"
         controller: "ProblemListController"

@@ -72,6 +72,15 @@
         <i class="fa fa-pencil"></i>Write new article
       </a>
     </div>
+
+    <list condition="articleCondition"
+          request-url="/article/search">
+      <div class="col-md-12">
+        <div class="cdoj-article" ng-repeat="article in list">
+          <article-item article="article"></article-item>
+        </div>
+      </div>
+    </list>
   </div>
 </tab>
 <tab heading="Teams"
