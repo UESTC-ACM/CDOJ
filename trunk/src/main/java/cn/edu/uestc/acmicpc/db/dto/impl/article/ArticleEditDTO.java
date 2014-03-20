@@ -11,17 +11,22 @@ public class ArticleEditDTO implements BaseDTO<Article> {
   public ArticleEditDTO() {
   }
 
-  private ArticleEditDTO(Integer articleId, String action, String title, String content) {
+  private ArticleEditDTO(Integer articleId, String action, String title, String content,
+                         String userName, Integer type) {
     this.articleId = articleId;
     this.action = action;
     this.title = title;
     this.content = content;
+    this.userName = userName;
+    this.type = type;
   }
 
   private Integer articleId;
   private String action;
   private String title;
   private String content;
+  private String userName;
+  private Integer type;
 
   public Integer getArticleId() {
     return articleId;
@@ -55,6 +60,22 @@ public class ArticleEditDTO implements BaseDTO<Article> {
     this.content = content;
   }
 
+  public String getUserName() {
+    return userName;
+  }
+
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
+
+  public Integer getType() {
+    return type;
+  }
+
+  public void setType(Integer type) {
+    this.type = type;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -78,6 +99,12 @@ public class ArticleEditDTO implements BaseDTO<Article> {
     if (title != null ? !title.equals(that.title) : that.title != null) {
       return false;
     }
+    if (userName != null ? !userName.equals(that.userName) : that.userName != null) {
+      return false;
+    }
+    if (type != null ? !type.equals(that.type) : that.type != null) {
+      return false;
+    }
 
     return true;
   }
@@ -88,6 +115,8 @@ public class ArticleEditDTO implements BaseDTO<Article> {
     result = 31 * result + (action != null ? action.hashCode() : 0);
     result = 31 * result + (title != null ? title.hashCode() : 0);
     result = 31 * result + (content != null ? content.hashCode() : 0);
+    result = 31 * result + (userName != null ? userName.hashCode() : 0);
+    result = 31 * result + (type != null ? type.hashCode() : 0);
     return result;
   }
 
@@ -101,13 +130,15 @@ public class ArticleEditDTO implements BaseDTO<Article> {
     }
 
     public ArticleEditDTO build() {
-      return new ArticleEditDTO(articleId, action, title, content);
+      return new ArticleEditDTO(articleId, action, title, content, userName, type);
     }
 
     private Integer articleId;
     private String action;
     private String title;
     private String content;
+    private String userName;
+    private Integer type;
 
     public Integer getArticleId() {
       return articleId;
@@ -145,5 +176,22 @@ public class ArticleEditDTO implements BaseDTO<Article> {
       return this;
     }
 
+    public String getUserName() {
+      return userName;
+    }
+
+    public Builder setUserName(String userName) {
+      this.userName = userName;
+      return this;
+    }
+
+    public Integer getType() {
+      return type;
+    }
+
+    public Builder setType(Integer type) {
+      this.type = type;
+      return this;
+    }
   }
 }

@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-md-12" style="margin-top: 15px;">
+    <tabset>
+      <tab heading="Summary">
+        <div style="margin: 0 -15px;">
+          <div class="col-md-12">
+            <div class="hero">
+              <div class="hero-titles">
+                <h1 class="cdoj-codefont">CDOJ</h1>
+
+                <div class="alert alert-danger">
+                  CDOJ is running!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </tab>
+      <tab heading="Notice">
+        <div style="margin: 15px -15px 0 -15px;">
+          <div class="col-md-12">
+            <ul ui-sortable="sortableOptions" class="list-group" ng-model="list">
+              <li class="list-group-item" ng-repeat="article in list">
+                <a href="/#/article/editor/{{article.ownerName}}/{{article.articleId}}"
+                   ng-bind="article.title"></a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-12" ng-show="listChanged">
+            <button class="btn btn-danger" ng-click="save()">Save changes</button>
+          </div>
+        </div>
+      </tab>
+    </tabset>
+  </div>
+</div>

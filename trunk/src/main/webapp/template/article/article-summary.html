@@ -1,0 +1,27 @@
+<div>
+  <h1><a href="#/article/show/{{article.articleId}}"
+         ng-bind="article.title"></a>
+  </h1>
+
+  <div>
+    <a ng-show="$root.hasLogin && $root.currentUser.userName == article.ownerName"
+       href="/#/article/editor/{{article.ownerName}}/{{article.articleId}}">
+      <i class="fa fa-pencil"></i>Edit
+    </a>
+    <span ng-bind="article.clicked"></span> visited, create by
+    <a href="/#/user/center/{{article.ownerName}}" ng-bind="article.ownerName"></a>
+    , last modified at
+    <span class="cdoj-article-post-time"
+          ui-time
+          time="article.time"
+          inline="true"></span>
+  </div>
+
+  <div class="cdoj-article-summary">
+    <markdown content="article.content"></markdown>
+  </div>
+  <p ui-readmore
+     has-more="article.hasMore"
+     article-id="article.articleId"></p>
+  <hr ng-show="$index < list.length - 1"/>
+</div>
