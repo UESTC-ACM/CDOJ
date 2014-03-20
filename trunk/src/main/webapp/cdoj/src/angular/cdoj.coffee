@@ -5,6 +5,7 @@ cdoj = angular.module('cdoj', [
   "ngRoute"
   "monospaced.elastic"
   "frapontillo.bootstrap-switch"
+  "ui.sortable"
 ])
 cdoj
 .run([
