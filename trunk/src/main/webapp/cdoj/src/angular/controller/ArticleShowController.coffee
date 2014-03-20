@@ -7,7 +7,7 @@ cdoj
         title: ""
 
       articleId = angular.copy($routeParams.articleId)
-      $http.get("/article/data/ArticleDTO/#{articleId}").then (response)->
+      $http.get("/article/data/#{articleId}").then (response)->
         data = response.data
         if data.result == "success"
           $scope.article = data.article

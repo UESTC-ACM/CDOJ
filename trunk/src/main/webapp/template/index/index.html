@@ -1,27 +1,10 @@
 <div id="cdoj-index">
   <div class="row">
-    <list condition="$root.articleCondition"
+    <list condition="articleCondition"
           request-url="/article/search">
       <div class="col-md-12">
         <div class="cdoj-article" ng-repeat="article in list">
-          <h1><a href="#/article/show/{{article.articleId}}"
-                 ng-bind="article.title"></a>
-          </h1>
-          <small>
-            <span ng-bind="article.clicked"></span> visited, create by
-            <span ng-bind="article.ownerName"></span>, last modified at
-            <span class="cdoj-article-post-time"
-                  ui-time
-                  time="article.time"
-                  inline="true"></span>
-          </small>
-          <div class="cdoj-article-summary">
-            <markdown content="article.content"></markdown>
-          </div>
-          <p ui-readmore
-             has-more="article.hasMore"
-             article-id="article.articleId"></p>
-          <hr ng-show="$index < list.length - 1"/>
+          <article-item article="article"></article-item>
         </div>
       </div>
     </list>

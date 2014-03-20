@@ -4,7 +4,6 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IArticleDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleListDTO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
@@ -64,24 +63,18 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
   }
 
   @Override
-  public Integer createNewArticle() throws AppException {
+  public Integer createNewArticle(Integer authorId) throws AppException {
     Article article = new Article();
     article.setTitle("");
     article.setContent("");
     article.setTime(new Timestamp(new Date().getTime()));
     article.setClicked(0);
     article.setOrder(0);
-    article.setType(0);
-    article.setIsVisible(false);
-    article.setUserId(1);
+    article.setType(1);
+    article.setIsVisible(true);
+    article.setUserId(authorId);
     articleDAO.add(article);
     return article.getArticleId();
-  }
-
-  @Override
-  public ArticleEditorShowDTO getArticleEditorShowDTO(Integer articleId)
-      throws AppException {
-    return articleDAO.getDTOByUniqueField(ArticleEditorShowDTO.class, ArticleEditorShowDTO.builder(), "articleId", articleId);
   }
 
   private void updateArticleByArticleDTO(Article article, ArticleDTO articleDTO) {

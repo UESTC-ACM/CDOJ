@@ -32,9 +32,9 @@ GlobalVariables =
     ENDED: "Ended"
 
   AuthenticationType:
-    NORMAL: "0"
-    ADMIN: "1"
-    CONSTANT: "2"
+    NORMAL: 0
+    ADMIN: 1
+    CONSTANT: 2
 
   AuthorStatusType:
     NONE: 0
@@ -46,6 +46,11 @@ GlobalVariables =
     ACCEPTED: 1
     REFUSED: 2
 
+  ArticleType:
+    NOTICE: 0
+    ARTICLE: 1
+    CLARIFICATION: 2
+
 GlobalConditions =
   articleCondition:
     currentPage: null
@@ -53,6 +58,9 @@ GlobalConditions =
     endId: undefined
     keyword: undefined
     title: undefined
+    userId: undefined
+    userName: undefined
+    type: undefined
     orderFields: "id"
     orderAsc: "false"
   problemCondition:

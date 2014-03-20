@@ -63,6 +63,12 @@ public class ArticleCondition extends BaseCondition {
    */
   public Integer contestId;
 
+  /**
+   * Type
+   */
+  @Exp(mapField = "type", type = Condition.ConditionType.EQUALS)
+  public Integer type;
+
   @Override
   public Condition getCondition() throws AppException {
     Condition condition = super.getCondition();

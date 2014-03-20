@@ -30,12 +30,15 @@ cdoj
       $scope.activeTeamsTab = false
       $scope.activeMessagesTab = false
       $scope.activeEditTab = false
+      $scope.activeBlogTab = false
       if currentTab == "teams"
         $scope.activeTeamsTab = true
       else if currentTab == "messages"
         $scope.activeMessagesTab = true
       else if currentTab == "edit"
         $scope.activeEditTab = true
+      else if currentTab == "blog"
+        $scope.activeBlogTab = true
       else
         $scope.activeProblemsTab = true
 
@@ -49,6 +52,10 @@ cdoj
           checkPermission()
         else
           $window.alert data.error_msg
+
+      articleCondition = angular.copy($rootScope.articleCondition)
+      articleCondition.userName = targetUserName
+      $scope.articleCondition = articleCondition
 
       $scope.userEditDTO = 0
       $scope.$on("userCenter:permissionChange", ->

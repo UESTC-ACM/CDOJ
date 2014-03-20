@@ -245,4 +245,20 @@ public class Global {
       return description;
     }
   }
+
+  /**
+   * Article type
+   */
+  public enum ArticleType {
+    NOTICE("Notice"), ARTICLE("Article"), CLARIFICATION("Clarification");
+    private final String description;
+
+    public String getDescription() {
+      return description;
+    }
+
+    ArticleType(String description) {
+      this.description = description;
+    }
+  }
 }
