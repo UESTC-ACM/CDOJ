@@ -65115,12 +65115,6 @@ if (typeof exports === 'object') {
       return $routeProvider.when("/", {
         templateUrl: "template/index/index.html",
         $controller: "IndexController"
-      }).when("/article/show/:articleId", {
-        templateUrl: "template/article/show.html",
-        controller: "ArticleShowController"
-      }).when("/article/editor/:action", {
-        templateUrl: "template/article/editor.html",
-        controller: "ArticleEditorController"
       }).when("/problem/list", {
         templateUrl: "template/problem/list.html",
         controller: "ProblemListController"
@@ -65160,12 +65154,18 @@ if (typeof exports === 'object') {
       }).when("/user/register", {
         templateUrl: "template/user/register.html",
         controller: "UserRegisterController"
+      }).when("/article/show/:articleId", {
+        templateUrl: "template/article/show.html",
+        controller: "ArticleShowController"
+      }).when("/article/editor/:userName/:action", {
+        templateUrl: "template/article/editor.html",
+        controller: "ArticleEditorController"
       });
     }
   ]);
 
   cdoj.controller("ArticleEditorController", [
-    "$scope", "$http", "$routeParams", "$window", function($scope, $http, $routeParams, $window) {
+    "$rootScope", "$scope", "$http", "$routeParams", "$window", function($rootScope, $scope, $http, $routeParams, $window) {
       var articleId;
       $scope.article = {
         content: "",
@@ -65173,10 +65173,15 @@ if (typeof exports === 'object') {
       };
       $scope.fieldInfo = [];
       $scope.action = $routeParams.action;
+      $scope.userName = $routeParams.userName;
+      if ($rootScope.hasLogin === false || $rootScope.currentUser.userName !== $scope.userName) {
+        $window.alert("Permission denied!");
+        $window.history.back();
+      }
       if ($scope.action !== "new") {
         $scope.title = "Edit article " + $scope.action;
         articleId = angular.copy($scope.action);
-        $http.get("/article/data/ArticleEditorShowDTO/" + articleId).then(function(response) {
+        $http.get("/article/data/" + articleId).then(function(response) {
           var data;
           data = response.data;
           if (data.result === "success") {
@@ -65196,7 +65201,7 @@ if (typeof exports === 'object') {
           var data;
           data = response.data;
           if (data.result === "success") {
-            return $window.location.href = "#/article/show/" + data.articleId;
+            return $window.location.href = "/#/article/show/" + data.articleId;
           } else if (data.result === "field_error") {
             return $scope.fieldInfo = data.field;
           } else {
@@ -65215,7 +65220,7 @@ if (typeof exports === 'object') {
         title: ""
       };
       articleId = angular.copy($routeParams.articleId);
-      return $http.get("/article/data/ArticleDTO/" + articleId).then(function(response) {
+      return $http.get("/article/data/" + articleId).then(function(response) {
         var data;
         data = response.data;
         if (data.result === "success") {
@@ -66269,12 +66274,15 @@ if (typeof exports === 'object') {
       $scope.activeTeamsTab = false;
       $scope.activeMessagesTab = false;
       $scope.activeEditTab = false;
+      $scope.activeBlogTab = false;
       if (currentTab === "teams") {
         $scope.activeTeamsTab = true;
       } else if (currentTab === "messages") {
         $scope.activeMessagesTab = true;
       } else if (currentTab === "edit") {
         $scope.activeEditTab = true;
+      } else if (currentTab === "blog") {
+        $scope.activeBlogTab = true;
       } else {
         $scope.activeProblemsTab = true;
       }
@@ -66731,7 +66739,6 @@ if (typeof exports === 'object') {
           $scope.mode = "edit";
           $scope.previewContent = "";
           $editor = $($element).find(".flandre-editor");
-          console.log($editor);
           $scope.togglePreview = function() {
             if ($scope.mode === "edit") {
               $scope.previewContent = $scope.content;

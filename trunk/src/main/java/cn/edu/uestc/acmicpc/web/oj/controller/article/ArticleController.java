@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.web.oj.controller.article;
 import cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleListDTO;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
@@ -44,34 +43,21 @@ public class ArticleController extends BaseController {
     this.pictureService = pictureService;
   }
 
-  @RequestMapping("data/{type}/{articleId}")
+  @RequestMapping("data/{articleId}")
   @LoginPermit(NeedLogin = false)
   public
   @ResponseBody
-  Map<String, Object> data(@PathVariable("type") String type,
-                           @PathVariable("articleId") Integer articleId,
+  Map<String, Object> data(@PathVariable("articleId") Integer articleId,
                            HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
-      if (!articleService.checkArticleExists(articleId)) {
-        throw new AppException("No such article.");
+      ArticleDTO articleDTO = articleService.getArticleDTO(articleId);
+      AppExceptionUtil.assertNotNull(articleDTO, "No such article.");
+      if (!checkPermission(session, articleDTO.getUserId())) {
+        throw new AppException("Permission denied!");
       }
-      switch (type) {
-        case "ArticleDTO":
-          ArticleDTO articleDTO = articleService.getArticleDTO(articleId);
-          AppExceptionUtil.assertNotNull(articleDTO, "No such article.");
-          articleService.incrementClicked(articleDTO.getArticleId());
-          json.put("article", articleDTO);
-          break;
-        case "ArticleEditorShowDTO":
-          ArticleEditorShowDTO articleEditorShowDTO = articleService.getArticleEditorShowDTO(articleId);
-          AppExceptionUtil.assertNotNull(articleEditorShowDTO, "No such article.");
-          json.put("article", articleEditorShowDTO);
-          break;
-        default:
-          throw new AppException("Unsupported data type.");
-      }
-
+      articleService.incrementClicked(articleDTO.getArticleId());
+      json.put("article", articleDTO);
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");

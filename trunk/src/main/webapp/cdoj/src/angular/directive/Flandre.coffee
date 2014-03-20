@@ -73,7 +73,6 @@ cdoj.directive("uiFlandre",
       $scope.mode = "edit"
       $scope.previewContent = ""
       $editor = $($element).find(".flandre-editor")
-      console.log $editor
 
       # Preview button
       $scope.togglePreview = ->
