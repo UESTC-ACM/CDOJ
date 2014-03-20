@@ -64946,9 +64946,9 @@ if (typeof exports === 'object') {
       ENDED: "Ended"
     },
     AuthenticationType: {
-      NORMAL: "0",
-      ADMIN: "1",
-      CONSTANT: "2"
+      NORMAL: 0,
+      ADMIN: 1,
+      CONSTANT: 2
     },
     AuthorStatusType: {
       NONE: 0,
@@ -65168,7 +65168,23 @@ if (typeof exports === 'object') {
       }).when("/article/editor/:userName/:action", {
         templateUrl: "template/article/editor.html",
         controller: "ArticleEditorController"
+      }).when("/admin/dashboard", {
+        templateUrl: "template/admin/dashboard.html",
+        controller: "AdminDashboardController"
       });
+    }
+  ]);
+
+  cdoj.controller("AdminDashboardController", [
+    "$scope", "$rootScope", "$window", function($scope, $rootScope, $window) {
+      var articleCondition;
+      if ($rootScope.hasLogin === false || $rootScope.currentUser.type !== $rootScope.AuthenticationType.ADMIN) {
+        $window.alert("Permission denied!");
+        $window.history.back();
+      }
+      articleCondition = angular.copy($rootScope.articleCondition);
+      articleCondition.type = $rootScope.ArticleType.NOTICE;
+      return $scope.articleCondition = articleCondition;
     }
   ]);
 

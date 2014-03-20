@@ -115,5 +115,8 @@ cdoj
       ).when("/article/editor/:userName/:action",
         templateUrl: "template/article/editor.html"
         controller: "ArticleEditorController"
+      ).when("/admin/dashboard",
+        templateUrl: "template/admin/dashboard.html"
+        controller: "AdminDashboardController"
       )
   ])

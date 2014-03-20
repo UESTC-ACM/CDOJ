@@ -106,18 +106,23 @@ border-top-right-radius: 0;">
                   class="dropdown-header" ng-bind="currentUser.userName">
               </li>
               <li role="presentation">
-                <a href="#/user/center/{{currentUser.userName}}">
+                <a href="/#/user/center/{{currentUser.userName}}">
                   <i class="fa fa-home"></i>User center
                 </a>
               </li>
               <li role="presentation">
-                <a href="#/user/center/{{currentUser.userName}}/teams">
+                <a href="/#/user/center/{{currentUser.userName}}/teams">
                   <i class="fa fa-group"></i>Teams
                 </a>
               </li>
               <li role="presentation">
-                <a href="#/user/center/{{currentUser.userName}}/edit">
+                <a href="/#/user/center/{{currentUser.userName}}/edit">
                   <i class="fa fa-wrench"></i>Edit profile
+                </a>
+              </li>
+              <li role="presentation">
+                <a href="/#/admin/dashboard">
+                  <i class="fa fa-dashboard"></i>Admin dashboard
                 </a>
               </li>
               <li role="presentation" class="divider"></li>
