@@ -65396,7 +65396,6 @@ if (typeof exports === 'object') {
         return $modalInstance.close();
       });
       return $scope.$on("contestUploader:complete", function(e, contestId) {
-        console.log("Fuck");
         return $window.location.href = "/#/contest/show/" + contestId;
       });
     }
