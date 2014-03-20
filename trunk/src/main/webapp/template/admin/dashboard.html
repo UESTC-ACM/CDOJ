@@ -19,14 +19,15 @@
       <tab heading="Notice">
         <div style="margin: 15px -15px 0 -15px;">
           <div class="col-md-12">
-            <list condition="articleCondition"
-                  request-url="/article/search">
-              <ul class="list-group">
-                <li class="list-group-item" ng-repeat="article in list">
-                  <a href="/#/article/editor/{{article.ownerName}}/{{article.articleId}}" ng-bind="article.title"></a>
-                </li>
-              </ul>
-            </list>
+            <ul ui-sortable="sortableOptions" class="list-group" ng-model="list">
+              <li class="list-group-item" ng-repeat="article in list">
+                <a href="/#/article/editor/{{article.ownerName}}/{{article.articleId}}"
+                   ng-bind="article.title"></a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-12" ng-show="listChanged">
+            <button class="btn btn-danger" ng-click="save()">Save changes</button>
           </div>
         </div>
       </tab>
