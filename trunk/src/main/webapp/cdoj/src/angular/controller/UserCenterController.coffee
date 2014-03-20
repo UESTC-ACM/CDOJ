@@ -53,6 +53,10 @@ cdoj
         else
           $window.alert data.error_msg
 
+      articleCondition = angular.copy($rootScope.articleCondition)
+      articleCondition.userName = targetUserName
+      $scope.articleCondition = articleCondition
+
       $scope.userEditDTO = 0
       $scope.$on("userCenter:permissionChange", ->
         if $scope.editPermission

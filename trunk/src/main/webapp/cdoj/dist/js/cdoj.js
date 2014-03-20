@@ -64959,6 +64959,11 @@ if (typeof exports === 'object') {
       PENDING: 0,
       ACCEPTED: 1,
       REFUSED: 2
+    },
+    ArticleType: {
+      NOTICE: 0,
+      ARTICLE: 1,
+      CLARIFICATION: 2
     }
   };
 
@@ -64969,6 +64974,9 @@ if (typeof exports === 'object') {
       endId: void 0,
       keyword: void 0,
       title: void 0,
+      userId: void 0,
+      userName: void 0,
+      type: void 0,
       orderFields: "id",
       orderAsc: "false"
     },
@@ -65114,7 +65122,7 @@ if (typeof exports === 'object') {
     "$routeProvider", function($routeProvider) {
       return $routeProvider.when("/", {
         templateUrl: "template/index/index.html",
-        $controller: "IndexController"
+        controller: "IndexController"
       }).when("/problem/list", {
         templateUrl: "template/problem/list.html",
         controller: "ProblemListController"
@@ -65825,8 +65833,12 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("IndexController", [
-    "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
-      return $rootScope.title = "Home";
+    "$scope", "$rootScope", function($scope, $rootScope) {
+      var articleCondition;
+      $rootScope.title = "Home";
+      articleCondition = angular.copy($rootScope.articleCondition);
+      articleCondition.type = $rootScope.ArticleType.NOTICE;
+      return $scope.articleCondition = articleCondition;
     }
   ]);
 
@@ -66243,7 +66255,7 @@ if (typeof exports === 'object') {
 
   cdoj.controller("UserCenterController", [
     "$scope", "$rootScope", "$http", "$routeParams", "$modal", "$window", "UserProfile", function($scope, $rootScope, $http, $routeParams, $modal, $window, $userProfile) {
-      var checkPermission, currentTab, targetUserName;
+      var articleCondition, checkPermission, currentTab, targetUserName;
       $scope.targetUser = {
         email: ""
       };
@@ -66300,6 +66312,9 @@ if (typeof exports === 'object') {
           return $window.alert(data.error_msg);
         }
       });
+      articleCondition = angular.copy($rootScope.articleCondition);
+      articleCondition.userName = targetUserName;
+      $scope.articleCondition = articleCondition;
       $scope.userEditDTO = 0;
       $scope.$on("userCenter:permissionChange", function() {
         if ($scope.editPermission) {
@@ -66451,6 +66466,16 @@ if (typeof exports === 'object') {
       };
     }
   ]);
+
+  cdoj.directive("articleItem", function() {
+    return {
+      restrict: "E",
+      scope: {
+        article: "="
+      },
+      templateUrl: "template/article/article-summary.html"
+    };
+  });
 
   cdoj.directive("autoFillSync", [
     "$timeout", function($timeout) {

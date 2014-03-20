@@ -46,6 +46,11 @@ GlobalVariables =
     ACCEPTED: 1
     REFUSED: 2
 
+  ArticleType:
+    NOTICE: 0
+    ARTICLE: 1
+    CLARIFICATION: 2
+
 GlobalConditions =
   articleCondition:
     currentPage: null
@@ -53,6 +58,9 @@ GlobalConditions =
     endId: undefined
     keyword: undefined
     title: undefined
+    userId: undefined
+    userName: undefined
+    type: undefined
     orderFields: "id"
     orderAsc: "false"
   problemCondition:
