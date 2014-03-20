@@ -32,9 +32,9 @@ GlobalVariables =
     ENDED: "Ended"
 
   AuthenticationType:
-    NORMAL: "0"
-    ADMIN: "1"
-    CONSTANT: "2"
+    NORMAL: 0
+    ADMIN: 1
+    CONSTANT: 2
 
   AuthorStatusType:
     NONE: 0
