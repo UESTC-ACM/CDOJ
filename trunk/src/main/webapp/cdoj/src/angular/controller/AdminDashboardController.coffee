@@ -12,13 +12,13 @@ cdoj
       articleCondition.orderAsc = "true"
 
       $scope.list = []
-      originalRange = ""
+      originalOrder = ""
       refresh = ->
         $http.post("/article/search", articleCondition).then (response) =>
           data = response.data
           if data.result == "success"
             $scope.list = data.list
-            originalRange = _.map($scope.list, (val)-> val.articleId).join(",")
+            originalOrder = _.map($scope.list, (val)-> val.articleId).join(",")
             $scope.pageInfo = data.pageInfo
           else
             $window.alert data.error_msg
@@ -27,11 +27,11 @@ cdoj
       $scope.listChanged = false
       $scope.sortableOptions =
         stop: (e, ui)->
-          newRange = _.map($scope.list, (val)-> val.articleId).join(",")
-          $scope.listChanged = !angular.equals(newRange, originalRange)
+          newOrder = _.map($scope.list, (val)-> val.articleId).join(",")
+          $scope.listChanged = !angular.equals(newOrder, originalOrder)
       $scope.save = ->
-        newRange = _.map($scope.list, (val)-> val.articleId).join(",")
-        $http.post("/article/arrangementNotice", permutation: newRange).then (response)->
+        newOrder = _.map($scope.list, (val)-> val.articleId).join(",")
+        $http.post("/article/changeNoticeOrder", order: newOrder).then (response)->
           data = response.data
           if data.result == "success"
             $window.alert "Done"

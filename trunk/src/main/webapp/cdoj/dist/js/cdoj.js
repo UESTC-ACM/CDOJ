@@ -80164,7 +80164,7 @@ if (typeof exports === 'object') {
 
   cdoj.controller("AdminDashboardController", [
     "$scope", "$rootScope", "$window", "$http", function($scope, $rootScope, $window, $http) {
-      var articleCondition, originalRange, refresh;
+      var articleCondition, originalOrder, refresh;
       if ($rootScope.hasLogin === false || $rootScope.currentUser.type !== $rootScope.AuthenticationType.ADMIN) {
         $window.alert("Permission denied!");
         $window.history.back();
@@ -80174,7 +80174,7 @@ if (typeof exports === 'object') {
       articleCondition.orderFields = "order";
       articleCondition.orderAsc = "true";
       $scope.list = [];
-      originalRange = "";
+      originalOrder = "";
       refresh = function() {
         return $http.post("/article/search", articleCondition).then((function(_this) {
           return function(response) {
@@ -80182,7 +80182,7 @@ if (typeof exports === 'object') {
             data = response.data;
             if (data.result === "success") {
               $scope.list = data.list;
-              originalRange = _.map($scope.list, function(val) {
+              originalOrder = _.map($scope.list, function(val) {
                 return val.articleId;
               }).join(",");
               return $scope.pageInfo = data.pageInfo;
@@ -80196,20 +80196,20 @@ if (typeof exports === 'object') {
       $scope.listChanged = false;
       $scope.sortableOptions = {
         stop: function(e, ui) {
-          var newRange;
-          newRange = _.map($scope.list, function(val) {
+          var newOrder;
+          newOrder = _.map($scope.list, function(val) {
             return val.articleId;
           }).join(",");
-          return $scope.listChanged = !angular.equals(newRange, originalRange);
+          return $scope.listChanged = !angular.equals(newOrder, originalOrder);
         }
       };
       return $scope.save = function() {
-        var newRange;
-        newRange = _.map($scope.list, function(val) {
+        var newOrder;
+        newOrder = _.map($scope.list, function(val) {
           return val.articleId;
         }).join(",");
-        return $http.post("/article/arrangementNotice", {
-          permutation: newRange
+        return $http.post("/article/changeNoticeOrder", {
+          order: newOrder
         }).then(function(response) {
           var data;
           data = response.data;
