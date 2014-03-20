@@ -11,14 +11,16 @@ cdoj
       if $rootScope.hasLogin == false || ($rootScope.isAdmin == false && $rootScope.currentUser.userName != $scope.userName)
         $window.alert "Permission denied!"
         $window.history.back()
+      $scope.isNotice = false
 
       if $scope.action != "new"
-        $scope.title = "Edit article " + $scope.action
         articleId = angular.copy($scope.action)
         $http.get("/article/data/#{articleId}").then (response)->
           data = response.data
           if data.result == "success"
             $scope.article = data.article
+            $scope.title = "Edit: " + $scope.article.title
+            $scope.isNotice = $scope.article.type == $rootScope.ArticleType.NOTICE
           else
             $window.alert data.error_msg
       else
@@ -28,6 +30,10 @@ cdoj
         articleEditDTO = angular.copy($scope.article)
         articleEditDTO.action = angular.copy($scope.action)
         articleEditDTO.userName = angular.copy($scope.userName)
+        if $scope.isNotice
+          articleEditDTO.type = $rootScope.ArticleType.NOTICE
+        else
+          articleEditDTO.type = $rootScope.ArticleType.ARTICLE
         $http.post("/article/edit", articleEditDTO).then (response)->
           data = response.data
           if data.result == "success"
