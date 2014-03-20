@@ -4,7 +4,7 @@ import cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticlePermutationDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleOrderDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
@@ -77,14 +77,14 @@ public class ArticleController extends BaseController {
     return json;
   }
 
-  @RequestMapping("arrangementNotice")
+  @RequestMapping("changeNoticeOrder")
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public
   @ResponseBody
-  Map<String, Object> arrangementNotice(@RequestBody ArticlePermutationDTO articlePermutationDTO) {
+  Map<String, Object> changeNoticeOrder(@RequestBody ArticleOrderDTO articleOrderDTO) {
     Map<String, Object> json = new HashMap<>();
     try {
-      String[] articleIdList = articlePermutationDTO.getPermutation().split(",");
+      String[] articleIdList = articleOrderDTO.getOrder().split(",");
       List<ArticleDTO> articleList = new LinkedList<>();
       for (String articleIdString: articleIdList) {
         if (articleIdString.length() == 0) {
