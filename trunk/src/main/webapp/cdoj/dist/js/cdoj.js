@@ -65396,7 +65396,6 @@ if (typeof exports === 'object') {
         return $modalInstance.close();
       });
       return $scope.$on("contestUploader:complete", function(e, contestId) {
-        console.log("Fuck");
         return $window.location.href = "/#/contest/show/" + contestId;
       });
     }
@@ -65527,7 +65526,8 @@ if (typeof exports === 'object') {
       $scope.review = {
         result: ""
       };
-      _.each($scope.team.teamUsers, function(teamUser) {
+      $scope.teamUsers = angular.copy($scope.team.teamUsers).concat(angular.copy($scope.team.invitedUsers));
+      _.each($scope.teamUsers, function(teamUser) {
         return $http.get("/user/profile/" + teamUser.userName).then(function(response) {
           var data;
           data = response.data;

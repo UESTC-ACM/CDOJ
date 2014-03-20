@@ -24,6 +24,7 @@ public class ContestTeamListDTO implements BaseDTO<ContestTeam> {
   private String statusName;
   private String comment;
   private List<TeamUserListDTO> teamUsers;
+  private List<TeamUserListDTO> invitedUsers;
 
   public List<TeamUserListDTO> getTeamUsers() {
     return teamUsers;
@@ -35,6 +36,14 @@ public class ContestTeamListDTO implements BaseDTO<ContestTeam> {
 
   public String getStatusName() {
     return statusName;
+  }
+
+  public List<TeamUserListDTO> getInvitedUsers() {
+    return invitedUsers;
+  }
+
+  public void setInvitedUsers(List<TeamUserListDTO> invitedUsers) {
+    this.invitedUsers = invitedUsers;
   }
 
   public void setStatusName(String statusName) {

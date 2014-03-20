@@ -58,9 +58,10 @@ cdoj
           templateUrl: "template/modal/contest-registry-review-modal.html"
           controller: "ContestRegistryReviewModalController"
           resolve:
-            team: -> team
+            team: ->
+              team
         )
-])
+  ])
 cdoj
 .controller("ContestRegistryReviewModalController", [
     "$scope", "$rootScope", "$http", "$modalInstance", "team", "$window"
@@ -68,7 +69,9 @@ cdoj
       $scope.team = team
       $scope.review =
         result: ""
-      _.each($scope.team.teamUsers, (teamUser)->
+      $scope.teamUsers = angular.copy($scope.team.teamUsers).concat(angular.copy($scope.team.invitedUsers))
+
+      _.each($scope.teamUsers, (teamUser)->
         $http.get("/user/profile/#{teamUser.userName}").then (response)->
           data = response.data
           if data.result == "success"
@@ -113,4 +116,4 @@ cdoj
 
       $scope.reasonList = [
       ]
-])
+  ])
