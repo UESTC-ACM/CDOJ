@@ -4,14 +4,11 @@
 <div class="modal-body">
   <div class="row">
     <div class="col-xs-6 text-center">
-      <a ng-click="createManually()"
-         href="javascript:void(0);"
+      <a href="#/contest/editor/new"
          class="btn btn-danger">Create manually</a>
     </div>
     <div class="col-xs-6 text-center">
-      <a ng-click="uploadZip()"
-         href="javascript:void(0);"
-         class="btn btn-danger">Upload zip file</a>
+      <ui-contest-uploader></ui-contest-uploader>
     </div>
   </div>
 </div>
