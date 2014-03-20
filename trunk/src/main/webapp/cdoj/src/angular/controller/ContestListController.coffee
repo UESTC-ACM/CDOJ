@@ -17,7 +17,6 @@ cdoj
         $modalInstance.close()
       )
       $scope.$on("contestUploader:complete", (e, contestId)->
-        console.log "Fuck"
         $window.location.href = "/#/contest/show/#{contestId}"
       )
   ])
