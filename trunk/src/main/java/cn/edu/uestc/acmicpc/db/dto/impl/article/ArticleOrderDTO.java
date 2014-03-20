@@ -13,4 +13,24 @@ public class ArticleOrderDTO {
   public void setOrder(String order) {
     this.order = order;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof ArticleOrderDTO)) {
+      return false;
+    }
+
+    ArticleOrderDTO that = (ArticleOrderDTO) o;
+
+    return !(order != null ? !order.equals(that.order) : that.order != null);
+
+  }
+
+  @Override
+  public int hashCode() {
+    return order != null ? order.hashCode() : 0;
+  }
 }
