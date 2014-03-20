@@ -23,7 +23,7 @@
                   request-url="/article/search">
               <ul class="list-group">
                 <li class="list-group-item" ng-repeat="article in list">
-                  <span ng-bind="article.title"></span>
+                  <a href="/#/article/editor/{{article.ownerName}}/{{article.articleId}}" ng-bind="article.title"></a>
                 </li>
               </ul>
             </list>

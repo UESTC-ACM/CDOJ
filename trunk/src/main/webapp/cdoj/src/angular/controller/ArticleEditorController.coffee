@@ -8,7 +8,7 @@ cdoj
       $scope.fieldInfo = []
       $scope.action = $routeParams.action
       $scope.userName = $routeParams.userName
-      if $rootScope.hasLogin == false || $rootScope.currentUser.userName != $scope.userName
+      if $rootScope.hasLogin == false || ($rootScope.isAdmin == false && $rootScope.currentUser.userName != $scope.userName)
         $window.alert "Permission denied!"
         $window.history.back()
 
