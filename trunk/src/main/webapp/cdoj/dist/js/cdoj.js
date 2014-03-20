@@ -65196,7 +65196,8 @@ if (typeof exports === 'object') {
       return $scope.submit = function() {
         var articleEditDTO;
         articleEditDTO = angular.copy($scope.article);
-        articleEditDTO.action = angular.copy($routeParams.action);
+        articleEditDTO.action = angular.copy($scope.action);
+        articleEditDTO.userName = angular.copy($scope.userName);
         return $http.post("/article/edit", articleEditDTO).then(function(response) {
           var data;
           data = response.data;

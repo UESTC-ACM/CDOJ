@@ -63,16 +63,16 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
   }
 
   @Override
-  public Integer createNewArticle() throws AppException {
+  public Integer createNewArticle(Integer authorId) throws AppException {
     Article article = new Article();
     article.setTitle("");
     article.setContent("");
     article.setTime(new Timestamp(new Date().getTime()));
     article.setClicked(0);
     article.setOrder(0);
-    article.setType(0);
-    article.setIsVisible(false);
-    article.setUserId(1);
+    article.setType(1);
+    article.setIsVisible(true);
+    article.setUserId(authorId);
     articleDAO.add(article);
     return article.getArticleId();
   }
