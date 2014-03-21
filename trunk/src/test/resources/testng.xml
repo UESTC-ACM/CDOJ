@@ -32,6 +32,11 @@
       <class name="cn.edu.uestc.acmicpc.util.checker.ZipDataCheckerTest"/>
     </classes>
   </test>
+  <test name="ContestZipCheckerTest" time-out="60000">
+    <classes>
+      <class name="cn.edu.uestc.acmicpc.util.checker.ContestZipCheckerTest"/>
+    </classes>
+  </test>
   <test name="IndexControllerTest" time-out="60000">
     <classes>
       <class name="cn.edu.uestc.acmicpc.web.oj.controller.IndexControllerTest"/>
