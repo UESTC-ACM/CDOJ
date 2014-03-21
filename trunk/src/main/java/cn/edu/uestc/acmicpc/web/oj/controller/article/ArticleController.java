@@ -127,6 +127,104 @@ public class ArticleController extends BaseController {
     return json;
   }
 
+  @RequestMapping("commentSearch")
+  @LoginPermit(NeedLogin = false)
+  public
+  @ResponseBody
+  Map<String, Object> commentSearch(HttpSession session,
+                                    @RequestBody ArticleCondition articleCondition) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      if (!isAdmin(session)) {
+        articleCondition.isVisible = true;
+      }
+      articleCondition.type = Global.ArticleType.COMMENT.ordinal();
+
+      Long count = articleService.count(articleCondition);
+      PageInfo pageInfo = buildPageInfo(count, articleCondition.currentPage,
+          Global.ARTICLE_PER_PAGE, null);
+
+      List<ArticleListDTO> articleListDTOList = articleService.getArticleList(
+          articleCondition, pageInfo);
+
+      json.put("pageInfo", pageInfo);
+      json.put("result", "success");
+      json.put("list", articleListDTOList);
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  @RequestMapping("editComment")
+  @LoginPermit(NeedLogin = true)
+  public
+  @ResponseBody
+  Map<String, Object> editComment(@RequestBody @Valid ArticleEditDTO articleEditDTO,
+                                  BindingResult validateResult,
+                                  HttpSession session) {
+    Map<String, Object> json = new HashMap<>();
+    if (validateResult.hasErrors()) {
+      json.put("result", "field_error");
+      json.put("field", validateResult.getFieldErrors());
+    } else {
+      try {
+        UserDTO currentUser = getCurrentUser(session);
+        if (!isAdmin(session) && !currentUser.getUserName().equals(articleEditDTO.getUserName())) {
+          throw new AppException("Permission denied");
+        }
+        articleEditDTO.setContent(StringUtil.trimAllSpace(articleEditDTO.getContent()));
+        if (articleEditDTO.getContent().length() <= 0 || articleEditDTO.getContent().length() > 233) {
+          throw new AppException("Comment should contain no more than 233 characters.");
+        }
+        ArticleDTO articleDTO;
+        if (articleEditDTO.getAction().equals("new")) {
+          Integer articleId = articleService.createNewArticle(currentUser.getUserId());
+          articleDTO = articleService.getArticleDTO(articleId);
+          if (articleDTO == null || !articleDTO.getArticleId().equals(articleId)) {
+            throw new AppException("Error while creating comment.");
+          }
+          // Move pictures
+          String oldDirectory = "/images/article/" + articleEditDTO.getUserName() + "/newComment/";
+          String newDirectory = "/images/article/" + articleEditDTO.getUserName() + "/" + articleId + "/";
+          articleEditDTO.setContent(pictureService.modifyPictureLocation(
+              articleEditDTO.getContent(), oldDirectory, newDirectory));
+        } else {
+          articleDTO = articleService.getArticleDTO(articleEditDTO
+              .getArticleId());
+          if (articleDTO == null) {
+            throw new AppException("No such comment.");
+          }
+        }
+
+        articleDTO.setTitle(articleEditDTO.getTitle());
+        articleDTO.setContent(articleEditDTO.getContent());
+        articleDTO.setTime(new Timestamp(System.currentTimeMillis()));
+        articleDTO.setType(Global.ArticleType.COMMENT.ordinal());
+        articleDTO.setProblemId(articleEditDTO.getProblemId());
+        articleDTO.setContestId(articleEditDTO.getContestId());
+        articleDTO.setParentId(articleEditDTO.getParentId());
+
+        articleService.updateArticle(articleDTO);
+        json.put("result", "success");
+        json.put("articleId", articleDTO.getArticleId());
+      } catch (FieldException e) {
+        putFieldErrorsIntoBindingResult(e, validateResult);
+        json.put("result", "field_error");
+        json.put("field", validateResult.getFieldErrors());
+      } catch (AppException e) {
+        json.put("result", "error");
+        json.put("error_msg", e.getMessage());
+      }
+    }
+    return json;
+  }
+
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public
@@ -138,8 +236,9 @@ public class ArticleController extends BaseController {
       if (!isAdmin(session)) {
         articleCondition.isVisible = true;
       }
-      articleCondition.problemId = null;
-      articleCondition.contestId = null;
+      articleCondition.problemId = -1;
+      articleCondition.contestId = -1;
+      articleCondition.parentId = -1;
       Long count = articleService.count(articleCondition);
       PageInfo pageInfo = buildPageInfo(count, articleCondition.currentPage,
           Global.ARTICLE_PER_PAGE, null);

@@ -78,26 +78,39 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
   }
 
   private void updateArticleByArticleDTO(Article article, ArticleDTO articleDTO) {
-    if (articleDTO.getParentId() != null)
+    if (articleDTO.getParentId() != null) {
       article.setParentId(articleDTO.getParentId());
-    if (articleDTO.getClicked() != null)
+    }
+    if (articleDTO.getClicked() != null) {
       article.setClicked(articleDTO.getClicked());
-    if (articleDTO.getContent() != null)
+    }
+    if (articleDTO.getContent() != null) {
       article.setContent(articleDTO.getContent());
-    if (articleDTO.getType() != null)
+    }
+    if (articleDTO.getType() != null) {
       article.setType(articleDTO.getType());
-    if (articleDTO.getIsVisible() != null)
+    }
+    if (articleDTO.getIsVisible() != null) {
       article.setIsVisible(articleDTO.getIsVisible());
-    if (articleDTO.getOrder() != null)
+    }
+    if (articleDTO.getOrder() != null) {
       article.setOrder(articleDTO.getOrder());
-    if (articleDTO.getProblemId() != null)
+    }
+    if (articleDTO.getProblemId() != null) {
       article.setProblemId(articleDTO.getProblemId());
-    if (articleDTO.getTime() != null)
+    }
+    if (articleDTO.getContestId() != null) {
+      article.setContestId(articleDTO.getContestId());
+    }
+    if (articleDTO.getTime() != null) {
       article.setTime(articleDTO.getTime());
-    if (articleDTO.getTitle() != null)
+    }
+    if (articleDTO.getTitle() != null) {
       article.setTitle(articleDTO.getTitle());
-    if (articleDTO.getUserId() != null)
+    }
+    if (articleDTO.getUserId() != null) {
       article.setUserId(articleDTO.getUserId());
+    }
   }
 
   @Override

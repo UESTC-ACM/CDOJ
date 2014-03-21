@@ -250,7 +250,7 @@ public class Global {
    * Article type
    */
   public enum ArticleType {
-    NOTICE("Notice"), ARTICLE("Article"), CLARIFICATION("Clarification");
+    NOTICE("Notice"), ARTICLE("Article"), COMMENT("Comment");
     private final String description;
 
     public String getDescription() {
