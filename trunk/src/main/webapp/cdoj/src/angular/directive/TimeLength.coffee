@@ -12,7 +12,7 @@ cdoj
           $scope.showTimeLength()
         )
         $scope.showTimeLength = ->
-          length = parseInt($scope.length)
+          length = Math.floor(parseInt($scope.length) / 1000)
           second = length % 60
           length = (length - second) / 60
 

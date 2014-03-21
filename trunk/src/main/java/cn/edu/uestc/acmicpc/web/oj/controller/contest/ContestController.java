@@ -398,12 +398,13 @@ public class ContestController extends BaseController {
       if (!contestShowDTO.getIsVisible() && !isAdmin(session)) {
         throw new AppException("No such contest.");
       }
+      List<ContestProblemDetailDTO> contestProblemList;
       if (contestShowDTO.getStatus().equals("Pending") && !isAdmin(session)) {
-        throw new AppException("Contest not start yet.");
+        contestProblemList = new LinkedList<>();
+      } else {
+        contestProblemList = contestProblemService
+            .getContestProblemDetailDTOListByContestId(contestId);
       }
-
-      List<ContestProblemDetailDTO> contestProblemList = contestProblemService.
-          getContestProblemDetailDTOListByContestId(contestId);
 
       json.put("contest", contestShowDTO);
       json.put("problemList", contestProblemList);
