@@ -151,4 +151,15 @@ public class ZipDataCheckerTest {
           new AppException("Some data files has not input file or output file."));
     }
   }
+
+  @Test
+  public void testCheck_noTestData() {
+    when(directory.listFiles()).thenReturn(new File[] {});
+    try {
+      checker.check(directory);
+      Assert.fail();
+    } catch (AppException e) {
+      Assert.assertEquals(e, new AppException("No test data."));
+    }
+  }
 }
