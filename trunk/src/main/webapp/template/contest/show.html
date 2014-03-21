@@ -3,10 +3,20 @@
 <div class="col-md-12">
   <h1 ng-bind="contest.title" class="text-center"></h1>
 </div>
+<div class="col-md-12">
+  <progressbar max="progressbar.max"
+               value="progressbar.value"
+               animate="true"
+               class="progress-striped"
+               ng-class="{active: progressbar.active}"
+               type="{{progressbar.type}}">
+  </progressbar>
+</div>
 
 <div class="col-md-12">
 <tabset>
-<tab heading="Overview">
+<tab heading="Overview"
+     active="activeOverviewTab">
   <div class="row">
     <div class="col-md-12">
       <dl class="dl-horizontal" style="margin-top: 15px;">
@@ -25,17 +35,20 @@
             time="contest.endTime"
             change="false"
             show="real"></dd>
-        <dt>Contest Type:</dt>
-        <dd ng-bind="contest.typeName"></dd>
         <dt>Contest Status:</dt>
-        <dd ng-bind="contest.status"></dd>
+        <dd ng-bind="contest.status"
+            ng-class="{
+              'font-primary': contest.status == $root.ContestStatus.PENDING,
+              'font-danger': contest.status == $root.ContestStatus.RUNNING,
+              'font-success': contest.status == $root.ContestStatus.ENDED
+            }"></dd>
       </dl>
     </div>
     <div class="col-md-12">
       <markdown content="contest.description">
       </markdown>
     </div>
-    <div class="col-md-12">
+    <div class="col-md-12" ng-hide="contest.status == $root.ContestStatus.PENDING">
       <table class="table table-striped table-condensed">
         <thead>
         <tr>
@@ -58,7 +71,9 @@
     </div>
   </div>
 </tab>
-<tab heading="Problems">
+<tab heading="Problems"
+     active="activeProblemTab"
+     ng-hide="contest.status == $root.ContestStatus.PENDING">
   <div class="row">
     <div class="col-md-12 text-center">
       <ul class="pagination" style="margin-bottom: 0;">
@@ -73,15 +88,16 @@
       <div class="col-md-12 text-center">
         <button class="btn btn-default" ng-click="openSubmitModal()">Submit</button>
         <button class="btn btn-default" ng-click="showStatusTab()">Status</button>
-        <button class="btn btn-default">Clarification</button>
       </div>
     </problem>
   </div>
 </tab>
-<tab heading="Clarification">
+<tab heading="Clarification"
+     ng-hide="contest.status == $root.ContestStatus.PENDING">
   Clarification
 </tab>
-<tab heading="Status">
+<tab heading="Status" select="refreshStatus()"
+     ng-hide="contest.status == $root.ContestStatus.PENDING">
   <list condition="contestStatusCondition"
         request-url="/status/search">
     <div class="col-md-12">
@@ -139,7 +155,7 @@
         </tr>
         <tr ng-repeat="status in list">
           <td style="text-align: center;" ng-show="$root.isAdmin">
-            <a href="#/user/center/{{status.userName}}"
+            <a href="/#/user/center/{{status.userName}}"
                ng-bind="status.userName"></a>
           </td>
           <td style="text-align: center;">
@@ -150,9 +166,9 @@
               ui-status
               status="status"
               ng-class="{
-                'status-info': [0, 16, 17, 18].some(status.returnTypeId),
-                'status-success': [1].some(status.returnTypeId),
-                'status-danger': [0, 1, 16, 17, 18].none(status.returnTypeId)
+                'font-primary': [0, 16, 17, 18].some(status.returnTypeId),
+                'font-success': [1].some(status.returnTypeId),
+                'font-danger': [0, 1, 16, 17, 18].none(status.returnTypeId)
               }">
           </td>
 
@@ -177,7 +193,8 @@
     </div>
   </list>
 </tab>
-<tab heading="Rank">
+<tab heading="Rank"
+     ng-hide="contest.status == $root.ContestStatus.PENDING">
   <div class="row">
     <div class="col-md-12">
       <table id="rank-list" class="table">
