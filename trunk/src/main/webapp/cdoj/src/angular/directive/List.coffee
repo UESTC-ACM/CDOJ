@@ -7,6 +7,7 @@ cdoj
     scope:
       condition: "="
       requestUrl: "@"
+      name: "@"
     controller: "ListController"
     template: """
 <div>

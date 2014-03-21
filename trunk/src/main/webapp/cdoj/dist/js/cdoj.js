@@ -80148,7 +80148,7 @@ if (typeof exports === 'object') {
     ArticleType: {
       NOTICE: 0,
       ARTICLE: 1,
-      CLARIFICATION: 2
+      COMMENT: 2
     }
   };
 
@@ -80860,8 +80860,8 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("ContestShowController", [
-    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$interval", "$timeout", function($scope, $rootScope, $http, $window, $modal, $routeParams, $interval, $timeout) {
-      var currentTimeTimer, rankListTimer, refreshRankList, updateTime;
+    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$interval", "$timeout", "$cookieStore", function($scope, $rootScope, $http, $window, $modal, $routeParams, $interval, $timeout, $cookieStore) {
+      var clarificationTimer, cookieName, currentTimeTimer, rankListTimer, refreshClarification, refreshRankList, updateTime;
       $scope.contestId = 0;
       $scope.contest = {
         title: "",
@@ -80885,6 +80885,12 @@ if (typeof exports === 'object') {
         type: "success",
         active: true
       };
+      cookieName = "contest" + $scope.contestId;
+      if (angular.isUndefined($cookieStore.get(cookieName))) {
+        $cookieStore.put(cookieName, {
+          lastClarificationCount: 0
+        });
+      }
       $scope.contestId = angular.copy($routeParams.contestId);
       $http.get("/contest/data/" + $scope.contestId).then(function(response) {
         var data;
@@ -80929,8 +80935,26 @@ if (typeof exports === 'object') {
       currentTimeTimer = $interval(updateTime, 1000);
       $scope.$on("$destroy", function() {
         $interval.cancel(currentTimeTimer);
-        return $interval.cancel(rankListTimer);
+        $interval.cancel(rankListTimer);
+        return $interval.cancel(clarificationTimer);
       });
+      $scope.totalUnreadedClarification = 0;
+      $scope.lastClarificationCount = 0;
+      refreshClarification = function() {
+        return $scope.$broadcast("refreshList:comment", function(data) {
+          $scope.totalUnreadedClarification = Math.max(0, data.pageInfo.totalItems - $cookieStore.get(cookieName).lastClarificationCount);
+          return $scope.lastClarificationCount = data.pageInfo.totalItems;
+        });
+      };
+      clarificationTimer = $interval(refreshClarification, 10000);
+      $timeout(refreshClarification, 500);
+      $scope.selectClarificationTab = function() {
+        var contest;
+        contest = $cookieStore.get(cookieName);
+        contest.lastClarificationCount = $scope.lastClarificationCount;
+        $cookieStore.put(cookieName, contest);
+        return $scope.totalUnreadedClarification = 0;
+      };
       $scope.showProblemTab = function() {
         return $scope.$$childHead.$$nextSibling.$$nextSibling.tabs[1].select();
       };
@@ -81153,8 +81177,11 @@ if (typeof exports === 'object') {
       };
       $scope.itemsPerPage = 20;
       $scope.showPages = 10;
-      $scope.$on("refreshList", function() {
-        return $scope.refresh();
+      $scope.$on("refreshList", function(e, callback) {
+        return $scope.refresh(callback);
+      });
+      $scope.$on("refreshList:" + $scope.name, function(e, callback) {
+        return $scope.refresh(callback);
       });
       _.each($scope.condition, function(val, key) {
         if (angular.isDefined($routeParams[key])) {
@@ -81165,7 +81192,7 @@ if (typeof exports === 'object') {
           }
         }
       });
-      $scope.refresh = function() {
+      $scope.refresh = function(callback) {
         var condition;
         if ($scope.requestUrl !== 0) {
           condition = angular.copy($scope.condition);
@@ -81175,7 +81202,11 @@ if (typeof exports === 'object') {
               data = response.data;
               if (data.result === "success") {
                 $scope.$$nextSibling.list = response.data.list;
-                return $scope.pageInfo = data.pageInfo;
+                $scope.pageInfo = data.pageInfo;
+                $scope.itemsPerPage = $scope.pageInfo.countPerPage;
+                if (angular.isFunction(callback)) {
+                  return callback(response.data);
+                }
               } else {
                 return $window.alert(data.error_msg);
               }
@@ -81364,7 +81395,9 @@ if (typeof exports === 'object') {
 
   cdoj.controller("StatusListController", [
     "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
-      return $rootScope.title = "Status list";
+      return $scope.refresh = function() {
+        return $scope.$broadcast("refreshList");
+      };
     }
   ]);
 
@@ -81878,6 +81911,83 @@ if (typeof exports === 'object') {
     };
   });
 
+  cdoj.directive("comment", function() {
+    return {
+      restrict: "E",
+      scope: {
+        contestId: "=",
+        problemId: "=",
+        articleId: "="
+      },
+      controller: [
+        "$rootScope", "$scope", "$http", "$window", function($rootScope, $scope, $http, $window) {
+          var commentCondition, sendEditRequest;
+          commentCondition = angular.copy($rootScope.articleCondition);
+          commentCondition.contestId = $scope.contestId;
+          commentCondition.problemId = $scope.problemId;
+          commentCondition.parentId = $scope.articleId;
+          $scope.commentCondition = commentCondition;
+          console.log($scope.commentCondition);
+          sendEditRequest = function(articleEditDTO) {
+            return $http.post("/article/editComment", articleEditDTO).then(function(response) {
+              var data;
+              data = response.data;
+              if (data.result === "success") {
+                $scope.newComment = "";
+                return $scope.$broadcast("refreshList");
+              } else if (data.result === "field_error") {
+                return $scope.fieldInfo = data.field;
+              } else {
+                return $window.alert(data.error_msg);
+              }
+            });
+          };
+          $scope.newComment = "";
+          $scope.comment = function() {
+            var articleEditDTO;
+            articleEditDTO = {
+              content: $scope.newComment,
+              action: "new",
+              title: "Comment",
+              userName: $rootScope.currentUser.userName,
+              type: $rootScope.ArticleType.COMMENT,
+              problemId: $scope.problemId,
+              contestId: $scope.contestId,
+              parentId: $scope.articleId
+            };
+            sendEditRequest(articleEditDTO);
+            $scope.stashCommentList = false;
+            return $window.scrollTo(0, 0);
+          };
+          $scope.stashCommentList = false;
+          $scope.cancel = function() {
+            $scope.newComment = "";
+            $scope.stashCommentList = false;
+            return $window.scrollTo(0, 0);
+          };
+          $scope.reply = function(article) {
+            $scope.newComment = "@" + article.ownerName + " : ";
+            $scope.$broadcast("flandre:focus");
+            return $scope.stashCommentList = true;
+          };
+          return $scope["delete"] = function(article) {
+            var articleEditDTO;
+            if ($window.confirm("Are you sure?")) {
+              articleEditDTO = {
+                content: "This comment is deleted by administrator.",
+                action: "Edit",
+                articleId: article.articleId
+              };
+              return sendEditRequest(articleEditDTO);
+            }
+          };
+        }
+      ],
+      replace: true,
+      templateUrl: "template/article/comment.html"
+    };
+  });
+
   cdoj.directive("uiContestAdminSpan", function() {
     return {
       restrict: "A",
@@ -82074,6 +82184,9 @@ if (typeof exports === 'object') {
               return $scope.mode = "edit";
             }
           };
+          $scope.$on("flandre:focus", function() {
+            return $($element).find(".flandre-editor").focus();
+          });
           return pictureUploader = new qq.FineUploaderBasic({
             button: $($element).find(".flandre-picture-uploader")[0],
             request: {
@@ -82106,7 +82219,7 @@ if (typeof exports === 'object') {
           });
         }
       ],
-      template: "<div class=\"panel panel-default\">\n  <div class=\"panel-heading flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\"\n                ng-click=\"togglePreview()\"\n                ng-class=\"{active: mode == 'preview'}\">Preview</button>\n      </div>\n      <div class=\"btn-group flandre-tools\">\n        <span class=\"btn btn-default btn-sm\"><i class=\"fa fa-smile-o\"></i></span>\n        <span class=\"btn btn-default btn-sm flandre-picture-uploader\"><i class=\"fa fa-picture-o\"></i></span>\n      </div>\n    </div>\n  </div>\n  <textarea class=\"tex2jax_ignore form-control flandre-editor\"\n            msd-elastic\n            ng-class=\"{'flandre-show': mode == 'edit'}\"\n            ng-model=\"content\"></textarea>\n  <div class=\"flandre-preview\" ng-class=\"{'flandre-show': mode == 'preview'}\">\n    <markdown content=\"previewContent\"></markdown>\n  </div>\n</div>",
+      template: "<div class=\"panel panel-default\" style=\"margin-bottom: 6px;\">\n  <div class=\"panel-heading flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\"\n                ng-click=\"togglePreview()\"\n                ng-class=\"{active: mode == 'preview'}\">Preview</button>\n      </div>\n      <div class=\"btn-group flandre-tools\">\n        <span class=\"btn btn-default btn-sm\"><i class=\"fa fa-smile-o\"></i></span>\n        <span class=\"btn btn-default btn-sm flandre-picture-uploader\"><i class=\"fa fa-picture-o\"></i></span>\n      </div>\n      <span class=\"pull-right\" style=\"padding-top: 6px;\">Contents are parsed with <a href=\"/#/article/show/2\">Markdown</a></span>\n    </div>\n  </div>\n  <textarea class=\"tex2jax_ignore form-control flandre-editor\"\n            msd-elastic\n            ng-class=\"{'flandre-show': mode == 'edit'}\"\n            ng-model=\"content\"></textarea>\n  <div class=\"flandre-preview\" ng-class=\"{'flandre-show': mode == 'preview'}\">\n    <markdown content=\"previewContent\"></markdown>\n  </div>\n</div>",
       replace: true
     };
   });
@@ -82118,7 +82231,8 @@ if (typeof exports === 'object') {
       transclude: true,
       scope: {
         condition: "=",
-        requestUrl: "@"
+        requestUrl: "@",
+        name: "@"
       },
       controller: "ListController",
       template: "<div>\n  <div class=\"col-md-12\" ng-show=\"pageInfo.totalItems > itemsPerPage\">\n    <pagination total-items=\"pageInfo.totalItems\"\n                items-per-page=\"itemsPerPage\"\n                page=\"condition.currentPage\"\n                max-size=\"showPages\"\n                class=\"pagination-sm\"\n                boundary-links=\"true\"\n                previous-text=\"&lsaquo;\"\n                next-text=\"&rsaquo;\"\n                first-text=\"&laquo;\"\n                last-text=\"&raquo;\"></pagination>\n  </div>\n  <div ng-transclude></div>\n</div>"
@@ -82142,7 +82256,7 @@ if (typeof exports === 'object') {
           return $scope.$watch("content", function() {
             var content;
             content = angular.copy($scope.content);
-            content = content.replace(/@([a-zA-Z0-9_]{4,24})/, "[@$1](/#/user/center/$1)");
+            content = content.replace(/@([a-zA-Z0-9_]{4,24})\s/, "[@$1](/#/user/center/$1)");
             content = marked(content);
             $element.empty().append(content);
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, $element[0]]);
