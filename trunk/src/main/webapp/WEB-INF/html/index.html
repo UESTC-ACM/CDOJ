@@ -120,7 +120,7 @@ border-top-right-radius: 0;">
                   <i class="fa fa-wrench"></i>Edit profile
                 </a>
               </li>
-              <li role="presentation">
+              <li role="presentation" ng-show="$root.isAdmin">
                 <a href="/#/admin/dashboard">
                   <i class="fa fa-dashboard"></i>Admin dashboard
                 </a>
@@ -230,7 +230,7 @@ border-top-right-radius: 0;">
   </div>
   <div id="cdoj-container">
     <div ng-view style="min-height: 600px;"></div>
-    <div class="row">
+    <div class="row" style="margin-top: 15px;">
       <div class="col-md-12" style="font-size: 10px;">
         <hr style="margin: 0;"/>
         <p class="muted">
