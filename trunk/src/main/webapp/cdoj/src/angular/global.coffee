@@ -49,7 +49,7 @@ GlobalVariables =
   ArticleType:
     NOTICE: 0
     ARTICLE: 1
-    CLARIFICATION: 2
+    COMMENT: 2
 
 GlobalConditions =
   articleCondition:

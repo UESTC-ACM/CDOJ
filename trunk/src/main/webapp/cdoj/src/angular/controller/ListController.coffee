@@ -10,8 +10,11 @@ cdoj
       $scope.itemsPerPage = 20
       $scope.showPages = 10
 
-      $scope.$on("refreshList", ->
-        $scope.refresh()
+      $scope.$on("refreshList", (e, callback)->
+        $scope.refresh(callback)
+      )
+      $scope.$on("refreshList:" + $scope.name, (e, callback)->
+        $scope.refresh(callback)
       )
       _.each $scope.condition, (val, key)->
         if angular.isDefined $routeParams[key]
@@ -19,7 +22,7 @@ cdoj
             $scope.condition[key] = parseInt($routeParams[key])
           else
             $scope.condition[key] = $routeParams[key]
-      $scope.refresh = ->
+      $scope.refresh = (callback)->
         if $scope.requestUrl != 0
           condition = angular.copy($scope.condition)
           $http.post($scope.requestUrl, condition).then (response) =>
@@ -27,6 +30,9 @@ cdoj
             if data.result == "success"
               $scope.$$nextSibling.list = response.data.list
               $scope.pageInfo = data.pageInfo
+              $scope.itemsPerPage = $scope.pageInfo.countPerPage
+              if angular.isFunction callback
+                callback(response.data)
             else
               $window.alert data.error_msg
       $scope.$watch("condition", ->

@@ -84,6 +84,10 @@ cdoj.directive("uiFlandre",
           # edit
           $scope.mode = "edit"
 
+      $scope.$on("flandre:focus", ->
+        $($element).find(".flandre-editor").focus()
+      )
+
       # Upload picture
       pictureUploader = new qq.FineUploaderBasic(
         button: $($element).find(".flandre-picture-uploader")[0]
@@ -113,7 +117,7 @@ cdoj.directive("uiFlandre",
       )
   ]
   template: """
-      <div class="panel panel-default">
+      <div class="panel panel-default" style="margin-bottom: 6px;">
         <div class="panel-heading flandre-heading">
           <div class="btn-toolbar" role="toolbar">
             <div class="btn-group">
@@ -125,6 +129,7 @@ cdoj.directive("uiFlandre",
               <span class="btn btn-default btn-sm"><i class="fa fa-smile-o"></i></span>
               <span class="btn btn-default btn-sm flandre-picture-uploader"><i class="fa fa-picture-o"></i></span>
             </div>
+            <span class="pull-right" style="padding-top: 6px;">Contents are parsed with <a href="/#/article/show/2">Markdown</a></span>
           </div>
         </div>
         <textarea class="tex2jax_ignore form-control flandre-editor"

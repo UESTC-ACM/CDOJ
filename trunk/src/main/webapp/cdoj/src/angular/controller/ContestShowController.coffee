@@ -1,7 +1,9 @@
 cdoj
 .controller("ContestShowController", [
-    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$interval", "$timeout"
-    ($scope, $rootScope, $http, $window, $modal, $routeParams, $interval, $timeout) ->
+    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$interval", "$timeout",
+    "$cookieStore"
+    ($scope, $rootScope, $http, $window, $modal, $routeParams, $interval, $timeout,
+     $cookieStore) ->
       $scope.contestId = 0
       $scope.contest =
         title: ""
@@ -23,6 +25,12 @@ cdoj
         type: "success"
         active: true
 
+      cookieName = "contest" + $scope.contestId
+      if angular.isUndefined $cookieStore.get(cookieName)
+        $cookieStore.put(cookieName,
+          lastClarificationCount: 0
+        )
+
       $scope.contestId = angular.copy($routeParams.contestId)
       $http.get("/contest/data/#{$scope.contestId}").then (response)->
         data = response.data
@@ -34,7 +42,6 @@ cdoj
             $scope.currentProblem = data.problemList[0]
         else
           $window.alert data.error_msg
-          #clearInterval rankListTimer
 
       currentTimeTimer = undefined
       updateTime = ->
@@ -65,7 +72,23 @@ cdoj
       $scope.$on("$destroy", ->
         $interval.cancel(currentTimeTimer)
         $interval.cancel(rankListTimer)
+        $interval.cancel(clarificationTimer)
       )
+
+      $scope.totalUnreadedClarification = 0
+      $scope.lastClarificationCount = 0
+      refreshClarification = ->
+        $scope.$broadcast("refreshList:comment", (data)->
+          $scope.totalUnreadedClarification = Math.max(0, data.pageInfo.totalItems - $cookieStore.get(cookieName).lastClarificationCount)
+          $scope.lastClarificationCount = data.pageInfo.totalItems
+        )
+      clarificationTimer = $interval(refreshClarification, 10000)
+      $timeout(refreshClarification, 500)
+      $scope.selectClarificationTab = ->
+        contest = $cookieStore.get(cookieName)
+        contest.lastClarificationCount = $scope.lastClarificationCount
+        $cookieStore.put(cookieName, contest)
+        $scope.totalUnreadedClarification = 0
 
       $scope.showProblemTab = ->
         $scope.$$childHead.$$nextSibling.$$nextSibling.tabs[1].select()
@@ -116,7 +139,6 @@ cdoj
 
       refreshRankList()
       rankListTimer = $interval(refreshRankList, 5000)
-
   ])
 cdoj.directive("uiContestProblemHref"
   ->
