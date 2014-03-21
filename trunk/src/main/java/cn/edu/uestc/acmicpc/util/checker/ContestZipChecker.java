@@ -28,7 +28,15 @@ import java.util.Arrays;
  */
 public class ContestZipChecker implements Checker<File> {
 
-  private final ZipDataChecker zipDataChecker = new ZipDataChecker();
+  private ZipDataChecker zipDataChecker;
+
+  public ContestZipChecker() {
+    zipDataChecker = new ZipDataChecker();
+  }
+
+  public void setZipDataChecker(ZipDataChecker zipDataChecker) {
+    this.zipDataChecker = zipDataChecker;
+  }
 
   @Override
   public void check(File file) throws AppException {
