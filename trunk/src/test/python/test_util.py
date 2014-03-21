@@ -2,40 +2,16 @@
 # coding=utf-8
 import unittest
 import sys
+import re
 
+def findWholeWordRegex(w):
+        return re.compile(r'\b({0})\b'.format(w)).search
 
-def isLetterOrDigit(c):
-    return (
-        (c >= 'a' and c <= 'z') or (
-            c >= 'A' and c <= 'Z') or (c >= '0' and c <= '9')
-    )
-
-
-def findWholeWord(word, s):
-    line = ''
-    in_string = False
-    for i in range(0, len(s)):
-        if s[i] == '"':
-            in_string = (in_string == False)
-        elif s[i] == '\\' and s[i + 1] == '"':
-            in_string = False
-        elif in_string == False:
-            line = line + s[i]
-    index = 0
-    while (index < len(line)):
-        newIndex = line[index:].find(word)
-        if newIndex < index:
-            break
-        left = False
-        right = False
-        if newIndex == index or isLetterOrDigit(line[newIndex - 1]) == False:
-            left = True
-        if newIndex + len(word) == len(line) or isLetterOrDigit(line[newIndex + len(word)]) == False:
-            right = True
-        if left and right:
-            return True
-        index = newIndex + len(word)
-    return False
+def findWholeWordInRealCode(word, s):
+    s = s.partition('//')[0]
+    s = s.replace('\\"', '')
+    s = re.sub('".*"', '', s)
+    return findWholeWordRegex(word)(s)
 
 
 class TestCase(unittest.TestCase):
