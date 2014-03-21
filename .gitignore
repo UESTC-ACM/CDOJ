@@ -10,3 +10,4 @@ trunk/build/
 /out
 *.ipr
 *.iws
+target/
