@@ -4,7 +4,7 @@ import unittest
 import os
 import stat
 import test_util
-from test_util import findWholeWord
+from test_util import findWholeWordInRealCode
 
 daos = []
 
@@ -42,7 +42,7 @@ class TestControllersNotContainDaos(test_util.TestCase):
                 continue
             if 'implements' not in line and 'import' not in line:
                 for entity in daos:
-                    if findWholeWord(entity, line):
+                    if findWholeWordInRealCode(entity, line):
                         self.fail('\x1b[1;31mfind DB DAO \x1b[0;32m' + entity + '\x1b[m reference at line ' + str(current) + ' of ' + self.file_name +
                                   '\n\x1b[0;33m' + self.file_name[self.file_name.find('/db/dao/'):] + '@' + str(current) + ': ' + line + '\x1b[m')
 
