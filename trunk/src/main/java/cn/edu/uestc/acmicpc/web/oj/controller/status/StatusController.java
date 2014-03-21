@@ -85,6 +85,7 @@ public class StatusController extends BaseController {
         statusCondition.isVisible = true;
         if (statusCondition.contestId != -1) {
           ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(statusCondition.contestId);
+          statusCondition.isVisible = false;
           if (contestShowDTO == null) {
             throw new AppException("No such contest.");
           }
@@ -209,10 +210,6 @@ public class StatusController extends BaseController {
         if (problemDTO == null) {
           throw new AppException("Wrong problem id.");
         }
-        if (!problemDTO.getIsVisible() &&
-            currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
-          throw new AppException("You have no permission to submit this problem.");
-        }
         if (submitDTO.getContestId() != null) {
           // Is this contest exist?
           ContestDTO contestDTO = contestService.getContestDTOByContestId(submitDTO.getContestId());
@@ -220,8 +217,14 @@ public class StatusController extends BaseController {
             throw new AppException("Wrong contest id.");
           }
           // Is this contest contains this problem?
-          if (contestProblemService.checkContestProblemInContest(submitDTO.getProblemId(), submitDTO.getContestId()) == false) {
+          if (!contestProblemService.checkContestProblemInContest(submitDTO.getProblemId(), submitDTO.getContestId())) {
             throw new AppException("Wrong problem id.");
+          }
+        } else {
+          // We don't allow normal user to submit code to a stashed problem.
+          if (!problemDTO.getIsVisible() &&
+              currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
+            throw new AppException("You have no permission to submit this problem.");
           }
         }
 
