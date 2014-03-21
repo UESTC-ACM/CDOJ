@@ -81293,25 +81293,71 @@ if (typeof exports === 'object') {
       };
       $scope.fieldInfo = [];
       $scope.action = $routeParams.action;
+      $scope.samples = [];
+      $scope.addSample = function() {
+        return $scope.samples.add({
+          input: "",
+          output: ""
+        });
+      };
+      $scope.removeSample = function(index) {
+        return $scope.samples.splice(index, 1);
+      };
       if ($scope.action !== "new") {
         $scope.title = "Edit problem " + $scope.action;
         problemId = angular.copy($scope.action);
         $http.post("/problem/data/" + problemId).then(function(response) {
-          var data;
+          var data, i, _sampleInput, _sampleOutput;
           data = response.data;
           if (data.result === "success") {
-            return $scope.problem = data.problem;
+            $scope.problem = data.problem;
+            _sampleInput = $scope.problem.sampleInput;
+            try {
+              _sampleInput = JSON.parse(_sampleInput);
+            } catch (_error) {}
+            if (!(_sampleInput instanceof Array)) {
+              _sampleInput = [_sampleInput];
+            }
+            _sampleOutput = $scope.problem.sampleOutput;
+            try {
+              _sampleOutput = JSON.parse(_sampleOutput);
+            } catch (_error) {}
+            if (!(_sampleOutput instanceof Array)) {
+              _sampleOutput = [_sampleOutput];
+            }
+            if (_sampleInput.length !== _sampleOutput.length) {
+              return alert("Sample input has not same number of cases with sample output!");
+            } else {
+              return $scope.samples = (function() {
+                var _i, _ref, _results;
+                _results = [];
+                for (i = _i = 0, _ref = _sampleInput.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+                  _results.push({
+                    input: _sampleInput[i].toString(),
+                    output: _sampleOutput[i].toString()
+                  });
+                }
+                return _results;
+              })();
+            }
           } else {
             return $window.alert(data.error_msg);
           }
         });
       } else {
         $scope.title = "New problem";
+        $scope.addSample();
       }
       return $scope.submit = function() {
         var problemEditDTO;
         problemEditDTO = angular.copy($scope.problem);
         problemEditDTO.action = angular.copy($scope.action);
+        problemEditDTO.sampleInput = JSON.stringify(_.map($scope.samples, function(sample) {
+          return sample.input;
+        }));
+        problemEditDTO.sampleOutput = JSON.stringify(_.map($scope.samples, function(sample) {
+          return sample.output;
+        }));
         return $http.post("/problem/edit", problemEditDTO).then(function(response) {
           var data;
           data = response.data;
