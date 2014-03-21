@@ -1,6 +1,22 @@
 <div class="row">
   <list condition="$root.userCondition"
         request-url="/user/search">
+    <div class="col-md-12" style="margin-top: 15px; margin-bottom: 15px;">
+      <form class="form-inline" role="form">
+        <div class="form-group">
+          <label>Keyword</label>
+          <input type="text"
+                 class="form-control input-sm"
+                 ng-model="$root.userCondition.keyword">
+        </div>
+        <div class="form-group">
+          <label>School</label>
+          <input type="text"
+                 class="form-control input-sm"
+                 ng-model="$root.userCondition.school">
+        </div>
+      </form>
+    </div>
     <div class="col-md-6" ng-repeat="user in list">
       <div class="panel panel-default">
         <div class="panel-body">
