@@ -5,11 +5,13 @@
     </div>
     <div class="col-md-12 text-center">
       <h1 ng-bind="article.title"></h1>
-      <a href="/#/article/editor/{{article.ownerName}}/{{article.articleId}}" ng-show="$root.isAdmin">
+      <a href="/#/article/editor/{{article.ownerName}}/{{article.articleId}}"
+         ng-show="$root.isAdmin">
         <i class="fa fa-pencil no-margin-right"></i> Edit
       </a>
     </div>
-    <div class="col-md-12"><markdown content="article.content"></markdown></div>
+    <div class="col-md-12">
+      <markdown content="article.content"></markdown>
     </div>
   </div>
 </div>
