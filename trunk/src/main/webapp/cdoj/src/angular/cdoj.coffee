@@ -25,8 +25,8 @@ cdoj
         if data.result == "success"
           _.extend($rootScope, data)
 
-    $rootScope.$on("refreshUserData", ->
-      fetchUserData()
+    $rootScope.$on("refreshData", ->
+      fetchData()
     )
     $rootScope.$on("refresh", ->
       $rootScope.$broadcast("refreshList")
