@@ -16,7 +16,7 @@
 
             <div class="media-body">
               <h5 style="margin-top: 0;"><span ng-bind="article.ownerName"></span>
-                &nbsp;•&nbsp;
+              &nbsp;•&nbsp;
           <span class="cdoj-article-post-time"
                 ui-time
                 time="article.time"
@@ -24,9 +24,9 @@
               </h5>
               <markdown content="article.content"></markdown>
 
-              <a href="javascript:void(0);" ng-click="reply(article)" ng-show="$root.hasLogin"><i class="fa fa-reply"></i> Reply</a>
-              <span ng-show="$root.isAdmin">&nbsp;•&nbsp;</span>
-              <a href="javascript:void(0);" ng-click="delete(article)" ng-show="$root.isAdmin"><i class="fa fa-trash-o"></i> Delete</a>
+              <a href="javascript:void(0);" ng-click="reply(article)" ng-show="$root.hasLogin" class="muted"><i class="fa fa-reply"></i> Reply</a>
+              <span ng-show="$root.isAdmin" class="muted">&nbsp;•&nbsp;</span>
+              <a href="javascript:void(0);" ng-click="delete(article)" ng-show="$root.isAdmin" class="muted"><i class="fa fa-trash-o"></i> Delete</a>
             </div>
           </div>
         </div>
