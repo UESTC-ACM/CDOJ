@@ -6758,6 +6758,10 @@ small {
 .font-success {
   color: #468847;
 }
+.mentioned {
+  color: #000000;
+  font-weight: 700;
+}
 #cdoj-navbar-top {
   position: fixed;
   right: 0;

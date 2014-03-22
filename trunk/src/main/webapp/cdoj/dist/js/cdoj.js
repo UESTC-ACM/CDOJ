@@ -80910,6 +80910,11 @@ if (typeof exports === 'object') {
           current = $scope.contest.currentTime - $scope.contest.startTime;
           type = "danger";
           active = true;
+          if ($scope.contest.currentTime >= $scope.contest.endTime) {
+            $timeout(function() {
+              return $window.location.reload();
+            }, 500);
+          }
         } else {
           current = $scope.contest.length;
           type = "success";
@@ -80990,21 +80995,31 @@ if (typeof exports === 'object') {
         var contestId;
         contestId = angular.copy($scope.contestId);
         return $http.get("/contest/rankList/" + contestId).then(function(response) {
-          var data;
+          var data, userStatus;
           data = response.data;
           if (data.result === "success") {
             $scope.rankList = data.rankList.rankList;
-            return _.each($scope.problemList, function(value, index) {
+            _.each($scope.problemList, function(value, index) {
               value.tried = data.rankList.problemList[index].tried;
               return value.solved = data.rankList.problemList[index].solved;
             });
+            if ($rootScope.hasLogin) {
+              userStatus = _.findWhere(data.rankList.rankList, {
+                userName: $rootScope.currentUser.userName
+              });
+              _.each($scope.problemList, function(value, index) {
+                value.hasSolved = userStatus.itemList[index].solved;
+                return value.hasTried = userStatus.itemList[index].tried > 0;
+              });
+              return console.log($scope.problemList);
+            }
           } else {
             return clearInterval(rankListTimer);
           }
         });
       };
-      refreshRankList();
-      return rankListTimer = $interval(refreshRankList, 30000);
+      rankListTimer = $interval(refreshRankList, 30000);
+      return $timeout(refreshRankList, 500);
     }
   ]);
 
@@ -82289,7 +82304,7 @@ if (typeof exports === 'object') {
           return $scope.$watch("content", function() {
             var content;
             content = angular.copy($scope.content);
-            content = content.replace(/@([a-zA-Z0-9_]{4,24})\s/, "[@$1](/#/user/center/$1)");
+            content = content.replace(/@([a-zA-Z0-9_]{4,24})\s/g, "[@$1](/#/user/center/$1)");
             content = marked(content);
             $element.empty().append(content);
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, $element[0]]);
