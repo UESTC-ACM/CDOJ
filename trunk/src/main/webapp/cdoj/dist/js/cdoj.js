@@ -80246,7 +80246,7 @@ if (typeof exports === 'object') {
 
   cdoj.run([
     "$rootScope", "$http", "$interval", function($rootScope, $http, $interval) {
-      var fetchOnlineUsersData, fetchUserData, fetchUserDataAndOnlineUsersData;
+      var fetchData;
       _.extend($rootScope, GlobalVariables);
       _.extend($rootScope, GlobalConditions);
       $http.get("/globalData").then(function(response) {
@@ -80255,8 +80255,8 @@ if (typeof exports === 'object') {
         return _.extend($rootScope, data);
       });
       $rootScope.finalTitle = "UESTC Online Judge";
-      fetchUserData = function() {
-        return $http.get("/userData").then(function(response) {
+      fetchData = function() {
+        return $http.get("/data").then(function(response) {
           var data;
           data = response.data;
           if (data.result === "success") {
@@ -80279,21 +80279,8 @@ if (typeof exports === 'object') {
         }
         return $rootScope.$broadcast("refresh");
       });
-      fetchOnlineUsersData = function() {
-        return $http.get("/onlineUsersData").then(function(response) {
-          var data;
-          data = response.data;
-          if (data.result === "success") {
-            return _.extend($rootScope, data);
-          }
-        });
-      };
-      fetchUserDataAndOnlineUsersData = function() {
-        fetchUserData();
-        return fetchOnlineUsersData();
-      };
-      fetchUserDataAndOnlineUsersData();
-      return $interval(fetchUserDataAndOnlineUsersData, 5000);
+      fetchData();
+      return $interval(fetchData, 10000);
     }
   ]).config([
     "$httpProvider", function($httpProvider) {

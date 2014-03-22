@@ -53,11 +53,11 @@ public class IndexController extends BaseController {
     return "index";
   }
 
-  @RequestMapping(value = "userData")
+  @RequestMapping(value = "data")
   @LoginPermit(NeedLogin = false)
   public
   @ResponseBody
-  Map<String, Object> userData(HttpSession session) {
+  Map<String, Object> data(HttpSession session) {
     Map<String, Object> result = new HashMap<>();
     try {
       UserDTO currentUser = getCurrentUser(session);
@@ -79,23 +79,13 @@ public class IndexController extends BaseController {
         result.put("unreadMessages", messageService.getMessageForReceiverDTOList(messageCondition,
             pageInfo));
       }
+      Integer onlineUsersCount = onlineUsersService.getNumberOfOnlineUsers();
+      result.put("onlineUsersCount", onlineUsersCount);
       result.put("result", "success");
     } catch (AppException e) {
       result.put("result", "error");
       result.put("error_msg", e.getMessage());
     }
-    return result;
-  }
-
-  @RequestMapping(value = "onlineUsersData")
-  @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> onlineUsersData(HttpSession session) {
-    Map<String, Object> result = new HashMap<>();
-    Integer onlineUsersCount = onlineUsersService.getNumberOfOnlineUsers();
-    result.put("onlineUsersCount", onlineUsersCount);
-    result.put("result", "success");
     return result;
   }
 
