@@ -82741,8 +82741,11 @@ if (typeof exports === 'object') {
               userName: void 0,
               problemId: void 0,
               languageId: void 0,
-              contestId: -1
+              contestId: $scope.status.contestId
             };
+            if (angular.isUndefined(condition.contestId)) {
+              condition.contestId = -1;
+            }
             return $http.post("/status/search", condition).then(function(response) {
               var data;
               data = response.data;
