@@ -210,7 +210,8 @@
   </div>
 </tab>
 <tab heading="Rank"
-     ng-hide="contest.status == $root.ContestStatus.PENDING">
+     ng-hide="contest.status == $root.ContestStatus.PENDING"
+     select="refreshRankList()">
   <div class="row">
     <div class="col-md-12">
       <table id="rank-list" class="table">
