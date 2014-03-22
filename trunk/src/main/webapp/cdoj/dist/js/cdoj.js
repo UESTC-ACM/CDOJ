@@ -80933,7 +80933,7 @@ if (typeof exports === 'object') {
           return $scope.lastClarificationCount = data.pageInfo.totalItems;
         });
       };
-      clarificationTimer = $interval(refreshClarification, 10000);
+      clarificationTimer = $interval(refreshClarification, 30000);
       $timeout(refreshClarification, 500);
       $scope.selectClarificationTab = function() {
         var contest;
@@ -81004,7 +81004,7 @@ if (typeof exports === 'object') {
         });
       };
       refreshRankList();
-      return rankListTimer = $interval(refreshRankList, 5000);
+      return rankListTimer = $interval(refreshRankList, 30000);
     }
   ]);
 

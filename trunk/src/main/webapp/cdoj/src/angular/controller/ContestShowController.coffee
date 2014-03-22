@@ -82,7 +82,7 @@ cdoj
           $scope.totalUnreadedClarification = Math.max(0, data.pageInfo.totalItems - $cookieStore.get(cookieName).lastClarificationCount)
           $scope.lastClarificationCount = data.pageInfo.totalItems
         )
-      clarificationTimer = $interval(refreshClarification, 10000)
+      clarificationTimer = $interval(refreshClarification, 30000)
       $timeout(refreshClarification, 500)
       $scope.selectClarificationTab = ->
         contest = $cookieStore.get(cookieName)
@@ -138,7 +138,7 @@ cdoj
             clearInterval rankListTimer
 
       refreshRankList()
-      rankListTimer = $interval(refreshRankList, 5000)
+      rankListTimer = $interval(refreshRankList, 30000)
   ])
 cdoj.directive("uiContestProblemHref"
   ->
