@@ -40,7 +40,9 @@ cdoj
             userName: undefined
             problemId: undefined
             languageId: undefined
-            contestId: -1
+            contestId: $scope.status.contestId
+          if angular.isUndefined condition.contestId
+            condition.contestId = -1
           $http.post("/status/search", condition).then(
             (response)->
               data = response.data

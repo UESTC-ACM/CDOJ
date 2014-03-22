@@ -90,9 +90,9 @@ public class RankListBuilder {
         item.firstBlood = true;
       }
       item.solved = true;
-      item.solvedTime = status.time / 1000;
+      item.solvedTime = status.time;
       item.tried = item.tried - 1;
-      item.penalty = item.solvedTime + item.tried * 20 * 60;
+      item.penalty = item.solvedTime / 1000 + item.tried * 20 * 60;
       user.solved = user.solved + 1;
       user.penalty = user.penalty + item.penalty;
     }
