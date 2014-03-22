@@ -223,14 +223,14 @@
         </thead>
         <tbody>
         <tr ng-repeat="user in rankList" class="text-center">
-          <td class="rank" ng-bind="user.rank" style="vertical-align:middle;"></td>
-          <td class="user-name">
+          <td class="rank" ng-bind="user.rank" style="vertical-align:middle;" ng-class="{my: user.userName == $root.currentUser.userName}"></td>
+          <td class="user-name" ng-class="{my: user.userName == $root.currentUser.userName}">
             <span ng-bind="user.userName"></span>
             <br/>
             <span>({{user.nickName}})</span>
           </td>
-          <td class="solved" ng-bind="user.solved" style="vertical-align:middle;"></td>
-          <td class="penalty" penalty="user.penalty" ui-penalty style="vertical-align:middle;"></td>
+          <td class="solved" ng-bind="user.solved" style="vertical-align:middle;" ng-class="{my: user.userName == $root.currentUser.userName}"></td>
+          <td class="penalty" penalty="user.penalty" ui-penalty style="vertical-align:middle;" ng-class="{my: user.userName == $root.currentUser.userName}"></td>
           <td class="item"
               ng-repeat="item in user.itemList"
               ng-class="{
