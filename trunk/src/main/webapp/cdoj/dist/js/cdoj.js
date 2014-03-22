@@ -80264,8 +80264,8 @@ if (typeof exports === 'object') {
           }
         });
       };
-      $rootScope.$on("refreshUserData", function() {
-        return fetchUserData();
+      $rootScope.$on("refreshData", function() {
+        return fetchData();
       });
       $rootScope.$on("refresh", function() {
         $rootScope.$broadcast("refreshList");
