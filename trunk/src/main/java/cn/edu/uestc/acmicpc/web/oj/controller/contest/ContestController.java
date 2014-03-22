@@ -431,6 +431,7 @@ public class ContestController extends BaseController {
       if (!isAdmin(session)) {
         contestCondition.isVisible = true;
       }
+      contestCondition.orderFields = "time";
       Long count = contestService.count(contestCondition);
       PageInfo pageInfo = buildPageInfo(count, contestCondition.currentPage,
           Global.RECORD_PER_PAGE, null);
