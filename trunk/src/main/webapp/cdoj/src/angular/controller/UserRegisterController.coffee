@@ -3,6 +3,7 @@ cdoj
     "$scope", "$rootScope", "$http", "$window"
     ($scope, $rootScope, $http, $window) ->
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
+      $window.scrollTo(0, 0)
       $scope.userRegisterDTO =
         departmentId: 1
         email: ""
@@ -22,8 +23,9 @@ cdoj
       $scope.fieldInfo = []
       $scope.register = ->
         userRegisterDTO = angular.copy($scope.userRegisterDTO)
-        if angular.isUndefined userRegisterDTO.password then return
-        if angular.isUndefined userRegisterDTO.passwordRepeat then return
+        if angular.isUndefined userRegisterDTO.password || angular.isUndefined userRegisterDTO.passwordRepeat
+          $window.scrollTo(0, 0)
+          return
         password = CryptoJS.SHA1(userRegisterDTO.password).toString()
         userRegisterDTO.password = password
         passwordRepeat = CryptoJS.SHA1(userRegisterDTO.passwordRepeat).toString()
@@ -35,7 +37,7 @@ cdoj
               userName: data.userName
               email: data.email
               type: data.type
-            $rootScope.$broadcast("refreshUserData")
+            $rootScope.$broadcast("data:refresh")
             $window.history.back();
           else if data.result == "field_error"
             $window.scrollTo(0, 0)

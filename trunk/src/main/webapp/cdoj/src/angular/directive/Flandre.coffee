@@ -100,7 +100,6 @@ cdoj.directive("uiFlandre",
         multiple: false
         callbacks:
           onComplete: (id, fileName, data) ->
-            console.log data
             if data.success == "true"
               value = "![title](#{data.uploadedFileUrl})"
               position = $editor.getCursorPosition()

@@ -13,7 +13,6 @@ cdoj
           $scope.buttonText = "Sending..."
           $scope.onSend = true
           $http.post("/user/sendSerialKey/#{userName}").success((data)->
-            console.log data
             if data.result == "success"
               $window.alert "We send you an Email with the url to reset your password right now, please check your mail box."
               $modalInstance.close();
@@ -31,4 +30,7 @@ cdoj
 
       $scope.dismiss = ->
         $modalInstance.dismiss()
+      $scope.$on("$routeChangeStart", ->
+        $modalInstance.dismiss()
+      )
   ])

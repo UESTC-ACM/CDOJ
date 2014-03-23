@@ -83,6 +83,12 @@ public class StatusController extends BaseController {
       if (!isAdmin(session)) {
         statusCondition.isForAdmin = false;
         statusCondition.isVisible = true;
+        if (statusCondition.contestId == null) {
+          statusCondition.contestId = -1;
+        }
+        if (statusCondition.result == null) {
+          statusCondition.result = Global.OnlineJudgeResultType.OJ_ALL;
+        }
         if (statusCondition.contestId != -1) {
           ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(statusCondition.contestId);
           statusCondition.isVisible = false;

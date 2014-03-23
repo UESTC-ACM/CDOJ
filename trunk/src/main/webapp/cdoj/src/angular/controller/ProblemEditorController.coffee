@@ -1,9 +1,10 @@
 cdoj
 .controller("ProblemEditorController", [
-    "$scope", "$http", "$window", "$routeParams"
-    ($scope, $http, $window, $routeParams)->
+    "$scope", "$http", "$window", "$routeParams", "$rootScope"
+    ($scope, $http, $window, $routeParams, $rootScope)->
       # Administrator only
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN)
+      $window.scrollTo(0, 0)
 
       $scope.problem =
         description: ""

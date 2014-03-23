@@ -38,4 +38,7 @@ cdoj
         )
       $scope.dismiss = ->
         $modalInstance.dismiss("close")
+      $scope.$on("$routeChangeStart", ->
+        $modalInstance.dismiss()
+      )
   ])

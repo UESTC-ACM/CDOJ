@@ -12,4 +12,7 @@ cdoj.controller("CompileInfoModalController", [
     ).error(->
       $scope.compileInfo = "Network error."
     )
+    $scope.$on("$routeChangeStart", ->
+      $modalInstance.dismiss()
+    )
 ])

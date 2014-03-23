@@ -1,8 +1,9 @@
 cdoj
 .controller("PasswordResetController", [
-    "$scope", "$http", "$window", "$routeParams"
-    ($scope, $http, $window, $routeParams) ->
+    "$scope", "$http", "$window", "$routeParams", "$rootScope"
+    ($scope, $http, $window, $routeParams, $rootScope) ->
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
+      $window.scrollTo(0, 0)
 
       $scope.userActivateDTO =
         userName: $routeParams.userName
@@ -18,7 +19,7 @@ cdoj
         userActivateDTO.passwordRepeat = passwordRepeat
         $http.post("/user/resetPassword", userActivateDTO).success((data)->
           if data.result == "success"
-            $window.alert("Success!")
+            $window.alert("Success, please login manually!")
             $window.location.href = "/"
           else if data.result == "field_error"
             $scope.fieldInfo = data.field

@@ -4,6 +4,7 @@ cdoj
     ($scope, $rootScope, $http, $window, $routeParams) ->
       # Administrator only
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN)
+      $window.scrollTo(0, 0)
 
       $scope.contest =
         problemList: ""
@@ -55,7 +56,7 @@ cdoj
       , true)
 
       $scope.updateProblemTitle = (problem) ->
-        if problem.problemId == undefined
+        if isNaN(parseInt(problem.problemId))
           problem.title = "Invalid problem id!"
         else
           $http.get("/problem/query/#{problem.problemId}/title").success (data) ->

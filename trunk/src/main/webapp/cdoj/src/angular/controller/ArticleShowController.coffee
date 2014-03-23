@@ -3,6 +3,7 @@ cdoj
     "$scope", "$rootScope", "$routeParams", "$http", "$window"
     ($scope, $rootScope, $routeParams, $http, $window)->
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
+      $window.scrollTo(0, 0)
 
       $scope.article =
         content: ""

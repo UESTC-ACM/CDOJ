@@ -9,7 +9,6 @@ cdoj
 
       _.each($scope.teamUsers, (teamUser)->
         $http.get("/user/profile/#{teamUser.userName}").success((data)->
-          data = response.data
           if data.result == "success"
             _.extend(teamUser, data.user)
             teamUser.sex = _.findWhere($rootScope.genderTypeList,
@@ -57,4 +56,7 @@ cdoj
 
       $scope.reasonList = [
       ]
+      $scope.$on("$routeChangeStart", ->
+        $modalInstance.dismiss()
+      )
   ])

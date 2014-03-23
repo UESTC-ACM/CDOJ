@@ -4,6 +4,7 @@ cdoj
     ($scope, $rootScope, $window, $http, $timeout)->
       # Administrator only
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN)
+      $window.scrollTo(0, 0)
 
       # Initilize article condition
       articleCondition = angular.copy($rootScope.articleCondition)

@@ -16,7 +16,7 @@ cdoj
         userLoginDTO.password = password
         $http.post("/user/login", userLoginDTO).success((data)->
           if data.result == "success"
-            $scope.$emit("currentUser:login",
+            $rootScope.$broadcast("currentUser:login",
               userName: data.userName
               email: data.email
               type: data.type
@@ -32,7 +32,7 @@ cdoj
       $scope.logout = ->
         $http.post("/user/logout").success((data)->
           if data.result == "success"
-            $scope.$emit("currentUser:logout")
+            $rootScope.$broadcast("currentUser:logout")
         ).error(->
           $window.alert "Network error"
         )

@@ -5,6 +5,7 @@ cdoj
     ($scope, $rootScope, $http, $window, $modal, $routeParams, $timeout, $interval
      $cookieStore) ->
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
+      $window.scrollTo(0, 0)
 
       $scope.contestId = 0
       $scope.contest =
@@ -108,12 +109,19 @@ cdoj
         $scope.showProblemTab()
         $scope.currentProblem = _.findWhere($scope.problemList, order: order)
 
+      $scope.resetStatusCondition = ->
+        $scope.contestStatusCondition.problemId = undefined
+        $scope.contestStatusCondition.result = 0
+        $scope.contestStatusCondition.language = undefined
+        if $rootScope.isAdmin
+          $scope.contestStatusCondition.userName = undefined
       $scope.$on("contestShow:showProblemTab", (e, order)->
         $scope.chooseProblem(order)
       )
       $scope.showStatusTab = ->
         # TODO Dirty code!
         $scope.$$childHead.$$nextSibling.$$nextSibling.tabs[3].select()
+        $scope.contestStatusCondition.problemId = $scope.currentProblem.problemId
         $scope.refreshStatus()
       $scope.openSubmitModal = ->
         $modal.open(
@@ -134,7 +142,7 @@ cdoj
       $scope.contestStatusCondition = angular.copy($rootScope.statusCondition)
       $scope.contestStatusCondition.contestId = $scope.contestId
       $scope.refreshStatus = ->
-        $scope.$broadcast("refreshList")
+        $scope.$broadcast("list:refresh:status")
 
       refreshRankList = ->
         contestId = angular.copy($scope.contestId)

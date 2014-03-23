@@ -6,10 +6,11 @@ cdoj
     message: "="
   replace: true
   controller: [
-    "$scope", "$modal",
-    ($scope, $modal)->
+    "$scope", "$modal", "$rootScope"
+    ($scope, $modal, $rootScope)->
       $scope.readMessage = ->
-        $scope.$broadcast("refresh")
+        $rootScope.$broadcast("list:refresh:message")
+        $rootScope.$broadcast("data:refresh")
         $modal.open(
           templateUrl: "template/modal/message-modal.html"
           controller: "MessageModalController"

@@ -83,7 +83,7 @@ GlobalConditions =
     endId: undefined
     keyword: undefined
     title: undefined
-    orderFields: "id"
+    orderFields: "time"
     orderAsc: "false"
   statusCondition:
     currentPage: null
