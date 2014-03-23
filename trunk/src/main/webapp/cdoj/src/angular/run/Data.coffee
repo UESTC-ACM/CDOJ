@@ -1,0 +1,33 @@
+cdoj
+.run([
+    "$rootScope", "$http", "$timeout"
+    ($rootScope, $http, $timeout)->
+      _.extend($rootScope, GlobalVariables)
+      _.extend($rootScope, GlobalConditions)
+
+      $rootScope.finalTitle = "UESTC Online Judge"
+
+      fetchGlobalData = ->
+        $http.get("/globalData").success((data)->
+          _.extend($rootScope, data)
+        ).error(->
+          $timeout(fetchGlobalData, 500)
+        )
+      fetchData = ->
+        $http.get("/data").success((data)->
+          if data.result == "success"
+            _.extend($rootScope, data)
+            $rootScope.$broadcast("currentUser:change")
+          $timeout(fetchData, 10000)
+        ).error(->
+          $timeout(fetchData, 500)
+        )
+
+      # Refresh event
+      $rootScope.$on("globalData:refresh", ->
+        $timeout(fetchGlobalData, 100)
+      )
+      $rootScope.$on("data:refresh", ->
+        $timeout(fetchData, 200)
+      )
+  ])

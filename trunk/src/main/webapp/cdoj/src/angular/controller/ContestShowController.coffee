@@ -86,7 +86,7 @@ cdoj
           $scope.totalUnreadedClarification = Math.max(0, data.pageInfo.totalItems - $cookieStore.get(cookieName).lastClarificationCount)
           $scope.lastClarificationCount = data.pageInfo.totalItems
         )
-      clarificationTimer = $interval(refreshClarification, 30000)
+      clarificationTimer = $interval(refreshClarification, 10000)
       $timeout(refreshClarification, 500)
       $scope.selectClarificationTab = ->
         contest = $cookieStore.get(cookieName)
@@ -140,16 +140,16 @@ cdoj
             )
             if $rootScope.hasLogin
               userStatus = _.findWhere(data.rankList.rankList, userName: $rootScope.currentUser.userName)
-              _.each($scope.problemList, (value, index)->
-                value.hasSolved = userStatus.itemList[index].solved
-                value.hasTried = userStatus.itemList[index].tried > 0
-              )
-              console.log $scope.problemList
+              if angular.isDefined userStatus
+                _.each($scope.problemList, (value, index)->
+                  value.hasSolved = userStatus.itemList[index].solved
+                  value.hasTried = userStatus.itemList[index].tried > 0
+                )
           else
-            clearInterval rankListTimer
+            $interval.cancel rankListTimer
 
-      rankListTimer = $interval(refreshRankList, 30000)
-      $timeout(refreshRankList, 500)
+      rankListTimer = $interval(refreshRankList, 10000)
+      $timeout(refreshRankList, 600)
   ])
 cdoj.directive("uiContestProblemHref"
   ->
