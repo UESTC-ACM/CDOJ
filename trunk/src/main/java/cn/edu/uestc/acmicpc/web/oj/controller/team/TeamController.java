@@ -167,6 +167,11 @@ public class TeamController extends BaseController {
 
         json.put("pageInfo", pageInfo);
         json.put("list", getTeamListDTO(teamCondition, pageInfo, session));
+      } else {
+        PageInfo pageInfo = buildPageInfo(0L, 1L,
+            Global.RECORD_PER_PAGE, null);
+        json.put("list", new LinkedList<>());
+        json.put("pageInfo", pageInfo);
       }
       json.put("result", "success");
     } catch (AppException e) {
