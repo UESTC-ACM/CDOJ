@@ -18,4 +18,7 @@ cdoj
       ).error(->
         $scope.code = "Network error."
       )
+      $scope.$on("$routeChangeStart", ->
+        $modalInstance.dismiss()
+      )
   ])

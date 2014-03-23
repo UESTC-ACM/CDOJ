@@ -2,6 +2,7 @@ cdoj.controller("ProblemShowController", [
   "$scope", "$rootScope", "$http", "$window", "$routeParams", "$modal"
   ($scope, $rootScope, $http, $window, $routeParams, $modal)->
     $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
+    $window.scrollTo(0, 0)
     $scope.problem =
       description: ""
       title: ""
@@ -20,7 +21,7 @@ cdoj.controller("ProblemShowController", [
       source: ""
 
     problemId = angular.copy($routeParams.problemId)
-    $http.post("/problem/data/#{problemId}").data((data)->
+    $http.post("/problem/data/#{problemId}").success((data)->
       if data.result == "success"
         $scope.problem = data.problem
         $rootScope.title = $scope.problem.title

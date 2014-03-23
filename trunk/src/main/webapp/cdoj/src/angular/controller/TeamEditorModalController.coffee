@@ -13,7 +13,8 @@ cdoj
       $scope.searchUser = (keyword)->
         condition =
           keyword: keyword
-        $http.post("/user/typeAheadList", condition).success((data)->
+        $http.post("/user/typeAheadList", condition).then ((response)->
+          data = response.data
           if data.result == "success"
             return data.list
           else
@@ -22,7 +23,6 @@ cdoj
       $scope.addMemberClick = ->
         if $scope.memberList.length < 3
           $http.get("/user/typeAheadItem/#{$scope.newMember.userName}").success((data)->
-            data = response.data
             if data.result == "success"
               result = data.user
               # Check if exists
@@ -44,7 +44,7 @@ cdoj
           $http.post("/team/addMember", teamDTO).success((data)->
             if data.result == "success"
               $scope.memberList.add user
-              $rootScope.$broadcast("refreshList")
+              $rootScope.$broadcast("list:refresh:team")
             else
               $window.alert data.error_msg
           ).error(->
@@ -59,7 +59,7 @@ cdoj
             $http.post("/team/removeMember", teamDTO).success((data)->
               if data.result == "success"
                 $scope.memberList.splice(index, 1);
-                $rootScope.$broadcast("refreshList")
+                $rootScope.$broadcast("list:refresh:team")
               else
                 $window.alert data.error_msg
             ).error(->
@@ -72,7 +72,7 @@ cdoj
             if data.result == "success"
               $window.alert "Done!"
               $modalInstance.close()
-              $rootScope.$broadcast("refreshList")
+              $rootScope.$broadcast("list:refresh:team")
             else
               $window.alert data.error_msg
           ).error(->
@@ -80,4 +80,7 @@ cdoj
           )
       $scope.dismiss = ->
         $modalInstance.dismiss()
+      $scope.$on("$routeChangeStart", ->
+        $modalInstance.dismiss()
+      )
   ])

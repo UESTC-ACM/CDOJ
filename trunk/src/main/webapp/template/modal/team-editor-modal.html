@@ -6,14 +6,12 @@
     <div class="col-sm-8 col-sm-offset-2">
       <ul class="media-list" style="margin-top: 15px;">
         <li class="media" ng-repeat="member in memberList">
-          <div class="pull-left">
+          <a class="pull-left" href="/#/user/center/{{member.userName}}">
             <img ui-avatar
                  email="member.email"
-                 width="44"
-                 height="44"
                  class="media-object"
                  style="width: 44px; height: 44px;"/>
-          </div>
+          </a>
           <div class="media-body">
             <h4 class="media-heading">
               <span ng-bind="member.userName"></span>
@@ -38,7 +36,7 @@
                  typeahead="user.userName for user in searchUser($viewValue) | filter:$viewValue"
                  typeahead-template-url="template/user/typeAhead.html"/>
           <span class="input-group-btn">
-            <button class="btn btn-default btn-sm" type="button"
+            <button class="btn btn-success btn-sm" type="button"
                     ng-click="addMemberClick()">Add member
             </button>
           </span>

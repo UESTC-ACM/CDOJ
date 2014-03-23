@@ -3,21 +3,23 @@
 </div>
 <div class="modal-body" style="padding: 14px 20px;">
   <div class="media" style="margin-bottom: 12px;">
-    <div class="pull-left">
+    <a class="pull-left" href="#/user/center/{{message.senderUserName}}">
       <img class="media-object"
            ui-avatar
            email="message.senderEmail"
            style="width: 40px; height: 40px;">
-    </div>
+    </a>
     <div class="media-body">
       <p style="margin-bottom: 0;">
         <a href="#/user/center/{{message.senderUserName}}"
-           ng-bind="message.senderUserName"></a>
+           ng-bind="message.senderUserName">
+        </a>
       </p>
       <span class="muted" style="font-size: 12px;">
         <i class="fa fa-clock-o"></i>
         <span ui-time time="message.time" inline="true" change="false"></span>
       </span>
+
       <div style="font-size: 18px;
       position: absolute;
       top: 14px;

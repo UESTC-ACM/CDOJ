@@ -9,7 +9,7 @@ cdoj.directive("uiContestAdminSpan",
     ($scope, $http, $window) ->
       $scope.editVisible = ->
         queryString = "/contest/operator/#{$scope.contestId}/isVisible/#{!$scope.isVisible}"
-        $http.post(queryString).success((data)
+        $http.post(queryString).success((data)->
           if data.result == "success"
             $scope.isVisible = !$scope.isVisible
           else

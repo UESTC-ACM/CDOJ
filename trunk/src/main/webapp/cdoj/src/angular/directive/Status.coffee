@@ -32,7 +32,6 @@ cdoj
       removeStatusTimer = ->
         clearInterval(refreshStatusTimer)
       refreshStatus = ->
-        console.log "refresh: " + refreshStatusTimer
         condition =
           currentPage: null
           startId: $scope.status.statusId

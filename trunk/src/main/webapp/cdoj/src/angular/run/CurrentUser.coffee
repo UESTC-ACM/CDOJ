@@ -10,15 +10,18 @@ cdoj
       $rootScope.$on("currentUser:login", (e, currentUser)->
         _.extend($rootScope.currentUser, currentUser)
         $rootScope.hasLogin = true
-        $rootScope.$broadcast("currentUser:change")
+        $rootScope.$broadcast("currentUser:changed")
       )
       $rootScope.$on("currentUser:logout", ->
         $rootScope.hasLogin = false
         $rootScope.currentUser =
           email: ""
-        $rootScope.$broadcast("currentUser:change")
+        $rootScope.$broadcast("currentUser:changed")
       )
-      $rootScope.$on("currentUser:change", ->
+      $rootScope.$on("currentUser:changed", ->
+        $rootScope.$broadcast("currentUser:updated")
+      )
+      $rootScope.$on("currentUser:updated", ->
         if $rootScope.hasLogin && $rootScope.currentUser.type == 1
           $rootScope.isAdmin = true
         else

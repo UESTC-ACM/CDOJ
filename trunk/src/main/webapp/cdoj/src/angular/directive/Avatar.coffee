@@ -12,6 +12,7 @@ cdoj
     ($scope, $element)->
       $scope.$watch("email",
       ->
+        if angular.isUndefined($scope.email) || $scope.email == null || $scope.email == "" then return
         $scope.size = $($element).width() if $scope.size == undefined
         $scope.image = "retro" if $scope.image == undefined
         $scope.rating = "pg" if $scope.rating == undefined

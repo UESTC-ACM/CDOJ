@@ -8,5 +8,8 @@ cdoj
       $scope.$on("contestUploader:complete", (e, contestId)->
         $window.location.href = "/#/contest/show/#{contestId}"
       )
+      $scope.$on("$routeChangeStart", ->
+        $modalInstance.dismiss()
+      )
   ])
 cdoj

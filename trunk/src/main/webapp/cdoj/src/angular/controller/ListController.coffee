@@ -10,6 +10,9 @@ cdoj
       $scope.itemsPerPage = 20
       $scope.showPages = 10
 
+      $scope.$on("currentUser:changed", ->
+        $scope.refresh()
+      )
       $scope.$on("list:refresh", (e, callback)->
         $scope.refresh(callback)
       )
@@ -17,6 +20,14 @@ cdoj
       $scope.$on(refreshTrigger, (e, callback)->
         $scope.refresh(callback)
       )
+      $scope.$on("list:reset", ->
+        $scope.reset()
+      )
+      resetTrigger = "list:reset:" + $scope.name
+      $scope.$on(resetTrigger, ->
+        $scope.reset()
+      )
+
       _.each $scope.condition, (val, key)->
         if angular.isDefined $routeParams[key]
           if not isNaN(parseInt($routeParams[key]))
@@ -36,7 +47,15 @@ cdoj
             else
               $window.alert data.error_msg
           )
-      $scope.$watch("condition", ->
+      $scope.reset = ->
+        _.each($scope.condition, (value, index) ->
+          if index == "orderFields" || index == "orderAsc" then return
+          $scope.condition[index] = undefined
+        )
+        $scope.condition["currentPage"] = null
+      $scope.$watch("condition", (newVal, oldVal) ->
+        if newVal.currentPage == oldVal.currentPage
+          $scope.condition.currentPage = 1
         $scope.refresh()
       , true
       )

@@ -5,6 +5,7 @@ cdoj
       # Current user only
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.CURRENT_USER,
         $routeParams.userName)
+      $window.scrollTo(0, 0)
 
       $scope.article =
         content: ""

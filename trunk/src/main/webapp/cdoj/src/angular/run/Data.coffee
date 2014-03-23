@@ -1,7 +1,7 @@
 cdoj
 .run([
-    "$rootScope", "$http", "$timeout"
-    ($rootScope, $http, $timeout)->
+    "$rootScope", "$http", "$timeout", "$window"
+    ($rootScope, $http, $timeout, $window)->
       _.extend($rootScope, GlobalVariables)
       _.extend($rootScope, GlobalConditions)
 
@@ -16,8 +16,10 @@ cdoj
       fetchData = ->
         $http.get("/data").success((data)->
           if data.result == "success"
+            if $rootScope.hasLogin && data.hasLogin == false
+              $window.alert "You has been logged out by server."
             _.extend($rootScope, data)
-            $rootScope.$broadcast("currentUser:change")
+            $rootScope.$broadcast("currentUser:updated")
           $timeout(fetchData, 10000)
         ).error(->
           $timeout(fetchData, 500)
