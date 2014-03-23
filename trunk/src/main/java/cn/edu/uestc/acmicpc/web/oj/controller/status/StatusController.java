@@ -72,6 +72,7 @@ public class StatusController extends BaseController {
     this.userService = userService;
   }
 
+  @SuppressWarnings("ConstantConditions")
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public
@@ -80,9 +81,16 @@ public class StatusController extends BaseController {
                              @RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
+      ContestShowDTO contestShowDTO = null;
+      if (statusCondition.contestId != -1) {
+        contestShowDTO = contestService.getContestShowDTOByContestId(statusCondition.contestId);
+        if (contestShowDTO == null) {
+          throw new AppException("No such contest.");
+        }
+      }
+
       if (!isAdmin(session)) {
         statusCondition.isForAdmin = false;
-        statusCondition.isVisible = true;
         if (statusCondition.contestId == null) {
           statusCondition.contestId = -1;
         }
@@ -90,24 +98,28 @@ public class StatusController extends BaseController {
           statusCondition.result = Global.OnlineJudgeResultType.OJ_ALL;
         }
         if (statusCondition.contestId != -1) {
-          ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(statusCondition.contestId);
-          statusCondition.isVisible = false;
-          if (contestShowDTO == null) {
-            throw new AppException("No such contest.");
-          }
           UserDTO currentUser = getCurrentUser(session);
           if (currentUser == null) {
             // Return nothing
             statusCondition.userId = 0;
           } else {
+            // Only show current user's status
             statusCondition.userId = currentUser.getUserId();
           }
+          // Only show status submitted in contest
           statusCondition.startTime = contestShowDTO.getStartTime();
           statusCondition.endTime = contestShowDTO.getEndTime();
+          // Some problems is stashed when contest is running
+          statusCondition.isVisible = null;
+        } else {
+          // Only show status submitted for visible problem
+          statusCondition.isVisible = true;
         }
       } else {
+        // Current user is administrator, just show all the status.
         statusCondition.isForAdmin = true;
       }
+
       Long count = statusService.count(statusCondition);
       Long recordPerPage = Global.RECORD_PER_PAGE;
       if (statusCondition.countPerPage != null) {

@@ -80364,6 +80364,7 @@ if (typeof exports === 'object') {
           if (data.result === "success") {
             if ($rootScope.hasLogin && data.hasLogin === false) {
               $window.alert("You has been logged out by server.");
+              $rootScope.$broadcast("currentUser:logout");
             }
             _.extend($rootScope, data);
             $rootScope.$broadcast("currentUser:updated");
