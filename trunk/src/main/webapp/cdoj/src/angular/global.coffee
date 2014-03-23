@@ -36,6 +36,7 @@ GlobalVariables =
     ADMIN: 1
     CONSTANT: 2
     NOOP: 3
+    CURRENT_USER: 4
 
   AuthorStatusType:
     NONE: 0

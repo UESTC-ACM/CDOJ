@@ -3,7 +3,6 @@ cdoj
     "$rootScope"
     ($rootScope)->
       $rootScope.$on("all:refresh", ->
-        $rootScope.$broadcast("list:refresh")
         $rootScope.$broadcast("data:refresh")
         $rootScope.$broadcast("globalData:refresh")
       )

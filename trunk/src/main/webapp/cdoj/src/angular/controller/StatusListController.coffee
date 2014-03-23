@@ -1,7 +1,8 @@
 cdoj
 .controller("StatusListController", [
-    "$scope", "$rootScope", "$http"
-    ($scope, $rootScope, $http)->
+    "$scope", "$rootScope"
+    ($scope, $rootScope)->
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
       $scope.refresh = ->
-        $scope.$broadcast("refreshList")
+        $scope.$broadcast("list:refresh:status")
   ])

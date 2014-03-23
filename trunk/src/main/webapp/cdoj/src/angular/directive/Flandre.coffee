@@ -13,7 +13,7 @@ $.fn.getSelection = ->
   if this.length == 0 then return -1
   s = $(this).getSelectionStart()
   e = $(this).getSelectionEnd()
-  return this[0].value.substring(s,e)
+  return this[0].value.substring(s, e)
 
 $.fn.getSelectionStart = ->
   if this.length == 0 then return -1
@@ -41,7 +41,7 @@ $.fn.getSelectionEnd = ->
     if (r.text == '')
       pos = input.value.length
     pos = input.value.lastIndexOf(r.text)
-  else if(typeof(input.selectionEnd)!="undefined")
+  else if(typeof(input.selectionEnd) != "undefined")
     pos = input.selectionEnd
   return pos
 

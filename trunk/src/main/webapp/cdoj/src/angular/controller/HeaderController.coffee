@@ -25,13 +25,17 @@ cdoj
             $scope.fieldInfo = data.field
           else
             $window.alert data.error_msg
-        ).error(-> $window.alert "Network error")
+        ).error(->
+          $window.alert "Network error"
+        )
 
       $scope.logout = ->
         $http.post("/user/logout").success((data)->
           if data.result == "success"
             $scope.$emit("currentUser:logout")
-        ).error(-> $window.alert "Network error")
+        ).error(->
+          $window.alert "Network error"
+        )
 
       $scope.openForgetPasswordModal = ->
         $modal.open(

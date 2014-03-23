@@ -2,6 +2,8 @@ cdoj
 .controller("IndexController", [
     "$scope", "$rootScope"
     ($scope, $rootScope)->
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
+
       $rootScope.title = "Home"
       articleCondition = angular.copy($rootScope.articleCondition)
       articleCondition.type = $rootScope.ArticleType.NOTICE
