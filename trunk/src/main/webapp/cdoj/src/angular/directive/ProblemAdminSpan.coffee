@@ -9,12 +9,14 @@ cdoj.directive("uiProblemAdminSpan",
     ($scope, $http, $window) ->
       $scope.editVisible = ->
         queryString = "/problem/operator/#{$scope.problemId}/isVisible/#{!$scope.isVisible}"
-        $http.post(queryString).then (response)=>
-          data = response.data
+        $http.post(queryString).success((data)->
           if data.result == "success"
             $scope.isVisible = !$scope.isVisible
           else
             $window.alert data.error_msg
+        ).error(->
+          $window.alert "Network error."
+        )
   ]
   template: """
               <div class="btn-toolbar" role="toolbar">

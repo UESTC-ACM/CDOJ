@@ -2,27 +2,25 @@ cdoj
 .controller("UserCenterController", [
     "$scope", "$rootScope", "$http", "$routeParams", "$modal", "$window", "UserProfile"
     ($scope, $rootScope, $http, $routeParams, $modal, $window, $userProfile) ->
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
       $scope.targetUser =
         email: ""
       $scope.teamCondition = angular.copy($rootScope.teamCondition)
       $scope.messageCondition = angular.copy($rootScope.messageCondition)
-      $scope.editPermission = false
-      checkPermission = ->
-        if $rootScope.hasLogin == false
-          $scope.editPermission = false
-        else if $rootScope.currentUser.userId == $scope.targetUser.userId
-          $scope.editPermission = true
-        $scope.messageCondition = angular.copy($rootScope.messageCondition)
-        if $scope.editPermission == false
-          $scope.messagesTabTitle = "Your messages with #{$scope.targetUser.userName}"
+
+      $scope.messageCondition = angular.copy($rootScope.messageCondition)
+      $scope.$on("permission:changes", ->
+        if $rootScope.hasEditPermission == false
+          $scope.messagesTabTitle = "Your messages with " + $scope.targetUser.userName
           $scope.messageCondition.userAId = $scope.currentUser.userId
           $scope.messageCondition.userBId = $scope.targetUser.userId
         else
-          $scope.messagesTabTitle = "#{$scope.targetUser.userName}'s messages"
+          $scope.messagesTabTitle = $scope.targetUser.userName + "'s messages"
           $scope.messageCondition.userId = $scope.currentUser.userId
-        $scope.$broadcast("userCenter:permissionChange")
-      $scope.$on("refresh", ->
-        $window.location.reload()
+          $userProfile.setProfile $scope.targetUser.userName
+          $scope.$on("UserProfile:success", ->
+            $scope.userEditDTO = $userProfile.getProfile()
+          )
       )
 
       currentTab = angular.copy($routeParams.tab)
@@ -49,7 +47,8 @@ cdoj
           $scope.targetUser = data.targetUser
           $scope.problemStatus = data.problemStatus
           $scope.teamCondition.userId = data.targetUser.userId
-          checkPermission()
+          $scope.$emit("permission:setEditPermission", $scope.targetUser.userName)
+          $scope.$emit("permission:check")
         else
           $window.alert data.error_msg
 
@@ -58,13 +57,6 @@ cdoj
       $scope.articleCondition = articleCondition
 
       $scope.userEditDTO = 0
-      $scope.$on("userCenter:permissionChange", ->
-        if $scope.editPermission
-          $userProfile.setProfile $scope.targetUser.userName
-          $scope.$on("UserProfile:success", ->
-            $scope.userEditDTO = $userProfile.getProfile()
-          )
-      )
       $scope.fieldInfo = []
       $scope.edit = ->
         userEditDTO = angular.copy($scope.userEditDTO)
@@ -81,25 +73,29 @@ cdoj
         if angular.isUndefined userEditDTO.oldPassword then return
         oldPassword = CryptoJS.SHA1(userEditDTO.oldPassword).toString()
         userEditDTO.oldPassword = oldPassword
-        $http.post("/user/edit", userEditDTO).then (response)->
-          data = response.data
+        $http.post("/user/edit", userEditDTO).success((data)->
           if data.result == "success"
             $window.alert "Success!"
             $scope.$broadcast("refresh")
           else if data.result == "field_error"
-            $window.scrollTo(0,0)
+            $window.scrollTo(0, 0)
             $scope.fieldInfo = data.field
           else
             $window.alert data.error_msg
+        ).error(->
+          $window.alert "Network error."
+        )
 
       $scope.newTeam =
         teamName: ""
       $scope.createNewTeam = ->
         teamDTO = angular.copy($scope.newTeam)
-        $http.post("/team/createTeam", teamDTO).then (response)->
-          data = response.data
+        $http.post("/team/createTeam", teamDTO).success((data)->
           if data.result == "success"
             $scope.$broadcast("refreshList")
           else
             $window.alert data.error_msg
+        ).error(->
+          $window.alert "Network error."
+        )
   ])

@@ -9,4 +9,4 @@ cdoj
           if ($ngModel.$pristine)
             $ngModel.$setViewValue(newVal)
         , 500)
-])
+  ])

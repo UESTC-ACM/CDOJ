@@ -2,6 +2,7 @@ cdoj
 .controller("UserRegisterController", [
     "$scope", "$rootScope", "$http", "$window"
     ($scope, $rootScope, $http, $window) ->
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
       $scope.userRegisterDTO =
         departmentId: 1
         email: ""
@@ -27,8 +28,7 @@ cdoj
         userRegisterDTO.password = password
         passwordRepeat = CryptoJS.SHA1(userRegisterDTO.passwordRepeat).toString()
         userRegisterDTO.passwordRepeat = passwordRepeat
-        $http.post("/user/register", userRegisterDTO).then (response)->
-          data = response.data
+        $http.post("/user/register", userRegisterDTO).success((data)->
           if data.result == "success"
             $rootScope.hasLogin = true
             $rootScope.currentUser =
@@ -38,8 +38,11 @@ cdoj
             $rootScope.$broadcast("refreshUserData")
             $window.history.back();
           else if data.result == "field_error"
-            $window.scrollTo(0,0)
+            $window.scrollTo(0, 0)
             $scope.fieldInfo = data.field
           else
             $window.alert data.error_msg
+        ).error(->
+          $window.alert "Network error."
+        )
   ])

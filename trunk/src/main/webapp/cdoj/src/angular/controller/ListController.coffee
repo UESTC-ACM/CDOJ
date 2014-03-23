@@ -10,10 +10,11 @@ cdoj
       $scope.itemsPerPage = 20
       $scope.showPages = 10
 
-      $scope.$on("refreshList", (e, callback)->
+      $scope.$on("list:refresh", (e, callback)->
         $scope.refresh(callback)
       )
-      $scope.$on("refreshList:" + $scope.name, (e, callback)->
+      refreshTrigger = "list:refresh:" + $scope.name
+      $scope.$on(refreshTrigger, (e, callback)->
         $scope.refresh(callback)
       )
       _.each $scope.condition, (val, key)->
@@ -25,16 +26,16 @@ cdoj
       $scope.refresh = (callback)->
         if $scope.requestUrl != 0
           condition = angular.copy($scope.condition)
-          $http.post($scope.requestUrl, condition).then (response) =>
-            data = response.data
+          $http.post($scope.requestUrl, condition).success((data) ->
             if data.result == "success"
-              $scope.$$nextSibling.list = response.data.list
+              $scope.$$nextSibling.list = data.list
               $scope.pageInfo = data.pageInfo
               $scope.itemsPerPage = $scope.pageInfo.countPerPage
               if angular.isFunction callback
-                callback(response.data)
+                callback(data)
             else
               $window.alert data.error_msg
+          )
       $scope.$watch("condition", ->
         $scope.refresh()
       , true

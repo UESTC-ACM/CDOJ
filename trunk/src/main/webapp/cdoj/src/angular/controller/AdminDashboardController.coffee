@@ -17,26 +17,29 @@ cdoj
         $http.post("/article/search", articleCondition).success((data)->
           if data.result == "success"
             $scope.list = data.list
-            originalOrder = _.map($scope.list, (val)-> val.articleId).join(",")
+            originalOrder = _.map($scope.list, (val)->
+              val.articleId).join(",")
             $scope.pageInfo = data.pageInfo
           else
             $window.alert data.error_msg
         ).error(->
           $timeout(refresh, 500)
         )
-      $timeout(refresh, 300)
+      $timeout(refresh, 0)
 
       $scope.listChanged = false
 
       # Sortable event
       $scope.sortableOptions =
         stop: ->
-          newOrder = _.map($scope.list, (val)-> val.articleId).join(",")
+          newOrder = _.map($scope.list, (val)->
+            val.articleId).join(",")
           $scope.listChanged = !angular.equals(newOrder, originalOrder)
 
       # Save notice order changes
       $scope.save = ->
-        newOrder = _.map($scope.list, (val)-> val.articleId).join(",")
+        newOrder = _.map($scope.list, (val)->
+          val.articleId).join(",")
         $http.post("/article/changeNoticeOrder", order: newOrder).success((data)->
           if data.result == "success"
             $window.alert "Done"
@@ -44,5 +47,7 @@ cdoj
             $scope.listChanged = false
           else
             $window.alert data.error_msg
-        ).error(-> $window.alert "Network error.")
+        ).error(->
+          $window.alert "Network error."
+        )
   ])

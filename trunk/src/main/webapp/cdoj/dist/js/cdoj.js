@@ -80133,7 +80133,9 @@ if (typeof exports === 'object') {
     AuthenticationType: {
       NORMAL: 0,
       ADMIN: 1,
-      CONSTANT: 2
+      CONSTANT: 2,
+      NOOP: 3,
+      CURRENT_USER: 4
     },
     AuthorStatusType: {
       NONE: 0,
@@ -80244,45 +80246,7 @@ if (typeof exports === 'object') {
 
   cdoj = angular.module('cdoj', ["ui.bootstrap", "ngRoute", "ngCookies", "monospaced.elastic", "frapontillo.bootstrap-switch", "ui.sortable"]);
 
-  cdoj.run([
-    "$rootScope", "$http", "$interval", function($rootScope, $http, $interval) {
-      var fetchData;
-      _.extend($rootScope, GlobalVariables);
-      _.extend($rootScope, GlobalConditions);
-      $http.get("/globalData").then(function(response) {
-        var data;
-        data = response.data;
-        return _.extend($rootScope, data);
-      });
-      $rootScope.finalTitle = "UESTC Online Judge";
-      fetchData = function() {
-        return $http.get("/data").then(function(response) {
-          var data;
-          data = response.data;
-          if (data.result === "success") {
-            return _.extend($rootScope, data);
-          }
-        });
-      };
-      $rootScope.$on("refreshData", function() {
-        return fetchData();
-      });
-      $rootScope.$on("refresh", function() {
-        $rootScope.$broadcast("refreshList");
-        return $rootScope.$broadcast("refreshUserData");
-      });
-      $rootScope.$watch("hasLogin", function() {
-        if ($rootScope.hasLogin && $rootScope.currentUser.type === 1) {
-          $rootScope.isAdmin = true;
-        } else {
-          $rootScope.isAdmin = false;
-        }
-        return $rootScope.$broadcast("refresh");
-      });
-      fetchData();
-      return $interval(fetchData, 10000);
-    }
-  ]).config([
+  cdoj.config([
     "$httpProvider", function($httpProvider) {
       if (!$httpProvider.defaults.headers.get) {
         $httpProvider.defaults.headers.get = {};
@@ -80290,7 +80254,9 @@ if (typeof exports === 'object') {
       $httpProvider.defaults.headers.get["Cache-Control"] = "no-cache";
       return $httpProvider.defaults.headers.get["Pragma"] = "no-cache";
     }
-  ]).config([
+  ]);
+
+  cdoj.config([
     "$routeProvider", function($routeProvider) {
       return $routeProvider.when("/", {
         templateUrl: "template/index/index.html",
@@ -80347,13 +80313,166 @@ if (typeof exports === 'object') {
     }
   ]);
 
+  cdoj.run([
+    "$rootScope", function($rootScope) {
+      $rootScope.hasLogin = false;
+      $rootScope.currentUser = {
+        email: ""
+      };
+      $rootScope.isAdmin = false;
+      $rootScope.$on("currentUser:login", function(e, currentUser) {
+        _.extend($rootScope.currentUser, currentUser);
+        $rootScope.hasLogin = true;
+        return $rootScope.$broadcast("currentUser:change");
+      });
+      $rootScope.$on("currentUser:logout", function() {
+        $rootScope.hasLogin = false;
+        $rootScope.currentUser = {
+          email: ""
+        };
+        return $rootScope.$broadcast("currentUser:change");
+      });
+      return $rootScope.$on("currentUser:change", function() {
+        if ($rootScope.hasLogin && $rootScope.currentUser.type === 1) {
+          $rootScope.isAdmin = true;
+        } else {
+          $rootScope.isAdmin = false;
+        }
+        return $rootScope.$broadcast("permission:check");
+      });
+    }
+  ]);
+
+  cdoj.run([
+    "$rootScope", "$http", "$timeout", function($rootScope, $http, $timeout) {
+      var fetchData, fetchGlobalData;
+      _.extend($rootScope, GlobalVariables);
+      _.extend($rootScope, GlobalConditions);
+      $rootScope.finalTitle = "UESTC Online Judge";
+      fetchGlobalData = function() {
+        return $http.get("/globalData").success(function(data) {
+          return _.extend($rootScope, data);
+        }).error(function() {
+          return $timeout(fetchGlobalData, 500);
+        });
+      };
+      fetchData = function() {
+        return $http.get("/data").success(function(data) {
+          if (data.result === "success") {
+            _.extend($rootScope, data);
+            $rootScope.$broadcast("currentUser:change");
+          }
+          return $timeout(fetchData, 10000);
+        }).error(function() {
+          return $timeout(fetchData, 500);
+        });
+      };
+      $rootScope.$on("globalData:refresh", function() {
+        return $timeout(fetchGlobalData, 100);
+      });
+      return $rootScope.$on("data:refresh", function() {
+        return $timeout(fetchData, 200);
+      });
+    }
+  ]);
+
+  cdoj.run([
+    "$rootScope", "$window", function($rootScope, $window) {
+      $rootScope.currentPermission = {
+        value: $rootScope.AuthenticationType.NOOP,
+        userName: void 0
+      };
+      $rootScope.editPermission = {
+        userName: void 0
+      };
+      $rootScope.hasEditPermission = false;
+      $rootScope.$on("permission:setPermission", function(e, permission, userName) {
+        return $rootScope.currentPermission = {
+          value: permission,
+          userName: userName
+        };
+      });
+      $rootScope.$on("permission:setEditPermission", function(e, userName) {
+        return $rootScope.editPermission = {
+          userName: userName
+        };
+      });
+      return $rootScope.$on("permission:check", function() {
+        if ($rootScope.currentPermission.value === $rootScope.AuthenticationType.ADMIN) {
+          if ($rootScope.isAdmin === false) {
+            $window.alert("Permission denied!");
+            $window.history.back();
+          }
+        } else if ($rootScope.currentPermission.value === $rootScope.AuthenticationType.NORMAL) {
+          if ($rootScope.hasLogin === false) {
+            $window.alert("Please login first!");
+            $window.history.back();
+          }
+        } else if ($rootScope.currentPermission.value === $rootScope.AuthenticationType.CURRENT_USER) {
+          if ($rootScope.hasLogin === false || ($rootScope.isAdmin === false && $rootScope.currentUser.userName !== $rootScope.currentPermission.userName)) {
+            $window.alert("Permission denied!");
+            $window.history.back();
+          }
+        }
+        if ($rootScope.hasLogin === false) {
+          $rootScope.hasEditPermission = false;
+        } else if ($rootScope.currentUser.userName === $rootScope.editPermission.userName) {
+          $rootScope.hasEditPermission = true;
+        }
+        return $rootScope.$broadcast("permission:changed");
+      });
+    }
+  ]);
+
+  cdoj.run([
+    "$rootScope", function($rootScope) {
+      $rootScope.$on("all:refresh", function() {
+        $rootScope.$broadcast("data:refresh");
+        return $rootScope.$broadcast("globalData:refresh");
+      });
+      return $rootScope.$broadcast("all:refresh");
+    }
+  ]);
+
+  cdoj.factory("UserProfile", [
+    "$http", "$window", "$rootScope", function($http, $window, $rootScope) {
+      var userProfile;
+      userProfile = 0;
+      return {
+        setProfile: function(userName) {
+          return $http.get("/user/profile/" + userName).success(function(data) {
+            if (data.result === "success") {
+              userProfile = data.user;
+              return $rootScope.$broadcast("UserProfile:success");
+            } else {
+              return $window.alert(data.error_msg);
+            }
+          });
+        },
+        getProfile: function() {
+          return userProfile;
+        }
+      };
+    }
+  ]);
+
+  cdoj.controller("AddContestModalController", [
+    "$scope", "$rootScope", "$modalInstance", "$window", function($scope, $rootScope, $modalInstance, $window) {
+      $scope.$on("$routeChangeStart", function() {
+        return $modalInstance.close();
+      });
+      return $scope.$on("contestUploader:complete", function(e, contestId) {
+        return $window.location.href = "/#/contest/show/" + contestId;
+      });
+    }
+  ]);
+
+  cdoj;
+
   cdoj.controller("AdminDashboardController", [
-    "$scope", "$rootScope", "$window", "$http", function($scope, $rootScope, $window, $http) {
+    "$scope", "$rootScope", "$window", "$http", "$timeout", function($scope, $rootScope, $window, $http, $timeout) {
       var articleCondition, originalOrder, refresh;
-      if ($rootScope.hasLogin === false || $rootScope.currentUser.type !== $rootScope.AuthenticationType.ADMIN) {
-        $window.alert("Permission denied!");
-        $window.history.back();
-      }
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN);
       articleCondition = angular.copy($rootScope.articleCondition);
       articleCondition.type = $rootScope.ArticleType.NOTICE;
       articleCondition.orderFields = "order";
@@ -80361,26 +80480,24 @@ if (typeof exports === 'object') {
       $scope.list = [];
       originalOrder = "";
       refresh = function() {
-        return $http.post("/article/search", articleCondition).then((function(_this) {
-          return function(response) {
-            var data;
-            data = response.data;
-            if (data.result === "success") {
-              $scope.list = data.list;
-              originalOrder = _.map($scope.list, function(val) {
-                return val.articleId;
-              }).join(",");
-              return $scope.pageInfo = data.pageInfo;
-            } else {
-              return $window.alert(data.error_msg);
-            }
-          };
-        })(this));
+        return $http.post("/article/search", articleCondition).success(function(data) {
+          if (data.result === "success") {
+            $scope.list = data.list;
+            originalOrder = _.map($scope.list, function(val) {
+              return val.articleId;
+            }).join(",");
+            return $scope.pageInfo = data.pageInfo;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $timeout(refresh, 500);
+        });
       };
-      refresh();
+      $timeout(refresh, 0);
       $scope.listChanged = false;
       $scope.sortableOptions = {
-        stop: function(e, ui) {
+        stop: function() {
           var newOrder;
           newOrder = _.map($scope.list, function(val) {
             return val.articleId;
@@ -80395,9 +80512,7 @@ if (typeof exports === 'object') {
         }).join(",");
         return $http.post("/article/changeNoticeOrder", {
           order: newOrder
-        }).then(function(response) {
-          var data;
-          data = response.data;
+        }).success(function(data) {
           if (data.result === "success") {
             $window.alert("Done");
             refresh();
@@ -80405,6 +80520,8 @@ if (typeof exports === 'object') {
           } else {
             return $window.alert(data.error_msg);
           }
+        }).error(function() {
+          return $window.alert("Network error.");
         });
       };
     }
@@ -80413,6 +80530,7 @@ if (typeof exports === 'object') {
   cdoj.controller("ArticleEditorController", [
     "$rootScope", "$scope", "$http", "$routeParams", "$window", function($rootScope, $scope, $http, $routeParams, $window) {
       var articleId;
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.CURRENT_USER, $routeParams.userName);
       $scope.article = {
         content: "",
         title: ""
@@ -80420,16 +80538,9 @@ if (typeof exports === 'object') {
       $scope.fieldInfo = [];
       $scope.action = $routeParams.action;
       $scope.userName = $routeParams.userName;
-      if ($rootScope.hasLogin === false || ($rootScope.isAdmin === false && $rootScope.currentUser.userName !== $scope.userName)) {
-        $window.alert("Permission denied!");
-        $window.history.back();
-      }
-      $scope.isNotice = false;
       if ($scope.action !== "new") {
         articleId = angular.copy($scope.action);
-        $http.get("/article/data/" + articleId).then(function(response) {
-          var data;
-          data = response.data;
+        $http.get("/article/data/" + articleId).success(function(data) {
           if (data.result === "success") {
             $scope.article = data.article;
             $scope.title = "Edit: " + $scope.article.title;
@@ -80437,6 +80548,8 @@ if (typeof exports === 'object') {
           } else {
             return $window.alert(data.error_msg);
           }
+        }).error(function() {
+          return $window.alert("Network error, please refresh page manually.");
         });
       } else {
         $scope.title = "New article";
@@ -80451,9 +80564,7 @@ if (typeof exports === 'object') {
         } else {
           articleEditDTO.type = $rootScope.ArticleType.ARTICLE;
         }
-        return $http.post("/article/edit", articleEditDTO).then(function(response) {
-          var data;
-          data = response.data;
+        return $http.post("/article/edit", articleEditDTO).success(function(data) {
           if (data.result === "success") {
             return $window.location.href = "/#/article/show/" + data.articleId;
           } else if (data.result === "field_error") {
@@ -80461,6 +80572,8 @@ if (typeof exports === 'object') {
           } else {
             return $window.alert(data.error_msg);
           }
+        }).error(function() {
+          return $window.alert("Network error.");
         });
       };
     }
@@ -80469,20 +80582,21 @@ if (typeof exports === 'object') {
   cdoj.controller("ArticleShowController", [
     "$scope", "$rootScope", "$routeParams", "$http", "$window", function($scope, $rootScope, $routeParams, $http, $window) {
       var articleId;
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $scope.article = {
         content: "",
         title: ""
       };
       articleId = angular.copy($routeParams.articleId);
-      return $http.get("/article/data/" + articleId).then(function(response) {
-        var data;
-        data = response.data;
+      return $http.get("/article/data/" + articleId).success(function(data) {
         if (data.result === "success") {
           $scope.article = data.article;
           return $rootScope.title = $scope.article.title;
         } else {
           return $window.alert(data.error_msg);
         }
+      }).error(function() {
+        return $window.alert("Network error, please refresh page manually.");
       });
     }
   ]);
@@ -80490,9 +80604,8 @@ if (typeof exports === 'object') {
   cdoj.controller("CodeModalController", [
     "$scope", "$http", "$modalInstance", "statusId", function($scope, $http, $modalInstance, statusId) {
       $scope.code = "Loading...";
-      return $http.post("/status/info/" + statusId).then(function(response) {
-        var code, compileInfo, data;
-        data = response.data;
+      return $http.post("/status/info/" + statusId).success(function(data) {
+        var code, compileInfo;
         compileInfo = "";
         if (data.result === "success") {
           compileInfo = data.compileInfo;
@@ -80506,6 +80619,8 @@ if (typeof exports === 'object') {
           code = data.error_msg;
         }
         return $scope.code = code;
+      }).error(function() {
+        return $scope.code = "Network error.";
       });
     }
   ]);
@@ -80513,9 +80628,8 @@ if (typeof exports === 'object') {
   cdoj.controller("CompileInfoModalController", [
     "$scope", "$http", "$modalInstance", "statusId", function($scope, $http, $modalInstance, statusId) {
       $scope.compileInfo = "Loading...";
-      return $http.post("/status/info/" + statusId).then(function(response) {
-        var compileInfo, data;
-        data = response.data;
+      return $http.post("/status/info/" + statusId).success(function(data) {
+        var compileInfo;
         compileInfo = "";
         if (data.result === "success") {
           compileInfo = data.compileInfo;
@@ -80523,6 +80637,8 @@ if (typeof exports === 'object') {
           compileInfo = data.error_msg;
         }
         return $scope.compileInfo = compileInfo;
+      }).error(function() {
+        return $scope.compileInfo = "Network error.";
       });
     }
   ]);
@@ -80530,6 +80646,7 @@ if (typeof exports === 'object') {
   cdoj.controller("ContestEditorController", [
     "$scope", "$rootScope", "$http", "$window", "$routeParams", function($scope, $rootScope, $http, $window, $routeParams) {
       var contestId;
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN);
       $scope.contest = {
         problemList: ""
       };
@@ -80539,9 +80656,8 @@ if (typeof exports === 'object') {
       if ($scope.action !== "new") {
         $scope.title = "Edit contest " + $scope.action;
         contestId = angular.copy($scope.action);
-        $http.post("/contest/data/" + contestId).then(function(response) {
-          var data, length;
-          data = response.data;
+        $http.post("/contest/data/" + contestId).success(function(data) {
+          var length;
           if (data.result === "success") {
             $scope.contest.action = $scope.action;
             $scope.contest.contestId = data.contest.contestId;
@@ -80565,6 +80681,8 @@ if (typeof exports === 'object') {
           } else {
             return $window.alert(data.error_msg);
           }
+        }).error(function() {
+          return $window.alert("Network error, please refresh page manually.");
         });
       } else {
         $scope.contest.action = $scope.action;
@@ -80584,9 +80702,7 @@ if (typeof exports === 'object') {
         if (problem.problemId === void 0) {
           return problem.title = "Invalid problem id!";
         } else {
-          return $http.get("/problem/query/" + problem.problemId + "/title").then(function(response) {
-            var data;
-            data = response.data;
+          return $http.get("/problem/query/" + problem.problemId + "/title").success(function(data) {
             if (data.result === "success") {
               if (data.list.length === 1) {
                 return problem.title = data.list[0];
@@ -80622,21 +80738,22 @@ if (typeof exports === 'object') {
         var contestEditDTO;
         contestEditDTO = angular.copy($scope.contest);
         contestEditDTO.time = Date.create(contestEditDTO.time).getTime();
-        return $http.post("/contest/edit", contestEditDTO).success((function(_this) {
-          return function(data) {
-            if (data.result === "success") {
-              return $window.location.href = "#/contest/show/" + data.contestId;
-            } else {
-              return $window.alert(data.error_msg);
-            }
-          };
-        })(this));
+        return $http.post("/contest/edit", contestEditDTO).success(function(data) {
+          if (data.result === "success") {
+            return $window.location.href = "#/contest/show/" + data.contestId;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
       };
     }
   ]);
 
   cdoj.controller("ContestListController", [
     "$scope", "$rootScope", "$window", "$modal", function($scope, $rootScope, $window, $modal) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       return $scope.showAddContestModal = function() {
         if ($rootScope.isAdmin === false) {
           return;
@@ -80649,62 +80766,15 @@ if (typeof exports === 'object') {
     }
   ]);
 
-  cdoj.controller("AddContestModalController", [
-    "$scope", "$rootScope", "$modalInstance", "$window", function($scope, $rootScope, $modalInstance, $window) {
-      $scope.$on("$routeChangeStart", function() {
-        return $modalInstance.close();
-      });
-      return $scope.$on("contestUploader:complete", function(e, contestId) {
-        return $window.location.href = "/#/contest/show/" + contestId;
-      });
-    }
-  ]);
-
-  cdoj.directive("uiContestUploader", [
-    "$window", function($window) {
-      return {
-        restrict: "E",
-        replace: true,
-        link: function($scope, $element) {
-          var contestUploader;
-          return contestUploader = new qq.FineUploaderBasic({
-            button: $($element)[0],
-            request: {
-              endpoint: "/contest/createContestByArchiveFile",
-              inputName: "uploadFile"
-            },
-            validation: {
-              allowedExtensions: ["zip"],
-              sizeLimit: 100 * 1000 * 1000
-            },
-            multiple: false,
-            callbacks: {
-              onComplete: function(id, fileName, data) {
-                console.log(data);
-                if (data.success === "true") {
-                  return $scope.$emit("contestUploader:complete", data.contestId);
-                } else {
-                  return $window.alert(data.error_msg);
-                }
-              }
-            }
-          });
-        },
-        template: "<button class=\"btn btn-danger\">Upload zip file</button>"
-      };
-    }
-  ]);
-
   cdoj.controller("ContestRegisterController", [
     "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", function($scope, $rootScope, $http, $window, $modal, $routeParams) {
       var contestCondition, contestId;
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       contestId = $routeParams.contestId;
       $scope.contest = 0;
       contestCondition = angular.copy($rootScope.contestCondition);
       contestCondition.startId = contestCondition.endId = contestId;
-      $http.post("/contest/search", contestCondition).then(function(response) {
-        var data;
-        data = response.data;
+      $http.post("/contest/search", contestCondition).success(function(data) {
         if (data.result === "success") {
           if (data.list.length === 1) {
             return $scope.contest = data.list[0];
@@ -80714,6 +80784,8 @@ if (typeof exports === 'object') {
         } else {
           return $window.alert(data.error_msg);
         }
+      }).error(function() {
+        return $window.alert("Network error, please refresh page manually.");
       });
       $scope.contestTeamCondition = angular.copy($rootScope.contestTeamCondition);
       $scope.contestTeamCondition.contestId = contestId;
@@ -80730,9 +80802,7 @@ if (typeof exports === 'object') {
         teamCondition.teamName = teamName;
         teamCondition.userId = $rootScope.currentUser.userId;
         teamCondition.allow = true;
-        return $http.post("/team/typeAHeadSearch", teamCondition).then(function(response) {
-          var data;
-          data = response.data;
+        return $http.post("/team/typeAHeadSearch", teamCondition).success(function(data) {
           if (data.result === "success") {
             return data.list;
           } else {
@@ -80742,27 +80812,27 @@ if (typeof exports === 'object') {
       };
       $scope.showRegisterButton = false;
       $scope.selectTeam = function() {
-        return $http.get("/team/typeAHeadItem/" + $scope.team.teamName).then(function(response) {
-          var data;
-          data = response.data;
+        return $http.get("/team/typeAHeadItem/" + $scope.team.teamName).success(function(data) {
           if (data.result === "success") {
             $scope.team = data.team;
             return $scope.showRegisterButton = true;
           } else {
             return $window.alert(data.error_msg);
           }
+        }).error(function() {
+          return $window.alert("Network error.");
         });
       };
       $scope.register = function() {
-        return $http.get("/contest/register/" + $scope.team.teamId + "/" + $scope.contest.contestId).then(function(response) {
-          var data;
-          data = response.data;
+        return $http.get("/contest/register/" + $scope.team.teamId + "/" + $scope.contest.contestId).success(function(data) {
           if (data.result === "success") {
             $window.alert("Register success! please wait for verify");
             return $rootScope.$broadcast("refresh");
           } else {
             return $window.alert(data.error_msg);
           }
+        }).error(function() {
+          return $window.alert("Network error.");
         });
       };
       return $scope.review = function(team) {
@@ -80787,8 +80857,7 @@ if (typeof exports === 'object') {
       };
       $scope.teamUsers = angular.copy($scope.team.teamUsers).concat(angular.copy($scope.team.invitedUsers));
       _.each($scope.teamUsers, function(teamUser) {
-        return $http.get("/user/profile/" + teamUser.userName).then(function(response) {
-          var data;
+        return $http.get("/user/profile/" + teamUser.userName).success(function(data) {
           data = response.data;
           if (data.result === "success") {
             _.extend(teamUser, data.user);
@@ -80810,12 +80879,12 @@ if (typeof exports === 'object') {
           } else {
             return $window.alert(data.error_msg);
           }
+        }).error(function() {
+          return $window.alert("Network error.");
         });
       });
       $scope.review = function(dto) {
-        return $http.post("/contest/registryReview", dto).then(function(response) {
-          var data;
-          data = response.data;
+        return $http.post("/contest/registryReview", dto).success(function(data) {
           if (data.result === "success") {
             $window.alert("Success!");
             $scope.team.status = dto.status;
@@ -80826,6 +80895,8 @@ if (typeof exports === 'object') {
             }
             return $modalInstance.close();
           }
+        }).error(function() {
+          return $window.alert("Network error.");
         });
       };
       $scope.accept = function() {
@@ -80847,8 +80918,9 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("ContestShowController", [
-    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$interval", "$timeout", "$cookieStore", function($scope, $rootScope, $http, $window, $modal, $routeParams, $interval, $timeout, $cookieStore) {
+    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$timeout", "$interval", "$cookieStore", function($scope, $rootScope, $http, $window, $modal, $routeParams, $timeout, $interval, $cookieStore) {
       var clarificationTimer, cookieName, currentTimeTimer, rankListTimer, refreshClarification, refreshRankList, updateTime;
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $scope.contestId = 0;
       $scope.contest = {
         title: "",
@@ -80879,12 +80951,9 @@ if (typeof exports === 'object') {
         });
       }
       $scope.contestId = angular.copy($routeParams.contestId);
-      $http.get("/contest/data/" + $scope.contestId).then(function(response) {
-        var data;
-        data = response.data;
+      $http.get("/contest/data/" + $scope.contestId).success(function(data) {
         if (data.result === "success") {
           $scope.contest = data.contest;
-          console.log($scope.contest);
           $scope.problemList = data.problemList;
           if (data.problemList.length > 0) {
             return $scope.currentProblem = data.problemList[0];
@@ -80892,6 +80961,8 @@ if (typeof exports === 'object') {
         } else {
           return $window.alert(data.error_msg);
         }
+      }).error(function() {
+        return $window.alert("Network error, please refresh page manually.");
       });
       currentTimeTimer = void 0;
       updateTime = function() {
@@ -80925,23 +80996,27 @@ if (typeof exports === 'object') {
         return $scope.progressbar.active = active;
       };
       currentTimeTimer = $interval(updateTime, 1000);
+      clarificationTimer = void 0;
+      rankListTimer = void 0;
       $scope.$on("$destroy", function() {
         $interval.cancel(currentTimeTimer);
-        $interval.cancel(rankListTimer);
-        return $interval.cancel(clarificationTimer);
+        $timeout.cancel(rankListTimer);
+        return $timeout.cancel(clarificationTimer);
       });
       $scope.totalUnreadedClarification = 0;
       $scope.lastClarificationCount = 0;
       refreshClarification = function() {
-        return $scope.$broadcast("refreshList:comment", function(data) {
+        return $rootScope.$broadcast("list:refresh:comment", function(data) {
           $scope.totalUnreadedClarification = Math.max(0, data.pageInfo.totalItems - $cookieStore.get(cookieName).lastClarificationCount);
-          return $scope.lastClarificationCount = data.pageInfo.totalItems;
+          $scope.lastClarificationCount = data.pageInfo.totalItems;
+          return clarificationTimer = $timeout(refreshClarification, 10000);
         });
       };
-      clarificationTimer = $interval(refreshClarification, 30000);
-      $timeout(refreshClarification, 500);
+      clarificationTimer = $timeout(refreshClarification, 500);
       $scope.selectClarificationTab = function() {
         var contest;
+        $timeout.cancel(clarificationTimer);
+        clarificationTimer = $timeout(refreshClarification, 0);
         contest = $cookieStore.get(cookieName);
         contest.lastClarificationCount = $scope.lastClarificationCount;
         $cookieStore.put(cookieName, contest);
@@ -80994,9 +81069,8 @@ if (typeof exports === 'object') {
       refreshRankList = function() {
         var contestId;
         contestId = angular.copy($scope.contestId);
-        return $http.get("/contest/rankList/" + contestId).then(function(response) {
-          var data, userStatus;
-          data = response.data;
+        return $http.get("/contest/rankList/" + contestId).success(function(data) {
+          var userStatus;
           if (data.result === "success") {
             $scope.rankList = data.rankList.rankList;
             _.each($scope.problemList, function(value, index) {
@@ -81007,54 +81081,22 @@ if (typeof exports === 'object') {
               userStatus = _.findWhere(data.rankList.rankList, {
                 userName: $rootScope.currentUser.userName
               });
-              _.each($scope.problemList, function(value, index) {
-                value.hasSolved = userStatus.itemList[index].solved;
-                return value.hasTried = userStatus.itemList[index].tried > 0;
-              });
-              return console.log($scope.problemList);
+              if (angular.isDefined(userStatus)) {
+                _.each($scope.problemList, function(value, index) {
+                  value.hasSolved = userStatus.itemList[index].solved;
+                  return value.hasTried = userStatus.itemList[index].tried > 0;
+                });
+              }
             }
-          } else {
-            return clearInterval(rankListTimer);
           }
+          return rankListTimer = $timeout(refreshRankList, 10000);
+        }).error(function() {
+          return rankListTimer = $timeout(refreshRankList, 10000);
         });
       };
-      rankListTimer = $interval(refreshRankList, 30000);
-      return $timeout(refreshRankList, 500);
+      return rankListTimer = $timeout(refreshRankList, 500);
     }
   ]);
-
-  cdoj.directive("uiContestProblemHref", function() {
-    return {
-      restrict: "E",
-      scope: {
-        problemId: "=",
-        problemList: "="
-      },
-      controller: [
-        "$scope", function($scope) {
-          $scope.order = -1;
-          $scope.orderCharacter = "-";
-          $scope.$watch("problemId + problemList", function() {
-            var target;
-            target = _.findWhere($scope.problemList, {
-              "problemId": $scope.problemId
-            });
-            if (target !== void 0) {
-              $scope.orderCharacter = target.orderCharacter;
-              return $scope.order = target.order;
-            }
-          });
-          return $scope.select = function() {
-            if ($scope.order !== -1) {
-              return $scope.$emit("contestShow:showProblemTab", $scope.order);
-            }
-          };
-        }
-      ],
-      template: "<a href=\"javascript:void(0);\" ng-bind=\"orderCharacter\" ng-click=\"select()\"></a>",
-      replace: true
-    };
-  });
 
   cdoj.controller("ForgetPasswordModalController", [
     "$scope", "$http", "$modalInstance", "$window", function($scope, $http, $modalInstance, $window) {
@@ -81067,13 +81109,10 @@ if (typeof exports === 'object') {
       $scope.sendSerialKey = function() {
         var userName;
         userName = angular.copy($scope.DTO.userName);
-        console.log(userName);
         if (userName.length > 0) {
           $scope.buttonText = "Sending...";
           $scope.onSend = true;
-          return $http.post("/user/sendSerialKey/" + userName).then(function(response) {
-            var data;
-            data = response.data;
+          return $http.post("/user/sendSerialKey/" + userName).success(function(data) {
             console.log(data);
             if (data.result === "success") {
               $window.alert("We send you an Email with the url to reset your password right now, please check your mail box.");
@@ -81085,6 +81124,8 @@ if (typeof exports === 'object') {
             }
             $scope.buttonText = "Send Email";
             return $scope.onSend = false;
+          }).error(function() {
+            return $window.alert("Network error.");
           });
         } else {
           return $window.alert("Please input your user name!");
@@ -81098,11 +81139,6 @@ if (typeof exports === 'object') {
 
   cdoj.controller("HeaderController", [
     "$scope", "$rootScope", "$http", "$element", "$compile", "$window", "$modal", function($scope, $rootScope, $http, $element, $compile, $window, $modal) {
-      $rootScope.hasLogin = false;
-      $rootScope.currentUser = {
-        email: ""
-      };
-      $rootScope.isAdmin = false;
       $scope.userLoginDTO = {
         userName: "",
         password: ""
@@ -81115,44 +81151,36 @@ if (typeof exports === 'object') {
         userLoginDTO = angular.copy($scope.userLoginDTO);
         password = CryptoJS.SHA1(userLoginDTO.password).toString();
         userLoginDTO.password = password;
-        return $http.post("/user/login", userLoginDTO).then(function(response) {
-          var data;
-          data = response.data;
+        return $http.post("/user/login", userLoginDTO).success(function(data) {
           if (data.result === "success") {
-            $rootScope.hasLogin = true;
-            return $rootScope.currentUser = {
+            return $scope.$emit("currentUser:login", {
               userName: data.userName,
               email: data.email,
               type: data.type
-            };
+            });
           } else if (data.result === "field_error") {
             return $scope.fieldInfo = data.field;
           } else {
             return $window.alert(data.error_msg);
           }
+        }).error(function() {
+          return $window.alert("Network error");
         });
       };
       $scope.logout = function() {
-        return $http.post("/user/logout").then(function(response) {
-          var data;
-          data = response.data;
+        return $http.post("/user/logout").success(function(data) {
           if (data.result === "success") {
-            $rootScope.hasLogin = false;
-            return $rootScope.currentUser = {
-              email: ""
-            };
+            return $scope.$emit("currentUser:logout");
           }
+        }).error(function() {
+          return $window.alert("Network error");
         });
       };
-      $scope.openForgetPasswordModal = function() {
-        var forgetPasswordModal;
-        return forgetPasswordModal = $modal.open({
+      return $scope.openForgetPasswordModal = function() {
+        return $modal.open({
           templateUrl: "template/modal/forget-password-modal.html",
           controller: "ForgetPasswordModalController"
         });
-      };
-      return $scope.readMessage = function(message) {
-        return console.log(message);
       };
     }
   ]);
@@ -81160,6 +81188,7 @@ if (typeof exports === 'object') {
   cdoj.controller("IndexController", [
     "$scope", "$rootScope", function($scope, $rootScope) {
       var articleCondition;
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $rootScope.title = "Home";
       articleCondition = angular.copy($rootScope.articleCondition);
       articleCondition.type = $rootScope.ArticleType.NOTICE;
@@ -81171,6 +81200,7 @@ if (typeof exports === 'object') {
 
   cdoj.controller("ListController", [
     "$scope", "$rootScope", "$http", "$window", "$routeParams", function($scope, $rootScope, $http, $window, $routeParams) {
+      var refreshTrigger;
       $scope.pageInfo = {
         countPerPage: 20,
         currentPage: 1,
@@ -81179,10 +81209,11 @@ if (typeof exports === 'object') {
       };
       $scope.itemsPerPage = 20;
       $scope.showPages = 10;
-      $scope.$on("refreshList", function(e, callback) {
+      $scope.$on("list:refresh", function(e, callback) {
         return $scope.refresh(callback);
       });
-      $scope.$on("refreshList:" + $scope.name, function(e, callback) {
+      refreshTrigger = "list:refresh:" + $scope.name;
+      $scope.$on(refreshTrigger, function(e, callback) {
         return $scope.refresh(callback);
       });
       _.each($scope.condition, function(val, key) {
@@ -81198,22 +81229,18 @@ if (typeof exports === 'object') {
         var condition;
         if ($scope.requestUrl !== 0) {
           condition = angular.copy($scope.condition);
-          return $http.post($scope.requestUrl, condition).then((function(_this) {
-            return function(response) {
-              var data;
-              data = response.data;
-              if (data.result === "success") {
-                $scope.$$nextSibling.list = response.data.list;
-                $scope.pageInfo = data.pageInfo;
-                $scope.itemsPerPage = $scope.pageInfo.countPerPage;
-                if (angular.isFunction(callback)) {
-                  return callback(response.data);
-                }
-              } else {
-                return $window.alert(data.error_msg);
+          return $http.post($scope.requestUrl, condition).success(function(data) {
+            if (data.result === "success") {
+              $scope.$$nextSibling.list = data.list;
+              $scope.pageInfo = data.pageInfo;
+              $scope.itemsPerPage = $scope.pageInfo.countPerPage;
+              if (angular.isFunction(callback)) {
+                return callback(data);
               }
-            };
-          })(this));
+            } else {
+              return $window.alert(data.error_msg);
+            }
+          });
         }
       };
       return $scope.$watch("condition", function() {
@@ -81226,9 +81253,7 @@ if (typeof exports === 'object') {
     "$scope", "$rootScope", "$http", "$modalInstance", "message", "$window", function($scope, $rootScope, $http, $modalInstance, message, $window) {
       $scope.message = message;
       $scope.message.content = "Loading...";
-      return $http.get("/message/fetch/" + $scope.message.messageId).then(function(response) {
-        var data;
-        data = response.data;
+      return $http.get("/message/fetch/" + $scope.message.messageId).success(function(data) {
         if (data.result === "success") {
           if ($scope.message.isOpened === false) {
             $rootScope.$broadcast("refresh");
@@ -81237,12 +81262,15 @@ if (typeof exports === 'object') {
         } else {
           return $window.alert(data.error_msg);
         }
+      }).error(function() {
+        return $window.alert("Network error.");
       });
     }
   ]);
 
   cdoj.controller("PasswordResetController", [
     "$scope", "$http", "$window", "$routeParams", function($scope, $http, $window, $routeParams) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $scope.userActivateDTO = {
         userName: $routeParams.userName,
         serialKey: $routeParams.serialKey,
@@ -81257,9 +81285,7 @@ if (typeof exports === 'object') {
         userActivateDTO.password = password;
         passwordRepeat = CryptoJS.SHA1(userActivateDTO.passwordRepeat).toString();
         userActivateDTO.passwordRepeat = passwordRepeat;
-        return $http.post("/user/resetPassword", userActivateDTO).then(function(response) {
-          var data;
-          data = response.data;
+        return $http.post("/user/resetPassword", userActivateDTO).success(function(data) {
           if (data.result === "success") {
             $window.alert("Success!");
             return $window.location.href = "/";
@@ -81268,6 +81294,8 @@ if (typeof exports === 'object') {
           } else {
             return $window.alert(data.error_msg);
           }
+        }).error(function() {
+          return $window.alert("Network error.");
         });
       };
     }
@@ -81276,6 +81304,7 @@ if (typeof exports === 'object') {
   cdoj.controller("ProblemEditorController", [
     "$scope", "$http", "$window", "$routeParams", function($scope, $http, $window, $routeParams) {
       var problemId;
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN);
       $scope.problem = {
         description: "",
         title: "",
@@ -81308,9 +81337,8 @@ if (typeof exports === 'object') {
       if ($scope.action !== "new") {
         $scope.title = "Edit problem " + $scope.action;
         problemId = angular.copy($scope.action);
-        $http.post("/problem/data/" + problemId).then(function(response) {
-          var data, i, _sampleInput, _sampleOutput;
-          data = response.data;
+        $http.post("/problem/data/" + problemId).success(function(data) {
+          var i, _sampleInput, _sampleOutput;
           if (data.result === "success") {
             $scope.problem = data.problem;
             _sampleInput = $scope.problem.sampleInput;
@@ -81345,6 +81373,8 @@ if (typeof exports === 'object') {
           } else {
             return $window.alert(data.error_msg);
           }
+        }).error(function() {
+          return $window.alert("Network error, please refresh page manually.");
         });
       } else {
         $scope.title = "New problem";
@@ -81360,9 +81390,7 @@ if (typeof exports === 'object') {
         problemEditDTO.sampleOutput = JSON.stringify(_.map($scope.samples, function(sample) {
           return sample.output;
         }));
-        return $http.post("/problem/edit", problemEditDTO).then(function(response) {
-          var data;
-          data = response.data;
+        return $http.post("/problem/edit", problemEditDTO).success(function(data) {
           if (data.result === "success") {
             return $window.location.href = "#/problem/show/" + data.problemId;
           } else if (data.result === "field_error") {
@@ -81370,6 +81398,8 @@ if (typeof exports === 'object') {
           } else {
             return $window.alert(data.error_msg);
           }
+        }).error(function() {
+          return $window.alert("Network error.");
         });
       };
     }
@@ -81377,6 +81407,7 @@ if (typeof exports === 'object') {
 
   cdoj.controller("ProblemListController", [
     "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       return $rootScope.title = "Problem list";
     }
   ]);
@@ -81384,6 +81415,7 @@ if (typeof exports === 'object') {
   cdoj.controller("ProblemShowController", [
     "$scope", "$rootScope", "$http", "$window", "$routeParams", "$modal", function($scope, $rootScope, $http, $window, $routeParams, $modal) {
       var problemId;
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $scope.problem = {
         description: "",
         title: "",
@@ -81402,15 +81434,15 @@ if (typeof exports === 'object') {
         source: ""
       };
       problemId = angular.copy($routeParams.problemId);
-      $http.post("/problem/data/" + problemId).then(function(response) {
-        var data;
-        data = response.data;
+      $http.post("/problem/data/" + problemId).data(function(data) {
         if (data.result === "success") {
           $scope.problem = data.problem;
           return $rootScope.title = $scope.problem.title;
         } else {
-          return alert(data.error_msg);
+          return $window.alert(data.error_msg);
         }
+      }).error(function() {
+        return $window.alert("Network error, please refresh page manually.");
       });
       $scope.openSubmitModal = function() {
         return $modal.open({
@@ -81431,20 +81463,21 @@ if (typeof exports === 'object') {
           }
         }).result.then(function(result) {
           if (result === "success") {
-            return $window.location.href = "#/status/list?problemId=" + $scope.problem.problemId;
+            return $window.location.href = "/#/status/list?problemId=" + $scope.problem.problemId;
           }
         });
       };
       return $scope.gotoStatusList = function() {
-        return $window.location.href = "#/status/list?problemId=" + $scope.problem.problemId;
+        return $window.location.href = "/#/status/list?problemId=" + $scope.problem.problemId;
       };
     }
   ]);
 
   cdoj.controller("StatusListController", [
-    "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
+    "$scope", "$rootScope", function($scope, $rootScope) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       return $scope.refresh = function() {
-        return $scope.$broadcast("refreshList");
+        return $scope.$broadcast("list:refresh:status");
       };
     }
   ]);
@@ -81462,9 +81495,7 @@ if (typeof exports === 'object') {
           $window.alert("Please login first!");
           return $modalInstance.dismiss("close");
         } else {
-          return $http.post("/status/submit", submitDTO).then(function(response) {
-            var data;
-            data = response.data;
+          return $http.post("/status/submit", submitDTO).success(function(data) {
             if (data.result === "success") {
               return $modalInstance.close("success");
             } else if (data.result === "field_error") {
@@ -81472,6 +81503,8 @@ if (typeof exports === 'object') {
             } else {
               return $window.alert(data.error_msg);
             }
+          }).error(function() {
+            return $window.alert("Network error.");
           });
         }
       };
@@ -81497,9 +81530,7 @@ if (typeof exports === 'object') {
         condition = {
           keyword: keyword
         };
-        return $http.post("/user/typeAheadList", condition).then(function(response) {
-          var data;
-          data = response.data;
+        return $http.post("/user/typeAheadList", condition).success(function(data) {
           if (data.result === "success") {
             return data.list;
           } else {
@@ -81509,8 +81540,8 @@ if (typeof exports === 'object') {
       };
       $scope.addMemberClick = function() {
         if ($scope.memberList.length < 3) {
-          return $http.get("/user/typeAheadItem/" + $scope.newMember.userName).then(function(response) {
-            var data, result;
+          return $http.get("/user/typeAheadItem/" + $scope.newMember.userName).success(function(data) {
+            var result;
             data = response.data;
             if (data.result === "success") {
               result = data.user;
@@ -81524,6 +81555,8 @@ if (typeof exports === 'object') {
             } else {
               return $window.alert(data.error_msg);
             }
+          }).error(function() {
+            return $window.alert("Network error.");
           });
         }
       };
@@ -81534,15 +81567,15 @@ if (typeof exports === 'object') {
         } else if ($window.confirm("Are you sure that invite " + user.userName + " into team " + $scope.teamDTO.teamName + "?")) {
           teamDTO = angular.copy($scope.teamDTO);
           teamDTO.memberList = "" + user.userId;
-          return $http.post("/team/addMember", teamDTO).then(function(response) {
-            var data;
-            data = response.data;
+          return $http.post("/team/addMember", teamDTO).success(function(data) {
             if (data.result === "success") {
               $scope.memberList.add(user);
               return $rootScope.$broadcast("refreshList");
             } else {
               return $window.alert(data.error_msg);
             }
+          }).error(function() {
+            return $window.alert("Network error.");
           });
         }
       };
@@ -81553,15 +81586,15 @@ if (typeof exports === 'object') {
           if ($window.confirm("Are you sure that remove " + user.userName + " from team " + $scope.teamDTO.teamName + "?")) {
             teamDTO = angular.copy($scope.teamDTO);
             teamDTO.memberList = "" + user.userId;
-            return $http.post("/team/removeMember", teamDTO).then(function(response) {
-              var data;
-              data = response.data;
+            return $http.post("/team/removeMember", teamDTO).success(function(data) {
               if (data.result === "success") {
                 $scope.memberList.splice(index, 1);
                 return $rootScope.$broadcast("refreshList");
               } else {
                 return $window.alert(data.error_msg);
               }
+            }).error(function() {
+              return $window.alert("Network error.");
             });
           }
         }
@@ -81570,9 +81603,7 @@ if (typeof exports === 'object') {
         var teamDTO;
         if ($window.confirm("This action will delete team " + $scope.teamDTO.teamName + " forever, are you sure?")) {
           teamDTO = angular.copy($scope.teamDTO);
-          return $http.post("/team/deleteTeam", teamDTO).then(function(response) {
-            var data;
-            data = response.data;
+          return $http.post("/team/deleteTeam", teamDTO).success(function(data) {
             if (data.result === "success") {
               $window.alert("Done!");
               $modalInstance.close();
@@ -81580,6 +81611,8 @@ if (typeof exports === 'object') {
             } else {
               return $window.alert(data.error_msg);
             }
+          }).error(function() {
+            return $window.alert("Network error.");
           });
         }
       };
@@ -81616,9 +81649,7 @@ if (typeof exports === 'object') {
           newPasswordRepeat = CryptoJS.SHA1(userEditDTO.newPasswordRepeat).toString();
           userEditDTO.newPasswordRepeat = newPasswordRepeat;
         }
-        return $http.post("/user/adminEdit", userEditDTO).then(function(response) {
-          var data;
-          data = response.data;
+        return $http.post("/user/adminEdit", userEditDTO).success(function(data) {
           if (data.result === "success") {
             $window.alert("Success!");
             return $modalInstance.close();
@@ -81627,6 +81658,8 @@ if (typeof exports === 'object') {
           } else {
             return $window.alert(data.error_msg);
           }
+        }).error(function() {
+          return $window.alert("Network error.");
         });
       };
       return $scope.dismiss = function() {
@@ -81637,32 +81670,27 @@ if (typeof exports === 'object') {
 
   cdoj.controller("UserCenterController", [
     "$scope", "$rootScope", "$http", "$routeParams", "$modal", "$window", "UserProfile", function($scope, $rootScope, $http, $routeParams, $modal, $window, $userProfile) {
-      var articleCondition, checkPermission, currentTab, targetUserName;
+      var articleCondition, currentTab, targetUserName;
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $scope.targetUser = {
         email: ""
       };
       $scope.teamCondition = angular.copy($rootScope.teamCondition);
       $scope.messageCondition = angular.copy($rootScope.messageCondition);
-      $scope.editPermission = false;
-      checkPermission = function() {
-        if ($rootScope.hasLogin === false) {
-          $scope.editPermission = false;
-        } else if ($rootScope.currentUser.userId === $scope.targetUser.userId) {
-          $scope.editPermission = true;
-        }
-        $scope.messageCondition = angular.copy($rootScope.messageCondition);
-        if ($scope.editPermission === false) {
+      $scope.messageCondition = angular.copy($rootScope.messageCondition);
+      $scope.$on("permission:changes", function() {
+        if ($rootScope.hasEditPermission === false) {
           $scope.messagesTabTitle = "Your messages with " + $scope.targetUser.userName;
           $scope.messageCondition.userAId = $scope.currentUser.userId;
-          $scope.messageCondition.userBId = $scope.targetUser.userId;
+          return $scope.messageCondition.userBId = $scope.targetUser.userId;
         } else {
-          $scope.messagesTabTitle = "" + $scope.targetUser.userName + "'s messages";
+          $scope.messagesTabTitle = $scope.targetUser.userName + "'s messages";
           $scope.messageCondition.userId = $scope.currentUser.userId;
+          $userProfile.setProfile($scope.targetUser.userName);
+          return $scope.$on("UserProfile:success", function() {
+            return $scope.userEditDTO = $userProfile.getProfile();
+          });
         }
-        return $scope.$broadcast("userCenter:permissionChange");
-      };
-      $scope.$on("refresh", function() {
-        return $window.location.reload();
       });
       currentTab = angular.copy($routeParams.tab);
       $scope.activeProblemsTab = false;
@@ -81689,7 +81717,8 @@ if (typeof exports === 'object') {
           $scope.targetUser = data.targetUser;
           $scope.problemStatus = data.problemStatus;
           $scope.teamCondition.userId = data.targetUser.userId;
-          return checkPermission();
+          $scope.$emit("permission:setEditPermission", $scope.targetUser.userName);
+          return $scope.$emit("permission:check");
         } else {
           return $window.alert(data.error_msg);
         }
@@ -81698,14 +81727,6 @@ if (typeof exports === 'object') {
       articleCondition.userName = targetUserName;
       $scope.articleCondition = articleCondition;
       $scope.userEditDTO = 0;
-      $scope.$on("userCenter:permissionChange", function() {
-        if ($scope.editPermission) {
-          $userProfile.setProfile($scope.targetUser.userName);
-          return $scope.$on("UserProfile:success", function() {
-            return $scope.userEditDTO = $userProfile.getProfile();
-          });
-        }
-      });
       $scope.fieldInfo = [];
       $scope.edit = function() {
         var newPassword, newPasswordRepeat, oldPassword, userEditDTO;
@@ -81730,9 +81751,7 @@ if (typeof exports === 'object') {
         }
         oldPassword = CryptoJS.SHA1(userEditDTO.oldPassword).toString();
         userEditDTO.oldPassword = oldPassword;
-        return $http.post("/user/edit", userEditDTO).then(function(response) {
-          var data;
-          data = response.data;
+        return $http.post("/user/edit", userEditDTO).success(function(data) {
           if (data.result === "success") {
             $window.alert("Success!");
             return $scope.$broadcast("refresh");
@@ -81742,6 +81761,8 @@ if (typeof exports === 'object') {
           } else {
             return $window.alert(data.error_msg);
           }
+        }).error(function() {
+          return $window.alert("Network error.");
         });
       };
       $scope.newTeam = {
@@ -81750,27 +81771,29 @@ if (typeof exports === 'object') {
       return $scope.createNewTeam = function() {
         var teamDTO;
         teamDTO = angular.copy($scope.newTeam);
-        return $http.post("/team/createTeam", teamDTO).then(function(response) {
-          var data;
-          data = response.data;
+        return $http.post("/team/createTeam", teamDTO).success(function(data) {
           if (data.result === "success") {
             return $scope.$broadcast("refreshList");
           } else {
             return $window.alert(data.error_msg);
           }
+        }).error(function() {
+          return $window.alert("Network error.");
         });
       };
     }
   ]);
 
   cdoj.controller("UserListController", [
-    "$scope", "$rootScope", "$http", function($scope, $rootScope, $http) {
+    "$scope", "$rootScope", function($scope, $rootScope) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       return $rootScope.title = "User list";
     }
   ]);
 
   cdoj.controller("UserRegisterController", [
     "$scope", "$rootScope", "$http", "$window", function($scope, $rootScope, $http, $window) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $scope.userRegisterDTO = {
         departmentId: 1,
         email: "",
@@ -81801,9 +81824,7 @@ if (typeof exports === 'object') {
         userRegisterDTO.password = password;
         passwordRepeat = CryptoJS.SHA1(userRegisterDTO.passwordRepeat).toString();
         userRegisterDTO.passwordRepeat = passwordRepeat;
-        return $http.post("/user/register", userRegisterDTO).then(function(response) {
-          var data;
-          data = response.data;
+        return $http.post("/user/register", userRegisterDTO).success(function(data) {
           if (data.result === "success") {
             $rootScope.hasLogin = true;
             $rootScope.currentUser = {
@@ -81819,6 +81840,8 @@ if (typeof exports === 'object') {
           } else {
             return $window.alert(data.error_msg);
           }
+        }).error(function() {
+          return $window.alert("Network error.");
         });
       };
     }
@@ -81975,19 +81998,18 @@ if (typeof exports === 'object') {
           commentCondition.problemId = $scope.problemId;
           commentCondition.parentId = $scope.articleId;
           $scope.commentCondition = commentCondition;
-          console.log($scope.commentCondition);
           sendEditRequest = function(articleEditDTO) {
-            return $http.post("/article/editComment", articleEditDTO).then(function(response) {
-              var data;
-              data = response.data;
+            return $http.post("/article/editComment", articleEditDTO).success(function(data) {
               if (data.result === "success") {
                 $scope.newComment = "";
-                return $scope.$broadcast("refreshList");
+                return $scope.$broadcast("list:refresh:comment");
               } else if (data.result === "field_error") {
                 return $scope.fieldInfo = data.field;
               } else {
                 return $window.alert(data.error_msg);
               }
+            }).error(function() {
+              return $window.alert("Network error.");
             });
           };
           $scope.newComment = "";
@@ -82048,23 +82070,82 @@ if (typeof exports === 'object') {
           return $scope.editVisible = function() {
             var queryString;
             queryString = "/contest/operator/" + $scope.contestId + "/isVisible/" + (!$scope.isVisible);
-            return $http.post(queryString).then((function(_this) {
-              return function(response) {
-                var data;
-                data = response.data;
-                if (data.result === "success") {
-                  return $scope.isVisible = !$scope.isVisible;
-                } else {
-                  return $window.alert(data.error_msg);
-                }
-              };
-            })(this));
+            return $http.post(queryString).success(data, data.result === "success" ? $scope.isVisible = !$scope.isVisible : $window.alert(data.error_msg)).error(function() {
+              return $window.alert("Network error.");
+            });
           };
         }
       ],
       template: "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm\" ng-click=\"editVisible()\" style=\"padding: 1px 5px;\">\n      <i class=\"fa\" ng-class=\"{\n        'fa-eye': isVisible == true,\n        'fa-eye-slash': isVisible == false\n      }\"></i>\n    </button>\n    <a href=\"#/contest/editor/{{contestId}}\"\n       class=\"btn btn-default btn-sm\" style=\"padding: 1px 5px;\"><i class=\"fa fa-pencil\"></i></a>\n  </div>\n</div>"
     };
   });
+
+  cdoj.directive("uiContestProblemHref", function() {
+    return {
+      restrict: "E",
+      scope: {
+        problemId: "=",
+        problemList: "="
+      },
+      controller: [
+        "$scope", function($scope) {
+          $scope.order = -1;
+          $scope.orderCharacter = "-";
+          $scope.$watch("problemId + problemList", function() {
+            var target;
+            target = _.findWhere($scope.problemList, {
+              "problemId": $scope.problemId
+            });
+            if (target !== void 0) {
+              $scope.orderCharacter = target.orderCharacter;
+              return $scope.order = target.order;
+            }
+          });
+          return $scope.select = function() {
+            if ($scope.order !== -1) {
+              return $scope.$emit("contestShow:showProblemTab", $scope.order);
+            }
+          };
+        }
+      ],
+      template: "<a href=\"javascript:void(0);\" ng-bind=\"orderCharacter\" ng-click=\"select()\"></a>",
+      replace: true
+    };
+  });
+
+  cdoj.directive("uiContestUploader", [
+    "$window", function($window) {
+      return {
+        restrict: "E",
+        replace: true,
+        link: function($scope, $element) {
+          var contestUploader;
+          return contestUploader = new qq.FineUploaderBasic({
+            button: $($element)[0],
+            request: {
+              endpoint: "/contest/createContestByArchiveFile",
+              inputName: "uploadFile"
+            },
+            validation: {
+              allowedExtensions: ["zip"],
+              sizeLimit: 100 * 1000 * 1000
+            },
+            multiple: false,
+            callbacks: {
+              onComplete: function(id, fileName, data) {
+                if (data.success === "true") {
+                  return $scope.$emit("contestUploader:complete", data.contestId);
+                } else {
+                  return $window.alert(data.error_msg);
+                }
+              }
+            }
+          });
+        },
+        template: "<button class=\"btn btn-danger\">Upload zip file</button>"
+      };
+    }
+  ]);
 
   cdoj.directive("uiDatetimepicker", function() {
     return {
@@ -82452,17 +82533,15 @@ if (typeof exports === 'object') {
           return $scope.editVisible = function() {
             var queryString;
             queryString = "/problem/operator/" + $scope.problemId + "/isVisible/" + (!$scope.isVisible);
-            return $http.post(queryString).then((function(_this) {
-              return function(response) {
-                var data;
-                data = response.data;
-                if (data.result === "success") {
-                  return $scope.isVisible = !$scope.isVisible;
-                } else {
-                  return $window.alert(data.error_msg);
-                }
-              };
-            })(this));
+            return $http.post(queryString).success(function(data) {
+              if (data.result === "success") {
+                return $scope.isVisible = !$scope.isVisible;
+              } else {
+                return $window.alert(data.error_msg);
+              }
+            }).error(function() {
+              return $window.alert("Network error.");
+            });
           };
         }
       ],
@@ -82549,23 +82628,24 @@ if (typeof exports === 'object') {
       controller: [
         "$scope", "$rootScope", "$http", "$window", function($scope, $rootScope, $http, $window) {
           return $scope.rejudge = function() {
-            return $http.post("/status/rejudgeStatusCount", $scope.condition).then(function(response) {
-              var data;
-              data = response.data;
+            return $http.post("/status/rejudgeStatusCount", $scope.condition).success(function(data) {
               if (data.result === "success") {
                 if (confirm("Rejudge all " + data.count + " records")) {
-                  return $http.post("/status/rejudge", $scope.condition).then(function(response) {
-                    data = response.data;
+                  return $http.post("/status/rejudge", $scope.condition).success(function(data) {
                     if (data.result === "success") {
                       return $window.alert("Done!");
                     } else {
                       return $window.alert(data.error_msg);
                     }
+                  }).error(function() {
+                    return $window.alert("Network error.");
                   });
                 }
               } else {
                 return $window.alert(data.error_msg);
               }
+            }).error(function() {
+              return $window.alert("Network error.");
             });
           };
         }
@@ -82748,9 +82828,7 @@ if (typeof exports === 'object') {
             if (angular.isUndefined(condition.contestId)) {
               condition.contestId = -1;
             }
-            return $http.post("/status/search", condition).then(function(response) {
-              var data;
-              data = response.data;
+            return $http.post("/status/search", condition).success(function(data) {
               if (data.result === "success" && data.list.length === 1) {
                 $scope.status = data.list[0];
                 checkShowHref();
@@ -82758,6 +82836,8 @@ if (typeof exports === 'object') {
                   return removeStatusTimer();
                 }
               }
+            }).error(function() {
+              return $window.alert("Network error.");
             });
           };
           if ([0, 16, 17, 18].some($scope.status.returnTypeId)) {
@@ -82894,21 +82974,22 @@ if (typeof exports === 'object') {
             }
           }
           $scope.joinIn = function(team) {
-            return $http.get("/team/changeAllowState/" + $scope.user.userId + "/" + team.teamId + "/" + team.allow).then(function() {
-              return $http.get("/team/typeAHeadItem/" + $scope.team.teamName).then(function(response) {
-                var data;
-                data = response.data;
+            return $http.get("/team/changeAllowState/" + $scope.user.userId + "/" + team.teamId + "/" + team.allow).success(function() {
+              return $http.get("/team/typeAHeadItem/" + $scope.team.teamName).success(function(data) {
                 if (data.result === "success") {
                   return $scope.team = data.team;
                 } else {
                   return $window.alert(data.error_msg);
                 }
+              }).error(function() {
+                return $window.alert("Network error.");
               });
+            }).error(function() {
+              return $window.alert("Network error.");
             });
           };
           return $scope.showTeamEditor = function(team) {
-            var teamEditor;
-            return teamEditor = $modal.open({
+            return $modal.open({
               templateUrl: "template/modal/team-editor-modal.html",
               controller: "TeamEditorModalController",
               resolve: {
@@ -83028,9 +83109,8 @@ if (typeof exports === 'object') {
       controller: [
         "$scope", "$http", "$modal", "$window", "UserProfile", function($scope, $http, $modal, $window, $userProfile) {
           return $scope.showEditor = function() {
-            var userAdminModal;
             $userProfile.setProfile($scope.user.userName);
-            return userAdminModal = $modal.open({
+            return $modal.open({
               templateUrl: "template/modal/user-admin-modal.html",
               controller: "UserAdminModalController"
             });
@@ -83068,29 +83148,5 @@ if (typeof exports === 'object') {
       template: "<span class=\"validate-info\" ng-show=\"isInvalid\" ng-bind=\"message\"></span>"
     };
   });
-
-  cdoj.factory("UserProfile", [
-    "$http", "$window", "$rootScope", function($http, $window, $rootScope) {
-      var userProfile;
-      userProfile = 0;
-      return {
-        setProfile: function(userName) {
-          return $http.get("/user/profile/" + userName).then(function(response) {
-            var data;
-            data = response.data;
-            if (data.result === "success") {
-              userProfile = data.user;
-              return $rootScope.$broadcast("UserProfile:success");
-            } else {
-              return $window.alert(data.error_msg);
-            }
-          });
-        },
-        getProfile: function() {
-          return userProfile;
-        }
-      };
-    }
-  ]);
 
 }).call(this);
