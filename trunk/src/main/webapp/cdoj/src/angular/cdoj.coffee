@@ -19,14 +19,14 @@ cdoj
       _.extend($rootScope, data)
     $rootScope.finalTitle = "UESTC Online Judge"
 
-    fetchUserData = ->
-      $http.get("/userData").then (response)->
+    fetchData = ->
+      $http.get("/data").then (response)->
         data = response.data
         if data.result == "success"
           _.extend($rootScope, data)
 
-    $rootScope.$on("refreshUserData", ->
-      fetchUserData()
+    $rootScope.$on("refreshData", ->
+      fetchData()
     )
     $rootScope.$on("refresh", ->
       $rootScope.$broadcast("refreshList")
@@ -42,18 +42,8 @@ cdoj
       $rootScope.$broadcast("refresh")
     )
 
-    fetchOnlineUsersData = ->
-      $http.get("/onlineUsersData").then (response) ->
-        data = response.data
-        if data.result == "success"
-          _.extend($rootScope, data)
-
-    fetchUserDataAndOnlineUsersData = ->
-      fetchUserData()
-      fetchOnlineUsersData()
-
-    fetchUserDataAndOnlineUsersData()
-    $interval(fetchUserDataAndOnlineUsersData, 5000)
+    fetchData()
+    $interval(fetchData, 10000)
 
 ])
 .config([

@@ -6475,6 +6475,10 @@ button.close {
 #rank-list td.penalty {
   background-color: #b1d3ec;
 }
+#rank-list td.my {
+  background-color: #0066b2;
+  color: white;
+}
 #rank-list td.rank-list-first-blood {
   background-color: #00b266;
 }
@@ -6753,6 +6757,10 @@ small {
 }
 .font-success {
   color: #468847;
+}
+.mentioned {
+  color: #000000;
+  font-weight: 700;
 }
 #cdoj-navbar-top {
   position: fixed;

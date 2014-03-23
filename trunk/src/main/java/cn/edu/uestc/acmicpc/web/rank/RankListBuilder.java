@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.web.rank;
 
 import cn.edu.uestc.acmicpc.util.settings.Global;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -106,6 +107,7 @@ public class RankListBuilder {
     for (int index = 0; index < result.rankList.length; index++) {
       result.rankList[index].rank = index + 1;
     }
+    result.lastFetched = new Timestamp(System.currentTimeMillis());
     return result;
   }
 }
