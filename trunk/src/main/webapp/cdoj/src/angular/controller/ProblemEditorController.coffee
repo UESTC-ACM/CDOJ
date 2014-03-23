@@ -1,7 +1,11 @@
 cdoj
 .controller("ProblemEditorController", [
-    "$scope", "$http", "$window", "$routeParams"
-    ($scope, $http, $window, $routeParams)->
+    "$scope", "$http", "$window", "$routeParams", "$rootScope"
+    ($scope, $http, $window, $routeParams, $rootScope)->
+      # Administrator only
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN)
+      $window.scrollTo(0, 0)
+
       $scope.problem =
         description: ""
         title: ""
@@ -33,8 +37,7 @@ cdoj
       if $scope.action != "new"
         $scope.title = "Edit problem " + $scope.action
         problemId = angular.copy($scope.action)
-        $http.post("/problem/data/#{problemId}").then (response)->
-          data = response.data
+        $http.post("/problem/data/#{problemId}").success((data)->
           if data.result == "success"
             $scope.problem = data.problem
 
@@ -59,6 +62,9 @@ cdoj
 
           else
             $window.alert data.error_msg
+        ).error(->
+          $window.alert "Network error, please refresh page manually."
+        )
       else
         $scope.title = "New problem"
         $scope.addSample()
@@ -66,11 +72,12 @@ cdoj
       $scope.submit = ->
         problemEditDTO = angular.copy($scope.problem)
         problemEditDTO.action = angular.copy($scope.action)
-        problemEditDTO.sampleInput = JSON.stringify(_.map($scope.samples, (sample)->sample.input))
-        problemEditDTO.sampleOutput = JSON.stringify(_.map($scope.samples, (sample)->sample.output))
+        problemEditDTO.sampleInput = JSON.stringify(_.map($scope.samples, (sample)->
+          sample.input))
+        problemEditDTO.sampleOutput = JSON.stringify(_.map($scope.samples, (sample)->
+          sample.output))
 
-        $http.post("/problem/edit", problemEditDTO).then (response)->
-          data = response.data
+        $http.post("/problem/edit", problemEditDTO).success((data)->
           if data.result == "success"
             $window.location.href = "#/problem/show/#{data.problemId}"
           else if data.result == "field_error"
@@ -78,4 +85,7 @@ cdoj
             $scope.fieldInfo = data.field
           else
             $window.alert data.error_msg
+        ).error(->
+          $window.alert "Network error."
+        )
   ])

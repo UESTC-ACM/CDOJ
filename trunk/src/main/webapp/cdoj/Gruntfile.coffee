@@ -20,9 +20,11 @@ module.exports = (grunt) ->
           "temp/angular/cdoj.angular.js": [
             "src/angular/global.coffee"
             "src/angular/cdoj.coffee"
+            "src/angular/config/*.coffee"
+            "src/angular/run/*.coffee"
+            "src/angular/factory/*.coffee"
             "src/angular/controller/*.coffee"
             "src/angular/directive/*.coffee"
-            "src/angular/factory/*.coffee"
           ]
 
     less:

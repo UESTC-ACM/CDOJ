@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
@@ -49,7 +50,7 @@ public class MessageController extends BaseController {
           !currentUser.getUserId().equals(messageDTO.getReceiverId())) {
         throw new AppException("Permission denied.");
       }
-      if (!messageDTO.getIsOpened()) {
+      if (currentUser.getUserId().equals(messageDTO.getReceiverId()) && !messageDTO.getIsOpened()) {
         messageService.read(messageDTO.getMessageId());
       }
       json.put("message", messageDTO);
@@ -74,8 +75,8 @@ public class MessageController extends BaseController {
     Map<String, Object> json = new HashMap<>();
     try {
       UserDTO currentUser = getCurrentUser(session);
+      Boolean valid = false;
       if (currentUser != null) {
-        Boolean valid = false;
         if (messageCondition.userId != null) {
           if (checkPermission(session, messageCondition.userId)) {
             valid = true;
@@ -85,13 +86,19 @@ public class MessageController extends BaseController {
             valid = true;
           }
         }
-        if (valid) {
-          Long count = messageService.count(messageCondition);
-          PageInfo pageInfo = buildPageInfo(count, messageCondition.currentPage,
-              Global.RECORD_PER_PAGE, null);
-          List<MessageForUserDTO> messageList = messageService.getMessageForUserDTOList(messageCondition, pageInfo);
-          json.put("list", messageList);
-        }
+      }
+      if (valid) {
+        Long count = messageService.count(messageCondition);
+        PageInfo pageInfo = buildPageInfo(count, messageCondition.currentPage,
+            Global.RECORD_PER_PAGE, null);
+        List<MessageForUserDTO> messageList = messageService.getMessageForUserDTOList(messageCondition, pageInfo);
+        json.put("list", messageList);
+        json.put("pageInfo", pageInfo);
+      } else {
+        PageInfo pageInfo = buildPageInfo(0L, 1L,
+            Global.RECORD_PER_PAGE, null);
+        json.put("list", new LinkedList<>());
+        json.put("pageInfo", pageInfo);
       }
       json.put("result", "success");
     } catch (AppException e) {
