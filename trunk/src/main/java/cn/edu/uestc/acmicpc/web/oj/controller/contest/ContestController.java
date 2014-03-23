@@ -10,7 +10,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDetailDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemSummaryDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReviewDTO;
@@ -21,6 +20,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ContestImporterService;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
+import cn.edu.uestc.acmicpc.service.iface.ContestRankListService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
@@ -42,8 +42,6 @@ import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
-import cn.edu.uestc.acmicpc.web.rank.RankListBuilder;
-import cn.edu.uestc.acmicpc.web.rank.RankListStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -84,6 +82,7 @@ public class ContestController extends BaseController {
   private TeamUserService teamUserService;
   private ContestTeamService contestTeamService;
   private MessageService messageService;
+  private ContestRankListService contestRankListService;
 
   @Autowired
   public ContestController(ContestService contestService,
@@ -97,7 +96,8 @@ public class ContestController extends BaseController {
                            TeamService teamService,
                            TeamUserService teamUserService,
                            ContestTeamService contestTeamService,
-                           MessageService messageService) {
+                           MessageService messageService,
+                           ContestRankListService contestRankListService) {
     this.contestService = contestService;
     this.contestProblemService = contestProblemService;
     this.contestImporterService = contestImporterService;
@@ -111,6 +111,7 @@ public class ContestController extends BaseController {
     this.contestService = contestService;
     this.contestTeamService = contestTeamService;
     this.messageService = messageService;
+    this.contestRankListService = contestRankListService;
   }
 
   @RequestMapping("registryReview")
@@ -340,37 +341,7 @@ public class ContestController extends BaseController {
         throw new AppException("Contest not start yet.");
       }
 
-      List<ContestProblemSummaryDTO> contestProblemList = contestProblemService.
-          getContestProblemSummaryDTOListByContestId(contestId);
-
-      StatusCondition statusCondition = new StatusCondition();
-      statusCondition.contestId = contestShowDTO.getContestId();
-      statusCondition.isForAdmin = isAdmin(session);
-      // Sort by time
-      statusCondition.orderFields = "time";
-      statusCondition.orderAsc = "true";
-      List<StatusListDTO> statusList = statusService.getStatusList(statusCondition);
-
-      RankListBuilder rankListBuilder = new RankListBuilder();
-      for (ContestProblemSummaryDTO problem : contestProblemList) {
-        rankListBuilder.addRankListProblem(problem.getProblemId().toString());
-      }
-      for (StatusListDTO status : statusList) {
-        if (contestShowDTO.getStartTime().after(status.getTime()) ||
-            contestShowDTO.getEndTime().before(status.getTime())) {
-          // Out of time.
-          continue;
-        }
-        rankListBuilder.addStatus(new RankListStatus(
-            1, // Total tried
-            status.getReturnTypeId(), // Return type id
-            status.getProblemId().toString(), // Problem id
-            status.getUserName(), // User name
-            status.getNickName(), // Nick name
-            status.getTime().getTime() - contestShowDTO.getStartTime().getTime())); // Time
-      }
-
-      json.put("rankList", rankListBuilder.build());
+      json.put("rankList", contestRankListService.getRankList(contestId));
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
