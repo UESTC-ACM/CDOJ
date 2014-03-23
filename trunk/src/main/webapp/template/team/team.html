@@ -31,18 +31,18 @@
         </h5>
 
         <div class="media">
-          <div class="pull-left">
+          <a class="pull-left" href="/#/user/center/{{member.userName}}">
             <img ui-avatar
                  email="member.email"
                  width="44"
                  height="44"
                  class="media-object"
                  style="width: 44px; height: 44px;"/>
-          </div>
+          </a>
 
           <div class="media-body">
             <h4 class="media-heading">
-              <span ng-bind="member.userName"></span>
+              <a ng-bind="member.userName" href="/#/user/center/{{member.userName}}"></a>
             </h4>
             <span ng-bind="member.nickName"></span>
           </div>
@@ -55,18 +55,18 @@
           </h5>
 
           <div class="media">
-            <div class="pull-left">
+            <a class="pull-left" href="/#/user/center/{{member.userName}}">
               <img ui-avatar
                    email="member.email"
                    width="44"
                    height="44"
                    class="media-object"
                    style="width: 44px; height: 44px;"/>
-            </div>
+            </a>
 
             <div class="media-body">
               <h4 class="media-heading">
-                <span ng-bind="member.userName"></span>
+                <a ng-bind="member.userName" href="/#/user/center/{{member.userName}}"></a>
               </h4>
               <span ng-bind="member.nickName"></span>
             </div>

@@ -35,6 +35,8 @@ GlobalVariables =
     NORMAL: 0
     ADMIN: 1
     CONSTANT: 2
+    NOOP: 3
+    CURRENT_USER: 4
 
   AuthorStatusType:
     NONE: 0
@@ -81,7 +83,7 @@ GlobalConditions =
     endId: undefined
     keyword: undefined
     title: undefined
-    orderFields: "id"
+    orderFields: "time"
     orderAsc: "false"
   statusCondition:
     currentPage: null

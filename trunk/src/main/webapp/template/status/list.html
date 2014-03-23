@@ -1,6 +1,7 @@
 <div class="row">
   <list condition="$root.statusCondition"
-        request-url="/status/search">
+        request-url="/status/search"
+        name="status">
     <div class="col-md-12">
       <table class="table table-condensed">
         <thead>
@@ -17,7 +18,7 @@
           <th style="width: 6em; text-align: center;">Time</th>
           <th style="width: 1em; text-align: center;">Language</th>
           <th style="width: 5em; text-align: center;">Length</th>
-          <th style="width: 9em; text-align: center;">Submit
+          <th style="width: 11em; text-align: center;">Submit
             Time
           </th>
         </tr>
@@ -32,6 +33,7 @@
           </td>
           <td>
             <input type="number"
+                   min="1"
                    style="width: 100%;"
                    ng-model="$root.statusCondition.problemId"/>
           </td>
@@ -50,7 +52,7 @@
               <option value="">All</option>
             </select>
           </td>
-          <td></td>
+          <td class="text-center"><button class="btn btn-xs btn-success" ng-click="resetStatusCondition()">Reset</button></td>
           <td class="text-center" ui-rejudge-button condition="$root.statusCondition">
           </td>
         </tr>

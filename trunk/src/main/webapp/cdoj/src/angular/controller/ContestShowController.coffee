@@ -1,9 +1,12 @@
 cdoj
 .controller("ContestShowController", [
-    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$interval", "$timeout",
+    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$timeout", "$interval"
     "$cookieStore"
-    ($scope, $rootScope, $http, $window, $modal, $routeParams, $interval, $timeout,
+    ($scope, $rootScope, $http, $window, $modal, $routeParams, $timeout, $interval
      $cookieStore) ->
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
+      $window.scrollTo(0, 0)
+
       $scope.contestId = 0
       $scope.contest =
         title: ""
@@ -32,16 +35,17 @@ cdoj
         )
 
       $scope.contestId = angular.copy($routeParams.contestId)
-      $http.get("/contest/data/#{$scope.contestId}").then (response)->
-        data = response.data
+      $http.get("/contest/data/#{$scope.contestId}").success((data)->
         if data.result == "success"
           $scope.contest = data.contest
-          console.log $scope.contest
           $scope.problemList = data.problemList
           if data.problemList.length > 0
             $scope.currentProblem = data.problemList[0]
         else
           $window.alert data.error_msg
+      ).error(->
+        $window.alert "Network error, please refresh page manually."
+      )
 
       currentTimeTimer = undefined
       updateTime = ->
@@ -73,22 +77,27 @@ cdoj
         $scope.progressbar.active = active
       currentTimeTimer = $interval(updateTime, 1000)
 
+      clarificationTimer = undefined
+      rankListTimer = undefined
       $scope.$on("$destroy", ->
         $interval.cancel(currentTimeTimer)
-        $interval.cancel(rankListTimer)
-        $interval.cancel(clarificationTimer)
+        $timeout.cancel(rankListTimer)
+        $timeout.cancel(clarificationTimer)
       )
 
       $scope.totalUnreadedClarification = 0
       $scope.lastClarificationCount = 0
       refreshClarification = ->
-        $scope.$broadcast("refreshList:comment", (data)->
-          $scope.totalUnreadedClarification = Math.max(0, data.pageInfo.totalItems - $cookieStore.get(cookieName).lastClarificationCount)
+        $rootScope.$broadcast("list:refresh:comment", (data)->
+          $scope.totalUnreadedClarification = Math.max(0,
+              data.pageInfo.totalItems - $cookieStore.get(cookieName).lastClarificationCount)
           $scope.lastClarificationCount = data.pageInfo.totalItems
+          clarificationTimer = $timeout(refreshClarification, 10000)
         )
-      clarificationTimer = $interval(refreshClarification, 30000)
-      $timeout(refreshClarification, 500)
+      clarificationTimer = $timeout(refreshClarification, 500)
       $scope.selectClarificationTab = ->
+        $timeout.cancel(clarificationTimer)
+        clarificationTimer = $timeout(refreshClarification, 0)
         contest = $cookieStore.get(cookieName)
         contest.lastClarificationCount = $scope.lastClarificationCount
         $cookieStore.put(cookieName, contest)
@@ -100,12 +109,19 @@ cdoj
         $scope.showProblemTab()
         $scope.currentProblem = _.findWhere($scope.problemList, order: order)
 
+      $scope.resetStatusCondition = ->
+        $scope.contestStatusCondition.problemId = undefined
+        $scope.contestStatusCondition.result = 0
+        $scope.contestStatusCondition.language = undefined
+        if $rootScope.isAdmin
+          $scope.contestStatusCondition.userName = undefined
       $scope.$on("contestShow:showProblemTab", (e, order)->
         $scope.chooseProblem(order)
       )
       $scope.showStatusTab = ->
         # TODO Dirty code!
         $scope.$$childHead.$$nextSibling.$$nextSibling.tabs[3].select()
+        $scope.contestStatusCondition.problemId = $scope.currentProblem.problemId
         $scope.refreshStatus()
       $scope.openSubmitModal = ->
         $modal.open(
@@ -126,12 +142,11 @@ cdoj
       $scope.contestStatusCondition = angular.copy($rootScope.statusCondition)
       $scope.contestStatusCondition.contestId = $scope.contestId
       $scope.refreshStatus = ->
-        $scope.$broadcast("refreshList")
+        $scope.$broadcast("list:refresh:status")
 
       refreshRankList = ->
         contestId = angular.copy($scope.contestId)
-        $http.get("/contest/rankList/#{contestId}").then (response)->
-          data = response.data
+        $http.get("/contest/rankList/#{contestId}").success((data)->
           if data.result == "success"
             $scope.rankList = data.rankList.rankList
             _.each($scope.problemList, (value, index)->
@@ -139,41 +154,17 @@ cdoj
               value.solved = data.rankList.problemList[index].solved
             )
             if $rootScope.hasLogin
-              userStatus = _.findWhere(data.rankList.rankList, userName: $rootScope.currentUser.userName)
-              _.each($scope.problemList, (value, index)->
-                value.hasSolved = userStatus.itemList[index].solved
-                value.hasTried = userStatus.itemList[index].tried > 0
-              )
-              console.log $scope.problemList
-          else
-            clearInterval rankListTimer
-
-      rankListTimer = $interval(refreshRankList, 30000)
-      $timeout(refreshRankList, 500)
-  ])
-cdoj.directive("uiContestProblemHref"
-  ->
-    restrict: "E"
-    scope:
-      problemId: "="
-      problemList: "="
-    controller: [
-      "$scope"
-      ($scope)->
-        $scope.order = -1
-        $scope.orderCharacter = "-"
-        $scope.$watch("problemId + problemList", ->
-          target = _.findWhere($scope.problemList, "problemId": $scope.problemId)
-          if target != undefined
-            $scope.orderCharacter = target.orderCharacter
-            $scope.order = target.order
+              userStatus = _.findWhere(data.rankList.rankList,
+                userName: $rootScope.currentUser.userName)
+              if angular.isDefined userStatus
+                _.each($scope.problemList, (value, index)->
+                  value.hasSolved = userStatus.itemList[index].solved
+                  value.hasTried = userStatus.itemList[index].tried > 0
+                )
+          rankListTimer = $timeout(refreshRankList, 10000)
+        ).error(->
+          rankListTimer = $timeout(refreshRankList, 10000)
         )
-        $scope.select = ->
-          if $scope.order != -1
-            $scope.$emit("contestShow:showProblemTab", $scope.order)
-    ]
-    template: """
-<a href="javascript:void(0);" ng-bind="orderCharacter" ng-click="select()"></a>
-"""
-    replace: true
-)
+
+      rankListTimer = $timeout(refreshRankList, 500)
+  ])

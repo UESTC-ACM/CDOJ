@@ -6,7 +6,7 @@
             name="comment">
         <div class="col-md-12">
           <div class="media" ng-repeat="article in list">
-            <a class="pull-left" href="javascript:void(0);">
+            <a class="pull-left" href="/#/user/center/{{article.ownerName}}">
               <img class="media-object"
                    ui-avatar
                    email="article.ownerEmail"
@@ -15,7 +15,7 @@
             </a>
 
             <div class="media-body">
-              <h5 style="margin-top: 0;"><span ng-bind="article.ownerName"></span>
+              <h5 style="margin-top: 0;"><a ng-bind="article.ownerName" href="/#/user/center/{{article.ownerName}}"></a>
               &nbsp;•&nbsp;
           <span class="cdoj-article-post-time"
                 ui-time
@@ -34,13 +34,13 @@
   </div>
   <div class="col-md-12" ng-show="$root.hasLogin" style="margin-top: 15px;">
     <div class="media">
-      <a class="pull-left" href="javascript:void(0);">
+      <span class="pull-left">
         <img class="media-object"
              ui-avatar
              style="width: 80px; height: 80px;"
              email="$root.currentUser.email"
              src="/images/avatar/default.jpg"/>
-      </a>
+      </span>
 
       <div class="media-body">
         <div ng-model="newComment"

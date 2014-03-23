@@ -12,14 +12,19 @@ cdoj
           $window.alert "Please login first!"
           $modalInstance.dismiss("close")
         else
-          $http.post("/status/submit", submitDTO).then (response)->
-            data = response.data
+          $http.post("/status/submit", submitDTO).success((data)->
             if data.result == "success"
               $modalInstance.close("success")
             else if data.result == "field_error"
               $scope.fieldInfo = data.field
             else
               $window.alert data.error_msg
+          ).error(->
+            $window.alert "Network error."
+          )
       $scope.close = ->
         $modalInstance.dismiss("close")
+      $scope.$on("$routeChangeStart", ->
+        $modalInstance.dismiss()
+      )
   ])
