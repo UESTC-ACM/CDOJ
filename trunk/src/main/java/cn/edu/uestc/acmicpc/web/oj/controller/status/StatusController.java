@@ -72,7 +72,6 @@ public class StatusController extends BaseController {
     this.userService = userService;
   }
 
-  @SuppressWarnings("ConstantConditions")
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
   public
