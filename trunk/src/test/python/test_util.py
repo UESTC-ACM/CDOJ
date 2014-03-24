@@ -4,8 +4,10 @@ import unittest
 import sys
 import re
 
+
 def findWholeWordRegex(w):
-        return re.compile(r'\b({0})\b'.format(w)).search
+    return re.compile(r'\b({0})\b'.format(w)).search
+
 
 def findWholeWordInRealCode(word, s):
     s = s.partition('//')[0]
