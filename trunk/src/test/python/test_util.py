@@ -12,7 +12,7 @@ def findWholeWordRegex(w):
 def findWholeWordInRealCode(word, s):
     s = s.partition('//')[0]
     s = s.replace('\\"', '')
-    s = re.sub('".*"', '', s)
+    s = re.sub('".*?"', '', s)
     return findWholeWordRegex(word)(s)
 
 
