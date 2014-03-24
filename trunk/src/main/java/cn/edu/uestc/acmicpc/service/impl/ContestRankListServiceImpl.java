@@ -43,7 +43,7 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
   }
 
   @Override
-  public RankList getRankList(Integer contestId) throws AppException {
+  public synchronized RankList getRankList(Integer contestId) throws AppException {
     RankList lastModified = rankListPool.get(contestId);
     if (lastModified == null ||
         (System.currentTimeMillis() - lastModified.lastFetched.getTime()) > FETCH_INTERVAL) {
