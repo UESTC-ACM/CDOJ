@@ -80,14 +80,6 @@ public class StatusController extends BaseController {
                              @RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
-      ContestShowDTO contestShowDTO = null;
-      if (statusCondition.contestId != -1) {
-        contestShowDTO = contestService.getContestShowDTOByContestId(statusCondition.contestId);
-        if (contestShowDTO == null) {
-          throw new AppException("No such contest.");
-        }
-      }
-
       if (!isAdmin(session)) {
         statusCondition.isForAdmin = false;
         if (statusCondition.contestId == null) {
@@ -97,6 +89,10 @@ public class StatusController extends BaseController {
           statusCondition.result = Global.OnlineJudgeResultType.OJ_ALL;
         }
         if (statusCondition.contestId != -1) {
+          ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(statusCondition.contestId);
+          if (contestShowDTO == null) {
+            throw new AppException("No such contest.");
+          }
           UserDTO currentUser = getCurrentUser(session);
           if (currentUser == null) {
             // Return nothing
@@ -115,6 +111,12 @@ public class StatusController extends BaseController {
           statusCondition.isVisible = true;
         }
       } else {
+        if (statusCondition.contestId != -1) {
+          ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(statusCondition.contestId);
+          if (contestShowDTO == null) {
+            throw new AppException("No such contest.");
+          }
+        }
         // Current user is administrator, just show all the status.
         statusCondition.isForAdmin = true;
       }
