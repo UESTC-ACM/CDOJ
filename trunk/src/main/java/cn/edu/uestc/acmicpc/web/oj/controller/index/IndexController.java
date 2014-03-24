@@ -7,6 +7,7 @@ import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.service.iface.OnlineUsersService;
+import cn.edu.uestc.acmicpc.service.iface.RecentContestService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -16,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -35,25 +35,38 @@ public class IndexController extends BaseController {
   private LanguageService languageService;
   private MessageService messageService;
   private OnlineUsersService onlineUsersService;
+  private RecentContestService recentContestService;
 
   @Autowired
   public IndexController(DepartmentService departmentService, GlobalService globalService,
                          LanguageService languageService, MessageService messageService,
-                         OnlineUsersService onlineUsersService) {
+                         OnlineUsersService onlineUsersService,
+                         RecentContestService recentContestService) {
     this.departmentService = departmentService;
     this.globalService = globalService;
     this.languageService = languageService;
     this.messageService = messageService;
     this.onlineUsersService = onlineUsersService;
+    this.recentContestService = recentContestService;
   }
 
-  @RequestMapping(value = {"index", "/"}, method = RequestMethod.GET)
+  @RequestMapping("/")
   public String index(ModelMap model) {
     model.put("message", "home page.");
     return "index";
   }
 
-  @RequestMapping(value = "data")
+  @RequestMapping("recentContest")
+  @LoginPermit(NeedLogin = false)
+  public
+  @ResponseBody
+  Map<String, Object> recentContestList() {
+    Map<String, Object> result = new HashMap<>();
+    result.put("recentContestList", recentContestService.getRecentContestList());
+    return result;
+  }
+
+  @RequestMapping("data")
   @LoginPermit(NeedLogin = false)
   public
   @ResponseBody
@@ -93,7 +106,7 @@ public class IndexController extends BaseController {
   @LoginPermit(NeedLogin = false)
   public
   @ResponseBody
-  Map<String, Object> globalData(HttpSession session) {
+  Map<String, Object> globalData() {
     Map<String, Object> result = new HashMap<>();
     result.put("departmentList", departmentService.getDepartmentList());
     result.put("authenticationTypeList", globalService.getAuthenticationTypeList());

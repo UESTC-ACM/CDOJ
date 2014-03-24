@@ -1,4 +1,6 @@
 GlobalVariables =
+  Version: "V2.2.0"
+
   OnlineJudgeReturnType:
     OJ_WAIT: 0
     OJ_AC: 1

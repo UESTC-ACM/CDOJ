@@ -6731,10 +6731,11 @@ html,
   margin: 0;
   padding: 0;
   color: #0066b2;
-  font-weight: 100;
+  font-family: "Source Code Pro", Monaco, Menlo, Consolas, "Courier New", monospace;
+  font-weight: 400;
 }
 .hero h2 {
-  font-weight: 100;
+  font-weight: 300;
   font-size: 260%;
   margin: 0.02em 0 0.8em;
   color: #666;
@@ -6761,6 +6762,15 @@ small {
 .mentioned {
   color: #000000;
   font-weight: 700;
+}
+hr.colorful {
+  height: 3px;
+  border-top: 0;
+  background: #c4e17f;
+  background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
 }
 #cdoj-navbar-top {
   position: fixed;
@@ -6847,7 +6857,7 @@ small {
   top: 0;
   bottom: 0;
   z-index: 1000;
-  background: #fff;
+  background: #f0f0f0;
   overflow-y: auto;
   -webkit-overflow-scroll: touch;
   color: #ffffff;
