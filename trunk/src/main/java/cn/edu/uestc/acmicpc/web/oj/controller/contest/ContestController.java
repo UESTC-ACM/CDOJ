@@ -375,6 +375,12 @@ public class ContestController extends BaseController {
       } else {
         contestProblemList = contestProblemService
             .getContestProblemDetailDTOListByContestId(contestId);
+        if (!isAdmin(session)) {
+          for (ContestProblemDetailDTO contestProblemDetailDTO: contestProblemList) {
+            // Stash problem source
+            contestProblemDetailDTO.setSource("");
+          }
+        }
       }
 
       json.put("contest", contestShowDTO);
