@@ -80795,6 +80795,7 @@ if (typeof exports === 'object') {
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $window.scrollTo(0, 0);
       contestId = $routeParams.contestId;
+      $scope.contestId = contestId;
       $scope.contest = 0;
       contestCondition = angular.copy($rootScope.contestCondition);
       contestCondition.startId = contestCondition.endId = contestId;
