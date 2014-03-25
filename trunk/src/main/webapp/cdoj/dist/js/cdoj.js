@@ -80098,6 +80098,7 @@ if (typeof exports === 'object') {
   var $, GlobalConditions, GlobalVariables, cdoj;
 
   GlobalVariables = {
+    Version: "V2.2.0",
     OnlineJudgeReturnType: {
       OJ_WAIT: 0,
       OJ_AC: 1,
@@ -81233,8 +81234,8 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("IndexController", [
-    "$scope", "$rootScope", "$window", function($scope, $rootScope, $window) {
-      var articleCondition;
+    "$scope", "$rootScope", "$window", "$http", function($scope, $rootScope, $window, $http) {
+      var articleCondition, clearSelectState;
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $window.scrollTo(0, 0);
       $rootScope.title = "Home";
@@ -81242,7 +81243,52 @@ if (typeof exports === 'object') {
       articleCondition.type = $rootScope.ArticleType.NOTICE;
       articleCondition.orderFields = "order";
       articleCondition.orderAsc = "true";
-      return $scope.articleCondition = articleCondition;
+      $scope.articleCondition = articleCondition;
+      $scope.isRecentNews = true;
+      $scope.isRecentContests = false;
+      $scope.isArticle = false;
+      $scope.currentArticleId = 0;
+      clearSelectState = function() {
+        $scope.isRecentNews = false;
+        $scope.isRecentContests = false;
+        return $scope.isArticle = false;
+      };
+      $scope.showRecentNews = function() {
+        $scope.$broadcast("list:refresh:article");
+        clearSelectState();
+        return $scope.isRecentNews = true;
+      };
+      $scope.recentContestsDescription = "该数据源允许直接引用，但请注明本段文字。\n\n数据来源：http://contests.acmicpc.info/contests.json 。\n\n本数据源力求支持所有国内ACMer的常用OJ，如果希望添加某个OJ或者发现某个OJ无法正常获取比赛信息，请联系doraemonok#163.com (#替换成@)。";
+      $scope.recentContests = [];
+      $scope.showRecentContests = function() {
+        $http.get("/recentContest").success(function(data) {
+          return $scope.recentContests = _.map(data.recentContestList, function(contest) {
+            contest.link = contest.link.unescapeHTML();
+            return contest;
+          });
+        }).error(function() {
+          return $window.alert("Network error, please refresh page manually.");
+        });
+        clearSelectState();
+        return $scope.isRecentContests = true;
+      };
+      $scope.article = {
+        content: ""
+      };
+      return $scope.showArticle = function(articleId) {
+        $http.get("/article/data/" + articleId).success(function(data) {
+          if (data.result === "success") {
+            return $scope.article = data.article;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error, please refresh page manually.");
+        });
+        clearSelectState();
+        $scope.isArticle = true;
+        return $scope.currentArticleId = articleId;
+      };
     }
   ]);
 
