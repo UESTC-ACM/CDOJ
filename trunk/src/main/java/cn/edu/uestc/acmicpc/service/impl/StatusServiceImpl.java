@@ -155,14 +155,9 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   @Override
   public void rejudge(StatusCondition statusCondition) throws AppException {
     Map<String, Object> properties = new HashMap<>();
-    properties.put("result",
-        Global.OnlineJudgeReturnType.OJ_REJUDGING.ordinal());
-    if (statusCondition.isVisible != null) {
-      statusCondition.isVisible = null;
-    }
-    if (statusCondition.userName != null) {
-      statusCondition.userName = null;
-    }
+    properties.put("result", Global.OnlineJudgeReturnType.OJ_REJUDGING.ordinal());
+    statusCondition.isVisible = null;
+    statusCondition.userName = null;
     statusCondition.isForAdmin = true;
     statusDAO.updateEntitiesByCondition(properties,
         statusCondition.getCondition());
@@ -173,7 +168,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.results.add(OnlineJudgeResultType.OJ_WAIT);
     if (isFirstTime) {
-     statusCondition.results.add(OnlineJudgeResultType.OJ_JUDGING);
+      statusCondition.results.add(OnlineJudgeResultType.OJ_JUDGING);
     }
     statusCondition.isForAdmin = true;
     statusCondition.orderFields = "statusId";
