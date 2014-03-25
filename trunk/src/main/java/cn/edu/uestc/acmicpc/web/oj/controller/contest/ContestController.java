@@ -146,7 +146,7 @@ public class ContestController extends BaseController {
         team.setTeamUsers(new LinkedList<TeamUserReportDTO>());
         team.setInvitedUsers(new LinkedList<TeamUserReportDTO>());
         for (TeamUserReportDTO teamUserListDTO : teamUserList) {
-          if (team.getTeamId().compareTo(teamUserListDTO.getTeamId()) == 0) {
+          if (team.getTeamId().equals(teamUserListDTO.getTeamId())) {
             // Put users into current users / inactive users
             if (teamUserListDTO.getAllow()) {
               team.getTeamUsers().add(teamUserListDTO);
