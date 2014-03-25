@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.web.view;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReportDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDTO;
+import cn.edu.uestc.acmicpc.util.settings.Global;
 
 import org.springframework.web.servlet.view.document.AbstractJExcelView;
 
@@ -20,17 +21,23 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ContestRegistryReportView extends AbstractJExcelView {
 
+  /**
+   * There are three sheets in total:
+   * sheets[ContestRegistryStatus.PENDING]: All pending teams
+   * sheets[ContestRegistryStatus.ACCEPTED]: All accepted teams
+   * sheets[ContestRegistryStatus.REFUSED]: All refused teams
+   */
   private final Integer TOTAL_SHEETS = 3;
-
-  // 0 - Pending teams, show on sheet 2
-  // 1 - Accepted teams, show on sheet 0
-  // 2 - Refused teams, show on sheet 1
   private WritableSheet sheets[] = new WritableSheet[TOTAL_SHEETS];
 
-  // Current row id
+  /**
+   * Current row id
+   */
   private Integer currentRow[] = new Integer[TOTAL_SHEETS];
 
-  // Total teams in each sheets
+  /**
+   * Total teams in each sheets
+   */
   private Integer totalTeams[] = new Integer[TOTAL_SHEETS];
 
   @Override
@@ -43,9 +50,9 @@ public class ContestRegistryReportView extends AbstractJExcelView {
     response.setHeader("Content-Disposition", "attachment; filename=\"Registry report.xls\"");
 
     // create a Excel sheet
-    sheets[1] = workbook.createSheet("Accepted", 0);
-    sheets[2] = workbook.createSheet("Refused", 1);
-    sheets[0] = workbook.createSheet("Pending", 2);
+    sheets[Global.ContestRegistryStatus.ACCEPTED.ordinal()] = workbook.createSheet("Accepted", 0);
+    sheets[Global.ContestRegistryStatus.REFUSED.ordinal()] = workbook.createSheet("Refused", 1);
+    sheets[Global.ContestRegistryStatus.PENDING.ordinal()] = workbook.createSheet("Pending", 2);
 
     for (int id = 0; id < TOTAL_SHEETS; id++) {
       setHeaderRow(sheets[id]);
@@ -60,7 +67,7 @@ public class ContestRegistryReportView extends AbstractJExcelView {
       }
       List<ContestTeamReportDTO> teamList = (List<ContestTeamReportDTO>) model.get("list");
       for (ContestTeamReportDTO team: teamList) {
-        putTeam(team, team.getStatus());
+        putTeam(team);
       }
     } else {
       String error_msg = (String) model.get("error_msg");
@@ -68,7 +75,7 @@ public class ContestRegistryReportView extends AbstractJExcelView {
       sheets[1].addCell(new Label(0, 2, error_msg));
       sheets[1].mergeCells(0, 2, 13, 2);
     }
-    // Auto resize
+    // Auto resize column
     for (int id = 0; id < TOTAL_SHEETS; id++) {
       autoResizeColumnWidth(id);
     }
@@ -82,15 +89,16 @@ public class ContestRegistryReportView extends AbstractJExcelView {
     }
   }
 
-  private void putTeam(ContestTeamReportDTO team, Integer sheetId)
+  private void putTeam(ContestTeamReportDTO team)
       throws WriteException {
+    Integer sheetId = team.getStatus();
     Integer startRow = currentRow[sheetId];
     WritableSheet sheet = sheets[sheetId];
     for (TeamUserReportDTO user: team.getTeamUsers()) {
-      putUser(user, team, sheetId);
+      putUser(user, team);
     }
     for (TeamUserReportDTO user: team.getInvitedUsers()) {
-      putUser(user, team, sheetId);
+      putUser(user, team);
     }
     // Write team information
     totalTeams[sheetId]++;
@@ -102,8 +110,10 @@ public class ContestRegistryReportView extends AbstractJExcelView {
     sheet.mergeCells(2, startRow, 2, currentRow[sheetId] - 1);
   }
 
-  private void putUser(TeamUserReportDTO user, ContestTeamReportDTO team,
-                       Integer sheetId) throws WriteException  {
+  private void putUser(TeamUserReportDTO user, ContestTeamReportDTO team)
+      throws WriteException  {
+    Integer sheetId = team.getStatus();
+
     WritableSheet sheet = sheets[sheetId];
     WritableCellFormat cellFormat = new WritableCellFormat();
     if (user.getAllow()) {
