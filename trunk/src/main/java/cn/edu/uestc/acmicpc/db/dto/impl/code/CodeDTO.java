@@ -52,6 +52,38 @@ public class CodeDTO implements BaseDTO<Code> {
     this.share = share;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    CodeDTO codeDTO = (CodeDTO) o;
+
+    if (codeId != null ? !codeId.equals(codeDTO.codeId) : codeDTO.codeId != null) {
+      return false;
+    }
+    if (content != null ? !content.equals(codeDTO.content) : codeDTO.content != null) {
+      return false;
+    }
+    if (share != null ? !share.equals(codeDTO.share) : codeDTO.share != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = codeId != null ? codeId.hashCode() : 0;
+    result = 31 * result + (content != null ? content.hashCode() : 0);
+    result = 31 * result + (share != null ? share.hashCode() : 0);
+    return result;
+  }
+
   public static Builder builder() {
     return new Builder();
   }

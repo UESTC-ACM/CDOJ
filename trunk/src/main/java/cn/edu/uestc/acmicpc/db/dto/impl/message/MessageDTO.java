@@ -8,7 +8,7 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
 import java.sql.Timestamp;
 import java.util.Map;
 
-@Fields({ "messageId", "senderId", "receiverId", "title", "content", "time", "isOpened" })
+@Fields({"messageId", "senderId", "receiverId", "title", "content", "time", "isOpened"})
 public class MessageDTO implements BaseDTO<Message> {
 
   public MessageDTO() {
@@ -87,6 +87,54 @@ public class MessageDTO implements BaseDTO<Message> {
 
   public void setIsOpened(Boolean isOpened) {
     this.isOpened = isOpened;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    MessageDTO that = (MessageDTO) o;
+
+    if (content != null ? !content.equals(that.content) : that.content != null) {
+      return false;
+    }
+    if (isOpened != null ? !isOpened.equals(that.isOpened) : that.isOpened != null) {
+      return false;
+    }
+    if (messageId != null ? !messageId.equals(that.messageId) : that.messageId != null) {
+      return false;
+    }
+    if (receiverId != null ? !receiverId.equals(that.receiverId) : that.receiverId != null) {
+      return false;
+    }
+    if (senderId != null ? !senderId.equals(that.senderId) : that.senderId != null) {
+      return false;
+    }
+    if (time != null ? !time.equals(that.time) : that.time != null) {
+      return false;
+    }
+    if (title != null ? !title.equals(that.title) : that.title != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = messageId != null ? messageId.hashCode() : 0;
+    result = 31 * result + (senderId != null ? senderId.hashCode() : 0);
+    result = 31 * result + (receiverId != null ? receiverId.hashCode() : 0);
+    result = 31 * result + (title != null ? title.hashCode() : 0);
+    result = 31 * result + (content != null ? content.hashCode() : 0);
+    result = 31 * result + (time != null ? time.hashCode() : 0);
+    result = 31 * result + (isOpened != null ? isOpened.hashCode() : 0);
+    return result;
   }
 
   public static Builder builder() {

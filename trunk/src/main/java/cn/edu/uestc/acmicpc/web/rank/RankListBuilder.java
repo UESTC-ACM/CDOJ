@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.web.rank;
 
 import cn.edu.uestc.acmicpc.util.settings.Global;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -90,9 +91,9 @@ public class RankListBuilder {
         item.firstBlood = true;
       }
       item.solved = true;
-      item.solvedTime = status.time / 1000;
+      item.solvedTime = status.time;
       item.tried = item.tried - 1;
-      item.penalty = item.solvedTime + item.tried * 20 * 60;
+      item.penalty = item.solvedTime / 1000 + item.tried * 20 * 60;
       user.solved = user.solved + 1;
       user.penalty = user.penalty + item.penalty;
     }
@@ -106,6 +107,7 @@ public class RankListBuilder {
     for (int index = 0; index < result.rankList.length; index++) {
       result.rankList[index].rank = index + 1;
     }
+    result.lastFetched = new Timestamp(System.currentTimeMillis());
     return result;
   }
 }

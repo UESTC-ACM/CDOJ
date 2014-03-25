@@ -10,18 +10,22 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDetailDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemSummaryDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReviewDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.service.iface.ContestImporterService;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
+import cn.edu.uestc.acmicpc.service.iface.ContestRankListService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
+import cn.edu.uestc.acmicpc.service.iface.FileService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
+import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
@@ -34,10 +38,10 @@ import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
+import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
-import cn.edu.uestc.acmicpc.web.rank.RankListBuilder;
-import cn.edu.uestc.acmicpc.web.rank.RankListStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,8 +49,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,6 +72,8 @@ public class ContestController extends BaseController {
 
   private ContestService contestService;
   private ContestProblemService contestProblemService;
+  private ContestImporterService contestImporterService;
+  private FileService fileService;
   private PictureService pictureService;
   private ProblemService problemService;
   private StatusService statusService;
@@ -70,19 +81,27 @@ public class ContestController extends BaseController {
   private TeamService teamService;
   private TeamUserService teamUserService;
   private ContestTeamService contestTeamService;
+  private MessageService messageService;
+  private ContestRankListService contestRankListService;
 
   @Autowired
   public ContestController(ContestService contestService,
                            ContestProblemService contestProblemService,
+                           ContestImporterService contestImporterService,
+                           FileService fileService,
                            PictureService pictureService,
                            ProblemService problemService,
                            StatusService statusService,
                            GlobalService globalService,
                            TeamService teamService,
                            TeamUserService teamUserService,
-                           ContestTeamService contestTeamService) {
+                           ContestTeamService contestTeamService,
+                           MessageService messageService,
+                           ContestRankListService contestRankListService) {
     this.contestService = contestService;
     this.contestProblemService = contestProblemService;
+    this.contestImporterService = contestImporterService;
+    this.fileService = fileService;
     this.pictureService = pictureService;
     this.problemService = problemService;
     this.statusService = statusService;
@@ -91,6 +110,8 @@ public class ContestController extends BaseController {
     this.teamUserService = teamUserService;
     this.contestService = contestService;
     this.contestTeamService = contestTeamService;
+    this.messageService = messageService;
+    this.contestRankListService = contestRankListService;
   }
 
   @RequestMapping("registryReview")
@@ -102,8 +123,32 @@ public class ContestController extends BaseController {
     try {
       ContestTeamDTO contestTeamDTO = contestTeamService.getContestTeamDTO(contestTeamReviewDTO.getContestTeamId());
       contestTeamDTO.setStatus(contestTeamReviewDTO.getStatus());
+      if (contestTeamReviewDTO.getComment() == null) {
+        contestTeamReviewDTO.setComment("");
+      }
       contestTeamDTO.setComment(contestTeamReviewDTO.getComment());
       contestTeamService.updateContestTeam(contestTeamDTO);
+
+      String messageTitle;
+      StringBuilder messageContentBuilder = new StringBuilder();
+      if (contestTeamReviewDTO.getStatus() == Global.ContestRegistryStatus.REFUSED.ordinal()) {
+        messageTitle = "Contest register request refused.";
+        messageContentBuilder.append("You register request has been refused, reason: ")
+            .append(contestTeamReviewDTO.getComment())
+            .append("\n\n")
+            .append("Please fix the issue and register again.");
+      } else {
+        messageTitle = "Contest register request accepted.";
+        messageContentBuilder.append("You register request has been accepted.");
+      }
+      messageService.createNewMessage(MessageDTO.builder()
+          .setSenderId(1) // Administrator
+          .setReceiverId(contestTeamDTO.getLeaderId())
+          .setTime(new Timestamp(System.currentTimeMillis()))
+          .setIsOpened(false)
+          .setTitle(messageTitle)
+          .setContent(messageContentBuilder.toString())
+          .build());
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
@@ -120,7 +165,8 @@ public class ContestController extends BaseController {
   @LoginPermit(NeedLogin = false)
   public
   @ResponseBody
-  Map<String, Object> registerStatusList(@RequestBody ContestTeamCondition contestTeamCondition) {
+  Map<String, Object> registerStatusList(@RequestBody ContestTeamCondition contestTeamCondition,
+                                         HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
       Long count = contestTeamService.count(contestTeamCondition);
@@ -129,26 +175,31 @@ public class ContestController extends BaseController {
       List<ContestTeamListDTO> contestTeamList = contestTeamService.getContestTeamList(
           contestTeamCondition, pageInfo);
 
-      // At most 20 records
-      List<Integer> teamIdList = new LinkedList<>();
-      for (ContestTeamListDTO team: contestTeamList) {
-        teamIdList.add(team.getTeamId());
-      }
-      TeamUserCondition teamUserCondition = new TeamUserCondition();
-      teamUserCondition.orderFields = "id";
-      teamUserCondition.orderAsc = "true";
-      teamUserCondition.teamIdList = ArrayUtil.join(teamIdList.toArray(), ",");
-      // Search team users
-      List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamUserCondition);
+      if (contestTeamList.size() > 0) {
+        // At most 20 records
+        List<Integer> teamIdList = new LinkedList<>();
+        for (ContestTeamListDTO team : contestTeamList) {
+          teamIdList.add(team.getTeamId());
+        }
+        TeamUserCondition teamUserCondition = new TeamUserCondition();
+        teamUserCondition.orderFields = "id";
+        teamUserCondition.orderAsc = "true";
+        teamUserCondition.teamIdList = ArrayUtil.join(teamIdList.toArray(), ",");
+        // Search team users
+        List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamUserCondition);
 
-      // Put users into teams
-      for (ContestTeamListDTO team: contestTeamList) {
-        team.setTeamUsers(new LinkedList<TeamUserListDTO>());
-        for (TeamUserListDTO teamUserListDTO : teamUserList) {
-          if (team.getTeamId().compareTo(teamUserListDTO.getTeamId()) == 0) {
-            // Put users into current users / inactive users
-            if (teamUserListDTO.getAllow()) {
-              team.getTeamUsers().add(teamUserListDTO);
+        // Put users into teams
+        for (ContestTeamListDTO team : contestTeamList) {
+          team.setTeamUsers(new LinkedList<TeamUserListDTO>());
+          team.setInvitedUsers(new LinkedList<TeamUserListDTO>());
+          for (TeamUserListDTO teamUserListDTO : teamUserList) {
+            if (team.getTeamId().compareTo(teamUserListDTO.getTeamId()) == 0) {
+              // Put users into current users / inactive users
+              if (teamUserListDTO.getAllow()) {
+                team.getTeamUsers().add(teamUserListDTO);
+              } else if (isAdmin(session)) {
+                team.getInvitedUsers().add(teamUserListDTO);
+              }
             }
           }
         }
@@ -190,7 +241,7 @@ public class ContestController extends BaseController {
         throw new AppException("You are not the team leader of team " + teamDTO.getTeamName() + ".");
       }
       List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamId);
-      for (TeamUserListDTO teamUserDTO: teamUserList) {
+      for (TeamUserListDTO teamUserDTO : teamUserList) {
         if (contestTeamService.whetherUserHasBeenRegistered(teamUserDTO.getUserId(),
             contestDTO.getContestId())) {
           throw new AppException("User " + teamUserDTO.getUserName() +
@@ -290,37 +341,7 @@ public class ContestController extends BaseController {
         throw new AppException("Contest not start yet.");
       }
 
-      List<ContestProblemSummaryDTO> contestProblemList = contestProblemService.
-          getContestProblemSummaryDTOListByContestId(contestId);
-
-      StatusCondition statusCondition = new StatusCondition();
-      statusCondition.contestId = contestShowDTO.getContestId();
-      statusCondition.isForAdmin = isAdmin(session);
-      // Sort by time
-      statusCondition.orderFields = "time";
-      statusCondition.orderAsc = "true";
-      List<StatusListDTO> statusList = statusService.getStatusList(statusCondition);
-
-      RankListBuilder rankListBuilder = new RankListBuilder();
-      for (ContestProblemSummaryDTO problem : contestProblemList) {
-        rankListBuilder.addRankListProblem(problem.getProblemId().toString());
-      }
-      for (StatusListDTO status : statusList) {
-        if (contestShowDTO.getStartTime().after(status.getTime()) ||
-            contestShowDTO.getEndTime().before(status.getTime())) {
-          // Out of time.
-          continue;
-        }
-        rankListBuilder.addStatus(new RankListStatus(
-            1, // Total tried
-            status.getReturnTypeId(), // Return type id
-            status.getProblemId().toString(), // Problem id
-            status.getUserName(), // User name
-            status.getNickName(), // Nick name
-            status.getTime().getTime() - contestShowDTO.getStartTime().getTime())); // Time
-      }
-
-      json.put("rankList", rankListBuilder.build());
+      json.put("rankList", contestRankListService.getRankList(contestId));
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
@@ -348,12 +369,19 @@ public class ContestController extends BaseController {
       if (!contestShowDTO.getIsVisible() && !isAdmin(session)) {
         throw new AppException("No such contest.");
       }
+      List<ContestProblemDetailDTO> contestProblemList;
       if (contestShowDTO.getStatus().equals("Pending") && !isAdmin(session)) {
-        throw new AppException("Contest not start yet.");
+        contestProblemList = new LinkedList<>();
+      } else {
+        contestProblemList = contestProblemService
+            .getContestProblemDetailDTOListByContestId(contestId);
+        if (!isAdmin(session)) {
+          for (ContestProblemDetailDTO contestProblemDetailDTO: contestProblemList) {
+            // Stash problem source
+            contestProblemDetailDTO.setSource("");
+          }
+        }
       }
-
-      List<ContestProblemDetailDTO> contestProblemList = contestProblemService.
-          getContestProblemDetailDTOListByContestId(contestId);
 
       json.put("contest", contestShowDTO);
       json.put("problemList", contestProblemList);
@@ -442,6 +470,9 @@ public class ContestController extends BaseController {
               || contestDTO.getContestId().compareTo(contestId) != 0) {
             throw new AppException("Error while creating contest.");
           }
+          if (contestEditDTO.getDescription() == null) {
+            contestEditDTO.setDescription("");
+          }
           // Move pictures
           String oldDirectory = "/images/contest/new/";
           String newDirectory = "/images/contest/" + contestId + "/";
@@ -515,6 +546,33 @@ public class ContestController extends BaseController {
         json.put("result", "error");
         json.put("error_msg", e.getMessage());
       }
+    }
+    return json;
+  }
+
+  @RequestMapping(value = "createContestByArchiveFile",
+      method = RequestMethod.POST)
+  @LoginPermit(Global.AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> createContestByArchiveFile(
+      @RequestParam(value = "uploadFile", required = true) MultipartFile[] files) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      FileInformationDTO fileInformationDTO = fileService.uploadContestArchive(
+          FileUploadDTO.builder()
+              .setFiles(Arrays.asList(files))
+              .build()
+      );
+      ContestDTO contestDTO = contestImporterService.parseContestZipArchive(fileInformationDTO);
+      json.put("success", "true");
+      json.put("contestId", contestDTO.getContestId());
+    } catch (AppException e) {
+      e.printStackTrace();
+      json.put("error", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("error", "Unknown exception occurred.");
     }
     return json;
   }

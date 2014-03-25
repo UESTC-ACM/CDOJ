@@ -18,7 +18,8 @@ public class ContestUserDTO implements BaseDTO<ContestUser> {
   private Integer userId;
   private Byte status;
 
-  public ContestUserDTO() {}
+  public ContestUserDTO() {
+  }
 
   public ContestUserDTO(Integer contestUserId, Integer contestId, Integer userId,
                         Byte status) {
@@ -58,6 +59,42 @@ public class ContestUserDTO implements BaseDTO<ContestUser> {
 
   public void setStatus(Byte status) {
     this.status = status;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    ContestUserDTO that = (ContestUserDTO) o;
+
+    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null) {
+      return false;
+    }
+    if (contestUserId != null ? !contestUserId.equals(that.contestUserId) : that.contestUserId != null) {
+      return false;
+    }
+    if (status != null ? !status.equals(that.status) : that.status != null) {
+      return false;
+    }
+    if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = contestUserId != null ? contestUserId.hashCode() : 0;
+    result = 31 * result + (contestId != null ? contestId.hashCode() : 0);
+    result = 31 * result + (userId != null ? userId.hashCode() : 0);
+    result = 31 * result + (status != null ? status.hashCode() : 0);
+    return result;
   }
 
   public static Builder Builder() {

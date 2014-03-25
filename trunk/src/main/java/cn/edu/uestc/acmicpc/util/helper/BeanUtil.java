@@ -1,5 +1,9 @@
 package cn.edu.uestc.acmicpc.util.helper;
 
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -8,7 +12,16 @@ import javax.servlet.ServletContext;
 /**
  * Manage methods for Spring Beans.
  */
+@Component
 public class BeanUtil {
+
+  private static ApplicationContext applicationContext;
+
+  @Autowired
+  public void setApplicationContext(ApplicationContext applicationContext)
+      throws BeansException {
+    this.applicationContext = applicationContext;
+  }
 
   /**
    * Get specific bean by bean name and servletContext.
@@ -20,5 +33,15 @@ public class BeanUtil {
   public static Object getBeanByServletContext(String beanName, ServletContext servletContext) {
     WebApplicationContext wc = WebApplicationContextUtils.getWebApplicationContext(servletContext);
     return wc.getBean(beanName);
+  }
+
+  /**
+   * Get specific bean by bean class.
+   *
+   * @param beanClass       bean's class
+   * @return specific bean
+   */
+  public static <T> T getBean(Class<T> beanClass) {
+    return applicationContext.getBean(beanClass);
   }
 }

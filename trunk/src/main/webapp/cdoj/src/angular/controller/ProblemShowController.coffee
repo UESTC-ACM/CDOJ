@@ -1,6 +1,8 @@
 cdoj.controller("ProblemShowController", [
   "$scope", "$rootScope", "$http", "$window", "$routeParams", "$modal"
   ($scope, $rootScope, $http, $window, $routeParams, $modal)->
+    $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
+    $window.scrollTo(0, 0)
     $scope.problem =
       description: ""
       title: ""
@@ -19,13 +21,15 @@ cdoj.controller("ProblemShowController", [
       source: ""
 
     problemId = angular.copy($routeParams.problemId)
-    $http.post("/problem/data/#{problemId}").then (response)->
-      data = response.data
+    $http.post("/problem/data/#{problemId}").success((data)->
       if data.result == "success"
         $scope.problem = data.problem
         $rootScope.title = $scope.problem.title
       else
-        alert data.error_msg
+        $window.alert data.error_msg
+    ).error(->
+      $window.alert "Network error, please refresh page manually."
+    )
 
     $scope.openSubmitModal = ->
       $modal.open(
@@ -41,8 +45,8 @@ cdoj.controller("ProblemShowController", [
             "#{$scope.problem.title}"
       ).result.then (result)->
         if result == "success"
-          $window.location.href = "#/status/list?problemId=#{$scope.problem.problemId}"
+          $window.location.href = "/#/status/list?problemId=#{$scope.problem.problemId}"
     $scope.gotoStatusList = ->
       # TODO
-      $window.location.href = "#/status/list?problemId=#{$scope.problem.problemId}"
+      $window.location.href = "/#/status/list?problemId=#{$scope.problem.problemId}"
 ])

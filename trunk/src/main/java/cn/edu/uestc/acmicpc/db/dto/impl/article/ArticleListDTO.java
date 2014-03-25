@@ -118,6 +118,54 @@ public class ArticleListDTO implements BaseDTO<Article> {
     this.hasMore = hasMore;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    ArticleListDTO that = (ArticleListDTO) o;
+
+    if (articleId != null ? !articleId.equals(that.articleId) : that.articleId != null) {
+      return false;
+    }
+    if (content != null ? !content.equals(that.content) : that.content != null) {
+      return false;
+    }
+    if (isVisible != null ? !isVisible.equals(that.isVisible) : that.isVisible != null) {
+      return false;
+    }
+    if (ownerEmail != null ? !ownerEmail.equals(that.ownerEmail) : that.ownerEmail != null) {
+      return false;
+    }
+    if (ownerName != null ? !ownerName.equals(that.ownerName) : that.ownerName != null) {
+      return false;
+    }
+    if (time != null ? !time.equals(that.time) : that.time != null) {
+      return false;
+    }
+    if (title != null ? !title.equals(that.title) : that.title != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = articleId != null ? articleId.hashCode() : 0;
+    result = 31 * result + (title != null ? title.hashCode() : 0);
+    result = 31 * result + (time != null ? time.hashCode() : 0);
+    result = 31 * result + (isVisible != null ? isVisible.hashCode() : 0);
+    result = 31 * result + (ownerName != null ? ownerName.hashCode() : 0);
+    result = 31 * result + (ownerEmail != null ? ownerEmail.hashCode() : 0);
+    result = 31 * result + (content != null ? content.hashCode() : 0);
+    return result;
+  }
+
   public static Builder builder() {
     return new Builder();
   }

@@ -230,6 +230,102 @@ public class StatusForJudgeDTO implements BaseDTO<Status> {
     this.userId = userId;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    StatusForJudgeDTO that = (StatusForJudgeDTO) o;
+
+    if (caseNumber != null ? !caseNumber.equals(that.caseNumber) : that.caseNumber != null) {
+      return false;
+    }
+    if (codeContent != null ? !codeContent.equals(that.codeContent) : that.codeContent != null) {
+      return false;
+    }
+    if (compileInfoId != null ? !compileInfoId.equals(that.compileInfoId) : that.compileInfoId != null) {
+      return false;
+    }
+    if (dataCount != null ? !dataCount.equals(that.dataCount) : that.dataCount != null) {
+      return false;
+    }
+    if (isSpj != null ? !isSpj.equals(that.isSpj) : that.isSpj != null) {
+      return false;
+    }
+    if (javaMemoryLimit != null ? !javaMemoryLimit.equals(that.javaMemoryLimit) : that.javaMemoryLimit != null) {
+      return false;
+    }
+    if (javaTimeLimit != null ? !javaTimeLimit.equals(that.javaTimeLimit) : that.javaTimeLimit != null) {
+      return false;
+    }
+    if (languageExtension != null ? !languageExtension.equals(that.languageExtension) : that.languageExtension != null) {
+      return false;
+    }
+    if (languageId != null ? !languageId.equals(that.languageId) : that.languageId != null) {
+      return false;
+    }
+    if (languageName != null ? !languageName.equals(that.languageName) : that.languageName != null) {
+      return false;
+    }
+    if (memoryCost != null ? !memoryCost.equals(that.memoryCost) : that.memoryCost != null) {
+      return false;
+    }
+    if (memoryLimit != null ? !memoryLimit.equals(that.memoryLimit) : that.memoryLimit != null) {
+      return false;
+    }
+    if (outputLimit != null ? !outputLimit.equals(that.outputLimit) : that.outputLimit != null) {
+      return false;
+    }
+    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null) {
+      return false;
+    }
+    if (result != null ? !result.equals(that.result) : that.result != null) {
+      return false;
+    }
+    if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) {
+      return false;
+    }
+    if (timeCost != null ? !timeCost.equals(that.timeCost) : that.timeCost != null) {
+      return false;
+    }
+    if (timeLimit != null ? !timeLimit.equals(that.timeLimit) : that.timeLimit != null) {
+      return false;
+    }
+    if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result1 = statusId != null ? statusId.hashCode() : 0;
+    result1 = 31 * result1 + (result != null ? result.hashCode() : 0);
+    result1 = 31 * result1 + (caseNumber != null ? caseNumber.hashCode() : 0);
+    result1 = 31 * result1 + (codeContent != null ? codeContent.hashCode() : 0);
+    result1 = 31 * result1 + (problemId != null ? problemId.hashCode() : 0);
+    result1 = 31 * result1 + (dataCount != null ? dataCount.hashCode() : 0);
+    result1 = 31 * result1 + (javaMemoryLimit != null ? javaMemoryLimit.hashCode() : 0);
+    result1 = 31 * result1 + (javaTimeLimit != null ? javaTimeLimit.hashCode() : 0);
+    result1 = 31 * result1 + (memoryLimit != null ? memoryLimit.hashCode() : 0);
+    result1 = 31 * result1 + (timeLimit != null ? timeLimit.hashCode() : 0);
+    result1 = 31 * result1 + (outputLimit != null ? outputLimit.hashCode() : 0);
+    result1 = 31 * result1 + (isSpj != null ? isSpj.hashCode() : 0);
+    result1 = 31 * result1 + (languageId != null ? languageId.hashCode() : 0);
+    result1 = 31 * result1 + (languageExtension != null ? languageExtension.hashCode() : 0);
+    result1 = 31 * result1 + (languageName != null ? languageName.hashCode() : 0);
+    result1 = 31 * result1 + (memoryCost != null ? memoryCost.hashCode() : 0);
+    result1 = 31 * result1 + (timeCost != null ? timeCost.hashCode() : 0);
+    result1 = 31 * result1 + (compileInfoId != null ? compileInfoId.hashCode() : 0);
+    result1 = 31 * result1 + (userId != null ? userId.hashCode() : 0);
+    return result1;
+  }
+
   public static Builder builder() {
     return new Builder();
   }

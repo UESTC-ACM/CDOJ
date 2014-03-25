@@ -61,6 +61,42 @@ public class SubmitDTO {
     this.languageId = languageId;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    SubmitDTO submitDTO = (SubmitDTO) o;
+
+    if (codeContent != null ? !codeContent.equals(submitDTO.codeContent) : submitDTO.codeContent != null) {
+      return false;
+    }
+    if (contestId != null ? !contestId.equals(submitDTO.contestId) : submitDTO.contestId != null) {
+      return false;
+    }
+    if (languageId != null ? !languageId.equals(submitDTO.languageId) : submitDTO.languageId != null) {
+      return false;
+    }
+    if (problemId != null ? !problemId.equals(submitDTO.problemId) : submitDTO.problemId != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = codeContent != null ? codeContent.hashCode() : 0;
+    result = 31 * result + (problemId != null ? problemId.hashCode() : 0);
+    result = 31 * result + (contestId != null ? contestId.hashCode() : 0);
+    result = 31 * result + (languageId != null ? languageId.hashCode() : 0);
+    return result;
+  }
+
   public Builder builder() {
     return new Builder();
   }

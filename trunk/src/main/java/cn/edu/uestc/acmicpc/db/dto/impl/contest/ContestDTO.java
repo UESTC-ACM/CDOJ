@@ -94,6 +94,54 @@ public class ContestDTO implements BaseDTO<Contest> {
     this.isVisible = isVisible;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    ContestDTO that = (ContestDTO) o;
+
+    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null) {
+      return false;
+    }
+    if (description != null ? !description.equals(that.description) : that.description != null) {
+      return false;
+    }
+    if (isVisible != null ? !isVisible.equals(that.isVisible) : that.isVisible != null) {
+      return false;
+    }
+    if (length != null ? !length.equals(that.length) : that.length != null) {
+      return false;
+    }
+    if (time != null ? !time.equals(that.time) : that.time != null) {
+      return false;
+    }
+    if (title != null ? !title.equals(that.title) : that.title != null) {
+      return false;
+    }
+    if (type != null ? !type.equals(that.type) : that.type != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = contestId != null ? contestId.hashCode() : 0;
+    result = 31 * result + (title != null ? title.hashCode() : 0);
+    result = 31 * result + (description != null ? description.hashCode() : 0);
+    result = 31 * result + (time != null ? time.hashCode() : 0);
+    result = 31 * result + (length != null ? length.hashCode() : 0);
+    result = 31 * result + (type != null ? type.hashCode() : 0);
+    result = 31 * result + (isVisible != null ? isVisible.hashCode() : 0);
+    return result;
+  }
+
   public static Builder builder() {
     return new Builder();
   }

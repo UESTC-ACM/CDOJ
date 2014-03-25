@@ -176,7 +176,7 @@
 <div class="col-md-12">
   <div ng-model="problem.description"
        ui-flandre
-       upload-url="/picture/uploadPicture/problem/{{action}}">
+       upload-url="/picture/uploadProblemPicture/{{action}}">
   </div>
 </div>
 <div class="col-md-12">
@@ -184,7 +184,7 @@
 
   <div ng-model="problem.input"
        ui-flandre
-       upload-url="/picture/uploadPicture/problem/{{action}}">
+       upload-url="/picture/uploadProblemPicture/{{action}}">
   </div>
 </div>
 <div class="col-md-12">
@@ -192,7 +192,7 @@
 
   <div ng-model="problem.output"
        ui-flandre
-       upload-url="/picture/uploadPicture/problem/{{action}}">
+       upload-url="/picture/uploadProblemPicture/{{action}}">
   </div>
 </div>
 <div class="col-md-12">
@@ -200,25 +200,32 @@
   <table class="table table-bordered">
     <thead>
     <tr>
+      <th></th>
       <th style="width: 50%;">Sample Input</th>
       <th style="width: 50%;">Sample Output</th>
     </tr>
     </thead>
     <tbody>
-    <tr>
+    <tr ng-repeat="sample in samples">
+      <td><a href="javascript:void(0);" ng-click="removeSample($index)"><i class="fa fa-times"></i></a></td>
       <td>
         <div class="sample" type="no-prettify">
-          <textarea ng-model="problem.sampleInput"
+          <textarea ng-model="sample.input"
                     class="form-control"
-                    style="height: 300px"></textarea>
+                    style="height: 100px"></textarea>
         </div>
       </td>
       <td>
         <div class="sample" type="no-prettify">
-          <textarea ng-model="problem.sampleOutput"
+          <textarea ng-model="sample.output"
                     class="form-control"
-                    style="height: 300px"></textarea>
+                    style="height: 100px"></textarea>
         </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <a href="javascript:void(0);" ng-click="addSample()"><i class="fa fa-plus"></i> Add sample</a>
       </td>
     </tr>
     </tbody>
@@ -229,7 +236,7 @@
 
   <div ng-model="problem.hint"
        ui-flandre
-       upload-url="/picture/uploadPicture/problem/{{action}}">
+       upload-url="/picture/uploadProblemPicture/{{action}}">
   </div>
 </div>
 <div class="col-md-12">

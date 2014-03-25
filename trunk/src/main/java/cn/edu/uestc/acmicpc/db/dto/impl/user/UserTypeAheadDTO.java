@@ -30,6 +30,10 @@ public class UserTypeAheadDTO implements BaseDTO<User> {
     this.nickName = nickName;
   }
 
+  public static Builder builder() {
+    return new Builder();
+  }
+
   public Integer getUserId() {
     return userId;
   }
@@ -62,19 +66,51 @@ public class UserTypeAheadDTO implements BaseDTO<User> {
     this.nickName = nickName;
   }
 
-  public static Builder builder() {
-    return new Builder();
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    UserTypeAheadDTO that = (UserTypeAheadDTO) o;
+
+    if (email != null ? !email.equals(that.email) : that.email != null) {
+      return false;
+    }
+    if (nickName != null ? !nickName.equals(that.nickName) : that.nickName != null) {
+      return false;
+    }
+    if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
+      return false;
+    }
+    if (userName != null ? !userName.equals(that.userName) : that.userName != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = userId != null ? userId.hashCode() : 0;
+    result = 31 * result + (email != null ? email.hashCode() : 0);
+    result = 31 * result + (userName != null ? userName.hashCode() : 0);
+    result = 31 * result + (nickName != null ? nickName.hashCode() : 0);
+    return result;
   }
 
   public static class Builder implements BaseBuilder<UserTypeAheadDTO> {
-
-    private Builder() {
-    }
 
     private Integer userId;
     private String email;
     private String userName;
     private String nickName;
+
+    private Builder() {
+    }
 
     @Override
     public UserTypeAheadDTO build() {

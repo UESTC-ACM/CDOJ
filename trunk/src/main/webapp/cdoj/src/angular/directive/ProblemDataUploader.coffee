@@ -1,5 +1,5 @@
-
-cdoj.directive("uiProblemDataUploader",
+cdoj
+.directive("uiProblemDataUploader",
 ->
   restrict: "E"
   scope:

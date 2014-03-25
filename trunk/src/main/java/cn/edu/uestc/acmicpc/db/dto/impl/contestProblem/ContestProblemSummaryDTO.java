@@ -65,6 +65,42 @@ public class ContestProblemSummaryDTO implements BaseDTO<ContestProblem> {
     this.source = source;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    ContestProblemSummaryDTO that = (ContestProblemSummaryDTO) o;
+
+    if (order != null ? !order.equals(that.order) : that.order != null) {
+      return false;
+    }
+    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null) {
+      return false;
+    }
+    if (source != null ? !source.equals(that.source) : that.source != null) {
+      return false;
+    }
+    if (title != null ? !title.equals(that.title) : that.title != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = problemId != null ? problemId.hashCode() : 0;
+    result = 31 * result + (order != null ? order.hashCode() : 0);
+    result = 31 * result + (title != null ? title.hashCode() : 0);
+    result = 31 * result + (source != null ? source.hashCode() : 0);
+    return result;
+  }
+
   public static Builder builder() {
     return new Builder();
   }
@@ -99,6 +135,7 @@ public class ContestProblemSummaryDTO implements BaseDTO<ContestProblem> {
       this.order = order;
       return this;
     }
+
     public Builder setTitle(String title) {
       this.title = title;
       return this;

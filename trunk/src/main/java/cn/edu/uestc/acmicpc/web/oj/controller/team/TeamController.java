@@ -167,6 +167,11 @@ public class TeamController extends BaseController {
 
         json.put("pageInfo", pageInfo);
         json.put("list", getTeamListDTO(teamCondition, pageInfo, session));
+      } else {
+        PageInfo pageInfo = buildPageInfo(0L, 1L,
+            Global.RECORD_PER_PAGE, null);
+        json.put("list", new LinkedList<>());
+        json.put("pageInfo", pageInfo);
       }
       json.put("result", "success");
     } catch (AppException e) {
@@ -297,7 +302,7 @@ public class TeamController extends BaseController {
         throw new AppException("Permission denied");
       }
       List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamDTO.getTeamId());
-      if (teamUserList.size() == 3) {
+      if (teamUserList.size() == 1) {
         throw new AppException("Member number should between 1 and 3.");
       }
       Integer userId;

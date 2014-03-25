@@ -1,22 +1,23 @@
 <div class="row">
   <list condition="$root.statusCondition"
-        request-url="/status/search">
+        request-url="/status/search"
+        name="status">
     <div class="col-md-12">
       <table class="table table-condensed">
         <thead>
         <tr>
-          <th style="text-align: center;">#</th>
-          <th style="text-align: center;">User</th>
-          <th style="text-align: center;">Prob</th>
+          <th style="width: 5em; text-align: center;">#</th>
+          <th style="width: 12em; text-align: center;">User</th>
+          <th style="width: 5em; text-align: center;">Prob</th>
           <th style="width: 19em; text-align: center;">Result
             <a id="status-refresh-button" href="javascript:void(0);" ng-click="refresh()">
               <i class="fa fa-refresh"></i>
             </a>
           </th>
-          <th style="text-align: center;">Memory</th>
-          <th style="text-align: center;">Time</th>
-          <th style="text-align: center;">Language</th>
-          <th style="text-align: center;">Length</th>
+          <th style="width: 7em; text-align: center;">Memory</th>
+          <th style="width: 6em; text-align: center;">Time</th>
+          <th style="width: 1em; text-align: center;">Language</th>
+          <th style="width: 5em; text-align: center;">Length</th>
           <th style="width: 11em; text-align: center;">Submit
             Time
           </th>
@@ -32,6 +33,7 @@
           </td>
           <td>
             <input type="number"
+                   min="1"
                    style="width: 100%;"
                    ng-model="$root.statusCondition.problemId"/>
           </td>
@@ -50,18 +52,18 @@
               <option value="">All</option>
             </select>
           </td>
-          <td></td>
+          <td class="text-center"><button class="btn btn-xs btn-success" ng-click="resetStatusCondition()">Reset</button></td>
           <td class="text-center" ui-rejudge-button condition="$root.statusCondition">
           </td>
         </tr>
         <tr ng-repeat="status in list">
           <td style="text-align: center;" ng-bind="status.statusId"></td>
           <td style="text-align: center;">
-            <a href="#/user/center/{{status.userName}}"
+            <a href="/#/user/center/{{status.userName}}"
                ng-bind="status.userName"></a>
           </td>
           <td style="text-align: center;">
-            <a href="#/problem/show/{{status.problemId}}"
+            <a href="/#/problem/show/{{status.problemId}}"
                ng-bind="status.problemId"></a>
           </td>
           <td style="text-align: center;"

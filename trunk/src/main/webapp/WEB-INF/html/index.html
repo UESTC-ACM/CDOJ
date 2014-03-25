@@ -12,7 +12,7 @@
         href="/plugins/Font-Awesome/css/font-awesome-ie7.min.css"/>
   <![endif]-->
   <link rel="stylesheet"
-        href="/cdoj/dist/css/cdoj.css"/>
+        href="/cdoj/dist/css/cdoj.min.css"/>
 
   <title ng-bind="$root.finalTitle"></title>
 
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav navbar-right" style="min-height: 50px;">
         <li ng-show="$root.hasLogin"
             style="font-size: 20px;">
-          <a href="#/user/center/{{currentUser.userName}}"><i class="fa fa-home"></i></a>
+          <a href="/#/user/center/{{currentUser.userName}}"><i class="fa fa-home"></i></a>
         </li>
         <li ng-show="$root.hasLogin"
             style="font-size: 20px;">
@@ -82,7 +82,7 @@
             </li>
             <li role="presentation" class="divider"></li>
             <li role="presentation">
-              <a href="#/user/center/{{currentUser.userName}}/messages">
+              <a href="/#/user/center/{{currentUser.userName}}/messages">
                 View more notifications
               </a>
             </li>
@@ -93,8 +93,7 @@
             <a href="javascript:void(0);" class="dropdown-toggle">
               <img id="cdoj-user-avatar"
                    ui-avatar
-                   email="currentUser.email"
-                   src="/images/avatar/default.jpg"/>
+                   email="currentUser.email"/>
             </a>
             <ul class="dropdown-menu"
                 role="menu"
@@ -106,18 +105,28 @@ border-top-right-radius: 0;">
                   class="dropdown-header" ng-bind="currentUser.userName">
               </li>
               <li role="presentation">
-                <a href="#/user/center/{{currentUser.userName}}">
+                <a href="/#/user/center/{{currentUser.userName}}">
                   <i class="fa fa-home"></i>User center
                 </a>
               </li>
               <li role="presentation">
-                <a href="#/user/center/{{currentUser.userName}}/teams">
+                <a href="/#/user/center/{{currentUser.userName}}/blog">
+                  <i class="fa fa-rss"></i>Blog
+                </a>
+              </li>
+              <li role="presentation">
+                <a href="/#/user/center/{{currentUser.userName}}/teams">
                   <i class="fa fa-group"></i>Teams
                 </a>
               </li>
               <li role="presentation">
-                <a href="#/user/center/{{currentUser.userName}}/edit">
+                <a href="/#/user/center/{{currentUser.userName}}/edit">
                   <i class="fa fa-wrench"></i>Edit profile
+                </a>
+              </li>
+              <li role="presentation" ng-show="$root.isAdmin">
+                <a href="/#/admin/dashboard">
+                  <i class="fa fa-dashboard"></i>Admin dashboard
                 </a>
               </li>
               <li role="presentation" class="divider"></li>
@@ -145,8 +154,6 @@ border-top-right-radius: 0;">
                          maxlength="24"
                          id="userName"
                          class="form-control"
-                         ng-required="true"
-                         ng-pattern="/^[a-zA-Z0-9_]{4,24}$/"
                          placeholder="Username"/>
                 </div>
                 <div class="input-group form-group input-group-sm">
@@ -156,9 +163,6 @@ border-top-right-radius: 0;">
                   <input type="password"
                          ng-model="userLoginDTO.password"
                          id="password"
-                         ng-required="true"
-                         ng-minlength="6"
-                         ng-maxlength="24"
                          class="form-control"
                          placeholder="Password"/>
                   <span class="input-group-btn">
@@ -230,9 +234,9 @@ border-top-right-radius: 0;">
   </div>
   <div id="cdoj-container">
     <div ng-view style="min-height: 600px;"></div>
-    <div class="row">
+    <div class="row" style="margin-top: 15px;">
       <div class="col-md-12" style="font-size: 10px;">
-        <hr style="margin: 0;"/>
+        <hr style="margin: 0;" class="colorful"/>
         <p class="muted">
           UESTC Online Judge
         </p>
@@ -243,12 +247,16 @@ border-top-right-radius: 0;">
           Yun Li(<a href="https://github.com/mzry1992">@mzry1992</a>).
           <a href="http://uestc-acm.github.io/CDOJ/">Project home</a>
         </p>
+        <p class="muted">
+          Currently online registered users:
+            <span ng-bind="onlineUsersCount"></span>
+        </p>
       </div>
     </div>
   </div>
 </div>
 
 <script src="/plugins/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script src="/cdoj/dist/js/cdoj.js"></script>
+<script src="/cdoj/dist/js/cdoj.min.js"></script>
 </body>
 </html>

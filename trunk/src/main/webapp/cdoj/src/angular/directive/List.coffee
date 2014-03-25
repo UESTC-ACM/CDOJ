@@ -1,14 +1,15 @@
 cdoj
 .directive("list",
-  ->
-    restrict: "EA"
-    replace: true
-    transclude: true
-    scope:
-      condition: "="
-      requestUrl: "@"
-    controller: "ListController"
-    template: """
+->
+  restrict: "EA"
+  replace: true
+  transclude: true
+  scope:
+    condition: "="
+    requestUrl: "@"
+    name: "@"
+  controller: "ListController"
+  template: """
 <div>
   <div class="col-md-12" ng-show="pageInfo.totalItems > itemsPerPage">
     <pagination total-items="pageInfo.totalItems"
@@ -25,4 +26,4 @@ cdoj
   <div ng-transclude></div>
 </div>
 """
-  )
+)

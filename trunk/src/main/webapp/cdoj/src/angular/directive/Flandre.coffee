@@ -2,21 +2,21 @@
 # From http://www.jquery4u.com/snippets/6-jquery-cursor-functions/
 $ = jQuery
 $.fn.getCursorPosition = ->
-  if this.lengh == 0 then return -1
+  if this.length == 0 then return -1
   return $(this).getSelectionStart()
 
 $.fn.setCursorPosition = (position) ->
-  if this.lengh == 0 then return this
+  if this.length == 0 then return this
   return $(this).setSelection(position, position)
 
 $.fn.getSelection = ->
-  if this.lengh == 0 then return -1
+  if this.length == 0 then return -1
   s = $(this).getSelectionStart()
   e = $(this).getSelectionEnd()
-  return this[0].value.substring(s,e)
+  return this[0].value.substring(s, e)
 
 $.fn.getSelectionStart = ->
-  if this.lengh == 0 then return -1
+  if this.length == 0 then return -1
   input = this[0]
 
   pos = input.value.length
@@ -31,7 +31,7 @@ $.fn.getSelectionStart = ->
   return pos
 
 $.fn.getSelectionEnd = ->
-  if this.lengh == 0 then return -1
+  if this.length == 0 then return -1
   input = this[0]
 
   pos = input.value.length
@@ -41,12 +41,12 @@ $.fn.getSelectionEnd = ->
     if (r.text == '')
       pos = input.value.length
     pos = input.value.lastIndexOf(r.text)
-  else if(typeof(input.selectionEnd)!="undefined")
+  else if(typeof(input.selectionEnd) != "undefined")
     pos = input.selectionEnd
   return pos
 
 $.fn.setSelection = (selectionStart, selectionEnd) ->
-  if this.lengh == 0 then return this
+  if this.length == 0 then return this
   input = this[0]
 
   if input.createTextRange
@@ -72,7 +72,7 @@ cdoj.directive("uiFlandre",
     ($scope, $element, $window) ->
       $scope.mode = "edit"
       $scope.previewContent = ""
-      $editor = $element.find(".flandre-editor")
+      $editor = $($element).find(".flandre-editor")
 
       # Preview button
       $scope.togglePreview = ->
@@ -83,6 +83,10 @@ cdoj.directive("uiFlandre",
         else
           # edit
           $scope.mode = "edit"
+
+      $scope.$on("flandre:focus", ->
+        $($element).find(".flandre-editor").focus()
+      )
 
       # Upload picture
       pictureUploader = new qq.FineUploaderBasic(
@@ -96,7 +100,6 @@ cdoj.directive("uiFlandre",
         multiple: false
         callbacks:
           onComplete: (id, fileName, data) ->
-            console.log data
             if data.success == "true"
               value = "![title](#{data.uploadedFileUrl})"
               position = $editor.getCursorPosition()
@@ -113,7 +116,7 @@ cdoj.directive("uiFlandre",
       )
   ]
   template: """
-      <div class="panel panel-default">
+      <div class="panel panel-default" style="margin-bottom: 6px;">
         <div class="panel-heading flandre-heading">
           <div class="btn-toolbar" role="toolbar">
             <div class="btn-group">
@@ -125,6 +128,7 @@ cdoj.directive("uiFlandre",
               <span class="btn btn-default btn-sm"><i class="fa fa-smile-o"></i></span>
               <span class="btn btn-default btn-sm flandre-picture-uploader"><i class="fa fa-picture-o"></i></span>
             </div>
+            <span class="pull-right" style="padding-top: 6px;">Contents are parsed with <a href="/#/article/show/2">Markdown</a></span>
           </div>
         </div>
         <textarea class="tex2jax_ignore form-control flandre-editor"

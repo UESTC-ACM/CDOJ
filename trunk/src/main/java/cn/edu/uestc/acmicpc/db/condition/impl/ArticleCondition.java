@@ -63,21 +63,39 @@ public class ArticleCondition extends BaseCondition {
    */
   public Integer contestId;
 
+  /**
+   * Parent id.
+   */
+  public Integer parentId;
+
+  /**
+   * Type
+   */
+  @Exp(mapField = "type", type = Condition.ConditionType.EQUALS)
+  public Integer type;
+
   @Override
   public Condition getCondition() throws AppException {
     Condition condition = super.getCondition();
     if (contestId != null) {
       if (contestId == -1) {
-        condition.addEntry("contestByContestId", Condition.ConditionType.IS_NULL, null);
+        condition.addEntry("contestId", Condition.ConditionType.IS_NULL, null);
       } else {
-        condition.addEntry("contestByContestId", Condition.ConditionType.EQUALS, contestId);
+        condition.addEntry("contestId", Condition.ConditionType.EQUALS, contestId);
       }
     }
     if (problemId != null) {
       if (problemId == -1) {
-        condition.addEntry("problemByProblemId", Condition.ConditionType.IS_NULL, null);
+        condition.addEntry("problemId", Condition.ConditionType.IS_NULL, null);
       } else {
-        condition.addEntry("problemByProblemId", Condition.ConditionType.EQUALS, problemId);
+        condition.addEntry("problemId", Condition.ConditionType.EQUALS, problemId);
+      }
+    }
+    if (parentId != null) {
+      if (parentId == -1) {
+        condition.addEntry("parentId", Condition.ConditionType.IS_NULL, null);
+      } else {
+        condition.addEntry("parentId", Condition.ConditionType.EQUALS, parentId);
       }
     }
     if (userName != null) {

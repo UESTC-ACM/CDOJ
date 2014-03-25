@@ -57,6 +57,42 @@ public class ContestProblemDTO implements BaseDTO<ContestProblem> {
     this.problemId = problemId;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    ContestProblemDTO that = (ContestProblemDTO) o;
+
+    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null) {
+      return false;
+    }
+    if (contestProblemId != null ? !contestProblemId.equals(that.contestProblemId) : that.contestProblemId != null) {
+      return false;
+    }
+    if (order != null ? !order.equals(that.order) : that.order != null) {
+      return false;
+    }
+    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = contestProblemId != null ? contestProblemId.hashCode() : 0;
+    result = 31 * result + (contestId != null ? contestId.hashCode() : 0);
+    result = 31 * result + (order != null ? order.hashCode() : 0);
+    result = 31 * result + (problemId != null ? problemId.hashCode() : 0);
+    return result;
+  }
+
   public static Builder builder() {
     return new Builder();
   }

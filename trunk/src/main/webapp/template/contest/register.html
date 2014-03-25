@@ -2,7 +2,10 @@
   <div class="col-md-12">
     <h1 ng-bind="contest.title"></h1>
   </div>
-  <div class="col-md-12" style="margin-bottom: 8px;">
+  <div class="col-md-12" style="margin-bottom: 8px;" ng-hide="$root.hasLogin">
+    注册比赛之前，请先登录。
+  </div>
+  <div class="col-md-12" style="margin-bottom: 8px;" ng-show="$root.hasLogin">
     <p>
       如果你还没有建立队伍，请到<a href="/#/user/center/{{$root.currentUser.userName}}/teams">这里</a>新建一个队伍。
     </p>
@@ -32,18 +35,18 @@
     </h5>
 
     <div class="media">
-      <div class="pull-left">
+      <a class="pull-left" href="/#/user/center/{{member.userName}}">
         <img ui-avatar
              email="member.email"
              width="44"
              height="44"
              class="media-object"
              style="width: 44px; height: 44px;"/>
-      </div>
+      </a>
 
       <div class="media-body">
         <h4 class="media-heading">
-          <span ng-bind="member.userName"></span>
+          <a ng-bind="member.userName" href="/#/user/center/{{member.userName}}"></a>
         </h4>
         <span ng-bind="member.nickName"></span>
       </div>
@@ -51,14 +54,17 @@
   </div>
   <div class="col-md-12" ng-show="showRegisterButton" style="margin-top: 8px;">
     <button class="btn btn-default"
-            ng-click="register()">Register</button>
+            ng-click="register()">Register
+    </button>
   </div>
+
   <div class="col-md-12">
-    <h3>Registrant</h3>
+    <h3>Registrants</h3>
     <hr style="margin: 0;"/>
   </div>
   <list condition="contestTeamCondition"
-        request-url="/contest/registryStatusList">
+        request-url="/contest/registryStatusList"
+        name="team">
     <div class="col-md-12">
       <table class="table table-condensed">
         <thead>
@@ -73,17 +79,19 @@
         </thead>
         <tbody>
         <tr ng-repeat="team in list">
-          <td ng-bind="team.contestTeamId" class="text-right"></td>
-          <td ng-bind="team.teamName" class="text-center"></td>
+          <td ng-bind="team.contestTeamId" class="text-right" style="vertical-align: middle;"></td>
+          <td ng-bind="team.teamName" class="text-center" style="vertical-align: middle;"></td>
           <td>
-            <span ng-repeat="user in team.teamUsers">
-                <img ui-avatar
-                     email="user.email"
-                     width="19"
-                     height="19"
-                     style="width: 19px; height: 19px;"/>
-              <a href="/#/user/center/{{user.userName}}" ng-bind="user.nickName"></a>
-            </span>
+            <div class="row">
+              <div class="col-md-12" ng-repeat="user in team.teamUsers">
+                <a class="pull-left" href="/#/user/center/{{user.userName}}">
+                  <img ui-avatar
+                       email="user.email"
+                       style="width: 19px; height: 19px;"/>
+                </a>
+                <a href="/#/user/center/{{user.userName}}" ng-bind="user.nickName"></a>
+              </div>
+            </div>
           </td>
           <td ng-bind="team.statusName"
               ng-class="{
@@ -91,9 +99,9 @@
                 'font-success': team.status == 1,
                 'font-danger': team.status == 2
               }"
-              class="text-center"></td>
-          <td ng-bind="team.comment"></td>
-          <td ng-show="$root.isAdmin">
+              class="text-center" style="vertical-align: middle;"></td>
+          <td ng-bind="team.comment" style="vertical-align: middle;"></td>
+          <td ng-show="$root.isAdmin" style="vertical-align: middle;">
             <a href="javascript:void(0);" ng-click="review(team)">Review</a>
           </td>
         </tr>

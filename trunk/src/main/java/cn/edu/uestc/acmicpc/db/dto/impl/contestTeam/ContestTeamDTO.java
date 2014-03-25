@@ -7,18 +7,20 @@ import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
 import java.util.Map;
 
-@Fields({ "contestTeamId", "contestId", "teamId", "status", "comment" })
+@Fields({"contestTeamId", "contestId", "teamId", "status", "comment", "teamByTeamId.leaderId"})
 public class ContestTeamDTO implements BaseDTO<ContestTeam> {
 
   public ContestTeamDTO() {
   }
 
-  private ContestTeamDTO(Integer contestTeamId, Integer contestId, Integer teamId, Integer status, String comment) {
+  private ContestTeamDTO(Integer contestTeamId, Integer contestId, Integer teamId, Integer status,
+                         String comment, Integer leaderId) {
     this.contestTeamId = contestTeamId;
     this.contestId = contestId;
     this.teamId = teamId;
     this.status = status;
     this.comment = comment;
+    this.leaderId = leaderId;
   }
 
   private Integer contestTeamId;
@@ -26,6 +28,15 @@ public class ContestTeamDTO implements BaseDTO<ContestTeam> {
   private Integer teamId;
   private Integer status;
   private String comment;
+  private Integer leaderId;
+
+  public Integer getLeaderId() {
+    return leaderId;
+  }
+
+  public void setLeaderId(Integer leaderId) {
+    this.leaderId = leaderId;
+  }
 
   public Integer getContestTeamId() {
     return contestTeamId;
@@ -78,7 +89,7 @@ public class ContestTeamDTO implements BaseDTO<ContestTeam> {
 
     @Override
     public ContestTeamDTO build() {
-      return new ContestTeamDTO(contestTeamId, contestId, teamId, status, comment);
+      return new ContestTeamDTO(contestTeamId, contestId, teamId, status, comment, leaderId);
     }
 
     @Override
@@ -88,6 +99,7 @@ public class ContestTeamDTO implements BaseDTO<ContestTeam> {
       teamId = (Integer) properties.get("teamId");
       status = (Integer) properties.get("status");
       comment = (String) properties.get("comment");
+      leaderId = (Integer) properties.get("teamByTeamId.leaderId");
       return build();
 
     }
@@ -97,6 +109,7 @@ public class ContestTeamDTO implements BaseDTO<ContestTeam> {
     private Integer teamId;
     private Integer status;
     private String comment;
+    private Integer leaderId;
 
     public Integer getContestTeamId() {
       return contestTeamId;
@@ -140,6 +153,15 @@ public class ContestTeamDTO implements BaseDTO<ContestTeam> {
 
     public Builder setComment(String comment) {
       this.comment = comment;
+      return this;
+    }
+
+    public Integer getLeaderId() {
+      return leaderId;
+    }
+
+    public Builder setLeaderId(Integer leaderId) {
+      this.leaderId = leaderId;
       return this;
     }
   }

@@ -1,4 +1,6 @@
 GlobalVariables =
+  Version: "V2.2.0"
+
   OnlineJudgeReturnType:
     OJ_WAIT: 0
     OJ_AC: 1
@@ -32,9 +34,11 @@ GlobalVariables =
     ENDED: "Ended"
 
   AuthenticationType:
-    NORMAL: "0"
-    ADMIN: "1"
-    CONSTANT: "2"
+    NORMAL: 0
+    ADMIN: 1
+    CONSTANT: 2
+    NOOP: 3
+    CURRENT_USER: 4
 
   AuthorStatusType:
     NONE: 0
@@ -46,6 +50,11 @@ GlobalVariables =
     ACCEPTED: 1
     REFUSED: 2
 
+  ArticleType:
+    NOTICE: 0
+    ARTICLE: 1
+    COMMENT: 2
+
 GlobalConditions =
   articleCondition:
     currentPage: null
@@ -53,6 +62,9 @@ GlobalConditions =
     endId: undefined
     keyword: undefined
     title: undefined
+    userId: undefined
+    userName: undefined
+    type: undefined
     orderFields: "id"
     orderAsc: "false"
   problemCondition:
@@ -73,7 +85,7 @@ GlobalConditions =
     endId: undefined
     keyword: undefined
     title: undefined
-    orderFields: "id"
+    orderFields: "time"
     orderAsc: "false"
   statusCondition:
     currentPage: null
@@ -83,7 +95,7 @@ GlobalConditions =
     problemId: undefined
     languageId: undefined
     contestId: -1
-    result: "OJ_ALL"
+    result: 0
     orderFields: "statusId"
     orderAsc: "false"
   userCondition:

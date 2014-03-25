@@ -115,6 +115,62 @@ public class ContestEditorShowDTO implements BaseDTO<Contest> {
     this.type = type;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    ContestEditorShowDTO that = (ContestEditorShowDTO) o;
+
+    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null) {
+      return false;
+    }
+    if (description != null ? !description.equals(that.description) : that.description != null) {
+      return false;
+    }
+    if (length != null ? !length.equals(that.length) : that.length != null) {
+      return false;
+    }
+    if (lengthDays != null ? !lengthDays.equals(that.lengthDays) : that.lengthDays != null) {
+      return false;
+    }
+    if (lengthHours != null ? !lengthHours.equals(that.lengthHours) : that.lengthHours != null) {
+      return false;
+    }
+    if (lengthMinutes != null ? !lengthMinutes.equals(that.lengthMinutes) : that.lengthMinutes != null) {
+      return false;
+    }
+    if (time != null ? !time.equals(that.time) : that.time != null) {
+      return false;
+    }
+    if (title != null ? !title.equals(that.title) : that.title != null) {
+      return false;
+    }
+    if (type != null ? !type.equals(that.type) : that.type != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = contestId != null ? contestId.hashCode() : 0;
+    result = 31 * result + (title != null ? title.hashCode() : 0);
+    result = 31 * result + (description != null ? description.hashCode() : 0);
+    result = 31 * result + (time != null ? time.hashCode() : 0);
+    result = 31 * result + (length != null ? length.hashCode() : 0);
+    result = 31 * result + (lengthDays != null ? lengthDays.hashCode() : 0);
+    result = 31 * result + (lengthHours != null ? lengthHours.hashCode() : 0);
+    result = 31 * result + (lengthMinutes != null ? lengthMinutes.hashCode() : 0);
+    result = 31 * result + (type != null ? type.hashCode() : 0);
+    return result;
+  }
+
   public static Builder builder() {
     return new Builder();
   }

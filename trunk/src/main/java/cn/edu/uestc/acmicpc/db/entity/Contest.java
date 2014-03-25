@@ -77,7 +77,7 @@ public class Contest implements Serializable {
   private String description = "";
 
   @Column(name = "description", nullable = false, insertable = true, updatable = true,
-      length = 200, precision = 0)
+      length = 65535, precision = 0)
   @Basic
   public String getDescription() {
     return description;

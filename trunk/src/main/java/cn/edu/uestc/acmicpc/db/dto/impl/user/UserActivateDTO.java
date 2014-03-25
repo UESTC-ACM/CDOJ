@@ -74,6 +74,42 @@ public class UserActivateDTO {
     this.passwordRepeat = passwordRepeat;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    UserActivateDTO that = (UserActivateDTO) o;
+
+    if (password != null ? !password.equals(that.password) : that.password != null) {
+      return false;
+    }
+    if (passwordRepeat != null ? !passwordRepeat.equals(that.passwordRepeat) : that.passwordRepeat != null) {
+      return false;
+    }
+    if (serialKey != null ? !serialKey.equals(that.serialKey) : that.serialKey != null) {
+      return false;
+    }
+    if (userName != null ? !userName.equals(that.userName) : that.userName != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = userName != null ? userName.hashCode() : 0;
+    result = 31 * result + (password != null ? password.hashCode() : 0);
+    result = 31 * result + (passwordRepeat != null ? passwordRepeat.hashCode() : 0);
+    result = 31 * result + (serialKey != null ? serialKey.hashCode() : 0);
+    return result;
+  }
+
   public static Builder builder() {
     return new Builder();
   }

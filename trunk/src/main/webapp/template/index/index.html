@@ -1,29 +1,106 @@
 <div id="cdoj-index">
   <div class="row">
-    <list condition="$root.articleCondition"
-          request-url="/article/search">
-      <div class="col-md-12">
-        <div class="cdoj-article" ng-repeat="article in list">
-          <h1><a href="#/article/show/{{article.articleId}}"
-                 ng-bind="article.title"></a>
-          </h1>
-          <small>
-            <span ng-bind="article.clicked"></span> visited, create by
-            <span ng-bind="article.ownerName"></span>, last modified at
-            <span class="cdoj-article-post-time"
-                  ui-time
-                  time="article.time"
-                  inline="true"></span>
-          </small>
-          <div class="cdoj-article-summary">
-            <markdown content="article.content"></markdown>
-          </div>
-          <p ui-readmore
-             has-more="article.hasMore"
-             article-id="article.articleId"></p>
-          <hr ng-show="$index < list.length - 1"/>
+    <div class="col-md-12">
+      <div class="hero">
+        <div class="hero-titles">
+          <h1>CDOJ</h1>
+
+          <h2 ng-bind="$root.Version"></h2>
         </div>
       </div>
-    </list>
+    </div>
+    <div class="col-md-12">
+      <ul class="nav nav-pills nav-justified thumbnail">
+        <li ng-class="{active: isRecentNews}">
+          <a href="javascript:void(0);" ng-click="showRecentNews()">
+            <h4 class="list-group-item-heading"><i class="fa fa-rss"></i></h4>
+
+            <p class="list-group-item-text">Recent news</p>
+          </a>
+        </li>
+        <li ng-class="{active: isRecentContests}">
+          <a href="javascript:void(0);" ng-click="showRecentContests()">
+            <h4 class="list-group-item-heading"><i class="fa fa-calendar"></i></h4>
+
+            <p class="list-group-item-text">Recent contests</p>
+          </a>
+        </li>
+        <li ng-class="{active: isArticle && currentArticleId == 1}">
+          <a href="javascript:void(0);" ng-click="showArticle(1)">
+            <h4 class="list-group-item-heading"><i class="fa fa-question-circle"></i></h4>
+
+            <p class="list-group-item-text">F.A.Qs</p>
+          </a>
+        </li>
+        <li ng-class="{active: isArticle && currentArticleId == 7}">
+          <a href="javascript:void(0);" ng-click="showArticle(7)">
+            <h4 class="list-group-item-heading"><i class="fa fa-download"></i></h4>
+
+            <p class="list-group-item-text">Download</p>
+          </a>
+        </li>
+        <li ng-class="{active: isArticle && currentArticleId == 6}">
+          <a href="javascript:void(0);" ng-click="showArticle(6)">
+            <h4 class="list-group-item-heading"><i class="fa fa-rocket"></i></h4>
+
+            <p class="list-group-item-text">Step-By-Step</p>
+          </a>
+        </li>
+        <li class="disabled">
+          <a href="javascript:void(0);">
+            <h4 class="list-group-item-heading"><i class="fa fa-trophy"></i></h4>
+
+            <p class="list-group-item-text">Teams Honors</p>
+          </a>
+        </li>
+        <li ng-class="{active: isArticle && currentArticleId == 4}">
+          <a href="javascript:void(0);" ng-click="showArticle(4)">
+            <h4 class="list-group-item-heading"><i class="fa fa-terminal"></i></h4>
+
+            <p class="list-group-item-text">About</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-12" ng-show="isRecentNews">
+      <list condition="articleCondition"
+            request-url="/article/search"
+            name="article">
+        <div class="cdoj-article" ng-repeat="article in list">
+          <article-item article="article"></article-item>
+        </div>
+      </list>
+    </div>
+    <div class="col-md-12" ng-show="isRecentContests">
+      <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+          <th>OJ</th>
+          <th>Name</th>
+          <th style="width: 12em;">Start time</th>
+          <th>Week</th>
+          <th>Access</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="contest in recentContests">
+          <td ng-bind="contest.oj"></td>
+          <td>
+            <a href="{{contest.link}}"
+               ng-bind="contest.name"
+               target="_blank"></a>
+          </td>
+          <td ui-time
+              time="contest.start_time"></td>
+          <td ng-bind="contest.week"></td>
+          <td ng-bind="contest.access"></td>
+        </tr>
+        </tbody>
+      </table>
+      <markdown content="recentContestsDescription"></markdown>
+    </div>
+    <div class="col-md-12" ng-show="isArticle">
+      <markdown content="article.content"></markdown>
+    </div>
   </div>
 </div>

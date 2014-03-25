@@ -80,6 +80,94 @@ public class ProblemEditDTO {
     this.source = source;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    ProblemEditDTO that = (ProblemEditDTO) o;
+
+    if (action != null ? !action.equals(that.action) : that.action != null) {
+      return false;
+    }
+    if (description != null ? !description.equals(that.description) : that.description != null) {
+      return false;
+    }
+    if (hint != null ? !hint.equals(that.hint) : that.hint != null) {
+      return false;
+    }
+    if (input != null ? !input.equals(that.input) : that.input != null) {
+      return false;
+    }
+    if (isSpj != null ? !isSpj.equals(that.isSpj) : that.isSpj != null) {
+      return false;
+    }
+    if (isVisible != null ? !isVisible.equals(that.isVisible) : that.isVisible != null) {
+      return false;
+    }
+    if (javaMemoryLimit != null ? !javaMemoryLimit.equals(that.javaMemoryLimit) : that.javaMemoryLimit != null) {
+      return false;
+    }
+    if (javaTimeLimit != null ? !javaTimeLimit.equals(that.javaTimeLimit) : that.javaTimeLimit != null) {
+      return false;
+    }
+    if (memoryLimit != null ? !memoryLimit.equals(that.memoryLimit) : that.memoryLimit != null) {
+      return false;
+    }
+    if (output != null ? !output.equals(that.output) : that.output != null) {
+      return false;
+    }
+    if (outputLimit != null ? !outputLimit.equals(that.outputLimit) : that.outputLimit != null) {
+      return false;
+    }
+    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null) {
+      return false;
+    }
+    if (sampleInput != null ? !sampleInput.equals(that.sampleInput) : that.sampleInput != null) {
+      return false;
+    }
+    if (sampleOutput != null ? !sampleOutput.equals(that.sampleOutput) : that.sampleOutput != null) {
+      return false;
+    }
+    if (source != null ? !source.equals(that.source) : that.source != null) {
+      return false;
+    }
+    if (timeLimit != null ? !timeLimit.equals(that.timeLimit) : that.timeLimit != null) {
+      return false;
+    }
+    if (title != null ? !title.equals(that.title) : that.title != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = action != null ? action.hashCode() : 0;
+    result = 31 * result + (problemId != null ? problemId.hashCode() : 0);
+    result = 31 * result + (description != null ? description.hashCode() : 0);
+    result = 31 * result + (title != null ? title.hashCode() : 0);
+    result = 31 * result + (isSpj != null ? isSpj.hashCode() : 0);
+    result = 31 * result + (timeLimit != null ? timeLimit.hashCode() : 0);
+    result = 31 * result + (javaTimeLimit != null ? javaTimeLimit.hashCode() : 0);
+    result = 31 * result + (memoryLimit != null ? memoryLimit.hashCode() : 0);
+    result = 31 * result + (javaMemoryLimit != null ? javaMemoryLimit.hashCode() : 0);
+    result = 31 * result + (outputLimit != null ? outputLimit.hashCode() : 0);
+    result = 31 * result + (isVisible != null ? isVisible.hashCode() : 0);
+    result = 31 * result + (input != null ? input.hashCode() : 0);
+    result = 31 * result + (output != null ? output.hashCode() : 0);
+    result = 31 * result + (sampleInput != null ? sampleInput.hashCode() : 0);
+    result = 31 * result + (sampleOutput != null ? sampleOutput.hashCode() : 0);
+    result = 31 * result + (hint != null ? hint.hashCode() : 0);
+    result = 31 * result + (source != null ? source.hashCode() : 0);
+    return result;
+  }
+
   public String getAction() {
     return action;
   }

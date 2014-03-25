@@ -47,7 +47,8 @@ public class Global {
     OJ_RF("Restricted Function", 13),
     OJ_SE("System Error", 14),
     OJ_JUDGING("Judging", 16, 17),
-    OJ_WAIT("Queuing", 0, 18);
+    OJ_WAIT("Queuing", 0, 18),
+    OJ_NOT_AC("Not accepted", 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
 
     private final static int TOTAL_RESULT_SIZE = 19;
 
@@ -242,6 +243,22 @@ public class Global {
 
     public String getDescription() {
       return description;
+    }
+  }
+
+  /**
+   * Article type
+   */
+  public enum ArticleType {
+    NOTICE("Notice"), ARTICLE("Article"), COMMENT("Comment");
+    private final String description;
+
+    public String getDescription() {
+      return description;
+    }
+
+    ArticleType(String description) {
+      this.description = description;
     }
   }
 }

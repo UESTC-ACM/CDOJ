@@ -159,6 +159,78 @@ public class StatusDTO implements BaseDTO<Status> {
     this.userId = userId;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    StatusDTO statusDTO = (StatusDTO) o;
+
+    if (caseNumber != null ? !caseNumber.equals(statusDTO.caseNumber) : statusDTO.caseNumber != null) {
+      return false;
+    }
+    if (codeId != null ? !codeId.equals(statusDTO.codeId) : statusDTO.codeId != null) {
+      return false;
+    }
+    if (compileInfoId != null ? !compileInfoId.equals(statusDTO.compileInfoId) : statusDTO.compileInfoId != null) {
+      return false;
+    }
+    if (contestId != null ? !contestId.equals(statusDTO.contestId) : statusDTO.contestId != null) {
+      return false;
+    }
+    if (languageId != null ? !languageId.equals(statusDTO.languageId) : statusDTO.languageId != null) {
+      return false;
+    }
+    if (length != null ? !length.equals(statusDTO.length) : statusDTO.length != null) {
+      return false;
+    }
+    if (memoryCost != null ? !memoryCost.equals(statusDTO.memoryCost) : statusDTO.memoryCost != null) {
+      return false;
+    }
+    if (problemId != null ? !problemId.equals(statusDTO.problemId) : statusDTO.problemId != null) {
+      return false;
+    }
+    if (result != null ? !result.equals(statusDTO.result) : statusDTO.result != null) {
+      return false;
+    }
+    if (statusId != null ? !statusId.equals(statusDTO.statusId) : statusDTO.statusId != null) {
+      return false;
+    }
+    if (time != null ? !time.equals(statusDTO.time) : statusDTO.time != null) {
+      return false;
+    }
+    if (timeCost != null ? !timeCost.equals(statusDTO.timeCost) : statusDTO.timeCost != null) {
+      return false;
+    }
+    if (userId != null ? !userId.equals(statusDTO.userId) : statusDTO.userId != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result1 = statusId != null ? statusId.hashCode() : 0;
+    result1 = 31 * result1 + (result != null ? result.hashCode() : 0);
+    result1 = 31 * result1 + (memoryCost != null ? memoryCost.hashCode() : 0);
+    result1 = 31 * result1 + (timeCost != null ? timeCost.hashCode() : 0);
+    result1 = 31 * result1 + (length != null ? length.hashCode() : 0);
+    result1 = 31 * result1 + (time != null ? time.hashCode() : 0);
+    result1 = 31 * result1 + (caseNumber != null ? caseNumber.hashCode() : 0);
+    result1 = 31 * result1 + (codeId != null ? codeId.hashCode() : 0);
+    result1 = 31 * result1 + (compileInfoId != null ? compileInfoId.hashCode() : 0);
+    result1 = 31 * result1 + (contestId != null ? contestId.hashCode() : 0);
+    result1 = 31 * result1 + (languageId != null ? languageId.hashCode() : 0);
+    result1 = 31 * result1 + (problemId != null ? problemId.hashCode() : 0);
+    result1 = 31 * result1 + (userId != null ? userId.hashCode() : 0);
+    return result1;
+  }
+
   public static Builder builder() {
     return new Builder();
   }

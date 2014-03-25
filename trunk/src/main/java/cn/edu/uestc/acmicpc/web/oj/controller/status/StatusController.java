@@ -82,7 +82,12 @@ public class StatusController extends BaseController {
     try {
       if (!isAdmin(session)) {
         statusCondition.isForAdmin = false;
-        statusCondition.isVisible = true;
+        if (statusCondition.contestId == null) {
+          statusCondition.contestId = -1;
+        }
+        if (statusCondition.result == null) {
+          statusCondition.result = Global.OnlineJudgeResultType.OJ_ALL;
+        }
         if (statusCondition.contestId != -1) {
           ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(statusCondition.contestId);
           if (contestShowDTO == null) {
@@ -93,14 +98,29 @@ public class StatusController extends BaseController {
             // Return nothing
             statusCondition.userId = 0;
           } else {
+            // Only show current user's status
             statusCondition.userId = currentUser.getUserId();
           }
+          // Only show status submitted in contest
           statusCondition.startTime = contestShowDTO.getStartTime();
           statusCondition.endTime = contestShowDTO.getEndTime();
+          // Some problems is stashed when contest is running
+          statusCondition.isVisible = null;
+        } else {
+          // Only show status submitted for visible problem
+          statusCondition.isVisible = true;
         }
       } else {
+        if (statusCondition.contestId != -1) {
+          ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(statusCondition.contestId);
+          if (contestShowDTO == null) {
+            throw new AppException("No such contest.");
+          }
+        }
+        // Current user is administrator, just show all the status.
         statusCondition.isForAdmin = true;
       }
+
       Long count = statusService.count(statusCondition);
       Long recordPerPage = Global.RECORD_PER_PAGE;
       if (statusCondition.countPerPage != null) {
@@ -133,15 +153,16 @@ public class StatusController extends BaseController {
     return json;
   }
 
-  @RequestMapping("count")
+  @RequestMapping("rejudgeStatusCount")
   @LoginPermit(Global.AuthenticationType.ADMIN)
   public
   @ResponseBody
-  Map<String, Object> count(@RequestBody StatusCondition statusCondition) {
+  Map<String, Object> rejudgeStatusCount(@RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
       // Current user is administrator
       statusCondition.isForAdmin = true;
+      statusCondition.result = Global.OnlineJudgeResultType.OJ_NOT_AC;
       Long count = statusService.count(statusCondition);
 
       json.put("result", "success");
@@ -167,10 +188,11 @@ public class StatusController extends BaseController {
       if (statusCondition.userName != null) {
         UserDTO userDTO = userService.getUserDTOByUserName(statusCondition.userName);
         if (userDTO == null) {
-          throw new AppException("User not found for given uesr name.");
+          throw new AppException("User not found for given user name.");
         }
         statusCondition.userId = userDTO.getUserId();
       }
+      statusCondition.result = Global.OnlineJudgeResultType.OJ_NOT_AC;
       statusService.rejudge(statusCondition);
 
       json.put("result", "success");
@@ -207,10 +229,6 @@ public class StatusController extends BaseController {
         if (problemDTO == null) {
           throw new AppException("Wrong problem id.");
         }
-        if (!problemDTO.getIsVisible() &&
-            currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
-          throw new AppException("You have no permission to submit this problem.");
-        }
         if (submitDTO.getContestId() != null) {
           // Is this contest exist?
           ContestDTO contestDTO = contestService.getContestDTOByContestId(submitDTO.getContestId());
@@ -218,8 +236,14 @@ public class StatusController extends BaseController {
             throw new AppException("Wrong contest id.");
           }
           // Is this contest contains this problem?
-          if (contestProblemService.checkContestProblemInContest(submitDTO.getProblemId(), submitDTO.getContestId()) == false) {
+          if (!contestProblemService.checkContestProblemInContest(submitDTO.getProblemId(), submitDTO.getContestId())) {
             throw new AppException("Wrong problem id.");
+          }
+        } else {
+          // We don't allow normal user to submit code to a stashed problem.
+          if (!problemDTO.getIsVisible() &&
+              currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
+            throw new AppException("You have no permission to submit this problem.");
           }
         }
 

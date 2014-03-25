@@ -2,46 +2,44 @@ cdoj
 .controller("HeaderController", [
     "$scope", "$rootScope", "$http", "$element", "$compile", "$window", "$modal"
     ($scope, $rootScope, $http, $element, $compile, $window, $modal) ->
-      $rootScope.hasLogin = false
-      $rootScope.currentUser =
-        email: ""
-      $rootScope.isAdmin = false
       $scope.userLoginDTO =
         userName: ""
         password: ""
       $scope.fieldInfo = []
 
       $scope.login = ->
+        # Force update form
+        $scope.userLoginDTO.userName = $("#userName").val()
+        $scope.userLoginDTO.password = $("#password").val()
         userLoginDTO = angular.copy($scope.userLoginDTO)
-        if angular.isUndefined userLoginDTO.password then return
         password = CryptoJS.SHA1(userLoginDTO.password).toString()
         userLoginDTO.password = password
-        $http.post("/user/login", userLoginDTO).then (response)->
-          data = response.data
+        $http.post("/user/login", userLoginDTO).success((data)->
           if data.result == "success"
-            $rootScope.hasLogin = true
-            $rootScope.currentUser =
+            $rootScope.$broadcast("currentUser:login",
               userName: data.userName
               email: data.email
               type: data.type
+            )
           else if data.result == "field_error"
             $scope.fieldInfo = data.field
           else
             $window.alert data.error_msg
+        ).error(->
+          $window.alert "Network error"
+        )
 
       $scope.logout = ->
-        $http.post("/user/logout").then (response)->
-          data = response.data
+        $http.post("/user/logout").success((data)->
           if data.result == "success"
-            $rootScope.hasLogin = false
-            $rootScope.currentUser =
-              email: ""
+            $rootScope.$broadcast("currentUser:logout")
+        ).error(->
+          $window.alert "Network error"
+        )
 
       $scope.openForgetPasswordModal = ->
-        forgetPasswordModal = $modal.open(
+        $modal.open(
           templateUrl: "template/modal/forget-password-modal.html"
           controller: "ForgetPasswordModalController"
         )
-      $scope.readMessage = (message)->
-        console.log message
   ])

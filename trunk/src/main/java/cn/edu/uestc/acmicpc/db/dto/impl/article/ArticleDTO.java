@@ -16,15 +16,17 @@ import java.util.Map;
  * "isVisible", "order", "problemId", "time", "title", "userId" })</code>
  */
 @Fields({"articleId", "parentId", "clicked", "content", "contestId", "type",
-    "isVisible", "order", "problemId", "time", "title", "userId"})
+    "isVisible", "order", "problemId", "time", "title", "userId", "userByUserId.userName",
+    "userByUserId.email"})
 public class ArticleDTO implements BaseDTO<Article> {
 
   public ArticleDTO() {
   }
 
-  private ArticleDTO(Integer articleId, Integer parentId, Integer clicked,
-                     String content, Integer contestId, Integer type, Boolean isVisible, Integer order,
-                     Integer problemId, Timestamp time, String title, Integer userId) {
+  public ArticleDTO(Integer articleId, Integer parentId, Integer clicked, String content,
+                    Integer contestId, Integer type, Boolean isVisible, Integer order,
+                    Integer problemId, Timestamp time, String title, Integer userId,
+                    String ownerName, String ownerEmail) {
     this.articleId = articleId;
     this.parentId = parentId;
     this.clicked = clicked;
@@ -37,6 +39,8 @@ public class ArticleDTO implements BaseDTO<Article> {
     this.time = time;
     this.title = title;
     this.userId = userId;
+    this.ownerName = ownerName;
+    this.ownerEmail = ownerEmail;
   }
 
   private Integer articleId;
@@ -51,6 +55,8 @@ public class ArticleDTO implements BaseDTO<Article> {
   private Timestamp time;
   private String title;
   private Integer userId;
+  private String ownerName;
+  private String ownerEmail;
 
   public Integer getArticleId() {
     return articleId;
@@ -148,6 +154,90 @@ public class ArticleDTO implements BaseDTO<Article> {
     this.userId = userId;
   }
 
+  public String getOwnerName() {
+    return ownerName;
+  }
+
+  public void setOwnerName(String ownerName) {
+    this.ownerName = ownerName;
+  }
+
+  public String getOwnerEmail() {
+    return ownerEmail;
+  }
+
+  public void setOwnerEmail(String ownerEmail) {
+    this.ownerEmail = ownerEmail;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    ArticleDTO that = (ArticleDTO) o;
+
+    if (articleId != null ? !articleId.equals(that.articleId) : that.articleId != null) {
+      return false;
+    }
+    if (content != null ? !content.equals(that.content) : that.content != null) {
+      return false;
+    }
+    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null) {
+      return false;
+    }
+    if (isVisible != null ? !isVisible.equals(that.isVisible) : that.isVisible != null) {
+      return false;
+    }
+    if (order != null ? !order.equals(that.order) : that.order != null) {
+      return false;
+    }
+    if (parentId != null ? !parentId.equals(that.parentId) : that.parentId != null) {
+      return false;
+    }
+    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null) {
+      return false;
+    }
+    if (title != null ? !title.equals(that.title) : that.title != null) {
+      return false;
+    }
+    if (type != null ? !type.equals(that.type) : that.type != null) {
+      return false;
+    }
+    if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
+      return false;
+    }
+    if (ownerName != null ? !ownerName.equals(that.ownerName) : that.ownerName != null) {
+      return false;
+    }
+    if (ownerEmail != null ? !ownerEmail.equals(that.ownerEmail) : that.ownerEmail != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = articleId != null ? articleId.hashCode() : 0;
+    result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
+    result = 31 * result + (content != null ? content.hashCode() : 0);
+    result = 31 * result + (contestId != null ? contestId.hashCode() : 0);
+    result = 31 * result + (type != null ? type.hashCode() : 0);
+    result = 31 * result + (isVisible != null ? isVisible.hashCode() : 0);
+    result = 31 * result + (order != null ? order.hashCode() : 0);
+    result = 31 * result + (problemId != null ? problemId.hashCode() : 0);
+    result = 31 * result + (title != null ? title.hashCode() : 0);
+    result = 31 * result + (userId != null ? userId.hashCode() : 0);
+    result = 31 * result + (ownerName != null ? ownerName.hashCode() : 0);
+    result = 31 * result + (ownerEmail != null ? ownerEmail.hashCode() : 0);
+    return result;
+  }
+
   public static Builder builder() {
     return new Builder();
   }
@@ -160,7 +250,7 @@ public class ArticleDTO implements BaseDTO<Article> {
     @Override
     public ArticleDTO build() {
       return new ArticleDTO(articleId, parentId, clicked, content, contestId,
-          type, isVisible, order, problemId, time, title, userId);
+          type, isVisible, order, problemId, time, title, userId, ownerName, ownerEmail);
     }
 
     @Override
@@ -177,6 +267,8 @@ public class ArticleDTO implements BaseDTO<Article> {
       time = (Timestamp) properties.get("time");
       title = (String) properties.get("title");
       userId = (Integer) properties.get("userId");
+      ownerName = (String) properties.get("userByUserId.userName");
+      ownerEmail = (String) properties.get("userByUserId.email");
 
       // Remove more tag
       content = content.replace(Global.ARTICLE_MORE_TAG, "");
@@ -197,6 +289,26 @@ public class ArticleDTO implements BaseDTO<Article> {
     private Timestamp time;
     private String title;
     private Integer userId;
+    private String ownerName;
+    private String ownerEmail;
+
+    public String getOwnerName() {
+      return ownerName;
+    }
+
+    public Builder setOwnerName(String ownerName) {
+      this.ownerName = ownerName;
+      return this;
+    }
+
+    public String getOwnerEmail() {
+      return ownerEmail;
+    }
+
+    public Builder setOwnerEmail(String ownerEmail) {
+      this.ownerEmail = ownerEmail;
+      return this;
+    }
 
     public Integer getArticleId() {
       return articleId;

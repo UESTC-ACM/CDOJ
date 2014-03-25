@@ -1,12 +1,19 @@
 <div class="row">
   <list condition="$root.contestCondition"
-        request-url="/contest/search">
+        request-url="/contest/search"
+        name="contest">
     <div class="col-md-12">
       <table class="table table-condensed">
         <thead>
         <tr>
           <th style="width: 4em; text-align: right;">#</th>
-          <th><a href="#/contest/editor/new" ng-show="$root.isAdmin">Add new contest</a></th>
+          <th>
+            <a href="javascript:void(0);"
+               ng-show="$root.isAdmin"
+               ng-click="showAddContestModal()">
+              Add new contest
+            </a>
+          </th>
           <th style="width: 12em; text-align: right;">Start time</th>
           <th style="width: 9em; text-align: right;">Length</th>
           <th style="width: 6em; text-align: center;">Type</th>
@@ -60,8 +67,7 @@
             <span ng-bind="contest.typeName"
                   ng-show="contest.type != $root.ContestType.INVITED || contest.status != $root.ContestStatus.PENDING">
             </span>
-            <a href="javascript:void(0);"
-               ng-click="toRegisterPage(contest)"
+            <a href="/#/contest/register/{{contest.contestId}}"
                class="pull-right"
                ng-hide="contest.type != $root.ContestType.INVITED || contest.status != $root.ContestStatus.PENDING">
               <i class="fa fa-hand-o-right"></i>Register

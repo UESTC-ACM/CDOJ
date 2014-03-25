@@ -6,7 +6,7 @@
         <thead>
         <tr>
           <th style="width: 4em; text-align: right;">#</th>
-          <th><a href="#/problem/editor/new" ng-show="$root.isAdmin">Add new problem</a></th>
+          <th><a href="/#/problem/editor/new" ng-show="$root.isAdmin">Add new problem</a></th>
           <th style="width: 5em; text-align: right;">Solved</th>
           <th style="width: 55px;" ng-show="$root.isAdmin"></th>
         </tr>
@@ -15,6 +15,7 @@
         <tr>
           <td>
             <input type="number"
+                   min="1"
                    style="width: 100%;"
                    ng-model="$root.problemCondition.startId"/>
           </td>

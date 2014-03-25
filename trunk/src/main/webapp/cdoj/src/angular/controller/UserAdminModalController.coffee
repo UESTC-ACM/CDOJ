@@ -25,8 +25,7 @@ cdoj
           newPasswordRepeat = CryptoJS.SHA1(userEditDTO.newPasswordRepeat).toString()
           userEditDTO.newPasswordRepeat = newPasswordRepeat
 
-        $http.post("/user/adminEdit", userEditDTO).then (response)->
-          data = response.data
+        $http.post("/user/adminEdit", userEditDTO).success((data)->
           if data.result == "success"
             $window.alert "Success!"
             $modalInstance.close()
@@ -34,6 +33,12 @@ cdoj
             $scope.fieldInfo = data.field
           else
             $window.alert data.error_msg
+        ).error(->
+          $window.alert "Network error."
+        )
       $scope.dismiss = ->
         $modalInstance.dismiss("close")
+      $scope.$on("$routeChangeStart", ->
+        $modalInstance.dismiss()
+      )
   ])
