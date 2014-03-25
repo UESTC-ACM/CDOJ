@@ -12,6 +12,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -26,7 +28,10 @@ public class Contest implements Serializable {
 
   private static final long serialVersionUID = -3631561809657861853L;
 
-  private static final Integer defaultContestLength = 300;
+  /**
+   * Default contest length: 1800 seconds / 300 minutes / 5 hours
+   */
+  private static final Integer defaultContestLength = 1800;
 
   private Integer contestId;
 
@@ -139,6 +144,31 @@ public class Contest implements Serializable {
     isVisible = visible;
   }
 
+  private String password;
+
+  @Column(name = "password", nullable = true, insertable = true, updatable = true, length = 40,
+    precision = 0)
+  @Basic
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  private Integer parentId;
+
+  @Column(name = "parentId", nullable = true, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  public Integer getParentId() {
+    return parentId;
+  }
+
+  public void setParentId(Integer parentId) {
+    this.parentId = parentId;
+  }
+
   private Collection<ContestProblem> contestProblemsByContestId;
 
   @OneToMany(mappedBy = "contestByContestId", cascade = CascadeType.ALL)
@@ -192,6 +222,19 @@ public class Contest implements Serializable {
 
   public void setContestTeamsByContestId(Collection<ContestTeam> contestTeamsByContestId) {
     this.contestTeamsByContestId = contestTeamsByContestId;
+  }
+
+  private Contest contestByParentId;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "parentId", referencedColumnName = "contestId", nullable = true,
+      insertable = false, updatable = false)
+  public Contest getContestByParentId() {
+    return contestByParentId;
+  }
+
+  public void setContestByParentId(Contest contestByParentId) {
+    this.contestByParentId = contestByParentId;
   }
 
   public Contest() {
