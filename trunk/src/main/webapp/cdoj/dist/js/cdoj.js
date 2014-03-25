@@ -80782,10 +80782,10 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("ContestListController", [
-    "$scope", "$rootScope", "$window", "$modal", function($scope, $rootScope, $window, $modal) {
+    "$scope", "$rootScope", "$window", "$modal", "$http", function($scope, $rootScope, $window, $modal, $http) {
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $window.scrollTo(0, 0);
-      return $scope.showAddContestModal = function() {
+      $scope.showAddContestModal = function() {
         if ($rootScope.isAdmin === false) {
           return;
         }
@@ -80793,6 +80793,69 @@ if (typeof exports === 'object') {
           templateUrl: "template/modal/add-contest-modal.html",
           controller: "AddContestModalController"
         });
+      };
+      return $scope.enterContest = function(contest) {
+        var contestLoginDTO;
+        if (contest.type === $rootScope.ContestType.PRIVATE) {
+          if ($rootScope.hasLogin === false) {
+            return $window.alert("Please login first!");
+          } else {
+            contestLoginDTO = {
+              contestId: contest.contestId,
+              password: "1234567890123456789012345678901234567890"
+            };
+            return $http.post("/contest/loginContest", contestLoginDTO).success(function(data) {
+              if (data.result === "success") {
+                return $window.location.href = "/#/contest/show/" + contest.contestId;
+              } else {
+                return $modal.open({
+                  templateUrl: "template/modal/contest-password-modal.html",
+                  controller: "ContestPasswordModalController",
+                  resolve: {
+                    contest: function() {
+                      return contest;
+                    }
+                  }
+                });
+              }
+            }).error(function() {
+              return $window.alert("Network error!");
+            });
+          }
+        } else if (contest.type === $rootScope.ContestType.INVITED) {
+
+        } else {
+          return $window.location.href = "/#/contest/show/" + contest.contestId;
+        }
+      };
+    }
+  ]);
+
+  cdoj.controller("ContestPasswordModalController", [
+    "$scope", "$rootScope", "$window", "$modalInstance", "contest", "$http", function($scope, $rootScope, $window, $modalInstance, contest, $http) {
+      $scope.contest = contest;
+      $scope.fieldInfo = [];
+      $scope.enter = function() {
+        var contestLoginDTO;
+        contestLoginDTO = {
+          contestId: contest.contestId,
+          password: CryptoJS.SHA1(contest.password).toString()
+        };
+        return $http.post("/contest/loginContest", contestLoginDTO).success(function(data) {
+          if (data.result === "success") {
+            $modalInstance.close();
+            return $window.location.href = "/#/contest/show/" + contest.contestId;
+          } else if (data.result === "field_error") {
+            return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error!");
+        });
+      };
+      return $scope.cancel = function() {
+        return $modalInstance.dismiss();
       };
     }
   ]);
