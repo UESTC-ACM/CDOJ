@@ -5,6 +5,7 @@ import cn.edu.uestc.acmicpc.db.condition.impl.ContestTeamCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestTeamDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReportDTO;
 import cn.edu.uestc.acmicpc.db.entity.ContestTeam;
 import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -97,5 +98,13 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
       contestTeam.setStatus(contestTeamDTO.getStatus());
     }
     contestTeamDAO.update(contestTeam);
+  }
+
+  @Override
+  public List<ContestTeamReportDTO> exportContestTeamReport(Integer contestId) throws AppException {
+    ContestTeamCondition contestTeamCondition = new ContestTeamCondition();
+    contestTeamCondition.contestId = contestId;
+    return contestTeamDAO.findAll(ContestTeamReportDTO.class,
+        ContestTeamReportDTO.builder(), contestTeamCondition.getCondition());
   }
 }
