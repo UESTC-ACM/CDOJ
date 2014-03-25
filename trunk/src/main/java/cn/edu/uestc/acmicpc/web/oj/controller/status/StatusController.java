@@ -80,14 +80,14 @@ public class StatusController extends BaseController {
                              @RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
+      if (statusCondition.contestId == null) {
+        statusCondition.contestId = -1;
+      }
+      if (statusCondition.result == null) {
+        statusCondition.result = Global.OnlineJudgeResultType.OJ_ALL;
+      }
       if (!isAdmin(session)) {
         statusCondition.isForAdmin = false;
-        if (statusCondition.contestId == null) {
-          statusCondition.contestId = -1;
-        }
-        if (statusCondition.result == null) {
-          statusCondition.result = Global.OnlineJudgeResultType.OJ_ALL;
-        }
         if (statusCondition.contestId != -1) {
           ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(statusCondition.contestId);
           if (contestShowDTO == null) {
@@ -162,7 +162,17 @@ public class StatusController extends BaseController {
     try {
       // Current user is administrator
       statusCondition.isForAdmin = true;
-      statusCondition.result = Global.OnlineJudgeResultType.OJ_NOT_AC;
+      if (statusCondition.result == null ||
+          statusCondition.result == Global.OnlineJudgeResultType.OJ_ALL ||
+          statusCondition.result == Global.OnlineJudgeResultType.OJ_AC ||
+          statusCondition.result == Global.OnlineJudgeResultType.OJ_JUDGING ||
+          statusCondition.result == Global.OnlineJudgeResultType.OJ_WAIT) {
+        // Avoid rejudge accepted status.
+        statusCondition.result = Global.OnlineJudgeResultType.OJ_NOT_AC;
+      }
+      if (statusCondition.contestId == null) {
+        statusCondition.contestId = -1;
+      }
       Long count = statusService.count(statusCondition);
 
       json.put("result", "success");
@@ -192,7 +202,17 @@ public class StatusController extends BaseController {
         }
         statusCondition.userId = userDTO.getUserId();
       }
-      statusCondition.result = Global.OnlineJudgeResultType.OJ_NOT_AC;
+      if (statusCondition.result == null ||
+          statusCondition.result == Global.OnlineJudgeResultType.OJ_ALL ||
+          statusCondition.result == Global.OnlineJudgeResultType.OJ_AC ||
+          statusCondition.result == Global.OnlineJudgeResultType.OJ_JUDGING ||
+          statusCondition.result == Global.OnlineJudgeResultType.OJ_WAIT) {
+        // Avoid rejudge accepted status.
+        statusCondition.result = Global.OnlineJudgeResultType.OJ_NOT_AC;
+      }
+      if (statusCondition.contestId == null) {
+        statusCondition.contestId = -1;
+      }
       statusService.rejudge(statusCondition);
 
       json.put("result", "success");
