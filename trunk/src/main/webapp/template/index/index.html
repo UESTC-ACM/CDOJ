@@ -46,8 +46,8 @@
             <p class="list-group-item-text">Step-By-Step</p>
           </a>
         </li>
-        <li class="disabled">
-          <a href="javascript:void(0);">
+        <li ng-class="{active: isArticle && currentArticleId == 174}">
+          <a href="javascript:void(0);" ng-click="showArticle(174)">
             <h4 class="list-group-item-heading"><i class="fa fa-trophy"></i></h4>
 
             <p class="list-group-item-text">Teams Honors</p>
