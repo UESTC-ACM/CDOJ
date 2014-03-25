@@ -12,11 +12,13 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDetailDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReportDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReviewDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ContestImporterService;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
@@ -53,6 +55,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -112,6 +115,55 @@ public class ContestController extends BaseController {
     this.contestTeamService = contestTeamService;
     this.messageService = messageService;
     this.contestRankListService = contestRankListService;
+  }
+
+  @RequestMapping("registryReport/{contestId}")
+  public ModelAndView registryReport(HttpSession session,
+                                     @PathVariable("contestId")
+                                     Integer contestId){
+    ModelAndView result = new ModelAndView();
+    result.setViewName("contestRegistryReportView");
+    try {
+      if (!isAdmin(session)) {
+        throw new AppException("Permission denied!");
+      }
+      List<ContestTeamReportDTO> contestTeamReportDTOList =
+          contestTeamService.exportContestTeamReport(contestId);
+      List<Integer> teamIdList = new LinkedList<>();
+      for (ContestTeamReportDTO team : contestTeamReportDTOList) {
+        teamIdList.add(team.getTeamId());
+      }
+      TeamUserCondition teamUserCondition = new TeamUserCondition();
+      teamUserCondition.orderFields = "id";
+      teamUserCondition.orderAsc = "true";
+      teamUserCondition.teamIdList = ArrayUtil.join(teamIdList.toArray(), ",");
+
+      // Search team users
+      List<TeamUserReportDTO> teamUserList = teamUserService.exportTeamUserReport(teamUserCondition);
+
+      // Put users into teams
+      for (ContestTeamReportDTO team : contestTeamReportDTOList) {
+        team.setTeamUsers(new LinkedList<TeamUserReportDTO>());
+        team.setInvitedUsers(new LinkedList<TeamUserReportDTO>());
+        for (TeamUserReportDTO teamUserListDTO : teamUserList) {
+          if (team.getTeamId().equals(teamUserListDTO.getTeamId())) {
+            // Put users into current users / inactive users
+            if (teamUserListDTO.getAllow()) {
+              team.getTeamUsers().add(teamUserListDTO);
+            } else if (isAdmin(session)) {
+              team.getInvitedUsers().add(teamUserListDTO);
+            }
+          }
+        }
+      }
+
+      result.addObject("list", contestTeamReportDTOList);
+      result.addObject("result", "success");
+    } catch (AppException e) {
+      result.addObject("result", "error");
+      result.addObject("error_msg", e.getMessage());
+    }
+    return result;
   }
 
   @RequestMapping("registryReview")
