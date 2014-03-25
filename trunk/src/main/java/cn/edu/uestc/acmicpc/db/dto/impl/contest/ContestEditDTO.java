@@ -10,9 +10,11 @@ public class ContestEditDTO {
   public ContestEditDTO() {
   }
 
-  public ContestEditDTO(String action, Integer contestId, String description, Integer lengthDays,
-                        Integer lengthHours, Integer lengthMinutes, String problemList,
-                        Timestamp time, String title, Byte type) {
+  public ContestEditDTO(String action, Integer contestId, String description,
+                        Integer lengthDays, Integer lengthHours,
+                        Integer lengthMinutes, String problemList,
+                        Timestamp time, String title, Byte type,
+                        String password, String passwordRepeat) {
     this.action = action;
     this.contestId = contestId;
     this.description = description;
@@ -23,6 +25,8 @@ public class ContestEditDTO {
     this.time = time;
     this.title = title;
     this.type = type;
+    this.password = password;
+    this.passwordRepeat = passwordRepeat;
   }
 
   private String action;
@@ -35,6 +39,24 @@ public class ContestEditDTO {
   private Timestamp time;
   private String title;
   private Byte type;
+  private String password;
+  private String passwordRepeat;
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public String getPasswordRepeat() {
+    return passwordRepeat;
+  }
+
+  public void setPasswordRepeat(String passwordRepeat) {
+    this.passwordRepeat = passwordRepeat;
+  }
 
   public String getAction() {
     return action;
@@ -118,12 +140,8 @@ public class ContestEditDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
+    if (this == o) return true;
+    if (!(o instanceof ContestEditDTO)) return false;
 
     ContestEditDTO that = (ContestEditDTO) o;
 
@@ -143,6 +161,12 @@ public class ContestEditDTO {
       return false;
     }
     if (lengthMinutes != null ? !lengthMinutes.equals(that.lengthMinutes) : that.lengthMinutes != null) {
+      return false;
+    }
+    if (password != null ? !password.equals(that.password) : that.password != null) {
+      return false;
+    }
+    if (passwordRepeat != null ? !passwordRepeat.equals(that.passwordRepeat) : that.passwordRepeat != null) {
       return false;
     }
     if (problemList != null ? !problemList.equals(that.problemList) : that.problemList != null) {
@@ -173,6 +197,8 @@ public class ContestEditDTO {
     result = 31 * result + (time != null ? time.hashCode() : 0);
     result = 31 * result + (title != null ? title.hashCode() : 0);
     result = 31 * result + (type != null ? type.hashCode() : 0);
+    result = 31 * result + (password != null ? password.hashCode() : 0);
+    result = 31 * result + (passwordRepeat != null ? passwordRepeat.hashCode() : 0);
     return result;
   }
 
@@ -195,10 +221,22 @@ public class ContestEditDTO {
     private Timestamp time;
     private String title;
     private Byte type;
+    private String password;
+    private String passwordRepeat;
 
     public ContestEditDTO build() {
       return new ContestEditDTO(action, contestId, description, lengthDays, lengthHours, lengthMinutes,
-          problemList, time, title, type);
+          problemList, time, title, type, password, passwordRepeat);
+    }
+
+    public Builder setPassword(String password) {
+      this.password = password;
+      return this;
+    }
+
+    public Builder setPasswordRepeat(String passwordRepeat) {
+      this.passwordRepeat = passwordRepeat;
+      return this;
     }
 
     public Builder setAction(String action) {
