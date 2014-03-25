@@ -97,14 +97,22 @@ DROP TABLE IF EXISTS `uestcoj`.`contest` ;
 CREATE  TABLE IF NOT EXISTS `uestcoj`.`contest` (
   `contestId` INT NOT NULL AUTO_INCREMENT ,
   `title` VARCHAR(50) NOT NULL ,
-  `description` VARCHAR(200) NOT NULL ,
+  `description` TEXT NOT NULL ,
   `type` TINYINT NOT NULL DEFAULT 0 ,
   `time` DATETIME NOT NULL ,
   `length` INT NOT NULL ,
   `isVisible` TINYINT(1) NOT NULL DEFAULT 0 ,
   `OPTLOCK` INT NULL DEFAULT 0 ,
+  `password` VARCHAR(40) NULL ,
+  `parentId` INT NULL ,
   PRIMARY KEY (`contestId`) ,
-  UNIQUE INDEX `contestId_UNIQUE` (`contestId` ASC) )
+  UNIQUE INDEX `contestId_UNIQUE` (`contestId` ASC) ,
+  INDEX `FK_parentId_on_contest_idx_idx` (`parentId` ASC) ,
+  CONSTRAINT `FK_parentId_on_contest_idx`
+    FOREIGN KEY (`parentId` )
+    REFERENCES `uestcoj`.`contest` (`contestId` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
