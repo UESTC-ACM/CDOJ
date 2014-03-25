@@ -80757,9 +80757,17 @@ if (typeof exports === 'object') {
         return $scope.problemList.splice(index, 1);
       };
       return $scope.submit = function() {
-        var contestEditDTO;
+        var contestEditDTO, password, passwordRepeat;
         contestEditDTO = angular.copy($scope.contest);
         contestEditDTO.time = Date.create(contestEditDTO.time).getTime();
+        if (angular.isUndefined(contestEditDTO.password || angular.isUndefined(contestEditDTO.passwordRepeat))) {
+          $window.scrollTo(0, 0);
+          return;
+        }
+        password = CryptoJS.SHA1(contestEditDTO.password).toString();
+        contestEditDTO.password = password;
+        passwordRepeat = CryptoJS.SHA1(contestEditDTO.passwordRepeat).toString();
+        contestEditDTO.passwordRepeat = passwordRepeat;
         return $http.post("/contest/edit", contestEditDTO).success(function(data) {
           if (data.result === "success") {
             return $window.location.href = "#/contest/show/" + data.contestId;

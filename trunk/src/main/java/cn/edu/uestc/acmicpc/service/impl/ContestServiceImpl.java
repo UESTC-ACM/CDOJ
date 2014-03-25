@@ -88,6 +88,9 @@ public class ContestServiceImpl extends AbstractService implements
     if (contestDTO.getType() != null) {
       contest.setType(contestDTO.getType());
     }
+    if (contestDTO.getPassword() != null) {
+      contest.setPassword(contestDTO.getPassword());
+    }
   }
 
   @Override

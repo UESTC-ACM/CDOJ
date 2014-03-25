@@ -514,6 +514,11 @@ public class ContestController extends BaseController {
         if (StringUtil.trimAllSpace(contestEditDTO.getTitle()).equals("")) {
           throw new FieldException("title", "Please enter a validate title.");
         }
+        if (contestEditDTO.getType() == Global.ContestType.PRIVATE.ordinal()) {
+          if (!contestEditDTO.getPassword().equals(contestEditDTO.getPasswordRepeat())) {
+            throw new FieldException("newPasswordRepeat", "Password do not match.");
+          }
+        }
         ContestDTO contestDTO;
         if (contestEditDTO.getAction().compareTo("new") == 0) {
           Integer contestId = contestService.createNewContest();
@@ -578,6 +583,9 @@ public class ContestController extends BaseController {
         }
 
         contestDTO.setType(contestEditDTO.getType());
+        if (contestEditDTO.getType() == Global.ContestType.PRIVATE.ordinal()) {
+          contestDTO.setPassword(contestEditDTO.getPassword());
+        }
         contestDTO.setDescription(contestEditDTO.getDescription());
         contestDTO.setTitle(contestEditDTO.getTitle());
         contestDTO.setLength(
