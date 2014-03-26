@@ -81257,7 +81257,12 @@ if (typeof exports === 'object') {
           return rankListTimer = $timeout(refreshRankList, 10000);
         });
       };
-      return rankListTimer = $timeout(refreshRankList, 500);
+      rankListTimer = $timeout(refreshRankList, 500);
+      return $scope.checkIsMyTeam = function(team) {
+        return angular.isDefined(_.findWhere(team.teamUsers, {
+          userName: $rootScope.currentUser.userName
+        }));
+      };
     }
   ]);
 

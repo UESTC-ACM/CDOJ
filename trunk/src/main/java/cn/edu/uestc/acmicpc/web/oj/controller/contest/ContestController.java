@@ -463,7 +463,32 @@ public class ContestController extends BaseController {
         throw new AppException("Contest not start yet.");
       }
 
-      json.put("rankList", contestRankListService.getRankList(contestId));
+      if (contestShowDTO.getType() == Global.ContestType.INHERIT.ordinal()) {
+        // Get parent contest
+        ContestDTO contestDTO = contestService.getContestDTOByContestId(contestShowDTO.getParentId());
+        if (contestDTO == null ||
+            (!contestDTO.getIsVisible() && !isAdmin(session))) {
+          throw new AppException("Contest not found.");
+        }
+        // Inherit contest type
+        contestShowDTO.setType(contestDTO.getType());
+      }
+      if (!isAdmin(session) && (
+          contestShowDTO.getType() == Global.ContestType.PRIVATE.ordinal() ||
+              contestShowDTO.getType() == Global.ContestType.INVITED.ordinal())) {
+        // Private contest
+        String attributeName = "ContestPermission#" + contestShowDTO.getContestId();
+        // If this user has not login before
+        if (session.getAttribute(attributeName) == null && !isAdmin(session)) {
+          throw new AppException("Permission denied.");
+        }
+      }
+
+      if (contestShowDTO.getType() == Global.ContestType.INVITED.ordinal()) {
+        json.put("rankList", contestRankListService.getRankList(contestId, true));
+      } else {
+        json.put("rankList", contestRankListService.getRankList(contestId, false));
+      }
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
@@ -492,10 +517,9 @@ public class ContestController extends BaseController {
         throw new AppException("No such contest.");
       }
 
-      ContestDTO contestDTO = contestService.getContestDTOByContestId(contestShowDTO.getContestId());
-      if (contestDTO.getType() == Global.ContestType.INHERIT.ordinal()) {
+      if (contestShowDTO.getType() == Global.ContestType.INHERIT.ordinal()) {
         // Get parent contest
-        contestDTO = contestService.getContestDTOByContestId(contestDTO.getParentId());
+        ContestDTO contestDTO = contestService.getContestDTOByContestId(contestShowDTO.getParentId());
         if (contestDTO == null ||
             (!contestDTO.getIsVisible() && !isAdmin(session))) {
           throw new AppException("Contest not found.");
@@ -503,8 +527,9 @@ public class ContestController extends BaseController {
         // Inherit contest type
         contestShowDTO.setType(contestDTO.getType());
       }
-      if (contestShowDTO.getType() == Global.ContestType.PRIVATE.ordinal() ||
-          contestShowDTO.getType() == Global.ContestType.INVITED.ordinal()) {
+      if (!isAdmin(session) && (
+          contestShowDTO.getType() == Global.ContestType.PRIVATE.ordinal() ||
+          contestShowDTO.getType() == Global.ContestType.INVITED.ordinal())) {
         // Private contest
         String attributeName = "ContestPermission#" + contestShowDTO.getContestId();
         // If this user has not login before
