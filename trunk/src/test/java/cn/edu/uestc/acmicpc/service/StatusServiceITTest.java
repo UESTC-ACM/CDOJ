@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.service;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -362,4 +363,13 @@ public class StatusServiceITTest extends AbstractTestNGSpringContextTests {
     Assert.assertEquals(statusListDTOs.size(), 0);
   }
 
+  @Test
+  public void testGetStatusInformation() throws AppException {
+    Integer statusId = 5;
+    StatusInformationDTO statusInformationDTO = statusService.getStatusInformation(statusId);
+    Assert.assertEquals(statusInformationDTO.getStatusId(), Integer.valueOf(5));
+    Assert.assertEquals(statusInformationDTO.getCodeContent(), "code");
+    Assert.assertEquals(statusInformationDTO.getUserId(), Integer.valueOf(2));
+    Assert.assertEquals(statusInformationDTO.getCompileInfoId(), Integer.valueOf(1));
+  }
 }
