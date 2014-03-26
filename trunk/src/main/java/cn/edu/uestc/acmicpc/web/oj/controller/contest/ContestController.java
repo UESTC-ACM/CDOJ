@@ -364,7 +364,7 @@ public class ContestController extends BaseController {
       }
       List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamId);
       for (TeamUserListDTO teamUserDTO : teamUserList) {
-        if (contestTeamService.whetherUserHasBeenRegistered(teamUserDTO.getUserId(),
+        if (contestTeamService.checkUserHasRegisterInContest(teamUserDTO.getUserId(),
             contestDTO.getContestId())) {
           throw new AppException("User " + teamUserDTO.getUserName() +
               " has been register into this contest in another team!");
@@ -534,7 +534,35 @@ public class ContestController extends BaseController {
         String attributeName = "ContestPermission#" + contestShowDTO.getContestId();
         // If this user has not login before
         if (session.getAttribute(attributeName) == null && !isAdmin(session)) {
-          throw new AppException("Permission denied.");
+          // Auto re-login first
+          ContestDTO contestDTO = contestService.getContestDTOByContestId(contestId);
+          if (contestDTO.getType() == Global.ContestType.INHERIT.ordinal()) {
+            // Get parent contest
+            contestDTO = contestService.getContestDTOByContestId(contestDTO.getParentId());
+            if (contestDTO == null ||
+                (!contestDTO.getIsVisible() && !isAdmin(session))) {
+              throw new AppException("Contest not found.");
+            }
+          }
+          if (session.getAttribute(attributeName) == null) {
+            // If this user has not login before
+            if (contestDTO.getType() == Global.ContestType.PRIVATE.ordinal()) {
+              throw new AppException("Permission denied, please return to the contest list and enter the contest again.");
+            } else if (contestDTO.getType() == Global.ContestType.INVITED.ordinal()) {
+              UserDTO currentUser = getCurrentUser(session);
+              if (currentUser == null) {
+                throw new AppException("Please login first.");
+              } else {
+                if (!contestTeamService.checkContestPermission(currentUser.getUserId(), contestDTO.getContestId())) {
+                  throw new AppException("You are not invited in this contest, please register first!");
+                }
+              }
+            } else {
+              // Unexpected type
+              throw new AppException("Incorrect contest settings, please contact the staff!");
+            }
+            session.setAttribute(attributeName, true);
+          }
         }
       }
 

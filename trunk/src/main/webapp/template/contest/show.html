@@ -119,7 +119,7 @@
         <table class="table table-condensed">
           <thead>
           <tr>
-            <th style="text-align: center;" ng-show="$root.isAdmin">User</th>
+            <th style="text-align: center;" ng-show="$root.isAdmin || contest.type == $root.ContestType.INVITED">User</th>
             <th style="text-align: center;">Prob</th>
             <th style="width: 19em; text-align: center;">Result
               <a id="status-refresh-button" href="javascript:void(0);" ng-click="refreshStatus()">
@@ -137,7 +137,7 @@
           </thead>
           <tbody>
           <tr>
-            <td ng-show="$root.isAdmin">
+            <td ng-show="$root.isAdmin || contest.type == $root.ContestType.INVITED">
               <input type="text"
                      style="width: 100%;"
                      ng-model="contestStatusCondition.userName"/>
@@ -169,7 +169,7 @@
             </td>
           </tr>
           <tr ng-repeat="status in list">
-            <td style="text-align: center;" ng-show="$root.isAdmin">
+            <td style="text-align: center;" ng-show="$root.isAdmin || contest.type == $root.ContestType.INVITED">
               <a href="/#/user/center/{{status.userName}}"
                  ng-bind="status.userName"></a>
             </td>
@@ -180,6 +180,7 @@
             <td style="text-align: center;"
                 ui-status
                 status="status"
+                always-show-href="true"
                 ng-class="{
                 'font-primary': [0, 16, 17, 18].some(status.returnTypeId),
                 'font-success': [1].some(status.returnTypeId),
@@ -197,7 +198,10 @@
             </td>
 
             <td style="text-align: center;" ng-bind="status.language"></td>
-            <td style="text-align: center;" ui-code-href status="status">
+            <td style="text-align: center;"
+                ui-code-href
+                status="status"
+                always-show-href="true">
             </td>
             <td style="text-align: center;"
                 ui-time

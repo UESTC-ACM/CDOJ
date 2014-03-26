@@ -39,7 +39,7 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
   }
 
   @Override
-  public Boolean whetherUserHasBeenRegistered(Integer userId, Integer contestId) throws AppException {
+  public Boolean checkUserHasRegisterInContest(Integer userId, Integer contestId) throws AppException {
     StringBuilder hqlBuilder = new StringBuilder();
     hqlBuilder.append("from ContestTeam contestTeam, TeamUser teamUser where")
         .append(" contestTeam.teamId = teamUser.teamId")
@@ -122,5 +122,22 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
         // User should be allowed
         .append(" and teamUser.allow = true");
     return contestTeamDAO.customCount("teamUser.userId", hqlBuilder.toString()) > 0;
+  }
+
+  @Override
+  public Integer getTeamIdInContest(Integer userId, Integer contestId) throws AppException {
+    StringBuilder hqlBuilder = new StringBuilder();
+    hqlBuilder.append("select contestTeam.teamId from ContestTeam contestTeam, TeamUser teamUser where")
+        // Contest id
+        .append(" contestTeam.contestId = ").append(contestId)
+        // Team should be accepted
+        .append(" and contestTeam.status = ").append(Global.ContestRegistryStatus.ACCEPTED.ordinal())
+        .append(" and contestTeam.teamId = teamUser.teamId")
+            // User id
+        .append(" and teamUser.userId = ").append(userId)
+        // User should be allowed
+        .append(" and teamUser.allow = true");
+    List<Integer> result = (List<Integer>) contestTeamDAO.findAll(hqlBuilder.toString());
+    return result.size() > 0 ? result.get(0) : null;
   }
 }

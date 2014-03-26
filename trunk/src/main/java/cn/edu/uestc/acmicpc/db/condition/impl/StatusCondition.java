@@ -59,6 +59,12 @@ public class StatusCondition extends BaseCondition {
   public Integer userId;
 
   /**
+   *
+   */
+  @Exp(mapField = "userId", type = ConditionType.IN)
+  public String userIds;
+
+  /**
    * Problem id.
    */
   @Exp(mapField = "problemId", type = Condition.ConditionType.EQUALS)
