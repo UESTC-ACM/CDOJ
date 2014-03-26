@@ -2,9 +2,11 @@ package cn.edu.uestc.acmicpc.service;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -15,6 +17,7 @@ import org.testng.annotations.Test;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * test cases for {@link cn.edu.uestc.acmicpc.service.iface.StatusService}
@@ -322,6 +325,41 @@ public class StatusServiceITTest extends AbstractTestNGSpringContextTests {
     statusCondition.isForAdmin = true;
     statusCondition.contestId = 1;
     Assert.assertEquals(statusService.count(statusCondition), Long.valueOf(2L));
+  }
+
+  @Test
+  public void testGetStatusList() throws AppException {
+    StatusCondition statusCondition = new StatusCondition();
+    statusCondition.problemId = 1;
+    statusCondition.isForAdmin = true;
+    List<StatusListDTO> statusListDTOs = statusService.getStatusList(statusCondition);
+    Assert.assertEquals(statusListDTOs.size(), 6);
+    Assert.assertEquals(statusListDTOs.get(0).getStatusId(), Integer.valueOf(1));
+    Assert.assertEquals(statusListDTOs.get(1).getStatusId(), Integer.valueOf(2));
+    Assert.assertEquals(statusListDTOs.get(2).getStatusId(), Integer.valueOf(3));
+    Assert.assertEquals(statusListDTOs.get(3).getStatusId(), Integer.valueOf(4));
+    Assert.assertEquals(statusListDTOs.get(4).getStatusId(), Integer.valueOf(5));
+    Assert.assertEquals(statusListDTOs.get(5).getStatusId(), Integer.valueOf(6));
+  }
+
+  @Test
+  public void testGetStatusList_withPageInfo() throws AppException {
+    StatusCondition statusCondition = new StatusCondition();
+    statusCondition.problemId = 1;
+    statusCondition.isForAdmin = true;
+    PageInfo pageInfo = PageInfo.create(300L, 4L, 10, 2L);
+    List<StatusListDTO> statusListDTOs = statusService.getStatusList(statusCondition, pageInfo);
+    Assert.assertEquals(statusListDTOs.size(), 2);
+  }
+
+  @Test
+  public void testGetStatusList_withPageInfo_emptyResult() throws AppException {
+    StatusCondition statusCondition = new StatusCondition();
+    statusCondition.problemId = 1;
+    statusCondition.isForAdmin = true;
+    PageInfo pageInfo = PageInfo.create(300L, 4L, 10, 3L);
+    List<StatusListDTO> statusListDTOs = statusService.getStatusList(statusCondition, pageInfo);
+    Assert.assertEquals(statusListDTOs.size(), 0);
   }
 
 }
