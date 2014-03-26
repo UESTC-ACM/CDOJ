@@ -7,6 +7,7 @@ import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestEditDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestLoginDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDetailDTO;
@@ -120,7 +121,7 @@ public class ContestController extends BaseController {
   @RequestMapping("registryReport/{contestId}")
   public ModelAndView registryReport(HttpSession session,
                                      @PathVariable("contestId")
-                                     Integer contestId){
+                                     Integer contestId) {
     ModelAndView result = new ModelAndView();
     result.setViewName("contestRegistryReportView");
     try {
@@ -164,6 +165,47 @@ public class ContestController extends BaseController {
       result.addObject("error_msg", e.getMessage());
     }
     return result;
+  }
+
+  @RequestMapping("loginContest")
+  @LoginPermit(NeedLogin = true)
+  public
+  @ResponseBody
+  Map<String, Object> loginContest(HttpSession session,
+                                   @RequestBody @Valid ContestLoginDTO contestLoginDTO,
+                                   BindingResult validateResult) {
+    Map<String, Object> json = new HashMap<>();
+    if (validateResult.hasErrors()) {
+      json.put("result", "field_error");
+      json.put("field", validateResult.getFieldErrors());
+    } else {
+      try {
+        ContestDTO contestDTO = contestService.getContestDTOByContestId(contestLoginDTO.getContestId());
+        if (contestDTO == null ||
+            (!contestDTO.getIsVisible() && !isAdmin(session))) {
+          throw new AppException("Contest not found.");
+        }
+
+        String attributeName = "ContestPermission#" + contestLoginDTO.getContestId();
+        // If this user has not login before
+        if (session.getAttribute(attributeName) == null) {
+          if (!contestDTO.getPassword().equals(contestLoginDTO.getPassword())) {
+            throw new FieldException("password", "Password is wrong, please try again");
+          }
+          session.setAttribute(attributeName, true);
+        }
+
+        json.put("result", "success");
+      } catch (FieldException e) {
+        putFieldErrorsIntoBindingResult(e, validateResult);
+        json.put("result", "field_error");
+        json.put("field", validateResult.getFieldErrors());
+      } catch (AppException e) {
+        json.put("result", "error");
+        json.put("error_msg", e.getMessage());
+      }
+    }
+    return json;
   }
 
   @RequestMapping("registryReview")
@@ -421,6 +463,15 @@ public class ContestController extends BaseController {
       if (!contestShowDTO.getIsVisible() && !isAdmin(session)) {
         throw new AppException("No such contest.");
       }
+      if (contestShowDTO.getType() == Global.ContestType.PRIVATE.ordinal()) {
+        // Private contest
+        String attributeName = "ContestPermission#" + contestShowDTO.getContestId();
+        // If this user has not login before
+        if (session.getAttribute(attributeName) == null && !isAdmin(session)) {
+          throw new AppException("Permission denied.");
+        }
+      }
+
       List<ContestProblemDetailDTO> contestProblemList;
       if (contestShowDTO.getStatus().equals("Pending") && !isAdmin(session)) {
         contestProblemList = new LinkedList<>();
@@ -428,7 +479,7 @@ public class ContestController extends BaseController {
         contestProblemList = contestProblemService
             .getContestProblemDetailDTOListByContestId(contestId);
         if (!isAdmin(session)) {
-          for (ContestProblemDetailDTO contestProblemDetailDTO: contestProblemList) {
+          for (ContestProblemDetailDTO contestProblemDetailDTO : contestProblemList) {
             // Stash problem source
             contestProblemDetailDTO.setSource("");
           }
@@ -514,6 +565,11 @@ public class ContestController extends BaseController {
         if (StringUtil.trimAllSpace(contestEditDTO.getTitle()).equals("")) {
           throw new FieldException("title", "Please enter a validate title.");
         }
+        if (contestEditDTO.getType() == Global.ContestType.PRIVATE.ordinal()) {
+          if (!contestEditDTO.getPassword().equals(contestEditDTO.getPasswordRepeat())) {
+            throw new FieldException("newPasswordRepeat", "Password do not match.");
+          }
+        }
         ContestDTO contestDTO;
         if (contestEditDTO.getAction().compareTo("new") == 0) {
           Integer contestId = contestService.createNewContest();
@@ -569,7 +625,8 @@ public class ContestController extends BaseController {
                   .setContestId(contestDTO.getContestId())
                   .setOrder(order)
                   .setProblemId(problemIdList.get(order))
-                  .build());
+                  .build()
+          );
 
           // Check problem added success.
           ContestProblemDTO contestProblemDTO = contestProblemService.getContestProblemDTO(contestProblemId);
@@ -578,6 +635,9 @@ public class ContestController extends BaseController {
         }
 
         contestDTO.setType(contestEditDTO.getType());
+        if (contestEditDTO.getType() == Global.ContestType.PRIVATE.ordinal()) {
+          contestDTO.setPassword(contestEditDTO.getPassword());
+        }
         contestDTO.setDescription(contestEditDTO.getDescription());
         contestDTO.setTitle(contestEditDTO.getTitle());
         contestDTO.setLength(

@@ -9,6 +9,9 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+DROP DATABASE IF EXISTS `uestcojtest`;
+CREATE DATABASE `uestcojtest`;
+
 USE `uestcojtest`;
 --
 -- Table structure for table `article`
@@ -93,8 +96,16 @@ CREATE TABLE `contest` (
   `length` int(11) NOT NULL,
   `isVisible` tinyint(1) NOT NULL,
   `OPTLOCK` int(11) DEFAULT '0',
+  `password` VARCHAR(40) NULL ,
+  `parentId` INT NULL ,
   PRIMARY KEY (`contestId`),
-  UNIQUE KEY `contestId_UNIQUE` (`contestId`)
+  UNIQUE KEY `contestId_UNIQUE` (`contestId`),
+  INDEX `FK_parentId_on_contest_idx_idx` (`parentId` ASC) ,
+  CONSTRAINT `FK_parentId_on_contest_idx`
+    FOREIGN KEY (`parentId` )
+    REFERENCES `contest` (`contestId` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

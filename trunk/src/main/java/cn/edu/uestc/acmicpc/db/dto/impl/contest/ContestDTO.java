@@ -13,7 +13,8 @@ import java.util.Map;
  * <br/>
  * <code>@Fields({ "contestId", "title", "description", "time", "length", "type" })</code>
  */
-@Fields({"contestId", "title", "description", "time", "length", "type", "isVisible"})
+@Fields({"contestId", "title", "description", "time", "length", "type",
+    "isVisible", "password"})
 public class ContestDTO implements BaseDTO<Contest> {
 
   private Integer contestId;
@@ -23,12 +24,13 @@ public class ContestDTO implements BaseDTO<Contest> {
   private Integer length;
   private Byte type;
   private Boolean isVisible;
+  private String password;
 
   public ContestDTO() {
   }
 
   public ContestDTO(Integer contestId, String title, String description, Timestamp time,
-                    Integer length, Byte type, Boolean isVisible) {
+                    Integer length, Byte type, Boolean isVisible, String password) {
     this.contestId = contestId;
     this.title = title;
     this.description = description;
@@ -36,6 +38,15 @@ public class ContestDTO implements BaseDTO<Contest> {
     this.time = time;
     this.type = type;
     this.isVisible = isVisible;
+    this.password = password;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 
   public Integer getContestId() {
@@ -126,6 +137,9 @@ public class ContestDTO implements BaseDTO<Contest> {
     if (type != null ? !type.equals(that.type) : that.type != null) {
       return false;
     }
+    if (password != null ? !password.equals(that.password) : that.password != null) {
+      return false;
+    }
 
     return true;
   }
@@ -139,6 +153,7 @@ public class ContestDTO implements BaseDTO<Contest> {
     result = 31 * result + (length != null ? length.hashCode() : 0);
     result = 31 * result + (type != null ? type.hashCode() : 0);
     result = 31 * result + (isVisible != null ? isVisible.hashCode() : 0);
+    result = 31 * result + (password != null ? password.hashCode() : 0);
     return result;
   }
 
@@ -155,10 +170,12 @@ public class ContestDTO implements BaseDTO<Contest> {
     private Integer length;
     private Byte type;
     private Boolean isVisible;
+    private String password;
 
     @Override
     public ContestDTO build() {
-      return new ContestDTO(contestId, title, description, time, length, type, isVisible);
+      return new ContestDTO(contestId, title, description, time, length, type,
+          isVisible, password);
     }
 
     @Override
@@ -170,7 +187,13 @@ public class ContestDTO implements BaseDTO<Contest> {
       time = (Timestamp) properties.get("time");
       type = (Byte) properties.get("type");
       isVisible = (Boolean) properties.get("isVisible");
+      password = (String) properties.get("password");
       return build();
+    }
+
+    public Builder setPassword(String password) {
+      this.password = password;
+      return this;
     }
 
     public Builder setContestId(Integer contestId) {
