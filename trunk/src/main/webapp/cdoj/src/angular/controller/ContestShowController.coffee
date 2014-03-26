@@ -34,6 +34,9 @@ cdoj
           lastClarificationCount: 0
         )
 
+      $scope.$on("currentUser:logout", ->
+        $window.location.href = "/#/contest/list"
+      )
       $scope.contestId = angular.copy($routeParams.contestId)
       $http.get("/contest/data/#{$scope.contestId}").success((data)->
         if data.result == "success"
