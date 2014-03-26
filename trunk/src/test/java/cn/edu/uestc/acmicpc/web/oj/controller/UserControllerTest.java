@@ -338,7 +338,7 @@ public class UserControllerTest extends ControllerTest {
         .contentType(APPLICATION_JSON_UTF8)
         .session(session))
         .andExpect(status().isOk());
-    Assert.assertNull(session.getAttribute("currentUser"));
+    Assert.assertTrue(session.isInvalid());
   }
 
   @Test
@@ -972,6 +972,6 @@ public class UserControllerTest extends ControllerTest {
         .session(session))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")));
-    Assert.assertNull(session.getAttribute("currentUser"));
+    Assert.assertTrue(session.isInvalid());
   }
 }
