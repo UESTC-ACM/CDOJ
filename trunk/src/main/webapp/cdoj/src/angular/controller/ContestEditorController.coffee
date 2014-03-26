@@ -86,6 +86,13 @@ cdoj
       $scope.submit = ->
         contestEditDTO = angular.copy($scope.contest)
         contestEditDTO.time = Date.create(contestEditDTO.time).getTime()
+        if angular.isUndefined contestEditDTO.password || angular.isUndefined contestEditDTO.passwordRepeat
+          $window.scrollTo(0, 0)
+          return
+        password = CryptoJS.SHA1(contestEditDTO.password).toString()
+        contestEditDTO.password = password
+        passwordRepeat = CryptoJS.SHA1(contestEditDTO.passwordRepeat).toString()
+        contestEditDTO.passwordRepeat = passwordRepeat
         $http.post("/contest/edit", contestEditDTO).success((data)->
           if data.result == "success"
             $window.location.href = "#/contest/show/#{data.contestId}"

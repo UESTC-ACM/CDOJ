@@ -37,8 +37,9 @@
           <td style="text-align: right;"
               ng-bind="contest.contestId"></td>
           <td>
-            <a href="#/contest/show/{{contest.contestId}}"
-               ng-bind="contest.title"></a>
+            <a href="javascript:void(0);"
+               ng-bind="contest.title"
+               ng-click="enterContest(contest)"></a>
           </td>
           <td style="text-align: right;"
               ui-time
