@@ -13,7 +13,11 @@ cdoj
         )
 
       $scope.enterContest = (contest)->
-        if contest.type == $rootScope.ContestType.PRIVATE
+        if contest.type == $rootScope.ContestType.INHERIT
+          type = contest.parentType
+        else
+          type = contest.type
+        if type == $rootScope.ContestType.PRIVATE
           if $rootScope.hasLogin == false
             $window.alert "Please login first!"
           else
@@ -34,8 +38,18 @@ cdoj
                     contest: -> contest
                 )
             ).error(-> $window.alert "Network error!")
-        else if contest.type == $rootScope.ContestType.INVITED
-          # Check
+        else if type == $rootScope.ContestType.INVITED
+          contestLoginDTO =
+            contestId: contest.contestId
+          # Avoid field error
+            password: "1234567890123456789012345678901234567890"
+          $http.post("/contest/loginContest", contestLoginDTO).success((data)->
+            if data.result == "success"
+              # The use has logined before
+              $window.location.href = "/#/contest/show/" + contest.contestId
+            else
+              $window.alert data.error_msg
+          ).error(-> $window.alert "Network error!")
         else
           $window.location.href = "/#/contest/show/" + contest.contestId
   ])

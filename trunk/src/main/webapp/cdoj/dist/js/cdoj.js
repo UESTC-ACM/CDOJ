@@ -80124,7 +80124,8 @@ if (typeof exports === 'object') {
       PUBLIC: 0,
       PRIVATE: 1,
       DIY: 2,
-      INVITED: 3
+      INVITED: 3,
+      INHERIT: 4
     },
     ContestStatus: {
       PENDING: "Pending",
@@ -80694,6 +80695,9 @@ if (typeof exports === 'object') {
             length = Math.floor(length / 24);
             $scope.contest.lengthDays = length;
             $scope.contest.description = data.contest.description;
+            if ($scope.contest.type === $rootScope.ContestType.INHERIT) {
+              $scope.contest.parentId = data.contest.parentId;
+            }
             return $scope.problemList = _.map(data.problemList, function(val) {
               return {
                 problemId: val.problemId,
@@ -80756,14 +80760,22 @@ if (typeof exports === 'object') {
       $scope.removeProblem = function(index) {
         return $scope.problemList.splice(index, 1);
       };
-      return $scope.submit = function() {
+      $scope.fieldInfo = [];
+      $scope.submit = function() {
         var contestEditDTO, password, passwordRepeat;
         contestEditDTO = angular.copy($scope.contest);
-        contestEditDTO.time = Date.create(contestEditDTO.time).getTime();
-        if (angular.isUndefined(contestEditDTO.password || angular.isUndefined(contestEditDTO.passwordRepeat))) {
-          $window.scrollTo(0, 0);
-          return;
+        if (contestEditDTO.type === $rootScope.ContestType.PRIVATE) {
+          if (angular.isUndefined(contestEditDTO.password) || angular.isUndefined(contestEditDTO.passwordRepeat)) {
+            $window.scrollTo(0, 0);
+            return;
+          }
+        } else if (contestEditDTO.type === $rootScope.ContestType.INHERIT) {
+          if (angular.isUndefined(contestEditDTO.parentId)) {
+            $window.scrollTo(0, 0);
+            return;
+          }
         }
+        contestEditDTO.time = Date.create(contestEditDTO.time).getTime();
         password = CryptoJS.SHA1(contestEditDTO.password).toString();
         contestEditDTO.password = password;
         passwordRepeat = CryptoJS.SHA1(contestEditDTO.passwordRepeat).toString();
@@ -80771,11 +80783,27 @@ if (typeof exports === 'object') {
         return $http.post("/contest/edit", contestEditDTO).success(function(data) {
           if (data.result === "success") {
             return $window.location.href = "#/contest/show/" + data.contestId;
+          } else if (data.result === "field_error") {
+            $scope.fieldInfo = data.field;
+            return $window.scrollTo(0, 0);
           } else {
             return $window.alert(data.error_msg);
           }
         }).error(function() {
           return $window.alert("Network error.");
+        });
+      };
+      return $scope.searchContest = function(keyword) {
+        var contestCondition;
+        contestCondition = {
+          keyword: keyword
+        };
+        return $http.post("/contest/search", contestCondition).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            return data.list;
+          }
         });
       };
     }
@@ -80795,8 +80823,13 @@ if (typeof exports === 'object') {
         });
       };
       return $scope.enterContest = function(contest) {
-        var contestLoginDTO;
-        if (contest.type === $rootScope.ContestType.PRIVATE) {
+        var contestLoginDTO, type;
+        if (contest.type === $rootScope.ContestType.INHERIT) {
+          type = contest.parentType;
+        } else {
+          type = contest.type;
+        }
+        if (type === $rootScope.ContestType.PRIVATE) {
           if ($rootScope.hasLogin === false) {
             return $window.alert("Please login first!");
           } else {
@@ -80822,8 +80855,20 @@ if (typeof exports === 'object') {
               return $window.alert("Network error!");
             });
           }
-        } else if (contest.type === $rootScope.ContestType.INVITED) {
-
+        } else if (type === $rootScope.ContestType.INVITED) {
+          contestLoginDTO = {
+            contestId: contest.contestId,
+            password: "1234567890123456789012345678901234567890"
+          };
+          return $http.post("/contest/loginContest", contestLoginDTO).success(function(data) {
+            if (data.result === "success") {
+              return $window.location.href = "/#/contest/show/" + contest.contestId;
+            } else {
+              return $window.alert(data.error_msg);
+            }
+          }).error(function() {
+            return $window.alert("Network error!");
+          });
         } else {
           return $window.location.href = "/#/contest/show/" + contest.contestId;
         }

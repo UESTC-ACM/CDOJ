@@ -107,4 +107,20 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
     return contestTeamDAO.findAll(ContestTeamReportDTO.class,
         ContestTeamReportDTO.builder(), contestTeamCondition.getCondition());
   }
+
+  @Override
+  public Boolean checkContestPermission(Integer userId, Integer contestId) throws AppException {
+    StringBuilder hqlBuilder = new StringBuilder();
+    hqlBuilder.append("from ContestTeam contestTeam, TeamUser teamUser where")
+        // Contest id
+        .append(" contestTeam.contestId = ").append(contestId)
+        // Team should be accepted
+        .append(" and contestTeam.status = ").append(Global.ContestRegistryStatus.ACCEPTED.ordinal())
+        .append(" and contestTeam.teamId = teamUser.teamId")
+        // User id
+        .append(" and teamUser.userId = ").append(userId)
+        // User should be allowed
+        .append(" and teamUser.allow = true");
+    return contestTeamDAO.customCount("teamUser.userId", hqlBuilder.toString()) > 0;
+  }
 }
