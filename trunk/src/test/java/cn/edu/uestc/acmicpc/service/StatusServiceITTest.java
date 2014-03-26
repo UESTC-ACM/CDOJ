@@ -100,4 +100,10 @@ public class StatusServiceITTest extends AbstractTestNGSpringContextTests {
     Boolean isAdmin = false;
     Assert.assertEquals(statusService.findAllUserAcceptedProblemIds(userId, isAdmin), Arrays.asList(new Object[] {}));
   }
+
+  @Test
+  public void testCountUsersTriedProblem() throws AppException {
+    Integer problemId1 = 1;
+    Assert.assertEquals(statusService.countUsersTriedProblem(problemId1), Long.valueOf(1));
+  }
 }
