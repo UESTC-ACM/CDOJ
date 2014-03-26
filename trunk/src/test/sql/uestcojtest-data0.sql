@@ -78,6 +78,13 @@ COMMIT;
 
 START TRANSACTION;
 USE `uestcojtest`;
+INSERT INTO `contest` (`contestId`, `title`, `description`, `type`, `time`, `length`, `isVisible`, `OPTLOCK`) 
+VALUES (1, 'title', 'descrip', 1, '2013-01-01 00:00:00', 300, 1, NULL);
+
+COMMIT;
+
+START TRANSACTION;
+USE `uestcojtest`;
 INSERT INTO `status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) 
 VALUES (1, 1, 1, 1, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 1, NULL, NULL);
 INSERT INTO `status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) 
@@ -87,18 +94,11 @@ VALUES (3, 1, 1, 3, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 3, NULL, 
 INSERT INTO `status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) 
 VALUES (4, 2, 1, 4, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 4, NULL, NULL);
 INSERT INTO `status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) 
-VALUES (5, 2, 1, 7, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 5, 1, NULL);
+VALUES (5, 2, 1, 7, 1000, 15, 1, 1000, '2013-07-07 00:00:00', 1, 1, 5, 1, NULL);
 INSERT INTO `status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) 
-VALUES (6, 3, 1, 2, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 6, NULL, NULL);
+VALUES (6, 3, 1, 2, 1000, 15, 1, 1000, '2014-01-01 00:00:00', 1, 1, 6, NULL, NULL);
 INSERT INTO `status` (`statusId`, `userId`, `problemId`, `result`, `memoryCost`, `timeCost`, `languageId`, `length`, `time`, `contestId`, `caseNumber`, `codeId`, `compileInfoId`, `OPTLOCK`) 
-VALUES (7, 3, 2, 1, 1000, 15, 1, 1000, '2013-07-07 00:00:00', NULL, 1, 7, NULL, NULL);
-
-COMMIT;
-
-START TRANSACTION;
-USE `uestcojtest`;
-INSERT INTO `contest` (`contestId`, `title`, `description`, `type`, `time`, `length`, `isVisible`, `OPTLOCK`) 
-VALUES (1, 'title', 'descrip', 1, '2013-01-01 00:00:00', 300, 1, NULL);
+VALUES (7, 3, 2, 1, 1000, 15, 1, 1000, '2014-03-26 11:00:00', NULL, 1, 7, NULL, NULL);
 
 COMMIT;
 
