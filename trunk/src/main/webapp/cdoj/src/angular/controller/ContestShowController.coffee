@@ -167,4 +167,7 @@ cdoj
         )
 
       rankListTimer = $timeout(refreshRankList, 500)
+
+      $scope.checkIsMyTeam = (team)->
+        return angular.isDefined(_.findWhere(team.teamUsers, {userName: $rootScope.currentUser.userName}))
   ])

@@ -232,10 +232,24 @@
         <tbody>
         <tr ng-repeat="user in rankList" class="text-center">
           <td class="rank" ng-bind="user.rank" style="vertical-align:middle;" ng-class="{my: user.userName == $root.currentUser.userName}"></td>
-          <td class="user-name" ng-class="{my: user.userName == $root.currentUser.userName}">
-            <span ng-bind="user.userName"></span>
+          <td class="user-name"
+              ng-class="{my: user.userName == $root.currentUser.userName}"
+              ng-hide="contest.type == $root.ContestType.INVITED">
+            <b ng-bind="user.userName"></b>
             <br/>
-            <span>({{user.nickName}})</span>
+            <span ng-bind="user.nickName"></span>
+          </td>
+          <td class="user-name"
+              ng-class="{my: checkIsMyTeam(user)}"
+              ng-show="contest.type == $root.ContestType.INVITED">
+            <b ng-bind="user.userName"></b>
+            <br/>
+            <span ng-repeat="teamUser in user.teamUsers">
+                  <img ui-avatar
+                       email="teamUser.email"
+                       style="width: 19px; height: 19px;"/>
+            {{teamUser.name}}
+            </span>
           </td>
           <td class="solved" ng-bind="user.solved" style="vertical-align:middle;" ng-class="{my: user.userName == $root.currentUser.userName}"></td>
           <td class="penalty" penalty="user.penalty" ui-penalty style="vertical-align:middle;" ng-class="{my: user.userName == $root.currentUser.userName}"></td>

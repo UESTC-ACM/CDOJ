@@ -8,5 +8,5 @@ import cn.edu.uestc.acmicpc.web.rank.RankList;
  */
 public interface ContestRankListService {
 
-  public RankList getRankList(Integer contestId) throws AppException;
+  public RankList getRankList(Integer contestId, Boolean teamMode) throws AppException;
 }
