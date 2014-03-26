@@ -39,4 +39,7 @@ public interface ContestTeamService
 
   public List<ContestTeamReportDTO> exportContestTeamReport(Integer contestId)
       throws AppException;
+
+  public Boolean checkContestPermission(Integer userId, Integer contestId)
+    throws AppException;
 }
