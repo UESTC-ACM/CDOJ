@@ -16,8 +16,8 @@ import java.util.List;
 public interface ContestTeamService
     extends DatabaseService<ContestTeam, Integer> {
 
-  public Boolean whetherUserHasBeenRegistered(Integer userId,
-                                              Integer contestId)
+  public Boolean checkUserHasRegisterInContest(Integer userId,
+                                               Integer contestId)
       throws AppException;
 
   public Integer createNewContestTeam(Integer contestId,
@@ -42,4 +42,7 @@ public interface ContestTeamService
 
   public Boolean checkContestPermission(Integer userId, Integer contestId)
     throws AppException;
+
+  public Integer getTeamIdInContest(Integer userId,
+                                    Integer contestId) throws AppException;
 }

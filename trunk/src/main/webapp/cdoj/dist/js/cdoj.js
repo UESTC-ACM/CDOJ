@@ -81757,12 +81757,9 @@ if (typeof exports === 'object') {
           });
         }
       };
-      $scope.close = function() {
+      return $scope.close = function() {
         return $modalInstance.dismiss("close");
       };
-      return $scope.$on("$routeChangeStart", function() {
-        return $modalInstance.dismiss();
-      });
     }
   ]);
 
@@ -82245,18 +82242,23 @@ if (typeof exports === 'object') {
     return {
       restrict: "A",
       scope: {
-        status: "="
+        status: "=",
+        alwaysShowHref: "@"
       },
       controller: [
         "$scope", "$rootScope", "$http", "$modal", function($scope, $rootScope, $http, $modal) {
           $scope.showHref = false;
-          $rootScope.$watch("hasLogin", function() {
-            if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
-              return $scope.showHref = true;
-            } else {
-              return $scope.showHref = false;
-            }
-          });
+          if ($scope.alwaysShowHref) {
+            $scope.showHref = true;
+          } else {
+            $scope.$on("currentUser:changed", function() {
+              if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
+                return $scope.showHref = true;
+              } else {
+                return $scope.showHref = false;
+              }
+            });
+          }
           return $scope.showCode = function() {
             var statusId;
             statusId = $scope.status.statusId;
@@ -83077,7 +83079,8 @@ if (typeof exports === 'object') {
     return {
       restrict: "A",
       scope: {
-        status: "="
+        status: "=",
+        alwaysShowHref: "@"
       },
       controller: [
         "$scope", "$rootScope", "$http", "$modal", function($scope, $rootScope, $http, $modal) {
@@ -83085,7 +83088,9 @@ if (typeof exports === 'object') {
           $scope.showHref = false;
           checkShowHref = function() {
             if ($scope.status.returnTypeId === 7) {
-              if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
+              if ($scope.alwaysShowHref) {
+                return $scope.showHref = true;
+              } else if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
                 return $scope.showHref = true;
               } else {
                 return $scope.showHref = false;
@@ -83094,7 +83099,8 @@ if (typeof exports === 'object') {
               return $scope.showHref = false;
             }
           };
-          $rootScope.$watch("hasLogin", function() {
+          checkShowHref();
+          $scope.$on("currentUser:changed", function() {
             return checkShowHref();
           });
           $scope.showCompileInfo = function() {

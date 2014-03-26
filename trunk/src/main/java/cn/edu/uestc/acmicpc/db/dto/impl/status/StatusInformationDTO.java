@@ -12,24 +12,34 @@ import java.util.Map;
  * <br/>
  * <code>@Fields({ "statusId", "userId", "codeByCodeId.content", "compileInfoId" })</code>
  */
-@Fields({"statusId", "userId", "codeByCodeId.content", "compileInfoId"})
+@Fields({"statusId", "userId", "codeByCodeId.content", "compileInfoId", "contestId"})
 public class StatusInformationDTO implements BaseDTO<Status> {
 
   public StatusInformationDTO() {
   }
 
   private StatusInformationDTO(Integer statusId, Integer userId, String codeContent,
-                               Integer compileInfoId) {
+                               Integer compileInfoId, Integer contestId) {
     this.statusId = statusId;
     this.userId = userId;
     this.codeContent = codeContent;
     this.compileInfoId = compileInfoId;
+    this.contestId = contestId;
   }
 
   private Integer statusId;
   private Integer userId;
   private String codeContent;
   private Integer compileInfoId;
+  private Integer contestId;
+
+  public Integer getContestId() {
+    return contestId;
+  }
+
+  public void setContestId(Integer contestId) {
+    this.contestId = contestId;
+  }
 
   public Integer getStatusId() {
     return statusId;
@@ -86,6 +96,9 @@ public class StatusInformationDTO implements BaseDTO<Status> {
     if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
       return false;
     }
+    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null) {
+      return false;
+    }
 
     return true;
   }
@@ -96,6 +109,7 @@ public class StatusInformationDTO implements BaseDTO<Status> {
     result = 31 * result + (userId != null ? userId.hashCode() : 0);
     result = 31 * result + (codeContent != null ? codeContent.hashCode() : 0);
     result = 31 * result + (compileInfoId != null ? compileInfoId.hashCode() : 0);
+    result = 31 * result + (contestId != null ? contestId.hashCode() : 0);
     return result;
   }
 
@@ -110,7 +124,8 @@ public class StatusInformationDTO implements BaseDTO<Status> {
 
     @Override
     public StatusInformationDTO build() {
-      return new StatusInformationDTO(statusId, userId, codeContent, compileInfoId);
+      return new StatusInformationDTO(statusId, userId, codeContent, compileInfoId,
+          contestId);
     }
 
     @Override
@@ -119,6 +134,7 @@ public class StatusInformationDTO implements BaseDTO<Status> {
       userId = (Integer) properties.get("userId");
       codeContent = (String) properties.get("codeByCodeId.content");
       compileInfoId = (Integer) properties.get("compileInfoId");
+      contestId = (Integer) properties.get("contestId");
       return build();
 
     }
@@ -127,9 +143,11 @@ public class StatusInformationDTO implements BaseDTO<Status> {
     private Integer userId;
     private String codeContent;
     private Integer compileInfoId;
+    private Integer contestId;
 
-    public Integer getStatusId() {
-      return statusId;
+    public Builder setContestId(Integer contestId) {
+      this.contestId = contestId;
+      return this;
     }
 
     public Builder setStatusId(Integer statusId) {
@@ -137,26 +155,14 @@ public class StatusInformationDTO implements BaseDTO<Status> {
       return this;
     }
 
-    public Integer getUserId() {
-      return userId;
-    }
-
     public Builder setUserId(Integer userId) {
       this.userId = userId;
       return this;
     }
 
-    public String getCodeContent() {
-      return codeContent;
-    }
-
     public Builder setCodeContent(String codeContent) {
       this.codeContent = codeContent;
       return this;
-    }
-
-    public Integer getCompileInfoId() {
-      return compileInfoId;
     }
 
     public Builder setCompileInfoId(Integer compileInfoId) {
