@@ -58,7 +58,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   }
 
   @Override
-  public Long countProblemsUserTired(Integer userId) throws AppException {
+  public Long countProblemsUserTried(Integer userId) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
     return statusDAO.customCount("distinct problemId", statusCondition.getCondition());
