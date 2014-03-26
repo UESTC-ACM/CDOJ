@@ -106,7 +106,7 @@ public class JudgeItem {
         properties.put("solved",
             statusService.countUsersAcceptedProblem(problemId));
         properties.put("tried",
-            statusService.countUsersTiredProblem(problemId));
+            statusService.countUsersTriedProblem(problemId));
         problemService.updateProblemByProblemId(properties, problemId);
       } catch (Exception e) {
       }
