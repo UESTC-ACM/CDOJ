@@ -106,4 +106,16 @@ public class StatusServiceITTest extends AbstractTestNGSpringContextTests {
     Integer problemId1 = 1;
     Assert.assertEquals(statusService.countUsersTriedProblem(problemId1), Long.valueOf(1));
   }
+
+  @Test
+  public void testCountUsersAcceptedProblem_shouldBeNoUser() throws AppException {
+    Integer problemId1 = 1;
+    Assert.assertEquals(statusService.countUsersAcceptedProblem(problemId1), Long.valueOf(0));
+  }
+
+  @Test
+  public void testCountUsersAcceptedProblem_shouldBeHasUsers() throws AppException {
+    Integer problemId2 = 2;
+    Assert.assertEquals(statusService.countUsersAcceptedProblem(problemId2), Long.valueOf(1));
+  }
 }
