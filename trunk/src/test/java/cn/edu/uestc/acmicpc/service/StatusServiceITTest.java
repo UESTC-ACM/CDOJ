@@ -10,6 +10,8 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
+
 /**
  * test cases for {@link cn.edu.uestc.acmicpc.service.iface.StatusService}
  */
@@ -41,5 +43,33 @@ public class StatusServiceITTest extends AbstractTestNGSpringContextTests {
   public void testCountProblemsUserAccepted_administrator() throws AppException {
     Integer userId = 1;
     Assert.assertEquals(statusService.countProblemsUserAccepted(userId), Long.valueOf(0L));
+  }
+
+  @Test
+  public void testFindAllUserTriedProblemIds_normalUser_forAdmin() throws AppException {
+    Integer userId = 3;
+    Boolean isAdmin = true;
+    Assert.assertEquals(statusService.findAllUserTriedProblemIds(userId, isAdmin), Arrays.asList(new Object[] {1, 2}));
+  }
+
+  @Test
+  public void testFindAllUserTriedProblemIds_normalUser_notForAdmin() throws AppException {
+    Integer userId = 3;
+    Boolean isAdmin = false;
+    Assert.assertEquals(statusService.findAllUserTriedProblemIds(userId, isAdmin), Arrays.asList(new Object[] {1, 2}));
+  }
+
+  @Test
+  public void testFindAllUserTriedProblemIds_administrator_forAdmin() throws AppException {
+    Integer userId = 1;
+    Boolean isAdmin = true;
+    Assert.assertEquals(statusService.findAllUserTriedProblemIds(userId, isAdmin), Arrays.asList(new Object[] {1}));
+  }
+
+  @Test
+  public void testFindAllUserTriedProblemIds_administrator_notForAdmin() throws AppException {
+    Integer userId = 1;
+    Boolean isAdmin = false;
+    Assert.assertEquals(statusService.findAllUserTriedProblemIds(userId, isAdmin), Arrays.asList(new Object[] {}));
   }
 }
