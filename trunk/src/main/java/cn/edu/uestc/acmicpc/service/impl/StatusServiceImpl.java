@@ -42,7 +42,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     statusCondition.userId = userId;
     statusCondition.results.add(Global.OnlineJudgeResultType.OJ_AC);
     statusCondition.isForAdmin = isAdmin;
-    return (List<Integer>) statusDAO.findAll("problemByProblemId.problemId",
+    return (List<Integer>) statusDAO.findAll("distinct problemByProblemId.problemId",
         statusCondition.getCondition());
   }
 
@@ -53,7 +53,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
     statusCondition.isForAdmin = isAdmin;
-    return (List<Integer>) statusDAO.findAll("problemByProblemId.problemId",
+    return (List<Integer>) statusDAO.findAll("distinct problemByProblemId.problemId",
         statusCondition.getCondition());
   }
 
