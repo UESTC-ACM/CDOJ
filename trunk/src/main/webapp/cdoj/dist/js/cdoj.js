@@ -81104,6 +81104,9 @@ if (typeof exports === 'object') {
           lastClarificationCount: 0
         });
       }
+      $scope.$on("currentUser:logout", function() {
+        return $window.location.href = "/#/contest/list";
+      });
       $scope.contestId = angular.copy($routeParams.contestId);
       $http.get("/contest/data/" + $scope.contestId).success(function(data) {
         if (data.result === "success") {
