@@ -79,6 +79,12 @@ public class ContestCondition extends BaseCondition {
       Condition keywordCondition = new Condition(Condition.JoinedType.OR);
       keywordCondition.addEntry("title", Condition.ConditionType.LIKE, keyword);
       keywordCondition.addEntry("description", Condition.ConditionType.LIKE, keyword);
+      try {
+        Integer keywordNumber = Integer.parseInt(keyword);
+        keywordCondition.addEntry("contestId", Condition.ConditionType.EQUALS, keywordNumber);
+      } catch (Exception ignored) {
+        // Keyword is not a number, just ignore it.
+      }
       condition.addEntry(keywordCondition);
     }
     return condition;
