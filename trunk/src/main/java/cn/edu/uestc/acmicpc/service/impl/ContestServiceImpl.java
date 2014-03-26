@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.service.impl;
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
@@ -91,6 +90,9 @@ public class ContestServiceImpl extends AbstractService implements
     if (contestDTO.getPassword() != null) {
       contest.setPassword(contestDTO.getPassword());
     }
+    if (contestDTO.getParentId() != null) {
+      contest.setParentId(contestDTO.getParentId());
+    }
   }
 
   @Override
@@ -127,13 +129,6 @@ public class ContestServiceImpl extends AbstractService implements
       value = sValue;
     }
     contestDAO.updateEntitiesByField(field, value, "contestId", ids);
-  }
-
-  @Override
-  public ContestEditorShowDTO getContestEditorShowDTO(Integer contestId)
-      throws AppException {
-    return contestDAO.getDTOByUniqueField(ContestEditorShowDTO.class,
-        ContestEditorShowDTO.builder(), "contestId", contestId);
   }
 
   @Override

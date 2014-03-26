@@ -14,7 +14,8 @@ import java.util.Map;
  * <br/>
  * <code>@Fields({ "contestId", "title", "description", "time", "length", "type" })</code>
  */
-@Fields({"contestId", "title", "description", "time", "length", "type", "isVisible"})
+@Fields({"contestId", "title", "description", "time", "length", "type",
+    "isVisible", "parentId"})
 public class ContestShowDTO implements BaseDTO<Contest> {
 
   private Integer contestId;
@@ -29,6 +30,7 @@ public class ContestShowDTO implements BaseDTO<Contest> {
   private Byte type;
   private String typeName;
   private Boolean isVisible;
+  private Integer parentId;
 
   public ContestShowDTO() {
   }
@@ -37,7 +39,7 @@ public class ContestShowDTO implements BaseDTO<Contest> {
                         String description,
                         String status, Timestamp startTime, Timestamp endTime,
                         Timestamp currentTime, Long timeLeft, Integer length, Byte type,
-                        String typeName, Boolean isVisible) {
+                        String typeName, Boolean isVisible, Integer parentId) {
     this.contestId = contestId;
     this.title = title;
     this.description = description;
@@ -50,6 +52,15 @@ public class ContestShowDTO implements BaseDTO<Contest> {
     this.type = type;
     this.typeName = typeName;
     this.isVisible = isVisible;
+    this.parentId = parentId;
+  }
+
+  public Integer getParentId() {
+    return parentId;
+  }
+
+  public void setParentId(Integer parentId) {
+    this.parentId = parentId;
   }
 
   public Integer getContestId() {
@@ -195,6 +206,9 @@ public class ContestShowDTO implements BaseDTO<Contest> {
     if (typeName != null ? !typeName.equals(that.typeName) : that.typeName != null) {
       return false;
     }
+    if (parentId != null ? !parentId.equals(that.parentId) : that.parentId != null) {
+      return false;
+    }
 
     return true;
   }
@@ -213,6 +227,7 @@ public class ContestShowDTO implements BaseDTO<Contest> {
     result = 31 * result + (type != null ? type.hashCode() : 0);
     result = 31 * result + (typeName != null ? typeName.hashCode() : 0);
     result = 31 * result + (isVisible != null ? isVisible.hashCode() : 0);
+    result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
     return result;
   }
 
@@ -234,12 +249,13 @@ public class ContestShowDTO implements BaseDTO<Contest> {
     private Byte type;
     private String typeName;
     private Boolean isVisible;
+    private Integer parentId;
 
     @Override
     public ContestShowDTO build() {
       return new ContestShowDTO(contestId, title, description,
           status, startTime, endTime, currentTime, timeLeft, length, type,
-          typeName, isVisible);
+          typeName, isVisible, parentId);
     }
 
     @Override
@@ -252,6 +268,7 @@ public class ContestShowDTO implements BaseDTO<Contest> {
       type = (Byte) properties.get("type");
       typeName = Global.ContestType.values()[type].getDescription();
       isVisible = (Boolean) properties.get("isVisible");
+      parentId = (Integer) properties.get("parentId");
 
       endTime = new Timestamp(startTime.getTime() + length);
       currentTime = new Timestamp(System.currentTimeMillis());
@@ -264,6 +281,11 @@ public class ContestShowDTO implements BaseDTO<Contest> {
         status = "Ended";
       }
       return build();
+    }
+
+    public Builder setParentId(Integer parentId) {
+      this.parentId = parentId;
+      return this;
     }
 
     public Builder setContestId(Integer contestId) {

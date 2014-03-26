@@ -136,7 +136,8 @@ public class Global {
    * Contest type for contest entity
    */
   public enum ContestType {
-    PUBLIC("Public"), PRIVATE("Private"), DIY("DIY"), INVITED("Invited");
+    PUBLIC("Public"), PRIVATE("Private"), DIY("DIY"), INVITED("Invited"),
+    INHERIT("Inherit");
 
     private final String description;
 

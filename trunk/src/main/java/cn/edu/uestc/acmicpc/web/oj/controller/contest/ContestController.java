@@ -573,7 +573,15 @@ public class ContestController extends BaseController {
           if (!contestEditDTO.getPassword().equals(contestEditDTO.getPasswordRepeat())) {
             throw new FieldException("newPasswordRepeat", "Password do not match.");
           }
+        } else if (contestEditDTO.getType() == Global.ContestType.INHERIT.ordinal()) {
+          if (contestEditDTO.getParentId() == null) {
+            throw new FieldException("parentId", "Please enter parent contest's id.");
+          }
+          if (!contestService.checkContestExists(contestEditDTO.getContestId())) {
+            throw new FieldException("parentId", "Contest not exists.");
+          }
         }
+
         ContestDTO contestDTO;
         if (contestEditDTO.getAction().compareTo("new") == 0) {
           Integer contestId = contestService.createNewContest();
@@ -641,6 +649,8 @@ public class ContestController extends BaseController {
         contestDTO.setType(contestEditDTO.getType());
         if (contestEditDTO.getType() == Global.ContestType.PRIVATE.ordinal()) {
           contestDTO.setPassword(contestEditDTO.getPassword());
+        } else if (contestEditDTO.getType() == Global.ContestType.INHERIT.ordinal()) {
+          contestDTO.setParentId(contestEditDTO.getParentId());
         }
         contestDTO.setDescription(contestEditDTO.getDescription());
         contestDTO.setTitle(contestEditDTO.getTitle());

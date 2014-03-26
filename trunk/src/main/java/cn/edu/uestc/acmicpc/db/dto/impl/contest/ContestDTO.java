@@ -11,10 +11,11 @@ import java.util.Map;
 /**
  * DTO for contest entity.
  * <br/>
- * <code>@Fields({ "contestId", "title", "description", "time", "length", "type" })</code>
+ * <code>@Fields({ "contestId", "title", "description", "time", "length", "type",
+ * "parentId"})</code>
  */
 @Fields({"contestId", "title", "description", "time", "length", "type",
-    "isVisible", "password"})
+    "isVisible", "password", "parentId"})
 public class ContestDTO implements BaseDTO<Contest> {
 
   private Integer contestId;
@@ -25,12 +26,14 @@ public class ContestDTO implements BaseDTO<Contest> {
   private Byte type;
   private Boolean isVisible;
   private String password;
+  private Integer parentId;
 
   public ContestDTO() {
   }
 
   public ContestDTO(Integer contestId, String title, String description, Timestamp time,
-                    Integer length, Byte type, Boolean isVisible, String password) {
+                    Integer length, Byte type, Boolean isVisible, String password,
+                    Integer parentId) {
     this.contestId = contestId;
     this.title = title;
     this.description = description;
@@ -39,6 +42,15 @@ public class ContestDTO implements BaseDTO<Contest> {
     this.type = type;
     this.isVisible = isVisible;
     this.password = password;
+    this.parentId = parentId;
+  }
+
+  public Integer getParentId() {
+    return parentId;
+  }
+
+  public void setParentId(Integer parentId) {
+    this.parentId = parentId;
   }
 
   public String getPassword() {
@@ -140,6 +152,9 @@ public class ContestDTO implements BaseDTO<Contest> {
     if (password != null ? !password.equals(that.password) : that.password != null) {
       return false;
     }
+    if (parentId != null ? !parentId.equals(that.parentId) : that.parentId != null) {
+      return false;
+    }
 
     return true;
   }
@@ -154,6 +169,7 @@ public class ContestDTO implements BaseDTO<Contest> {
     result = 31 * result + (type != null ? type.hashCode() : 0);
     result = 31 * result + (isVisible != null ? isVisible.hashCode() : 0);
     result = 31 * result + (password != null ? password.hashCode() : 0);
+    result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
     return result;
   }
 
@@ -171,11 +187,12 @@ public class ContestDTO implements BaseDTO<Contest> {
     private Byte type;
     private Boolean isVisible;
     private String password;
+    private Integer parentId;
 
     @Override
     public ContestDTO build() {
       return new ContestDTO(contestId, title, description, time, length, type,
-          isVisible, password);
+          isVisible, password, parentId);
     }
 
     @Override
@@ -188,7 +205,13 @@ public class ContestDTO implements BaseDTO<Contest> {
       type = (Byte) properties.get("type");
       isVisible = (Boolean) properties.get("isVisible");
       password = (String) properties.get("password");
+      parentId = (Integer) properties.get("parentId");
       return build();
+    }
+
+    public Builder setParentId(Integer parentId) {
+      this.parentId = parentId;
+      return this;
     }
 
     public Builder setPassword(String password) {
