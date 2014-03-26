@@ -99,7 +99,7 @@ public class JudgeItem {
         properties.put("solved",
             statusService.countProblemsUserAccepted(userId));
         properties.put("tried",
-            statusService.countProblemsUserTired(userId));
+            statusService.countProblemsUserTried(userId));
         userService.updateUserByUserId(properties, userId);
 
         properties.clear();
