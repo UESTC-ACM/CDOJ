@@ -45,6 +45,7 @@ import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
+import cn.edu.uestc.acmicpc.web.view.ContestRegistryReportView;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -87,6 +88,7 @@ public class ContestController extends BaseController {
   private ContestTeamService contestTeamService;
   private MessageService messageService;
   private ContestRankListService contestRankListService;
+  private ContestRegistryReportView contestRegistryReportView;
 
   @Autowired
   public ContestController(ContestService contestService,
@@ -101,7 +103,8 @@ public class ContestController extends BaseController {
                            TeamUserService teamUserService,
                            ContestTeamService contestTeamService,
                            MessageService messageService,
-                           ContestRankListService contestRankListService) {
+                           ContestRankListService contestRankListService,
+                           ContestRegistryReportView contestRegistryReportView) {
     this.contestService = contestService;
     this.contestProblemService = contestProblemService;
     this.contestImporterService = contestImporterService;
@@ -116,6 +119,7 @@ public class ContestController extends BaseController {
     this.contestTeamService = contestTeamService;
     this.messageService = messageService;
     this.contestRankListService = contestRankListService;
+    this.contestRegistryReportView = contestRegistryReportView;
   }
 
   @RequestMapping("registryReport/{contestId}")
@@ -123,7 +127,7 @@ public class ContestController extends BaseController {
                                      @PathVariable("contestId")
                                      Integer contestId) {
     ModelAndView result = new ModelAndView();
-    result.setViewName("contestRegistryReportView");
+    result.setView(contestRegistryReportView);
     try {
       if (!isAdmin(session)) {
         throw new AppException("Permission denied!");
