@@ -72,4 +72,32 @@ public class StatusServiceITTest extends AbstractTestNGSpringContextTests {
     Boolean isAdmin = false;
     Assert.assertEquals(statusService.findAllUserTriedProblemIds(userId, isAdmin), Arrays.asList(new Object[] {}));
   }
+
+  @Test
+  public void testFindAllUserAcceptedProblemIds_normalUser_forAdmin() throws AppException {
+    Integer userId = 3;
+    Boolean isAdmin = true;
+    Assert.assertEquals(statusService.findAllUserAcceptedProblemIds(userId, isAdmin), Arrays.asList(new Object[] {2}));
+  }
+
+  @Test
+  public void testFindAllUserAcceptedProblemIds_normalUser_notForAdmin() throws AppException {
+    Integer userId = 3;
+    Boolean isAdmin = false;
+    Assert.assertEquals(statusService.findAllUserAcceptedProblemIds(userId, isAdmin), Arrays.asList(new Object[] {2}));
+  }
+
+  @Test
+  public void testFindAllUserAcceptedProblemIds_administrator_forAdmin() throws AppException {
+    Integer userId = 1;
+    Boolean isAdmin = true;
+    Assert.assertEquals(statusService.findAllUserAcceptedProblemIds(userId, isAdmin), Arrays.asList(new Object[] {1}));
+  }
+
+  @Test
+  public void testFindAllUserAcceptedProblemIds_administrator_notForAdmin() throws AppException {
+    Integer userId = 1;
+    Boolean isAdmin = false;
+    Assert.assertEquals(statusService.findAllUserAcceptedProblemIds(userId, isAdmin), Arrays.asList(new Object[] {}));
+  }
 }
