@@ -28,9 +28,9 @@ cdoj
 
       # Refresh event
       $rootScope.$on("globalData:refresh", ->
-        $timeout(fetchGlobalData, 100)
+        $timeout(fetchGlobalData, 0)
       )
       $rootScope.$on("data:refresh", ->
-        $timeout(fetchData, 200)
+        $timeout(fetchData, 0)
       )
   ])

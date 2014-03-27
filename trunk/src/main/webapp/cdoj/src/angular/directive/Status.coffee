@@ -20,7 +20,7 @@ cdoj
         else
           $scope.showHref = false
       checkShowHref()
-      $scope.$on("currentUser:changed", ->
+      $scope.$on("currentUser:updated", ->
         checkShowHref()
       )
       $scope.showCompileInfo = ->
