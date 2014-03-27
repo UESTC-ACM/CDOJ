@@ -99,14 +99,14 @@ public class JudgeItem {
         properties.put("solved",
             statusService.countProblemsUserAccepted(userId));
         properties.put("tried",
-            statusService.countProblemsUserTired(userId));
+            statusService.countProblemsUserTried(userId));
         userService.updateUserByUserId(properties, userId);
 
         properties.clear();
         properties.put("solved",
             statusService.countUsersAcceptedProblem(problemId));
         properties.put("tried",
-            statusService.countUsersTiredProblem(problemId));
+            statusService.countUsersTriedProblem(problemId));
         problemService.updateProblemByProblemId(properties, problemId);
       } catch (Exception e) {
       }
