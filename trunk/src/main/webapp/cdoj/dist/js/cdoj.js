@@ -80377,10 +80377,10 @@ if (typeof exports === 'object') {
         });
       };
       $rootScope.$on("globalData:refresh", function() {
-        return $timeout(fetchGlobalData, 100);
+        return $timeout(fetchGlobalData, 0);
       });
       return $rootScope.$on("data:refresh", function() {
-        return $timeout(fetchData, 200);
+        return $timeout(fetchData, 0);
       });
     }
   ]);
@@ -82250,18 +82250,22 @@ if (typeof exports === 'object') {
       },
       controller: [
         "$scope", "$rootScope", "$http", "$modal", function($scope, $rootScope, $http, $modal) {
+          var checkShowHref;
           $scope.showHref = false;
-          if ($scope.alwaysShowHref) {
-            $scope.showHref = true;
-          } else {
-            $scope.$on("currentUser:changed", function() {
-              if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
-                return $scope.showHref = true;
-              } else {
-                return $scope.showHref = false;
-              }
-            });
-          }
+          checkShowHref = function() {
+            if ($scope.alwaysShowHref) {
+              $scope.showHref = true;
+            } else if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
+              $scope.showHref = true;
+            } else {
+              $scope.showHref = false;
+            }
+            return console.log($scope.showHref, $rootScope.hasLogin, $rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName);
+          };
+          checkShowHref();
+          $scope.$on("currentUser:changed", function() {
+            return checkShowHref();
+          });
           return $scope.showCode = function() {
             var statusId;
             statusId = $scope.status.statusId;
@@ -83103,7 +83107,7 @@ if (typeof exports === 'object') {
             }
           };
           checkShowHref();
-          $scope.$on("currentUser:changed", function() {
+          $scope.$on("currentUser:updated", function() {
             return checkShowHref();
           });
           $scope.showCompileInfo = function() {
