@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <link rel="icon" type="image/png" href="/images/logo/favicon128.png">
+  <meta http-equiv=Content-Type content="text/html;charset=utf-8"/>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      margin: 20px 0;
+      height: 100%;
+    }
+
+    #browser-upgrade {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      background: #fff;
+    }
+
+    #browser-upgrade ul {
+      width: 960px;
+      margin: 0 auto;
+      border: 0;
+      outline: 0;
+      font-size: 100%;
+      vertical-align: baseline;
+      background: transparent;
+      padding: 0;
+      font: 13px/1.5 sans-serif;
+    }
+
+    #browser-upgrade li {
+      list-style-type: none;
+      border-radius: 10px;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #aaa), color-stop(1, #fff));
+      width: 190px;
+      float: left;
+      margin: 0 1px 0 0;
+    }
+
+    #browser-upgrade li .icon {
+      width: 200px;
+      height: 185px;
+      position: relative;
+      background-repeat: no-repeat;
+      background-position: 30px 10px;
+      background-image: url("/images/browser.png");
+    }
+
+    #browser-upgrade li#sprite-chrome .icon {
+      background-position: 30px 8px;
+      width: 200px;
+      height: 180px;
+    }
+
+    #browser-upgrade li#sprite-firefox .icon {
+      background-position: 30px -168px;
+      width: 200px;
+      height: 180px;
+    }
+
+    #browser-upgrade li#sprite-ie .icon {
+      background-position: 30px -347px;
+      width: 200px;
+      height: 180px;
+    }
+
+    #browser-upgrade li#sprite-opera .icon {
+      background-position: 30px -524px;
+      width: 200px;
+      height: 180px;
+    }
+
+    #browser-upgrade li#sprite-safari .icon {
+      background-position: 30px -706px;
+      width: 200px;
+      height: 180px;
+    }
+
+    #browser-upgrade h2.header {
+      font: 250% Impact, Helvetica, sans-serif;
+      text-align: center;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+      padding: 0;
+    }
+
+    #browser-upgrade li h2 {
+      bottom: 0;
+      width: 190px;
+      position: absolute;
+      font: 150% Impact, Helvetica, sans-serif;
+      text-align: center;
+      text-transform: uppercase;
+      color: #0E73BB;
+      text-shadow: 0 1px 0 #fff;
+      background-color: rgba(255, 255, 255, 0.5);
+      line-height: 1;
+      margin: 0;
+      padding: 8px 0;
+    }
+
+    #browser-upgrade p {
+      text-shadow: 0 1px 0 rgba(255, 255, 255, .8);
+      padding: 0 15px;
+    }
+
+    #browser-upgrade p.info {
+      min-height: 125px;
+    }
+
+    #browser-upgrade p.version {
+      font-style: italic;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    #browser-upgrade p.download {
+      text-align: center;
+      min-height: 80px;
+    }
+
+    #browser-upgrade p.download a{
+      margin: 4px 0;
+    }
+
+    /* line 10, ../scss/button.scss */
+    .button {
+      box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.2);
+      background-color: #eeeeee;
+      display: inline-block;
+      vertical-align: middle;
+      *vertical-align: auto;
+      zoom: 1;
+      *display: inline;
+      border: 1px solid #d4d4d4;
+      height: 32px;
+      line-height: 32px;
+      padding: 0px 25.6px;
+      font-weight: 300;
+      font-size: 14px;
+      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+      color: #666666;
+      text-shadow: 0 1px 1px white;
+      margin: 0;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .button-block {
+      display: block;
+    }
+
+
+    .button-flat-primary {
+      transition-property: background, color;
+      transition-duration: 0.3s;
+      box-shadow: none;
+      background: #00a1cb;
+      color: white;
+      text-shadow: none;
+      border: none;
+    }
+    .button-flat-primary:hover {
+      background: #00b5e5;
+    }
+    .button-flat-primary:active {
+      background: #1495b7;
+      color: #00647f;
+    }
+    .button-flat-primary.disabled {
+      box-shadow: none;
+    }
+
+    .button-flat-action {
+      transition-property: background, color;
+      transition-duration: 0.3s;
+      box-shadow: none;
+      background: #7db500;
+      color: white;
+      text-shadow: none;
+      border: none;
+    }
+    .button-flat-action:hover {
+      background: #8fcf00;
+    }
+    .button-flat-action:active {
+      background: #76a312;
+      color: #486900;
+    }
+    .button-flat-action.disabled {
+      box-shadow: none;
+    }
+
+    .button-flat-highlight {
+      transition-property: background, color;
+      transition-duration: 0.3s;
+      box-shadow: none;
+      background: #f18d05;
+      color: white;
+      text-shadow: none;
+      border: none;
+    }
+    .button-flat-highlight:hover {
+      background: #fa9915;
+    }
+    .button-flat-highlight:active {
+      background: #d8891e;
+      color: #a66103;
+    }
+    .button-flat-highlight.disabled {
+      box-shadow: none;
+    }
+
+    .button-flat-caution {
+      transition-property: background, color;
+      transition-duration: 0.3s;
+      box-shadow: none;
+      background: #e54028;
+      color: white;
+      text-shadow: none;
+      border: none;
+    }
+    .button-flat-caution:hover {
+      background: #e8543f;
+    }
+    .button-flat-caution:active {
+      background: #cd5240;
+      color: #ac2815;
+    }
+    .button-flat-caution.disabled {
+      box-shadow: none;
+    }
+
+    .button-flat-royal {
+      transition-property: background, color;
+      transition-duration: 0.3s;
+      box-shadow: none;
+      background: #87318c;
+      color: white;
+      text-shadow: none;
+      border: none;
+    }
+    .button-flat-royal:hover {
+      background: #99389f;
+    }
+    .button-flat-royal:active {
+      background: #764479;
+      color: #501d53;
+    }
+    .button-flat-royal.disabled {
+      box-shadow: none;
+    }
+
+    .button-large {
+      font-size: 19px;
+      height: 38.4px;
+      line-height: 38.4px;
+      padding: 0px 30.72px;
+    }
+
+    input.button-large, button.button-large {
+      height: 40.4px;
+    }
+
+    .button-small {
+      font-size: 12px;
+      height: 25.6px;
+      line-height: 25.6px;
+      padding: 0px 20.48px;
+    }
+
+    input.button-small, button.button-small {
+      height: 27.6px;
+    }
+
+    .button-tiny {
+      font-size: 11px;
+      height: 22.4px;
+      line-height: 22.4px;
+      padding: 0px 17.92px;
+    }
+
+    input.button-tiny, button.button-tiny {
+      height: 24.4px;
+    }
+  </style>
+  <title>Upgrade browser!</title>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-47734287-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function () {
+      var ga = document.createElement('script');
+      ga.type = 'text/javascript';
+      ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+</head>
+<body>
+<div id="browser-upgrade">
+  <h2 class="header">PLEASE UPGRADE YOUR BROWSER</h2>
+  <ul>
+    <li id="sprite-ie">
+      <div class="icon"><h2>IE</h2></div>
+      <p class="version">Latest version: <strong>11</strong></p>
+
+      <p class="download">
+        <a class="button button-flat-caution" href="http://windows.microsoft.com/ie">Official website</a>
+      </p>
+
+      <p class="info">“Designed to help you take control of your privacy and
+        browse with confidence.”</p>
+    </li>
+    <li id="sprite-chrome">
+      <div class="icon"><h2>Chrome</h2></div>
+      <p class="version">Latest version: <strong>33</strong></p>
+
+      <p class="download">
+        <a class="button button-flat-caution" href="http://www.google.com/chrome">Official website</a>
+        <a class="button button-flat-caution" href="http://222.197.181.35/downloads/ChromeStandaloneSetup.exe">Download</a>
+      </p>
+
+      <p class="info">“Runs websites and applications with lightning speed.”</p>
+    </li>
+    <li id="sprite-firefox">
+      <div class="icon"><h2>Firefox</h2></div>
+      <p class="version">Latest version: <strong>28</strong></p>
+
+      <p class="download">
+        <a class="button button-flat-caution" href="http://www.firefox.com/">Official website</a>
+        <a class="button button-flat-caution" href="http://222.197.181.35/downloads/Firefox%20Setup%2028.0.exe">Download</a>
+      </p>
+
+      <p class="info">“Firefox is free and made to help you get the most out of
+        the web.”</p>
+    </li>
+    <li id="sprite-safari">
+      <div class="icon"><h2>Safari</h2></div>
+      <p class="version">Latest version: <strong>7</strong></p>
+
+      <p class="download">
+        <a class="button button-flat-caution" href="http://www.apple.com/safari/">Official website</a>
+      </p>
+
+      <p class="info">“Browse the web in smarter, more powerful ways.”</p>
+    </li>
+    <li id="sprite-opera">
+      <div class="icon"><h2>Opera</h2></div>
+      <p class="version">Latest version: <strong>20</strong></p>
+
+      <p class="download">
+        <a class="button button-flat-caution" href="http://www.opera.com/">Official website</a>
+      </p>
+
+      <p class="info">“Secure, powerful and easy to use, with excellent privacy
+        protection.”</p>
+    </li>
+  </ul>
+</div>
+</body>
+</html>
