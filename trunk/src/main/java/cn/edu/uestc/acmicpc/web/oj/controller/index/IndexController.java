@@ -56,6 +56,14 @@ public class IndexController extends BaseController {
     return "index";
   }
 
+  /**
+   * Force redirect to this page when user use IE 6 7 8
+   */
+  @RequestMapping("fuckIE")
+  public String fuckIE() {
+    return "fuckIE";
+  }
+
   @RequestMapping("recentContest")
   @LoginPermit(NeedLogin = false)
   public
