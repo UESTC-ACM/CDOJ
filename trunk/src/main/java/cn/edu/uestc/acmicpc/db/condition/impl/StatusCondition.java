@@ -59,10 +59,10 @@ public class StatusCondition extends BaseCondition {
   public Integer userId;
 
   /**
-   *
+   * Submit user id list, separated by dot.
    */
   @Exp(mapField = "userId", type = ConditionType.IN)
-  public String userIds;
+  public String userIdList;
 
   /**
    * Problem id.
