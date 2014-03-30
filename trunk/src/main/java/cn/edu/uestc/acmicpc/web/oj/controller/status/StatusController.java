@@ -2,7 +2,6 @@ package cn.edu.uestc.acmicpc.web.oj.controller.status;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.code.CodeDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
@@ -21,6 +20,7 @@ import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
@@ -93,12 +93,17 @@ public class StatusController extends BaseController {
           if (contestShowDTO == null) {
             throw new AppException("No such contest.");
           }
-          UserDTO currentUser = getCurrentUser(session);
-          if (currentUser == null) {
-            // Return nothing
-            statusCondition.userId = 0;
+          // Check permission
+          checkContestPermission(session, statusCondition.contestId);
+          // Get type
+          Byte type = getContestType(session, statusCondition.contestId);
+          if (type == Global.ContestType.INVITED.ordinal()) {
+            // Only show current user and his member's status
+            List<Integer> memberList = getContestTeamMembers(session, statusCondition.contestId);
+            statusCondition.userIdList = ArrayUtil.join(memberList.toArray(), ",");
           } else {
             // Only show current user's status
+            UserDTO currentUser = getCurrentUser(session);
             statusCondition.userId = currentUser.getUserId();
           }
           // Only show status submitted in contest
@@ -242,6 +247,13 @@ public class StatusController extends BaseController {
       try {
         UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
 
+        if (submitDTO.getLanguageId() == null) {
+          throw new AppException("Please select a language.");
+        }
+        if (languageService.getLanguageName(submitDTO.getLanguageId()) == null) {
+          throw new AppException("No such language.");
+        }
+
         if (submitDTO.getProblemId() == null) {
           throw new AppException("Wrong problem id.");
         }
@@ -249,29 +261,30 @@ public class StatusController extends BaseController {
         if (problemDTO == null) {
           throw new AppException("Wrong problem id.");
         }
+        // Status in contest
         if (submitDTO.getContestId() != null) {
-          // Is this contest exist?
-          ContestDTO contestDTO = contestService.getContestDTOByContestId(submitDTO.getContestId());
-          if (contestDTO == null) {
+          ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(submitDTO.getContestId());
+          if (contestShowDTO == null) {
             throw new AppException("Wrong contest id.");
           }
-          // Is this contest contains this problem?
           if (!contestProblemService.checkContestProblemInContest(submitDTO.getProblemId(), submitDTO.getContestId())) {
             throw new AppException("Wrong problem id.");
           }
+          if (!isAdmin(session)) {
+            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+            if (currentTime.before(contestShowDTO.getStartTime()) ||
+                currentTime.after(contestShowDTO.getEndTime())) {
+              throw new AppException("Out of time!");
+            }
+            checkContestPermission(session, submitDTO.getContestId());
+          }
         } else {
           // We don't allow normal user to submit code to a stashed problem.
-          if (!problemDTO.getIsVisible() &&
-              currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
-            throw new AppException("You have no permission to submit this problem.");
+          if (!isAdmin(session)) {
+            if (!problemDTO.getIsVisible()) {
+              throw new AppException("You have no permission to submit this problem.");
+            }
           }
-        }
-
-        if (submitDTO.getLanguageId() == null) {
-          throw new AppException("Please select a language.");
-        }
-        if (languageService.getLanguageName(submitDTO.getLanguageId()) == null) {
-          throw new AppException("No such language.");
         }
 
         Integer codeId = codeService.createNewCode(CodeDTO.builder()
@@ -312,8 +325,38 @@ public class StatusController extends BaseController {
       if (statusInformationDTO == null) {
         throw new AppException("No such status.");
       }
-      if (!checkPermission(session, statusInformationDTO.getUserId())) {
-        throw new AppException("You have no permission to view this code.");
+      if (!isAdmin(session)) {
+        UserDTO currentUser = getCurrentUser(session);
+        if (statusInformationDTO.getContestId() == null) {
+          // Status not in contest
+          if (!currentUser.getUserId().equals(statusInformationDTO.getUserId())) {
+            throw new AppException("You have no permission to view this code.");
+          }
+        } else {
+          // Status in contest
+          checkContestPermission(session, statusInformationDTO.getContestId());
+          Byte type = getContestType(session, statusInformationDTO.getContestId());
+          if (type == Global.ContestType.INVITED.ordinal()) {
+            // Only show current user and his member's status
+            // Find current user's teamId
+            List<Integer> teamMembers = getContestTeamMembers(session, statusInformationDTO.getContestId());
+            // Check permission
+            Boolean valid = false;
+            for (Integer memberId : teamMembers) {
+              if (memberId.equals(currentUser.getUserId())) {
+                valid = true;
+              }
+            }
+            if (!valid) {
+              throw new AppException("You have no permission to view this code.");
+            }
+          } else {
+            // Status in normal contest
+            if (!currentUser.getUserId().equals(statusInformationDTO.getUserId())) {
+              throw new AppException("You have no permission to view this code.");
+            }
+          }
+        }
       }
       json.put("result", "success");
       json.put("code", statusInformationDTO.getCodeContent());

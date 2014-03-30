@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -78,6 +80,15 @@ public class FileServiceImpl extends AbstractService implements FileService {
     int dataCount = 0;
     boolean foundSpj = false;
     File[] files = currentFile.listFiles();
+    // Sort files by name.
+    if (files != null) {
+      Arrays.sort(files, new Comparator<File>() {
+        @Override
+        public int compare(File o1, File o2) {
+          return FileUtil.getFileName(o1).compareTo(FileUtil.getFileName(o2));
+        }
+      });
+    }
     Map<String, Integer> fileMap = new TreeMap<>();
     if (files != null) {
       for (File file : files) {
@@ -88,7 +99,6 @@ public class FileServiceImpl extends AbstractService implements FileService {
         }
       }
     }
-
     if (dataCount != 0) {
       FileUtil.clearDirectory(dataPath);
       if (!targetFile.exists()) {

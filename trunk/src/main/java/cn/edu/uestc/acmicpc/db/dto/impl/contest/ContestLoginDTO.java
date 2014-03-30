@@ -64,4 +64,30 @@ public class ContestLoginDTO {
   public void setPassword(String password) {
     this.password = password;
   }
+
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  public static class Builder {
+
+    public ContestLoginDTO build() {
+      return new ContestLoginDTO(contestId, password);
+    }
+
+    private Integer contestId;
+    private String password;
+
+    public Builder setContestId(Integer contestId) {
+      this.contestId = contestId;
+      return this;
+    }
+
+    public Builder setPassword(String password) {
+      this.password = password;
+      return this;
+    }
+  }
+
 }

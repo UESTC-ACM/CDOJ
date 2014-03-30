@@ -39,7 +39,8 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
   }
 
   @Override
-  public Boolean whetherUserHasBeenRegistered(Integer userId, Integer contestId) throws AppException {
+  public Boolean checkUserCanRegisterInContest(Integer userId,
+                                               Integer contestId) throws AppException {
     StringBuilder hqlBuilder = new StringBuilder();
     hqlBuilder.append("from ContestTeam contestTeam, TeamUser teamUser where")
         .append(" contestTeam.teamId = teamUser.teamId")
@@ -48,7 +49,7 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
         .append(" and teamUser.userId = ").append(userId)
         .append(" and teamUser.allow = 1");
     Long count = contestTeamDAO.customCount("contestTeam.contestTeamId", hqlBuilder.toString());
-    return count > 0;
+    return count == 0;
   }
 
   @Override
@@ -106,5 +107,22 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
     contestTeamCondition.contestId = contestId;
     return contestTeamDAO.findAll(ContestTeamReportDTO.class,
         ContestTeamReportDTO.builder(), contestTeamCondition.getCondition());
+  }
+
+  @Override
+  public Integer getTeamIdByUserIdAndContestId(Integer userId, Integer contestId) throws AppException {
+    StringBuilder hqlBuilder = new StringBuilder();
+    hqlBuilder.append("select contestTeam.teamId from ContestTeam contestTeam, TeamUser teamUser where")
+        // Contest id
+        .append(" contestTeam.contestId = ").append(contestId)
+        // Team should be accepted
+        .append(" and contestTeam.status = ").append(Global.ContestRegistryStatus.ACCEPTED.ordinal())
+        .append(" and contestTeam.teamId = teamUser.teamId")
+            // User id
+        .append(" and teamUser.userId = ").append(userId)
+        // User should be allowed
+        .append(" and teamUser.allow = true");
+    List<Integer> result = (List<Integer>) contestTeamDAO.findAll(hqlBuilder.toString());
+    return result.size() > 0 ? result.get(0) : null;
   }
 }

@@ -112,7 +112,8 @@ public class UserController extends BaseController {
   @ResponseBody
   Map<String, Object> logout(HttpSession session) {
     Map<String, Object> json = new HashMap<>();
-    session.removeAttribute("currentUser");
+    // Clear sessions
+    session.invalidate();
     json.put("result", "success");
     return json;
   }

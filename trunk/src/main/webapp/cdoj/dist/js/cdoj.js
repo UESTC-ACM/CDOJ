@@ -80124,7 +80124,8 @@ if (typeof exports === 'object') {
       PUBLIC: 0,
       PRIVATE: 1,
       DIY: 2,
-      INVITED: 3
+      INVITED: 3,
+      INHERIT: 4
     },
     ContestStatus: {
       PENDING: "Pending",
@@ -80376,10 +80377,10 @@ if (typeof exports === 'object') {
         });
       };
       $rootScope.$on("globalData:refresh", function() {
-        return $timeout(fetchGlobalData, 100);
+        return $timeout(fetchGlobalData, 0);
       });
       return $rootScope.$on("data:refresh", function() {
-        return $timeout(fetchData, 200);
+        return $timeout(fetchData, 0);
       });
     }
   ]);
@@ -80694,6 +80695,9 @@ if (typeof exports === 'object') {
             length = Math.floor(length / 24);
             $scope.contest.lengthDays = length;
             $scope.contest.description = data.contest.description;
+            if ($scope.contest.type === $rootScope.ContestType.INHERIT) {
+              $scope.contest.parentId = data.contest.parentId;
+            }
             return $scope.problemList = _.map(data.problemList, function(val) {
               return {
                 problemId: val.problemId,
@@ -80756,14 +80760,22 @@ if (typeof exports === 'object') {
       $scope.removeProblem = function(index) {
         return $scope.problemList.splice(index, 1);
       };
-      return $scope.submit = function() {
+      $scope.fieldInfo = [];
+      $scope.submit = function() {
         var contestEditDTO, password, passwordRepeat;
         contestEditDTO = angular.copy($scope.contest);
-        contestEditDTO.time = Date.create(contestEditDTO.time).getTime();
-        if (angular.isUndefined(contestEditDTO.password || angular.isUndefined(contestEditDTO.passwordRepeat))) {
-          $window.scrollTo(0, 0);
-          return;
+        if (contestEditDTO.type === $rootScope.ContestType.PRIVATE) {
+          if (angular.isUndefined(contestEditDTO.password) || angular.isUndefined(contestEditDTO.passwordRepeat)) {
+            $window.scrollTo(0, 0);
+            return;
+          }
+        } else if (contestEditDTO.type === $rootScope.ContestType.INHERIT) {
+          if (angular.isUndefined(contestEditDTO.parentId)) {
+            $window.scrollTo(0, 0);
+            return;
+          }
         }
+        contestEditDTO.time = Date.create(contestEditDTO.time).getTime();
         password = CryptoJS.SHA1(contestEditDTO.password).toString();
         contestEditDTO.password = password;
         passwordRepeat = CryptoJS.SHA1(contestEditDTO.passwordRepeat).toString();
@@ -80771,11 +80783,27 @@ if (typeof exports === 'object') {
         return $http.post("/contest/edit", contestEditDTO).success(function(data) {
           if (data.result === "success") {
             return $window.location.href = "#/contest/show/" + data.contestId;
+          } else if (data.result === "field_error") {
+            $scope.fieldInfo = data.field;
+            return $window.scrollTo(0, 0);
           } else {
             return $window.alert(data.error_msg);
           }
         }).error(function() {
           return $window.alert("Network error.");
+        });
+      };
+      return $scope.searchContest = function(keyword) {
+        var contestCondition;
+        contestCondition = {
+          keyword: keyword
+        };
+        return $http.post("/contest/search", contestCondition).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            return data.list;
+          }
         });
       };
     }
@@ -80795,8 +80823,13 @@ if (typeof exports === 'object') {
         });
       };
       return $scope.enterContest = function(contest) {
-        var contestLoginDTO;
-        if (contest.type === $rootScope.ContestType.PRIVATE) {
+        var contestLoginDTO, type;
+        if (contest.type === $rootScope.ContestType.INHERIT) {
+          type = contest.parentType;
+        } else {
+          type = contest.type;
+        }
+        if (type === $rootScope.ContestType.PRIVATE) {
           if ($rootScope.hasLogin === false) {
             return $window.alert("Please login first!");
           } else {
@@ -80822,8 +80855,20 @@ if (typeof exports === 'object') {
               return $window.alert("Network error!");
             });
           }
-        } else if (contest.type === $rootScope.ContestType.INVITED) {
-
+        } else if (type === $rootScope.ContestType.INVITED) {
+          contestLoginDTO = {
+            contestId: contest.contestId,
+            password: "1234567890123456789012345678901234567890"
+          };
+          return $http.post("/contest/loginContest", contestLoginDTO).success(function(data) {
+            if (data.result === "success") {
+              return $window.location.href = "/#/contest/show/" + contest.contestId;
+            } else {
+              return $window.alert(data.error_msg);
+            }
+          }).error(function() {
+            return $window.alert("Network error!");
+          });
         } else {
           return $window.location.href = "/#/contest/show/" + contest.contestId;
         }
@@ -81030,6 +81075,7 @@ if (typeof exports === 'object') {
       var clarificationTimer, cookieName, currentTimeTimer, rankListTimer, refreshClarification, refreshRankList, updateTime;
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $window.scrollTo(0, 0);
+      $scope.currentTeam = "";
       $scope.contestId = 0;
       $scope.contest = {
         title: "",
@@ -81059,6 +81105,9 @@ if (typeof exports === 'object') {
           lastClarificationCount: 0
         });
       }
+      $scope.$on("currentUser:logout", function() {
+        return $window.location.href = "/#/contest/list";
+      });
       $scope.contestId = angular.copy($routeParams.contestId);
       $http.get("/contest/data/" + $scope.contestId).success(function(data) {
         if (data.result === "success") {
@@ -81118,10 +81167,10 @@ if (typeof exports === 'object') {
         return $rootScope.$broadcast("list:refresh:comment", function(data) {
           $scope.totalUnreadedClarification = Math.max(0, data.pageInfo.totalItems - $cookieStore.get(cookieName).lastClarificationCount);
           $scope.lastClarificationCount = data.pageInfo.totalItems;
-          return clarificationTimer = $timeout(refreshClarification, 10000);
+          return clarificationTimer = $timeout(refreshClarification, 30000);
         });
       };
-      clarificationTimer = $timeout(refreshClarification, 500);
+      clarificationTimer = $timeout(refreshClarification, 100);
       $scope.selectClarificationTab = function() {
         var contest;
         $timeout.cancel(clarificationTimer);
@@ -81196,23 +81245,39 @@ if (typeof exports === 'object') {
               return value.solved = data.rankList.problemList[index].solved;
             });
             if ($rootScope.hasLogin) {
-              userStatus = _.findWhere(data.rankList.rankList, {
-                userName: $rootScope.currentUser.userName
-              });
+              userStatus = void 0;
+              if ($scope.contest.type === $rootScope.ContestType.INVITED) {
+                _.each(data.rankList.rankList, function(rank) {
+                  var findMe;
+                  findMe = _.findWhere(rank.teamUsers, {
+                    userName: $scope.currentUser.userName
+                  });
+                  if (angular.isDefined(findMe)) {
+                    $scope.currentTeam = rank.userName;
+                    return userStatus = rank;
+                  }
+                });
+              } else {
+                userStatus = _.findWhere(data.rankList.rankList, {
+                  userName: $rootScope.currentUser.userName
+                });
+              }
               if (angular.isDefined(userStatus)) {
-                _.each($scope.problemList, function(value, index) {
+                return _.each($scope.problemList, function(value, index) {
                   value.hasSolved = userStatus.itemList[index].solved;
                   return value.hasTried = userStatus.itemList[index].tried > 0;
                 });
               }
             }
           }
-          return rankListTimer = $timeout(refreshRankList, 10000);
         }).error(function() {
-          return rankListTimer = $timeout(refreshRankList, 10000);
+          return $window.alert("Network error!");
         });
       };
-      return rankListTimer = $timeout(refreshRankList, 500);
+      $scope.refreshRankList = function() {
+        return refreshRankList();
+      };
+      return rankListTimer = $timeout(refreshRankList, 100);
     }
   ]);
 
@@ -81413,8 +81478,6 @@ if (typeof exports === 'object') {
               if (angular.isFunction(callback)) {
                 return callback(data);
               }
-            } else {
-              return $window.alert(data.error_msg);
             }
           });
         }
@@ -81707,12 +81770,9 @@ if (typeof exports === 'object') {
           });
         }
       };
-      $scope.close = function() {
+      return $scope.close = function() {
         return $modalInstance.dismiss("close");
       };
-      return $scope.$on("$routeChangeStart", function() {
-        return $modalInstance.dismiss();
-      });
     }
   ]);
 
@@ -82195,17 +82255,26 @@ if (typeof exports === 'object') {
     return {
       restrict: "A",
       scope: {
-        status: "="
+        status: "=",
+        alwaysShowHref: "@"
       },
       controller: [
         "$scope", "$rootScope", "$http", "$modal", function($scope, $rootScope, $http, $modal) {
+          var checkShowHref;
           $scope.showHref = false;
-          $rootScope.$watch("hasLogin", function() {
-            if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
-              return $scope.showHref = true;
+          checkShowHref = function() {
+            if ($scope.alwaysShowHref) {
+              $scope.showHref = true;
+            } else if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
+              $scope.showHref = true;
             } else {
-              return $scope.showHref = false;
+              $scope.showHref = false;
             }
+            return console.log($scope.showHref, $rootScope.hasLogin, $rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName);
+          };
+          checkShowHref();
+          $scope.$on("currentUser:changed", function() {
+            return checkShowHref();
           });
           return $scope.showCode = function() {
             var statusId;
@@ -83027,7 +83096,8 @@ if (typeof exports === 'object') {
     return {
       restrict: "A",
       scope: {
-        status: "="
+        status: "=",
+        alwaysShowHref: "@"
       },
       controller: [
         "$scope", "$rootScope", "$http", "$modal", function($scope, $rootScope, $http, $modal) {
@@ -83035,7 +83105,9 @@ if (typeof exports === 'object') {
           $scope.showHref = false;
           checkShowHref = function() {
             if ($scope.status.returnTypeId === 7) {
-              if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
+              if ($scope.alwaysShowHref) {
+                return $scope.showHref = true;
+              } else if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
                 return $scope.showHref = true;
               } else {
                 return $scope.showHref = false;
@@ -83044,7 +83116,8 @@ if (typeof exports === 'object') {
               return $scope.showHref = false;
             }
           };
-          $rootScope.$watch("hasLogin", function() {
+          checkShowHref();
+          $scope.$on("currentUser:updated", function() {
             return checkShowHref();
           });
           $scope.showCompileInfo = function() {

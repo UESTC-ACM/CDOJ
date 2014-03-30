@@ -1,5 +1,7 @@
 package cn.edu.uestc.acmicpc.web.rank;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
 import cn.edu.uestc.acmicpc.util.settings.Global;
 
 import java.sql.Timestamp;
@@ -15,16 +17,32 @@ import java.util.Map;
 public class RankListBuilder {
   private List<RankListProblem> problemList;
   private List<RankListUser> userList;
+  private List<ContestTeamListDTO> teamList;
   private Map<String, RankListProblem> problemMap;
   private Map<String, RankListUser> userMap;
   private Map<String, Integer> problemIndexMap;
+  private Map<String, ContestTeamListDTO> teamMap;
+  private Boolean teamMode;
 
   public RankListBuilder() {
     problemList = new LinkedList<>();
     userList = new LinkedList<>();
+    teamList = new LinkedList<>();
     problemMap = new HashMap<>();
     userMap = new HashMap<>();
     problemIndexMap = new HashMap<>();
+    teamMap = new HashMap<>();
+    teamMode = false;
+  }
+
+  public void enableTeamMode() {
+    teamMode = true;
+  }
+
+  public void addRankListTeam(ContestTeamListDTO team) {
+    for (TeamUserListDTO teamUserListDTO: team.getTeamUsers()) {
+      teamMap.put(teamUserListDTO.getUserName(), team);
+    }
   }
 
   public void addRankListProblem(String title) {
@@ -42,31 +60,71 @@ public class RankListBuilder {
     return problemIndexMap.get(title);
   }
 
-  private RankListUser getRankListUser(String userName, String nickName) {
-    RankListUser user = userMap.get(userName);
-    if (user == null) {
-      user = new RankListUser();
-      user.userName = userName;
-      user.nickName = nickName;
-      user.penalty = 0L;
-      user.rank = 0;
-      user.solved = 0;
-      user.tried = 0;
-      user.itemList = new RankListItem[problemList.size()];
-      for (int index = 0; index < problemList.size(); index++) {
-        user.itemList[index] = new RankListItem();
-        RankListItem rankListItem = user.itemList[index];
-        rankListItem.solvedTime = 0L;
-        rankListItem.solved = false;
-        rankListItem.penalty = 0L;
-        rankListItem.tried = 0;
-        rankListItem.firstBlood = false;
-      }
+  private RankListUser getRankListUser(String userName,
+                                       String nickName,
+                                       String email) {
+    if (!teamMode) {
+      RankListUser user = userMap.get(userName);
+      if (user == null) {
+        user = new RankListUser();
+        user.userName = userName;
+        user.nickName = nickName;
+        user.email = email;
+        user.penalty = 0L;
+        user.rank = 0;
+        user.solved = 0;
+        user.tried = 0;
+        user.itemList = new RankListItem[problemList.size()];
+        for (int index = 0; index < problemList.size(); index++) {
+          user.itemList[index] = new RankListItem();
+          RankListItem rankListItem = user.itemList[index];
+          rankListItem.solvedTime = 0L;
+          rankListItem.solved = false;
+          rankListItem.penalty = 0L;
+          rankListItem.tried = 0;
+          rankListItem.firstBlood = false;
+        }
 
-      userList.add(user);
-      userMap.put(userName, user);
+        userList.add(user);
+        userMap.put(userName, user);
+      }
+      return user;
+    } else {
+      ContestTeamListDTO team = teamMap.get(userName);
+      if (team == null) {
+        // This will happened when administrator submit in contest
+        team = new ContestTeamListDTO(0, 0, userName, 0, 0, "");
+        team.setTeamUsers(new LinkedList<TeamUserListDTO>());
+        team.getTeamUsers().add(new TeamUserListDTO(0, 0, 0, userName, email, nickName, true, ""));
+        teamList.add(team);
+        teamMap.put(userName, team);
+      }
+      RankListUser user = userMap.get(team.getTeamName());
+      if (user == null) {
+        user = new RankListUser();
+        user.userName = team.getTeamName();
+        user.penalty = 0L;
+        user.rank = 0;
+        user.solved = 0;
+        user.tried = 0;
+        user.itemList = new RankListItem[problemList.size()];
+        for (int index = 0; index < problemList.size(); index++) {
+          user.itemList[index] = new RankListItem();
+          RankListItem rankListItem = user.itemList[index];
+          rankListItem.solvedTime = 0L;
+          rankListItem.solved = false;
+          rankListItem.penalty = 0L;
+          rankListItem.tried = 0;
+          rankListItem.firstBlood = false;
+        }
+        // Set team users
+        user.teamUsers = team.getTeamUsers();
+
+        userList.add(user);
+        userMap.put(team.getTeamName(), user);
+      }
+      return user;
     }
-    return user;
   }
 
   public void addStatus(RankListStatus status) {
@@ -76,7 +134,7 @@ public class RankListBuilder {
       return;
     }
     RankListProblem problem = problemList.get(problemIndex);
-    RankListUser user = getRankListUser(status.userName, status.nickName);
+    RankListUser user = getRankListUser(status.userName, status.nickName, status.email);
     RankListItem item = user.itemList[problemIndex];
     if (item.solved) {
       // Has solved

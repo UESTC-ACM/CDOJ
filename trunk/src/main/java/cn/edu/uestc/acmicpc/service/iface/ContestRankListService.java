@@ -4,9 +4,17 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.rank.RankList;
 
 /**
- * Description
+ * Contest rank list service interface.
  */
 public interface ContestRankListService {
 
-  public RankList getRankList(Integer contestId) throws AppException;
+  /**
+   * Get rank list by contest's id.
+   *
+   * @param contestId contest's id.
+   * @param invitedContest true if this contest is INVITED type.
+   * @return {@link RankList} entity.
+   * @throws AppException
+   */
+  public RankList getRankList(Integer contestId, Boolean invitedContest) throws AppException;
 }

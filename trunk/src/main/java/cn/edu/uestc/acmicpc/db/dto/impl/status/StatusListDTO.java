@@ -16,7 +16,8 @@ import java.util.Map;
  * "languageByLanguageId.name", "timeCost", "memoryCost", "time", "caseNumber" })</code>
  */
 @Fields({"statusId", "userByUserId.userName", "userByUserId.nickName", "problemId", "contestId",
-    "result", "length", "languageByLanguageId.name", "timeCost", "memoryCost", "time", "caseNumber"})
+    "result", "length", "languageByLanguageId.name", "timeCost", "memoryCost", "time", "caseNumber",
+    "userByUserId.email"})
 public class StatusListDTO implements BaseDTO<Status> {
 
   private String nickName;
@@ -27,7 +28,7 @@ public class StatusListDTO implements BaseDTO<Status> {
   private StatusListDTO(Integer statusId, String userName, String nickName, Integer problemId,
                         Integer contestId, String returnType, Integer returnTypeId, Integer length,
                         String language, Integer timeCost, Integer memoryCost, Timestamp time,
-                        Integer caseNumber) {
+                        Integer caseNumber, String email) {
     this.statusId = statusId;
     this.userName = userName;
     this.nickName = nickName;
@@ -41,6 +42,7 @@ public class StatusListDTO implements BaseDTO<Status> {
     this.memoryCost = memoryCost;
     this.time = time;
     this.caseNumber = caseNumber;
+    this.email = email;
   }
 
   private Integer statusId;
@@ -55,6 +57,15 @@ public class StatusListDTO implements BaseDTO<Status> {
   private Integer memoryCost;
   private Timestamp time;
   private Integer caseNumber;
+  private String email;
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
   public String getNickName() {
     return nickName;
@@ -210,6 +221,9 @@ public class StatusListDTO implements BaseDTO<Status> {
     if (userName != null ? !userName.equals(that.userName) : that.userName != null) {
       return false;
     }
+    if (email != null ? !email.equals(that.email) : that.email != null) {
+      return false;
+    }
 
     return true;
   }
@@ -229,6 +243,7 @@ public class StatusListDTO implements BaseDTO<Status> {
     result = 31 * result + (memoryCost != null ? memoryCost.hashCode() : 0);
     result = 31 * result + (time != null ? time.hashCode() : 0);
     result = 31 * result + (caseNumber != null ? caseNumber.hashCode() : 0);
+    result = 31 * result + (email != null ? email.hashCode() : 0);
     return result;
   }
 
@@ -246,7 +261,7 @@ public class StatusListDTO implements BaseDTO<Status> {
     @Override
     public StatusListDTO build() {
       return new StatusListDTO(statusId, userName, nickName, problemId, contestId, returnType,
-          returnTypeId, length, language, timeCost, memoryCost, time, caseNumber);
+          returnTypeId, length, language, timeCost, memoryCost, time, caseNumber, email);
     }
 
     @Override
@@ -263,6 +278,7 @@ public class StatusListDTO implements BaseDTO<Status> {
       memoryCost = (Integer) properties.get("memoryCost");
       time = (Timestamp) properties.get("time");
       caseNumber = (Integer) properties.get("caseNumber");
+      email = (String) properties.get("userByUserId.email");
       return build();
 
     }
@@ -279,14 +295,16 @@ public class StatusListDTO implements BaseDTO<Status> {
     private Integer memoryCost;
     private Timestamp time;
     private Integer caseNumber;
+    private String email;
+
+    public Builder setEmail(String email) {
+      this.email = email;
+      return this;
+    }
 
     public Builder setNickName(String nickName) {
       this.nickName = nickName;
       return this;
-    }
-
-    public Integer getStatusId() {
-      return statusId;
     }
 
     public Builder setStatusId(Integer statusId) {
@@ -294,17 +312,9 @@ public class StatusListDTO implements BaseDTO<Status> {
       return this;
     }
 
-    public String getUserName() {
-      return userName;
-    }
-
     public Builder setUserName(String userName) {
       this.userName = userName;
       return this;
-    }
-
-    public Integer getProblemId() {
-      return problemId;
     }
 
     public Builder setProblemId(Integer problemId) {
@@ -312,17 +322,9 @@ public class StatusListDTO implements BaseDTO<Status> {
       return this;
     }
 
-    public Integer getContestId() {
-      return contestId;
-    }
-
     public Builder setContestId(Integer contestId) {
       this.contestId = contestId;
       return this;
-    }
-
-    public String getReturnType() {
-      return returnType;
     }
 
     public Builder setReturnType(String returnType) {
@@ -330,17 +332,9 @@ public class StatusListDTO implements BaseDTO<Status> {
       return this;
     }
 
-    public Integer getReturnTypeId() {
-      return returnTypeId;
-    }
-
     public Builder setReturnTypeId(Integer returnTypeId) {
       this.returnTypeId = returnTypeId;
       return this;
-    }
-
-    public Integer getLength() {
-      return length;
     }
 
     public Builder setLength(Integer length) {
@@ -348,17 +342,9 @@ public class StatusListDTO implements BaseDTO<Status> {
       return this;
     }
 
-    public String getLanguage() {
-      return language;
-    }
-
     public Builder setLanguage(String language) {
       this.language = language;
       return this;
-    }
-
-    public Integer getTimeCost() {
-      return timeCost;
     }
 
     public Builder setTimeCost(Integer timeCost) {
@@ -366,26 +352,14 @@ public class StatusListDTO implements BaseDTO<Status> {
       return this;
     }
 
-    public Integer getMemoryCost() {
-      return memoryCost;
-    }
-
     public Builder setMemoryCost(Integer memoryCost) {
       this.memoryCost = memoryCost;
       return this;
     }
 
-    public Timestamp getTime() {
-      return time;
-    }
-
     public Builder setTime(Timestamp time) {
       this.time = time;
       return this;
-    }
-
-    public Integer getCaseNumber() {
-      return caseNumber;
     }
 
     public Builder setCaseNumber(Integer caseNumber) {
