@@ -145,4 +145,13 @@ public interface StatusService extends DatabaseService<Status, Integer> {
    * @throws AppException
    */
   public void rejudge(StatusCondition statusCondition) throws AppException;
+
+  /**
+   * Export all status fit in status condition.
+   *
+   * @param statusCondition search condition
+   * @return list of {@link StatusInformationDTO} entities.
+   * @throws AppException
+   */
+  public List<StatusInformationDTO> getStatusInformationDTOList(StatusCondition statusCondition) throws AppException;
 }

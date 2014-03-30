@@ -16,6 +16,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReportDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReviewDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
@@ -59,6 +60,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -67,6 +71,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -124,10 +131,70 @@ public class ContestController extends BaseController {
     this.contestRegistryReportView = contestRegistryReportView;
   }
 
+  @RequestMapping("exportCodes/{contestId}")
+  public void registryReport(HttpSession session,
+                             @PathVariable("contestId") Integer contestId,
+                             HttpServletResponse response) {
+    try {
+      if (!isAdmin(session)) {
+        throw new AppException("Permission denied!");
+      }
+      ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(contestId);
+      if (contestId == null) {
+        throw new AppException("Contest not found.");
+      }
+
+      // Fetch status list
+      StatusCondition statusCondition = new StatusCondition();
+      statusCondition.contestId = contestId;
+      statusCondition.result = Global.OnlineJudgeResultType.OJ_AC;
+      List<StatusInformationDTO> statusList = statusService.getStatusInformationDTOList(statusCondition);
+
+      // Create zip output stream
+      ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
+      ZipOutputStream zipOutputStream = new ZipOutputStream(outputBuffer);
+      zipOutputStream.setLevel(ZipOutputStream.STORED);
+
+      try {
+        // Put status as file
+        for (StatusInformationDTO status : statusList) {
+          if (status.getTime().before(contestShowDTO.getStartTime()) ||
+              status.getTime().after(contestShowDTO.getEndTime())) {
+            // Skip submission out of contest time.
+            continue;
+          }
+          // Set file name, e.g: 1_Problem_1_User_Administrator.c
+          StringBuilder fileName = new StringBuilder();
+          fileName.append(status.getStatusId())
+              .append("Problem_").append(status.getProblemId())
+              .append("_User_").append(status.getUserName())
+              .append(status.getExtension());
+          ZipEntry zipEntry = new ZipEntry(fileName.toString());
+          zipOutputStream.putNextEntry(zipEntry);
+          zipOutputStream.write(status.getCodeContent().getBytes(Charset.forName("UTF-8")));
+          zipOutputStream.closeEntry();
+        }
+        // Close
+        zipOutputStream.close();
+
+        response.setContentType("application/zip");
+        response.addHeader("Content-Disposition", "attachment; filename=\"code.zip\"");
+        response.addHeader("Content-Transfer-Encoding", "binary");
+
+        response.getOutputStream().write(outputBuffer.toByteArray());
+        response.getOutputStream().flush();
+        outputBuffer.close();
+      } catch (IOException e) {
+        throw new AppException("Error while export codes");
+      }
+    } catch (AppException e) {
+      // Ignore
+    }
+  }
+
   @RequestMapping("registryReport/{contestId}")
   public ModelAndView registryReport(HttpSession session,
-                                     @PathVariable("contestId")
-                                     Integer contestId) {
+                                     @PathVariable("contestId") Integer contestId) {
     ModelAndView result = new ModelAndView();
     result.setView(contestRegistryReportView);
     try {
