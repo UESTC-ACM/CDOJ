@@ -10,21 +10,27 @@ import java.util.Map;
 /**
  * DTO for code and compile information query.
  * <br/>
- * <code>@Fields({ "statusId", "userId", "codeByCodeId.content", "compileInfoId" })</code>
+ * <code>@Fields({ "statusId", "userId", "codeByCodeId.content", "compileInfoId", "contestId", "problemId" })</code>
  */
-@Fields({"statusId", "userId", "codeByCodeId.content", "compileInfoId", "contestId"})
+@Fields({"statusId", "userId", "codeByCodeId.content", "compileInfoId",
+    "contestId", "problemId", "languageByLanguageId.extension",
+    "userByUserId.userName"})
 public class StatusInformationDTO implements BaseDTO<Status> {
 
   public StatusInformationDTO() {
   }
 
   private StatusInformationDTO(Integer statusId, Integer userId, String codeContent,
-                               Integer compileInfoId, Integer contestId) {
+                               Integer compileInfoId, Integer contestId, Integer problemId,
+                               String extension, String userName) {
     this.statusId = statusId;
     this.userId = userId;
     this.codeContent = codeContent;
     this.compileInfoId = compileInfoId;
     this.contestId = contestId;
+    this.problemId = problemId;
+    this.extension = extension;
+    this.userName = userName;
   }
 
   private Integer statusId;
@@ -32,6 +38,33 @@ public class StatusInformationDTO implements BaseDTO<Status> {
   private String codeContent;
   private Integer compileInfoId;
   private Integer contestId;
+  private Integer problemId;
+  private String extension;
+  private String userName;
+
+  public String getUserName() {
+    return userName;
+  }
+
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
+
+  public String getExtension() {
+    return extension;
+  }
+
+  public void setExtension(String extension) {
+    this.extension = extension;
+  }
+
+  public Integer getProblemId() {
+    return problemId;
+  }
+
+  public void setProblemId(Integer problemId) {
+    this.problemId = problemId;
+  }
 
   public Integer getContestId() {
     return contestId;
@@ -99,6 +132,9 @@ public class StatusInformationDTO implements BaseDTO<Status> {
     if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null) {
       return false;
     }
+    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null) {
+      return false;
+    }
 
     return true;
   }
@@ -110,6 +146,7 @@ public class StatusInformationDTO implements BaseDTO<Status> {
     result = 31 * result + (codeContent != null ? codeContent.hashCode() : 0);
     result = 31 * result + (compileInfoId != null ? compileInfoId.hashCode() : 0);
     result = 31 * result + (contestId != null ? contestId.hashCode() : 0);
+    result = 31 * result + (problemId != null ? problemId.hashCode() : 0);
     return result;
   }
 
@@ -125,7 +162,7 @@ public class StatusInformationDTO implements BaseDTO<Status> {
     @Override
     public StatusInformationDTO build() {
       return new StatusInformationDTO(statusId, userId, codeContent, compileInfoId,
-          contestId);
+          contestId, problemId, extension, userName);
     }
 
     @Override
@@ -135,8 +172,10 @@ public class StatusInformationDTO implements BaseDTO<Status> {
       codeContent = (String) properties.get("codeByCodeId.content");
       compileInfoId = (Integer) properties.get("compileInfoId");
       contestId = (Integer) properties.get("contestId");
+      problemId = (Integer) properties.get("problemId");
+      extension = (String) properties.get("languageByLanguageId.extension");
+      userName = (String) properties.get("userByUserId.userName");
       return build();
-
     }
 
     private Integer statusId;
@@ -144,6 +183,24 @@ public class StatusInformationDTO implements BaseDTO<Status> {
     private String codeContent;
     private Integer compileInfoId;
     private Integer contestId;
+    private Integer problemId;
+    private String extension;
+    private String userName;
+
+    public Builder setUserName(String userName) {
+      this.userName = userName;
+      return this;
+    }
+
+    public Builder setExtension(String extension) {
+      this.extension = extension;
+      return this;
+    }
+
+    public Builder setProblemId(Integer problemId) {
+      this.problemId = problemId;
+      return this;
+    }
 
     public Builder setContestId(Integer contestId) {
       this.contestId = contestId;
