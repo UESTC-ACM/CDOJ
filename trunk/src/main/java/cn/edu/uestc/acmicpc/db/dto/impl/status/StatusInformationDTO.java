@@ -119,8 +119,12 @@ public class StatusInformationDTO implements BaseDTO<Status> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof StatusInformationDTO)) return false;
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof StatusInformationDTO)) {
+      return false;
+    }
 
     StatusInformationDTO that = (StatusInformationDTO) o;
 
