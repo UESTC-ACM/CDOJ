@@ -148,7 +148,7 @@ public class ContestController extends BaseController {
       StatusCondition statusCondition = new StatusCondition();
       statusCondition.contestId = contestId;
       statusCondition.result = Global.OnlineJudgeResultType.OJ_AC;
-      List<StatusInformationDTO> statusList = statusService.exportCodes(statusCondition);
+      List<StatusInformationDTO> statusList = statusService.getStatusInformationDTOList(statusCondition);
 
       // Create zip output stream
       ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
