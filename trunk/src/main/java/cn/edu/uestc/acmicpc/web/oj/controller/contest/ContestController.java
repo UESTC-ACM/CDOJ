@@ -163,11 +163,11 @@ public class ContestController extends BaseController {
             // Skip submission out of contest time.
             continue;
           }
-          // Set file name, e.g: Problem_1_User_Administrator_ID_1.c
+          // Set file name, e.g: 1_Problem_1_User_Administrator.c
           StringBuilder fileName = new StringBuilder();
-          fileName.append("Problem_").append(status.getProblemId())
+          fileName.append(status.getStatusId())
+              .append("Problem_").append(status.getProblemId())
               .append("_User_").append(status.getUserName())
-              .append("_ID_").append(status.getStatusId())
               .append(status.getExtension());
           ZipEntry zipEntry = new ZipEntry(fileName.toString());
           zipOutputStream.putNextEntry(zipEntry);
