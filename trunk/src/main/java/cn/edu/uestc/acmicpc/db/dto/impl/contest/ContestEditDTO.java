@@ -14,7 +14,8 @@ public class ContestEditDTO {
                         Integer lengthDays, Integer lengthHours,
                         Integer lengthMinutes, String problemList,
                         Timestamp time, String title, Byte type,
-                        String password, String passwordRepeat) {
+                        String password, String passwordRepeat,
+                        Integer parentId) {
     this.action = action;
     this.contestId = contestId;
     this.description = description;
@@ -27,6 +28,7 @@ public class ContestEditDTO {
     this.type = type;
     this.password = password;
     this.passwordRepeat = passwordRepeat;
+    this.parentId = parentId;
   }
 
   private String action;
@@ -41,6 +43,15 @@ public class ContestEditDTO {
   private Byte type;
   private String password;
   private String passwordRepeat;
+  private Integer parentId;
+
+  public Integer getParentId() {
+    return parentId;
+  }
+
+  public void setParentId(Integer parentId) {
+    this.parentId = parentId;
+  }
 
   public String getPassword() {
     return password;
@@ -181,6 +192,9 @@ public class ContestEditDTO {
     if (type != null ? !type.equals(that.type) : that.type != null) {
       return false;
     }
+    if (parentId != null ? !parentId.equals(that.parentId) : that.parentId != null) {
+      return false;
+    }
 
     return true;
   }
@@ -199,6 +213,7 @@ public class ContestEditDTO {
     result = 31 * result + (type != null ? type.hashCode() : 0);
     result = 31 * result + (password != null ? password.hashCode() : 0);
     result = 31 * result + (passwordRepeat != null ? passwordRepeat.hashCode() : 0);
+    result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
     return result;
   }
 
@@ -223,10 +238,16 @@ public class ContestEditDTO {
     private Byte type;
     private String password;
     private String passwordRepeat;
+    private Integer parentId;
 
     public ContestEditDTO build() {
       return new ContestEditDTO(action, contestId, description, lengthDays, lengthHours, lengthMinutes,
-          problemList, time, title, type, password, passwordRepeat);
+          problemList, time, title, type, password, passwordRepeat, parentId);
+    }
+
+    public Builder setParentId(Integer parentId) {
+      this.parentId = parentId;
+      return this;
     }
 
     public Builder setPassword(String password) {

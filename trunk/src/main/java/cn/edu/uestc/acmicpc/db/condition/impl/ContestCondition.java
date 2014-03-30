@@ -29,19 +29,6 @@ public class ContestCondition extends BaseCondition {
   public Integer endId;
 
   /**
-   * Contest tile (partly matches).
-   */
-  @Exp(type = Condition.ConditionType.LIKE)
-  public String title;
-
-  /**
-   * Contest description
-   */
-  //(TODO(mzry1992) remove it and use keyword).
-  @Exp(type = Condition.ConditionType.LIKE)
-  public String description;
-
-  /**
    * Contest type.
    *
    * @see ContestType
@@ -79,6 +66,13 @@ public class ContestCondition extends BaseCondition {
       Condition keywordCondition = new Condition(Condition.JoinedType.OR);
       keywordCondition.addEntry("title", Condition.ConditionType.LIKE, keyword);
       keywordCondition.addEntry("description", Condition.ConditionType.LIKE, keyword);
+      // If the keyword is numeric, add a condition entry to match the contest id.
+      try {
+        Integer keywordNumber = Integer.parseInt(keyword);
+        keywordCondition.addEntry("contestId", Condition.ConditionType.EQUALS, keywordNumber);
+      } catch (Exception ignored) {
+        // Just ignore it.
+      }
       condition.addEntry(keywordCondition);
     }
     return condition;

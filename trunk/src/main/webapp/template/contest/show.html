@@ -48,7 +48,8 @@
       <markdown content="contest.description">
       </markdown>
     </div>
-    <div class="col-md-12" ng-hide="contest.status == $root.ContestStatus.PENDING">
+    <div class="col-md-12"
+         ng-hide="contest.status == $root.ContestStatus.PENDING">
       <table class="table table-condensed">
         <thead>
         <tr>
@@ -64,10 +65,12 @@
               success: problem.hasSolved == true
             }">
           <td class="text-right">
-            <span ng-bind="problem.solved"></span> / <span ng-bind="problem.tried"></span>
+            <span ng-bind="problem.solved"></span> / <span
+              ng-bind="problem.tried"></span>
           </td>
           <td>Problem <span ng-bind="problem.orderCharacter"></span></td>
-          <td><a href="javascript:void(0);" ng-click="chooseProblem(problem.order)"
+          <td><a href="javascript:void(0);"
+                 ng-click="chooseProblem(problem.order)"
                  ng-bind="problem.title"></a></td>
         </tr>
         </tbody>
@@ -89,12 +92,15 @@
       </ul>
     </div>
     <div class="col-md-12 text-center">
-      <h1><span ng-bind="currentProblem.orderCharacter"></span> - <span ng-bind="currentProblem.title"></span></h1>
+      <h1><span ng-bind="currentProblem.orderCharacter"></span> - <span
+          ng-bind="currentProblem.title"></span></h1>
     </div>
     <problem problem="currentProblem">
       <div class="col-md-12 text-center">
-        <button class="btn btn-default" ng-click="openSubmitModal()">Submit</button>
-        <button class="btn btn-default" ng-click="showStatusTab()">Status</button>
+        <button class="btn btn-default" ng-click="openSubmitModal()">Submit
+        </button>
+        <button class="btn btn-default" ng-click="showStatusTab()">Status
+        </button>
       </div>
     </problem>
   </div>
@@ -102,7 +108,8 @@
 <tab ng-hide="contest.status == $root.ContestStatus.PENDING"
      select="selectClarificationTab()">
   <tab-heading>
-    <span class="badge pull-right" ng-show="totalUnreadedClarification > 0" ng-bind="totalUnreadedClarification"></span>
+    <span class="badge pull-right" ng-show="totalUnreadedClarification > 0"
+          ng-bind="totalUnreadedClarification"></span>
     Clarification
   </tab-heading>
   <div class="row">
@@ -119,10 +126,14 @@
         <table class="table table-condensed">
           <thead>
           <tr>
-            <th style="text-align: center;" ng-show="$root.isAdmin">User</th>
+            <th style="text-align: center;"
+                ng-show="$root.isAdmin || contest.type == $root.ContestType.INVITED">
+              User
+            </th>
             <th style="text-align: center;">Prob</th>
             <th style="width: 19em; text-align: center;">Result
-              <a id="status-refresh-button" href="javascript:void(0);" ng-click="refreshStatus()">
+              <a id="status-refresh-button" href="javascript:void(0);"
+                 ng-click="refreshStatus()">
                 <i class="fa fa-refresh"></i>
               </a>
             </th>
@@ -137,7 +148,7 @@
           </thead>
           <tbody>
           <tr>
-            <td ng-show="$root.isAdmin">
+            <td ng-show="$root.isAdmin || contest.type == $root.ContestType.INVITED">
               <input type="text"
                      style="width: 100%;"
                      ng-model="contestStatusCondition.userName"/>
@@ -164,12 +175,18 @@
                 <option value="">All</option>
               </select>
             </td>
-            <td class="text-center"><button class="btn btn-xs btn-success" ng-click="resetStatusCondition()">Reset</button></td>
-            <td class="text-center" ui-rejudge-button condition="contestStatusCondition">
+            <td class="text-center">
+              <button class="btn btn-xs btn-success"
+                      ng-click="resetStatusCondition()">Reset
+              </button>
+            </td>
+            <td class="text-center" ui-rejudge-button
+                condition="contestStatusCondition">
             </td>
           </tr>
           <tr ng-repeat="status in list">
-            <td style="text-align: center;" ng-show="$root.isAdmin">
+            <td style="text-align: center;"
+                ng-show="$root.isAdmin || contest.type == $root.ContestType.INVITED">
               <a href="/#/user/center/{{status.userName}}"
                  ng-bind="status.userName"></a>
             </td>
@@ -180,6 +197,7 @@
             <td style="text-align: center;"
                 ui-status
                 status="status"
+                always-show-href="true"
                 ng-class="{
                 'font-primary': [0, 16, 17, 18].some(status.returnTypeId),
                 'font-success': [1].some(status.returnTypeId),
@@ -197,7 +215,10 @@
             </td>
 
             <td style="text-align: center;" ng-bind="status.language"></td>
-            <td style="text-align: center;" ui-code-href status="status">
+            <td style="text-align: center;"
+                ui-code-href
+                status="status"
+                always-show-href="true">
             </td>
             <td style="text-align: center;"
                 ui-time
@@ -212,7 +233,15 @@
 <tab heading="Rank"
      ng-hide="contest.status == $root.ContestStatus.PENDING"
      select="refreshRankList()">
-  <div class="row">
+  <div class="row" style="margin-top: 15px;">
+    <div class="col-md-12">
+      <div class="pull-left">
+        <button class="btn btn-danger btn-xs"
+                ng-click="refreshRankList()">
+          <i class="fa fa-refresh"></i>Refresh
+        </button>
+      </div>
+    </div>
     <div class="col-md-12">
       <table id="rank-list" class="table">
         <thead>
@@ -224,21 +253,41 @@
           <th class="text-center"
               ng-repeat="problem in problemList"
               style="width: 70px;">
-            <a href="javascript:void(0);" ng-click="chooseProblem(problem.order)"
+            <a href="javascript:void(0);"
+               ng-click="chooseProblem(problem.order)"
                ng-bind="problem.orderCharacter"></a>
           </th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="user in rankList" class="text-center">
-          <td class="rank" ng-bind="user.rank" style="vertical-align:middle;" ng-class="{my: user.userName == $root.currentUser.userName}"></td>
-          <td class="user-name" ng-class="{my: user.userName == $root.currentUser.userName}">
-            <span ng-bind="user.userName"></span>
+          <td class="rank" ng-bind="user.rank" style="vertical-align:middle;"
+              ng-class="{my: user.userName == $root.currentUser.userName}"></td>
+          <td class="user-name"
+              ng-class="{my: user.userName == $root.currentUser.userName}"
+              ng-hide="contest.type == $root.ContestType.INVITED">
+            <b ng-bind="user.userName"></b>
             <br/>
-            <span>({{user.nickName}})</span>
+            <span ng-bind="user.nickName"></span>
           </td>
-          <td class="solved" ng-bind="user.solved" style="vertical-align:middle;" ng-class="{my: user.userName == $root.currentUser.userName}"></td>
-          <td class="penalty" penalty="user.penalty" ui-penalty style="vertical-align:middle;" ng-class="{my: user.userName == $root.currentUser.userName}"></td>
+          <td class="user-name"
+              ng-class="{my: user.userName == currentTeam}"
+              ng-show="contest.type == $root.ContestType.INVITED">
+            <b ng-bind="user.userName"></b>
+            <br/>
+            <span ng-repeat="teamUser in user.teamUsers">
+                  <img ui-avatar
+                       email="teamUser.email"
+                       style="width: 19px; height: 19px;"/>
+            {{teamUser.name}}
+            </span>
+          </td>
+          <td class="solved" ng-bind="user.solved"
+              style="vertical-align:middle;"
+              ng-class="{my: user.userName == $root.currentUser.userName}"></td>
+          <td class="penalty" penalty="user.penalty" ui-penalty
+              style="vertical-align:middle;"
+              ng-class="{my: user.userName == $root.currentUser.userName}"></td>
           <td class="item"
               ng-repeat="item in user.itemList"
               ng-class="{
@@ -246,7 +295,8 @@
                   'rank-list-solved': item.firstBlood == false && item.solved,
                   'rank-list-tried': item.solved == false && item.tried > 0
                 }">
-            <span ng-if="item.solved == true" length="item.solvedTime" ui-time-length></span>
+            <span ng-if="item.solved == true" length="item.solvedTime"
+                  ui-time-length></span>
             <br/>
             <span ng-if="item.tried > 0">(-{{item.tried}})</span>
           </td>

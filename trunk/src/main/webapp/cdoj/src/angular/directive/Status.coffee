@@ -4,20 +4,23 @@ cdoj
   restrict: "A"
   scope:
     status: "="
+    alwaysShowHref: "@"
   controller: [
     "$scope", "$rootScope", "$http", "$modal"
     ($scope, $rootScope, $http, $modal) ->
       $scope.showHref = false
       checkShowHref = ->
         if $scope.status.returnTypeId == 7
-          if $rootScope.hasLogin && ($rootScope.currentUser.type == 1 || $rootScope.currentUser.userName == $scope.status.userName)
+          if $scope.alwaysShowHref
+            $scope.showHref = true
+          else if $rootScope.hasLogin && ($rootScope.currentUser.type == 1 || $rootScope.currentUser.userName == $scope.status.userName)
             $scope.showHref = true
           else
             $scope.showHref = false
         else
           $scope.showHref = false
-      $rootScope.$watch("hasLogin",
-      ->
+      checkShowHref()
+      $scope.$on("currentUser:updated", ->
         checkShowHref()
       )
       $scope.showCompileInfo = ->
