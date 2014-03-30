@@ -2,25 +2,21 @@ package cn.edu.uestc.acmicpc.web.oj.controller.status;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.code.CodeDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.SubmitDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.CodeService;
 import cn.edu.uestc.acmicpc.service.iface.CompileInfoService;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
-import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
-import cn.edu.uestc.acmicpc.service.iface.TeamUserService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -40,7 +36,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
@@ -59,16 +54,13 @@ public class StatusController extends BaseController {
   private GlobalService globalService;
   private LanguageService languageService;
   private UserService userService;
-  private TeamUserService teamUserService;
-  private ContestTeamService contestTeamService;
 
   @Autowired
   public StatusController(StatusService statusService, ProblemService problemService,
                           CodeService codeService, CompileInfoService compileInfoService,
                           ContestService contestService, ContestProblemService contestProblemService,
                           GlobalService globalService, LanguageService languageService,
-                          UserService userService, TeamUserService teamUserService,
-                          ContestTeamService contestTeamService) {
+                          UserService userService) {
     this.statusService = statusService;
     this.problemService = problemService;
     this.codeService = codeService;
@@ -78,8 +70,6 @@ public class StatusController extends BaseController {
     this.globalService = globalService;
     this.languageService = languageService;
     this.userService = userService;
-    this.teamUserService = teamUserService;
-    this.contestTeamService = contestTeamService;
   }
 
   @RequestMapping("search")
@@ -103,42 +93,18 @@ public class StatusController extends BaseController {
           if (contestShowDTO == null) {
             throw new AppException("No such contest.");
           }
-          UserDTO currentUser = getCurrentUser(session);
-          if (currentUser == null) {
-            // Return nothing
-            statusCondition.userId = 0;
+          // Check permission
+          checkContestPermission(session, statusCondition.contestId);
+          // Get type
+          Byte type = getContestType(session, statusCondition.contestId);
+          if (type == Global.ContestType.INVITED.ordinal()) {
+            // Only show current user and his member's status
+            List<Integer> memberList = getContestTeamMembers(session, statusCondition.contestId);
+            statusCondition.userIdList = ArrayUtil.join(memberList.toArray(), ",");
           } else {
-            Integer invitedContestId = contestShowDTO.getContestId();
-            if (contestShowDTO.getType() == Global.ContestType.INHERIT.ordinal()) {
-              // Get parent contest
-              ContestDTO contestDTO = contestService.getContestDTOByContestId(contestShowDTO.getParentId());
-              if (contestDTO == null ||
-                  (!contestDTO.getIsVisible() && !isAdmin(session))) {
-                throw new AppException("Contest not found.");
-              }
-              // Inherit contest type
-              contestShowDTO.setType(contestDTO.getType());
-              invitedContestId = contestDTO.getContestId();
-            }
-            if (contestShowDTO.getType() == Global.ContestType.INVITED.ordinal()) {
-              // Only show current user and his member's status
-              // Find current user's teamId
-              Integer teamId = contestTeamService.getTeamIdInContest(currentUser.getUserId(), invitedContestId);
-              if (teamId == null) {
-                // Return nothing
-                statusCondition.userId = 0;
-              } else {
-                // Find members in team
-                List<Integer> memberList = new LinkedList<>();
-                for (TeamUserListDTO user : teamUserService.getTeamUserList(teamId)) {
-                  memberList.add(user.getUserId());
-                }
-                statusCondition.userIds = ArrayUtil.join(memberList.toArray(), ",");
-              }
-            } else {
-              // Only show current user's status
-              statusCondition.userId = currentUser.getUserId();
-            }
+            // Only show current user's status
+            UserDTO currentUser = getCurrentUser(session);
+            statusCondition.userId = currentUser.getUserId();
           }
           // Only show status submitted in contest
           statusCondition.startTime = contestShowDTO.getStartTime();
@@ -281,6 +247,13 @@ public class StatusController extends BaseController {
       try {
         UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
 
+        if (submitDTO.getLanguageId() == null) {
+          throw new AppException("Please select a language.");
+        }
+        if (languageService.getLanguageName(submitDTO.getLanguageId()) == null) {
+          throw new AppException("No such language.");
+        }
+
         if (submitDTO.getProblemId() == null) {
           throw new AppException("Wrong problem id.");
         }
@@ -288,63 +261,30 @@ public class StatusController extends BaseController {
         if (problemDTO == null) {
           throw new AppException("Wrong problem id.");
         }
+        // Status in contest
         if (submitDTO.getContestId() != null) {
-          // Is this contest exist?
-          ContestDTO contestDTO = contestService.getContestDTOByContestId(submitDTO.getContestId());
-          if (contestDTO == null) {
+          ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(submitDTO.getContestId());
+          if (contestShowDTO == null) {
             throw new AppException("Wrong contest id.");
           }
-          // Is this contest contains this problem?
           if (!contestProblemService.checkContestProblemInContest(submitDTO.getProblemId(), submitDTO.getContestId())) {
             throw new AppException("Wrong problem id.");
           }
-          // Is this user have permission in this contest?
           if (!isAdmin(session)) {
-            // Status in contest
-            Integer invitedContestId = contestDTO.getContestId();
-            if (contestDTO.getType() == Global.ContestType.INHERIT.ordinal()) {
-              // Get parent contest
-              ContestDTO parentContestDTO = contestService.getContestDTOByContestId(contestDTO.getParentId());
-              if (parentContestDTO == null ||
-                  (!parentContestDTO.getIsVisible() && !isAdmin(session))) {
-                throw new AppException("Contest not found.");
-              }
-              // Inherit contest type
-              contestDTO.setType(parentContestDTO.getType());
-              invitedContestId = parentContestDTO.getContestId();
+            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+            if (currentTime.before(contestShowDTO.getStartTime()) ||
+                currentTime.after(contestShowDTO.getEndTime())) {
+              throw new AppException("Out of time!");
             }
-            if (contestDTO.getType() == Global.ContestType.INVITED.ordinal()) {
-              // Only show current user and his member's status
-              // Find current user's teamId
-              Integer teamId = contestTeamService.getTeamIdInContest(currentUser.getUserId(), invitedContestId);
-              if (teamId == null) {
-                throw new AppException("You have no permission to submit in this contest.");
-              }
-              // Check permission
-              Boolean valid = false;
-              for (TeamUserListDTO user : teamUserService.getTeamUserList(teamId)) {
-                if (user.getUserId().equals(currentUser.getUserId())) {
-                  valid = true;
-                }
-              }
-              if (!valid) {
-                throw new AppException("You have no permission to submit in this contest.");
-              }
-            }
+            checkContestPermission(session, submitDTO.getContestId());
           }
         } else {
           // We don't allow normal user to submit code to a stashed problem.
-          if (!problemDTO.getIsVisible() &&
-              currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
-            throw new AppException("You have no permission to submit this problem.");
+          if (!isAdmin(session)) {
+            if (!problemDTO.getIsVisible()) {
+              throw new AppException("You have no permission to submit this problem.");
+            }
           }
-        }
-
-        if (submitDTO.getLanguageId() == null) {
-          throw new AppException("Please select a language.");
-        }
-        if (languageService.getLanguageName(submitDTO.getLanguageId()) == null) {
-          throw new AppException("No such language.");
         }
 
         Integer codeId = codeService.createNewCode(CodeDTO.builder()
@@ -394,33 +334,16 @@ public class StatusController extends BaseController {
           }
         } else {
           // Status in contest
-          ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(statusInformationDTO.getContestId());
-          if (contestShowDTO == null) {
-            throw new AppException("No such contest.");
-          }
-          Integer invitedContestId = contestShowDTO.getContestId();
-          if (contestShowDTO.getType() == Global.ContestType.INHERIT.ordinal()) {
-            // Get parent contest
-            ContestDTO contestDTO = contestService.getContestDTOByContestId(contestShowDTO.getParentId());
-            if (contestDTO == null ||
-                (!contestDTO.getIsVisible() && !isAdmin(session))) {
-              throw new AppException("Contest not found.");
-            }
-            // Inherit contest type
-            contestShowDTO.setType(contestDTO.getType());
-            invitedContestId = contestDTO.getContestId();
-          }
-          if (contestShowDTO.getType() == Global.ContestType.INVITED.ordinal()) {
+          checkContestPermission(session, statusInformationDTO.getContestId());
+          Byte type = getContestType(session, statusInformationDTO.getContestId());
+          if (type == Global.ContestType.INVITED.ordinal()) {
             // Only show current user and his member's status
             // Find current user's teamId
-            Integer teamId = contestTeamService.getTeamIdInContest(currentUser.getUserId(), invitedContestId);
-            if (teamId == null) {
-              throw new AppException("Permission denied.");
-            }
+            List<Integer> teamMembers = getContestTeamMembers(session, statusInformationDTO.getContestId());
             // Check permission
             Boolean valid = false;
-            for (TeamUserListDTO user : teamUserService.getTeamUserList(teamId)) {
-              if (user.getUserId().equals(currentUser.getUserId())) {
+            for (Integer memberId : teamMembers) {
+              if (memberId.equals(currentUser.getUserId())) {
                 valid = true;
               }
             }

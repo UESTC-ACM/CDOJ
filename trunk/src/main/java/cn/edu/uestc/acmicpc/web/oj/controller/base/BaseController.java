@@ -10,6 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -36,6 +39,40 @@ public class BaseController {
     UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
     return userDTO != null && (userDTO.getUserName().equals(userName) || userDTO.getType() == Global.AuthenticationType.ADMIN.ordinal());
   }
+
+  protected void checkContestPermission(HttpSession session, Integer contestId) throws AppException {
+    String attributeName = "ContestPermission#" + contestId;
+    if (session.getAttribute(attributeName) == null) {
+      throw new AppException("Permission denied");
+    }
+  }
+
+  protected List<Integer> getContestTeamMembers(HttpSession session, Integer contestId) {
+    String attributeName = "ContestPermission#" + contestId + "#members";
+    return new ArrayList<Integer>((Set<Integer>) session.getAttribute(attributeName));
+  }
+
+  protected Byte getContestType(HttpSession session, Integer contestId) {
+    String attributeName = "ContestPermission#" + contestId + "#type";
+    return (Byte) session.getAttribute(attributeName);
+  }
+
+  protected void setContestPermission(HttpSession session, Integer contestId) {
+    String attributeName = "ContestPermission#" + contestId;
+    session.setAttribute(attributeName, true);
+  }
+
+  protected void setContestType(HttpSession session, Integer contestId, Byte type) {
+    String attributeName = "ContestPermission#" + contestId + "#type";
+    session.setAttribute(attributeName, type);
+  }
+
+  protected void setContestTeamMembers(HttpSession session, Integer contestId,
+                                       Set<Integer> members) {
+    String attributeName = "ContestPermission#" + contestId + "#members";
+    session.setAttribute(attributeName, members);
+  }
+
   /**
    * Put field errors into binding result
    *

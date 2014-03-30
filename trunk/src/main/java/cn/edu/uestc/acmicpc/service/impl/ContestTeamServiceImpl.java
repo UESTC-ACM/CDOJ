@@ -39,7 +39,8 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
   }
 
   @Override
-  public Boolean checkUserHasRegisterInContest(Integer userId, Integer contestId) throws AppException {
+  public Boolean checkUserCanRegisterInContest(Integer userId,
+                                               Integer contestId) throws AppException {
     StringBuilder hqlBuilder = new StringBuilder();
     hqlBuilder.append("from ContestTeam contestTeam, TeamUser teamUser where")
         .append(" contestTeam.teamId = teamUser.teamId")
@@ -48,7 +49,7 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
         .append(" and teamUser.userId = ").append(userId)
         .append(" and teamUser.allow = 1");
     Long count = contestTeamDAO.customCount("contestTeam.contestTeamId", hqlBuilder.toString());
-    return count > 0;
+    return count == 0;
   }
 
   @Override
@@ -109,23 +110,7 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
   }
 
   @Override
-  public Boolean checkContestPermission(Integer userId, Integer contestId) throws AppException {
-    StringBuilder hqlBuilder = new StringBuilder();
-    hqlBuilder.append("from ContestTeam contestTeam, TeamUser teamUser where")
-        // Contest id
-        .append(" contestTeam.contestId = ").append(contestId)
-        // Team should be accepted
-        .append(" and contestTeam.status = ").append(Global.ContestRegistryStatus.ACCEPTED.ordinal())
-        .append(" and contestTeam.teamId = teamUser.teamId")
-        // User id
-        .append(" and teamUser.userId = ").append(userId)
-        // User should be allowed
-        .append(" and teamUser.allow = true");
-    return contestTeamDAO.customCount("teamUser.userId", hqlBuilder.toString()) > 0;
-  }
-
-  @Override
-  public Integer getTeamIdInContest(Integer userId, Integer contestId) throws AppException {
+  public Integer getTeamIdByUserIdAndContestId(Integer userId, Integer contestId) throws AppException {
     StringBuilder hqlBuilder = new StringBuilder();
     hqlBuilder.append("select contestTeam.teamId from ContestTeam contestTeam, TeamUser teamUser where")
         // Contest id

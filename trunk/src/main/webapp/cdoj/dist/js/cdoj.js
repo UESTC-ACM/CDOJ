@@ -81075,6 +81075,7 @@ if (typeof exports === 'object') {
       var clarificationTimer, cookieName, currentTimeTimer, rankListTimer, refreshClarification, refreshRankList, updateTime;
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $window.scrollTo(0, 0);
+      $scope.currentTeam = "";
       $scope.contestId = 0;
       $scope.contest = {
         title: "",
@@ -81166,10 +81167,10 @@ if (typeof exports === 'object') {
         return $rootScope.$broadcast("list:refresh:comment", function(data) {
           $scope.totalUnreadedClarification = Math.max(0, data.pageInfo.totalItems - $cookieStore.get(cookieName).lastClarificationCount);
           $scope.lastClarificationCount = data.pageInfo.totalItems;
-          return clarificationTimer = $timeout(refreshClarification, 10000);
+          return clarificationTimer = $timeout(refreshClarification, 30000);
         });
       };
-      clarificationTimer = $timeout(refreshClarification, 500);
+      clarificationTimer = $timeout(refreshClarification, 100);
       $scope.selectClarificationTab = function() {
         var contest;
         $timeout.cancel(clarificationTimer);
@@ -81244,28 +81245,39 @@ if (typeof exports === 'object') {
               return value.solved = data.rankList.problemList[index].solved;
             });
             if ($rootScope.hasLogin) {
-              userStatus = _.findWhere(data.rankList.rankList, {
-                userName: $rootScope.currentUser.userName
-              });
+              userStatus = void 0;
+              if ($scope.contest.type === $rootScope.ContestType.INVITED) {
+                _.each(data.rankList.rankList, function(rank) {
+                  var findMe;
+                  findMe = _.findWhere(rank.teamUsers, {
+                    userName: $scope.currentUser.userName
+                  });
+                  if (angular.isDefined(findMe)) {
+                    $scope.currentTeam = rank.userName;
+                    return userStatus = rank;
+                  }
+                });
+              } else {
+                userStatus = _.findWhere(data.rankList.rankList, {
+                  userName: $rootScope.currentUser.userName
+                });
+              }
               if (angular.isDefined(userStatus)) {
-                _.each($scope.problemList, function(value, index) {
+                return _.each($scope.problemList, function(value, index) {
                   value.hasSolved = userStatus.itemList[index].solved;
                   return value.hasTried = userStatus.itemList[index].tried > 0;
                 });
               }
             }
           }
-          return rankListTimer = $timeout(refreshRankList, 10000);
         }).error(function() {
-          return rankListTimer = $timeout(refreshRankList, 10000);
+          return $window.alert("Network error!");
         });
       };
-      rankListTimer = $timeout(refreshRankList, 500);
-      return $scope.checkIsMyTeam = function(team) {
-        return angular.isDefined(_.findWhere(team.teamUsers, {
-          userName: $rootScope.currentUser.userName
-        }));
+      $scope.refreshRankList = function() {
+        return refreshRankList();
       };
+      return rankListTimer = $timeout(refreshRankList, 100);
     }
   ]);
 
@@ -81466,8 +81478,6 @@ if (typeof exports === 'object') {
               if (angular.isFunction(callback)) {
                 return callback(data);
               }
-            } else {
-              return $window.alert(data.error_msg);
             }
           });
         }

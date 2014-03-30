@@ -67,11 +67,11 @@
                 'font-primary': contest.type == $root.ContestType.DIY
               }">
             <span ng-bind="contest.typeName"
-                  ng-show="contest.type != $root.ContestType.INVITED || contest.status != $root.ContestStatus.PENDING">
+                  ng-show="contest.type != $root.ContestType.INVITED">
             </span>
             <a href="/#/contest/register/{{contest.contestId}}"
                class="pull-right"
-               ng-hide="contest.type != $root.ContestType.INVITED || contest.status != $root.ContestStatus.PENDING">
+               ng-hide="contest.type != $root.ContestType.INVITED">
               <i class="fa fa-hand-o-right"></i>Register
             </a>
           </td>

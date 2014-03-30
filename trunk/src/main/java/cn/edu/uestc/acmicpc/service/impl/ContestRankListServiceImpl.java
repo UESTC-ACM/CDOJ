@@ -115,7 +115,8 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
   }
 
   @Override
-  public synchronized RankList getRankList(Integer contestId, Boolean teamMode) throws AppException {
+  public synchronized RankList getRankList(Integer contestId,
+                                           Boolean invitedContest) throws AppException {
     RankList lastModified = rankListPool.get(contestId);
     if (lastModified == null ||
         (System.currentTimeMillis() - lastModified.lastFetched.getTime()) > FETCH_INTERVAL) {
@@ -137,7 +138,7 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
         rankListBuilder.addRankListProblem(problem.getProblemId().toString());
       }
 
-      if (teamMode) {
+      if (invitedContest) {
         // Invited type contest, should include team information
         rankListBuilder.enableTeamMode();
 
