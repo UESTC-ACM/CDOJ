@@ -44,6 +44,19 @@
             }"></dd>
       </dl>
     </div>
+    <div class="col-md-12 text-center"
+         ng-show="$root.isAdmin">
+      <a class="btn btn-danger btn-xs"
+         href="/contest/exportRankList/{{contest.contestId}}"
+         ng-click="exportRankList()">
+        Export rank list
+      </a>
+      <a class="btn btn-danger btn-xs"
+         href="/contest/exportCodes/{{contest.contestId}}"
+         ng-click="exportCodes()">
+        Export codes
+      </a>
+    </div>
     <div class="col-md-12">
       <markdown content="contest.description">
       </markdown>
