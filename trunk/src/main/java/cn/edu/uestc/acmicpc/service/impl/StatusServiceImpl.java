@@ -164,7 +164,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   }
 
   @Override
-  public List<StatusInformationDTO> exportCodes(StatusCondition statusCondition) throws AppException {
+  public List<StatusInformationDTO> getStatusInformationDTOList(StatusCondition statusCondition) throws AppException {
     return statusDAO.findAll(StatusInformationDTO.class,
         StatusInformationDTO.builder(), statusCondition.getCondition());
   }
