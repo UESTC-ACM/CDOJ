@@ -5,6 +5,7 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 
+import java.sql.Timestamp;
 import java.util.Map;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Map;
  */
 @Fields({"statusId", "userId", "codeByCodeId.content", "compileInfoId",
     "contestId", "problemId", "languageByLanguageId.extension",
-    "userByUserId.userName"})
+    "userByUserId.userName", "time"})
 public class StatusInformationDTO implements BaseDTO<Status> {
 
   public StatusInformationDTO() {
@@ -22,7 +23,7 @@ public class StatusInformationDTO implements BaseDTO<Status> {
 
   private StatusInformationDTO(Integer statusId, Integer userId, String codeContent,
                                Integer compileInfoId, Integer contestId, Integer problemId,
-                               String extension, String userName) {
+                               String extension, String userName, Timestamp time) {
     this.statusId = statusId;
     this.userId = userId;
     this.codeContent = codeContent;
@@ -31,6 +32,7 @@ public class StatusInformationDTO implements BaseDTO<Status> {
     this.problemId = problemId;
     this.extension = extension;
     this.userName = userName;
+    this.time = time;
   }
 
   private Integer statusId;
@@ -41,6 +43,15 @@ public class StatusInformationDTO implements BaseDTO<Status> {
   private Integer problemId;
   private String extension;
   private String userName;
+  private Timestamp time;
+
+  public Timestamp getTime() {
+    return time;
+  }
+
+  public void setTime(Timestamp time) {
+    this.time = time;
+  }
 
   public String getUserName() {
     return userName;
@@ -108,12 +119,8 @@ public class StatusInformationDTO implements BaseDTO<Status> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
+    if (this == o) return true;
+    if (!(o instanceof StatusInformationDTO)) return false;
 
     StatusInformationDTO that = (StatusInformationDTO) o;
 
@@ -123,16 +130,25 @@ public class StatusInformationDTO implements BaseDTO<Status> {
     if (compileInfoId != null ? !compileInfoId.equals(that.compileInfoId) : that.compileInfoId != null) {
       return false;
     }
+    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null) {
+      return false;
+    }
+    if (extension != null ? !extension.equals(that.extension) : that.extension != null) {
+      return false;
+    }
+    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null) {
+      return false;
+    }
     if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) {
+      return false;
+    }
+    if (time != null ? !time.equals(that.time) : that.time != null) {
       return false;
     }
     if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
       return false;
     }
-    if (contestId != null ? !contestId.equals(that.contestId) : that.contestId != null) {
-      return false;
-    }
-    if (problemId != null ? !problemId.equals(that.problemId) : that.problemId != null) {
+    if (userName != null ? !userName.equals(that.userName) : that.userName != null) {
       return false;
     }
 
@@ -147,6 +163,9 @@ public class StatusInformationDTO implements BaseDTO<Status> {
     result = 31 * result + (compileInfoId != null ? compileInfoId.hashCode() : 0);
     result = 31 * result + (contestId != null ? contestId.hashCode() : 0);
     result = 31 * result + (problemId != null ? problemId.hashCode() : 0);
+    result = 31 * result + (extension != null ? extension.hashCode() : 0);
+    result = 31 * result + (userName != null ? userName.hashCode() : 0);
+    result = 31 * result + (time != null ? time.hashCode() : 0);
     return result;
   }
 
@@ -162,7 +181,7 @@ public class StatusInformationDTO implements BaseDTO<Status> {
     @Override
     public StatusInformationDTO build() {
       return new StatusInformationDTO(statusId, userId, codeContent, compileInfoId,
-          contestId, problemId, extension, userName);
+          contestId, problemId, extension, userName, time);
     }
 
     @Override
@@ -175,6 +194,7 @@ public class StatusInformationDTO implements BaseDTO<Status> {
       problemId = (Integer) properties.get("problemId");
       extension = (String) properties.get("languageByLanguageId.extension");
       userName = (String) properties.get("userByUserId.userName");
+      time = (Timestamp) properties.get("time");
       return build();
     }
 
@@ -186,6 +206,12 @@ public class StatusInformationDTO implements BaseDTO<Status> {
     private Integer problemId;
     private String extension;
     private String userName;
+    private Timestamp time;
+
+    public Builder setTime(Timestamp time) {
+      this.time = time;
+      return this;
+    }
 
     public Builder setUserName(String userName) {
       this.userName = userName;

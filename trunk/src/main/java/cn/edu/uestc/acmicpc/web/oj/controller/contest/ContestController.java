@@ -139,6 +139,11 @@ public class ContestController extends BaseController {
       if (!isAdmin(session)) {
         throw new AppException("Permission denied!");
       }
+      ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(contestId);
+      if (contestId == null) {
+        throw new AppException("Contest not found.");
+      }
+
       // Fetch status list
       StatusCondition statusCondition = new StatusCondition();
       statusCondition.contestId = contestId;
@@ -153,6 +158,11 @@ public class ContestController extends BaseController {
       try {
         // Put status as file
         for (StatusInformationDTO status : statusList) {
+          if (status.getTime().before(contestShowDTO.getStartTime()) ||
+              status.getTime().after(contestShowDTO.getEndTime())) {
+            // Skip submission out of contest time.
+            continue;
+          }
           // Set file name, e.g: Problem_1_User_Administrator_ID_1.c
           StringBuilder fileName = new StringBuilder();
           fileName.append("Problem_").append(status.getProblemId())
