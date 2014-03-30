@@ -4,6 +4,7 @@ import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ITeamUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDTO;
 import cn.edu.uestc.acmicpc.db.entity.TeamUser;
 import cn.edu.uestc.acmicpc.service.iface.TeamUserService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -70,5 +71,10 @@ public class TeamUserServiceImpl extends AbstractService implements TeamUserServ
   @Override
   public void removeTeamUser(Integer teamUserId) throws AppException {
     teamUserDAO.deleteEntitiesByField("teamUserId", teamUserId.toString());
+  }
+
+  @Override
+  public List<TeamUserReportDTO> exportTeamUserReport(TeamUserCondition teamUserCondition) throws AppException {
+    return teamUserDAO.findAll(TeamUserReportDTO.class, TeamUserReportDTO.builder(), teamUserCondition.getCondition());
   }
 }

@@ -27,6 +27,7 @@ GlobalVariables =
     PRIVATE: 1
     DIY: 2
     INVITED: 3
+    INHERIT: 4
 
   ContestStatus:
     PENDING: "Pending"

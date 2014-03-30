@@ -1,12 +1,15 @@
 cdoj
 .controller("ContestShowController", [
-    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$timeout", "$interval"
+    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams",
+    "$timeout", "$interval"
     "$cookieStore"
     ($scope, $rootScope, $http, $window, $modal, $routeParams, $timeout, $interval
      $cookieStore) ->
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
+      $scope.$emit("permission:setPermission",
+        $rootScope.AuthenticationType.NOOP)
       $window.scrollTo(0, 0)
 
+      $scope.currentTeam = ""
       $scope.contestId = 0
       $scope.contest =
         title: ""
@@ -34,6 +37,9 @@ cdoj
           lastClarificationCount: 0
         )
 
+      $scope.$on("currentUser:logout", ->
+        $window.location.href = "/#/contest/list"
+      )
       $scope.contestId = angular.copy($routeParams.contestId)
       $http.get("/contest/data/#{$scope.contestId}").success((data)->
         if data.result == "success"
@@ -92,9 +98,9 @@ cdoj
           $scope.totalUnreadedClarification = Math.max(0,
               data.pageInfo.totalItems - $cookieStore.get(cookieName).lastClarificationCount)
           $scope.lastClarificationCount = data.pageInfo.totalItems
-          clarificationTimer = $timeout(refreshClarification, 10000)
+          clarificationTimer = $timeout(refreshClarification, 30000)
         )
-      clarificationTimer = $timeout(refreshClarification, 500)
+      clarificationTimer = $timeout(refreshClarification, 100)
       $scope.selectClarificationTab = ->
         $timeout.cancel(clarificationTimer)
         clarificationTimer = $timeout(refreshClarification, 0)
@@ -154,17 +160,28 @@ cdoj
               value.solved = data.rankList.problemList[index].solved
             )
             if $rootScope.hasLogin
-              userStatus = _.findWhere(data.rankList.rankList,
-                userName: $rootScope.currentUser.userName)
+              userStatus = undefined
+              if $scope.contest.type == $rootScope.ContestType.INVITED
+                _.each(data.rankList.rankList, (rank)->
+                  findMe = _.findWhere(rank.teamUsers,
+                    userName: $scope.currentUser.userName
+                  )
+                  if angular.isDefined(findMe)
+                    $scope.currentTeam = rank.userName
+                    userStatus = rank
+                )
+              else
+                userStatus = _.findWhere(data.rankList.rankList,
+                  userName: $rootScope.currentUser.userName)
               if angular.isDefined userStatus
                 _.each($scope.problemList, (value, index)->
                   value.hasSolved = userStatus.itemList[index].solved
                   value.hasTried = userStatus.itemList[index].tried > 0
                 )
-          rankListTimer = $timeout(refreshRankList, 10000)
         ).error(->
-          rankListTimer = $timeout(refreshRankList, 10000)
+          $window.alert("Network error!")
         )
 
-      rankListTimer = $timeout(refreshRankList, 500)
+      $scope.refreshRankList = -> refreshRankList()
+      rankListTimer = $timeout(refreshRankList, 100)
   ])

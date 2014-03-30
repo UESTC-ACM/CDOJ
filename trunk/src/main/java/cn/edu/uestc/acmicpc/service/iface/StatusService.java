@@ -45,7 +45,7 @@ public interface StatusService extends DatabaseService<Status, Integer> {
    * @return number of problems this user has tried.
    * @throws AppException
    */
-  public Long countProblemsUserTired(Integer userId) throws AppException;
+  public Long countProblemsUserTried(Integer userId) throws AppException;
 
   /**
    * Counts user's accepted problems.
@@ -63,7 +63,7 @@ public interface StatusService extends DatabaseService<Status, Integer> {
    * @return number of users who tried this problem.
    * @throws AppException
    */
-  public Long countUsersTiredProblem(Integer problemId) throws AppException;
+  public Long countUsersTriedProblem(Integer problemId) throws AppException;
 
   /**
    * Counts users that accepted specified problem.

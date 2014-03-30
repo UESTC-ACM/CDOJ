@@ -1,579 +1,529 @@
-DROP SCHEMA IF EXISTS `uestcojtest`;
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-CREATE SCHEMA IF NOT EXISTS `uestcojtest` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin ;
-USE `uestcojtest` ;
+DROP DATABASE IF EXISTS `uestcojtest`;
+CREATE DATABASE `uestcojtest`;
 
--- -----------------------------------------------------
--- Table `uestcojtest`.`department`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`department` ;
+USE `uestcojtest`;
+--
+-- Table structure for table `article`
+--
 
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`department` (
-  `departmentId` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(50) NOT NULL DEFAULT '' COMMENT 'department\'s name' ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  PRIMARY KEY (`departmentId`) ,
-  UNIQUE INDEX `departmentId_UNIQUE` (`departmentId` ASC) )
-ENGINE = InnoDB;
+DROP TABLE IF EXISTS `article`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `article` (
+  `articleId` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) COLLATE utf8_bin NOT NULL,
+  `content` text COLLATE utf8_bin NOT NULL,
+  `time` datetime NOT NULL,
+  `clicked` int(11) NOT NULL DEFAULT '0',
+  `order` int(11) NOT NULL DEFAULT '0',
+  `type` int(11) NOT NULL DEFAULT '0',
+  `isVisible` tinyint(1) NOT NULL DEFAULT '0',
+  `parentId` int(11) DEFAULT NULL,
+  `problemId` int(11) DEFAULT NULL,
+  `contestId` int(11) DEFAULT NULL,
+  `userId` int(11) DEFAULT NULL,
+  `OPTLOCK` int(11) DEFAULT '0',
+  PRIMARY KEY (`articleId`),
+  UNIQUE KEY `noticeId_UNIQUE` (`articleId`),
+  KEY `FK_parentId_on_article_idx` (`parentId`),
+  KEY `FK_problemId_on_problem_idx` (`problemId`),
+  KEY `FK_contestId_on_contest_idx` (`contestId`),
+  KEY `FK_userId_on_user_idx` (`userId`),
+  CONSTRAINT `FK_article_contestId_on_contest` FOREIGN KEY (`contestId`) REFERENCES `contest` (`contestId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_article_parentId_on_article` FOREIGN KEY (`parentId`) REFERENCES `article` (`articleId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_article_problemId_on_problem` FOREIGN KEY (`problemId`) REFERENCES `problem` (`problemId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_article_userId_on_user` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `code`
+--
 
--- -----------------------------------------------------
--- Table `uestcojtest`.`user`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`user` ;
+DROP TABLE IF EXISTS `code`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `code` (
+  `codeId` int(11) NOT NULL AUTO_INCREMENT,
+  `content` text COLLATE utf8_bin NOT NULL,
+  `OPTLOCK` int(11) DEFAULT '0',
+  `share` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`codeId`),
+  UNIQUE KEY `codeId_UNIQUE` (`codeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`user` (
-  `userId` INT NOT NULL AUTO_INCREMENT ,
-  `userName` VARCHAR(24) NOT NULL ,
-  `studentId` VARCHAR(50) NOT NULL ,
-  `departmentId` INT NOT NULL ,
-  `password` VARCHAR(40) NOT NULL COMMENT 'need to validate\nuse SHA1 encoding' ,
-  `school` VARCHAR(100) NOT NULL DEFAULT '' ,
-  `nickName` VARCHAR(50) NOT NULL COMMENT 'length >= 3' ,
-  `email` VARCHAR(100) NOT NULL COMMENT 'need to validate' ,
-  `solved` INT NOT NULL DEFAULT 0 ,
-  `tried` INT NOT NULL DEFAULT 0 ,
-  `type` INT NOT NULL DEFAULT 0 ,
-  `lastLogin` DATETIME NOT NULL ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  `motto` VARCHAR(255) NOT NULL DEFAULT '这个人很屌，什么都没写。。。' ,
-  `name` VARCHAR(50) NOT NULL ,
-  `sex` INT NOT NULL ,
-  `grade` INT NOT NULL ,
-  `phone` VARCHAR(45) NOT NULL ,
-  `size` INT NOT NULL ,
-  PRIMARY KEY (`userId`) ,
-  UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) ,
-  UNIQUE INDEX `userName_UNIQUE` (`userName` ASC) ,
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) ,
-  INDEX `FK_departmentId_on_department_idx` (`departmentId` ASC) ,
-  CONSTRAINT `FK_user_departmentId_on_department`
-    FOREIGN KEY (`departmentId` )
-    REFERENCES `uestcojtest`.`department` (`departmentId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
+--
+-- Table structure for table `compileInfo`
+--
 
+DROP TABLE IF EXISTS `compileInfo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `compileInfo` (
+  `compileInfoId` int(11) NOT NULL AUTO_INCREMENT,
+  `content` text COLLATE utf8_bin NOT NULL,
+  `OPTLOCK` int(11) DEFAULT '0',
+  PRIMARY KEY (`compileInfoId`),
+  UNIQUE KEY `compileInfoId_UNIQUE` (`compileInfoId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- -----------------------------------------------------
--- Table `uestcojtest`.`problem`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`problem` ;
+--
+-- Table structure for table `contest`
+--
 
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`problem` (
-  `problemId` INT NOT NULL AUTO_INCREMENT ,
-  `title` VARCHAR(50) NOT NULL ,
-  `description` TEXT NOT NULL ,
-  `input` TEXT NOT NULL ,
-  `output` TEXT NOT NULL ,
-  `sampleInput` TEXT NOT NULL ,
-  `sampleOutput` TEXT NOT NULL ,
-  `hint` TEXT NOT NULL ,
-  `source` VARCHAR(100) NOT NULL DEFAULT '' ,
-  `timeLimit` INT NOT NULL DEFAULT 1000 ,
-  `memoryLimit` INT NOT NULL DEFAULT 65535 ,
-  `solved` INT NOT NULL DEFAULT 0 ,
-  `tried` INT NOT NULL DEFAULT 0 ,
-  `isSPJ` TINYINT(1) NOT NULL ,
-  `isVisible` TINYINT(1) NOT NULL ,
-  `outputLimit` INT NOT NULL DEFAULT 8000 ,
-  `javaTimeLimit` INT NOT NULL DEFAULT 3000 ,
-  `javaMemoryLimit` INT NOT NULL DEFAULT 65535 ,
-  `dataCount` INT NOT NULL DEFAULT 1 ,
-  `difficulty` INT NOT NULL DEFAULT 1 ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  PRIMARY KEY (`problemId`) ,
-  UNIQUE INDEX `problemId_UNIQUE` (`problemId` ASC) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `uestcojtest`.`contest`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`contest` ;
-
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`contest` (
-  `contestId` INT NOT NULL AUTO_INCREMENT ,
-  `title` VARCHAR(50) NOT NULL COMMENT 'length >= 3' ,
-  `description` VARCHAR(200) NOT NULL DEFAULT '' ,
-  `type` TINYINT NOT NULL DEFAULT 0 ,
-  `time` DATETIME NOT NULL ,
-  `length` INT NOT NULL ,
-  `isVisible` TINYINT(1) NOT NULL ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  PRIMARY KEY (`contestId`) ,
-  UNIQUE INDEX `contestId_UNIQUE` (`contestId` ASC) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `uestcojtest`.`article`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`article` ;
-
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`article` (
-  `articleId` INT NOT NULL AUTO_INCREMENT ,
-  `title` VARCHAR(50) NOT NULL ,
-  `content` TEXT NOT NULL ,
-  `time` DATETIME NOT NULL ,
-  `clicked` INT NOT NULL DEFAULT 0 ,
-  `order` INT NOT NULL DEFAULT 0 COMMENT 'set order to top and move' ,
-  `type` INT NOT NULL DEFAULT 0 ,
-  `isVisible` TINYINT(1) NOT NULL DEFAULT 0 ,
-  `parentId` INT NULL DEFAULT NULL ,
-  `problemId` INT NULL DEFAULT NULL ,
-  `contestId` INT NULL DEFAULT NULL ,
-  `userId` INT NULL DEFAULT NULL ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  PRIMARY KEY (`articleId`) ,
-  UNIQUE INDEX `noticeId_UNIQUE` (`articleId` ASC) ,
-  INDEX `FK_parentId_on_article_idx` (`parentId` ASC) ,
-  INDEX `FK_problemId_on_problem_idx` (`problemId` ASC) ,
-  INDEX `FK_contestId_on_contest_idx` (`contestId` ASC) ,
-  INDEX `FK_userId_on_user_idx` (`userId` ASC) ,
-  CONSTRAINT `FK_article_parentId_on_article`
+DROP TABLE IF EXISTS `contest`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `contest` (
+  `contestId` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) COLLATE utf8_bin NOT NULL COMMENT 'length >= 3',
+  `description` text COLLATE utf8_bin NOT NULL,
+  `type` tinyint(4) NOT NULL DEFAULT '0',
+  `time` datetime NOT NULL,
+  `length` int(11) NOT NULL,
+  `isVisible` tinyint(1) NOT NULL,
+  `OPTLOCK` int(11) DEFAULT '0',
+  `password` VARCHAR(40) NULL ,
+  `parentId` INT NULL ,
+  PRIMARY KEY (`contestId`),
+  UNIQUE KEY `contestId_UNIQUE` (`contestId`),
+  INDEX `FK_parentId_on_contest_idx_idx` (`parentId` ASC) ,
+  CONSTRAINT `FK_parentId_on_contest_idx`
     FOREIGN KEY (`parentId` )
-    REFERENCES `uestcojtest`.`article` (`articleId` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `FK_article_problemId_on_problem`
-    FOREIGN KEY (`problemId` )
-    REFERENCES `uestcojtest`.`problem` (`problemId` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `FK_article_contestId_on_contest`
-    FOREIGN KEY (`contestId` )
-    REFERENCES `uestcojtest`.`contest` (`contestId` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `FK_article_userId_on_user`
-    FOREIGN KEY (`userId` )
-    REFERENCES `uestcojtest`.`user` (`userId` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `uestcojtest`.`message`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`message` ;
-
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`message` (
-  `messageId` INT NOT NULL AUTO_INCREMENT ,
-  `senderId` INT NOT NULL ,
-  `receiverId` INT NOT NULL ,
-  `title` VARCHAR(50) NOT NULL DEFAULT '' ,
-  `content` TEXT NOT NULL ,
-  `time` DATETIME NOT NULL ,
-  `isOpened` TINYINT(1) NOT NULL DEFAULT 0 ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  PRIMARY KEY (`messageId`) ,
-  UNIQUE INDEX `messageId_UNIQUE` (`messageId` ASC) ,
-  INDEX `FK_senderId_on_user_idx` (`senderId` ASC) ,
-  INDEX `FK_receiverId_on_user_idx` (`receiverId` ASC) ,
-  CONSTRAINT `FK_message_senderId_on_user`
-    FOREIGN KEY (`senderId` )
-    REFERENCES `uestcojtest`.`user` (`userId` )
+    REFERENCES `contest` (`contestId` )
     ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_message_receiverId_on_user`
-    FOREIGN KEY (`receiverId` )
-    REFERENCES `uestcojtest`.`user` (`userId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `contestProblem`
+--
 
--- -----------------------------------------------------
--- Table `uestcojtest`.`contestUser`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`contestUser` ;
+DROP TABLE IF EXISTS `contestProblem`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `contestProblem` (
+  `contestProblemId` int(11) NOT NULL AUTO_INCREMENT,
+  `contestId` int(11) NOT NULL,
+  `problemId` int(11) NOT NULL,
+  `order` int(11) NOT NULL,
+  `OPTLOCK` int(11) DEFAULT '0',
+  PRIMARY KEY (`contestProblemId`),
+  UNIQUE KEY `contestProblemId_UNIQUE` (`contestProblemId`),
+  KEY `FK_contestId_on_contest_idx` (`contestId`),
+  KEY `FK_problemId_on_problem_idx` (`problemId`),
+  CONSTRAINT `FK_contestProblem_contestId_on_contest` FOREIGN KEY (`contestId`) REFERENCES `contest` (`contestId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_contestProblem_problemId_on_problem` FOREIGN KEY (`problemId`) REFERENCES `problem` (`problemId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`contestUser` (
-  `contestUserId` INT NOT NULL AUTO_INCREMENT ,
-  `contestId` INT NOT NULL ,
-  `userId` INT NOT NULL ,
-  `status` TINYINT(4) NOT NULL COMMENT '0 - wait for validating\n1 - accepted\n2 - refused' ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  `comment` VARCHAR(255) NOT NULL, 
-  PRIMARY KEY (`contestUserId`) ,
-  UNIQUE INDEX `contestUserId_UNIQUE` (`contestUserId` ASC) ,
-  INDEX `FK_contestId_on_contest_idx` (`contestId` ASC) ,
-  INDEX `FK_userId_on_user_idx` (`userId` ASC) ,
-  CONSTRAINT `FK_contestUser_contestId_on_contest`
-    FOREIGN KEY (`contestId` )
-    REFERENCES `uestcojtest`.`contest` (`contestId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_contestUser_userId_on_user`
-    FOREIGN KEY (`userId` )
-    REFERENCES `uestcojtest`.`user` (`userId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
+--
+-- Table structure for table `contestTeam`
+--
 
+DROP TABLE IF EXISTS `contestTeam`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `contestTeam` (
+  `contestTeamId` int(11) NOT NULL AUTO_INCREMENT,
+  `contestId` int(11) NOT NULL,
+  `teamId` int(11) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `comment` varchar(255) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`contestTeamId`),
+  UNIQUE KEY `contestTeamId_UNIQUE` (`contestTeamId`),
+  KEY `FK_contestTeam_contestId_on_contest_idx` (`contestId`),
+  KEY `FK_contestTeam_teamId_on_team_idx` (`teamId`),
+  CONSTRAINT `FK_contestTeam_contestId_on_contest` FOREIGN KEY (`contestId`) REFERENCES `contest` (`contestId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_contestTeam_teamId_on_team` FOREIGN KEY (`teamId`) REFERENCES `team` (`teamId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- -----------------------------------------------------
--- Table `uestcojtest`.`contestProblem`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`contestProblem` ;
+--
+-- Table structure for table `contestUser`
+--
 
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`contestProblem` (
-  `contestProblemId` INT NOT NULL AUTO_INCREMENT ,
-  `contestId` INT NOT NULL ,
-  `problemId` INT NOT NULL ,
-  `order` INT NOT NULL ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  PRIMARY KEY (`contestProblemId`) ,
-  UNIQUE INDEX `contestProblemId_UNIQUE` (`contestProblemId` ASC) ,
-  INDEX `FK_contestId_on_contest_idx` (`contestId` ASC) ,
-  INDEX `FK_problemId_on_problem_idx` (`problemId` ASC) ,
-  CONSTRAINT `FK_contestProblem_contestId_on_contest`
-    FOREIGN KEY (`contestId` )
-    REFERENCES `uestcojtest`.`contest` (`contestId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_contestProblem_problemId_on_problem`
-    FOREIGN KEY (`problemId` )
-    REFERENCES `uestcojtest`.`problem` (`problemId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
+DROP TABLE IF EXISTS `contestUser`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `contestUser` (
+  `contestUserId` int(11) NOT NULL AUTO_INCREMENT,
+  `contestId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `status` tinyint(4) NOT NULL COMMENT '0 - wait for validating\\n1 - accepted\\n2 - refused',
+  `OPTLOCK` int(11) DEFAULT '0',
+  `comment` varchar(255) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`contestUserId`),
+  UNIQUE KEY `contestUserId_UNIQUE` (`contestUserId`),
+  KEY `FK_contestId_on_contest_idx` (`contestId`),
+  KEY `FK_userId_on_user_idx` (`userId`),
+  CONSTRAINT `FK_contestUser_contestId_on_contest` FOREIGN KEY (`contestId`) REFERENCES `contest` (`contestId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_contestUser_userId_on_user` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `department`
+--
 
--- -----------------------------------------------------
--- Table `uestcojtest`.`tag`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`tag` ;
+DROP TABLE IF EXISTS `department`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `department` (
+  `departmentId` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT 'department\\''s name',
+  `OPTLOCK` int(11) DEFAULT '0',
+  PRIMARY KEY (`departmentId`),
+  UNIQUE KEY `departmentId_UNIQUE` (`departmentId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`tag` (
-  `tagId` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(50) NOT NULL ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  PRIMARY KEY (`tagId`) ,
-  UNIQUE INDEX `tagId_UNIQUE` (`tagId` ASC) ,
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC) )
-ENGINE = InnoDB;
+--
+-- Table structure for table `language`
+--
 
+DROP TABLE IF EXISTS `language`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `language` (
+  `languageId` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8_bin NOT NULL,
+  `extension` varchar(10) COLLATE utf8_bin NOT NULL,
+  `param` text COLLATE utf8_bin NOT NULL,
+  `OPTLOCK` int(11) DEFAULT '0',
+  PRIMARY KEY (`languageId`),
+  UNIQUE KEY `languageId_UNIQUE` (`languageId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- -----------------------------------------------------
--- Table `uestcojtest`.`problemTag`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`problemTag` ;
+--
+-- Table structure for table `message`
+--
 
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`problemTag` (
-  `problemTagId` INT NOT NULL AUTO_INCREMENT ,
-  `problemId` INT NOT NULL ,
-  `tagId` INT NOT NULL ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  PRIMARY KEY (`problemTagId`) ,
-  UNIQUE INDEX `problemTagId_UNIQUE` (`problemTagId` ASC) ,
-  INDEX `FK_problemId_on_problem_idx` (`problemId` ASC) ,
-  INDEX `FK_tagId_on_tag_idx` (`tagId` ASC) ,
-  CONSTRAINT `FK_problemTag_problemId_on_problem`
-    FOREIGN KEY (`problemId` )
-    REFERENCES `uestcojtest`.`problem` (`problemId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_problemTag_tagId_on_tag`
-    FOREIGN KEY (`tagId` )
-    REFERENCES `uestcojtest`.`tag` (`tagId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
+DROP TABLE IF EXISTS `message`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `message` (
+  `messageId` int(11) NOT NULL AUTO_INCREMENT,
+  `senderId` int(11) NOT NULL,
+  `receiverId` int(11) NOT NULL,
+  `title` varchar(50) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `content` text COLLATE utf8_bin NOT NULL,
+  `time` datetime NOT NULL,
+  `isOpened` tinyint(1) NOT NULL DEFAULT '0',
+  `OPTLOCK` int(11) DEFAULT '0',
+  PRIMARY KEY (`messageId`),
+  UNIQUE KEY `messageId_UNIQUE` (`messageId`),
+  KEY `FK_senderId_on_user_idx` (`senderId`),
+  KEY `FK_receiverId_on_user_idx` (`receiverId`),
+  CONSTRAINT `FK_message_receiverId_on_user` FOREIGN KEY (`receiverId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_message_senderId_on_user` FOREIGN KEY (`senderId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `problem`
+--
 
--- -----------------------------------------------------
--- Table `uestcojtest`.`language`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`language` ;
+DROP TABLE IF EXISTS `problem`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `problem` (
+  `problemId` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) COLLATE utf8_bin NOT NULL,
+  `description` text COLLATE utf8_bin NOT NULL,
+  `input` text COLLATE utf8_bin NOT NULL,
+  `output` text COLLATE utf8_bin NOT NULL,
+  `sampleInput` text COLLATE utf8_bin NOT NULL,
+  `sampleOutput` text COLLATE utf8_bin NOT NULL,
+  `hint` text COLLATE utf8_bin NOT NULL,
+  `source` varchar(100) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `timeLimit` int(11) NOT NULL DEFAULT '1000',
+  `memoryLimit` int(11) NOT NULL DEFAULT '65535',
+  `solved` int(11) NOT NULL DEFAULT '0',
+  `tried` int(11) NOT NULL DEFAULT '0',
+  `isSPJ` tinyint(1) NOT NULL,
+  `isVisible` tinyint(1) NOT NULL,
+  `outputLimit` int(11) NOT NULL DEFAULT '8000',
+  `javaTimeLimit` int(11) NOT NULL DEFAULT '3000',
+  `javaMemoryLimit` int(11) NOT NULL DEFAULT '65535',
+  `dataCount` int(11) NOT NULL DEFAULT '1',
+  `difficulty` int(11) NOT NULL DEFAULT '1',
+  `OPTLOCK` int(11) DEFAULT '0',
+  PRIMARY KEY (`problemId`),
+  UNIQUE KEY `problemId_UNIQUE` (`problemId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`language` (
-  `languageId` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(50) NOT NULL ,
-  `extension` VARCHAR(10) NOT NULL ,
-  `param` TEXT NOT NULL ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  PRIMARY KEY (`languageId`) ,
-  UNIQUE INDEX `languageId_UNIQUE` (`languageId` ASC) )
-ENGINE = InnoDB;
+--
+-- Table structure for table `problemTag`
+--
 
+DROP TABLE IF EXISTS `problemTag`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `problemTag` (
+  `problemTagId` int(11) NOT NULL AUTO_INCREMENT,
+  `problemId` int(11) NOT NULL,
+  `tagId` int(11) NOT NULL,
+  `OPTLOCK` int(11) DEFAULT '0',
+  PRIMARY KEY (`problemTagId`),
+  UNIQUE KEY `problemTagId_UNIQUE` (`problemTagId`),
+  KEY `FK_problemId_on_problem_idx` (`problemId`),
+  KEY `FK_tagId_on_tag_idx` (`tagId`),
+  CONSTRAINT `FK_problemTag_problemId_on_problem` FOREIGN KEY (`problemId`) REFERENCES `problem` (`problemId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_problemTag_tagId_on_tag` FOREIGN KEY (`tagId`) REFERENCES `tag` (`tagId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- -----------------------------------------------------
--- Table `uestcojtest`.`code`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`code` ;
+--
+-- Table structure for table `status`
+--
 
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`code` (
-  `codeId` INT NOT NULL AUTO_INCREMENT ,
-  `content` TEXT NOT NULL ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  `share` TINYINT(1) NOT NULL DEFAULT false ,
-  PRIMARY KEY (`codeId`) ,
-  UNIQUE INDEX `codeId_UNIQUE` (`codeId` ASC) )
-ENGINE = InnoDB;
+DROP TABLE IF EXISTS `status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `status` (
+  `statusId` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `problemId` int(11) NOT NULL,
+  `result` int(11) NOT NULL,
+  `memoryCost` int(11) NOT NULL,
+  `timeCost` int(11) NOT NULL,
+  `languageId` int(11) NOT NULL,
+  `length` int(11) NOT NULL,
+  `time` datetime NOT NULL,
+  `contestId` int(11) DEFAULT NULL,
+  `caseNumber` int(11) NOT NULL DEFAULT '0',
+  `codeId` int(11) NOT NULL,
+  `compileInfoId` int(11) DEFAULT NULL,
+  `OPTLOCK` int(11) DEFAULT '0',
+  PRIMARY KEY (`statusId`),
+  UNIQUE KEY `statusId_UNIQUE` (`statusId`),
+  KEY `FK_userID_on_user_idx` (`userId`),
+  KEY `FK_problemId_on_problem_idx` (`problemId`),
+  KEY `FK_languageId_on_language_idx` (`languageId`),
+  KEY `FK_contestId_on_contst_idx` (`contestId`),
+  KEY `FK_codeId_on_code_idx` (`codeId`),
+  KEY `FK_compileInfoId_on_compileInfo_idx` (`compileInfoId`),
+  CONSTRAINT `FK_status_codeId_on_code` FOREIGN KEY (`codeId`) REFERENCES `code` (`codeId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_status_compileInfoId_on_compileInfo` FOREIGN KEY (`compileInfoId`) REFERENCES `compileInfo` (`compileInfoId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_status_contestId_on_contest` FOREIGN KEY (`contestId`) REFERENCES `contest` (`contestId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_status_languageId_on_language` FOREIGN KEY (`languageId`) REFERENCES `language` (`languageId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_status_problemId_on_problem` FOREIGN KEY (`problemId`) REFERENCES `problem` (`problemId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_status_userID_on_user` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `tag`
+--
 
--- -----------------------------------------------------
--- Table `uestcojtest`.`compileInfo`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`compileInfo` ;
+DROP TABLE IF EXISTS `tag`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tag` (
+  `tagId` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8_bin NOT NULL,
+  `OPTLOCK` int(11) DEFAULT '0',
+  PRIMARY KEY (`tagId`),
+  UNIQUE KEY `tagId_UNIQUE` (`tagId`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`compileInfo` (
-  `compileInfoId` INT NOT NULL AUTO_INCREMENT ,
-  `content` TEXT NOT NULL ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  PRIMARY KEY (`compileInfoId`) ,
-  UNIQUE INDEX `compileInfoId_UNIQUE` (`compileInfoId` ASC) )
-ENGINE = InnoDB;
+--
+-- Table structure for table `team`
+--
 
+DROP TABLE IF EXISTS `team`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `team` (
+  `teamId` int(11) NOT NULL AUTO_INCREMENT,
+  `teamName` varchar(45) COLLATE utf8_bin NOT NULL,
+  `leaderId` int(11) NOT NULL,
+  PRIMARY KEY (`teamId`),
+  UNIQUE KEY `teamName_UNIQUE` (`teamName`),
+  UNIQUE KEY `teamId_UNIQUE` (`teamId`),
+  KEY `leaderId_idx` (`leaderId`),
+  CONSTRAINT `FK_team_leaderId_on_user` FOREIGN KEY (`leaderId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- -----------------------------------------------------
--- Table `uestcojtest`.`status`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`status` ;
+--
+-- Table structure for table `teamUser`
+--
 
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`status` (
-  `statusId` INT NOT NULL AUTO_INCREMENT ,
-  `userId` INT NOT NULL ,
-  `problemId` INT NOT NULL ,
-  `result` INT NOT NULL ,
-  `memoryCost` INT NOT NULL ,
-  `timeCost` INT NOT NULL ,
-  `languageId` INT NOT NULL ,
-  `length` INT NOT NULL ,
-  `time` DATETIME NOT NULL ,
-  `contestId` INT NULL DEFAULT NULL ,
-  `caseNumber` INT NOT NULL DEFAULT 0 ,
-  `codeId` INT NOT NULL ,
-  `compileInfoId` INT NULL DEFAULT NULL ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  PRIMARY KEY (`statusId`) ,
-  UNIQUE INDEX `statusId_UNIQUE` (`statusId` ASC) ,
-  INDEX `FK_userID_on_user_idx` (`userId` ASC) ,
-  INDEX `FK_problemId_on_problem_idx` (`problemId` ASC) ,
-  INDEX `FK_languageId_on_language_idx` (`languageId` ASC) ,
-  INDEX `FK_contestId_on_contst_idx` (`contestId` ASC) ,
-  INDEX `FK_codeId_on_code_idx` (`codeId` ASC) ,
-  INDEX `FK_compileInfoId_on_compileInfo_idx` (`compileInfoId` ASC) ,
-  CONSTRAINT `FK_status_userID_on_user`
-    FOREIGN KEY (`userId` )
-    REFERENCES `uestcojtest`.`user` (`userId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_status_problemId_on_problem`
-    FOREIGN KEY (`problemId` )
-    REFERENCES `uestcojtest`.`problem` (`problemId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_status_languageId_on_language`
-    FOREIGN KEY (`languageId` )
-    REFERENCES `uestcojtest`.`language` (`languageId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_status_contestId_on_contest`
-    FOREIGN KEY (`contestId` )
-    REFERENCES `uestcojtest`.`contest` (`contestId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_status_codeId_on_code`
-    FOREIGN KEY (`codeId` )
-    REFERENCES `uestcojtest`.`code` (`codeId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_status_compileInfoId_on_compileInfo`
-    FOREIGN KEY (`compileInfoId` )
-    REFERENCES `uestcojtest`.`compileInfo` (`compileInfoId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
+DROP TABLE IF EXISTS `teamUser`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `teamUser` (
+  `teamUserId` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `teamId` int(11) NOT NULL,
+  `allow` tinyint(1) NOT NULL,
+  PRIMARY KEY (`teamUserId`),
+  UNIQUE KEY `teamUserId_UNIQUE` (`teamUserId`),
+  KEY `teamId_idx` (`teamId`),
+  KEY `userId_idx` (`userId`),
+  CONSTRAINT `FK_team_teamId_on_team` FOREIGN KEY (`teamId`) REFERENCES `team` (`teamId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_team_userId_on_user` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `trainingContest`
+--
 
--- -----------------------------------------------------
--- Table `uestcojtest`.`userSerialKey`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`userSerialKey` ;
+DROP TABLE IF EXISTS `trainingContest`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `trainingContest` (
+  `trainingContestId` int(11) NOT NULL AUTO_INCREMENT,
+  `isPersonal` tinyint(1) NOT NULL,
+  `title` varchar(150) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `OPTLOCK` int(11) DEFAULT '0',
+  `type` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`trainingContestId`),
+  UNIQUE KEY `traningContestId_UNIQUE` (`trainingContestId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`userSerialKey` (
-  `userSerialKeyId` INT NOT NULL AUTO_INCREMENT ,
-  `userId` INT NOT NULL ,
-  `serialKey` VARCHAR(128) NOT NULL ,
-  `time` DATETIME NOT NULL ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  PRIMARY KEY (`userSerialKeyId`) ,
-  UNIQUE INDEX `userSerialKeyId_UNIQUE` (`userSerialKeyId` ASC) ,
-  INDEX `FK_userId_on_user_idx` (`userId` ASC) ,
-  CONSTRAINT `FK_userSerialKey_userId_on_user`
-    FOREIGN KEY (`userId` )
-    REFERENCES `uestcojtest`.`user` (`userId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
+--
+-- Table structure for table `trainingStatus`
+--
 
+DROP TABLE IF EXISTS `trainingStatus`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `trainingStatus` (
+  `trainingStatusId` int(11) NOT NULL AUTO_INCREMENT,
+  `trainingContestId` int(11) NOT NULL,
+  `trainingUserId` int(11) NOT NULL,
+  `rating` double NOT NULL,
+  `volatility` double NOT NULL,
+  `OPTLOCK` int(11) DEFAULT '0',
+  `rank` int(11) NOT NULL,
+  `solve` int(11) NOT NULL,
+  `penalty` int(11) NOT NULL,
+  `ratingVary` double NOT NULL,
+  `volatilityVary` double NOT NULL,
+  `summary` text COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`trainingStatusId`),
+  UNIQUE KEY `trainingStatusId_UNIQUE` (`trainingStatusId`),
+  KEY `FK_trainingStatus_trainingContestId_on_trainingContest_idx` (`trainingContestId`),
+  KEY `FK_trainingStatus_trainingUserId_on_user_idx` (`trainingUserId`),
+  CONSTRAINT `FK_trainingStatus_trainingContestId_on_trainingContest` FOREIGN KEY (`trainingContestId`) REFERENCES `trainingContest` (`trainingContestId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_trainingStatus_trainingUserId_on_trainingUser` FOREIGN KEY (`trainingUserId`) REFERENCES `trainingUser` (`trainingUserId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- -----------------------------------------------------
--- Table `uestcojtest`.`trainingContest`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`trainingContest` ;
+--
+-- Table structure for table `trainingUser`
+--
 
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`trainingContest` (
-  `trainingContestId` INT NOT NULL AUTO_INCREMENT ,
-  `isPersonal` TINYINT(1) NOT NULL ,
-  `title` VARCHAR(150) NOT NULL DEFAULT '' ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  `type` VARCHAR(45) NOT NULL DEFAULT 0 ,
-  PRIMARY KEY (`trainingContestId`) ,
-  UNIQUE INDEX `traningContestId_UNIQUE` (`trainingContestId` ASC) )
-ENGINE = InnoDB;
+DROP TABLE IF EXISTS `trainingUser`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `trainingUser` (
+  `trainingUserId` int(11) NOT NULL AUTO_INCREMENT,
+  `rating` double NOT NULL,
+  `volatility` double NOT NULL,
+  `type` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `OPTLOCK` int(11) DEFAULT NULL,
+  `name` varchar(45) COLLATE utf8_bin NOT NULL,
+  `allow` tinyint(1) NOT NULL,
+  `ratingVary` double NOT NULL DEFAULT '0',
+  `volatilityVary` double NOT NULL DEFAULT '0',
+  `competitions` int(11) NOT NULL,
+  `member` varchar(128) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`trainingUserId`),
+  UNIQUE KEY `trainingUserId_UNIQUE` (`trainingUserId`),
+  UNIQUE KEY `name_UNIQUE` (`name`),
+  KEY `FK_trainingUser_userId_on_user_idx` (`userId`),
+  CONSTRAINT `FK_trainingUser_userId_on_user` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `user`
+--
 
--- -----------------------------------------------------
--- Table `uestcojtest`.`trainingUser`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`trainingUser` ;
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user` (
+  `userId` int(11) NOT NULL AUTO_INCREMENT,
+  `userName` varchar(24) COLLATE utf8_bin NOT NULL,
+  `studentId` varchar(50) COLLATE utf8_bin NOT NULL,
+  `departmentId` int(11) NOT NULL,
+  `password` varchar(40) COLLATE utf8_bin NOT NULL COMMENT 'need to validate\\nuse SHA1 encoding',
+  `school` varchar(100) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `nickName` varchar(50) COLLATE utf8_bin NOT NULL COMMENT 'length >= 3',
+  `email` varchar(100) COLLATE utf8_bin NOT NULL COMMENT 'need to validate',
+  `solved` int(11) NOT NULL DEFAULT '0',
+  `tried` int(11) NOT NULL DEFAULT '0',
+  `type` int(11) NOT NULL DEFAULT '0',
+  `lastLogin` datetime NOT NULL,
+  `OPTLOCK` int(11) DEFAULT '0',
+  `motto` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '这个人很屌，什么都没写。。。',
+  `name` varchar(50) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `sex` int(11) NOT NULL DEFAULT '0',
+  `grade` int(11) NOT NULL DEFAULT '0',
+  `phone` varchar(45) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `size` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`userId`),
+  UNIQUE KEY `userId_UNIQUE` (`userId`),
+  UNIQUE KEY `userName_UNIQUE` (`userName`),
+  UNIQUE KEY `email_UNIQUE` (`email`),
+  KEY `FK_departmentId_on_department_idx` (`departmentId`),
+  CONSTRAINT `FK_user_departmentId_on_department` FOREIGN KEY (`departmentId`) REFERENCES `department` (`departmentId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`trainingUser` (
-  `trainingUserId` INT NOT NULL AUTO_INCREMENT ,
-  `rating` DOUBLE NOT NULL ,
-  `volatility` DOUBLE NOT NULL ,
-  `type` INT NOT NULL ,
-  `userId` INT NOT NULL ,
-  `OPTLOCK` INT NULL ,
-  `name` VARCHAR(45) NOT NULL ,
-  `allow` TINYINT(1) NOT NULL ,
-  `ratingVary` DOUBLE NOT NULL DEFAULT 0 ,
-  `volatilityVary` DOUBLE NOT NULL DEFAULT 0 ,
-  `competitions` INT NOT NULL ,
-  `member` VARCHAR(128) NOT NULL ,
-  PRIMARY KEY (`trainingUserId`) ,
-  UNIQUE INDEX `trainingUserId_UNIQUE` (`trainingUserId` ASC) ,
-  INDEX `FK_trainingUser_userId_on_user_idx` (`userId` ASC) ,
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC) ,
-  CONSTRAINT `FK_trainingUser_userId_on_user`
-    FOREIGN KEY (`userId` )
-    REFERENCES `uestcojtest`.`user` (`userId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
+--
+-- Table structure for table `userSerialKey`
+--
 
+DROP TABLE IF EXISTS `userSerialKey`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `userSerialKey` (
+  `userSerialKeyId` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `serialKey` varchar(128) COLLATE utf8_bin NOT NULL,
+  `time` datetime NOT NULL,
+  `OPTLOCK` int(11) DEFAULT '0',
+  PRIMARY KEY (`userSerialKeyId`),
+  UNIQUE KEY `userSerialKeyId_UNIQUE` (`userSerialKeyId`),
+  KEY `FK_userId_on_user_idx` (`userId`),
+  CONSTRAINT `FK_userSerialKey_userId_on_user` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
--- -----------------------------------------------------
--- Table `uestcojtest`.`trainingStatus`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`trainingStatus` ;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`trainingStatus` (
-  `trainingStatusId` INT NOT NULL AUTO_INCREMENT ,
-  `trainingContestId` INT NOT NULL ,
-  `trainingUserId` INT NOT NULL ,
-  `rating` DOUBLE NOT NULL ,
-  `volatility` DOUBLE NOT NULL ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  `rank` INT NOT NULL ,
-  `solve` INT NOT NULL ,
-  `penalty` INT NOT NULL ,
-  `ratingVary` DOUBLE NOT NULL ,
-  `volatilityVary` DOUBLE NOT NULL ,
-  `summary` TEXT NOT NULL ,
-  PRIMARY KEY (`trainingStatusId`) ,
-  UNIQUE INDEX `trainingStatusId_UNIQUE` (`trainingStatusId` ASC) ,
-  INDEX `FK_trainingStatus_trainingContestId_on_trainingContest_idx` (`trainingContestId` ASC) ,
-  INDEX `FK_trainingStatus_trainingUserId_on_user_idx` (`trainingUserId` ASC) ,
-  CONSTRAINT `FK_trainingStatus_trainingContestId_on_trainingContest`
-    FOREIGN KEY (`trainingContestId` )
-    REFERENCES `uestcojtest`.`trainingContest` (`trainingContestId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_trainingStatus_trainingUserId_on_trainingUser`
-    FOREIGN KEY (`trainingUserId` )
-    REFERENCES `uestcojtest`.`trainingUser` (`trainingUserId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `uestcojtest`.`team`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`team` ;
-
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`team` (
-  `teamId` INT NOT NULL AUTO_INCREMENT ,
-  `teamName` VARCHAR(45) NOT NULL ,
-  `leaderId` INT NOT NULL ,
-  PRIMARY KEY (`teamId`) ,
-  INDEX `leaderId_idx` (`leaderId` ASC) ,
-  UNIQUE INDEX `teamName_UNIQUE` (`teamName` ASC) ,
-  UNIQUE INDEX `teamId_UNIQUE` (`teamId` ASC) ,
-  CONSTRAINT `FK_team_leaderId_on_user`
-    FOREIGN KEY (`leaderId` )
-    REFERENCES `uestcojtest`.`user` (`userId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `uestcojtest`.`teamUser`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`teamUser` ;
-
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`teamUser` (
-  `teamUserId` INT NOT NULL AUTO_INCREMENT ,
-  `userId` INT NOT NULL ,
-  `teamId` INT NOT NULL ,
-  `allow` TINYINT(1) NOT NULL ,
-  PRIMARY KEY (`teamUserId`) ,
-  INDEX `teamId_idx` (`teamId` ASC) ,
-  INDEX `userId_idx` (`userId` ASC) ,
-  UNIQUE INDEX `teamUserId_UNIQUE` (`teamUserId` ASC) ,
-  CONSTRAINT `FK_team_teamId_on_team`
-    FOREIGN KEY (`teamId` )
-    REFERENCES `uestcojtest`.`team` (`teamId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_team_userId_on_user`
-    FOREIGN KEY (`userId` )
-    REFERENCES `uestcojtest`.`user` (`userId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `uestcojtest`.`contestTeam`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcojtest`.`contestTeam` ;
-
-CREATE  TABLE IF NOT EXISTS `uestcojtest`.`contestTeam` (
-  `contestTeamId` INT NOT NULL AUTO_INCREMENT ,
-  `contestId` INT NOT NULL ,
-  `teamId` INT NOT NULL ,
-  `status` TINYINT(4) NOT NULL COMMENT '0 - wait for validating\n1 - accepted\n2 - refused' ,
-  `comment` VARCHAR(255) NOT NULL, 
-  PRIMARY KEY (`contestTeamId`) ,
-  INDEX `FK_contestTeam_contestId_on_contest_idx` (`contestId` ASC) ,
-  INDEX `FK_contestTeam_teamId_on_team_idx` (`teamId` ASC) ,
-  UNIQUE INDEX `contestTeamId_UNIQUE` (`contestTeamId` ASC) ,
-  CONSTRAINT `FK_contestTeam_contestId_on_contest`
-    FOREIGN KEY (`contestId` )
-    REFERENCES `uestcojtest`.`contest` (`contestId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_contestTeam_teamId_on_team`
-    FOREIGN KEY (`teamId` )
-    REFERENCES `uestcojtest`.`team` (`teamId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-USE `uestcojtest` ;
-
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+-- Dump completed on 2014-03-26  0:16:33

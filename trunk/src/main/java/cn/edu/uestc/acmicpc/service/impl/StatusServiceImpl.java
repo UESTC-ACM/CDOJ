@@ -42,7 +42,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     statusCondition.userId = userId;
     statusCondition.results.add(Global.OnlineJudgeResultType.OJ_AC);
     statusCondition.isForAdmin = isAdmin;
-    return (List<Integer>) statusDAO.findAll("problemByProblemId.problemId",
+    return (List<Integer>) statusDAO.findAll("distinct problemByProblemId.problemId",
         statusCondition.getCondition());
   }
 
@@ -53,12 +53,12 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
     statusCondition.isForAdmin = isAdmin;
-    return (List<Integer>) statusDAO.findAll("problemByProblemId.problemId",
+    return (List<Integer>) statusDAO.findAll("distinct problemByProblemId.problemId",
         statusCondition.getCondition());
   }
 
   @Override
-  public Long countProblemsUserTired(Integer userId) throws AppException {
+  public Long countProblemsUserTried(Integer userId) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
     return statusDAO.customCount("distinct problemId", statusCondition.getCondition());
@@ -73,7 +73,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   }
 
   @Override
-  public Long countUsersTiredProblem(Integer problemId) throws AppException {
+  public Long countUsersTriedProblem(Integer problemId) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.problemId = problemId;
     return statusDAO.customCount("distinct userId", statusCondition.getCondition());
@@ -155,14 +155,9 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   @Override
   public void rejudge(StatusCondition statusCondition) throws AppException {
     Map<String, Object> properties = new HashMap<>();
-    properties.put("result",
-        Global.OnlineJudgeReturnType.OJ_REJUDGING.ordinal());
-    if (statusCondition.isVisible != null) {
-      statusCondition.isVisible = null;
-    }
-    if (statusCondition.userName != null) {
-      statusCondition.userName = null;
-    }
+    properties.put("result", Global.OnlineJudgeReturnType.OJ_REJUDGING.ordinal());
+    statusCondition.isVisible = null;
+    statusCondition.userName = null;
     statusCondition.isForAdmin = true;
     statusDAO.updateEntitiesByCondition(properties,
         statusCondition.getCondition());
@@ -173,7 +168,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.results.add(OnlineJudgeResultType.OJ_WAIT);
     if (isFirstTime) {
-     statusCondition.results.add(OnlineJudgeResultType.OJ_JUDGING);
+      statusCondition.results.add(OnlineJudgeResultType.OJ_JUDGING);
     }
     statusCondition.isForAdmin = true;
     statusCondition.orderFields = "statusId";

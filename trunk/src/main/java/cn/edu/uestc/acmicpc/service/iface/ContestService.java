@@ -2,7 +2,6 @@ package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestEditorShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
@@ -92,15 +91,6 @@ public interface ContestService extends DatabaseService<Contest, Integer> {
    */
   public void operator(String field, String ids, String value)
       throws AppException;
-
-  /**
-   * Get {@link ContestEditorShowDTO} by contest id.
-   *
-   * @param contestId contest's id.
-   * @return {@link ContestEditorShowDTO} entity.
-   * @throws AppException
-   */
-  public ContestEditorShowDTO getContestEditorShowDTO(Integer contestId) throws AppException;
 
   /**
    * Creates a new contest record.

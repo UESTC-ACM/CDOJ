@@ -6,5 +6,5 @@ install:
   - cd trunk
 
 script:
-  - gradle -PdbUser=travis -PdbPassword="" build
+  - gradle -PdbUser=travis -PdbPassword="" build 
 

@@ -30,6 +30,8 @@ cdoj
             length = Math.floor(length / 24)
             $scope.contest.lengthDays = length
             $scope.contest.description = data.contest.description
+            if $scope.contest.type == $rootScope.ContestType.INHERIT
+              $scope.contest.parentId = data.contest.parentId
 
             $scope.problemList = _.map(data.problemList, (val)->
               problemId: val.problemId
@@ -83,16 +85,42 @@ cdoj
       $scope.removeProblem = (index) ->
         $scope.problemList.splice(index, 1);
 
+      $scope.fieldInfo = []
+
       $scope.submit = ->
         contestEditDTO = angular.copy($scope.contest)
+        if contestEditDTO.type == $rootScope.ContestType.PRIVATE
+          if angular.isUndefined(contestEditDTO.password) || angular.isUndefined(contestEditDTO.passwordRepeat)
+            $window.scrollTo(0, 0)
+            return
+        else if contestEditDTO.type == $rootScope.ContestType.INHERIT
+          if angular.isUndefined(contestEditDTO.parentId)
+            $window.scrollTo(0, 0)
+            return
+
         contestEditDTO.time = Date.create(contestEditDTO.time).getTime()
+        password = CryptoJS.SHA1(contestEditDTO.password).toString()
+        contestEditDTO.password = password
+        passwordRepeat = CryptoJS.SHA1(contestEditDTO.passwordRepeat).toString()
+        contestEditDTO.passwordRepeat = passwordRepeat
         $http.post("/contest/edit", contestEditDTO).success((data)->
           if data.result == "success"
             $window.location.href = "#/contest/show/#{data.contestId}"
+          else if data.result == "field_error"
+            $scope.fieldInfo = data.field
+            $window.scrollTo(0, 0)
           else
-            # TODO
             $window.alert data.error_msg
         ).error(->
           $window.alert "Network error."
+        )
+
+      $scope.searchContest = (keyword)->
+        contestCondition =
+          keyword: keyword
+        $http.post("/contest/search", contestCondition).then((response)->
+          data = response.data
+          if data.result == "success"
+            return data.list
         )
   ])

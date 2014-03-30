@@ -37,8 +37,9 @@
           <td style="text-align: right;"
               ng-bind="contest.contestId"></td>
           <td>
-            <a href="#/contest/show/{{contest.contestId}}"
-               ng-bind="contest.title"></a>
+            <a href="javascript:void(0);"
+               ng-bind="contest.title"
+               ng-click="enterContest(contest)"></a>
           </td>
           <td style="text-align: right;"
               ui-time
@@ -59,19 +60,30 @@
             }">
           </td>
           <td style="text-align: center"
+              ng-show="contest.type != $root.ContestType.INHERIT"
               ng-class="{
                 'font-success': contest.type == $root.ContestType.PUBLIC,
                 'font-danger': contest.type == $root.ContestType.PRIVATE || contest.type == $root.ContestType.INVITED,
                 'font-primary': contest.type == $root.ContestType.DIY
               }">
             <span ng-bind="contest.typeName"
-                  ng-show="contest.type != $root.ContestType.INVITED || contest.status != $root.ContestStatus.PENDING">
+                  ng-show="contest.type != $root.ContestType.INVITED">
             </span>
             <a href="/#/contest/register/{{contest.contestId}}"
                class="pull-right"
-               ng-hide="contest.type != $root.ContestType.INVITED || contest.status != $root.ContestStatus.PENDING">
+               ng-hide="contest.type != $root.ContestType.INVITED">
               <i class="fa fa-hand-o-right"></i>Register
             </a>
+          </td>
+          <td style="text-align: center"
+              ng-hide="contest.type != $root.ContestType.INHERIT"
+              ng-class="{
+                'font-success': contest.parentType == $root.ContestType.PUBLIC,
+                'font-danger': contest.parentType == $root.ContestType.PRIVATE || contest.parentType == $root.ContestType.INVITED,
+                'font-primary': contest.parentType == $root.ContestType.DIY
+              }">
+            <span ng-bind="contest.parentTypeName">
+            </span>
           </td>
           <td ui-contest-admin-span
               contest-id="contest.contestId"

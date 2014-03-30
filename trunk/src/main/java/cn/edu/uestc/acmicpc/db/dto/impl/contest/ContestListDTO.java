@@ -14,7 +14,7 @@ import java.util.Map;
  * <br/>
  * <code>@Fields({ "contestId", "title", "type", "time", "length", "isVisible" })</code>
  */
-@Fields({"contestId", "title", "type", "time", "length", "isVisible"})
+@Fields({"contestId", "title", "type", "time", "length", "isVisible", "parentId"})
 public class ContestListDTO implements BaseDTO<Contest> {
 
   private Integer contestId;
@@ -26,13 +26,16 @@ public class ContestListDTO implements BaseDTO<Contest> {
   private Boolean isVisible;
   private String typeName;
   private String status;
+  private Integer parentId;
+  private Byte parentType;
+  private String parentTypeName;
 
   public ContestListDTO() {
   }
 
   public ContestListDTO(Integer contestId, String title, String description, Byte type,
                         Timestamp time, Integer length, Boolean isVisible, String typeName,
-                        String status) {
+                        String status, Integer parentId) {
     this.contestId = contestId;
     this.title = title;
     this.description = description;
@@ -42,6 +45,23 @@ public class ContestListDTO implements BaseDTO<Contest> {
     this.isVisible = isVisible;
     this.typeName = typeName;
     this.status = status;
+    this.parentId = parentId;
+  }
+
+  public Integer getParentId() {
+    return parentId;
+  }
+
+  public void setParentId(Integer parentId) {
+    this.parentId = parentId;
+  }
+
+  public Byte getParentType() {
+    return parentType;
+  }
+
+  public void setParentType(Byte parentType) {
+    this.parentType = parentType;
   }
 
   public Integer getContestId() {
@@ -66,6 +86,14 @@ public class ContestListDTO implements BaseDTO<Contest> {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public String getParentTypeName() {
+    return parentTypeName;
+  }
+
+  public void setParentTypeName(String parentTypeName) {
+    this.parentTypeName = parentTypeName;
   }
 
   public Byte getType() {
@@ -154,6 +182,15 @@ public class ContestListDTO implements BaseDTO<Contest> {
     if (typeName != null ? !typeName.equals(that.typeName) : that.typeName != null) {
       return false;
     }
+    if (parentId != null ? !parentId.equals(that.parentId) : that.parentId != null) {
+      return false;
+    }
+    if (parentType != null ? !parentType.equals(that.parentType) : that.parentType != null) {
+      return false;
+    }
+    if (parentTypeName != null ? !parentTypeName.equals(that.parentTypeName) : that.parentTypeName != null) {
+      return false;
+    }
 
     return true;
   }
@@ -169,6 +206,9 @@ public class ContestListDTO implements BaseDTO<Contest> {
     result = 31 * result + (isVisible != null ? isVisible.hashCode() : 0);
     result = 31 * result + (typeName != null ? typeName.hashCode() : 0);
     result = 31 * result + (status != null ? status.hashCode() : 0);
+    result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
+    result = 31 * result + (parentType != null ? parentType.hashCode() : 0);
+    result = 31 * result + (parentTypeName != null ? parentTypeName.hashCode() : 0);
     return result;
   }
 
@@ -187,11 +227,12 @@ public class ContestListDTO implements BaseDTO<Contest> {
     private Boolean isVisible;
     private String typeName;
     private String status;
+    private Integer parentId;
 
     @Override
     public ContestListDTO build() {
       return new ContestListDTO(contestId, title, description, type, time,
-          length, isVisible, typeName, status);
+          length, isVisible, typeName, status, parentId);
     }
 
     @Override
@@ -204,6 +245,7 @@ public class ContestListDTO implements BaseDTO<Contest> {
       length = (Integer) properties.get("length") * 1000;
       isVisible = (Boolean) properties.get("isVisible");
       typeName = Global.ContestType.values()[type].getDescription();
+      parentId = (Integer) properties.get("parentId");
 
       Timestamp endTime = new Timestamp(time.getTime() + length);
       Timestamp currentTime = new Timestamp(System.currentTimeMillis());
@@ -216,6 +258,11 @@ public class ContestListDTO implements BaseDTO<Contest> {
         status = "Ended";
       }
       return build();
+    }
+
+    public Builder setParentId(Integer parentId) {
+      this.parentId = parentId;
+      return this;
     }
 
     public Builder setContestId(Integer contestId) {

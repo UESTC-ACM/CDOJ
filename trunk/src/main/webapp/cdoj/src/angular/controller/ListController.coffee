@@ -44,8 +44,6 @@ cdoj
               $scope.itemsPerPage = $scope.pageInfo.countPerPage
               if angular.isFunction callback
                 callback(data)
-            else
-              $window.alert data.error_msg
           )
       $scope.reset = ->
         _.each($scope.condition, (value, index) ->
