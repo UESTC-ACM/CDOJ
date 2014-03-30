@@ -164,6 +164,12 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   }
 
   @Override
+  public List<StatusInformationDTO> exportCodes(StatusCondition statusCondition) throws AppException {
+    return statusDAO.findAll(StatusInformationDTO.class,
+        StatusInformationDTO.builder(), statusCondition.getCondition());
+  }
+
+  @Override
   public List<StatusForJudgeDTO> getQueuingStatus(boolean isFirstTime) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.results.add(OnlineJudgeResultType.OJ_WAIT);
