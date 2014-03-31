@@ -232,6 +232,12 @@ public class ContestController extends BaseController {
 
   private List<ContestTeamReportDTO> getContestTeamReportDTOList(Integer contestId,
                                                                  HttpSession session) throws AppException {
+    ContestDTO contestDTO = contestService.getContestDTOByContestId(contestId);
+    if (contestDTO.getType() == Global.ContestType.INHERIT.ordinal()) {
+      contestDTO = contestService.getContestDTOByContestId(contestDTO.getParentId());
+    }
+    contestId = contestDTO.getContestId();
+
     List<ContestTeamReportDTO> contestTeamReportDTOList =
         contestTeamService.exportContestTeamReport(contestId);
     List<Integer> teamIdList = new LinkedList<>();

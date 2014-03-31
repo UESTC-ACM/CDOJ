@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description
+ * Rank list builder
  */
 public class RankListBuilder {
   private List<RankListProblem> problemList;
@@ -67,7 +67,7 @@ public class RankListBuilder {
       RankListUser user = userMap.get(userName);
       if (user == null) {
         user = new RankListUser();
-        user.userName = userName;
+        user.name = userName;
         user.nickName = nickName;
         user.email = email;
         user.penalty = 0L;
@@ -102,7 +102,7 @@ public class RankListBuilder {
       RankListUser user = userMap.get(team.getTeamName());
       if (user == null) {
         user = new RankListUser();
-        user.userName = team.getTeamName();
+        user.name = team.getTeamName();
         user.penalty = 0L;
         user.rank = 0;
         user.solved = 0;

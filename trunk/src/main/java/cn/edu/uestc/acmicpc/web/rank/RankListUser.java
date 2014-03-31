@@ -8,7 +8,7 @@ import java.util.List;
  * Description
  */
 public class RankListUser implements Comparable<RankListUser> {
-  public String userName;
+  public String name;
   public String nickName;
   public String email;
   public List<TeamUserListDTO> teamUsers;
