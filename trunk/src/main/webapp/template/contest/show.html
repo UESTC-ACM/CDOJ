@@ -275,18 +275,18 @@
         <tbody>
         <tr ng-repeat="user in rankList" class="text-center">
           <td class="rank" ng-bind="user.rank" style="vertical-align:middle;"
-              ng-class="{my: user.userName == $root.currentUser.userName}"></td>
+              ng-class="{my: user.name == $root.currentUser.userName}"></td>
           <td class="user-name"
-              ng-class="{my: user.userName == $root.currentUser.userName}"
+              ng-class="{my: user.name == $root.currentUser.userName}"
               ng-hide="contest.type == $root.ContestType.INVITED">
-            <b ng-bind="user.userName"></b>
+            <b ng-bind="user.name"></b>
             <br/>
             <span ng-bind="user.nickName"></span>
           </td>
           <td class="user-name"
-              ng-class="{my: user.userName == currentTeam}"
+              ng-class="{my: user.name == currentTeam}"
               ng-show="contest.type == $root.ContestType.INVITED">
-            <b ng-bind="user.userName"></b>
+            <b ng-bind="user.name"></b>
             <br/>
             <span ng-repeat="teamUser in user.teamUsers">
                   <img ui-avatar
@@ -297,10 +297,10 @@
           </td>
           <td class="solved" ng-bind="user.solved"
               style="vertical-align:middle;"
-              ng-class="{my: user.userName == $root.currentUser.userName}"></td>
+              ng-class="{my: user.name == $root.currentUser.userName}"></td>
           <td class="penalty" penalty="user.penalty" ui-penalty
               style="vertical-align:middle;"
-              ng-class="{my: user.userName == $root.currentUser.userName}"></td>
+              ng-class="{my: user.name == $root.currentUser.userName}"></td>
           <td class="item"
               ng-repeat="item in user.itemList"
               ng-class="{
