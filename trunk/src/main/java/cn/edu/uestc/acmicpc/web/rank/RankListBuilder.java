@@ -92,12 +92,7 @@ public class RankListBuilder {
     } else {
       ContestTeamListDTO team = teamMap.get(userName);
       if (team == null) {
-        // This will happened when administrator submit in contest
-        team = new ContestTeamListDTO(0, 0, userName, 0, 0, "");
-        team.setTeamUsers(new LinkedList<TeamUserListDTO>());
-        team.getTeamUsers().add(new TeamUserListDTO(0, 0, 0, userName, email, nickName, true, ""));
-        teamList.add(team);
-        teamMap.put(userName, team);
+        return null;
       }
       RankListUser user = userMap.get(team.getTeamName());
       if (user == null) {
@@ -135,6 +130,10 @@ public class RankListBuilder {
     }
     RankListProblem problem = problemList.get(problemIndex);
     RankListUser user = getRankListUser(status.userName, status.nickName, status.email);
+    if (user == null) {
+      // Ignore
+      return;
+    }
     RankListItem item = user.itemList[problemIndex];
     if (item.solved) {
       // Has solved
