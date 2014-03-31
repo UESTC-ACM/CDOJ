@@ -11,12 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * Settings information
+ * Setting information
  */
-@Table(name = "settings")
+@Table(name = "setting")
 @Entity
 @KeyField("settingId")
-public class Settings implements Serializable {
+public class Setting implements Serializable {
 
   private static final long serialVersionUID = -4166330560308995164L;
   private Integer settingsId;

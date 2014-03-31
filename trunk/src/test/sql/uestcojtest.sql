@@ -498,12 +498,12 @@ CREATE TABLE `user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `settings`
+-- Table structure for table `setting`
 --
-DROP TABLE IF EXISTS `settings` ;
+DROP TABLE IF EXISTS `setting` ;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE  TABLE `settings` (
+CREATE  TABLE `setting` (
   `settingId` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(255) NOT NULL DEFAULT '',
   `description` VARCHAR(255) NOT NULL DEFAULT '',

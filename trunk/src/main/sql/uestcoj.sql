@@ -580,11 +580,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `uestcoj`.`settings`
+-- Table `uestcoj`.`setting`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcoj`.`settings` ;
+DROP TABLE IF EXISTS `uestcoj`.`setting` ;
 
-CREATE  TABLE IF NOT EXISTS `uestcoj`.`settings` (
+CREATE  TABLE IF NOT EXISTS `uestcoj`.`setting` (
   `settingId` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(255) NOT NULL DEFAULT '',
   `description` VARCHAR(255) NOT NULL DEFAULT '',
@@ -599,11 +599,11 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
--- Data for table `uestcoj`.`settings`
+-- Data for table `uestcoj`.`setting`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uestcoj`;
-INSERT INTO `settings` (`settingId`, `name`, `description`, `value`)
+INSERT INTO `setting` (`settingId`, `name`, `description`, `value`)
 VALUES
 	(1, X'686F7374', X'4F4A20686F7374', X'687474703A2F2F61636D2E75657374632E6564752E636E'),
 	(2, X'656E636F64696E67', X'44656661756C7420656E636F64696E67', X'5554462D38'),
