@@ -144,7 +144,6 @@ public class Judge implements Runnable {
     if (currentTestCase == 1)
       stringBuilder.append(" -C");
 
-    System.out.println(stringBuilder.toString());
     return stringBuilder.toString();
   }
 
