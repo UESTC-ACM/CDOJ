@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Setting service interface.
  */
-public interface SettingsService extends DatabaseService<Setting, Integer> {
+public interface SettingService extends DatabaseService<Setting, Integer> {
 
   /**
    * Get settings detail by settings name.
@@ -22,5 +22,5 @@ public interface SettingsService extends DatabaseService<Setting, Integer> {
    *
    * @param settingsDTO {@link cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDTO} entity.
    */
-  public void updateSettingsBySettingsDTO(SettingDTO settingsDTO);
+  public void updateSettingsBySettingsDTO(SettingDTO settingsDTO) throws AppException;
 }
