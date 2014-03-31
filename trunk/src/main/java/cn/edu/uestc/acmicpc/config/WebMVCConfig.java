@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.config;
 
+import cn.edu.uestc.acmicpc.web.view.ContestRankListView;
 import cn.edu.uestc.acmicpc.web.view.ContestRegistryReportView;
 
 import org.springframework.context.annotation.Bean;
@@ -68,5 +69,10 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
   @Bean
   public ContestRegistryReportView contestRegistryReportView() {
     return new ContestRegistryReportView();
+  }
+
+  @Bean
+  public ContestRankListView contestRankListView() {
+    return new ContestRankListView();
   }
 }
