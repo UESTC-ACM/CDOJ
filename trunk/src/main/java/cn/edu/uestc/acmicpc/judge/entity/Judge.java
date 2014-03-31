@@ -94,9 +94,12 @@ public class Judge implements Runnable {
                                         JudgeItem judgeItem) {
     StringBuilder stringBuilder = new StringBuilder();
 
-    stringBuilder.append(workPath);
-    stringBuilder.append("/");
     stringBuilder.append(settings.JUDGE_JUDGE_CORE);
+    stringBuilder.append(" -T "); // SPJ time
+    stringBuilder.append(10000);
+    stringBuilder.append(" -L "); // log file
+    stringBuilder.append("/var/log/fuck.log");
+
     stringBuilder.append(" -u ");
     stringBuilder.append(judgeItem.getStatusForJudgeDTO().getStatusId());
     stringBuilder.append(" -s ");
@@ -140,6 +143,8 @@ public class Judge implements Runnable {
         .append(currentTestCase).append(".out");
     if (currentTestCase == 1)
       stringBuilder.append(" -C");
+
+    System.out.println(stringBuilder.toString());
     return stringBuilder.toString();
   }
 
