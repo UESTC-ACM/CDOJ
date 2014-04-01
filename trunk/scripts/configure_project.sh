@@ -10,8 +10,9 @@
 # $4 password for db
 # $5 static resources path
 # $6 images path
+# $7 data path
 
-if [ $# -ne 6 ]; then
+if [ $# -ne 7 ]; then
   exit 1
 fi
 
@@ -20,3 +21,4 @@ echo "db.username=$3" >> $2
 echo "db.password=$4" >> $2
 echo "staticResources.path=$5" >> $2
 echo "images.path=$6" >> $2
+echo "data.path=$7" >> $2

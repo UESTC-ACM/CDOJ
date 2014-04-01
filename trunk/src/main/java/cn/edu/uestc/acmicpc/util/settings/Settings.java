@@ -9,7 +9,9 @@ import cn.edu.uestc.acmicpc.util.settings.entity.JudgeSetting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 
 import com.alibaba.fastjson.JSON;
@@ -18,13 +20,18 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 /**
- * Global settings.
+ * Global settings, load from database and resources.properties.
+ *
+ * Picture folder path and data folder path is load form resources.properties.
  */
 @Repository
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 @Lazy(false)
+@PropertySource("classpath:resources.properties")
 public class Settings {
 
+  @Autowired
+  private Environment environment;
   private SettingService settingService;
 
   @Autowired
@@ -90,14 +97,15 @@ public class Settings {
       HOST = getStringValueSettingByName(SettingsID.HOST);
       ENCODING = getStringValueSettingByName(SettingsID.ENCODING);
       UPLOAD_FOLDER = getStringValueSettingByName(SettingsID.UPLOAD_FOLDER);
-      PICTURE_FOLDER = getStringValueSettingByName(SettingsID.PICTURE_FOLDER);
       JUDGE_CORE = getStringValueSettingByName(SettingsID.JUDGE_CORE);
-      DATA_PATH = getStringValueSettingByName(SettingsID.DATA_PATH);
       WORK_PATH = getStringValueSettingByName(SettingsID.WORK_PATH);
       RECORD_PER_PAGE = getLongValueSettingByName(SettingsID.RECORD_PER_PAGE);
 
       JUDGES = JSON.parseArray(getStringValueSettingByName(SettingsID.JUDGES), JudgeSetting.class);
       EMAIL = JSON.parseObject(getStringValueSettingByName(SettingsID.EMAIL), EmailSetting.class);
+
+      PICTURE_FOLDER = environment.getProperty("images.path");
+      DATA_PATH = environment.getProperty("data.path");
     } catch (AppException e) {
       e.printStackTrace();
     }
