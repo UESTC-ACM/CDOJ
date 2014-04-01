@@ -12,15 +12,15 @@ public interface SettingService extends DatabaseService<Setting, Integer> {
   /**
    * Get settings detail by settings name.
    *
-   * @param name settings name
+   * @param settingId setting's id
    * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDTO} entity.
    */
-  public SettingDTO getSettingsDTOByName(String name) throws AppException;
+  public SettingDTO getSettingDTO(Integer settingId) throws AppException;
 
   /**
-   * Update settings by content of {@link cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDTO} entity.
+   * Update setting by content of {@link cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDTO} entity.
    *
-   * @param settingsDTO {@link cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDTO} entity.
+   * @param settingDTO {@link cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDTO} entity.
    */
-  public void updateSettingsBySettingsDTO(SettingDTO settingsDTO) throws AppException;
+  public void updateSettingBySettingDTO(SettingDTO settingDTO) throws AppException;
 }

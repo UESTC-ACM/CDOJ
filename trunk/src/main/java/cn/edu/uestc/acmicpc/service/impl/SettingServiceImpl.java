@@ -27,15 +27,14 @@ public class SettingServiceImpl extends AbstractService implements SettingServic
     return settingDAO;
   }
 
-
   @Override
-  public SettingDTO getSettingsDTOByName(String name) throws AppException {
+  public SettingDTO getSettingDTO(Integer settingId) throws AppException {
     return settingDAO.getDTOByUniqueField(SettingDTO.class,
-        SettingDTO.builder(), "name", name);
+        SettingDTO.builder(), "settingId", settingId);
   }
 
   @Override
-  public void updateSettingsBySettingsDTO(SettingDTO settingDTO) throws AppException {
+  public void updateSettingBySettingDTO(SettingDTO settingDTO) throws AppException {
     Setting setting = settingDAO.get(settingDTO.getSettingId());
     if (settingDTO.getName() != null) {
       setting.setName(settingDTO.getName());
