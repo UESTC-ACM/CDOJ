@@ -43,16 +43,16 @@ public class JudgeService {
     Scheduler scheduler = applicationContext.getBean("scheduler", Scheduler.class);
     scheduler.setJudgeQueue(judgeQueue);
     schedulerThread = new Thread(scheduler);
-    judgeThreads = new Thread[settings.JUDGE_LIST.size()];
-    Judge[] judges = new Judge[settings.JUDGE_LIST.size()];
+    judgeThreads = new Thread[settings.JUDGES.size()];
+    Judge[] judges = new Judge[settings.JUDGES.size()];
     for (int i = 0; i < judgeThreads.length; ++i) {
       judges[i] = applicationContext.getBean("judge", Judge.class);
       judges[i].setJudgeQueue(judgeQueue);
-      judges[i].setWorkPath(settings.JUDGE_TEMP_PATH + "/" + settings.JUDGE_LIST.get(i).get("name")
+      judges[i].setWorkPath(settings.WORK_PATH + "/" + settings.JUDGES.get(i).getName()
           + "/");
-      judges[i].setTempPath(settings.JUDGE_TEMP_PATH + "/" + settings.JUDGE_LIST.get(i).get("name")
+      judges[i].setTempPath(settings.WORK_PATH + "/" + settings.JUDGES.get(i).getName()
           + "/temp/");
-      judges[i].setJudgeName(settings.JUDGE_LIST.get(i).get("name"));
+      judges[i].setJudgeName(settings.JUDGES.get(i).getName());
       judgeThreads[i] = new Thread(judges[i]);
       judgeThreads[i].start();
     }

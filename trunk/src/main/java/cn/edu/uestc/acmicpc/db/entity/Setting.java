@@ -29,11 +29,11 @@ public class Setting implements Serializable {
       precision = 0, unique = true)
   @Id
   @GeneratedValue
-  public Integer getSettingsId() {
+  public Integer getSettingId() {
     return settingsId;
   }
 
-  public void setSettingsId(Integer settingsId) {
+  public void setSettingId(Integer settingsId) {
     this.settingsId = settingsId;
   }
 

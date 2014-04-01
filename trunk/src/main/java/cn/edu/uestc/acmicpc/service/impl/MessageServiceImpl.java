@@ -10,7 +10,6 @@ import cn.edu.uestc.acmicpc.db.entity.Message;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +24,10 @@ import java.util.List;
 public class MessageServiceImpl extends AbstractService implements MessageService {
 
   private IMessageDAO messageDAO;
-  private Settings settings;
 
   @Autowired
-  public MessageServiceImpl(IMessageDAO messageDAO, Settings settings) {
+  public MessageServiceImpl(IMessageDAO messageDAO) {
     this.messageDAO = messageDAO;
-    this.settings = settings;
   }
 
   @Override
