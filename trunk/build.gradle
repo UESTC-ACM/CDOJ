@@ -62,7 +62,8 @@ task generateMainPropertyFile(type: Exec) {
       "$dbUser", "$dbPassword",
       file(staticResourcePath).absolutePath,
       file(imagesPath).absolutePath,
-      file(dataPath).absolutePath
+      file(dataPath).absolutePath,
+      file(uploadPath).absolutePath
 }
 
 task generateTestPropertyFile(type: Exec) {
@@ -72,7 +73,8 @@ task generateTestPropertyFile(type: Exec) {
       "$dbUser", "$dbPassword",
       file(staticResourcePath).absolutePath,
       file(imagesPath).absolutePath,
-      file(dataPath).absolutePath
+      file(dataPath).absolutePath,
+      file(uploadPath).absolutePath
 }
 
 task cleanResources << {

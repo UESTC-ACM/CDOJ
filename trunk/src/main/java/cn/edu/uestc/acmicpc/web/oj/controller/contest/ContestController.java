@@ -809,8 +809,8 @@ public class ContestController extends BaseController {
             contestEditDTO.setDescription("");
           }
           // Move pictures
-          String oldDirectory = "/images/contest/new/";
-          String newDirectory = "/images/contest/" + contestId + "/";
+          String oldDirectory = "contest/new/";
+          String newDirectory = "contest/" + contestId + "/";
           contestEditDTO.setDescription(pictureService.modifyPictureLocation(
               contestEditDTO.getDescription(), oldDirectory, newDirectory
           ));
