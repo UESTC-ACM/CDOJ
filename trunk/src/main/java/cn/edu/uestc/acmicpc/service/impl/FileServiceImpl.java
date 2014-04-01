@@ -52,6 +52,7 @@ public class FileServiceImpl extends AbstractService implements FileService {
     if (targetFile.exists() && !targetFile.delete()) {
       throw new AppException("Internal exception: target file exists and can not be deleted.");
     }
+    System.out.println(targetFile.getAbsolutePath());
     try {
       file.transferTo(targetFile);
     } catch (IOException e) {

@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.util.settings;
 import cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDTO;
 import cn.edu.uestc.acmicpc.service.iface.SettingService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.helper.FileUtil;
 import cn.edu.uestc.acmicpc.util.settings.entity.EmailSetting;
 import cn.edu.uestc.acmicpc.util.settings.entity.JudgeSetting;
 
@@ -96,16 +97,25 @@ public class Settings {
     try {
       HOST = getStringValueSettingByName(SettingsID.HOST);
       ENCODING = getStringValueSettingByName(SettingsID.ENCODING);
-      UPLOAD_FOLDER = getStringValueSettingByName(SettingsID.UPLOAD_FOLDER);
-      JUDGE_CORE = getStringValueSettingByName(SettingsID.JUDGE_CORE);
-      WORK_PATH = getStringValueSettingByName(SettingsID.WORK_PATH);
       RECORD_PER_PAGE = getLongValueSettingByName(SettingsID.RECORD_PER_PAGE);
 
+      // Judge settings
+      JUDGE_CORE = getStringValueSettingByName(SettingsID.JUDGE_CORE);
+      WORK_PATH = getStringValueSettingByName(SettingsID.WORK_PATH);
       JUDGES = JSON.parseArray(getStringValueSettingByName(SettingsID.JUDGES), JudgeSetting.class);
+
+      // Email settings
       EMAIL = JSON.parseObject(getStringValueSettingByName(SettingsID.EMAIL), EmailSetting.class);
 
-      PICTURE_FOLDER = environment.getProperty("images.path");
-      DATA_PATH = environment.getProperty("data.path");
+      // This is settings in gradle.properties, and use absolute path
+      PICTURE_FOLDER = environment.getProperty("images.path") + "/";
+      DATA_PATH = environment.getProperty("data.path") + "/";
+      UPLOAD_FOLDER = environment.getProperty("upload.path") + "/";
+
+      // Initialize folders
+      FileUtil.createDirectoryIfNotExists(PICTURE_FOLDER);
+      FileUtil.createDirectoryIfNotExists(DATA_PATH);
+      FileUtil.createDirectoryIfNotExists(UPLOAD_FOLDER);
     } catch (AppException e) {
       e.printStackTrace();
     }
