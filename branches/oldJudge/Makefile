@@ -10,8 +10,8 @@ all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(LD) $(OBJECTS) -o $@ $(LDFLAGS)
 	sudo chown root:root $(TARGET)
-	sudo cp $(TARGET) /usr/bin/
-	sudo chmod 4755 /usr/bin/pyloncore
+	sudo cp $(TARGET) /usr/local/bin/
+	sudo chmod 4755 /usr/local/bin/pyloncore
 
 objs/%.o: src/%.cc include/*.h
 	$(CXX) $< -c -o $@ $(CXXFLAGS)
