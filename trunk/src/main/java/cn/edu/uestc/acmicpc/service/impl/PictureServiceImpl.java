@@ -27,18 +27,18 @@ public class PictureServiceImpl extends AbstractService implements PictureServic
   @Override
   public FileInformationDTO uploadPicture(FileUploadDTO fileUploadDTO,
                                           String directory) throws AppException {
-    return FileUploadUtil.uploadFile(fileUploadDTO, settings.PICTURE_FOLDER,
+    return FileUploadUtil.uploadFile(fileUploadDTO, "/images/",
         settings.PICTURE_FOLDER, directory);
   }
 
   @Override
   public String modifyPictureLocation(String content, String oldDirectory,
                                       String newDirectory) throws AppException {
-    String imagePatternString = "!\\[.*\\]\\(" + oldDirectory + "(\\S*)\\)";
+    String imagePatternString = "!\\[(.*)\\]\\(/images/" + oldDirectory + "(\\S*)\\)";
     Pattern imagePattern = Pattern.compile(imagePatternString);
     Matcher matcher = imagePattern.matcher(content);
     while (matcher.find()) {
-      String imageLocation = matcher.group(1);
+      String imageLocation = matcher.group(2);
 
       String oldImageLocation = settings.PICTURE_FOLDER + oldDirectory + imageLocation;
       String newImageLocation = settings.PICTURE_FOLDER + newDirectory + imageLocation;
@@ -59,7 +59,7 @@ public class PictureServiceImpl extends AbstractService implements PictureServic
         throw new AppException("Unable to move images!");
       }
     }
-    String imageReplacePatternString = "!\\[.*\\]\\(" + newDirectory + "$1\\)";
+    String imageReplacePatternString = "!\\[$1\\]\\(/images/" + newDirectory + "$2\\)";
     content = content.replaceAll(imagePatternString, imageReplacePatternString);
     return content;
   }
