@@ -1,9 +1,11 @@
 package cn.edu.uestc.acmicpc.config;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDTO;
 import cn.edu.uestc.acmicpc.judge.JudgeService;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
@@ -12,12 +14,15 @@ import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
+import cn.edu.uestc.acmicpc.service.iface.SettingService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.service.impl.ProblemServiceImpl;
 import cn.edu.uestc.acmicpc.service.impl.UserServiceImpl;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -126,6 +131,41 @@ public class TestContext extends ApplicationContextConfig {
   @Primary
   public PictureService mockPictureService() {
     return mock(PictureService.class);
+  }
+
+  @Bean
+  @Primary
+  public SettingService mockSettingService() throws AppException {
+    SettingService mockSettingService = mock(SettingService.class);
+    when(mockSettingService.getSettingsDTOByName(Mockito.anyString())).thenReturn(
+        SettingDTO.builder()
+            .setName("name")
+            .setDescription("description")
+            .setValue("value")
+            .build()
+    );
+    when(mockSettingService.getSettingsDTOByName("email")).thenReturn(
+        SettingDTO.builder()
+            .setName("name")
+            .setDescription("description")
+            .setValue("{\"address\":\"cdoj_test@163.com\",\"userName\":\"cdoj_test@163.com\",\"password\":\"135678942570\",\"smtpServer\":\"smtp.163.com\"}")
+            .build()
+    );
+    when(mockSettingService.getSettingsDTOByName("judges")).thenReturn(
+        SettingDTO.builder()
+            .setName("name")
+            .setDescription("description")
+            .setValue("[{\"name\":\"fish\"},{\"name\":\"mzry1992\"},{\"name\":\"gongbaoa\"},{\"name\":\"kennethsnow\"}]")
+            .build()
+    );
+    when(mockSettingService.getSettingsDTOByName("recordPerPage")).thenReturn(
+        SettingDTO.builder()
+            .setName("name")
+            .setDescription("description")
+            .setValue("20")
+            .build()
+    );
+    return mockSettingService;
   }
 
   @Bean

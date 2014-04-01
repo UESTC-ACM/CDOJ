@@ -6,9 +6,8 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
-import cn.edu.uestc.acmicpc.util.settings.Global;
-import cn.edu.uestc.acmicpc.util.settings.Global.AuthenticationType;
-import cn.edu.uestc.acmicpc.util.settings.Global.OnlineJudgeResultType;
+import cn.edu.uestc.acmicpc.util.type.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.type.OnlineJudgeResultType;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -97,7 +96,7 @@ public class StatusCondition extends BaseCondition {
   /**
    * Single result.
    *
-   * @see cn.edu.uestc.acmicpc.util.settings.Global.OnlineJudgeResultType
+   * @see OnlineJudgeResultType
    */
   public OnlineJudgeResultType result;
 
@@ -130,7 +129,7 @@ public class StatusCondition extends BaseCondition {
     if (result != null) {
       results.add(result);
     }
-    if (!results.contains(Global.OnlineJudgeResultType.OJ_ALL)) {
+    if (!results.contains(OnlineJudgeResultType.OJ_ALL)) {
       Condition typeCondition = new Condition(JoinedType.OR);
       Set<Integer> affectedResults = new HashSet<>();
       for (OnlineJudgeResultType result : results) {

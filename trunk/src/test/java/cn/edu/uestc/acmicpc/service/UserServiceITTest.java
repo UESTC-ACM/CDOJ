@@ -6,7 +6,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.type.AuthenticationType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -122,7 +122,7 @@ public class UserServiceITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testCount_byType() throws AppException {
     UserCondition condition = new UserCondition();
-    condition.type = Global.AuthenticationType.CONSTANT.ordinal();
+    condition.type = AuthenticationType.CONSTANT.ordinal();
     Assert.assertEquals(userService.count(condition), Long.valueOf(1L));
   }
 }
