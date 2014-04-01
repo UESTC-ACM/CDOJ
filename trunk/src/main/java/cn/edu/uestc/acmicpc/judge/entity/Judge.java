@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.judge.entity;
 
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.FileUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.util.type.OnlineJudgeReturnType;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,7 +32,13 @@ public class Judge implements Runnable {
     this.judgeName = judgeName;
   }
 
-  public void setWorkPath(String workPath) {
+  public void setWorkPath(String workPath) throws AppException {
+    File dir = new File(workPath);
+    if (!dir.exists()) {
+      if (!dir.mkdirs()) {
+        throw new AppException("Cannot create work directory");
+      }
+    }
     this.workPath = workPath;
   }
 
@@ -49,7 +57,13 @@ public class Judge implements Runnable {
   @Autowired
   private Settings settings;
 
-  public void setTempPath(String tempPath) {
+  public void setTempPath(String tempPath) throws AppException {
+    File dir = new File(tempPath);
+    if (!dir.exists()) {
+      if (!dir.mkdirs()) {
+        throw new AppException("Cannot create temp directory");
+      }
+    }
     this.tempPath = tempPath;
   }
 
@@ -98,7 +112,7 @@ public class Judge implements Runnable {
     stringBuilder.append(" -T "); // SPJ time
     stringBuilder.append(10000);
     stringBuilder.append(" -L "); // log file
-    stringBuilder.append("/var/log/fuck.log");
+    stringBuilder.append(workPath + "/log.log");
 
     stringBuilder.append(" -u ");
     stringBuilder.append(judgeItem.getStatusForJudgeDTO().getStatusId());
