@@ -41,7 +41,12 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.settings.Settings;
+import cn.edu.uestc.acmicpc.util.type.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.type.ContestRegistryStatusType;
+import cn.edu.uestc.acmicpc.util.type.ContestType;
+import cn.edu.uestc.acmicpc.util.type.OnlineJudgeResultType;
+import cn.edu.uestc.acmicpc.util.type.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -101,6 +106,7 @@ public class ContestController extends BaseController {
   private ContestRankListService contestRankListService;
   private ContestRegistryReportView contestRegistryReportView;
   private ContestRankListView contestRankListView;
+  private Settings settings;
 
   @Autowired
   public ContestController(ContestService contestService,
@@ -117,7 +123,8 @@ public class ContestController extends BaseController {
                            MessageService messageService,
                            ContestRankListService contestRankListService,
                            ContestRegistryReportView contestRegistryReportView,
-                           ContestRankListView contestRankListView) {
+                           ContestRankListView contestRankListView,
+                           Settings settings) {
     this.contestService = contestService;
     this.contestProblemService = contestProblemService;
     this.contestImporterService = contestImporterService;
@@ -134,6 +141,7 @@ public class ContestController extends BaseController {
     this.contestRankListService = contestRankListService;
     this.contestRegistryReportView = contestRegistryReportView;
     this.contestRankListView = contestRankListView;
+    this.settings = settings;
   }
 
   @RequestMapping("exportCodes/{contestId}")
@@ -152,7 +160,7 @@ public class ContestController extends BaseController {
       // Fetch status list
       StatusCondition statusCondition = new StatusCondition();
       statusCondition.contestId = contestId;
-      statusCondition.result = Global.OnlineJudgeResultType.OJ_AC;
+      statusCondition.result = OnlineJudgeResultType.OJ_AC;
       List<StatusInformationDTO> statusList = statusService.getStatusInformationDTOList(statusCondition);
 
       // Create zip output stream
@@ -219,7 +227,7 @@ public class ContestController extends BaseController {
       result.addObject("rankList", getRankList(contestId, session));
       Byte contestType = getContestType(session, contestId);
       result.addObject("type", contestType);
-      if (contestType == Global.ContestType.INVITED.ordinal()) {
+      if (contestType == ContestType.INVITED.ordinal()) {
         result.addObject("teamList", getContestTeamReportDTOList(contestId, session));
       }
       result.addObject("result", "success");
@@ -233,7 +241,7 @@ public class ContestController extends BaseController {
   private List<ContestTeamReportDTO> getContestTeamReportDTOList(Integer contestId,
                                                                  HttpSession session) throws AppException {
     ContestDTO contestDTO = contestService.getContestDTOByContestId(contestId);
-    if (contestDTO.getType() == Global.ContestType.INHERIT.ordinal()) {
+    if (contestDTO.getType() == ContestType.INHERIT.ordinal()) {
       contestDTO = contestService.getContestDTOByContestId(contestDTO.getParentId());
     }
     contestId = contestDTO.getContestId();
@@ -300,7 +308,7 @@ public class ContestController extends BaseController {
     }
 
     Integer registeredContestId = contestDTO.getContestId();
-    if (contestDTO.getType() == Global.ContestType.INHERIT.ordinal()) {
+    if (contestDTO.getType() == ContestType.INHERIT.ordinal()) {
       // Get parent contest
       ContestDTO parentContest = contestService.getContestDTOByContestId(contestDTO.getParentId());
       if (parentContest == null) {
@@ -312,18 +320,18 @@ public class ContestController extends BaseController {
       contestDTO.setPassword(parentContest.getPassword());
       registeredContestId = parentContest.getContestId();
     }
-    if (contestDTO.getType() == Global.ContestType.PUBLIC.ordinal()) {
+    if (contestDTO.getType() == ContestType.PUBLIC.ordinal()) {
       // Do nothing
-    } else if (contestDTO.getType() == Global.ContestType.PRIVATE.ordinal()) {
+    } else if (contestDTO.getType() == ContestType.PRIVATE.ordinal()) {
       // Check password
       if (!isAdmin(session)) {
         if (!contestDTO.getPassword().equals(contestLoginDTO.getPassword())) {
           throw new FieldException("password", "Password is wrong, please try again");
         }
       }
-    } else if (contestDTO.getType() == Global.ContestType.DIY.ordinal()) {
+    } else if (contestDTO.getType() == ContestType.DIY.ordinal()) {
       // Do nothing
-    } else if (contestDTO.getType() == Global.ContestType.INVITED.ordinal()) {
+    } else if (contestDTO.getType() == ContestType.INVITED.ordinal()) {
       // Check permission
       if (!isAdmin(session)) {
         UserDTO currentUser = getCurrentUser(session);
@@ -383,7 +391,7 @@ public class ContestController extends BaseController {
   }
 
   @RequestMapping("registryReview")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
+  @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
   Map<String, Object> registryReview(@RequestBody ContestTeamReviewDTO contestTeamReviewDTO) {
@@ -399,7 +407,7 @@ public class ContestController extends BaseController {
 
       String messageTitle;
       StringBuilder messageContentBuilder = new StringBuilder();
-      if (contestTeamReviewDTO.getStatus() == Global.ContestRegistryStatus.REFUSED.ordinal()) {
+      if (contestTeamReviewDTO.getStatus() == ContestRegistryStatusType.REFUSED.ordinal()) {
         messageTitle = "Contest register request refused.";
         messageContentBuilder.append("You register request has been refused, reason: ")
             .append(contestTeamReviewDTO.getComment())
@@ -439,7 +447,7 @@ public class ContestController extends BaseController {
     try {
       Long count = contestTeamService.count(contestTeamCondition);
       PageInfo pageInfo = buildPageInfo(count, contestTeamCondition.currentPage,
-          Global.RECORD_PER_PAGE, null);
+          settings.RECORD_PER_PAGE, null);
       List<ContestTeamListDTO> contestTeamList = contestTeamService.getContestTeamList(
           contestTeamCondition, pageInfo);
 
@@ -577,7 +585,7 @@ public class ContestController extends BaseController {
           } else {
             status.setReturnType(globalService.getReturnDescription(status.getReturnTypeId(),
                 status.getCaseNumber()));
-            if (status.getReturnTypeId() != Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
+            if (status.getReturnTypeId() != OnlineJudgeReturnType.OJ_AC.ordinal()) {
               status.setTimeCost(null);
               status.setMemoryCost(null);
             }
@@ -613,7 +621,7 @@ public class ContestController extends BaseController {
     // Check permission
     checkContestPermission(session, contestId);
 
-    if (getContestType(session, contestId) == Global.ContestType.INVITED.ordinal()) {
+    if (getContestType(session, contestId) == ContestType.INVITED.ordinal()) {
       return contestRankListService.getRankList(contestId, true);
     } else {
       return contestRankListService.getRankList(contestId, false);
@@ -717,14 +725,14 @@ public class ContestController extends BaseController {
       }
       Long count = contestService.count(contestCondition);
       PageInfo pageInfo = buildPageInfo(count, contestCondition.currentPage,
-          Global.RECORD_PER_PAGE, null);
+          settings.RECORD_PER_PAGE, null);
       List<ContestListDTO> contestListDTOList = contestService.
           getContestListDTOList(contestCondition, pageInfo);
       for (ContestListDTO contestListDTO : contestListDTOList) {
-        if (contestListDTO.getType() == Global.ContestType.INHERIT.ordinal()) {
+        if (contestListDTO.getType() == ContestType.INHERIT.ordinal()) {
           ContestDTO contestDTO = contestService.getContestDTOByContestId(contestListDTO.getParentId());
           contestListDTO.setParentType(contestDTO.getType());
-          contestListDTO.setParentTypeName(Global.ContestType.values()[contestDTO.getType()].getDescription());
+          contestListDTO.setParentTypeName(ContestType.values()[contestDTO.getType()].getDescription());
         }
       }
 
@@ -743,7 +751,7 @@ public class ContestController extends BaseController {
   }
 
   @RequestMapping("operator/{id}/{field}/{value}")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
+  @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
   Map<String, Object> operator(@PathVariable("id") String targetId,
@@ -762,7 +770,7 @@ public class ContestController extends BaseController {
   }
 
   @RequestMapping("edit")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
+  @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
   Map<String, Object> edit(@RequestBody @Valid ContestEditDTO contestEditDTO,
@@ -776,11 +784,11 @@ public class ContestController extends BaseController {
         if (StringUtil.trimAllSpace(contestEditDTO.getTitle()).equals("")) {
           throw new FieldException("title", "Please enter a validate title.");
         }
-        if (contestEditDTO.getType() == Global.ContestType.PRIVATE.ordinal()) {
+        if (contestEditDTO.getType() == ContestType.PRIVATE.ordinal()) {
           if (!contestEditDTO.getPassword().equals(contestEditDTO.getPasswordRepeat())) {
             throw new FieldException("newPasswordRepeat", "Password do not match.");
           }
-        } else if (contestEditDTO.getType() == Global.ContestType.INHERIT.ordinal()) {
+        } else if (contestEditDTO.getType() == ContestType.INHERIT.ordinal()) {
           if (contestEditDTO.getParentId() == null) {
             throw new FieldException("parentId", "Please enter parent contest's id.");
           }
@@ -801,8 +809,8 @@ public class ContestController extends BaseController {
             contestEditDTO.setDescription("");
           }
           // Move pictures
-          String oldDirectory = "/images/contest/new/";
-          String newDirectory = "/images/contest/" + contestId + "/";
+          String oldDirectory = "contest/new/";
+          String newDirectory = "contest/" + contestId + "/";
           contestEditDTO.setDescription(pictureService.modifyPictureLocation(
               contestEditDTO.getDescription(), oldDirectory, newDirectory
           ));
@@ -854,9 +862,9 @@ public class ContestController extends BaseController {
         }
 
         contestDTO.setType(contestEditDTO.getType());
-        if (contestEditDTO.getType() == Global.ContestType.PRIVATE.ordinal()) {
+        if (contestEditDTO.getType() == ContestType.PRIVATE.ordinal()) {
           contestDTO.setPassword(contestEditDTO.getPassword());
-        } else if (contestEditDTO.getType() == Global.ContestType.INHERIT.ordinal()) {
+        } else if (contestEditDTO.getType() == ContestType.INHERIT.ordinal()) {
           contestDTO.setParentId(contestEditDTO.getParentId());
         }
         contestDTO.setDescription(contestEditDTO.getDescription());
@@ -885,7 +893,7 @@ public class ContestController extends BaseController {
 
   @RequestMapping(value = "createContestByArchiveFile",
       method = RequestMethod.POST)
-  @LoginPermit(Global.AuthenticationType.ADMIN)
+  @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
   Map<String, Object> createContestByArchiveFile(

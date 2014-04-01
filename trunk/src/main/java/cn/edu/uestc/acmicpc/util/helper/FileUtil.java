@@ -1,5 +1,7 @@
 package cn.edu.uestc.acmicpc.util.helper;
 
+import cn.edu.uestc.acmicpc.util.exception.AppException;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -78,6 +80,20 @@ public class FileUtil {
     clearDirectory(new File(path));
   }
 
+  /**
+   * Create directory if not exists.
+   *
+   * @param path absolute path value
+   * @throws AppException
+   */
+  public static void createDirectoryIfNotExists(String path) throws AppException {
+    File dir = new File(path);
+    if (!dir.exists()) {
+      if (!dir.mkdirs()) {
+        throw new AppException("Can not create directory");
+      }
+    }
+  }
   /**
    * Move a directory into specific location.
    *

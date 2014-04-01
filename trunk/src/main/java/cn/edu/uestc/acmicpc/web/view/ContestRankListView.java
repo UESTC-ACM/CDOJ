@@ -3,7 +3,7 @@ package cn.edu.uestc.acmicpc.web.view;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReportDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDTO;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.type.ContestType;
 import cn.edu.uestc.acmicpc.web.rank.RankList;
 import cn.edu.uestc.acmicpc.web.rank.RankListItem;
 import cn.edu.uestc.acmicpc.web.rank.RankListProblem;
@@ -69,7 +69,7 @@ public class ContestRankListView extends AbstractJExcelView {
     // Initialize current used row.
     currentRow = 1;
 
-    if (contestType == Global.ContestType.INVITED.ordinal()) {
+    if (contestType == ContestType.INVITED.ordinal()) {
       // Invited type contest.
       lastColumn = setInvitedContestHeaderRow(sheet, rankList.problemList);
       currentRow += 2;

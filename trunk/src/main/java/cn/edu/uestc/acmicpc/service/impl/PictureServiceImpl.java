@@ -27,28 +27,28 @@ public class PictureServiceImpl extends AbstractService implements PictureServic
   @Override
   public FileInformationDTO uploadPicture(FileUploadDTO fileUploadDTO,
                                           String directory) throws AppException {
-    return FileUploadUtil.uploadFile(fileUploadDTO, settings.SETTING_PICTURE_FOLDER,
-        settings.SETTING_PICTURE_FOLDER_ABSOLUTE, directory);
+    return FileUploadUtil.uploadFile(fileUploadDTO, "/images/",
+        settings.PICTURE_FOLDER, directory);
   }
 
   @Override
   public String modifyPictureLocation(String content, String oldDirectory,
                                       String newDirectory) throws AppException {
-    String imagePatternString = "!\\[.*\\]\\(" + oldDirectory + "(\\S*)\\)";
+    String imagePatternString = "!\\[(.*)\\]\\(/images/" + oldDirectory + "(\\S*)\\)";
     Pattern imagePattern = Pattern.compile(imagePatternString);
     Matcher matcher = imagePattern.matcher(content);
     while (matcher.find()) {
-      String imageLocation = matcher.group(1);
+      String imageLocation = matcher.group(2);
 
-      String oldImageLocation = settings.SETTING_ABSOLUTE_PATH + oldDirectory + imageLocation;
-      String newImageLocation = settings.SETTING_ABSOLUTE_PATH + newDirectory + imageLocation;
+      String oldImageLocation = settings.PICTURE_FOLDER + oldDirectory + imageLocation;
+      String newImageLocation = settings.PICTURE_FOLDER + newDirectory + imageLocation;
 
       File oldFile = new File(oldImageLocation);
       if (!oldFile.exists()) {
         continue;
       }
 
-      File newPath = new File(settings.SETTING_ABSOLUTE_PATH + newDirectory);
+      File newPath = new File(settings.PICTURE_FOLDER + newDirectory);
       if (!newPath.exists()) {
         if (!newPath.mkdirs()) {
           throw new AppException("Error while make picture directory!");
@@ -59,7 +59,7 @@ public class PictureServiceImpl extends AbstractService implements PictureServic
         throw new AppException("Unable to move images!");
       }
     }
-    String imageReplacePatternString = "!\\[.*\\]\\(" + newDirectory + "$1\\)";
+    String imageReplacePatternString = "!\\[$1\\]\\(/images/" + newDirectory + "$2\\)";
     content = content.replaceAll(imagePatternString, imageReplacePatternString);
     return content;
   }

@@ -5,7 +5,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDTO;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.settings.Global;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +20,7 @@ import java.util.Random;
 public class UserSerialKeyServiceImpl extends AbstractService implements UserSerialKeyService {
 
   private final IUserSerialKeyDAO userSerialKeyDAO;
+  private final Integer USER_SERIAL_KEY_LENGTH = 128;
 
   @Autowired
   public UserSerialKeyServiceImpl(IUserSerialKeyDAO userSerialKeyDAO) {
@@ -37,7 +37,7 @@ public class UserSerialKeyServiceImpl extends AbstractService implements UserSer
   public UserSerialKeyDTO generateUserSerialKey(Integer userId) throws AppException {
     StringBuilder stringBuilder = new StringBuilder();
     Random random = new Random();
-    for (int i = 0; i < Global.USER_SERIAL_KEY_LENGTH; ++i) {
+    for (int i = 0; i < USER_SERIAL_KEY_LENGTH; ++i) {
       stringBuilder.append((char) (random.nextInt(126 - 33 + 1) + 33));
     }
     String serialKey = stringBuilder.toString();

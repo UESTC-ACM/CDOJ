@@ -18,7 +18,6 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
-import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
@@ -163,13 +162,13 @@ public class TeamController extends BaseController {
         // Search teams
         Long count = teamService.count(teamCondition);
         PageInfo pageInfo = buildPageInfo(count, teamCondition.currentPage,
-            Global.RECORD_PER_PAGE, null);
+            settings.RECORD_PER_PAGE, null);
 
         json.put("pageInfo", pageInfo);
         json.put("list", getTeamListDTO(teamCondition, pageInfo, session));
       } else {
         PageInfo pageInfo = buildPageInfo(0L, 1L,
-            Global.RECORD_PER_PAGE, null);
+            settings.RECORD_PER_PAGE, null);
         json.put("list", new LinkedList<>());
         json.put("pageInfo", pageInfo);
       }
@@ -322,7 +321,7 @@ public class TeamController extends BaseController {
           // Send a notification
           UserDTO currentUser = getCurrentUser(session);
 
-          String userCenterUrl = settings.SETTING_HOST
+          String userCenterUrl = settings.HOST
               + "/#/user/center/" + userDTO.getUserName() + "/teams";
           StringBuilder messageContent = new StringBuilder();
           messageContent.append(StringUtil.getAtLink(currentUser.getUserName()))
@@ -398,7 +397,7 @@ public class TeamController extends BaseController {
       // Send a notification
       UserDTO currentUser = getCurrentUser(session);
 
-      String userCenterUrl = settings.SETTING_HOST
+      String userCenterUrl = settings.HOST
           + "/#/user/center/" + userDTO.getUserName() + "/teams";
       StringBuilder messageContent = new StringBuilder();
       messageContent.append(StringUtil.getAtLink(currentUser.getUserName()))

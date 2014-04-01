@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.web.rank;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.type.OnlineJudgeReturnType;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -142,7 +142,7 @@ public class RankListBuilder {
     problem.tried = problem.tried + 1;
     item.tried = item.tried + 1;
     user.tried = user.tried + 1;
-    if (status.result == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
+    if (status.result == OnlineJudgeReturnType.OJ_AC.ordinal()) {
       problem.solved = problem.solved + 1;
       if (problem.solved == 1) {
         item.firstBlood = true;
