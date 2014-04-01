@@ -59,14 +59,14 @@ task generateMainPropertyFile(type: Exec) {
   commandLine "bash", "scripts/configure_project.sh",
       "src/main/resources/resources.properties.template",
       "src/main/resources/resources.properties",
-      "$dbUser", "$dbPassword", file("static/").absolutePath
+      "$dbUser", "$dbPassword", file(staticResourcePath).absolutePath, file(imagesPath).absolutePath
 }
 
 task generateTestPropertyFile(type: Exec) {
   commandLine "bash", "scripts/configure_project.sh",
       "src/test/resources/resources.properties.template",
       "src/test/resources/resources.properties",
-      "$dbUser", "$dbPassword", file("static/").absolutePath
+      "$dbUser", "$dbPassword", file(staticResourcePath).absolutePath, file(imagesPath).absolutePath
 }
 
 task cleanResources << {
