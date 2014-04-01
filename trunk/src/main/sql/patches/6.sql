@@ -17,6 +17,20 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
+-- -----------------------------------------------------
+-- Data for table `uestcoj`.`setting`
+-- settingId	name	        description	                value
+-- 1	        host	        OJ host	                    http://acm.uestc.edu.cn
+-- 2	        encoding    	Default encoding	          UTF-8
+-- 3	        uploadFolder	Upload files store folder	  ~/uploads/
+-- 4        	pictureFolder	Pictures folder	            ~/images/
+-- 5	        judgeCore	    Judge core name	            pyloncore
+-- 6        	dataPath    	Data file path	            ~/data/
+-- 7        	workPath    	Judge work path           	~/work/
+-- 8        	judges      	Judge threads             	[{"name":"fish"},{"name":"mzry1992"},{"name":"gongbaoa"},{"name":"kennethsnow"}]
+-- 9        	email       	Email server settings	      {"address":"cdoj_test@163.com","userName":"cdoj_test@163.com","password":"135678942570","smtpServer":"smtp.163.com"}
+-- 10       	recordPerPage	Number of records per page	20
+-- -----------------------------------------------------
 START TRANSACTION;
 USE `uestcoj`;
 INSERT INTO `setting` (`settingId`, `name`, `description`, `value`)

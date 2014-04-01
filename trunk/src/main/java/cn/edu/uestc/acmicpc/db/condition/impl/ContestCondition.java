@@ -30,7 +30,7 @@ public class ContestCondition extends BaseCondition {
   /**
    * Contest type.
    *
-   * {@link cn.edu.uestc.acmicpc.util.type.ContestType}
+   * @see cn.edu.uestc.acmicpc.util.type.ContestType
    */
   @Exp(type = Condition.ConditionType.EQUALS)
   public Byte type;
