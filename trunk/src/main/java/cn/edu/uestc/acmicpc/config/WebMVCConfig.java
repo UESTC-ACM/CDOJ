@@ -40,15 +40,15 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    registry.addResourceHandler("/cdoj/**").addResourceLocations(getResourceLocations("cdoj"));
-    registry.addResourceHandler("/font/**").addResourceLocations(getResourceLocations("font"));
-    registry.addResourceHandler("/images/**").addResourceLocations(getResourceLocations("images"));
-    registry.addResourceHandler("/plugins/**").addResourceLocations(getResourceLocations("plugins"));
-    registry.addResourceHandler("/template/**").addResourceLocations(getResourceLocations("template"));
+    registry.addResourceHandler("/cdoj/**").addResourceLocations(getResourceLocations("cdoj", "staticResources.path"));
+    registry.addResourceHandler("/font/**").addResourceLocations(getResourceLocations("font", "staticResources.path"));
+    registry.addResourceHandler("/plugins/**").addResourceLocations(getResourceLocations("plugins", "staticResources.path"));
+    registry.addResourceHandler("/template/**").addResourceLocations(getResourceLocations("template", "staticResources.path"));
+    registry.addResourceHandler("/images/**").addResourceLocations(getResourceLocations("", "images.path"));
   }
 
-  private String getResourceLocations(String folder) {
-    String path = environment.getProperty("staticResources.path");
+  private String getResourceLocations(String folder, String name) {
+    String path = environment.getProperty(name);
     return "file://" + path + "/" + folder + "/**";
   }
 
