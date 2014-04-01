@@ -82,39 +82,34 @@ public class Settings {
   public Long RECORD_PER_PAGE;
 
   /**
-   * Article more tag. contents after more tag will be dismiss in article list.
-   */
-  public String ARTICLE_MORE_TAG;
-
-  /**
    * Initialize settings
    */
   @PostConstruct
   public void init() {
     try {
-      HOST = getStringValueSettingByName("host");
-      ENCODING = getStringValueSettingByName("encoding");
-      UPLOAD_FOLDER = getStringValueSettingByName("uploadFolder");
-      PICTURE_FOLDER = getStringValueSettingByName("pictureFolder");
-      JUDGE_CORE = getStringValueSettingByName("judgeCore");
-      DATA_PATH = getStringValueSettingByName("dataPath");
-      WORK_PATH = getStringValueSettingByName("workPath");
-      RECORD_PER_PAGE = getLongValueSettingByName("recordPerPage");
+      HOST = getStringValueSettingByName(SettingsID.HOST);
+      ENCODING = getStringValueSettingByName(SettingsID.ENCODING);
+      UPLOAD_FOLDER = getStringValueSettingByName(SettingsID.UPLOAD_FOLDER);
+      PICTURE_FOLDER = getStringValueSettingByName(SettingsID.PICTURE_FOLDER);
+      JUDGE_CORE = getStringValueSettingByName(SettingsID.JUDGE_CORE);
+      DATA_PATH = getStringValueSettingByName(SettingsID.DATA_PATH);
+      WORK_PATH = getStringValueSettingByName(SettingsID.WORK_PATH);
+      RECORD_PER_PAGE = getLongValueSettingByName(SettingsID.RECORD_PER_PAGE);
 
-      JUDGES = JSON.parseArray(getStringValueSettingByName("judges"), JudgeSetting.class);
-      EMAIL = JSON.parseObject(getStringValueSettingByName("email"), EmailSetting.class);
+      JUDGES = JSON.parseArray(getStringValueSettingByName(SettingsID.JUDGES), JudgeSetting.class);
+      EMAIL = JSON.parseObject(getStringValueSettingByName(SettingsID.EMAIL), EmailSetting.class);
     } catch (AppException e) {
       e.printStackTrace();
     }
   }
 
-  private String getStringValueSettingByName(String name) throws AppException {
-    SettingDTO settingDTO = settingService.getSettingsDTOByName(name);
+  private String getStringValueSettingByName(SettingsID settingsID) throws AppException {
+    SettingDTO settingDTO = settingService.getSettingDTO(settingsID.getId());
     return settingDTO.getValue();
   }
 
-  private Long getLongValueSettingByName(String name) throws AppException {
-    SettingDTO settingDTO = settingService.getSettingsDTOByName(name);
+  private Long getLongValueSettingByName(SettingsID settingsID) throws AppException {
+    SettingDTO settingDTO = settingService.getSettingDTO(settingsID.getId());
     return Long.parseLong(settingDTO.getValue());
   }
 

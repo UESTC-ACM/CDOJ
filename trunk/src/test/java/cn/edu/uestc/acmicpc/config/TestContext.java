@@ -21,6 +21,7 @@ import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.service.impl.ProblemServiceImpl;
 import cn.edu.uestc.acmicpc.service.impl.UserServiceImpl;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.settings.SettingsID;
 
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,28 +138,28 @@ public class TestContext extends ApplicationContextConfig {
   @Primary
   public SettingService mockSettingService() throws AppException {
     SettingService mockSettingService = mock(SettingService.class);
-    when(mockSettingService.getSettingsDTOByName(Mockito.anyString())).thenReturn(
+    when(mockSettingService.getSettingDTO(Mockito.anyInt())).thenReturn(
         SettingDTO.builder()
             .setName("name")
             .setDescription("description")
             .setValue("value")
             .build()
     );
-    when(mockSettingService.getSettingsDTOByName("email")).thenReturn(
+    when(mockSettingService.getSettingDTO(SettingsID.EMAIL.getId())).thenReturn(
         SettingDTO.builder()
             .setName("name")
             .setDescription("description")
             .setValue("{\"address\":\"cdoj_test@163.com\",\"userName\":\"cdoj_test@163.com\",\"password\":\"135678942570\",\"smtpServer\":\"smtp.163.com\"}")
             .build()
     );
-    when(mockSettingService.getSettingsDTOByName("judges")).thenReturn(
+    when(mockSettingService.getSettingDTO(SettingsID.JUDGES.getId())).thenReturn(
         SettingDTO.builder()
             .setName("name")
             .setDescription("description")
             .setValue("[{\"name\":\"fish\"},{\"name\":\"mzry1992\"},{\"name\":\"gongbaoa\"},{\"name\":\"kennethsnow\"}]")
             .build()
     );
-    when(mockSettingService.getSettingsDTOByName("recordPerPage")).thenReturn(
+    when(mockSettingService.getSettingDTO(SettingsID.RECORD_PER_PAGE.getId())).thenReturn(
         SettingDTO.builder()
             .setName("name")
             .setDescription("description")
