@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.judge;
 import cn.edu.uestc.acmicpc.judge.entity.Judge;
 import cn.edu.uestc.acmicpc.judge.entity.JudgeItem;
 import cn.edu.uestc.acmicpc.judge.entity.Scheduler;
+import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 
 import org.apache.log4j.LogManager;
@@ -39,7 +40,7 @@ public class JudgeService {
    * Initialize the judge threads.
    */
   @PostConstruct
-  public void init() {
+  public void init() throws AppException {
     Scheduler scheduler = applicationContext.getBean("scheduler", Scheduler.class);
     scheduler.setJudgeQueue(judgeQueue);
     schedulerThread = new Thread(scheduler);
