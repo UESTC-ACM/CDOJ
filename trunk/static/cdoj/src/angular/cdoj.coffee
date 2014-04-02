@@ -7,4 +7,5 @@ cdoj = angular.module('cdoj', [
   "monospaced.elastic"
   "frapontillo.bootstrap-switch"
   "ui.sortable"
+  "pasvaz.bindonce"
 ])

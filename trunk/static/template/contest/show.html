@@ -1,7 +1,7 @@
 <div id="contest-show">
 <div class="row">
 <div class="col-md-12">
-  <h1 ng-bind="contest.title" class="text-center"></h1>
+  <h1 class="text-center">{{contest.title}}</h1>
 </div>
 <div class="col-md-12">
   <progressbar max="progressbar.max"
@@ -78,13 +78,10 @@
               success: problem.hasSolved == true
             }">
           <td class="text-right">
-            <span ng-bind="problem.solved"></span> / <span
-              ng-bind="problem.tried"></span>
+            {{problem.solved}} / {{problem.tried}}
           </td>
           <td>Problem <span ng-bind="problem.orderCharacter"></span></td>
-          <td><a href="javascript:void(0);"
-                 ng-click="chooseProblem(problem.order)"
-                 ng-bind="problem.title"></a></td>
+          <td><a href="javascript:void(0);" ng-click="chooseProblem(problem.order)">{{problem.title}}</a></td>
         </tr>
         </tbody>
       </table>
@@ -99,14 +96,12 @@
       <ul class="pagination" style="margin-bottom: 0;">
         <li ng-repeat="problem in problemList"
             ng-class="{active: currentProblem.order == problem.order}">
-          <a href="javascript:void(0);" ng-click="chooseProblem(problem.order)"
-             ng-bind="problem.orderCharacter"></a>
+          <a href="javascript:void(0);" ng-click="chooseProblem(problem.order)">{{problem.orderCharacter}}</a>
         </li>
       </ul>
     </div>
     <div class="col-md-12 text-center">
-      <h1><span ng-bind="currentProblem.orderCharacter"></span> - <span
-          ng-bind="currentProblem.title"></span></h1>
+      <h1>{{currentProblem.orderCharacter}} - {{currentProblem.title}}</h1>
     </div>
     <problem problem="currentProblem">
       <div class="col-md-12 text-center">
@@ -121,8 +116,8 @@
 <tab ng-hide="contest.status == $root.ContestStatus.PENDING"
      select="selectClarificationTab()">
   <tab-heading>
-    <span class="badge pull-right" ng-show="totalUnreadedClarification > 0"
-          ng-bind="totalUnreadedClarification"></span>
+    <span class="badge pull-right"
+          ng-show="totalUnreadedClarification > 0">{{totalUnreadedClarification}}</span>
     Clarification
   </tab-heading>
   <div class="row">
@@ -200,8 +195,7 @@
           <tr ng-repeat="status in list">
             <td style="text-align: center;"
                 ng-show="$root.isAdmin || contest.type == $root.ContestType.INVITED">
-              <a href="/#/user/center/{{status.userName}}"
-                 ng-bind="status.userName"></a>
+              <a href="/#/user/center/{{status.userName}}">{{status.userName}}</a>
             </td>
             <td style="text-align: center;">
               <ui-contest-problem-href problem-id="status.problemId"
@@ -219,15 +213,15 @@
             </td>
 
             <td style="text-align: center;">
-              <span ng-bind="status.memoryCost"></span>
+              {{status.memoryCost}}
               <span ng-hide="status.memoryCost == undefined"> KB</span>
             </td>
             <td style="text-align: center;">
-              <span ng-bind="status.timeCost"></span>
+              {{status.timeCost}}
               <span ng-hide="status.memoryCost == undefined"> MS</span>
             </td>
 
-            <td style="text-align: center;" ng-bind="status.language"></td>
+            <td style="text-align: center;">{{status.language}}</td>
             <td style="text-align: center;"
                 ui-code-href
                 status="status"
@@ -243,9 +237,8 @@
     </list>
   </div>
 </tab>
-<!--tab heading="Rank"
-     ng-hide="contest.status == $root.ContestStatus.PENDING"
-     select="refreshRankList()">
+<tab heading="Rank"
+     ng-hide="contest.status == $root.ContestStatus.PENDING">
   <div class="row" style="margin-top: 15px;">
     <div class="col-md-12">
       <div class="pull-left">
@@ -264,52 +257,52 @@
           <th class="text-center" style="width: 65px;">Solved</th>
           <th class="text-center" style="width: 75px;">Penalty</th>
           <th class="text-center"
-              ng-repeat="problem in problemList"
+              bindonce ng-repeat="problem in problemList"
               style="width: 70px;">
             <a href="javascript:void(0);"
-               ng-click="chooseProblem(problem.order)"
-               ng-bind="problem.orderCharacter"></a>
+               ng-click="chooseProblem(problem.order)">{{problem.orderCharacter}}</a>
           </th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="user in rankList" class="text-center">
-          <td class="rank" ng-bind="user.rank" style="vertical-align:middle;"
-              ng-class="{my: user.name == $root.currentUser.userName}"></td>
+        <tr bindonce ng-repeat="user in rankList" class="text-center">
+          <td class="rank"
+              style="vertical-align:middle;"
+              ng-class="{my: user.name == $root.currentUser.userName}">
+            {{user.rank}}
+          </td>
           <td class="user-name"
               ng-class="{my: user.name == $root.currentUser.userName}"
-              ng-hide="contest.type == $root.ContestType.INVITED">
-            <b ng-bind="user.name"></b>
+              ng-if="contest.type != $root.ContestType.INVITED">
+            <b>{{user.name}}</b>
             <br/>
-            <span ng-bind="user.nickName"></span>
+            {{user.nickName}}
           </td>
           <td class="user-name"
               ng-class="{my: user.name == currentTeam}"
-              ng-show="contest.type == $root.ContestType.INVITED">
-            <b ng-bind="user.name"></b>
+              ng-if="contest.type == $root.ContestType.INVITED">
+            <b>{{user.name}}</b>
             <br/>
-            <span ng-repeat="teamUser in user.teamUsers">
-                  <img ui-avatar
-                       email="teamUser.email"
-                       style="width: 19px; height: 19px;"/>
-            {{teamUser.name}}
+            <span bindonce
+                  ng-repeat="teamUser in user.teamUsers">
+              {{teamUser.name}}&nbsp;
             </span>
           </td>
-          <td class="solved" ng-bind="user.solved"
+          <td class="solved"
               style="vertical-align:middle;"
-              ng-class="{my: user.name == $root.currentUser.userName}"></td>
+              ng-class="{my: user.name == $root.currentUser.userName}">{{user.solved}}</td>
           <td class="penalty" penalty="user.penalty" ui-penalty
               style="vertical-align:middle;"
               ng-class="{my: user.name == $root.currentUser.userName}"></td>
           <td class="item"
-              ng-repeat="item in user.itemList"
+              bindonce ng-repeat="item in user.itemList"
               ng-class="{
                   'rank-list-first-blood': item.firstBlood,
                   'rank-list-solved': item.firstBlood == false && item.solved,
                   'rank-list-tried': item.solved == false && item.tried > 0
                 }">
-            <span ng-if="item.solved == true" length="item.solvedTime"
-                  ui-time-length></span>
+            <span ng-if="item.solved == true" penalty="item.solvedTime / 1000"
+                  ui-penalty></span>
             <br/>
             <span ng-if="item.tried > 0">(-{{item.tried}})</span>
           </td>
@@ -318,7 +311,7 @@
       </table>
     </div>
   </div>
-</tab-->
+</tab>
 </tabset>
 </div>
 </div>
