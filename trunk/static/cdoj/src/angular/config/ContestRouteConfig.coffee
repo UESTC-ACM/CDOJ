@@ -8,6 +8,23 @@ cdoj
       ).when("/contest/show/:contestId",
         templateUrl: "template/contest/show.html"
         controller: "ContestShowController"
+        resolve:
+          contest: ["$q", "$route", "$http", "Error", "$rootScope"
+            ($q, $route, $http, $Error, $rootScope)->
+              deferred = $q.defer()
+              contestId = $route.current.params.contestId
+              $http.get("/contest/data/#{contestId}").success((data)->
+                if data.result == "success"
+                  contest = data.contest
+                  contest.problemList = data.problemList
+                  deferred.resolve(contest)
+                else
+                  $Error data.error_msg
+              ).error(->
+                $Error "Network error."
+              )
+              return deferred.promise
+          ]
       ).when("/contest/editor/:action",
         templateUrl: "template/contest/editor.html"
         controller: "ContestEditorController"

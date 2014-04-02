@@ -16,7 +16,6 @@ cdoj
           $scope.showHref = true
         else
           $scope.showHref = false
-        console.log $scope.showHref, $rootScope.hasLogin, ($rootScope.currentUser.type == 1 || $rootScope.currentUser.userName == $scope.status.userName)
       checkShowHref()
       $scope.$on("currentUser:changed", ->
         checkShowHref()

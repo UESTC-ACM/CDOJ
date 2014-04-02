@@ -80255,7 +80255,29 @@ if (typeof exports === 'object') {
         controller: "ContestListController"
       }).when("/contest/show/:contestId", {
         templateUrl: "template/contest/show.html",
-        controller: "ContestShowController"
+        controller: "ContestShowController",
+        resolve: {
+          contest: [
+            "$q", "$route", "$http", "Error", "$rootScope", function($q, $route, $http, $Error, $rootScope) {
+              var contestId, deferred;
+              deferred = $q.defer();
+              contestId = $route.current.params.contestId;
+              $http.get("/contest/data/" + contestId).success(function(data) {
+                var contest;
+                if (data.result === "success") {
+                  contest = data.contest;
+                  contest.problemList = data.problemList;
+                  return deferred.resolve(contest);
+                } else {
+                  return $Error(data.error_msg);
+                }
+              }).error(function() {
+                return $Error("Network error.");
+              });
+              return deferred.promise;
+            }
+          ]
+        }
       }).when("/contest/editor/:action", {
         templateUrl: "template/contest/editor.html",
         controller: "ContestEditorController",
@@ -81021,28 +81043,11 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("ContestShowController", [
-    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$timeout", "$interval", "$cookieStore", function($scope, $rootScope, $http, $window, $modal, $routeParams, $timeout, $interval, $cookieStore) {
+    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$timeout", "$interval", "$cookieStore", "contest", function($scope, $rootScope, $http, $window, $modal, $routeParams, $timeout, $interval, $cookieStore, contest) {
       var clarificationTimer, cookieName, currentTimeTimer, rankListTimer, refreshClarification, refreshRankList, updateTime;
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $window.scrollTo(0, 0);
       $scope.currentTeam = "";
-      $scope.contestId = 0;
-      $scope.contest = {
-        title: "",
-        description: "",
-        currentTime: new Date().getTime()
-      };
-      $scope.problemList = [];
-      $scope.currentProblem = {
-        description: "",
-        title: "",
-        input: "",
-        output: "",
-        sampleInput: "",
-        sampleOutput: "",
-        hint: "",
-        source: ""
-      };
       $scope.progressbar = {
         max: 100,
         value: 0,
@@ -81059,19 +81064,11 @@ if (typeof exports === 'object') {
         return $window.location.href = "/#/contest/list";
       });
       $scope.contestId = angular.copy($routeParams.contestId);
-      $http.get("/contest/data/" + $scope.contestId).success(function(data) {
-        if (data.result === "success") {
-          $scope.contest = data.contest;
-          $scope.problemList = data.problemList;
-          if (data.problemList.length > 0) {
-            return $scope.currentProblem = data.problemList[0];
-          }
-        } else {
-          return $window.alert(data.error_msg);
-        }
-      }).error(function() {
-        return $window.alert("Network error, please refresh page manually.");
-      });
+      $scope.contest = contest;
+      $scope.problemList = contest.problemList;
+      if ($scope.problemList.length > 0) {
+        $scope.currentProblem = $scope.problemList[0];
+      }
       currentTimeTimer = void 0;
       updateTime = function() {
         var active, current, type;
@@ -81122,7 +81119,6 @@ if (typeof exports === 'object') {
       };
       clarificationTimer = $timeout(refreshClarification, 100);
       $scope.selectClarificationTab = function() {
-        var contest;
         $timeout.cancel(clarificationTimer);
         clarificationTimer = $timeout(refreshClarification, 0);
         contest = $cookieStore.get(cookieName);
@@ -82335,13 +82331,12 @@ if (typeof exports === 'object') {
           $scope.showHref = false;
           checkShowHref = function() {
             if ($scope.alwaysShowHref) {
-              $scope.showHref = true;
+              return $scope.showHref = true;
             } else if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
-              $scope.showHref = true;
+              return $scope.showHref = true;
             } else {
-              $scope.showHref = false;
+              return $scope.showHref = false;
             }
-            return console.log($scope.showHref, $rootScope.hasLogin, $rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName);
           };
           checkShowHref();
           $scope.$on("currentUser:changed", function() {
