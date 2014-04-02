@@ -215,8 +215,8 @@ public class ProblemController extends BaseController {
             throw new AppException("Error while creating problem.");
           }
           // Move pictures
-          String oldDirectory = "/images/problem/new/";
-          String newDirectory = "/images/problem/" + problemId + "/";
+          String oldDirectory = "problem/new/";
+          String newDirectory = "problem/" + problemId + "/";
           problemEditDTO.setDescription(pictureService.modifyPictureLocation(
               problemEditDTO.getDescription(), oldDirectory, newDirectory));
           problemEditDTO.setInput(pictureService.modifyPictureLocation(

@@ -1,6 +1,5 @@
 apply plugin: 'java'
 apply plugin: 'war'
-apply plugin: 'jetty'
 apply plugin: 'checkstyle'
 apply plugin: 'jacoco'
 apply plugin: 'idea'
@@ -13,9 +12,15 @@ description = """UESTC Online Judge"""
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-[jettyRunWar, jettyRun]*.contextPath = '/'
-project.stopPort = 8005
-project.stopKey = 'stop'
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath (group: 'com.sahlbach.gradle', name: 'gradle-jetty-eclipse-plugin', version: '1.9.+')
+  }
+}
+apply plugin: 'jettyEclipse'
 
 task checkControllerDoNotContainDaos(type: Exec) {
   commandLine "python",
@@ -54,14 +59,22 @@ task generateMainPropertyFile(type: Exec) {
   commandLine "bash", "scripts/configure_project.sh",
       "src/main/resources/resources.properties.template",
       "src/main/resources/resources.properties",
-      "$dbUser", "$dbPassword"
+      "$dbUser", "$dbPassword",
+      file(staticResourcePath).absolutePath,
+      file(imagesPath).absolutePath,
+      file(dataPath).absolutePath,
+      file(uploadPath).absolutePath
 }
 
 task generateTestPropertyFile(type: Exec) {
   commandLine "bash", "scripts/configure_project.sh",
       "src/test/resources/resources.properties.template",
       "src/test/resources/resources.properties",
-      "$dbUser", "$dbPassword"
+      "$dbUser", "$dbPassword",
+      file(staticResourcePath).absolutePath,
+      file(imagesPath).absolutePath,
+      file(dataPath).absolutePath,
+      file(uploadPath).absolutePath
 }
 
 task cleanResources << {
@@ -170,16 +183,15 @@ dependencies {
 
 test {
   doFirst {
-    jettyRun.daemon = true
-    jettyRun.execute()
+    jettyEclipseRun.daemon = true
+    jettyEclipseRun.execute()
   }
   doLast {
-    jettyStop.execute()
+    jettyEclipseStop.execute()
   }
   useTestNG()
 }
 
 jacoco {
- toolVersion = "0.6.5.201403032054"
+  toolVersion = "0.6.5.201403032054"
 }
-
