@@ -80260,18 +80260,120 @@ if (typeof exports === 'object') {
 
   cdoj.config([
     "$routeProvider", function($routeProvider) {
-      return $routeProvider.when("/", {
-        templateUrl: "template/index/index.html",
-        controller: "IndexController"
-      }).when("/problem/list", {
+      return $routeProvider.when("/problem/list", {
         templateUrl: "template/problem/list.html",
         controller: "ProblemListController"
       }).when("/problem/show/:problemId", {
         templateUrl: "template/problem/show.html",
-        controller: "ProblemShowController"
+        controller: "ProblemShowController",
+        resolve: {
+          problem: [
+            "$q", "$route", "$http", "$window", function($q, $route, $http, $window) {
+              var deferred, problemId;
+              deferred = $q.defer();
+              problemId = $route.current.params.problemId;
+              $http.post("/problem/data/" + problemId).success(function(data) {
+                if (data.result === "success") {
+                  return deferred.resolve(data.problem);
+                } else {
+                  $window.alert(data.error_msg);
+                  return $window.location.href = "/#/problem/list";
+                }
+              }).error(function() {
+                $window.alert("Network error, please refresh page manually.");
+                return $window.location.href = "/#/problem/list";
+              });
+              return deferred.promise;
+            }
+          ]
+        }
       }).when("/problem/editor/:action", {
         templateUrl: "template/problem/editor.html",
-        controller: "ProblemEditorController"
+        controller: "ProblemEditorController",
+        resolve: {
+          problem: [
+            "$q", "$route", "$http", "$window", function($q, $route, $http, $window) {
+              var action, deferred, problemId;
+              deferred = $q.defer();
+              action = $route.current.params.action;
+              if (action !== "new") {
+                problemId = action;
+                $http.post("/problem/data/" + problemId).success(function(data) {
+                  var i, _sampleInput, _sampleOutput;
+                  if (data.result === "success") {
+                    data.problem.action = action;
+                    _sampleInput = data.problem.sampleInput;
+                    try {
+                      _sampleInput = JSON.parse(_sampleInput);
+                    } catch (_error) {}
+                    if (!(_sampleInput instanceof Array)) {
+                      _sampleInput = [_sampleInput];
+                    }
+                    _sampleOutput = data.problem.sampleOutput;
+                    try {
+                      _sampleOutput = JSON.parse(_sampleOutput);
+                    } catch (_error) {}
+                    if (!(_sampleOutput instanceof Array)) {
+                      _sampleOutput = [_sampleOutput];
+                    }
+                    if (_sampleInput.length !== _sampleOutput.length) {
+                      $window.alert("Sample input has not same number of cases with sample output!");
+                      $window.location.href = "/#/problem/list";
+                    } else {
+                      data.problem.samples = (function() {
+                        var _i, _ref, _results;
+                        _results = [];
+                        for (i = _i = 0, _ref = _sampleInput.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+                          _results.push({
+                            input: _sampleInput[i].toString(),
+                            output: _sampleOutput[i].toString()
+                          });
+                        }
+                        return _results;
+                      })();
+                    }
+                    return deferred.resolve(data.problem);
+                  } else {
+                    $window.alert(data.error_msg);
+                    return $window.location.href = "/#/problem/list";
+                  }
+                }).error(function() {
+                  $window.alert("Network error, please refresh page manually.");
+                  return $window.location.href = "/#/problem/list";
+                });
+              } else {
+                deferred.resolve({
+                  action: action,
+                  description: "",
+                  title: "",
+                  isSpj: false,
+                  timeLimit: 1000,
+                  javaTimeLimit: 3000,
+                  memoryLimit: 65535,
+                  javaMemoryLimit: 65535,
+                  outputLimit: 65535,
+                  isVisible: false,
+                  input: "",
+                  output: "",
+                  sampleInput: "",
+                  sampleOutput: "",
+                  hint: "",
+                  source: ""
+                });
+              }
+              return deferred.promise;
+            }
+          ]
+        }
+      });
+    }
+  ]);
+
+  cdoj.config([
+    "$routeProvider", function($routeProvider) {
+      return $routeProvider.when("/", {
+        templateUrl: "template/index/index.html",
+        controller: "IndexController"
       }).when("/contest/list", {
         templateUrl: "template/contest/list.html",
         controller: "ContestListController"
@@ -81557,29 +81659,12 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("ProblemEditorController", [
-    "$scope", "$http", "$window", "$routeParams", "$rootScope", function($scope, $http, $window, $routeParams, $rootScope) {
-      var problemId;
+    "$scope", "$http", "$window", "$rootScope", "problem", function($scope, $http, $window, $rootScope, problem) {
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN);
       $window.scrollTo(0, 0);
-      $scope.problem = {
-        description: "",
-        title: "",
-        isSpj: false,
-        timeLimit: 1000,
-        javaTimeLimit: 3000,
-        memoryLimit: 65535,
-        javaMemoryLimit: 65535,
-        outputLimit: 65535,
-        isVisible: false,
-        input: "",
-        output: "",
-        sampleInput: "",
-        sampleOutput: "",
-        hint: "",
-        source: ""
-      };
+      $scope.problem = problem;
       $scope.fieldInfo = [];
-      $scope.action = $routeParams.action;
+      $scope.action = problem.action;
       $scope.samples = [];
       $scope.addSample = function() {
         return $scope.samples.add({
@@ -81592,46 +81677,7 @@ if (typeof exports === 'object') {
       };
       if ($scope.action !== "new") {
         $scope.title = "Edit problem " + $scope.action;
-        problemId = angular.copy($scope.action);
-        $http.post("/problem/data/" + problemId).success(function(data) {
-          var i, _sampleInput, _sampleOutput;
-          if (data.result === "success") {
-            $scope.problem = data.problem;
-            _sampleInput = $scope.problem.sampleInput;
-            try {
-              _sampleInput = JSON.parse(_sampleInput);
-            } catch (_error) {}
-            if (!(_sampleInput instanceof Array)) {
-              _sampleInput = [_sampleInput];
-            }
-            _sampleOutput = $scope.problem.sampleOutput;
-            try {
-              _sampleOutput = JSON.parse(_sampleOutput);
-            } catch (_error) {}
-            if (!(_sampleOutput instanceof Array)) {
-              _sampleOutput = [_sampleOutput];
-            }
-            if (_sampleInput.length !== _sampleOutput.length) {
-              return alert("Sample input has not same number of cases with sample output!");
-            } else {
-              return $scope.samples = (function() {
-                var _i, _ref, _results;
-                _results = [];
-                for (i = _i = 0, _ref = _sampleInput.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-                  _results.push({
-                    input: _sampleInput[i].toString(),
-                    output: _sampleOutput[i].toString()
-                  });
-                }
-                return _results;
-              })();
-            }
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $window.alert("Network error, please refresh page manually.");
-        });
+        $scope.samples = $scope.problem.samples;
       } else {
         $scope.title = "New problem";
         $scope.addSample();
@@ -81648,7 +81694,7 @@ if (typeof exports === 'object') {
         }));
         return $http.post("/problem/edit", problemEditDTO).success(function(data) {
           if (data.result === "success") {
-            return $window.location.href = "#/problem/show/" + data.problemId;
+            return $window.location.href = "/#/problem/show/" + data.problemId;
           } else if (data.result === "field_error") {
             return $scope.fieldInfo = data.field;
           } else {
@@ -81670,38 +81716,10 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("ProblemShowController", [
-    "$scope", "$rootScope", "$http", "$window", "$routeParams", "$modal", function($scope, $rootScope, $http, $window, $routeParams, $modal) {
-      var problemId;
+    "$scope", "$rootScope", "$window", "$modal", "problem", function($scope, $rootScope, $window, $modal, problem) {
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $window.scrollTo(0, 0);
-      $scope.problem = {
-        description: "",
-        title: "",
-        isSpj: false,
-        timeLimit: 1000,
-        javaTimeLimit: 3000,
-        memoryLimit: 65536,
-        javaMemoryLimit: "--",
-        solved: 0,
-        tried: 0,
-        input: "",
-        output: "",
-        sampleInput: "",
-        sampleOutput: "",
-        hint: "",
-        source: ""
-      };
-      problemId = angular.copy($routeParams.problemId);
-      $http.post("/problem/data/" + problemId).success(function(data) {
-        if (data.result === "success") {
-          $scope.problem = data.problem;
-          return $rootScope.title = $scope.problem.title;
-        } else {
-          return $window.alert(data.error_msg);
-        }
-      }).error(function() {
-        return $window.alert("Network error, please refresh page manually.");
-      });
+      $scope.problem = problem;
       $scope.openSubmitModal = function() {
         return $modal.open({
           templateUrl: "template/modal/submit-modal.html",
