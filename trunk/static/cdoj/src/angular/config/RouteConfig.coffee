@@ -5,15 +5,6 @@ cdoj
       $routeProvider.when("/",
         templateUrl: "template/index/index.html"
         controller: "IndexController"
-      ).when("/problem/list",
-        templateUrl: "template/problem/list.html"
-        controller: "ProblemListController"
-      ).when("/problem/show/:problemId",
-        templateUrl: "template/problem/show.html"
-        controller: "ProblemShowController"
-      ).when("/problem/editor/:action",
-        templateUrl: "template/problem/editor.html"
-        controller: "ProblemEditorController"
       ).when("/contest/list",
         templateUrl: "template/contest/list.html"
         controller: "ContestListController"
