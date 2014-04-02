@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.web.rank;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
-import cn.edu.uestc.acmicpc.util.type.OnlineJudgeReturnType;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 
 import java.sql.Timestamp;
 import java.util.Arrays;

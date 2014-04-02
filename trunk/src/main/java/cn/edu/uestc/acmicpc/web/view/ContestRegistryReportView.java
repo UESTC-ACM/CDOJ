@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.web.view;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReportDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDTO;
-import cn.edu.uestc.acmicpc.util.type.ContestRegistryStatusType;
+import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
 
 import org.springframework.web.servlet.view.document.AbstractJExcelView;
 

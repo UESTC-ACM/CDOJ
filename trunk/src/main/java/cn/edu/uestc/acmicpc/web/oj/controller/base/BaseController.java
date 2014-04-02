@@ -3,7 +3,7 @@ package cn.edu.uestc.acmicpc.web.oj.controller.base;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
-import cn.edu.uestc.acmicpc.util.type.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.stereotype.Controller;

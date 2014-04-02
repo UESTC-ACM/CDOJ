@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.db.entity;
 
 import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-import cn.edu.uestc.acmicpc.util.type.ContestType;
+import cn.edu.uestc.acmicpc.util.enums.ContestType;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

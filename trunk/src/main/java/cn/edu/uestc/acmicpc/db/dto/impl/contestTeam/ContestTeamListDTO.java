@@ -5,7 +5,7 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
 import cn.edu.uestc.acmicpc.db.entity.ContestTeam;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
-import cn.edu.uestc.acmicpc.util.type.ContestRegistryStatusType;
+import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
 
 import java.util.List;
 import java.util.Map;

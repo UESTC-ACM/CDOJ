@@ -3,7 +3,7 @@ package cn.edu.uestc.acmicpc.judge.entity;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDTO;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.type.OnlineJudgeReturnType;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;

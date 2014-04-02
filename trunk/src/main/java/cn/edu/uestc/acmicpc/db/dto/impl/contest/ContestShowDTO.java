@@ -4,7 +4,7 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
-import cn.edu.uestc.acmicpc.util.type.ContestType;
+import cn.edu.uestc.acmicpc.util.enums.ContestType;
 
 import java.sql.Timestamp;
 import java.util.Map;

@@ -22,10 +22,10 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
-import cn.edu.uestc.acmicpc.util.type.AuthenticationType;
-import cn.edu.uestc.acmicpc.util.type.ContestType;
-import cn.edu.uestc.acmicpc.util.type.OnlineJudgeResultType;
-import cn.edu.uestc.acmicpc.util.type.OnlineJudgeReturnType;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.ContestType;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 

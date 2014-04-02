@@ -9,14 +9,14 @@ import cn.edu.uestc.acmicpc.util.dto.GradeTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.OnlineJudgeResultTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.TShirtsSizeTypeDTO;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
-import cn.edu.uestc.acmicpc.util.type.AuthenticationType;
-import cn.edu.uestc.acmicpc.util.type.ContestRegistryStatusType;
-import cn.edu.uestc.acmicpc.util.type.ContestType;
-import cn.edu.uestc.acmicpc.util.type.GenderType;
-import cn.edu.uestc.acmicpc.util.type.GradeType;
-import cn.edu.uestc.acmicpc.util.type.OnlineJudgeResultType;
-import cn.edu.uestc.acmicpc.util.type.OnlineJudgeReturnType;
-import cn.edu.uestc.acmicpc.util.type.TShirtsSizeType;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
+import cn.edu.uestc.acmicpc.util.enums.ContestType;
+import cn.edu.uestc.acmicpc.util.enums.GenderType;
+import cn.edu.uestc.acmicpc.util.enums.GradeType;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
+import cn.edu.uestc.acmicpc.util.enums.TShirtsSizeType;
 
 import org.springframework.stereotype.Service;
 

@@ -16,23 +16,23 @@ import java.util.List;
 public interface GlobalService {
 
   /**
-   * Get all {@link cn.edu.uestc.acmicpc.util.type.AuthenticationType} entities.
+   * Get all {@link cn.edu.uestc.acmicpc.util.enums.AuthenticationType} entities.
    *
-   * @return list of all {@link cn.edu.uestc.acmicpc.util.type.AuthenticationType} entities.
+   * @return list of all {@link cn.edu.uestc.acmicpc.util.enums.AuthenticationType} entities.
    */
   public List<AuthenticationTypeDTO> getAuthenticationTypeList();
 
   /**
-   * Get all {@link cn.edu.uestc.acmicpc.util.type.OnlineJudgeResultType} entities.
+   * Get all {@link cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType} entities.
    *
-   * @return list of all {@link cn.edu.uestc.acmicpc.util.type.OnlineJudgeResultType} entities.
+   * @return list of all {@link cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType} entities.
    */
   public List<OnlineJudgeResultTypeDTO> getOnlineJudgeResultTypeList();
 
   /**
-   * Get all {@link cn.edu.uestc.acmicpc.util.type.GenderType} entities
+   * Get all {@link cn.edu.uestc.acmicpc.util.enums.GenderType} entities
    *
-   * @return list of all {@link cn.edu.uestc.acmicpc.util.type.GenderType} entities
+   * @return list of all {@link cn.edu.uestc.acmicpc.util.enums.GenderType} entities
    */
   public List<GenderTypeDTO> getGenderTypeList();
 
@@ -44,7 +44,7 @@ public interface GlobalService {
    *
    * @param type authentication type.
    * @return authentication name.
-   * @see cn.edu.uestc.acmicpc.util.type.AuthenticationType
+   * @see cn.edu.uestc.acmicpc.util.enums.AuthenticationType
    */
   public String getAuthenticationName(Integer type);
 
@@ -54,14 +54,14 @@ public interface GlobalService {
    * @param returnTypeId return type's id.
    * @param caseNumber   current processed case number.
    * @return return type description.
-   * @see cn.edu.uestc.acmicpc.util.type.OnlineJudgeReturnType
+   * @see cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType
    */
   public String getReturnDescription(Integer returnTypeId, Integer caseNumber);
 
   /**
-   * Get all {@link cn.edu.uestc.acmicpc.util.type.ContestType} entities.
+   * Get all {@link cn.edu.uestc.acmicpc.util.enums.ContestType} entities.
    *
-   * @return list of all {@link cn.edu.uestc.acmicpc.util.type.ContestType} entities.
+   * @return list of all {@link cn.edu.uestc.acmicpc.util.enums.ContestType} entities.
    */
   public List<ContestTypeDTO> getContestTypeList();
 
