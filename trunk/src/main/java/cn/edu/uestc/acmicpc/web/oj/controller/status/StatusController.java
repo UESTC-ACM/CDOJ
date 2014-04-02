@@ -115,7 +115,12 @@ public class StatusController extends BaseController {
           } else {
             // Only show current user's status
             UserDTO currentUser = getCurrentUser(session);
-            statusCondition.userId = currentUser.getUserId();
+            if (currentUser == null) {
+              // Avoid null point exception.
+              statusCondition.userId = 0;
+            } else {
+              statusCondition.userId = currentUser.getUserId();
+            }
           }
           // Only show status submitted in contest
           statusCondition.startTime = contestShowDTO.getStartTime();
