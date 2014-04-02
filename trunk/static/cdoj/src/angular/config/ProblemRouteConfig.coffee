@@ -9,19 +9,17 @@ cdoj
         templateUrl: "template/problem/show.html"
         controller: "ProblemShowController"
         resolve:
-          problem: ["$q", "$route", "$http", "$window"
-            ($q, $route, $http, $window)->
+          problem: ["$q", "$route", "$http", "Error"
+            ($q, $route, $http, $Error)->
               deferred = $q.defer()
               problemId = $route.current.params.problemId
               $http.post("/problem/data/#{problemId}").success((data)->
                 if data.result == "success"
                   deferred.resolve(data.problem)
                 else
-                  $window.alert(data.error_msg)
-                  $window.location.href = "/#/problem/list"
+                  $Error.error(data.error_msg)
               ).error(->
-                $window.alert("Network error, please refresh page manually.")
-                $window.location.href = "/#/problem/list"
+                $Error.error("Network error!")
               )
               return deferred.promise
           ]
@@ -29,8 +27,8 @@ cdoj
         templateUrl: "template/problem/editor.html"
         controller: "ProblemEditorController"
         resolve:
-          problem: ["$q", "$route", "$http", "$window",
-            ($q, $route, $http, $window)->
+          problem: ["$q", "$route", "$http", "Error",
+            ($q, $route, $http, $Error)->
               deferred = $q.defer()
               action = $route.current.params.action
               if action != "new"
@@ -54,18 +52,15 @@ cdoj
                       _sampleOutput = [_sampleOutput]
 
                     if _sampleInput.length != _sampleOutput.length
-                      $window.alert "Sample input has not same number of cases with sample output!"
-                      $window.location.href = "/#/problem/list"
+                      $Error.error("Sample input has not same number of cases with sample output!")
                     else
                       data.problem.samples = ({input: _sampleInput[i].toString(), output: _sampleOutput[i].toString()} for i in [0.._sampleInput.length - 1])
 
                     deferred.resolve(data.problem)
                   else
-                    $window.alert data.error_msg
-                    $window.location.href = "/#/problem/list"
+                    $Error.error(data.error_msg)
                 ).error(->
-                  $window.alert("Network error, please refresh page manually.")
-                  $window.location.href = "/#/problem/list"
+                  $Error.error("Network error!")
                 )
               else
                 deferred.resolve(

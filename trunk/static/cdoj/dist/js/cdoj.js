@@ -80249,6 +80249,104 @@ if (typeof exports === 'object') {
   cdoj = angular.module('cdoj', ["ui.bootstrap", "ngRoute", "ngCookies", "monospaced.elastic", "frapontillo.bootstrap-switch", "ui.sortable"]);
 
   cdoj.config([
+    "$routeProvider", function($routeProvider) {
+      return $routeProvider.when("/contest/list", {
+        templateUrl: "template/contest/list.html",
+        controller: "ContestListController"
+      }).when("/contest/show/:contestId", {
+        templateUrl: "template/contest/show.html",
+        controller: "ContestShowController"
+      }).when("/contest/editor/:action", {
+        templateUrl: "template/contest/editor.html",
+        controller: "ContestEditorController",
+        resolve: {
+          contest: [
+            "$q", "$route", "$http", "Error", "$rootScope", function($q, $route, $http, $Error, $rootScope) {
+              var action, contest, contestId, deferred;
+              deferred = $q.defer();
+              action = $route.current.params.action;
+              contest = {
+                action: action,
+                type: $rootScope.ContestType.PUBLIC,
+                time: Date.create().format("{yyyy}-{MM}-{dd} {HH}:{mm}"),
+                lengthMinutes: 0,
+                lengthHours: 5,
+                lengthDays: 0
+              };
+              if (action !== "new") {
+                contestId = action;
+                $http.post("/contest/data/" + contestId).success(function(data) {
+                  var length;
+                  if (data.result === "success") {
+                    contest.action = action;
+                    contest.contestId = data.contest.contestId;
+                    contest.title = data.contest.title;
+                    contest.type = data.contest.type;
+                    contest.time = Date.create(data.contest.startTime).format("{yyyy}-{MM}-{dd} {HH}:{mm}");
+                    length = Math.floor(data.contest.length / 1000);
+                    length = Math.floor(length / 60);
+                    contest.lengthMinutes = length % 60;
+                    length = Math.floor(length / 60);
+                    contest.lengthHours = length % 24;
+                    length = Math.floor(length / 24);
+                    contest.lengthDays = length;
+                    contest.description = data.contest.description;
+                    if (angular.isDefined(data.contest.parentId)) {
+                      contest.type = $rootScope.ContestType.INHERIT;
+                      contest.parentId = data.contest.parentId;
+                    }
+                    contest.problemList = data.problemList;
+                    return deferred.resolve(contest);
+                  } else {
+                    return $Error.error(data.error_msg);
+                  }
+                }).error(function() {
+                  return $Error.error("Network error!");
+                });
+              } else {
+                deferred.resolve(contest);
+              }
+              return deferred.promise;
+            }
+          ]
+        }
+      }).when("/contest/register/:contestId", {
+        templateUrl: "template/contest/register.html",
+        controller: "ContestRegisterController",
+        resolve: {
+          contest: [
+            "$q", "$route", "$http", "Error", "$rootScope", function($q, $route, $http, $Error, $rootScope) {
+              var contestCondition, contestId, deferred;
+              deferred = $q.defer();
+              contestId = $route.current.params.contestId;
+              contestCondition = angular.copy($rootScope.contestCondition);
+              contestCondition.startId = contestCondition.endId = contestId;
+              $http.post("/contest/search", contestCondition).success(function(data) {
+                var contest;
+                if (data.result === "success") {
+                  if (data.list.length !== 1) {
+                    $Error.error("Incorrect contest ID!");
+                  }
+                  contest = data.list[0];
+                  if (contest.type !== $rootScope.ContestType.INVITED) {
+                    $Error.error("Incorrect contest ID!");
+                  }
+                  return deferred.resolve(contest);
+                } else {
+                  return $Error.error(data.error_msg);
+                }
+              }).error(function() {
+                return $Error.error("Network error!");
+              });
+              return deferred.promise;
+            }
+          ]
+        }
+      });
+    }
+  ]);
+
+  cdoj.config([
     "$httpProvider", function($httpProvider) {
       if (!$httpProvider.defaults.headers.get) {
         $httpProvider.defaults.headers.get = {};
@@ -80268,7 +80366,7 @@ if (typeof exports === 'object') {
         controller: "ProblemShowController",
         resolve: {
           problem: [
-            "$q", "$route", "$http", "$window", function($q, $route, $http, $window) {
+            "$q", "$route", "$http", "Error", function($q, $route, $http, $Error) {
               var deferred, problemId;
               deferred = $q.defer();
               problemId = $route.current.params.problemId;
@@ -80276,12 +80374,10 @@ if (typeof exports === 'object') {
                 if (data.result === "success") {
                   return deferred.resolve(data.problem);
                 } else {
-                  $window.alert(data.error_msg);
-                  return $window.location.href = "/#/problem/list";
+                  return $Error.error(data.error_msg);
                 }
               }).error(function() {
-                $window.alert("Network error, please refresh page manually.");
-                return $window.location.href = "/#/problem/list";
+                return $Error.error("Network error!");
               });
               return deferred.promise;
             }
@@ -80292,7 +80388,7 @@ if (typeof exports === 'object') {
         controller: "ProblemEditorController",
         resolve: {
           problem: [
-            "$q", "$route", "$http", "$window", function($q, $route, $http, $window) {
+            "$q", "$route", "$http", "Error", function($q, $route, $http, $Error) {
               var action, deferred, problemId;
               deferred = $q.defer();
               action = $route.current.params.action;
@@ -80317,8 +80413,7 @@ if (typeof exports === 'object') {
                       _sampleOutput = [_sampleOutput];
                     }
                     if (_sampleInput.length !== _sampleOutput.length) {
-                      $window.alert("Sample input has not same number of cases with sample output!");
-                      $window.location.href = "/#/problem/list";
+                      $Error.error("Sample input has not same number of cases with sample output!");
                     } else {
                       data.problem.samples = (function() {
                         var _i, _ref, _results;
@@ -80334,12 +80429,10 @@ if (typeof exports === 'object') {
                     }
                     return deferred.resolve(data.problem);
                   } else {
-                    $window.alert(data.error_msg);
-                    return $window.location.href = "/#/problem/list";
+                    return $Error.error(data.error_msg);
                   }
                 }).error(function() {
-                  $window.alert("Network error, please refresh page manually.");
-                  return $window.location.href = "/#/problem/list";
+                  return $Error.error("Network error!");
                 });
               } else {
                 deferred.resolve({
@@ -80374,18 +80467,6 @@ if (typeof exports === 'object') {
       return $routeProvider.when("/", {
         templateUrl: "template/index/index.html",
         controller: "IndexController"
-      }).when("/contest/list", {
-        templateUrl: "template/contest/list.html",
-        controller: "ContestListController"
-      }).when("/contest/show/:contestId", {
-        templateUrl: "template/contest/show.html",
-        controller: "ContestShowController"
-      }).when("/contest/editor/:action", {
-        templateUrl: "template/contest/editor.html",
-        controller: "ContestEditorController"
-      }).when("/contest/register/:contestId", {
-        templateUrl: "template/contest/register.html",
-        controller: "ContestRegisterController"
       }).when("/status/list", {
         templateUrl: "template/status/list.html",
         controller: "StatusListController"
@@ -80413,6 +80494,13 @@ if (typeof exports === 'object') {
       }).when("/admin/dashboard", {
         templateUrl: "template/admin/dashboard.html",
         controller: "AdminDashboardController"
+      }).when("/404/", {
+        templateUrl: "template/index/404.html"
+      }).when("/error/:message", {
+        templateUrl: "template/index/error.html",
+        controller: "ErrorController"
+      }).otherwise({
+        redirectTo: "/404/"
       });
     }
   ]);
@@ -80546,6 +80634,16 @@ if (typeof exports === 'object') {
     }
   ]);
 
+  cdoj.factory("Error", [
+    "$location", function($location) {
+      return {
+        error: function(message) {
+          return $location.path("/error/" + message.escapeURL());
+        }
+      };
+    }
+  ]);
+
   cdoj.factory("UserProfile", [
     "$http", "$window", "$rootScope", function($http, $window, $rootScope) {
       var userProfile;
@@ -80568,257 +80666,23 @@ if (typeof exports === 'object') {
     }
   ]);
 
-  cdoj.controller("AddContestModalController", [
-    "$scope", "$rootScope", "$modalInstance", "$window", function($scope, $rootScope, $modalInstance, $window) {
-      $scope.$on("$routeChangeStart", function() {
-        return $modalInstance.close();
-      });
-      $scope.$on("contestUploader:complete", function(e, contestId) {
-        return $window.location.href = "/#/contest/show/" + contestId;
-      });
-      return $scope.$on("$routeChangeStart", function() {
-        return $modalInstance.dismiss();
-      });
-    }
-  ]);
-
-  cdoj;
-
-  cdoj.controller("AdminDashboardController", [
-    "$scope", "$rootScope", "$window", "$http", "$timeout", function($scope, $rootScope, $window, $http, $timeout) {
-      var articleCondition, originalOrder, refresh;
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN);
-      $window.scrollTo(0, 0);
-      articleCondition = angular.copy($rootScope.articleCondition);
-      articleCondition.type = $rootScope.ArticleType.NOTICE;
-      articleCondition.orderFields = "order";
-      articleCondition.orderAsc = "true";
-      $scope.list = [];
-      originalOrder = "";
-      refresh = function() {
-        return $http.post("/article/search", articleCondition).success(function(data) {
-          if (data.result === "success") {
-            $scope.list = data.list;
-            originalOrder = _.map($scope.list, function(val) {
-              return val.articleId;
-            }).join(",");
-            return $scope.pageInfo = data.pageInfo;
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $timeout(refresh, 500);
-        });
-      };
-      $timeout(refresh, 0);
-      $scope.listChanged = false;
-      $scope.sortableOptions = {
-        stop: function() {
-          var newOrder;
-          newOrder = _.map($scope.list, function(val) {
-            return val.articleId;
-          }).join(",");
-          return $scope.listChanged = !angular.equals(newOrder, originalOrder);
-        }
-      };
-      return $scope.save = function() {
-        var newOrder;
-        newOrder = _.map($scope.list, function(val) {
-          return val.articleId;
-        }).join(",");
-        return $http.post("/article/changeNoticeOrder", {
-          order: newOrder
-        }).success(function(data) {
-          if (data.result === "success") {
-            $window.alert("Done");
-            refresh();
-            return $scope.listChanged = false;
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $window.alert("Network error.");
-        });
-      };
-    }
-  ]);
-
-  cdoj.controller("ArticleEditorController", [
-    "$rootScope", "$scope", "$http", "$routeParams", "$window", function($rootScope, $scope, $http, $routeParams, $window) {
-      var articleId;
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.CURRENT_USER, $routeParams.userName);
-      $window.scrollTo(0, 0);
-      $scope.article = {
-        content: "",
-        title: ""
-      };
-      $scope.fieldInfo = [];
-      $scope.action = $routeParams.action;
-      $scope.userName = $routeParams.userName;
-      if ($scope.action !== "new") {
-        articleId = angular.copy($scope.action);
-        $http.get("/article/data/" + articleId).success(function(data) {
-          if (data.result === "success") {
-            $scope.article = data.article;
-            $scope.title = "Edit: " + $scope.article.title;
-            return $scope.isNotice = $scope.article.type === $rootScope.ArticleType.NOTICE;
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $window.alert("Network error, please refresh page manually.");
-        });
-      } else {
-        $scope.title = "New article";
-      }
-      return $scope.submit = function() {
-        var articleEditDTO;
-        articleEditDTO = angular.copy($scope.article);
-        articleEditDTO.action = angular.copy($scope.action);
-        articleEditDTO.userName = angular.copy($scope.userName);
-        if ($scope.isNotice) {
-          articleEditDTO.type = $rootScope.ArticleType.NOTICE;
-        } else {
-          articleEditDTO.type = $rootScope.ArticleType.ARTICLE;
-        }
-        return $http.post("/article/edit", articleEditDTO).success(function(data) {
-          if (data.result === "success") {
-            return $window.location.href = "/#/article/show/" + data.articleId;
-          } else if (data.result === "field_error") {
-            return $scope.fieldInfo = data.field;
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $window.alert("Network error.");
-        });
-      };
-    }
-  ]);
-
-  cdoj.controller("ArticleShowController", [
-    "$scope", "$rootScope", "$routeParams", "$http", "$window", function($scope, $rootScope, $routeParams, $http, $window) {
-      var articleId;
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
-      $window.scrollTo(0, 0);
-      $scope.article = {
-        content: "",
-        title: ""
-      };
-      articleId = angular.copy($routeParams.articleId);
-      return $http.get("/article/data/" + articleId).success(function(data) {
-        if (data.result === "success") {
-          $scope.article = data.article;
-          return $rootScope.title = $scope.article.title;
-        } else {
-          return $window.alert(data.error_msg);
-        }
-      }).error(function() {
-        return $window.alert("Network error, please refresh page manually.");
-      });
-    }
-  ]);
-
-  cdoj.controller("CodeModalController", [
-    "$scope", "$http", "$modalInstance", "statusId", function($scope, $http, $modalInstance, statusId) {
-      $scope.code = "Loading...";
-      $http.post("/status/info/" + statusId).success(function(data) {
-        var code, compileInfo;
-        compileInfo = "";
-        if (data.result === "success") {
-          compileInfo = data.compileInfo;
-        } else {
-          compileInfo = data.error_msg;
-        }
-        code = "";
-        if (data.result === "success") {
-          code = data.code;
-        } else {
-          code = data.error_msg;
-        }
-        return $scope.code = code;
-      }).error(function() {
-        return $scope.code = "Network error.";
-      });
-      return $scope.$on("$routeChangeStart", function() {
-        return $modalInstance.dismiss();
-      });
-    }
-  ]);
-
-  cdoj.controller("CompileInfoModalController", [
-    "$scope", "$http", "$modalInstance", "statusId", function($scope, $http, $modalInstance, statusId) {
-      $scope.compileInfo = "Loading...";
-      $http.post("/status/info/" + statusId).success(function(data) {
-        var compileInfo;
-        compileInfo = "";
-        if (data.result === "success") {
-          compileInfo = data.compileInfo;
-        } else {
-          compileInfo = data.error_msg;
-        }
-        return $scope.compileInfo = compileInfo;
-      }).error(function() {
-        return $scope.compileInfo = "Network error.";
-      });
-      return $scope.$on("$routeChangeStart", function() {
-        return $modalInstance.dismiss();
-      });
-    }
-  ]);
-
   cdoj.controller("ContestEditorController", [
-    "$scope", "$rootScope", "$http", "$window", "$routeParams", function($scope, $rootScope, $http, $window, $routeParams) {
-      var contestId;
+    "$scope", "$rootScope", "$http", "$window", "contest", function($scope, $rootScope, $http, $window, contest) {
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN);
       $window.scrollTo(0, 0);
-      $scope.contest = {
-        problemList: ""
-      };
+      $scope.contest = contest;
       $scope.problemList = [];
       $scope.fieldInfo = [];
-      $scope.action = $routeParams.action;
+      $scope.action = contest.action;
       if ($scope.action !== "new") {
         $scope.title = "Edit contest " + $scope.action;
-        contestId = angular.copy($scope.action);
-        $http.post("/contest/data/" + contestId).success(function(data) {
-          var length;
-          if (data.result === "success") {
-            $scope.contest.action = $scope.action;
-            $scope.contest.contestId = data.contest.contestId;
-            $scope.contest.title = data.contest.title;
-            $scope.contest.type = data.contest.type;
-            $scope.contest.time = Date.create(data.contest.startTime).format("{yyyy}-{MM}-{dd} {HH}:{mm}");
-            length = Math.floor(data.contest.length / 1000);
-            length = Math.floor(length / 60);
-            $scope.contest.lengthMinutes = length % 60;
-            length = Math.floor(length / 60);
-            $scope.contest.lengthHours = length % 24;
-            length = Math.floor(length / 24);
-            $scope.contest.lengthDays = length;
-            $scope.contest.description = data.contest.description;
-            if ($scope.contest.type === $rootScope.ContestType.INHERIT) {
-              $scope.contest.parentId = data.contest.parentId;
-            }
-            return $scope.problemList = _.map(data.problemList, function(val) {
-              return {
-                problemId: val.problemId,
-                title: val.title
-              };
-            });
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $window.alert("Network error, please refresh page manually.");
+        $scope.problemList = _.map(contest.problemList, function(val) {
+          return {
+            problemId: val.problemId,
+            title: val.title
+          };
         });
       } else {
-        $scope.contest.action = $scope.action;
-        $scope.contest.type = $rootScope.ContestType.PUBLIC;
-        $scope.contest.time = Date.create().format("{yyyy}-{MM}-{dd} {HH}:{mm}");
-        $scope.contest.lengthMinutes = 0;
-        $scope.contest.lengthHours = 5;
-        $scope.contest.lengthDays = 0;
         $scope.title = "New contest";
       }
       $scope.$watch("problemList", function() {
@@ -81008,28 +80872,12 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("ContestRegisterController", [
-    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", function($scope, $rootScope, $http, $window, $modal, $routeParams) {
-      var contestCondition, contestId;
+    "$scope", "$rootScope", "$http", "$window", "$modal", "contest", function($scope, $rootScope, $http, $window, $modal, contest) {
+      var contestId;
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $window.scrollTo(0, 0);
-      contestId = $routeParams.contestId;
-      $scope.contestId = contestId;
-      $scope.contest = 0;
-      contestCondition = angular.copy($rootScope.contestCondition);
-      contestCondition.startId = contestCondition.endId = contestId;
-      $http.post("/contest/search", contestCondition).success(function(data) {
-        if (data.result === "success") {
-          if (data.list.length === 1) {
-            return $scope.contest = data.list[0];
-          } else {
-            return $window.alert("Wrong contest id.");
-          }
-        } else {
-          return $window.alert(data.error_msg);
-        }
-      }).error(function() {
-        return $window.alert("Network error, please refresh page manually.");
-      });
+      $scope.contest = contest;
+      contestId = contest.contestId;
       $scope.contestTeamCondition = angular.copy($rootScope.contestTeamCondition);
       $scope.contestTeamCondition.contestId = contestId;
       $scope.team = {
@@ -81069,7 +80917,7 @@ if (typeof exports === 'object') {
         });
       };
       $scope.register = function() {
-        return $http.get("/contest/register/" + $scope.team.teamId + "/" + $scope.contest.contestId).success(function(data) {
+        return $http.get("/contest/register/" + $scope.team.teamId + "/" + contestId).success(function(data) {
           if (data.result === "success") {
             $window.alert("Register success! please wait for verify");
             $scope.team = {
@@ -81383,6 +81231,302 @@ if (typeof exports === 'object') {
     }
   ]);
 
+  cdoj.controller("ProblemEditorController", [
+    "$scope", "$http", "$window", "$rootScope", "problem", function($scope, $http, $window, $rootScope, problem) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN);
+      $window.scrollTo(0, 0);
+      $scope.problem = problem;
+      $scope.fieldInfo = [];
+      $scope.action = problem.action;
+      $scope.samples = [];
+      $scope.addSample = function() {
+        return $scope.samples.add({
+          input: "",
+          output: ""
+        });
+      };
+      $scope.removeSample = function(index) {
+        return $scope.samples.splice(index, 1);
+      };
+      if ($scope.action !== "new") {
+        $scope.title = "Edit problem " + $scope.action;
+        $scope.samples = $scope.problem.samples;
+      } else {
+        $scope.title = "New problem";
+        $scope.addSample();
+      }
+      return $scope.submit = function() {
+        var problemEditDTO;
+        problemEditDTO = angular.copy($scope.problem);
+        problemEditDTO.action = angular.copy($scope.action);
+        problemEditDTO.sampleInput = JSON.stringify(_.map($scope.samples, function(sample) {
+          return sample.input;
+        }));
+        problemEditDTO.sampleOutput = JSON.stringify(_.map($scope.samples, function(sample) {
+          return sample.output;
+        }));
+        return $http.post("/problem/edit", problemEditDTO).success(function(data) {
+          if (data.result === "success") {
+            return $window.location.href = "/#/problem/show/" + data.problemId;
+          } else if (data.result === "field_error") {
+            return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
+      };
+    }
+  ]);
+
+  cdoj.controller("ProblemListController", [
+    "$scope", "$rootScope", "$window", function($scope, $rootScope, $window) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
+      $window.scrollTo(0, 0);
+      return $rootScope.title = "Problem list";
+    }
+  ]);
+
+  cdoj.controller("ProblemShowController", [
+    "$scope", "$rootScope", "$window", "$modal", "problem", function($scope, $rootScope, $window, $modal, problem) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
+      $window.scrollTo(0, 0);
+      $scope.problem = problem;
+      $scope.openSubmitModal = function() {
+        return $modal.open({
+          templateUrl: "template/modal/submit-modal.html",
+          controller: "SubmitModalController",
+          resolve: {
+            submitDTO: function() {
+              return {
+                codeContent: "",
+                problemId: $scope.problem.problemId,
+                contestId: null,
+                languageId: 2
+              };
+            },
+            title: function() {
+              return "" + $scope.problem.title;
+            }
+          }
+        }).result.then(function(result) {
+          if (result === "success") {
+            return $window.location.href = "/#/status/list?problemId=" + $scope.problem.problemId;
+          }
+        });
+      };
+      return $scope.gotoStatusList = function() {
+        return $window.location.href = "/#/status/list?problemId=" + $scope.problem.problemId;
+      };
+    }
+  ]);
+
+  cdoj.controller("AddContestModalController", [
+    "$scope", "$rootScope", "$modalInstance", "$window", function($scope, $rootScope, $modalInstance, $window) {
+      $scope.$on("$routeChangeStart", function() {
+        return $modalInstance.close();
+      });
+      $scope.$on("contestUploader:complete", function(e, contestId) {
+        return $window.location.href = "/#/contest/show/" + contestId;
+      });
+      return $scope.$on("$routeChangeStart", function() {
+        return $modalInstance.dismiss();
+      });
+    }
+  ]);
+
+  cdoj;
+
+  cdoj.controller("AdminDashboardController", [
+    "$scope", "$rootScope", "$window", "$http", "$timeout", function($scope, $rootScope, $window, $http, $timeout) {
+      var articleCondition, originalOrder, refresh;
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN);
+      $window.scrollTo(0, 0);
+      articleCondition = angular.copy($rootScope.articleCondition);
+      articleCondition.type = $rootScope.ArticleType.NOTICE;
+      articleCondition.orderFields = "order";
+      articleCondition.orderAsc = "true";
+      $scope.list = [];
+      originalOrder = "";
+      refresh = function() {
+        return $http.post("/article/search", articleCondition).success(function(data) {
+          if (data.result === "success") {
+            $scope.list = data.list;
+            originalOrder = _.map($scope.list, function(val) {
+              return val.articleId;
+            }).join(",");
+            return $scope.pageInfo = data.pageInfo;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $timeout(refresh, 500);
+        });
+      };
+      $timeout(refresh, 0);
+      $scope.listChanged = false;
+      $scope.sortableOptions = {
+        stop: function() {
+          var newOrder;
+          newOrder = _.map($scope.list, function(val) {
+            return val.articleId;
+          }).join(",");
+          return $scope.listChanged = !angular.equals(newOrder, originalOrder);
+        }
+      };
+      return $scope.save = function() {
+        var newOrder;
+        newOrder = _.map($scope.list, function(val) {
+          return val.articleId;
+        }).join(",");
+        return $http.post("/article/changeNoticeOrder", {
+          order: newOrder
+        }).success(function(data) {
+          if (data.result === "success") {
+            $window.alert("Done");
+            refresh();
+            return $scope.listChanged = false;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
+      };
+    }
+  ]);
+
+  cdoj.controller("ArticleEditorController", [
+    "$rootScope", "$scope", "$http", "$routeParams", "$window", function($rootScope, $scope, $http, $routeParams, $window) {
+      var articleId;
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.CURRENT_USER, $routeParams.userName);
+      $window.scrollTo(0, 0);
+      $scope.article = {
+        content: "",
+        title: ""
+      };
+      $scope.fieldInfo = [];
+      $scope.action = $routeParams.action;
+      $scope.userName = $routeParams.userName;
+      if ($scope.action !== "new") {
+        articleId = angular.copy($scope.action);
+        $http.get("/article/data/" + articleId).success(function(data) {
+          if (data.result === "success") {
+            $scope.article = data.article;
+            $scope.title = "Edit: " + $scope.article.title;
+            return $scope.isNotice = $scope.article.type === $rootScope.ArticleType.NOTICE;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error, please refresh page manually.");
+        });
+      } else {
+        $scope.title = "New article";
+      }
+      return $scope.submit = function() {
+        var articleEditDTO;
+        articleEditDTO = angular.copy($scope.article);
+        articleEditDTO.action = angular.copy($scope.action);
+        articleEditDTO.userName = angular.copy($scope.userName);
+        if ($scope.isNotice) {
+          articleEditDTO.type = $rootScope.ArticleType.NOTICE;
+        } else {
+          articleEditDTO.type = $rootScope.ArticleType.ARTICLE;
+        }
+        return $http.post("/article/edit", articleEditDTO).success(function(data) {
+          if (data.result === "success") {
+            return $window.location.href = "/#/article/show/" + data.articleId;
+          } else if (data.result === "field_error") {
+            return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
+      };
+    }
+  ]);
+
+  cdoj.controller("ArticleShowController", [
+    "$scope", "$rootScope", "$routeParams", "$http", "$window", function($scope, $rootScope, $routeParams, $http, $window) {
+      var articleId;
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
+      $window.scrollTo(0, 0);
+      $scope.article = {
+        content: "",
+        title: ""
+      };
+      articleId = angular.copy($routeParams.articleId);
+      return $http.get("/article/data/" + articleId).success(function(data) {
+        if (data.result === "success") {
+          $scope.article = data.article;
+          return $rootScope.title = $scope.article.title;
+        } else {
+          return $window.alert(data.error_msg);
+        }
+      }).error(function() {
+        return $window.alert("Network error, please refresh page manually.");
+      });
+    }
+  ]);
+
+  cdoj.controller("CodeModalController", [
+    "$scope", "$http", "$modalInstance", "statusId", function($scope, $http, $modalInstance, statusId) {
+      $scope.code = "Loading...";
+      $http.post("/status/info/" + statusId).success(function(data) {
+        var code, compileInfo;
+        compileInfo = "";
+        if (data.result === "success") {
+          compileInfo = data.compileInfo;
+        } else {
+          compileInfo = data.error_msg;
+        }
+        code = "";
+        if (data.result === "success") {
+          code = data.code;
+        } else {
+          code = data.error_msg;
+        }
+        return $scope.code = code;
+      }).error(function() {
+        return $scope.code = "Network error.";
+      });
+      return $scope.$on("$routeChangeStart", function() {
+        return $modalInstance.dismiss();
+      });
+    }
+  ]);
+
+  cdoj.controller("CompileInfoModalController", [
+    "$scope", "$http", "$modalInstance", "statusId", function($scope, $http, $modalInstance, statusId) {
+      $scope.compileInfo = "Loading...";
+      $http.post("/status/info/" + statusId).success(function(data) {
+        var compileInfo;
+        compileInfo = "";
+        if (data.result === "success") {
+          compileInfo = data.compileInfo;
+        } else {
+          compileInfo = data.error_msg;
+        }
+        return $scope.compileInfo = compileInfo;
+      }).error(function() {
+        return $scope.compileInfo = "Network error.";
+      });
+      return $scope.$on("$routeChangeStart", function() {
+        return $modalInstance.dismiss();
+      });
+    }
+  ]);
+
+  cdoj.controller("ErrorController", [
+    "$routeParams", "$scope", function($routeParams, $scope) {
+      return $scope.message = $routeParams.message;
+    }
+  ]);
+
   cdoj.controller("ForgetPasswordModalController", [
     "$scope", "$http", "$modalInstance", "$window", function($scope, $http, $modalInstance, $window) {
       $scope.DTO = {
@@ -81654,97 +81798,6 @@ if (typeof exports === 'object') {
         }).error(function() {
           return $window.alert("Network error.");
         });
-      };
-    }
-  ]);
-
-  cdoj.controller("ProblemEditorController", [
-    "$scope", "$http", "$window", "$rootScope", "problem", function($scope, $http, $window, $rootScope, problem) {
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN);
-      $window.scrollTo(0, 0);
-      $scope.problem = problem;
-      $scope.fieldInfo = [];
-      $scope.action = problem.action;
-      $scope.samples = [];
-      $scope.addSample = function() {
-        return $scope.samples.add({
-          input: "",
-          output: ""
-        });
-      };
-      $scope.removeSample = function(index) {
-        return $scope.samples.splice(index, 1);
-      };
-      if ($scope.action !== "new") {
-        $scope.title = "Edit problem " + $scope.action;
-        $scope.samples = $scope.problem.samples;
-      } else {
-        $scope.title = "New problem";
-        $scope.addSample();
-      }
-      return $scope.submit = function() {
-        var problemEditDTO;
-        problemEditDTO = angular.copy($scope.problem);
-        problemEditDTO.action = angular.copy($scope.action);
-        problemEditDTO.sampleInput = JSON.stringify(_.map($scope.samples, function(sample) {
-          return sample.input;
-        }));
-        problemEditDTO.sampleOutput = JSON.stringify(_.map($scope.samples, function(sample) {
-          return sample.output;
-        }));
-        return $http.post("/problem/edit", problemEditDTO).success(function(data) {
-          if (data.result === "success") {
-            return $window.location.href = "/#/problem/show/" + data.problemId;
-          } else if (data.result === "field_error") {
-            return $scope.fieldInfo = data.field;
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $window.alert("Network error.");
-        });
-      };
-    }
-  ]);
-
-  cdoj.controller("ProblemListController", [
-    "$scope", "$rootScope", "$window", function($scope, $rootScope, $window) {
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
-      $window.scrollTo(0, 0);
-      return $rootScope.title = "Problem list";
-    }
-  ]);
-
-  cdoj.controller("ProblemShowController", [
-    "$scope", "$rootScope", "$window", "$modal", "problem", function($scope, $rootScope, $window, $modal, problem) {
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
-      $window.scrollTo(0, 0);
-      $scope.problem = problem;
-      $scope.openSubmitModal = function() {
-        return $modal.open({
-          templateUrl: "template/modal/submit-modal.html",
-          controller: "SubmitModalController",
-          resolve: {
-            submitDTO: function() {
-              return {
-                codeContent: "",
-                problemId: $scope.problem.problemId,
-                contestId: null,
-                languageId: 2
-              };
-            },
-            title: function() {
-              return "" + $scope.problem.title;
-            }
-          }
-        }).result.then(function(result) {
-          if (result === "success") {
-            return $window.location.href = "/#/status/list?problemId=" + $scope.problem.problemId;
-          }
-        });
-      };
-      return $scope.gotoStatusList = function() {
-        return $window.location.href = "/#/status/list?problemId=" + $scope.problem.problemId;
       };
     }
   ]);
