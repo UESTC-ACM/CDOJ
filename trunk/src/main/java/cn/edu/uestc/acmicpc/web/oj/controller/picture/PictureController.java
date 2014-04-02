@@ -4,7 +4,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.type.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;

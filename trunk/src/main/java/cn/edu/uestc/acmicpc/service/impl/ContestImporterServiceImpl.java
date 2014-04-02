@@ -15,7 +15,7 @@ import cn.edu.uestc.acmicpc.util.helper.FileUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.helper.ZipUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
-import cn.edu.uestc.acmicpc.util.type.ContestType;
+import cn.edu.uestc.acmicpc.util.enums.ContestType;
 import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
 import cn.edu.uestc.acmicpc.web.xml.XmlNode;
 import cn.edu.uestc.acmicpc.web.xml.XmlParser;

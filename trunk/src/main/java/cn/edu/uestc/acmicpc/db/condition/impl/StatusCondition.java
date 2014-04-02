@@ -6,8 +6,8 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
-import cn.edu.uestc.acmicpc.util.type.AuthenticationType;
-import cn.edu.uestc.acmicpc.util.type.OnlineJudgeResultType;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 
 import java.sql.Timestamp;
 import java.util.HashSet;

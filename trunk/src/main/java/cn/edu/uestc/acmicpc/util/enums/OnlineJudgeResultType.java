@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.util.type;
+package cn.edu.uestc.acmicpc.util.enums;
 
 import java.util.ArrayList;
 import java.util.List;

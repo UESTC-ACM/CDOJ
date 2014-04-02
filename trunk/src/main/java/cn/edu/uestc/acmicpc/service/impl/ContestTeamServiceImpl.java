@@ -10,7 +10,7 @@ import cn.edu.uestc.acmicpc.db.entity.ContestTeam;
 import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-import cn.edu.uestc.acmicpc.util.type.ContestRegistryStatusType;
+import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;

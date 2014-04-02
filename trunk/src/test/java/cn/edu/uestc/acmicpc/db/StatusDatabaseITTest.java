@@ -9,7 +9,7 @@ import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
-import cn.edu.uestc.acmicpc.util.type.OnlineJudgeReturnType;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;

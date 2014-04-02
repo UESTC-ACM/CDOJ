@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.util.annotation;
 
-import cn.edu.uestc.acmicpc.util.type.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

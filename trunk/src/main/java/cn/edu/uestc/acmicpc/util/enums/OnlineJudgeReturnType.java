@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.util.type;
+package cn.edu.uestc.acmicpc.util.enums;
 
 /**
  * Online judge return type.

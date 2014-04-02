@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.util.type;
+package cn.edu.uestc.acmicpc.util.enums;
 
 /**
  * User's t-shirts size type

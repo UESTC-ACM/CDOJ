@@ -4,10 +4,10 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.TeamUser;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
-import cn.edu.uestc.acmicpc.util.type.AuthenticationType;
-import cn.edu.uestc.acmicpc.util.type.GenderType;
-import cn.edu.uestc.acmicpc.util.type.GradeType;
-import cn.edu.uestc.acmicpc.util.type.TShirtsSizeType;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.GenderType;
+import cn.edu.uestc.acmicpc.util.enums.GradeType;
+import cn.edu.uestc.acmicpc.util.enums.TShirtsSizeType;
 
 import java.util.Map;
 

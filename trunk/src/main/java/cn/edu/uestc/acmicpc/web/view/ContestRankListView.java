@@ -3,7 +3,7 @@ package cn.edu.uestc.acmicpc.web.view;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReportDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDTO;
-import cn.edu.uestc.acmicpc.util.type.ContestType;
+import cn.edu.uestc.acmicpc.util.enums.ContestType;
 import cn.edu.uestc.acmicpc.web.rank.RankList;
 import cn.edu.uestc.acmicpc.web.rank.RankListItem;
 import cn.edu.uestc.acmicpc.web.rank.RankListProblem;
