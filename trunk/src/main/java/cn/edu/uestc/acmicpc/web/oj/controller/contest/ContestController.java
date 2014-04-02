@@ -335,6 +335,9 @@ public class ContestController extends BaseController {
       // Check permission
       if (!isAdmin(session)) {
         UserDTO currentUser = getCurrentUser(session);
+        if (currentUser == null) {
+          throw new AppException("You are not invited in this contest, please register first!");
+        }
         Integer teamId = contestTeamService.getTeamIdByUserIdAndContestId(currentUser.getUserId(), registeredContestId);
         if (teamId == null) {
           throw new AppException("You are not invited in this contest, please register first!");
