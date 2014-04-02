@@ -1,30 +1,14 @@
 cdoj
 .controller("ContestShowController", [
-    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams",
-    "$timeout", "$interval"
-    "$cookieStore"
+    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$timeout", "$interval"
+    "$cookieStore", "contest"
     ($scope, $rootScope, $http, $window, $modal, $routeParams, $timeout, $interval
-     $cookieStore) ->
+     $cookieStore, contest) ->
       $scope.$emit("permission:setPermission",
         $rootScope.AuthenticationType.NOOP)
       $window.scrollTo(0, 0)
 
       $scope.currentTeam = ""
-      $scope.contestId = 0
-      $scope.contest =
-        title: ""
-        description: ""
-        currentTime: new Date().getTime()
-      $scope.problemList = []
-      $scope.currentProblem =
-        description: ""
-        title: ""
-        input: ""
-        output: ""
-        sampleInput: ""
-        sampleOutput: ""
-        hint: ""
-        source: ""
       $scope.progressbar =
         max: 100
         value: 0
@@ -40,18 +24,12 @@ cdoj
       $scope.$on("currentUser:logout", ->
         $window.location.href = "/#/contest/list"
       )
+
       $scope.contestId = angular.copy($routeParams.contestId)
-      $http.get("/contest/data/#{$scope.contestId}").success((data)->
-        if data.result == "success"
-          $scope.contest = data.contest
-          $scope.problemList = data.problemList
-          if data.problemList.length > 0
-            $scope.currentProblem = data.problemList[0]
-        else
-          $window.alert data.error_msg
-      ).error(->
-        $window.alert "Network error, please refresh page manually."
-      )
+      $scope.contest = contest
+      $scope.problemList = contest.problemList
+      if $scope.problemList.length > 0
+        $scope.currentProblem = $scope.problemList[0]
 
       currentTimeTimer = undefined
       updateTime = ->
