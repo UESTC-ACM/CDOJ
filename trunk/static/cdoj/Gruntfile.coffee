@@ -23,6 +23,7 @@ module.exports = (grunt) ->
             "src/angular/config/*.coffee"
             "src/angular/run/*.coffee"
             "src/angular/factory/*.coffee"
+            "src/angular/controller/*/*.coffee"
             "src/angular/controller/*.coffee"
             "src/angular/directive/*.coffee"
           ]

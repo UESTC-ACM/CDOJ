@@ -1,17 +1,9 @@
 <div>
   <div class="col-md-12 text-center">
     <h5>
-      <span>Time Limit: </span>
-      <span ng-bind="problem.javaTimeLimit"></span>
-      <span>/</span>
-      <span ng-bind="problem.timeLimit"></span>
-      <span>MS (Java/Others)</span>
-      <span>&nbsp;&nbsp;&nbsp;</span>
-      <span>Memory Limit: </span>
-      <span ng-bind="problem.javaMemoryLimit"></span>
-      <span>/</span>
-      <span ng-bind="problem.memoryLimit"></span>
-      <span>KB (Java/Others)</span>
+      Time Limit: {{problem.javaTimeLimit}}/{{problem.timeLimit}}MS (Java/Others)
+      &nbsp;&nbsp;&nbsp;
+      Memory Limit: {{problem.javaMemoryLimit}}/{{problem.memoryLimit}}KB (Java/Others)
     </h5>
   </div>
 
@@ -45,10 +37,10 @@
       <tbody>
       <tr ng-repeat="sample in samples">
         <td>
-          <pre class="sample" ng-bind="sample.input"></pre>
+          <pre class="sample">{{sample.input}}</pre>
         </td>
         <td>
-          <pre class="sample" ng-bind="sample.output"></pre>
+          <pre class="sample">{{sample.output}}</pre>
         </td>
       </tr>
       </tbody>
@@ -63,7 +55,8 @@
   <div class="col-md-12" ng-show="problem.source != ''">
     <h2>Source</h2>
 
-    <div ng-bind="problem.source">
+    <div>
+      {{problem.source}}
     </div>
   </div>
 </div>

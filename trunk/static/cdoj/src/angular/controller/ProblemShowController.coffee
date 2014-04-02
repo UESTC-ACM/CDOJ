@@ -1,35 +1,10 @@
 cdoj.controller("ProblemShowController", [
-  "$scope", "$rootScope", "$http", "$window", "$routeParams", "$modal"
-  ($scope, $rootScope, $http, $window, $routeParams, $modal)->
+  "$scope", "$rootScope", "$window", "$modal", "problem"
+  ($scope, $rootScope, $window, $modal, problem)->
     $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
     $window.scrollTo(0, 0)
-    $scope.problem =
-      description: ""
-      title: ""
-      isSpj: false
-      timeLimit: 1000
-      javaTimeLimit: 3000
-      memoryLimit: 65536
-      javaMemoryLimit: "--"
-      solved: 0
-      tried: 0
-      input: ""
-      output: ""
-      sampleInput: ""
-      sampleOutput: ""
-      hint: ""
-      source: ""
 
-    problemId = angular.copy($routeParams.problemId)
-    $http.post("/problem/data/#{problemId}").success((data)->
-      if data.result == "success"
-        $scope.problem = data.problem
-        $rootScope.title = $scope.problem.title
-      else
-        $window.alert data.error_msg
-    ).error(->
-      $window.alert "Network error, please refresh page manually."
-    )
+    $scope.problem = problem
 
     $scope.openSubmitModal = ->
       $modal.open(
