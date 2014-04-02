@@ -4,7 +4,6 @@ import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.settings.Global.AuthenticationType;
 
 /**
  * User database condition entity.
@@ -42,7 +41,7 @@ public class UserCondition extends BaseCondition {
   /**
    * User's type.
    *
-   * @see AuthenticationType
+   * @see cn.edu.uestc.acmicpc.util.enums.AuthenticationType
    */
   @Exp(type = ConditionType.EQUALS)
   public Integer type;

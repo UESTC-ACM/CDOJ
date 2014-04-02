@@ -1,5 +1,24 @@
 USE `uestcojtest` ;
 
+-- -----------------------------------------------------
+-- Data for table `uestcoj`.`setting`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `uestcojtest`;
+INSERT INTO `setting` (`settingId`, `name`, `description`, `value`)
+VALUES
+  (1, 'host', 'OJ host', 'http://127.0.0.1:8080'),
+  (2, 'encoding', 'Default encoding', 'UTF-8'),
+  (3, 'uploadFolder', 'Upload files store folder', 'uploads/'),
+  (4, 'pictureFolder', 'Pictures folder', 'images/'),
+  (5, 'judgeCore', 'Judge core name', 'pyloncore'),
+  (6, 'dataPath', 'Data file path', 'data/'),
+  (7, 'workPath', 'Judge work path', 'work/'),
+  (8, 'judges', 'Judge threads', '[{"name":"judge1"},{"name":"judge2"},{"name":"judge3"},{"name":"judge4"}]'),
+  (9, 'email', 'Email server settings', '{"address":"example@mail.com","userName":"user name","password":"password","smtpServer":"smtp.mail.com"}'),
+  (10, 'recordPerPage', 'Number of records per page', 20);
+COMMIT;
+
 START TRANSACTION;
 USE `uestcojtest`;
 INSERT INTO `department` (`departmentId`, `name`, `OPTLOCK`) VALUES (1, 'Others', 0);

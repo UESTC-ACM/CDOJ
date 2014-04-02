@@ -5,7 +5,7 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
 import cn.edu.uestc.acmicpc.db.entity.ContestTeam;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
 
 import java.util.List;
 import java.util.Map;
@@ -59,7 +59,7 @@ public class ContestTeamListDTO implements BaseDTO<ContestTeam> {
     this.status = status;
     this.comment = comment;
 
-    this.statusName = Global.ContestRegistryStatus.values()[status].getDescription();
+    this.statusName = ContestRegistryStatusType.values()[status].getDescription();
   }
 
   public Integer getContestTeamId() {

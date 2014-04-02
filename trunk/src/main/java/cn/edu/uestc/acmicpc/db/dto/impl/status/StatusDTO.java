@@ -4,7 +4,7 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 
 import java.sql.Timestamp;
 import java.util.Map;
@@ -266,7 +266,7 @@ public class StatusDTO implements BaseDTO<Status> {
     }
 
     private Integer statusId;
-    private Integer result = Global.OnlineJudgeReturnType.OJ_WAIT.ordinal();
+    private Integer result = OnlineJudgeReturnType.OJ_WAIT.ordinal();
     private Integer memoryCost = 0;
     private Integer timeCost = 0;
     private Integer length;

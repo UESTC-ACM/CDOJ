@@ -27,7 +27,8 @@ int int_ignored;
 int main(int argc, char *argv[], char *envp[])
 {
     nice(10);
-    judge_conf::load();
+    parse_arguments(argc, argv);
+
     log_open(judge_conf::log_file.c_str());
     FM_LOG_DEBUG("\n\x1b[31m-----a new start-----\x1b[0m");
     if (geteuid() != 0)
@@ -35,7 +36,6 @@ int main(int argc, char *argv[], char *envp[])
         FM_LOG_FATAL("euid != 0, please run as root, or set suid bit(chmod +4755)");
         exit(judge_conf::EXIT_UNPRIVILEGED);
     }
-    parse_arguments(argc, argv);
     judge_conf::judge_time_limit += problem::time_limit;
     if (EXIT_SUCCESS != malarm(ITIMER_REAL, judge_conf::judge_time_limit))
     {

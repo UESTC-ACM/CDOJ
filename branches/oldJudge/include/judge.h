@@ -21,8 +21,6 @@ extern "C"
 }
 
 namespace judge_conf {
-//配置文件名
-const std::string config_file   = "config.ini";
 
 //日志文件路径
 std::string log_file;
@@ -48,57 +46,6 @@ int time_limit_addtion          = 314;
 int java_time_factor            = 2;
 
 int java_memory_factor          = 2;
-
-void load() {
-  int n, i, j;
-
-  // Get judge path
-  char buf[1024] = {0};
-  n = readlink("/proc/self/exe", buf, sizeof(buf));
-  if (n < 0) {
-    fprintf(stderr, "can't read /proc/self/exe");
-    exit(3);
-  }
-  for (i = strlen(buf) - 1; i >= 0 && buf[i] != '/'; i--);
-  buf[i + 1] = '\0';
-
-  // Get config file path
-  strncat(buf, judge_conf::config_file.c_str(), sizeof(buf));
-
-  FILE *fp = fopen(buf, "r");
-  if (fp == NULL) {
-    fprintf(stderr, "can't open configuration file!");
-    exit(3);
-  }
-  char line[1024];
-  while (true) {
-    (void) fgets(line, 1023, fp);
-    if (feof(fp)) break;
-    for (i = 0; line[i] != '\0'; i++) {
-      if (line[i] == '=') break;
-    }
-
-    std::string key;
-    char *value = NULL;
-    if (line[i] == '=') {
-      line[i] = 0;
-      key = std::string(line);
-      for (j = i + 1; line[j] != '\0' && line[j] != '\n'; j++);
-      if (line[j] == '\n') line[j] = '\0';
-      value = line + i + 1;
-
-      if (key == "log_file") {
-        judge_conf::log_file = std::string(value);
-      } else if (key == "spj_time_limit") {
-        judge_conf::spj_time_limit = atoi(value);
-        judge_conf::judge_time_limit += judge_conf::spj_time_limit;
-      } else {
-        fprintf(stderr, "unknown param: %s => %s\n", key.c_str(), line + i + 1);
-      }
-    }
-  }
-  fclose(fp);
-}
 
 //--------------Constants-------------
 
@@ -213,46 +160,52 @@ void parse_arguments(int argc, char *argv[]) {
   int opt;
   extern char *optarg;
 
-  while ((opt = getopt(argc, argv, "l:u:s:n:D:d:t:m:o:I:O:SC")) != -1) {
+  while ((opt = getopt(argc, argv, "l:u:s:n:D:d:t:m:o:I:O:T:L:SC")) != -1) {
     switch (opt) {
-    case 'u':
+    case 'u': // task ID
       problem::uid          	= optarg;
       break;
-    case 's':
+    case 's': // Program source path
       problem::source_file  	= optarg;
       break;
-    case 'n':
+    case 'n': // Problem ID
       problem::id           	= atoi(optarg);
       break;
-    case 'D':
+    case 'D': // Data directory path
       problem::data_dir     	= optarg;
       break;
-    case 'd':
+    case 'd': // Work directory
       problem::temp_dir     	= optarg;
       break;
-    case 't':
+    case 't': // Time limit
       problem::time_limit   	= atoi(optarg);
       break;
-    case 'm':
+    case 'm': // Memory limit
       problem::memory_limit 	= atoi(optarg);
       break;
-    case 'o':
+    case 'o': // Output limit
       problem::output_limit 	= atoi(optarg);
       break;
-    case 'S':
+    case 'S': // SPJ option
       problem::spj          	= true;
       break;
-    case 'l':
+    case 'l': // Language
       problem::lang         	= atoi(optarg);
       break;
-    case 'I':
+    case 'I': // Input file
       problem::input_file		= optarg;
       break;
-    case 'O':
+    case 'O': // Output file
       problem::output_file_std	= optarg;
       break;
-    case 'C':
+    case 'C': // Compile option
       problem::needCompile		= true;
+      break;
+    case 'T': // SPJ time
+      judge_conf::spj_time_limit = atoi(optarg);
+      break;
+    case 'L': // Log file
+      judge_conf::log_file = optarg;
       break;
     default:
       FM_LOG_WARNING("unknown option provided: -%c %s", opt, optarg);

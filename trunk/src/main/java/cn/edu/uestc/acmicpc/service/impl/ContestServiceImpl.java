@@ -9,7 +9,7 @@ import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +24,12 @@ public class ContestServiceImpl extends AbstractService implements
     ContestService {
 
   private final IContestDAO contestDAO;
+  private final Settings settings;
 
   @Autowired
-  public ContestServiceImpl(IContestDAO contestDAO) {
+  public ContestServiceImpl(IContestDAO contestDAO, Settings settings) {
     this.contestDAO = contestDAO;
+    this.settings = settings;
   }
 
   @Override
@@ -114,7 +116,7 @@ public class ContestServiceImpl extends AbstractService implements
       ContestCondition contestCondition,
       PageInfo pageInfo) throws AppException {
     contestCondition.currentPage = pageInfo.getCurrentPage();
-    contestCondition.countPerPage = Global.RECORD_PER_PAGE;
+    contestCondition.countPerPage = settings.RECORD_PER_PAGE;
     return contestDAO.findAll(ContestListDTO.class, ContestListDTO.builder(),
         contestCondition.getCondition());
   }

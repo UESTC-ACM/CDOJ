@@ -3,8 +3,8 @@ package cn.edu.uestc.acmicpc.web.oj.controller.picture;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
@@ -40,7 +40,7 @@ public class PictureController extends BaseController {
   }
 
   @RequestMapping(value = "uploadProblemPicture/{problemId}", method = RequestMethod.POST)
-  @LoginPermit(Global.AuthenticationType.ADMIN)
+  @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
   Map<String, Object> uploadProblemPicture(@RequestParam(value = "uploadFile", required = true)
@@ -69,7 +69,7 @@ public class PictureController extends BaseController {
   }
 
   @RequestMapping(value = "uploadContestPicture/{contestId}", method = RequestMethod.POST)
-  @LoginPermit(Global.AuthenticationType.ADMIN)
+  @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
   Map<String, Object> uploadContestPicture(@RequestParam(value = "uploadFile", required = true)

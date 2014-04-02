@@ -15,9 +15,10 @@ import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.TeamUserService;
+import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
+import cn.edu.uestc.acmicpc.util.enums.ContestType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
-import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.rank.RankList;
 import cn.edu.uestc.acmicpc.web.rank.RankListBuilder;
 import cn.edu.uestc.acmicpc.web.rank.RankListStatus;
@@ -70,7 +71,7 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
 
   private List<ContestTeamListDTO> fetchTeamList(Integer contestId) throws AppException {
     ContestDTO contestDTO = contestService.getContestDTOByContestId(contestId);
-    if (contestDTO.getType() == Global.ContestType.INHERIT.ordinal()) {
+    if (contestDTO.getType() == ContestType.INHERIT.ordinal()) {
       contestDTO = contestService.getContestDTOByContestId(contestDTO.getParentId());
     }
     contestId = contestDTO.getContestId();
@@ -78,7 +79,7 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
     ContestTeamCondition contestTeamCondition = new ContestTeamCondition();
     contestTeamCondition.contestId = contestId;
     // Fetch accepted teams
-    contestTeamCondition.status = Global.ContestRegistryStatus.ACCEPTED.ordinal();
+    contestTeamCondition.status = ContestRegistryStatusType.ACCEPTED.ordinal();
 
     // Fetch all
     List<ContestTeamListDTO> contestTeamList = contestTeamService.getContestTeamList(

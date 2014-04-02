@@ -4,7 +4,6 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
-import cn.edu.uestc.acmicpc.util.settings.Global;
 
 import java.sql.Timestamp;
 import java.util.Map;
@@ -193,7 +192,7 @@ public class ArticleListDTO implements BaseDTO<Article> {
       content = (String) properties.get("content");
 
       // Get summary info
-      int pos = content.indexOf(Global.ARTICLE_MORE_TAG);
+      int pos = content.indexOf(ARTICLE_MORE_TAG);
       if (pos != -1) {
         content = content.substring(0, pos);
         hasMore = true;
@@ -203,6 +202,8 @@ public class ArticleListDTO implements BaseDTO<Article> {
 
       return build();
     }
+
+    private final String ARTICLE_MORE_TAG = "!!!more!!!";
 
     private Integer articleId;
     private String title;

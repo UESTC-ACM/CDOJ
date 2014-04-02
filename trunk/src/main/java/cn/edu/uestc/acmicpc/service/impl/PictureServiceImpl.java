@@ -27,8 +27,8 @@ public class PictureServiceImpl extends AbstractService implements PictureServic
   @Override
   public FileInformationDTO uploadPicture(FileUploadDTO fileUploadDTO,
                                           String directory) throws AppException {
-    return FileUploadUtil.uploadFile(fileUploadDTO, settings.SETTING_PICTURE_FOLDER,
-        settings.SETTING_PICTURE_FOLDER_ABSOLUTE, directory);
+    return FileUploadUtil.uploadFile(fileUploadDTO, settings.PICTURE_FOLDER,
+        settings.PICTURE_FOLDER, directory);
   }
 
   @Override
@@ -40,15 +40,15 @@ public class PictureServiceImpl extends AbstractService implements PictureServic
     while (matcher.find()) {
       String imageLocation = matcher.group(1);
 
-      String oldImageLocation = settings.SETTING_ABSOLUTE_PATH + oldDirectory + imageLocation;
-      String newImageLocation = settings.SETTING_ABSOLUTE_PATH + newDirectory + imageLocation;
+      String oldImageLocation = settings.PICTURE_FOLDER + oldDirectory + imageLocation;
+      String newImageLocation = settings.PICTURE_FOLDER + newDirectory + imageLocation;
 
       File oldFile = new File(oldImageLocation);
       if (!oldFile.exists()) {
         continue;
       }
 
-      File newPath = new File(settings.SETTING_ABSOLUTE_PATH + newDirectory);
+      File newPath = new File(settings.PICTURE_FOLDER + newDirectory);
       if (!newPath.exists()) {
         if (!newPath.mkdirs()) {
           throw new AppException("Error while make picture directory!");

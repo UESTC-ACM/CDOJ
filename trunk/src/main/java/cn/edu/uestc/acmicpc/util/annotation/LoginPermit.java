@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.util.annotation;
 
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -15,12 +15,12 @@ public @interface LoginPermit {
 
   /**
    * Set user type needed. The user type can refer to
-   * {@link cn.edu.uestc.acmicpc.util.settings.Global.AuthenticationType}.
+   * {@link AuthenticationType}.
    *
    * @return User type needed.
-   * @see cn.edu.uestc.acmicpc.util.settings.Global.AuthenticationType
+   * @see AuthenticationType
    */
-  public Global.AuthenticationType value() default Global.AuthenticationType.NORMAL;
+  public AuthenticationType value() default AuthenticationType.NORMAL;
 
   /**
    * Need user toLogin or not

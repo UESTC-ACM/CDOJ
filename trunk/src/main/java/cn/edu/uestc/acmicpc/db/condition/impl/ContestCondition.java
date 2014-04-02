@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.db.condition.impl;
 import cn.edu.uestc.acmicpc.db.condition.base.BaseCondition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.settings.Global.ContestType;
 
 import java.sql.Timestamp;
 
@@ -31,7 +30,7 @@ public class ContestCondition extends BaseCondition {
   /**
    * Contest type.
    *
-   * @see ContestType
+   * @see cn.edu.uestc.acmicpc.util.enums.ContestType
    */
   @Exp(type = Condition.ConditionType.EQUALS)
   public Byte type;

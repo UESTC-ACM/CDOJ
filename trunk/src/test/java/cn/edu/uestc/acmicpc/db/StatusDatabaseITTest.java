@@ -7,9 +7,9 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
-import cn.edu.uestc.acmicpc.util.settings.Global;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -41,7 +41,7 @@ public class StatusDatabaseITTest extends AbstractTestNGSpringContextTests {
     Condition condition = new Condition();
     condition.addEntry("userId", ConditionType.EQUALS, user.getUserId());
     condition.addEntry("result", ConditionType.EQUALS,
-        Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+        OnlineJudgeReturnType.OJ_AC.ordinal());
     List<?> results = statusDAO.findAll("problemId", condition);
     Assert.assertEquals(results.size(), 1);
     Assert.assertEquals(results.get(0), Integer.valueOf(1));

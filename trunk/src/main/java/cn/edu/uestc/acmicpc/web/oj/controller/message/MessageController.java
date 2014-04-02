@@ -8,7 +8,7 @@ import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
@@ -29,10 +29,12 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/message")
 public class MessageController extends BaseController {
   private MessageService messageService;
+  private Settings settings;
 
   @Autowired
-  public MessageController(MessageService messageService) {
+  public MessageController(MessageService messageService, Settings settings) {
     this.messageService = messageService;
+    this.settings = settings;
   }
 
   @RequestMapping("fetch/{messageId}")
@@ -90,13 +92,13 @@ public class MessageController extends BaseController {
       if (valid) {
         Long count = messageService.count(messageCondition);
         PageInfo pageInfo = buildPageInfo(count, messageCondition.currentPage,
-            Global.RECORD_PER_PAGE, null);
+            settings.RECORD_PER_PAGE, null);
         List<MessageForUserDTO> messageList = messageService.getMessageForUserDTOList(messageCondition, pageInfo);
         json.put("list", messageList);
         json.put("pageInfo", pageInfo);
       } else {
         PageInfo pageInfo = buildPageInfo(0L, 1L,
-            Global.RECORD_PER_PAGE, null);
+            settings.RECORD_PER_PAGE, null);
         json.put("list", new LinkedList<>());
         json.put("pageInfo", pageInfo);
       }
