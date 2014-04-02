@@ -1,9 +1,9 @@
 package cn.edu.uestc.acmicpc.judge.entity;
 
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.FileUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
-import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;

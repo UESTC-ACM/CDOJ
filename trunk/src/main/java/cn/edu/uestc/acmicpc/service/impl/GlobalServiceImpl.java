@@ -8,7 +8,6 @@ import cn.edu.uestc.acmicpc.util.dto.GenderTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.GradeTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.OnlineJudgeResultTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.TShirtsSizeTypeDTO;
-import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
 import cn.edu.uestc.acmicpc.util.enums.ContestType;
@@ -17,6 +16,7 @@ import cn.edu.uestc.acmicpc.util.enums.GradeType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.enums.TShirtsSizeType;
+import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 
 import org.springframework.stereotype.Service;
 
