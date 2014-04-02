@@ -195,8 +195,8 @@ public class ArticleController extends BaseController {
             throw new AppException("Error while creating comment.");
           }
           // Move pictures
-          String oldDirectory = "/images/article/" + articleEditDTO.getUserName() + "/newComment/";
-          String newDirectory = "/images/article/" + articleEditDTO.getUserName() + "/" + articleId + "/";
+          String oldDirectory = "article/" + articleEditDTO.getUserName() + "/newComment/";
+          String newDirectory = "article/" + articleEditDTO.getUserName() + "/" + articleId + "/";
           articleEditDTO.setContent(pictureService.modifyPictureLocation(
               articleEditDTO.getContent(), oldDirectory, newDirectory));
         } else {
@@ -294,8 +294,8 @@ public class ArticleController extends BaseController {
             throw new AppException("Error while creating article.");
           }
           // Move pictures
-          String oldDirectory = "/images/article/" + articleEditDTO.getUserName() + "/new/";
-          String newDirectory = "/images/article/" + articleEditDTO.getUserName() + "/" + articleId + "/";
+          String oldDirectory = "article/" + articleEditDTO.getUserName() + "/new/";
+          String newDirectory = "article/" + articleEditDTO.getUserName() + "/" + articleId + "/";
           articleEditDTO.setContent(pictureService.modifyPictureLocation(
               articleEditDTO.getContent(), oldDirectory, newDirectory));
         } else {
