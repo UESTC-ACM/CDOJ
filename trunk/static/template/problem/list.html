@@ -27,17 +27,16 @@
         </tr>
         <tr ng-repeat="problem in list">
           <td ng-class="{
-        success: problem.status == $root.AuthorStatusType.PASS,
-        danger: problem.status == $root.AuthorStatusType.FAIL
-      }" style="text-align: right;" ng-bind="problem.problemId"></td>
+                success: problem.status == $root.AuthorStatusType.PASS,
+                danger: problem.status == $root.AuthorStatusType.FAIL
+              }"
+              style="text-align: right;">{{problem.problemId}}</td>
           <td>
-            <a href="#/problem/show/{{problem.problemId}}"
-               ng-bind="problem.title"></a>
-            <small>&nbsp- <span ng-bind="problem.source"></span></small>
+            <a href="#/problem/show/{{problem.problemId}}">{{problem.title}}</a>
+            <small>&nbsp- {{problem.source}}</small>
           </td>
           <td style="text-align: right;">
-            <a href="#/status/list?problemId={{problem.problemId}}">x
-              <span ng-bind="problem.solved"></span>
+            <a href="#/status/list?problemId={{problem.problemId}}">x{{problem.solved}}
             </a>
           </td>
           <td ui-problem-admin-span
