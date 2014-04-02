@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.admin;
 
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,7 @@ public class AdminController extends BaseController {
   }
 
   @RequestMapping(value = {"index", "/"})
-  @LoginPermit(Global.AuthenticationType.ADMIN)
+  @LoginPermit(AuthenticationType.ADMIN)
   public String index() {
     return "admin/index";
   }

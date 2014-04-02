@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.util.dto;
 
 /**
- * DTO for {@link cn.edu.uestc.acmicpc.util.settings.Global.AuthenticationType}
+ * DTO for {@link cn.edu.uestc.acmicpc.util.enums.AuthenticationType}
  */
 public class AuthenticationTypeDTO {
   private Integer authenticationTypeId;

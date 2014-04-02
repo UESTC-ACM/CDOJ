@@ -498,6 +498,23 @@ CREATE TABLE `user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `setting`
+--
+DROP TABLE IF EXISTS `setting` ;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE  TABLE `setting` (
+  `settingId` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(255) NOT NULL DEFAULT '',
+  `description` VARCHAR(255) NOT NULL DEFAULT '',
+  `value` LONGTEXT NOT NULL,
+  PRIMARY KEY (`settingId`) ,
+  UNIQUE INDEX `settingId_UNIQUE` (`settingId` ASC) ,
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) )
+ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `userSerialKey`
 --
 

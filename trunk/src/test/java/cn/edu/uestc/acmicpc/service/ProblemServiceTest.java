@@ -20,7 +20,6 @@ import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
-import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.mockito.ArgumentCaptor;
@@ -132,7 +131,7 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testGetProblemListDTOList() throws AppException {
     ArgumentCaptor<Condition> captor = ArgumentCaptor.forClass(Condition.class);
-    PageInfo pageInfo = PageInfo.create(300L, Global.RECORD_PER_PAGE, 10, 2L);
+    PageInfo pageInfo = PageInfo.create(300L, 20L, 10, 2L);
     problemService.getProblemListDTOList(new ProblemCondition(), pageInfo);
     verify(problemDAO).findAll(eq(ProblemListDTO.class),
         isA(ProblemListDTO.Builder.class), captor.capture());

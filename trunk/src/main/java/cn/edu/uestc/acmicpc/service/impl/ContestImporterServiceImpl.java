@@ -9,12 +9,12 @@ import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.util.checker.ContestZipChecker;
+import cn.edu.uestc.acmicpc.util.enums.ContestType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.helper.FileUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.helper.ZipUtil;
-import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
 import cn.edu.uestc.acmicpc.web.xml.XmlNode;
@@ -96,11 +96,11 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
   public ContestDTO parseContestZipArchive(FileInformationDTO fileInformationDTO) throws AppException {
     ZipFile zipFile;
     try {
-      zipFile = new ZipFile(settings.SETTING_UPLOAD_FOLDER + fileInformationDTO.getFileName());
+      zipFile = new ZipFile(settings.UPLOAD_FOLDER + fileInformationDTO.getFileName());
     } catch (IOException e) {
       throw new AppException("Create zipFile object failed.");
     }
-    String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/"
+    String tempDirectory = settings.UPLOAD_FOLDER + "/"
         + fileInformationDTO.getFileName().replaceAll(".zip", "");
     ZipUtil.unzipFile(zipFile, tempDirectory, new ContestZipChecker());
     ContestDTO contestDTO;
@@ -198,19 +198,19 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
   }
 
   private static Byte getContestType(String contestTypeString) {
-    Global.ContestType contestType;
+    ContestType contestType;
     switch (contestTypeString) {
       case "Private":
-        contestType = Global.ContestType.PRIVATE;
+        contestType = ContestType.PRIVATE;
         break;
       case "Invited":
-        contestType = Global.ContestType.INVITED;
+        contestType = ContestType.INVITED;
         break;
       case "DIY":
-        contestType = Global.ContestType.DIY;
+        contestType = ContestType.DIY;
         break;
       default:
-        contestType = Global.ContestType.PUBLIC;
+        contestType = ContestType.PUBLIC;
     }
     return (byte) contestType.ordinal();
   }
@@ -222,7 +222,7 @@ public class ContestImporterServiceImpl extends AbstractService implements Conte
     for (XmlNode node : problemsNode.getChildList()) {
       String problemDirectory = rootDirectory + "/" + node.getInnerText().trim();
       ProblemDTO problem = parseContestProblem(problemDirectory);
-      problemDataDirectories.add(problemDirectory.replaceFirst(settings.SETTING_UPLOAD_FOLDER, ""));
+      problemDataDirectories.add(problemDirectory.replaceFirst(settings.UPLOAD_FOLDER, ""));
       contestProblems.add(problem);
     }
     return contestProblems;

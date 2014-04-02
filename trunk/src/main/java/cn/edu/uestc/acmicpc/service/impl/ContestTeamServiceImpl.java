@@ -8,9 +8,9 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReportDTO;
 import cn.edu.uestc.acmicpc.db.entity.ContestTeam;
 import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
+import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
     hqlBuilder.append("from ContestTeam contestTeam, TeamUser teamUser where")
         .append(" contestTeam.teamId = teamUser.teamId")
         .append(" and contestTeam.contestId = ").append(contestId)
-        .append(" and contestTeam.status != ").append(Global.ContestRegistryStatus.REFUSED.ordinal())
+        .append(" and contestTeam.status != ").append(ContestRegistryStatusType.REFUSED.ordinal())
         .append(" and teamUser.userId = ").append(userId)
         .append(" and teamUser.allow = 1");
     Long count = contestTeamDAO.customCount("contestTeam.contestTeamId", hqlBuilder.toString());
@@ -59,7 +59,7 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
     ContestTeam contestTeam = new ContestTeam();
     contestTeam.setTeamId(teamId);
     contestTeam.setContestId(contestId);
-    contestTeam.setStatus(Global.ContestRegistryStatus.PENDING.ordinal());
+    contestTeam.setStatus(ContestRegistryStatusType.PENDING.ordinal());
     contestTeam.setComment("");
     contestTeamDAO.add(contestTeam);
     return contestTeam.getContestTeamId();
@@ -116,7 +116,7 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
         // Contest id
         .append(" contestTeam.contestId = ").append(contestId)
         // Team should be accepted
-        .append(" and contestTeam.status = ").append(Global.ContestRegistryStatus.ACCEPTED.ordinal())
+        .append(" and contestTeam.status = ").append(ContestRegistryStatusType.ACCEPTED.ordinal())
         .append(" and contestTeam.teamId = teamUser.teamId")
             // User id
         .append(" and teamUser.userId = ").append(userId)

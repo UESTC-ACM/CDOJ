@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.util.helper;
 
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 
 import java.security.MessageDigest;
 import java.text.DateFormat;
@@ -227,7 +227,7 @@ public class StringUtil {
    * @param currentCase current case number
    * @return target description
    */
-  public static String getStatusDescription(Global.OnlineJudgeReturnType type, int currentCase) {
+  public static String getStatusDescription(OnlineJudgeReturnType type, int currentCase) {
     return type.getDescription().replace("$case", Integer.toString(currentCase));
   }
 }
