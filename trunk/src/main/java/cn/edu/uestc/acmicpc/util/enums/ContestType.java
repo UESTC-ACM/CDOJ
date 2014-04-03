@@ -5,7 +5,7 @@ package cn.edu.uestc.acmicpc.util.enums;
  */
 public enum ContestType {
   PUBLIC("Public"), PRIVATE("Private"), DIY("DIY"), INVITED("Invited"),
-  INHERIT("Inherit");
+  INHERIT("Inherit"), ONSITE("Onsite");
 
   private final String description;
 
