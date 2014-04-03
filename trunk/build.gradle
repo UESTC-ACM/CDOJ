@@ -23,6 +23,9 @@ buildscript {
 }
 apply plugin: 'jettyEclipse'
 
+// Build cdoj subproject first
+jettyEclipseRun.dependsOn ":static/cdoj:build"
+
 task checkControllerDoNotContainDaos(type: Exec) {
   commandLine "python",
       file("src/test/python/check_controller_not_contain_daos.py").absolutePath
@@ -195,9 +198,4 @@ test {
 
 jacoco {
   toolVersion = "0.6.5.201403032054"
-}
-
-// Sub project
-project(':static/cdoj') {
-
 }

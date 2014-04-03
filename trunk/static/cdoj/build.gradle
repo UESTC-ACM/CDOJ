@@ -32,7 +32,9 @@ task setupCNPM(type: NpmTask) {
 
 task build << {
   nodeSetup.execute()
-  //setupCNPM.execute()
+  if (Boolean.getBoolean("useCNPM")) {
+    setupCNPM.execute()
+  }
   installGrunt.execute()
   npmInstall.execute()
   grunt_build.execute()
