@@ -28,6 +28,14 @@ module.exports = (grunt) ->
             "src/angular/directive/*.coffee"
           ]
 
+    coffeelint:
+      coffee: [
+        "src/angular/*.coffee"
+        "src/angular/**/*.coffee"
+      ]
+      options:
+        "arrow_spacing":
+          "level": "error"
     less:
       cdoj:
         files:
@@ -49,6 +57,7 @@ module.exports = (grunt) ->
           "bower_components/angular-route/angular-route.js"
           "bower_components/angular-cookies/angular-cookies.js"
           "bower_components/angular-sanitize/angular-sanitize.js"
+          "bower_components/angular-bindonce/bindonce.js"
           "bower_components/angular-elastic/elastic.js"
           "bower_components/jquery/dist/jquery.js"
           "bower_components/bootstrap/dist/js/bootstrap.js"
@@ -74,6 +83,7 @@ module.exports = (grunt) ->
           "bower_components/angular-route/angular-route.min.js"
           "bower_components/angular-cookies/angular-cookies.min.js"
           "bower_components/angular-sanitize/angular-sanitize.min.js"
+          "bower_components/angular-bindonce/bindonce.min.js"
           "bower_components/jquery/dist/jquery.min.js"
           "bower_components/bootstrap/dist/js/bootstrap.min.js"
           "bower_components/bootstrap-switch/build/js/bootstrap-switch.min.js"
@@ -116,8 +126,11 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks "grunt-contrib-coffee"
   grunt.loadNpmTasks "grunt-contrib-concat"
   grunt.loadNpmTasks "grunt-yui-compressor"
+  grunt.loadNpmTasks "grunt-coffeelint"
 
   grunt.registerTask "compileFull", [
+    "coffeelint:coffee"
+
     "less:cdoj"
     "concat:cdojFull"
 

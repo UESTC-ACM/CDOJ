@@ -6,7 +6,7 @@ cdoj
   transclude: true
   scope:
     problem: "="
-  link: ($scope)->
+  link: ($scope) ->
     $scope.$watch("problem",
     ->
       _sampleInput = $scope.problem.sampleInput
@@ -26,7 +26,12 @@ cdoj
       if _sampleInput.length != _sampleOutput.length
         alert "Sample input has not same number of cases with sample output!"
       else
-        $scope.samples = ({input: _sampleInput[i].toString(), output: _sampleOutput[i].toString()} for i in [0.._sampleInput.length - 1])
+        $scope.samples = _.map(
+          _.zip(_sampleInput, _sampleOutput)
+          (sample) ->
+            input: sample[0].toString()
+            output: sample[1].toString()
+        )
     , true)
   templateUrl: "template/problem/problem.html"
 )

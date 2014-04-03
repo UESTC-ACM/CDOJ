@@ -1,9 +1,12 @@
 cdoj
 .controller("AdminDashboardController", [
     "$scope", "$rootScope", "$window", "$http", "$timeout"
-    ($scope, $rootScope, $window, $http, $timeout)->
+    ($scope, $rootScope, $window, $http, $timeout) ->
       # Administrator only
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN)
+      $scope.$emit(
+        "permission:setPermission"
+        $rootScope.AuthenticationType.ADMIN
+      )
       $window.scrollTo(0, 0)
 
       # Initilize article condition
@@ -15,10 +18,10 @@ cdoj
       $scope.list = []
       originalOrder = ""
       refresh = ->
-        $http.post("/article/search", articleCondition).success((data)->
+        $http.post("/article/search", articleCondition).success((data) ->
           if data.result == "success"
             $scope.list = data.list
-            originalOrder = _.map($scope.list, (val)->
+            originalOrder = _.map($scope.list, (val) ->
               val.articleId).join(",")
             $scope.pageInfo = data.pageInfo
           else
@@ -33,15 +36,18 @@ cdoj
       # Sortable event
       $scope.sortableOptions =
         stop: ->
-          newOrder = _.map($scope.list, (val)->
+          newOrder = _.map($scope.list, (val) ->
             val.articleId).join(",")
           $scope.listChanged = !angular.equals(newOrder, originalOrder)
 
       # Save notice order changes
       $scope.save = ->
-        newOrder = _.map($scope.list, (val)->
+        newOrder = _.map($scope.list, (val) ->
           val.articleId).join(",")
-        $http.post("/article/changeNoticeOrder", order: newOrder).success((data)->
+        $http.post(
+          "/article/changeNoticeOrder"
+          order: newOrder
+        ).success((data) ->
           if data.result == "success"
             $window.alert "Done"
             refresh()

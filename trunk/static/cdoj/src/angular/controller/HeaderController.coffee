@@ -14,7 +14,7 @@ cdoj
         userLoginDTO = angular.copy($scope.userLoginDTO)
         password = CryptoJS.SHA1(userLoginDTO.password).toString()
         userLoginDTO.password = password
-        $http.post("/user/login", userLoginDTO).success((data)->
+        $http.post("/user/login", userLoginDTO).success((data) ->
           if data.result == "success"
             $rootScope.$broadcast("currentUser:login",
               userName: data.userName
@@ -30,7 +30,7 @@ cdoj
         )
 
       $scope.logout = ->
-        $http.post("/user/logout").success((data)->
+        $http.post("/user/logout").success((data) ->
           if data.result == "success"
             $rootScope.$broadcast("currentUser:logout")
         ).error(->

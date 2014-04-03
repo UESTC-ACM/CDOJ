@@ -7,7 +7,7 @@ cdoj
   replace: true
   controller: [
     "$scope", "$modal", "$rootScope"
-    ($scope, $modal, $rootScope)->
+    ($scope, $modal, $rootScope) ->
       $scope.readMessage = ->
         $rootScope.$broadcast("list:refresh:message")
         $rootScope.$broadcast("data:refresh")

@@ -15,7 +15,8 @@ cdoj
       $scope.showRelativeTime = ->
         $scope.timeString = Date.create($scope.time).relative()
       $scope.showRealTime = ->
-        $scope.timeString = Date.create($scope.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")
+        $scope.timeString =
+          Date.create($scope.time).format("{yyyy}-{MM}-{dd} {HH}:{mm}:{ss}")
       $scope.showTime = ->
         if $scope.show == "real"
           $scope.showRealTime()

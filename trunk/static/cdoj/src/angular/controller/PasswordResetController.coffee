@@ -2,7 +2,10 @@ cdoj
 .controller("PasswordResetController", [
     "$scope", "$http", "$window", "$routeParams", "$rootScope"
     ($scope, $http, $window, $routeParams, $rootScope) ->
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
+      $scope.$emit(
+        "permission:setPermission"
+        $rootScope.AuthenticationType.NOOP
+      )
       $window.scrollTo(0, 0)
 
       $scope.userActivateDTO =
@@ -13,11 +16,13 @@ cdoj
       $scope.filedInfo = []
       $scope.submit = ->
         userActivateDTO = angular.copy($scope.userActivateDTO)
-        password = CryptoJS.SHA1(userActivateDTO.password).toString()
+        password =
+          CryptoJS.SHA1(userActivateDTO.password).toString()
         userActivateDTO.password = password
-        passwordRepeat = CryptoJS.SHA1(userActivateDTO.passwordRepeat).toString()
+        passwordRepeat =
+          CryptoJS.SHA1(userActivateDTO.passwordRepeat).toString()
         userActivateDTO.passwordRepeat = passwordRepeat
-        $http.post("/user/resetPassword", userActivateDTO).success((data)->
+        $http.post("/user/resetPassword", userActivateDTO).success((data) ->
           if data.result == "success"
             $window.alert("Success, please login manually!")
             $window.location.href = "/"

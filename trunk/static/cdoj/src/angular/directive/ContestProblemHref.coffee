@@ -7,11 +7,14 @@ cdoj
       problemList: "="
     controller: [
       "$scope"
-      ($scope)->
+      ($scope) ->
         $scope.order = -1
         $scope.orderCharacter = "-"
         $scope.$watch("problemId + problemList", ->
-          target = _.findWhere($scope.problemList, "problemId": $scope.problemId)
+          target = _.findWhere(
+            $scope.problemList
+            "problemId": $scope.problemId
+          )
           if target != undefined
             $scope.orderCharacter = target.orderCharacter
             $scope.order = target.order
