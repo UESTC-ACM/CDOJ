@@ -80582,7 +80582,7 @@ if (typeof exports === 'object') {
         controller: "ContestShowController",
         resolve: {
           contest: [
-            "$q", "$route", "$http", "Error", "$rootScope", function($q, $route, $http, $Error, $rootScope) {
+            "$q", "$route", "$http", "Error", function($q, $route, $http, $Error) {
               var contestId, deferred;
               deferred = $q.defer();
               contestId = $route.current.params.contestId;
@@ -80593,10 +80593,10 @@ if (typeof exports === 'object') {
                   contest.problemList = data.problemList;
                   return deferred.resolve(contest);
                 } else {
-                  return $Error(data.error_msg);
+                  return $Error.error(data.error_msg);
                 }
               }).error(function() {
-                return $Error("Network error.");
+                return $Error.error("Network error.");
               });
               return deferred.promise;
             }

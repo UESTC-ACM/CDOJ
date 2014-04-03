@@ -4,11 +4,14 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IContestUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestUser.ContestUserDTO;
 import cn.edu.uestc.acmicpc.db.entity.ContestUser;
 import cn.edu.uestc.acmicpc.service.iface.ContestUserService;
+import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Description
@@ -59,5 +62,20 @@ public class ContestUserServiceImpl extends AbstractService implements ContestUs
         .append(")");
     contestUserDAO.executeHQL(hqlBuilder.toString());
     contestUserDAO.deleteEntitiesByField("contestId", contestId.toString());
+  }
+
+  @Override
+  public Boolean fetchOnsiteUsersByUserIdAndContestId(Integer userId, Integer contestId) throws AppException {
+    StringBuilder hqlBuilder = new StringBuilder();
+    hqlBuilder.append("select contestUser.contestUserId from ContestUser contestUser, User user where")
+        // Contest id
+        .append(" contestUser.contestId = ").append(contestId)
+        // User should be accepted
+        .append(" and contestUser.status = ").append(ContestRegistryStatusType.ACCEPTED.ordinal())
+        .append(" and contestUser.userId = user.userId")
+        // User id
+        .append(" and contestUser.userId = ").append(userId);
+    List<Integer> result = (List<Integer>) contestUserDAO.findAll(hqlBuilder.toString());
+    return result.size() > 0;
   }
 }

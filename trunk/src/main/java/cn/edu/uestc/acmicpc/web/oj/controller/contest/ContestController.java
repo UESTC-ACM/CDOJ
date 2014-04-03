@@ -372,6 +372,9 @@ public class ContestController extends BaseController {
           throw new AppException("You are not invited in this contest!");
         }
         // Check permission
+        if (!contestUserService.fetchOnsiteUsersByUserIdAndContestId(currentUser.getUserId(), registeredContestId)) {
+          throw new AppException("You are not invited in this contest!");
+        }
       }
     } else {
       // Unexpected type

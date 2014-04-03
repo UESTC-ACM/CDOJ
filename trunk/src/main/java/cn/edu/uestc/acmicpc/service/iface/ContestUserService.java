@@ -25,4 +25,14 @@ public interface ContestUserService extends DatabaseService<ContestUser, Integer
    * @throws AppException
    */
   public void removeContestUsersByContestId(Integer contestId) throws AppException;
+
+  /**
+   * Check whether a user has registered in a specified contest.
+   *
+   * @param userId user's id.
+   * @param contestId contest's id.
+   * @return true if this user has registered in this contest.
+   * @throws AppException
+   */
+  public Boolean fetchOnsiteUsersByUserIdAndContestId(Integer userId, Integer contestId) throws AppException;
 }
