@@ -145,4 +145,13 @@ public interface UserService extends DatabaseService<User, Integer> {
    * @throws AppException
    */
   public List<Integer> createOnsiteUsersByUserList(List<UserDTO> userList) throws AppException;
+
+  /**
+   * Fetch all onsite users by contest's id. return as a list of {@link UserDTO} entities.
+   *
+   * @param contestId contest's id.
+   * @return list of {@link UserDTO} entities.
+   * @throws AppException
+   */
+  public List<UserDTO> fetchAllOnsiteUsersByContestId(Integer contestId) throws AppException;
 }

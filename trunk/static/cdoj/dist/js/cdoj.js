@@ -81114,6 +81114,24 @@ if (typeof exports === 'object') {
       $scope.$on("onsiteUserFileUploader:complete", function(e, list) {
         return $scope.onsiteUsers = list;
       });
+      if ($scope.contest.type === $rootScope.ContestType.ONSITE) {
+        $http.get("/contest/fetchAllOnsiteUsers/" + $scope.contest.contestId).success(function(data) {
+          if (data.result === "success") {
+            return $scope.onsiteUsers = _.map(data.list, function(user) {
+              return {
+                userName: user.userName,
+                password: "Encrypted password",
+                teamName: user.nickName,
+                members: user.name
+              };
+            });
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
+      }
       $scope.updateOnsiteUsers = function() {
         var userList;
         userList = _.map($scope.onsiteUsers, function(user) {
