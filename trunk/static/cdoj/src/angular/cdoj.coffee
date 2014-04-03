@@ -1,4 +1,4 @@
-_.mixin(_.str.exports());
+_.mixin(_.str.exports())
 
 cdoj = angular.module('cdoj', [
   "ui.bootstrap"
@@ -7,4 +7,5 @@ cdoj = angular.module('cdoj', [
   "monospaced.elastic"
   "frapontillo.bootstrap-switch"
   "ui.sortable"
+  "pasvaz.bindonce"
 ])

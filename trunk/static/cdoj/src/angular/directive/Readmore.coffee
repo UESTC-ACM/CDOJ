@@ -7,5 +7,7 @@ cdoj
     articleId: "="
   link: ($scope, $element) ->
     if $scope.hasMore
-      $element.empty().append("<a href=\"#/article/show/#{$scope.articleId}\">Read more >></a>")
+      $element.empty().append(
+        "<a href=\"#/article/show/#{$scope.articleId}\">Read more >></a>"
+      )
 )

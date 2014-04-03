@@ -1,7 +1,7 @@
 cdoj
 .controller("CodeModalController", [
     "$scope", "$http", "$modalInstance", "statusId"
-    ($scope, $http, $modalInstance, statusId)->
+    ($scope, $http, $modalInstance, statusId) ->
       $scope.code = "Loading..."
       $http.post("/status/info/#{statusId}").success((data) ->
         compileInfo = ""
@@ -14,7 +14,7 @@ cdoj
           code = data.code
         else
           code = data.error_msg
-        $scope.code = code;
+        $scope.code = code
       ).error(->
         $scope.code = "Network error."
       )

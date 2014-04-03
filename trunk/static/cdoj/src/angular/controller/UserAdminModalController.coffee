@@ -1,7 +1,7 @@
 cdoj
 .controller("UserAdminModalController", [
     "$scope", "$http", "$modalInstance", "UserProfile", "$window"
-    ($scope, $http, $modalInstance, $userProfile, $window)->
+    ($scope, $http, $modalInstance, $userProfile, $window) ->
       $scope.userEditDTO = 0
       $scope.$watch(
         ->
@@ -13,19 +13,25 @@ cdoj
       $scope.fieldInfo = []
       $scope.edit = ->
         userEditDTO = angular.copy($scope.userEditDTO)
-
-        userEditDTO.newPassword = undefined if userEditDTO.newPassword == ""
-        userEditDTO.newPasswordRepeat = undefined if userEditDTO.newPasswordRepeat == ""
-        if angular.isUndefined userEditDTO.newPassword && angular.isUndefined userEditDTO.newPasswordRepeat
+        if userEditDTO.newPassword == ""
+          userEditDTO.newPassword = undefined
+        if userEditDTO.newPasswordRepeat == ""
+          userEditDTO.newPasswordRepeat = undefined
+        if (
+          angular.isUndefined userEditDTO.newPassword &&
+            angular.isUndefined userEditDTO.newPasswordRepeat
+        )
           userEditDTO = _.omit(userEditDTO, "newPassword")
           userEditDTO = _.omit(userEditDTO, "newPassowrdRepeat")
         else
-          newPassword = CryptoJS.SHA1(userEditDTO.newPassword).toString()
+          newPassword =
+            CryptoJS.SHA1(userEditDTO.newPassword).toString()
           userEditDTO.newPassword = newPassword
-          newPasswordRepeat = CryptoJS.SHA1(userEditDTO.newPasswordRepeat).toString()
+          newPasswordRepeat =
+            CryptoJS.SHA1(userEditDTO.newPasswordRepeat).toString()
           userEditDTO.newPasswordRepeat = newPasswordRepeat
 
-        $http.post("/user/adminEdit", userEditDTO).success((data)->
+        $http.post("/user/adminEdit", userEditDTO).success((data) ->
           if data.result == "success"
             $window.alert "Success!"
             $modalInstance.close()

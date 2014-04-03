@@ -26475,6 +26475,329 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 
 })(window, window.angular);
 
+(function () {
+	"use strict";
+	/**
+	 * Bindonce - Zero watches binding for AngularJs
+	 * @version v0.3.1
+	 * @link https://github.com/Pasvaz/bindonce
+	 * @author Pasquale Vazzana <pasqualevazzana@gmail.com>
+	 * @license MIT License, http://www.opensource.org/licenses/MIT
+	 */
+
+	var bindonceModule = angular.module('pasvaz.bindonce', []);
+
+	bindonceModule.directive('bindonce', function ()
+	{
+		var toBoolean = function (value)
+		{
+			if (value && value.length !== 0)
+			{
+				var v = angular.lowercase("" + value);
+				value = !(v === 'f' || v === '0' || v === 'false' || v === 'no' || v === 'n' || v === '[]');
+			}
+			else
+			{
+				value = false;
+			}
+			return value;
+		};
+
+		var msie = parseInt((/msie (\d+)/.exec(angular.lowercase(navigator.userAgent)) || [])[1], 10);
+		if (isNaN(msie))
+		{
+			msie = parseInt((/trident\/.*; rv:(\d+)/.exec(angular.lowercase(navigator.userAgent)) || [])[1], 10);
+		}
+
+		var bindonceDirective =
+		{
+			restrict: "AM",
+			controller: ['$scope', '$element', '$attrs', '$interpolate', function ($scope, $element, $attrs, $interpolate)
+			{
+				var showHideBinder = function (elm, attr, value)
+				{
+					var show = (attr === 'show') ? '' : 'none';
+					var hide = (attr === 'hide') ? '' : 'none';
+					elm.css('display', toBoolean(value) ? show : hide);
+				};
+				var classBinder = function (elm, value)
+				{
+					if (angular.isObject(value) && !angular.isArray(value))
+					{
+						var results = [];
+						angular.forEach(value, function (value, index)
+						{
+							if (value) results.push(index);
+						});
+						value = results;
+					}
+					if (value)
+					{
+						elm.addClass(angular.isArray(value) ? value.join(' ') : value);
+					}
+				};
+
+				var ctrl =
+				{
+					watcherRemover: undefined,
+					binders: [],
+					group: $attrs.boName,
+					element: $element,
+					ran: false,
+
+					addBinder: function (binder)
+					{
+						this.binders.push(binder);
+
+						// In case of late binding (when using the directive bo-name/bo-parent)
+						// it happens only when you use nested bindonce, if the bo-children
+						// are not dom children the linking can follow another order
+						if (this.ran)
+						{
+							this.runBinders();
+						}
+					},
+
+					setupWatcher: function (bindonceValue)
+					{
+						var that = this;
+						this.watcherRemover = $scope.$watch(bindonceValue, function (newValue)
+						{
+							if (newValue === undefined) return;
+							that.removeWatcher();
+							that.runBinders();
+						}, true);
+					},
+
+					removeWatcher: function ()
+					{
+						if (this.watcherRemover !== undefined)
+						{
+							this.watcherRemover();
+							this.watcherRemover = undefined;
+						}
+					},
+
+					runBinders: function ()
+					{
+						while (this.binders.length > 0)
+						{
+							var binder = this.binders.shift();
+							if (this.group && this.group != binder.group) continue;
+							var value = binder.scope.$eval((binder.interpolate) ? $interpolate(binder.value) : binder.value);
+							switch (binder.attr)
+							{
+								case 'boIf':
+									if (toBoolean(value))
+									{
+										binder.transclude(binder.scope.$new(), function (clone)
+										{
+											var parent = binder.element.parent();
+											var afterNode = binder.element && binder.element[binder.element.length - 1];
+											var parentNode = parent && parent[0] || afterNode && afterNode.parentNode;
+											var afterNextSibling = (afterNode && afterNode.nextSibling) || null;
+											angular.forEach(clone, function (node)
+											{
+												parentNode.insertBefore(node, afterNextSibling);
+											});
+										});
+									}
+									break;
+								case 'boSwitch':
+									var selectedTranscludes, switchCtrl = binder.controller[0];
+									if ((selectedTranscludes = switchCtrl.cases['!' + value] || switchCtrl.cases['?']))
+									{
+										binder.scope.$eval(binder.attrs.change);
+										angular.forEach(selectedTranscludes, function (selectedTransclude)
+										{
+											selectedTransclude.transclude(binder.scope.$new(), function (clone)
+											{
+												var parent = selectedTransclude.element.parent();
+												var afterNode = selectedTransclude.element && selectedTransclude.element[selectedTransclude.element.length - 1];
+												var parentNode = parent && parent[0] || afterNode && afterNode.parentNode;
+												var afterNextSibling = (afterNode && afterNode.nextSibling) || null;
+												angular.forEach(clone, function (node)
+												{
+													parentNode.insertBefore(node, afterNextSibling);
+												});
+
+											});
+										});
+									}
+									break;
+								case 'boSwitchWhen':
+									var ctrl = binder.controller[0];
+									ctrl.cases['!' + binder.attrs.boSwitchWhen] = (ctrl.cases['!' + binder.attrs.boSwitchWhen] || []);
+									ctrl.cases['!' + binder.attrs.boSwitchWhen].push({ transclude: binder.transclude, element: binder.element });
+									break;
+								case 'boSwitchDefault':
+									var ctrl = binder.controller[0];
+									ctrl.cases['?'] = (ctrl.cases['?'] || []);
+									ctrl.cases['?'].push({ transclude: binder.transclude, element: binder.element });
+									break;
+								case 'hide':
+								case 'show':
+									showHideBinder(binder.element, binder.attr, value);
+									break;
+								case 'class':
+									classBinder(binder.element, value);
+									break;
+								case 'text':
+									binder.element.text(value);
+									break;
+								case 'html':
+									binder.element.html(value);
+									break;
+								case 'style':
+									binder.element.css(value);
+									break;
+								case 'src':
+									binder.element.attr(binder.attr, value);
+									if (msie) binder.element.prop('src', value);
+									break;
+								case 'attr':
+									angular.forEach(binder.attrs, function (attrValue, attrKey)
+									{
+										var newAttr, newValue;
+										if (attrKey.match(/^boAttr./) && binder.attrs[attrKey])
+										{
+											newAttr = attrKey.replace(/^boAttr/, '').replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+											newValue = binder.scope.$eval(binder.attrs[attrKey]);
+											binder.element.attr(newAttr, newValue);
+										}
+									});
+									break;
+								case 'href':
+								case 'alt':
+								case 'title':
+								case 'id':
+								case 'value':
+									binder.element.attr(binder.attr, value);
+									break;
+							}
+						}
+						this.ran = true;
+					}
+				};
+
+				return ctrl;
+			}],
+
+			link: function (scope, elm, attrs, bindonceController)
+			{
+				var value = (attrs.bindonce) ? scope.$eval(attrs.bindonce) : true;
+				if (value !== undefined)
+				{
+					// since Angular 1.2 promises are no longer 
+					// undefined until they don't get resolved
+					if (value.then && typeof value.then === 'function')
+					{
+						value.then(function ()
+						{
+							bindonceController.runBinders();
+						});
+					}
+					else
+					{
+						bindonceController.runBinders();
+					}
+				}
+				else
+				{
+					bindonceController.setupWatcher(attrs.bindonce);
+					elm.bind("$destroy", bindonceController.removeWatcher);
+				}
+			}
+		};
+
+		return bindonceDirective;
+	});
+
+	angular.forEach(
+	[
+		{ directiveName: 'boShow', attribute: 'show' },
+		{ directiveName: 'boHide', attribute: 'hide' },
+		{ directiveName: 'boClass', attribute: 'class' },
+		{ directiveName: 'boText', attribute: 'text' },
+		{ directiveName: 'boBind', attribute: 'text' },
+		{ directiveName: 'boHtml', attribute: 'html' },
+		{ directiveName: 'boSrcI', attribute: 'src', interpolate: true },
+		{ directiveName: 'boSrc', attribute: 'src' },
+		{ directiveName: 'boHrefI', attribute: 'href', interpolate: true },
+		{ directiveName: 'boHref', attribute: 'href' },
+		{ directiveName: 'boAlt', attribute: 'alt' },
+		{ directiveName: 'boTitle', attribute: 'title' },
+		{ directiveName: 'boId', attribute: 'id' },
+		{ directiveName: 'boStyle', attribute: 'style' },
+		{ directiveName: 'boValue', attribute: 'value' },
+		{ directiveName: 'boAttr', attribute: 'attr' },
+
+		{ directiveName: 'boIf', transclude: 'element', terminal: true, priority: 1000 },
+		{ directiveName: 'boSwitch', require: 'boSwitch', controller: function () { this.cases = {}; } },
+		{ directiveName: 'boSwitchWhen', transclude: 'element', priority: 800, require: '^boSwitch', },
+		{ directiveName: 'boSwitchDefault', transclude: 'element', priority: 800, require: '^boSwitch', }
+	],
+	function (boDirective)
+	{
+		var childPriority = 200;
+		return bindonceModule.directive(boDirective.directiveName, function ()
+		{
+			var bindonceDirective =
+			{
+				priority: boDirective.priority || childPriority,
+				transclude: boDirective.transclude || false,
+				terminal: boDirective.terminal || false,
+				require: ['^bindonce'].concat(boDirective.require || []),
+				controller: boDirective.controller,
+				compile: function (tElement, tAttrs, transclude)
+				{
+					return function (scope, elm, attrs, controllers)
+					{
+						var bindonceController = controllers[0];
+						var name = attrs.boParent;
+						if (name && bindonceController.group !== name)
+						{
+							var element = bindonceController.element.parent();
+							bindonceController = undefined;
+							var parentValue;
+
+							while (element[0].nodeType !== 9 && element.length)
+							{
+								if ((parentValue = element.data('$bindonceController'))
+									&& parentValue.group === name)
+								{
+									bindonceController = parentValue;
+									break;
+								}
+								element = element.parent();
+							}
+							if (!bindonceController)
+							{
+								throw new Error("No bindonce controller: " + name);
+							}
+						}
+
+						bindonceController.addBinder(
+						{
+							element: elm,
+							attr: boDirective.attribute || boDirective.directiveName,
+							attrs: attrs,
+							value: attrs[boDirective.directiveName],
+							interpolate: boDirective.interpolate,
+							group: name,
+							transclude: transclude,
+							controller: controllers.slice(1),
+							scope: scope
+						});
+					};
+				}
+			};
+
+			return bindonceDirective;
+		});
+	})
+})();
+
 /*
  * angular-elastic v2.3.1
  * (c) 2013 Monospaced http://monospaced.com
@@ -80246,7 +80569,127 @@ if (typeof exports === 'object') {
 
   _.mixin(_.str.exports());
 
-  cdoj = angular.module('cdoj', ["ui.bootstrap", "ngRoute", "ngCookies", "monospaced.elastic", "frapontillo.bootstrap-switch", "ui.sortable"]);
+  cdoj = angular.module('cdoj', ["ui.bootstrap", "ngRoute", "ngCookies", "monospaced.elastic", "frapontillo.bootstrap-switch", "ui.sortable", "pasvaz.bindonce"]);
+
+  cdoj.config([
+    "$routeProvider", function($routeProvider) {
+      return $routeProvider.when("/contest/list", {
+        templateUrl: "template/contest/list.html",
+        controller: "ContestListController"
+      }).when("/contest/show/:contestId", {
+        templateUrl: "template/contest/show.html",
+        controller: "ContestShowController",
+        resolve: {
+          contest: [
+            "$q", "$route", "$http", "Error", "$rootScope", function($q, $route, $http, $Error, $rootScope) {
+              var contestId, deferred;
+              deferred = $q.defer();
+              contestId = $route.current.params.contestId;
+              $http.get("/contest/data/" + contestId).success(function(data) {
+                var contest;
+                if (data.result === "success") {
+                  contest = data.contest;
+                  contest.problemList = data.problemList;
+                  return deferred.resolve(contest);
+                } else {
+                  return $Error(data.error_msg);
+                }
+              }).error(function() {
+                return $Error("Network error.");
+              });
+              return deferred.promise;
+            }
+          ]
+        }
+      }).when("/contest/editor/:action", {
+        templateUrl: "template/contest/editor.html",
+        controller: "ContestEditorController",
+        resolve: {
+          contest: [
+            "$q", "$route", "$http", "Error", "$rootScope", function($q, $route, $http, $Error, $rootScope) {
+              var action, contest, contestId, deferred;
+              deferred = $q.defer();
+              action = $route.current.params.action;
+              contest = {
+                action: action,
+                type: $rootScope.ContestType.PUBLIC,
+                time: Date.create().format("{yyyy}-{MM}-{dd} {HH}:{mm}"),
+                lengthMinutes: 0,
+                lengthHours: 5,
+                lengthDays: 0
+              };
+              if (action !== "new") {
+                contestId = action;
+                $http.post("/contest/data/" + contestId).success(function(data) {
+                  var length;
+                  if (data.result === "success") {
+                    contest.action = action;
+                    contest.contestId = data.contest.contestId;
+                    contest.title = data.contest.title;
+                    contest.type = data.contest.type;
+                    contest.time = Date.create(data.contest.startTime).format("{yyyy}-{MM}-{dd} {HH}:{mm}");
+                    length = Math.floor(data.contest.length / 1000);
+                    length = Math.floor(length / 60);
+                    contest.lengthMinutes = length % 60;
+                    length = Math.floor(length / 60);
+                    contest.lengthHours = length % 24;
+                    length = Math.floor(length / 24);
+                    contest.lengthDays = length;
+                    contest.description = data.contest.description;
+                    if (angular.isDefined(data.contest.parentId)) {
+                      contest.type = $rootScope.ContestType.INHERIT;
+                      contest.parentId = data.contest.parentId;
+                    }
+                    contest.problemList = data.problemList;
+                    return deferred.resolve(contest);
+                  } else {
+                    return $Error.error(data.error_msg);
+                  }
+                }).error(function() {
+                  return $Error.error("Network error!");
+                });
+              } else {
+                deferred.resolve(contest);
+              }
+              return deferred.promise;
+            }
+          ]
+        }
+      }).when("/contest/register/:contestId", {
+        templateUrl: "template/contest/register.html",
+        controller: "ContestRegisterController",
+        resolve: {
+          contest: [
+            "$q", "$route", "$http", "Error", "$rootScope", function($q, $route, $http, $Error, $rootScope) {
+              var contestCondition, contestId, deferred;
+              deferred = $q.defer();
+              contestId = $route.current.params.contestId;
+              contestCondition = angular.copy($rootScope.contestCondition);
+              contestCondition.startId = contestCondition.endId = contestId;
+              $http.post("/contest/search", contestCondition).success(function(data) {
+                var contest;
+                if (data.result === "success") {
+                  if (data.list.length !== 1) {
+                    $Error.error("Incorrect contest ID!");
+                  }
+                  contest = data.list[0];
+                  if (contest.type !== $rootScope.ContestType.INVITED) {
+                    $Error.error("Incorrect contest ID!");
+                  }
+                  return deferred.resolve(contest);
+                } else {
+                  return $Error.error(data.error_msg);
+                }
+              }).error(function() {
+                return $Error.error("Network error!");
+              });
+              return deferred.promise;
+            }
+          ]
+        }
+      });
+    }
+  ]);
 
   cdoj.config([
     "$httpProvider", function($httpProvider) {
@@ -80268,7 +80711,7 @@ if (typeof exports === 'object') {
         controller: "ProblemShowController",
         resolve: {
           problem: [
-            "$q", "$route", "$http", "$window", function($q, $route, $http, $window) {
+            "$q", "$route", "$http", "Error", function($q, $route, $http, $Error) {
               var deferred, problemId;
               deferred = $q.defer();
               problemId = $route.current.params.problemId;
@@ -80276,12 +80719,10 @@ if (typeof exports === 'object') {
                 if (data.result === "success") {
                   return deferred.resolve(data.problem);
                 } else {
-                  $window.alert(data.error_msg);
-                  return $window.location.href = "/#/problem/list";
+                  return $Error.error(data.error_msg);
                 }
               }).error(function() {
-                $window.alert("Network error, please refresh page manually.");
-                return $window.location.href = "/#/problem/list";
+                return $Error.error("Network error!");
               });
               return deferred.promise;
             }
@@ -80292,14 +80733,14 @@ if (typeof exports === 'object') {
         controller: "ProblemEditorController",
         resolve: {
           problem: [
-            "$q", "$route", "$http", "$window", function($q, $route, $http, $window) {
+            "$q", "$route", "$http", "Error", function($q, $route, $http, $Error) {
               var action, deferred, problemId;
               deferred = $q.defer();
               action = $route.current.params.action;
               if (action !== "new") {
                 problemId = action;
                 $http.post("/problem/data/" + problemId).success(function(data) {
-                  var i, _sampleInput, _sampleOutput;
+                  var _sampleInput, _sampleOutput;
                   if (data.result === "success") {
                     data.problem.action = action;
                     _sampleInput = data.problem.sampleInput;
@@ -80317,29 +80758,21 @@ if (typeof exports === 'object') {
                       _sampleOutput = [_sampleOutput];
                     }
                     if (_sampleInput.length !== _sampleOutput.length) {
-                      $window.alert("Sample input has not same number of cases with sample output!");
-                      $window.location.href = "/#/problem/list";
+                      $Error.error("Sample input has not same number of cases with sample output!");
                     } else {
-                      data.problem.samples = (function() {
-                        var _i, _ref, _results;
-                        _results = [];
-                        for (i = _i = 0, _ref = _sampleInput.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-                          _results.push({
-                            input: _sampleInput[i].toString(),
-                            output: _sampleOutput[i].toString()
-                          });
-                        }
-                        return _results;
-                      })();
+                      data.problem.samples = _.map(_.zip(_sampleInput, _sampleOutput), function(sample) {
+                        return {
+                          input: sample[0].toString(),
+                          output: sample[1].toString()
+                        };
+                      });
                     }
                     return deferred.resolve(data.problem);
                   } else {
-                    $window.alert(data.error_msg);
-                    return $window.location.href = "/#/problem/list";
+                    return $Error.error(data.error_msg);
                   }
                 }).error(function() {
-                  $window.alert("Network error, please refresh page manually.");
-                  return $window.location.href = "/#/problem/list";
+                  return $Error.error("Network error!");
                 });
               } else {
                 deferred.resolve({
@@ -80374,18 +80807,6 @@ if (typeof exports === 'object') {
       return $routeProvider.when("/", {
         templateUrl: "template/index/index.html",
         controller: "IndexController"
-      }).when("/contest/list", {
-        templateUrl: "template/contest/list.html",
-        controller: "ContestListController"
-      }).when("/contest/show/:contestId", {
-        templateUrl: "template/contest/show.html",
-        controller: "ContestShowController"
-      }).when("/contest/editor/:action", {
-        templateUrl: "template/contest/editor.html",
-        controller: "ContestEditorController"
-      }).when("/contest/register/:contestId", {
-        templateUrl: "template/contest/register.html",
-        controller: "ContestRegisterController"
       }).when("/status/list", {
         templateUrl: "template/status/list.html",
         controller: "StatusListController"
@@ -80413,6 +80834,13 @@ if (typeof exports === 'object') {
       }).when("/admin/dashboard", {
         templateUrl: "template/admin/dashboard.html",
         controller: "AdminDashboardController"
+      }).when("/404/", {
+        templateUrl: "template/index/404.html"
+      }).when("/error/:message", {
+        templateUrl: "template/index/error.html",
+        controller: "ErrorController"
+      }).otherwise({
+        redirectTo: "/404/"
       });
     }
   ]);
@@ -80488,7 +80916,7 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.run([
-    "$rootScope", "$window", function($rootScope, $window) {
+    "$rootScope", "$window", "Error", function($rootScope, $window, Error) {
       $rootScope.currentPermission = {
         value: $rootScope.AuthenticationType.NOOP,
         userName: void 0
@@ -80511,18 +80939,15 @@ if (typeof exports === 'object') {
       return $rootScope.$on("permission:check", function() {
         if ($rootScope.currentPermission.value === $rootScope.AuthenticationType.ADMIN) {
           if ($rootScope.isAdmin === false) {
-            $window.alert("Permission denied!");
-            $window.history.back();
+            Error.error("Permission denied!");
           }
         } else if ($rootScope.currentPermission.value === $rootScope.AuthenticationType.NORMAL) {
           if ($rootScope.hasLogin === false) {
-            $window.alert("Please login first!");
-            $window.history.back();
+            Error.error("Please login first!");
           }
         } else if ($rootScope.currentPermission.value === $rootScope.AuthenticationType.CURRENT_USER) {
           if ($rootScope.hasLogin === false || ($rootScope.isAdmin === false && $rootScope.currentUser.userName !== $rootScope.currentPermission.userName)) {
-            $window.alert("Permission denied!");
-            $window.history.back();
+            Error.error("Permission denied!");
           }
         }
         if ($rootScope.hasLogin === false) {
@@ -80546,6 +80971,16 @@ if (typeof exports === 'object') {
     }
   ]);
 
+  cdoj.factory("Error", [
+    "$location", function($location) {
+      return {
+        error: function(message) {
+          return $location.path("/error/" + message.escapeURL());
+        }
+      };
+    }
+  ]);
+
   cdoj.factory("UserProfile", [
     "$http", "$window", "$rootScope", function($http, $window, $rootScope) {
       var userProfile;
@@ -80564,6 +80999,636 @@ if (typeof exports === 'object') {
         getProfile: function() {
           return userProfile;
         }
+      };
+    }
+  ]);
+
+  cdoj.controller("ContestEditorController", [
+    "$scope", "$rootScope", "$http", "$window", "contest", function($scope, $rootScope, $http, $window, contest) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN);
+      $window.scrollTo(0, 0);
+      $scope.contest = contest;
+      $scope.problemList = [];
+      $scope.fieldInfo = [];
+      $scope.action = contest.action;
+      if ($scope.action !== "new") {
+        $scope.title = "Edit contest " + $scope.action;
+        $scope.problemList = _.map(contest.problemList, function(val) {
+          return {
+            problemId: val.problemId,
+            title: val.title
+          };
+        });
+      } else {
+        $scope.title = "New contest";
+      }
+      $scope.$watch("problemList", function() {
+        return $scope.contest.problemList = _.map($scope.problemList, function(val) {
+          return val.problemId;
+        }).join(",");
+      }, true);
+      $scope.updateProblemTitle = function(problem) {
+        if (isNaN(parseInt(problem.problemId))) {
+          return problem.title = "Invalid problem id!";
+        } else {
+          return $http.get("/problem/query/" + problem.problemId + "/title").success(function(data) {
+            if (data.result === "success") {
+              if (data.list.length === 1) {
+                return problem.title = data.list[0];
+              } else {
+                return problem.title = "No such problem!";
+              }
+            } else {
+              return problem.title = data.error_msg;
+            }
+          });
+        }
+      };
+      $scope.addProblem = function() {
+        var lastId, problem, problemId;
+        problemId = "";
+        if ($scope.problemList.length > 0) {
+          lastId = parseInt($scope.problemList.last().problemId);
+          if (!isNaN(lastId)) {
+            problemId = lastId + 1;
+          }
+        }
+        problem = {
+          problemId: problemId,
+          title: ""
+        };
+        $scope.updateProblemTitle(problem);
+        return $scope.problemList.add(problem);
+      };
+      $scope.removeProblem = function(index) {
+        return $scope.problemList.splice(index, 1);
+      };
+      $scope.fieldInfo = [];
+      $scope.submit = function() {
+        var contestEditDTO, password, passwordRepeat;
+        contestEditDTO = angular.copy($scope.contest);
+        if (contestEditDTO.type === $rootScope.ContestType.PRIVATE) {
+          if (angular.isUndefined(contestEditDTO.password) || angular.isUndefined(contestEditDTO.passwordRepeat)) {
+            $window.scrollTo(0, 0);
+            return;
+          }
+        } else if (contestEditDTO.type === $rootScope.ContestType.INHERIT) {
+          if (angular.isUndefined(contestEditDTO.parentId)) {
+            $window.scrollTo(0, 0);
+            return;
+          }
+        }
+        contestEditDTO.time = Date.create(contestEditDTO.time).getTime();
+        password = CryptoJS.SHA1(contestEditDTO.password).toString();
+        contestEditDTO.password = password;
+        passwordRepeat = CryptoJS.SHA1(contestEditDTO.passwordRepeat).toString();
+        contestEditDTO.passwordRepeat = passwordRepeat;
+        return $http.post("/contest/edit", contestEditDTO).success(function(data) {
+          if (data.result === "success") {
+            return $window.location.href = "#/contest/show/" + data.contestId;
+          } else if (data.result === "field_error") {
+            $scope.fieldInfo = data.field;
+            return $window.scrollTo(0, 0);
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
+      };
+      return $scope.searchContest = function(keyword) {
+        var contestCondition;
+        contestCondition = {
+          keyword: keyword
+        };
+        return $http.post("/contest/search", contestCondition).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            return data.list;
+          }
+        });
+      };
+    }
+  ]);
+
+  cdoj.controller("ContestListController", [
+    "$scope", "$rootScope", "$window", "$modal", "$http", function($scope, $rootScope, $window, $modal, $http) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
+      $window.scrollTo(0, 0);
+      $scope.showAddContestModal = function() {
+        if ($rootScope.isAdmin === false) {
+          return;
+        }
+        return $modal.open({
+          templateUrl: "template/modal/add-contest-modal.html",
+          controller: "AddContestModalController"
+        });
+      };
+      return $scope.enterContest = function(contest) {
+        var contestLoginDTO, type;
+        if (contest.type === $rootScope.ContestType.INHERIT) {
+          type = contest.parentType;
+        } else {
+          type = contest.type;
+        }
+        if (type === $rootScope.ContestType.PRIVATE) {
+          if ($rootScope.hasLogin === false) {
+            return $window.alert("Please login first!");
+          } else {
+            contestLoginDTO = {
+              contestId: contest.contestId,
+              password: "1234567890123456789012345678901234567890"
+            };
+            return $http.post("/contest/loginContest", contestLoginDTO).success(function(data) {
+              if (data.result === "success") {
+                return $window.location.href = "/#/contest/show/" + contest.contestId;
+              } else {
+                return $modal.open({
+                  templateUrl: "template/modal/contest-password-modal.html",
+                  controller: "ContestPasswordModalController",
+                  resolve: {
+                    contest: function() {
+                      return contest;
+                    }
+                  }
+                });
+              }
+            }).error(function() {
+              return $window.alert("Network error!");
+            });
+          }
+        } else if (type === $rootScope.ContestType.INVITED) {
+          contestLoginDTO = {
+            contestId: contest.contestId,
+            password: "1234567890123456789012345678901234567890"
+          };
+          return $http.post("/contest/loginContest", contestLoginDTO).success(function(data) {
+            if (data.result === "success") {
+              return $window.location.href = "/#/contest/show/" + contest.contestId;
+            } else {
+              return $window.alert(data.error_msg);
+            }
+          }).error(function() {
+            return $window.alert("Network error!");
+          });
+        } else {
+          return $window.location.href = "/#/contest/show/" + contest.contestId;
+        }
+      };
+    }
+  ]);
+
+  cdoj.controller("ContestPasswordModalController", [
+    "$scope", "$rootScope", "$window", "$modalInstance", "contest", "$http", function($scope, $rootScope, $window, $modalInstance, contest, $http) {
+      $scope.contest = contest;
+      $scope.fieldInfo = [];
+      $scope.enter = function() {
+        var contestLoginDTO;
+        contestLoginDTO = {
+          contestId: contest.contestId,
+          password: CryptoJS.SHA1(contest.password).toString()
+        };
+        return $http.post("/contest/loginContest", contestLoginDTO).success(function(data) {
+          if (data.result === "success") {
+            $modalInstance.close();
+            return $window.location.href = "/#/contest/show/" + contest.contestId;
+          } else if (data.result === "field_error") {
+            return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error!");
+        });
+      };
+      return $scope.cancel = function() {
+        return $modalInstance.dismiss();
+      };
+    }
+  ]);
+
+  cdoj.controller("ContestRegisterController", [
+    "$scope", "$rootScope", "$http", "$window", "$modal", "contest", function($scope, $rootScope, $http, $window, $modal, contest) {
+      var contestId;
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
+      $window.scrollTo(0, 0);
+      $scope.contest = contest;
+      contestId = contest.contestId;
+      $scope.contestTeamCondition = angular.copy($rootScope.contestTeamCondition);
+      $scope.contestTeamCondition.contestId = contestId;
+      $scope.team = {
+        teamName: "",
+        invitedUsers: [],
+        leaderId: null,
+        teamId: null,
+        teamUsers: []
+      };
+      $scope.searchTeam = function(teamName) {
+        var teamCondition;
+        teamCondition = angular.copy($rootScope.teamCondition);
+        teamCondition.teamName = teamName;
+        teamCondition.userId = $rootScope.currentUser.userId;
+        teamCondition.allow = true;
+        return $http.post("/team/typeAHeadSearch", teamCondition).then(function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            return data.list;
+          } else {
+            return [];
+          }
+        });
+      };
+      $scope.showRegisterButton = false;
+      $scope.selectTeam = function() {
+        return $http.get("/team/typeAHeadItem/" + $scope.team.teamName).success(function(data) {
+          if (data.result === "success") {
+            $scope.team = data.team;
+            return $scope.showRegisterButton = true;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
+      };
+      $scope.register = function() {
+        return $http.get("/contest/register/" + $scope.team.teamId + "/" + contestId).success(function(data) {
+          if (data.result === "success") {
+            $window.alert("Register success! please wait for verify");
+            $scope.team = {
+              teamName: "",
+              invitedUsers: [],
+              leaderId: null,
+              teamId: null,
+              teamUsers: []
+            };
+            $scope.showRegisterButton = false;
+            return $rootScope.$broadcast("list:refresh:team");
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
+      };
+      return $scope.review = function(team) {
+        return $modal.open({
+          templateUrl: "template/modal/contest-registry-review-modal.html",
+          controller: "ContestRegistryReviewModalController",
+          resolve: {
+            team: function() {
+              return team;
+            }
+          }
+        });
+      };
+    }
+  ]);
+
+  cdoj.controller("ContestRegistryReviewModalController", [
+    "$scope", "$rootScope", "$http", "$modalInstance", "team", "$window", function($scope, $rootScope, $http, $modalInstance, team, $window) {
+      $scope.team = team;
+      $scope.review = {
+        result: ""
+      };
+      $scope.teamUsers = angular.copy($scope.team.teamUsers).concat(angular.copy($scope.team.invitedUsers));
+      _.each($scope.teamUsers, function(teamUser) {
+        return $http.get("/user/profile/" + teamUser.userName).success(function(data) {
+          if (data.result === "success") {
+            _.extend(teamUser, data.user);
+            teamUser.sex = _.findWhere($rootScope.genderTypeList, {
+              genderTypeId: data.user.sex
+            }).description;
+            teamUser.departmentId = _.findWhere($rootScope.departmentList, {
+              departmentId: data.user.departmentId
+            }).name;
+            teamUser.grade = _.findWhere($rootScope.gradeTypeList, {
+              gradeTypeId: data.user.grade
+            }).description;
+            teamUser.size = _.findWhere($rootScope.tShirtsSizeTypeList, {
+              sizeTypeId: data.user.size
+            }).description;
+            return teamUser.type = _.findWhere($rootScope.authenticationTypeList, {
+              authenticationTypeId: data.user.type
+            }).description;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
+      });
+      $scope.review = function(dto) {
+        return $http.post("/contest/registryReview", dto).success(function(data) {
+          if (data.result === "success") {
+            $window.alert("Success!");
+            $scope.team.status = dto.status;
+            if (dto.status === $rootScope.ContestRegistryStatus.ACCEPTED) {
+              $scope.team.statusName = "Accepted";
+            } else {
+              $scope.team.statusName = "Refused";
+            }
+            return $modalInstance.close();
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
+      };
+      $scope.accept = function() {
+        return $scope.review({
+          contestTeamId: $scope.team.contestTeamId,
+          status: $rootScope.ContestRegistryStatus.ACCEPTED,
+          comment: $scope.review.result
+        });
+      };
+      $scope.refuse = function() {
+        return $scope.review({
+          contestTeamId: $scope.team.contestTeamId,
+          status: $rootScope.ContestRegistryStatus.REFUSED,
+          comment: $scope.review.result
+        });
+      };
+      $scope.reasonList = [];
+      return $scope.$on("$routeChangeStart", function() {
+        return $modalInstance.dismiss();
+      });
+    }
+  ]);
+
+  cdoj.controller("ContestShowController", [
+    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$timeout", "$interval", "$cookieStore", "contest", function($scope, $rootScope, $http, $window, $modal, $routeParams, $timeout, $interval, $cookieStore, contest) {
+      var clarificationTimer, cookieName, currentTimeTimer, rankListTimer, refreshClarification, refreshRankList, updateTime;
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
+      $window.scrollTo(0, 0);
+      $scope.currentTeam = "";
+      $scope.progressbar = {
+        max: 100,
+        value: 0,
+        type: "success",
+        active: true
+      };
+      cookieName = "contest" + $scope.contestId;
+      if (angular.isUndefined($cookieStore.get(cookieName))) {
+        $cookieStore.put(cookieName, {
+          lastClarificationCount: 0
+        });
+      }
+      $scope.$on("currentUser:logout", function() {
+        return $window.location.href = "/#/contest/list";
+      });
+      $scope.contestId = angular.copy($routeParams.contestId);
+      $scope.contest = contest;
+      $scope.problemList = contest.problemList;
+      if ($scope.problemList.length > 0) {
+        $scope.currentProblem = $scope.problemList[0];
+      }
+      currentTimeTimer = void 0;
+      updateTime = function() {
+        var active, current, type;
+        $scope.contest.currentTime = $scope.contest.currentTime + 1000;
+        if ($scope.contest.status === $rootScope.ContestStatus.PENDING) {
+          current = 0;
+          type = "primary";
+          active = true;
+          if ($scope.contest.currentTime >= $scope.contest.startTime) {
+            $timeout(function() {
+              return $window.location.reload();
+            }, 500);
+          }
+        } else if ($scope.contest.status === $rootScope.ContestStatus.RUNNING) {
+          current = $scope.contest.currentTime - $scope.contest.startTime;
+          type = "danger";
+          active = true;
+          if ($scope.contest.currentTime >= $scope.contest.endTime) {
+            $timeout(function() {
+              return $window.location.reload();
+            }, 500);
+          }
+        } else {
+          current = $scope.contest.length;
+          type = "success";
+          active = false;
+        }
+        $scope.progressbar.value = current * 100 / $scope.contest.length;
+        $scope.progressbar.type = type;
+        return $scope.progressbar.active = active;
+      };
+      currentTimeTimer = $interval(updateTime, 1000);
+      clarificationTimer = void 0;
+      rankListTimer = void 0;
+      $scope.$on("$destroy", function() {
+        $interval.cancel(currentTimeTimer);
+        $timeout.cancel(rankListTimer);
+        return $timeout.cancel(clarificationTimer);
+      });
+      $scope.totalUnreadedClarification = 0;
+      $scope.lastClarificationCount = 0;
+      refreshClarification = function() {
+        return $rootScope.$broadcast("list:refresh:comment", function(data) {
+          $scope.totalUnreadedClarification = Math.max(0, data.pageInfo.totalItems - $cookieStore.get(cookieName).lastClarificationCount);
+          $scope.lastClarificationCount = data.pageInfo.totalItems;
+          return clarificationTimer = $timeout(refreshClarification, 30000);
+        });
+      };
+      clarificationTimer = $timeout(refreshClarification, 100);
+      $scope.selectClarificationTab = function() {
+        $timeout.cancel(clarificationTimer);
+        clarificationTimer = $timeout(refreshClarification, 0);
+        contest = $cookieStore.get(cookieName);
+        contest.lastClarificationCount = $scope.lastClarificationCount;
+        $cookieStore.put(cookieName, contest);
+        return $scope.totalUnreadedClarification = 0;
+      };
+      $scope.showProblemTab = function() {
+        return $scope.$$childHead.$$nextSibling.$$nextSibling.tabs[1].select();
+      };
+      $scope.chooseProblem = function(order) {
+        $scope.showProblemTab();
+        return $scope.currentProblem = _.findWhere($scope.problemList, {
+          order: order
+        });
+      };
+      $scope.resetStatusCondition = function() {
+        $scope.contestStatusCondition.problemId = void 0;
+        $scope.contestStatusCondition.result = 0;
+        $scope.contestStatusCondition.language = void 0;
+        if ($rootScope.isAdmin) {
+          return $scope.contestStatusCondition.userName = void 0;
+        }
+      };
+      $scope.$on("contestShow:showProblemTab", function(e, order) {
+        return $scope.chooseProblem(order);
+      });
+      $scope.showStatusTab = function() {
+        $scope.$$childHead.$$nextSibling.$$nextSibling.tabs[3].select();
+        $scope.contestStatusCondition.problemId = $scope.currentProblem.problemId;
+        return $scope.refreshStatus();
+      };
+      $scope.openSubmitModal = function() {
+        return $modal.open({
+          templateUrl: "template/modal/submit-modal.html",
+          controller: "SubmitModalController",
+          resolve: {
+            submitDTO: function() {
+              return {
+                codeContent: "",
+                problemId: $scope.currentProblem.problemId,
+                contestId: $scope.contest.contestId,
+                languageId: 2
+              };
+            },
+            title: function() {
+              return $scope.currentProblem.orderCharacter + " - " + $scope.currentProblem.title;
+            }
+          }
+        }).result.then(function(result) {
+          if (result === "success") {
+            return $scope.showStatusTab();
+          }
+        });
+      };
+      $scope.contestStatusCondition = angular.copy($rootScope.statusCondition);
+      $scope.contestStatusCondition.contestId = $scope.contestId;
+      $scope.refreshStatus = function() {
+        return $scope.$broadcast("list:refresh:status");
+      };
+      refreshRankList = function() {
+        var contestId;
+        contestId = angular.copy($scope.contestId);
+        return $http.get("/contest/rankList/" + contestId).success(function(data) {
+          var userStatus;
+          if (data.result === "success") {
+            $scope.rankList = data.rankList.rankList;
+            _.each($scope.problemList, function(value, index) {
+              value.tried = data.rankList.problemList[index].tried;
+              return value.solved = data.rankList.problemList[index].solved;
+            });
+            if ($rootScope.hasLogin) {
+              userStatus = void 0;
+              if ($scope.contest.type === $rootScope.ContestType.INVITED) {
+                _.each(data.rankList.rankList, function(rank) {
+                  var findMe;
+                  findMe = _.findWhere(rank.teamUsers, {
+                    userName: $scope.currentUser.userName
+                  });
+                  if (angular.isDefined(findMe)) {
+                    $scope.currentTeam = rank.userName;
+                    return userStatus = rank;
+                  }
+                });
+              } else {
+                userStatus = _.findWhere(data.rankList.rankList, {
+                  userName: $rootScope.currentUser.userName
+                });
+              }
+              if (angular.isDefined(userStatus)) {
+                return _.each($scope.problemList, function(value, index) {
+                  value.hasSolved = userStatus.itemList[index].solved;
+                  return value.hasTried = userStatus.itemList[index].tried > 0;
+                });
+              }
+            }
+          }
+        }).error(function() {
+          return $window.alert("Network error!");
+        });
+      };
+      $scope.refreshRankList = function() {
+        return refreshRankList();
+      };
+      return rankListTimer = $timeout(refreshRankList, 100);
+    }
+  ]);
+
+  cdoj.controller("ProblemEditorController", [
+    "$scope", "$http", "$window", "$rootScope", "problem", function($scope, $http, $window, $rootScope, problem) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN);
+      $window.scrollTo(0, 0);
+      $scope.problem = problem;
+      $scope.fieldInfo = [];
+      $scope.action = problem.action;
+      $scope.samples = [];
+      $scope.addSample = function() {
+        return $scope.samples.add({
+          input: "",
+          output: ""
+        });
+      };
+      $scope.removeSample = function(index) {
+        return $scope.samples.splice(index, 1);
+      };
+      if ($scope.action !== "new") {
+        $scope.title = "Edit problem " + $scope.action;
+        $scope.samples = $scope.problem.samples;
+      } else {
+        $scope.title = "New problem";
+        $scope.addSample();
+      }
+      return $scope.submit = function() {
+        var problemEditDTO;
+        problemEditDTO = angular.copy($scope.problem);
+        problemEditDTO.action = angular.copy($scope.action);
+        problemEditDTO.sampleInput = JSON.stringify(_.map($scope.samples, function(sample) {
+          return sample.input;
+        }));
+        problemEditDTO.sampleOutput = JSON.stringify(_.map($scope.samples, function(sample) {
+          return sample.output;
+        }));
+        return $http.post("/problem/edit", problemEditDTO).success(function(data) {
+          if (data.result === "success") {
+            return $window.location.href = "/#/problem/show/" + data.problemId;
+          } else if (data.result === "field_error") {
+            return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
+      };
+    }
+  ]);
+
+  cdoj.controller("ProblemListController", [
+    "$scope", "$rootScope", "$window", function($scope, $rootScope, $window) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
+      $window.scrollTo(0, 0);
+      return $rootScope.title = "Problem list";
+    }
+  ]);
+
+  cdoj.controller("ProblemShowController", [
+    "$scope", "$rootScope", "$window", "$modal", "problem", function($scope, $rootScope, $window, $modal, problem) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
+      $window.scrollTo(0, 0);
+      $scope.problem = problem;
+      $scope.openSubmitModal = function() {
+        return $modal.open({
+          templateUrl: "template/modal/submit-modal.html",
+          controller: "SubmitModalController",
+          resolve: {
+            submitDTO: function() {
+              return {
+                codeContent: "",
+                problemId: $scope.problem.problemId,
+                contestId: null,
+                languageId: 2
+              };
+            },
+            title: function() {
+              return "" + $scope.problem.title;
+            }
+          }
+        }).result.then(function(result) {
+          if (result === "success") {
+            return $window.location.href = "/#/status/list?problemId=" + $scope.problem.problemId;
+          }
+        });
+      };
+      return $scope.gotoStatusList = function() {
+        return $window.location.href = "/#/status/list?problemId=" + $scope.problem.problemId;
       };
     }
   ]);
@@ -80767,619 +81832,9 @@ if (typeof exports === 'object') {
     }
   ]);
 
-  cdoj.controller("ContestEditorController", [
-    "$scope", "$rootScope", "$http", "$window", "$routeParams", function($scope, $rootScope, $http, $window, $routeParams) {
-      var contestId;
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN);
-      $window.scrollTo(0, 0);
-      $scope.contest = {
-        problemList: ""
-      };
-      $scope.problemList = [];
-      $scope.fieldInfo = [];
-      $scope.action = $routeParams.action;
-      if ($scope.action !== "new") {
-        $scope.title = "Edit contest " + $scope.action;
-        contestId = angular.copy($scope.action);
-        $http.post("/contest/data/" + contestId).success(function(data) {
-          var length;
-          if (data.result === "success") {
-            $scope.contest.action = $scope.action;
-            $scope.contest.contestId = data.contest.contestId;
-            $scope.contest.title = data.contest.title;
-            $scope.contest.type = data.contest.type;
-            $scope.contest.time = Date.create(data.contest.startTime).format("{yyyy}-{MM}-{dd} {HH}:{mm}");
-            length = Math.floor(data.contest.length / 1000);
-            length = Math.floor(length / 60);
-            $scope.contest.lengthMinutes = length % 60;
-            length = Math.floor(length / 60);
-            $scope.contest.lengthHours = length % 24;
-            length = Math.floor(length / 24);
-            $scope.contest.lengthDays = length;
-            $scope.contest.description = data.contest.description;
-            if ($scope.contest.type === $rootScope.ContestType.INHERIT) {
-              $scope.contest.parentId = data.contest.parentId;
-            }
-            return $scope.problemList = _.map(data.problemList, function(val) {
-              return {
-                problemId: val.problemId,
-                title: val.title
-              };
-            });
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $window.alert("Network error, please refresh page manually.");
-        });
-      } else {
-        $scope.contest.action = $scope.action;
-        $scope.contest.type = $rootScope.ContestType.PUBLIC;
-        $scope.contest.time = Date.create().format("{yyyy}-{MM}-{dd} {HH}:{mm}");
-        $scope.contest.lengthMinutes = 0;
-        $scope.contest.lengthHours = 5;
-        $scope.contest.lengthDays = 0;
-        $scope.title = "New contest";
-      }
-      $scope.$watch("problemList", function() {
-        return $scope.contest.problemList = _.map($scope.problemList, function(val) {
-          return val.problemId;
-        }).join(",");
-      }, true);
-      $scope.updateProblemTitle = function(problem) {
-        if (isNaN(parseInt(problem.problemId))) {
-          return problem.title = "Invalid problem id!";
-        } else {
-          return $http.get("/problem/query/" + problem.problemId + "/title").success(function(data) {
-            if (data.result === "success") {
-              if (data.list.length === 1) {
-                return problem.title = data.list[0];
-              } else {
-                return problem.title = "No such problem!";
-              }
-            } else {
-              return problem.title = data.error_msg;
-            }
-          });
-        }
-      };
-      $scope.addProblem = function() {
-        var lastId, problem, problemId;
-        problemId = "";
-        if ($scope.problemList.length > 0) {
-          lastId = parseInt($scope.problemList.last().problemId);
-          if (!isNaN(lastId)) {
-            problemId = lastId + 1;
-          }
-        }
-        problem = {
-          problemId: problemId,
-          title: ""
-        };
-        $scope.updateProblemTitle(problem);
-        return $scope.problemList.add(problem);
-      };
-      $scope.removeProblem = function(index) {
-        return $scope.problemList.splice(index, 1);
-      };
-      $scope.fieldInfo = [];
-      $scope.submit = function() {
-        var contestEditDTO, password, passwordRepeat;
-        contestEditDTO = angular.copy($scope.contest);
-        if (contestEditDTO.type === $rootScope.ContestType.PRIVATE) {
-          if (angular.isUndefined(contestEditDTO.password) || angular.isUndefined(contestEditDTO.passwordRepeat)) {
-            $window.scrollTo(0, 0);
-            return;
-          }
-        } else if (contestEditDTO.type === $rootScope.ContestType.INHERIT) {
-          if (angular.isUndefined(contestEditDTO.parentId)) {
-            $window.scrollTo(0, 0);
-            return;
-          }
-        }
-        contestEditDTO.time = Date.create(contestEditDTO.time).getTime();
-        password = CryptoJS.SHA1(contestEditDTO.password).toString();
-        contestEditDTO.password = password;
-        passwordRepeat = CryptoJS.SHA1(contestEditDTO.passwordRepeat).toString();
-        contestEditDTO.passwordRepeat = passwordRepeat;
-        return $http.post("/contest/edit", contestEditDTO).success(function(data) {
-          if (data.result === "success") {
-            return $window.location.href = "#/contest/show/" + data.contestId;
-          } else if (data.result === "field_error") {
-            $scope.fieldInfo = data.field;
-            return $window.scrollTo(0, 0);
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $window.alert("Network error.");
-        });
-      };
-      return $scope.searchContest = function(keyword) {
-        var contestCondition;
-        contestCondition = {
-          keyword: keyword
-        };
-        return $http.post("/contest/search", contestCondition).then(function(response) {
-          var data;
-          data = response.data;
-          if (data.result === "success") {
-            return data.list;
-          }
-        });
-      };
-    }
-  ]);
-
-  cdoj.controller("ContestListController", [
-    "$scope", "$rootScope", "$window", "$modal", "$http", function($scope, $rootScope, $window, $modal, $http) {
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
-      $window.scrollTo(0, 0);
-      $scope.showAddContestModal = function() {
-        if ($rootScope.isAdmin === false) {
-          return;
-        }
-        return $modal.open({
-          templateUrl: "template/modal/add-contest-modal.html",
-          controller: "AddContestModalController"
-        });
-      };
-      return $scope.enterContest = function(contest) {
-        var contestLoginDTO, type;
-        if (contest.type === $rootScope.ContestType.INHERIT) {
-          type = contest.parentType;
-        } else {
-          type = contest.type;
-        }
-        if (type === $rootScope.ContestType.PRIVATE) {
-          if ($rootScope.hasLogin === false) {
-            return $window.alert("Please login first!");
-          } else {
-            contestLoginDTO = {
-              contestId: contest.contestId,
-              password: "1234567890123456789012345678901234567890"
-            };
-            return $http.post("/contest/loginContest", contestLoginDTO).success(function(data) {
-              if (data.result === "success") {
-                return $window.location.href = "/#/contest/show/" + contest.contestId;
-              } else {
-                return $modal.open({
-                  templateUrl: "template/modal/contest-password-modal.html",
-                  controller: "ContestPasswordModalController",
-                  resolve: {
-                    contest: function() {
-                      return contest;
-                    }
-                  }
-                });
-              }
-            }).error(function() {
-              return $window.alert("Network error!");
-            });
-          }
-        } else if (type === $rootScope.ContestType.INVITED) {
-          contestLoginDTO = {
-            contestId: contest.contestId,
-            password: "1234567890123456789012345678901234567890"
-          };
-          return $http.post("/contest/loginContest", contestLoginDTO).success(function(data) {
-            if (data.result === "success") {
-              return $window.location.href = "/#/contest/show/" + contest.contestId;
-            } else {
-              return $window.alert(data.error_msg);
-            }
-          }).error(function() {
-            return $window.alert("Network error!");
-          });
-        } else {
-          return $window.location.href = "/#/contest/show/" + contest.contestId;
-        }
-      };
-    }
-  ]);
-
-  cdoj.controller("ContestPasswordModalController", [
-    "$scope", "$rootScope", "$window", "$modalInstance", "contest", "$http", function($scope, $rootScope, $window, $modalInstance, contest, $http) {
-      $scope.contest = contest;
-      $scope.fieldInfo = [];
-      $scope.enter = function() {
-        var contestLoginDTO;
-        contestLoginDTO = {
-          contestId: contest.contestId,
-          password: CryptoJS.SHA1(contest.password).toString()
-        };
-        return $http.post("/contest/loginContest", contestLoginDTO).success(function(data) {
-          if (data.result === "success") {
-            $modalInstance.close();
-            return $window.location.href = "/#/contest/show/" + contest.contestId;
-          } else if (data.result === "field_error") {
-            return $scope.fieldInfo = data.field;
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $window.alert("Network error!");
-        });
-      };
-      return $scope.cancel = function() {
-        return $modalInstance.dismiss();
-      };
-    }
-  ]);
-
-  cdoj.controller("ContestRegisterController", [
-    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", function($scope, $rootScope, $http, $window, $modal, $routeParams) {
-      var contestCondition, contestId;
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
-      $window.scrollTo(0, 0);
-      contestId = $routeParams.contestId;
-      $scope.contestId = contestId;
-      $scope.contest = 0;
-      contestCondition = angular.copy($rootScope.contestCondition);
-      contestCondition.startId = contestCondition.endId = contestId;
-      $http.post("/contest/search", contestCondition).success(function(data) {
-        if (data.result === "success") {
-          if (data.list.length === 1) {
-            return $scope.contest = data.list[0];
-          } else {
-            return $window.alert("Wrong contest id.");
-          }
-        } else {
-          return $window.alert(data.error_msg);
-        }
-      }).error(function() {
-        return $window.alert("Network error, please refresh page manually.");
-      });
-      $scope.contestTeamCondition = angular.copy($rootScope.contestTeamCondition);
-      $scope.contestTeamCondition.contestId = contestId;
-      $scope.team = {
-        teamName: "",
-        invitedUsers: [],
-        leaderId: null,
-        teamId: null,
-        teamUsers: []
-      };
-      $scope.searchTeam = function(teamName) {
-        var teamCondition;
-        teamCondition = angular.copy($rootScope.teamCondition);
-        teamCondition.teamName = teamName;
-        teamCondition.userId = $rootScope.currentUser.userId;
-        teamCondition.allow = true;
-        return $http.post("/team/typeAHeadSearch", teamCondition).then(function(response) {
-          var data;
-          data = response.data;
-          if (data.result === "success") {
-            return data.list;
-          } else {
-            return [];
-          }
-        });
-      };
-      $scope.showRegisterButton = false;
-      $scope.selectTeam = function() {
-        return $http.get("/team/typeAHeadItem/" + $scope.team.teamName).success(function(data) {
-          if (data.result === "success") {
-            $scope.team = data.team;
-            return $scope.showRegisterButton = true;
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $window.alert("Network error.");
-        });
-      };
-      $scope.register = function() {
-        return $http.get("/contest/register/" + $scope.team.teamId + "/" + $scope.contest.contestId).success(function(data) {
-          if (data.result === "success") {
-            $window.alert("Register success! please wait for verify");
-            $scope.team = {
-              teamName: "",
-              invitedUsers: [],
-              leaderId: null,
-              teamId: null,
-              teamUsers: []
-            };
-            $scope.showRegisterButton = false;
-            return $rootScope.$broadcast("list:refresh:team");
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $window.alert("Network error.");
-        });
-      };
-      return $scope.review = function(team) {
-        return $modal.open({
-          templateUrl: "template/modal/contest-registry-review-modal.html",
-          controller: "ContestRegistryReviewModalController",
-          resolve: {
-            team: function() {
-              return team;
-            }
-          }
-        });
-      };
-    }
-  ]);
-
-  cdoj.controller("ContestRegistryReviewModalController", [
-    "$scope", "$rootScope", "$http", "$modalInstance", "team", "$window", function($scope, $rootScope, $http, $modalInstance, team, $window) {
-      $scope.team = team;
-      $scope.review = {
-        result: ""
-      };
-      $scope.teamUsers = angular.copy($scope.team.teamUsers).concat(angular.copy($scope.team.invitedUsers));
-      _.each($scope.teamUsers, function(teamUser) {
-        return $http.get("/user/profile/" + teamUser.userName).success(function(data) {
-          if (data.result === "success") {
-            _.extend(teamUser, data.user);
-            teamUser.sex = _.findWhere($rootScope.genderTypeList, {
-              genderTypeId: data.user.sex
-            }).description;
-            teamUser.departmentId = _.findWhere($rootScope.departmentList, {
-              departmentId: data.user.departmentId
-            }).name;
-            teamUser.grade = _.findWhere($rootScope.gradeTypeList, {
-              gradeTypeId: data.user.grade
-            }).description;
-            teamUser.size = _.findWhere($rootScope.tShirtsSizeTypeList, {
-              sizeTypeId: data.user.size
-            }).description;
-            return teamUser.type = _.findWhere($rootScope.authenticationTypeList, {
-              authenticationTypeId: data.user.type
-            }).description;
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $window.alert("Network error.");
-        });
-      });
-      $scope.review = function(dto) {
-        return $http.post("/contest/registryReview", dto).success(function(data) {
-          if (data.result === "success") {
-            $window.alert("Success!");
-            $scope.team.status = dto.status;
-            if (dto.status === $rootScope.ContestRegistryStatus.ACCEPTED) {
-              $scope.team.statusName = "Accepted";
-            } else {
-              $scope.team.statusName = "Refused";
-            }
-            return $modalInstance.close();
-          }
-        }).error(function() {
-          return $window.alert("Network error.");
-        });
-      };
-      $scope.accept = function() {
-        return $scope.review({
-          contestTeamId: $scope.team.contestTeamId,
-          status: $rootScope.ContestRegistryStatus.ACCEPTED,
-          comment: $scope.review.result
-        });
-      };
-      $scope.refuse = function() {
-        return $scope.review({
-          contestTeamId: $scope.team.contestTeamId,
-          status: $rootScope.ContestRegistryStatus.REFUSED,
-          comment: $scope.review.result
-        });
-      };
-      $scope.reasonList = [];
-      return $scope.$on("$routeChangeStart", function() {
-        return $modalInstance.dismiss();
-      });
-    }
-  ]);
-
-  cdoj.controller("ContestShowController", [
-    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$timeout", "$interval", "$cookieStore", function($scope, $rootScope, $http, $window, $modal, $routeParams, $timeout, $interval, $cookieStore) {
-      var clarificationTimer, cookieName, currentTimeTimer, rankListTimer, refreshClarification, refreshRankList, updateTime;
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
-      $window.scrollTo(0, 0);
-      $scope.currentTeam = "";
-      $scope.contestId = 0;
-      $scope.contest = {
-        title: "",
-        description: "",
-        currentTime: new Date().getTime()
-      };
-      $scope.problemList = [];
-      $scope.currentProblem = {
-        description: "",
-        title: "",
-        input: "",
-        output: "",
-        sampleInput: "",
-        sampleOutput: "",
-        hint: "",
-        source: ""
-      };
-      $scope.progressbar = {
-        max: 100,
-        value: 0,
-        type: "success",
-        active: true
-      };
-      cookieName = "contest" + $scope.contestId;
-      if (angular.isUndefined($cookieStore.get(cookieName))) {
-        $cookieStore.put(cookieName, {
-          lastClarificationCount: 0
-        });
-      }
-      $scope.$on("currentUser:logout", function() {
-        return $window.location.href = "/#/contest/list";
-      });
-      $scope.contestId = angular.copy($routeParams.contestId);
-      $http.get("/contest/data/" + $scope.contestId).success(function(data) {
-        if (data.result === "success") {
-          $scope.contest = data.contest;
-          $scope.problemList = data.problemList;
-          if (data.problemList.length > 0) {
-            return $scope.currentProblem = data.problemList[0];
-          }
-        } else {
-          return $window.alert(data.error_msg);
-        }
-      }).error(function() {
-        return $window.alert("Network error, please refresh page manually.");
-      });
-      currentTimeTimer = void 0;
-      updateTime = function() {
-        var active, current, type;
-        $scope.contest.currentTime = $scope.contest.currentTime + 1000;
-        if ($scope.contest.status === $rootScope.ContestStatus.PENDING) {
-          current = 0;
-          type = "primary";
-          active = true;
-          if ($scope.contest.currentTime >= $scope.contest.startTime) {
-            $timeout(function() {
-              return $window.location.reload();
-            }, 500);
-          }
-        } else if ($scope.contest.status === $rootScope.ContestStatus.RUNNING) {
-          current = $scope.contest.currentTime - $scope.contest.startTime;
-          type = "danger";
-          active = true;
-          if ($scope.contest.currentTime >= $scope.contest.endTime) {
-            $timeout(function() {
-              return $window.location.reload();
-            }, 500);
-          }
-        } else {
-          current = $scope.contest.length;
-          type = "success";
-          active = false;
-        }
-        $scope.progressbar.value = current * 100 / $scope.contest.length;
-        $scope.progressbar.type = type;
-        return $scope.progressbar.active = active;
-      };
-      currentTimeTimer = $interval(updateTime, 1000);
-      clarificationTimer = void 0;
-      rankListTimer = void 0;
-      $scope.$on("$destroy", function() {
-        $interval.cancel(currentTimeTimer);
-        $timeout.cancel(rankListTimer);
-        return $timeout.cancel(clarificationTimer);
-      });
-      $scope.totalUnreadedClarification = 0;
-      $scope.lastClarificationCount = 0;
-      refreshClarification = function() {
-        return $rootScope.$broadcast("list:refresh:comment", function(data) {
-          $scope.totalUnreadedClarification = Math.max(0, data.pageInfo.totalItems - $cookieStore.get(cookieName).lastClarificationCount);
-          $scope.lastClarificationCount = data.pageInfo.totalItems;
-          return clarificationTimer = $timeout(refreshClarification, 30000);
-        });
-      };
-      clarificationTimer = $timeout(refreshClarification, 100);
-      $scope.selectClarificationTab = function() {
-        var contest;
-        $timeout.cancel(clarificationTimer);
-        clarificationTimer = $timeout(refreshClarification, 0);
-        contest = $cookieStore.get(cookieName);
-        contest.lastClarificationCount = $scope.lastClarificationCount;
-        $cookieStore.put(cookieName, contest);
-        return $scope.totalUnreadedClarification = 0;
-      };
-      $scope.showProblemTab = function() {
-        return $scope.$$childHead.$$nextSibling.$$nextSibling.tabs[1].select();
-      };
-      $scope.chooseProblem = function(order) {
-        $scope.showProblemTab();
-        return $scope.currentProblem = _.findWhere($scope.problemList, {
-          order: order
-        });
-      };
-      $scope.resetStatusCondition = function() {
-        $scope.contestStatusCondition.problemId = void 0;
-        $scope.contestStatusCondition.result = 0;
-        $scope.contestStatusCondition.language = void 0;
-        if ($rootScope.isAdmin) {
-          return $scope.contestStatusCondition.userName = void 0;
-        }
-      };
-      $scope.$on("contestShow:showProblemTab", function(e, order) {
-        return $scope.chooseProblem(order);
-      });
-      $scope.showStatusTab = function() {
-        $scope.$$childHead.$$nextSibling.$$nextSibling.tabs[3].select();
-        $scope.contestStatusCondition.problemId = $scope.currentProblem.problemId;
-        return $scope.refreshStatus();
-      };
-      $scope.openSubmitModal = function() {
-        return $modal.open({
-          templateUrl: "template/modal/submit-modal.html",
-          controller: "SubmitModalController",
-          resolve: {
-            submitDTO: function() {
-              return {
-                codeContent: "",
-                problemId: $scope.currentProblem.problemId,
-                contestId: $scope.contest.contestId,
-                languageId: 2
-              };
-            },
-            title: function() {
-              return "" + $scope.currentProblem.orderCharacter + " - " + $scope.currentProblem.title;
-            }
-          }
-        }).result.then(function(result) {
-          if (result === "success") {
-            return $scope.showStatusTab();
-          }
-        });
-      };
-      $scope.contestStatusCondition = angular.copy($rootScope.statusCondition);
-      $scope.contestStatusCondition.contestId = $scope.contestId;
-      $scope.refreshStatus = function() {
-        return $scope.$broadcast("list:refresh:status");
-      };
-      refreshRankList = function() {
-        var contestId;
-        contestId = angular.copy($scope.contestId);
-        return $http.get("/contest/rankList/" + contestId).success(function(data) {
-          var userStatus;
-          if (data.result === "success") {
-            $scope.rankList = data.rankList.rankList;
-            _.each($scope.problemList, function(value, index) {
-              value.tried = data.rankList.problemList[index].tried;
-              return value.solved = data.rankList.problemList[index].solved;
-            });
-            if ($rootScope.hasLogin) {
-              userStatus = void 0;
-              if ($scope.contest.type === $rootScope.ContestType.INVITED) {
-                _.each(data.rankList.rankList, function(rank) {
-                  var findMe;
-                  findMe = _.findWhere(rank.teamUsers, {
-                    userName: $scope.currentUser.userName
-                  });
-                  if (angular.isDefined(findMe)) {
-                    $scope.currentTeam = rank.userName;
-                    return userStatus = rank;
-                  }
-                });
-              } else {
-                userStatus = _.findWhere(data.rankList.rankList, {
-                  userName: $rootScope.currentUser.userName
-                });
-              }
-              if (angular.isDefined(userStatus)) {
-                return _.each($scope.problemList, function(value, index) {
-                  value.hasSolved = userStatus.itemList[index].solved;
-                  return value.hasTried = userStatus.itemList[index].tried > 0;
-                });
-              }
-            }
-          }
-        }).error(function() {
-          return $window.alert("Network error!");
-        });
-      };
-      $scope.refreshRankList = function() {
-        return refreshRankList();
-      };
-      return rankListTimer = $timeout(refreshRankList, 100);
+  cdoj.controller("ErrorController", [
+    "$routeParams", "$scope", function($routeParams, $scope) {
+      return $scope.message = $routeParams.message;
     }
   ]);
 
@@ -81399,7 +81854,7 @@ if (typeof exports === 'object') {
           $scope.onSend = true;
           return $http.post("/user/sendSerialKey/" + userName).success(function(data) {
             if (data.result === "success") {
-              $window.alert("We send you an Email with the url to reset your password right now, please check your mail box.");
+              $window.alert("We send you an Email with the url to reset your password " + "right now, please check your mail box.");
               $modalInstance.close();
             } else if (data.result === "failed") {
               $window.alert("Unknown error occurred.");
@@ -81497,7 +81952,7 @@ if (typeof exports === 'object') {
         clearSelectState();
         return $scope.isRecentNews = true;
       };
-      $scope.recentContestsDescription = "该数据源允许直接引用，但请注明本段文字。\n\n数据来源：http://contests.acmicpc.info/contests.json 。\n\n本数据源力求支持所有国内ACMer的常用OJ，如果希望添加某个OJ或者发现某个OJ无法正常获取比赛信息，请联系doraemonok#163.com (#替换成@)。";
+      $scope.recentContestsDescription = "该数据源允许直接引用，但请注明本段文字。\n\n数据来源：http://contests.acmicpc.info/contests.json 。\n\n本数据源力求支持所有国内ACMer的常用OJ，如果希望添加某个OJ或者发现某个OJ无法正常获取比赛信息，\n请联系doraemonok#163.com (#替换成@)。";
       $scope.recentContests = [];
       $scope.showRecentContests = function() {
         $http.get("/recentContest").success(function(data) {
@@ -81654,97 +82109,6 @@ if (typeof exports === 'object') {
         }).error(function() {
           return $window.alert("Network error.");
         });
-      };
-    }
-  ]);
-
-  cdoj.controller("ProblemEditorController", [
-    "$scope", "$http", "$window", "$rootScope", "problem", function($scope, $http, $window, $rootScope, problem) {
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN);
-      $window.scrollTo(0, 0);
-      $scope.problem = problem;
-      $scope.fieldInfo = [];
-      $scope.action = problem.action;
-      $scope.samples = [];
-      $scope.addSample = function() {
-        return $scope.samples.add({
-          input: "",
-          output: ""
-        });
-      };
-      $scope.removeSample = function(index) {
-        return $scope.samples.splice(index, 1);
-      };
-      if ($scope.action !== "new") {
-        $scope.title = "Edit problem " + $scope.action;
-        $scope.samples = $scope.problem.samples;
-      } else {
-        $scope.title = "New problem";
-        $scope.addSample();
-      }
-      return $scope.submit = function() {
-        var problemEditDTO;
-        problemEditDTO = angular.copy($scope.problem);
-        problemEditDTO.action = angular.copy($scope.action);
-        problemEditDTO.sampleInput = JSON.stringify(_.map($scope.samples, function(sample) {
-          return sample.input;
-        }));
-        problemEditDTO.sampleOutput = JSON.stringify(_.map($scope.samples, function(sample) {
-          return sample.output;
-        }));
-        return $http.post("/problem/edit", problemEditDTO).success(function(data) {
-          if (data.result === "success") {
-            return $window.location.href = "/#/problem/show/" + data.problemId;
-          } else if (data.result === "field_error") {
-            return $scope.fieldInfo = data.field;
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $window.alert("Network error.");
-        });
-      };
-    }
-  ]);
-
-  cdoj.controller("ProblemListController", [
-    "$scope", "$rootScope", "$window", function($scope, $rootScope, $window) {
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
-      $window.scrollTo(0, 0);
-      return $rootScope.title = "Problem list";
-    }
-  ]);
-
-  cdoj.controller("ProblemShowController", [
-    "$scope", "$rootScope", "$window", "$modal", "problem", function($scope, $rootScope, $window, $modal, problem) {
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
-      $window.scrollTo(0, 0);
-      $scope.problem = problem;
-      $scope.openSubmitModal = function() {
-        return $modal.open({
-          templateUrl: "template/modal/submit-modal.html",
-          controller: "SubmitModalController",
-          resolve: {
-            submitDTO: function() {
-              return {
-                codeContent: "",
-                problemId: $scope.problem.problemId,
-                contestId: null,
-                languageId: 2
-              };
-            },
-            title: function() {
-              return "" + $scope.problem.title;
-            }
-          }
-        }).result.then(function(result) {
-          if (result === "success") {
-            return $window.location.href = "/#/status/list?problemId=" + $scope.problem.problemId;
-          }
-        });
-      };
-      return $scope.gotoStatusList = function() {
-        return $window.location.href = "/#/status/list?problemId=" + $scope.problem.problemId;
       };
     }
   ]);
@@ -82243,7 +82607,7 @@ if (typeof exports === 'object') {
             if ($scope.rating === void 0) {
               $scope.rating = "pg";
             }
-            url = "http://www.gravatar.com/avatar/" + (CryptoJS.MD5($scope.email).toString()) + ".jpg?" + ($scope.size ? "s=" + $scope.size + "&" : "") + ($scope.rating ? "r=" + $scope.rating + "&" : "") + ($scope.image ? "d=" + encodeURIComponent($scope.image) : "");
+            url = "http://www.gravatar.com/avatar/" + CryptoJS.MD5($scope.email).toString() + ".jpg?" + ($scope.size ? "s=" + $scope.size + "&" : "") + ($scope.rating ? "r=" + $scope.rating + "&" : "") + ($scope.image ? "d=" + encodeURIComponent($scope.image) : "");
             return $element.attr("src", url);
           });
         }
@@ -82282,13 +82646,12 @@ if (typeof exports === 'object') {
           $scope.showHref = false;
           checkShowHref = function() {
             if ($scope.alwaysShowHref) {
-              $scope.showHref = true;
+              return $scope.showHref = true;
             } else if ($rootScope.hasLogin && ($rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName)) {
-              $scope.showHref = true;
+              return $scope.showHref = true;
             } else {
-              $scope.showHref = false;
+              return $scope.showHref = false;
             }
-            return console.log($scope.showHref, $rootScope.hasLogin, $rootScope.currentUser.type === 1 || $rootScope.currentUser.userName === $scope.status.userName);
           };
           checkShowHref();
           $scope.$on("currentUser:changed", function() {
@@ -82309,7 +82672,7 @@ if (typeof exports === 'object') {
           };
         }
       ],
-      template: "<a href=\"javascript:void(0);\" ng-show=\"showHref\" ng-click=\"showCode()\">{{status.length}} B</a>\n<span ng-hide=\"showHref\">{{status.length}} B</span>"
+      template: "<a href=\"javascript:void(0);\"\n   ng-show=\"showHref\"\n   ng-click=\"showCode()\">{{status.length}} B</a>\n<span ng-hide=\"showHref\">{{status.length}} B</span>"
     };
   });
 
@@ -82413,7 +82776,7 @@ if (typeof exports === 'object') {
           };
         }
       ],
-      template: "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm\" ng-click=\"editVisible()\" style=\"padding: 1px 5px;\">\n      <i class=\"fa\" ng-class=\"{\n        'fa-eye': isVisible == true,\n        'fa-eye-slash': isVisible == false\n      }\"></i>\n    </button>\n    <a href=\"#/contest/editor/{{contestId}}\"\n       class=\"btn btn-default btn-sm\" style=\"padding: 1px 5px;\"><i class=\"fa fa-pencil\"></i></a>\n  </div>\n</div>"
+      template: "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\"\n            class=\"btn btn-default btn-sm\"\n            ng-click=\"editVisible()\"\n            style=\"padding: 1px 5px;\">\n      <i class=\"fa\"\n         ng-class=\"{\n          'fa-eye': isVisible == true,\n          'fa-eye-slash': isVisible == false\n         }\"></i>\n    </button>\n    <a href=\"/#/contest/editor/{{contestId}}\"\n       class=\"btn btn-default btn-sm\"\n       style=\"padding: 1px 5px;\">\n      <i class=\"fa fa-pencil\"></i>\n    </a>\n  </div>\n</div>"
     };
   });
 
@@ -82504,11 +82867,9 @@ if (typeof exports === 'object') {
     return {
       restrict: "A",
       link: function($scope, $element) {
-        return $element.find("form").on("click", (function(_this) {
-          return function(e) {
-            return e.stopPropagation();
-          };
-        })(this));
+        return $element.find("form").on("click", function(e) {
+          return e.stopPropagation();
+        });
       }
     };
   });
@@ -82684,7 +83045,7 @@ if (typeof exports === 'object') {
           });
         }
       ],
-      template: "<div class=\"panel panel-default\" style=\"margin-bottom: 6px;\">\n  <div class=\"panel-heading flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\"\n                ng-click=\"togglePreview()\"\n                ng-class=\"{active: mode == 'preview'}\">Preview</button>\n      </div>\n      <div class=\"btn-group flandre-tools\">\n        <span class=\"btn btn-default btn-sm\"><i class=\"fa fa-smile-o\"></i></span>\n        <span class=\"btn btn-default btn-sm flandre-picture-uploader\"><i class=\"fa fa-picture-o\"></i></span>\n      </div>\n      <span class=\"pull-right\" style=\"padding-top: 6px;\">Contents are parsed with <a href=\"/#/article/show/2\">Markdown</a></span>\n    </div>\n  </div>\n  <textarea class=\"tex2jax_ignore form-control flandre-editor\"\n            msd-elastic\n            ng-class=\"{'flandre-show': mode == 'edit'}\"\n            ng-model=\"content\"></textarea>\n  <div class=\"flandre-preview\" ng-class=\"{'flandre-show': mode == 'preview'}\">\n    <markdown content=\"previewContent\"></markdown>\n  </div>\n</div>",
+      template: "<div class=\"panel panel-default\" style=\"margin-bottom: 6px;\">\n  <div class=\"panel-heading flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\"\n                class=\"btn btn-default btn-sm\"\n                ng-click=\"togglePreview()\"\n                ng-class=\"{active: mode == 'preview'}\">\n          Preview\n        </button>\n      </div>\n      <div class=\"btn-group flandre-tools\">\n        <span class=\"btn btn-default btn-sm\">\n          <i class=\"fa fa-smile-o\"></i>\n        </span>\n        <span class=\"btn btn-default btn-sm flandre-picture-uploader\">\n          <i class=\"fa fa-picture-o\"></i>\n        </span>\n      </div>\n      <span class=\"pull-right\"\n            style=\"padding-top: 6px;\">\n        Contents are parsed with <a href=\"/#/article/show/2\">Markdown</a>\n      </span>\n    </div>\n  </div>\n  <textarea class=\"tex2jax_ignore form-control flandre-editor\"\n            msd-elastic\n            ng-class=\"{'flandre-show': mode == 'edit'}\"\n            ng-model=\"content\"></textarea>\n  <div class=\"flandre-preview\" ng-class=\"{'flandre-show': mode == 'preview'}\">\n    <markdown content=\"previewContent\"></markdown>\n  </div>\n</div>",
       replace: true
     };
   });
@@ -82725,16 +83086,14 @@ if (typeof exports === 'object') {
             content = marked(content);
             $element.empty().append(content);
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, $element[0]]);
-            return $($element).find("pre").each((function(_this) {
-              return function(id, el) {
-                var $el, text;
-                $el = $(el);
-                if ($el.attr("type") !== "no-prettify") {
-                  text = prettyPrintOne($el[0].innerText.escapeHTML());
-                  return $el.empty().append(text);
-                }
-              };
-            })(this));
+            return $($element).find("pre").each(function(id, el) {
+              var $el, text;
+              $el = $(el);
+              if ($el.attr("type") !== "no-prettify") {
+                text = prettyPrintOne($el[0].innerText.escapeHTML());
+                return $el.empty().append(text);
+              }
+            });
           }, true);
         }
       },
@@ -82773,42 +83132,18 @@ if (typeof exports === 'object') {
   cdoj.directive("uiPenalty", function() {
     return {
       restrict: "A",
-      scope: {
-        penalty: "="
-      },
-      controller: [
-        "$scope", function($scope) {
-          $scope.timeString = "";
-          $scope.$watch("penalty", function() {
-            return $scope.showPenaltyMinutes();
-          });
-          $scope.showPenaltyMinutes = function() {
-            return $scope.timeString = Math.round($scope.penalty / 60);
-          };
-          $scope.showPenalty = function() {
-            var hours, length, minute, second;
-            length = parseInt($scope.penalty);
-            second = length % 60;
-            length = (length - second) / 60;
-            minute = length % 60;
-            length = (length - minute) / 60;
-            hours = length;
-            $scope.timeString = "";
-            return $scope.timeString = $scope.timeString + _.sprintf("%d:%02d:%02d", hours, minute, second);
-          };
-          $scope.mouseOver = function() {
-            return $scope.showPenalty();
-          };
-          return $scope.mouseLeave = function() {
-            return setTimeout(function() {
-              return $scope.$apply(function() {
-                return $scope.showPenaltyMinutes();
-              });
-            }, 400);
-          };
-        }
-      ],
-      template: "<span ng-mouseover=\"mouseOver()\" ng-mouseleave=\"mouseLeave()\">{{timeString}}</span>"
+      link: function($scope, $element, $attr) {
+        var hours, length, minute, penalty, second, timeString;
+        penalty = $scope.$eval($attr.penalty);
+        length = parseInt(penalty);
+        second = length % 60;
+        length = (length - second) / 60;
+        minute = length % 60;
+        length = (length - minute) / 60;
+        hours = length;
+        timeString = _.sprintf("%d:%02d:%02d", hours, minute, second);
+        return $($element).text(timeString);
+      }
     };
   });
 
@@ -82822,7 +83157,7 @@ if (typeof exports === 'object') {
       },
       link: function($scope) {
         return $scope.$watch("problem", function() {
-          var i, _sampleInput, _sampleOutput;
+          var _sampleInput, _sampleOutput;
           _sampleInput = $scope.problem.sampleInput;
           try {
             _sampleInput = JSON.parse(_sampleInput);
@@ -82840,17 +83175,12 @@ if (typeof exports === 'object') {
           if (_sampleInput.length !== _sampleOutput.length) {
             return alert("Sample input has not same number of cases with sample output!");
           } else {
-            return $scope.samples = (function() {
-              var _i, _ref, _results;
-              _results = [];
-              for (i = _i = 0, _ref = _sampleInput.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-                _results.push({
-                  input: _sampleInput[i].toString(),
-                  output: _sampleOutput[i].toString()
-                });
-              }
-              return _results;
-            })();
+            return $scope.samples = _.map(_.zip(_sampleInput, _sampleOutput), function(sample) {
+              return {
+                input: sample[0].toString(),
+                output: sample[1].toString()
+              };
+            });
           }
         }, true);
       },
@@ -82882,7 +83212,7 @@ if (typeof exports === 'object') {
           };
         }
       ],
-      template: "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm\" ng-click=\"editVisible()\" style=\"padding: 1px 5px;\">\n      <i class=\"fa\" ng-class=\"{\n        'fa-eye': isVisible == true,\n        'fa-eye-slash': isVisible == false\n      }\"></i>\n    </button>\n    <a href=\"#/problem/editor/{{problemId}}\"\n       class=\"btn btn-default btn-sm\" style=\"padding: 1px 5px;\"><i class=\"fa fa-pencil\"></i></a>\n  </div>\n</div>"
+      template: "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\"\n            class=\"btn btn-default btn-sm\"\n            ng-click=\"editVisible()\"\n            style=\"padding: 1px 5px;\">\n      <i class=\"fa\"\n         ng-class=\"{\n          'fa-eye': isVisible == true,\n          'fa-eye-slash': isVisible == false\n         }\"></i>\n    </button>\n    <a href=\"#/problem/editor/{{problemId}}\"\n       class=\"btn btn-default btn-sm\"\n       style=\"padding: 1px 5px;\">\n      <i class=\"fa fa-pencil\"></i>\n    </a>\n  </div>\n</div>"
     };
   });
 
@@ -83188,7 +83518,7 @@ if (typeof exports === 'object') {
           });
         }
       ],
-      template: "<a href=\"javascript:void(0);\" ng-show=\"showHref\" ng-click=\"showCompileInfo()\">{{status.returnType}}</a>\n<span ng-hide=\"showHref\">{{status.returnType}}</span>"
+      template: "<a href=\"javascript:void(0);\"\n   ng-show=\"showHref\"\n   ng-click=\"showCompileInfo()\">{{status.returnType}}</a>\n<span ng-hide=\"showHref\">{{status.returnType}}</span>"
     };
   });
 
@@ -83457,7 +83787,7 @@ if (typeof exports === 'object') {
           };
         }
       ],
-      template: "<div class=\"btn-toolbar\" role=\"toolbar\" style=\"position: absolute; top: 12px; right: 30px;\"\n     ng-show=\"$root.isAdmin\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm\" ng-click=\"showEditor()\">\n      <i class=\"fa fa-pencil\"></i>\n    </button>\n  </div>\n</div>"
+      template: "<div class=\"btn-toolbar\"\n     role=\"toolbar\"\n     style=\"position: absolute; top: 12px; right: 30px;\"\n     ng-show=\"$root.isAdmin\">\n  <div class=\"btn-group\">\n    <button type=\"button\"\n            class=\"btn btn-default btn-sm\"\n            ng-click=\"showEditor()\">\n      <i class=\"fa fa-pencil\"></i>\n    </button>\n  </div>\n</div>"
     };
   });
 

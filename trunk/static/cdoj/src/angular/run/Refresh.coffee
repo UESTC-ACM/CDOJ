@@ -1,7 +1,7 @@
 cdoj
 .run([
     "$rootScope"
-    ($rootScope)->
+    ($rootScope) ->
       $rootScope.$on("all:refresh", ->
         $rootScope.$broadcast("data:refresh")
         $rootScope.$broadcast("globalData:refresh")

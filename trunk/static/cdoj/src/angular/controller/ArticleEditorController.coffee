@@ -1,10 +1,13 @@
 cdoj
 .controller("ArticleEditorController", [
     "$rootScope", "$scope", "$http", "$routeParams", "$window"
-    ($rootScope, $scope, $http, $routeParams, $window)->
+    ($rootScope, $scope, $http, $routeParams, $window) ->
       # Current user only
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.CURRENT_USER,
-        $routeParams.userName)
+      $scope.$emit(
+        "permission:setPermission"
+        $rootScope.AuthenticationType.CURRENT_USER
+        $routeParams.userName
+      )
       $window.scrollTo(0, 0)
 
       $scope.article =
@@ -16,11 +19,12 @@ cdoj
 
       if $scope.action != "new"
         articleId = angular.copy($scope.action)
-        $http.get("/article/data/#{articleId}").success((data)->
+        $http.get("/article/data/#{articleId}").success((data) ->
           if data.result == "success"
             $scope.article = data.article
             $scope.title = "Edit: " + $scope.article.title
-            $scope.isNotice = $scope.article.type == $rootScope.ArticleType.NOTICE
+            $scope.isNotice =
+                $scope.article.type == $rootScope.ArticleType.NOTICE
           else
             $window.alert data.error_msg
         ).error(->
@@ -37,7 +41,7 @@ cdoj
           articleEditDTO.type = $rootScope.ArticleType.NOTICE
         else
           articleEditDTO.type = $rootScope.ArticleType.ARTICLE
-        $http.post("/article/edit", articleEditDTO).success((data)->
+        $http.post("/article/edit", articleEditDTO).success((data) ->
           if data.result == "success"
             $window.location.href = "/#/article/show/#{data.articleId}"
           else if data.result == "field_error"

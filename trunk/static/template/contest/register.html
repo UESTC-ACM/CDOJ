@@ -1,17 +1,17 @@
 <div class="row">
   <div class="col-md-12">
-    <h1 ng-bind="contest.title"></h1>
+    <h1>{{contest.title}}</h1>
   </div>
   <div class="col-md-12" style="margin-bottom: 8px;" ng-hide="$root.hasLogin">
-    注册比赛之前，请先登录。
+    Please login before register.
   </div>
   <div class="col-md-12" style="margin-bottom: 8px;" ng-show="$root.hasLogin">
     <p>
-      如果你还没有建立队伍，请到<a href="/#/user/center/{{$root.currentUser.userName}}/teams">这里</a>新建一个队伍。
+      If you are not in any teams currently, please create one at <a href="/#/user/center/{{$root.currentUser.userName}}/teams">here</a>.
     </p>
 
     <p>
-      每个用户只能在一个队伍中参赛！如果队伍中有任何一个队员不符合要求都无法注册。
+      Each user can only attend the contest in one team.
     </p>
 
     <div class="input-group" style="width: 350px;">
@@ -46,9 +46,9 @@
 
       <div class="media-body">
         <h4 class="media-heading">
-          <a ng-bind="member.userName" href="/#/user/center/{{member.userName}}"></a>
+          <a href="/#/user/center/{{member.userName}}">{{member.userName}}</a>
         </h4>
-        <span ng-bind="member.nickName"></span>
+        {{member.nickName}}
       </div>
     </div>
   </div>
@@ -82,8 +82,8 @@
         </thead>
         <tbody>
         <tr ng-repeat="team in list">
-          <td ng-bind="team.contestTeamId" class="text-right" style="vertical-align: middle;"></td>
-          <td ng-bind="team.teamName" class="text-center" style="vertical-align: middle;"></td>
+          <td class="text-right" style="vertical-align: middle;">{{team.contestTeamId}}</td>
+          <td class="text-center" style="vertical-align: middle;">{{team.teamName}}</td>
           <td>
             <div class="row">
               <div class="col-md-12" ng-repeat="user in team.teamUsers">
@@ -92,18 +92,17 @@
                        email="user.email"
                        style="width: 19px; height: 19px;"/>
                 </a>
-                <a href="/#/user/center/{{user.userName}}" ng-bind="user.nickName"></a>
+                <a href="/#/user/center/{{user.userName}}">{{user.nickName}}</a>
               </div>
             </div>
           </td>
-          <td ng-bind="team.statusName"
-              ng-class="{
+          <td ng-class="{
                 'font-primary': team.status == 0,
                 'font-success': team.status == 1,
                 'font-danger': team.status == 2
               }"
-              class="text-center" style="vertical-align: middle;"></td>
-          <td ng-bind="team.comment" style="vertical-align: middle;"></td>
+              class="text-center" style="vertical-align: middle;">{{team.statusName}}</td>
+          <td style="vertical-align: middle;">{{team.comment}}</td>
           <td ng-show="$root.isAdmin" style="vertical-align: middle;">
             <a href="javascript:void(0);" ng-click="review(team)">Review</a>
           </td>

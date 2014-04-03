@@ -1,12 +1,12 @@
 cdoj
 .directive("activeLink", [
     "$location"
-    ($location)->
+    ($location) ->
       restrict: "A"
-      link: ($scope, $element, $attr)->
+      link: ($scope, $element, $attr) ->
         position = $attr.activeLink
         $scope.location = $location
-        $scope.$watch("location.path()", (newPath)->
+        $scope.$watch("location.path()", (newPath) ->
           currentPosition = newPath.split("/")[1]
           currentPosition = "" if angular.isUndefined(currentPosition)
           if currentPosition == position
