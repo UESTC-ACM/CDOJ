@@ -4,7 +4,7 @@ cdoj
   restrict: "E"
   scope:
     code: "="
-  link: ($scope, $element)->
+  link: ($scope, $element) ->
     $scope.$watch("code", ->
       result = prettyPrintOne($scope.code.trim().escapeHTML())
       $($element).empty().append(result)

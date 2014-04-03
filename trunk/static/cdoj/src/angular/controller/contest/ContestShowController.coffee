@@ -1,9 +1,9 @@
 cdoj
 .controller("ContestShowController", [
-    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$timeout", "$interval"
-    "$cookieStore", "contest"
-    ($scope, $rootScope, $http, $window, $modal, $routeParams, $timeout, $interval
-     $cookieStore, contest) ->
+    "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams",
+    "$timeout", "$interval", "$cookieStore", "contest"
+    ($scope, $rootScope, $http, $window, $modal, $routeParams,
+     $timeout, $interval, $cookieStore, contest) ->
       $scope.$emit("permission:setPermission",
         $rootScope.AuthenticationType.NOOP)
       $window.scrollTo(0, 0)
@@ -72,9 +72,13 @@ cdoj
       $scope.totalUnreadedClarification = 0
       $scope.lastClarificationCount = 0
       refreshClarification = ->
-        $rootScope.$broadcast("list:refresh:comment", (data)->
-          $scope.totalUnreadedClarification = Math.max(0,
-              data.pageInfo.totalItems - $cookieStore.get(cookieName).lastClarificationCount)
+        $rootScope.$broadcast("list:refresh:comment", (data) ->
+          $scope.totalUnreadedClarification =
+            Math.max(
+              0
+              data.pageInfo.totalItems -
+                $cookieStore.get(cookieName).lastClarificationCount
+            )
           $scope.lastClarificationCount = data.pageInfo.totalItems
           clarificationTimer = $timeout(refreshClarification, 30000)
         )
@@ -89,7 +93,7 @@ cdoj
 
       $scope.showProblemTab = ->
         $scope.$$childHead.$$nextSibling.$$nextSibling.tabs[1].select()
-      $scope.chooseProblem = (order)->
+      $scope.chooseProblem = (order) ->
         $scope.showProblemTab()
         $scope.currentProblem = _.findWhere($scope.problemList, order: order)
 
@@ -99,13 +103,14 @@ cdoj
         $scope.contestStatusCondition.language = undefined
         if $rootScope.isAdmin
           $scope.contestStatusCondition.userName = undefined
-      $scope.$on("contestShow:showProblemTab", (e, order)->
+      $scope.$on("contestShow:showProblemTab", (e, order) ->
         $scope.chooseProblem(order)
       )
       $scope.showStatusTab = ->
         # TODO Dirty code!
         $scope.$$childHead.$$nextSibling.$$nextSibling.tabs[3].select()
-        $scope.contestStatusCondition.problemId = $scope.currentProblem.problemId
+        $scope.contestStatusCondition.problemId =
+          $scope.currentProblem.problemId
         $scope.refreshStatus()
       $scope.openSubmitModal = ->
         $modal.open(
@@ -118,8 +123,9 @@ cdoj
               contestId: $scope.contest.contestId
               languageId: 2 #default C++
             title: ->
-              "#{$scope.currentProblem.orderCharacter} - #{$scope.currentProblem.title}"
-        ).result.then (result)->
+              $scope.currentProblem.orderCharacter + " - " +
+              $scope.currentProblem.title
+        ).result.then (result) ->
           if result == "success"
             $scope.showStatusTab()
 
@@ -130,17 +136,17 @@ cdoj
 
       refreshRankList = ->
         contestId = angular.copy($scope.contestId)
-        $http.get("/contest/rankList/#{contestId}").success((data)->
+        $http.get("/contest/rankList/#{contestId}").success((data) ->
           if data.result == "success"
             $scope.rankList = data.rankList.rankList
-            _.each($scope.problemList, (value, index)->
+            _.each($scope.problemList, (value, index) ->
               value.tried = data.rankList.problemList[index].tried
               value.solved = data.rankList.problemList[index].solved
             )
             if $rootScope.hasLogin
               userStatus = undefined
               if $scope.contest.type == $rootScope.ContestType.INVITED
-                _.each(data.rankList.rankList, (rank)->
+                _.each(data.rankList.rankList, (rank) ->
                   findMe = _.findWhere(rank.teamUsers,
                     userName: $scope.currentUser.userName
                   )
@@ -152,7 +158,7 @@ cdoj
                 userStatus = _.findWhere(data.rankList.rankList,
                   userName: $rootScope.currentUser.userName)
               if angular.isDefined userStatus
-                _.each($scope.problemList, (value, index)->
+                _.each($scope.problemList, (value, index) ->
                   value.hasSolved = userStatus.itemList[index].solved
                   value.hasTried = userStatus.itemList[index].tried > 0
                 )

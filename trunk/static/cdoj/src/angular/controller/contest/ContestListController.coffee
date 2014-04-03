@@ -1,8 +1,11 @@
 cdoj
 .controller("ContestListController", [
     "$scope", "$rootScope", "$window", "$modal", "$http"
-    ($scope, $rootScope, $window, $modal, $http)->
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
+    ($scope, $rootScope, $window, $modal, $http) ->
+      $scope.$emit(
+        "permission:setPermission"
+        $rootScope.AuthenticationType.NOOP
+      )
       $window.scrollTo(0, 0)
 
       $scope.showAddContestModal = ->
@@ -12,7 +15,7 @@ cdoj
           controller: "AddContestModalController"
         )
 
-      $scope.enterContest = (contest)->
+      $scope.enterContest = (contest) ->
         if contest.type == $rootScope.ContestType.INHERIT
           type = contest.parentType
         else
@@ -25,7 +28,10 @@ cdoj
               contestId: contest.contestId
               # Avoid field error
               password: "1234567890123456789012345678901234567890"
-            $http.post("/contest/loginContest", contestLoginDTO).success((data)->
+            $http.post(
+              "/contest/loginContest"
+              contestLoginDTO
+            ).success((data) ->
               if data.result == "success"
                 # The use has logined before
                 $window.location.href = "/#/contest/show/" + contest.contestId
@@ -43,7 +49,10 @@ cdoj
             contestId: contest.contestId
           # Avoid field error
             password: "1234567890123456789012345678901234567890"
-          $http.post("/contest/loginContest", contestLoginDTO).success((data)->
+          $http.post(
+            "/contest/loginContest"
+            contestLoginDTO
+          ).success((data) ->
             if data.result == "success"
               # The use has logined before
               $window.location.href = "/#/contest/show/" + contest.contestId

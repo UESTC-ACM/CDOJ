@@ -1,6 +1,6 @@
 cdoj.controller("ProblemShowController", [
   "$scope", "$rootScope", "$window", "$modal", "problem"
-  ($scope, $rootScope, $window, $modal, problem)->
+  ($scope, $rootScope, $window, $modal, problem) ->
     $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
     $window.scrollTo(0, 0)
 
@@ -18,10 +18,12 @@ cdoj.controller("ProblemShowController", [
             languageId: 2 #default C++
           title: ->
             "#{$scope.problem.title}"
-      ).result.then (result)->
+      ).result.then (result) ->
         if result == "success"
-          $window.location.href = "/#/status/list?problemId=#{$scope.problem.problemId}"
+          $window.location.href = "/#/status/list?problemId=" +
+            $scope.problem.problemId
     $scope.gotoStatusList = ->
       # TODO
-      $window.location.href = "/#/status/list?problemId=#{$scope.problem.problemId}"
+      $window.location.href = "/#/status/list?problemId=" +
+        $scope.problem.problemId
 ])

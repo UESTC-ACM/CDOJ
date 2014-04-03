@@ -4,7 +4,7 @@ cdoj
     ($window) ->
       restrict: "E"
       replace: true
-      link: ($scope, $element)->
+      link: ($scope, $element) ->
         contestUploader = new qq.FineUploaderBasic(
           button: $($element)[0]
           request:

@@ -8,15 +8,15 @@ cdoj
     articleId: "="
   controller: [
     "$rootScope", "$scope", "$http", "$window"
-    ($rootScope, $scope, $http, $window)->
+    ($rootScope, $scope, $http, $window) ->
       commentCondition = angular.copy($rootScope.articleCondition)
       commentCondition.contestId = $scope.contestId
       commentCondition.problemId = $scope.problemId
       commentCondition.parentId = $scope.articleId
       $scope.commentCondition = commentCondition
 
-      sendEditRequest = (articleEditDTO)->
-        $http.post("/article/editComment", articleEditDTO).success((data)->
+      sendEditRequest = (articleEditDTO) ->
+        $http.post("/article/editComment", articleEditDTO).success((data) ->
           if data.result == "success"
             $scope.newComment = ""
             $scope.$broadcast("list:refresh:comment")
@@ -49,12 +49,12 @@ cdoj
         $scope.stashCommentList = false
         $window.scrollTo(0, 0)
 
-      $scope.reply = (article)->
+      $scope.reply = (article) ->
         $scope.newComment = "@" + article.ownerName + " : "
         $scope.$broadcast("flandre:focus")
         $scope.stashCommentList = true
 
-      $scope.delete = (article)->
+      $scope.delete = (article) ->
         if $window.confirm "Are you sure?"
           articleEditDTO =
             content: "This comment is deleted by administrator."

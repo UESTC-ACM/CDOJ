@@ -2,14 +2,14 @@ cdoj.directive("equals",
 ->
   restrict: "A"
   require: "?ngModel"
-  link: ($scope, $element, $attrs, $ngModel)->
+  link: ($scope, $element, $attrs, $ngModel) ->
     if angular.isUndefined $ngModel then return
     # watch own value and re-validate on change
     $scope.$watch($attrs.ngModel, ->
       validate())
 
     # observe the other value and re-validate on change
-    $attrs.$observe("equals", ()->
+    $attrs.$observe("equals", ->
       validate())
 
     validate = ->

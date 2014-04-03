@@ -1,7 +1,7 @@
 cdoj
 .controller("ContestPasswordModalController", [
     "$scope", "$rootScope", "$window", "$modalInstance", "contest", "$http"
-    ($scope, $rootScope, $window, $modalInstance, contest, $http)->
+    ($scope, $rootScope, $window, $modalInstance, contest, $http) ->
       $scope.contest = contest
       $scope.fieldInfo = []
 
@@ -9,7 +9,10 @@ cdoj
         contestLoginDTO =
           contestId: contest.contestId
           password: CryptoJS.SHA1(contest.password).toString()
-        $http.post("/contest/loginContest", contestLoginDTO).success((data)->
+        $http.post(
+          "/contest/loginContest"
+          contestLoginDTO
+        ).success((data) ->
           if data.result == "success"
             # Success!
             $modalInstance.close()

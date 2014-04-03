@@ -116,29 +116,39 @@ cdoj.directive("uiFlandre",
       )
   ]
   template: """
-      <div class="panel panel-default" style="margin-bottom: 6px;">
-        <div class="panel-heading flandre-heading">
-          <div class="btn-toolbar" role="toolbar">
-            <div class="btn-group">
-              <button type="button" class="btn btn-default btn-sm"
-                      ng-click="togglePreview()"
-                      ng-class="{active: mode == 'preview'}">Preview</button>
-            </div>
-            <div class="btn-group flandre-tools">
-              <span class="btn btn-default btn-sm"><i class="fa fa-smile-o"></i></span>
-              <span class="btn btn-default btn-sm flandre-picture-uploader"><i class="fa fa-picture-o"></i></span>
-            </div>
-            <span class="pull-right" style="padding-top: 6px;">Contents are parsed with <a href="/#/article/show/2">Markdown</a></span>
-          </div>
-        </div>
-        <textarea class="tex2jax_ignore form-control flandre-editor"
-                  msd-elastic
-                  ng-class="{'flandre-show': mode == 'edit'}"
-                  ng-model="content"></textarea>
-        <div class="flandre-preview" ng-class="{'flandre-show': mode == 'preview'}">
-          <markdown content="previewContent"></markdown>
-        </div>
+<div class="panel panel-default" style="margin-bottom: 6px;">
+  <div class="panel-heading flandre-heading">
+    <div class="btn-toolbar" role="toolbar">
+      <div class="btn-group">
+        <button type="button"
+                class="btn btn-default btn-sm"
+                ng-click="togglePreview()"
+                ng-class="{active: mode == 'preview'}">
+          Preview
+        </button>
       </div>
+      <div class="btn-group flandre-tools">
+        <span class="btn btn-default btn-sm">
+          <i class="fa fa-smile-o"></i>
+        </span>
+        <span class="btn btn-default btn-sm flandre-picture-uploader">
+          <i class="fa fa-picture-o"></i>
+        </span>
+      </div>
+      <span class="pull-right"
+            style="padding-top: 6px;">
+        Contents are parsed with <a href="/#/article/show/2">Markdown</a>
+      </span>
+    </div>
+  </div>
+  <textarea class="tex2jax_ignore form-control flandre-editor"
+            msd-elastic
+            ng-class="{'flandre-show': mode == 'edit'}"
+            ng-model="content"></textarea>
+  <div class="flandre-preview" ng-class="{'flandre-show': mode == 'preview'}">
+    <markdown content="previewContent"></markdown>
+  </div>
+</div>
       """
   replace: true
 )

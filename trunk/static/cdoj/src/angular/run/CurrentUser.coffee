@@ -1,13 +1,13 @@
 cdoj
 .run([
     "$rootScope"
-    ($rootScope)->
+    ($rootScope) ->
       $rootScope.hasLogin = false
       $rootScope.currentUser =
         email: ""
       $rootScope.isAdmin = false
 
-      $rootScope.$on("currentUser:login", (e, currentUser)->
+      $rootScope.$on("currentUser:login", (e, currentUser) ->
         _.extend($rootScope.currentUser, currentUser)
         $rootScope.hasLogin = true
         $rootScope.$broadcast("currentUser:changed")

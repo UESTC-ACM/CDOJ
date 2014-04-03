@@ -1,8 +1,11 @@
 cdoj
 .controller("IndexController", [
     "$scope", "$rootScope", "$window", "$http"
-    ($scope, $rootScope, $window, $http)->
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
+    ($scope, $rootScope, $window, $http) ->
+      $scope.$emit(
+        "permission:setPermission"
+        $rootScope.AuthenticationType.NOOP
+      )
       $window.scrollTo(0, 0)
 
       $rootScope.title = "Home"
@@ -32,12 +35,13 @@ cdoj
 
 数据来源：http://contests.acmicpc.info/contests.json 。
 
-本数据源力求支持所有国内ACMer的常用OJ，如果希望添加某个OJ或者发现某个OJ无法正常获取比赛信息，请联系doraemonok#163.com (#替换成@)。
+本数据源力求支持所有国内ACMer的常用OJ，如果希望添加某个OJ或者发现某个OJ无法正常获取比赛信息，
+请联系doraemonok#163.com (#替换成@)。
 """
       $scope.recentContests = []
       $scope.showRecentContests = ->
-        $http.get("/recentContest").success((data)->
-          $scope.recentContests = _.map(data.recentContestList, (contest)->
+        $http.get("/recentContest").success((data) ->
+          $scope.recentContests = _.map(data.recentContestList, (contest) ->
             contest.link = contest.link.unescapeHTML()
             return contest
           )
@@ -49,8 +53,8 @@ cdoj
 
       $scope.article =
         content: ""
-      $scope.showArticle = (articleId)->
-        $http.get("/article/data/#{articleId}").success((data)->
+      $scope.showArticle = (articleId) ->
+        $http.get("/article/data/#{articleId}").success((data) ->
           if data.result == "success"
             $scope.article = data.article
           else

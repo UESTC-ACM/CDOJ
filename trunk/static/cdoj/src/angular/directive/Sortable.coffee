@@ -1,9 +1,13 @@
 #
 # jQuery UI Sortable plugin wrapper
 #
-# @param [ui-sortable] {object} Options to pass to $.fn.sortable() merged onto ui.config
+# @param [ui-sortable] {object}
+# Options to pass to $.fn.sortable() merged onto ui.config
 #
-angular.module("ui.sortable", []).value("uiSortableConfig", {}).directive "uiSortable", [
+angular
+.module("ui.sortable", [])
+.value("uiSortableConfig", {})
+.directive "uiSortable", [
   "uiSortableConfig"
   "$timeout"
   "$log"
@@ -74,7 +78,10 @@ angular.module("ui.sortable", []).value("uiSortableConfig", {}).directive "uiSor
           # been created, either placeholder will be false if no
           # placeholder class was given or placeholder.element will be
           # undefined if a class was given (placeholder will be a string)
-          if placeholder and placeholder.element and typeof placeholder.element is "function"
+          if (
+              placeholder and placeholder.element and
+              typeof placeholder.element is "function"
+          )
             phElement = placeholder.element()
 
             # workaround for jquery ui 1.9.x,
@@ -84,7 +91,8 @@ angular.module("ui.sortable", []).value("uiSortableConfig", {}).directive "uiSor
             # exact match with the placeholder's class attribute to handle
             # the case that multiple connected sortables exist and
             # the placehoilder option equals the class of sortable items
-            excludes = element.find("[class=\"" + phElement.attr("class") + "\"]")
+            excludes =
+              element.find("[class=\"" + phElement.attr("class") + "\"]")
             savedNodes = savedNodes.not(excludes)
           return
 
@@ -111,8 +119,8 @@ angular.module("ui.sortable", []).value("uiSortableConfig", {}).directive "uiSor
 
           # restore all the savedNodes except .ui-sortable-helper element
           # (which is placed last). That way it will be garbage collected.
-          savedNodes = savedNodes.not(savedNodes.last())  if element.sortable("option",
-            "helper") is "clone"
+          if element.sortable("option", "helper") is "clone"
+            savedNodes = savedNodes.not(savedNodes.last())
           savedNodes.appendTo element
 
           # If received is true (an item was dropped in from another list)
@@ -121,7 +129,11 @@ angular.module("ui.sortable", []).value("uiSortableConfig", {}).directive "uiSor
           # moved here from another list
           if ui.item.sortable.received and not ui.item.sortable.isCanceled()
             scope.$apply ->
-              ngModel.$modelValue.splice ui.item.sortable.dropindex, 0, ui.item.sortable.moved
+              ngModel.$modelValue.splice(
+                ui.item.sortable.dropindex
+                0
+                ui.item.sortable.moved
+              )
               return
 
           return
@@ -131,18 +143,27 @@ angular.module("ui.sortable", []).value("uiSortableConfig", {}).directive "uiSor
           # If the received flag hasn't be set on the item, this is a
           # normal sort, if dropindex is set, the item was moved, so move
           # the items in the list.
-          if not ui.item.sortable.received and "dropindex" of ui.item.sortable and not ui.item.sortable.isCanceled()
+          if (
+              not ui.item.sortable.received and
+              "dropindex" of ui.item.sortable and
+              not ui.item.sortable.isCanceled()
+          )
             scope.$apply ->
-              ngModel.$modelValue.splice ui.item.sortable.dropindex, 0, ngModel.$modelValue.splice(ui.item.sortable.index,
-                1)[0]
+              ngModel.$modelValue.splice(
+                ui.item.sortable.dropindex
+                0
+                ngModel.$modelValue.splice(ui.item.sortable.index, 1)[0]
+              )
               return
 
           else
 
             # if the item was not moved, then restore the elements
             # so that the ngRepeat's comment are correct.
-            savedNodes.appendTo element  if (("dropindex" of ui.item.sortable) or ui.item.sortable.isCanceled()) and element.sortable("option",
-              "helper") isnt "clone"
+            if ((("dropindex" of ui.item.sortable) or
+                    ui.item.sortable.isCanceled()) and
+                element.sortable("option", "helper") isnt "clone")
+              savedNodes.appendTo element
           return
 
         callbacks.receive = (e, ui) ->
@@ -158,7 +179,8 @@ angular.module("ui.sortable", []).value("uiSortableConfig", {}).directive "uiSor
           # so the next list can retrive it
           unless ui.item.sortable.isCanceled()
             scope.$apply ->
-              ui.item.sortable.moved = ngModel.$modelValue.splice(ui.item.sortable.index, 1)[0]
+              ui.item.sortable.moved =
+                ngModel.$modelValue.splice(ui.item.sortable.index, 1)[0]
               return
 
           return

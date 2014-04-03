@@ -2,7 +2,10 @@ cdoj
 .controller("UserCenterController", [
     "$scope", "$rootScope", "$http", "$routeParams", "$modal", "$window"
     ($scope, $rootScope, $http, $routeParams, $modal, $window) ->
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
+      $scope.$emit(
+        "permission:setPermission"
+        $rootScope.AuthenticationType.NOOP
+      )
       $window.scrollTo(0, 0)
       $scope.targetUser =
         email: ""
@@ -12,14 +15,17 @@ cdoj
       # FIXME(mzry1992) This will cause the message list refresh automatically!
       permissionChanged = ->
         if $rootScope.hasEditPermission == false
-          $scope.messagesTabTitle = "Your messages with " + $scope.targetUser.userName
+          $scope.messagesTabTitle =
+              "Your messages with " + $scope.targetUser.userName
           $scope.messageCondition.userAId = $scope.currentUser.userId
           $scope.messageCondition.userBId = $scope.targetUser.userId
         else
           $scope.messagesTabTitle = $scope.targetUser.userName + "'s messages"
           $scope.messageCondition.userId = $scope.currentUser.userId
           if angular.isUndefined $scope.userEditDTO
-            $http.get("/user/profile/#{$scope.targetUser.userName}").success((data)->
+            $http.get(
+              "/user/profile/" + $scope.targetUser.userName
+            ).success((data) ->
               if data.result == "success"
                 $scope.userEditDTO = data.user
             )
@@ -57,7 +63,7 @@ cdoj
       targetUserName = angular.copy($routeParams.userName)
       $scope.$emit("permission:setEditPermission", targetUserName)
       $scope.$emit("permission:check")
-      $http.get("/user/userCenterData/#{targetUserName}").success((data)->
+      $http.get("/user/userCenterData/#{targetUserName}").success((data) ->
         if data.result == "success"
           $scope.targetUser = data.targetUser
           $scope.problemStatus = data.problemStatus
@@ -75,22 +81,28 @@ cdoj
       $scope.fieldInfo = []
       $scope.edit = ->
         userEditDTO = angular.copy($scope.userEditDTO)
-        userEditDTO.newPassword = undefined if userEditDTO.newPassword == ""
-        userEditDTO.newPasswordRepeat = undefined if userEditDTO.newPasswordRepeat == ""
-        if angular.isUndefined userEditDTO.newPassword && angular.isUndefined userEditDTO.newPasswordRepeat
+        if userEditDTO.newPassword == ""
+          userEditDTO.newPassword = undefined
+        if userEditDTO.newPasswordRepeat == ""
+          userEditDTO.newPasswordRepeat = undefined
+        if (
+          angular.isUndefined userEditDTO.newPassword &&
+            angular.isUndefined userEditDTO.newPasswordRepeat
+        )
           userEditDTO = _.omit(userEditDTO, "newPassword")
           userEditDTO = _.omit(userEditDTO, "newPassowrdRepeat")
         else
           newPassword = CryptoJS.SHA1(userEditDTO.newPassword).toString()
           userEditDTO.newPassword = newPassword
-          newPasswordRepeat = CryptoJS.SHA1(userEditDTO.newPasswordRepeat).toString()
+          newPasswordRepeat =
+            CryptoJS.SHA1(userEditDTO.newPasswordRepeat).toString()
           userEditDTO.newPasswordRepeat = newPasswordRepeat
         if angular.isUndefined userEditDTO.oldPassword
           $window.scrollTo(0, 0)
           return
         oldPassword = CryptoJS.SHA1(userEditDTO.oldPassword).toString()
         userEditDTO.oldPassword = oldPassword
-        $http.post("/user/edit", userEditDTO).success((data)->
+        $http.post("/user/edit", userEditDTO).success((data) ->
           if data.result == "success"
             $window.alert "Success!"
             $window.location.href = "/#/"
@@ -107,9 +119,9 @@ cdoj
         teamName: ""
       $scope.createNewTeam = ->
         teamDTO = angular.copy($scope.newTeam)
-        $http.post("/team/createTeam", teamDTO).success((data)->
+        $http.post("/team/createTeam", teamDTO).success((data) ->
           if data.result == "success"
-            $scope.$broadcast("list:refresh:team", (data)->
+            $scope.$broadcast("list:refresh:team", (data) ->
               $modal.open(
                 templateUrl: "template/modal/team-editor-modal.html"
                 controller: "TeamEditorModalController"

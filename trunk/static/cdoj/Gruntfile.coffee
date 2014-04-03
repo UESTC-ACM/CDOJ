@@ -28,6 +28,14 @@ module.exports = (grunt) ->
             "src/angular/directive/*.coffee"
           ]
 
+    coffeelint:
+      coffee: [
+        "src/angular/*.coffee"
+        "src/angular/**/*.coffee"
+      ]
+      options:
+        "arrow_spacing":
+          "level": "error"
     less:
       cdoj:
         files:
@@ -118,8 +126,11 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks "grunt-contrib-coffee"
   grunt.loadNpmTasks "grunt-contrib-concat"
   grunt.loadNpmTasks "grunt-yui-compressor"
+  grunt.loadNpmTasks "grunt-coffeelint"
 
   grunt.registerTask "compileFull", [
+    "coffeelint:coffee"
+
     "less:cdoj"
     "concat:cdojFull"
 

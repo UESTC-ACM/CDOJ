@@ -81,7 +81,11 @@ angular.module("frapontillo.bootstrap-switch").directive "bsSwitch", [
       listenToView()
       element.bootstrapSwitch()
       $timeout ->
-        element.bootstrapSwitch "setState", controller.$modelValue or false, true
+        element.bootstrapSwitch(
+          "setState"
+          controller.$modelValue or false
+          true
+        )
 
       scope.$on "$destroy", ->
         element.bootstrapSwitch "destroy"

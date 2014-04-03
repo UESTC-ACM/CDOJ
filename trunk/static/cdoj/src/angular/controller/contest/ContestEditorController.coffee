@@ -3,8 +3,10 @@ cdoj
     "$scope", "$rootScope", "$http", "$window", "contest"
     ($scope, $rootScope, $http, $window, contest) ->
       # Administrator only
-      $scope.$emit("permission:setPermission",
-        $rootScope.AuthenticationType.ADMIN)
+      $scope.$emit(
+        "permission:setPermission"
+        $rootScope.AuthenticationType.ADMIN
+      )
       $window.scrollTo(0, 0)
 
       $scope.contest = contest
@@ -14,7 +16,7 @@ cdoj
 
       if $scope.action != "new"
         $scope.title = "Edit contest " + $scope.action
-        $scope.problemList = _.map(contest.problemList, (val)->
+        $scope.problemList = _.map(contest.problemList, (val) ->
           problemId: val.problemId
           title: val.title
         )
@@ -31,7 +33,9 @@ cdoj
         if isNaN(parseInt(problem.problemId))
           problem.title = "Invalid problem id!"
         else
-          $http.get("/problem/query/#{problem.problemId}/title").success (data) ->
+          $http.get(
+            "/problem/query/" + problem.problemId + "/title"
+          ).success (data) ->
             if data.result == "success"
               if data.list.length == 1
                 problem.title = data.list[0]
@@ -53,14 +57,17 @@ cdoj
         $scope.problemList.add(problem)
 
       $scope.removeProblem = (index) ->
-        $scope.problemList.splice(index, 1);
+        $scope.problemList.splice(index, 1)
 
       $scope.fieldInfo = []
 
       $scope.submit = ->
         contestEditDTO = angular.copy($scope.contest)
         if contestEditDTO.type == $rootScope.ContestType.PRIVATE
-          if angular.isUndefined(contestEditDTO.password) || angular.isUndefined(contestEditDTO.passwordRepeat)
+          if (
+              angular.isUndefined(contestEditDTO.password) ||
+              angular.isUndefined(contestEditDTO.passwordRepeat)
+          )
             $window.scrollTo(0, 0)
             return
         else if contestEditDTO.type == $rootScope.ContestType.INHERIT
@@ -73,7 +80,7 @@ cdoj
         contestEditDTO.password = password
         passwordRepeat = CryptoJS.SHA1(contestEditDTO.passwordRepeat).toString()
         contestEditDTO.passwordRepeat = passwordRepeat
-        $http.post("/contest/edit", contestEditDTO).success((data)->
+        $http.post("/contest/edit", contestEditDTO).success((data) ->
           if data.result == "success"
             $window.location.href = "#/contest/show/#{data.contestId}"
           else if data.result == "field_error"
@@ -85,10 +92,10 @@ cdoj
           $window.alert "Network error."
         )
 
-      $scope.searchContest = (keyword)->
+      $scope.searchContest = (keyword) ->
         contestCondition =
           keyword: keyword
-        $http.post("/contest/search", contestCondition).then((response)->
+        $http.post("/contest/search", contestCondition).then((response) ->
           data = response.data
           if data.result == "success"
             return data.list
