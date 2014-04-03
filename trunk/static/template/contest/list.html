@@ -61,7 +61,7 @@
               ng-show="contest.type != $root.ContestType.INHERIT"
               ng-class="{
                 'font-success': contest.type == $root.ContestType.PUBLIC,
-                'font-danger': contest.type == $root.ContestType.PRIVATE || contest.type == $root.ContestType.INVITED,
+                'font-danger': contest.type == $root.ContestType.PRIVATE || contest.type == $root.ContestType.INVITED || contest.type == $root.ContestType.ONSITE,
                 'font-primary': contest.type == $root.ContestType.DIY
               }">
             <span ng-show="contest.type != $root.ContestType.INVITED">{{contest.typeName}}</span>
@@ -75,7 +75,7 @@
               ng-hide="contest.type != $root.ContestType.INHERIT"
               ng-class="{
                 'font-success': contest.parentType == $root.ContestType.PUBLIC,
-                'font-danger': contest.parentType == $root.ContestType.PRIVATE || contest.parentType == $root.ContestType.INVITED,
+                'font-danger': contest.parentType == $root.ContestType.PRIVATE || contest.parentType == $root.ContestType.INVITED || contest.parentType == $root.ContestType.ONSITE,
                 'font-primary': contest.parentType == $root.ContestType.DIY
               }">
             {{contest.parentTypeName}}

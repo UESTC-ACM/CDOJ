@@ -352,6 +352,15 @@ public class ContestController extends BaseController {
         // Put members map in session
         setContestTeamMembers(session, contestDTO.getContestId(), teamMembers);
       }
+    } else if (contestDTO.getType() == ContestType.ONSITE.ordinal()) {
+      // Onsite!
+      if (!isAdmin(session)) {
+        UserDTO currentUser = getCurrentUser(session);
+        if (currentUser == null) {
+          throw new AppException("You are not invited in this contest!");
+        }
+        // Check permission
+      }
     } else {
       // Unexpected type
       throw new AppException("Incorrect contest type.");

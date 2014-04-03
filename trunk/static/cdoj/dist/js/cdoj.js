@@ -80448,7 +80448,8 @@ if (typeof exports === 'object') {
       PRIVATE: 1,
       DIY: 2,
       INVITED: 3,
-      INHERIT: 4
+      INHERIT: 4,
+      ONSITE: 5
     },
     ContestStatus: {
       PENDING: "Pending",
