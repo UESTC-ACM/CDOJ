@@ -25,16 +25,8 @@ buildscript {
 }
 apply plugin: 'grunt'
 
-task setupCNPM(type: NpmTask) {
-  // config cnpmjs
-  args = ["config", "set", "registry", "http://registry.cnpmjs.org"]
-}
-
 task build << {
   nodeSetup.execute()
-  if (Boolean.getBoolean("useCNPM")) {
-    setupCNPM.execute()
-  }
   installGrunt.execute()
   npmInstall.execute()
   grunt_build.execute()
