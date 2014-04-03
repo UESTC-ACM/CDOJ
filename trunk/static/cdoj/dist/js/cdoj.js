@@ -81124,7 +81124,18 @@ if (typeof exports === 'object') {
             name: user.members
           };
         });
-        return console.log(userList);
+        return $http.post("/contest/updateOnsiteUser", {
+          userList: userList,
+          contestId: $scope.contest.contestId
+        }).success(function(data) {
+          if (data.result === "success") {
+            return $window.alert("Update onsite users information successful!");
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
       };
       return $scope.onsiteUserFileHelp = "You should upload user config file in csv format.\n\nYou need to specify the corresponding attribute in the header row, see\nthe example below for more details.\n\n(Use `,` as the separators and `\"` as the quote character)\n\n```\n\"id\", \"userName\", \"password\", \"teamName\", \"members\"\n\"team001\", \"12th_team001\", \"123456789\", \"UESTC_Dage\", \"大哥, 大哥, 大哥\"\n```\n\nPlease check the list carefully after you upload it, and click the update\nbutton below to commit changes.";
     }
@@ -83154,6 +83165,7 @@ if (typeof exports === 'object') {
         replace: true,
         link: function($scope, $element) {
           var onsiteUserFileUploader;
+          $scope.label = "Load from CSV file";
           return onsiteUserFileUploader = new qq.FineUploaderBasic({
             button: $($element)[0],
             request: {
@@ -83166,9 +83178,17 @@ if (typeof exports === 'object') {
             },
             multiple: false,
             callbacks: {
+              onSubmit: function() {
+                return $scope.$apply(function() {
+                  return $scope.label = "Uploading...";
+                });
+              },
               onComplete: function(id, fileName, data) {
                 if (data.success === "true") {
-                  return $scope.$emit("onsiteUserFileUploader:complete", data.list);
+                  return $scope.$apply(function() {
+                    $scope.$emit("onsiteUserFileUploader:complete", data.list);
+                    return $scope.label = "Load from CSV file";
+                  });
                 }
               },
               onError: function(id, fileName, errorReason) {
@@ -83177,7 +83197,7 @@ if (typeof exports === 'object') {
             }
           });
         },
-        template: "<button class=\"btn btn-danger\">Load from CSV file</button>"
+        template: "<button class=\"btn btn-danger\">{{label}}</button>"
       };
     }
   ]);

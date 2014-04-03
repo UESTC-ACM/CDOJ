@@ -15,6 +15,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReportDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReviewDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestUser.ContestUserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
@@ -28,6 +29,7 @@ import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestRankListService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
+import cn.edu.uestc.acmicpc.service.iface.ContestUserService;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
@@ -36,6 +38,7 @@ import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.TeamService;
 import cn.edu.uestc.acmicpc.service.iface.TeamUserService;
+import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
@@ -110,6 +113,8 @@ public class ContestController extends BaseController {
   private ContestRegistryReportView contestRegistryReportView;
   private ContestRankListView contestRankListView;
   private Settings settings;
+  private UserService userService;
+  private ContestUserService contestUserService;
 
   @Autowired
   public ContestController(ContestService contestService,
@@ -127,7 +132,9 @@ public class ContestController extends BaseController {
                            ContestRankListService contestRankListService,
                            ContestRegistryReportView contestRegistryReportView,
                            ContestRankListView contestRankListView,
-                           Settings settings) {
+                           Settings settings,
+                           UserService userService,
+                           ContestUserService contestUserService) {
     this.contestService = contestService;
     this.contestProblemService = contestProblemService;
     this.contestImporterService = contestImporterService;
@@ -145,12 +152,14 @@ public class ContestController extends BaseController {
     this.contestRegistryReportView = contestRegistryReportView;
     this.contestRankListView = contestRankListView;
     this.settings = settings;
+    this.userService = userService;
+    this.contestUserService = contestUserService;
   }
 
   @RequestMapping("exportCodes/{contestId}")
   public void exportCodes(HttpSession session,
-                             @PathVariable("contestId") Integer contestId,
-                             HttpServletResponse response) {
+                          @PathVariable("contestId") Integer contestId,
+                          HttpServletResponse response) {
     try {
       if (!isAdmin(session)) {
         throw new AppException("Permission denied!");
@@ -934,7 +943,7 @@ public class ContestController extends BaseController {
   }
 
   @RequestMapping(value = "uploadOnsiteUserFile",
-    method = RequestMethod.POST)
+      method = RequestMethod.POST)
   @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
@@ -967,18 +976,28 @@ public class ContestController extends BaseController {
   @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
-  Map<String, Object> updateOnsiteUser(@RequestBody List<UserDTO> userList) {
+  Map<String, Object> updateOnsiteUser(@RequestBody ContestEditDTO contestEditDTO) {
     Map<String, Object> json = new HashMap<>();
     try {
-
-
-      json.put("success", "true");
+      Integer contestId = contestEditDTO.getContestId();
+      // Remove old users
+      contestUserService.removeContestUsersByContestId(contestId);
+      // Add new users
+      List<Integer> newUsersIDList = userService.createOnsiteUsersByUserList(contestEditDTO.getUserList());
+      for (Integer userID : newUsersIDList) {
+        contestUserService.createNewContestUser(
+            ContestUserDTO.Builder()
+                .setContestId(contestId)
+                .setUserId(userID)
+                .setStatus((byte) ContestRegistryStatusType.ACCEPTED.ordinal())
+                .setComment("Users in contest " + contestId)
+                .build()
+        );
+      }
+      json.put("result", "success");
     } catch (AppException e) {
-      e.printStackTrace();
-      json.put("error", e.getMessage());
-    } catch (Exception e) {
-      e.printStackTrace();
-      json.put("error", "Unknown exception occurred.");
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
     }
     return json;
   }

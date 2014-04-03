@@ -1,6 +1,9 @@
 package cn.edu.uestc.acmicpc.db.dto.impl.contest;
 
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * DTO post from contest editor.
@@ -44,6 +47,15 @@ public class ContestEditDTO {
   private String password;
   private String passwordRepeat;
   private Integer parentId;
+  private List<UserDTO> userList;
+
+  public List<UserDTO> getUserList() {
+    return userList;
+  }
+
+  public void setUserList(List<UserDTO> userList) {
+    this.userList = userList;
+  }
 
   public Integer getParentId() {
     return parentId;
@@ -151,8 +163,12 @@ public class ContestEditDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof ContestEditDTO)) return false;
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof ContestEditDTO)) {
+      return false;
+    }
 
     ContestEditDTO that = (ContestEditDTO) o;
 
@@ -174,6 +190,9 @@ public class ContestEditDTO {
     if (lengthMinutes != null ? !lengthMinutes.equals(that.lengthMinutes) : that.lengthMinutes != null) {
       return false;
     }
+    if (parentId != null ? !parentId.equals(that.parentId) : that.parentId != null) {
+      return false;
+    }
     if (password != null ? !password.equals(that.password) : that.password != null) {
       return false;
     }
@@ -192,7 +211,7 @@ public class ContestEditDTO {
     if (type != null ? !type.equals(that.type) : that.type != null) {
       return false;
     }
-    if (parentId != null ? !parentId.equals(that.parentId) : that.parentId != null) {
+    if (userList != null ? !userList.equals(that.userList) : that.userList != null) {
       return false;
     }
 
@@ -214,6 +233,7 @@ public class ContestEditDTO {
     result = 31 * result + (password != null ? password.hashCode() : 0);
     result = 31 * result + (passwordRepeat != null ? passwordRepeat.hashCode() : 0);
     result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
+    result = 31 * result + (userList != null ? userList.hashCode() : 0);
     return result;
   }
 
