@@ -17,6 +17,7 @@
 		"grunt-contrib-less": "*",
     "grunt-contrib-concat": "*",
     "grunt-yui-compressor": "*",
+    "grunt-coffeelint": "*",
     "bower": "*"
   }
 }

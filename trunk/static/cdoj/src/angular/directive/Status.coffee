@@ -13,7 +13,13 @@ cdoj
         if $scope.status.returnTypeId == 7
           if $scope.alwaysShowHref
             $scope.showHref = true
-          else if $rootScope.hasLogin && ($rootScope.currentUser.type == 1 || $rootScope.currentUser.userName == $scope.status.userName)
+          else if (
+              $rootScope.hasLogin &&
+              (
+                  $rootScope.currentUser.type == 1 ||
+                  $rootScope.currentUser.userName == $scope.status.userName
+              )
+          )
             $scope.showHref = true
           else
             $scope.showHref = false
@@ -45,7 +51,7 @@ cdoj
           contestId: $scope.status.contestId
         if angular.isUndefined condition.contestId
           condition.contestId = -1
-        $http.post("/status/search", condition).success((data)->
+        $http.post("/status/search", condition).success((data) ->
           if data.result == "success" and data.list.length == 1
             $scope.status = data.list[0]
             checkShowHref()
@@ -61,7 +67,9 @@ cdoj
       )
   ]
   template: """
-<a href="javascript:void(0);" ng-show="showHref" ng-click="showCompileInfo()">{{status.returnType}}</a>
+<a href="javascript:void(0);"
+   ng-show="showHref"
+   ng-click="showCompileInfo()">{{status.returnType}}</a>
 <span ng-hide="showHref">{{status.returnType}}</span>
     """
 )

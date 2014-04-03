@@ -24,8 +24,12 @@ cdoj
         days = length
         $scope.timeString = ""
         if days > 0
-          $scope.timeString = $scope.timeString + days + " #{if days == 1 then "day" else "days"} "
-        $scope.timeString = $scope.timeString + _.sprintf("%d:%02d:%02d", hours, minute, second)
+          $scope.timeString =
+            $scope.timeString + days +
+              " #{if days == 1 then "day" else "days"} "
+        $scope.timeString =
+            $scope.timeString +
+              _.sprintf("%d:%02d:%02d", hours, minute, second)
   ]
   template: """
     {{timeString}}

@@ -1,7 +1,7 @@
 cdoj
 .config([
     "$routeProvider",
-    ($routeProvider)->
+    ($routeProvider) ->
       $routeProvider.when("/contest/list",
         templateUrl: "template/contest/list.html"
         controller: "ContestListController"
@@ -10,10 +10,10 @@ cdoj
         controller: "ContestShowController"
         resolve:
           contest: ["$q", "$route", "$http", "Error", "$rootScope"
-            ($q, $route, $http, $Error, $rootScope)->
+            ($q, $route, $http, $Error, $rootScope) ->
               deferred = $q.defer()
               contestId = $route.current.params.contestId
-              $http.get("/contest/data/#{contestId}").success((data)->
+              $http.get("/contest/data/#{contestId}").success((data) ->
                 if data.result == "success"
                   contest = data.contest
                   contest.problemList = data.problemList
@@ -30,7 +30,7 @@ cdoj
         controller: "ContestEditorController"
         resolve:
           contest: ["$q", "$route", "$http", "Error", "$rootScope"
-            ($q, $route, $http, $Error, $rootScope)->
+            ($q, $route, $http, $Error, $rootScope) ->
               deferred = $q.defer()
               action = $route.current.params.action
               contest =
@@ -42,13 +42,16 @@ cdoj
                 lengthDays: 0
               if action != "new"
                 contestId = action
-                $http.post("/contest/data/#{contestId}").success((data)->
+                $http.post("/contest/data/#{contestId}").success((data) ->
                   if data.result == "success"
                     contest.action = action
                     contest.contestId = data.contest.contestId
                     contest.title = data.contest.title
                     contest.type = data.contest.type
-                    contest.time = Date.create(data.contest.startTime).format("{yyyy}-{MM}-{dd} {HH}:{mm}")
+                    contest.time =
+                      Date
+                      .create(data.contest.startTime)
+                      .format("{yyyy}-{MM}-{dd} {HH}:{mm}")
                     length = Math.floor(data.contest.length / 1000)
                     length = Math.floor(length / 60)
                     contest.lengthMinutes = length % 60
@@ -76,12 +79,15 @@ cdoj
         controller: "ContestRegisterController"
         resolve:
           contest: ["$q", "$route", "$http", "Error", "$rootScope"
-            ($q, $route, $http, $Error, $rootScope)->
+            ($q, $route, $http, $Error, $rootScope) ->
               deferred = $q.defer()
               contestId = $route.current.params.contestId
               contestCondition = angular.copy($rootScope.contestCondition)
               contestCondition.startId = contestCondition.endId = contestId
-              $http.post("/contest/search", contestCondition).success((data)->
+              $http.post(
+                "/contest/search"
+                contestCondition
+              ).success((data) ->
                 if data.result == "success"
                   if data.list.length != 1
                     $Error.error "Incorrect contest ID!"

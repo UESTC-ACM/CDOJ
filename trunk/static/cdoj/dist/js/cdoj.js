@@ -80740,7 +80740,7 @@ if (typeof exports === 'object') {
               if (action !== "new") {
                 problemId = action;
                 $http.post("/problem/data/" + problemId).success(function(data) {
-                  var i, _sampleInput, _sampleOutput;
+                  var _sampleInput, _sampleOutput;
                   if (data.result === "success") {
                     data.problem.action = action;
                     _sampleInput = data.problem.sampleInput;
@@ -80760,17 +80760,12 @@ if (typeof exports === 'object') {
                     if (_sampleInput.length !== _sampleOutput.length) {
                       $Error.error("Sample input has not same number of cases with sample output!");
                     } else {
-                      data.problem.samples = (function() {
-                        var _i, _ref, _results;
-                        _results = [];
-                        for (i = _i = 0, _ref = _sampleInput.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-                          _results.push({
-                            input: _sampleInput[i].toString(),
-                            output: _sampleOutput[i].toString()
-                          });
-                        }
-                        return _results;
-                      })();
+                      data.problem.samples = _.map(_.zip(_sampleInput, _sampleOutput), function(sample) {
+                        return {
+                          input: sample[0].toString(),
+                          output: sample[1].toString()
+                        };
+                      });
                     }
                     return deferred.resolve(data.problem);
                   } else {
@@ -80921,7 +80916,7 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.run([
-    "$rootScope", "$window", function($rootScope, $window) {
+    "$rootScope", "$window", "Error", function($rootScope, $window, Error) {
       $rootScope.currentPermission = {
         value: $rootScope.AuthenticationType.NOOP,
         userName: void 0
@@ -80944,18 +80939,15 @@ if (typeof exports === 'object') {
       return $rootScope.$on("permission:check", function() {
         if ($rootScope.currentPermission.value === $rootScope.AuthenticationType.ADMIN) {
           if ($rootScope.isAdmin === false) {
-            $window.alert("Permission denied!");
-            $window.history.back();
+            Error.error("Permission denied!");
           }
         } else if ($rootScope.currentPermission.value === $rootScope.AuthenticationType.NORMAL) {
           if ($rootScope.hasLogin === false) {
-            $window.alert("Please login first!");
-            $window.history.back();
+            Error.error("Please login first!");
           }
         } else if ($rootScope.currentPermission.value === $rootScope.AuthenticationType.CURRENT_USER) {
           if ($rootScope.hasLogin === false || ($rootScope.isAdmin === false && $rootScope.currentUser.userName !== $rootScope.currentPermission.userName)) {
-            $window.alert("Permission denied!");
-            $window.history.back();
+            Error.error("Permission denied!");
           }
         }
         if ($rootScope.hasLogin === false) {
@@ -81488,7 +81480,7 @@ if (typeof exports === 'object') {
               };
             },
             title: function() {
-              return "" + $scope.currentProblem.orderCharacter + " - " + $scope.currentProblem.title;
+              return $scope.currentProblem.orderCharacter + " - " + $scope.currentProblem.title;
             }
           }
         }).result.then(function(result) {
@@ -81862,7 +81854,7 @@ if (typeof exports === 'object') {
           $scope.onSend = true;
           return $http.post("/user/sendSerialKey/" + userName).success(function(data) {
             if (data.result === "success") {
-              $window.alert("We send you an Email with the url to reset your password right now, please check your mail box.");
+              $window.alert("We send you an Email with the url to reset your password " + "right now, please check your mail box.");
               $modalInstance.close();
             } else if (data.result === "failed") {
               $window.alert("Unknown error occurred.");
@@ -81960,7 +81952,7 @@ if (typeof exports === 'object') {
         clearSelectState();
         return $scope.isRecentNews = true;
       };
-      $scope.recentContestsDescription = "该数据源允许直接引用，但请注明本段文字。\n\n数据来源：http://contests.acmicpc.info/contests.json 。\n\n本数据源力求支持所有国内ACMer的常用OJ，如果希望添加某个OJ或者发现某个OJ无法正常获取比赛信息，请联系doraemonok#163.com (#替换成@)。";
+      $scope.recentContestsDescription = "该数据源允许直接引用，但请注明本段文字。\n\n数据来源：http://contests.acmicpc.info/contests.json 。\n\n本数据源力求支持所有国内ACMer的常用OJ，如果希望添加某个OJ或者发现某个OJ无法正常获取比赛信息，\n请联系doraemonok#163.com (#替换成@)。";
       $scope.recentContests = [];
       $scope.showRecentContests = function() {
         $http.get("/recentContest").success(function(data) {
@@ -82615,7 +82607,7 @@ if (typeof exports === 'object') {
             if ($scope.rating === void 0) {
               $scope.rating = "pg";
             }
-            url = "http://www.gravatar.com/avatar/" + (CryptoJS.MD5($scope.email).toString()) + ".jpg?" + ($scope.size ? "s=" + $scope.size + "&" : "") + ($scope.rating ? "r=" + $scope.rating + "&" : "") + ($scope.image ? "d=" + encodeURIComponent($scope.image) : "");
+            url = "http://www.gravatar.com/avatar/" + CryptoJS.MD5($scope.email).toString() + ".jpg?" + ($scope.size ? "s=" + $scope.size + "&" : "") + ($scope.rating ? "r=" + $scope.rating + "&" : "") + ($scope.image ? "d=" + encodeURIComponent($scope.image) : "");
             return $element.attr("src", url);
           });
         }
@@ -82680,7 +82672,7 @@ if (typeof exports === 'object') {
           };
         }
       ],
-      template: "<a href=\"javascript:void(0);\" ng-show=\"showHref\" ng-click=\"showCode()\">{{status.length}} B</a>\n<span ng-hide=\"showHref\">{{status.length}} B</span>"
+      template: "<a href=\"javascript:void(0);\"\n   ng-show=\"showHref\"\n   ng-click=\"showCode()\">{{status.length}} B</a>\n<span ng-hide=\"showHref\">{{status.length}} B</span>"
     };
   });
 
@@ -82784,7 +82776,7 @@ if (typeof exports === 'object') {
           };
         }
       ],
-      template: "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm\" ng-click=\"editVisible()\" style=\"padding: 1px 5px;\">\n      <i class=\"fa\" ng-class=\"{\n        'fa-eye': isVisible == true,\n        'fa-eye-slash': isVisible == false\n      }\"></i>\n    </button>\n    <a href=\"#/contest/editor/{{contestId}}\"\n       class=\"btn btn-default btn-sm\" style=\"padding: 1px 5px;\"><i class=\"fa fa-pencil\"></i></a>\n  </div>\n</div>"
+      template: "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\"\n            class=\"btn btn-default btn-sm\"\n            ng-click=\"editVisible()\"\n            style=\"padding: 1px 5px;\">\n      <i class=\"fa\"\n         ng-class=\"{\n          'fa-eye': isVisible == true,\n          'fa-eye-slash': isVisible == false\n         }\"></i>\n    </button>\n    <a href=\"/#/contest/editor/{{contestId}}\"\n       class=\"btn btn-default btn-sm\"\n       style=\"padding: 1px 5px;\">\n      <i class=\"fa fa-pencil\"></i>\n    </a>\n  </div>\n</div>"
     };
   });
 
@@ -82875,11 +82867,9 @@ if (typeof exports === 'object') {
     return {
       restrict: "A",
       link: function($scope, $element) {
-        return $element.find("form").on("click", (function(_this) {
-          return function(e) {
-            return e.stopPropagation();
-          };
-        })(this));
+        return $element.find("form").on("click", function(e) {
+          return e.stopPropagation();
+        });
       }
     };
   });
@@ -83055,7 +83045,7 @@ if (typeof exports === 'object') {
           });
         }
       ],
-      template: "<div class=\"panel panel-default\" style=\"margin-bottom: 6px;\">\n  <div class=\"panel-heading flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\" class=\"btn btn-default btn-sm\"\n                ng-click=\"togglePreview()\"\n                ng-class=\"{active: mode == 'preview'}\">Preview</button>\n      </div>\n      <div class=\"btn-group flandre-tools\">\n        <span class=\"btn btn-default btn-sm\"><i class=\"fa fa-smile-o\"></i></span>\n        <span class=\"btn btn-default btn-sm flandre-picture-uploader\"><i class=\"fa fa-picture-o\"></i></span>\n      </div>\n      <span class=\"pull-right\" style=\"padding-top: 6px;\">Contents are parsed with <a href=\"/#/article/show/2\">Markdown</a></span>\n    </div>\n  </div>\n  <textarea class=\"tex2jax_ignore form-control flandre-editor\"\n            msd-elastic\n            ng-class=\"{'flandre-show': mode == 'edit'}\"\n            ng-model=\"content\"></textarea>\n  <div class=\"flandre-preview\" ng-class=\"{'flandre-show': mode == 'preview'}\">\n    <markdown content=\"previewContent\"></markdown>\n  </div>\n</div>",
+      template: "<div class=\"panel panel-default\" style=\"margin-bottom: 6px;\">\n  <div class=\"panel-heading flandre-heading\">\n    <div class=\"btn-toolbar\" role=\"toolbar\">\n      <div class=\"btn-group\">\n        <button type=\"button\"\n                class=\"btn btn-default btn-sm\"\n                ng-click=\"togglePreview()\"\n                ng-class=\"{active: mode == 'preview'}\">\n          Preview\n        </button>\n      </div>\n      <div class=\"btn-group flandre-tools\">\n        <span class=\"btn btn-default btn-sm\">\n          <i class=\"fa fa-smile-o\"></i>\n        </span>\n        <span class=\"btn btn-default btn-sm flandre-picture-uploader\">\n          <i class=\"fa fa-picture-o\"></i>\n        </span>\n      </div>\n      <span class=\"pull-right\"\n            style=\"padding-top: 6px;\">\n        Contents are parsed with <a href=\"/#/article/show/2\">Markdown</a>\n      </span>\n    </div>\n  </div>\n  <textarea class=\"tex2jax_ignore form-control flandre-editor\"\n            msd-elastic\n            ng-class=\"{'flandre-show': mode == 'edit'}\"\n            ng-model=\"content\"></textarea>\n  <div class=\"flandre-preview\" ng-class=\"{'flandre-show': mode == 'preview'}\">\n    <markdown content=\"previewContent\"></markdown>\n  </div>\n</div>",
       replace: true
     };
   });
@@ -83096,16 +83086,14 @@ if (typeof exports === 'object') {
             content = marked(content);
             $element.empty().append(content);
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, $element[0]]);
-            return $($element).find("pre").each((function(_this) {
-              return function(id, el) {
-                var $el, text;
-                $el = $(el);
-                if ($el.attr("type") !== "no-prettify") {
-                  text = prettyPrintOne($el[0].innerText.escapeHTML());
-                  return $el.empty().append(text);
-                }
-              };
-            })(this));
+            return $($element).find("pre").each(function(id, el) {
+              var $el, text;
+              $el = $(el);
+              if ($el.attr("type") !== "no-prettify") {
+                text = prettyPrintOne($el[0].innerText.escapeHTML());
+                return $el.empty().append(text);
+              }
+            });
           }, true);
         }
       },
@@ -83169,7 +83157,7 @@ if (typeof exports === 'object') {
       },
       link: function($scope) {
         return $scope.$watch("problem", function() {
-          var i, _sampleInput, _sampleOutput;
+          var _sampleInput, _sampleOutput;
           _sampleInput = $scope.problem.sampleInput;
           try {
             _sampleInput = JSON.parse(_sampleInput);
@@ -83187,17 +83175,12 @@ if (typeof exports === 'object') {
           if (_sampleInput.length !== _sampleOutput.length) {
             return alert("Sample input has not same number of cases with sample output!");
           } else {
-            return $scope.samples = (function() {
-              var _i, _ref, _results;
-              _results = [];
-              for (i = _i = 0, _ref = _sampleInput.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-                _results.push({
-                  input: _sampleInput[i].toString(),
-                  output: _sampleOutput[i].toString()
-                });
-              }
-              return _results;
-            })();
+            return $scope.samples = _.map(_.zip(_sampleInput, _sampleOutput), function(sample) {
+              return {
+                input: sample[0].toString(),
+                output: sample[1].toString()
+              };
+            });
           }
         }, true);
       },
@@ -83229,7 +83212,7 @@ if (typeof exports === 'object') {
           };
         }
       ],
-      template: "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm\" ng-click=\"editVisible()\" style=\"padding: 1px 5px;\">\n      <i class=\"fa\" ng-class=\"{\n        'fa-eye': isVisible == true,\n        'fa-eye-slash': isVisible == false\n      }\"></i>\n    </button>\n    <a href=\"#/problem/editor/{{problemId}}\"\n       class=\"btn btn-default btn-sm\" style=\"padding: 1px 5px;\"><i class=\"fa fa-pencil\"></i></a>\n  </div>\n</div>"
+      template: "<div class=\"btn-toolbar\" role=\"toolbar\">\n  <div class=\"btn-group\">\n    <button type=\"button\"\n            class=\"btn btn-default btn-sm\"\n            ng-click=\"editVisible()\"\n            style=\"padding: 1px 5px;\">\n      <i class=\"fa\"\n         ng-class=\"{\n          'fa-eye': isVisible == true,\n          'fa-eye-slash': isVisible == false\n         }\"></i>\n    </button>\n    <a href=\"#/problem/editor/{{problemId}}\"\n       class=\"btn btn-default btn-sm\"\n       style=\"padding: 1px 5px;\">\n      <i class=\"fa fa-pencil\"></i>\n    </a>\n  </div>\n</div>"
     };
   });
 
@@ -83535,7 +83518,7 @@ if (typeof exports === 'object') {
           });
         }
       ],
-      template: "<a href=\"javascript:void(0);\" ng-show=\"showHref\" ng-click=\"showCompileInfo()\">{{status.returnType}}</a>\n<span ng-hide=\"showHref\">{{status.returnType}}</span>"
+      template: "<a href=\"javascript:void(0);\"\n   ng-show=\"showHref\"\n   ng-click=\"showCompileInfo()\">{{status.returnType}}</a>\n<span ng-hide=\"showHref\">{{status.returnType}}</span>"
     };
   });
 
@@ -83804,7 +83787,7 @@ if (typeof exports === 'object') {
           };
         }
       ],
-      template: "<div class=\"btn-toolbar\" role=\"toolbar\" style=\"position: absolute; top: 12px; right: 30px;\"\n     ng-show=\"$root.isAdmin\">\n  <div class=\"btn-group\">\n    <button type=\"button\" class=\"btn btn-default btn-sm\" ng-click=\"showEditor()\">\n      <i class=\"fa fa-pencil\"></i>\n    </button>\n  </div>\n</div>"
+      template: "<div class=\"btn-toolbar\"\n     role=\"toolbar\"\n     style=\"position: absolute; top: 12px; right: 30px;\"\n     ng-show=\"$root.isAdmin\">\n  <div class=\"btn-group\">\n    <button type=\"button\"\n            class=\"btn btn-default btn-sm\"\n            ng-click=\"showEditor()\">\n      <i class=\"fa fa-pencil\"></i>\n    </button>\n  </div>\n</div>"
     };
   });
 

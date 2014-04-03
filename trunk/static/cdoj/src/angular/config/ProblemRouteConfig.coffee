@@ -1,7 +1,7 @@
 cdoj
 .config([
     "$routeProvider",
-    ($routeProvider)->
+    ($routeProvider) ->
       $routeProvider.when("/problem/list",
         templateUrl: "template/problem/list.html"
         controller: "ProblemListController"
@@ -10,10 +10,10 @@ cdoj
         controller: "ProblemShowController"
         resolve:
           problem: ["$q", "$route", "$http", "Error"
-            ($q, $route, $http, $Error)->
+            ($q, $route, $http, $Error) ->
               deferred = $q.defer()
               problemId = $route.current.params.problemId
-              $http.post("/problem/data/#{problemId}").success((data)->
+              $http.post("/problem/data/#{problemId}").success((data) ->
                 if data.result == "success"
                   deferred.resolve(data.problem)
                 else
@@ -28,12 +28,12 @@ cdoj
         controller: "ProblemEditorController"
         resolve:
           problem: ["$q", "$route", "$http", "Error",
-            ($q, $route, $http, $Error)->
+            ($q, $route, $http, $Error) ->
               deferred = $q.defer()
               action = $route.current.params.action
               if action != "new"
                 problemId = action
-                $http.post("/problem/data/#{problemId}").success((data)->
+                $http.post("/problem/data/#{problemId}").success((data) ->
                   if data.result == "success"
                     data.problem.action = action
 
@@ -52,10 +52,15 @@ cdoj
                       _sampleOutput = [_sampleOutput]
 
                     if _sampleInput.length != _sampleOutput.length
-                      $Error.error("Sample input has not same number of cases with sample output!")
+                      $Error.error("Sample input has not same number of cases
+                       with sample output!")
                     else
-                      data.problem.samples = ({input: _sampleInput[i].toString(), output: _sampleOutput[i].toString()} for i in [0.._sampleInput.length - 1])
-
+                      data.problem.samples = _.map(
+                        _.zip(_sampleInput, _sampleOutput)
+                        (sample) ->
+                          input: sample[0].toString()
+                          output: sample[1].toString()
+                      )
                     deferred.resolve(data.problem)
                   else
                     $Error.error(data.error_msg)

@@ -1,7 +1,7 @@
 cdoj
 .config([
     "$routeProvider",
-    ($routeProvider)->
+    ($routeProvider) ->
       $routeProvider.when("/",
         templateUrl: "template/index/index.html"
         controller: "IndexController"

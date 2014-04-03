@@ -1,7 +1,9 @@
 cdoj
 .controller("SubmitModalController", [
-    "$scope", "$rootScope", "$window", "$http", "$modalInstance", "submitDTO", "title"
-    ($scope, $rootScope, $window, $http, $modalInstance, submitDTO, title)->
+    "$scope", "$rootScope", "$window", "$http", "$modalInstance", "submitDTO",
+    "title"
+    ($scope, $rootScope, $window, $http, $modalInstance, submitDTO,
+     title) ->
       $scope.submitDTO = submitDTO
       $scope.title = title
 
@@ -12,7 +14,7 @@ cdoj
           $window.alert "Please login first!"
           $modalInstance.dismiss("close")
         else
-          $http.post("/status/submit", submitDTO).success((data)->
+          $http.post("/status/submit", submitDTO).success((data) ->
             if data.result == "success"
               $modalInstance.close("success")
             else if data.result == "field_error"

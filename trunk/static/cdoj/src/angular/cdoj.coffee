@@ -1,4 +1,4 @@
-_.mixin(_.str.exports());
+_.mixin(_.str.exports())
 
 cdoj = angular.module('cdoj', [
   "ui.bootstrap"

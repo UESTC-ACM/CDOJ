@@ -13,11 +13,11 @@ cdoj
       $scope.$on("currentUser:changed", ->
         $scope.refresh()
       )
-      $scope.$on("list:refresh", (e, callback)->
+      $scope.$on("list:refresh", (e, callback) ->
         $scope.refresh(callback)
       )
       refreshTrigger = "list:refresh:" + $scope.name
-      $scope.$on(refreshTrigger, (e, callback)->
+      $scope.$on(refreshTrigger, (e, callback) ->
         $scope.refresh(callback)
       )
       $scope.$on("list:reset", ->
@@ -28,13 +28,13 @@ cdoj
         $scope.reset()
       )
 
-      _.each $scope.condition, (val, key)->
+      _.each $scope.condition, (val, key) ->
         if angular.isDefined $routeParams[key]
           if not isNaN(parseInt($routeParams[key]))
             $scope.condition[key] = parseInt($routeParams[key])
           else
             $scope.condition[key] = $routeParams[key]
-      $scope.refresh = (callback)->
+      $scope.refresh = (callback) ->
         if $scope.requestUrl != 0
           condition = angular.copy($scope.condition)
           $http.post($scope.requestUrl, condition).success((data) ->

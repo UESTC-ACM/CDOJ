@@ -2,7 +2,7 @@ cdoj
 .directive("uiPenalty",
 ->
   restrict: "A"
-  link: ($scope, $element, $attr)->
+  link: ($scope, $element, $attr) ->
     penalty = $scope.$eval($attr.penalty)
     length = parseInt(penalty)
     second = length % 60

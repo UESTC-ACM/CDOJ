@@ -1,9 +1,9 @@
 cdoj
 .directive("autoFillSync", [
     "$timeout",
-    ($timeout)->
+    ($timeout) ->
       require: "ngModel"
-      link: ($scope, $elem, $attrs, $ngModel)->
+      link: ($scope, $elem, $attrs, $ngModel) ->
         $timeout(->
           newVal = $elem.val()
           if ($ngModel.$pristine)

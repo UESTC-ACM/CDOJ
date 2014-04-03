@@ -6,7 +6,7 @@ cdoj
     uploadUrl: "@"
   controller: [
     "$scope", "$element", "$window"
-    ($scope, $element, $window)->
+    ($scope, $element, $window) ->
       $scope.hint = "Upload"
       $scope.hasError = false
       dataUploader = new qq.FineUploaderBasic(
