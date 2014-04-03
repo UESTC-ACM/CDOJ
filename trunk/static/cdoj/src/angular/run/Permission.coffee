@@ -53,7 +53,9 @@ cdoj
           if $rootScope.hasLogin == false
             $rootScope.hasEditPermission = false
           else if (
-              $rootScope.currentUser.userName ==
+            $rootScope.currentUser.type !=
+              $rootScope.AuthenticationType.CONSTANT &&
+            $rootScope.currentUser.userName ==
               $rootScope.editPermission.userName
           )
             $rootScope.hasEditPermission = true

@@ -355,6 +355,9 @@ public class UserController extends BaseController {
         if (userDTO == null) {
           throw new AppException("No such user.");
         }
+        if (userDTO.getType() == AuthenticationType.CONSTANT.ordinal()) {
+          throw new AppException("Permission denied!");
+        }
         if (!userEditDTO.getOldPassword().equals(currentUser.getPassword())) {
           throw new FieldException("oldPassword", "Your password is wrong, please try again.");
         }

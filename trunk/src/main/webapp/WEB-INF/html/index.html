@@ -120,7 +120,7 @@ border-top-right-radius: 0;">
                   <i class="fa fa-group"></i>Teams
                 </a>
               </li>
-              <li role="presentation">
+              <li role="presentation" ng-if="currentUser.type != $root.AuthenticationType.CONSTANT">
                 <a href="/#/user/center/{{currentUser.userName}}/edit">
                   <i class="fa fa-wrench"></i>Edit profile
                 </a>
