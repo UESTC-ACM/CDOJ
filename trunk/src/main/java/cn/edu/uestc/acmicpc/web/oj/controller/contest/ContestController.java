@@ -21,6 +21,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.OnsiteUserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ContestImporterService;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
@@ -45,6 +46,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
+import cn.edu.uestc.acmicpc.util.helper.CSVUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
@@ -68,6 +70,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.sql.Timestamp;
@@ -929,4 +932,55 @@ public class ContestController extends BaseController {
     }
     return json;
   }
+
+  @RequestMapping(value = "uploadOnsiteUserFile",
+    method = RequestMethod.POST)
+  @LoginPermit(AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> uploadOnsiteUserFile(
+      @RequestParam(value = "uploadFile", required = true) MultipartFile[] files) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      FileInformationDTO fileInformationDTO = fileService.uploadContestArchive(
+          FileUploadDTO.builder()
+              .setFiles(Arrays.asList(files))
+              .build()
+      );
+
+      File csvFile = new File(settings.UPLOAD_FOLDER + fileInformationDTO.getFileName());
+      List<OnsiteUserDTO> result = CSVUtil.parseArray(csvFile, OnsiteUserDTO.class);
+      json.put("success", "true");
+      json.put("list", result);
+    } catch (AppException e) {
+      e.printStackTrace();
+      json.put("error", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("error", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+
+  @RequestMapping("updateOnsiteUser")
+  @LoginPermit(AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> updateOnsiteUser(@RequestBody List<UserDTO> userList) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+
+
+      json.put("success", "true");
+    } catch (AppException e) {
+      e.printStackTrace();
+      json.put("error", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("error", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
 }

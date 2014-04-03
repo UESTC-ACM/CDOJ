@@ -81097,7 +81097,7 @@ if (typeof exports === 'object') {
           return $window.alert("Network error.");
         });
       };
-      return $scope.searchContest = function(keyword) {
+      $scope.searchContest = function(keyword) {
         var contestCondition;
         contestCondition = {
           keyword: keyword
@@ -81110,6 +81110,23 @@ if (typeof exports === 'object') {
           }
         });
       };
+      $scope.onsiteUsers = [];
+      $scope.$on("onsiteUserFileUploader:complete", function(e, list) {
+        return $scope.onsiteUsers = list;
+      });
+      $scope.updateOnsiteUsers = function() {
+        var userList;
+        userList = _.map($scope.onsiteUsers, function(user) {
+          return {
+            userName: user.userName,
+            password: CryptoJS.SHA1(user.password).toString(),
+            nickName: user.teamName,
+            name: user.members
+          };
+        });
+        return console.log(userList);
+      };
+      return $scope.onsiteUserFileHelp = "You should upload user config file in csv format.\n\nYou need to specify the corresponding attribute in the header row, see\nthe example below for more details.\n\n(Use `,` as the separators and `\"` as the quote character)\n\n```\n\"id\", \"userName\", \"password\", \"teamName\", \"members\"\n\"team001\", \"12th_team001\", \"123456789\", \"UESTC_Dage\", \"大哥, 大哥, 大哥\"\n```\n\nPlease check the list carefully after you upload it, and click the update\nbutton below to commit changes.";
     }
   ]);
 
@@ -83129,6 +83146,41 @@ if (typeof exports === 'object') {
       template: "<a href=\"javascript:void(0);\"\n   ng-click=\"readMessage()\"\n   ng-bind=\"message.title\"></a>"
     };
   });
+
+  cdoj.directive("uiOnsiteUserFileUploader", [
+    "$window", function($window) {
+      return {
+        restrict: "E",
+        replace: true,
+        link: function($scope, $element) {
+          var onsiteUserFileUploader;
+          return onsiteUserFileUploader = new qq.FineUploaderBasic({
+            button: $($element)[0],
+            request: {
+              endpoint: "/contest/uploadOnsiteUserFile",
+              inputName: "uploadFile"
+            },
+            validation: {
+              allowedExtensions: ["csv", "txt"],
+              sizeLimit: 10 * 1000 * 1000
+            },
+            multiple: false,
+            callbacks: {
+              onComplete: function(id, fileName, data) {
+                if (data.success === "true") {
+                  return $scope.$emit("onsiteUserFileUploader:complete", data.list);
+                }
+              },
+              onError: function(id, fileName, errorReason) {
+                return $window.alert(errorReason);
+              }
+            }
+          });
+        },
+        template: "<button class=\"btn btn-danger\">Load from CSV file</button>"
+      };
+    }
+  ]);
 
   cdoj.directive("uiPenalty", function() {
     return {
