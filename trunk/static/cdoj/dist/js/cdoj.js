@@ -80811,21 +80811,6 @@ if (typeof exports === 'object') {
       }).when("/status/list", {
         templateUrl: "template/status/list.html",
         controller: "StatusListController"
-      }).when("/user/list", {
-        templateUrl: "template/user/list.html",
-        controller: "UserListController"
-      }).when("/user/center/:userName/:tab", {
-        templateUrl: "template/user/center.html",
-        controller: "UserCenterController"
-      }).when("/user/center/:userName", {
-        templateUrl: "template/user/center.html",
-        controller: "UserCenterController"
-      }).when("/user/activate/:userName/:serialKey", {
-        templateUrl: "template/user/activation.html",
-        controller: "PasswordResetController"
-      }).when("/user/register", {
-        templateUrl: "template/user/register.html",
-        controller: "UserRegisterController"
       }).when("/article/show/:articleId", {
         templateUrl: "template/article/show.html",
         controller: "ArticleShowController"
@@ -80842,6 +80827,82 @@ if (typeof exports === 'object') {
         controller: "ErrorController"
       }).otherwise({
         redirectTo: "/404/"
+      });
+    }
+  ]);
+
+  cdoj.config([
+    "$routeProvider", function($routeProvider) {
+      return $routeProvider.when("/user/list", {
+        templateUrl: "template/user/list.html",
+        controller: "UserListController"
+      }).when("/user/center/:userName/:tab", {
+        templateUrl: "template/user/center.html",
+        controller: "UserCenterController",
+        resolve: {
+          targetUser: [
+            "$q", "$route", "$http", "Error", "$rootScope", function($q, $route, $http, $Error, $rootScope) {
+              var deferred, userName;
+              deferred = $q.defer();
+              userName = $route.current.params.userName;
+              $http.get("/user/userCenterData/" + userName).success(function(data) {
+                if (data.result === "success") {
+                  return deferred.resolve({
+                    targetUser: data.targetUser,
+                    problemStatus: data.problemStatus
+                  });
+                } else {
+                  return $Error.error(data.error_msg);
+                }
+              }).error(function() {
+                return $Error.error("Network error!");
+              });
+              return deferred.promise;
+            }
+          ],
+          userEditDTO: [
+            "$q", "$route", "$http", "Error", "$rootScope", function($q, $route, $http, $Error, $rootScope) {
+              var deferred, tab, userName;
+              deferred = $q.defer();
+              userName = $route.current.params.userName;
+              tab = $route.current.params.tab;
+              if (tab === "edit") {
+                $http.get("/user/profile/" + userName).success(function(data) {
+                  if (data.result === "success") {
+                    return deferred.resolve(data.user);
+                  } else {
+                    return $Error.error(data.error_msg);
+                  }
+                }).error(function() {
+                  return $Error.error("Network error!");
+                });
+              } else {
+                deferred.resolve(null);
+              }
+              return deferred.promise;
+            }
+          ]
+        }
+      }).when("/user/center/:userName", {
+        templateUrl: "template/user/center.html",
+        controller: "UserCenterController",
+        resolve: {
+          targetUser: function() {
+            return {
+              targetUser: void 0,
+              problemStatus: void 0
+            };
+          },
+          userEditDTO: function() {
+            return void 0;
+          }
+        }
+      }).when("/user/activate/:userName/:serialKey", {
+        templateUrl: "template/user/activation.html",
+        controller: "PasswordResetController"
+      }).when("/user/register", {
+        templateUrl: "template/user/register.html",
+        controller: "UserRegisterController"
       });
     }
   ]);
@@ -80953,7 +81014,7 @@ if (typeof exports === 'object') {
         }
         if ($rootScope.hasLogin === false) {
           $rootScope.hasEditPermission = false;
-        } else if ($rootScope.currentUser.userName === $rootScope.editPermission.userName) {
+        } else if ($rootScope.currentUser.type !== $rootScope.AuthenticationType.CONSTANT && $rootScope.currentUser.userName === $rootScope.editPermission.userName) {
           $rootScope.hasEditPermission = true;
         }
         return $rootScope.$broadcast("permission:changed");
@@ -81680,6 +81741,269 @@ if (typeof exports === 'object') {
     }
   ]);
 
+  cdoj.controller("UserAdminModalController", [
+    "$scope", "$http", "$modalInstance", "UserProfile", "$window", function($scope, $http, $modalInstance, $userProfile, $window) {
+      $scope.userEditDTO = 0;
+      $scope.$watch(function() {
+        return $userProfile.getProfile();
+      }, function() {
+        return $scope.userEditDTO = $userProfile.getProfile();
+      }, true);
+      $scope.fieldInfo = [];
+      $scope.edit = function() {
+        var newPassword, newPasswordRepeat, userEditDTO;
+        userEditDTO = angular.copy($scope.userEditDTO);
+        if (userEditDTO.newPassword === "") {
+          userEditDTO.newPassword = void 0;
+        }
+        if (userEditDTO.newPasswordRepeat === "") {
+          userEditDTO.newPasswordRepeat = void 0;
+        }
+        if (angular.isUndefined(userEditDTO.newPassword && angular.isUndefined(userEditDTO.newPasswordRepeat))) {
+          userEditDTO = _.omit(userEditDTO, "newPassword");
+          userEditDTO = _.omit(userEditDTO, "newPassowrdRepeat");
+        } else {
+          newPassword = CryptoJS.SHA1(userEditDTO.newPassword).toString();
+          userEditDTO.newPassword = newPassword;
+          newPasswordRepeat = CryptoJS.SHA1(userEditDTO.newPasswordRepeat).toString();
+          userEditDTO.newPasswordRepeat = newPasswordRepeat;
+        }
+        return $http.post("/user/adminEdit", userEditDTO).success(function(data) {
+          if (data.result === "success") {
+            $window.alert("Success!");
+            return $modalInstance.close();
+          } else if (data.result === "field_error") {
+            return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
+      };
+      $scope.dismiss = function() {
+        return $modalInstance.dismiss("close");
+      };
+      return $scope.$on("$routeChangeStart", function() {
+        return $modalInstance.dismiss();
+      });
+    }
+  ]);
+
+  cdoj.controller("UserCenterController", [
+    "$scope", "$rootScope", "$http", "$routeParams", "$modal", "$window", "$location", "targetUser", "userEditDTO", function($scope, $rootScope, $http, $routeParams, $modal, $window, $location, targetUser, userEditDTO) {
+      var articleCondition, currentTab, permissionChanged, targetUserName;
+      targetUserName = angular.copy($routeParams.userName);
+      currentTab = angular.copy($routeParams.tab);
+      if (angular.isUndefined(currentTab)) {
+        $location.path("/user/center/" + targetUserName + "/problems");
+      }
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
+      $window.scrollTo(0, 0);
+      $scope.targetUser = {
+        email: ""
+      };
+      $scope.teamCondition = angular.copy($rootScope.teamCondition);
+      $scope.messageCondition = angular.copy($rootScope.messageCondition);
+      $scope.userEditDTO = userEditDTO;
+      permissionChanged = function() {
+        if ($rootScope.hasEditPermission === false) {
+          $scope.messagesTabTitle = "Your messages with " + $scope.targetUser.userName;
+          $scope.messageCondition.userAId = $scope.currentUser.userId;
+          return $scope.messageCondition.userBId = $scope.targetUser.userId;
+        } else {
+          $scope.messagesTabTitle = $scope.targetUser.userName + "'s messages";
+          return $scope.messageCondition.userId = $scope.currentUser.userId;
+        }
+      };
+      $scope.$on("permission:changed", function() {
+        return permissionChanged();
+      });
+      $scope.$on("currentUser:changed", function() {
+        return permissionChanged();
+      });
+      $scope.activeProblemsTab = false;
+      $scope.activeTeamsTab = false;
+      $scope.activeMessagesTab = false;
+      $scope.activeEditTab = false;
+      $scope.activeBlogTab = false;
+      if (currentTab === "teams") {
+        $scope.activeTeamsTab = true;
+      } else if (currentTab === "messages") {
+        $scope.activeMessagesTab = true;
+      } else if (currentTab === "edit") {
+        $scope.activeEditTab = true;
+      } else if (currentTab === "blog") {
+        $scope.activeBlogTab = true;
+      } else {
+        $scope.activeProblemsTab = true;
+      }
+      $scope.selectBlogTab = function() {
+        return $scope.$broadcast("list:refresh:article");
+      };
+      $scope.selectTeamTab = function() {
+        return $scope.$broadcast("list:refresh:team");
+      };
+      $scope.selectMessagesTab = function() {
+        return $scope.$broadcast("list:refresh:message");
+      };
+      $scope.$emit("permission:setEditPermission", targetUserName);
+      $scope.$emit("permission:check");
+      $scope.targetUser = targetUser.targetUser;
+      $scope.problemStatus = targetUser.problemStatus;
+      $scope.teamCondition.userId = targetUser.targetUser.userId;
+      articleCondition = angular.copy($rootScope.articleCondition);
+      articleCondition.userName = targetUserName;
+      $scope.articleCondition = articleCondition;
+      $scope.fieldInfo = [];
+      $scope.edit = function() {
+        var newPassword, newPasswordRepeat, oldPassword;
+        if ($rootScope.currentUser.hasLogin === false || $rootScope.currentUser.type === $rootScope.AuthenticationType.CONSTANT) {
+          $window.alert("Permission denied!");
+          return;
+        }
+        userEditDTO = angular.copy($scope.userEditDTO);
+        if (userEditDTO.newPassword === "") {
+          userEditDTO.newPassword = void 0;
+        }
+        if (userEditDTO.newPasswordRepeat === "") {
+          userEditDTO.newPasswordRepeat = void 0;
+        }
+        if (angular.isUndefined(userEditDTO.newPassword && angular.isUndefined(userEditDTO.newPasswordRepeat))) {
+          userEditDTO = _.omit(userEditDTO, "newPassword");
+          userEditDTO = _.omit(userEditDTO, "newPassowrdRepeat");
+        } else {
+          newPassword = CryptoJS.SHA1(userEditDTO.newPassword).toString();
+          userEditDTO.newPassword = newPassword;
+          newPasswordRepeat = CryptoJS.SHA1(userEditDTO.newPasswordRepeat).toString();
+          userEditDTO.newPasswordRepeat = newPasswordRepeat;
+        }
+        if (angular.isUndefined(userEditDTO.oldPassword)) {
+          $window.scrollTo(0, 0);
+          return;
+        }
+        oldPassword = CryptoJS.SHA1(userEditDTO.oldPassword).toString();
+        userEditDTO.oldPassword = oldPassword;
+        return $http.post("/user/edit", userEditDTO).success(function(data) {
+          if (data.result === "success") {
+            $window.alert("Success!");
+            return $window.location.href = "/#/";
+          } else if (data.result === "field_error") {
+            $window.scrollTo(0, 0);
+            return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
+      };
+      $scope.newTeam = {
+        teamName: ""
+      };
+      $scope.createNewTeam = function() {
+        var teamDTO;
+        teamDTO = angular.copy($scope.newTeam);
+        return $http.post("/team/createTeam", teamDTO).success(function(data) {
+          if (data.result === "success") {
+            return $scope.$broadcast("list:refresh:team", function(data) {
+              return $modal.open({
+                templateUrl: "template/modal/team-editor-modal.html",
+                controller: "TeamEditorModalController",
+                resolve: {
+                  team: function() {
+                    return data.list[0];
+                  }
+                }
+              });
+            });
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
+      };
+      return $scope.selectEditTab = function() {
+        return $http.get("/user/profile/" + $scope.targetUser.userName).success(function(data) {
+          if (data.result === "success") {
+            return $scope.userEditDTO = data.user;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error!");
+        });
+      };
+    }
+  ]);
+
+  cdoj.controller("UserListController", [
+    "$scope", "$rootScope", "$window", function($scope, $rootScope, $window) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
+      $window.scrollTo(0, 0);
+      $rootScope.title = "User list";
+      return $scope.resetStatusCondition = function() {
+        return $scope.$broadcast("list:reset:user");
+      };
+    }
+  ]);
+
+  cdoj.controller("UserRegisterController", [
+    "$scope", "$rootScope", "$http", "$window", function($scope, $rootScope, $http, $window) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
+      $window.scrollTo(0, 0);
+      $scope.userRegisterDTO = {
+        departmentId: 1,
+        email: "",
+        motto: "",
+        nickName: "",
+        password: "",
+        passwordRepeat: "",
+        school: "",
+        studentId: "",
+        userName: "",
+        sex: 0,
+        size: 2,
+        phone: "",
+        grade: 3,
+        name: ""
+      };
+      $scope.fieldInfo = [];
+      return $scope.register = function() {
+        var password, passwordRepeat, userRegisterDTO;
+        userRegisterDTO = angular.copy($scope.userRegisterDTO);
+        if (angular.isUndefined(userRegisterDTO.password || angular.isUndefined(userRegisterDTO.passwordRepeat))) {
+          $window.scrollTo(0, 0);
+          return;
+        }
+        password = CryptoJS.SHA1(userRegisterDTO.password).toString();
+        userRegisterDTO.password = password;
+        passwordRepeat = CryptoJS.SHA1(userRegisterDTO.passwordRepeat).toString();
+        userRegisterDTO.passwordRepeat = passwordRepeat;
+        return $http.post("/user/register", userRegisterDTO).success(function(data) {
+          if (data.result === "success") {
+            $rootScope.hasLogin = true;
+            $rootScope.currentUser = {
+              userName: data.userName,
+              email: data.email,
+              type: data.type
+            };
+            $rootScope.$broadcast("data:refresh");
+            return $window.history.back();
+          } else if (data.result === "field_error") {
+            $window.scrollTo(0, 0);
+            return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
+      };
+    }
+  ]);
+
   cdoj.controller("AddContestModalController", [
     "$scope", "$rootScope", "$modalInstance", "$window", function($scope, $rootScope, $modalInstance, $window) {
       $scope.$on("$routeChangeStart", function() {
@@ -82314,266 +82638,6 @@ if (typeof exports === 'object') {
       return $scope.$on("$routeChangeStart", function() {
         return $modalInstance.dismiss();
       });
-    }
-  ]);
-
-  cdoj.controller("UserAdminModalController", [
-    "$scope", "$http", "$modalInstance", "UserProfile", "$window", function($scope, $http, $modalInstance, $userProfile, $window) {
-      $scope.userEditDTO = 0;
-      $scope.$watch(function() {
-        return $userProfile.getProfile();
-      }, function() {
-        return $scope.userEditDTO = $userProfile.getProfile();
-      }, true);
-      $scope.fieldInfo = [];
-      $scope.edit = function() {
-        var newPassword, newPasswordRepeat, userEditDTO;
-        userEditDTO = angular.copy($scope.userEditDTO);
-        if (userEditDTO.newPassword === "") {
-          userEditDTO.newPassword = void 0;
-        }
-        if (userEditDTO.newPasswordRepeat === "") {
-          userEditDTO.newPasswordRepeat = void 0;
-        }
-        if (angular.isUndefined(userEditDTO.newPassword && angular.isUndefined(userEditDTO.newPasswordRepeat))) {
-          userEditDTO = _.omit(userEditDTO, "newPassword");
-          userEditDTO = _.omit(userEditDTO, "newPassowrdRepeat");
-        } else {
-          newPassword = CryptoJS.SHA1(userEditDTO.newPassword).toString();
-          userEditDTO.newPassword = newPassword;
-          newPasswordRepeat = CryptoJS.SHA1(userEditDTO.newPasswordRepeat).toString();
-          userEditDTO.newPasswordRepeat = newPasswordRepeat;
-        }
-        return $http.post("/user/adminEdit", userEditDTO).success(function(data) {
-          if (data.result === "success") {
-            $window.alert("Success!");
-            return $modalInstance.close();
-          } else if (data.result === "field_error") {
-            return $scope.fieldInfo = data.field;
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $window.alert("Network error.");
-        });
-      };
-      $scope.dismiss = function() {
-        return $modalInstance.dismiss("close");
-      };
-      return $scope.$on("$routeChangeStart", function() {
-        return $modalInstance.dismiss();
-      });
-    }
-  ]);
-
-  cdoj.controller("UserCenterController", [
-    "$scope", "$rootScope", "$http", "$routeParams", "$modal", "$window", function($scope, $rootScope, $http, $routeParams, $modal, $window) {
-      var articleCondition, currentTab, permissionChanged, targetUserName;
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
-      $window.scrollTo(0, 0);
-      $scope.targetUser = {
-        email: ""
-      };
-      $scope.teamCondition = angular.copy($rootScope.teamCondition);
-      $scope.messageCondition = angular.copy($rootScope.messageCondition);
-      $scope.userEditDTO = void 0;
-      permissionChanged = function() {
-        if ($rootScope.hasEditPermission === false) {
-          $scope.messagesTabTitle = "Your messages with " + $scope.targetUser.userName;
-          $scope.messageCondition.userAId = $scope.currentUser.userId;
-          return $scope.messageCondition.userBId = $scope.targetUser.userId;
-        } else {
-          $scope.messagesTabTitle = $scope.targetUser.userName + "'s messages";
-          $scope.messageCondition.userId = $scope.currentUser.userId;
-          if (angular.isUndefined($scope.userEditDTO)) {
-            return $http.get("/user/profile/" + $scope.targetUser.userName).success(function(data) {
-              if (data.result === "success") {
-                return $scope.userEditDTO = data.user;
-              }
-            });
-          }
-        }
-      };
-      $scope.$on("permission:changed", function() {
-        return permissionChanged();
-      });
-      $scope.$on("currentUser:changed", function() {
-        return permissionChanged();
-      });
-      currentTab = angular.copy($routeParams.tab);
-      $scope.activeProblemsTab = false;
-      $scope.activeTeamsTab = false;
-      $scope.activeMessagesTab = false;
-      $scope.activeEditTab = false;
-      $scope.activeBlogTab = false;
-      if (currentTab === "teams") {
-        $scope.activeTeamsTab = true;
-      } else if (currentTab === "messages") {
-        $scope.activeMessagesTab = true;
-      } else if (currentTab === "edit") {
-        $scope.activeEditTab = true;
-      } else if (currentTab === "blog") {
-        $scope.activeBlogTab = true;
-      } else {
-        $scope.activeProblemsTab = true;
-      }
-      $scope.selectBlogTab = function() {
-        return $scope.$broadcast("list:refresh:article");
-      };
-      $scope.selectTeamTab = function() {
-        return $scope.$broadcast("list:refresh:team");
-      };
-      $scope.selectMessagesTab = function() {
-        return $scope.$broadcast("list:refresh:message");
-      };
-      targetUserName = angular.copy($routeParams.userName);
-      $scope.$emit("permission:setEditPermission", targetUserName);
-      $scope.$emit("permission:check");
-      $http.get("/user/userCenterData/" + targetUserName).success(function(data) {
-        if (data.result === "success") {
-          $scope.targetUser = data.targetUser;
-          $scope.problemStatus = data.problemStatus;
-          return $scope.teamCondition.userId = data.targetUser.userId;
-        } else {
-          return $window.alert(data.error_msg);
-        }
-      }).error(function() {
-        return $window.alert("Network error, please refresh page manually.");
-      });
-      articleCondition = angular.copy($rootScope.articleCondition);
-      articleCondition.userName = targetUserName;
-      $scope.articleCondition = articleCondition;
-      $scope.fieldInfo = [];
-      $scope.edit = function() {
-        var newPassword, newPasswordRepeat, oldPassword, userEditDTO;
-        userEditDTO = angular.copy($scope.userEditDTO);
-        if (userEditDTO.newPassword === "") {
-          userEditDTO.newPassword = void 0;
-        }
-        if (userEditDTO.newPasswordRepeat === "") {
-          userEditDTO.newPasswordRepeat = void 0;
-        }
-        if (angular.isUndefined(userEditDTO.newPassword && angular.isUndefined(userEditDTO.newPasswordRepeat))) {
-          userEditDTO = _.omit(userEditDTO, "newPassword");
-          userEditDTO = _.omit(userEditDTO, "newPassowrdRepeat");
-        } else {
-          newPassword = CryptoJS.SHA1(userEditDTO.newPassword).toString();
-          userEditDTO.newPassword = newPassword;
-          newPasswordRepeat = CryptoJS.SHA1(userEditDTO.newPasswordRepeat).toString();
-          userEditDTO.newPasswordRepeat = newPasswordRepeat;
-        }
-        if (angular.isUndefined(userEditDTO.oldPassword)) {
-          $window.scrollTo(0, 0);
-          return;
-        }
-        oldPassword = CryptoJS.SHA1(userEditDTO.oldPassword).toString();
-        userEditDTO.oldPassword = oldPassword;
-        return $http.post("/user/edit", userEditDTO).success(function(data) {
-          if (data.result === "success") {
-            $window.alert("Success!");
-            return $window.location.href = "/#/";
-          } else if (data.result === "field_error") {
-            $window.scrollTo(0, 0);
-            return $scope.fieldInfo = data.field;
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $window.alert("Network error.");
-        });
-      };
-      $scope.newTeam = {
-        teamName: ""
-      };
-      return $scope.createNewTeam = function() {
-        var teamDTO;
-        teamDTO = angular.copy($scope.newTeam);
-        return $http.post("/team/createTeam", teamDTO).success(function(data) {
-          if (data.result === "success") {
-            return $scope.$broadcast("list:refresh:team", function(data) {
-              return $modal.open({
-                templateUrl: "template/modal/team-editor-modal.html",
-                controller: "TeamEditorModalController",
-                resolve: {
-                  team: function() {
-                    return data.list[0];
-                  }
-                }
-              });
-            });
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $window.alert("Network error.");
-        });
-      };
-    }
-  ]);
-
-  cdoj.controller("UserListController", [
-    "$scope", "$rootScope", "$window", function($scope, $rootScope, $window) {
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
-      $window.scrollTo(0, 0);
-      $rootScope.title = "User list";
-      return $scope.resetStatusCondition = function() {
-        return $scope.$broadcast("list:reset:user");
-      };
-    }
-  ]);
-
-  cdoj.controller("UserRegisterController", [
-    "$scope", "$rootScope", "$http", "$window", function($scope, $rootScope, $http, $window) {
-      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
-      $window.scrollTo(0, 0);
-      $scope.userRegisterDTO = {
-        departmentId: 1,
-        email: "",
-        motto: "",
-        nickName: "",
-        password: "",
-        passwordRepeat: "",
-        school: "",
-        studentId: "",
-        userName: "",
-        sex: 0,
-        size: 2,
-        phone: "",
-        grade: 3,
-        name: ""
-      };
-      $scope.fieldInfo = [];
-      return $scope.register = function() {
-        var password, passwordRepeat, userRegisterDTO;
-        userRegisterDTO = angular.copy($scope.userRegisterDTO);
-        if (angular.isUndefined(userRegisterDTO.password || angular.isUndefined(userRegisterDTO.passwordRepeat))) {
-          $window.scrollTo(0, 0);
-          return;
-        }
-        password = CryptoJS.SHA1(userRegisterDTO.password).toString();
-        userRegisterDTO.password = password;
-        passwordRepeat = CryptoJS.SHA1(userRegisterDTO.passwordRepeat).toString();
-        userRegisterDTO.passwordRepeat = passwordRepeat;
-        return $http.post("/user/register", userRegisterDTO).success(function(data) {
-          if (data.result === "success") {
-            $rootScope.hasLogin = true;
-            $rootScope.currentUser = {
-              userName: data.userName,
-              email: data.email,
-              type: data.type
-            };
-            $rootScope.$broadcast("data:refresh");
-            return $window.history.back();
-          } else if (data.result === "field_error") {
-            $window.scrollTo(0, 0);
-            return $scope.fieldInfo = data.field;
-          } else {
-            return $window.alert(data.error_msg);
-          }
-        }).error(function() {
-          return $window.alert("Network error.");
-        });
-      };
     }
   ]);
 

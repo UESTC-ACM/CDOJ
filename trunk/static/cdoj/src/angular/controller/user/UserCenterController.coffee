@@ -1,18 +1,25 @@
 cdoj
 .controller("UserCenterController", [
-    "$scope", "$rootScope", "$http", "$routeParams", "$modal", "$window"
-    ($scope, $rootScope, $http, $routeParams, $modal, $window) ->
+    "$scope", "$rootScope", "$http", "$routeParams", "$modal", "$window",
+    "$location", "targetUser", "userEditDTO"
+    ($scope, $rootScope, $http, $routeParams, $modal, $window, $location,
+     targetUser, userEditDTO) ->
+      targetUserName = angular.copy($routeParams.userName)
+      currentTab = angular.copy($routeParams.tab)
+      if angular.isUndefined currentTab
+        $location.path("/user/center/" + targetUserName + "/problems")
+
       $scope.$emit(
         "permission:setPermission"
         $rootScope.AuthenticationType.NOOP
       )
       $window.scrollTo(0, 0)
+
       $scope.targetUser =
         email: ""
       $scope.teamCondition = angular.copy($rootScope.teamCondition)
       $scope.messageCondition = angular.copy($rootScope.messageCondition)
-      $scope.userEditDTO = undefined
-      # FIXME(mzry1992) This will cause the message list refresh automatically!
+      $scope.userEditDTO = userEditDTO
       permissionChanged = ->
         if $rootScope.hasEditPermission == false
           $scope.messagesTabTitle =
@@ -22,13 +29,6 @@ cdoj
         else
           $scope.messagesTabTitle = $scope.targetUser.userName + "'s messages"
           $scope.messageCondition.userId = $scope.currentUser.userId
-          if angular.isUndefined $scope.userEditDTO
-            $http.get(
-              "/user/profile/" + $scope.targetUser.userName
-            ).success((data) ->
-              if data.result == "success"
-                $scope.userEditDTO = data.user
-            )
       $scope.$on("permission:changed", ->
         permissionChanged()
       )
@@ -36,7 +36,6 @@ cdoj
         permissionChanged()
       )
 
-      currentTab = angular.copy($routeParams.tab)
       $scope.activeProblemsTab = false
       $scope.activeTeamsTab = false
       $scope.activeMessagesTab = false
@@ -60,19 +59,12 @@ cdoj
       $scope.selectMessagesTab = ->
         $scope.$broadcast("list:refresh:message")
 
-      targetUserName = angular.copy($routeParams.userName)
+
       $scope.$emit("permission:setEditPermission", targetUserName)
       $scope.$emit("permission:check")
-      $http.get("/user/userCenterData/#{targetUserName}").success((data) ->
-        if data.result == "success"
-          $scope.targetUser = data.targetUser
-          $scope.problemStatus = data.problemStatus
-          $scope.teamCondition.userId = data.targetUser.userId
-        else
-          $window.alert data.error_msg
-      ).error(->
-        $window.alert "Network error, please refresh page manually."
-      )
+      $scope.targetUser = targetUser.targetUser
+      $scope.problemStatus = targetUser.problemStatus
+      $scope.teamCondition.userId = targetUser.targetUser.userId
 
       articleCondition = angular.copy($rootScope.articleCondition)
       articleCondition.userName = targetUserName
@@ -80,6 +72,12 @@ cdoj
 
       $scope.fieldInfo = []
       $scope.edit = ->
+        if ($rootScope.currentUser.hasLogin == false ||
+            $rootScope.currentUser.type ==
+              $rootScope.AuthenticationType.CONSTANT
+        )
+          $window.alert("Permission denied!")
+          return
         userEditDTO = angular.copy($scope.userEditDTO)
         if userEditDTO.newPassword == ""
           userEditDTO.newPassword = undefined
@@ -134,5 +132,16 @@ cdoj
             $window.alert data.error_msg
         ).error(->
           $window.alert "Network error."
+        )
+      $scope.selectEditTab = ->
+        $http.get(
+            "/user/profile/" + $scope.targetUser.userName
+        ).success((data) ->
+          if data.result == "success"
+            $scope.userEditDTO  = data.user
+          else
+            $window.alert(data.error_msg)
+        ).error(->
+          $window.alert("Network error!")
         )
   ])

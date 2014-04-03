@@ -171,7 +171,8 @@
 </tab>
 <tab heading="Edit"
      active="activeEditTab"
-     ng-show="$root.hasEditPermission">
+     ng-if="$root.hasEditPermission"
+     select="selectEditTab()">
 <div style="margin: 0 -15px;">
 <div class="col-md-12" style="margin-top: 15px;">
 <form class="form-horizontal">
