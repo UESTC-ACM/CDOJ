@@ -100,4 +100,35 @@ cdoj
           if data.result == "success"
             return data.list
         )
+
+      $scope.onsiteUsers = []
+      $scope.$on("onsiteUserFileUploader:complete", (e, list) ->
+        $scope.onsiteUsers = list
+      )
+      $scope.updateOnsiteUsers = ->
+        userList = _.map(
+          $scope.onsiteUsers
+          (user) ->
+            userName: user.userName
+            password: CryptoJS.SHA1(user.password).toString()
+            nickName: user.teamName
+            name: user.members
+        )
+        console.log userList
+      $scope.onsiteUserFileHelp = """
+You should upload user config file in csv format.
+
+You need to specify the corresponding attribute in the header row, see
+the example below for more details.
+
+(Use `,` as the separators and `"` as the quote character)
+
+```
+"id", "userName", "password", "teamName", "members"
+"team001", "12th_team001", "123456789", "UESTC_Dage", "大哥, 大哥, 大哥"
+```
+
+Please check the list carefully after you upload it, and click the update
+button below to commit changes.
+"""
   ])

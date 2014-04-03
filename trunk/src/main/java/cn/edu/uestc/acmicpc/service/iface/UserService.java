@@ -108,7 +108,7 @@ public interface UserService extends DatabaseService<User, Integer> {
    * @throws AppException
    */
   public List<UserTypeAheadDTO> getUserTypeAheadDTOList(UserCondition condition, PageInfo pageInfo)
-    throws AppException;
+      throws AppException;
 
   /**
    * Update some fields of one user according the user id.
@@ -121,6 +121,7 @@ public interface UserService extends DatabaseService<User, Integer> {
 
   /**
    * Check whether a user exists.
+   *
    * @param userName user's name
    * @return true if exists
    * @throws AppException
@@ -129,9 +130,18 @@ public interface UserService extends DatabaseService<User, Integer> {
 
   /**
    * Check whether a user exists.
+   *
    * @param userId user's id
    * @return true if exists
    * @throws AppException
    */
   public Boolean checkUserExists(Integer userId) throws AppException;
+
+  /**
+   * Create onsite users by {@link UserDTO} list.
+   *
+   * @param userList {@link UserDTO} list
+   * @throws AppException
+   */
+  public void createOnsiteUsersByUserList(List<UserDTO> userList) throws AppException;
 }
