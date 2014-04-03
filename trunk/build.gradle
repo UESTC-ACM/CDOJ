@@ -12,6 +12,7 @@ description = """UESTC Online Judge"""
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+// Jetty eclipse plugin
 buildscript {
   repositories {
     jcenter()
@@ -21,6 +22,9 @@ buildscript {
   }
 }
 apply plugin: 'jettyEclipse'
+
+// Build cdoj subproject first
+jettyEclipseRun.dependsOn ":static/cdoj:build"
 
 task checkControllerDoNotContainDaos(type: Exec) {
   commandLine "python",
