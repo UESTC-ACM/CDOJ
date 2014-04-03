@@ -12,6 +12,7 @@ description = """UESTC Online Judge"""
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+// Jetty eclipse plugin
 buildscript {
   repositories {
     jcenter()
@@ -194,4 +195,9 @@ test {
 
 jacoco {
   toolVersion = "0.6.5.201403032054"
+}
+
+// Sub project
+project(':static/cdoj') {
+
 }
