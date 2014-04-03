@@ -105,6 +105,24 @@ cdoj
       $scope.$on("onsiteUserFileUploader:complete", (e, list) ->
         $scope.onsiteUsers = list
       )
+      if $scope.contest.type == $rootScope.ContestType.ONSITE
+        $http.get(
+            "/contest/fetchAllOnsiteUsers/" + $scope.contest.contestId
+        ).success((data) ->
+          if data.result == "success"
+            $scope.onsiteUsers = _.map(
+              data.list
+              (user) ->
+                userName: user.userName
+                password: "Encrypted password"
+                teamName: user.nickName
+                members: user.name
+            )
+          else
+            $window.alert data.error_msg
+        ).error(->
+          $window.alert "Network error."
+        )
       $scope.updateOnsiteUsers = ->
         userList = _.map(
           $scope.onsiteUsers

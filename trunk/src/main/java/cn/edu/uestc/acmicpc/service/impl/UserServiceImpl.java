@@ -209,6 +209,19 @@ public class UserServiceImpl extends AbstractService implements UserService {
   }
 
   @Override
+  public List<UserDTO> fetchAllOnsiteUsersByContestId(Integer contestId) throws AppException {
+    StringBuilder hqlBuilder = new StringBuilder();
+    hqlBuilder
+        .append("from User where")
+        .append(" userId in (")
+        .append("   select userId from ContestUser where contestId = ")
+        .append(contestId)
+        .append(" )")
+        .append(")");
+    return userDAO.findAll(UserDTO.class, UserDTO.builder(), hqlBuilder.toString(), null);
+  }
+
+  @Override
   public UserEditorDTO getUserEditorDTOByUserName(String userName)
       throws AppException {
     return userDAO.getDTOByUniqueField(UserEditorDTO.class,

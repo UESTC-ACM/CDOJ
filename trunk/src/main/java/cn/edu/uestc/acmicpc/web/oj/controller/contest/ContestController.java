@@ -971,7 +971,6 @@ public class ContestController extends BaseController {
     return json;
   }
 
-
   @RequestMapping("updateOnsiteUser")
   @LoginPermit(AuthenticationType.ADMIN)
   public
@@ -1002,4 +1001,20 @@ public class ContestController extends BaseController {
     return json;
   }
 
+  @RequestMapping("fetchAllOnsiteUsers/{contestId}")
+  @LoginPermit(AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> fetchAllOnsiteUsers(@PathVariable("contestId") Integer contestId) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      List<UserDTO> result = userService.fetchAllOnsiteUsersByContestId(contestId);
+      json.put("result", "success");
+      json.put("list", result);
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    }
+    return json;
+  }
 }
