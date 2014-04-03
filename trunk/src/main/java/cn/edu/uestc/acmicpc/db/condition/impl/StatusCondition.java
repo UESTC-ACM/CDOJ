@@ -121,9 +121,12 @@ public class StatusCondition extends BaseCondition {
           userName);
     }
 
-    if (!isForAdmin) {
+    if (isForAdmin) {
       condition.addEntry("userByUserId.type", ConditionType.EQUALS,
-          AuthenticationType.NORMAL.ordinal());
+          AuthenticationType.ADMIN.ordinal());
+    } else {
+      condition.addEntry("userByUserId.type", ConditionType.NOT_EQUALS,
+          AuthenticationType.ADMIN.ordinal());
     }
 
     if (result != null) {
