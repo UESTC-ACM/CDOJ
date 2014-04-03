@@ -149,3 +149,7 @@ module.exports = (grunt) ->
     "compileFull",
     "minifyResult"
   ]
+  grunt.registerTask "build", [
+    "compileFull",
+    "minifyResult"
+  ]
