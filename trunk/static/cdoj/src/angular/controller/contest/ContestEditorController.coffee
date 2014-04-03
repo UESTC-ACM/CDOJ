@@ -114,7 +114,18 @@ cdoj
             nickName: user.teamName
             name: user.members
         )
-        console.log userList
+        $http.post(
+          "/contest/updateOnsiteUser"
+          userList: userList
+          contestId: $scope.contest.contestId
+        ).success((data) ->
+          if data.result == "success"
+            $window.alert "Update onsite users information successful!"
+          else
+            $window.alert data.error_msg
+        ).error(->
+          $window.alert "Network error."
+        )
       $scope.onsiteUserFileHelp = """
 You should upload user config file in csv format.
 

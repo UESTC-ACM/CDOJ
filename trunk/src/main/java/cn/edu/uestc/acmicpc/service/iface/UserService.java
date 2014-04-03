@@ -75,9 +75,10 @@ public interface UserService extends DatabaseService<User, Integer> {
    * Create a new user record {@link UserDTO} entity.
    *
    * @param userDTO {@link UserDTO} entity.
+   * @return New user's user ID.
    * @throws AppException
    */
-  public void createNewUser(UserDTO userDTO) throws AppException;
+  public Integer createNewUser(UserDTO userDTO) throws AppException;
 
   /**
    * Counts the number of users fit in condition.
@@ -140,8 +141,8 @@ public interface UserService extends DatabaseService<User, Integer> {
   /**
    * Create onsite users by {@link UserDTO} list.
    *
-   * @param userList {@link UserDTO} list
+   * @param userList {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO} list
    * @throws AppException
    */
-  public void createOnsiteUsersByUserList(List<UserDTO> userList) throws AppException;
+  public List<Integer> createOnsiteUsersByUserList(List<UserDTO> userList) throws AppException;
 }
