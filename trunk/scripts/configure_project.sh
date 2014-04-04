@@ -12,8 +12,9 @@
 # $6 images path
 # $7 data path
 # $8 upload path
+# $9 judge work path
 
-if [ $# -ne 8 ]; then
+if [ $# -ne 9 ]; then
   exit 1
 fi
 
@@ -24,3 +25,4 @@ echo "staticResources.path=$5" >> $2
 echo "images.path=$6" >> $2
 echo "data.path=$7" >> $2
 echo "upload.path=$8" >> $2
+echo "judge.workPath=$9" >> $2

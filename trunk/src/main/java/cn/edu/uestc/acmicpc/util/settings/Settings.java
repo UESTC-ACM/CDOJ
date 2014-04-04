@@ -101,7 +101,6 @@ public class Settings {
 
       // Judge settings
       JUDGE_CORE = getStringValueSettingByName(SettingsID.JUDGE_CORE);
-      WORK_PATH = getStringValueSettingByName(SettingsID.WORK_PATH);
       JUDGES = JSON.parseArray(getStringValueSettingByName(SettingsID.JUDGES), JudgeSetting.class);
 
       // Email settings
@@ -111,11 +110,13 @@ public class Settings {
       PICTURE_FOLDER = environment.getProperty("images.path") + "/";
       DATA_PATH = environment.getProperty("data.path") + "/";
       UPLOAD_FOLDER = environment.getProperty("upload.path") + "/";
+      WORK_PATH = environment.getProperty("judge.workPath") + "/";
 
       // Initialize folders
       FileUtil.createDirectoryIfNotExists(PICTURE_FOLDER);
       FileUtil.createDirectoryIfNotExists(DATA_PATH);
       FileUtil.createDirectoryIfNotExists(UPLOAD_FOLDER);
+      FileUtil.createDirectoryIfNotExists(WORK_PATH);
     } catch (AppException e) {
       e.printStackTrace();
     }
