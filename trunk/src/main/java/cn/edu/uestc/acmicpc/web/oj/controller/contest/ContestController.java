@@ -15,18 +15,21 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReportDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReviewDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestUser.ContestUserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.OnsiteUserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ContestImporterService;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestRankListService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
+import cn.edu.uestc.acmicpc.service.iface.ContestUserService;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
@@ -35,6 +38,7 @@ import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.TeamService;
 import cn.edu.uestc.acmicpc.service.iface.TeamUserService;
+import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
@@ -45,6 +49,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
+import cn.edu.uestc.acmicpc.util.helper.CSVUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
@@ -68,6 +73,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.sql.Timestamp;
@@ -107,6 +113,8 @@ public class ContestController extends BaseController {
   private ContestRegistryReportView contestRegistryReportView;
   private ContestRankListView contestRankListView;
   private Settings settings;
+  private UserService userService;
+  private ContestUserService contestUserService;
 
   @Autowired
   public ContestController(ContestService contestService,
@@ -124,7 +132,9 @@ public class ContestController extends BaseController {
                            ContestRankListService contestRankListService,
                            ContestRegistryReportView contestRegistryReportView,
                            ContestRankListView contestRankListView,
-                           Settings settings) {
+                           Settings settings,
+                           UserService userService,
+                           ContestUserService contestUserService) {
     this.contestService = contestService;
     this.contestProblemService = contestProblemService;
     this.contestImporterService = contestImporterService;
@@ -142,12 +152,14 @@ public class ContestController extends BaseController {
     this.contestRegistryReportView = contestRegistryReportView;
     this.contestRankListView = contestRankListView;
     this.settings = settings;
+    this.userService = userService;
+    this.contestUserService = contestUserService;
   }
 
   @RequestMapping("exportCodes/{contestId}")
   public void exportCodes(HttpSession session,
-                             @PathVariable("contestId") Integer contestId,
-                             HttpServletResponse response) {
+                          @PathVariable("contestId") Integer contestId,
+                          HttpServletResponse response) {
     try {
       if (!isAdmin(session)) {
         throw new AppException("Permission denied!");
@@ -351,6 +363,18 @@ public class ContestController extends BaseController {
         }
         // Put members map in session
         setContestTeamMembers(session, contestDTO.getContestId(), teamMembers);
+      }
+    } else if (contestDTO.getType() == ContestType.ONSITE.ordinal()) {
+      // Onsite!
+      if (!isAdmin(session)) {
+        UserDTO currentUser = getCurrentUser(session);
+        if (currentUser == null) {
+          throw new AppException("You are not invited in this contest!");
+        }
+        // Check permission
+        if (!contestUserService.fetchOnsiteUsersByUserIdAndContestId(currentUser.getUserId(), registeredContestId)) {
+          throw new AppException("You are not invited in this contest!");
+        }
       }
     } else {
       // Unexpected type
@@ -917,6 +941,82 @@ public class ContestController extends BaseController {
     } catch (Exception e) {
       e.printStackTrace();
       json.put("error", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  @RequestMapping(value = "uploadOnsiteUserFile",
+      method = RequestMethod.POST)
+  @LoginPermit(AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> uploadOnsiteUserFile(
+      @RequestParam(value = "uploadFile", required = true) MultipartFile[] files) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      FileInformationDTO fileInformationDTO = fileService.uploadContestArchive(
+          FileUploadDTO.builder()
+              .setFiles(Arrays.asList(files))
+              .build()
+      );
+
+      File csvFile = new File(settings.UPLOAD_FOLDER + fileInformationDTO.getFileName());
+      List<OnsiteUserDTO> result = CSVUtil.parseArray(csvFile, OnsiteUserDTO.class);
+      json.put("success", "true");
+      json.put("list", result);
+    } catch (AppException e) {
+      e.printStackTrace();
+      json.put("error", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("error", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  @RequestMapping("updateOnsiteUser")
+  @LoginPermit(AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> updateOnsiteUser(@RequestBody ContestEditDTO contestEditDTO) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      Integer contestId = contestEditDTO.getContestId();
+      // Remove old users
+      contestUserService.removeContestUsersByContestId(contestId);
+      // Add new users
+      List<Integer> newUsersIDList = userService.createOnsiteUsersByUserList(contestEditDTO.getUserList());
+      for (Integer userID : newUsersIDList) {
+        contestUserService.createNewContestUser(
+            ContestUserDTO.Builder()
+                .setContestId(contestId)
+                .setUserId(userID)
+                .setStatus((byte) ContestRegistryStatusType.ACCEPTED.ordinal())
+                .setComment("Users in contest " + contestId)
+                .build()
+        );
+      }
+      json.put("result", "success");
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    }
+    return json;
+  }
+
+  @RequestMapping("fetchAllOnsiteUsers/{contestId}")
+  @LoginPermit(AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> fetchAllOnsiteUsers(@PathVariable("contestId") Integer contestId) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      List<UserDTO> result = userService.fetchAllOnsiteUsersByContestId(contestId);
+      json.put("result", "success");
+      json.put("list", result);
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
     }
     return json;
   }
