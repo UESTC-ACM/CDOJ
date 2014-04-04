@@ -306,7 +306,8 @@
               ng-class="{
                   'rank-list-first-blood': item.firstBlood,
                   'rank-list-solved': item.firstBlood == false && item.solved,
-                  'rank-list-tried': item.solved == false && item.tried > 0
+                  'rank-list-tried': item.solved == false && item.triedAfterFrozen == false && item.tried > 0,
+                  'rank-list-frozen': item.soved == false && item.triedAfterFrozen
                 }">
             <span ng-if="item.solved == true" penalty="item.solvedTime / 1000"
                   ui-penalty></span>

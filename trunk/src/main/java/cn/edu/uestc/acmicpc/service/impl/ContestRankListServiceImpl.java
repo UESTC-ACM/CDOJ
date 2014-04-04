@@ -37,7 +37,7 @@ import java.util.Map;
 @Service
 public class ContestRankListServiceImpl extends AbstractService implements ContestRankListService {
 
-  private final Map<Integer, RankList> rankListPool = new HashMap<>();
+  private final Map<String, RankList> rankListPool = new HashMap<>();
   private final long FETCH_INTERVAL = 10 * 1000; //10 seconds
 
   private ContestProblemService contestProblemService;
@@ -117,8 +117,10 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
 
   @Override
   public synchronized RankList getRankList(Integer contestId,
-                                           Integer contestType) throws AppException {
-    RankList lastModified = rankListPool.get(contestId);
+                                           Integer contestType,
+                                           Boolean frozen) throws AppException {
+    String rankListName = contestId.toString() + ":" + frozen;
+    RankList lastModified = rankListPool.get(rankListName);
     if (lastModified == null ||
         (System.currentTimeMillis() - lastModified.lastFetched.getTime()) > FETCH_INTERVAL) {
       ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(contestId);
@@ -155,6 +157,10 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
           // Out of time.
           continue;
         }
+        Boolean isFrozen = false;
+        if (frozen && contestShowDTO.getEndTime().getTime() - status.getTime().getTime() <= 60 * 60 * 1000) {
+          isFrozen = true;
+        }
         rankListBuilder.addStatus(new RankListStatus(
             1, // Total tried
             status.getReturnTypeId(), // Return type id
@@ -163,12 +169,13 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
             status.getNickName(), // Nick name
             status.getEmail(), // Email
             status.getName(),
-            status.getTime().getTime() - contestShowDTO.getStartTime().getTime())); // Time
+            status.getTime().getTime() - contestShowDTO.getStartTime().getTime()),
+            isFrozen); // Time
       }
 
       RankList result = rankListBuilder.build();
 
-      rankListPool.put(contestId, result);
+      rankListPool.put(rankListName, result);
       return result;
     } else {
       return lastModified;
