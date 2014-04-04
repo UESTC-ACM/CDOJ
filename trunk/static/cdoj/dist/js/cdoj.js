@@ -82493,9 +82493,32 @@ if (typeof exports === 'object') {
       }).error(function() {
         return $window.alert("Network error.");
       });
-      return $scope.$on("$routeChangeStart", function() {
+      $scope.$on("$routeChangeStart", function() {
         return $modalInstance.dismiss();
       });
+      return $scope.printMessage = function() {
+        var $content, content, printWindow;
+        printWindow = $window.open("", "print");
+        printWindow.document.write("<html><head><title>print</title>");
+        printWindow.document.write("</head><body >");
+        content = angular.copy($scope.message.content);
+        content = marked(content);
+        $content = $("<div></div>").append(content);
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $content[0]]);
+        console.log($content.find("pre"));
+        $content.find("pre").each(function(id, el) {
+          var $el, text;
+          $el = $(el);
+          if ($el.attr("type") !== "no-prettify") {
+            text = prettyPrintOne($el[0].innerText.escapeHTML());
+            return $el.empty().append(text);
+          }
+        });
+        printWindow.document.write($content[0].innerHTML);
+        printWindow.document.write("</body></html>");
+        printWindow.print();
+        return printWindow.close();
+      };
     }
   ]);
 
