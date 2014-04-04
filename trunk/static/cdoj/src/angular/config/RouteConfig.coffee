@@ -8,21 +8,6 @@ cdoj
       ).when("/status/list",
         templateUrl: "template/status/list.html"
         controller: "StatusListController"
-      ).when("/user/list",
-        templateUrl: "template/user/list.html"
-        controller: "UserListController"
-      ).when("/user/center/:userName/:tab",
-        templateUrl: "template/user/center.html"
-        controller: "UserCenterController"
-      ).when("/user/center/:userName",
-        templateUrl: "template/user/center.html"
-        controller: "UserCenterController"
-      ).when("/user/activate/:userName/:serialKey",
-        templateUrl: "template/user/activation.html"
-        controller: "PasswordResetController"
-      ).when("/user/register",
-        templateUrl: "template/user/register.html"
-        controller: "UserRegisterController"
       ).when("/article/show/:articleId",
         templateUrl: "template/article/show.html"
         controller: "ArticleShowController"

@@ -9,8 +9,8 @@ cdoj
         templateUrl: "template/contest/show.html"
         controller: "ContestShowController"
         resolve:
-          contest: ["$q", "$route", "$http", "Error", "$rootScope"
-            ($q, $route, $http, $Error, $rootScope) ->
+          contest: ["$q", "$route", "$http", "Error"
+            ($q, $route, $http, $Error) ->
               deferred = $q.defer()
               contestId = $route.current.params.contestId
               $http.get("/contest/data/#{contestId}").success((data) ->
@@ -19,9 +19,9 @@ cdoj
                   contest.problemList = data.problemList
                   deferred.resolve(contest)
                 else
-                  $Error data.error_msg
+                  $Error.error data.error_msg
               ).error(->
-                $Error "Network error."
+                $Error.error "Network error."
               )
               return deferred.promise
           ]

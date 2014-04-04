@@ -10,6 +10,10 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.GenderType;
+import cn.edu.uestc.acmicpc.util.enums.GradeType;
+import cn.edu.uestc.acmicpc.util.enums.TShirtsSizeType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -17,6 +21,9 @@ import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -102,10 +109,11 @@ public class UserServiceImpl extends AbstractService implements UserService {
   }
 
   @Override
-  public void createNewUser(UserDTO userDTO) throws AppException {
+  public Integer createNewUser(UserDTO userDTO) throws AppException {
     User user = new User();
     updateUserByUserDTO(user, userDTO);
     userDAO.add(user);
+    return user.getUserId();
   }
 
   @Override
@@ -171,6 +179,46 @@ public class UserServiceImpl extends AbstractService implements UserService {
   public Boolean checkUserExists(Integer userId) throws AppException {
     UserDTO userDTO = getUserDTOByUserId(userId);
     return userDTO != null;
+  }
+
+  @Override
+  public List<Integer> createOnsiteUsersByUserList(List<UserDTO> userList) throws AppException {
+    // Property userName, password, nickName and name is already exists.
+    List<Integer> userIdList = new LinkedList<>();
+    for (UserDTO userDTO: userList) {
+      userDTO.setStudentId("123456");
+      userDTO.setSchool("UESTC");
+      // Avoid conflict email address.
+      userDTO.setEmail(userDTO.getUserName() + userDTO.getPassword() + "@cdoj.com");
+      userDTO.setSolved(0);
+      userDTO.setTried(0);
+      // Constant user
+      userDTO.setType(AuthenticationType.CONSTANT.ordinal());
+      userDTO.setMotto("");
+      userDTO.setLastLogin(new Timestamp(new Date().getTime()));
+      userDTO.setDepartmentId(1);
+      userDTO.setSex(GenderType.FEMALE.ordinal());
+      userDTO.setGrade(GradeType.FRESHMAN.ordinal());
+      userDTO.setPhone("123");
+      userDTO.setSize(TShirtsSizeType.M.ordinal());
+
+      Integer newUserID = createNewUser(userDTO);
+      userIdList.add(newUserID);
+    }
+    return userIdList;
+  }
+
+  @Override
+  public List<UserDTO> fetchAllOnsiteUsersByContestId(Integer contestId) throws AppException {
+    StringBuilder hqlBuilder = new StringBuilder();
+    hqlBuilder
+        .append("from User where")
+        .append(" userId in (")
+        .append("   select userId from ContestUser where contestId = ")
+        .append(contestId)
+        .append(" )")
+        .append(")");
+    return userDAO.findAll(UserDTO.class, UserDTO.builder(), hqlBuilder.toString(), null);
   }
 
   @Override
