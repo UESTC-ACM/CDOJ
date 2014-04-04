@@ -15,5 +15,5 @@ public interface ContestRankListService {
    * @return {@link RankList} entity.
    * @throws AppException
    */
-  public RankList getRankList(Integer contestId, Integer contestType) throws AppException;
+  public RankList getRankList(Integer contestId, Integer contestType, Boolean frozen) throws AppException;
 }

@@ -648,7 +648,11 @@ public class ContestController extends BaseController {
     // Check permission
     checkContestPermission(session, contestId);
 
-    return contestRankListService.getRankList(contestId, (int) getContestType(session, contestId));
+    if (contestShowDTO.getStatus().equals("Ended")) {
+      return contestRankListService.getRankList(contestId, (int) getContestType(session, contestId), false);
+    } else {
+      return contestRankListService.getRankList(contestId, (int) getContestType(session, contestId), !isAdmin(session));
+    }
   }
 
   @RequestMapping("rankList/{contestId}")

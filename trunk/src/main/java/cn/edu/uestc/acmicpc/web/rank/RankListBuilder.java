@@ -85,6 +85,7 @@ public class RankListBuilder {
           rankListItem.penalty = 0L;
           rankListItem.tried = 0;
           rankListItem.firstBlood = false;
+          rankListItem.triedAfterFrozen = false;
         }
 
         userList.add(user);
@@ -114,6 +115,7 @@ public class RankListBuilder {
           rankListItem.penalty = 0L;
           rankListItem.tried = 0;
           rankListItem.firstBlood = false;
+          rankListItem.triedAfterFrozen = false;
         }
         // Set team users
         user.teamUsers = team.getTeamUsers();
@@ -125,7 +127,7 @@ public class RankListBuilder {
     }
   }
 
-  public void addStatus(RankListStatus status) {
+  public void addStatus(RankListStatus status, Boolean frozen) {
     Integer problemIndex = getRankListProblemIndex(status.problemTitle);
     if (problemIndex == null) {
       // Ignore
@@ -145,17 +147,21 @@ public class RankListBuilder {
     problem.tried = problem.tried + 1;
     item.tried = item.tried + 1;
     user.tried = user.tried + 1;
-    if (status.result == OnlineJudgeReturnType.OJ_AC.ordinal()) {
-      problem.solved = problem.solved + 1;
-      if (problem.solved == 1) {
-        item.firstBlood = true;
+    if (frozen) {
+      item.triedAfterFrozen = true;
+    } else {
+      if (status.result == OnlineJudgeReturnType.OJ_AC.ordinal()) {
+        problem.solved = problem.solved + 1;
+        if (problem.solved == 1) {
+          item.firstBlood = true;
+        }
+        item.solved = true;
+        item.solvedTime = status.time;
+        item.tried = item.tried - 1;
+        item.penalty = item.solvedTime / 1000 + item.tried * 20 * 60;
+        user.solved = user.solved + 1;
+        user.penalty = user.penalty + item.penalty;
       }
-      item.solved = true;
-      item.solvedTime = status.time;
-      item.tried = item.tried - 1;
-      item.penalty = item.solvedTime / 1000 + item.tried * 20 * 60;
-      user.solved = user.solved + 1;
-      user.penalty = user.penalty + item.penalty;
     }
   }
 
