@@ -10,7 +10,7 @@ public enum SettingsID {
   @Deprecated PICTURE_FOLDER(4),
   JUDGE_CORE(5),
   @Deprecated DATA_PATH(6),
-  WORK_PATH(7),
+  @Deprecated WORK_PATH(7),
   JUDGES(8),
   EMAIL(9),
   RECORD_PER_PAGE(10);
