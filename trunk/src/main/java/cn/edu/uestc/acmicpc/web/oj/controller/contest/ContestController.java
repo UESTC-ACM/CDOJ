@@ -648,11 +648,7 @@ public class ContestController extends BaseController {
     // Check permission
     checkContestPermission(session, contestId);
 
-    if (getContestType(session, contestId) == ContestType.INVITED.ordinal()) {
-      return contestRankListService.getRankList(contestId, true);
-    } else {
-      return contestRankListService.getRankList(contestId, false);
-    }
+    return contestRankListService.getRankList(contestId, (int) getContestType(session, contestId));
   }
 
   @RequestMapping("rankList/{contestId}")

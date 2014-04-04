@@ -273,7 +273,7 @@
           </td>
           <td class="user-name"
               ng-class="{my: user.name == $root.currentUser.userName}"
-              ng-if="contest.type != $root.ContestType.INVITED">
+              ng-if="contest.type != $root.ContestType.INVITED && contest.type != $root.ContestType.ONSITE">
             <b>{{user.name}}</b>
             <br/>
             {{user.nickName}}
@@ -287,6 +287,13 @@
                   ng-repeat="teamUser in user.teamUsers">
               {{teamUser.name}}&nbsp;
             </span>
+          </td>
+          <td class="user-name"
+              ng-class="{my: user.name == $root.currentUser.userName}"
+              ng-if="contest.type == $root.ContestType.ONSITE">
+            <b>{{user.nickName}}</b>
+            <br/>
+            {{user.reallyName}}
           </td>
           <td class="solved"
               style="vertical-align:middle;"
