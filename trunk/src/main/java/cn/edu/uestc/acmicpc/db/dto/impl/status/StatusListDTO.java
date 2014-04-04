@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @Fields({"statusId", "userByUserId.userName", "userByUserId.nickName", "problemId", "contestId",
     "result", "length", "languageByLanguageId.name", "timeCost", "memoryCost", "time", "caseNumber",
-    "userByUserId.email"})
+    "userByUserId.email", "userByUserId.name"})
 public class StatusListDTO implements BaseDTO<Status> {
 
   private String nickName;
@@ -28,7 +28,7 @@ public class StatusListDTO implements BaseDTO<Status> {
   private StatusListDTO(Integer statusId, String userName, String nickName, Integer problemId,
                         Integer contestId, String returnType, Integer returnTypeId, Integer length,
                         String language, Integer timeCost, Integer memoryCost, Timestamp time,
-                        Integer caseNumber, String email) {
+                        Integer caseNumber, String email, String name) {
     this.statusId = statusId;
     this.userName = userName;
     this.nickName = nickName;
@@ -43,8 +43,10 @@ public class StatusListDTO implements BaseDTO<Status> {
     this.time = time;
     this.caseNumber = caseNumber;
     this.email = email;
+    this.name = name;
   }
 
+  private String name;
   private Integer statusId;
   private String userName;
   private Integer problemId;
@@ -58,6 +60,14 @@ public class StatusListDTO implements BaseDTO<Status> {
   private Timestamp time;
   private Integer caseNumber;
   private String email;
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
 
   public String getEmail() {
     return email;
@@ -261,7 +271,7 @@ public class StatusListDTO implements BaseDTO<Status> {
     @Override
     public StatusListDTO build() {
       return new StatusListDTO(statusId, userName, nickName, problemId, contestId, returnType,
-          returnTypeId, length, language, timeCost, memoryCost, time, caseNumber, email);
+          returnTypeId, length, language, timeCost, memoryCost, time, caseNumber, email, name);
     }
 
     @Override
@@ -279,8 +289,16 @@ public class StatusListDTO implements BaseDTO<Status> {
       time = (Timestamp) properties.get("time");
       caseNumber = (Integer) properties.get("caseNumber");
       email = (String) properties.get("userByUserId.email");
+      name = (String) properties.get("userByUserId.name");
       return build();
 
+    }
+
+    private String name;
+
+    public Builder setName(String name) {
+      this.name = name;
+      return this;
     }
 
     private Integer statusId;

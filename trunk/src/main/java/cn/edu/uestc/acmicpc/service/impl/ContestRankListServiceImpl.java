@@ -117,7 +117,7 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
 
   @Override
   public synchronized RankList getRankList(Integer contestId,
-                                           Boolean invitedContest) throws AppException {
+                                           Integer contestType) throws AppException {
     RankList lastModified = rankListPool.get(contestId);
     if (lastModified == null ||
         (System.currentTimeMillis() - lastModified.lastFetched.getTime()) > FETCH_INTERVAL) {
@@ -139,7 +139,7 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
         rankListBuilder.addRankListProblem(problem.getProblemId().toString());
       }
 
-      if (invitedContest) {
+      if (contestType == ContestType.INVITED.ordinal()) {
         // Invited type contest, should include team information
         rankListBuilder.enableTeamMode();
 
@@ -162,10 +162,12 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
             status.getUserName(), // User name
             status.getNickName(), // Nick name
             status.getEmail(), // Email
+            status.getName(),
             status.getTime().getTime() - contestShowDTO.getStartTime().getTime())); // Time
       }
 
       RankList result = rankListBuilder.build();
+
       rankListPool.put(contestId, result);
       return result;
     } else {

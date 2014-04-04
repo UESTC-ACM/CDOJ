@@ -62,12 +62,14 @@ public class RankListBuilder {
 
   private RankListUser getRankListUser(String userName,
                                        String nickName,
-                                       String email) {
+                                       String email,
+                                       String reallyName) {
     if (!teamMode) {
       RankListUser user = userMap.get(userName);
       if (user == null) {
         user = new RankListUser();
         user.name = userName;
+        user.reallyName = reallyName;
         user.nickName = nickName;
         user.email = email;
         user.penalty = 0L;
@@ -100,6 +102,7 @@ public class RankListBuilder {
         user.name = team.getTeamName();
         user.penalty = 0L;
         user.rank = 0;
+        user.reallyName = reallyName;
         user.solved = 0;
         user.tried = 0;
         user.itemList = new RankListItem[problemList.size()];
@@ -129,7 +132,7 @@ public class RankListBuilder {
       return;
     }
     RankListProblem problem = problemList.get(problemIndex);
-    RankListUser user = getRankListUser(status.userName, status.nickName, status.email);
+    RankListUser user = getRankListUser(status.userName, status.nickName, status.email, status.reallyName);
     if (user == null) {
       // Ignore
       return;
