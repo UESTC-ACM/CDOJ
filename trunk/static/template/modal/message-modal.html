@@ -24,12 +24,16 @@
       position: absolute;
       top: 14px;
       right: 20px;">
-        <a href="javascript:void(0);" style="color: black;"><i class="fa fa-reply"></i></a>
+        <!--a href="javascript:void(0);" style="color: #999;" class="disabled"><i class="fa fa-reply"></i></a>
         <span>&nbsp</span>
-        <a href="javascript:void(0);" style="color: black;"><i class="fa fa-trash-o"></i></a>
+        <a href="javascript:void(0);" style="color: #999;"><i class="fa fa-trash-o"></i></a>
+        <span>&nbsp</span-->
+        <a href="javascript:void(0);" style="color: black;" ng-click="printMessage()"><i class="fa fa-print"></i></a>
       </div>
     </div>
   </div>
-  <markdown content="message.content">
-  </markdown>
+  <div class="printContent">
+    <markdown content="message.content">
+    </markdown>
+  </div>
 </div>
