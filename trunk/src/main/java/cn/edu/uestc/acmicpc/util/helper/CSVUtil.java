@@ -33,7 +33,7 @@ public class CSVUtil {
       if (field.isAnnotationPresent(CSVMap.class)) {
         CSVMap csvMap = field.getAnnotation(CSVMap.class);
         String column = csvMap.value();
-        if (column.equals("")) {
+        if ("".equals(column)) {
           // Default set as field name
           column = field.getName();
         }
@@ -55,7 +55,7 @@ public class CSVUtil {
       if (field.isAnnotationPresent(CSVMap.class)) {
         CSVMap csvMap = field.getAnnotation(CSVMap.class);
         String column = csvMap.value();
-        if (column.equals("")) {
+        if ("".equals(column)) {
           // Default set as field name
           column = field.getName();
         }
