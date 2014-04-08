@@ -5,8 +5,8 @@ import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -210,7 +210,7 @@ public class StatusServiceITTest extends AbstractTestNGSpringContextTests {
   public void testCount_byResult() throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.isForAdmin = true;
-    statusCondition.result = Global.OnlineJudgeResultType.OJ_AC;
+    statusCondition.result = OnlineJudgeResultType.OJ_AC;
     Assert.assertEquals(statusService.count(statusCondition), Long.valueOf(2L));
   }
 
@@ -218,7 +218,7 @@ public class StatusServiceITTest extends AbstractTestNGSpringContextTests {
   public void testCount_byResult_emptyResult() throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.isForAdmin = true;
-    statusCondition.result = Global.OnlineJudgeResultType.OJ_SE;
+    statusCondition.result = OnlineJudgeResultType.OJ_SE;
     Assert.assertEquals(statusService.count(statusCondition), Long.valueOf(0L));
   }
 
@@ -227,9 +227,9 @@ public class StatusServiceITTest extends AbstractTestNGSpringContextTests {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.isForAdmin = true;
     statusCondition.results = new HashSet<>(Arrays.asList(
-        Global.OnlineJudgeResultType.OJ_MLE,
-        Global.OnlineJudgeResultType.OJ_CE,
-        Global.OnlineJudgeResultType.OJ_OLE
+        OnlineJudgeResultType.OJ_MLE,
+        OnlineJudgeResultType.OJ_CE,
+        OnlineJudgeResultType.OJ_OLE
     ));
     Assert.assertEquals(statusService.count(statusCondition), Long.valueOf(2L));
   }
@@ -239,9 +239,9 @@ public class StatusServiceITTest extends AbstractTestNGSpringContextTests {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.isForAdmin = true;
     statusCondition.results = new HashSet<>(Arrays.asList(
-        Global.OnlineJudgeResultType.OJ_JUDGING,
-        Global.OnlineJudgeResultType.OJ_RE,
-        Global.OnlineJudgeResultType.OJ_RF
+        OnlineJudgeResultType.OJ_JUDGING,
+        OnlineJudgeResultType.OJ_RE,
+        OnlineJudgeResultType.OJ_RF
     ));
     Assert.assertEquals(statusService.count(statusCondition), Long.valueOf(0L));
   }

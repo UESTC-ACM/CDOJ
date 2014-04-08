@@ -19,9 +19,13 @@ import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.ContestType;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
@@ -54,13 +58,19 @@ public class StatusController extends BaseController {
   private GlobalService globalService;
   private LanguageService languageService;
   private UserService userService;
+  private Settings settings;
 
   @Autowired
-  public StatusController(StatusService statusService, ProblemService problemService,
-                          CodeService codeService, CompileInfoService compileInfoService,
-                          ContestService contestService, ContestProblemService contestProblemService,
-                          GlobalService globalService, LanguageService languageService,
-                          UserService userService) {
+  public StatusController(StatusService statusService,
+                          ProblemService problemService,
+                          CodeService codeService,
+                          CompileInfoService compileInfoService,
+                          ContestService contestService,
+                          ContestProblemService contestProblemService,
+                          GlobalService globalService,
+                          LanguageService languageService,
+                          UserService userService,
+                          Settings settings) {
     this.statusService = statusService;
     this.problemService = problemService;
     this.codeService = codeService;
@@ -70,6 +80,7 @@ public class StatusController extends BaseController {
     this.globalService = globalService;
     this.languageService = languageService;
     this.userService = userService;
+    this.settings = settings;
   }
 
   @RequestMapping("search")
@@ -84,7 +95,7 @@ public class StatusController extends BaseController {
         statusCondition.contestId = -1;
       }
       if (statusCondition.result == null) {
-        statusCondition.result = Global.OnlineJudgeResultType.OJ_ALL;
+        statusCondition.result = OnlineJudgeResultType.OJ_ALL;
       }
       if (!isAdmin(session)) {
         statusCondition.isForAdmin = false;
@@ -97,14 +108,19 @@ public class StatusController extends BaseController {
           checkContestPermission(session, statusCondition.contestId);
           // Get type
           Byte type = getContestType(session, statusCondition.contestId);
-          if (type == Global.ContestType.INVITED.ordinal()) {
+          if (type == ContestType.INVITED.ordinal()) {
             // Only show current user and his member's status
             List<Integer> memberList = getContestTeamMembers(session, statusCondition.contestId);
             statusCondition.userIdList = ArrayUtil.join(memberList.toArray(), ",");
           } else {
             // Only show current user's status
             UserDTO currentUser = getCurrentUser(session);
-            statusCondition.userId = currentUser.getUserId();
+            if (currentUser == null) {
+              // Avoid null point exception.
+              statusCondition.userId = 0;
+            } else {
+              statusCondition.userId = currentUser.getUserId();
+            }
           }
           // Only show status submitted in contest
           statusCondition.startTime = contestShowDTO.getStartTime();
@@ -127,7 +143,7 @@ public class StatusController extends BaseController {
       }
 
       Long count = statusService.count(statusCondition);
-      Long recordPerPage = Global.RECORD_PER_PAGE;
+      Long recordPerPage = settings.RECORD_PER_PAGE;
       if (statusCondition.countPerPage != null) {
         recordPerPage = statusCondition.countPerPage;
       }
@@ -138,7 +154,7 @@ public class StatusController extends BaseController {
       for (StatusListDTO statusListDTO : statusListDTOList) {
         statusListDTO.setReturnType(globalService.getReturnDescription(
             statusListDTO.getReturnTypeId(), statusListDTO.getCaseNumber()));
-        if (statusListDTO.getReturnTypeId() != Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
+        if (statusListDTO.getReturnTypeId() != OnlineJudgeReturnType.OJ_AC.ordinal()) {
           statusListDTO.setTimeCost(null);
           statusListDTO.setMemoryCost(null);
         }
@@ -159,7 +175,7 @@ public class StatusController extends BaseController {
   }
 
   @RequestMapping("rejudgeStatusCount")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
+  @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
   Map<String, Object> rejudgeStatusCount(@RequestBody StatusCondition statusCondition) {
@@ -168,12 +184,12 @@ public class StatusController extends BaseController {
       // Current user is administrator
       statusCondition.isForAdmin = true;
       if (statusCondition.result == null ||
-          statusCondition.result == Global.OnlineJudgeResultType.OJ_ALL ||
-          statusCondition.result == Global.OnlineJudgeResultType.OJ_AC ||
-          statusCondition.result == Global.OnlineJudgeResultType.OJ_JUDGING ||
-          statusCondition.result == Global.OnlineJudgeResultType.OJ_WAIT) {
+          statusCondition.result == OnlineJudgeResultType.OJ_ALL ||
+          statusCondition.result == OnlineJudgeResultType.OJ_AC ||
+          statusCondition.result == OnlineJudgeResultType.OJ_JUDGING ||
+          statusCondition.result == OnlineJudgeResultType.OJ_WAIT) {
         // Avoid rejudge accepted status.
-        statusCondition.result = Global.OnlineJudgeResultType.OJ_NOT_AC;
+        statusCondition.result = OnlineJudgeResultType.OJ_NOT_AC;
       }
       if (statusCondition.contestId == null) {
         statusCondition.contestId = -1;
@@ -194,7 +210,7 @@ public class StatusController extends BaseController {
   }
 
   @RequestMapping("rejudge")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
+  @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
   Map<String, Object> rejudge(@RequestBody StatusCondition statusCondition) {
@@ -208,12 +224,12 @@ public class StatusController extends BaseController {
         statusCondition.userId = userDTO.getUserId();
       }
       if (statusCondition.result == null ||
-          statusCondition.result == Global.OnlineJudgeResultType.OJ_ALL ||
-          statusCondition.result == Global.OnlineJudgeResultType.OJ_AC ||
-          statusCondition.result == Global.OnlineJudgeResultType.OJ_JUDGING ||
-          statusCondition.result == Global.OnlineJudgeResultType.OJ_WAIT) {
+          statusCondition.result == OnlineJudgeResultType.OJ_ALL ||
+          statusCondition.result == OnlineJudgeResultType.OJ_AC ||
+          statusCondition.result == OnlineJudgeResultType.OJ_JUDGING ||
+          statusCondition.result == OnlineJudgeResultType.OJ_WAIT) {
         // Avoid rejudge accepted status.
-        statusCondition.result = Global.OnlineJudgeResultType.OJ_NOT_AC;
+        statusCondition.result = OnlineJudgeResultType.OJ_NOT_AC;
       }
       if (statusCondition.contestId == null) {
         statusCondition.contestId = -1;
@@ -336,7 +352,7 @@ public class StatusController extends BaseController {
           // Status in contest
           checkContestPermission(session, statusInformationDTO.getContestId());
           Byte type = getContestType(session, statusInformationDTO.getContestId());
-          if (type == Global.ContestType.INVITED.ordinal()) {
+          if (type == ContestType.INVITED.ordinal()) {
             // Only show current user and his member's status
             // Find current user's teamId
             List<Integer> teamMembers = getContestTeamMembers(session, statusInformationDTO.getContestId());

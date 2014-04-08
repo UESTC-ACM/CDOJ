@@ -207,8 +207,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   @Override
   public List<?> findAll(String fields, Condition condition)
       throws AppException {
+    String hql = "";
     try {
-      String hql;
       if (fields == null) {
         hql = buildHQLStringWithOrders(condition);
       } else {
@@ -217,7 +217,7 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
       }
       return getQuery(hql, condition.getPageInfo()).list();
     } catch (HibernateException e) {
-      LOGGER.error(e);
+      LOGGER.error(e + "\nHQL = " + hql);
       throw new AppException("Invoke findAll method error.");
     }
   }

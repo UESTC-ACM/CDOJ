@@ -9,11 +9,13 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.enums.ArticleType;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
@@ -39,11 +41,14 @@ public class ArticleController extends BaseController {
 
   private ArticleService articleService;
   private PictureService pictureService;
+  private Settings settings;
 
   @Autowired
-  public ArticleController(ArticleService articleService, PictureService pictureService) {
+  public ArticleController(ArticleService articleService,
+                           PictureService pictureService, Settings settings) {
     this.articleService = articleService;
     this.pictureService = pictureService;
+    this.settings = settings;
   }
 
   @RequestMapping("data/{articleId}")
@@ -56,8 +61,8 @@ public class ArticleController extends BaseController {
     try {
       ArticleDTO articleDTO = articleService.getArticleDTO(articleId);
       AppExceptionUtil.assertNotNull(articleDTO, "No such article.");
-      if (articleDTO.getType() != Global.ArticleType.ARTICLE.ordinal() &&
-          articleDTO.getType() != Global.ArticleType.NOTICE.ordinal()) {
+      if (articleDTO.getType() != ArticleType.ARTICLE.ordinal() &&
+          articleDTO.getType() != ArticleType.NOTICE.ordinal()) {
         throw new AppException("No such article.");
       }
       if (!articleDTO.getIsVisible() && !isAdmin(session)) {
@@ -78,7 +83,7 @@ public class ArticleController extends BaseController {
   }
 
   @RequestMapping("changeNoticeOrder")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
+  @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
   Map<String, Object> changeNoticeOrder(@RequestBody ArticleOrderDTO articleOrderDTO) {
@@ -99,8 +104,8 @@ public class ArticleController extends BaseController {
 
         ArticleDTO articleDTO = articleService.getArticleDTO(articleId);
         AppExceptionUtil.assertNotNull(articleDTO, "No such article.");
-        if (articleDTO.getType() != Global.ArticleType.ARTICLE.ordinal() &&
-            articleDTO.getType() != Global.ArticleType.NOTICE.ordinal()) {
+        if (articleDTO.getType() != ArticleType.ARTICLE.ordinal() &&
+            articleDTO.getType() != ArticleType.NOTICE.ordinal()) {
           throw new AppException("No such article.");
         }
 
@@ -138,11 +143,11 @@ public class ArticleController extends BaseController {
       if (!isAdmin(session)) {
         articleCondition.isVisible = true;
       }
-      articleCondition.type = Global.ArticleType.COMMENT.ordinal();
+      articleCondition.type = ArticleType.COMMENT.ordinal();
 
       Long count = articleService.count(articleCondition);
       PageInfo pageInfo = buildPageInfo(count, articleCondition.currentPage,
-          Global.ARTICLE_PER_PAGE, null);
+          settings.RECORD_PER_PAGE, null);
 
       List<ArticleListDTO> articleListDTOList = articleService.getArticleList(
           articleCondition, pageInfo);
@@ -190,8 +195,8 @@ public class ArticleController extends BaseController {
             throw new AppException("Error while creating comment.");
           }
           // Move pictures
-          String oldDirectory = "/images/article/" + articleEditDTO.getUserName() + "/newComment/";
-          String newDirectory = "/images/article/" + articleEditDTO.getUserName() + "/" + articleId + "/";
+          String oldDirectory = "article/" + articleEditDTO.getUserName() + "/newComment/";
+          String newDirectory = "article/" + articleEditDTO.getUserName() + "/" + articleId + "/";
           articleEditDTO.setContent(pictureService.modifyPictureLocation(
               articleEditDTO.getContent(), oldDirectory, newDirectory));
         } else {
@@ -205,7 +210,7 @@ public class ArticleController extends BaseController {
         articleDTO.setTitle(articleEditDTO.getTitle());
         articleDTO.setContent(articleEditDTO.getContent());
         articleDTO.setTime(new Timestamp(System.currentTimeMillis()));
-        articleDTO.setType(Global.ArticleType.COMMENT.ordinal());
+        articleDTO.setType(ArticleType.COMMENT.ordinal());
         articleDTO.setProblemId(articleEditDTO.getProblemId());
         articleDTO.setContestId(articleEditDTO.getContestId());
         articleDTO.setParentId(articleEditDTO.getParentId());
@@ -241,7 +246,7 @@ public class ArticleController extends BaseController {
       articleCondition.parentId = -1;
       Long count = articleService.count(articleCondition);
       PageInfo pageInfo = buildPageInfo(count, articleCondition.currentPage,
-          Global.ARTICLE_PER_PAGE, null);
+          settings.RECORD_PER_PAGE, null);
 
       List<ArticleListDTO> articleListDTOList = articleService.getArticleList(
           articleCondition, pageInfo);
@@ -289,8 +294,8 @@ public class ArticleController extends BaseController {
             throw new AppException("Error while creating article.");
           }
           // Move pictures
-          String oldDirectory = "/images/article/" + articleEditDTO.getUserName() + "/new/";
-          String newDirectory = "/images/article/" + articleEditDTO.getUserName() + "/" + articleId + "/";
+          String oldDirectory = "article/" + articleEditDTO.getUserName() + "/new/";
+          String newDirectory = "article/" + articleEditDTO.getUserName() + "/" + articleId + "/";
           articleEditDTO.setContent(pictureService.modifyPictureLocation(
               articleEditDTO.getContent(), oldDirectory, newDirectory));
         } else {
@@ -307,7 +312,7 @@ public class ArticleController extends BaseController {
         if (isAdmin(session)) {
           articleDTO.setType(articleEditDTO.getType());
         } else {
-          articleDTO.setType(Global.ArticleType.ARTICLE.ordinal());
+          articleDTO.setType(ArticleType.ARTICLE.ordinal());
         }
 
         articleService.updateArticle(articleDTO);
@@ -326,7 +331,7 @@ public class ArticleController extends BaseController {
   }
 
   @RequestMapping("operation/{id}/{field}/{value}")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
+  @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
   Map<String, Object> operation(@PathVariable("id") String targetId,

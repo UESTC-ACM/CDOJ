@@ -4,7 +4,7 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.enums.ContestType;
 
 import java.sql.Timestamp;
 import java.util.Map;
@@ -244,7 +244,7 @@ public class ContestListDTO implements BaseDTO<Contest> {
       time = (Timestamp) properties.get("time");
       length = (Integer) properties.get("length") * 1000;
       isVisible = (Boolean) properties.get("isVisible");
-      typeName = Global.ContestType.values()[type].getDescription();
+      typeName = ContestType.values()[type].getDescription();
       parentId = (Integer) properties.get("parentId");
 
       Timestamp endTime = new Timestamp(time.getTime() + length);

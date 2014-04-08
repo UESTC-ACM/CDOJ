@@ -1,6 +1,6 @@
-[submodule "trunk/src/main/webapp/plugins/Font-Awesome"]
-	path = trunk/src/main/webapp/plugins/Font-Awesome
+[submodule "trunk/static/plugins/Font-Awesome"]
+	path = trunk/static/plugins/Font-Awesome
 	url = https://github.com/FortAwesome/Font-Awesome.git
-[submodule "trunk/src/main/webapp/plugins/MathJax"]
-	path = trunk/src/main/webapp/plugins/MathJax
+[submodule "trunk/static/plugins/MathJax"]
+	path = trunk/static/plugins/MathJax
 	url = https://github.com/mathjax/MathJax.git

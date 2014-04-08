@@ -1,9 +1,9 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.base;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
-import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.stereotype.Controller;
@@ -27,17 +27,17 @@ public class BaseController {
 
   protected Boolean isAdmin(HttpSession session) throws AppException {
     UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
-    return userDTO != null && userDTO.getType() == Global.AuthenticationType.ADMIN.ordinal();
+    return userDTO != null && userDTO.getType() == AuthenticationType.ADMIN.ordinal();
   }
 
   protected Boolean checkPermission(HttpSession session, Integer userId) throws AppException {
     UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
-    return userDTO != null && (userDTO.getUserId().equals(userId) || userDTO.getType() == Global.AuthenticationType.ADMIN.ordinal());
+    return userDTO != null && (userDTO.getUserId().equals(userId) || userDTO.getType() == AuthenticationType.ADMIN.ordinal());
   }
 
   protected Boolean checkPermission(HttpSession session, String userName) throws AppException {
     UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
-    return userDTO != null && (userDTO.getUserName().equals(userName) || userDTO.getType() == Global.AuthenticationType.ADMIN.ordinal());
+    return userDTO != null && (userDTO.getUserName().equals(userName) || userDTO.getType() == AuthenticationType.ADMIN.ordinal());
   }
 
   protected void checkContestPermission(HttpSession session, Integer contestId) throws AppException {

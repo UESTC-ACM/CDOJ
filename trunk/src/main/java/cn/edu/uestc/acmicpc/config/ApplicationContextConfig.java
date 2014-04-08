@@ -12,6 +12,7 @@ import cn.edu.uestc.acmicpc.db.entity.Language;
 import cn.edu.uestc.acmicpc.db.entity.Message;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.db.entity.ProblemTag;
+import cn.edu.uestc.acmicpc.db.entity.Setting;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.entity.Tag;
 import cn.edu.uestc.acmicpc.db.entity.Team;
@@ -119,6 +120,7 @@ public class ApplicationContextConfig {
         Message.class,
         Problem.class,
         ProblemTag.class,
+        Setting.class,
         Status.class,
         Tag.class,
         Team.class,

@@ -58,13 +58,13 @@ public class EmailServiceImpl extends AbstractService implements EmailService {
     Properties properties = new Properties();
     properties.setProperty("mail.transport.protocol", "smtp");
     // properties.setProperty("mail.smtp.starttls.enable", "true");
-    properties.setProperty("mail.smtp.host", settings.EMAIL_SMTP_SERVER);
+    properties.setProperty("mail.smtp.host", settings.EMAIL.getSmtpServer());
     properties.setProperty("mail.smtp.auth", "true");
-    Authenticator auth = new AJavaAuthenticator(settings.EMAIL_USERNAME, settings.EMAIL_PASSWORD);
+    Authenticator auth = new AJavaAuthenticator(settings.EMAIL.getUserName(), settings.EMAIL.getPassword());
     Session session = Session.getDefaultInstance(properties, auth);
     try {
       Message message = new MimeMessage(session);
-      message.setFrom(new InternetAddress(settings.EMAIL_ADDRESS));
+      message.setFrom(new InternetAddress(settings.EMAIL.getAddress()));
       message.setRecipient(Message.RecipientType.TO, new InternetAddress(emailAddress));
       message.setSubject(title);
       message.setText(content);
@@ -82,7 +82,7 @@ public class EmailServiceImpl extends AbstractService implements EmailService {
     if (userDTO == null) {
       throw new AppException("No such user!");
     }
-    String url = settings.SETTING_HOST
+    String url = settings.HOST
         + "/#/user/activate/" + userDTO.getUserName()
         + "/" + StringUtil.encodeSHA1(userSerialKey.getSerialKey());
     StringBuilder stringBuilder = new StringBuilder();

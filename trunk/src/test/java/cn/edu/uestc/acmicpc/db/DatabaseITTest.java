@@ -10,8 +10,8 @@ import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
 import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.settings.Global;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,7 +142,7 @@ public class DatabaseITTest extends AbstractTestNGSpringContextTests {
   public void testSQLUpdate() throws AppException {
     statusCondition.contestId = 1;
     Map<String, Object> properties = new HashMap<>();
-    properties.put("result", Global.OnlineJudgeReturnType.OJ_AC.ordinal());
+    properties.put("result", OnlineJudgeReturnType.OJ_AC.ordinal());
     statusDAO.updateEntitiesByCondition(properties, statusCondition.getCondition());
   }
 }

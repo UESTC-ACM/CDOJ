@@ -20,11 +20,13 @@ import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.AuthorStatusType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
@@ -56,17 +58,23 @@ public class UserController extends BaseController {
   private UserSerialKeyService userSerialKeyService;
   private EmailService emailService;
   private DepartmentService departmentService;
+  private Settings settings;
 
   @Autowired
-  public UserController(UserService userService, ProblemService problemService,
-                        StatusService statusService, UserSerialKeyService userSerialKeyService,
-                        EmailService emailService, DepartmentService departmentService) {
+  public UserController(UserService userService,
+                        ProblemService problemService,
+                        StatusService statusService,
+                        UserSerialKeyService userSerialKeyService,
+                        EmailService emailService,
+                        DepartmentService departmentService,
+                        Settings settings) {
     this.userService = userService;
     this.problemService = problemService;
     this.statusService = statusService;
     this.userSerialKeyService = userSerialKeyService;
     this.emailService = emailService;
     this.departmentService = departmentService;
+    this.settings = settings;
   }
 
   @RequestMapping("login")
@@ -163,7 +171,7 @@ public class UserController extends BaseController {
             .setEmail(userRegisterDTO.getEmail())
             .setSolved(0)
             .setTried(0)
-            .setType(Global.AuthenticationType.NORMAL.ordinal())
+            .setType(AuthenticationType.NORMAL.ordinal())
             .setDepartmentId(userRegisterDTO.getDepartmentId())
             .setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000))
             .setMotto(userRegisterDTO.getMotto())
@@ -207,7 +215,7 @@ public class UserController extends BaseController {
     try {
       Long count = userService.count(userCondition);
       PageInfo pageInfo = buildPageInfo(count, userCondition.currentPage,
-          Global.RECORD_PER_PAGE, null);
+          settings.RECORD_PER_PAGE, null);
       List<UserListDTO> userList = userService.getUserListDTOList(userCondition, pageInfo);
 
       json.put("pageInfo", pageInfo);
@@ -289,29 +297,29 @@ public class UserController extends BaseController {
       if (userCenterDTO == null) {
         throw new AppException("No such user!");
       }
-      Map<Integer, Global.AuthorStatusType> problemStatus = new TreeMap<>();
+      Map<Integer, AuthorStatusType> problemStatus = new TreeMap<>();
 
       List<Integer> results = problemService.getAllVisibleProblemIds();
       for (Integer result : results) {
-        problemStatus.put(result, Global.AuthorStatusType.NONE);
+        problemStatus.put(result, AuthorStatusType.NONE);
       }
       results = statusService.findAllUserTriedProblemIds(userCenterDTO.getUserId(),
           isAdmin(session));
       for (Integer result : results) {
         if (problemStatus.containsKey(result)) {
-          problemStatus.put(result, Global.AuthorStatusType.FAIL);
+          problemStatus.put(result, AuthorStatusType.FAIL);
         }
       }
       results = statusService.findAllUserAcceptedProblemIds(userCenterDTO.getUserId(),
           isAdmin(session));
       for (Integer result : results) {
         if (problemStatus.containsKey(result)) {
-          problemStatus.put(result, Global.AuthorStatusType.PASS);
+          problemStatus.put(result, AuthorStatusType.PASS);
         }
       }
 
       List<UserProblemStatusDTO> problemStatusList = new LinkedList<>();
-      for (Map.Entry<Integer, Global.AuthorStatusType> status : problemStatus.entrySet()) {
+      for (Map.Entry<Integer, AuthorStatusType> status : problemStatus.entrySet()) {
         problemStatusList.add(new UserProblemStatusDTO(status.getKey(), status.getValue().ordinal()));
       }
 
@@ -346,6 +354,9 @@ public class UserController extends BaseController {
         UserDTO userDTO = userService.getUserDTOByUserName(userEditDTO.getUserName());
         if (userDTO == null) {
           throw new AppException("No such user.");
+        }
+        if (userDTO.getType() == AuthenticationType.CONSTANT.ordinal()) {
+          throw new AppException("Permission denied!");
         }
         if (!userEditDTO.getOldPassword().equals(currentUser.getPassword())) {
           throw new FieldException("oldPassword", "Your password is wrong, please try again.");
@@ -386,7 +397,7 @@ public class UserController extends BaseController {
   }
 
   @RequestMapping("adminEdit")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
+  @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
   Map<String, Object> adminEdit(@RequestBody @Valid UserAdminEditDTO userAdminEditDTO,
@@ -473,7 +484,7 @@ public class UserController extends BaseController {
     try {
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
 
-      if (currentUser.getType() != Global.AuthenticationType.ADMIN.ordinal()) {
+      if (currentUser.getType() != AuthenticationType.ADMIN.ordinal()) {
         if (!currentUser.getUserName().equals(userName)) {
           throw new AppException("You can only view your information.");
         }

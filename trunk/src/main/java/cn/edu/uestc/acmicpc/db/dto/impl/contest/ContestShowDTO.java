@@ -4,7 +4,7 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.enums.ContestType;
 
 import java.sql.Timestamp;
 import java.util.Map;
@@ -266,7 +266,7 @@ public class ContestShowDTO implements BaseDTO<Contest> {
       length = (Integer) properties.get("length") * 1000;
       startTime = (Timestamp) properties.get("time");
       type = (Byte) properties.get("type");
-      typeName = Global.ContestType.values()[type].getDescription();
+      typeName = ContestType.values()[type].getDescription();
       isVisible = (Boolean) properties.get("isVisible");
       parentId = (Integer) properties.get("parentId");
 

@@ -37,7 +37,7 @@ public class FileServiceImpl extends AbstractService implements FileService {
   }
 
   private String getDataZipFileName(String problemId) {
-    return settings.SETTING_UPLOAD_FOLDER + "/problem_" + problemId + ".zip";
+    return settings.UPLOAD_FOLDER + "/problem_" + problemId + ".zip";
   }
 
   @Override
@@ -60,7 +60,7 @@ public class FileServiceImpl extends AbstractService implements FileService {
 
     try {
       ZipFile zipFile = new ZipFile(getDataZipFileName(problemId));
-      String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/" + problemId;
+      String tempDirectory = settings.UPLOAD_FOLDER + "/" + problemId;
       ZipUtil.unzipFile(zipFile, tempDirectory, new ZipDataChecker());
 
       File dataPath = new File(tempDirectory);
@@ -145,8 +145,8 @@ public class FileServiceImpl extends AbstractService implements FileService {
 
   @Override
   public Integer moveProblemDataFile(String uploadFolder, Integer problemId) throws AppException {
-    String dataPath = settings.JUDGE_DATA_PATH + "/" + problemId;
-    String tempDirectory = settings.SETTING_UPLOAD_FOLDER + "/" + uploadFolder;
+    String dataPath = settings.DATA_PATH + "/" + problemId;
+    String tempDirectory = settings.UPLOAD_FOLDER + "/" + uploadFolder;
     return moveProblemDataFile(tempDirectory, dataPath);
   }
 
@@ -172,13 +172,13 @@ public class FileServiceImpl extends AbstractService implements FileService {
   }
 
   private String getContestArchiveZipFileName() {
-    return settings.SETTING_UPLOAD_FOLDER + "/contest_" + System.currentTimeMillis() + ".zip";
+    return settings.UPLOAD_FOLDER + "/contest_" + System.currentTimeMillis() + ".zip";
   }
 
   @Override
   public void moveFile(String source, String target) throws AppException {
-    File sourceFile = new File(settings.SETTING_ABSOLUTE_PATH + source);
-    File targetFile = new File(settings.SETTING_ABSOLUTE_PATH + target);
+    File sourceFile = new File(source);
+    File targetFile = new File(target);
     if (!sourceFile.renameTo(targetFile)) {
       throw new AppException("Can not move file!");
     }

@@ -1,0 +1,62 @@
+<div>
+  <div class="col-md-12 text-center">
+    <h5>
+      Time Limit: {{problem.javaTimeLimit}}/{{problem.timeLimit}}MS (Java/Others)
+      &nbsp;&nbsp;&nbsp;
+      Memory Limit: {{problem.javaMemoryLimit}}/{{problem.memoryLimit}}KB (Java/Others)
+    </h5>
+  </div>
+
+  <div class="col-md-12 text-center" ng-transclude>
+  </div>
+
+  <div class="col-md-12">
+    <markdown content="problem.description"></markdown>
+  </div>
+  <div class="col-md-12">
+    <h2>Input</h2>
+
+    <markdown content="problem.input">
+    </markdown>
+  </div>
+  <div class="col-md-12">
+    <h2>Output</h2>
+
+    <markdown content="problem.output">
+    </markdown>
+  </div>
+  <div class="col-md-12">
+    <h2>Sample input and output</h2>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th style="width: 50%;">Sample Input</th>
+        <th style="width: 50%;">Sample Output</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="sample in samples">
+        <td>
+          <pre class="sample">{{sample.input}}</pre>
+        </td>
+        <td>
+          <pre class="sample">{{sample.output}}</pre>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-12" ng-show="problem.hint != ''">
+    <h2>Hint</h2>
+
+    <markdown content="problem.hint">
+    </markdown>
+  </div>
+  <div class="col-md-12" ng-show="problem.source != ''">
+    <h2>Source</h2>
+
+    <div>
+      {{problem.source}}
+    </div>
+  </div>
+</div>

@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.web.view;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReportDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDTO;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
 
 import org.springframework.web.servlet.view.document.AbstractJExcelView;
 
@@ -50,9 +50,9 @@ public class ContestRegistryReportView extends AbstractJExcelView {
     response.setHeader("Content-Disposition", "attachment; filename=\"Registry report.xls\"");
 
     // create a Excel sheet
-    sheets[Global.ContestRegistryStatus.ACCEPTED.ordinal()] = workbook.createSheet("Accepted", 0);
-    sheets[Global.ContestRegistryStatus.REFUSED.ordinal()] = workbook.createSheet("Refused", 1);
-    sheets[Global.ContestRegistryStatus.PENDING.ordinal()] = workbook.createSheet("Pending", 2);
+    sheets[ContestRegistryStatusType.ACCEPTED.ordinal()] = workbook.createSheet("Accepted", 0);
+    sheets[ContestRegistryStatusType.REFUSED.ordinal()] = workbook.createSheet("Refused", 1);
+    sheets[ContestRegistryStatusType.PENDING.ordinal()] = workbook.createSheet("Pending", 2);
 
     for (int id = 0; id < TOTAL_SHEETS; id++) {
       setHeaderRow(sheets[id]);

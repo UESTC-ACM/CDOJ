@@ -4,7 +4,10 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.TeamUser;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.GenderType;
+import cn.edu.uestc.acmicpc.util.enums.GradeType;
+import cn.edu.uestc.acmicpc.util.enums.TShirtsSizeType;
 
 import java.util.Map;
 
@@ -392,13 +395,13 @@ public class TeamUserReportDTO implements BaseDTO<TeamUser> {
       Integer tempValue;
 
       tempValue = (Integer) properties.get("userByUserId.sex");
-      sex = Global.Gender.values()[tempValue].getDescription();
+      sex = GenderType.values()[tempValue].getDescription();
       tempValue = (Integer) properties.get("userByUserId.size");
-      size = Global.TShirtsSize.values()[tempValue].getDescription();
+      size = TShirtsSizeType.values()[tempValue].getDescription();
       tempValue = (Integer) properties.get("userByUserId.grade");
-      grade = Global.Grade.values()[tempValue].getDescription();
+      grade = GradeType.values()[tempValue].getDescription();
       tempValue = (Integer) properties.get("userByUserId.type");
-      type = Global.AuthenticationType.values()[tempValue].getDescription();
+      type = AuthenticationType.values()[tempValue].getDescription();
 
       return build();
     }

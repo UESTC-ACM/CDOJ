@@ -11,22 +11,32 @@ import java.util.Map;
  * DTO used in contest user entity.
  */
 
-@Fields({"contestUserId", "contestId", "userId", "status"})
+@Fields({"contestUserId", "contestId", "userId", "status", "comment"})
 public class ContestUserDTO implements BaseDTO<ContestUser> {
   private Integer contestUserId;
   private Integer contestId;
   private Integer userId;
   private Byte status;
+  private String comment;
 
   public ContestUserDTO() {
   }
 
   public ContestUserDTO(Integer contestUserId, Integer contestId, Integer userId,
-                        Byte status) {
+                        Byte status, String comment) {
     this.contestUserId = contestUserId;
     this.contestId = contestId;
     this.userId = userId;
     this.status = status;
+    this.comment = comment;
+  }
+
+  public String getComment() {
+    return comment;
+  }
+
+  public void setComment(String comment) {
+    this.comment = comment;
   }
 
   public Integer getContestUserId() {
@@ -84,6 +94,9 @@ public class ContestUserDTO implements BaseDTO<ContestUser> {
     if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
       return false;
     }
+    if (comment != null ? !comment.equals(that.comment): that.comment != null) {
+      return false;
+    }
 
     return true;
   }
@@ -94,6 +107,7 @@ public class ContestUserDTO implements BaseDTO<ContestUser> {
     result = 31 * result + (contestId != null ? contestId.hashCode() : 0);
     result = 31 * result + (userId != null ? userId.hashCode() : 0);
     result = 31 * result + (status != null ? status.hashCode() : 0);
+    result = 31 * result + (comment != null ? comment.hashCode() : 0);
     return result;
   }
 
@@ -107,10 +121,11 @@ public class ContestUserDTO implements BaseDTO<ContestUser> {
     private Integer contestId;
     private Integer userId;
     private Byte status;
+    private String comment;
 
     @Override
     public ContestUserDTO build() {
-      return new ContestUserDTO(contestUserId, contestId, userId, status);
+      return new ContestUserDTO(contestUserId, contestId, userId, status, comment);
     }
 
     @Override
@@ -119,7 +134,13 @@ public class ContestUserDTO implements BaseDTO<ContestUser> {
       contestId = (Integer) properties.get("contestId");
       userId = (Integer) properties.get("userId");
       status = (Byte) properties.get("status");
+      comment = (String) properties.get("comment");
       return build();
+    }
+
+    public Builder setComment(String comment) {
+      this.comment = comment;
+      return this;
     }
 
     public Builder setContestUserId(Integer contestUserId) {

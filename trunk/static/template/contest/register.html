@@ -1,0 +1,114 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1>{{contest.title}}</h1>
+  </div>
+  <div class="col-md-12" style="margin-bottom: 8px;" ng-hide="$root.hasLogin">
+    Please login before register.
+  </div>
+  <div class="col-md-12" style="margin-bottom: 8px;" ng-show="$root.hasLogin">
+    <p>
+      If you are not in any teams currently, please create one at <a href="/#/user/center/{{$root.currentUser.userName}}/teams">here</a>.
+    </p>
+
+    <p>
+      Each user can only attend the contest in one team.
+    </p>
+
+    <div class="input-group" style="width: 350px;">
+      <span class="input-group-addon">Team name:</span>
+      <input type="text"
+             class="form-control input-sm"
+             ng-model="team.teamName"
+             typeahead="team.teamName for team in searchTeam($viewValue) | filter:$viewValue"
+             typeahead-template-url="template/team/typeAhead.html"/>
+      <span class="input-group-btn">
+        <button class="btn btn-default btn-sm" type="button"
+                ng-click="selectTeam()">Use this team
+        </button>
+      </span>
+    </div>
+  </div>
+  <div class="col-md-4" ng-repeat="member in team.teamUsers">
+    <h5 style="margin-top: 0;">
+      <span ng-show="$index == 0" class="font-primary">Leader</span>
+      <span ng-show="$index != 0" class="font-success">Member</span>
+    </h5>
+
+    <div class="media">
+      <a class="pull-left" href="/#/user/center/{{member.userName}}">
+        <img ui-avatar
+             email="member.email"
+             width="44"
+             height="44"
+             class="media-object"
+             style="width: 44px; height: 44px;"/>
+      </a>
+
+      <div class="media-body">
+        <h4 class="media-heading">
+          <a href="/#/user/center/{{member.userName}}">{{member.userName}}</a>
+        </h4>
+        {{member.nickName}}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12" ng-show="showRegisterButton" style="margin-top: 8px;">
+    <button class="btn btn-default"
+            ng-click="register()">Register
+    </button>
+  </div>
+
+  <div class="col-md-12">
+    <h3>Registrants</h3>
+    <hr style="margin: 0;"/>
+  </div>
+  <list condition="contestTeamCondition"
+        request-url="/contest/registryStatusList"
+        name="team">
+    <div class="col-md-12">
+      <table class="table table-condensed">
+        <thead>
+        <tr>
+          <th class="text-right" style="width: 4em;">#</th>
+          <th class="text-center">Team name</th>
+          <th>Team members</th>
+          <th class="text-center">Status</th>
+          <th class="text-center"></th>
+          <th style="width: 60px;" ng-show="$root.isAdmin">
+            <a class="btn btn-danger btn-xs"
+               href="/contest/registryReport/{{contestId}}">Export</a>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="team in list">
+          <td class="text-right" style="vertical-align: middle;">{{team.contestTeamId}}</td>
+          <td class="text-center" style="vertical-align: middle;">{{team.teamName}}</td>
+          <td>
+            <div class="row">
+              <div class="col-md-12" ng-repeat="user in team.teamUsers">
+                <a class="pull-left" href="/#/user/center/{{user.userName}}">
+                  <img ui-avatar
+                       email="user.email"
+                       style="width: 19px; height: 19px;"/>
+                </a>
+                <a href="/#/user/center/{{user.userName}}">{{user.nickName}}</a>
+              </div>
+            </div>
+          </td>
+          <td ng-class="{
+                'font-primary': team.status == 0,
+                'font-success': team.status == 1,
+                'font-danger': team.status == 2
+              }"
+              class="text-center" style="vertical-align: middle;">{{team.statusName}}</td>
+          <td style="vertical-align: middle;">{{team.comment}}</td>
+          <td ng-show="$root.isAdmin" style="vertical-align: middle;">
+            <a href="javascript:void(0);" ng-click="review(team)">Review</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </list>
+</div>

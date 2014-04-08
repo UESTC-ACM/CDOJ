@@ -10,10 +10,12 @@ import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.AuthorStatusType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
@@ -44,13 +46,19 @@ public class ProblemController extends BaseController {
   private StatusService statusService;
   private PictureService pictureService;
   private FileService fileService;
+  private Settings settings;
 
   @Autowired
-  public ProblemController(ProblemService problemService, StatusService statusService, PictureService pictureService, FileService fileService) {
+  public ProblemController(ProblemService problemService,
+                           StatusService statusService,
+                           PictureService pictureService,
+                           FileService fileService,
+                           Settings settings) {
     this.problemService = problemService;
     this.statusService = statusService;
     this.pictureService = pictureService;
     this.fileService = fileService;
+    this.settings = settings;
   }
 
   @RequestMapping("data/{problemId}")
@@ -102,17 +110,17 @@ public class ProblemController extends BaseController {
       }
       Long count = problemService.count(problemCondition);
       PageInfo pageInfo = buildPageInfo(count, problemCondition.currentPage,
-          Global.RECORD_PER_PAGE, null);
+          settings.RECORD_PER_PAGE, null);
 
       List<ProblemListDTO> problemListDTOList = problemService
           .getProblemListDTOList(
               problemCondition, pageInfo);
 
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-      Map<Integer, Global.AuthorStatusType> problemStatus = getProblemStatus(currentUser, session);
+      Map<Integer, AuthorStatusType> problemStatus = getProblemStatus(currentUser, session);
 
       for (ProblemListDTO problemListDTO : problemListDTOList) {
-        if (problemStatus.get(problemListDTO.getProblemId()) == Global.AuthorStatusType.PASS) {
+        if (problemStatus.get(problemListDTO.getProblemId()) == AuthorStatusType.PASS) {
           problemListDTO.setStatus(1);
         } else if (problemStatus.containsKey(problemListDTO.getProblemId())) {
           problemListDTO.setStatus(2);
@@ -142,7 +150,7 @@ public class ProblemController extends BaseController {
    * @return JSON
    */
   @RequestMapping("operator/{id}/{field}/{value}")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
+  @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
   Map<String, Object> operator(@PathVariable("id") String targetId,
@@ -161,7 +169,7 @@ public class ProblemController extends BaseController {
   }
 
   @RequestMapping("query/{id}/{field}")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
+  @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
   Map<String, Object> query(@PathVariable("id") String targetId,
@@ -186,7 +194,7 @@ public class ProblemController extends BaseController {
    * @return
    */
   @RequestMapping("edit")
-  @LoginPermit(Global.AuthenticationType.ADMIN)
+  @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
   Map<String, Object> edit(@RequestBody @Valid ProblemEditDTO problemEditDTO,
@@ -207,8 +215,8 @@ public class ProblemController extends BaseController {
             throw new AppException("Error while creating problem.");
           }
           // Move pictures
-          String oldDirectory = "/images/problem/new/";
-          String newDirectory = "/images/problem/" + problemId + "/";
+          String oldDirectory = "problem/new/";
+          String newDirectory = "problem/" + problemId + "/";
           problemEditDTO.setDescription(pictureService.modifyPictureLocation(
               problemEditDTO.getDescription(), oldDirectory, newDirectory));
           problemEditDTO.setInput(pictureService.modifyPictureLocation(
@@ -268,7 +276,7 @@ public class ProblemController extends BaseController {
 
   @RequestMapping(value = "uploadProblemDataFile/{problemId}",
       method = RequestMethod.POST)
-  @LoginPermit(Global.AuthenticationType.ADMIN)
+  @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
   Map<String, Object> uploadProblemDataFile(
@@ -306,20 +314,20 @@ public class ProblemController extends BaseController {
     return json;
   }
 
-  private Map<Integer, Global.AuthorStatusType> getProblemStatus(UserDTO currentUser,
+  private Map<Integer, AuthorStatusType> getProblemStatus(UserDTO currentUser,
                                                                  HttpSession session) {
-    Map<Integer, Global.AuthorStatusType> problemStatus = new HashMap<>();
+    Map<Integer, AuthorStatusType> problemStatus = new HashMap<>();
     try {
       if (currentUser != null) {
         List<Integer> triedProblems = statusService.
             findAllUserTriedProblemIds(currentUser.getUserId(), isAdmin(session));
         for (Integer result : triedProblems) {
-          problemStatus.put(result, Global.AuthorStatusType.FAIL);
+          problemStatus.put(result, AuthorStatusType.FAIL);
         }
         List<Integer> acceptedProblems = statusService.
             findAllUserAcceptedProblemIds(currentUser.getUserId(), isAdmin(session));
         for (Integer result : acceptedProblems) {
-          problemStatus.put(result, Global.AuthorStatusType.PASS);
+          problemStatus.put(result, AuthorStatusType.PASS);
         }
       }
     } catch (AppException ignored) {

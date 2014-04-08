@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.db.entity;
 
 import cn.edu.uestc.acmicpc.util.annotation.KeyField;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.enums.ContestType;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -244,6 +244,6 @@ public class Contest implements Serializable {
     length = defaultContestLength;
     time = new Timestamp(System.currentTimeMillis());
     title = "";
-    type = (byte) Global.ContestType.PUBLIC.ordinal();
+    type = (byte) ContestType.PUBLIC.ordinal();
   }
 }

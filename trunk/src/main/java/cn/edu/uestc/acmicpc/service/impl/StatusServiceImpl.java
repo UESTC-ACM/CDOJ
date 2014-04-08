@@ -9,9 +9,9 @@ import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.util.settings.Global;
-import cn.edu.uestc.acmicpc.util.settings.Global.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
       throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
-    statusCondition.results.add(Global.OnlineJudgeResultType.OJ_AC);
+    statusCondition.results.add(OnlineJudgeResultType.OJ_AC);
     statusCondition.isForAdmin = isAdmin;
     return (List<Integer>) statusDAO.findAll("distinct problemByProblemId.problemId",
         statusCondition.getCondition());
@@ -68,7 +68,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   public Long countProblemsUserAccepted(Integer userId) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
-    statusCondition.results.add(Global.OnlineJudgeResultType.OJ_AC);
+    statusCondition.results.add(OnlineJudgeResultType.OJ_AC);
     return statusDAO.customCount("distinct problemId", statusCondition.getCondition());
   }
 
@@ -83,7 +83,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   public Long countUsersAcceptedProblem(Integer problemId) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.problemId = problemId;
-    statusCondition.results.add(Global.OnlineJudgeResultType.OJ_AC);
+    statusCondition.results.add(OnlineJudgeResultType.OJ_AC);
     return statusDAO.customCount("distinct userId", statusCondition.getCondition());
   }
 
@@ -155,12 +155,18 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   @Override
   public void rejudge(StatusCondition statusCondition) throws AppException {
     Map<String, Object> properties = new HashMap<>();
-    properties.put("result", Global.OnlineJudgeReturnType.OJ_REJUDGING.ordinal());
+    properties.put("result", OnlineJudgeReturnType.OJ_REJUDGING.ordinal());
     statusCondition.isVisible = null;
     statusCondition.userName = null;
     statusCondition.isForAdmin = true;
     statusDAO.updateEntitiesByCondition(properties,
         statusCondition.getCondition());
+  }
+
+  @Override
+  public List<StatusInformationDTO> getStatusInformationDTOList(StatusCondition statusCondition) throws AppException {
+    return statusDAO.findAll(StatusInformationDTO.class,
+        StatusInformationDTO.builder(), statusCondition.getCondition());
   }
 
   @Override

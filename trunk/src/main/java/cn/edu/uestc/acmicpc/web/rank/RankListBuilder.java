@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.web.rank;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
-import cn.edu.uestc.acmicpc.util.settings.Global;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description
+ * Rank list builder
  */
 public class RankListBuilder {
   private List<RankListProblem> problemList;
@@ -67,7 +67,7 @@ public class RankListBuilder {
       RankListUser user = userMap.get(userName);
       if (user == null) {
         user = new RankListUser();
-        user.userName = userName;
+        user.name = userName;
         user.nickName = nickName;
         user.email = email;
         user.penalty = 0L;
@@ -92,17 +92,12 @@ public class RankListBuilder {
     } else {
       ContestTeamListDTO team = teamMap.get(userName);
       if (team == null) {
-        // This will happened when administrator submit in contest
-        team = new ContestTeamListDTO(0, 0, userName, 0, 0, "");
-        team.setTeamUsers(new LinkedList<TeamUserListDTO>());
-        team.getTeamUsers().add(new TeamUserListDTO(0, 0, 0, userName, email, nickName, true, ""));
-        teamList.add(team);
-        teamMap.put(userName, team);
+        return null;
       }
       RankListUser user = userMap.get(team.getTeamName());
       if (user == null) {
         user = new RankListUser();
-        user.userName = team.getTeamName();
+        user.name = team.getTeamName();
         user.penalty = 0L;
         user.rank = 0;
         user.solved = 0;
@@ -135,6 +130,10 @@ public class RankListBuilder {
     }
     RankListProblem problem = problemList.get(problemIndex);
     RankListUser user = getRankListUser(status.userName, status.nickName, status.email);
+    if (user == null) {
+      // Ignore
+      return;
+    }
     RankListItem item = user.itemList[problemIndex];
     if (item.solved) {
       // Has solved
@@ -143,7 +142,7 @@ public class RankListBuilder {
     problem.tried = problem.tried + 1;
     item.tried = item.tried + 1;
     user.tried = user.tried + 1;
-    if (status.result == Global.OnlineJudgeReturnType.OJ_AC.ordinal()) {
+    if (status.result == OnlineJudgeReturnType.OJ_AC.ordinal()) {
       problem.solved = problem.solved + 1;
       if (problem.solved == 1) {
         item.firstBlood = true;
