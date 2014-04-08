@@ -139,7 +139,7 @@ dependencies {
   compile "cglib:cglib:2.2.2"
   compile "aopalliance:aopalliance:1.0"
   compile "javax.servlet:jstl:1.2"
-  compile "com.jolbox:bonecp:0.8.0-rc1"
+  compile "com.alibaba:druid:1.0.4"
   compile "com.alibaba:fastjson:1.1.38"
 
   final jettyGroup = 'org.eclipse.jetty'
