@@ -12,7 +12,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.jolbox.bonecp.BoneCPDataSource;
+import com.alibaba.druid.pool.DruidDataSource;
 
 /**
  * Test cases for AOP framework
@@ -24,11 +24,11 @@ public class AOPITTest extends AbstractTestNGSpringContextTests {
   IUserDAO userDAO;
 
   @Autowired
-  BoneCPDataSource dataSource;
+  DruidDataSource dataSource;
 
   @Test
   public void testFetchDataSource() {
-    Assert.assertEquals(dataSource.getJdbcUrl(),
+    Assert.assertEquals(dataSource.getUrl(),
         "jdbc:mysql://localhost:3306/uestcojtest?useUnicode=true&characterEncoding=UTF-8");
   }
 

@@ -35,7 +35,7 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.jolbox.bonecp.BoneCPDataSource;
+import com.alibaba.druid.pool.DruidDataSource;
 
 @Configuration
 @ComponentScan(basePackages = {
@@ -50,8 +50,8 @@ public class TestContext extends ApplicationContextConfig {
 
   @Override
   @Bean
-  public BoneCPDataSource dataSource() {
-    return mock(BoneCPDataSource.class);
+  public DruidDataSource dataSource() {
+    return mock(DruidDataSource.class);
   }
 
   @Override
