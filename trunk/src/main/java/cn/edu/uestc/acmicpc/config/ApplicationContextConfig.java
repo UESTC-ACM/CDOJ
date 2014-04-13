@@ -37,7 +37,7 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.jolbox.bonecp.BoneCPDataSource;
+import com.alibaba.druid.pool.DruidDataSource;
 
 import java.util.Properties;
 
@@ -77,22 +77,38 @@ public class ApplicationContextConfig {
    * @return dataSource bean
    */
   @Bean(name = "dataSource", destroyMethod = "close")
-  public BoneCPDataSource dataSource() {
-    BoneCPDataSource dataSource = new BoneCPDataSource();
+  public DruidDataSource dataSource() {
+    DruidDataSource dataSource = new DruidDataSource();
 
-    dataSource.setDriverClass(getProperty("db.driver"));
-    dataSource.setJdbcUrl(getProperty("db.url"));
+    // Basic attribute
+    dataSource.setUrl(getProperty("db.url"));
     dataSource.setUsername(getProperty("db.username"));
     dataSource.setPassword(getProperty("db.password"));
-    dataSource.setMaxConnectionsPerPartition(Integer
-        .parseInt(getProperty("db.maxConnectionsPerPartition")));
-    dataSource.setMinConnectionsPerPartition(Integer
-        .parseInt(getProperty("db.minConnectionsPerPartition")));
-    dataSource.setPartitionCount(Integer.parseInt(getProperty("db.partitionCount")));
-    dataSource.setAcquireIncrement(Integer.parseInt(getProperty("db.acquireIncrement")));
-    dataSource.setStatementsCacheSize(Integer.parseInt(getProperty("db.statementsCacheSize")));
-    // dataSource.setIdleMaxAgeInSeconds(Integer.parseInt(getProperty("db.idleMaxAge")));
-    // dataSource.setIdleConnectionTestPeriodInSeconds(Integer.parseInt(getProperty("db.idleConnectionTestPeriod")));
+
+    // Pool size
+    dataSource.setInitialSize(8);
+    dataSource.setMinIdle(8);
+    dataSource.setMaxActive(128);
+
+    // Connection wait time limit
+    dataSource.setMaxWait(60 * 1000);
+
+    // Time between connection check
+    dataSource.setTimeBetweenEvictionRunsMillis(60 * 1000);
+
+    // Time of connection max live time
+    dataSource.setMinEvictableIdleTimeMillis(5 * 60 * 1000);
+
+    // Connection test
+    dataSource.setValidationQuery("SELECT 'x'");
+    dataSource.setTestWhileIdle(true);
+    dataSource.setTestOnBorrow(false);
+    dataSource.setTestOnReturn(false);
+
+    // PS cache
+    dataSource.setPoolPreparedStatements(true);
+    dataSource.setMaxPoolPreparedStatementPerConnectionSize(20);
+
     return dataSource;
   }
 
