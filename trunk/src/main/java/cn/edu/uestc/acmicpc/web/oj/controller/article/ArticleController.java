@@ -279,7 +279,7 @@ public class ArticleController extends BaseController {
     } else {
       try {
         UserDTO currentUser = getCurrentUser(session);
-        if (!isAdmin(session) && !currentUser.getUserName().equals(articleEditDTO.getUserName())) {
+        if (!currentUser.getUserName().equals(articleEditDTO.getUserName())) {
           throw new AppException("Permission denied");
         }
 
