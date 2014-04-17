@@ -744,9 +744,13 @@ public class ContestController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> search(HttpSession session,
-                             @RequestBody ContestCondition contestCondition) {
+                             @RequestBody(required = false) ContestCondition contestCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
+      // Avoid null pointer exception
+      if (contestCondition == null) {
+        contestCondition = new ContestCondition();
+      }
       if (!isAdmin(session)) {
         contestCondition.isVisible = true;
       }
