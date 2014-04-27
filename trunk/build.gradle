@@ -171,7 +171,7 @@ dependencies {
   compile "commons-lang:commons-lang:2.0"
   compile "org.apache.commons:commons-lang3:3.1"
   compile "javax.mail:mail:1.5.0-b01"
-  compile "com.sun.mail:smtp:1.5.0"
+  compile "com.sun.mail:all:1.5.0"
 
   compile "net.sf.opencsv:opencsv:2.3"
 
