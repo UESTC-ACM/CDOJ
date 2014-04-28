@@ -56,7 +56,7 @@ public class TestContext extends ApplicationContextConfig {
 
   @Override
   @Bean
-  public LocalSessionFactoryBean sessionFactory() {
+  public LocalSessionFactoryBean localSessionFactoryBean() {
     return mock(LocalSessionFactoryBean.class);
   }
 
