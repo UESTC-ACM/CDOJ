@@ -24,6 +24,7 @@ import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.judge.JudgeService;
 
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
@@ -113,13 +114,13 @@ public class ApplicationContextConfig {
   }
 
   /**
-   * Bean: session factory
+   * Bean: local session factory bean
    *
-   * @return sessionFactory bean
+   * @return localSessionFactoryBean bean
    */
-  @Bean(name = "sessionFactory")
+  @Bean(name = "localSessionFactoryBean")
   @Lazy(false)
-  public LocalSessionFactoryBean sessionFactory() {
+  public LocalSessionFactoryBean localSessionFactoryBean() {
     LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
 
     localSessionFactoryBean.setDataSource(this.dataSource());
@@ -151,6 +152,17 @@ public class ApplicationContextConfig {
   }
 
   /**
+   * Bean: session factory
+   *
+   * @return sessionFactory bean
+   */
+  @Bean(name = "sessionFactory")
+  @Lazy(false)
+  public SessionFactory sessionFactory() {
+    return this.localSessionFactoryBean().getObject();
+  }
+
+  /**
    * Bean: transaction manager
    *
    * @return transactionManagerBean
@@ -159,7 +171,7 @@ public class ApplicationContextConfig {
   @Bean(name = "transactionManager")
   public HibernateTransactionManager transactionManager() {
     HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-    transactionManager.setSessionFactory(this.sessionFactory().getObject());
+    transactionManager.setSessionFactory(this.sessionFactory());
     /*
      * <tx:method name="save*" propagation="REQUIRED" /> <tx:method name="add*"
      * propagation="REQUIRED" /> <tx:method name="update*"
