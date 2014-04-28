@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.db.entity.Code;
 import org.springframework.stereotype.Repository;
 
 /**
- * DAO for code entity.
+ * DAO for Code entity.
  */
 @Repository
 public class CodeDAO extends DAO<Code, Integer> implements ICodeDAO {

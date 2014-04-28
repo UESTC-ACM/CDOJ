@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.db.entity.Language;
 import org.springframework.stereotype.Repository;
 
 /**
- * DAO for language entity.
+ * DAO for Language entity.
  */
 @Repository
 public class LanguageDAO extends DAO<Language, Integer> implements ILanguageDAO {

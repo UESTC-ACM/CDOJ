@@ -8,7 +8,6 @@ from test_util import findWholeWordInRealCode
 
 entities = []
 
-
 class TestDtosNotContainEntities(test_util.TestCase):
 
     def __init__(self, file_name):
