@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.db.entity.User;
 import org.springframework.stereotype.Repository;
 
 /**
- * DAO for user entity.
+ * DAO for User entity.
  */
 @Repository
 public class UserDAO extends DAO<User, Integer> implements IUserDAO {

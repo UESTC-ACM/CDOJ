@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
 import org.springframework.stereotype.Repository;
 
 /**
- * DAO for compileinfo entity.
+ * DAO for CompileInfo entity.
  */
 @Repository
 public class CompileInfoDAO extends DAO<CompileInfo, Integer> implements ICompileInfoDAO {
