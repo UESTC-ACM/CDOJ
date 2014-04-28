@@ -4,7 +4,13 @@ jdk:
   - oraclejdk7
 
 install:
-  - cd trunk
+  - wget https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz -O protobuf-2.5.0.tar.gz >/dev/null 2>&1
+  - tar -xzvf protobuf-2.5.0.tar.gz >/dev/null 2>&1
+  - cd protobuf-2.5.0
+  - ./configure --prefix=/usr >/dev/null 2>&1
+  - make >/dev/null 2>&1
+  - sudo make install >/dev/null 2>&1
+  - cd ../trunk
 
 script:
   - gradle -PdbUser=travis -PdbPassword="" build 

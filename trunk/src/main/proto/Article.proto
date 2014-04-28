@@ -1,0 +1,23 @@
+option java_package = "cn.edu.uestc.acmicpc.db.dto";
+option java_outer_classname = "ArticleDtoProtos";
+
+message ArticleDto {
+  required int32 articleId = 1;
+  optional string title = 2;
+  optional string content = 3;
+  optional int64 time = 4;
+  optional int32 clicked = 5 [default = 0];
+  optional int32 order = 6 [default = 0];
+  optional ArticleType type = 7 [default = ARTICLE];
+  optional bool isVisible = 8 [default = false];
+  optional int32 parentId = 9;
+  optional int32 problemId = 10;
+  optional int32 contestId = 11;
+  optional int32 userId = 12 [default = 1];
+
+  enum ArticleType {
+    NOTICE = 1;
+    ARTICLE = 2;
+    COMMENT = 3;
+  }
+}
