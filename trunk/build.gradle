@@ -83,6 +83,36 @@ task generateTestPropertyFile(type: Exec) {
       file(judgeWorkPath).absolutePath
 }
 
+// Gradle protobuf plugin
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath 'com.tomcawley:gradle-protobuf-plugin:0.2'
+  }
+}
+
+apply plugin: 'gradleProtobufPlugin'
+
+protoBuf {
+  protoc {
+    'Mac OS X' {
+      path = "protoc"
+    }
+    'Linux' {
+      path = "protoc"
+    }
+  }
+
+  lang {
+    java {
+      genDir = 'src/main/gen'
+    }
+  }
+}
+
 task cleanResources << {
   delete "src/main/resources/resources.properties"
   delete "src/test/resources/resources.properties"
@@ -104,8 +134,13 @@ configurations {
 
 sourceSets {
   main.compileClasspath += configurations.provided
+  main.compileClasspath += files("src/main/gen/")
+
   test.compileClasspath += configurations.provided
+  test.compileClasspath += files("src/main/gen/")
+
   test.runtimeClasspath += configurations.provided
+  test.runtimeClasspath += files("src/main/gen/")
 }
 
 repositories {
@@ -174,6 +209,8 @@ dependencies {
   compile "com.sun.mail:all:1.5.0"
 
   compile "net.sf.opencsv:opencsv:2.3"
+
+  compile "com.google.protobuf:protobuf-java:2.5.0"
 
   testCompile "$springGroup:spring-test:$springVersion"
   testCompile "org.hamcrest:hamcrest-all:1.3"
