@@ -41,6 +41,11 @@ task checkTestingCodeAllDoNotUseJunit(type: Exec) {
       file("src/test/python/check_testing_code_all_not_use_junit.py").absolutePath
 }
 
+task generateDaos(type: Exec) {
+  commandLine "python",
+      file("src/main/python/generate_daos.py").absolutePath
+}
+
 task createSchema(type: Exec) {
   if (dbPassword == "") {
     commandLine "mysql", "-u$dbUser"
@@ -118,6 +123,7 @@ task cleanResources << {
   delete "src/test/resources/resources.properties"
 }
 
+checkControllerDoNotContainDaos.dependsOn(generateDaos)
 compileJava.dependsOn(checkControllerDoNotContainDaos)
 compileJava.dependsOn(checkDtosDoNotContainEntities)
 compileJava.dependsOn(checkTestingCodeAllDoNotUseJunit)

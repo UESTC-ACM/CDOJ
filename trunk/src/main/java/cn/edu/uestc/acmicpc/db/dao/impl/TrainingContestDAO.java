@@ -7,11 +7,10 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import org.springframework.stereotype.Repository;
 
 /**
- * Training Contest DAO implementation.
+ * DAO for TrainingContest entity.
  */
 @Repository
-public class TrainingContestDAO extends DAO<TrainingContest, Integer>
-    implements ITrainingContestDAO {
+public class TrainingContestDAO extends DAO<TrainingContest, Integer> implements ITrainingContestDAO {
 
   @Override
   protected Class<Integer> getPKClass() {

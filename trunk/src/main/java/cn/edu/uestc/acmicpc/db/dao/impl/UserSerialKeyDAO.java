@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import org.springframework.stereotype.Repository;
 
 /**
- * DAO implementation for {@link UserSerialKey}.
+ * DAO for UserSerialKey entity.
  */
 @Repository
 public class UserSerialKeyDAO extends DAO<UserSerialKey, Integer> implements IUserSerialKeyDAO {

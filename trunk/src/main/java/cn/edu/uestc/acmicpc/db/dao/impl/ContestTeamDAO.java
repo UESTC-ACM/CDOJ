@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.db.entity.ContestTeam;
 import org.springframework.stereotype.Repository;
 
 /**
- * DAO for contestteam entity.
+ * DAO for ContestTeam entity.
  */
 @Repository
 public class ContestTeamDAO extends DAO<ContestTeam, Integer> implements IContestTeamDAO {

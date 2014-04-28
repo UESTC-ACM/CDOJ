@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.db.entity.Status;
 import org.springframework.stereotype.Repository;
 
 /**
- * DAO for status.
+ * DAO for Status entity.
  */
 @Repository
 public class StatusDAO extends DAO<Status, Integer> implements IStatusDAO {

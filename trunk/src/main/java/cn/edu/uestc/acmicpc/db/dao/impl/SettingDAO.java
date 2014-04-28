@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.db.entity.Setting;
 import org.springframework.stereotype.Repository;
 
 /**
- * DAO for setting.
+ * DAO for Setting entity.
  */
 @Repository
 public class SettingDAO extends DAO<Setting, Integer> implements ISettingDAO {

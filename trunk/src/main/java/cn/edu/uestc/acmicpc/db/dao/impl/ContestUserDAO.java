@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.db.entity.ContestUser;
 import org.springframework.stereotype.Repository;
 
 /**
- * DAO for contestuser entity.
+ * DAO for ContestUser entity.
  */
 @Repository
 public class ContestUserDAO extends DAO<ContestUser, Integer> implements IContestUserDAO {

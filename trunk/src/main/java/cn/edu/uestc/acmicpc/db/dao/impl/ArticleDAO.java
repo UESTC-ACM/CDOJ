@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.db.entity.Article;
 import org.springframework.stereotype.Repository;
 
 /**
- * DAO for article entity.
+ * DAO for Article entity.
  */
 @Repository
 public class ArticleDAO extends DAO<Article, Integer> implements IArticleDAO {

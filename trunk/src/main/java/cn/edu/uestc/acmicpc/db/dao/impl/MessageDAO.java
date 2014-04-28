@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.db.entity.Message;
 import org.springframework.stereotype.Repository;
 
 /**
- * DAO for message entity.
+ * DAO for Message entity.
  */
 @Repository
 public class MessageDAO extends DAO<Message, Integer> implements IMessageDAO {

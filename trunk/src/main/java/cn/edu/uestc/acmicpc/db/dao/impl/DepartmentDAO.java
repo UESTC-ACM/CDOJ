@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.db.entity.Department;
 import org.springframework.stereotype.Repository;
 
 /**
- * DAO for department entity.
+ * DAO for Department entity.
  */
 @Repository
 public class DepartmentDAO extends DAO<Department, Integer> implements IDepartmentDAO {

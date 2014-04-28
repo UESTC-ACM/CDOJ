@@ -6,6 +6,9 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 
 import org.springframework.stereotype.Repository;
 
+/**
+ * DAO for TrainingStatus entity.
+ */
 @Repository
 public class TrainingStatusDAO extends DAO<TrainingStatus, Integer> implements ITrainingStatusDAO {
 
