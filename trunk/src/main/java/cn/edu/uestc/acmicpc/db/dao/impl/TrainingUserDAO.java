@@ -6,6 +6,9 @@ import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 
 import org.springframework.stereotype.Repository;
 
+/**
+ * DAO for TrainingUser entity.
+ */
 @Repository
 public class TrainingUserDAO extends DAO<TrainingUser, Integer> implements ITrainingUserDAO {
 

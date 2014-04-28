@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.db.entity.Problem;
 import org.springframework.stereotype.Repository;
 
 /**
- * DAO for problem entity.
+ * DAO for Problem entity.
  */
 @Repository
 public class ProblemDAO extends DAO<Problem, Integer> implements IProblemDAO {

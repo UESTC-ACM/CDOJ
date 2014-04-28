@@ -7,7 +7,7 @@ import cn.edu.uestc.acmicpc.db.entity.Tag;
 import org.springframework.stereotype.Repository;
 
 /**
- * DAO for tag entity.
+ * DAO for Tag entity.
  */
 @Repository
 public class TagDAO extends DAO<Tag, Integer> implements ITagDAO {

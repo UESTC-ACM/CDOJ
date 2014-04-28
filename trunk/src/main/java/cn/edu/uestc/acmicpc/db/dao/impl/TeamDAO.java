@@ -7,10 +7,11 @@ import cn.edu.uestc.acmicpc.db.entity.Team;
 import org.springframework.stereotype.Repository;
 
 /**
- * DAO for team entity
+ * DAO for Team entity.
  */
 @Repository
 public class TeamDAO extends DAO<Team, Integer> implements ITeamDAO {
+
   @Override
   protected Class<Integer> getPKClass() {
     return Integer.class;
