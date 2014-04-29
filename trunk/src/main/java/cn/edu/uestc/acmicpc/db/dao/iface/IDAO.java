@@ -295,9 +295,11 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * List all entity by criteria for specific protocol buffer type.
    *
    * @param criteria Hibernate criteria entity.
+   * @param pageInfo page constraint.
    * @param <T> result type, should be inherit from {@link com.google.protobuf.GeneratedMessage}
    * @return List of results
    * @throws AppException
    */
-  <T extends GeneratedMessage> List<T> list(DetachedCriteria criteria) throws AppException;
+  <T extends GeneratedMessage> List<T> list(DetachedCriteria criteria,
+                                            PageInfo pageInfo) throws AppException;
 }

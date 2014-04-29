@@ -14,6 +14,7 @@ import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
@@ -456,8 +457,15 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
-  public <T extends GeneratedMessage> List<T> list(DetachedCriteria criteria) throws AppException {
-    return criteria.getExecutableCriteria(getSession()).list();
+  public <T extends GeneratedMessage> List<T> list(DetachedCriteria criteria,
+                                                   PageInfo pageInfo) throws AppException {
+    Criteria executableCriteria = criteria.getExecutableCriteria(getSession());
+    if (pageInfo != null) {
+      executableCriteria = executableCriteria
+          .setFirstResult((int) ((pageInfo.getCurrentPage() - 1) * pageInfo.getCountPerPage()))
+          .setMaxResults(pageInfo.getCountPerPage().intValue());
+    }
+    return executableCriteria.list();
   }
 
 }
