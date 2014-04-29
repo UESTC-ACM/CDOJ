@@ -1,15 +1,18 @@
 package cn.edu.uestc.acmicpc.db.criteria.base;
 
+import cn.edu.uestc.acmicpc.db.criteria.transformer.AliasToProtocolBufferBuilderTransformer;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 
+import com.google.protobuf.GeneratedMessage;
+
 /**
  * We can use this class to get {@link DetachedCriteria} entity.
  */
-public abstract class BaseCriteria<Entity> {
+public abstract class BaseCriteria<Entity, Dto extends GeneratedMessage> {
 
   /**
    * Current page id.
@@ -37,8 +40,11 @@ public abstract class BaseCriteria<Entity> {
    */
   private Class<Entity> referenceClass;
 
-  protected BaseCriteria(Class<Entity> referenceClass) {
+  private Class<Dto> resultClass;
+
+  protected BaseCriteria(Class<Entity> referenceClass, Class<Dto> resultClass) {
     this.referenceClass = referenceClass;
+    this.resultClass = resultClass;
   }
 
   /**
@@ -50,6 +56,10 @@ public abstract class BaseCriteria<Entity> {
   public DetachedCriteria getCriteria() throws AppException {
     DetachedCriteria criteria = DetachedCriteria.forClass(referenceClass);
 
+    // Set result transformer
+    criteria.setResultTransformer(new AliasToProtocolBufferBuilderTransformer(resultClass));
+
+    // Set order condition
     if (orderFields != null) {
       String[] fields = orderFields.split(",");
       String[] asc = orderAsc.split(",");

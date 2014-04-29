@@ -37,7 +37,7 @@ public class CriteriaITTest extends AbstractTestNGSpringContextTests {
     );
     criteria.setResultTransformer(new AliasToProtocolBufferBuilderTransformer(ArticleDtoProtos.ArticleDto.class));
 
-    List<ArticleDtoProtos.ArticleDto> result = articleDAO.list(criteria);
+    List<ArticleDtoProtos.ArticleDto> result = articleDAO.list(criteria, null);
     Assert.assertEquals(result.size(), 4);
     Assert.assertEquals(result.get(0).getArticleId(), 1);
     Assert.assertEquals(result.get(0).getTitle(), "Frequently Asked Questions");
