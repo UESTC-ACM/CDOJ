@@ -6,6 +6,10 @@ import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
+import org.hibernate.criterion.DetachedCriteria;
+
+import com.google.protobuf.GeneratedMessage;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -286,4 +290,14 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    */
   void increment(String incrementField,
                  String field, String values) throws AppException;
+
+  /**
+   * List all entity by criteria for specific protocol buffer type.
+   *
+   * @param criteria Hibernate criteria entity.
+   * @param <T> result type, should be inherit from {@link com.google.protobuf.GeneratedMessage}
+   * @return List of results
+   * @throws AppException
+   */
+  <T extends GeneratedMessage> List<T> list(DetachedCriteria criteria) throws AppException;
 }
