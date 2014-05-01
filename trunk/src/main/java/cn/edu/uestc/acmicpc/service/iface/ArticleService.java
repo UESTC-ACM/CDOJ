@@ -52,9 +52,9 @@ public interface ArticleService extends DatabaseService<Article, Integer> {
       throws AppException;
 
   /**
-   * Modify one filed of multiply entities as value.
+   * Modify one field of multiply entities as value.
    *
-   * @param field filed need to modified.
+   * @param field field need to modified.
    * @param ids   entities' ID split by <code>,</code>.
    * @param value new value.
    * @throws AppException
