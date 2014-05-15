@@ -1,18 +1,20 @@
 package cn.edu.uestc.acmicpc.db.criteria.base;
 
 import cn.edu.uestc.acmicpc.db.criteria.transformer.AliasToProtocolBufferBuilderTransformer;
+import cn.edu.uestc.acmicpc.db.dto.field.FieldProjection;
+import cn.edu.uestc.acmicpc.db.dto.field.Fields;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
-
-import com.google.protobuf.GeneratedMessage;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 
 /**
  * We can use this class to get {@link DetachedCriteria} entity.
  */
-public abstract class BaseCriteria<Entity, Dto extends GeneratedMessage> {
+public abstract class BaseCriteria<Entity, Dto> {
 
   /**
    * Current page id.
@@ -40,11 +42,22 @@ public abstract class BaseCriteria<Entity, Dto extends GeneratedMessage> {
    */
   private Class<Entity> referenceClass;
 
+  /**
+   * Result class, this class should generate by protocol buffer
+   */
   private Class<Dto> resultClass;
 
-  protected BaseCriteria(Class<Entity> referenceClass, Class<Dto> resultClass) {
+  /**
+   * Specify the fields we need when build query criteria
+   */
+  private Fields resultFields;
+
+  protected BaseCriteria(Class<Entity> referenceClass,
+                         Class<Dto> resultClass,
+                         Fields resultFields) {
     this.referenceClass = referenceClass;
     this.resultClass = resultClass;
+    this.resultFields = resultFields;
   }
 
   /**
@@ -56,8 +69,28 @@ public abstract class BaseCriteria<Entity, Dto extends GeneratedMessage> {
   public DetachedCriteria getCriteria() throws AppException {
     DetachedCriteria criteria = DetachedCriteria.forClass(referenceClass);
 
+    // Get field projection list
+    FieldProjection[] fieldProjectionList = resultFields.getProjections();
+
+    ProjectionList projectionList = Projections.projectionList();
+    for (FieldProjection fieldProjection : fieldProjectionList) {
+      if (fieldProjection.getType().equals("alias")) {
+        // Set alias
+        criteria.createAlias(fieldProjection.getField(), fieldProjection.getAlias());
+      } else {
+        // Set projection
+        projectionList = projectionList.add(
+            Projections.property(fieldProjection.getField()),
+            fieldProjection.getAlias()
+        );
+      }
+    }
+    criteria.setProjection(projectionList);
+
     // Set result transformer
-    criteria.setResultTransformer(new AliasToProtocolBufferBuilderTransformer(resultClass));
+    // We must set the projection first
+    // setProjection() method will change the transformer to PROJECTION
+    criteria = criteria.setResultTransformer(new AliasToProtocolBufferBuilderTransformer(resultClass));
 
     // Set order condition
     if (orderFields != null) {
@@ -72,7 +105,6 @@ public abstract class BaseCriteria<Entity, Dto extends GeneratedMessage> {
         }
       }
     }
-
     return criteria;
   }
 
