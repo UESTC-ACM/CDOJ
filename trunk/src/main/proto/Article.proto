@@ -15,6 +15,9 @@ message ArticleDto {
   optional int32 contestId = 11;
   optional int32 userId = 12 [default = 1];
 
+  optional string ownerName = 13;
+  optional string ownerEmail = 14;
+
   enum ArticleType {
     NOTICE = 1;
     ARTICLE = 2;

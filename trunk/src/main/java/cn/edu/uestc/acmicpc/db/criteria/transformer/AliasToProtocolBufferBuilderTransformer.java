@@ -9,6 +9,7 @@ import org.hibernate.transform.AliasedTupleSubsetResultTransformer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
 import java.util.Arrays;
 
 /**
@@ -52,6 +53,7 @@ public class AliasToProtocolBufferBuilderTransformer extends AliasedTupleSubsetR
   private boolean isInitialized;
   private String[] aliases;
   private Setter[] setters;
+  private Class[] fieldType;
 
   public AliasToProtocolBufferBuilderTransformer(Class resultClass) {
     if ( resultClass == null ) {
@@ -97,8 +99,28 @@ public class AliasToProtocolBufferBuilderTransformer extends AliasedTupleSubsetR
       }
 
       for ( int i = 0; i < aliases.length; i++ ) {
-        if ( setters[i] != null ) {
-          setters[i].set( builder, tuple[i], null );
+        if ( setters[i] != null && tuple[i] != null) {
+          try {
+            if (tuple[i] instanceof Timestamp) {
+              Timestamp timestamp = (Timestamp) tuple[i];
+              setters[i].set(builder, timestamp.getTime(), null);
+            } else if (fieldType[i].isEnum()) {
+              try {
+                Method enumConvertMethod = fieldType[i].getMethod("valueOf");
+                Object enumValue = enumConvertMethod.invoke(tuple[i]);
+                setters[i].set(builder, enumValue, null);
+              } catch (NoSuchMethodException e) {
+                throw new IllegalArgumentException( "Enum type should generate by protocol buffer." );
+              } catch (InvocationTargetException e) {
+                throw new IllegalArgumentException( "Enum type should generate by protocol buffer." );
+              }
+            } else {
+              setters[i].set(builder, tuple[i], null);
+            }
+          } catch (IllegalArgumentException ex) {
+            // Convert time to long manually
+            System.out.println(setters[i].getMethodName() + " : " + tuple[i]);
+          }
         }
       }
     }
@@ -125,11 +147,14 @@ public class AliasToProtocolBufferBuilderTransformer extends AliasedTupleSubsetR
     );
     this.aliases = new String[ aliases.length ];
     setters = new Setter[ aliases.length ];
+    fieldType = new Class[ aliases.length ];
+
     for ( int i = 0; i < aliases.length; i++ ) {
       String alias = aliases[ i ];
       if ( alias != null ) {
         this.aliases[ i ] = alias;
         setters[ i ] = propertyAccessor.getSetter( builderClass, alias );
+        fieldType[ i ] = propertyAccessor.getGetter( builderClass, alias ).getReturnType();
       }
     }
     isInitialized = true;

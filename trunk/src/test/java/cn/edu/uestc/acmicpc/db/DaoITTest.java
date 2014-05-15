@@ -33,12 +33,12 @@ public class DaoITTest extends AbstractTestNGSpringContextTests {
   }
 
   @Test
-  public void test_fetch_list_with_range_successful() throws AppException {
+  public void test_fetch_list_with_page_range_successful() throws AppException {
     // Build criteria manually
-    DetachedCriteria criteria = DetachedCriteria.forClass(Article.class, "article");
+    DetachedCriteria criteria = DetachedCriteria.forClass(Article.class);
 
     criteria.setProjection(Projections.projectionList()
-            .add(Projections.property("article.articleId"), "articleId")
+            .add(Projections.property("articleId"), "articleId")
     );
     criteria.setResultTransformer(new AliasToProtocolBufferBuilderTransformer(ArticleDtoProtos.ArticleDto.class));
 

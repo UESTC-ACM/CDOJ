@@ -467,5 +467,4 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
     }
     return executableCriteria.list();
   }
-
 }
