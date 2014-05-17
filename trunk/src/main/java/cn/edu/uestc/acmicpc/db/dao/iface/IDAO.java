@@ -8,8 +8,6 @@ import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.hibernate.criterion.DetachedCriteria;
 
-import com.google.protobuf.GeneratedMessage;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -292,14 +290,14 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
                  String field, String values) throws AppException;
 
   /**
-   * List all entity by criteria for specific protocol buffer type.
+   * List all entity by criteria.
    *
    * @param criteria Hibernate criteria entity.
    * @param pageInfo page constraint.
-   * @param <T> result type, should be inherit from {@link com.google.protobuf.GeneratedMessage}
+   * @param <T> result type
    * @return List of results
    * @throws AppException
    */
-  <T extends GeneratedMessage> List<T> list(DetachedCriteria criteria,
+  <T extends BaseDTO<Entity> > List<T> list(DetachedCriteria criteria,
                                             PageInfo pageInfo) throws AppException;
 }

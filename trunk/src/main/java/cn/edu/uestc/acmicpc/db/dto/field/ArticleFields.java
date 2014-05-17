@@ -1,9 +1,12 @@
 package cn.edu.uestc.acmicpc.db.dto.field;
 
 /**
- * Description
+ * Field projection settings for ArticleDto.
  */
 public enum ArticleFields implements Fields {
+  /**
+   * Get all fields from database
+   */
   ALL(FieldProjection.Property("articleId"),
       FieldProjection.Property("title"),
       FieldProjection.Property("content"),

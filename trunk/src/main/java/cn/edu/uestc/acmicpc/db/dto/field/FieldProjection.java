@@ -1,12 +1,23 @@
 package cn.edu.uestc.acmicpc.db.dto.field;
 
 /**
- * Description
+ * Field projection
  */
 public class FieldProjection {
 
+  /**
+   * Field in database
+   */
   private String field;
+
+  /**
+   * Alias
+   */
   private String alias;
+
+  /**
+   * Projection type
+   */
   private String type;
 
   public String getField() {

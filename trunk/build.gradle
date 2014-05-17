@@ -46,6 +46,13 @@ task generateDaos(type: Exec) {
       file("src/main/python/generate_daos.py").absolutePath
 }
 
+task generateDtos(type: Exec) {
+  commandLine "python",
+      file("src/main/python/generate_dtos.py").absolutePath,
+      "-i", "src/main/dto",
+      "-o", "src/main/gen"
+}
+
 task createSchema(type: Exec) {
   if (dbPassword == "") {
     commandLine "mysql", "-u$dbUser"
@@ -88,41 +95,12 @@ task generateTestPropertyFile(type: Exec) {
       file(judgeWorkPath).absolutePath
 }
 
-// Gradle protobuf plugin
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-
-  dependencies {
-    classpath 'com.tomcawley:gradle-protobuf-plugin:0.2'
-  }
-}
-
-apply plugin: 'gradleProtobufPlugin'
-
-protoBuf {
-  protoc {
-    'Mac OS X' {
-      path = "protoc"
-    }
-    'Linux' {
-      path = "protoc"
-    }
-  }
-
-  lang {
-    java {
-      genDir = 'src/main/gen'
-    }
-  }
-}
-
 task cleanResources << {
   delete "src/main/resources/resources.properties"
   delete "src/test/resources/resources.properties"
 }
 
+checkDtosDoNotContainEntities.dependsOn(generateDtos)
 checkControllerDoNotContainDaos.dependsOn(generateDaos)
 compileJava.dependsOn(checkControllerDoNotContainDaos)
 compileJava.dependsOn(checkDtosDoNotContainEntities)
