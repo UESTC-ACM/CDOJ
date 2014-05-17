@@ -20,8 +20,6 @@ import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.stereotype.Repository;
 
-import com.google.protobuf.GeneratedMessage;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -457,8 +455,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
-  public <T extends GeneratedMessage> List<T> list(DetachedCriteria criteria,
-                                                   PageInfo pageInfo) throws AppException {
+  public <T extends BaseDTO<Entity>> List<T> list(DetachedCriteria criteria,
+                                                  PageInfo pageInfo) throws AppException {
     Criteria executableCriteria = criteria.getExecutableCriteria(getSession());
     if (pageInfo != null) {
       executableCriteria = executableCriteria

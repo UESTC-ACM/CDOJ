@@ -1,6 +1,5 @@
 package cn.edu.uestc.acmicpc.db.criteria.base;
 
-import cn.edu.uestc.acmicpc.db.criteria.transformer.AliasToProtocolBufferBuilderTransformer;
 import cn.edu.uestc.acmicpc.db.dto.field.FieldProjection;
 import cn.edu.uestc.acmicpc.db.dto.field.Fields;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -10,6 +9,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.transform.AliasToBeanResultTransformer;
 
 /**
  * We can use this class to get {@link DetachedCriteria} entity.
@@ -90,7 +90,7 @@ public abstract class BaseCriteria<Entity, Dto> {
     // Set result transformer
     // We must set the projection first
     // setProjection() method will change the transformer to PROJECTION
-    criteria = criteria.setResultTransformer(new AliasToProtocolBufferBuilderTransformer(resultClass));
+    criteria = criteria.setResultTransformer(new AliasToBeanResultTransformer(resultClass));
 
     // Set order condition
     if (orderFields != null) {

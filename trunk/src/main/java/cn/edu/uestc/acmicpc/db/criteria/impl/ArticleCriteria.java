@@ -1,8 +1,8 @@
 package cn.edu.uestc.acmicpc.db.criteria.impl;
 
 import cn.edu.uestc.acmicpc.db.criteria.base.BaseCriteria;
-import cn.edu.uestc.acmicpc.db.dto.ArticleDtoProtos;
 import cn.edu.uestc.acmicpc.db.dto.field.Fields;
+import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -12,10 +12,10 @@ import org.hibernate.criterion.Restrictions;
 /**
  * Article database criteria entity.
  */
-public class ArticleCriteria extends BaseCriteria<Article, ArticleDtoProtos.ArticleDto> {
+public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
 
   public ArticleCriteria(Fields resultFields) {
-    super(Article.class, ArticleDtoProtos.ArticleDto.class, resultFields);
+    super(Article.class, ArticleDto.class, resultFields);
   }
 
   public Integer startId;
@@ -34,7 +34,7 @@ public class ArticleCriteria extends BaseCriteria<Article, ArticleDtoProtos.Arti
 
   public Integer parentId;
 
-  public ArticleDtoProtos.ArticleDto.ArticleType type;
+  public Integer type;
 
   @Override
   public DetachedCriteria getCriteria() throws AppException {
