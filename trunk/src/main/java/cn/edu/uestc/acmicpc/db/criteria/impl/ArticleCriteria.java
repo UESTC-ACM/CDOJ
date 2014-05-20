@@ -18,9 +18,15 @@ public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
     super(Article.class, ArticleDto.class, resultFields);
   }
 
+  public ArticleCriteria() {
+    super(Article.class, ArticleDto.class);
+  }
+
   public Integer startId;
 
   public Integer endId;
+
+  public String title;
 
   public String keyword;
 
@@ -37,6 +43,11 @@ public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
   public Integer type;
 
   @Override
+  public void setResultFields(Fields resultFields) {
+    super.setResultFields(resultFields);
+  }
+
+  @Override
   public DetachedCriteria getCriteria() throws AppException {
     DetachedCriteria criteria = super.getCriteria();
 
@@ -46,11 +57,17 @@ public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
     if (endId != null) {
       criteria.add(Restrictions.le("articleId", endId));
     }
+    if (title != null) {
+      criteria.add(Restrictions.eq("title", title));
+    }
     if (isVisible != null) {
       criteria.add(Restrictions.eq("isVisible", isVisible));
     }
     if (userId != null) {
       criteria.add(Restrictions.eq("userId", userId));
+    }
+    if (type != null) {
+      criteria.add(Restrictions.eq("type", type));
     }
 
     if (contestId != null) {

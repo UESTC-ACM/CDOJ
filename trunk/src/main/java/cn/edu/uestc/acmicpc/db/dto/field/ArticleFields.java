@@ -4,9 +4,6 @@ package cn.edu.uestc.acmicpc.db.dto.field;
  * Field projection settings for ArticleDto.
  */
 public enum ArticleFields implements Fields {
-  /**
-   * Get all fields from database
-   */
   ALL(FieldProjection.Property("articleId"),
       FieldProjection.Property("title"),
       FieldProjection.Property("content"),
@@ -19,6 +16,15 @@ public enum ArticleFields implements Fields {
       FieldProjection.Property("problemId"),
       FieldProjection.Property("contestId"),
       FieldProjection.Property("userId"),
+      FieldProjection.Alias("userByUserId", "owner"),
+      FieldProjection.Property("owner.userName", "ownerName"),
+      FieldProjection.Property("owner.email", "ownerEmail")),
+  LIST(FieldProjection.Property("articleId"),
+      FieldProjection.Property("title"),
+      FieldProjection.Property("content"),
+      FieldProjection.Property("time"),
+      FieldProjection.Property("clicked"),
+      FieldProjection.Property("isVisible"),
       FieldProjection.Alias("userByUserId", "owner"),
       FieldProjection.Property("owner.userName", "ownerName"),
       FieldProjection.Property("owner.email", "ownerEmail"));

@@ -18,6 +18,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
@@ -455,8 +456,8 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
   }
 
   @Override
-  public <T extends BaseDTO<Entity>> List<T> list(DetachedCriteria criteria,
-                                                  PageInfo pageInfo) throws AppException {
+  public <T extends BaseDTO<Entity>> List<T> findAll(DetachedCriteria criteria,
+                                                     PageInfo pageInfo) throws AppException {
     Criteria executableCriteria = criteria.getExecutableCriteria(getSession());
     if (pageInfo != null) {
       executableCriteria = executableCriteria
@@ -464,5 +465,25 @@ public abstract class DAO<Entity extends Serializable, PK extends Serializable>
           .setMaxResults(pageInfo.getCountPerPage().intValue());
     }
     return executableCriteria.list();
+  }
+
+  @Override
+  public <T extends BaseDTO<Entity>> T getDtoByUniqueField(DetachedCriteria criteria)
+      throws AppException {
+    List<T> result = findAll(criteria, null);
+    if (result.size() == 0) {
+      return null;
+    } else if (result.size() == 1) {
+      return result.get(0);
+    } else {
+      throw new AppException("the value is not unique.");
+    }
+  }
+
+  @Override
+  public Long count(DetachedCriteria criteria) throws AppException {
+    criteria = criteria.setProjection(Projections.rowCount());
+    Criteria executableCriteria = criteria.getExecutableCriteria(getSession());
+    return (Long) executableCriteria.uniqueResult();
   }
 }

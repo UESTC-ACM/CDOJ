@@ -60,6 +60,16 @@ public abstract class BaseCriteria<Entity, Dto> {
     this.resultFields = resultFields;
   }
 
+  protected BaseCriteria(Class<Entity> referenceClass,
+                         Class<Dto> resultClass) {
+    this.referenceClass = referenceClass;
+    this.resultClass = resultClass;
+  }
+
+  public void setResultFields(Fields resultFields) {
+    this.resultFields = resultFields;
+  }
+
   /**
    * Get {@link DetachedCriteria} object.
    *
@@ -69,23 +79,25 @@ public abstract class BaseCriteria<Entity, Dto> {
   public DetachedCriteria getCriteria() throws AppException {
     DetachedCriteria criteria = DetachedCriteria.forClass(referenceClass);
 
-    // Get field projection list
-    FieldProjection[] fieldProjectionList = resultFields.getProjections();
+    if (resultFields != null) {
+      // Get field projection list
+      FieldProjection[] fieldProjectionList = resultFields.getProjections();
 
-    ProjectionList projectionList = Projections.projectionList();
-    for (FieldProjection fieldProjection : fieldProjectionList) {
-      if (fieldProjection.getType().equals("alias")) {
-        // Set alias
-        criteria.createAlias(fieldProjection.getField(), fieldProjection.getAlias());
-      } else {
-        // Set projection
-        projectionList = projectionList.add(
-            Projections.property(fieldProjection.getField()),
-            fieldProjection.getAlias()
-        );
+      ProjectionList projectionList = Projections.projectionList();
+      for (FieldProjection fieldProjection : fieldProjectionList) {
+        if (fieldProjection.getType().equals("alias")) {
+          // Set alias
+          criteria.createAlias(fieldProjection.getField(), fieldProjection.getAlias());
+        } else {
+          // Set projection
+          projectionList = projectionList.add(
+              Projections.property(fieldProjection.getField()),
+              fieldProjection.getAlias()
+          );
+        }
       }
+      criteria.setProjection(projectionList);
     }
-    criteria.setProjection(projectionList);
 
     // Set result transformer
     // We must set the projection first

@@ -39,7 +39,7 @@ public class CriteriaITTest extends AbstractTestNGSpringContextTests {
     articleCriteria.startId = 1;
     articleCriteria.endId = 1;
 
-    List<ArticleDto> result = articleDAO.list(articleCriteria.getCriteria(), null);
+    List<ArticleDto> result = articleDAO.findAll(articleCriteria.getCriteria(), null);
     Assert.assertEquals(result.size(), 1);
     ArticleDto articleDto = result.get(0);
 
@@ -66,7 +66,7 @@ public class CriteriaITTest extends AbstractTestNGSpringContextTests {
     articleCriteria.startId = 2;
     articleCriteria.endId = 3;
 
-    List<ArticleDto> result = articleDAO.list(articleCriteria.getCriteria(), null);
+    List<ArticleDto> result = articleDAO.findAll(articleCriteria.getCriteria(), null);
 
     Assert.assertEquals(result.size(), 2);
     Assert.assertEquals(result.get(0).getArticleId(), Integer.valueOf(2));
