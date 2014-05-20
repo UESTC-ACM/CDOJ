@@ -1,6 +1,5 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition;
 import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.IArticleDAO;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
@@ -132,10 +131,10 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
   @Override
   public Boolean checkArticleExists(Integer articleId) throws AppException {
     AppExceptionUtil.assertNotNull(articleId);
-    ArticleCondition articleCondition = new ArticleCondition();
-    articleCondition.startId = articleId;
-    articleCondition.endId = articleId;
-    return articleDAO.count(articleCondition.getCondition()) == 1;
+    ArticleCriteria articleCriteria = new ArticleCriteria();
+    articleCriteria.startId = articleId;
+    articleCriteria.endId = articleId;
+    return articleDAO.count(articleCriteria.getCriteria()) == 1;
   }
 
 }
