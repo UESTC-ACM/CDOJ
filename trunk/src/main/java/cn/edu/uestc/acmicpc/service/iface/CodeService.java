@@ -1,6 +1,7 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.code.CodeDTO;
+import cn.edu.uestc.acmicpc.db.dto.field.CodeFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.CodeDto;
 import cn.edu.uestc.acmicpc.db.entity.Code;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -10,21 +11,23 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 public interface CodeService extends DatabaseService<Code, Integer> {
 
   /**
-   * Get {@link CodeDTO} by code id.
+   * Get {@link CodeDto} by code id.
    *
    * @param codeId code's id.
-   * @return {@link CodeDTO} entity.
+   * @param codeFields fields which is needed.
+   * @return {@link CodeDto} entity.
    * @throws AppException
    */
-  public CodeDTO getCodeDTOByCodeId(Integer codeId) throws AppException;
+  public CodeDto getCodeDto(Integer codeId,
+                            CodeFields codeFields) throws AppException;
 
   /**
-   * Create a new code record by {@link CodeDTO}.
+   * Create a new code record by {@link CodeDto}.
    *
-   * @param codeDTO {@link CodeDTO} entity.
+   * @param codeDto {@link CodeDto} entity.
    * @return record's id.
    * @throws AppException
    */
-  public Integer createNewCode(CodeDTO codeDTO) throws AppException;
+  public Integer createNewCode(CodeDto codeDto) throws AppException;
 
 }

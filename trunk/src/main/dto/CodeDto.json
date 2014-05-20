@@ -1,0 +1,18 @@
+{
+  "entity": "Code",
+  "package": "cn.edu.uestc.acmicpc.db.dto.impl",
+  "fields": [
+    {
+      "name": "codeId",
+      "type": "Integer"
+    },
+    {
+      "name": "content",
+      "type": "String"
+    },
+    {
+      "name": "share",
+      "type": "Boolean"
+    }
+  ]
+}
