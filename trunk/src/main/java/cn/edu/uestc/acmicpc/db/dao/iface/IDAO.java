@@ -298,6 +298,25 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @return List of results
    * @throws AppException
    */
-  <T extends BaseDTO<Entity> > List<T> list(DetachedCriteria criteria,
-                                            PageInfo pageInfo) throws AppException;
+  <T extends BaseDTO<Entity> > List<T> findAll(DetachedCriteria criteria,
+                                               PageInfo pageInfo) throws AppException;
+
+  /**
+   * Get unique DTO entity by unique field.
+   *
+   * @param criteria Hibernate criteria entity.
+   * @param <T> result type
+   * @return unique entity for query.
+   * @throws AppException
+   */
+  <T extends BaseDTO<Entity> > T getDtoByUniqueField(DetachedCriteria criteria) throws AppException;
+
+  /**
+   * Count the number of records in the table by criteria.
+   *
+   * @param criteria criteria object
+   * @return number of records we query
+   * @throws AppException
+   */
+  Long count(DetachedCriteria criteria) throws AppException;
 }

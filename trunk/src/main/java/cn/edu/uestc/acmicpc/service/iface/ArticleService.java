@@ -1,8 +1,8 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleListDTO;
+import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
+import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -15,40 +15,43 @@ import java.util.List;
 public interface ArticleService extends DatabaseService<Article, Integer> {
 
   /**
-   * Update article by {@link ArticleDTO}.
+   * Update article by {@link ArticleDto}.
    *
-   * @param articleDTO {@link ArticleDTO} entity.
+   * @param articleDto {@link ArticleDto} entity.
    * @throws AppException
    */
-  public void updateArticle(ArticleDTO articleDTO) throws AppException;
+  public void updateArticle(ArticleDto articleDto) throws AppException;
 
   /**
-   * Get {@link ArticleDTO} by article id.
+   * Get {@link ArticleDto} by article id with specified fields.
    *
-   * @param articleId article's id.
-   * @return {@link ArticleDTO} entity.
+   * @param articleId     article's id.
+   * @param articleFields fields which is needed.
+   * @return {@link ArticleDto} entity.
    * @throws AppException
    */
-  public ArticleDTO getArticleDTO(Integer articleId) throws AppException;
+  public ArticleDto getArticleDto(Integer articleId,
+                                  ArticleFields articleFields)
+      throws AppException;
 
   /**
    * Counts the number of articles fit in condition.
    *
-   * @param condition {@link ArticleCondition} entity.
+   * @param articleCriteria {@link ArticleCriteria} entity.
    * @return total number of articles fit in the condition.
    * @throws AppException
    */
-  public Long count(ArticleCondition condition) throws AppException;
+  public Long count(ArticleCriteria articleCriteria) throws AppException;
 
   /**
    * Get the articles fit in condition and page range.
    *
-   * @param condition {@link ArticleCondition} entity.
+   * @param articleCriteria {@link ArticleCriteria} entity.
    * @param pageInfo  {@link PageInfo} entity.
-   * @return List of {@link ArticleListDTO} entities.
+   * @return List of {@link ArticleDto} entities.
    * @throws AppException
    */
-  public List<ArticleListDTO> getArticleList(ArticleCondition condition, PageInfo pageInfo)
+  public List<ArticleDto> getArticleList(ArticleCriteria articleCriteria, PageInfo pageInfo)
       throws AppException;
 
   /**

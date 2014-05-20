@@ -43,7 +43,7 @@ public class DaoITTest extends AbstractTestNGSpringContextTests {
     criteria.setResultTransformer(new AliasToBeanResultTransformer(ArticleDto.class));
 
     // 4 articles in total, 1 result per page, and the 3rd article is on page 3.
-    List<ArticleDto> result = articleDAO.list(criteria, PageInfo.create(4L, 1L, 1, 3L));
+    List<ArticleDto> result = articleDAO.findAll(criteria, PageInfo.create(4L, 1L, 1, 3L));
     Assert.assertEquals(result.size(), 1);
     Assert.assertEquals(result.get(0).getArticleId(), Integer.valueOf(3));
   }
