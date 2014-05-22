@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.ITeamDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.TeamDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamTypeAHeadDTO;
@@ -22,22 +22,22 @@ import java.util.List;
 @Service
 public class TeamServiceImpl extends AbstractService implements TeamService {
 
-  private final ITeamDAO teamDAO;
+  private final TeamDao teamDao;
 
   @Autowired
-  public TeamServiceImpl(ITeamDAO teamDAO) {
-    this.teamDAO = teamDAO;
+  public TeamServiceImpl(TeamDao teamDao) {
+    this.teamDao = teamDao;
   }
 
   @Override
-  public ITeamDAO getDAO() {
-    return teamDAO;
+  public TeamDao getDao() {
+    return teamDao;
   }
 
   @Override
   public Boolean checkTeamExists(String teamName) throws AppException {
     AppExceptionUtil.assertNotNull(teamName);
-    TeamDTO teamDTO = teamDAO.getDTOByUniqueField(TeamDTO.class, TeamDTO.builder(), "teamName", teamName);
+    TeamDTO teamDTO = teamDao.getDTOByUniqueField(TeamDTO.class, TeamDTO.builder(), "teamName", teamName);
     if (teamDTO != null) {
       AppExceptionUtil.assertTrue(teamDTO.getTeamName().compareTo(teamName) == 0);
       return true;
@@ -51,18 +51,18 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
     team.setTeamId(null);
     team.setTeamName(teamName);
     team.setLeaderId(leaderId);
-    teamDAO.add(team);
+    teamDao.add(team);
     return team.getTeamId();
   }
 
   @Override
   public TeamDTO getTeamDTOByTeamId(Integer teamId) throws AppException {
-    return teamDAO.getDTOByUniqueField(TeamDTO.class, TeamDTO.builder(), "teamId", teamId);
+    return teamDao.getDTOByUniqueField(TeamDTO.class, TeamDTO.builder(), "teamId", teamId);
   }
 
   @Override
   public Long count(TeamCondition teamCondition) throws AppException {
-    return teamDAO.count(getHQLString(teamCondition));
+    return teamDao.count(getHQLString(teamCondition));
   }
 
   public String getHQLString(TeamCondition teamCondition) throws AppException {
@@ -111,13 +111,13 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
   @Override
   public List<TeamTypeAHeadDTO> getTeamTypeAHeadList(TeamCondition teamCondition,
                                                      PageInfo pageInfo) throws AppException {
-    return teamDAO.findAll(TeamTypeAHeadDTO.class, TeamTypeAHeadDTO.builder(),
+    return teamDao.findAll(TeamTypeAHeadDTO.class, TeamTypeAHeadDTO.builder(),
         getHQLString(teamCondition), pageInfo);
   }
 
   @Override
   public Integer getTeamIdByTeamName(String teamName) throws AppException {
-    TeamDTO teamDTO = teamDAO.getDTOByUniqueField(TeamDTO.class, TeamDTO.builder(), "teamName",
+    TeamDTO teamDTO = teamDao.getDTOByUniqueField(TeamDTO.class, TeamDTO.builder(), "teamName",
         teamName);
     AppExceptionUtil.assertNotNull(teamDTO, "Team not found.");
     return teamDTO.getTeamId();
@@ -125,13 +125,13 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
 
   @Override
   public void deleteTeam(TeamDTO teamDTO) throws AppException {
-    teamDAO.deleteEntitiesByField("teamId", teamDTO.getTeamId().toString());
+    teamDao.deleteEntitiesByField("teamId", teamDTO.getTeamId().toString());
   }
 
   @Override
   public List<TeamListDTO> getTeamList(TeamCondition teamCondition, PageInfo pageInfo)
       throws AppException {
-    return teamDAO.findAll(TeamListDTO.class, TeamListDTO.builder(), getHQLString(teamCondition),
+    return teamDao.findAll(TeamListDTO.class, TeamListDTO.builder(), getHQLString(teamCondition),
         pageInfo);
   }
 }

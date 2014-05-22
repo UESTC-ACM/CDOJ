@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.db;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
-import cn.edu.uestc.acmicpc.db.dao.iface.IArticleDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ArticleDao;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.field.FieldProjection;
 import cn.edu.uestc.acmicpc.db.dto.field.Fields;
@@ -24,7 +24,7 @@ import java.util.List;
 public class CriteriaITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired
-  IArticleDAO articleDAO;
+  ArticleDao articleDao;
 
   public void test_fetch_article_with_specified_fields() throws AppException {
     ArticleCriteria articleCriteria = new ArticleCriteria(new Fields() {
@@ -39,7 +39,7 @@ public class CriteriaITTest extends AbstractTestNGSpringContextTests {
     articleCriteria.startId = 1;
     articleCriteria.endId = 1;
 
-    List<ArticleDto> result = articleDAO.findAll(articleCriteria.getCriteria(), null);
+    List<ArticleDto> result = articleDao.findAll(articleCriteria.getCriteria(), null);
     Assert.assertEquals(result.size(), 1);
     ArticleDto articleDto = result.get(0);
 
@@ -66,7 +66,7 @@ public class CriteriaITTest extends AbstractTestNGSpringContextTests {
     articleCriteria.startId = 2;
     articleCriteria.endId = 3;
 
-    List<ArticleDto> result = articleDAO.findAll(articleCriteria.getCriteria(), null);
+    List<ArticleDto> result = articleDao.findAll(articleCriteria.getCriteria(), null);
 
     Assert.assertEquals(result.size(), 2);
     Assert.assertEquals(result.get(0).getArticleId(), Integer.valueOf(2));

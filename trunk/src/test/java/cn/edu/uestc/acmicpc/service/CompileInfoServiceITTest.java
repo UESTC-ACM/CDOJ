@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.CompileInfoDao;
 import cn.edu.uestc.acmicpc.service.iface.CompileInfoService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -34,7 +34,7 @@ public class CompileInfoServiceITTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void testGetDAO() throws AppException {
-    Assert.assertTrue(compileInfoService.getDAO() instanceof ICompileInfoDAO);
+    Assert.assertTrue(compileInfoService.getDao() instanceof CompileInfoDao);
   }
 
   @Test

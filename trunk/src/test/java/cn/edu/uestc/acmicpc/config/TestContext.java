@@ -3,8 +3,8 @@ package cn.edu.uestc.acmicpc.config;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
+import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDTO;
 import cn.edu.uestc.acmicpc.judge.JudgeService;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
@@ -69,14 +69,14 @@ public class TestContext extends ApplicationContextConfig {
   // real beans for testing.
   @Bean
   @Autowired
-  public UserService realUserService(@Qualifier("mockUserDAO") IUserDAO userDAO) {
-    return new UserServiceImpl(userDAO);
+  public UserService realUserService(@Qualifier("mockUserDao") UserDao userDao) {
+    return new UserServiceImpl(userDao);
   }
 
   @Bean
   @Autowired
-  public ProblemService realProblemService(@Qualifier("mockProblemDAO") IProblemDAO problemDAO) {
-    return new ProblemServiceImpl(problemDAO);
+  public ProblemService realProblemService(@Qualifier("mockProblemDao") ProblemDao problemDao) {
+    return new ProblemServiceImpl(problemDao);
   }
 
   // mock beans, add a new type here, the bean should be reset in ControllerTest.
@@ -177,14 +177,14 @@ public class TestContext extends ApplicationContextConfig {
 
   @Bean
   @Primary
-  public IUserDAO mockUserDAO() {
-    return mock(IUserDAO.class);
+  public UserDao mockUserDao() {
+    return mock(UserDao.class);
   }
 
   @Bean
   @Primary
-  public IProblemDAO mockProblemDAO() {
-    return mock(IProblemDAO.class);
+  public ProblemDao mockProblemDao() {
+    return mock(ProblemDao.class);
   }
 
   @Bean

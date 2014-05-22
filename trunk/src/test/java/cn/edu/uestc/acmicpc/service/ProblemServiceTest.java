@@ -12,7 +12,7 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.Entry;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
@@ -49,8 +49,8 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
   private ProblemService problemService;
 
   @Autowired
-  @Qualifier("mockProblemDAO")
-  private IProblemDAO problemDAO;
+  @Qualifier("mockProblemDao")
+  private ProblemDao problemDao;
 
   @Autowired
   @Qualifier("mockGlobalService")
@@ -58,16 +58,16 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
 
   @BeforeMethod
   public void init() {
-    Mockito.reset(problemDAO, globalService);
+    Mockito.reset(problemDao, globalService);
   }
 
   @Test
   public void testGetProblemDTOByProblemId() throws AppException {
     ProblemDTO problemDTO = ProblemDTO.builder().build();
-    when(problemDAO.getDTOByUniqueField(eq(ProblemDTO.class), Mockito.<ProblemDTO.Builder>any(),
+    when(problemDao.getDTOByUniqueField(eq(ProblemDTO.class), Mockito.<ProblemDTO.Builder>any(),
         eq("problemId"), eq(problemDTO.getProblemId()))).thenReturn(problemDTO);
     Assert.assertEquals(problemService.getProblemDTOByProblemId(problemDTO.getProblemId()), problemDTO);
-    verify(problemDAO).getDTOByUniqueField(eq(ProblemDTO.class), Mockito.<ProblemDTO.Builder>any(),
+    verify(problemDao).getDTOByUniqueField(eq(ProblemDTO.class), Mockito.<ProblemDTO.Builder>any(),
         eq("problemId"), eq(problemDTO.getProblemId()));
   }
 
@@ -77,7 +77,7 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
     Condition condition = mock(Condition.class);
     when(problemCondition.getCondition()).thenReturn(condition);
     problemService.count(problemCondition);
-    verify(problemDAO).count(condition);
+    verify(problemDao).count(condition);
   }
 
   @Test
@@ -85,18 +85,18 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
     ProblemDTO problemDTO = ProblemDTO.builder().build();
     Problem problem = new Problem();
     problem.setProblemId(problemDTO.getProblemId());
-    when(problemDAO.get(problemDTO.getProblemId())).thenReturn(problem);
+    when(problemDao.get(problemDTO.getProblemId())).thenReturn(problem);
     problemService.updateProblem(problemDTO);
     ArgumentCaptor<Problem> captor = ArgumentCaptor.forClass(Problem.class);
-    verify(problemDAO).update(captor.capture());
+    verify(problemDao).update(captor.capture());
     Assert.assertTrue(ObjectUtil.entityEquals(problemDTO, captor.getValue()));
-    verify(problemDAO).get(problemDTO.getProblemId());
+    verify(problemDao).get(problemDTO.getProblemId());
   }
 
   @Test(expectedExceptions = AppException.class)
   public void testUpdateProblem_problemNotFound() throws AppException {
     ProblemDTO problemDTO = ProblemDTO.builder().build();
-    when(problemDAO.get(problemDTO.getProblemId())).thenReturn(null);
+    when(problemDao.get(problemDTO.getProblemId())).thenReturn(null);
 
     problemService.updateProblem(problemDTO);
     Assert.fail();
@@ -106,7 +106,7 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
   public void testUpdateProblem_problemFoundWithNullId() throws AppException {
     ProblemDTO problemDTO = ProblemDTO.builder().build();
     Problem problem = mock(Problem.class);
-    when(problemDAO.get(problemDTO.getProblemId())).thenReturn(problem);
+    when(problemDao.get(problemDTO.getProblemId())).thenReturn(problem);
     when(problem.getProblemId()).thenReturn(null);
     problemService.updateProblem(problemDTO);
     Assert.fail();
@@ -115,7 +115,7 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testCreateNewProblem() throws AppException {
     ArgumentCaptor<Problem> captor = ArgumentCaptor.forClass(Problem.class);
-    when(problemDAO.add(captor.capture())).thenAnswer(new Answer<Problem>() {
+    when(problemDao.add(captor.capture())).thenAnswer(new Answer<Problem>() {
       @Override
       public Problem answer(InvocationOnMock invocation) {
         Object[] args = invocation.getArguments();
@@ -133,7 +133,7 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
     ArgumentCaptor<Condition> captor = ArgumentCaptor.forClass(Condition.class);
     PageInfo pageInfo = PageInfo.create(300L, 20L, 10, 2L);
     problemService.getProblemListDTOList(new ProblemCondition(), pageInfo);
-    verify(problemDAO).findAll(eq(ProblemListDTO.class),
+    verify(problemDao).findAll(eq(ProblemListDTO.class),
         isA(ProblemListDTO.Builder.class), captor.capture());
     Condition condition = captor.getValue();
     Assert.assertEquals(condition.getJoinedType(), JoinedType.AND);
@@ -144,7 +144,7 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
   public void testGetAllVisibleProblemIds() throws AppException {
     ArgumentCaptor<Condition> captor = ArgumentCaptor.forClass(Condition.class);
     problemService.getAllVisibleProblemIds();
-    verify(problemDAO).findAll(eq("problemId"), captor.capture());
+    verify(problemDao).findAll(eq("problemId"), captor.capture());
     Condition condition = captor.getValue();
     List<Entry> entries = condition.getEntries();
     Assert.assertEquals(Entry.of("isVisible",

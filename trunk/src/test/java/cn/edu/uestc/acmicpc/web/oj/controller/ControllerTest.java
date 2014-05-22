@@ -5,8 +5,8 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 
 import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.config.WebMVCResource;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
+import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.department.DepartmentDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.language.LanguageDTO;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
@@ -60,8 +60,8 @@ public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
   @Autowired protected LanguageService languageService;
   @Autowired protected PictureService pictureService;
   @Autowired protected FileService fileService;
-  @Autowired protected IUserDAO userDAO;
-  @Autowired protected IProblemDAO problemDAO;
+  @Autowired protected UserDao userDao;
+  @Autowired protected ProblemDao problemDao;
 
   /**
    * Application JSON type with UTF-8 character set.

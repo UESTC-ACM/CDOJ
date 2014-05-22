@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.db;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldNotUniqueException;
@@ -21,7 +21,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 public class AOPITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired
-  IUserDAO userDAO;
+  UserDao userDao;
 
   @Autowired
   DruidDataSource dataSource;
@@ -34,34 +34,34 @@ public class AOPITTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void testDataBaseConnection() throws FieldNotUniqueException, AppException {
-    User user = (User) userDAO.getEntityByUniqueField("userName", "admin");
+    User user = (User) userDao.getEntityByUniqueField("userName", "admin");
     Assert.assertEquals(user.getUserName(), "admin");
   }
 
   @Test
   public void testHQLQuery() throws AppException {
-    userDAO.findAll("from Article");
-    userDAO.findAll("from Code");
-    userDAO.findAll("from CompileInfo");
-    userDAO.findAll("from Contest");
-    userDAO.findAll("from ContestProblem");
-    userDAO.findAll("from ContestTeam");
-    userDAO.findAll("from ContestUser");
-    userDAO.findAll("from Department");
-    userDAO.findAll("from Language");
-    userDAO.findAll("from Message");
-    userDAO.findAll("from Code");
-    userDAO.findAll("from Problem");
-    userDAO.findAll("from ProblemTag");
-    userDAO.findAll("from Setting");
-    userDAO.findAll("from Status");
-    userDAO.findAll("from Tag");
-    userDAO.findAll("from Team");
-    userDAO.findAll("from TeamUser");
-    userDAO.findAll("from TrainingContest");
-    userDAO.findAll("from TrainingStatus");
-    userDAO.findAll("from TrainingUser");
-    userDAO.findAll("from User");
-    userDAO.findAll("from UserSerialKey");
+    userDao.findAll("from Article");
+    userDao.findAll("from Code");
+    userDao.findAll("from CompileInfo");
+    userDao.findAll("from Contest");
+    userDao.findAll("from ContestProblem");
+    userDao.findAll("from ContestTeam");
+    userDao.findAll("from ContestUser");
+    userDao.findAll("from Department");
+    userDao.findAll("from Language");
+    userDao.findAll("from Message");
+    userDao.findAll("from Code");
+    userDao.findAll("from Problem");
+    userDao.findAll("from ProblemTag");
+    userDao.findAll("from Setting");
+    userDao.findAll("from Status");
+    userDao.findAll("from Tag");
+    userDao.findAll("from Team");
+    userDao.findAll("from TeamUser");
+    userDao.findAll("from TrainingContest");
+    userDao.findAll("from TrainingStatus");
+    userDao.findAll("from TrainingUser");
+    userDao.findAll("from User");
+    userDao.findAll("from UserSerialKey");
   }
 }

@@ -18,7 +18,7 @@ import java.util.Map;
  * @param <Entity> Entity's type
  * @param <PK>     Primary key's type
  */
-public interface IDAO<Entity extends Serializable, PK extends Serializable> {
+public interface Dao<Entity extends Serializable, PK extends Serializable> {
 
   /**
    * Add entity into database, and return number of Row changed.
@@ -60,7 +60,7 @@ public interface IDAO<Entity extends Serializable, PK extends Serializable> {
    * @return entity list in tables.
    * @throws AppException
    * @deprecated this method is not supported in new API, please use
-   * {@link IDAO#findAll(Class, BaseBuilder, Condition)}
+   * {@link Dao#findAll(Class, BaseBuilder, Condition)}
    */
   @Deprecated
   List<?> findAll() throws AppException;

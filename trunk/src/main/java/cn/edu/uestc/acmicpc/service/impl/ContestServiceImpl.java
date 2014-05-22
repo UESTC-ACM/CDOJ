@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IContestDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ContestDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
@@ -23,18 +23,18 @@ import java.util.List;
 public class ContestServiceImpl extends AbstractService implements
     ContestService {
 
-  private final IContestDAO contestDAO;
+  private final ContestDao contestDao;
   private final Settings settings;
 
   @Autowired
-  public ContestServiceImpl(IContestDAO contestDAO, Settings settings) {
-    this.contestDAO = contestDAO;
+  public ContestServiceImpl(ContestDao contestDao, Settings settings) {
+    this.contestDao = contestDao;
     this.settings = settings;
   }
 
   @Override
-  public IContestDAO getDAO() {
-    return contestDAO;
+  public ContestDao getDao() {
+    return contestDao;
   }
 
   @SuppressWarnings("unchecked")
@@ -42,7 +42,7 @@ public class ContestServiceImpl extends AbstractService implements
   public List<Integer> getAllVisibleContestIds() throws AppException {
     ContestCondition contestCondition = new ContestCondition();
     contestCondition.isVisible = true;
-    return (List<Integer>) contestDAO.findAll("contestId",
+    return (List<Integer>) contestDao.findAll("contestId",
         contestCondition.getCondition());
   }
 
@@ -51,14 +51,14 @@ public class ContestServiceImpl extends AbstractService implements
       Integer contestId)
       throws AppException {
     AppExceptionUtil.assertNotNull(contestId);
-    return contestDAO.getDTOByUniqueField(ContestDTO.class,
+    return contestDao.getDTOByUniqueField(ContestDTO.class,
         ContestDTO.builder(), "contestId", contestId);
   }
 
   @Override
   public ContestShowDTO getContestShowDTOByContestId(Integer contestId) throws AppException {
     AppExceptionUtil.assertNotNull(contestId);
-    return contestDAO.getDTOByUniqueField(ContestShowDTO.class,
+    return contestDao.getDTOByUniqueField(ContestShowDTO.class,
         ContestShowDTO.builder(), "contestId", contestId);
   }
 
@@ -67,7 +67,7 @@ public class ContestServiceImpl extends AbstractService implements
     ContestCondition contestCondition = new ContestCondition();
     contestCondition.startId = contestId;
     contestCondition.endId = contestId;
-    return contestDAO.count(contestCondition.getCondition()) == 1;
+    return contestDao.count(contestCondition.getCondition()) == 1;
   }
 
   private void updateContestByContestDTO(Contest contest, ContestDTO contestDTO) {
@@ -99,16 +99,16 @@ public class ContestServiceImpl extends AbstractService implements
 
   @Override
   public void updateContest(ContestDTO contestDTO) throws AppException {
-    Contest contest = contestDAO.get(contestDTO.getContestId());
+    Contest contest = contestDao.get(contestDTO.getContestId());
     AppExceptionUtil.assertNotNull(contest);
     AppExceptionUtil.assertNotNull(contest.getContestId());
     updateContestByContestDTO(contest, contestDTO);
-    contestDAO.update(contest);
+    contestDao.update(contest);
   }
 
   @Override
   public Long count(ContestCondition contestCondition) throws AppException {
-    return contestDAO.count(contestCondition.getCondition());
+    return contestDao.count(contestCondition.getCondition());
   }
 
   @Override
@@ -117,7 +117,7 @@ public class ContestServiceImpl extends AbstractService implements
       PageInfo pageInfo) throws AppException {
     contestCondition.currentPage = pageInfo.getCurrentPage();
     contestCondition.countPerPage = settings.RECORD_PER_PAGE;
-    return contestDAO.findAll(ContestListDTO.class, ContestListDTO.builder(),
+    return contestDao.findAll(ContestListDTO.class, ContestListDTO.builder(),
         contestCondition.getCondition());
   }
 
@@ -130,13 +130,13 @@ public class ContestServiceImpl extends AbstractService implements
     } else {
       value = sValue;
     }
-    contestDAO.updateEntitiesByField(field, value, "contestId", ids);
+    contestDao.updateEntitiesByField(field, value, "contestId", ids);
   }
 
   @Override
   public Integer createNewContest() throws AppException {
     Contest contest = new Contest();
-    contestDAO.add(contest);
+    contestDao.add(contest);
     return contest.getContestId();
   }
 

@@ -5,7 +5,7 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.Entry;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -28,14 +28,14 @@ public class ProblemDatabaseITTest extends AbstractTestNGSpringContextTests {
   // TODO(fish): use problem service to query.
 
   @Autowired
-  private IProblemDAO problemDAO;
+  private ProblemDao problemDao;
 
   @Test
   public void testStartIdAndEndId() throws AppException {
     Condition condition = new Condition();
     condition.addEntry(Entry.of("problemId", ConditionType.GREATER_OR_EQUALS, 1));
     condition.addEntry(Entry.of("problemId", ConditionType.LESS_OR_EQUALS, 5));
-    Assert.assertEquals(problemDAO.count(condition), Long.valueOf(5));
+    Assert.assertEquals(problemDao.count(condition), Long.valueOf(5));
   }
 
   @Test
@@ -43,7 +43,7 @@ public class ProblemDatabaseITTest extends AbstractTestNGSpringContextTests {
     Condition condition = new Condition();
     condition.addEntry(Entry.of("problemId", ConditionType.GREATER_OR_EQUALS, 2));
     condition.addEntry(Entry.of("problemId", ConditionType.LESS_OR_EQUALS, 1));
-    Assert.assertEquals(problemDAO.count(condition), Long.valueOf(0));
+    Assert.assertEquals(problemDao.count(condition), Long.valueOf(0));
   }
 
   @Test
@@ -52,7 +52,7 @@ public class ProblemDatabaseITTest extends AbstractTestNGSpringContextTests {
     condition.addEntry(Entry.of("problemId", ConditionType.GREATER_OR_EQUALS, 1));
     condition.addEntry(Entry.of("problemId", ConditionType.LESS_OR_EQUALS, 5));
     condition.addEntry(Entry.of("isSpj", ConditionType.EQUALS, false));
-    Assert.assertEquals(problemDAO.count(condition), Long.valueOf(3));
+    Assert.assertEquals(problemDao.count(condition), Long.valueOf(3));
   }
 
   @Test
@@ -61,7 +61,7 @@ public class ProblemDatabaseITTest extends AbstractTestNGSpringContextTests {
     condition.startId = 1;
     condition.endId = 5;
     condition.isSpj = true;
-    Assert.assertEquals(problemDAO.count(condition.getCondition()), Long.valueOf(2));
+    Assert.assertEquals(problemDao.count(condition.getCondition()), Long.valueOf(2));
   }
 
   @SuppressWarnings({"unchecked", "deprecation"})
@@ -70,7 +70,7 @@ public class ProblemDatabaseITTest extends AbstractTestNGSpringContextTests {
     Condition condition = new Condition();
     condition.addEntry(Entry.of("title", ConditionType.STRING_EQUALS, ""));
     List<ProblemDTO> problems =
-        problemDAO.findAll(ProblemDTO.class, ProblemDTO.builder(), condition);
+        problemDao.findAll(ProblemDTO.class, ProblemDTO.builder(), condition);
     Assert.assertEquals(problems.size(), 1);
     Assert.assertEquals(problems.get(0).getProblemId(), Integer.valueOf(5));
   }
@@ -89,7 +89,7 @@ public class ProblemDatabaseITTest extends AbstractTestNGSpringContextTests {
     problem.setSource("Source " + randomId.toString());
     problem.setIsSpj(new Random().nextBoolean());
     problem.setIsVisible(new Random().nextBoolean());
-    problemDAO.add(problem);
+    problemDao.add(problem);
     Assert.assertNotNull(problem.getProblemId());
   }
 }

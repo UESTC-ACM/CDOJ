@@ -1,12 +1,9 @@
 package cn.edu.uestc.acmicpc.util.helper;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -16,18 +13,6 @@ import java.util.List;
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class RatingUtil {
-
-  @SuppressWarnings("unused")
-  private final ITrainingStatusDAO trainingStatusDAO;
-  @SuppressWarnings("unused")
-  private final ITrainingUserDAO trainingUserDAO;
-
-  @Autowired
-  public RatingUtil(ITrainingUserDAO trainingUserDAO,
-                    ITrainingStatusDAO trainingStatusDAO) {
-    this.trainingUserDAO = trainingUserDAO;
-    this.trainingStatusDAO = trainingStatusDAO;
-  }
 
   // TODO(mzry1992): refactor.
   public void updateRating(TrainingContest trainingContest) throws AppException {

@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.criteria.impl.CodeCriteria;
-import cn.edu.uestc.acmicpc.db.dao.iface.ICodeDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.CodeDao;
 import cn.edu.uestc.acmicpc.db.dto.field.CodeFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.CodeDto;
 import cn.edu.uestc.acmicpc.db.entity.Code;
@@ -17,11 +17,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class CodeServiceImpl extends AbstractService implements CodeService {
 
-  private final ICodeDAO codeDAO;
+  private final CodeDao codeDao;
 
   @Autowired
-  public CodeServiceImpl(ICodeDAO codeDAO) {
-    this.codeDAO = codeDAO;
+  public CodeServiceImpl(CodeDao codeDao) {
+    this.codeDao = codeDao;
   }
 
   @Override
@@ -29,7 +29,7 @@ public class CodeServiceImpl extends AbstractService implements CodeService {
                                     CodeFields codeFields) throws AppException {
     CodeCriteria codeCriteria = new CodeCriteria(CodeFields.ALL);
     codeCriteria.codeId = codeId;
-    return codeDAO.getDtoByUniqueField(codeCriteria.getCriteria());
+    return codeDao.getDtoByUniqueField(codeCriteria.getCriteria());
   }
 
   private void updateCodeByCodeDTO(Code code, CodeDto codeDto) {
@@ -43,12 +43,12 @@ public class CodeServiceImpl extends AbstractService implements CodeService {
   public Integer createNewCode(CodeDto codeDto) throws AppException {
     Code code = new Code();
     updateCodeByCodeDTO(code, codeDto);
-    codeDAO.add(code);
+    codeDao.add(code);
     return code.getCodeId();
   }
 
   @Override
-  public ICodeDAO getDAO() {
-    return codeDAO;
+  public CodeDao getDao() {
+    return codeDao;
   }
 }

@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
-import cn.edu.uestc.acmicpc.db.dao.iface.IArticleDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ArticleDao;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.db.entity.Article;
@@ -22,16 +22,16 @@ import java.util.Map;
 @Service
 public class ArticleServiceImpl extends AbstractService implements ArticleService {
 
-  private final IArticleDAO articleDAO;
+  private final ArticleDao articleDao;
 
   @Autowired
-  public ArticleServiceImpl(IArticleDAO articleDAO) {
-    this.articleDAO = articleDAO;
+  public ArticleServiceImpl(ArticleDao articleDao) {
+    this.articleDao = articleDao;
   }
 
   @Override
-  public IArticleDAO getDAO() {
-    return articleDAO;
+  public ArticleDao getDao() {
+    return articleDao;
   }
 
   @Override
@@ -41,25 +41,25 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
     ArticleCriteria articleCriteria = new ArticleCriteria(articleFields);
     articleCriteria.startId = articleId;
     articleCriteria.endId = articleId;
-    return articleDAO.getDtoByUniqueField(articleCriteria.getCriteria());
+    return articleDao.getDtoByUniqueField(articleCriteria.getCriteria());
   }
 
   @Override
   public Long count(ArticleCriteria articleCriteria) throws AppException {
-    return articleDAO.count(articleCriteria.getCriteria());
+    return articleDao.count(articleCriteria.getCriteria());
   }
 
   @Override
   public List<ArticleDto> getArticleList(ArticleCriteria articleCriteria,
                                              PageInfo pageInfo) throws AppException {
-    return articleDAO.findAll(articleCriteria.getCriteria(), pageInfo);
+    return articleDao.findAll(articleCriteria.getCriteria(), pageInfo);
   }
 
   @Override
   public void operator(String field, String ids, String value) throws AppException {
     Map<String, Object> properties = new HashMap<>();
     properties.put(field, value);
-    articleDAO.updateEntitiesByField(properties, "articleId", ids);
+    articleDao.updateEntitiesByField(properties, "articleId", ids);
   }
 
   @Override
@@ -73,7 +73,7 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
     article.setType(1);
     article.setIsVisible(true);
     article.setUserId(authorId);
-    articleDAO.add(article);
+    articleDao.add(article);
     return article.getArticleId();
   }
 
@@ -117,15 +117,15 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
   public void updateArticle(ArticleDto articleDto) throws AppException {
     AppExceptionUtil.assertNotNull(articleDto);
     AppExceptionUtil.assertNotNull(articleDto.getArticleId());
-    Article article = articleDAO.get(articleDto.getArticleId());
+    Article article = articleDao.get(articleDto.getArticleId());
     AppExceptionUtil.assertNotNull(article);
     updateArticleByArticleDTO(article, articleDto);
-    articleDAO.update(article);
+    articleDao.update(article);
   }
 
   @Override
   public void incrementClicked(Integer articleId) throws AppException {
-    articleDAO.increment("clicked", "articleId", articleId.toString());
+    articleDao.increment("clicked", "articleId", articleId.toString());
   }
 
   @Override
@@ -134,7 +134,7 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.startId = articleId;
     articleCriteria.endId = articleId;
-    return articleDAO.count(articleCriteria.getCriteria()) == 1;
+    return articleDao.count(articleCriteria.getCriteria()) == 1;
   }
 
 }

@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.service;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
-import cn.edu.uestc.acmicpc.db.dao.iface.IArticleDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ArticleDao;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
@@ -374,7 +374,7 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void testGetDAO() throws AppException {
-    Assert.assertTrue(articleService.getDAO() instanceof IArticleDAO);
+    Assert.assertTrue(articleService.getDao() instanceof ArticleDao);
   }
 
   @Test

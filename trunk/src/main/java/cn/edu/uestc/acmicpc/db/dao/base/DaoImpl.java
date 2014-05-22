@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.db.dao.base;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
-import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.Dao;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
@@ -38,10 +38,10 @@ import java.util.Map;
  * @param <PK>     Primary key's type
  */
 @Repository
-public abstract class DAO<Entity extends Serializable, PK extends Serializable>
-    extends BaseDAO implements IDAO<Entity, PK> {
+public abstract class DaoImpl<Entity extends Serializable, PK extends Serializable>
+    extends BaseDao implements Dao<Entity, PK> {
 
-  private static final Logger LOGGER = LogManager.getLogger(DAO.class);
+  private static final Logger LOGGER = LogManager.getLogger(DaoImpl.class);
 
   @Override
   public void addOrUpdate(Entity entity) throws AppException {

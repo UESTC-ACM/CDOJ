@@ -17,9 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Repository
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class BaseDAO {
+public class BaseDao {
 
-  private static final Logger LOGGER = LogManager.getLogger(BaseDAO.class);
+  private static final Logger LOGGER = LogManager.getLogger(BaseDao.class);
 
   @Autowired
   private SessionFactory sessionFactory;
