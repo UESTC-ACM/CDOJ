@@ -2,7 +2,9 @@
 # coding=utf-8
 
 import os
+import sys
 import stat
+import getopt
 
 entities = []
 
@@ -69,12 +71,33 @@ def generateDaos():
         generateDaoIface(item)
         generateDaoImpl(item)
 
+def parseOpt(argv):
+    help_info = "generate_daos.py -i <input> -o <output>"
+    input_dir = ""
+    output_dir = ""
+    try:
+        opts, args = getopt.getopt(argv, "hi:o:", ["input=", "output="])
+    except getopt.GetoptError:
+        print help_info
+        sys.exit(1)
+    for opt, arg in opts:
+        if opt == "-h":
+            print help_info
+            sys.exit(0)
+        elif opt in ("-i", "--input"):
+            input_dir = arg
+        elif opt in ("-o", "--output"):
+            output_dir = arg
+    return input_dir, output_dir
+
 if __name__ == '__main__':
-    base_dir = os.getcwd()
-    entity_dir = base_dir + '/src/main/java/cn/edu/uestc/acmicpc/db/entity/'
+    input_dir, output_dir = parseOpt(sys.argv[1:])
+
+    base_dir = os.getcwd() + "/"
+    entity_dir = base_dir + input_dir + "/"
     initEntities(entity_dir)
-    dao_iface_dir = base_dir + '/src/main/java/cn/edu/uestc/acmicpc/db/dao/iface/'
-    dao_impl_dir = base_dir + '/src/main/java/cn/edu/uestc/acmicpc/db/dao/impl/'
+    dao_iface_dir = base_dir + output_dir + "/iface/"
+    dao_impl_dir = base_dir + output_dir + "/impl/"
     if not os.path.exists(dao_iface_dir):
         os.makedirs(dao_iface_dir)
     if not os.path.exists(dao_impl_dir):

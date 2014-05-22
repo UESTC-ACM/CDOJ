@@ -92,14 +92,25 @@ def generateDto(input_file, output_dir):
   # Create file
   out = open(output_file, "w")
 
+  need_timestamp = False
+  for field in fields:
+    if field["type"] == "Timestamp":
+      need_timestamp = True
+
   # imports
   out.write("""package {0};
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
 import cn.edu.uestc.acmicpc.db.entity.{1};
-
+""".format(package, entity))
+  if need_timestamp:
+    out.write("""
 import java.sql.Timestamp;
+import java.util.Map;
+""".format(package, entity))
+  else:
+      out.write("""
 import java.util.Map;
 """.format(package, entity))
 
