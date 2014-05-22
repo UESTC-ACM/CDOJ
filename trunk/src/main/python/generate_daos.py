@@ -48,7 +48,7 @@ import cn.edu.uestc.acmicpc.db.entity.{0};
 import org.springframework.stereotype.Repository;
 
 /**
- * DAO for {0} entity.
+ * DAO for {{@link {0}}} entity.
  */
 @Repository
 public class {0}DAO extends DAO<{0}, Integer> implements I{0}DAO {{
