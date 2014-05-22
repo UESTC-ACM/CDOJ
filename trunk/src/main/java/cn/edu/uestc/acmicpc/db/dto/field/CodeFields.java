@@ -4,7 +4,7 @@ package cn.edu.uestc.acmicpc.db.dto.field;
  * Description
  */
 public enum CodeFields implements Fields {
-  ALL(FieldProjection.Property("codeId"),
+  ALL_FIELDS(FieldProjection.Property("codeId"),
       FieldProjection.Property("content"),
       FieldProjection.Property("share"));
 

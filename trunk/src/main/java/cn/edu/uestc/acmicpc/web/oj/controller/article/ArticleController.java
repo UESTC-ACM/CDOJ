@@ -57,7 +57,7 @@ public class ArticleController extends BaseController {
                            HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
-      ArticleDto articleDto = articleService.getArticleDto(articleId, ArticleFields.ALL);
+      ArticleDto articleDto = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS);
       AppExceptionUtil.assertNotNull(articleDto, "No such article.");
       if (articleDto.getType() != ArticleType.ARTICLE.ordinal() &&
           articleDto.getType() != ArticleType.NOTICE.ordinal()) {
@@ -100,7 +100,7 @@ public class ArticleController extends BaseController {
           throw new AppException("Article ID format error.");
         }
 
-        ArticleDto articleDto = articleService.getArticleDto(articleId, ArticleFields.ALL);
+        ArticleDto articleDto = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS);
         AppExceptionUtil.assertNotNull(articleDto, "No such article.");
         if (articleDto.getType() != ArticleType.ARTICLE.ordinal() &&
             articleDto.getType() != ArticleType.NOTICE.ordinal()) {
@@ -140,7 +140,7 @@ public class ArticleController extends BaseController {
                                     @RequestBody ArticleCriteria articleCriteria) {
     Map<String, Object> json = new HashMap<>();
     try {
-      articleCriteria.setResultFields(ArticleFields.LIST);
+      articleCriteria.setResultFields(ArticleFields.FIELDS_FOR_LIST_PAGE);
       if (!isAdmin(session)) {
         articleCriteria.isVisible = true;
       }
@@ -192,7 +192,7 @@ public class ArticleController extends BaseController {
         ArticleDto articleDto;
         if (action.equals("new")) {
           Integer articleId = articleService.createNewArticle(currentUser.getUserId());
-          articleDto = articleService.getArticleDto(articleId, ArticleFields.ALL);
+          articleDto = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS);
           if (articleDto == null || !articleDto.getArticleId().equals(articleId)) {
             throw new AppException("Error while creating comment.");
           }
@@ -203,7 +203,7 @@ public class ArticleController extends BaseController {
           articleEditDto.setContent(pictureService.modifyPictureLocation(
               articleEditDto.getContent(), oldDirectory, newDirectory));
         } else {
-          articleDto = articleService.getArticleDto(articleEditDto.getArticleId(), ArticleFields.ALL);
+          articleDto = articleService.getArticleDto(articleEditDto.getArticleId(), ArticleFields.ALL_FIELDS);
           if (articleDto == null) {
             throw new AppException("No such comment.");
           }
@@ -240,7 +240,7 @@ public class ArticleController extends BaseController {
                              @RequestBody ArticleCriteria articleCriteria) {
     Map<String, Object> json = new HashMap<>();
     try {
-      articleCriteria.setResultFields(ArticleFields.LIST);
+      articleCriteria.setResultFields(ArticleFields.FIELDS_FOR_LIST_PAGE);
       if (!isAdmin(session)) {
         articleCriteria.isVisible = true;
       }
@@ -293,7 +293,7 @@ public class ArticleController extends BaseController {
         ArticleDto articleDto;
         if (action.equals("new")) {
           Integer articleId = articleService.createNewArticle(currentUser.getUserId());
-          articleDto = articleService.getArticleDto(articleId, ArticleFields.ALL);
+          articleDto = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS);
           if (articleDto == null || !articleDto.getArticleId().equals(articleId)) {
             throw new AppException("Error while creating article.");
           }
@@ -304,7 +304,7 @@ public class ArticleController extends BaseController {
           articleEditDto.setContent(pictureService.modifyPictureLocation(
               articleEditDto.getContent(), oldDirectory, newDirectory));
         } else {
-          articleDto = articleService.getArticleDto(articleEditDto.getArticleId(), ArticleFields.ALL);
+          articleDto = articleService.getArticleDto(articleEditDto.getArticleId(), ArticleFields.ALL_FIELDS);
           if (articleDto == null) {
             throw new AppException("No such article.");
           }

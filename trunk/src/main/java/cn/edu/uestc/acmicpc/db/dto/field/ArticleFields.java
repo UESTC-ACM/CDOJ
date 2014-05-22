@@ -4,7 +4,7 @@ package cn.edu.uestc.acmicpc.db.dto.field;
  * Field projection settings for ArticleDto.
  */
 public enum ArticleFields implements Fields {
-  ALL(FieldProjection.Property("articleId"),
+  ALL_FIELDS(FieldProjection.Property("articleId"),
       FieldProjection.Property("title"),
       FieldProjection.Property("content"),
       FieldProjection.Property("time"),
@@ -19,7 +19,7 @@ public enum ArticleFields implements Fields {
       FieldProjection.Alias("userByUserId", "owner"),
       FieldProjection.Property("owner.userName", "ownerName"),
       FieldProjection.Property("owner.email", "ownerEmail")),
-  LIST(FieldProjection.Property("articleId"),
+  FIELDS_FOR_LIST_PAGE(FieldProjection.Property("articleId"),
       FieldProjection.Property("title"),
       FieldProjection.Property("content"),
       FieldProjection.Property("time"),

@@ -61,7 +61,7 @@ public class CriteriaITTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void test_fetch_article_list_by_id_range_successful() throws AppException {
-    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL);
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
 
     articleCriteria.startId = 2;
     articleCriteria.endId = 3;
