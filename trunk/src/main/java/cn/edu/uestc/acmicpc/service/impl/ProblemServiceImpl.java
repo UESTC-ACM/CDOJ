@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IProblemDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
@@ -25,11 +25,11 @@ import java.util.Map;
 public class ProblemServiceImpl extends AbstractService implements
     ProblemService {
 
-  private final IProblemDAO problemDAO;
+  private final ProblemDao problemDao;
 
   @Autowired
-  public ProblemServiceImpl(IProblemDAO problemDAO) {
-    this.problemDAO = problemDAO;
+  public ProblemServiceImpl(ProblemDao problemDao) {
+    this.problemDao = problemDao;
   }
 
   @SuppressWarnings("unchecked")
@@ -37,27 +37,27 @@ public class ProblemServiceImpl extends AbstractService implements
   public List<Integer> getAllVisibleProblemIds() throws AppException {
     ProblemCondition problemCondition = new ProblemCondition();
     problemCondition.isVisible = true;
-    return (List<Integer>) problemDAO.findAll("problemId",
+    return (List<Integer>) problemDao.findAll("problemId",
         problemCondition.getCondition());
   }
 
   @Override
-  public IProblemDAO getDAO() {
-    return problemDAO;
+  public ProblemDao getDao() {
+    return problemDao;
   }
 
   @Override
   public ProblemDTO getProblemDTOByProblemId(Integer problemId)
       throws AppException {
     AppExceptionUtil.assertNotNull(problemId);
-    return problemDAO.getDTOByUniqueField(ProblemDTO.class,
+    return problemDao.getDTOByUniqueField(ProblemDTO.class,
         ProblemDTO.builder(), "problemId",
         problemId);
   }
 
   @Override
   public Long count(ProblemCondition condition) throws AppException {
-    return problemDAO.count(condition.getCondition());
+    return problemDao.count(condition.getCondition());
   }
 
   @Override
@@ -66,7 +66,7 @@ public class ProblemServiceImpl extends AbstractService implements
       PageInfo pageInfo) throws AppException {
     Condition condition = problemCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return problemDAO.findAll(ProblemListDTO.class, ProblemListDTO.builder(),
+    return problemDao.findAll(ProblemListDTO.class, ProblemListDTO.builder(),
         condition);
   }
 
@@ -79,7 +79,7 @@ public class ProblemServiceImpl extends AbstractService implements
     } else {
       value = sValue;
     }
-    problemDAO.updateEntitiesByField(field, value, "problemId", ids);
+    problemDao.updateEntitiesByField(field, value, "problemId", ids);
   }
 
   @SuppressWarnings("unchecked")
@@ -88,7 +88,7 @@ public class ProblemServiceImpl extends AbstractService implements
     ProblemCondition problemCondition = new ProblemCondition();
     Condition condition = problemCondition.getCondition();
     condition.addEntry("problemId", Condition.ConditionType.IN, ids);
-    return (List<Object>) problemDAO.findAll(field, condition);
+    return (List<Object>) problemDao.findAll(field, condition);
   }
 
   @Override
@@ -114,7 +114,7 @@ public class ProblemServiceImpl extends AbstractService implements
     problem.setJavaMemoryLimit(65535);
     problem.setDataCount(0);
     problem.setDifficulty(1);
-    problemDAO.add(problem);
+    problemDao.add(problem);
     return problem.getProblemId();
   }
 
@@ -161,11 +161,11 @@ public class ProblemServiceImpl extends AbstractService implements
 
   @Override
   public void updateProblem(ProblemDTO problemDTO) throws AppException {
-    Problem problem = problemDAO.get(problemDTO.getProblemId());
+    Problem problem = problemDao.get(problemDTO.getProblemId());
     AppExceptionUtil.assertNotNull(problem);
     AppExceptionUtil.assertNotNull(problem.getProblemId());
     updateProblemByProblemDTO(problem, problemDTO);
-    problemDAO.update(problem);
+    problemDao.update(problem);
   }
 
   @Override
@@ -192,13 +192,13 @@ public class ProblemServiceImpl extends AbstractService implements
     ProblemCondition problemCondition = new ProblemCondition();
     problemCondition.startId = problemId;
     problemCondition.endId = problemId;
-    return problemDAO.count(problemCondition.getCondition()) == 1;
+    return problemDao.count(problemCondition.getCondition()) == 1;
   }
 
   @Override
   public void updateProblemByProblemId(Map<String, Object> properties,
                                        Integer problemId) throws AppException {
-    problemDAO.updateEntitiesByField(properties, "problemId",
+    problemDao.updateEntitiesByField(properties, "problemId",
         problemId.toString());
   }
 }

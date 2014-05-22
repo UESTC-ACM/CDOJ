@@ -19,7 +19,7 @@ def initEntities(dir_name):
             entities.append(entity)
 
 def generateDaoIface(entity):
-    file_name = dao_iface_dir + 'I' + entity + 'DAO.java'
+    file_name = dao_iface_dir + entity + 'Dao.java'
     out = open(file_name, 'w')
     out.write(
         '''package cn.edu.uestc.acmicpc.db.dao.iface;
@@ -27,31 +27,31 @@ def generateDaoIface(entity):
 import cn.edu.uestc.acmicpc.db.entity.{0};
 
 /**
- * {0}DAO AOP interface.
+ * {0}Dao AOP interface.
  */
-public interface I{0}DAO extends IDAO<{0}, Integer> {{
+public interface {0}Dao extends Dao<{0}, Integer> {{
 }}
 '''.format(entity)
     )
 
 def generateDaoImpl(entity):
-    file_name = dao_impl_dir + entity + 'DAO.java'
+    file_name = dao_impl_dir + entity + 'DaoImpl.java'
     out = open(file_name, 'w')
 
     out.write(
         '''package cn.edu.uestc.acmicpc.db.dao.impl;
 
-import cn.edu.uestc.acmicpc.db.dao.base.DAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.I{0}DAO;
+import cn.edu.uestc.acmicpc.db.dao.base.DaoImpl;
+import cn.edu.uestc.acmicpc.db.dao.iface.{0}Dao;
 import cn.edu.uestc.acmicpc.db.entity.{0};
 
 import org.springframework.stereotype.Repository;
 
 /**
- * DAO for {{@link {0}}} entity.
+ * Dao for {{@link {0}}} entity.
  */
 @Repository
-public class {0}DAO extends DAO<{0}, Integer> implements I{0}DAO {{
+public class {0}DaoImpl extends DaoImpl<{0}, Integer> implements {0}Dao {{
 
   @Override
   protected Class<Integer> getPKClass() {{

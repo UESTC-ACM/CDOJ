@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestTeamCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IContestTeamDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ContestTeamDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReportDTO;
@@ -26,16 +26,16 @@ import java.util.List;
 @Primary
 public class ContestTeamServiceImpl extends AbstractService implements ContestTeamService {
 
-  private IContestTeamDAO contestTeamDAO;
+  private ContestTeamDao contestTeamDao;
 
   @Autowired
-  public ContestTeamServiceImpl(IContestTeamDAO contestTeamDAO) {
-    this.contestTeamDAO = contestTeamDAO;
+  public ContestTeamServiceImpl(ContestTeamDao contestTeamDao) {
+    this.contestTeamDao = contestTeamDao;
   }
 
   @Override
-  public IContestTeamDAO getDAO() {
-    return contestTeamDAO;
+  public ContestTeamDao getDao() {
+    return contestTeamDao;
   }
 
   @Override
@@ -48,7 +48,7 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
         .append(" and contestTeam.status != ").append(ContestRegistryStatusType.REFUSED.ordinal())
         .append(" and teamUser.userId = ").append(userId)
         .append(" and teamUser.allow = 1");
-    Long count = contestTeamDAO.customCount("contestTeam.contestTeamId", hqlBuilder.toString());
+    Long count = contestTeamDao.customCount("contestTeam.contestTeamId", hqlBuilder.toString());
     return count == 0;
   }
 
@@ -61,13 +61,13 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
     contestTeam.setContestId(contestId);
     contestTeam.setStatus(ContestRegistryStatusType.PENDING.ordinal());
     contestTeam.setComment("");
-    contestTeamDAO.add(contestTeam);
+    contestTeamDao.add(contestTeam);
     return contestTeam.getContestTeamId();
   }
 
   @Override
   public Long count(ContestTeamCondition contestTeamCondition) throws AppException {
-    return contestTeamDAO.count(contestTeamCondition.getCondition());
+    return contestTeamDao.count(contestTeamCondition.getCondition());
   }
 
   @Override
@@ -75,14 +75,14 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
                                                      PageInfo pageInfo) throws AppException {
     Condition condition = contestTeamCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return contestTeamDAO.findAll(ContestTeamListDTO.class, ContestTeamListDTO.builder(),
+    return contestTeamDao.findAll(ContestTeamListDTO.class, ContestTeamListDTO.builder(),
         condition);
   }
 
   @Override
   public ContestTeamDTO getContestTeamDTO(Integer contestTeamId) throws AppException {
     AppExceptionUtil.assertNotNull(contestTeamId);
-    return contestTeamDAO.getDTOByUniqueField(ContestTeamDTO.class, ContestTeamDTO.builder(),
+    return contestTeamDao.getDTOByUniqueField(ContestTeamDTO.class, ContestTeamDTO.builder(),
         "contestTeamId", contestTeamId);
   }
 
@@ -90,7 +90,7 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
   public void updateContestTeam(ContestTeamDTO contestTeamDTO) throws AppException {
     AppExceptionUtil.assertNotNull(contestTeamDTO);
     AppExceptionUtil.assertNotNull(contestTeamDTO.getContestTeamId());
-    ContestTeam contestTeam = contestTeamDAO.get(contestTeamDTO.getContestTeamId());
+    ContestTeam contestTeam = contestTeamDao.get(contestTeamDTO.getContestTeamId());
     AppExceptionUtil.assertNotNull(contestTeam.getContestTeamId());
     if (contestTeamDTO.getComment() != null) {
       contestTeam.setComment(contestTeamDTO.getComment());
@@ -98,14 +98,14 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
     if (contestTeamDTO.getStatus() != null) {
       contestTeam.setStatus(contestTeamDTO.getStatus());
     }
-    contestTeamDAO.update(contestTeam);
+    contestTeamDao.update(contestTeam);
   }
 
   @Override
   public List<ContestTeamReportDTO> exportContestTeamReport(Integer contestId) throws AppException {
     ContestTeamCondition contestTeamCondition = new ContestTeamCondition();
     contestTeamCondition.contestId = contestId;
-    return contestTeamDAO.findAll(ContestTeamReportDTO.class,
+    return contestTeamDao.findAll(ContestTeamReportDTO.class,
         ContestTeamReportDTO.builder(), contestTeamCondition.getCondition());
   }
 
@@ -122,7 +122,7 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
         .append(" and teamUser.userId = ").append(userId)
         // User should be allowed
         .append(" and teamUser.allow = true");
-    List<Integer> result = (List<Integer>) contestTeamDAO.findAll(hqlBuilder.toString());
+    List<Integer> result = (List<Integer>) contestTeamDao.findAll(hqlBuilder.toString());
     return result.size() > 0 ? result.get(0) : null;
   }
 }

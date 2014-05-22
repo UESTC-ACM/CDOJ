@@ -10,7 +10,7 @@ import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
@@ -45,8 +45,8 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
   private UserService userService;
 
   @Autowired
-  @Qualifier("mockUserDAO")
-  private IUserDAO userDAO;
+  @Qualifier("mockUserDao")
+  private UserDao userDao;
 
   @Autowired
   @Qualifier("mockGlobalService")
@@ -58,47 +58,47 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
 
   @BeforeMethod
   public void init() {
-    Mockito.reset(userDAO, globalService);
+    Mockito.reset(userDao, globalService);
   }
 
   @Test
   public void testGetUserDTOByUserId() throws AppException {
     UserDTO userDTO = UserDTO.builder().build();
-    when(userDAO.getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
+    when(userDao.getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
         eq("userId"), eq(userDTO.getUserId()))).thenReturn(userDTO);
     Assert.assertEquals(userService.getUserDTOByUserId(userDTO.getUserId()), userDTO);
-    verify(userDAO).getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
+    verify(userDao).getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
         eq("userId"), eq(userDTO.getUserId()));
   }
 
   @Test
   public void testGetUserDTOByUserName() throws AppException {
     UserDTO userDTO = UserDTO.builder().build();
-    when(userDAO.getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
+    when(userDao.getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
         eq("userName"), eq(userDTO.getUserName()))).thenReturn(userDTO);
     Assert.assertEquals(userService.getUserDTOByUserName(userDTO.getUserName()), userDTO);
-    verify(userDAO).getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
+    verify(userDao).getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
         eq("userName"), eq(userDTO.getUserName()));
   }
 
   @Test
   public void testGetUserCenterDTOByUserName() throws AppException {
     UserCenterDTO userCenterDTO = UserCenterDTO.builder().build();
-    when(userDAO.getDTOByUniqueField(eq(UserCenterDTO.class), Mockito.<UserCenterDTO.Builder>any(),
+    when(userDao.getDTOByUniqueField(eq(UserCenterDTO.class), Mockito.<UserCenterDTO.Builder>any(),
         eq("userName"), eq(userCenterDTO.getUserName()))).thenReturn(userCenterDTO);
     Assert.assertEquals(userService.getUserCenterDTOByUserName(userCenterDTO.getUserName()),
         userCenterDTO);
-    verify(userDAO).getDTOByUniqueField(eq(UserCenterDTO.class),
+    verify(userDao).getDTOByUniqueField(eq(UserCenterDTO.class),
         Mockito.<UserCenterDTO.Builder>any(), eq("userName"), eq(userCenterDTO.getUserName()));
   }
 
   @Test
   public void testGetUserDTOByEmail() throws AppException {
     UserDTO userDTO = UserDTO.builder().build();
-    when(userDAO.getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
+    when(userDao.getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
         eq("email"), eq(userDTO.getEmail()))).thenReturn(userDTO);
     Assert.assertEquals(userService.getUserDTOByEmail(userDTO.getEmail()), userDTO);
-    verify(userDAO).getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
+    verify(userDao).getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
         eq("email"), eq(userDTO.getEmail()));
   }
 
@@ -107,18 +107,18 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     UserDTO userDTO = UserDTO.builder().build();
     User user = new User();
     user.setUserId(userDTO.getUserId());
-    when(userDAO.get(userDTO.getUserId())).thenReturn(user);
+    when(userDao.get(userDTO.getUserId())).thenReturn(user);
     userService.updateUser(userDTO);
     ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
-    verify(userDAO).update(captor.capture());
+    verify(userDao).update(captor.capture());
     Assert.assertTrue(ObjectUtil.entityEquals(userDTO, captor.getValue()));
-    verify(userDAO).get(userDTO.getUserId());
+    verify(userDao).get(userDTO.getUserId());
   }
 
   @Test(expectedExceptions = AppException.class)
   public void testUpdateUser_userNotFound() throws AppException {
     UserDTO userDTO = UserDTO.builder().build();
-    when(userDAO.get(userDTO.getUserId())).thenReturn(null);
+    when(userDao.get(userDTO.getUserId())).thenReturn(null);
     userService.updateUser(userDTO);
     Assert.fail();
   }
@@ -127,7 +127,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
   public void testUpdateUser_userFoundWithNullId() throws AppException {
     UserDTO userDTO = UserDTO.builder().build();
     User user = mock(User.class);
-    when(userDAO.get(userDTO.getUserId())).thenReturn(user);
+    when(userDao.get(userDTO.getUserId())).thenReturn(user);
     when(user.getUserId()).thenReturn(null);
     userService.updateUser(userDTO);
     Assert.fail();
@@ -138,7 +138,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     UserDTO userDTO = UserDTO.builder().build();
     userService.createNewUser(userDTO);
     ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
-    verify(userDAO).add(captor.capture());
+    verify(userDao).add(captor.capture());
     User user = captor.getValue();
     // the user is not persisted.
     Assert.assertNull(user.getUserId());
@@ -151,7 +151,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     ArgumentCaptor<Condition> captor = ArgumentCaptor.forClass(Condition.class);
     PageInfo pageInfo = PageInfo.create(300L, 20L, 10, 2L);
     userService.getUserListDTOList(new UserCondition(), pageInfo);
-    verify(userDAO).findAll(eq(UserListDTO.class),
+    verify(userDao).findAll(eq(UserListDTO.class),
         isA(UserListDTO.Builder.class), captor.capture());
     Condition condition = captor.getValue();
     Assert.assertEquals(condition.getJoinedType(), JoinedType.AND);
@@ -164,6 +164,6 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     Condition condition = mock(Condition.class);
     when(userCondition.getCondition()).thenReturn(condition);
     userService.count(userCondition);
-    verify(userDAO).count(condition);
+    verify(userDao).count(condition);
   }
 }

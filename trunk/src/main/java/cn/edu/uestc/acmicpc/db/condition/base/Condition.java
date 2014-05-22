@@ -1,6 +1,5 @@
 package cn.edu.uestc.acmicpc.db.condition.base;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
@@ -10,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Conditions setting for {@link IDAO#findAll(String, Condition)}
- * and {@link IDAO#count(Condition)}.
+ * Conditions setting for {@link cn.edu.uestc.acmicpc.db.dao.iface.Dao#findAll(String, Condition)}
+ * and {@link cn.edu.uestc.acmicpc.db.dao.iface.Dao#count(Condition)}.
  * <p/>
  * <strong>For Developers</strong>:
  * <p/>

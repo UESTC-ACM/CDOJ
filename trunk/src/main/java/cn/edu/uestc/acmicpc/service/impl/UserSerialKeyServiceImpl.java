@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserSerialKeyDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.UserSerialKeyDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDTO;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
@@ -19,17 +19,17 @@ import java.util.Random;
 @Service
 public class UserSerialKeyServiceImpl extends AbstractService implements UserSerialKeyService {
 
-  private final IUserSerialKeyDAO userSerialKeyDAO;
+  private final UserSerialKeyDao userSerialKeyDao;
   private final Integer USER_SERIAL_KEY_LENGTH = 128;
 
   @Autowired
-  public UserSerialKeyServiceImpl(IUserSerialKeyDAO userSerialKeyDAO) {
-    this.userSerialKeyDAO = userSerialKeyDAO;
+  public UserSerialKeyServiceImpl(UserSerialKeyDao userSerialKeyDao) {
+    this.userSerialKeyDao = userSerialKeyDao;
   }
 
   @Override
   public UserSerialKeyDTO findUserSerialKeyDTOByUserId(Integer userId) throws AppException {
-    return userSerialKeyDAO.getDTOByUniqueField(UserSerialKeyDTO.class, UserSerialKeyDTO.builder(),
+    return userSerialKeyDao.getDTOByUniqueField(UserSerialKeyDTO.class, UserSerialKeyDTO.builder(),
         "userId", userId);
   }
 
@@ -67,15 +67,15 @@ public class UserSerialKeyServiceImpl extends AbstractService implements UserSer
     if (userSerialKeyDTO.getUserSerialKeyId() == null)
       userSerialKey = new UserSerialKey();
     else
-      userSerialKey = userSerialKeyDAO.get(userSerialKeyDTO.getUserSerialKeyId());
+      userSerialKey = userSerialKeyDao.get(userSerialKeyDTO.getUserSerialKeyId());
     userSerialKey.setTime(userSerialKeyDTO.getTime());
     userSerialKey.setSerialKey(userSerialKeyDTO.getSerialKey());
     userSerialKey.setUserId(userSerialKeyDTO.getUserId());
-    userSerialKeyDAO.addOrUpdate(userSerialKey);
+    userSerialKeyDao.addOrUpdate(userSerialKey);
   }
 
   @Override
-  public IUserSerialKeyDAO getDAO() {
-    return userSerialKeyDAO;
+  public UserSerialKeyDao getDao() {
+    return userSerialKeyDao;
   }
 }

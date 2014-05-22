@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.db;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.dao.iface.IArticleDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ArticleDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -22,14 +22,14 @@ import java.util.List;
  * Test cases for Daos.
  */
 @ContextConfiguration(classes = {IntegrationTestContext.class})
-public class DaoITTest extends AbstractTestNGSpringContextTests {
+public class DaoImplITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired
-  IArticleDAO articleDAO;
+  ArticleDao articleDao;
 
   @Test
   public void test_daos_autowired_successful() {
-    Assert.assertNotNull(articleDAO);
+    Assert.assertNotNull(articleDao);
   }
 
   @Test
@@ -43,7 +43,7 @@ public class DaoITTest extends AbstractTestNGSpringContextTests {
     criteria.setResultTransformer(new AliasToBeanResultTransformer(ArticleDto.class));
 
     // 4 articles in total, 1 result per page, and the 3rd article is on page 3.
-    List<ArticleDto> result = articleDAO.findAll(criteria, PageInfo.create(4L, 1L, 1, 3L));
+    List<ArticleDto> result = articleDao.findAll(criteria, PageInfo.create(4L, 1L, 1, 3L));
     Assert.assertEquals(result.size(), 1);
     Assert.assertEquals(result.get(0).getArticleId(), Integer.valueOf(3));
   }

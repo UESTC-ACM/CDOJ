@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.Dao;
 
 import java.io.Serializable;
 
@@ -17,5 +17,5 @@ public interface DatabaseService<E extends Serializable, K extends Serializable>
    *
    * @return enitty DAO for query.
    */
-  IDAO<E, K> getDAO();
+  Dao<E, K> getDao();
 }

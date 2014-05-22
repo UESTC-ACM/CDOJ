@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IStatusDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.StatusDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
@@ -27,11 +27,11 @@ import java.util.Map;
 @Service
 public class StatusServiceImpl extends AbstractService implements StatusService {
 
-  private final IStatusDAO statusDAO;
+  private final StatusDao statusDao;
 
   @Autowired
-  public StatusServiceImpl(IStatusDAO statusDAO) {
-    this.statusDAO = statusDAO;
+  public StatusServiceImpl(StatusDao statusDao) {
+    this.statusDao = statusDao;
   }
 
   @SuppressWarnings("unchecked")
@@ -42,7 +42,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     statusCondition.userId = userId;
     statusCondition.results.add(OnlineJudgeResultType.OJ_AC);
     statusCondition.isForAdmin = isAdmin;
-    return (List<Integer>) statusDAO.findAll("distinct problemByProblemId.problemId",
+    return (List<Integer>) statusDao.findAll("distinct problemByProblemId.problemId",
         statusCondition.getCondition());
   }
 
@@ -53,7 +53,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
     statusCondition.isForAdmin = isAdmin;
-    return (List<Integer>) statusDAO.findAll("distinct problemByProblemId.problemId",
+    return (List<Integer>) statusDao.findAll("distinct problemByProblemId.problemId",
         statusCondition.getCondition());
   }
 
@@ -61,7 +61,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   public Long countProblemsUserTried(Integer userId) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
-    return statusDAO.customCount("distinct problemId", statusCondition.getCondition());
+    return statusDao.customCount("distinct problemId", statusCondition.getCondition());
   }
 
   @Override
@@ -69,14 +69,14 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.userId = userId;
     statusCondition.results.add(OnlineJudgeResultType.OJ_AC);
-    return statusDAO.customCount("distinct problemId", statusCondition.getCondition());
+    return statusDao.customCount("distinct problemId", statusCondition.getCondition());
   }
 
   @Override
   public Long countUsersTriedProblem(Integer problemId) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.problemId = problemId;
-    return statusDAO.customCount("distinct userId", statusCondition.getCondition());
+    return statusDao.customCount("distinct userId", statusCondition.getCondition());
   }
 
   @Override
@@ -84,12 +84,12 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.problemId = problemId;
     statusCondition.results.add(OnlineJudgeResultType.OJ_AC);
-    return statusDAO.customCount("distinct userId", statusCondition.getCondition());
+    return statusDao.customCount("distinct userId", statusCondition.getCondition());
   }
 
   @Override
   public Long count(StatusCondition condition) throws AppException {
-    return statusDAO.count(condition.getCondition());
+    return statusDao.count(condition.getCondition());
   }
 
   @Override
@@ -97,13 +97,13 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
                                            PageInfo pageInfo) throws AppException {
     Condition condition = statusCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return statusDAO.findAll(StatusListDTO.class, StatusListDTO.builder(),
+    return statusDao.findAll(StatusListDTO.class, StatusListDTO.builder(),
         condition);
   }
 
   @Override
   public List<StatusListDTO> getStatusList(StatusCondition condition) throws AppException {
-    return statusDAO.findAll(StatusListDTO.class, StatusListDTO.builder(), condition.getCondition());
+    return statusDao.findAll(StatusListDTO.class, StatusListDTO.builder(), condition.getCondition());
   }
 
   private void updateStatusByStatusDTO(Status status, StatusDTO statusDTO) {
@@ -137,19 +137,19 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   public void createNewStatus(StatusDTO statusDTO) throws AppException {
     Status status = new Status();
     updateStatusByStatusDTO(status, statusDTO);
-    statusDAO.add(status);
+    statusDao.add(status);
   }
 
   @Override
   public StatusInformationDTO getStatusInformation(Integer statusId)
       throws AppException {
-    return statusDAO.getDTOByUniqueField(StatusInformationDTO.class,
+    return statusDao.getDTOByUniqueField(StatusInformationDTO.class,
         StatusInformationDTO.builder(), "statusId", statusId);
   }
 
   @Override
-  public IStatusDAO getDAO() {
-    return statusDAO;
+  public StatusDao getDao() {
+    return statusDao;
   }
 
   @Override
@@ -159,13 +159,13 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     statusCondition.isVisible = null;
     statusCondition.userName = null;
     statusCondition.isForAdmin = true;
-    statusDAO.updateEntitiesByCondition(properties,
+    statusDao.updateEntitiesByCondition(properties,
         statusCondition.getCondition());
   }
 
   @Override
   public List<StatusInformationDTO> getStatusInformationDTOList(StatusCondition statusCondition) throws AppException {
-    return statusDAO.findAll(StatusInformationDTO.class,
+    return statusDao.findAll(StatusInformationDTO.class,
         StatusInformationDTO.builder(), statusCondition.getCondition());
   }
 
@@ -179,7 +179,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     statusCondition.isForAdmin = true;
     statusCondition.orderFields = "statusId";
     statusCondition.orderAsc = "true";
-    return statusDAO.findAll(StatusForJudgeDTO.class,
+    return statusDao.findAll(StatusForJudgeDTO.class,
         StatusForJudgeDTO.builder(), statusCondition.getCondition());
   }
 
@@ -197,7 +197,7 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
       properties.put("memoryCost", statusForJudgeDTO.getMemoryCost());
     if (statusForJudgeDTO.getCompileInfoId() != null)
       properties.put("compileInfoId", statusForJudgeDTO.getCompileInfoId());
-    statusDAO.updateEntitiesByField(properties, "statusId", statusForJudgeDTO
+    statusDao.updateEntitiesByField(properties, "statusId", statusForJudgeDTO
         .getStatusId().toString());
   }
 
