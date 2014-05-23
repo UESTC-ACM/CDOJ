@@ -1,14 +1,14 @@
 package cn.edu.uestc.acmicpc.db;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.criteria.transformer.AliasToProtocolBufferBuilderTransformer;
-import cn.edu.uestc.acmicpc.db.dao.iface.IArticleDAO;
-import cn.edu.uestc.acmicpc.db.dto.ArticleDtoProtos;
-import cn.edu.uestc.acmicpc.db.entity.Article;
+import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
+import cn.edu.uestc.acmicpc.db.dao.iface.ArticleDao;
+import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
+import cn.edu.uestc.acmicpc.db.dto.field.FieldProjection;
+import cn.edu.uestc.acmicpc.db.dto.field.Fields;
+import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -24,34 +24,52 @@ import java.util.List;
 public class CriteriaITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired
-  IArticleDAO articleDAO;
+  ArticleDao articleDao;
 
-  @Test
-  public void test_fetch_list_successful() throws AppException {
-    // Build criteria manually
-    DetachedCriteria criteria = DetachedCriteria.forClass(Article.class, "article");
+  public void test_fetch_article_with_specified_fields() throws AppException {
+    ArticleCriteria articleCriteria = new ArticleCriteria(new Fields() {
+      @Override
+      public FieldProjection[] getProjections() {
+        FieldProjection[] projection = new FieldProjection[1];
+        projection[0] = FieldProjection.Property("articleId");
+        return projection;
+      }
+    });
 
-    criteria.setProjection(Projections.projectionList()
-            .add(Projections.property("article.articleId"), "articleId")
-            .add(Projections.property("article.title"), "title")
-    );
-    criteria.setResultTransformer(new AliasToProtocolBufferBuilderTransformer(ArticleDtoProtos.ArticleDto.class));
+    articleCriteria.startId = 1;
+    articleCriteria.endId = 1;
 
-    List<ArticleDtoProtos.ArticleDto> result = articleDAO.list(criteria);
-    Assert.assertEquals(result.size(), 4);
-    Assert.assertEquals(result.get(0).getArticleId(), 1);
-    Assert.assertEquals(result.get(0).getTitle(), "Frequently Asked Questions");
-    // Empty fields.
-    Assert.assertEquals(result.get(0).hasContent(), false);
-    Assert.assertEquals(result.get(0).hasTime(), false);
-    Assert.assertEquals(result.get(0).hasClicked(), false);
-    Assert.assertEquals(result.get(0).hasOrder(), false);
-    Assert.assertEquals(result.get(0).hasType(), false);
-    Assert.assertEquals(result.get(0).hasIsVisible(), false);
-    Assert.assertEquals(result.get(0).hasParentId(), false);
-    Assert.assertEquals(result.get(0).hasProblemId(), false);
-    Assert.assertEquals(result.get(0).hasContestId(), false);
-    Assert.assertEquals(result.get(0).hasUserId(), false);
+    List<ArticleDto> result = articleDao.findAll(articleCriteria.getCriteria(), null);
+    Assert.assertEquals(result.size(), 1);
+    ArticleDto articleDto = result.get(0);
+
+    Assert.assertEquals(articleDto.getArticleId(), Integer.valueOf(1));
+    Assert.assertNull(articleDto.getTitle());
+    Assert.assertNull(articleDto.getContent());
+    Assert.assertNull(articleDto.getTime());
+    Assert.assertEquals(articleDto.getClicked(), Integer.valueOf(0));
+    Assert.assertEquals(articleDto.getOrder(), Integer.valueOf(0));
+    Assert.assertEquals(articleDto.getType(), Integer.valueOf(0));
+    Assert.assertEquals(articleDto.getIsVisible(), Boolean.FALSE);
+    Assert.assertNull(articleDto.getParentId());
+    Assert.assertNull(articleDto.getProblemId());
+    Assert.assertNull(articleDto.getContestId());
+    Assert.assertEquals(articleDto.getUserId(), Integer.valueOf(1));
+    Assert.assertNull(articleDto.getOwnerName());
+    Assert.assertNull(articleDto.getOwnerEmail());
   }
 
+  @Test
+  public void test_fetch_article_list_by_id_range_successful() throws AppException {
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.ALL_FIELDS);
+
+    articleCriteria.startId = 2;
+    articleCriteria.endId = 3;
+
+    List<ArticleDto> result = articleDao.findAll(articleCriteria.getCriteria(), null);
+
+    Assert.assertEquals(result.size(), 2);
+    Assert.assertEquals(result.get(0).getArticleId(), Integer.valueOf(2));
+    Assert.assertEquals(result.get(1).getArticleId(), Integer.valueOf(3));
+  }
 }

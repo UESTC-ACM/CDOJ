@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDTO;
@@ -33,11 +33,11 @@ import java.util.Map;
 @Service
 public class UserServiceImpl extends AbstractService implements UserService {
 
-  private final IUserDAO userDAO;
+  private final UserDao userDao;
 
   @Autowired
-  public UserServiceImpl(IUserDAO userDAO) {
-    this.userDAO = userDAO;
+  public UserServiceImpl(UserDao userDao) {
+    this.userDao = userDao;
   }
 
   private void updateUserByUserDTO(User user, UserDTO userDTO) {
@@ -95,24 +95,24 @@ public class UserServiceImpl extends AbstractService implements UserService {
   }
 
   @Override
-  public IUserDAO getDAO() {
-    return userDAO;
+  public UserDao getDao() {
+    return userDao;
   }
 
   @Override
   public void updateUser(UserDTO userDTO) throws AppException {
-    User user = userDAO.get(userDTO.getUserId());
+    User user = userDao.get(userDTO.getUserId());
     AppExceptionUtil.assertNotNull(user);
     AppExceptionUtil.assertNotNull(user.getUserId());
     updateUserByUserDTO(user, userDTO);
-    userDAO.update(user);
+    userDao.update(user);
   }
 
   @Override
   public Integer createNewUser(UserDTO userDTO) throws AppException {
     User user = new User();
     updateUserByUserDTO(user, userDTO);
-    userDAO.add(user);
+    userDao.add(user);
     return user.getUserId();
   }
 
@@ -121,7 +121,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
                                               PageInfo pageInfo) throws AppException {
     Condition condition = userCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return userDAO.findAll(UserListDTO.class, UserListDTO.builder(), condition);
+    return userDao.findAll(UserListDTO.class, UserListDTO.builder(), condition);
   }
 
   @Override
@@ -129,44 +129,44 @@ public class UserServiceImpl extends AbstractService implements UserService {
                                                         PageInfo pageInfo) throws AppException {
     Condition condition = userCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return userDAO.findAll(UserTypeAheadDTO.class, UserTypeAheadDTO.builder(), condition);
+    return userDao.findAll(UserTypeAheadDTO.class, UserTypeAheadDTO.builder(), condition);
   }
 
   @Override
   public UserDTO getUserDTOByUserName(String userName) throws AppException {
-    return userDAO.getDTOByUniqueField(UserDTO.class, UserDTO.builder(),
+    return userDao.getDTOByUniqueField(UserDTO.class, UserDTO.builder(),
         "userName", userName);
   }
 
   @Override
   public UserDTO getUserDTOByEmail(String email) throws AppException {
-    return userDAO.getDTOByUniqueField(UserDTO.class, UserDTO.builder(),
+    return userDao.getDTOByUniqueField(UserDTO.class, UserDTO.builder(),
         "email", email);
   }
 
   @Override
   public UserDTO getUserDTOByUserId(Integer userId) throws AppException {
-    return userDAO.getDTOByUniqueField(UserDTO.class, UserDTO.builder(),
+    return userDao.getDTOByUniqueField(UserDTO.class, UserDTO.builder(),
         "userId", userId);
   }
 
   @Override
   public UserCenterDTO getUserCenterDTOByUserName(String userName)
       throws AppException {
-    return userDAO.getDTOByUniqueField(UserCenterDTO.class,
+    return userDao.getDTOByUniqueField(UserCenterDTO.class,
         UserCenterDTO.builder(), "userName",
         userName);
   }
 
   @Override
   public Long count(UserCondition userCondition) throws AppException {
-    return userDAO.count(userCondition.getCondition());
+    return userDao.count(userCondition.getCondition());
   }
 
   @Override
   public void updateUserByUserId(Map<String, Object> properties, Integer userId)
       throws AppException {
-    userDAO.updateEntitiesByField(properties, "userId", userId.toString());
+    userDao.updateEntitiesByField(properties, "userId", userId.toString());
   }
 
   @Override
@@ -218,13 +218,13 @@ public class UserServiceImpl extends AbstractService implements UserService {
         .append(contestId)
         .append(" )")
         .append(")");
-    return userDAO.findAll(UserDTO.class, UserDTO.builder(), hqlBuilder.toString(), null);
+    return userDao.findAll(UserDTO.class, UserDTO.builder(), hqlBuilder.toString(), null);
   }
 
   @Override
   public UserEditorDTO getUserEditorDTOByUserName(String userName)
       throws AppException {
-    return userDAO.getDTOByUniqueField(UserEditorDTO.class,
+    return userDao.getDTOByUniqueField(UserEditorDTO.class,
         UserEditorDTO.builder(), "userName", userName);
   }
 

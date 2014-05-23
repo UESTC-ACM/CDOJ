@@ -1,13 +1,12 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.article;
 
-import cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleEditDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleOrderDTO;
+import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
+import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
+import cn.edu.uestc.acmicpc.util.annotation.JsonMap;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.ArticleType;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
@@ -33,7 +32,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/article")
@@ -59,17 +57,17 @@ public class ArticleController extends BaseController {
                            HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
-      ArticleDTO articleDTO = articleService.getArticleDTO(articleId);
-      AppExceptionUtil.assertNotNull(articleDTO, "No such article.");
-      if (articleDTO.getType() != ArticleType.ARTICLE.ordinal() &&
-          articleDTO.getType() != ArticleType.NOTICE.ordinal()) {
+      ArticleDto articleDto = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS);
+      AppExceptionUtil.assertNotNull(articleDto, "No such article.");
+      if (articleDto.getType() != ArticleType.ARTICLE.ordinal() &&
+          articleDto.getType() != ArticleType.NOTICE.ordinal()) {
         throw new AppException("No such article.");
       }
-      if (!articleDTO.getIsVisible() && !isAdmin(session)) {
+      if (!articleDto.getIsVisible() && !isAdmin(session)) {
         throw new AppException("Permission denied!");
       }
-      articleService.incrementClicked(articleDTO.getArticleId());
-      json.put("article", articleDTO);
+      articleService.incrementClicked(articleDto.getArticleId());
+      json.put("article", articleDto);
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
@@ -86,12 +84,12 @@ public class ArticleController extends BaseController {
   @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
-  Map<String, Object> changeNoticeOrder(@RequestBody ArticleOrderDTO articleOrderDTO) {
+  Map<String, Object> changeNoticeOrder(@JsonMap("order") String orderList) {
     Map<String, Object> json = new HashMap<>();
     try {
-      String[] articleIdList = articleOrderDTO.getOrder().split(",");
-      List<ArticleDTO> articleList = new LinkedList<>();
-      for (String articleIdString: articleIdList) {
+      String[] articleIdList = orderList.split(",");
+      List<ArticleDto> articleList = new LinkedList<>();
+      for (String articleIdString : articleIdList) {
         if (articleIdString.length() == 0) {
           continue;
         }
@@ -102,23 +100,25 @@ public class ArticleController extends BaseController {
           throw new AppException("Article ID format error.");
         }
 
-        ArticleDTO articleDTO = articleService.getArticleDTO(articleId);
-        AppExceptionUtil.assertNotNull(articleDTO, "No such article.");
-        if (articleDTO.getType() != ArticleType.ARTICLE.ordinal() &&
-            articleDTO.getType() != ArticleType.NOTICE.ordinal()) {
+        ArticleDto articleDto = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS);
+        AppExceptionUtil.assertNotNull(articleDto, "No such article.");
+        if (articleDto.getType() != ArticleType.ARTICLE.ordinal() &&
+            articleDto.getType() != ArticleType.NOTICE.ordinal()) {
           throw new AppException("No such article.");
         }
 
-        articleList.add(articleDTO);
+        articleList.add(articleDto);
       }
       // Set order
       for (Integer order = 0; order < articleList.size(); order++) {
-        ArticleDTO articleDTO = articleList.get(order);
+        ArticleDto articleDto = articleList.get(order);
         // Update
-        ArticleDTO articleDTOForUpdate = new ArticleDTO();
-        articleDTOForUpdate.setArticleId(articleDTO.getArticleId());
-        articleDTOForUpdate.setOrder(order);
-        articleService.updateArticle(articleDTOForUpdate);
+        ArticleDto articleDtoForUpdate =
+            ArticleDto.builder()
+                .setArticleId(articleDto.getArticleId())
+                .setOrder(order)
+                .build();
+        articleService.updateArticle(articleDtoForUpdate);
       }
       json.put("result", "success");
     } catch (AppException e) {
@@ -137,20 +137,21 @@ public class ArticleController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> commentSearch(HttpSession session,
-                                    @RequestBody ArticleCondition articleCondition) {
+                                    @RequestBody ArticleCriteria articleCriteria) {
     Map<String, Object> json = new HashMap<>();
     try {
+      articleCriteria.setResultFields(ArticleFields.FIELDS_FOR_LIST_PAGE);
       if (!isAdmin(session)) {
-        articleCondition.isVisible = true;
+        articleCriteria.isVisible = true;
       }
-      articleCondition.type = ArticleType.COMMENT.ordinal();
+      articleCriteria.type = ArticleType.COMMENT.ordinal();
 
-      Long count = articleService.count(articleCondition);
-      PageInfo pageInfo = buildPageInfo(count, articleCondition.currentPage,
+      Long count = articleService.count(articleCriteria);
+      PageInfo pageInfo = buildPageInfo(count, articleCriteria.currentPage,
           settings.RECORD_PER_PAGE, null);
 
-      List<ArticleListDTO> articleListDTOList = articleService.getArticleList(
-          articleCondition, pageInfo);
+      List<ArticleDto> articleListDTOList = articleService.getArticleList(
+          articleCriteria, pageInfo);
 
       json.put("pageInfo", pageInfo);
       json.put("result", "success");
@@ -170,7 +171,8 @@ public class ArticleController extends BaseController {
   @LoginPermit(NeedLogin = true)
   public
   @ResponseBody
-  Map<String, Object> editComment(@RequestBody @Valid ArticleEditDTO articleEditDTO,
+  Map<String, Object> editComment(@JsonMap("articleEditDto") ArticleDto articleEditDto,
+                                  @JsonMap("action") String action,
                                   BindingResult validateResult,
                                   HttpSession session) {
     Map<String, Object> json = new HashMap<>();
@@ -180,44 +182,44 @@ public class ArticleController extends BaseController {
     } else {
       try {
         UserDTO currentUser = getCurrentUser(session);
-        if (!isAdmin(session) && !currentUser.getUserName().equals(articleEditDTO.getUserName())) {
+        if (checkPermission(session, articleEditDto.getUserId())) {
           throw new AppException("Permission denied");
         }
-        articleEditDTO.setContent(StringUtil.trimAllSpace(articleEditDTO.getContent()));
-        if (articleEditDTO.getContent().length() <= 0 || articleEditDTO.getContent().length() > 233) {
+        articleEditDto.setContent(StringUtil.trimAllSpace(articleEditDto.getContent()));
+        if (articleEditDto.getContent().length() <= 0 || articleEditDto.getContent().length() > 233) {
           throw new AppException("Comment should contain no more than 233 characters.");
         }
-        ArticleDTO articleDTO;
-        if (articleEditDTO.getAction().equals("new")) {
+        ArticleDto articleDto;
+        if (action.equals("new")) {
           Integer articleId = articleService.createNewArticle(currentUser.getUserId());
-          articleDTO = articleService.getArticleDTO(articleId);
-          if (articleDTO == null || !articleDTO.getArticleId().equals(articleId)) {
+          articleDto = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS);
+          if (articleDto == null || !articleDto.getArticleId().equals(articleId)) {
             throw new AppException("Error while creating comment.");
           }
+          String userName = getCurrentUser(session).getUserName();
           // Move pictures
-          String oldDirectory = "article/" + articleEditDTO.getUserName() + "/newComment/";
-          String newDirectory = "article/" + articleEditDTO.getUserName() + "/" + articleId + "/";
-          articleEditDTO.setContent(pictureService.modifyPictureLocation(
-              articleEditDTO.getContent(), oldDirectory, newDirectory));
+          String oldDirectory = "article/" + userName + "/newComment/";
+          String newDirectory = "article/" + userName + "/" + articleId + "/";
+          articleEditDto.setContent(pictureService.modifyPictureLocation(
+              articleEditDto.getContent(), oldDirectory, newDirectory));
         } else {
-          articleDTO = articleService.getArticleDTO(articleEditDTO
-              .getArticleId());
-          if (articleDTO == null) {
+          articleDto = articleService.getArticleDto(articleEditDto.getArticleId(), ArticleFields.ALL_FIELDS);
+          if (articleDto == null) {
             throw new AppException("No such comment.");
           }
         }
 
-        articleDTO.setTitle(articleEditDTO.getTitle());
-        articleDTO.setContent(articleEditDTO.getContent());
-        articleDTO.setTime(new Timestamp(System.currentTimeMillis()));
-        articleDTO.setType(ArticleType.COMMENT.ordinal());
-        articleDTO.setProblemId(articleEditDTO.getProblemId());
-        articleDTO.setContestId(articleEditDTO.getContestId());
-        articleDTO.setParentId(articleEditDTO.getParentId());
+        articleDto.setTitle(articleEditDto.getTitle());
+        articleDto.setContent(articleEditDto.getContent());
+        articleDto.setTime(new Timestamp(System.currentTimeMillis()));
+        articleDto.setType(ArticleType.COMMENT.ordinal());
+        articleDto.setProblemId(articleEditDto.getProblemId());
+        articleDto.setContestId(articleEditDto.getContestId());
+        articleDto.setParentId(articleEditDto.getParentId());
 
-        articleService.updateArticle(articleDTO);
+        articleService.updateArticle(articleDto);
         json.put("result", "success");
-        json.put("articleId", articleDTO.getArticleId());
+        json.put("articleId", articleDto.getArticleId());
       } catch (FieldException e) {
         putFieldErrorsIntoBindingResult(e, validateResult);
         json.put("result", "field_error");
@@ -235,25 +237,26 @@ public class ArticleController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> search(HttpSession session,
-                             @RequestBody ArticleCondition articleCondition) {
+                             @RequestBody ArticleCriteria articleCriteria) {
     Map<String, Object> json = new HashMap<>();
     try {
+      articleCriteria.setResultFields(ArticleFields.FIELDS_FOR_LIST_PAGE);
       if (!isAdmin(session)) {
-        articleCondition.isVisible = true;
+        articleCriteria.isVisible = true;
       }
-      articleCondition.problemId = -1;
-      articleCondition.contestId = -1;
-      articleCondition.parentId = -1;
-      Long count = articleService.count(articleCondition);
-      PageInfo pageInfo = buildPageInfo(count, articleCondition.currentPage,
+      articleCriteria.problemId = -1;
+      articleCriteria.contestId = -1;
+      articleCriteria.parentId = -1;
+      Long count = articleService.count(articleCriteria);
+      PageInfo pageInfo = buildPageInfo(count, articleCriteria.currentPage,
           settings.RECORD_PER_PAGE, null);
 
-      List<ArticleListDTO> articleListDTOList = articleService.getArticleList(
-          articleCondition, pageInfo);
+      List<ArticleDto> result = articleService.getArticleList(
+          articleCriteria, pageInfo);
 
       json.put("pageInfo", pageInfo);
       json.put("result", "success");
-      json.put("list", articleListDTOList);
+      json.put("list", result);
     } catch (AppException e) {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
@@ -269,7 +272,8 @@ public class ArticleController extends BaseController {
   @LoginPermit(NeedLogin = true)
   public
   @ResponseBody
-  Map<String, Object> edit(@RequestBody @Valid ArticleEditDTO articleEditDTO,
+  Map<String, Object> edit(@JsonMap("articleEditDto") ArticleDto articleEditDto,
+                           @JsonMap("action") String action,
                            BindingResult validateResult,
                            HttpSession session) {
     Map<String, Object> json = new HashMap<>();
@@ -279,45 +283,45 @@ public class ArticleController extends BaseController {
     } else {
       try {
         UserDTO currentUser = getCurrentUser(session);
-        if (!isAdmin(session) && !currentUser.getUserName().equals(articleEditDTO.getUserName())) {
+        if (checkPermission(session, articleEditDto.getUserId())) {
           throw new AppException("Permission denied");
         }
 
-        if (StringUtil.trimAllSpace(articleEditDTO.getTitle()).equals("")) {
+        if (StringUtil.trimAllSpace(articleEditDto.getTitle()).equals("")) {
           throw new FieldException("title", "Please enter a validate title.");
         }
-        ArticleDTO articleDTO;
-        if (articleEditDTO.getAction().equals("new")) {
+        ArticleDto articleDto;
+        if (action.equals("new")) {
           Integer articleId = articleService.createNewArticle(currentUser.getUserId());
-          articleDTO = articleService.getArticleDTO(articleId);
-          if (articleDTO == null || !articleDTO.getArticleId().equals(articleId)) {
+          articleDto = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS);
+          if (articleDto == null || !articleDto.getArticleId().equals(articleId)) {
             throw new AppException("Error while creating article.");
           }
+          String userName = getCurrentUser(session).getUserName();
           // Move pictures
-          String oldDirectory = "article/" + articleEditDTO.getUserName() + "/new/";
-          String newDirectory = "article/" + articleEditDTO.getUserName() + "/" + articleId + "/";
-          articleEditDTO.setContent(pictureService.modifyPictureLocation(
-              articleEditDTO.getContent(), oldDirectory, newDirectory));
+          String oldDirectory = "article/" + userName + "/new/";
+          String newDirectory = "article/" + userName + "/" + articleId + "/";
+          articleEditDto.setContent(pictureService.modifyPictureLocation(
+              articleEditDto.getContent(), oldDirectory, newDirectory));
         } else {
-          articleDTO = articleService.getArticleDTO(articleEditDTO
-              .getArticleId());
-          if (articleDTO == null) {
+          articleDto = articleService.getArticleDto(articleEditDto.getArticleId(), ArticleFields.ALL_FIELDS);
+          if (articleDto == null) {
             throw new AppException("No such article.");
           }
         }
 
-        articleDTO.setTitle(articleEditDTO.getTitle());
-        articleDTO.setContent(articleEditDTO.getContent());
-        articleDTO.setTime(new Timestamp(System.currentTimeMillis()));
+        articleDto.setTitle(articleEditDto.getTitle());
+        articleDto.setContent(articleEditDto.getContent());
+        articleDto.setTime(new Timestamp(System.currentTimeMillis()));
         if (isAdmin(session)) {
-          articleDTO.setType(articleEditDTO.getType());
+          articleDto.setType(articleEditDto.getType());
         } else {
-          articleDTO.setType(ArticleType.ARTICLE.ordinal());
+          articleDto.setType(ArticleType.ARTICLE.ordinal());
         }
 
-        articleService.updateArticle(articleDTO);
+        articleService.updateArticle(articleDto);
         json.put("result", "success");
-        json.put("articleId", articleDTO.getArticleId());
+        json.put("articleId", articleDto.getArticleId());
       } catch (FieldException e) {
         putFieldErrorsIntoBindingResult(e, validateResult);
         json.put("result", "field_error");

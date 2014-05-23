@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IDepartmentDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.DepartmentDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.department.DepartmentDTO;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -19,18 +19,18 @@ import javax.annotation.PostConstruct;
 @Service
 public class DepartmentServiceImpl extends AbstractService implements DepartmentService {
 
-  private final IDepartmentDAO departmentDAO;
+  private final DepartmentDao departmentDao;
   private List<DepartmentDTO> departmentDTOList;
 
   @Autowired
-  public DepartmentServiceImpl(IDepartmentDAO departmentDAO) {
-    this.departmentDAO = departmentDAO;
+  public DepartmentServiceImpl(DepartmentDao departmentDao) {
+    this.departmentDao = departmentDao;
   }
 
   @PostConstruct
   public void init() throws AppException {
     try {
-      departmentDTOList = departmentDAO.findAll(DepartmentDTO.class, DepartmentDTO.builder(),
+      departmentDTOList = departmentDao.findAll(DepartmentDTO.class, DepartmentDTO.builder(),
           new Condition());
     } catch (NullPointerException e) {
       departmentDTOList = new LinkedList<>();
@@ -51,7 +51,7 @@ public class DepartmentServiceImpl extends AbstractService implements Department
   }
 
   @Override
-  public IDepartmentDAO getDAO() {
-    return departmentDAO;
+  public DepartmentDao getDao() {
+    return departmentDao;
   }
 }

@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.db;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -22,7 +22,7 @@ import java.util.List;
 public class UserDatabaseITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired
-  private IUserDAO userDAO;
+  private UserDao userDao;
 
   @SuppressWarnings({"unchecked", "deprecation"})
   @Test
@@ -30,7 +30,7 @@ public class UserDatabaseITTest extends AbstractTestNGSpringContextTests {
     UserCondition condition = new UserCondition();
     condition.userName = "admin";
     List<UserDTO> users =
-        userDAO.findAll(UserDTO.class, UserDTO.builder(), condition.getCondition());
+        userDao.findAll(UserDTO.class, UserDTO.builder(), condition.getCondition());
     Assert.assertEquals(users.size(), 2);
     Assert.assertEquals(users.get(0).getUserName(), "administrator");
     Assert.assertEquals(users.get(0).getUserId(), Integer.valueOf(1));
@@ -45,7 +45,7 @@ public class UserDatabaseITTest extends AbstractTestNGSpringContextTests {
     condition.endId = 3;
     condition.departmentId = 1;
     List<UserDTO> users =
-        userDAO.findAll(UserDTO.class, UserDTO.builder(), condition.getCondition());
+        userDao.findAll(UserDTO.class, UserDTO.builder(), condition.getCondition());
     Assert.assertEquals(2, users.size());
     Assert.assertEquals(users.get(0).getUserName(), "administrator");
     Assert.assertEquals(users.get(1).getUserName(), "admin");
@@ -56,6 +56,6 @@ public class UserDatabaseITTest extends AbstractTestNGSpringContextTests {
     UserCondition condition = new UserCondition();
     condition.startId = 2;
     condition.endId = 10;
-    Assert.assertEquals(userDAO.count(condition.getCondition()), Long.valueOf(5));
+    Assert.assertEquals(userDao.count(condition.getCondition()), Long.valueOf(5));
   }
 }

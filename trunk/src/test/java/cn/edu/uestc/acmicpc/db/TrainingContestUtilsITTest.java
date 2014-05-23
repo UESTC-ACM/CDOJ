@@ -4,10 +4,10 @@ import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.impl.TrainingContestCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TrainingStatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TrainingUserCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.TrainingContestDao;
+import cn.edu.uestc.acmicpc.db.dao.iface.TrainingStatusDao;
+import cn.edu.uestc.acmicpc.db.dao.iface.TrainingUserDao;
+import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -34,8 +34,8 @@ public class TrainingContestUtilsITTest extends AbstractTestNGSpringContextTests
       // TrainingUserDTO trainingUserDTO = TrainingUserDTO.builder()
       // .setName("UESTC_" + i).build();
       // TrainingUser trainingUser = strainingUserDTO.getEntity();
-      // trainingUser.setUserByUserId(userDAO.get(1));
-      // trainingUserDAO.add(trainingUser);
+      // trainingUser.setUserByUserId(userDao.get(1));
+      // trainingUserDao.add(trainingUser);
     }
   }
 
@@ -46,7 +46,7 @@ public class TrainingContestUtilsITTest extends AbstractTestNGSpringContextTests
 //          .setTitle("Contest " + i)
 //          .setIsPersonal(true).build();
 //      TrainingContest trainingContest = trainingContestDTO.getEntity();
-//      trainingContestDAO.add(trainingContest);
+//      trainingContestDao.add(trainingContest);
 //    }
   }
 
@@ -56,9 +56,9 @@ public class TrainingContestUtilsITTest extends AbstractTestNGSpringContextTests
 //      for (int j = 1; j <= 10; j++) {
 //        TrainingStatusDTO trainingStatusDTO = TrainingStatusDTO.builder().build();
 //        TrainingStatus trainingStatus = trainingStatusDTO.getEntity();
-//        trainingStatus.setTrainingUserByTrainingUserId(trainingUserDAO.get(j));
-//        trainingStatus.setTrainingContestByTrainingContestId(trainingContestDAO.get(i));
-//        trainingStatusDAO.add(trainingStatus);
+//        trainingStatus.setTrainingUserByTrainingUserId(trainingUserDao.get(j));
+//        trainingStatus.setTrainingContestByTrainingContestId(trainingContestDao.get(i));
+//        trainingStatusDao.add(trainingStatus);
 //      }
 //    }
   }
@@ -67,15 +67,15 @@ public class TrainingContestUtilsITTest extends AbstractTestNGSpringContextTests
   @Test(enabled = false)
   @Deprecated
   public void updateUser() throws AppException {
-    List<TrainingUser> trainingUserList = (List<TrainingUser>) trainingUserDAO.findAll();
+    List<TrainingUser> trainingUserList = (List<TrainingUser>) trainingUserDao.findAll();
     for (TrainingUser trainingUser : trainingUserList) {
       trainingUser.setMember(trainingUser.getName());
-      trainingUserDAO.update(trainingUser);
+      trainingUserDao.update(trainingUser);
     }
   }
 
   @Autowired
-  private IUserDAO userDAO;
+  private UserDao userDao;
 
   private TrainingStatusCondition trainingStatusCondition;
 
@@ -84,12 +84,12 @@ public class TrainingContestUtilsITTest extends AbstractTestNGSpringContextTests
   private TrainingUserCondition trainingUserCondition;
 
   @Autowired
-  private ITrainingUserDAO trainingUserDAO;
+  private TrainingUserDao trainingUserDao;
 
   @Autowired
-  private ITrainingStatusDAO trainingStatusDAO;
+  private TrainingStatusDao trainingStatusDao;
 
   @Autowired
-  private ITrainingContestDAO trainingContestDAO;
+  private TrainingContestDao trainingContestDao;
 
 }

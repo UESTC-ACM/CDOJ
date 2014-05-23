@@ -1,10 +1,10 @@
 package cn.edu.uestc.acmicpc.db;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingContestDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingStatusDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.ITrainingUserDAO;
-import cn.edu.uestc.acmicpc.db.dao.iface.IUserDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.TrainingContestDao;
+import cn.edu.uestc.acmicpc.db.dao.iface.TrainingStatusDao;
+import cn.edu.uestc.acmicpc.db.dao.iface.TrainingUserDao;
+import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
 import cn.edu.uestc.acmicpc.db.entity.TrainingStatus;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
@@ -29,7 +29,7 @@ public class TrainingEntityITTest extends AbstractTestNGSpringContextTests {
     trainingUser.setUserId(1);
     trainingUser.setName("01李昀");
     trainingUser.setType(0);
-    trainingUserDAO.add(trainingUser);
+    trainingUserDao.add(trainingUser);
   }
 
   @Test(enabled = false)
@@ -37,7 +37,7 @@ public class TrainingEntityITTest extends AbstractTestNGSpringContextTests {
     TrainingContest trainingContest = new TrainingContest();
     trainingContest.setTitle("World final 2013");
     trainingContest.setIsPersonal(false);
-    trainingContestDAO.add(trainingContest);
+    trainingContestDao.add(trainingContest);
   }
 
   @Test(enabled = false)
@@ -53,16 +53,16 @@ public class TrainingEntityITTest extends AbstractTestNGSpringContextTests {
     trainingStatus.setTrainingUserId(1);
     trainingStatus.setTrainingContestId(1);
 
-    trainingStatusDAO.add(trainingStatus);
+    trainingStatusDao.add(trainingStatus);
   }
 
   @Autowired
-  private ITrainingContestDAO trainingContestDAO;
+  private TrainingContestDao trainingContestDao;
   @Autowired
-  private ITrainingUserDAO trainingUserDAO;
+  private TrainingUserDao trainingUserDao;
   @Autowired
-  private ITrainingStatusDAO trainingStatusDAO;
+  private TrainingStatusDao trainingStatusDao;
 
   @Autowired
-  private IUserDAO userDAO;
+  private UserDao userDao;
 }

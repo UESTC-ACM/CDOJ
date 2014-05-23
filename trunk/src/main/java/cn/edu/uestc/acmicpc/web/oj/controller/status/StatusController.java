@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.status;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.code.CodeDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.CodeDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
@@ -303,7 +303,7 @@ public class StatusController extends BaseController {
           }
         }
 
-        Integer codeId = codeService.createNewCode(CodeDTO.builder()
+        Integer codeId = codeService.createNewCode(CodeDto.builder()
             .setContent(submitDTO.getCodeContent())
             .setShare(false)
             .build());
