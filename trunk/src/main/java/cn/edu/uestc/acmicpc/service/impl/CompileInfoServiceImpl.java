@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.ICompileInfoDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.CompileInfoDao;
 import cn.edu.uestc.acmicpc.db.entity.CompileInfo;
 import cn.edu.uestc.acmicpc.service.iface.CompileInfoService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -14,28 +14,28 @@ import org.springframework.stereotype.Service;
 @Service
 public class CompileInfoServiceImpl extends AbstractService implements CompileInfoService {
 
-  private final ICompileInfoDAO compileInfoDAO;
+  private final CompileInfoDao compileInfoDao;
 
   @Autowired
-  public CompileInfoServiceImpl(ICompileInfoDAO compileInfoDAO) {
-    this.compileInfoDAO = compileInfoDAO;
+  public CompileInfoServiceImpl(CompileInfoDao compileInfoDao) {
+    this.compileInfoDao = compileInfoDao;
   }
 
   @Override
   public String getCompileInfo(Integer compileInfoId) throws AppException {
-    return (String) compileInfoDAO.getEntityByUniqueField("compileInfoId", compileInfoId,
+    return (String) compileInfoDao.getEntityByUniqueField("compileInfoId", compileInfoId,
         "content", true);
   }
 
   @Override
-  public ICompileInfoDAO getDAO() {
-    return compileInfoDAO;
+  public CompileInfoDao getDao() {
+    return compileInfoDao;
   }
 
   @Override
   public void updateCompileInfoContent(Integer compileInfoId, String content)
       throws AppException {
-    compileInfoDAO.updateEntitiesByField("content", content, "compileInfoId", compileInfoId.toString());
+    compileInfoDao.updateEntitiesByField("content", content, "compileInfoId", compileInfoId.toString());
   }
 
   @Override
@@ -43,7 +43,7 @@ public class CompileInfoServiceImpl extends AbstractService implements CompileIn
       throws AppException {
     CompileInfo compileInfo = new CompileInfo();
     compileInfo.setContent(content);
-    compileInfoDAO.add(compileInfo);
+    compileInfoDao.add(compileInfo);
     return compileInfo.getCompileInfoId();
   }
 }

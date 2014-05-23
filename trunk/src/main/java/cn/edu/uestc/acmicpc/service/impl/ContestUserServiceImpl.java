@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.IContestUserDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.ContestUserDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestUser.ContestUserDTO;
 import cn.edu.uestc.acmicpc.db.entity.ContestUser;
 import cn.edu.uestc.acmicpc.service.iface.ContestUserService;
@@ -19,16 +19,16 @@ import java.util.List;
 @Service
 @Primary
 public class ContestUserServiceImpl extends AbstractService implements ContestUserService {
-  private final IContestUserDAO contestUserDAO;
+  private final ContestUserDao contestUserDao;
 
   @Autowired
-  public ContestUserServiceImpl(IContestUserDAO contestUserDAO) {
-    this.contestUserDAO = contestUserDAO;
+  public ContestUserServiceImpl(ContestUserDao contestUserDao) {
+    this.contestUserDao = contestUserDao;
   }
 
   @Override
-  public IContestUserDAO getDAO() {
-    return contestUserDAO;
+  public ContestUserDao getDao() {
+    return contestUserDao;
   }
 
   @Override
@@ -46,7 +46,7 @@ public class ContestUserServiceImpl extends AbstractService implements ContestUs
     if (contestUserDTO.getComment() != null) {
       contestUser.setComment(contestUserDTO.getComment());
     }
-    contestUserDAO.add(contestUser);
+    contestUserDao.add(contestUser);
     return contestUser.getUserId();
   }
 
@@ -60,8 +60,8 @@ public class ContestUserServiceImpl extends AbstractService implements ContestUs
         .append(contestId)
         .append(" )")
         .append(")");
-    contestUserDAO.executeHQL(hqlBuilder.toString());
-    contestUserDAO.deleteEntitiesByField("contestId", contestId.toString());
+    contestUserDao.executeHQL(hqlBuilder.toString());
+    contestUserDao.deleteEntitiesByField("contestId", contestId.toString());
   }
 
   @Override
@@ -75,7 +75,7 @@ public class ContestUserServiceImpl extends AbstractService implements ContestUs
         .append(" and contestUser.userId = user.userId")
         // User id
         .append(" and contestUser.userId = ").append(userId);
-    List<Integer> result = (List<Integer>) contestUserDAO.findAll(hqlBuilder.toString());
+    List<Integer> result = (List<Integer>) contestUserDao.findAll(hqlBuilder.toString());
     return result.size() > 0;
   }
 }

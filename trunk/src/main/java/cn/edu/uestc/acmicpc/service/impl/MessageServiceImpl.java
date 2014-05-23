@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.MessageCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IMessageDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.MessageDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDTO;
@@ -23,16 +23,16 @@ import java.util.List;
 @Service
 public class MessageServiceImpl extends AbstractService implements MessageService {
 
-  private IMessageDAO messageDAO;
+  private MessageDao messageDao;
 
   @Autowired
-  public MessageServiceImpl(IMessageDAO messageDAO) {
-    this.messageDAO = messageDAO;
+  public MessageServiceImpl(MessageDao messageDao) {
+    this.messageDao = messageDao;
   }
 
   @Override
-  public IMessageDAO getDAO() {
-    return messageDAO;
+  public MessageDao getDao() {
+    return messageDao;
   }
 
   @Override
@@ -47,20 +47,20 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
     message.setSenderId(messageDTO.getSenderId());
     message.setReceiverId(messageDTO.getReceiverId());
     message.setMessageId(null);
-    messageDAO.add(message);
+    messageDao.add(message);
     return message.getMessageId();
   }
 
   @Override
   public MessageDTO getMessageDTO(Integer messageId) throws AppException {
     AppExceptionUtil.assertNotNull(messageId);
-    return messageDAO.getDTOByUniqueField(MessageDTO.class, MessageDTO.builder(), "messageId",
+    return messageDao.getDTOByUniqueField(MessageDTO.class, MessageDTO.builder(), "messageId",
         messageId);
   }
 
   @Override
   public Long count(MessageCondition condition) throws AppException {
-    return messageDAO.count(condition.getCondition());
+    return messageDao.count(condition.getCondition());
   }
 
   @Override
@@ -68,18 +68,18 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
       , PageInfo pageInfo) throws AppException {
     Condition condition = messageCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return messageDAO.findAll(MessageForReceiverDTO.class, MessageForReceiverDTO.builder(), condition);
+    return messageDao.findAll(MessageForReceiverDTO.class, MessageForReceiverDTO.builder(), condition);
   }
 
   @Override
   public List<MessageForUserDTO> getMessageForUserDTOList(MessageCondition messageCondition, PageInfo pageInfo) throws AppException {
     Condition condition = messageCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return messageDAO.findAll(MessageForUserDTO.class, MessageForUserDTO.builder(), condition);
+    return messageDao.findAll(MessageForUserDTO.class, MessageForUserDTO.builder(), condition);
   }
 
   @Override
   public void read(Integer messageId) throws AppException {
-    messageDAO.updateEntitiesByField("isOpened", true, "messageId", messageId.toString());
+    messageDao.updateEntitiesByField("isOpened", true, "messageId", messageId.toString());
   }
 }

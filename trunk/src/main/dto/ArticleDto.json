@@ -1,0 +1,67 @@
+{
+  "entity": "Article",
+  "package": "cn.edu.uestc.acmicpc.db.dto.impl",
+  "fields": [
+    {
+      "name": "articleId",
+      "type": "Integer"
+    },
+    {
+      "name": "title",
+      "type": "String"
+    },
+    {
+      "name": "content",
+      "type": "String"
+    },
+    {
+      "name": "time",
+      "type": "Timestamp"
+    },
+    {
+      "name": "clicked",
+      "type": "Integer",
+      "default": 0
+    },
+    {
+      "name": "order",
+      "type": "Integer",
+      "default": 0
+    },
+    {
+      "name": "type",
+      "type": "Integer",
+      "default": 0
+    },
+    {
+      "name": "isVisible",
+      "type": "Boolean",
+      "default": false
+    },
+    {
+      "name": "parentId",
+      "type": "Integer"
+    },
+    {
+      "name": "problemId",
+      "type": "Integer"
+    },
+    {
+      "name": "contestId",
+      "type": "Integer"
+    },
+    {
+      "name": "userId",
+      "type": "Integer",
+      "default": 1
+    },
+    {
+      "name": "ownerName",
+      "type": "String"
+    },
+    {
+      "name": "ownerEmail",
+      "type": "String"
+    }
+  ]
+}

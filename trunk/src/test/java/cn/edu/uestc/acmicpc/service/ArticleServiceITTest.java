@@ -1,11 +1,12 @@
 package cn.edu.uestc.acmicpc.service;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IArticleDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleListDTO;
+import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
+import cn.edu.uestc.acmicpc.db.dao.iface.ArticleDao;
+import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
+import cn.edu.uestc.acmicpc.util.enums.ArticleType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -30,13 +31,13 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testGetArticleDTO() throws AppException {
     Integer articleId = 2;
-    Assert.assertEquals(articleService.getArticleDTO(articleId).getArticleId(), Integer.valueOf(2));
+    Assert.assertEquals(articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS).getArticleId(), Integer.valueOf(2));
   }
 
   @Test
   public void testGetArticleDTO_noSuchArticle() throws AppException {
     Integer articleId = 10;
-    Assert.assertNull(articleService.getArticleDTO(articleId));
+    Assert.assertNull(articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS));
   }
 
   @Test
@@ -53,66 +54,80 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void testCount_byStartId() throws AppException {
-    ArticleCondition articleCondition = new ArticleCondition();
-    articleCondition.startId = 2;
-    Assert.assertEquals(articleService.count(articleCondition), Long.valueOf(3L));
+    ArticleCriteria articleCriteria = new ArticleCriteria();
+    articleCriteria.startId = 2;
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(3L));
   }
 
   @Test
   public void testCount_byEndId() throws AppException {
-    ArticleCondition articleCondition = new ArticleCondition();
-    articleCondition.endId = 2;
-    Assert.assertEquals(articleService.count(articleCondition), Long.valueOf(2L));
+    ArticleCriteria articleCriteria = new ArticleCriteria();
+    articleCriteria.endId = 2;
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
   }
 
   @Test
   public void testCount_byStartIdAndEndId() throws AppException {
-    ArticleCondition articleCondition = new ArticleCondition();
-    articleCondition.startId = 2;
-    articleCondition.endId = 3;
-    Assert.assertEquals(articleService.count(articleCondition), Long.valueOf(2L));
+    ArticleCriteria articleCriteria = new ArticleCriteria();
+    articleCriteria.startId = 2;
+    articleCriteria.endId = 3;
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
   }
 
   @Test
   public void testCount_byStartIdAndEndId_emptyResult() throws AppException {
-    ArticleCondition articleCondition = new ArticleCondition();
-    articleCondition.startId = 5;
-    articleCondition.endId = 4;
-    Assert.assertEquals(articleService.count(articleCondition), Long.valueOf(0L));
+    ArticleCriteria articleCriteria = new ArticleCriteria();
+    articleCriteria.startId = 5;
+    articleCriteria.endId = 4;
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
   }
 
   @Test
   public void testCount_byTitle() throws AppException {
-    ArticleCondition articleCondition = new ArticleCondition();
-    articleCondition.title = "About";
-    Assert.assertEquals(articleService.count(articleCondition), Long.valueOf(1L));
+    ArticleCriteria articleCriteria = new ArticleCriteria();
+    articleCriteria.title = "About";
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(1L));
   }
 
   @Test
   public void testCount_byTitle_emptyResult() throws AppException {
-    ArticleCondition articleCondition = new ArticleCondition();
-    articleCondition.title = "About 1";
-    Assert.assertEquals(articleService.count(articleCondition), Long.valueOf(0L));
+    ArticleCriteria articleCriteria = new ArticleCriteria();
+    articleCriteria.title = "About 1";
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
+  }
+
+  @Test
+  public void testCount_byType() throws AppException {
+    ArticleCriteria articleCriteria = new ArticleCriteria();
+    articleCriteria.type = ArticleType.NOTICE.ordinal();
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(4L));
+  }
+
+  @Test
+  public void testCount_byType_emptyResult() throws AppException {
+    ArticleCriteria articleCriteria = new ArticleCriteria();
+    articleCriteria.type = ArticleType.COMMENT.ordinal();
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
   }
 
   @Test
   public void testOperator_title() throws AppException {
-    ArticleCondition articleCondition = new ArticleCondition();
-    articleCondition.title = "new title";
-    Assert.assertEquals(articleService.count(articleCondition), Long.valueOf(0L));
+    ArticleCriteria articleCriteria = new ArticleCriteria();
+    articleCriteria.title = "new title";
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
     articleService.operator("title", "1, 2", "new title");
-    Assert.assertEquals(articleService.count(articleCondition), Long.valueOf(2L));
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
     articleService.operator("title", "1", "Frequently Asked Questions");
     articleService.operator("title", "2", "Markdown syntax cheatsheet");
   }
 
   @Test
   public void testOperator_contestId() throws AppException {
-    ArticleCondition articleCondition = new ArticleCondition();
-    articleCondition.contestId = 1;
-    Assert.assertEquals(articleService.count(articleCondition), Long.valueOf(0L));
+    ArticleCriteria articleCriteria = new ArticleCriteria();
+    articleCriteria.contestId = 1;
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
     articleService.operator("contestId", "1, 2", "1");
-    Assert.assertEquals(articleService.count(articleCondition), Long.valueOf(2L));
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
     articleService.operator("contestId", "1, 2", null);
   }
 
@@ -128,11 +143,11 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void testOperator_problemId() throws AppException {
-    ArticleCondition articleCondition = new ArticleCondition();
-    articleCondition.problemId = 1;
-    Assert.assertEquals(articleService.count(articleCondition), Long.valueOf(0L));
+    ArticleCriteria articleCriteria = new ArticleCriteria();
+    articleCriteria.problemId = 1;
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
     articleService.operator("problemId", "1, 2", "1");
-    Assert.assertEquals(articleService.count(articleCondition), Long.valueOf(2L));
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
     articleService.operator("problemId", "1, 2", null);
   }
 
@@ -148,11 +163,11 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void testOperator_parentId() throws AppException {
-    ArticleCondition articleCondition = new ArticleCondition();
-    articleCondition.parentId = 1;
-    Assert.assertEquals(articleService.count(articleCondition), Long.valueOf(0L));
+    ArticleCriteria articleCriteria = new ArticleCriteria();
+    articleCriteria.parentId = 1;
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
     articleService.operator("parentId", "3, 4", "1");
-    Assert.assertEquals(articleService.count(articleCondition), Long.valueOf(2L));
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
     articleService.operator("parentId", "3, 4", null);
   }
 
@@ -168,11 +183,11 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void testOperator_userId() throws AppException {
-    ArticleCondition articleCondition = new ArticleCondition();
-    articleCondition.userId = 2;
-    Assert.assertEquals(articleService.count(articleCondition), Long.valueOf(0L));
+    ArticleCriteria articleCriteria = new ArticleCriteria();
+    articleCriteria.userId = 2;
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
     articleService.operator("userId", "3, 4", "2");
-    Assert.assertEquals(articleService.count(articleCondition), Long.valueOf(2L));
+    Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
     articleService.operator("userId", "3, 4", "1");
   }
 
@@ -189,183 +204,194 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testIncrementClicked() throws AppException {
     Integer articleId = 1;
-    Integer beforeIncrement = articleService.getArticleDTO(articleId).getClicked();
+    Integer beforeIncrement = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS).getClicked();
     articleService.incrementClicked(articleId);
-    Integer afterIncrement = articleService.getArticleDTO(articleId).getClicked();
+    Integer afterIncrement = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS).getClicked();
     Assert.assertEquals(Integer.valueOf(beforeIncrement + 1), afterIncrement);
   }
 
   @Test
   public void testUpdateArticle_title() throws AppException {
     String titleToUpdate = "Hello world!";
-    String titleOrigin = articleService.getArticleDTO(1).getTitle();
+    String titleOrigin = articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getTitle();
     Assert.assertNotEquals(titleOrigin, titleToUpdate);
-    ArticleDTO articleDTO = new ArticleDTO();
-    articleDTO.setArticleId(1);
-    articleDTO.setTitle(titleToUpdate);
-    articleService.updateArticle(articleDTO);
-    Assert.assertEquals(articleService.getArticleDTO(1).getTitle(), titleToUpdate);
-    articleDTO.setTitle(titleOrigin);
-    articleService.updateArticle(articleDTO);
+    ArticleDto articleDto = ArticleDto.builder()
+        .setArticleId(1)
+        .setTitle(titleToUpdate)
+        .build();
+    articleService.updateArticle(articleDto);
+    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getTitle(), titleToUpdate);
+    articleDto.setTitle(titleOrigin);
+    articleService.updateArticle(articleDto);
   }
 
   @Test
   public void testUpdateArticle_parentId() throws AppException {
     Integer parentIdToUpdate = 1;
-    Integer parentIdOrigin = articleService.getArticleDTO(3).getParentId();
+    Integer parentIdOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getParentId();
     Assert.assertNotEquals(parentIdOrigin, parentIdToUpdate);
-    ArticleDTO articleDTO = new ArticleDTO();
-    articleDTO.setArticleId(3);
-    articleDTO.setParentId(parentIdToUpdate);
-    articleService.updateArticle(articleDTO);
-    Assert.assertEquals(articleService.getArticleDTO(3).getParentId(), parentIdToUpdate);
+    ArticleDto articleDto = ArticleDto.builder()
+        .setArticleId(3)
+        .setParentId(parentIdToUpdate)
+        .build();
+    articleService.updateArticle(articleDto);
+    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getParentId(), parentIdToUpdate);
     articleService.operator("parentId", "3", null);
   }
 
   @Test
   public void testUpdateArticle_type() throws AppException {
     Integer typeToUpdate = 1;
-    Integer typeOrigin = articleService.getArticleDTO(1).getType();
+    Integer typeOrigin = articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getType();
     Assert.assertNotEquals(typeOrigin, typeToUpdate);
-    ArticleDTO articleDTO = new ArticleDTO();
-    articleDTO.setArticleId(1);
-    articleDTO.setType(typeToUpdate);
-    articleService.updateArticle(articleDTO);
-    Assert.assertEquals(articleService.getArticleDTO(1).getType(), typeToUpdate);
-    articleDTO.setType(typeOrigin);
-    articleService.updateArticle(articleDTO);
+    ArticleDto articleDto = ArticleDto.builder()
+        .setArticleId(1)
+        .setType(typeToUpdate)
+        .build();
+    articleService.updateArticle(articleDto);
+    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getType(), typeToUpdate);
+    articleDto.setType(typeOrigin);
+    articleService.updateArticle(articleDto);
   }
 
   @Test
   public void testUpdateArticle_content() throws AppException {
     String contentToUpdate = "content";
-    String contentOrigin = articleService.getArticleDTO(1).getContent();
+    String contentOrigin = articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getContent();
     Assert.assertNotEquals(contentOrigin, contentToUpdate);
-    ArticleDTO articleDTO = new ArticleDTO();
-    articleDTO.setArticleId(1);
-    articleDTO.setContent(contentToUpdate);
-    articleService.updateArticle(articleDTO);
-    Assert.assertEquals(articleService.getArticleDTO(1).getContent(), contentToUpdate);
-    articleDTO.setContent(contentOrigin);
-    articleService.updateArticle(articleDTO);
+    ArticleDto articleDto = ArticleDto.builder()
+        .setArticleId(1)
+        .setContent(contentToUpdate)
+        .build();
+    articleService.updateArticle(articleDto);
+    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getContent(), contentToUpdate);
+    articleDto.setContent(contentOrigin);
+    articleService.updateArticle(articleDto);
   }
 
   @Test
   public void testUpdateArticle_clicked() throws AppException {
     Integer clickedToUpdate = 15;
-    Integer clickedOrigin = articleService.getArticleDTO(1).getClicked();
+    Integer clickedOrigin = articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getClicked();
     Assert.assertNotEquals(clickedOrigin, clickedToUpdate);
-    ArticleDTO articleDTO = new ArticleDTO();
-    articleDTO.setArticleId(1);
-    articleDTO.setClicked(clickedToUpdate);
-    articleService.updateArticle(articleDTO);
-    Assert.assertEquals(articleService.getArticleDTO(1).getClicked(), clickedToUpdate);
-    articleDTO.setClicked(clickedOrigin);
-    articleService.updateArticle(articleDTO);
+    ArticleDto articleDto = ArticleDto.builder()
+        .setArticleId(1)
+        .setClicked(clickedToUpdate)
+        .build();
+    articleService.updateArticle(articleDto);
+    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getClicked(), clickedToUpdate);
+    articleDto.setClicked(clickedOrigin);
+    articleService.updateArticle(articleDto);
   }
 
   @Test
   public void testUpdateArticle_isVisible() throws AppException {
-    Boolean isVisibleToUpdate = false;
-    Boolean isVisibleOrigin = articleService.getArticleDTO(1).getIsVisible();
+    Boolean isVisibleToUpdate = true;
+    Boolean isVisibleOrigin = articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getIsVisible();
     Assert.assertNotEquals(isVisibleOrigin, isVisibleToUpdate);
-    ArticleDTO articleDTO = new ArticleDTO();
-    articleDTO.setArticleId(1);
-    articleDTO.setIsVisible(isVisibleToUpdate);
-    articleService.updateArticle(articleDTO);
-    Assert.assertEquals(articleService.getArticleDTO(1).getIsVisible(), isVisibleToUpdate);
-    articleDTO.setIsVisible(isVisibleOrigin);
-    articleService.updateArticle(articleDTO);
+    ArticleDto articleDto = ArticleDto.builder()
+        .setArticleId(1)
+        .setIsVisible(isVisibleToUpdate)
+        .build();
+    articleService.updateArticle(articleDto);
+    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getIsVisible(), isVisibleToUpdate);
+    articleDto.setIsVisible(isVisibleOrigin);
+    articleService.updateArticle(articleDto);
   }
 
   @Test
   public void testUpdateArticle_problemId() throws AppException {
     Integer problemIdToUpdate = 1;
-    Integer problemIdOrigin = articleService.getArticleDTO(3).getProblemId();
+    Integer problemIdOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getProblemId();
     Assert.assertNotEquals(problemIdOrigin, problemIdToUpdate);
-    ArticleDTO articleDTO = new ArticleDTO();
-    articleDTO.setArticleId(3);
-    articleDTO.setProblemId(problemIdToUpdate);
-    articleService.updateArticle(articleDTO);
-    Assert.assertEquals(articleService.getArticleDTO(3).getProblemId(), problemIdToUpdate);
+    ArticleDto articleDto = ArticleDto.builder()
+        .setArticleId(3)
+        .setProblemId(problemIdToUpdate)
+        .build();
+    articleService.updateArticle(articleDto);
+    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getProblemId(), problemIdToUpdate);
     articleService.operator("problemId", "3", null);
   }
 
   @Test
   public void testUpdateArticle_userId() throws AppException {
     Integer userIdToUpdate = 2;
-    Integer userIdOrigin = articleService.getArticleDTO(3).getUserId();
+    Integer userIdOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getUserId();
     Assert.assertNotEquals(userIdOrigin, userIdToUpdate);
-    ArticleDTO articleDTO = new ArticleDTO();
-    articleDTO.setArticleId(3);
-    articleDTO.setUserId(userIdToUpdate);
-    articleService.updateArticle(articleDTO);
-    Assert.assertEquals(articleService.getArticleDTO(3).getUserId(), userIdToUpdate);
-    articleDTO.setUserId(userIdOrigin);
-    articleService.updateArticle(articleDTO);
+    ArticleDto articleDto = ArticleDto.builder()
+        .setArticleId(3)
+        .setUserId(userIdToUpdate)
+        .build();
+    articleService.updateArticle(articleDto);
+    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getUserId(), userIdToUpdate);
+    articleDto.setUserId(userIdOrigin);
+    articleService.updateArticle(articleDto);
   }
 
   @Test
   public void testUpdateArticle_contestId() throws AppException {
     Integer contestIdToUpdate = 1;
-    Integer contestIdOrigin = articleService.getArticleDTO(3).getContestId();
+    Integer contestIdOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getContestId();
     Assert.assertNotEquals(contestIdOrigin, contestIdToUpdate);
-    ArticleDTO articleDTO = new ArticleDTO();
-    articleDTO.setArticleId(3);
-    articleDTO.setContestId(contestIdToUpdate);
-    articleService.updateArticle(articleDTO);
-    Assert.assertEquals(articleService.getArticleDTO(3).getContestId(), contestIdToUpdate);
+    ArticleDto articleDto = ArticleDto.builder()
+        .setArticleId(3)
+        .setContestId(contestIdToUpdate)
+        .build();
+    articleService.updateArticle(articleDto);
+    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getContestId(), contestIdToUpdate);
     articleService.operator("contestId", "3", null);
   }
 
   @Test
   public void testUpdateArticle_order() throws AppException {
     Integer orderToUpdate = 1;
-    Integer orderOrigin = articleService.getArticleDTO(3).getOrder();
+    Integer orderOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getOrder();
     Assert.assertNotEquals(orderOrigin, orderToUpdate);
-    ArticleDTO articleDTO = new ArticleDTO();
-    articleDTO.setArticleId(3);
-    articleDTO.setOrder(orderToUpdate);
-    articleService.updateArticle(articleDTO);
-    Assert.assertEquals(articleService.getArticleDTO(3).getOrder(), orderToUpdate);
-    articleDTO.setOrder(orderOrigin);
-    articleService.updateArticle(articleDTO);
+    ArticleDto articleDto = ArticleDto.builder()
+        .setArticleId(3)
+        .setOrder(orderToUpdate)
+        .build();
+    articleService.updateArticle(articleDto);
+    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getOrder(), orderToUpdate);
+    articleDto.setOrder(orderOrigin);
+    articleService.updateArticle(articleDto);
   }
 
   @Test
   public void testUpdateArticle_time() throws AppException {
     Timestamp timeToUpdate = Timestamp.valueOf("2014-03-27 00:00:00");
-    Timestamp timeOrigin = articleService.getArticleDTO(3).getTime();
+    Timestamp timeOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getTime();
     Assert.assertNotEquals(timeOrigin, timeToUpdate);
-    ArticleDTO articleDTO = new ArticleDTO();
-    articleDTO.setArticleId(3);
-    articleDTO.setTime(timeToUpdate);
-    articleService.updateArticle(articleDTO);
-    Assert.assertEquals(articleService.getArticleDTO(3).getTime(), timeToUpdate);
-    articleDTO.setTime(timeOrigin);
-    articleService.updateArticle(articleDTO);
+    ArticleDto articleDto = ArticleDto.builder()
+        .setArticleId(3)
+        .setTime(timeToUpdate)
+        .build();
+    articleService.updateArticle(articleDto);
+    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getTime(), timeToUpdate);
+    articleDto.setTime(timeOrigin);
+    articleService.updateArticle(articleDto);
   }
 
   @Test
   public void testGetDAO() throws AppException {
-    Assert.assertTrue(articleService.getDAO() instanceof IArticleDAO);
+    Assert.assertTrue(articleService.getDao() instanceof ArticleDao);
   }
 
   @Test
   public void testGetArticleList_withPageInfo() throws AppException {
-    ArticleCondition articleCondition = new ArticleCondition();
-    articleCondition.userName = "administrator";
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.FIELDS_FOR_LIST_PAGE);
+    articleCriteria.userId = 1;
     PageInfo pageInfo = PageInfo.create(300L, 3L, 10, 2L);
-    List<ArticleListDTO> articleListDTOs = articleService.getArticleList(articleCondition, pageInfo);
+    List<ArticleDto> articleListDTOs = articleService.getArticleList(articleCriteria, pageInfo);
     Assert.assertEquals(articleListDTOs.size(), 1);
   }
 
   @Test
   public void testGetArticleList_withPageInfo_emptyResult() throws AppException {
-    ArticleCondition articleCondition = new ArticleCondition();
-    articleCondition.userName = "administrator";
+    ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.FIELDS_FOR_LIST_PAGE);
+    articleCriteria.userId = 1;
     PageInfo pageInfo = PageInfo.create(300L, 3L, 10, 3L);
-    List<ArticleListDTO> articleListDTOs = articleService.getArticleList(articleCondition, pageInfo);
+    List<ArticleDto> articleListDTOs = articleService.getArticleList(articleCriteria, pageInfo);
     Assert.assertEquals(articleListDTOs.size(), 0);
   }
 }

@@ -1,10 +1,9 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.condition.base.Condition;
-import cn.edu.uestc.acmicpc.db.condition.impl.ArticleCondition;
-import cn.edu.uestc.acmicpc.db.dao.iface.IArticleDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.article.ArticleListDTO;
+import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
+import cn.edu.uestc.acmicpc.db.dao.iface.ArticleDao;
+import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -23,43 +22,44 @@ import java.util.Map;
 @Service
 public class ArticleServiceImpl extends AbstractService implements ArticleService {
 
-  private final IArticleDAO articleDAO;
+  private final ArticleDao articleDao;
 
   @Autowired
-  public ArticleServiceImpl(IArticleDAO articleDAO) {
-    this.articleDAO = articleDAO;
+  public ArticleServiceImpl(ArticleDao articleDao) {
+    this.articleDao = articleDao;
   }
 
   @Override
-  public IArticleDAO getDAO() {
-    return articleDAO;
+  public ArticleDao getDao() {
+    return articleDao;
   }
 
   @Override
-  public ArticleDTO getArticleDTO(Integer articleId)
+  public ArticleDto getArticleDto(Integer articleId,
+                                  ArticleFields articleFields)
       throws AppException {
-    return articleDAO.getDTOByUniqueField(ArticleDTO.class,
-        ArticleDTO.builder(), "articleId", articleId);
+    ArticleCriteria articleCriteria = new ArticleCriteria(articleFields);
+    articleCriteria.startId = articleId;
+    articleCriteria.endId = articleId;
+    return articleDao.getDtoByUniqueField(articleCriteria.getCriteria());
   }
 
   @Override
-  public Long count(ArticleCondition condition) throws AppException {
-    return articleDAO.count(condition.getCondition());
+  public Long count(ArticleCriteria articleCriteria) throws AppException {
+    return articleDao.count(articleCriteria.getCriteria());
   }
 
   @Override
-  public List<ArticleListDTO> getArticleList(ArticleCondition articleCondition,
+  public List<ArticleDto> getArticleList(ArticleCriteria articleCriteria,
                                              PageInfo pageInfo) throws AppException {
-    Condition condition = articleCondition.getCondition();
-    condition.setPageInfo(pageInfo);
-    return articleDAO.findAll(ArticleListDTO.class, ArticleListDTO.builder(), condition);
+    return articleDao.findAll(articleCriteria.getCriteria(), pageInfo);
   }
 
   @Override
   public void operator(String field, String ids, String value) throws AppException {
     Map<String, Object> properties = new HashMap<>();
     properties.put(field, value);
-    articleDAO.updateEntitiesByField(properties, "articleId", ids);
+    articleDao.updateEntitiesByField(properties, "articleId", ids);
   }
 
   @Override
@@ -73,68 +73,68 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
     article.setType(1);
     article.setIsVisible(true);
     article.setUserId(authorId);
-    articleDAO.add(article);
+    articleDao.add(article);
     return article.getArticleId();
   }
 
-  private void updateArticleByArticleDTO(Article article, ArticleDTO articleDTO) {
-    if (articleDTO.getParentId() != null) {
-      article.setParentId(articleDTO.getParentId());
+  private void updateArticleByArticleDTO(Article article, ArticleDto articleDto) {
+    if (articleDto.getParentId() != null) {
+      article.setParentId(articleDto.getParentId());
     }
-    if (articleDTO.getClicked() != null) {
-      article.setClicked(articleDTO.getClicked());
+    if (articleDto.getClicked() != null) {
+      article.setClicked(articleDto.getClicked());
     }
-    if (articleDTO.getContent() != null) {
-      article.setContent(articleDTO.getContent());
+    if (articleDto.getContent() != null) {
+      article.setContent(articleDto.getContent());
     }
-    if (articleDTO.getType() != null) {
-      article.setType(articleDTO.getType());
+    if (articleDto.getType() != null) {
+      article.setType(articleDto.getType());
     }
-    if (articleDTO.getIsVisible() != null) {
-      article.setIsVisible(articleDTO.getIsVisible());
+    if (articleDto.getIsVisible() != null) {
+      article.setIsVisible(articleDto.getIsVisible());
     }
-    if (articleDTO.getOrder() != null) {
-      article.setOrder(articleDTO.getOrder());
+    if (articleDto.getOrder() != null) {
+      article.setOrder(articleDto.getOrder());
     }
-    if (articleDTO.getProblemId() != null) {
-      article.setProblemId(articleDTO.getProblemId());
+    if (articleDto.getProblemId() != null) {
+      article.setProblemId(articleDto.getProblemId());
     }
-    if (articleDTO.getContestId() != null) {
-      article.setContestId(articleDTO.getContestId());
+    if (articleDto.getContestId() != null) {
+      article.setContestId(articleDto.getContestId());
     }
-    if (articleDTO.getTime() != null) {
-      article.setTime(articleDTO.getTime());
+    if (articleDto.getTime() != null) {
+      article.setTime(articleDto.getTime());
     }
-    if (articleDTO.getTitle() != null) {
-      article.setTitle(articleDTO.getTitle());
+    if (articleDto.getTitle() != null) {
+      article.setTitle(articleDto.getTitle());
     }
-    if (articleDTO.getUserId() != null) {
-      article.setUserId(articleDTO.getUserId());
+    if (articleDto.getUserId() != null) {
+      article.setUserId(articleDto.getUserId());
     }
   }
 
   @Override
-  public void updateArticle(ArticleDTO articleDTO) throws AppException {
-    AppExceptionUtil.assertNotNull(articleDTO);
-    AppExceptionUtil.assertNotNull(articleDTO.getArticleId());
-    Article article = articleDAO.get(articleDTO.getArticleId());
+  public void updateArticle(ArticleDto articleDto) throws AppException {
+    AppExceptionUtil.assertNotNull(articleDto);
+    AppExceptionUtil.assertNotNull(articleDto.getArticleId());
+    Article article = articleDao.get(articleDto.getArticleId());
     AppExceptionUtil.assertNotNull(article);
-    updateArticleByArticleDTO(article, articleDTO);
-    articleDAO.update(article);
+    updateArticleByArticleDTO(article, articleDto);
+    articleDao.update(article);
   }
 
   @Override
   public void incrementClicked(Integer articleId) throws AppException {
-    articleDAO.increment("clicked", "articleId", articleId.toString());
+    articleDao.increment("clicked", "articleId", articleId.toString());
   }
 
   @Override
   public Boolean checkArticleExists(Integer articleId) throws AppException {
     AppExceptionUtil.assertNotNull(articleId);
-    ArticleCondition articleCondition = new ArticleCondition();
-    articleCondition.startId = articleId;
-    articleCondition.endId = articleId;
-    return articleDAO.count(articleCondition.getCondition()) == 1;
+    ArticleCriteria articleCriteria = new ArticleCriteria();
+    articleCriteria.startId = articleId;
+    articleCriteria.endId = articleId;
+    return articleDao.count(articleCriteria.getCriteria()) == 1;
   }
 
 }

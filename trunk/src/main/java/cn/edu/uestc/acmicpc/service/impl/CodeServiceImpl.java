@@ -1,7 +1,9 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.ICodeDAO;
-import cn.edu.uestc.acmicpc.db.dto.impl.code.CodeDTO;
+import cn.edu.uestc.acmicpc.db.criteria.impl.CodeCriteria;
+import cn.edu.uestc.acmicpc.db.dao.iface.CodeDao;
+import cn.edu.uestc.acmicpc.db.dto.field.CodeFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.CodeDto;
 import cn.edu.uestc.acmicpc.db.entity.Code;
 import cn.edu.uestc.acmicpc.service.iface.CodeService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -15,35 +17,38 @@ import org.springframework.stereotype.Service;
 @Service
 public class CodeServiceImpl extends AbstractService implements CodeService {
 
-  private final ICodeDAO codeDAO;
+  private final CodeDao codeDao;
 
   @Autowired
-  public CodeServiceImpl(ICodeDAO codeDAO) {
-    this.codeDAO = codeDAO;
+  public CodeServiceImpl(CodeDao codeDao) {
+    this.codeDao = codeDao;
   }
 
   @Override
-  public CodeDTO getCodeDTOByCodeId(Integer codeId) throws AppException {
-    return codeDAO.getDTOByUniqueField(CodeDTO.class, CodeDTO.builder(), "codeId", codeId);
+  public CodeDto getCodeDto(Integer codeId,
+                                    CodeFields codeFields) throws AppException {
+    CodeCriteria codeCriteria = new CodeCriteria(CodeFields.ALL_FIELDS);
+    codeCriteria.codeId = codeId;
+    return codeDao.getDtoByUniqueField(codeCriteria.getCriteria());
   }
 
-  private void updateCodeByCodeDTO(Code code, CodeDTO codeDTO) {
-    if (codeDTO.getContent() != null)
-      code.setContent(codeDTO.getContent());
-    if (codeDTO.getShare() != null)
-      code.setShare(codeDTO.getShare());
+  private void updateCodeByCodeDTO(Code code, CodeDto codeDto) {
+    if (codeDto.getContent() != null)
+      code.setContent(codeDto.getContent());
+    if (codeDto.getShare() != null)
+      code.setShare(codeDto.getShare());
   }
 
   @Override
-  public Integer createNewCode(CodeDTO codeDTO) throws AppException {
+  public Integer createNewCode(CodeDto codeDto) throws AppException {
     Code code = new Code();
-    updateCodeByCodeDTO(code, codeDTO);
-    codeDAO.add(code);
+    updateCodeByCodeDTO(code, codeDto);
+    codeDao.add(code);
     return code.getCodeId();
   }
 
   @Override
-  public ICodeDAO getDAO() {
-    return codeDAO;
+  public CodeDao getDao() {
+    return codeDao;
   }
 }

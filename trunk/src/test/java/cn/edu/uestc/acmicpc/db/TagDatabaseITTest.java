@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.db;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.dao.iface.ITagDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.TagDao;
 import cn.edu.uestc.acmicpc.db.entity.Tag;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -20,12 +20,12 @@ import java.util.List;
 public class TagDatabaseITTest extends AbstractTestNGSpringContextTests {
 
   @Autowired
-  private ITagDAO tagDAO;
+  private TagDao tagDao;
 
   @SuppressWarnings({"unchecked", "deprecation"})
   @Test
   public void testQuery_fetchAllTags() throws AppException {
-    List<Tag> tags = (List<Tag>) tagDAO.findAll();
+    List<Tag> tags = (List<Tag>) tagDao.findAll();
     Assert.assertEquals(tags.get(0).getName(), "tag1");
     Assert.assertEquals(tags.get(1).getName(), "tag2");
     Assert.assertEquals(tags.get(2).getName(), "tag3");
@@ -35,6 +35,6 @@ public class TagDatabaseITTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void testCount() throws AppException {
-    Assert.assertEquals(tagDAO.count(), Long.valueOf(5));
+    Assert.assertEquals(tagDao.count(), Long.valueOf(5));
   }
 }

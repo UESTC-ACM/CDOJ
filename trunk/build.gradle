@@ -43,7 +43,16 @@ task checkTestingCodeAllDoNotUseJunit(type: Exec) {
 
 task generateDaos(type: Exec) {
   commandLine "python",
-      file("src/main/python/generate_daos.py").absolutePath
+      file("src/main/python/generate_daos.py").absolutePath,
+      "-i", "src/main/java/cn/edu/uestc/acmicpc/db/entity/",
+      "-o", "/src/gen/java/cn/edu/uestc/acmicpc/db/dao"
+}
+
+task generateDtos(type: Exec) {
+  commandLine "python",
+      file("src/main/python/generate_dtos.py").absolutePath,
+      "-i", "src/main/dto",
+      "-o", "src/gen/java"
 }
 
 task createSchema(type: Exec) {
@@ -88,41 +97,12 @@ task generateTestPropertyFile(type: Exec) {
       file(judgeWorkPath).absolutePath
 }
 
-// Gradle protobuf plugin
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-
-  dependencies {
-    classpath 'com.tomcawley:gradle-protobuf-plugin:0.2'
-  }
-}
-
-apply plugin: 'gradleProtobufPlugin'
-
-protoBuf {
-  protoc {
-    'Mac OS X' {
-      path = "protoc"
-    }
-    'Linux' {
-      path = "protoc"
-    }
-  }
-
-  lang {
-    java {
-      genDir = 'src/main/gen'
-    }
-  }
-}
-
 task cleanResources << {
   delete "src/main/resources/resources.properties"
   delete "src/test/resources/resources.properties"
 }
 
+checkDtosDoNotContainEntities.dependsOn(generateDtos)
 checkControllerDoNotContainDaos.dependsOn(generateDaos)
 compileJava.dependsOn(checkControllerDoNotContainDaos)
 compileJava.dependsOn(checkDtosDoNotContainEntities)
@@ -133,20 +113,18 @@ generateData.dependsOn(createSchema)
 compileJava.dependsOn(generateMainPropertyFile)
 compileJava.dependsOn(generateTestPropertyFile)
 clean.dependsOn(cleanResources)
+test.dependsOn(war)
 
 configurations {
   provided
 }
 
 sourceSets {
-  main.compileClasspath += configurations.provided
-  main.compileClasspath += files("src/main/gen/")
-
-  test.compileClasspath += configurations.provided
-  test.compileClasspath += files("src/main/gen/")
-
-  test.runtimeClasspath += configurations.provided
-  test.runtimeClasspath += files("src/main/gen/")
+  main {
+    java {
+      srcDirs = ["src/main/java", "src/gen/java"]
+    }
+  }
 }
 
 repositories {

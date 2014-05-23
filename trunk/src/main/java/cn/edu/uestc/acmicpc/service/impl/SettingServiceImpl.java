@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.dao.iface.ISettingDAO;
+import cn.edu.uestc.acmicpc.db.dao.iface.SettingDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDTO;
 import cn.edu.uestc.acmicpc.db.entity.Setting;
 import cn.edu.uestc.acmicpc.service.iface.SettingService;
@@ -15,27 +15,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class SettingServiceImpl extends AbstractService implements SettingService {
 
-  private final ISettingDAO settingDAO;
+  private final SettingDao settingDao;
 
   @Autowired
-  public SettingServiceImpl(ISettingDAO settingDAO) {
-    this.settingDAO = settingDAO;
+  public SettingServiceImpl(SettingDao settingDao) {
+    this.settingDao = settingDao;
   }
 
   @Override
-  public ISettingDAO getDAO() {
-    return settingDAO;
+  public SettingDao getDao() {
+    return settingDao;
   }
 
   @Override
   public SettingDTO getSettingDTO(Integer settingId) throws AppException {
-    return settingDAO.getDTOByUniqueField(SettingDTO.class,
+    return settingDao.getDTOByUniqueField(SettingDTO.class,
         SettingDTO.builder(), "settingId", settingId);
   }
 
   @Override
   public void updateSettingBySettingDTO(SettingDTO settingDTO) throws AppException {
-    Setting setting = settingDAO.get(settingDTO.getSettingId());
+    Setting setting = settingDao.get(settingDTO.getSettingId());
     if (settingDTO.getName() != null) {
       setting.setName(settingDTO.getName());
     }
@@ -45,6 +45,6 @@ public class SettingServiceImpl extends AbstractService implements SettingServic
     if (settingDTO.getValue() != null) {
       setting.setValue(settingDTO.getValue());
     }
-    settingDAO.update(setting);
+    settingDao.update(setting);
   }
 }
