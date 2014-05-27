@@ -43,7 +43,8 @@ public class UserControllerTest extends ControllerTest {
 
   private final String PASSWORD_ENCODED = "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8";
 
-  @Autowired private UserController userController;
+  @Autowired
+  private UserController userController;
 
   @Override
   @BeforeMethod

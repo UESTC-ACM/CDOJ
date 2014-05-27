@@ -11,6 +11,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -50,6 +51,12 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
   private String getResourceLocations(String folder, String name) {
     String path = environment.getProperty(name);
     return "file://" + path + "/" + folder + "/**";
+  }
+
+  @Override
+  public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+    argumentResolvers.addAll(WebMVCResource.argumentResolvers());
+    super.addArgumentResolvers(argumentResolvers);
   }
 
   @Override
