@@ -4,11 +4,13 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 import cn.edu.uestc.acmicpc.config.TestContext;
+import cn.edu.uestc.acmicpc.config.WebMVCConfig;
 import cn.edu.uestc.acmicpc.config.WebMVCResource;
 import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.department.DepartmentDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.language.LanguageDTO;
+import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
@@ -31,6 +33,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
@@ -41,7 +44,7 @@ import java.util.List;
  * Abstract test to define constant variables for controller tests.
  */
 @WebAppConfiguration
-@ContextConfiguration(classes = {TestContext.class})
+@ContextConfiguration(classes = {TestContext.class, WebMVCConfig.class})
 public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
 
   protected MockMvc mockMvc;
@@ -50,6 +53,7 @@ public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
   protected List<AuthenticationTypeDTO> authenticationTypeList = new ArrayList<AuthenticationTypeDTO>();
   @Mock protected List<LanguageDTO> languageList;
 
+  @Autowired protected ArticleService articleService;
   @Autowired protected UserService userService;
   @Autowired protected ProblemService problemService;
   @Autowired protected StatusService statusService;
@@ -89,9 +93,13 @@ public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
   protected WebApplicationContext context;
 
   protected MockMvc initControllers(Object... objects) {
+    List<HandlerMethodArgumentResolver> resolverList = WebMVCResource.argumentResolvers();
+    HandlerMethodArgumentResolver[] resolversArray = new HandlerMethodArgumentResolver[resolverList.size()];
+
     return standaloneSetup(objects)
         .setViewResolvers(WebMVCResource.viewResolver())
         .setMessageConverters(WebMVCResource.messageConverters())
+        .setCustomArgumentResolvers(resolverList.toArray(resolversArray))
         .build();
   }
 }

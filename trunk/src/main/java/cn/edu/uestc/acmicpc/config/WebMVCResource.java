@@ -1,7 +1,10 @@
 package cn.edu.uestc.acmicpc.config;
 
+import cn.edu.uestc.acmicpc.web.resolver.JsonPathArgumentResolver;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
@@ -36,4 +39,11 @@ public class WebMVCResource {
     return converters;
   }
 
+  public static List<HandlerMethodArgumentResolver> argumentResolvers() {
+    List<HandlerMethodArgumentResolver> resolverList = new LinkedList<>();
+
+    resolverList.add(new JsonPathArgumentResolver());
+
+    return resolverList;
+  }
 }
