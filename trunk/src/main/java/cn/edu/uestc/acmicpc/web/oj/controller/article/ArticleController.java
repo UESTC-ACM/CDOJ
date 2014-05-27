@@ -72,10 +72,6 @@ public class ArticleController extends BaseController {
     } catch (AppException e) {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
-    } catch (Exception e) {
-      e.printStackTrace();
-      json.put("result", "error");
-      json.put("error_msg", "Unknown exception occurred.");
     }
     return json;
   }
@@ -125,7 +121,6 @@ public class ArticleController extends BaseController {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
     } catch (Exception e) {
-      e.printStackTrace();
       json.put("result", "error");
       json.put("error_msg", "Unknown exception occurred.");
     }
@@ -159,10 +154,6 @@ public class ArticleController extends BaseController {
     } catch (AppException e) {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
-    } catch (Exception e) {
-      e.printStackTrace();
-      json.put("result", "error");
-      json.put("error_msg", "Unknown exception occurred.");
     }
     return json;
   }
@@ -260,10 +251,6 @@ public class ArticleController extends BaseController {
     } catch (AppException e) {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
-    } catch (Exception e) {
-      e.printStackTrace();
-      json.put("result", "error");
-      json.put("error_msg", "Unknown exception occurred.");
     }
     return json;
   }
@@ -345,10 +332,9 @@ public class ArticleController extends BaseController {
     try {
       articleService.operator(field, targetId, value);
       json.put("result", "success");
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (AppException e) {
       json.put("result", "error");
-      json.put("error_msg", "Unknown exception occurred.");
+      json.put("error_msg", e.getMessage());
     }
     return json;
   }

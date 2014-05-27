@@ -7,6 +7,7 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDTO;
 import cn.edu.uestc.acmicpc.judge.JudgeService;
+import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
@@ -80,6 +81,12 @@ public class TestContext extends ApplicationContextConfig {
   }
 
   // mock beans, add a new type here, the bean should be reset in ControllerTest.
+  @Bean
+  @Primary
+  public ArticleService mockArticleService() {
+    return mock(ArticleService.class);
+  }
+
   @Bean
   @Primary
   public UserService mockUserService() {
