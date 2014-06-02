@@ -241,7 +241,7 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void testUpdateArticle_type() throws AppException {
-    Integer typeToUpdate = 1;
+    Integer typeToUpdate = 0;
     Integer typeOrigin = articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getType();
     Assert.assertNotEquals(typeOrigin, typeToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
