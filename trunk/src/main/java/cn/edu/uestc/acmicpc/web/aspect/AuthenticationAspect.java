@@ -10,10 +10,10 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Component
 @Aspect
+@Order(1)
 public class AuthenticationAspect {
 
   /**
@@ -40,25 +41,17 @@ public class AuthenticationAspect {
     Method method = methodSignature.getMethod();
     LoginPermit permit = method.getAnnotation(LoginPermit.class);
 
-    try {
-      if (permit.NeedLogin()) {
-        UserDTO userDTO = (UserDTO) request.getSession().getAttribute("currentUser");
-        if (userDTO == null)
-          throw new AppException("Please login first.");
-        if (permit.value() != AuthenticationType.NORMAL) {
-          if (userDTO.getType() != permit.value().ordinal()) {
-            throw new AppException("Permission denied");
-          }
+    if (permit.NeedLogin()) {
+      UserDTO userDTO = (UserDTO) request.getSession().getAttribute("currentUser");
+      if (userDTO == null)
+        throw new AppException("Please login first.");
+      if (permit.value() != AuthenticationType.NORMAL) {
+        if (userDTO.getType() != permit.value().ordinal()) {
+          throw new AppException("Permission denied");
         }
       }
-      Map<String, Object> result = (Map<String, Object>) proceedingJoinPoint.proceed();
-      return result;
-    } catch (AppException e) {
-      Map<String, Object> json = new HashMap<>();
-      json.put("result", "error");
-      json.put("error_msg", e.getMessage());
-      return json;
     }
+    return (Map<String, Object>) proceedingJoinPoint.proceed();
   }
 
 }
