@@ -298,7 +298,7 @@ public class ArticleControllerTest extends ControllerTest {
 
   @Test
   public void testOperationWithoutLogin() throws Exception {
-    mockMvc.perform(get("/article/operation/{id}/{field}/{value}", 1, "isVisible", "false"))
+    mockMvc.perform(get("/article/applyOperation/{id}/{field}/{value}", 1, "isVisible", "false"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("error")))
         .andExpect(jsonPath("$.error_msg", is("Please login first.")));
@@ -309,7 +309,7 @@ public class ArticleControllerTest extends ControllerTest {
     UserDTO currentUserDTO = UserDTO.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .build();
-    mockMvc.perform(get("/article/operation/{id}/{field}/{value}", 1, "isVisible", "false")
+    mockMvc.perform(get("/article/applyOperation/{id}/{field}/{value}", 1, "isVisible", "false")
         .sessionAttr("currentUser", currentUserDTO))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")));
@@ -317,11 +317,11 @@ public class ArticleControllerTest extends ControllerTest {
 
   @Test
   public void testOperationWithAppException() throws Exception {
-    doThrow(new AppException("error message")).when(articleService).operator(anyString(), anyString(), anyString());
+    doThrow(new AppException("error message")).when(articleService).applyOperation(anyString(), anyString(), anyString());
     UserDTO currentUserDTO = UserDTO.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .build();
-    mockMvc.perform(get("/article/operation/{id}/{field}/{value}", 1, "isVisible", "false")
+    mockMvc.perform(get("/article/applyOperation/{id}/{field}/{value}", 1, "isVisible", "false")
         .sessionAttr("currentUser", currentUserDTO))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("error")))

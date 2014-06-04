@@ -56,7 +56,7 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
   }
 
   @Override
-  public void operator(String field, String ids, String value) throws AppException {
+  public void applyOperation(String field, String ids, String value) throws AppException {
     Map<String, Object> properties = new HashMap<>();
     properties.put(field, value);
     articleDao.updateEntitiesByField(properties, "articleId", ids);

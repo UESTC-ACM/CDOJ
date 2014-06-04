@@ -115,10 +115,10 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.title = "new title";
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
-    articleService.operator("title", "1, 2", "new title");
+    articleService.applyOperation("title", "1, 2", "new title");
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
-    articleService.operator("title", "1", "Frequently Asked Questions");
-    articleService.operator("title", "2", "Markdown syntax cheatsheet");
+    articleService.applyOperation("title", "1", "Frequently Asked Questions");
+    articleService.applyOperation("title", "2", "Markdown syntax cheatsheet");
   }
 
   @Test
@@ -126,15 +126,15 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.contestId = 1;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
-    articleService.operator("contestId", "1, 2", "1");
+    articleService.applyOperation("contestId", "1, 2", "1");
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
-    articleService.operator("contestId", "1, 2", null);
+    articleService.applyOperation("contestId", "1, 2", null);
   }
 
   @Test
   public void testOperator_contestId_noSuchContest() throws AppException {
     try {
-      articleService.operator("contestId", "3", "5");
+      articleService.applyOperation("contestId", "3", "5");
       Assert.fail();
     } catch (AppException e) {
       Assert.assertEquals("Error while execute database query.", e.getMessage());
@@ -146,15 +146,15 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.problemId = 1;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
-    articleService.operator("problemId", "1, 2", "1");
+    articleService.applyOperation("problemId", "1, 2", "1");
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
-    articleService.operator("problemId", "1, 2", null);
+    articleService.applyOperation("problemId", "1, 2", null);
   }
 
   @Test
   public void testOperator_contestId_noSuchProblem() throws AppException {
     try {
-      articleService.operator("problemId", "3", "10");
+      articleService.applyOperation("problemId", "3", "10");
       Assert.fail();
     } catch (AppException e) {
       Assert.assertEquals("Error while execute database query.", e.getMessage());
@@ -166,15 +166,15 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.parentId = 1;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
-    articleService.operator("parentId", "3, 4", "1");
+    articleService.applyOperation("parentId", "3, 4", "1");
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
-    articleService.operator("parentId", "3, 4", null);
+    articleService.applyOperation("parentId", "3, 4", null);
   }
 
   @Test
   public void testOperator_parentId_noSuchParent() throws AppException {
     try {
-      articleService.operator("parentId", "3", "5");
+      articleService.applyOperation("parentId", "3", "5");
       Assert.fail();
     } catch (AppException e) {
       Assert.assertEquals("Error while execute database query.", e.getMessage());
@@ -186,15 +186,15 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
     ArticleCriteria articleCriteria = new ArticleCriteria();
     articleCriteria.userId = 2;
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(0L));
-    articleService.operator("userId", "3, 4", "2");
+    articleService.applyOperation("userId", "3, 4", "2");
     Assert.assertEquals(articleService.count(articleCriteria), Long.valueOf(2L));
-    articleService.operator("userId", "3, 4", "1");
+    articleService.applyOperation("userId", "3, 4", "1");
   }
 
   @Test
   public void testOperator_userId_noSuchUser() throws AppException {
     try {
-      articleService.operator("userId", "3", "10");
+      articleService.applyOperation("userId", "3", "10");
       Assert.fail();
     } catch (AppException e) {
       Assert.assertEquals("Error while execute database query.", e.getMessage());
@@ -236,7 +236,7 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
         .build();
     articleService.updateArticle(articleDto);
     Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getParentId(), parentIdToUpdate);
-    articleService.operator("parentId", "3", null);
+    articleService.applyOperation("parentId", "3", null);
   }
 
   @Test
@@ -310,7 +310,7 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
         .build();
     articleService.updateArticle(articleDto);
     Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getProblemId(), problemIdToUpdate);
-    articleService.operator("problemId", "3", null);
+    articleService.applyOperation("problemId", "3", null);
   }
 
   @Test
@@ -339,7 +339,7 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
         .build();
     articleService.updateArticle(articleDto);
     Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getContestId(), contestIdToUpdate);
-    articleService.operator("contestId", "3", null);
+    articleService.applyOperation("contestId", "3", null);
   }
 
   @Test
