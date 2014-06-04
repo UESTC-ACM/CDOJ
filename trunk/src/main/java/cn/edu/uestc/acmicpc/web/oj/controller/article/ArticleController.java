@@ -202,7 +202,7 @@ public class ArticleController extends BaseController {
       if (articleDto == null) {
         throw new AppException("No such article.");
       }
-      System.out.println("After query: " + articleDto.getType() + " ArticleType " + ArticleType.ARTICLE.ordinal() );
+      System.out.println("After query: " + articleDto.getType() + " ArticleType " + ArticleType.ARTICLE.ordinal());
       if (!checkPermission(session, articleDto.getUserId())) {
         throw new AppException("Permission denied");
       }
@@ -237,15 +237,15 @@ public class ArticleController extends BaseController {
     return json;
   }
 
-  @RequestMapping("operation/{id}/{field}/{value}")
+  @RequestMapping("applyOperation/{id}/{field}/{value}")
   @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
-  Map<String, Object> operation(@PathVariable("id") String targetId,
-                                @PathVariable("field") String field,
-                                @PathVariable("value") String value) throws AppException {
+  Map<String, Object> applyOperation(@PathVariable("id") String targetId,
+                                     @PathVariable("field") String field,
+                                     @PathVariable("value") String value) throws AppException {
     Map<String, Object> json = new HashMap<>();
-    articleService.operator(field, targetId, value);
+    articleService.applyOperation(field, targetId, value);
     json.put("result", "success");
     return json;
   }
