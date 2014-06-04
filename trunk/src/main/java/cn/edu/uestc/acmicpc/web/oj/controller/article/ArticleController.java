@@ -202,7 +202,6 @@ public class ArticleController extends BaseController {
       if (articleDto == null) {
         throw new AppException("No such article.");
       }
-      System.out.println("After query: " + articleDto.getType() + " ArticleType " + ArticleType.ARTICLE.ordinal());
       if (!checkPermission(session, articleDto.getUserId())) {
         throw new AppException("Permission denied");
       }
