@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -23,6 +24,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.util.enums.ArticleType;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.article.ArticleController;
 
@@ -39,7 +41,9 @@ import com.alibaba.fastjson.JSON;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -98,19 +102,6 @@ public class ArticleControllerTest extends ControllerTest {
   public void testFetchArticleFailed() throws Exception {
     when(articleService.getArticleDto(100, ArticleFields.ALL_FIELDS))
         .thenReturn(null);
-    mockMvc.perform(get("/article/data/{articleId}", 100))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.result", is("error")))
-        .andExpect(jsonPath("$.error_msg", is("No such article.")));
-  }
-
-  @Test
-  public void testFetchArticleWithIncorrectType() throws Exception {
-    ArticleDto articleDto = ArticleDto.builder()
-        .setType(ArticleType.COMMENT.ordinal())
-        .build();
-    when(articleService.getArticleDto(100, ArticleFields.ALL_FIELDS))
-        .thenReturn(articleDto);
     mockMvc.perform(get("/article/data/{articleId}", 100))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("error")))
@@ -307,7 +298,7 @@ public class ArticleControllerTest extends ControllerTest {
 
   @Test
   public void testOperationWithoutLogin() throws Exception {
-    mockMvc.perform(get("/article/operation/{id}/{field}/{value}", 1, "isVisible", "false"))
+    mockMvc.perform(get("/article/applyOperation/{id}/{field}/{value}", 1, "isVisible", "false"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("error")))
         .andExpect(jsonPath("$.error_msg", is("Please login first.")));
@@ -318,7 +309,7 @@ public class ArticleControllerTest extends ControllerTest {
     UserDTO currentUserDTO = UserDTO.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .build();
-    mockMvc.perform(get("/article/operation/{id}/{field}/{value}", 1, "isVisible", "false")
+    mockMvc.perform(get("/article/applyOperation/{id}/{field}/{value}", 1, "isVisible", "false")
         .sessionAttr("currentUser", currentUserDTO))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")));
@@ -326,14 +317,502 @@ public class ArticleControllerTest extends ControllerTest {
 
   @Test
   public void testOperationWithAppException() throws Exception {
-    doThrow(new AppException("error message")).when(articleService).operator(anyString(), anyString(), anyString());
+    doThrow(new AppException("error message")).when(articleService).applyOperation(anyString(), anyString(), anyString());
     UserDTO currentUserDTO = UserDTO.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .build();
-    mockMvc.perform(get("/article/operation/{id}/{field}/{value}", 1, "isVisible", "false")
+    mockMvc.perform(get("/article/applyOperation/{id}/{field}/{value}", 1, "isVisible", "false")
         .sessionAttr("currentUser", currentUserDTO))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("error")))
         .andExpect(jsonPath("$.error_msg", is("error message")));
+  }
+
+  @Test
+  public void testChangeNoticeOrderSuccessful() throws Exception {
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.ADMIN.ordinal())
+        .build();
+    when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
+        ArticleDto.builder()
+            .setArticleId(1)
+            .setType(ArticleType.ARTICLE.ordinal())
+            .build()
+    );
+    when(articleService.getArticleDto(2, ArticleFields.ALL_FIELDS)).thenReturn(
+        ArticleDto.builder()
+            .setArticleId(2)
+            .build()
+    );
+    when(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS)).thenReturn(
+        ArticleDto.builder()
+            .setArticleId(3)
+            .build()
+    );
+
+    mockMvc.perform(post("/article/changeNoticeOrder")
+        .sessionAttr("currentUser", currentUserDTO)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content("{\"order\":\"3,2,1\"}"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")));
+
+    ArgumentCaptor<ArticleDto> updateArticleCaptor = ArgumentCaptor.forClass(ArticleDto.class);
+    verify(articleService, times(3)).updateArticle(updateArticleCaptor.capture());
+    Assert.assertEquals(updateArticleCaptor.getAllValues().size(), 3);
+    Assert.assertEquals(updateArticleCaptor.getAllValues().get(0).getArticleId(), Integer.valueOf(3));
+    Assert.assertEquals(updateArticleCaptor.getAllValues().get(0).getOrder(), Integer.valueOf(0));
+    Assert.assertEquals(updateArticleCaptor.getAllValues().get(1).getArticleId(), Integer.valueOf(2));
+    Assert.assertEquals(updateArticleCaptor.getAllValues().get(1).getOrder(), Integer.valueOf(1));
+    Assert.assertEquals(updateArticleCaptor.getAllValues().get(2).getArticleId(), Integer.valueOf(1));
+    Assert.assertEquals(updateArticleCaptor.getAllValues().get(2).getOrder(), Integer.valueOf(2));
+  }
+
+  @Test
+  public void testChangeNoticeOrderWithEmptyString() throws Exception {
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.ADMIN.ordinal())
+        .build();
+    mockMvc.perform(post("/article/changeNoticeOrder")
+        .sessionAttr("currentUser", currentUserDTO)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content("{\"order\":\"\"}"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")));
+  }
+
+  @Test
+  public void testChangeNoticeOrderWithNoneInteger() throws Exception {
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.ADMIN.ordinal())
+        .build();
+    mockMvc.perform(post("/article/changeNoticeOrder")
+        .sessionAttr("currentUser", currentUserDTO)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content("{\"order\":\"a\"}"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("error")))
+        .andExpect(jsonPath("$.error_msg", is("Article ID format error.")));
+  }
+
+  @Test
+  public void testChangeNoticeOrderWithInexistentArticle() throws Exception {
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.ADMIN.ordinal())
+        .build();
+    when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(null);
+    mockMvc.perform(post("/article/changeNoticeOrder")
+        .sessionAttr("currentUser", currentUserDTO)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content("{\"order\":\"1\"}"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("error")))
+        .andExpect(jsonPath("$.error_msg", is("No such article.")));
+  }
+
+  private final ArticleDto articleDtoInCommentEditTest = ArticleDto.builder()
+      .setArticleId(1)
+      .setTitle("Comment")
+      .setContent("old content")
+      .setProblemId(1)
+      .setUserId(100)
+      .build();
+
+  @Test
+  public void testEditCommentSuccessful() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "edit");
+    ArticleDto articleEditDto = ArticleDto.builder()
+        .setArticleId(1)
+        .setContent("content")
+        .setProblemId(1)
+        .setType(ArticleType.COMMENT.ordinal())
+        .build();
+    jsonData.put("articleEditDto", articleEditDto);
+    String jsonDataString = JSON.toJSONString(jsonData);
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.NORMAL.ordinal())
+        .setUserId(100)
+        .build();
+    when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
+        articleDtoInCommentEditTest
+    );
+    mockMvc.perform(post("/article/edit")
+        .sessionAttr("currentUser", currentUserDTO)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(jsonDataString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")))
+        .andExpect(jsonPath("$.articleId", is(1)));
+
+    ArgumentCaptor<ArticleDto> articleDtoArgumentCaptor = ArgumentCaptor.forClass(ArticleDto.class);
+    verify(articleService, times(1)).updateArticle(articleDtoArgumentCaptor.capture());
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getTitle(), "Comment");
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getContent(), articleEditDto.getContent());
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getType(),
+        Integer.valueOf(ArticleType.COMMENT.ordinal())
+    );
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getUserId(), currentUserDTO.getUserId());
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getProblemId(), articleEditDto.getProblemId());
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getContestId(), articleEditDto.getContestId());
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getParentId(), articleEditDto.getParentId());
+  }
+
+  @Test
+  public void testEditCommentWithWrongUser() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "edit");
+    jsonData.put("articleEditDto",
+        ArticleDto.builder()
+            .setArticleId(1)
+            .setContent("content")
+            .setProblemId(1)
+            .setType(ArticleType.COMMENT.ordinal())
+            .build()
+    );
+    String jsonDataString = JSON.toJSONString(jsonData);
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.NORMAL.ordinal())
+        .setUserId(99)
+        .build();
+    when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
+        articleDtoInCommentEditTest
+    );
+    mockMvc.perform(post("/article/edit")
+        .sessionAttr("currentUser", currentUserDTO)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(jsonDataString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("error")))
+        .andExpect(jsonPath("$.error_msg", is("Permission denied")));
+  }
+
+  @Test
+  public void testEditCommentWithEmptyContent() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "edit");
+    jsonData.put("articleEditDto",
+        ArticleDto.builder()
+            .setArticleId(1)
+            .setContent("")
+            .setProblemId(1)
+            .setType(ArticleType.COMMENT.ordinal())
+            .build()
+    );
+    String jsonDataString = JSON.toJSONString(jsonData);
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.NORMAL.ordinal())
+        .setUserId(100)
+        .build();
+    when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
+        articleDtoInCommentEditTest
+    );
+    mockMvc.perform(post("/article/edit")
+        .sessionAttr("currentUser", currentUserDTO)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(jsonDataString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("error")))
+        .andExpect(jsonPath("$.error_msg", is("Comment should contain no more than 233 characters.")));
+  }
+
+  @Test
+  public void testEditCommentWithNullContent() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "edit");
+    jsonData.put("articleEditDto",
+        ArticleDto.builder()
+            .setArticleId(1)
+            .setProblemId(1)
+            .setType(ArticleType.COMMENT.ordinal())
+            .build()
+    );
+    String jsonDataString = JSON.toJSONString(jsonData);
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.NORMAL.ordinal())
+        .setUserId(100)
+        .build();
+    when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
+        articleDtoInCommentEditTest
+    );
+    mockMvc.perform(post("/article/edit")
+        .sessionAttr("currentUser", currentUserDTO)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(jsonDataString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("error")))
+        .andExpect(jsonPath("$.error_msg", is("Comment should contain no more than 233 characters.")));
+  }
+
+  @Test
+  public void testEditCommentWithLongContent() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "edit");
+    jsonData.put("articleEditDto",
+        ArticleDto.builder()
+            .setArticleId(1)
+            .setContent(StringUtil.repeat("a", 234))
+            .setProblemId(1)
+            .setType(ArticleType.COMMENT.ordinal())
+            .build()
+    );
+    String jsonDataString = JSON.toJSONString(jsonData);
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.NORMAL.ordinal())
+        .setUserId(100)
+        .build();
+    when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
+        articleDtoInCommentEditTest
+    );
+    mockMvc.perform(post("/article/edit")
+        .sessionAttr("currentUser", currentUserDTO)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(jsonDataString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("error")))
+        .andExpect(jsonPath("$.error_msg", is("Comment should contain no more than 233 characters.")));
+  }
+
+  @Test
+  public void testEditCommentWithInexistentArticle() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "edit");
+    jsonData.put("articleEditDto",
+        ArticleDto.builder()
+            .setArticleId(1)
+            .setContent("content")
+            .setProblemId(1)
+            .setType(ArticleType.COMMENT.ordinal())
+            .build()
+    );
+    String jsonDataString = JSON.toJSONString(jsonData);
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.NORMAL.ordinal())
+        .setUserId(100)
+        .build();
+    when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
+        null
+    );
+    mockMvc.perform(post("/article/edit")
+        .sessionAttr("currentUser", currentUserDTO)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(jsonDataString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("error")))
+        .andExpect(jsonPath("$.error_msg", is("No such article.")));
+  }
+
+  @Test
+  public void testCreateCommentSuccessful() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "new");
+    ArticleDto articleEditDto = ArticleDto.builder()
+        .setArticleId(1)
+        .setContent("content")
+        .setProblemId(1)
+        .setType(ArticleType.COMMENT.ordinal())
+        .build();
+    jsonData.put("articleEditDto", articleEditDto);
+    String jsonDataString = JSON.toJSONString(jsonData);
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.NORMAL.ordinal())
+        .setUserId(100)
+        .build();
+    when(articleService.createNewArticle(currentUserDTO.getUserId())).thenReturn(1);
+    when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
+        articleDtoInCommentEditTest
+    );
+    mockMvc.perform(post("/article/edit")
+        .sessionAttr("currentUser", currentUserDTO)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(jsonDataString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")))
+        .andExpect(jsonPath("$.articleId", is(1)));
+  }
+
+  @Test
+  public void testCreateCommentWithCreateFailed() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "new");
+    ArticleDto articleEditDto = ArticleDto.builder()
+        .setArticleId(1)
+        .setContent("content")
+        .setProblemId(1)
+        .setType(ArticleType.COMMENT.ordinal())
+        .build();
+    jsonData.put("articleEditDto", articleEditDto);
+    String jsonDataString = JSON.toJSONString(jsonData);
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.NORMAL.ordinal())
+        .setUserId(100)
+        .build();
+    when(articleService.createNewArticle(currentUserDTO.getUserId())).thenReturn(1);
+    when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
+        null
+    );
+    mockMvc.perform(post("/article/edit")
+        .sessionAttr("currentUser", currentUserDTO)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(jsonDataString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("error")))
+        .andExpect(jsonPath("$.error_msg", is("Error while creating article.")));
+  }
+
+  @Test
+  public void testEditArticleSuccessful() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "edit");
+    ArticleDto articleEditDto = ArticleDto.builder()
+        .setArticleId(1)
+        .setContent("AAAAAAAAAAAAABBBBBBBBBB")
+        .setTitle("Hello world!")
+        .setType(ArticleType.ARTICLE.ordinal())
+        .build();
+    jsonData.put("articleEditDto", articleEditDto);
+    String jsonDataString = JSON.toJSONString(jsonData);
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.NORMAL.ordinal())
+        .setUserId(100)
+        .build();
+    when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
+        ArticleDto.builder()
+            .setArticleId(1)
+            .setTitle("Old title")
+            .setContent("Old content")
+            .setUserId(100)
+            .setType(ArticleType.ARTICLE.ordinal())
+            .build()
+    );
+    mockMvc.perform(post("/article/edit")
+        .sessionAttr("currentUser", currentUserDTO)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(jsonDataString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")))
+        .andExpect(jsonPath("$.articleId", is(1)));
+
+    ArgumentCaptor<ArticleDto> articleDtoArgumentCaptor = ArgumentCaptor.forClass(ArticleDto.class);
+    verify(articleService, times(1)).updateArticle(articleDtoArgumentCaptor.capture());
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getTitle(), articleEditDto.getTitle());
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getContent(), articleEditDto.getContent());
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getType(),
+        Integer.valueOf(ArticleType.ARTICLE.ordinal())
+    );
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getUserId(), currentUserDTO.getUserId());
+  }
+
+  @Test
+  public void testEditArticleWithEmptyTitle() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "edit");
+    ArticleDto articleEditDto = ArticleDto.builder()
+        .setArticleId(1)
+        .setContent("AAAAAAAAAAAAABBBBBBBBBB")
+        .setTitle("")
+        .setType(ArticleType.ARTICLE.ordinal())
+        .build();
+    jsonData.put("articleEditDto", articleEditDto);
+    String jsonDataString = JSON.toJSONString(jsonData);
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.NORMAL.ordinal())
+        .setUserId(100)
+        .build();
+    when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
+        ArticleDto.builder()
+            .setArticleId(1)
+            .setTitle("Old title")
+            .setContent("Old content")
+            .setUserId(100)
+            .setType(ArticleType.ARTICLE.ordinal())
+            .build()
+    );
+    mockMvc.perform(post("/article/edit")
+        .sessionAttr("currentUser", currentUserDTO)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(jsonDataString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("field_error")))
+        .andExpect(jsonPath("$.field", hasSize(1)))
+        .andExpect(jsonPath("$.field[0].field", is("title")))
+        .andExpect(jsonPath("$.field[0].defaultMessage",
+            is("Please enter a validate title.")));
+  }
+
+  @Test
+  public void testEditArticleTypeByAdmin() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "edit");
+    ArticleDto articleEditDto = ArticleDto.builder()
+        .setArticleId(1)
+        .setContent("AAAAAAAAAAAAABBBBBBBBBB")
+        .setTitle("Hello world!")
+        .setType(ArticleType.NOTICE.ordinal())
+        .build();
+    jsonData.put("articleEditDto", articleEditDto);
+    String jsonDataString = JSON.toJSONString(jsonData);
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.ADMIN.ordinal())
+        .setUserId(100)
+        .build();
+    when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
+        ArticleDto.builder()
+            .setArticleId(1)
+            .setTitle("Old title")
+            .setContent("Old content")
+            .setUserId(100)
+            .setType(ArticleType.ARTICLE.ordinal())
+            .build()
+    );
+    mockMvc.perform(post("/article/edit")
+        .sessionAttr("currentUser", currentUserDTO)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(jsonDataString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")))
+        .andExpect(jsonPath("$.articleId", is(1)));
+
+    ArgumentCaptor<ArticleDto> articleDtoArgumentCaptor = ArgumentCaptor.forClass(ArticleDto.class);
+    verify(articleService, times(1)).updateArticle(articleDtoArgumentCaptor.capture());
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getType(), articleEditDto.getType());
+  }
+
+  @Test
+  public void testEditArticleTypeByNoneAdmin() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "edit");
+    ArticleDto articleEditDto = ArticleDto.builder()
+        .setArticleId(1)
+        .setContent("AAAAAAAAAAAAABBBBBBBBBB")
+        .setTitle("Hello world!")
+        .setType(ArticleType.NOTICE.ordinal())
+        .build();
+    jsonData.put("articleEditDto", articleEditDto);
+    String jsonDataString = JSON.toJSONString(jsonData);
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.NORMAL.ordinal())
+        .setUserId(100)
+        .build();
+    when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
+        ArticleDto.builder()
+            .setArticleId(1)
+            .setTitle("Old title")
+            .setContent("Old content")
+            .setUserId(100)
+            .setType(ArticleType.ARTICLE.ordinal())
+            .build()
+    );
+    mockMvc.perform(post("/article/edit")
+        .sessionAttr("currentUser", currentUserDTO)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(jsonDataString))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")))
+        .andExpect(jsonPath("$.articleId", is(1)));
+
+    ArgumentCaptor<ArticleDto> articleDtoArgumentCaptor = ArgumentCaptor.forClass(ArticleDto.class);
+    verify(articleService, times(1)).updateArticle(articleDtoArgumentCaptor.capture());
+    Assert.assertNotEquals(articleDtoArgumentCaptor.getValue().getType(), articleEditDto.getType());
   }
 }

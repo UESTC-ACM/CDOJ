@@ -15,7 +15,6 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -51,8 +50,7 @@ public class IndexController extends BaseController {
   }
 
   @RequestMapping("/")
-  public String index(ModelMap model) {
-    model.put("message", "home page.");
+  public String index() {
     return "index";
   }
 
