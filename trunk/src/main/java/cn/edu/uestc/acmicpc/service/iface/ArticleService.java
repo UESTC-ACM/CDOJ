@@ -62,7 +62,7 @@ public interface ArticleService extends DatabaseService<Article, Integer> {
    * @param value new value.
    * @throws AppException
    */
-  public void operator(String field, String ids, String value) throws AppException;
+  public void applyOperation(String field, String ids, String value) throws AppException;
 
   /**
    * Creates a new article record.

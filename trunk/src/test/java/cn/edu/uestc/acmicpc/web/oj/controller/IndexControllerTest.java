@@ -1,7 +1,6 @@
 package cn.edu.uestc.acmicpc.web.oj.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -35,7 +34,6 @@ public class IndexControllerTest extends ControllerTest {
   public void testVisitIndex() throws Exception {
     mockMvc.perform(get("/"))
         .andExpect(status().isOk())
-        .andExpect(view().name("index"))
-        .andExpect(model().attribute("message", "home page."));
+        .andExpect(view().name("index"));
   }
 }

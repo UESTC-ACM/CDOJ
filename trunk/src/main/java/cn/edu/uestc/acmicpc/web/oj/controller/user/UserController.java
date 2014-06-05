@@ -467,7 +467,6 @@ public class UserController extends BaseController {
         json.put("result", "failed");
       }
     } catch (AppException e) {
-      System.out.println(e.getMessage());
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
     }
