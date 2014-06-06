@@ -648,10 +648,22 @@ public class ContestController extends BaseController {
     // Check permission
     checkContestPermission(session, contestId);
 
-    if (contestShowDTO.getStatus().equals("Ended")) {
-      return contestRankListService.getRankList(contestId, (int) getContestType(session, contestId), false);
+    if (isAdmin(session)) {
+      // Admin or no frozen time specified
+      return contestRankListService.getRankList(
+          contestId,
+          (int) getContestType(session, contestId),
+          false,
+          0
+      );
     } else {
-      return contestRankListService.getRankList(contestId, (int) getContestType(session, contestId), !isAdmin(session));
+      // Frozen board on last frozenTime minutes
+      return contestRankListService.getRankList(
+          contestId,
+          (int) getContestType(session, contestId),
+          contestShowDTO.getTimeLeft() <= contestShowDTO.getFrozenTime(),
+          contestShowDTO.getFrozenTime()
+      );
     }
   }
 
@@ -893,6 +905,8 @@ public class ContestController extends BaseController {
         }
 
         contestDTO.setType(contestEditDTO.getType());
+        contestDTO.setPassword(null);
+        contestDTO.setParentId(null);
         if (contestEditDTO.getType() == ContestType.PRIVATE.ordinal()) {
           contestDTO.setPassword(contestEditDTO.getPassword());
         } else if (contestEditDTO.getType() == ContestType.INHERIT.ordinal()) {
@@ -906,6 +920,15 @@ public class ContestController extends BaseController {
                 contestEditDTO.getLengthMinutes() * 60
         );
         contestDTO.setTime(contestEditDTO.getTime());
+        if (contestEditDTO.getNeedFrozen()) {
+          contestDTO.setFrozenTime(
+              contestEditDTO.getFrozenLengthDays() * 24 * 60 * 60 +
+                  contestEditDTO.getFrozenLengthHours() * 60 * 60 +
+                  contestEditDTO.getFrozenLengthMinutes() * 60
+          );
+        } else {
+          contestDTO.setFrozenTime(0);
+        }
 
         contestService.updateContest(contestDTO);
         json.put("result", "success");

@@ -118,7 +118,7 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
   @Override
   public synchronized RankList getRankList(Integer contestId,
                                            Integer contestType,
-                                           Boolean frozen) throws AppException {
+                                           Boolean frozen, Integer frozenTime) throws AppException {
     String rankListName = contestId.toString() + ":" + frozen;
     RankList lastModified = rankListPool.get(rankListName);
     if (lastModified == null ||
@@ -158,7 +158,7 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
           continue;
         }
         Boolean isFrozen = false;
-        if (frozen && contestShowDTO.getEndTime().getTime() - status.getTime().getTime() <= 60 * 60 * 1000) {
+        if (frozen && contestShowDTO.getEndTime().getTime() - status.getTime().getTime() <= frozenTime) {
           isFrozen = true;
         }
         rankListBuilder.addStatus(new RankListStatus(

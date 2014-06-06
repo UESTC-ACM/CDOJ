@@ -131,6 +131,19 @@ public class Contest implements Serializable {
     this.length = length;
   }
 
+  private Integer frozenTime;
+
+  @Column(name = "frozenTime", nullable = false, insertable = true, updatable = true, length = 10,
+      precision = 0)
+  @Basic
+  public Integer getFrozenTime() {
+    return frozenTime;
+  }
+
+  public void setFrozenTime(Integer frozenTime) {
+    this.frozenTime = frozenTime;
+  }
+
   private Boolean isVisible;
 
   @Column(name = "isVisible", nullable = false, insertable = true, updatable = true, length = 0,
@@ -147,7 +160,7 @@ public class Contest implements Serializable {
   private String password;
 
   @Column(name = "password", nullable = true, insertable = true, updatable = true, length = 40,
-    precision = 0)
+      precision = 0)
   @Basic
   public String getPassword() {
     return password;
@@ -244,6 +257,7 @@ public class Contest implements Serializable {
     length = defaultContestLength;
     time = new Timestamp(System.currentTimeMillis());
     title = "";
+    frozenTime = 0;
     type = (byte) ContestType.PUBLIC.ordinal();
   }
 }
