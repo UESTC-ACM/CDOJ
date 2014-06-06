@@ -46,6 +46,20 @@ cdoj
             , 500)
         else if $scope.contest.status == $rootScope.ContestStatus.RUNNING
           current = ($scope.contest.currentTime - $scope.contest.startTime)
+
+          length = Math.floor(current / 1000)
+          second = length % 60
+          length = (length - second) / 60
+          minute = length % 60
+          length = (length - minute) / 60
+          hours = length
+          $scope.currentTimePassed =  _.sprintf(
+            "%d:%02d:%02d"
+            hours
+            minute
+            second
+          )
+
           type = "danger"
           active = true
           if $scope.contest.currentTime >= $scope.contest.endTime
