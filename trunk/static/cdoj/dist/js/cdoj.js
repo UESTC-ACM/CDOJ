@@ -81483,7 +81483,7 @@ if (typeof exports === 'object') {
 
   cdoj.controller("ContestShowController", [
     "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$timeout", "$interval", "$cookieStore", "contest", function($scope, $rootScope, $http, $window, $modal, $routeParams, $timeout, $interval, $cookieStore, contest) {
-      var clarificationTimer, cookieName, currentTimeTimer, rankListTimer, refreshClarification, refreshRankList, updateTime;
+      var clarificationTimer, cookieName, currentTimeTimer, getProblemStateStyle, getSuccessRatio, rankListTimer, refreshClarification, refreshRankList, updateTime;
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $window.scrollTo(0, 0);
       $scope.currentTeam = "";
@@ -81625,16 +81625,41 @@ if (typeof exports === 'object') {
       $scope.refreshStatus = function() {
         return $scope.$broadcast("list:refresh:status");
       };
+      getProblemStateStyle = function(solved, tried, maxSolved) {
+        var col, val;
+        if (maxSolved === 0 || tried === 0) {
+          return "";
+        }
+        val = (maxSolved - solved) / maxSolved * 200;
+        col = "white";
+        if (val > 128) {
+          col = "black";
+        }
+        return _.sprintf("background-color: rgb(%.0f, %.0f, %.0f); color: %s;", val, val, val, col);
+      };
+      getSuccessRatio = function(solved, tried) {
+        if (tried === 0) {
+          return "";
+        }
+        return _.sprintf("%.0f", solved / tried * 100);
+      };
       refreshRankList = function() {
         var contestId;
         contestId = angular.copy($scope.contestId);
         return $http.get("/contest/rankList/" + contestId).success(function(data) {
-          var userStatus;
+          var maxSolved, userStatus;
           if (data.result === "success") {
             $scope.rankList = data.rankList.rankList;
             _.each($scope.problemList, function(value, index) {
               value.tried = data.rankList.problemList[index].tried;
               return value.solved = data.rankList.problemList[index].solved;
+            });
+            maxSolved = _.reduce($scope.problemList, function(memo, problem) {
+              return Math.max(memo, problem.solved);
+            }, 0);
+            _.each($scope.problemList, function(value, index) {
+              value.stateStyle = getProblemStateStyle(value.solved, value.tried, maxSolved);
+              return value.successRatio = getSuccessRatio(value.solved, value.tried);
             });
             if ($rootScope.hasLogin) {
               userStatus = void 0;

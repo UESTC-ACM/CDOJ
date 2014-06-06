@@ -248,7 +248,8 @@
         <div class="form-group">
           <textarea class="cdoj-submit-area"
                     ng-model="submitDTO.codeContent"></textarea>
-          <ui-validate-info value="fieldInfo" for="codeContent"></ui-validate-info>
+          <ui-validate-info value="fieldInfo"
+                            for="codeContent"></ui-validate-info>
         </div>
         <button class="btn btn-default" ng-click="printCode()">Print</button>
       </form>
@@ -268,16 +269,16 @@
       </div>
     </div>
     <div class="col-md-12">
-      <table id="rank-list" class="table">
+      <table id="rank-list" class="table" style="width: auto;">
         <thead>
         <tr>
-          <th class="text-center" style="width: 55px;">Rank</th>
-          <th class="text-center">ID</th>
-          <th class="text-center" style="width: 65px;">Solved</th>
-          <th class="text-center" style="width: 75px;">Penalty</th>
+          <th class="text-center" style="width: 55px; min-width: 55px; max-width: 55px;">Rank</th>
+          <th class="text-center" style="width: 220px; min-width: 220px; max-width: 220px;">ID</th>
+          <th class="text-center" style="width: 65px; min-width: 65px; max-width: 65px;">Solved</th>
+          <th class="text-center" style="width: 75px; min-width: 75px; max-width: 75px;">Penalty</th>
           <th class="text-center"
               bindonce ng-repeat="problem in problemList"
-              style="width: 70px;">
+              style="width: 70px; min-width: 70px; max-width: 70px;">
             <a href="javascript:void(0);"
                ng-click="chooseProblem(problem.order)">{{problem.orderCharacter}}</a>
           </th>
@@ -334,6 +335,19 @@
                   ui-penalty></span>
             <br/>
             <span ng-if="item.tried > 0">(-{{item.tried}})</span>
+          </td>
+        </tr>
+        <tr class="rank-foot">
+          <td class="text-center"></td>
+          <td class="text-center"></td>
+          <td class="text-center"></td>
+          <td class="text-center"></td>
+          <td class="text-center"
+              bindonce ng-repeat="problem in problemList"
+              style="{{problem.stateStyle}}">
+            <span ng-if="problem.tried > 0">{{problem.solved}}/{{problem.tried}}</span>
+            <br/>
+            <span ng-if="problem.tried > 0">{{problem.successRatio}}%</span>
           </td>
         </tr>
         </tbody>
