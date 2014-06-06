@@ -42,6 +42,8 @@ public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
 
   public Integer type;
 
+  public String userName;
+
   @Override
   public void setResultFields(Fields resultFields) {
     super.setResultFields(resultFields);
@@ -68,6 +70,9 @@ public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
     }
     if (type != null) {
       criteria.add(Restrictions.eq("type", type));
+    }
+    if (userName != null) {
+      criteria.add(Restrictions.eq("owner.userName", userName));
     }
 
     if (contestId != null) {
@@ -96,8 +101,8 @@ public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
       criteria.add(Restrictions.or(
           Restrictions.ilike("title", keyword),
           Restrictions.ilike("content", keyword),
-          Restrictions.ilike("userByUserId.userName", keyword),
-          Restrictions.ilike("userByUserId.nickName", keyword)
+          Restrictions.ilike("owner.userName", keyword),
+          Restrictions.ilike("owner.nickName", keyword)
       ));
     }
 

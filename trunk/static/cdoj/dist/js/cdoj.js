@@ -80421,7 +80421,7 @@ if (typeof exports === 'object') {
   var $, GlobalConditions, GlobalVariables, cdoj;
 
   GlobalVariables = {
-    Version: "V2.2.0",
+    Version: "V2.2.2",
     OnlineJudgeReturnType: {
       OJ_WAIT: 0,
       OJ_AC: 1,
