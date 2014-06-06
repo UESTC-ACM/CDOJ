@@ -82,7 +82,9 @@
             {{problem.solved}} / {{problem.tried}}
           </td>
           <td>Problem <span ng-bind="problem.orderCharacter"></span></td>
-          <td><a href="javascript:void(0);" ng-click="chooseProblem(problem.order)">{{problem.title}}</a></td>
+          <td><a href="javascript:void(0);"
+                 ng-click="chooseProblem(problem.order)">{{problem.title}}</a>
+          </td>
         </tr>
         </tbody>
       </table>
@@ -239,7 +241,8 @@
   </div>
 </tab>
 <tab heading="Rank"
-     ng-hide="contest.status == $root.ContestStatus.PENDING">
+     ng-hide="contest.status == $root.ContestStatus.PENDING"
+     select="refreshRankList()">
   <div class="row" style="margin-top: 15px;">
     <div class="col-md-12">
       <div class="pull-left">
@@ -298,7 +301,9 @@
           </td>
           <td class="solved"
               style="vertical-align:middle;"
-              ng-class="{my: user.name == $root.currentUser.userName}">{{user.solved}}</td>
+              ng-class="{my: user.name == $root.currentUser.userName}">
+            {{user.solved}}
+          </td>
           <td class="penalty" penalty="user.penalty" ui-penalty
               style="vertical-align:middle;"
               ng-class="{my: user.name == $root.currentUser.userName}"></td>
