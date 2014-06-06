@@ -81669,7 +81669,32 @@ if (typeof exports === 'object') {
       $scope.refreshRankList = function() {
         return refreshRankList();
       };
-      return rankListTimer = $timeout(refreshRankList, 100);
+      rankListTimer = $timeout(refreshRankList, 100);
+      $scope.submitDTO = {
+        codeContent: ""
+      };
+      return $scope.printCode = function() {
+        var submitDTO;
+        submitDTO = angular.copy($scope.submitDTO);
+        if (angular.isUndefined(submitDTO.codeContent)) {
+          return;
+        }
+        if ($rootScope.hasLogin === false) {
+          return $window.alert("Please login first!");
+        } else {
+          if ($window.confirm("Are you sure?")) {
+            return $http.post("/status/print", submitDTO).success(function(data) {
+              if (data.result === "success") {
+                return $window.alert("Your print request has been send to the stuff," + " please wait patiently.");
+              } else {
+                return $window.alert(data.error_msg);
+              }
+            }).error(function() {
+              return $window.alert("Network error.");
+            });
+          }
+        }
+      };
     }
   ]);
 
