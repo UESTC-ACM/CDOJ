@@ -476,6 +476,7 @@ public abstract class DaoImpl<Entity extends Serializable, PK extends Serializab
     } else if (result.size() == 1) {
       return result.get(0);
     } else {
+      System.out.println(result.size());
       throw new AppException("the value is not unique.");
     }
   }

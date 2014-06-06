@@ -15,8 +15,8 @@ cdoj
       commentCondition.parentId = $scope.articleId
       $scope.commentCondition = commentCondition
 
-      sendEditRequest = (articleEditDTO) ->
-        $http.post("/article/editComment", articleEditDTO).success((data) ->
+      sendEditRequest = (articleEditDto) ->
+        $http.post("/article/edit", articleEditDto).success((data) ->
           if data.result == "success"
             $scope.newComment = ""
             $scope.$broadcast("list:refresh:comment")
@@ -30,16 +30,14 @@ cdoj
 
       $scope.newComment = ""
       $scope.comment = ->
-        articleEditDTO =
+        articleEditDto =
           content: $scope.newComment
-          action: "new"
           title: "Comment"
-          userName: $rootScope.currentUser.userName
           type: $rootScope.ArticleType.COMMENT
           problemId: $scope.problemId
           contestId: $scope.contestId
           parentId: $scope.articleId
-        sendEditRequest(articleEditDTO)
+        sendEditRequest(action: "new", articleEditDto: articleEditDto)
         $scope.stashCommentList = false
         $window.scrollTo(0, 0)
 
@@ -56,11 +54,11 @@ cdoj
 
       $scope.delete = (article) ->
         if $window.confirm "Are you sure?"
-          articleEditDTO =
+          articleEditDto =
             content: "This comment is deleted by administrator."
-            action: "Edit"
+            type: $rootScope.ArticleType.COMMENT
             articleId: article.articleId
-          sendEditRequest(articleEditDTO)
+          sendEditRequest(articleEditDto: articleEditDto, action: "edit")
 
   ]
   replace: true
