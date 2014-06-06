@@ -34,14 +34,15 @@ cdoj
         $scope.title = "New article"
 
       $scope.submit = ->
-        articleEditDTO = angular.copy($scope.article)
-        articleEditDTO.action = angular.copy($scope.action)
-        articleEditDTO.userName = angular.copy($scope.userName)
+        articleEditDto = angular.copy($scope.article)
         if $scope.isNotice
-          articleEditDTO.type = $rootScope.ArticleType.NOTICE
+          articleEditDto.type = $rootScope.ArticleType.NOTICE
         else
-          articleEditDTO.type = $rootScope.ArticleType.ARTICLE
-        $http.post("/article/edit", articleEditDTO).success((data) ->
+          articleEditDto.type = $rootScope.ArticleType.ARTICLE
+        $http.post("/article/edit",
+          action: angular.copy($scope.action)
+          articleEditDto: articleEditDto
+        ).success((data) ->
           if data.result == "success"
             $window.location.href = "/#/article/show/#{data.articleId}"
           else if data.result == "field_error"

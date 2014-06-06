@@ -241,7 +241,7 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void testUpdateArticle_type() throws AppException {
-    Integer typeToUpdate = 0;
+    Integer typeToUpdate = 1;
     Integer typeOrigin = articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getType();
     Assert.assertNotEquals(typeOrigin, typeToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
@@ -286,7 +286,7 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void testUpdateArticle_isVisible() throws AppException {
-    Boolean isVisibleToUpdate = true;
+    Boolean isVisibleToUpdate = false;
     Boolean isVisibleOrigin = articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getIsVisible();
     Assert.assertNotEquals(isVisibleOrigin, isVisibleToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
