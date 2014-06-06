@@ -82219,7 +82219,8 @@ if (typeof exports === 'object') {
       return $http.get("/article/data/" + articleId).success(function(data) {
         if (data.result === "success") {
           $scope.article = data.article;
-          return $rootScope.title = $scope.article.title;
+          $rootScope.title = $scope.article.title;
+          return $scope.article.content = $scope.article.content.replace("!!!more!!!", "");
         } else {
           return $window.alert(data.error_msg);
         }
@@ -83491,7 +83492,7 @@ if (typeof exports === 'object') {
             },
             validation: {
               allowedExtensions: ["zip"],
-              sizeLimit: 100 * 1000 * 1000
+              sizeLimit: 300 * 1024 * 1024
             },
             multiple: false,
             callbacks: {

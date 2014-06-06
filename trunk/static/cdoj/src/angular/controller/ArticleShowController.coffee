@@ -17,6 +17,8 @@ cdoj
         if data.result == "success"
           $scope.article = data.article
           $rootScope.title = $scope.article.title
+          $scope.article.content =
+            $scope.article.content.replace("!!!more!!!", "")
         else
           $window.alert data.error_msg
       ).error(->
