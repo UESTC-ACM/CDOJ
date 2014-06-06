@@ -18,7 +18,10 @@ public class ContestEditDTO {
                         Integer lengthMinutes, String problemList,
                         Timestamp time, String title, Byte type,
                         String password, String passwordRepeat,
-                        Integer parentId) {
+                        Integer parentId, Boolean needFrozen,
+                        Integer frozenLengthMinutes,
+                        Integer frozenLengthHours,
+                        Integer frozenLengthDays) {
     this.action = action;
     this.contestId = contestId;
     this.description = description;
@@ -32,6 +35,10 @@ public class ContestEditDTO {
     this.password = password;
     this.passwordRepeat = passwordRepeat;
     this.parentId = parentId;
+    this.needFrozen = needFrozen;
+    this.frozenLengthMinutes = frozenLengthMinutes;
+    this.frozenLengthHours = frozenLengthHours;
+    this.frozenLengthDays = frozenLengthDays;
   }
 
   private String action;
@@ -48,6 +55,10 @@ public class ContestEditDTO {
   private String passwordRepeat;
   private Integer parentId;
   private List<UserDTO> userList;
+  private Boolean needFrozen;
+  private Integer frozenLengthDays;
+  private Integer frozenLengthHours;
+  private Integer frozenLengthMinutes;
 
   public List<UserDTO> getUserList() {
     return userList;
@@ -161,14 +172,42 @@ public class ContestEditDTO {
     this.type = type;
   }
 
+  public Boolean getNeedFrozen() {
+    return needFrozen;
+  }
+
+  public void setNeedFrozen(Boolean needFrozen) {
+    this.needFrozen = needFrozen;
+  }
+
+  public Integer getFrozenLengthDays() {
+    return frozenLengthDays;
+  }
+
+  public void setFrozenLengthDays(Integer frozenLengthDays) {
+    this.frozenLengthDays = frozenLengthDays;
+  }
+
+  public Integer getFrozenLengthHours() {
+    return frozenLengthHours;
+  }
+
+  public void setFrozenLengthHours(Integer frozenLengthHours) {
+    this.frozenLengthHours = frozenLengthHours;
+  }
+
+  public Integer getFrozenLengthMinutes() {
+    return frozenLengthMinutes;
+  }
+
+  public void setFrozenLengthMinutes(Integer frozenLengthMinutes) {
+    this.frozenLengthMinutes = frozenLengthMinutes;
+  }
+
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof ContestEditDTO)) {
-      return false;
-    }
+    if (this == o) return true;
+    if (!(o instanceof ContestEditDTO)) return false;
 
     ContestEditDTO that = (ContestEditDTO) o;
 
@@ -181,6 +220,15 @@ public class ContestEditDTO {
     if (description != null ? !description.equals(that.description) : that.description != null) {
       return false;
     }
+    if (frozenLengthDays != null ? !frozenLengthDays.equals(that.frozenLengthDays) : that.frozenLengthDays != null) {
+      return false;
+    }
+    if (frozenLengthHours != null ? !frozenLengthHours.equals(that.frozenLengthHours) : that.frozenLengthHours != null) {
+      return false;
+    }
+    if (frozenLengthMinutes != null ? !frozenLengthMinutes.equals(that.frozenLengthMinutes) : that.frozenLengthMinutes != null) {
+      return false;
+    }
     if (lengthDays != null ? !lengthDays.equals(that.lengthDays) : that.lengthDays != null) {
       return false;
     }
@@ -188,6 +236,9 @@ public class ContestEditDTO {
       return false;
     }
     if (lengthMinutes != null ? !lengthMinutes.equals(that.lengthMinutes) : that.lengthMinutes != null) {
+      return false;
+    }
+    if (needFrozen != null ? !needFrozen.equals(that.needFrozen) : that.needFrozen != null) {
       return false;
     }
     if (parentId != null ? !parentId.equals(that.parentId) : that.parentId != null) {
@@ -234,6 +285,10 @@ public class ContestEditDTO {
     result = 31 * result + (passwordRepeat != null ? passwordRepeat.hashCode() : 0);
     result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
     result = 31 * result + (userList != null ? userList.hashCode() : 0);
+    result = 31 * result + (needFrozen != null ? needFrozen.hashCode() : 0);
+    result = 31 * result + (frozenLengthDays != null ? frozenLengthDays.hashCode() : 0);
+    result = 31 * result + (frozenLengthHours != null ? frozenLengthHours.hashCode() : 0);
+    result = 31 * result + (frozenLengthMinutes != null ? frozenLengthMinutes.hashCode() : 0);
     return result;
   }
 
@@ -259,10 +314,14 @@ public class ContestEditDTO {
     private String password;
     private String passwordRepeat;
     private Integer parentId;
+    private Boolean needFrozen;
+    private Integer frozenLengthDays;
+    private Integer frozenLengthHours;
+    private Integer frozenLengthMinutes;
 
     public ContestEditDTO build() {
       return new ContestEditDTO(action, contestId, description, lengthDays, lengthHours, lengthMinutes,
-          problemList, time, title, type, password, passwordRepeat, parentId);
+          problemList, time, title, type, password, passwordRepeat, parentId, needFrozen, frozenLengthMinutes, frozenLengthHours, frozenLengthDays);
     }
 
     public Builder setParentId(Integer parentId) {
@@ -327,6 +386,26 @@ public class ContestEditDTO {
 
     public Builder setType(Byte type) {
       this.type = type;
+      return this;
+    }
+
+    public Builder setNeedFrozen(Boolean needFrozen) {
+      this.needFrozen = needFrozen;
+      return this;
+    }
+
+    public Builder setFrozenLengthDays(Integer frozenLengthDays) {
+      this.frozenLengthDays = frozenLengthDays;
+      return this;
+    }
+
+    public Builder setFrozenLengthHours(Integer frozenLengthHours) {
+      this.frozenLengthHours = frozenLengthHours;
+      return this;
+    }
+
+    public Builder setFrozenLengthMinutes(Integer frozenLengthMinutes) {
+      this.frozenLengthMinutes = frozenLengthMinutes;
       return this;
     }
   }

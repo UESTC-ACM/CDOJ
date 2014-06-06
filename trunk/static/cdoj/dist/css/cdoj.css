@@ -6488,6 +6488,9 @@ button.close {
 #rank-list td.rank-list-tried {
   background-color: #ffccbf;
 }
+#rank-list td.rank-list-frozen {
+  background-color: #ffc080;
+}
 /* Hemisu Light */
 /* Original theme - http://noahfrederick.com/vim-color-scheme-hemisu/ */
 /* Pretty printing styles. Used with prettify.js. */
@@ -6873,7 +6876,7 @@ hr.colorful {
   overflow-y: auto;
   -webkit-overflow-scroll: touch;
   color: #ffffff;
-  margin-left: -164.99999999px;
+  margin-left: -165px;
   width: 165px;
   left: 165px;
 }

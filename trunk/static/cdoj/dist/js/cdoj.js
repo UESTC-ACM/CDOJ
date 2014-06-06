@@ -80617,7 +80617,11 @@ if (typeof exports === 'object') {
                 time: Date.create().format("{yyyy}-{MM}-{dd} {HH}:{mm}"),
                 lengthMinutes: 0,
                 lengthHours: 5,
-                lengthDays: 0
+                lengthDays: 0,
+                needFrozen: false,
+                frozenLengthMinutes: 0,
+                frozenLengthHours: 1,
+                frozenLengthDays: 0
               };
               if (action !== "new") {
                 contestId = action;
@@ -80636,6 +80640,18 @@ if (typeof exports === 'object') {
                     contest.lengthHours = length % 24;
                     length = Math.floor(length / 24);
                     contest.lengthDays = length;
+                    if (angular.isDefined(data.contest.frozenTime)) {
+                      contest.needFrozen = true;
+                      length = Math.floor(data.contest.frozenTime / 1000);
+                      length = Math.floor(length / 60);
+                      contest.frozenLengthMinutes = length % 60;
+                      length = Math.floor(length / 60);
+                      contest.frozenLengthHours = length % 24;
+                      length = Math.floor(length / 24);
+                      contest.frozenLengthDays = length;
+                    } else {
+                      contest.needFrozen = false;
+                    }
                     contest.description = data.contest.description;
                     if (angular.isDefined(data.contest.parentId)) {
                       contest.type = $rootScope.ContestType.INHERIT;
