@@ -240,6 +240,21 @@
     </list>
   </div>
 </tab>
+<tab heading="Print"
+     ng-hide="contest.status == $root.ContestStatus.PENDING">
+  <div class="row" style="margin-top: 15px;">
+    <div class="col-md-8 col-md-offset-2">
+      <form>
+        <div class="form-group">
+          <textarea class="cdoj-submit-area"
+                    ng-model="submitDTO.codeContent"></textarea>
+          <ui-validate-info value="fieldInfo" for="codeContent"></ui-validate-info>
+        </div>
+        <button class="btn btn-default" ng-click="printCode()">Print</button>
+      </form>
+    </div>
+  </div>
+</tab>
 <tab heading="Rank"
      ng-hide="contest.status == $root.ContestStatus.PENDING"
      select="refreshRankList()">
