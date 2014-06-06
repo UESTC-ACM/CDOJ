@@ -20,23 +20,19 @@
     },
     {
       "name": "clicked",
-      "type": "Integer",
-      "default": 0
+      "type": "Integer"
     },
     {
       "name": "order",
-      "type": "Integer",
-      "default": 0
+      "type": "Integer"
     },
     {
       "name": "type",
-      "type": "Integer",
-      "default": 1
+      "type": "Integer"
     },
     {
       "name": "isVisible",
-      "type": "Boolean",
-      "default": false
+      "type": "Boolean"
     },
     {
       "name": "parentId",
@@ -52,8 +48,7 @@
     },
     {
       "name": "userId",
-      "type": "Integer",
-      "default": 1
+      "type": "Integer"
     },
     {
       "name": "ownerName",

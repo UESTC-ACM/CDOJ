@@ -197,6 +197,7 @@ public class ArticleController extends BaseController {
       articleEditDto.setContent(pictureService.modifyPictureLocation(
           articleEditDto.getContent(), oldDirectory, newDirectory));
       articleDto.setType(ArticleType.ARTICLE.ordinal());
+      articleDto.setUserId(currentUser.getUserId());
     } else {
       articleDto = articleService.getArticleDto(articleEditDto.getArticleId(), ArticleFields.ALL_FIELDS);
       if (articleDto == null) {
@@ -223,7 +224,6 @@ public class ArticleController extends BaseController {
       }
     }
 
-    articleDto.setUserId(currentUser.getUserId());
     if (articleEditDto.getType() == ArticleType.COMMENT.ordinal()) {
       articleDto.setProblemId(articleEditDto.getProblemId());
       articleDto.setContestId(articleEditDto.getContestId());

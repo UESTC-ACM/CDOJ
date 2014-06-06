@@ -82108,16 +82108,17 @@ if (typeof exports === 'object') {
         $scope.title = "New article";
       }
       return $scope.submit = function() {
-        var articleEditDTO;
-        articleEditDTO = angular.copy($scope.article);
-        articleEditDTO.action = angular.copy($scope.action);
-        articleEditDTO.userName = angular.copy($scope.userName);
+        var articleEditDto;
+        articleEditDto = angular.copy($scope.article);
         if ($scope.isNotice) {
-          articleEditDTO.type = $rootScope.ArticleType.NOTICE;
+          articleEditDto.type = $rootScope.ArticleType.NOTICE;
         } else {
-          articleEditDTO.type = $rootScope.ArticleType.ARTICLE;
+          articleEditDto.type = $rootScope.ArticleType.ARTICLE;
         }
-        return $http.post("/article/edit", articleEditDTO).success(function(data) {
+        return $http.post("/article/edit", {
+          action: angular.copy($scope.action),
+          articleEditDto: articleEditDto
+        }).success(function(data) {
           if (data.result === "success") {
             return $window.location.href = "/#/article/show/" + data.articleId;
           } else if (data.result === "field_error") {
@@ -82803,8 +82804,8 @@ if (typeof exports === 'object') {
           commentCondition.problemId = $scope.problemId;
           commentCondition.parentId = $scope.articleId;
           $scope.commentCondition = commentCondition;
-          sendEditRequest = function(articleEditDTO) {
-            return $http.post("/article/editComment", articleEditDTO).success(function(data) {
+          sendEditRequest = function(articleEditDto) {
+            return $http.post("/article/edit", articleEditDto).success(function(data) {
               if (data.result === "success") {
                 $scope.newComment = "";
                 return $scope.$broadcast("list:refresh:comment");
@@ -82819,18 +82820,19 @@ if (typeof exports === 'object') {
           };
           $scope.newComment = "";
           $scope.comment = function() {
-            var articleEditDTO;
-            articleEditDTO = {
+            var articleEditDto;
+            articleEditDto = {
               content: $scope.newComment,
-              action: "new",
               title: "Comment",
-              userName: $rootScope.currentUser.userName,
               type: $rootScope.ArticleType.COMMENT,
               problemId: $scope.problemId,
               contestId: $scope.contestId,
               parentId: $scope.articleId
             };
-            sendEditRequest(articleEditDTO);
+            sendEditRequest({
+              action: "new",
+              articleEditDto: articleEditDto
+            });
             $scope.stashCommentList = false;
             return $window.scrollTo(0, 0);
           };
@@ -82846,14 +82848,17 @@ if (typeof exports === 'object') {
             return $scope.stashCommentList = true;
           };
           return $scope["delete"] = function(article) {
-            var articleEditDTO;
+            var articleEditDto;
             if ($window.confirm("Are you sure?")) {
-              articleEditDTO = {
+              articleEditDto = {
                 content: "This comment is deleted by administrator.",
-                action: "Edit",
+                type: $rootScope.ArticleType.COMMENT,
                 articleId: article.articleId
               };
-              return sendEditRequest(articleEditDTO);
+              return sendEditRequest({
+                articleEditDto: articleEditDto,
+                action: "edit"
+              });
             }
           };
         }
