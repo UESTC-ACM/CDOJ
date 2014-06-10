@@ -9,4 +9,5 @@ public class RankListItem {
   public Long solvedTime;
   public Long penalty;
   public Boolean firstBlood;
+  public Boolean triedAfterFrozen;
 }

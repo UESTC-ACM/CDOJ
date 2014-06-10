@@ -9,6 +9,7 @@ public class RankListStatus {
   public String problemTitle;
   public String userName;
   public String nickName;
+  public String reallyName;
   public String email;
   public Long time;
 
@@ -18,6 +19,7 @@ public class RankListStatus {
                         String userName,
                         String nickName,
                         String email,
+                        String reallyName,
                         Long time) {
     this.tried = tried;
     this.result = result;
@@ -25,6 +27,7 @@ public class RankListStatus {
     this.userName = userName;
     this.nickName = nickName;
     this.email = email;
+    this.reallyName = reallyName;
     this.time = time;
   }
 }

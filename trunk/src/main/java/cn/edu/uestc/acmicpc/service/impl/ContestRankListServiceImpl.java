@@ -37,7 +37,7 @@ import java.util.Map;
 @Service
 public class ContestRankListServiceImpl extends AbstractService implements ContestRankListService {
 
-  private final Map<Integer, RankList> rankListPool = new HashMap<>();
+  private final Map<String, RankList> rankListPool = new HashMap<>();
   private final long FETCH_INTERVAL = 10 * 1000; //10 seconds
 
   private ContestProblemService contestProblemService;
@@ -117,8 +117,10 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
 
   @Override
   public synchronized RankList getRankList(Integer contestId,
-                                           Boolean invitedContest) throws AppException {
-    RankList lastModified = rankListPool.get(contestId);
+                                           Integer contestType,
+                                           Boolean frozen, Integer frozenTime) throws AppException {
+    String rankListName = contestId.toString() + ":" + frozen;
+    RankList lastModified = rankListPool.get(rankListName);
     if (lastModified == null ||
         (System.currentTimeMillis() - lastModified.lastFetched.getTime()) > FETCH_INTERVAL) {
       ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(contestId);
@@ -139,7 +141,7 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
         rankListBuilder.addRankListProblem(problem.getProblemId().toString());
       }
 
-      if (invitedContest) {
+      if (contestType == ContestType.INVITED.ordinal()) {
         // Invited type contest, should include team information
         rankListBuilder.enableTeamMode();
 
@@ -155,6 +157,10 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
           // Out of time.
           continue;
         }
+        Boolean isFrozen = false;
+        if (frozen && contestShowDTO.getEndTime().getTime() - status.getTime().getTime() <= frozenTime) {
+          isFrozen = true;
+        }
         rankListBuilder.addStatus(new RankListStatus(
             1, // Total tried
             status.getReturnTypeId(), // Return type id
@@ -162,11 +168,14 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
             status.getUserName(), // User name
             status.getNickName(), // Nick name
             status.getEmail(), // Email
-            status.getTime().getTime() - contestShowDTO.getStartTime().getTime())); // Time
+            status.getName(),
+            status.getTime().getTime() - contestShowDTO.getStartTime().getTime()),
+            isFrozen); // Time
       }
 
       RankList result = rankListBuilder.build();
-      rankListPool.put(contestId, result);
+
+      rankListPool.put(rankListName, result);
       return result;
     } else {
       return lastModified;

@@ -10,6 +10,7 @@ import java.util.List;
 public class RankListUser implements Comparable<RankListUser> {
   public String name;
   public String nickName;
+  public String reallyName;
   public String email;
   public List<TeamUserListDTO> teamUsers;
   public Integer rank;

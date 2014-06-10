@@ -151,6 +151,15 @@ public class ArticleController extends BaseController {
 
     List<ArticleDto> result = articleService.getArticleList(
         articleCriteria, pageInfo);
+    for (ArticleDto articleDto : result) {
+      String content = articleDto.getContent();
+      if (content.contains("!!!more!!!")) {
+        articleDto.setHasMore(true);
+        articleDto.setContent(content.substring(0, content.indexOf("!!!more!!!")));
+      } else {
+        articleDto.setHasMore(false);
+      }
+    }
 
     json.put("pageInfo", pageInfo);
     json.put("result", "success");
