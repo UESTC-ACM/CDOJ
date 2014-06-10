@@ -11,11 +11,13 @@ import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestLoginDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDetailDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemSummaryDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReportDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReviewDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.contestUser.ContestUserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.language.LanguageDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
@@ -32,6 +34,7 @@ import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
 import cn.edu.uestc.acmicpc.service.iface.ContestUserService;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
+import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
@@ -71,12 +74,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -89,6 +96,12 @@ import java.util.zip.ZipOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 /**
  * @author liverliu
@@ -115,6 +128,7 @@ public class ContestController extends BaseController {
   private Settings settings;
   private UserService userService;
   private ContestUserService contestUserService;
+  private LanguageService languageService;
 
   @Autowired
   public ContestController(ContestService contestService,
@@ -134,7 +148,8 @@ public class ContestController extends BaseController {
                            ContestRankListView contestRankListView,
                            Settings settings,
                            UserService userService,
-                           ContestUserService contestUserService) {
+                           ContestUserService contestUserService,
+                           LanguageService languageService) {
     this.contestService = contestService;
     this.contestProblemService = contestProblemService;
     this.contestImporterService = contestImporterService;
@@ -154,6 +169,234 @@ public class ContestController extends BaseController {
     this.settings = settings;
     this.userService = userService;
     this.contestUserService = contestUserService;
+    this.languageService = languageService;
+  }
+
+  private  String getTimeString(Timestamp time) {
+    return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time);
+  }
+
+  private void generateScoreboard(ContestShowDTO contestShowDTO,
+                                  List<UserDTO> contestUserList,
+                                  List<ContestProblemSummaryDTO> contestProblemList,
+                                  List<LanguageDTO> languageDTOList,
+                                  ZipOutputStream zipOutputStream) throws Exception {
+    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    Transformer transformer = transformerFactory.newTransformer();
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    DOMImplementation domImplementation = builder.getDOMImplementation();
+    Document document = domImplementation.createDocument("", "root", null);
+
+    // root
+    Element root = document.getDocumentElement();
+    // root -> scoreboard
+    Element scoreboard = document.createElement("scoreboard");
+    // root -> scoreboard -> ontest
+    Element contest = document.createElement("contest");
+    contest.setAttribute("id", contestShowDTO.getContestId().toString());
+    contest.setAttribute("start", getTimeString(contestShowDTO.getStartTime()));
+    contest.setAttribute("end", getTimeString(contestShowDTO.getEndTime()));
+    Timestamp frozenTime = new Timestamp(contestShowDTO.getEndTime().getTime() - contestShowDTO.getFrozenTime());
+    contest.setAttribute("freeze", getTimeString(frozenTime));
+    contest.appendChild(document.createTextNode(contestShowDTO.getTitle()));
+    scoreboard.appendChild(contest);
+    // root -> scoreboard -> rows
+    Element rows = document.createElement("rows");
+    for (UserDTO user : contestUserList) {
+      // root -> scoreboard -> rows -> row
+      Element row = document.createElement("row");
+      // root -> scoreboard -> rows -> row -> team
+      Element team = document.createElement("team");
+      team.setAttribute("id", user.getUserName());
+      team.setAttribute("categoryid", "1");
+      team.setAttribute("affillid", "");
+      team.appendChild(document.createTextNode(user.getNickName() + " " + user.getName()));
+      row.appendChild(team);
+      rows.appendChild(row);
+    }
+    scoreboard.appendChild(rows);
+    // root -> scoreboard -> problem_legend
+    Element problem_legend = document.createElement("problem_legend");
+    for (ContestProblemSummaryDTO problemInfo : contestProblemList) {
+      // root -> scoreboard -> problem_legend -> problem
+      Element problem = document.createElement("problem");
+      problem.setAttribute("id", "" + (char) ('A' + problemInfo.getOrder()));
+      problem.setAttribute("color", "#000000");
+      problem.appendChild(document.createTextNode(problemInfo.getTitle()));
+      problem_legend.appendChild(problem);
+    }
+    scoreboard.appendChild(problem_legend);
+    // root -> scoreboard -> language_legend
+    Element language_legend = document.createElement("language_legend");
+    for (LanguageDTO languageDTO : languageDTOList) {
+      // root -> scoreboard -> language_legend -> language
+      Element language = document.createElement("language");
+      language.setAttribute("id", languageDTO.getLanguageId().toString());
+      language.appendChild(document.createTextNode(languageDTO.getName()));
+      language_legend.appendChild(language);
+    }
+    scoreboard.appendChild(language_legend);
+    // root -> scoreboard -> affiliation_legend (empty)
+    Element affiliation_legend = document.createElement("affiliation_legend");
+    scoreboard.appendChild(affiliation_legend);
+    // root -> scoreboard -> category_legend
+    Element category_legend = document.createElement("category_legend");
+    // root -> scoreboard -> category_legend -> category
+    Element category = document.createElement("category");
+    category.setAttribute("id", "1");
+    category.setAttribute("color", "#ffffff");
+    category.appendChild(document.createTextNode("Participants"));
+    category_legend.appendChild(category);
+    scoreboard.appendChild(category_legend);
+    root.appendChild(scoreboard);
+
+    DOMSource domSource = new DOMSource(document);
+    StreamResult streamResult = new StreamResult(zipOutputStream);
+    transformer.transform(domSource, streamResult);
+  }
+
+  private void generateEvent(ContestShowDTO contestShowDTO,
+                             List<LanguageDTO> languageDTOList,
+                             List<ContestProblemSummaryDTO> contestProblemList,
+                             List<StatusListDTO> statusList,
+                             ZipOutputStream zipOutputStream) throws Exception {
+    Map<Integer, String> problemIdMap = new HashMap<>();
+    Map<Integer, String> problemTitleMap = new HashMap<>();
+    for (ContestProblemSummaryDTO problem : contestProblemList) {
+      problemIdMap.put(problem.getProblemId(), "" + (char)('A' + problem.getOrder()));
+      problemTitleMap.put(problem.getProblemId(), problem.getTitle());
+    }
+    Map<String, Integer> languageIdMap = new HashMap<>();
+    for (LanguageDTO languageDTO : languageDTOList) {
+      languageIdMap.put(languageDTO.getName(), languageDTO.getLanguageId());
+    }
+
+    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    Transformer transformer = transformerFactory.newTransformer();
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    DOMImplementation domImplementation = builder.getDOMImplementation();
+    Document document = domImplementation.createDocument("", "root", null);
+
+    // root
+    Element root = document.getDocumentElement();
+    // root -> events
+    Element events = document.createElement("events");
+    int eventId = 0;
+    for (StatusListDTO status : statusList) {
+      if (contestShowDTO.getStartTime().after(status.getTime()) ||
+          contestShowDTO.getEndTime().before(status.getTime())) {
+        // Out of time.
+        continue;
+      }
+
+      // root -> events -> event
+      Element event;
+
+      event = document.createElement("event");
+      eventId++;
+      event.setAttribute("id", "" + eventId);
+      event.setAttribute("time", getTimeString(status.getTime()));
+
+      // root -> events -> event -> submission
+      Element submission = document.createElement("submission");
+      submission.setAttribute("id", status.getStatusId().toString());
+      // root -> events -> event -> submission -> team
+      Element team = document.createElement("team");
+      team.setAttribute("id", status.getUserName());
+      team.appendChild(document.createTextNode(status.getNickName() + " " + status.getName()));
+      submission.appendChild(team);
+      // root -> events -> event -> submission -> problem
+      Element problem = document.createElement("problem");
+      problem.setAttribute("id", problemIdMap.get(status.getProblemId()));
+      problem.appendChild(document.createTextNode(problemTitleMap.get(status.getProblemId())));
+      submission.appendChild(problem);
+      // root -> events -> event -> submission -> language
+      Element language = document.createElement("language");
+      language.setAttribute("id", languageIdMap.get(status.getLanguage()).toString());
+      language.appendChild(document.createTextNode(status.getLanguage()));
+      submission.appendChild(language);
+
+      event.appendChild(submission);
+      events.appendChild(event);
+
+      event = document.createElement("event");
+      eventId++;
+      event.setAttribute("id", "" + eventId);
+      event.setAttribute("time", getTimeString(status.getTime()));
+      // root -> events -> event -> judging
+      Element judging = document.createElement("judging");
+      judging.setAttribute("id", "");
+      judging.setAttribute("submitid", status.getStatusId().toString());
+      if (status.getReturnTypeId() == OnlineJudgeReturnType.OJ_AC.ordinal()) {
+        judging.appendChild(document.createTextNode("correct"));
+      } else {
+        judging.appendChild(document.createTextNode("wrong-answer"));
+      }
+      event.appendChild(judging);
+      events.appendChild(event);
+    }
+    root.appendChild(events);
+
+    DOMSource domSource = new DOMSource(document);
+    StreamResult streamResult = new StreamResult(zipOutputStream);
+    transformer.transform(domSource, streamResult);
+  }
+
+  @RequestMapping("exportDOMJudgeStyleReport/{contestId}")
+  public void exportDOMJudgeStyleReport(HttpSession session,
+                                        @PathVariable("contestId") Integer contestId,
+                                        HttpServletResponse response) throws Exception {
+    if (!isAdmin(session)) {
+      throw new AppException("Permission denied!");
+    }
+    // Fetch contest detail
+    ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(contestId);
+    if (contestId == null) {
+      throw new AppException("Contest not found.");
+    }
+    // Fetch user list
+    List<UserDTO> contestUserList = userService.fetchAllOnsiteUsersByContestId(contestId);
+    // Fetch problem list
+    List<ContestProblemSummaryDTO> contestProblemList = contestProblemService.
+        getContestProblemSummaryDTOListByContestId(contestId);
+    // Fetch language list
+    List<LanguageDTO> languageDTOList = languageService.getLanguageList();
+    // Fetch status list
+    StatusCondition statusCondition = new StatusCondition();
+    statusCondition.contestId = contestId;
+    statusCondition.isForAdmin = false;
+    // Sort by time
+    statusCondition.orderFields = "time";
+    statusCondition.orderAsc = "true";
+    List<StatusListDTO> statusList = statusService.getStatusList(statusCondition);
+
+    // Create zip output stream
+    ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();
+    ZipOutputStream zipOutputStream = new ZipOutputStream(outputBuffer);
+    zipOutputStream.setLevel(ZipOutputStream.STORED);
+
+    ZipEntry zipEntry = new ZipEntry("scoreboard.xml");
+    zipOutputStream.putNextEntry(zipEntry);
+    generateScoreboard(contestShowDTO, contestUserList, contestProblemList, languageDTOList, zipOutputStream);
+    zipOutputStream.closeEntry();
+
+    zipEntry = new ZipEntry("event.xml");
+    zipOutputStream.putNextEntry(zipEntry);
+    generateEvent(contestShowDTO, languageDTOList, contestProblemList, statusList, zipOutputStream);
+    zipOutputStream.closeEntry();
+
+    // Close
+    zipOutputStream.close();
+
+    response.setContentType("application/zip");
+    response.addHeader("Content-Disposition", "attachment; filename=\"domjudge.zip\"");
+    response.addHeader("Content-Transfer-Encoding", "binary");
+
+    response.getOutputStream().write(outputBuffer.toByteArray());
+    response.getOutputStream().flush();
+    outputBuffer.close();
   }
 
   @RequestMapping("exportCodes/{contestId}")
