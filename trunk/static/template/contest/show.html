@@ -48,14 +48,16 @@
     <div class="col-md-12 text-center"
          ng-show="$root.isAdmin">
       <a class="btn btn-danger btn-xs"
-         href="/contest/exportRankList/{{contest.contestId}}"
-         ng-click="exportRankList()">
+         href="/contest/exportRankList/{{contest.contestId}}">
         Export rank list
       </a>
       <a class="btn btn-danger btn-xs"
-         href="/contest/exportCodes/{{contest.contestId}}"
-         ng-click="exportCodes()">
+         href="/contest/exportCodes/{{contest.contestId}}">
         Export codes
+      </a>
+      <a class="btn btn-danger btn-xs"
+         href="/contest/exportDOMJudgeStyleReport/{{contest.contestId}}">
+        Export DOMJudge report for DOMJura
       </a>
     </div>
     <div class="col-md-12">
