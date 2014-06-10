@@ -80421,7 +80421,7 @@ if (typeof exports === 'object') {
   var $, GlobalConditions, GlobalVariables, cdoj;
 
   GlobalVariables = {
-    Version: "V2.2.0",
+    Version: "V2.2.2",
     OnlineJudgeReturnType: {
       OJ_WAIT: 0,
       OJ_AC: 1,
@@ -80617,7 +80617,11 @@ if (typeof exports === 'object') {
                 time: Date.create().format("{yyyy}-{MM}-{dd} {HH}:{mm}"),
                 lengthMinutes: 0,
                 lengthHours: 5,
-                lengthDays: 0
+                lengthDays: 0,
+                needFrozen: false,
+                frozenLengthMinutes: 0,
+                frozenLengthHours: 1,
+                frozenLengthDays: 0
               };
               if (action !== "new") {
                 contestId = action;
@@ -80636,6 +80640,18 @@ if (typeof exports === 'object') {
                     contest.lengthHours = length % 24;
                     length = Math.floor(length / 24);
                     contest.lengthDays = length;
+                    if (angular.isDefined(data.contest.frozenTime)) {
+                      contest.needFrozen = true;
+                      length = Math.floor(data.contest.frozenTime / 1000);
+                      length = Math.floor(length / 60);
+                      contest.frozenLengthMinutes = length % 60;
+                      length = Math.floor(length / 60);
+                      contest.frozenLengthHours = length % 24;
+                      length = Math.floor(length / 24);
+                      contest.frozenLengthDays = length;
+                    } else {
+                      contest.needFrozen = false;
+                    }
                     contest.description = data.contest.description;
                     if (angular.isDefined(data.contest.parentId)) {
                       contest.type = $rootScope.ContestType.INHERIT;
@@ -81467,7 +81483,7 @@ if (typeof exports === 'object') {
 
   cdoj.controller("ContestShowController", [
     "$scope", "$rootScope", "$http", "$window", "$modal", "$routeParams", "$timeout", "$interval", "$cookieStore", "contest", function($scope, $rootScope, $http, $window, $modal, $routeParams, $timeout, $interval, $cookieStore, contest) {
-      var clarificationTimer, cookieName, currentTimeTimer, rankListTimer, refreshClarification, refreshRankList, updateTime;
+      var clarificationTimer, cookieName, currentTimeTimer, getProblemStateStyle, getSuccessRatio, rankListTimer, refreshClarification, refreshRankList, updateTime;
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $window.scrollTo(0, 0);
       $scope.currentTeam = "";
@@ -81494,7 +81510,7 @@ if (typeof exports === 'object') {
       }
       currentTimeTimer = void 0;
       updateTime = function() {
-        var active, current, type;
+        var active, current, hours, length, minute, second, type;
         $scope.contest.currentTime = $scope.contest.currentTime + 1000;
         if ($scope.contest.status === $rootScope.ContestStatus.PENDING) {
           current = 0;
@@ -81507,6 +81523,13 @@ if (typeof exports === 'object') {
           }
         } else if ($scope.contest.status === $rootScope.ContestStatus.RUNNING) {
           current = $scope.contest.currentTime - $scope.contest.startTime;
+          length = Math.floor(current / 1000);
+          second = length % 60;
+          length = (length - second) / 60;
+          minute = length % 60;
+          length = (length - minute) / 60;
+          hours = length;
+          $scope.currentTimePassed = _.sprintf("%d:%02d:%02d", hours, minute, second);
           type = "danger";
           active = true;
           if ($scope.contest.currentTime >= $scope.contest.endTime) {
@@ -81602,16 +81625,41 @@ if (typeof exports === 'object') {
       $scope.refreshStatus = function() {
         return $scope.$broadcast("list:refresh:status");
       };
+      getProblemStateStyle = function(solved, tried, maxSolved) {
+        var col, val;
+        if (maxSolved === 0 || tried === 0) {
+          return "";
+        }
+        val = (maxSolved - solved) / maxSolved * 200;
+        col = "white";
+        if (val > 128) {
+          col = "black";
+        }
+        return _.sprintf("background-color: rgb(%.0f, %.0f, %.0f); color: %s;", val, val, val, col);
+      };
+      getSuccessRatio = function(solved, tried) {
+        if (tried === 0) {
+          return "";
+        }
+        return _.sprintf("%.0f", solved / tried * 100);
+      };
       refreshRankList = function() {
         var contestId;
         contestId = angular.copy($scope.contestId);
         return $http.get("/contest/rankList/" + contestId).success(function(data) {
-          var userStatus;
+          var maxSolved, userStatus;
           if (data.result === "success") {
             $scope.rankList = data.rankList.rankList;
             _.each($scope.problemList, function(value, index) {
               value.tried = data.rankList.problemList[index].tried;
               return value.solved = data.rankList.problemList[index].solved;
+            });
+            maxSolved = _.reduce($scope.problemList, function(memo, problem) {
+              return Math.max(memo, problem.solved);
+            }, 0);
+            _.each($scope.problemList, function(value, index) {
+              value.stateStyle = getProblemStateStyle(value.solved, value.tried, maxSolved);
+              return value.successRatio = getSuccessRatio(value.solved, value.tried);
             });
             if ($rootScope.hasLogin) {
               userStatus = void 0;
@@ -81646,7 +81694,32 @@ if (typeof exports === 'object') {
       $scope.refreshRankList = function() {
         return refreshRankList();
       };
-      return rankListTimer = $timeout(refreshRankList, 100);
+      rankListTimer = $timeout(refreshRankList, 100);
+      $scope.submitDTO = {
+        codeContent: ""
+      };
+      return $scope.printCode = function() {
+        var submitDTO;
+        submitDTO = angular.copy($scope.submitDTO);
+        if (angular.isUndefined(submitDTO.codeContent)) {
+          return;
+        }
+        if ($rootScope.hasLogin === false) {
+          return $window.alert("Please login first!");
+        } else {
+          if ($window.confirm("Are you sure?")) {
+            return $http.post("/status/print", submitDTO).success(function(data) {
+              if (data.result === "success") {
+                return $window.alert("Your print request has been send to the stuff," + " please wait patiently.");
+              } else {
+                return $window.alert(data.error_msg);
+              }
+            }).error(function() {
+              return $window.alert("Network error.");
+            });
+          }
+        }
+      };
     }
   ]);
 
@@ -82146,7 +82219,8 @@ if (typeof exports === 'object') {
       return $http.get("/article/data/" + articleId).success(function(data) {
         if (data.result === "success") {
           $scope.article = data.article;
-          return $rootScope.title = $scope.article.title;
+          $rootScope.title = $scope.article.title;
+          return $scope.article.content = $scope.article.content.replace("!!!more!!!", "");
         } else {
           return $window.alert(data.error_msg);
         }
@@ -82445,9 +82519,32 @@ if (typeof exports === 'object') {
       }).error(function() {
         return $window.alert("Network error.");
       });
-      return $scope.$on("$routeChangeStart", function() {
+      $scope.$on("$routeChangeStart", function() {
         return $modalInstance.dismiss();
       });
+      return $scope.printMessage = function() {
+        var $content, content, printWindow;
+        printWindow = $window.open("", "print");
+        printWindow.document.write("<html><head><title>print</title>");
+        printWindow.document.write("</head><body >");
+        content = angular.copy($scope.message.content);
+        content = marked(content);
+        $content = $("<div></div>").append(content);
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, $content[0]]);
+        console.log($content.find("pre"));
+        $content.find("pre").each(function(id, el) {
+          var $el, text;
+          $el = $(el);
+          if ($el.attr("type") !== "no-prettify") {
+            text = prettyPrintOne($el[0].innerText.escapeHTML());
+            return $el.empty().append(text);
+          }
+        });
+        printWindow.document.write($content[0].innerHTML);
+        printWindow.document.write("</body></html>");
+        printWindow.print();
+        return printWindow.close();
+      };
     }
   ]);
 
@@ -83395,7 +83492,7 @@ if (typeof exports === 'object') {
             },
             validation: {
               allowedExtensions: ["zip"],
-              sizeLimit: 100 * 1000 * 1000
+              sizeLimit: 300 * 1024 * 1024
             },
             multiple: false,
             callbacks: {

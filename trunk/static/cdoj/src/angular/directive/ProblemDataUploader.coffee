@@ -16,7 +16,7 @@ cdoj
           inputName: "uploadFile"
         validation:
           allowedExtensions: ["zip"],
-          sizeLimit: 100 * 1000 * 1000 # 100 MB
+          sizeLimit: 300 * 1024 * 1024 # 300 MB
         multiple: false
         callbacks:
           onComplete: (id, fileName, data) ->

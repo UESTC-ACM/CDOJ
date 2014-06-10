@@ -105,6 +105,7 @@ CREATE  TABLE IF NOT EXISTS `uestcoj`.`contest` (
   `OPTLOCK` INT NULL DEFAULT 0 ,
   `password` VARCHAR(40) NULL ,
   `parentId` INT NULL ,
+  `frozenTime` INT(11) NOT NULL DEFAULT 0 ,
   PRIMARY KEY (`contestId`) ,
   UNIQUE INDEX `contestId_UNIQUE` (`contestId` ASC) ,
   INDEX `FK_parentId_on_contest_idx_idx` (`parentId` ASC) ,

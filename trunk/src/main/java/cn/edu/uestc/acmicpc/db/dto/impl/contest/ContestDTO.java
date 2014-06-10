@@ -15,7 +15,7 @@ import java.util.Map;
  * "parentId"})</code>
  */
 @Fields({"contestId", "title", "description", "time", "length", "type",
-    "isVisible", "password", "parentId"})
+    "isVisible", "password", "parentId", "frozenTime"})
 public class ContestDTO implements BaseDTO<Contest> {
 
   private Integer contestId;
@@ -27,13 +27,14 @@ public class ContestDTO implements BaseDTO<Contest> {
   private Boolean isVisible;
   private String password;
   private Integer parentId;
+  private Integer frozenTime;
 
   public ContestDTO() {
   }
 
   public ContestDTO(Integer contestId, String title, String description, Timestamp time,
                     Integer length, Byte type, Boolean isVisible, String password,
-                    Integer parentId) {
+                    Integer parentId, Integer frozenTime) {
     this.contestId = contestId;
     this.title = title;
     this.description = description;
@@ -43,6 +44,7 @@ public class ContestDTO implements BaseDTO<Contest> {
     this.isVisible = isVisible;
     this.password = password;
     this.parentId = parentId;
+    this.frozenTime = frozenTime;
   }
 
   public Integer getParentId() {
@@ -117,6 +119,14 @@ public class ContestDTO implements BaseDTO<Contest> {
     this.isVisible = isVisible;
   }
 
+  public Integer getFrozenTime() {
+    return frozenTime;
+  }
+
+  public void setFrozenTime(Integer frozenTime) {
+    this.frozenTime = frozenTime;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -155,6 +165,9 @@ public class ContestDTO implements BaseDTO<Contest> {
     if (parentId != null ? !parentId.equals(that.parentId) : that.parentId != null) {
       return false;
     }
+    if (frozenTime != null ? !frozenTime.equals(that.frozenTime) : that.frozenTime != null) {
+      return false;
+    }
 
     return true;
   }
@@ -170,6 +183,7 @@ public class ContestDTO implements BaseDTO<Contest> {
     result = 31 * result + (isVisible != null ? isVisible.hashCode() : 0);
     result = 31 * result + (password != null ? password.hashCode() : 0);
     result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
+    result = 31 * result + (frozenTime != null ? frozenTime.hashCode() : 0);
     return result;
   }
 
@@ -188,11 +202,12 @@ public class ContestDTO implements BaseDTO<Contest> {
     private Boolean isVisible;
     private String password;
     private Integer parentId;
+    private Integer frozenTime;
 
     @Override
     public ContestDTO build() {
       return new ContestDTO(contestId, title, description, time, length, type,
-          isVisible, password, parentId);
+          isVisible, password, parentId, frozenTime);
     }
 
     @Override
@@ -206,6 +221,9 @@ public class ContestDTO implements BaseDTO<Contest> {
       isVisible = (Boolean) properties.get("isVisible");
       password = (String) properties.get("password");
       parentId = (Integer) properties.get("parentId");
+      if (properties.get("frozenTime") != null) {
+        frozenTime = (Integer) properties.get("frozenTime") * 1000;
+      }
       return build();
     }
 
@@ -251,6 +269,11 @@ public class ContestDTO implements BaseDTO<Contest> {
 
     public Builder setIsVisible(Boolean isVisible) {
       this.isVisible = isVisible;
+      return this;
+    }
+
+    public Builder setFrozenTime(Integer frozenTime) {
+      this.frozenTime = frozenTime;
       return this;
     }
   }

@@ -62,12 +62,14 @@ public class RankListBuilder {
 
   private RankListUser getRankListUser(String userName,
                                        String nickName,
-                                       String email) {
+                                       String email,
+                                       String reallyName) {
     if (!teamMode) {
       RankListUser user = userMap.get(userName);
       if (user == null) {
         user = new RankListUser();
         user.name = userName;
+        user.reallyName = reallyName;
         user.nickName = nickName;
         user.email = email;
         user.penalty = 0L;
@@ -83,6 +85,7 @@ public class RankListBuilder {
           rankListItem.penalty = 0L;
           rankListItem.tried = 0;
           rankListItem.firstBlood = false;
+          rankListItem.triedAfterFrozen = false;
         }
 
         userList.add(user);
@@ -100,6 +103,7 @@ public class RankListBuilder {
         user.name = team.getTeamName();
         user.penalty = 0L;
         user.rank = 0;
+        user.reallyName = reallyName;
         user.solved = 0;
         user.tried = 0;
         user.itemList = new RankListItem[problemList.size()];
@@ -111,6 +115,7 @@ public class RankListBuilder {
           rankListItem.penalty = 0L;
           rankListItem.tried = 0;
           rankListItem.firstBlood = false;
+          rankListItem.triedAfterFrozen = false;
         }
         // Set team users
         user.teamUsers = team.getTeamUsers();
@@ -122,14 +127,14 @@ public class RankListBuilder {
     }
   }
 
-  public void addStatus(RankListStatus status) {
+  public void addStatus(RankListStatus status, Boolean frozen) {
     Integer problemIndex = getRankListProblemIndex(status.problemTitle);
     if (problemIndex == null) {
       // Ignore
       return;
     }
     RankListProblem problem = problemList.get(problemIndex);
-    RankListUser user = getRankListUser(status.userName, status.nickName, status.email);
+    RankListUser user = getRankListUser(status.userName, status.nickName, status.email, status.reallyName);
     if (user == null) {
       // Ignore
       return;
@@ -142,17 +147,21 @@ public class RankListBuilder {
     problem.tried = problem.tried + 1;
     item.tried = item.tried + 1;
     user.tried = user.tried + 1;
-    if (status.result == OnlineJudgeReturnType.OJ_AC.ordinal()) {
-      problem.solved = problem.solved + 1;
-      if (problem.solved == 1) {
-        item.firstBlood = true;
+    if (frozen) {
+      item.triedAfterFrozen = true;
+    } else {
+      if (status.result == OnlineJudgeReturnType.OJ_AC.ordinal()) {
+        problem.solved = problem.solved + 1;
+        if (problem.solved == 1) {
+          item.firstBlood = true;
+        }
+        item.solved = true;
+        item.solvedTime = status.time;
+        item.tried = item.tried - 1;
+        item.penalty = item.solvedTime / 1000 + item.tried * 20 * 60;
+        user.solved = user.solved + 1;
+        user.penalty = user.penalty + item.penalty;
       }
-      item.solved = true;
-      item.solvedTime = status.time;
-      item.tried = item.tried - 1;
-      item.penalty = item.solvedTime / 1000 + item.tried * 20 * 60;
-      user.solved = user.solved + 1;
-      user.penalty = user.penalty + item.penalty;
     }
   }
 

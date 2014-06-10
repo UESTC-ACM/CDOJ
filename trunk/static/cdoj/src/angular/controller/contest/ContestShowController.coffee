@@ -46,6 +46,20 @@ cdoj
             , 500)
         else if $scope.contest.status == $rootScope.ContestStatus.RUNNING
           current = ($scope.contest.currentTime - $scope.contest.startTime)
+
+          length = Math.floor(current / 1000)
+          second = length % 60
+          length = (length - second) / 60
+          minute = length % 60
+          length = (length - minute) / 60
+          hours = length
+          $scope.currentTimePassed =  _.sprintf(
+            "%d:%02d:%02d"
+            hours
+            minute
+            second
+          )
+
           type = "danger"
           active = true
           if $scope.contest.currentTime >= $scope.contest.endTime
@@ -134,6 +148,26 @@ cdoj
       $scope.refreshStatus = ->
         $scope.$broadcast("list:refresh:status")
 
+      getProblemStateStyle = (solved, tried, maxSolved) ->
+        if maxSolved == 0 || tried == 0
+          return ""
+        val = (maxSolved - solved) / maxSolved * 200
+        col = "white"
+        if val > 128
+          col = "black"
+        return _.sprintf(
+          "background-color: rgb(%.0f, %.0f, %.0f); color: %s;",
+          val,
+          val,
+          val,
+          col
+        )
+
+      getSuccessRatio = (solved, tried) ->
+        if tried == 0
+          return ""
+        return _.sprintf("%.0f", solved / tried * 100)
+
       refreshRankList = ->
         contestId = angular.copy($scope.contestId)
         $http.get("/contest/rankList/#{contestId}").success((data) ->
@@ -142,6 +176,17 @@ cdoj
             _.each($scope.problemList, (value, index) ->
               value.tried = data.rankList.problemList[index].tried
               value.solved = data.rankList.problemList[index].solved
+            )
+            maxSolved = _.reduce(
+              $scope.problemList,
+              (memo, problem) ->
+                return Math.max(memo, problem.solved)
+              , 0)
+            _.each($scope.problemList, (value, index) ->
+              value.stateStyle = getProblemStateStyle(
+                value.solved, value.tried, maxSolved
+              )
+              value.successRatio = getSuccessRatio(value.solved, value.tried)
             )
             if $rootScope.hasLogin
               userStatus = undefined
@@ -168,4 +213,23 @@ cdoj
 
       $scope.refreshRankList = -> refreshRankList()
       rankListTimer = $timeout(refreshRankList, 100)
+
+      $scope.submitDTO =
+        codeContent: ""
+      $scope.printCode = ->
+        submitDTO = angular.copy($scope.submitDTO)
+        if angular.isUndefined submitDTO.codeContent then return
+        if $rootScope.hasLogin == false
+          $window.alert "Please login first!"
+        else
+          if $window.confirm "Are you sure?"
+            $http.post("/status/print", submitDTO).success((data) ->
+              if data.result == "success"
+                $window.alert "Your print request has been send to the stuff," +
+                  " please wait patiently."
+              else
+                $window.alert data.error_msg
+            ).error(->
+              $window.alert "Network error."
+            )
   ])

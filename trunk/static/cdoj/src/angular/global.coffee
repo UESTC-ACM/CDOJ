@@ -1,5 +1,5 @@
 GlobalVariables =
-  Version: "V2.2.0"
+  Version: "V2.2.2"
 
   OnlineJudgeReturnType:
     OJ_WAIT: 0

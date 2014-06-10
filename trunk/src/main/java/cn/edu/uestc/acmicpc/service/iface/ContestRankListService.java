@@ -12,9 +12,11 @@ public interface ContestRankListService {
    * Get rank list by contest's id.
    *
    * @param contestId contest's id.
-   * @param invitedContest true if this contest is INVITED type.
    * @return {@link RankList} entity.
    * @throws AppException
    */
-  public RankList getRankList(Integer contestId, Boolean invitedContest) throws AppException;
+  public RankList getRankList(Integer contestId,
+                              Integer contestType,
+                              Boolean frozen, Integer frozenTime) throws AppException;
+
 }

@@ -3,6 +3,7 @@ package cn.edu.uestc.acmicpc.web.oj.controller.status;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.CodeDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
@@ -15,6 +16,7 @@ import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
+import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
@@ -25,6 +27,7 @@ import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
+import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
@@ -59,6 +62,7 @@ public class StatusController extends BaseController {
   private LanguageService languageService;
   private UserService userService;
   private Settings settings;
+  private MessageService messageService;
 
   @Autowired
   public StatusController(StatusService statusService,
@@ -70,7 +74,8 @@ public class StatusController extends BaseController {
                           GlobalService globalService,
                           LanguageService languageService,
                           UserService userService,
-                          Settings settings) {
+                          Settings settings,
+                          MessageService messageService) {
     this.statusService = statusService;
     this.problemService = problemService;
     this.codeService = codeService;
@@ -81,6 +86,7 @@ public class StatusController extends BaseController {
     this.languageService = languageService;
     this.userService = userService;
     this.settings = settings;
+    this.messageService = messageService;
   }
 
   @RequestMapping("search")
@@ -380,6 +386,51 @@ public class StatusController extends BaseController {
         json.put("compileInfo", compileInfoService.getCompileInfo(
             statusInformationDTO.getCompileInfoId()));
       }
+    } catch (AppException e) {
+      json.put("result", "error");
+      json.put("error_msg", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("result", "error");
+      json.put("error_msg", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+  @RequestMapping("print")
+  @LoginPermit(NeedLogin = true)
+  public
+  @ResponseBody
+  Map<String, Object> print(HttpSession session,
+                            @RequestBody SubmitDTO submitDTO) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      String codeContent = submitDTO.getCodeContent();
+      if (StringUtil.isNullOrWhiteSpace(codeContent)) {
+        throw new AppException("Please print something.");
+      }
+
+      UserDTO currentUser = getCurrentUser(session);
+      StringBuilder messageContentBuilder = new StringBuilder();
+      messageContentBuilder.append("```\n")
+          .append("/**\n")
+          .append("  * User name: ").append(currentUser.getUserName()).append("\n")
+          .append("  * Team name: ").append(currentUser.getNickName()).append("\n")
+          .append("  * Members  : ").append(currentUser.getName()).append("\n")
+          .append("  * Time     : ").append(new Date(System.currentTimeMillis())).append("\n")
+          .append("  */\n")
+          .append(codeContent)
+          .append("```");
+      messageService.createNewMessage(MessageDTO.builder()
+          .setSenderId(currentUser.getUserId())
+          .setReceiverId(1)  // Administrator
+          .setTime(new Timestamp(System.currentTimeMillis()))
+          .setIsOpened(false)
+          .setTitle("Print request.")
+          .setContent(messageContentBuilder.toString())
+          .build());
+
+      json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
