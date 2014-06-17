@@ -8,24 +8,49 @@ This is a online judge system for `ACM/ICPC`, and it currently runs at [UESTC AC
 
 ### How to run the project in your own computer?
 
-First of all, you need a `i686 Linux` and install `openjdk7`, `gradle` and `mysql` in your PC.
+First of all, you need a `i686 Linux` and install `openjdk7`, `gradle 1.7+` and `mysql` in your PC.
 
 Then you can fetch sources from our repository, and run the commond below.
 
-    # Go to main directory of project.
     cd path/to/the/sources
-    cd trunk
     
+    # Build judge core
+    cd branches/oldJudge
+    make
+    
+    # Go to main directory of project.
+    cd ../../trunk
+    
+    # Fetch submodules
+    ./install-plugin.sh
+        
     # Set up database
     # Note: please change the user name if needed
     mysql -uroot -p < src/main/sql/uestcoj.sql
     
-    # Build project
-    # Note: please change user name and password
+Edit `gradle.properties`
+
+    dbUser = your_database_user_name
+    dbPassword = your_database_password
+    # Static web resource path
+    staticResourcePath = static/ 
+    # Image directory location
+    imagesPath = static/images/  
+    # Problem data path
+    dataPath = data/data/          
+    # Path to save temporary files upload from client  
+    uploadPath = data/upload/    
+    # Judge core working path
+    judgeWorkPath = work/       
+
+Build project
+    
+    # Note: You can setup database user name and password in command line
     gradle -PdbUser=user -PdbPassword=password build
     
-    # Run jetty server
-    gradle jettyRun
+Run jetty server
+    
+    gradle jettyEclipseRun
 
 After that, you can visit [localhost:8080](http://localhost:8080/) to get running demo.
 
