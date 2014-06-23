@@ -6891,13 +6891,14 @@ hr.colorful {
   border: none;
   white-space: normal;
   padding: 0.6em 0 0.6em 0.6em;
-  font-size: 24px;
+  font-size: 20px;
 }
 .cdoj-menu .fa {
-  font-size: 24px;
+  font-size: 28px;
   margin: 0;
-  height: 24px;
-  width: 24px;
+  height: 28px;
+  width: 40px;
+  text-align: center;
 }
 .cdoj-menu .nav-stacked > li + li {
   margin-top: 0;
@@ -6905,6 +6906,10 @@ hr.colorful {
 .cdoj-menu .active {
   border-radius: 0;
   background: #6caad9;
+}
+.cdoj-menu .cdoj-menu-item {
+  height: 20px;
+  margin: 4px 0 4px 0;
 }
 .cdoj-menu li a:hover,
 .cdoj-menu li a:focus {
