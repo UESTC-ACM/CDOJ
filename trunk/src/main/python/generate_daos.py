@@ -101,12 +101,13 @@ if __name__ == '__main__':
     dao_impl_dir = base_dir + output_dir + "/impl/"
 
     # Remove exists directories
-    shutil.rmtree(dao_iface_dir)
-    shutil.rmtree(dao_impl_dir)
+    if os.path.exists(dao_iface_dir):
+        shutil.rmtree(dao_iface_dir)
+    if os.path.exists(dao_impl_dir):
+        shutil.rmtree(dao_impl_dir)
 
-    if not os.path.exists(dao_iface_dir):
-        os.makedirs(dao_iface_dir)
-    if not os.path.exists(dao_impl_dir):
-        os.makedirs(dao_impl_dir)
+    os.makedirs(dao_iface_dir)
+    os.makedirs(dao_impl_dir)
+
     generateDaos()
     quit(0)

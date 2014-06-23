@@ -1,6 +1,5 @@
 {
   "entity": "Article",
-  "package": "cn.edu.uestc.acmicpc.db.dto.impl",
   "fields": [
     {
       "name": "articleId",
