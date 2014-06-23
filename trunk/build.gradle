@@ -52,7 +52,7 @@ task generateDtos(type: Exec) {
   commandLine "python",
       file("src/main/python/generate_dtos.py").absolutePath,
       "-i", "src/main/dto",
-      "-o", "src/gen/java"
+      "-o", "src/gen/java/cn/edu/uestc/acmicpc/db/dto/impl"
 }
 
 task createSchema(type: Exec) {
