@@ -2,6 +2,8 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
+DROP DATABASE IF EXISTS `uestcoj`;
+
 CREATE SCHEMA IF NOT EXISTS `uestcoj` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin ;
 USE `uestcoj` ;
 
@@ -424,87 +426,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `uestcoj`.`trainingContest`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcoj`.`trainingContest` ;
-
-CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingContest` (
-  `trainingContestId` INT NOT NULL AUTO_INCREMENT ,
-  `isPersonal` TINYINT(1) NOT NULL ,
-  `title` VARCHAR(150) NOT NULL DEFAULT '' ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  `type` VARCHAR(45) NOT NULL DEFAULT 0 ,
-  PRIMARY KEY (`trainingContestId`) ,
-  UNIQUE INDEX `traningContestId_UNIQUE` (`trainingContestId` ASC) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `uestcoj`.`trainingUser`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcoj`.`trainingUser` ;
-
-CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingUser` (
-  `trainingUserId` INT NOT NULL AUTO_INCREMENT ,
-  `rating` DOUBLE NOT NULL ,
-  `volatility` DOUBLE NOT NULL ,
-  `type` INT NOT NULL ,
-  `userId` INT NOT NULL ,
-  `OPTLOCK` INT NULL ,
-  `name` VARCHAR(45) NOT NULL ,
-  `allow` TINYINT(1) NOT NULL ,
-  `ratingVary` DOUBLE NOT NULL DEFAULT 0 ,
-  `volatilityVary` DOUBLE NOT NULL DEFAULT 0 ,
-  `competitions` INT NOT NULL ,
-  `member` VARCHAR(128) NOT NULL ,
-  PRIMARY KEY (`trainingUserId`) ,
-  UNIQUE INDEX `trainingUserId_UNIQUE` (`trainingUserId` ASC) ,
-  INDEX `FK_trainingUser_userId_on_user_idx` (`userId` ASC) ,
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC) ,
-  CONSTRAINT `FK_trainingUser_userId_on_user`
-    FOREIGN KEY (`userId` )
-    REFERENCES `uestcoj`.`user` (`userId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `uestcoj`.`trainingStatus`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `uestcoj`.`trainingStatus` ;
-
-CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingStatus` (
-  `trainingStatusId` INT NOT NULL AUTO_INCREMENT ,
-  `trainingContestId` INT NOT NULL ,
-  `trainingUserId` INT NOT NULL ,
-  `rating` DOUBLE NOT NULL ,
-  `volatility` DOUBLE NOT NULL ,
-  `OPTLOCK` INT NULL DEFAULT 0 ,
-  `rank` INT NOT NULL ,
-  `solve` INT NOT NULL ,
-  `penalty` INT NOT NULL ,
-  `ratingVary` DOUBLE NOT NULL ,
-  `volatilityVary` DOUBLE NOT NULL ,
-  `summary` TEXT NOT NULL ,
-  PRIMARY KEY (`trainingStatusId`) ,
-  UNIQUE INDEX `trainingStatusId_UNIQUE` (`trainingStatusId` ASC) ,
-  INDEX `FK_trainingStatus_trainingContestId_on_trainingContest_idx` (`trainingContestId` ASC) ,
-  INDEX `FK_trainingStatus_trainingUserId_on_user_idx` (`trainingUserId` ASC) ,
-  CONSTRAINT `FK_trainingStatus_trainingContestId_on_trainingContest`
-    FOREIGN KEY (`trainingContestId` )
-    REFERENCES `uestcoj`.`trainingContest` (`trainingContestId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_trainingStatus_trainingUserId_on_trainingUser`
-    FOREIGN KEY (`trainingUserId` )
-    REFERENCES `uestcoj`.`trainingUser` (`trainingUserId` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `uestcoj`.`team`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `uestcoj`.`team` ;
@@ -598,6 +519,103 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Table `uestcoj`.`training`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcoj`.`training` ;
+
+CREATE  TABLE IF NOT EXISTS `uestcoj`.`training` (
+  `trainingId` INT NOT NULL AUTO_INCREMENT ,
+  `title` VARCHAR(255) NOT NULL ,
+  `description` TEXT NOT NULL ,
+  PRIMARY KEY (`trainingId`) ,
+  UNIQUE INDEX `trainingId_UNIQUE` (`trainingId` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `uestcoj`.`trainingUser`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcoj`.`trainingUser` ;
+
+CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingUser` (
+  `trainingUserId` INT NOT NULL AUTO_INCREMENT ,
+  `trainingId` INT NOT NULL ,
+  `userId` INT NOT NULL ,
+  `trainingUserName` VARCHAR(45) NOT NULL ,
+  `type` INT NOT NULL ,
+  `currentRating` DOUBLE NOT NULL ,
+  `currentVolatility` DOUBLE NOT NULL ,
+  `competitions` INT NOT NULL ,
+  `rank` INT NOT NULL ,
+  `maximumRating` DOUBLE NOT NULL ,
+  `minimumRating` DOUBLE NOT NULL ,
+  `mostRecentEventId` INT NULL ,
+  `mostRecentEventName` VARCHAR(255) NULL ,
+  `ratingHistory` TEXT NOT NULL ,
+  PRIMARY KEY (`trainingUserId`) ,
+  UNIQUE INDEX `trainingUserId_UNIQUE` (`trainingUserId` ASC) ,
+  INDEX `FK_training_user_trainingId_on_training_idx` (`trainingId` ASC) ,
+  INDEX `FK_training_user_userId_on_user_idx` (`userId` ASC) ,
+  CONSTRAINT `FK_training_user_trainingId_on_training`
+    FOREIGN KEY (`trainingId` )
+    REFERENCES `uestcoj`.`training` (`trainingId` )
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_training_user_userId_on_user`
+    FOREIGN KEY (`userId` )
+    REFERENCES `uestcoj`.`user` (`userId` )
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `uestcoj`.`trainingPlatformInfo`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcoj`.`trainingPlatformInfo` ;
+
+CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingPlatformInfo` (
+  `trainingPlatformInfoId` INT NOT NULL AUTO_INCREMENT ,
+  `trainingUserId` INT NOT NULL ,
+  `userName` VARCHAR(255) NULL ,
+  `userId` VARCHAR(255) NULL ,
+  `type` INT NOT NULL ,
+  PRIMARY KEY (`trainingPlatformInfoId`) ,
+  UNIQUE INDEX `trainingPlatformInfoId_UNIQUE` (`trainingPlatformInfoId` ASC) ,
+  INDEX `FK_training_platform_info_trainingUserId_on_trainingUser_idx` (`trainingUserId` ASC) ,
+  CONSTRAINT `FK_training_platform_info_trainingUserId_on_trainingUser`
+    FOREIGN KEY (`trainingUserId` )
+    REFERENCES `uestcoj`.`trainingUser` (`trainingUserId` )
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `uestcoj`.`trainingContest`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `uestcoj`.`trainingContest` ;
+
+CREATE  TABLE IF NOT EXISTS `uestcoj`.`trainingContest` (
+  `trainingContestId` INT NOT NULL AUTO_INCREMENT ,
+  `trainingId` INT NOT NULL ,
+  `title` VARCHAR(255) NOT NULL ,
+  `link` VARCHAR(255) NULL ,
+  `rankList` TEXT NOT NULL ,
+  `type` INT NOT NULL ,
+  `platformType` INT NOT NULL ,
+  PRIMARY KEY (`trainingContestId`) ,
+  UNIQUE INDEX `trainingContestId_UNIQUE` (`trainingContestId` ASC) ,
+  INDEX `FK_training_contest_trainingId_on_training_idx` (`trainingId` ASC) ,
+  CONSTRAINT `FK_training_contest_trainingId_on_training`
+    FOREIGN KEY (`trainingId` )
+    REFERENCES `uestcoj`.`training` (`trainingId` )
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Data for table `uestcoj`.`setting`
