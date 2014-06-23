@@ -6,6 +6,7 @@ import sys
 import stat
 import getopt
 import json
+import shutil
 
 def parseOpt(argv):
   help_info = "generate_dtos.py -i <input> -o <output>"
@@ -78,12 +79,8 @@ def generateDto(input_file, output_dir):
   data = json.load(open(input_file))
   entity = data["entity"]
   fields = data["fields"]
-  package = data["package"]
 
-  # Get output file name
-  package_dir = package.replace(".", "/")
   # Create directors if needed
-  output_dir = output_dir + package_dir + "/"
   if not os.path.exists(output_dir):
     os.makedirs(output_dir)
   class_name = input_file[input_file.rfind("/") + 1: -5]
@@ -98,21 +95,21 @@ def generateDto(input_file, output_dir):
       need_timestamp = True
 
   # imports
-  out.write("""package {0};
+  out.write("""package cn.edu.uestc.acmicpc.db.dto.impl;
 
 import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
 import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
-import cn.edu.uestc.acmicpc.db.entity.{1};
-""".format(package, entity))
+import cn.edu.uestc.acmicpc.db.entity.{0};
+""".format(entity))
   if need_timestamp:
     out.write("""
 import java.sql.Timestamp;
 import java.util.Map;
-""".format(package, entity))
+""")
   else:
       out.write("""
 import java.util.Map;
-""".format(package, entity))
+""")
 
   # Class definition
   out.write("""
@@ -225,6 +222,10 @@ if __name__ == "__main__":
   base_dir = os.getcwd() + "/"
   input_dir = base_dir + input_dir + "/"
   output_dir = base_dir + output_dir + "/"
+
+  # Remove exists directories
+  if os.path.exists(output_dir):
+    shutil.rmtree(output_dir)
 
   # Scanf input directory and get input files
   input_files = scanfInputDirectory(input_dir)

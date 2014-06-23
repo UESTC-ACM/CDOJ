@@ -58,9 +58,6 @@ public class AOPITTest extends AbstractTestNGSpringContextTests {
     userDao.findAll("from Tag");
     userDao.findAll("from Team");
     userDao.findAll("from TeamUser");
-    userDao.findAll("from TrainingContest");
-    userDao.findAll("from TrainingStatus");
-    userDao.findAll("from TrainingUser");
     userDao.findAll("from User");
     userDao.findAll("from UserSerialKey");
   }

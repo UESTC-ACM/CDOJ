@@ -1,6 +1,5 @@
 {
   "entity": "Code",
-  "package": "cn.edu.uestc.acmicpc.db.dto.impl",
   "fields": [
     {
       "name": "codeId",
