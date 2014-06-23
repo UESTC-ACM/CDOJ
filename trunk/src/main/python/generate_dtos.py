@@ -6,6 +6,7 @@ import sys
 import stat
 import getopt
 import json
+import shutil
 
 def parseOpt(argv):
   help_info = "generate_dtos.py -i <input> -o <output>"
@@ -225,6 +226,9 @@ if __name__ == "__main__":
   base_dir = os.getcwd() + "/"
   input_dir = base_dir + input_dir + "/"
   output_dir = base_dir + output_dir + "/"
+
+  # Remove exists directories
+  shutil.rmtree(output_dir)
 
   # Scanf input directory and get input files
   input_files = scanfInputDirectory(input_dir)
