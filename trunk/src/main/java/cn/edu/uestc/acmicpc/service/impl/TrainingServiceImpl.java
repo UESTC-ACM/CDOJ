@@ -27,6 +27,7 @@ public class TrainingServiceImpl extends AbstractService implements TrainingServ
 
   @Override
   public TrainingDto getTrainingDto(Integer trainingId, TrainingFields trainingFields) throws AppException {
+    AppExceptionUtil.assertNotNull(trainingId);
     TrainingCriteria trainingCriteria = new TrainingCriteria(trainingFields);
     trainingCriteria.startId = trainingCriteria.endId = trainingId;
     return trainingDao.getDtoByUniqueField(trainingCriteria.getCriteria());
