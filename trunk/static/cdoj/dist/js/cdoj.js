@@ -80849,6 +80849,15 @@ if (typeof exports === 'object') {
 
   cdoj.config([
     "$routeProvider", function($routeProvider) {
+      return $routeProvider.when("/training/list", {
+        templateUrl: "template/training/list.html",
+        controller: "TrainingListController"
+      });
+    }
+  ]);
+
+  cdoj.config([
+    "$routeProvider", function($routeProvider) {
       return $routeProvider.when("/user/list", {
         templateUrl: "template/user/list.html",
         controller: "UserListController"
@@ -81811,6 +81820,14 @@ if (typeof exports === 'object') {
       return $scope.gotoStatusList = function() {
         return $window.location.href = "/#/status/list?problemId=" + $scope.problem.problemId;
       };
+    }
+  ]);
+
+  cdoj.controller("TrainingListController", [
+    "$scope", "$rootScope", "$window", function($scope, $rootScope, $window) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
+      $window.scrollTo(0, 0);
+      return $rootScope.title = "Training list";
     }
   ]);
 

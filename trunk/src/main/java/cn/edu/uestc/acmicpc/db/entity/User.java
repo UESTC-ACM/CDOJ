@@ -362,4 +362,14 @@ public class User implements Serializable {
     this.teamUsersByUserId = teamUsersByUserId;
   }
 
+  private Collection<TrainingUser> trainingUsersByUserId;
+
+  @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
+  public Collection<TrainingUser> getTrainingUsersByUserId() {
+    return trainingUsersByUserId;
+  }
+
+  public void setTrainingUsersByUserId(Collection<TrainingUser> trainingUsersByUserId) {
+    this.trainingUsersByUserId = trainingUsersByUserId;
+  }
 }
