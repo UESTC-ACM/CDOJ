@@ -1,4 +1,4 @@
-package cn.edu.uestc.acmicpc.db;
+package cn.edu.uestc.acmicpc.db.dao;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.dao.iface.ArticleDao;

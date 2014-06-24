@@ -1,12 +1,14 @@
 package cn.edu.uestc.acmicpc.db.dto.field;
 
 /**
- * Description
+ * Field projection settings for CodeDto.
  */
 public enum CodeFields implements Fields {
-  ALL_FIELDS(FieldProjection.Property("codeId"),
+  ALL_FIELDS(
+      FieldProjection.Property("codeId"),
       FieldProjection.Property("content"),
-      FieldProjection.Property("share"));
+      FieldProjection.Property("share")
+  );
 
   private final FieldProjection[] projections;
 
