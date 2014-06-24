@@ -17,6 +17,10 @@ import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.db.entity.Tag;
 import cn.edu.uestc.acmicpc.db.entity.Team;
 import cn.edu.uestc.acmicpc.db.entity.TeamUser;
+import cn.edu.uestc.acmicpc.db.entity.Training;
+import cn.edu.uestc.acmicpc.db.entity.TrainingContest;
+import cn.edu.uestc.acmicpc.db.entity.TrainingPlatformInfo;
+import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.judge.JudgeService;
@@ -139,6 +143,10 @@ public class ApplicationContextConfig {
         Tag.class,
         Team.class,
         TeamUser.class,
+        Training.class,
+        TrainingContest.class,
+        TrainingPlatformInfo.class,
+        TrainingUser.class,
         User.class,
         UserSerialKey.class);
 
