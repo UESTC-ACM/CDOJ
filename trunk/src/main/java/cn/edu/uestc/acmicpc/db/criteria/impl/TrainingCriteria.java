@@ -42,6 +42,7 @@ public class TrainingCriteria extends BaseCriteria<Training, TrainingDto> {
       criteria.add(Restrictions.le("trainingId", endId));
     }
     if (keyword != null) {
+      keyword = "%" + keyword + "%";
       criteria.add(Restrictions.ilike("title", keyword));
     }
 
