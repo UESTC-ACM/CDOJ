@@ -44,6 +44,18 @@ COMMIT;
 
 START TRANSACTION;
 USE `uestcojtest`;
+INSERT INTO `training` (`trainingId`, `title`, `description`) VALUES(1, 'Training1', 'Description1');
+INSERT INTO `training` (`trainingId`, `title`, `description`) VALUES(2, 'Training2', 'Description2');
+INSERT INTO `training` (`trainingId`, `title`, `description`) VALUES(3, 'Training3', 'Description3');
+INSERT INTO `training` (`trainingId`, `title`, `description`) VALUES(4, 'Training4', 'Description4');
+INSERT INTO `training` (`trainingId`, `title`, `description`) VALUES(5, 'keyword1', 'Description5');
+INSERT INTO `training` (`trainingId`, `title`, `description`) VALUES(6, 'keyword2', 'Description6');
+INSERT INTO `training` (`trainingId`, `title`, `description`) VALUES(7, 'keyword3', 'Description7');
+
+COMMIT;
+
+START TRANSACTION;
+USE `uestcojtest`;
 INSERT INTO `user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`, `motto`, `name`, `sex`, `grade`, `phone`, `size`) 
 VALUES (1, 'administrator', '2010013100008', 1, '3669a3b6618e9b27d641666d764432e025fc5be7', 'UESTC', 'administrator', 'acm@uestc.edu.cn', 0, 0, 1, '2013-01-30 13:17:26', 0, 'fuck', 'aa', 0, 0, '123', 0);
 INSERT INTO `user` (`userId`, `userName`, `studentId`, `departmentId`, `password`, `school`, `nickName`, `email`, `solved`, `tried`, `type`, `lastLogin`, `OPTLOCK`, `motto`, `name`, `sex`, `grade`, `phone`, `size`) 

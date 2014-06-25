@@ -98,6 +98,7 @@ public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
     }
 
     if (keyword != null) {
+      keyword = "%" + keyword + "%";
       criteria.add(Restrictions.or(
           Restrictions.ilike("title", keyword),
           Restrictions.ilike("content", keyword),
