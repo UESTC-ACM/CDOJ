@@ -394,4 +394,14 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
     List<ArticleDto> articleListDTOs = articleService.getArticleList(articleCriteria, pageInfo);
     Assert.assertEquals(articleListDTOs.size(), 0);
   }
+
+  @Test
+  public void testCreateArticle() throws AppException {
+    Long exceptedId = articleService.count(new ArticleCriteria(ArticleFields.ALL_FIELDS)) + 1;
+    Integer newId = articleService.createNewArticle(1);
+    Assert.assertEquals(newId.intValue(), exceptedId.intValue());
+
+    ArticleDao articleDao = (ArticleDao)articleService.getDao();
+    articleDao.deleteEntitiesByField("articleId", exceptedId.toString());
+  }
 }
