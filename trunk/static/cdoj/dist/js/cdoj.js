@@ -80565,6 +80565,14 @@ if (typeof exports === 'object') {
       status: null,
       orderFields: "contestTeamId",
       orderAsc: "false"
+    },
+    trainingCriteria: {
+      currentPage: null,
+      startId: null,
+      endId: null,
+      keyword: null,
+      orderFields: "trainingId",
+      orderAsc: "false"
     }
   };
 
@@ -80852,6 +80860,38 @@ if (typeof exports === 'object') {
       return $routeProvider.when("/training/list", {
         templateUrl: "template/training/list.html",
         controller: "TrainingListController"
+      }).when("/training/editor/:action", {
+        templateUrl: "template/training/editor.html",
+        controller: "TrainingEditorController",
+        resolve: {
+          training: [
+            "$q", "$route", "$http", "Error", function($q, $route, $http, $Error) {
+              var action, deferred, trainingId;
+              deferred = $q.defer();
+              action = $route.current.params.action;
+              if (action !== "new") {
+                trainingId = action;
+                $http.post("/training/data/" + trainingId).success(function(data) {
+                  if (data.result === "success") {
+                    data.training.action = action;
+                    return deferred.resolve(data.training);
+                  } else {
+                    return $Error.error(data.error_msg);
+                  }
+                }).error(function() {
+                  return $Error.error("Network error!");
+                });
+              } else {
+                deferred.resolve({
+                  action: action,
+                  description: "",
+                  title: ""
+                });
+              }
+              return deferred.promise;
+            }
+          ]
+        }
       });
     }
   ]);
@@ -81819,6 +81859,39 @@ if (typeof exports === 'object') {
       };
       return $scope.gotoStatusList = function() {
         return $window.location.href = "/#/status/list?problemId=" + $scope.problem.problemId;
+      };
+    }
+  ]);
+
+  cdoj.controller("TrainingEditorController", [
+    "$scope", "$http", "$rootScope", "$window", "training", function($scope, $http, $rootScope, $window, training) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN);
+      $window.scrollTo(0, 0);
+      $scope.training = training;
+      $scope.fieldInfo = [];
+      $scope.action = training.action;
+      if ($scope.action !== "new") {
+        $scope.title = "Edit training " + $scope.action;
+      } else {
+        $scope.title = "New training";
+      }
+      return $scope.submit = function() {
+        var trainingEditDto;
+        trainingEditDto = angular.copy($scope.training);
+        return $http.post("/training/edit", {
+          action: angular.copy($scope.action),
+          trainingEditDto: trainingEditDto
+        }).success(function(data) {
+          if (data.result === "success") {
+            return $window.location.href = "/#/training/show/" + data.trainingId;
+          } else if (data.result === "field_error") {
+            return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
       };
     }
   ]);
