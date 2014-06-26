@@ -44,8 +44,8 @@ public class PictureController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> uploadProblemPicture(@RequestParam(value = "uploadFile", required = true)
-                                    MultipartFile[] files,
-                                    @PathVariable("problemId") String problemId) {
+                                           MultipartFile[] files,
+                                           @PathVariable("problemId") String problemId) {
     Map<String, Object> json = new HashMap<>();
     try {
       String directory = "problem/" + problemId + "/";
@@ -53,7 +53,8 @@ public class PictureController extends BaseController {
           FileUploadDTO.builder()
               .setFiles(Arrays.asList(files))
               .build(),
-          directory);
+          directory
+      );
 
       json.put("success", "true");
       json.put("uploadedFile", fileInformationDTO.getFileName());
@@ -82,7 +83,39 @@ public class PictureController extends BaseController {
           FileUploadDTO.builder()
               .setFiles(Arrays.asList(files))
               .build(),
-          directory);
+          directory
+      );
+
+      json.put("success", "true");
+      json.put("uploadedFile", fileInformationDTO.getFileName());
+      json.put("uploadedFileUrl", fileInformationDTO.getFileURL());
+    } catch (AppException e) {
+      e.printStackTrace();
+      json.put("error", e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("error", "Unknown exception occurred.");
+    }
+    return json;
+  }
+
+
+  @RequestMapping(value = "uploadTrainingPicture/{trainingId}", method = RequestMethod.POST)
+  @LoginPermit(AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> uploadTrainingPicture(@RequestParam(value = "uploadFile", required = true)
+                                            MultipartFile[] files,
+                                            @PathVariable("trainingId") String trainingId) {
+    Map<String, Object> json = new HashMap<>();
+    try {
+      String directory = "training/" + trainingId + "/";
+      FileInformationDTO fileInformationDTO = pictureService.uploadPicture(
+          FileUploadDTO.builder()
+              .setFiles(Arrays.asList(files))
+              .build(),
+          directory
+      );
 
       json.put("success", "true");
       json.put("uploadedFile", fileInformationDTO.getFileName());
@@ -117,7 +150,8 @@ public class PictureController extends BaseController {
           FileUploadDTO.builder()
               .setFiles(Arrays.asList(files))
               .build(),
-          directory);
+          directory
+      );
 
       json.put("success", "true");
       json.put("uploadedFile", fileInformationDTO.getFileName());
