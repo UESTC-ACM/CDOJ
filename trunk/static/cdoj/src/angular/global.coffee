@@ -135,3 +135,10 @@ GlobalConditions =
     status: null
     orderFields: "contestTeamId"
     orderAsc: "false"
+  trainingCriteria:
+    currentPage: null
+    startId: null
+    endId: null
+    keyword: null
+    orderFields: "trainingId"
+    orderAsc: "false"
