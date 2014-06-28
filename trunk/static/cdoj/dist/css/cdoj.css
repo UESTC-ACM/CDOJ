@@ -6983,6 +6983,13 @@ hr.colorful {
   .cdoj-menu li a {
     padding: 12px 6px;
   }
+  .cdoj-menu .fa {
+    font-size: 20px;
+    margin: 0;
+    height: 20px;
+    width: 100%;
+    text-align: center;
+  }
   #advance-search {
     right: 132px;
   }
