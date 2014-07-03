@@ -1,16 +1,16 @@
 cdoj
 .controller("TrainingEditorController", [
-    "$scope", "$http", "$rootScope", "$window", "training"
-    ($scope, $http, $rootScope, $window, training) ->
+    "$scope", "$http", "$rootScope", "$window", "trainingDto"
+    ($scope, $http, $rootScope, $window, trainingDto) ->
       $scope.$emit(
         "permission:setPermission"
         $rootScope.AuthenticationType.ADMIN
       )
       $window.scrollTo(0, 0)
 
-      $scope.training = training
+      $scope.trainingDto = trainingDto
       $scope.fieldInfo = []
-      $scope.action = training.action
+      $scope.action = trainingDto.action
 
       if $scope.action != "new"
         $scope.title = "Edit training " + $scope.action
@@ -18,7 +18,7 @@ cdoj
         $scope.title = "New training"
 
       $scope.submit = ->
-        trainingEditDto = angular.copy($scope.training)
+        trainingEditDto = angular.copy($scope.trainingDto)
 
         $http.post("/training/edit",
           action: angular.copy($scope.action)
