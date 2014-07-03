@@ -1,7 +1,10 @@
 cdoj.controller("ProblemShowController", [
   "$scope", "$rootScope", "$window", "$modal", "problem"
   ($scope, $rootScope, $window, $modal, problem) ->
-    $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP)
+    $scope.$emit(
+      "permission:setPermission"
+      $rootScope.AuthenticationType.NOOP
+    )
     $window.scrollTo(0, 0)
 
     $scope.problem = problem
