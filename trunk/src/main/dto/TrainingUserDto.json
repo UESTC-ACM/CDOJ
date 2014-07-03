@@ -1,0 +1,70 @@
+{
+  "entity": "TrainingUser",
+  "fields": [
+    {
+      "name": "trainingUserId",
+      "type": "Integer"
+    },
+    {
+      "name": "trainingId",
+      "type": "Integer"
+    },
+    {
+      "name": "userId",
+      "type": "Integer"
+    },
+    {
+      "name": "userName",
+      "type": "String"
+    },
+    {
+      "name": "trainingUserName",
+      "type": "String"
+    },
+    {
+      "name": "type",
+      "type": "Integer"
+    },
+    {
+      "name": "currentRating",
+      "type": "Double"
+    },
+    {
+      "name": "currentVolatility",
+      "type": "Double"
+    },
+    {
+      "name": "competitions",
+      "type": "Integer"
+    },
+    {
+      "name": "rank",
+      "type": "Integer"
+    },
+    {
+      "name": "maximumRating",
+      "type": "Double"
+    },
+    {
+      "name": "minimumRating",
+      "type": "Double"
+    },
+    {
+      "name": "mostRecentEventId",
+      "type": "Integer"
+    },
+    {
+      "name": "mostRecentEventName",
+      "type": "String"
+    },
+    {
+      "name": "ratingHistory",
+      "type": "String"
+    },
+    {
+      "name": "ratingHistoryList",
+      "type": "List<TrainingRating>",
+      "classpath": "cn.edu.uestc.acmicpc.web.dto.TrainingRating"
+    }
+  ]
+}
