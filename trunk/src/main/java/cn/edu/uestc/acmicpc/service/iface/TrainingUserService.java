@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingUserCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
@@ -27,11 +27,11 @@ public interface TrainingUserService extends DatabaseService<TrainingUser, Integ
   /**
    * Get all {@link TrainingUserDto} fit in criteria.
    *
-   * @param trainingCriteria search criteria
+   * @param trainingUserCriteria search criteria
    * @return all records in database fit in the criteria.
    * @throws AppException
    */
-  public List<TrainingUserDto> getTrainingUserList(TrainingCriteria trainingCriteria) throws AppException;
+  public List<TrainingUserDto> getTrainingUserList(TrainingUserCriteria trainingUserCriteria) throws AppException;
 
   /**
    * Update training user record by none-null fields in {@link TrainingUserDto} entity.
@@ -45,8 +45,9 @@ public interface TrainingUserService extends DatabaseService<TrainingUser, Integ
    * Create a new training user record with specified cdoj user id.
    *
    * @param userId CDOJ user id.
+   * @param trainingId training id.
    * @return Id of new record.
    * @throws AppException
    */
-  public Integer createNewTrainingUser(Integer userId) throws AppException;
+  Integer createNewTrainingUser(Integer userId, Integer trainingId) throws AppException;
 }
