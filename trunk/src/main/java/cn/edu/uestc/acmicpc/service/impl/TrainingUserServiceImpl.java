@@ -1,12 +1,12 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingUserCriteria;
 import cn.edu.uestc.acmicpc.db.dao.iface.TrainingUserDao;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
 import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.service.iface.TrainingUserService;
+import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 
@@ -34,8 +34,8 @@ public class TrainingUserServiceImpl extends AbstractService implements Training
   }
 
   @Override
-  public List<TrainingUserDto> getTrainingUserList(TrainingCriteria trainingCriteria) throws AppException {
-    return trainingUserDao.findAll(trainingCriteria.getCriteria(), null);
+  public List<TrainingUserDto> getTrainingUserList(TrainingUserCriteria trainingUserCriteria) throws AppException {
+    return trainingUserDao.findAll(trainingUserCriteria.getCriteria(), null);
   }
 
   @Override
@@ -89,9 +89,19 @@ public class TrainingUserServiceImpl extends AbstractService implements Training
   }
 
   @Override
-  public Integer createNewTrainingUser(Integer userId) throws AppException {
+  public Integer createNewTrainingUser(Integer userId, Integer trainingId) throws AppException {
     TrainingUser trainingUser = new TrainingUser();
+    trainingUser.setTrainingId(trainingId);
     trainingUser.setUserId(userId);
+    trainingUser.setTrainingUserName("");
+    trainingUser.setType(TrainingUserType.PERSONAL.ordinal());
+    trainingUser.setCurrentRating(1200.0);
+    trainingUser.setCurrentVolatility(350.0);
+    trainingUser.setCompetitions(0);
+    trainingUser.setRank(0);
+    trainingUser.setMinimumRating(1200.0);
+    trainingUser.setMaximumRating(1200.0);
+    trainingUser.setRatingHistory("[]");
     trainingUserDao.add(trainingUser);
     return trainingUser.getTrainingUserId();
   }
