@@ -8,7 +8,7 @@
           <th style="width: 4em; text-align: right;">#</th>
           <th><a href="/#/training/editor/new" ng-show="$root.isAdmin">Add new
             training schedule</a></th>
-          <th style="width: 55px;" ng-show="$root.isAdmin"></th>
+          <th style="width: 30px;" ng-if="$root.isAdmin"></th>
         </tr>
         </thead>
         <tbody>
@@ -28,6 +28,17 @@
         <tr ng-repeat="training in list">
           <td>{{training.trainingId}}</td>
           <td><a href="/#/training/show/{{training.trainingId}}">{{training.title}}</a>
+          </td>
+          <td ng-if="$root.isAdmin">
+            <div class="btn-toolbar" role="toolbar">
+              <div class="btn-group">
+                <a href="/#/training/editor/{{training.trainingId}}"
+                   class="btn btn-default btn-sm"
+                   style="padding: 1px 5px;">
+                  <i class="fa fa-pencil"></i>
+                </a>
+              </div>
+            </div>
           </td>
         </tr>
         </tbody>

@@ -153,3 +153,16 @@ INSERT INTO `article` (`articleId`, `title`, `content`, `time`, `clicked`, `orde
 INSERT INTO `article` (`articleId`, `title`, `content`, `time`, `clicked`, `order`, `type`, `isVisible`, `parentId`, `problemId`, `contestId`, `userId`, `OPTLOCK`) VALUES (4, 'About', '[Project home](https://gitcafe.com/UESTC_ACM/cdoj)\n\n***\n###Features\n* Use markdown to edit problem and article\n* Manager problem data in convenient way\n* Full support of formula(use MathJax)\n\n***\n###TODO\n* Discuss\n* Contest clarification\n* Blog and BBS\n* Links manage\n* Problem tags manage\n* Related documents\n* Attachments manage\n* Message and bookmarks\n* Optimize database and use cache to speed up\n* Backup\n* Upload contest in a zip package\n* VJ(maybe..)\n\n***\n###Copyright\ncdoj, UESTC ACMICPC Online Judge\n\nCopyright (c) 2013 fish [lyhypacm@gmail.com](mailto:lyhypacm@gmail.com),\n mzry1992 [muziriyun@gmail.com](mailto:muziriyun@gmail.com)\n\nThis program is free software; you can redistribute it and/or\nmodify it under the terms of the GNU General Public License\nas published by the Free Software Foundation; either version 2\nof the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this program; if not, write to the Free Software\nFoundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.', '2013-07-17 23:59:14', 0, 0, 0, 1, NULL, NULL, NULL, 1, 6);
 
 COMMIT;
+
+START TRANSACTION;
+USE `uestcojtest`;
+INSERT INTO `trainingUser` (`trainingUserId`, `trainingId`, `userId`, `trainingUserName`, `type`, `currentRating`, `currentVolatility`, `competitions`, `rank`, `maximumRating`, `minimumRating`, `mostRecentEventId`, `mostRecentEventName`, `ratingHistory`)
+VALUES
+	(1, 1, 1, X'7573657241', 0, 1200, 350, 0, 0, 1200, 1200, NULL, NULL, X''),
+	(2, 1, 2, X'7573657242', 0, 1200, 350, 0, 0, 1200, 1200, NULL, NULL, X''),
+	(3, 1, 3, X'7573657243', 0, 1200, 350, 0, 0, 1200, 1200, NULL, NULL, X''),
+	(4, 1, 3, X'757365724332', 0, 1200, 350, 0, 0, 1200, 1200, NULL, NULL, X''),
+	(5, 2, 1, X'7573657241', 0, 1200, 350, 0, 0, 1200, 1200, NULL, NULL, X'');
+
+COMMIT;
+
