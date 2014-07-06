@@ -2,6 +2,7 @@ package cn.edu.uestc.acmicpc.web.oj.controller.training;
 
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
+import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
@@ -12,6 +13,7 @@ import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.JsonMap;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
@@ -21,6 +23,7 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/training")
@@ -139,17 +143,47 @@ public class TrainingController extends BaseController {
   @LoginPermit(value = AuthenticationType.ADMIN)
   public
   @ResponseBody
-  Map<String, Object> editTrainingUser(@JsonMap("trainingUserEditDto")TrainingUserDto trainingUserDto,
-      @JsonMap("action") String action) throws AppException {
+  Map<String, Object> editTrainingUser(@JsonMap("trainingUserEditDto") @Valid TrainingUserDto trainingUserEditDto,
+      @JsonMap("action") String action,
+      BindingResult validateResult) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
+    if (validateResult.hasErrors()) {
+      json.put("result", "field_error");
+      json.put("field", validateResult.getFieldErrors());
+      return json;
+    }
+
     // Check user name
-    UserDTO userDTO = userService.getUserDTOByUserName(trainingUserDto.getUserName());
+    UserDTO userDTO = userService.getUserDTOByUserName(trainingUserEditDto.getUserName());
     if (userDTO == null) {
       throw new FieldException("userName", "Invalid OJ user name.");
     }
-    // Check display name
+    // Check type
+    if (trainingUserEditDto.getType() < 0 || trainingUserEditDto.getType() >= TrainingUserType.values().length) {
+      throw new FieldException("type", "Invalid type.");
+    }
 
+    TrainingUserDto trainingUserDto;
+    if (action.equals("new")) {
+      Integer trainingUserId = trainingUserService.createNewTrainingUser(userDTO.getUserId(), trainingUserEditDto.getTrainingId());
+      trainingUserDto = trainingUserService.getTrainingUserDto(trainingUserId, TrainingUserFields.ALL_FIELDS);
+      if (trainingUserDto == null) {
+        throw new AppException("Error while creating training user.");
+      }
+    } else {
+      trainingUserDto = trainingUserService.getTrainingUserDto(trainingUserEditDto.getTrainingUserId(), TrainingUserFields.ALL_FIELDS);
+      if (trainingUserDto == null) {
+        throw new AppException("Training user not found.");
+      }
+    }
+
+    trainingUserDto.setUserId(trainingUserEditDto.getUserId());
+    trainingUserDto.setTrainingUserName(trainingUserEditDto.getTrainingUserName());
+    trainingUserDto.setType(trainingUserEditDto.getType());
+
+    trainingUserService.updateTrainingUser(trainingUserDto);
+    json.put("result", "success");
 
     return json;
   }
