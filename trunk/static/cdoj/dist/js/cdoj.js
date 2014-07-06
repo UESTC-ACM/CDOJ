@@ -81927,14 +81927,33 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("TrainingMemberEditorController", [
-    "$scope", "$http", "$modalInstance", "action", function($scope, $http, $modalInstance, action) {
+    "$scope", "$http", "$modalInstance", "action", "trainingUserDto", function($scope, $http, $modalInstance, action, trainingUserDto) {
       $scope.action = action;
-      console.log(action);
+      $scope.trainingUserDto = trainingUserDto;
       if ($scope.action === "new") {
         $scope.title = "Add new member";
       } else {
         $scope.title = "Edit";
       }
+      $scope.searchUser = function(keyword) {
+        var condition;
+        condition = {
+          keyword: keyword
+        };
+        return $http.post("/user/typeAheadList", condition).then((function(response) {
+          var data;
+          data = response.data;
+          if (data.result === "success") {
+            return data.list;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }));
+      };
+      $scope.add = function() {
+        var trainingUserEditDto;
+        return trainingUserEditDto = angular.copy($scope.trainingUserDto);
+      };
       return $scope.dismiss = function() {
         return $modalInstance.dismiss("close");
       };
@@ -81953,6 +81972,13 @@ if (typeof exports === 'object') {
           resolve: {
             action: function() {
               return "new";
+            },
+            trainingUserDto: function() {
+              return {
+                trainingId: trainingDto.trainingId,
+                trainingUserName: "",
+                type: 0
+              };
             }
           }
         });
