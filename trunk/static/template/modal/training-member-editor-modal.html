@@ -1,0 +1,27 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="dismiss()">&times;</button>
+  <h4 class="modal-title">{{title}}</h4>
+</div>
+<div class="modal-body">
+  <form class="from-horizontal">
+    <fieldset>
+      <div class="form-group">
+      </div>
+    </fieldset>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default"
+          ng-click="dismiss()">Close
+  </button>
+  <button type="button"
+          class="btn btn-primary"
+          ng-if="action != 'new'"
+          ng-click="edit()">Edit
+  </button>
+  <button type="button"
+          class="btn btn-primary"
+          ng-if="action == 'new'"
+          ng-click="new()">Add
+  </button>
+</div>

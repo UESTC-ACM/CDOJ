@@ -7,7 +7,7 @@
 <div class="col-sm-12">
   <div class="form-group">
     <input type="text"
-           ng-model="training.title"
+           ng-model="trainingDto.title"
            ng-require="true"
            ng-maxlength="50"
            class="form-control" placeholder="Enter title here"/>
@@ -16,7 +16,7 @@
 </div>
 
 <div class="col-md-12">
-  <div ng-model="training.description"
+  <div ng-model="trainingDto.description"
        ui-flandre
        upload-url="/picture/uploadTrainingPicture/{{action}}">
   </div>

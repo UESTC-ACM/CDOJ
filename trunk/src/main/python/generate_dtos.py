@@ -90,25 +90,37 @@ def generateDto(input_file, output_dir):
   out = open(output_file, "w")
 
   need_timestamp = False
+  need_list = False
   for field in fields:
     if field["type"] == "Timestamp":
       need_timestamp = True
+    if field["type"].startswith("List<") and field["type"].endswith(">"):
+      need_list = True
+  importList = [
+    "cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder",
+    "cn.edu.uestc.acmicpc.db.dto.base.BaseDTO",
+    "cn.edu.uestc.acmicpc.db.entity.{0}".format(entity)
+  ]
+  for field in fields:
+    if "classpath" in field:
+      importList.append(field["classpath"])
 
   # imports
   out.write("""package cn.edu.uestc.acmicpc.db.dto.impl;
 
-import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
-import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
-import cn.edu.uestc.acmicpc.db.entity.{0};
-""".format(entity))
-  if need_timestamp:
-    out.write("""
-import java.sql.Timestamp;
-import java.util.Map;
 """)
-  else:
-      out.write("""
-import java.util.Map;
+  for package in sorted(importList):
+    out.write("""import {0};
+""".format(package))
+  out.write("""
+""")
+  if need_timestamp:
+    out.write("""import java.sql.Timestamp;
+""")
+  if need_list:
+    out.write("""import java.util.List;
+""")
+  out.write("""import java.util.Map;
 """)
 
   # Class definition

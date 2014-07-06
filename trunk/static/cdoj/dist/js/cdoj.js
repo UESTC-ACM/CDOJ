@@ -80864,7 +80864,7 @@ if (typeof exports === 'object') {
         templateUrl: "template/training/editor.html",
         controller: "TrainingEditorController",
         resolve: {
-          training: [
+          trainingDto: [
             "$q", "$route", "$http", "Error", function($q, $route, $http, $Error) {
               var action, deferred, trainingId;
               deferred = $q.defer();
@@ -80873,8 +80873,8 @@ if (typeof exports === 'object') {
                 trainingId = action;
                 $http.post("/training/data/" + trainingId).success(function(data) {
                   if (data.result === "success") {
-                    data.training.action = action;
-                    return deferred.resolve(data.training);
+                    data.trainingDto.action = action;
+                    return deferred.resolve(data.trainingDto);
                   } else {
                     return $Error.error(data.error_msg);
                   }
@@ -80888,6 +80888,28 @@ if (typeof exports === 'object') {
                   title: ""
                 });
               }
+              return deferred.promise;
+            }
+          ]
+        }
+      }).when("/training/show/:trainingId", {
+        templateUrl: "template/training/show.html",
+        controller: "TrainingShowController",
+        resolve: {
+          trainingDto: [
+            "$q", "$route", "$http", "Error", function($q, $route, $http, $Error) {
+              var deferred, trainingId;
+              deferred = $q.defer();
+              trainingId = $route.current.params.trainingId;
+              $http.post("/training/data/" + trainingId).success(function(data) {
+                if (data.result === "success") {
+                  return deferred.resolve(data.trainingDto);
+                } else {
+                  return $Error.error(data.error_msg);
+                }
+              }).error(function() {
+                return $Error.error("Network error!");
+              });
               return deferred.promise;
             }
           ]
@@ -81864,12 +81886,12 @@ if (typeof exports === 'object') {
   ]);
 
   cdoj.controller("TrainingEditorController", [
-    "$scope", "$http", "$rootScope", "$window", "training", function($scope, $http, $rootScope, $window, training) {
+    "$scope", "$http", "$rootScope", "$window", "trainingDto", function($scope, $http, $rootScope, $window, trainingDto) {
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.ADMIN);
       $window.scrollTo(0, 0);
-      $scope.training = training;
+      $scope.trainingDto = trainingDto;
       $scope.fieldInfo = [];
-      $scope.action = training.action;
+      $scope.action = trainingDto.action;
       if ($scope.action !== "new") {
         $scope.title = "Edit training " + $scope.action;
       } else {
@@ -81877,7 +81899,7 @@ if (typeof exports === 'object') {
       }
       return $scope.submit = function() {
         var trainingEditDto;
-        trainingEditDto = angular.copy($scope.training);
+        trainingEditDto = angular.copy($scope.trainingDto);
         return $http.post("/training/edit", {
           action: angular.copy($scope.action),
           trainingEditDto: trainingEditDto
@@ -81901,6 +81923,40 @@ if (typeof exports === 'object') {
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $window.scrollTo(0, 0);
       return $rootScope.title = "Training list";
+    }
+  ]);
+
+  cdoj.controller("TrainingMemberEditorController", [
+    "$scope", "$http", "$modalInstance", "action", function($scope, $http, $modalInstance, action) {
+      $scope.action = action;
+      console.log(action);
+      if ($scope.action === "new") {
+        $scope.title = "Add new member";
+      } else {
+        $scope.title = "Edit";
+      }
+      return $scope.dismiss = function() {
+        return $modalInstance.dismiss("close");
+      };
+    }
+  ]);
+
+  cdoj.controller("TrainingShowController", [
+    "$scope", "$http", "$rootScope", "$window", "trainingDto", "$modal", function($scope, $http, $rootScope, $window, trainingDto, $modal) {
+      $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
+      $window.scrollTo(0, 0);
+      $scope.trainingDto = trainingDto;
+      return $scope.addNewMember = function() {
+        return $modal.open({
+          templateUrl: "template/modal/training-member-editor-modal.html",
+          controller: "TrainingMemberEditorController",
+          resolve: {
+            action: function() {
+              return "new";
+            }
+          }
+        });
+      };
     }
   ]);
 

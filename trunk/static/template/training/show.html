@@ -1,0 +1,54 @@
+<div id="training-show">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="text-center">{{trainingDto.title}}</h1>
+    </div>
+    <div class="col-md-12">
+      <tabset>
+        <tab heading="Overview">
+          <div class="row">
+            <div class="col-md-12 text-center"
+                 style="margin-top: 16px;"
+                 ng-if="$root.isAdmin">
+              <a class="btn btn-danger btn-xs"
+                 href="javascript: void(0);"
+                 ng-click="addNewMember()">
+                Add member
+              </a>
+              <a class="btn btn-danger btn-xs"
+                 href="/#/training/contest/new">
+                Add contest
+              </a>
+            </div>
+            <div class="col-md-12" style="margin-top: 16px;">
+              <markdown content="trainingDto.description"></markdown>
+            </div>
+          </div>
+        </tab>
+        <tab heading="Rank">
+          <div class="row">
+            <div class="col-md-12">
+              <table class="table table-condensed">
+                <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Name</th>
+                  <th>Competitions</th>
+                  <th>Rating</th>
+                  <th>Volatility</th>
+                  <th>Recent event</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </tab>
+        <tab heading="History">
+
+        </tab>
+      </tabset>
+    </div>
+  </div>
+</div>

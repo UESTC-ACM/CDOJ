@@ -39,7 +39,7 @@ public interface TrainingService extends DatabaseService<Training, Integer> {
    *
    * @param trainingCriteria search criteria
    * @param pageInfo page range restriction
-   * @return all records in database hit the criteria
+   * @return all records in database fit in the criteria
    * @throws AppException
    */
   public List<TrainingDto> getTrainingList(TrainingCriteria trainingCriteria,
