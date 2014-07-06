@@ -23,7 +23,6 @@ import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +31,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/training")
@@ -87,6 +85,10 @@ public class TrainingController extends BaseController {
     Map<String, Object> json = new HashMap<>();
 
     TrainingDto trainingDto = trainingService.getTrainingDto(trainingId, TrainingFields.ALL_FIELDS);
+    if (trainingDto == null) {
+      throw new AppException("Training not found!");
+    }
+
     json.put("trainingDto", trainingDto);
     json.put("result", "success");
 
@@ -124,7 +126,7 @@ public class TrainingController extends BaseController {
     } else {
       trainingDto = trainingService.getTrainingDto(trainingEditDto.getTrainingId(), TrainingFields.ALL_FIELDS);
       if (trainingDto == null) {
-        throw new AppException("No such training.");
+        throw new AppException("Training not found.");
       }
     }
 
@@ -143,15 +145,13 @@ public class TrainingController extends BaseController {
   @LoginPermit(value = AuthenticationType.ADMIN)
   public
   @ResponseBody
-  Map<String, Object> editTrainingUser(@JsonMap("trainingUserEditDto") @Valid TrainingUserDto trainingUserEditDto,
-      @JsonMap("action") String action,
-      BindingResult validateResult) throws AppException {
+  Map<String, Object> editTrainingUser(@JsonMap("trainingUserEditDto") TrainingUserDto trainingUserEditDto,
+      @JsonMap("action") String action) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
-    if (validateResult.hasErrors()) {
-      json.put("result", "field_error");
-      json.put("field", validateResult.getFieldErrors());
-      return json;
+    if (trainingUserEditDto.getTrainingUserName().length() > 30 ||
+        trainingUserEditDto.getTrainingUserName().length() < 2) {
+      throw new FieldException("trainingUserName", "Please enter 2-30 characters.");
     }
 
     // Check user name
@@ -159,6 +159,7 @@ public class TrainingController extends BaseController {
     if (userDTO == null) {
       throw new FieldException("userName", "Invalid OJ user name.");
     }
+    trainingUserEditDto.setUserId(userDTO.getUserId());
     // Check type
     if (trainingUserEditDto.getType() < 0 || trainingUserEditDto.getType() >= TrainingUserType.values().length) {
       throw new FieldException("type", "Invalid type.");
@@ -166,7 +167,7 @@ public class TrainingController extends BaseController {
 
     TrainingUserDto trainingUserDto;
     if (action.equals("new")) {
-      Integer trainingUserId = trainingUserService.createNewTrainingUser(userDTO.getUserId(), trainingUserEditDto.getTrainingId());
+      Integer trainingUserId = trainingUserService.createNewTrainingUser(trainingUserEditDto.getUserId(), trainingUserEditDto.getTrainingId());
       trainingUserDto = trainingUserService.getTrainingUserDto(trainingUserId, TrainingUserFields.ALL_FIELDS);
       if (trainingUserDto == null) {
         throw new AppException("Error while creating training user.");
