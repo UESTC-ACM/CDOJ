@@ -8,6 +8,7 @@ import cn.edu.uestc.acmicpc.util.dto.GenderTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.GradeTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.OnlineJudgeResultTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.TShirtsSizeTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.TrainingUserTypeDto;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
 import cn.edu.uestc.acmicpc.util.enums.ContestType;
@@ -16,6 +17,7 @@ import cn.edu.uestc.acmicpc.util.enums.GradeType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.enums.TShirtsSizeType;
+import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 
 import org.springframework.stereotype.Service;
@@ -89,6 +91,15 @@ public class GlobalServiceImpl extends AbstractService implements GlobalService 
     for (ContestRegistryStatusType contestRegistryStatus: ContestRegistryStatusType.values()) {
       result.add(new ContestRegistryStatusDTO(contestRegistryStatus.ordinal(),
           contestRegistryStatus.getDescription()));
+    }
+    return result;
+  }
+
+  @Override
+  public List<TrainingUserTypeDto> getTrainingUserTypeList() {
+    List<TrainingUserTypeDto> result = new LinkedList<>();
+    for (TrainingUserType trainingUserType: TrainingUserType.values()) {
+      result.add(new TrainingUserTypeDto(trainingUserType.ordinal(), trainingUserType.getDescription()));
     }
     return result;
   }

@@ -3,8 +3,12 @@ package cn.edu.uestc.acmicpc.web.oj.controller.training;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingService;
+import cn.edu.uestc.acmicpc.service.iface.TrainingUserService;
+import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.JsonMap;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
@@ -31,14 +35,20 @@ import java.util.Map;
 public class TrainingController extends BaseController {
 
   private TrainingService trainingService;
+  private TrainingUserService trainingUserService;
+  private UserService userService;
   private PictureService pictureService;
   private Settings settings;
 
   @Autowired
   public TrainingController(TrainingService trainingService,
-                            PictureService pictureService,
-                            Settings settings) {
+      TrainingUserService trainingUserService,
+      UserService userService,
+      PictureService pictureService,
+      Settings settings) {
     this.trainingService = trainingService;
+    this.trainingUserService = trainingUserService;
+    this.userService = userService;
     this.pictureService = pictureService;
     this.settings = settings;
   }
@@ -84,7 +94,7 @@ public class TrainingController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> edit(@JsonMap("trainingEditDto") TrainingDto trainingEditDto,
-                           @JsonMap("action") String action) throws AppException {
+      @JsonMap("action") String action) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
     // Check title
@@ -121,6 +131,25 @@ public class TrainingController extends BaseController {
 
     json.put("trainingId", trainingDto.getTrainingId());
     json.put("result", "success");
+
+    return json;
+  }
+
+  @RequestMapping("editTrainingUser")
+  @LoginPermit(value = AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> editTrainingUser(@JsonMap("trainingUserEditDto")TrainingUserDto trainingUserDto,
+      @JsonMap("action") String action) throws AppException {
+    Map<String, Object> json = new HashMap<>();
+
+    // Check user name
+    UserDTO userDTO = userService.getUserDTOByUserName(trainingUserDto.getUserName());
+    if (userDTO == null) {
+      throw new FieldException("userName", "Invalid OJ user name.");
+    }
+    // Check display name
+
 
     return json;
   }

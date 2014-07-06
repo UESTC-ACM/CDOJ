@@ -19,7 +19,19 @@
     },
     {
       "name": "trainingUserName",
-      "type": "String"
+      "type": "String",
+      "validator": [
+        {
+          "type": "NotNull",
+          "message": "Please enter a display name."
+        },
+        {
+          "type": "Length",
+          "min": 2,
+          "max": 30,
+          "message": "Please enter 2-30 characters."
+        }
+      ]
     },
     {
       "name": "type",

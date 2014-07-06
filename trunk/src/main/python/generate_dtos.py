@@ -42,6 +42,26 @@ fetchName = lambda name: name[:1].upper() + name[1:]
 
 def writeProperties(indent, out, fields, builder):
   for i in range(len(fields)):
+    if i > 0:
+      out.write("\n")
+    if builder == False:
+      if "validator" in fields[i]:
+        validators = fields[i]["validator"]
+        for validator in validators:
+          out.write(indent * ' ')
+          out.write("@" + validator["type"] + "(")
+          firstItem = True
+          for key, value in validator.items():
+            if key != "type":
+              if not firstItem:
+                out.write(", ")
+              firstItem = False
+              out.write(key + " = ")
+              if type(value) is unicode or type(value) is str:
+                out.write("\"" + value + "\"")
+              else:
+                out.write(str(value))
+          out.write(")\n")
     out.write(indent * ' ')
     out.write("private " + fields[i]["type"] + " " + fields[i]["name"])
     if "default" in fields[i]:
@@ -75,6 +95,19 @@ def writeProperties(indent, out, fields, builder):
     out.write(indent * ' ')
     out.write("}\n")
 
+validators_in_javax = [
+  "AssertFalse", "AssertTrue", "DecimalMax", "DecimalMin",
+  "Digits", "Future", "Max", "Min", "NotNull", "Null", "Past", "Pattern", "Size"
+]
+validators_in_hibernate = [
+  "ConstraintComposition", "CreditCardNumber", "Email", "Length", "NotBlank",
+  "NotEmpty", "Range", "SafeHtml", "ScriptAssert", "RUL"
+]
+
+def unique(seq):
+  seen = set()
+  return [x for x in seq if x not in seen and not seen.add(x)]
+
 def generateDto(input_file, output_dir):
   data = json.load(open(input_file))
   entity = data["entity"]
@@ -91,16 +124,32 @@ def generateDto(input_file, output_dir):
 
   need_timestamp = False
   need_list = False
+  javax_import_list = []
+  hibernate_import_list = []
+
   for field in fields:
     if field["type"] == "Timestamp":
       need_timestamp = True
     if field["type"].startswith("List<") and field["type"].endswith(">"):
       need_list = True
+
+    if "validator" in field:
+      for validator in field["validator"]:
+        if validator["type"] in validators_in_javax:
+          javax_import_list.append("javax.validation.constraints." + validator["type"])
+        elif validator["type"] in validators_in_hibernate:
+          hibernate_import_list.append("org.hibernate.validator.constraints." + validator["type"])
+        else:
+          print "Unknown validator type: " + validator["type"]
+          exit(-1)
+
   importList = [
     "cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder",
     "cn.edu.uestc.acmicpc.db.dto.base.BaseDTO",
     "cn.edu.uestc.acmicpc.db.entity.{0}".format(entity)
   ]
+  javax_import_list = unique(javax_import_list)
+  hibernate_import_list = unique(hibernate_import_list)
   for field in fields:
     if "classpath" in field:
       importList.append(field["classpath"])
@@ -110,18 +159,20 @@ def generateDto(input_file, output_dir):
 
 """)
   for package in sorted(importList):
-    out.write("""import {0};
-""".format(package))
-  out.write("""
-""")
+    out.write("import {0};\n".format(package))
+  if len(hibernate_import_list) > 0:
+    out.write("\n")
+    for package in sorted(hibernate_import_list):
+      out.write("import {0};\n".format(package))
+  out.write("\n")
   if need_timestamp:
-    out.write("""import java.sql.Timestamp;
-""")
+    out.write("import java.sql.Timestamp;\n")
   if need_list:
-    out.write("""import java.util.List;
-""")
-  out.write("""import java.util.Map;
-""")
+    out.write("import java.util.List;\n")
+  out.write("import java.util.Map;\n")
+  if len(javax_import_list) > 0:
+    for package in sorted(javax_import_list):
+      out.write("import {0};\n".format(package))
 
   # Class definition
   out.write("""

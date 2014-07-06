@@ -7,6 +7,7 @@ import cn.edu.uestc.acmicpc.util.dto.GenderTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.GradeTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.OnlineJudgeResultTypeDTO;
 import cn.edu.uestc.acmicpc.util.dto.TShirtsSizeTypeDTO;
+import cn.edu.uestc.acmicpc.util.dto.TrainingUserTypeDto;
 
 import java.util.List;
 
@@ -66,4 +67,6 @@ public interface GlobalService {
   public List<ContestTypeDTO> getContestTypeList();
 
   public List<ContestRegistryStatusDTO> getContestRegistryStatusList();
+
+  public List<TrainingUserTypeDto> getTrainingUserTypeList();
 }
