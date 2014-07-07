@@ -16,5 +16,9 @@ cdoj
           controller: "TrainingMemberEditorController"
           resolve:
             action: -> "new"
+            trainingUserDto: ->
+              trainingId: trainingDto.trainingId
+              trainingUserName: ""
+              type: 0
         )
   ])

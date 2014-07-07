@@ -11,13 +11,8 @@
                  style="margin-top: 16px;"
                  ng-if="$root.isAdmin">
               <a class="btn btn-danger btn-xs"
-                 href="javascript: void(0);"
-                 ng-click="addNewMember()">
-                Add member
-              </a>
-              <a class="btn btn-danger btn-xs"
-                 href="/#/training/contest/new">
-                Add contest
+                 href="/#/training/editor/{{trainingDto.trainingId}}">
+                Edit
               </a>
             </div>
             <div class="col-md-12" style="margin-top: 16px;">
@@ -27,6 +22,15 @@
         </tab>
         <tab heading="Rank">
           <div class="row">
+            <div class="col-md-12 text-center"
+                 style="margin-top: 16px;"
+                 ng-if="$root.isAdmin">
+              <a class="btn btn-danger btn-xs"
+                 href="javascript: void(0);"
+                 ng-click="addNewMember()">
+                Add new member
+              </a>
+            </div>
             <div class="col-md-12">
               <table class="table table-condensed">
                 <thead>
