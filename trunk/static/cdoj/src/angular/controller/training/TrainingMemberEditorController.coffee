@@ -9,6 +9,7 @@ cdoj
         $scope.title = "Add new member"
       else
         $scope.title = "Edit"
+      $scope.fieldInfo = []
 
       $scope.searchUser = (keyword) ->
         condition =
@@ -21,8 +22,32 @@ cdoj
             $window.alert data.error_msg
         )
 
-      $scope.add = ->
+      editTrainingUser = (postData) ->
+        console.log postData
+        $http.post("/training/editTrainingUser", postData).success((data) ->
+          if data.result == "success"
+            $modalInstance.close()
+          else if data.result == "field_error"
+            $scope.fieldInfo = data.field
+          else
+            $window.alert data.error_msg
+        ).error(->
+          $window.alert "Network error."
+        )
+
+      $scope.new = ->
         trainingUserEditDto = angular.copy($scope.trainingUserDto)
+        editTrainingUser(
+          action: "new"
+          trainingUserEditDto: trainingUserEditDto
+        )
+
+      $scope.edit = ->
+        trainingUserEditDto = angular.copy($scope.trainingUserDto)
+        editTrainingUser(
+          action: "edit"
+          trainingUserEditDto: trainingUserEditDto
+        )
 
       $scope.dismiss = ->
         $modalInstance.dismiss("close")
