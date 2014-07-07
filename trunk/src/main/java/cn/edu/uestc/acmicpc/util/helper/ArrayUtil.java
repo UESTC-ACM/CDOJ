@@ -5,6 +5,9 @@ package cn.edu.uestc.acmicpc.util.helper;
  */
 public class ArrayUtil {
 
+  // prevent installation.
+  private ArrayUtil() {}
+
   /**
    * Join all objects into a string, splitting with {@code flag}.
    *
@@ -41,8 +44,9 @@ public class ArrayUtil {
    * @return expected array
    */
   public static <T> Object[] toArray(T[] array) {
-    if (array == null || array.length < 1)
-      return new Object[]{};
+    if (array == null || array.length < 1) {
+      return new Object[0];
+    }
     Object[] result = new Object[array.length];
     System.arraycopy(array, 0, result, 0, result.length);
     return result;
@@ -57,8 +61,9 @@ public class ArrayUtil {
    * @return expected integer array
    */
   public static Integer[] parseIntArray(String s) {
-    if (s == null)
+    if (s == null) {
       return new Integer[0];
+    }
     String[] arr = s.split("[,]");
     Integer[] result = new Integer[arr.length];
     for (int i = 0; i < arr.length; ++i) {
