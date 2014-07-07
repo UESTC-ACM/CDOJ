@@ -30,6 +30,7 @@ cdoj
         $modal.open(
           templateUrl: "template/modal/code-modal.html"
           controller: "CodeModalController"
+          size: "lg"
           resolve:
             statusId: ->
               statusId
