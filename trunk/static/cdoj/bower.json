@@ -30,7 +30,7 @@
     "angular-ui-sortable": "~0.12.1",
     "bootstrap-switch": "~2.0.1",
     "bootstrap": "~3.1.1",
-    "fine-uploader": "~5.0.3",
+    "fine-uploader": "xzyfer/fine-uploader",
     "google-code-prettify": "~1.0.1",
     "jquery": "1.11.0",
     "marked": "~0.3.1",
