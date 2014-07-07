@@ -38,11 +38,11 @@
   <div class="container" ng-controller="HeaderController">
     <nav>
       <ul class="nav navbar-nav navbar-right" style="min-height: 50px;">
-        <li ng-show="$root.hasLogin"
+        <li ng-if="$root.hasLogin"
             style="font-size: 20px;">
           <a href="/#/user/center/{{currentUser.userName}}"><i class="fa fa-home"></i></a>
         </li>
-        <li ng-show="$root.hasLogin"
+        <li ng-if="$root.hasLogin"
             style="font-size: 20px;">
           <a href="javascript:void(0);"
              class="dropdown-toggle">
@@ -89,9 +89,9 @@
             </li>
           </ul>
         </li>
-        <li ng-show="$root.hasLogin">
-          <div id="cdoj-user" style="margin-left: 15px;">
-            <a href="javascript:void(0);" class="dropdown-toggle">
+        <li ng-if="$root.hasLogin">
+          <div id="cdoj-user" dropdown style="margin-left: 15px;">
+            <a href class="dropdown-toggle">
               <img id="cdoj-user-avatar"
                    ui-avatar
                    email="currentUser.email"/>
@@ -139,8 +139,8 @@ border-top-right-radius: 0;">
             </ul>
           </div>
         </li>
-        <li ng-hide="$root.hasLogin">
-          <a href="javascript:void(0);" class="dropdown-toggle">
+        <li dropdown ng-if="$root.hasLogin == false">
+          <a href class="dropdown-toggle">
             Sign in
           </a>
           <ul ui-dropdown-menu class="dropdown-menu cdoj-form-menu" style="width: 340px;">
