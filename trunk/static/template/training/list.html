@@ -26,7 +26,7 @@
           </td>
         </tr>
         <tr ng-repeat="training in list">
-          <td>{{training.trainingId}}</td>
+          <td class="text-right">{{training.trainingId}}</td>
           <td><a href="/#/training/show/{{training.trainingId}}">{{training.title}}</a>
           </td>
           <td ng-if="$root.isAdmin">

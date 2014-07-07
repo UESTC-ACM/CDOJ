@@ -100,7 +100,7 @@ cdoj.directive("uiFlandre",
         multiple: false
         callbacks:
           onComplete: (id, fileName, data) ->
-            if data.success == "true"
+            if data.success == true
               value = "![title](#{data.uploadedFileUrl})"
               position = $editor.getCursorPosition()
               oldText = $editor.val()
