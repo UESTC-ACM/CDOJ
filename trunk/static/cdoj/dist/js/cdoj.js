@@ -80573,6 +80573,16 @@ if (typeof exports === 'object') {
       keyword: null,
       orderFields: "trainingId",
       orderAsc: "false"
+    },
+    trainingUserCriteria: {
+      currentPage: null,
+      startId: null,
+      endId: null,
+      trainingId: null,
+      keyword: null,
+      type: null,
+      orderFields: "currentRating,trainingUserName",
+      orderAsc: "true,false"
     }
   };
 
@@ -81928,6 +81938,7 @@ if (typeof exports === 'object') {
 
   cdoj.controller("TrainingMemberEditorController", [
     "$scope", "$http", "$modalInstance", "action", "trainingUserDto", function($scope, $http, $modalInstance, action, trainingUserDto) {
+      var editTrainingUser;
       $scope.action = action;
       $scope.trainingUserDto = trainingUserDto;
       if ($scope.action === "new") {
@@ -81935,6 +81946,7 @@ if (typeof exports === 'object') {
       } else {
         $scope.title = "Edit";
       }
+      $scope.fieldInfo = [];
       $scope.searchUser = function(keyword) {
         var condition;
         condition = {
@@ -81950,9 +81962,35 @@ if (typeof exports === 'object') {
           }
         }));
       };
-      $scope.add = function() {
+      editTrainingUser = function(postData) {
+        console.log(postData);
+        return $http.post("/training/editTrainingUser", postData).success(function(data) {
+          if (data.result === "success") {
+            return $modalInstance.close();
+          } else if (data.result === "field_error") {
+            return $scope.fieldInfo = data.field;
+          } else {
+            return $window.alert(data.error_msg);
+          }
+        }).error(function() {
+          return $window.alert("Network error.");
+        });
+      };
+      $scope["new"] = function() {
         var trainingUserEditDto;
-        return trainingUserEditDto = angular.copy($scope.trainingUserDto);
+        trainingUserEditDto = angular.copy($scope.trainingUserDto);
+        return editTrainingUser({
+          action: "new",
+          trainingUserEditDto: trainingUserEditDto
+        });
+      };
+      $scope.edit = function() {
+        var trainingUserEditDto;
+        trainingUserEditDto = angular.copy($scope.trainingUserDto);
+        return editTrainingUser({
+          action: "edit",
+          trainingUserEditDto: trainingUserEditDto
+        });
       };
       return $scope.dismiss = function() {
         return $modalInstance.dismiss("close");
@@ -81962,13 +82000,46 @@ if (typeof exports === 'object') {
 
   cdoj.controller("TrainingShowController", [
     "$scope", "$http", "$rootScope", "$window", "trainingDto", "$modal", function($scope, $http, $rootScope, $window, trainingDto, $modal) {
+      var _trainingUserCriteria;
       $scope.$emit("permission:setPermission", $rootScope.AuthenticationType.NOOP);
       $window.scrollTo(0, 0);
       $scope.trainingDto = trainingDto;
+      _trainingUserCriteria = angular.copy($rootScope.trainingUserCriteria);
+      _trainingUserCriteria.trainingId = trainingDto.trainingId;
+      $scope.trainingUserCriteria = _trainingUserCriteria;
+      $scope.editTrainingUser = function(trainingUserId) {
+        return $modal.open({
+          templateUrl: "template/modal/training-member-editor-modal.html",
+          controller: "TrainingMemberEditorController",
+          size: "lg",
+          resolve: {
+            action: function() {
+              return "edit";
+            },
+            trainingUserDto: [
+              "$q", "$http", "Error", function($q, $http, $Error) {
+                var deferred;
+                deferred = $q.defer();
+                $http.get("/training/trainingUserData/" + trainingUserId).success(function(data) {
+                  if (data.result === "success") {
+                    return deferred.resolve(data.trainingUserDto);
+                  } else {
+                    return $Error.error(data.error_msg);
+                  }
+                }).error(function() {
+                  return $Error.error("Network error!");
+                });
+                return deferred.promise;
+              }
+            ]
+          }
+        });
+      };
       return $scope.addNewMember = function() {
         return $modal.open({
           templateUrl: "template/modal/training-member-editor-modal.html",
           controller: "TrainingMemberEditorController",
+          size: "lg",
           resolve: {
             action: function() {
               return "new";
@@ -83447,6 +83518,22 @@ if (typeof exports === 'object') {
       },
       controller: "ListController",
       template: "<div>\n  <div class=\"col-md-12\" ng-show=\"pageInfo.totalItems > itemsPerPage\">\n    <pagination total-items=\"pageInfo.totalItems\"\n                items-per-page=\"itemsPerPage\"\n                page=\"condition.currentPage\"\n                max-size=\"showPages\"\n                class=\"pagination-sm\"\n                boundary-links=\"true\"\n                previous-text=\"&lsaquo;\"\n                next-text=\"&rsaquo;\"\n                first-text=\"&laquo;\"\n                last-text=\"&raquo;\"></pagination>\n  </div>\n  <div ng-transclude></div>\n</div>"
+    };
+  });
+
+  cdoj.directive("uiLoadingNotification", function() {
+    return {
+      restrict: "E",
+      controller: [
+        "$scope", "$rootScope", "$window", function($scope, $rootScope, $window) {
+          $scope.show = false;
+          $scope.marginTopValue = (($window.innerHeight - 100) / 2) + "px";
+          return $rootScope.$on("loading:on", function() {
+            return $scope.show = true;
+          });
+        }
+      ],
+      template: "<div>\n<div ng-if=\"show\"\n     style=\"position: fixed;\n            top: 0;\n            left: 0;\n            z-index: 999998;\n            width: 100%;\n            height: 100%;\n            background: #000;\n            filter: alpha(opacity=60);\n            opacity: 0.6;\">\n</div>\n<div ng-if=\"show\"\n     style=\"position: fixed;\n            top: 0;\n            left: 0;\n            z-index: 999999;\n            width: 100%;\n            height: 100%;\">\n  <div style=\"margin-left: auto;\n              margin-right: auto;\n              width: 200px;\n              height: 100px;\n              background: #FFF;\"\n      ng-style=\"{'margin-top': marginTopValue}\">\n    <div class=\"text-center\"\n         style=\"padding-top: 36px;\n                font-size: 24px;\n                color: #F00;\n                font-weight: bold;\">\n      LOADING\n    </div>\n  </div>\n</div>\n</div>"
     };
   });
 
