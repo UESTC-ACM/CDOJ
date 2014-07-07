@@ -28,6 +28,7 @@ public class TrainingUserCriteria extends BaseCriteria<TrainingUser, TrainingUse
     super.setResultFields(resultFields);
   }
 
+  public Integer trainingId;
   public Integer startId;
   public Integer endId;
   public String keyword;
@@ -37,6 +38,9 @@ public class TrainingUserCriteria extends BaseCriteria<TrainingUser, TrainingUse
   public DetachedCriteria getCriteria() throws AppException {
     DetachedCriteria criteria = super.getCriteria();
 
+    if (trainingId != null) {
+      criteria.add(Restrictions.eq("trainingId", trainingId));
+    }
     if (startId != null) {
       criteria.add(Restrictions.ge("trainingUserId", startId));
     }

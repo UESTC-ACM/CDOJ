@@ -1,6 +1,7 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.training;
 
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingUserCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
@@ -184,6 +185,53 @@ public class TrainingController extends BaseController {
     trainingUserDto.setType(trainingUserEditDto.getType());
 
     trainingUserService.updateTrainingUser(trainingUserDto);
+    json.put("result", "success");
+
+    return json;
+  }
+
+  @RequestMapping("searchTrainingUser/{trainingId}")
+  @LoginPermit(NeedLogin = false)
+  public
+  @ResponseBody
+  Map<String, Object> searchTrainingUser(@RequestBody(required = false) TrainingUserCriteria trainingUserCriteria,
+      @PathVariable("trainingId") Integer trainingId) throws AppException {
+    Map<String, Object> json = new HashMap<>();
+
+    if (trainingUserCriteria == null) {
+      trainingUserCriteria = new TrainingUserCriteria();
+    }
+    trainingUserCriteria.setResultFields(TrainingUserFields.FIELDS_FOR_LIST_PAGE);
+    trainingUserCriteria.trainingId = trainingId;
+
+    List<TrainingUserDto> trainingUserDtoList = trainingUserService.getTrainingUserList(trainingUserCriteria);
+    for (int id = 0; id < trainingUserDtoList.size(); ++id) {
+      trainingUserDtoList.get(id).setRank(id + 1);
+    }
+
+    PageInfo pageInfo = buildPageInfo((long) trainingUserDtoList.size(),
+        1L, (long) trainingUserDtoList.size(), null);
+
+    json.put("pageInfo", pageInfo);
+    json.put("list", trainingUserDtoList);
+    json.put("result", "success");
+
+    return json;
+  }
+
+  @RequestMapping("trainingUserData/{trainingUserId}")
+  @LoginPermit(NeedLogin = false)
+  public
+  @ResponseBody
+  Map<String, Object> trainingUserData(@PathVariable("trainingUserId") Integer trainingUserId) throws AppException {
+    Map<String, Object> json = new HashMap<>();
+
+    TrainingUserDto trainingUserDto = trainingUserService.getTrainingUserDto(trainingUserId, TrainingUserFields.ALL_FIELDS);
+    if (trainingUserDto == null) {
+      throw new AppException("Training user not found!");
+    }
+
+    json.put("trainingUserDto", trainingUserDto);
     json.put("result", "success");
 
     return json;
