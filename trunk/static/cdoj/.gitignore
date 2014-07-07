@@ -2,3 +2,4 @@
 .idea
 *.xmi
 /temp
+/bower_components
