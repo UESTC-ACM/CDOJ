@@ -26,7 +26,6 @@ public class StringUtil {
    * Create @user link
    *
    * @param userName user's name
-   * @param userId user's id
    * @return result
    */
   public static String getAtLink(String userName) {
@@ -62,7 +61,7 @@ public class StringUtil {
   public static String getFieldNameFromGetterOrSetter(String methodName) {
     if (methodName.startsWith("get") || methodName.startsWith("set")) {
       StringBuilder stringBuilder = new StringBuilder();
-      stringBuilder.append(CharUtil.toLowerCase(methodName.charAt(3)));
+      stringBuilder.append(Character.toLowerCase(methodName.charAt(3)));
       if (methodName.length() > 4)
         stringBuilder.append(methodName.substring(4));
       return stringBuilder.toString();
@@ -197,9 +196,9 @@ public class StringUtil {
     char[] firstCharArray = first.toCharArray();
     char[] secondCharArray = second.toCharArray();
     for (int i = 0, j = 0; ; ) {
-      if (i < firstCharArray.length && CharUtil.isWhiteSpace(firstCharArray[i])) {
+      if (i < firstCharArray.length && Character.isWhitespace(firstCharArray[i])) {
         ++i;
-      } else if (j < secondCharArray.length && CharUtil.isWhiteSpace(secondCharArray[j])) {
+      } else if (j < secondCharArray.length && Character.isWhitespace(secondCharArray[j])) {
         ++j;
       } else if (i == firstCharArray.length) {
         if (j == secondCharArray.length) {

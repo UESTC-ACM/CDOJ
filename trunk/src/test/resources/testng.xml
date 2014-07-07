@@ -17,9 +17,9 @@
       <class name="cn.edu.uestc.acmicpc.db.condition.base.ConditionTest"/>
     </classes>
   </test>
-  <test name="ArrayUtilTest" time-out="60000">
+  <test name="UtilHelperTest" time-out="60000">
     <classes>
-      <class name="cn.edu.uestc.acmicpc.util.ArrayUtilTest"/>
+      <class name="cn.edu.uestc.acmicpc.util.helper.ArrayUtilTest"/>
     </classes>
   </test>
   <test name="CompareSkipSpacesTest" time-out="60000">
