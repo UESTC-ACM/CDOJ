@@ -1,0 +1,43 @@
+{
+  "name": "cdoj",
+  "version": "2.2.2",
+  "homepage": "https://github.com/mzry1992/CDOJ",
+  "authors": [
+    "mzry1992 <muziriyun@gmail.com>"
+  ],
+  "description": "CDOJ UI layer",
+  "main": "Gruntfile.coffee",
+  "keywords": [
+    "CDOJ"
+  ],
+  "license": "GPL",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "CryptoJS": "~3.1.12",
+    "angular-bindonce": "~0.3.1",
+    "angular-bootstrap": "~0.10.0",
+    "angular-cookies": "~1.2.14",
+    "angular-elastic": "~2.3.1",
+    "angular-route": "~1.2.14",
+    "angular-sanitize": "~1.2.14",
+    "angular-ui-sortable": "~0.12.1",
+    "bootstrap-switch": "~2.0.1",
+    "bootstrap": "~3.1.1",
+    "fine-uploader": "xzyfer/fine-uploader",
+    "google-code-prettify": "~1.0.1",
+    "jquery": "1.11.0",
+    "marked": "~0.3.1",
+    "requirejs": "~2.1.11",
+    "smalot-bootstrap-datetimepicker": "~2.2.0",
+    "sugar": "~1.4.1",
+    "underscore.string": "~2.3.3",
+    "underscore": "~1.6.0"
+  }
+}

@@ -142,3 +142,12 @@ GlobalConditions =
     keyword: null
     orderFields: "trainingId"
     orderAsc: "false"
+  trainingUserCriteria:
+    currentPage: null
+    startId: null
+    endId: null
+    trainingId: null
+    keyword: null
+    type: null
+    orderFields: "currentRating,trainingUserName"
+    orderAsc: "true,false"
