@@ -123,6 +123,7 @@ public class IndexController extends BaseController {
     result.put("gradeTypeList", globalService.getGradeTypeList());
     result.put("tShirtsSizeTypeList", globalService.getTShirtsSizeTypeList());
     result.put("contestRegistryStatusList", globalService.getContestRegistryStatusList());
+    result.put("trainingUserTypeList", globalService.getTrainingUserTypeList());
     result.put("result", "success");
     return result;
   }

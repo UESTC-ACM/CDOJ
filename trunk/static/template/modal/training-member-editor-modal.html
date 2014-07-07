@@ -3,9 +3,52 @@
   <h4 class="modal-title">{{title}}</h4>
 </div>
 <div class="modal-body">
-  <form class="from-horizontal">
+  <form class="form-horizontal">
     <fieldset>
       <div class="form-group">
+        <label class="control-label col-sm-4"
+               for="userName">OJ user name</label>
+        <div class="col-sm-8">
+          <input type="text"
+                 id="userName"
+                 class="form-control input-sm"
+                 placeholder="User name"
+                 ng-model="trainingUserDto.userName"
+                 typeahead="user.userName for user in searchUser($viewValue) | filter:$viewValue"
+                 typeahead-template-url="template/user/typeAhead.html"/>
+          <ui-validate-info value="fieldInfo" for="userName"></ui-validate-info>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-4"
+               for="displayName">Display name</label>
+
+        <div class="col-sm-8">
+          <input type="text"
+                 ng-model="trainingUserDto.trainingUserName"
+                 id="displayName"
+                 ng-required="true"
+                 ng-maxlength="50"
+                 ng-minlength="1"
+                 class="form-control input-sm"/>
+          <ui-validate-info value="fieldInfo" for="trainingUserName"></ui-validate-info>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-4 "
+               for="type">Type</label>
+
+        <div class="col-sm-8">
+          <select ng-model="trainingUserDto.type"
+                  ng-options="type.trainingUserTypeId as type.description for type in $root.trainingUserTypeList"
+                  id="type"
+                  ng-required="true"
+                  class="form-control input-sm">
+          </select>
+          <ui-validate-info value="fieldInfo" for="type"></ui-validate-info>
+        </div>
       </div>
     </fieldset>
   </form>

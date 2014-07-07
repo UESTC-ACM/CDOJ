@@ -2,12 +2,18 @@ package cn.edu.uestc.acmicpc.web.oj.controller.training;
 
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
+import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingService;
+import cn.edu.uestc.acmicpc.service.iface.TrainingUserService;
+import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.JsonMap;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
@@ -31,14 +37,20 @@ import java.util.Map;
 public class TrainingController extends BaseController {
 
   private TrainingService trainingService;
+  private TrainingUserService trainingUserService;
+  private UserService userService;
   private PictureService pictureService;
   private Settings settings;
 
   @Autowired
   public TrainingController(TrainingService trainingService,
-                            PictureService pictureService,
-                            Settings settings) {
+      TrainingUserService trainingUserService,
+      UserService userService,
+      PictureService pictureService,
+      Settings settings) {
     this.trainingService = trainingService;
+    this.trainingUserService = trainingUserService;
+    this.userService = userService;
     this.pictureService = pictureService;
     this.settings = settings;
   }
@@ -73,6 +85,10 @@ public class TrainingController extends BaseController {
     Map<String, Object> json = new HashMap<>();
 
     TrainingDto trainingDto = trainingService.getTrainingDto(trainingId, TrainingFields.ALL_FIELDS);
+    if (trainingDto == null) {
+      throw new AppException("Training not found!");
+    }
+
     json.put("trainingDto", trainingDto);
     json.put("result", "success");
 
@@ -84,7 +100,7 @@ public class TrainingController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> edit(@JsonMap("trainingEditDto") TrainingDto trainingEditDto,
-                           @JsonMap("action") String action) throws AppException {
+      @JsonMap("action") String action) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
     // Check title
@@ -110,7 +126,7 @@ public class TrainingController extends BaseController {
     } else {
       trainingDto = trainingService.getTrainingDto(trainingEditDto.getTrainingId(), TrainingFields.ALL_FIELDS);
       if (trainingDto == null) {
-        throw new AppException("No such training.");
+        throw new AppException("Training not found.");
       }
     }
 
@@ -120,6 +136,54 @@ public class TrainingController extends BaseController {
     trainingService.updateTraining(trainingDto);
 
     json.put("trainingId", trainingDto.getTrainingId());
+    json.put("result", "success");
+
+    return json;
+  }
+
+  @RequestMapping("editTrainingUser")
+  @LoginPermit(value = AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> editTrainingUser(@JsonMap("trainingUserEditDto") TrainingUserDto trainingUserEditDto,
+      @JsonMap("action") String action) throws AppException {
+    Map<String, Object> json = new HashMap<>();
+
+    if (trainingUserEditDto.getTrainingUserName().length() > 30 ||
+        trainingUserEditDto.getTrainingUserName().length() < 2) {
+      throw new FieldException("trainingUserName", "Please enter 2-30 characters.");
+    }
+
+    // Check user name
+    UserDTO userDTO = userService.getUserDTOByUserName(trainingUserEditDto.getUserName());
+    if (userDTO == null) {
+      throw new FieldException("userName", "Invalid OJ user name.");
+    }
+    trainingUserEditDto.setUserId(userDTO.getUserId());
+    // Check type
+    if (trainingUserEditDto.getType() < 0 || trainingUserEditDto.getType() >= TrainingUserType.values().length) {
+      throw new FieldException("type", "Invalid type.");
+    }
+
+    TrainingUserDto trainingUserDto;
+    if (action.equals("new")) {
+      Integer trainingUserId = trainingUserService.createNewTrainingUser(trainingUserEditDto.getUserId(), trainingUserEditDto.getTrainingId());
+      trainingUserDto = trainingUserService.getTrainingUserDto(trainingUserId, TrainingUserFields.ALL_FIELDS);
+      if (trainingUserDto == null) {
+        throw new AppException("Error while creating training user.");
+      }
+    } else {
+      trainingUserDto = trainingUserService.getTrainingUserDto(trainingUserEditDto.getTrainingUserId(), TrainingUserFields.ALL_FIELDS);
+      if (trainingUserDto == null) {
+        throw new AppException("Training user not found.");
+      }
+    }
+
+    trainingUserDto.setUserId(trainingUserEditDto.getUserId());
+    trainingUserDto.setTrainingUserName(trainingUserEditDto.getTrainingUserName());
+    trainingUserDto.setType(trainingUserEditDto.getType());
+
+    trainingUserService.updateTrainingUser(trainingUserDto);
     json.put("result", "success");
 
     return json;

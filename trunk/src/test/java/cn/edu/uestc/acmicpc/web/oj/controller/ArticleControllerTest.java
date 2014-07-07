@@ -607,7 +607,6 @@ public class ArticleControllerTest extends ControllerTest {
     Map<String, Object> jsonData = new HashMap<>();
     jsonData.put("action", "new");
     ArticleDto articleEditDto = ArticleDto.builder()
-        .setArticleId(1)
         .setContent("content")
         .setProblemId(1)
         .setType(ArticleType.COMMENT.ordinal())
