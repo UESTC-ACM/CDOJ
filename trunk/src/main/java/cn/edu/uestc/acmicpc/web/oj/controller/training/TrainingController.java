@@ -1,13 +1,17 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.training;
 
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingPlatformInfoCriteria;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingUserCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
+import cn.edu.uestc.acmicpc.db.dto.field.TrainingPlatformInfoFields;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
+import cn.edu.uestc.acmicpc.service.iface.TrainingPlatformInfoService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingUserService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
@@ -39,6 +43,7 @@ public class TrainingController extends BaseController {
 
   private TrainingService trainingService;
   private TrainingUserService trainingUserService;
+  private TrainingPlatformInfoService trainingPlatformInfoService;
   private UserService userService;
   private PictureService pictureService;
   private Settings settings;
@@ -46,11 +51,13 @@ public class TrainingController extends BaseController {
   @Autowired
   public TrainingController(TrainingService trainingService,
       TrainingUserService trainingUserService,
+      TrainingPlatformInfoService trainingPlatformInfoService,
       UserService userService,
       PictureService pictureService,
       Settings settings) {
     this.trainingService = trainingService;
     this.trainingUserService = trainingUserService;
+    this.trainingPlatformInfoService = trainingPlatformInfoService;
     this.userService = userService;
     this.pictureService = pictureService;
     this.settings = settings;
@@ -231,9 +238,56 @@ public class TrainingController extends BaseController {
       throw new AppException("Training user not found!");
     }
 
+    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(TrainingPlatformInfoFields.ALL_FIELDS);
+    trainingPlatformInfoCriteria.trainingUserId = trainingUserId;
+    List<TrainingPlatformInfoDto> trainingPlatformInfoDtoList = trainingPlatformInfoService.getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
+
     json.put("trainingUserDto", trainingUserDto);
+    json.put("trainingPlatformInfoDtoList", trainingPlatformInfoDtoList);
     json.put("result", "success");
 
+    return json;
+  }
+
+  @RequestMapping("editTrainingPlatformInfo")
+  @LoginPermit(value = AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> editTrainingPlatformInfo(@JsonMap("trainingPlatformInfoEditDto") TrainingPlatformInfoDto trainingPlatformInfoEditDto,
+      @JsonMap("action") String action) throws AppException {
+    Map<String, Object> json = new HashMap<>();
+
+    if (action.equals("remove")) {
+      trainingPlatformInfoService.removeTrainingPlatformInfo(trainingPlatformInfoEditDto.getTrainingPlatformInfoId());
+    } else {
+      TrainingPlatformInfoDto trainingPlatformInfoDto;
+      if (action.equals("new")) {
+        Integer trainingPlatformInfoId = trainingPlatformInfoService.createNewTrainingPlatformInfo(trainingPlatformInfoEditDto.getTrainingUserId());
+        trainingPlatformInfoDto = trainingPlatformInfoService.getTrainingPlatformInfoDto(trainingPlatformInfoId, TrainingPlatformInfoFields.ALL_FIELDS);
+        if (trainingPlatformInfoDto == null) {
+          throw new AppException("Error while creating training platform info.");
+        }
+      } else {
+        trainingPlatformInfoDto = trainingPlatformInfoService.getTrainingPlatformInfoDto(trainingPlatformInfoEditDto.getTrainingPlatformInfoId(), TrainingPlatformInfoFields.ALL_FIELDS);
+        if (trainingPlatformInfoDto == null) {
+          throw new AppException("Training platform info not found.");
+        }
+      }
+
+      trainingPlatformInfoDto.setType(trainingPlatformInfoEditDto.getType());
+      trainingPlatformInfoDto.setUserName(trainingPlatformInfoEditDto.getUserName());
+      trainingPlatformInfoDto.setUserId(trainingPlatformInfoEditDto.getUserId());
+
+      trainingPlatformInfoService.updateTrainingPlatformInfo(trainingPlatformInfoDto);
+      json.put("trainingPlatformInfoDto",
+          trainingPlatformInfoService.getTrainingPlatformInfoDto(
+              trainingPlatformInfoDto.getTrainingPlatformInfoId(),
+              TrainingPlatformInfoFields.ALL_FIELDS
+          )
+      );
+    }
+
+    json.put("result", "success");
     return json;
   }
 }
