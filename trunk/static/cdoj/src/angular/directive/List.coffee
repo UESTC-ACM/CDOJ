@@ -14,7 +14,7 @@ cdoj
   <div class="col-md-12" ng-show="pageInfo.totalItems > itemsPerPage">
     <pagination total-items="pageInfo.totalItems"
                 items-per-page="itemsPerPage"
-                page="condition.currentPage"
+                ng-model="condition.currentPage"
                 max-size="showPages"
                 class="pagination-sm"
                 boundary-links="true"
