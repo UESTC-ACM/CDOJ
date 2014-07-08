@@ -2,11 +2,11 @@ package cn.edu.uestc.acmicpc.db.condition.base;
 
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
-import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Conditions setting for {@link cn.edu.uestc.acmicpc.db.dao.iface.Dao#findAll(String, Condition)}
@@ -172,9 +172,9 @@ public class Condition {
         return false;
       }
       Entry entry = (Entry) obj;
-      return ObjectUtil.equals(fieldName, entry.fieldName)
-          && ObjectUtil.equals(value, entry.value)
-          && ObjectUtil.equals(conditionType, entry.conditionType);
+      return Objects.equals(fieldName, entry.fieldName)
+          && Objects.equals(value, entry.value)
+          && Objects.equals(conditionType, entry.conditionType);
     }
   }
 

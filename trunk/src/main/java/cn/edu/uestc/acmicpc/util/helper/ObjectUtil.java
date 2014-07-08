@@ -26,8 +26,9 @@ public class ObjectUtil {
    */
   @SuppressWarnings("rawtypes")
   public static String toString(Object obj) {
-    if (obj == null)
+    if (obj == null) {
       return "null";
+    }
     ArrayList<String> list = new ArrayList<>();
     Class<?> cls = obj.getClass();
     for (Field f : cls.getFields()) {
@@ -52,16 +53,6 @@ public class ObjectUtil {
       }
     }
     return String.format("{\n%s\n}", ArrayUtil.join(list.toArray(), ",\n"));
-  }
-
-  public static boolean equals(Object first, Object second) {
-    if (first == second) {
-      return true;
-    }
-    if (first == null || second == null) {
-      return false;
-    }
-    return first.equals(second);
   }
 
   public static <T extends Serializable> boolean entityEquals(BaseDTO<T> dto, T object) {
