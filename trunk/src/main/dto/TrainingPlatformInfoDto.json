@@ -1,0 +1,25 @@
+{
+  "entity": "TrainingPlatformInfo",
+  "fields": [
+    {
+      "name": "trainingPlatformInfoId",
+      "type": "Integer"
+    },
+    {
+      "name": "trainingUserId",
+      "type": "Integer"
+    },
+    {
+      "name": "userName",
+      "type": "String"
+    },
+    {
+      "name": "userId",
+      "type": "String"
+    },
+    {
+      "name": "type",
+      "type": "Integer"
+    }
+  ]
+}
