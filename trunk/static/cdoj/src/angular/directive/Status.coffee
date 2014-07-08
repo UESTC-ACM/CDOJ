@@ -34,6 +34,7 @@ cdoj
         $modal.open(
           templateUrl: "template/modal/compile-info-modal.html"
           controller: "CompileInfoModalController"
+          size: "lg"
           resolve:
             statusId: ->
               statusId

@@ -14,10 +14,9 @@ cdoj
       $scope.trainingUserCriteria = _trainingUserCriteria
 
       $scope.editTrainingUser = (trainingUserId) ->
-        $modal.open(
+        modalInstance = $modal.open(
           templateUrl: "template/modal/training-member-editor-modal.html"
           controller: "TrainingMemberEditorController"
-          size: "lg"
           resolve:
             action: ->
               "edit"
@@ -37,12 +36,14 @@ cdoj
                 return deferred.promise
             ]
         )
+        modalInstance.result.then( ->
+          $scope.$broadcast("list:refresh:trainingRankList")
+        )
 
       $scope.addNewMember = ->
-        $modal.open(
+        modalInstance = $modal.open(
           templateUrl: "template/modal/training-member-editor-modal.html"
           controller: "TrainingMemberEditorController"
-          size: "lg"
           resolve:
             action: ->
               "new"
@@ -50,5 +51,8 @@ cdoj
               trainingId: trainingDto.trainingId
               trainingUserName: ""
               type: 0
+        )
+        modalInstance.result.then( ->
+          $scope.$broadcast("list:refresh:trainingRankList")
         )
   ])
