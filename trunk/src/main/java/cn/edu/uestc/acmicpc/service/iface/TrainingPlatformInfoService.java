@@ -49,4 +49,12 @@ public interface TrainingPlatformInfoService extends DatabaseService<TrainingPla
    * @throws AppException
    */
   public Integer createNewTrainingPlatformInfo(Integer trainingUserId) throws AppException;
+
+  /**
+   * Remove training platform info record by id.
+   *
+   * @param trainingPlatformInfoId id.
+   * @throws AppException
+   */
+  public void removeTrainingPlatformInfo(Integer trainingPlatformInfoId) throws AppException;
 }

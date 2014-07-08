@@ -19,6 +19,7 @@ import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.service.iface.TrainingPlatformInfoService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingUserService;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
@@ -68,6 +69,7 @@ public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
   @Autowired protected FileService fileService;
   @Autowired protected TrainingService trainingService;
   @Autowired protected TrainingUserService trainingUserService;
+  @Autowired protected TrainingPlatformInfoService trainingPlatformInfoService;
   @Autowired protected UserDao userDao;
   @Autowired protected ProblemDao problemDao;
 

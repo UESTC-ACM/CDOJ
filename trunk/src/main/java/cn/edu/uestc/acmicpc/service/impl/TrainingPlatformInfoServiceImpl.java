@@ -69,6 +69,11 @@ public class TrainingPlatformInfoServiceImpl extends AbstractService implements 
   }
 
   @Override
+  public void removeTrainingPlatformInfo(Integer trainingPlatformInfoId) throws AppException {
+    trainingPlatformInfoDao.deleteEntitiesByField("trainingPlatformInfoId", trainingPlatformInfoId.toString());
+  }
+
+  @Override
   public TrainingPlatformInfoDao getDao() {
     return trainingPlatformInfoDao;
   }
