@@ -49,5 +49,5 @@ public interface TrainingUserService extends DatabaseService<TrainingUser, Integ
    * @return Id of new record.
    * @throws AppException
    */
-  Integer createNewTrainingUser(Integer userId, Integer trainingId) throws AppException;
+  public Integer createNewTrainingUser(Integer userId, Integer trainingId) throws AppException;
 }
