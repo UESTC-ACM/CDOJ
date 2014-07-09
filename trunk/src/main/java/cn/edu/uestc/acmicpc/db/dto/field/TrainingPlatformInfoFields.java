@@ -5,6 +5,7 @@ package cn.edu.uestc.acmicpc.db.dto.field;
  */
 public enum TrainingPlatformInfoFields implements Fields {
   ALL_FIELDS(
+      FieldProjection.Alias("trainingUserByTrainingUserId", "trainingUser"),
       FieldProjection.Property("trainingPlatformInfoId"),
       FieldProjection.Property("trainingUserId"),
       FieldProjection.Property("userName"),

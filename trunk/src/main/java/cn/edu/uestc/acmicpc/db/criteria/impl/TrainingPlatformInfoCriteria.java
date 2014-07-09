@@ -25,6 +25,7 @@ public class TrainingPlatformInfoCriteria extends BaseCriteria<TrainingPlatformI
   public String userName;
   public String userId;
   public TrainingPlatformType type;
+  public String keyword;
 
   @Override
   public DetachedCriteria getCriteria() throws AppException {
@@ -44,7 +45,15 @@ public class TrainingPlatformInfoCriteria extends BaseCriteria<TrainingPlatformI
       criteria.add(Restrictions.eq("userId", userId));
     }
     if (type != null) {
-      criteria.add(Restrictions.eq("type", type));
+      criteria.add(Restrictions.eq("type", type.ordinal()));
+    }
+    if (keyword != null) {
+      keyword = "%" + keyword + "%";
+      criteria.add(Restrictions.or(
+          Restrictions.ilike("userName", keyword),
+          Restrictions.ilike("userId", keyword),
+          Restrictions.ilike("trainingUser.trainingUserName", keyword)
+      ));
     }
 
     return criteria;

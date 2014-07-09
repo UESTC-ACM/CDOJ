@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.2.20-build.286+sha.da0e3c9
+ * @license AngularJS v1.2.19
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -68,7 +68,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.20-build.286+sha.da0e3c9/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.19/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -1184,7 +1184,7 @@ function parseKeyValue(/**string*/keyValue) {
       key = tryDecodeURIComponent(key_value[0]);
       if ( isDefined(key) ) {
         var val = isDefined(key_value[1]) ? tryDecodeURIComponent(key_value[1]) : true;
-        if (!hasOwnProperty.call(obj, key)) {
+        if (!obj[key]) {
           obj[key] = val;
         } else if(isArray(obj[key])) {
           obj[key].push(val);
@@ -1958,11 +1958,11 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.20-build.286+sha.da0e3c9',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.19',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
-  dot: 20,
-  codeName: 'snapshot'
+  dot: 19,
+  codeName: 'precognitive-flashbacks'
 };
 
 
@@ -5241,7 +5241,7 @@ function $TemplateCacheProvider() {
  *   local name. Given `<widget my-attr="count = count + value">` and widget definition of
  *   `scope: { localFn:'&myAttr' }`, then isolate scope property `localFn` will point to
  *   a function wrapper for the `count = count + value` expression. Often it's desirable to
- *   pass data from the isolated scope via an expression to the parent scope, this can be
+ *   pass data from the isolated scope via an expression and to the parent scope, this can be
  *   done by passing a map of local variable names and values into the expression wrapper fn.
  *   For example, if the expression is `increment(amount)` then we can specify the amount value
  *   by calling the `localFn` as `localFn({amount: 22})`.
@@ -7383,39 +7383,12 @@ function isSuccess(status) {
 }
 
 
-/**
- * @ngdoc provider
- * @name $httpProvider
- * @description
- * Use `$httpProvider` to change the default behavior of the {@link ng.$http $http} service.
- * */
 function $HttpProvider() {
   var JSON_START = /^\s*(\[|\{[^\{])/,
       JSON_END = /[\}\]]\s*$/,
       PROTECTION_PREFIX = /^\)\]\}',?\n/,
       CONTENT_TYPE_APPLICATION_JSON = {'Content-Type': 'application/json;charset=utf-8'};
 
-  /**
-   * @ngdoc property
-   * @name $httpProvider#defaults
-   * @description
-   *
-   * Object containing default values for all {@link ng.$http $http} requests.
-   *
-   * - **`defaults.xsrfCookieName`** - {string} - Name of cookie containing the XSRF token.
-   * Defaults value is `'XSRF-TOKEN'`.
-   *
-   * - **`defaults.xsrfHeaderName`** - {string} - Name of HTTP header to populate with the
-   * XSRF token. Defaults value is `'X-XSRF-TOKEN'`.
-   *
-   * - **`defaults.headers`** - {Object} - Default headers for all $http requests.
-   * Refer to {@link ng.$http#setting-http-headers $http} for documentation on
-   * setting default headers.
-   *     - **`defaults.headers.common`**
-   *     - **`defaults.headers.post`**
-   *     - **`defaults.headers.put`**
-   *     - **`defaults.headers.patch`**
-   **/
   var defaults = this.defaults = {
     // transform incoming response data
     transformResponse: [function(data) {
@@ -8006,7 +7979,7 @@ function $HttpProvider() {
         var reqData = transformData(config.data, headersGetter(headers), config.transformRequest);
 
         // strip content-type if data is undefined
-        if (isUndefined(reqData)) {
+        if (isUndefined(config.data)) {
           forEach(headers, function(value, header) {
             if (lowercase(header) === 'content-type') {
                 delete headers[header];
@@ -9510,16 +9483,13 @@ LocationHashbangInHtml5Url.prototype =
    * If the argument is a hash object containing an array of values, these values will be encoded
    * as duplicate search parameters in the url.
    *
-   * @param {(string|Array<string>|boolean)=} paramValue If `search` is a string, then `paramValue`
-   * will override only a single search property.
+   * @param {(string|Array<string>)=} paramValue If `search` is a string, then `paramValue` will
+   * override only a single search property.
    *
    * If `paramValue` is an array, it will override the property of the `search` component of
    * `$location` specified via the first argument.
    *
    * If `paramValue` is `null`, the property specified via the first argument will be deleted.
-   *
-   * If `paramValue` is `true`, the property specified via the first argument will be added with no
-   * value nor trailing equal sign.
    *
    * @return {Object} If called with no arguments returns the parsed `search` object. If called with
    * one or more arguments returns `$location` object itself.
@@ -9532,11 +9502,6 @@ LocationHashbangInHtml5Url.prototype =
         if (isString(search)) {
           this.$$search = parseKeyValue(search);
         } else if (isObject(search)) {
-          // remove object undefined or null properties
-          forEach(search, function(value, key) {
-            if (value == null) delete search[key];
-          });
-
           this.$$search = search;
         } else {
           throw $locationMinErr('isrcharg',
@@ -9890,7 +9855,7 @@ function $LogProvider(){
       self = this;
 
   /**
-   * @ngdoc method
+   * @ngdoc property
    * @name $logProvider#debugEnabled
    * @description
    * @param {boolean=} flag enable or disable debug level messages
@@ -13154,21 +13119,19 @@ function adjustMatchers(matchers) {
  *
  * Here is what a secure configuration for this scenario might look like:
  *
- * ```
- *  angular.module('myApp', []).config(function($sceDelegateProvider) {
- *    $sceDelegateProvider.resourceUrlWhitelist([
- *      // Allow same origin resource loads.
- *      'self',
- *      // Allow loading from our assets domain.  Notice the difference between * and **.
- *      'http://srv*.assets.example.com/**'
- *    ]);
+ * <pre class="prettyprint">
+ *    angular.module('myApp', []).config(function($sceDelegateProvider) {
+ *      $sceDelegateProvider.resourceUrlWhitelist([
+ *        // Allow same origin resource loads.
+ *        'self',
+ *        // Allow loading from our assets domain.  Notice the difference between * and **.
+ *        'http://srv*.assets.example.com/**']);
  *
- *    // The blacklist overrides the whitelist so the open redirect here is blocked.
- *    $sceDelegateProvider.resourceUrlBlacklist([
- *      'http://myapp.example.com/clickThru**'
- *    ]);
- *  });
- * ```
+ *      // The blacklist overrides the whitelist so the open redirect here is blocked.
+ *      $sceDelegateProvider.resourceUrlBlacklist([
+ *        'http://myapp.example.com/clickThru**']);
+ *      });
+ * </pre>
  */
 
 function $SceDelegateProvider() {
@@ -13463,10 +13426,10 @@ function $SceDelegateProvider() {
  *
  * Here's an example of a binding in a privileged context:
  *
- * ```
- * <input ng-model="userHtml">
- * <div ng-bind-html="userHtml"></div>
- * ```
+ * <pre class="prettyprint">
+ *     <input ng-model="userHtml">
+ *     <div ng-bind-html="userHtml">
+ * </pre>
  *
  * Notice that `ng-bind-html` is bound to `userHtml` controlled by the user.  With SCE
  * disabled, this application allows the user to render arbitrary HTML into the DIV.
@@ -13506,15 +13469,15 @@ function $SceDelegateProvider() {
  * ng.$sce#parseAsHtml $sce.parseAsHtml(binding expression)}.  Here's the actual code (slightly
  * simplified):
  *
- * ```
- * var ngBindHtmlDirective = ['$sce', function($sce) {
- *   return function(scope, element, attr) {
- *     scope.$watch($sce.parseAsHtml(attr.ngBindHtml), function(value) {
- *       element.html(value || '');
- *     });
- *   };
- * }];
- * ```
+ * <pre class="prettyprint">
+ *   var ngBindHtmlDirective = ['$sce', function($sce) {
+ *     return function(scope, element, attr) {
+ *       scope.$watch($sce.parseAsHtml(attr.ngBindHtml), function(value) {
+ *         element.html(value || '');
+ *       });
+ *     };
+ *   }];
+ * </pre>
  *
  * ## Impact on loading templates
  *
@@ -13618,65 +13581,66 @@ function $SceDelegateProvider() {
  *
  * ## Show me an example using SCE.
  *
- * <example module="mySceApp" deps="angular-sanitize.js">
- * <file name="index.html">
- *   <div ng-controller="myAppController as myCtrl">
- *     <i ng-bind-html="myCtrl.explicitlyTrustedHtml" id="explicitlyTrustedHtml"></i><br><br>
- *     <b>User comments</b><br>
- *     By default, HTML that isn't explicitly trusted (e.g. Alice's comment) is sanitized when
- *     $sanitize is available.  If $sanitize isn't available, this results in an error instead of an
- *     exploit.
- *     <div class="well">
- *       <div ng-repeat="userComment in myCtrl.userComments">
- *         <b>{{userComment.name}}</b>:
- *         <span ng-bind-html="userComment.htmlComment" class="htmlComment"></span>
- *         <br>
- *       </div>
- *     </div>
- *   </div>
- * </file>
- *
- * <file name="script.js">
- *   var mySceApp = angular.module('mySceApp', ['ngSanitize']);
- *
- *   mySceApp.controller("myAppController", function myAppController($http, $templateCache, $sce) {
- *     var self = this;
- *     $http.get("test_data.json", {cache: $templateCache}).success(function(userComments) {
- *       self.userComments = userComments;
- *     });
- *     self.explicitlyTrustedHtml = $sce.trustAsHtml(
- *         '<span onmouseover="this.textContent=&quot;Explicitly trusted HTML bypasses ' +
- *         'sanitization.&quot;">Hover over this text.</span>');
- *   });
- * </file>
- *
- * <file name="test_data.json">
- * [
- *   { "name": "Alice",
- *     "htmlComment":
- *         "<span onmouseover='this.textContent=\"PWN3D!\"'>Is <i>anyone</i> reading this?</span>"
- *   },
- *   { "name": "Bob",
- *     "htmlComment": "<i>Yes!</i>  Am I the only other one?"
- *   }
- * ]
- * </file>
- *
- * <file name="protractor.js" type="protractor">
- *   describe('SCE doc demo', function() {
- *     it('should sanitize untrusted values', function() {
- *       expect(element(by.css('.htmlComment')).getInnerHtml())
- *           .toBe('<span>Is <i>anyone</i> reading this?</span>');
- *     });
- *
- *     it('should NOT sanitize explicitly trusted values', function() {
- *       expect(element(by.id('explicitlyTrustedHtml')).getInnerHtml()).toBe(
- *           '<span onmouseover="this.textContent=&quot;Explicitly trusted HTML bypasses ' +
- *           'sanitization.&quot;">Hover over this text.</span>');
- *     });
- *   });
- * </file>
- * </example>
+ * @example
+<example module="mySceApp" deps="angular-sanitize.js">
+<file name="index.html">
+  <div ng-controller="myAppController as myCtrl">
+    <i ng-bind-html="myCtrl.explicitlyTrustedHtml" id="explicitlyTrustedHtml"></i><br><br>
+    <b>User comments</b><br>
+    By default, HTML that isn't explicitly trusted (e.g. Alice's comment) is sanitized when
+    $sanitize is available.  If $sanitize isn't available, this results in an error instead of an
+    exploit.
+    <div class="well">
+      <div ng-repeat="userComment in myCtrl.userComments">
+        <b>{{userComment.name}}</b>:
+        <span ng-bind-html="userComment.htmlComment" class="htmlComment"></span>
+        <br>
+      </div>
+    </div>
+  </div>
+</file>
+
+<file name="script.js">
+  var mySceApp = angular.module('mySceApp', ['ngSanitize']);
+
+  mySceApp.controller("myAppController", function myAppController($http, $templateCache, $sce) {
+    var self = this;
+    $http.get("test_data.json", {cache: $templateCache}).success(function(userComments) {
+      self.userComments = userComments;
+    });
+    self.explicitlyTrustedHtml = $sce.trustAsHtml(
+        '<span onmouseover="this.textContent=&quot;Explicitly trusted HTML bypasses ' +
+        'sanitization.&quot;">Hover over this text.</span>');
+  });
+</file>
+
+<file name="test_data.json">
+[
+  { "name": "Alice",
+    "htmlComment":
+        "<span onmouseover='this.textContent=\"PWN3D!\"'>Is <i>anyone</i> reading this?</span>"
+  },
+  { "name": "Bob",
+    "htmlComment": "<i>Yes!</i>  Am I the only other one?"
+  }
+]
+</file>
+
+<file name="protractor.js" type="protractor">
+  describe('SCE doc demo', function() {
+    it('should sanitize untrusted values', function() {
+      expect(element(by.css('.htmlComment')).getInnerHtml())
+          .toBe('<span>Is <i>anyone</i> reading this?</span>');
+    });
+
+    it('should NOT sanitize explicitly trusted values', function() {
+      expect(element(by.id('explicitlyTrustedHtml')).getInnerHtml()).toBe(
+          '<span onmouseover="this.textContent=&quot;Explicitly trusted HTML bypasses ' +
+          'sanitization.&quot;">Hover over this text.</span>');
+    });
+  });
+</file>
+</example>
  *
  *
  *
@@ -13690,13 +13654,13 @@ function $SceDelegateProvider() {
  *
  * That said, here's how you can completely disable SCE:
  *
- * ```
- * angular.module('myAppWithSceDisabledmyApp', []).config(function($sceProvider) {
- *   // Completely disable SCE.  For demonstration purposes only!
- *   // Do not use in new projects.
- *   $sceProvider.enabled(false);
- * });
- * ```
+ * <pre class="prettyprint">
+ *   angular.module('myAppWithSceDisabledmyApp', []).config(function($sceProvider) {
+ *     // Completely disable SCE.  For demonstration purposes only!
+ *     // Do not use in new projects.
+ *     $sceProvider.enabled(false);
+ *   });
+ * </pre>
  *
  */
 /* jshint maxlen: 100 */
@@ -15675,7 +15639,7 @@ var htmlAnchorDirective = valueFn({
             return browser.driver.getCurrentUrl().then(function(url) {
               return url.match(/\/123$/);
             });
-          }, 5000, 'page should navigate to /123');
+          }, 1000, 'page should navigate to /123');
         });
 
         xit('should execute ng-click but not reload when href empty string and name specified', function() {
@@ -15703,7 +15667,7 @@ var htmlAnchorDirective = valueFn({
             return browser.driver.getCurrentUrl().then(function(url) {
               return url.match(/\/6$/);
             });
-          }, 5000, 'page should navigate to /6');
+          }, 1000, 'page should navigate to /6');
         });
       </file>
     </example>
@@ -16439,7 +16403,7 @@ var ngFormDirective = formDirectiveFactory(true);
 */
 
 var URL_REGEXP = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/;
-var EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+var EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9-]+(\.[a-z0-9-]+)*$/i;
 var NUMBER_REGEXP = /^\s*(\-|\+)?(\d+|(\d*(\.\d*)))\s*$/;
 
 var inputType = {
@@ -18767,29 +18731,29 @@ var ngCloakDirective = ngDirective({
  *   <file name="protractor.js" type="protractor">
  *     it('should check controller as', function() {
  *       var container = element(by.id('ctrl-as-exmpl'));
- *         expect(container.element(by.model('settings.name'))
+ *         expect(container.findElement(by.model('settings.name'))
  *           .getAttribute('value')).toBe('John Smith');
  *
  *       var firstRepeat =
- *           container.element(by.repeater('contact in settings.contacts').row(0));
+ *           container.findElement(by.repeater('contact in settings.contacts').row(0));
  *       var secondRepeat =
- *           container.element(by.repeater('contact in settings.contacts').row(1));
+ *           container.findElement(by.repeater('contact in settings.contacts').row(1));
  *
- *       expect(firstRepeat.element(by.model('contact.value')).getAttribute('value'))
+ *       expect(firstRepeat.findElement(by.model('contact.value')).getAttribute('value'))
  *           .toBe('408 555 1212');
  *
- *       expect(secondRepeat.element(by.model('contact.value')).getAttribute('value'))
+ *       expect(secondRepeat.findElement(by.model('contact.value')).getAttribute('value'))
  *           .toBe('john.smith@example.org');
  *
- *       firstRepeat.element(by.linkText('clear')).click();
+ *       firstRepeat.findElement(by.linkText('clear')).click();
  *
- *       expect(firstRepeat.element(by.model('contact.value')).getAttribute('value'))
+ *       expect(firstRepeat.findElement(by.model('contact.value')).getAttribute('value'))
  *           .toBe('');
  *
- *       container.element(by.linkText('add')).click();
+ *       container.findElement(by.linkText('add')).click();
  *
- *       expect(container.element(by.repeater('contact in settings.contacts').row(2))
- *           .element(by.model('contact.value'))
+ *       expect(container.findElement(by.repeater('contact in settings.contacts').row(2))
+ *           .findElement(by.model('contact.value'))
  *           .getAttribute('value'))
  *           .toBe('yourname@example.org');
  *     });
@@ -18848,28 +18812,28 @@ var ngCloakDirective = ngDirective({
  *    it('should check controller', function() {
  *      var container = element(by.id('ctrl-exmpl'));
  *
- *      expect(container.element(by.model('name'))
+ *      expect(container.findElement(by.model('name'))
  *          .getAttribute('value')).toBe('John Smith');
  *
  *      var firstRepeat =
- *          container.element(by.repeater('contact in contacts').row(0));
+ *          container.findElement(by.repeater('contact in contacts').row(0));
  *      var secondRepeat =
- *          container.element(by.repeater('contact in contacts').row(1));
+ *          container.findElement(by.repeater('contact in contacts').row(1));
  *
- *      expect(firstRepeat.element(by.model('contact.value')).getAttribute('value'))
+ *      expect(firstRepeat.findElement(by.model('contact.value')).getAttribute('value'))
  *          .toBe('408 555 1212');
- *      expect(secondRepeat.element(by.model('contact.value')).getAttribute('value'))
+ *      expect(secondRepeat.findElement(by.model('contact.value')).getAttribute('value'))
  *          .toBe('john.smith@example.org');
  *
- *      firstRepeat.element(by.linkText('clear')).click();
+ *      firstRepeat.findElement(by.linkText('clear')).click();
  *
- *      expect(firstRepeat.element(by.model('contact.value')).getAttribute('value'))
+ *      expect(firstRepeat.findElement(by.model('contact.value')).getAttribute('value'))
  *          .toBe('');
  *
- *      container.element(by.linkText('add')).click();
+ *      container.findElement(by.linkText('add')).click();
  *
- *      expect(container.element(by.repeater('contact in contacts').row(2))
- *          .element(by.model('contact.value'))
+ *      expect(container.findElement(by.repeater('contact in contacts').row(2))
+ *          .findElement(by.model('contact.value'))
  *          .getAttribute('value'))
  *          .toBe('yourname@example.org');
  *    });
@@ -19266,7 +19230,7 @@ forEach(
          expect(element(by.binding('list')).getText()).toBe('list=[]');
          element(by.css('#submit')).click();
          expect(element(by.binding('list')).getText()).toContain('hello');
-         expect(element(by.model('text')).getAttribute('value')).toBe('');
+         expect(element(by.input('text')).getAttribute('value')).toBe('');
        });
        it('should ignore empty strings', function() {
          expect(element(by.binding('list')).getText()).toBe('list=[]');
@@ -19621,7 +19585,7 @@ var ngIfDirective = ['$animate', function($animate) {
           return;
         }
         templateSelect.click();
-        templateSelect.all(by.css('option')).get(2).click();
+        templateSelect.element.all(by.css('option')).get(2).click();
         expect(includeElem.getText()).toMatch(/Content of template2.html/);
       });
 
@@ -19631,7 +19595,7 @@ var ngIfDirective = ['$animate', function($animate) {
           return;
         }
         templateSelect.click();
-        templateSelect.all(by.css('option')).get(0).click();
+        templateSelect.element.all(by.css('option')).get(0).click();
         expect(includeElem.isPresent()).toBe(false);
       });
     </file>
@@ -20948,11 +20912,11 @@ var ngStyleDirective = ngDirective(function(scope, element, attr) {
         expect(switchElem.getText()).toMatch(/Settings Div/);
       });
       it('should change to home', function() {
-        select.all(by.css('option')).get(1).click();
+        select.element.all(by.css('option')).get(1).click();
         expect(switchElem.getText()).toMatch(/Home Span/);
       });
       it('should select default', function() {
-        select.all(by.css('option')).get(2).click();
+        select.element.all(by.css('option')).get(2).click();
         expect(switchElem.getText()).toMatch(/default/);
       });
     </file>
@@ -21275,7 +21239,7 @@ var ngOptionsMinErr = minErr('ngOptions');
       <file name="protractor.js" type="protractor">
          it('should check ng-options', function() {
            expect(element(by.binding('{selected_color:myColor}')).getText()).toMatch('red');
-           element.all(by.model('myColor')).first().click();
+           element.all(by.select('myColor')).first().click();
            element.all(by.css('select[ng-model="myColor"] option')).first().click();
            expect(element(by.binding('{selected_color:myColor}')).getText()).toMatch('black');
            element(by.css('.nullable select[ng-model="myColor"]')).click();
@@ -25930,7 +25894,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 }]);
 
 /**
- * @license AngularJS v1.2.20-build.286+sha.da0e3c9
+ * @license AngularJS v1.2.19
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -26858,7 +26822,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 })(window, window.angular);
 
 /**
- * @license AngularJS v1.2.20-build.286+sha.da0e3c9
+ * @license AngularJS v1.2.19
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -27063,7 +27027,7 @@ angular.module('ngCookies', ['ng']).
 })(window, window.angular);
 
 /**
- * @license AngularJS v1.2.20-build.286+sha.da0e3c9
+ * @license AngularJS v1.2.19
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */

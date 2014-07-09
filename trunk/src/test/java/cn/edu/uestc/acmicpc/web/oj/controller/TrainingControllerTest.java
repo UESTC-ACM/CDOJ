@@ -18,12 +18,14 @@ import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingPlatformInfoCriteria;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingUserCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
+import cn.edu.uestc.acmicpc.db.dto.field.TrainingPlatformInfoFields;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.TrainingPlatformType;
 import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -678,8 +680,8 @@ public class TrainingControllerTest extends ControllerTest {
   public void testFetchTrainingUserDataSuccess() throws Exception {
     when(trainingUserService.getTrainingUserDto(1, TrainingUserFields.ALL_FIELDS)).thenReturn(
         TrainingUserDto.builder()
-        .setTrainingUserId(1)
-        .build()
+            .setTrainingUserId(1)
+            .build()
     );
     List<TrainingPlatformInfoDto> trainingPlatformInfoDtoList = new LinkedList<>();
     for (int i = 0; i < 3; i++) {
@@ -701,12 +703,192 @@ public class TrainingControllerTest extends ControllerTest {
   @Test
   public void testFetchTrainingUserDataNotFound() throws Exception {
     when(trainingUserService.getTrainingUserDto(1, TrainingUserFields.ALL_FIELDS)).thenReturn(
-      null
+        null
     );
 
     mockMvc.perform(get("/training/trainingUserData/{trainingUserId}", 1))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("error")))
         .andExpect(jsonPath("$.error_msg", is("Training user not found!")));
+  }
+
+  @Test
+  public void testRemoveTrainingPlatformInfoSuccess() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "remove");
+    jsonData.put("trainingPlatformInfoEditDto", TrainingPlatformInfoDto.builder()
+        .setTrainingPlatformInfoId(1)
+        .build());
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.ADMIN.ordinal())
+        .setUserId(100)
+        .build();
+
+    mockMvc.perform(post("/training/editTrainingPlatformInfo")
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(jsonData))
+        .sessionAttr("currentUser", currentUserDTO))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")));
+  }
+
+  @Test
+  public void testCreateTrainingPlatformInfoSuccess() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "new");
+    jsonData.put("trainingPlatformInfoEditDto", TrainingPlatformInfoDto.builder()
+        .setTrainingUserId(1)
+        .setUserName("mzry1992")
+        .setUserId("123")
+        .setType(TrainingPlatformType.CF.ordinal())
+        .build());
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.ADMIN.ordinal())
+        .setUserId(100)
+        .build();
+
+    when(trainingPlatformInfoService.createNewTrainingPlatformInfo(1)).thenReturn(1);
+    when(trainingPlatformInfoService.getTrainingPlatformInfoDto(1, TrainingPlatformInfoFields.ALL_FIELDS)).thenReturn(
+        TrainingPlatformInfoDto.builder()
+            .setTrainingPlatformInfoId(1)
+            .setTrainingUserId(1)
+            .build()
+    ).thenReturn(
+        TrainingPlatformInfoDto.builder()
+            .setTrainingPlatformInfoId(1)
+            .setTrainingUserId(1)
+            .setUserName("mzry1992")
+            .setUserId("123")
+            .setType(TrainingPlatformType.CF.ordinal())
+            .build()
+    );
+
+    mockMvc.perform(post("/training/editTrainingPlatformInfo")
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(jsonData))
+        .sessionAttr("currentUser", currentUserDTO))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto", notNullValue()))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.trainingPlatformInfoId", is(1)))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.trainingUserId", is(1)))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.userName", is("mzry1992")))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.userId", is("123")))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.type", is(TrainingPlatformType.CF.ordinal())));
+
+    ArgumentCaptor<TrainingPlatformInfoDto> trainingPlatformInfoDtoArgumentCaptor = ArgumentCaptor.forClass(TrainingPlatformInfoDto.class);
+    verify(trainingPlatformInfoService).updateTrainingPlatformInfo(trainingPlatformInfoDtoArgumentCaptor.capture());
+    Assert.assertEquals(Integer.valueOf(TrainingPlatformType.CF.ordinal()), trainingPlatformInfoDtoArgumentCaptor.getValue().getType());
+    Assert.assertEquals("mzry1992", trainingPlatformInfoDtoArgumentCaptor.getValue().getUserName());
+    Assert.assertEquals("123", trainingPlatformInfoDtoArgumentCaptor.getValue().getUserId());
+  }
+
+  @Test
+  public void testCreateTrainingPlatformInfoFailed() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "new");
+    jsonData.put("trainingPlatformInfoEditDto", TrainingPlatformInfoDto.builder()
+        .setTrainingUserId(1)
+        .setUserName("mzry1992")
+        .setUserId("123")
+        .setType(TrainingPlatformType.CF.ordinal())
+        .build());
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.ADMIN.ordinal())
+        .setUserId(100)
+        .build();
+
+    when(trainingPlatformInfoService.createNewTrainingPlatformInfo(1)).thenReturn(1);
+    when(trainingPlatformInfoService.getTrainingPlatformInfoDto(1, TrainingPlatformInfoFields.ALL_FIELDS)).thenReturn(
+        null
+    );
+
+    mockMvc.perform(post("/training/editTrainingPlatformInfo")
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(jsonData))
+        .sessionAttr("currentUser", currentUserDTO))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("error")))
+        .andExpect(jsonPath("$.error_msg", is("Error while creating training platform info.")));
+  }
+
+  @Test
+  public void testEditTrainingPlatformInfoSuccess() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "edit");
+    jsonData.put("trainingPlatformInfoEditDto", TrainingPlatformInfoDto.builder()
+        .setTrainingPlatformInfoId(1)
+        .setTrainingUserId(1)
+        .setUserName("mzry1992")
+        .setUserId("123")
+        .setType(TrainingPlatformType.CF.ordinal())
+        .build());
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.ADMIN.ordinal())
+        .setUserId(100)
+        .build();
+
+    when(trainingPlatformInfoService.getTrainingPlatformInfoDto(1, TrainingPlatformInfoFields.ALL_FIELDS)).thenReturn(
+        TrainingPlatformInfoDto.builder()
+            .setTrainingPlatformInfoId(1)
+            .setTrainingUserId(1)
+            .build()
+    ).thenReturn(
+        TrainingPlatformInfoDto.builder()
+            .setTrainingPlatformInfoId(1)
+            .setTrainingUserId(1)
+            .setUserName("mzry1992")
+            .setUserId("123")
+            .setType(TrainingPlatformType.CF.ordinal())
+            .build()
+    );
+
+    mockMvc.perform(post("/training/editTrainingPlatformInfo")
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(jsonData))
+        .sessionAttr("currentUser", currentUserDTO))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto", notNullValue()))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.trainingPlatformInfoId", is(1)))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.trainingUserId", is(1)))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.userName", is("mzry1992")))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.userId", is("123")))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.type", is(TrainingPlatformType.CF.ordinal())));
+
+    ArgumentCaptor<TrainingPlatformInfoDto> trainingPlatformInfoDtoArgumentCaptor = ArgumentCaptor.forClass(TrainingPlatformInfoDto.class);
+    verify(trainingPlatformInfoService).updateTrainingPlatformInfo(trainingPlatformInfoDtoArgumentCaptor.capture());
+    Assert.assertEquals(Integer.valueOf(TrainingPlatformType.CF.ordinal()), trainingPlatformInfoDtoArgumentCaptor.getValue().getType());
+    Assert.assertEquals("mzry1992", trainingPlatformInfoDtoArgumentCaptor.getValue().getUserName());
+    Assert.assertEquals("123", trainingPlatformInfoDtoArgumentCaptor.getValue().getUserId());
+  }
+
+  @Test
+  public void testEditTrainingPlatformInfoFailed() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "edit");
+    jsonData.put("trainingPlatformInfoEditDto", TrainingPlatformInfoDto.builder()
+        .setTrainingPlatformInfoId(1)
+        .setTrainingUserId(1)
+        .setUserName("mzry1992")
+        .setUserId("123")
+        .setType(TrainingPlatformType.CF.ordinal())
+        .build());
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.ADMIN.ordinal())
+        .setUserId(100)
+        .build();
+
+    when(trainingPlatformInfoService.getTrainingPlatformInfoDto(1, TrainingPlatformInfoFields.ALL_FIELDS)).thenReturn(
+        null
+    );
+
+    mockMvc.perform(post("/training/editTrainingPlatformInfo")
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(jsonData))
+        .sessionAttr("currentUser", currentUserDTO))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("error")))
+        .andExpect(jsonPath("$.error_msg", is("Training platform info not found.")));
   }
 }
