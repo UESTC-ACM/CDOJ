@@ -40,8 +40,8 @@ import org.testng.annotations.Test;
 import com.alibaba.fastjson.JSON;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -166,7 +166,10 @@ public class ArticleControllerTest extends ControllerTest {
     articleCriteria.startId = 1;
     articleCriteria.endId = 5;
 
-    List<ArticleDto> result = new ArrayList<>(5);
+    List<ArticleDto> result = new LinkedList<>();
+    for (int i = 0; i < 5; i++) {
+      result.add(ArticleDto.builder().setArticleId(i + 1).build());
+    }
     when(articleService.count(any(ArticleCriteria.class))).thenReturn(5L);
     when(articleService.getArticleList(any(ArticleCriteria.class), any(PageInfo.class))).thenReturn(result);
 
@@ -175,7 +178,12 @@ public class ArticleControllerTest extends ControllerTest {
         .content(JSON.toJSONBytes(articleCriteria)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")))
-        .andExpect(jsonPath("$.list", hasSize(result.size())));
+        .andExpect(jsonPath("$.list", hasSize(5)))
+        .andExpect(jsonPath("$.list[0].articleId", is(1)))
+        .andExpect(jsonPath("$.list[1].articleId", is(2)))
+        .andExpect(jsonPath("$.list[2].articleId", is(3)))
+        .andExpect(jsonPath("$.list[3].articleId", is(4)))
+        .andExpect(jsonPath("$.list[4].articleId", is(5)));
 
     // Check ArticleCriteria argument in count method
     ArgumentCaptor<ArticleCriteria> articleCriteriaCaptor = ArgumentCaptor.forClass(ArticleCriteria.class);
@@ -190,7 +198,10 @@ public class ArticleControllerTest extends ControllerTest {
     articleCriteria.startId = 1;
     articleCriteria.endId = 5;
 
-    List<ArticleDto> result = new ArrayList<>(5);
+    List<ArticleDto> result = new LinkedList<>();
+    for (int i = 0; i < 5; i++) {
+      result.add(ArticleDto.builder().setArticleId(i + 1).build());
+    }
     when(articleService.count(any(ArticleCriteria.class))).thenReturn(5L);
     when(articleService.getArticleList(any(ArticleCriteria.class), any(PageInfo.class))).thenReturn(result);
 
@@ -203,7 +214,12 @@ public class ArticleControllerTest extends ControllerTest {
         .content(JSON.toJSONBytes(articleCriteria)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")))
-        .andExpect(jsonPath("$.list", hasSize(result.size())));
+        .andExpect(jsonPath("$.list", hasSize(5)))
+        .andExpect(jsonPath("$.list[0].articleId", is(1)))
+        .andExpect(jsonPath("$.list[1].articleId", is(2)))
+        .andExpect(jsonPath("$.list[2].articleId", is(3)))
+        .andExpect(jsonPath("$.list[3].articleId", is(4)))
+        .andExpect(jsonPath("$.list[4].articleId", is(5)));
 
     // Check ArticleCriteria argument in count method
     ArgumentCaptor<ArticleCriteria> articleCriteriaCaptor = ArgumentCaptor.forClass(ArticleCriteria.class);
@@ -232,7 +248,11 @@ public class ArticleControllerTest extends ControllerTest {
     articleCriteria.startId = 1;
     articleCriteria.endId = 5;
 
-    List<ArticleDto> result = new ArrayList<>(5);
+    List<ArticleDto> result = new LinkedList<>();
+    for (int i = 0; i < 5; i++) {
+      result.add(ArticleDto.builder().setArticleId(i + 1).setContent("123").build());
+    }
+
     when(articleService.count(any(ArticleCriteria.class))).thenReturn(5L);
     when(articleService.getArticleList(any(ArticleCriteria.class), any(PageInfo.class))).thenReturn(result);
 
@@ -241,7 +261,12 @@ public class ArticleControllerTest extends ControllerTest {
         .content(JSON.toJSONBytes(articleCriteria)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")))
-        .andExpect(jsonPath("$.list", hasSize(result.size())));
+        .andExpect(jsonPath("$.list", hasSize(5)))
+        .andExpect(jsonPath("$.list[0].articleId", is(1)))
+        .andExpect(jsonPath("$.list[1].articleId", is(2)))
+        .andExpect(jsonPath("$.list[2].articleId", is(3)))
+        .andExpect(jsonPath("$.list[3].articleId", is(4)))
+        .andExpect(jsonPath("$.list[4].articleId", is(5)));
 
     // Check ArticleCriteria argument in count method
     ArgumentCaptor<ArticleCriteria> articleCriteriaCaptor = ArgumentCaptor.forClass(ArticleCriteria.class);
@@ -258,7 +283,11 @@ public class ArticleControllerTest extends ControllerTest {
     articleCriteria.startId = 1;
     articleCriteria.endId = 5;
 
-    List<ArticleDto> result = new ArrayList<>(5);
+    List<ArticleDto> result = new LinkedList<>();
+    for (int i = 0; i < 5; i++) {
+      result.add(ArticleDto.builder().setArticleId(i + 1).setContent("123").build());
+    }
+
     when(articleService.count(any(ArticleCriteria.class))).thenReturn(5L);
     when(articleService.getArticleList(any(ArticleCriteria.class), any(PageInfo.class))).thenReturn(result);
 
@@ -271,7 +300,12 @@ public class ArticleControllerTest extends ControllerTest {
         .content(JSON.toJSONBytes(articleCriteria)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")))
-        .andExpect(jsonPath("$.list", hasSize(result.size())));
+        .andExpect(jsonPath("$.list", hasSize(5)))
+        .andExpect(jsonPath("$.list[0].articleId", is(1)))
+        .andExpect(jsonPath("$.list[1].articleId", is(2)))
+        .andExpect(jsonPath("$.list[2].articleId", is(3)))
+        .andExpect(jsonPath("$.list[3].articleId", is(4)))
+        .andExpect(jsonPath("$.list[4].articleId", is(5)));
 
     // Check ArticleCriteria argument in count method
     ArgumentCaptor<ArticleCriteria> articleCriteriaCaptor = ArgumentCaptor.forClass(ArticleCriteria.class);

@@ -15,12 +15,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import cn.edu.uestc.acmicpc.config.TestContext;
 import cn.edu.uestc.acmicpc.config.WebMVCConfig;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingPlatformInfoCriteria;
+import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingUserCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
+import cn.edu.uestc.acmicpc.db.dto.field.TrainingPlatformInfoFields;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.TrainingPlatformType;
 import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -37,8 +42,8 @@ import org.testng.annotations.Test;
 
 import com.alibaba.fastjson.JSON;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -67,7 +72,11 @@ public class TrainingControllerTest extends ControllerTest {
     trainingCriteria.startId = 1;
     trainingCriteria.endId = 3;
 
-    List<TrainingDto> result = new ArrayList<>(3);
+    List<TrainingDto> result = new LinkedList<>();
+    for (int i = 0; i < 3; i++) {
+      result.add(TrainingDto.builder().setTrainingId(i + 1).build());
+    }
+
     when(trainingService.count(any(TrainingCriteria.class))).thenReturn((long) result.size());
     when(trainingService.getTrainingList(any(TrainingCriteria.class), any(PageInfo.class))).thenReturn(result);
 
@@ -76,24 +85,36 @@ public class TrainingControllerTest extends ControllerTest {
         .content(JSON.toJSONBytes(trainingCriteria)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")))
-        .andExpect(jsonPath("$.list", hasSize(result.size())));
+        .andExpect(jsonPath("$.list", hasSize(3)))
+        .andExpect(jsonPath("$.list[0].trainingId", is(1)))
+        .andExpect(jsonPath("$.list[1].trainingId", is(2)))
+        .andExpect(jsonPath("$.list[2].trainingId", is(3)));
 
     ArgumentCaptor<TrainingCriteria> trainingCriteriaArgumentCaptor = ArgumentCaptor.forClass(TrainingCriteria.class);
-    verify(trainingService).count(trainingCriteriaArgumentCaptor.capture());
+    verify(trainingService).getTrainingList(trainingCriteriaArgumentCaptor.capture(), any(PageInfo.class));
     Assert.assertEquals(trainingCriteria.startId, trainingCriteriaArgumentCaptor.getValue().startId);
     Assert.assertEquals(trainingCriteria.endId, trainingCriteriaArgumentCaptor.getValue().endId);
   }
 
   @Test
   public void testSearchWithNullPostData() throws Exception {
-    List<TrainingDto> result = new ArrayList<>(5);
+    List<TrainingDto> result = new LinkedList<>();
+    for (int i = 0; i < 5; i++) {
+      result.add(TrainingDto.builder().setTrainingId(i + 1).build());
+    }
+
     when(trainingService.count(any(TrainingCriteria.class))).thenReturn((long) result.size());
     when(trainingService.getTrainingList(any(TrainingCriteria.class), any(PageInfo.class))).thenReturn(result);
 
     mockMvc.perform(get("/training/search"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")))
-        .andExpect(jsonPath("$.list", hasSize(result.size())));
+        .andExpect(jsonPath("$.list", hasSize(5)))
+        .andExpect(jsonPath("$.list[0].trainingId", is(1)))
+        .andExpect(jsonPath("$.list[1].trainingId", is(2)))
+        .andExpect(jsonPath("$.list[2].trainingId", is(3)))
+        .andExpect(jsonPath("$.list[3].trainingId", is(4)))
+        .andExpect(jsonPath("$.list[4].trainingId", is(5)));
 
     ArgumentCaptor<TrainingCriteria> trainingCriteriaArgumentCaptor = ArgumentCaptor.forClass(TrainingCriteria.class);
     verify(trainingService).count(trainingCriteriaArgumentCaptor.capture());
@@ -591,5 +612,283 @@ public class TrainingControllerTest extends ControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("error")))
         .andExpect(jsonPath("$.error_msg", is("Training user not found.")));
+  }
+
+  @Test
+  public void testSearchTrainingUserSuccess() throws Exception {
+    TrainingUserCriteria trainingUserCriteria = new TrainingUserCriteria();
+    trainingUserCriteria.startId = 1;
+    trainingUserCriteria.endId = 5;
+
+    List<TrainingUserDto> trainingUserDtoList = new LinkedList<>();
+    for (int i = 0; i < 5; i++) {
+      trainingUserDtoList.add(TrainingUserDto.builder().build());
+    }
+
+    when(trainingUserService.getTrainingUserList(any(TrainingUserCriteria.class))).thenReturn(trainingUserDtoList);
+
+    System.out.println(trainingUserDtoList.size());
+
+    mockMvc.perform(post("/training/searchTrainingUser/{trainingId}", 1)
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(trainingUserCriteria)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")))
+        .andExpect(jsonPath("$.list", hasSize(5)))
+        .andExpect(jsonPath("$.list[0].rank", is(1)))
+        .andExpect(jsonPath("$.list[1].rank", is(2)))
+        .andExpect(jsonPath("$.list[2].rank", is(3)))
+        .andExpect(jsonPath("$.list[3].rank", is(4)))
+        .andExpect(jsonPath("$.list[4].rank", is(5)));
+
+    ArgumentCaptor<TrainingUserCriteria> trainingUserCriteriaArgumentCaptor = ArgumentCaptor.forClass(TrainingUserCriteria.class);
+    verify(trainingUserService).getTrainingUserList(trainingUserCriteriaArgumentCaptor.capture());
+    Assert.assertEquals(trainingUserCriteria.startId, trainingUserCriteriaArgumentCaptor.getValue().startId);
+    Assert.assertEquals(trainingUserCriteria.endId, trainingUserCriteriaArgumentCaptor.getValue().endId);
+    Assert.assertEquals(Integer.valueOf(1), trainingUserCriteriaArgumentCaptor.getValue().trainingId);
+  }
+
+  @Test
+  public void testSearchTrainingUserWithNullCriteria() throws Exception {
+    List<TrainingUserDto> trainingUserDtoList = new LinkedList<>();
+    for (int i = 0; i < 5; i++) {
+      trainingUserDtoList.add(TrainingUserDto.builder().build());
+    }
+
+    when(trainingUserService.getTrainingUserList(any(TrainingUserCriteria.class))).thenReturn(trainingUserDtoList);
+
+    System.out.println(trainingUserDtoList.size());
+
+    mockMvc.perform(get("/training/searchTrainingUser/{trainingId}", 1))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")))
+        .andExpect(jsonPath("$.list", hasSize(5)))
+        .andExpect(jsonPath("$.list[0].rank", is(1)))
+        .andExpect(jsonPath("$.list[1].rank", is(2)))
+        .andExpect(jsonPath("$.list[2].rank", is(3)))
+        .andExpect(jsonPath("$.list[3].rank", is(4)))
+        .andExpect(jsonPath("$.list[4].rank", is(5)));
+
+    ArgumentCaptor<TrainingUserCriteria> trainingUserCriteriaArgumentCaptor = ArgumentCaptor.forClass(TrainingUserCriteria.class);
+    verify(trainingUserService).getTrainingUserList(trainingUserCriteriaArgumentCaptor.capture());
+    Assert.assertNull(trainingUserCriteriaArgumentCaptor.getValue().startId);
+    Assert.assertNull(trainingUserCriteriaArgumentCaptor.getValue().endId);
+    Assert.assertEquals(Integer.valueOf(1), trainingUserCriteriaArgumentCaptor.getValue().trainingId);
+  }
+
+  @Test
+  public void testFetchTrainingUserDataSuccess() throws Exception {
+    when(trainingUserService.getTrainingUserDto(1, TrainingUserFields.ALL_FIELDS)).thenReturn(
+        TrainingUserDto.builder()
+            .setTrainingUserId(1)
+            .build()
+    );
+    List<TrainingPlatformInfoDto> trainingPlatformInfoDtoList = new LinkedList<>();
+    for (int i = 0; i < 3; i++) {
+      trainingPlatformInfoDtoList.add(TrainingPlatformInfoDto.builder().setTrainingPlatformInfoId(i + 1).build());
+    }
+    when(trainingPlatformInfoService.getTrainingPlatformInfoList(any(TrainingPlatformInfoCriteria.class))).thenReturn(trainingPlatformInfoDtoList);
+
+    mockMvc.perform(get("/training/trainingUserData/{trainingUserId}", 1))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")))
+        .andExpect(jsonPath("$.trainingUserDto", notNullValue()))
+        .andExpect(jsonPath("$.trainingUserDto.trainingUserId", is(1)))
+        .andExpect(jsonPath("$.trainingPlatformInfoDtoList", hasSize(3)))
+        .andExpect(jsonPath("$.trainingPlatformInfoDtoList[0].trainingPlatformInfoId", is(1)))
+        .andExpect(jsonPath("$.trainingPlatformInfoDtoList[1].trainingPlatformInfoId", is(2)))
+        .andExpect(jsonPath("$.trainingPlatformInfoDtoList[2].trainingPlatformInfoId", is(3)));
+  }
+
+  @Test
+  public void testFetchTrainingUserDataNotFound() throws Exception {
+    when(trainingUserService.getTrainingUserDto(1, TrainingUserFields.ALL_FIELDS)).thenReturn(
+        null
+    );
+
+    mockMvc.perform(get("/training/trainingUserData/{trainingUserId}", 1))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("error")))
+        .andExpect(jsonPath("$.error_msg", is("Training user not found!")));
+  }
+
+  @Test
+  public void testRemoveTrainingPlatformInfoSuccess() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "remove");
+    jsonData.put("trainingPlatformInfoEditDto", TrainingPlatformInfoDto.builder()
+        .setTrainingPlatformInfoId(1)
+        .build());
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.ADMIN.ordinal())
+        .setUserId(100)
+        .build();
+
+    mockMvc.perform(post("/training/editTrainingPlatformInfo")
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(jsonData))
+        .sessionAttr("currentUser", currentUserDTO))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")));
+  }
+
+  @Test
+  public void testCreateTrainingPlatformInfoSuccess() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "new");
+    jsonData.put("trainingPlatformInfoEditDto", TrainingPlatformInfoDto.builder()
+        .setTrainingUserId(1)
+        .setUserName("mzry1992")
+        .setUserId("123")
+        .setType(TrainingPlatformType.CF.ordinal())
+        .build());
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.ADMIN.ordinal())
+        .setUserId(100)
+        .build();
+
+    when(trainingPlatformInfoService.createNewTrainingPlatformInfo(1)).thenReturn(1);
+    when(trainingPlatformInfoService.getTrainingPlatformInfoDto(1, TrainingPlatformInfoFields.ALL_FIELDS)).thenReturn(
+        TrainingPlatformInfoDto.builder()
+            .setTrainingPlatformInfoId(1)
+            .setTrainingUserId(1)
+            .build()
+    ).thenReturn(
+        TrainingPlatformInfoDto.builder()
+            .setTrainingPlatformInfoId(1)
+            .setTrainingUserId(1)
+            .setUserName("mzry1992")
+            .setUserId("123")
+            .setType(TrainingPlatformType.CF.ordinal())
+            .build()
+    );
+
+    mockMvc.perform(post("/training/editTrainingPlatformInfo")
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(jsonData))
+        .sessionAttr("currentUser", currentUserDTO))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto", notNullValue()))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.trainingPlatformInfoId", is(1)))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.trainingUserId", is(1)))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.userName", is("mzry1992")))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.userId", is("123")))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.type", is(TrainingPlatformType.CF.ordinal())));
+
+    ArgumentCaptor<TrainingPlatformInfoDto> trainingPlatformInfoDtoArgumentCaptor = ArgumentCaptor.forClass(TrainingPlatformInfoDto.class);
+    verify(trainingPlatformInfoService).updateTrainingPlatformInfo(trainingPlatformInfoDtoArgumentCaptor.capture());
+    Assert.assertEquals(Integer.valueOf(TrainingPlatformType.CF.ordinal()), trainingPlatformInfoDtoArgumentCaptor.getValue().getType());
+    Assert.assertEquals("mzry1992", trainingPlatformInfoDtoArgumentCaptor.getValue().getUserName());
+    Assert.assertEquals("123", trainingPlatformInfoDtoArgumentCaptor.getValue().getUserId());
+  }
+
+  @Test
+  public void testCreateTrainingPlatformInfoFailed() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "new");
+    jsonData.put("trainingPlatformInfoEditDto", TrainingPlatformInfoDto.builder()
+        .setTrainingUserId(1)
+        .setUserName("mzry1992")
+        .setUserId("123")
+        .setType(TrainingPlatformType.CF.ordinal())
+        .build());
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.ADMIN.ordinal())
+        .setUserId(100)
+        .build();
+
+    when(trainingPlatformInfoService.createNewTrainingPlatformInfo(1)).thenReturn(1);
+    when(trainingPlatformInfoService.getTrainingPlatformInfoDto(1, TrainingPlatformInfoFields.ALL_FIELDS)).thenReturn(
+        null
+    );
+
+    mockMvc.perform(post("/training/editTrainingPlatformInfo")
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(jsonData))
+        .sessionAttr("currentUser", currentUserDTO))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("error")))
+        .andExpect(jsonPath("$.error_msg", is("Error while creating training platform info.")));
+  }
+
+  @Test
+  public void testEditTrainingPlatformInfoSuccess() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "edit");
+    jsonData.put("trainingPlatformInfoEditDto", TrainingPlatformInfoDto.builder()
+        .setTrainingPlatformInfoId(1)
+        .setTrainingUserId(1)
+        .setUserName("mzry1992")
+        .setUserId("123")
+        .setType(TrainingPlatformType.CF.ordinal())
+        .build());
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.ADMIN.ordinal())
+        .setUserId(100)
+        .build();
+
+    when(trainingPlatformInfoService.getTrainingPlatformInfoDto(1, TrainingPlatformInfoFields.ALL_FIELDS)).thenReturn(
+        TrainingPlatformInfoDto.builder()
+            .setTrainingPlatformInfoId(1)
+            .setTrainingUserId(1)
+            .build()
+    ).thenReturn(
+        TrainingPlatformInfoDto.builder()
+            .setTrainingPlatformInfoId(1)
+            .setTrainingUserId(1)
+            .setUserName("mzry1992")
+            .setUserId("123")
+            .setType(TrainingPlatformType.CF.ordinal())
+            .build()
+    );
+
+    mockMvc.perform(post("/training/editTrainingPlatformInfo")
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(jsonData))
+        .sessionAttr("currentUser", currentUserDTO))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("success")))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto", notNullValue()))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.trainingPlatformInfoId", is(1)))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.trainingUserId", is(1)))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.userName", is("mzry1992")))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.userId", is("123")))
+        .andExpect(jsonPath("$.trainingPlatformInfoDto.type", is(TrainingPlatformType.CF.ordinal())));
+
+    ArgumentCaptor<TrainingPlatformInfoDto> trainingPlatformInfoDtoArgumentCaptor = ArgumentCaptor.forClass(TrainingPlatformInfoDto.class);
+    verify(trainingPlatformInfoService).updateTrainingPlatformInfo(trainingPlatformInfoDtoArgumentCaptor.capture());
+    Assert.assertEquals(Integer.valueOf(TrainingPlatformType.CF.ordinal()), trainingPlatformInfoDtoArgumentCaptor.getValue().getType());
+    Assert.assertEquals("mzry1992", trainingPlatformInfoDtoArgumentCaptor.getValue().getUserName());
+    Assert.assertEquals("123", trainingPlatformInfoDtoArgumentCaptor.getValue().getUserId());
+  }
+
+  @Test
+  public void testEditTrainingPlatformInfoFailed() throws Exception {
+    Map<String, Object> jsonData = new HashMap<>();
+    jsonData.put("action", "edit");
+    jsonData.put("trainingPlatformInfoEditDto", TrainingPlatformInfoDto.builder()
+        .setTrainingPlatformInfoId(1)
+        .setTrainingUserId(1)
+        .setUserName("mzry1992")
+        .setUserId("123")
+        .setType(TrainingPlatformType.CF.ordinal())
+        .build());
+    UserDTO currentUserDTO = UserDTO.builder()
+        .setType(AuthenticationType.ADMIN.ordinal())
+        .setUserId(100)
+        .build();
+
+    when(trainingPlatformInfoService.getTrainingPlatformInfoDto(1, TrainingPlatformInfoFields.ALL_FIELDS)).thenReturn(
+        null
+    );
+
+    mockMvc.perform(post("/training/editTrainingPlatformInfo")
+        .contentType(APPLICATION_JSON_UTF8)
+        .content(JSON.toJSONBytes(jsonData))
+        .sessionAttr("currentUser", currentUserDTO))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result", is("error")))
+        .andExpect(jsonPath("$.error_msg", is("Training platform info not found.")));
   }
 }

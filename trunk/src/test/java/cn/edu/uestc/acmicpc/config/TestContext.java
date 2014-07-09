@@ -17,6 +17,7 @@ import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.SettingService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
+import cn.edu.uestc.acmicpc.service.iface.TrainingPlatformInfoService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingUserService;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
@@ -153,6 +154,12 @@ public class TestContext extends ApplicationContextConfig {
   @Primary
   public TrainingUserService mockTrainingUserService() {
     return mock(TrainingUserService.class);
+  }
+
+  @Bean
+  @Primary
+  public TrainingPlatformInfoService mockTrainingPlatformInfoService() {
+    return mock(TrainingPlatformInfoService.class);
   }
 
   @Bean

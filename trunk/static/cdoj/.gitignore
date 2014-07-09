@@ -3,3 +3,4 @@
 *.xmi
 /temp
 /bower_components
+/dist
