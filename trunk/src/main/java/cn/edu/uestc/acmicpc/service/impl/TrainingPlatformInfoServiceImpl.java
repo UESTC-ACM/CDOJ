@@ -64,6 +64,9 @@ public class TrainingPlatformInfoServiceImpl extends AbstractService implements 
   public Integer createNewTrainingPlatformInfo(Integer trainingUserId) throws AppException {
     TrainingPlatformInfo trainingPlatformInfo = new TrainingPlatformInfo();
     trainingPlatformInfo.setTrainingUserId(trainingUserId);
+    trainingPlatformInfo.setUserName("");
+    trainingPlatformInfo.setUserId("");
+    trainingPlatformInfo.setType(0);
     trainingPlatformInfoDao.add(trainingPlatformInfo);
     return trainingPlatformInfo.getTrainingPlatformInfoId();
   }
