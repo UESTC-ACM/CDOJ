@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Online judge result type.
  */
-public enum OnlineJudgeResultType {
+public enum OnlineJudgeResultType implements EnumType {
   OJ_ALL("All"),
   OJ_AC("Accepted", 1),
   OJ_PE("Presentation Error", 2),
@@ -28,11 +28,7 @@ public enum OnlineJudgeResultType {
 
   private final List<Integer> results;
 
-  /**
-   * Get enumerate value's description.
-   *
-   * @return description string for specific online judge return type
-   */
+  @Override
   public String getDescription() {
     return description;
   }

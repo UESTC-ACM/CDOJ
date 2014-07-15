@@ -3,7 +3,7 @@ package cn.edu.uestc.acmicpc.util.enums;
 /**
  * User's t-shirts size type
  */
-public enum TShirtsSizeType {
+public enum TShirtsSizeType implements EnumType {
   XS("XS"), S("S"), M("M"), L("L"), XL("XL"), XXL("XXL");
 
   private final String description;
@@ -12,6 +12,7 @@ public enum TShirtsSizeType {
     this.description = description;
   }
 
+  @Override
   public String getDescription() {
     return description;
   }

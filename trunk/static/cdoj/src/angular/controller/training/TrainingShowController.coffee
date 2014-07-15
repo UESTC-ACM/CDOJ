@@ -20,14 +20,14 @@ cdoj
           resolve:
             action: ->
               "edit"
-            trainingUserDto: ["$q", "$http", "Error"
+            trainingUserData: ["$q", "$http", "Error"
               ($q, $http, $Error) ->
                 deferred = $q.defer()
                 $http.get(
                   "/training/trainingUserData/#{trainingUserId}"
                 ).success((data) ->
                   if data.result == "success"
-                    deferred.resolve(data.trainingUserDto)
+                    deferred.resolve(data)
                   else
                     $Error.error(data.error_msg)
                 ).error(->

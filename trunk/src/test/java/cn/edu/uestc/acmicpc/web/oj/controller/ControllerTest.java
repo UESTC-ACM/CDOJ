@@ -24,7 +24,6 @@ import cn.edu.uestc.acmicpc.service.iface.TrainingService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingUserService;
 import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
-import cn.edu.uestc.acmicpc.util.dto.AuthenticationTypeDTO;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -53,7 +52,6 @@ public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
   protected MockMvc mockMvc;
   protected MockHttpSession session;
   protected List<DepartmentDTO> departmentList = new ArrayList<DepartmentDTO>();
-  protected List<AuthenticationTypeDTO> authenticationTypeList = new ArrayList<AuthenticationTypeDTO>();
   @Mock protected List<LanguageDTO> languageList;
 
   @Autowired protected ArticleService articleService;
@@ -91,7 +89,6 @@ public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
       }
     }
     when(departmentService.getDepartmentList()).thenReturn(departmentList);
-    when(globalService.getAuthenticationTypeList()).thenReturn(authenticationTypeList);
     when(languageService.getLanguageList()).thenReturn(languageList);
   }
 
