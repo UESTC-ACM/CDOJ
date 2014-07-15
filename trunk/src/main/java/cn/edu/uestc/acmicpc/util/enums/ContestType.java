@@ -3,7 +3,7 @@ package cn.edu.uestc.acmicpc.util.enums;
 /**
  * Contest type for contest entity
  */
-public enum ContestType {
+public enum ContestType implements EnumType {
   PUBLIC("Public"), PRIVATE("Private"), DIY("DIY"), INVITED("Invited"),
   INHERIT("Inherit"), ONSITE("Onsite");
 
@@ -13,11 +13,7 @@ public enum ContestType {
     this.description = description;
   }
 
-  /**
-   * Get enumerate value's description.
-   *
-   * @return description string for specific contest type
-   */
+  @Override
   public String getDescription() {
     return description;
   }

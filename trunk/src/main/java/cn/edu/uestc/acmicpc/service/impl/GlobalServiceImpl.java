@@ -1,29 +1,17 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.service.iface.GlobalService;
-import cn.edu.uestc.acmicpc.util.dto.AuthenticationTypeDTO;
-import cn.edu.uestc.acmicpc.util.dto.ContestRegistryStatusDTO;
-import cn.edu.uestc.acmicpc.util.dto.ContestTypeDTO;
-import cn.edu.uestc.acmicpc.util.dto.GenderTypeDTO;
-import cn.edu.uestc.acmicpc.util.dto.GradeTypeDTO;
-import cn.edu.uestc.acmicpc.util.dto.OnlineJudgeResultTypeDTO;
-import cn.edu.uestc.acmicpc.util.dto.TShirtsSizeTypeDTO;
-import cn.edu.uestc.acmicpc.util.dto.TrainingUserTypeDto;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
-import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
-import cn.edu.uestc.acmicpc.util.enums.ContestType;
-import cn.edu.uestc.acmicpc.util.enums.GenderType;
-import cn.edu.uestc.acmicpc.util.enums.GradeType;
-import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
+import cn.edu.uestc.acmicpc.util.enums.EnumType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
-import cn.edu.uestc.acmicpc.util.enums.TShirtsSizeType;
-import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation for {@link GlobalService}.
@@ -32,74 +20,16 @@ import java.util.List;
 public class GlobalServiceImpl extends AbstractService implements GlobalService {
 
   @Override
-  public List<AuthenticationTypeDTO> getAuthenticationTypeList() {
-    List<AuthenticationTypeDTO> result = new LinkedList<>();
-    for (AuthenticationType authenticationType: AuthenticationType.values()) {
-      result.add(new AuthenticationTypeDTO(authenticationType.ordinal(), authenticationType.getDescription()));
-    }
-    return result;
-  }
+  public List<Map<String, Object>> getEnumTypeList(String idAlias, EnumType[] enumTypes) {
+    List<Map<String, Object>> result = new LinkedList<>();
+    Integer ordinal = 0;
+    for (EnumType enumType : enumTypes) {
+      Map<String, Object> data = new HashMap<>();
+      data.put(idAlias, ordinal);
+      data.put("description", enumType.getDescription());
 
-  @Override
-  public List<OnlineJudgeResultTypeDTO> getOnlineJudgeResultTypeList() {
-    List<OnlineJudgeResultTypeDTO> result = new LinkedList<>();
-    for (OnlineJudgeResultType onlineJudgeResultType: OnlineJudgeResultType.values()) {
-      result.add(new OnlineJudgeResultTypeDTO(onlineJudgeResultType.ordinal(), onlineJudgeResultType.getDescription()));
-    }
-    return result;
-  }
-
-  @Override
-  public List<GenderTypeDTO> getGenderTypeList() {
-    List<GenderTypeDTO> result = new LinkedList<>();
-    for (GenderType gender: GenderType.values()) {
-      result.add(new GenderTypeDTO(gender.ordinal(), gender.getDescription()));
-    }
-    return result;
-  }
-
-  @Override
-  public List<GradeTypeDTO> getGradeTypeList() {
-    List<GradeTypeDTO> result = new LinkedList<>();
-    for (GradeType grade: GradeType.values()) {
-      result.add(new GradeTypeDTO(grade.ordinal(), grade.getDescription()));
-    }
-    return result;
-  }
-
-  @Override
-  public List<TShirtsSizeTypeDTO> getTShirtsSizeTypeList() {
-    List<TShirtsSizeTypeDTO> result = new LinkedList<>();
-    for (TShirtsSizeType tShirtsSize: TShirtsSizeType.values()) {
-      result.add(new TShirtsSizeTypeDTO(tShirtsSize.ordinal(), tShirtsSize.getDescription()));
-    }
-    return result;
-  }
-
-  @Override
-  public List<ContestTypeDTO> getContestTypeList() {
-    List<ContestTypeDTO> result = new LinkedList<>();
-    for (ContestType contestType: ContestType.values()) {
-      result.add(new ContestTypeDTO(contestType.ordinal(), contestType.getDescription()));
-    }
-    return result;
-  }
-
-  @Override
-  public List<ContestRegistryStatusDTO> getContestRegistryStatusList() {
-    List<ContestRegistryStatusDTO> result = new LinkedList<>();
-    for (ContestRegistryStatusType contestRegistryStatus: ContestRegistryStatusType.values()) {
-      result.add(new ContestRegistryStatusDTO(contestRegistryStatus.ordinal(),
-          contestRegistryStatus.getDescription()));
-    }
-    return result;
-  }
-
-  @Override
-  public List<TrainingUserTypeDto> getTrainingUserTypeList() {
-    List<TrainingUserTypeDto> result = new LinkedList<>();
-    for (TrainingUserType trainingUserType: TrainingUserType.values()) {
-      result.add(new TrainingUserTypeDto(trainingUserType.ordinal(), trainingUserType.getDescription()));
+      ordinal = ordinal + 1;
+      result.add(data);
     }
     return result;
   }
