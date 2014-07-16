@@ -16,7 +16,6 @@ import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
@@ -49,16 +48,12 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
   private UserDao userDao;
 
   @Autowired
-  @Qualifier("mockGlobalService")
-  private GlobalService globalService;
-
-  @Autowired
   @Qualifier("mockEmailService")
   private EmailService emailService;
 
   @BeforeMethod
   public void init() {
-    Mockito.reset(userDao, globalService);
+    Mockito.reset(userDao);
   }
 
   @Test

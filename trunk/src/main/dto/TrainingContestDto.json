@@ -1,0 +1,33 @@
+{
+  "entity": "TrainingContest",
+  "fields": [
+    {
+      "name": "trainingContestId",
+      "type": "Integer"
+    },
+    {
+      "name": "trainingId",
+      "type": "Integer"
+    },
+    {
+      "name": "title",
+      "type": "String"
+    },
+    {
+      "name": "link",
+      "type": "String"
+    },
+    {
+      "name": "rankList",
+      "type": "String"
+    },
+    {
+      "name": "type",
+      "type": "Integer"
+    },
+    {
+      "name": "platformType",
+      "type": "Integer"
+    }
+  ]
+}

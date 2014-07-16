@@ -33,7 +33,6 @@ import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
 import cn.edu.uestc.acmicpc.service.iface.ContestUserService;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
@@ -53,6 +52,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
 import cn.edu.uestc.acmicpc.util.helper.CSVUtil;
+import cn.edu.uestc.acmicpc.util.helper.EnumTypeUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
@@ -117,7 +117,6 @@ public class ContestController extends BaseController {
   private PictureService pictureService;
   private ProblemService problemService;
   private StatusService statusService;
-  private GlobalService globalService;
   private TeamService teamService;
   private TeamUserService teamUserService;
   private ContestTeamService contestTeamService;
@@ -132,24 +131,23 @@ public class ContestController extends BaseController {
 
   @Autowired
   public ContestController(ContestService contestService,
-                           ContestProblemService contestProblemService,
-                           ContestImporterService contestImporterService,
-                           FileService fileService,
-                           PictureService pictureService,
-                           ProblemService problemService,
-                           StatusService statusService,
-                           GlobalService globalService,
-                           TeamService teamService,
-                           TeamUserService teamUserService,
-                           ContestTeamService contestTeamService,
-                           MessageService messageService,
-                           ContestRankListService contestRankListService,
-                           ContestRegistryReportView contestRegistryReportView,
-                           ContestRankListView contestRankListView,
-                           Settings settings,
-                           UserService userService,
-                           ContestUserService contestUserService,
-                           LanguageService languageService) {
+      ContestProblemService contestProblemService,
+      ContestImporterService contestImporterService,
+      FileService fileService,
+      PictureService pictureService,
+      ProblemService problemService,
+      StatusService statusService,
+      TeamService teamService,
+      TeamUserService teamUserService,
+      ContestTeamService contestTeamService,
+      MessageService messageService,
+      ContestRankListService contestRankListService,
+      ContestRegistryReportView contestRegistryReportView,
+      ContestRankListView contestRankListView,
+      Settings settings,
+      UserService userService,
+      ContestUserService contestUserService,
+      LanguageService languageService) {
     this.contestService = contestService;
     this.contestProblemService = contestProblemService;
     this.contestImporterService = contestImporterService;
@@ -157,7 +155,6 @@ public class ContestController extends BaseController {
     this.pictureService = pictureService;
     this.problemService = problemService;
     this.statusService = statusService;
-    this.globalService = globalService;
     this.teamService = teamService;
     this.teamUserService = teamUserService;
     this.contestService = contestService;
@@ -172,15 +169,15 @@ public class ContestController extends BaseController {
     this.languageService = languageService;
   }
 
-  private  String getTimeString(Timestamp time) {
+  private String getTimeString(Timestamp time) {
     return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time);
   }
 
   private void generateScoreboard(ContestShowDTO contestShowDTO,
-                                  List<UserDTO> contestUserList,
-                                  List<ContestProblemSummaryDTO> contestProblemList,
-                                  List<LanguageDTO> languageDTOList,
-                                  ZipOutputStream zipOutputStream) throws Exception {
+      List<UserDTO> contestUserList,
+      List<ContestProblemSummaryDTO> contestProblemList,
+      List<LanguageDTO> languageDTOList,
+      ZipOutputStream zipOutputStream) throws Exception {
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     Transformer transformer = transformerFactory.newTransformer();
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -257,14 +254,14 @@ public class ContestController extends BaseController {
   }
 
   private void generateEvent(ContestShowDTO contestShowDTO,
-                             List<LanguageDTO> languageDTOList,
-                             List<ContestProblemSummaryDTO> contestProblemList,
-                             List<StatusListDTO> statusList,
-                             ZipOutputStream zipOutputStream) throws Exception {
+      List<LanguageDTO> languageDTOList,
+      List<ContestProblemSummaryDTO> contestProblemList,
+      List<StatusListDTO> statusList,
+      ZipOutputStream zipOutputStream) throws Exception {
     Map<Integer, String> problemIdMap = new HashMap<>();
     Map<Integer, String> problemTitleMap = new HashMap<>();
     for (ContestProblemSummaryDTO problem : contestProblemList) {
-      problemIdMap.put(problem.getProblemId(), "" + (char)('A' + problem.getOrder()));
+      problemIdMap.put(problem.getProblemId(), "" + (char) ('A' + problem.getOrder()));
       problemTitleMap.put(problem.getProblemId(), problem.getTitle());
     }
     Map<String, Integer> languageIdMap = new HashMap<>();
@@ -346,8 +343,8 @@ public class ContestController extends BaseController {
 
   @RequestMapping("exportDOMJudgeStyleReport/{contestId}")
   public void exportDOMJudgeStyleReport(HttpSession session,
-                                        @PathVariable("contestId") Integer contestId,
-                                        HttpServletResponse response) throws Exception {
+      @PathVariable("contestId") Integer contestId,
+      HttpServletResponse response) throws Exception {
     if (!isAdmin(session)) {
       throw new AppException("Permission denied!");
     }
@@ -401,8 +398,8 @@ public class ContestController extends BaseController {
 
   @RequestMapping("exportCodes/{contestId}")
   public void exportCodes(HttpSession session,
-                          @PathVariable("contestId") Integer contestId,
-                          HttpServletResponse response) {
+      @PathVariable("contestId") Integer contestId,
+      HttpServletResponse response) {
     try {
       if (!isAdmin(session)) {
         throw new AppException("Permission denied!");
@@ -462,7 +459,7 @@ public class ContestController extends BaseController {
 
   @RequestMapping("exportRankList/{contestId}")
   public ModelAndView exportRankList(HttpSession session,
-                                     @PathVariable("contestId") Integer contestId) {
+      @PathVariable("contestId") Integer contestId) {
     ModelAndView result = new ModelAndView();
     result.setView(contestRankListView);
     try {
@@ -494,7 +491,7 @@ public class ContestController extends BaseController {
   }
 
   private List<ContestTeamReportDTO> getContestTeamReportDTOList(Integer contestId,
-                                                                 HttpSession session) throws AppException {
+      HttpSession session) throws AppException {
     ContestDTO contestDTO = contestService.getContestDTOByContestId(contestId);
     if (contestDTO.getType() == ContestType.INHERIT.ordinal()) {
       contestDTO = contestService.getContestDTOByContestId(contestDTO.getParentId());
@@ -536,8 +533,8 @@ public class ContestController extends BaseController {
 
   @RequestMapping("registryReport/{contestId}")
   public ModelAndView registryReport(HttpSession session,
-                                     @PathVariable("contestId")
-                                     Integer contestId) {
+      @PathVariable("contestId")
+      Integer contestId) {
     ModelAndView result = new ModelAndView();
     result.setView(contestRegistryReportView);
     try {
@@ -555,7 +552,7 @@ public class ContestController extends BaseController {
   }
 
   private void loginContest(HttpSession session,
-                            ContestLoginDTO contestLoginDTO) throws AppException {
+      ContestLoginDTO contestLoginDTO) throws AppException {
     ContestDTO contestDTO = contestService.getContestDTOByContestId(contestLoginDTO.getContestId());
     if (contestDTO == null ||
         (!contestDTO.getIsVisible() && !isAdmin(session))) {
@@ -637,8 +634,8 @@ public class ContestController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> loginContest(HttpSession session,
-                                   @RequestBody @Valid ContestLoginDTO contestLoginDTO,
-                                   BindingResult validateResult) {
+      @RequestBody @Valid ContestLoginDTO contestLoginDTO,
+      BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
@@ -712,7 +709,7 @@ public class ContestController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> registerStatusList(@RequestBody ContestTeamCondition contestTeamCondition,
-                                         HttpSession session) {
+      HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
       Long count = contestTeamService.count(contestTeamCondition);
@@ -770,8 +767,8 @@ public class ContestController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> register(@PathVariable("teamId") Integer teamId,
-                               @PathVariable("contestId") Integer contestId,
-                               HttpSession session) {
+      @PathVariable("contestId") Integer contestId,
+      HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
       TeamDTO teamDTO = teamService.getTeamDTOByTeamId(teamId);
@@ -820,8 +817,8 @@ public class ContestController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> status(@PathVariable("contestId") Integer contestId,
-                             @PathVariable("lastFetched") Integer lastFetched,
-                             HttpSession session) {
+      @PathVariable("lastFetched") Integer lastFetched,
+      HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
       UserDTO currentUser = getCurrentUser(session);
@@ -853,7 +850,7 @@ public class ContestController extends BaseController {
             status.setCaseNumber(null);
             status.setLanguage(null);
           } else {
-            status.setReturnType(globalService.getReturnDescription(status.getReturnTypeId(),
+            status.setReturnType(EnumTypeUtil.getReturnDescription(status.getReturnTypeId(),
                 status.getCaseNumber()));
             if (status.getReturnTypeId() != OnlineJudgeReturnType.OJ_AC.ordinal()) {
               status.setTimeCost(null);
@@ -876,7 +873,7 @@ public class ContestController extends BaseController {
   }
 
   private RankList getRankList(Integer contestId,
-                               HttpSession session) throws AppException {
+      HttpSession session) throws AppException {
     ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(contestId);
     if (contestShowDTO == null) {
       throw new AppException("No such contest.");
@@ -915,7 +912,7 @@ public class ContestController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> rankList(@PathVariable("contestId") Integer contestId,
-                               HttpSession session) {
+      HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
       json.put("rankList", getRankList(contestId, session));
@@ -936,7 +933,7 @@ public class ContestController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> data(@PathVariable("contestId") Integer contestId,
-                           HttpSession session) {
+      HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
       ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(contestId);
@@ -999,7 +996,7 @@ public class ContestController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> search(HttpSession session,
-                             @RequestBody(required = false) ContestCondition contestCondition) {
+      @RequestBody(required = false) ContestCondition contestCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
       // Avoid null pointer exception
@@ -1041,8 +1038,8 @@ public class ContestController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> operator(@PathVariable("id") String targetId,
-                               @PathVariable("field") String field,
-                               @PathVariable("value") String value) {
+      @PathVariable("field") String field,
+      @PathVariable("value") String value) {
     Map<String, Object> json = new HashMap<>();
     try {
       contestService.operator(field, targetId, value);
@@ -1060,7 +1057,7 @@ public class ContestController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> edit(@RequestBody @Valid ContestEditDTO contestEditDTO,
-                           BindingResult validateResult) {
+      BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");

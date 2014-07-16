@@ -12,6 +12,11 @@ cdoj
         ->
           $scope.show = true
       )
+      $rootScope.$on(
+        "loading:off"
+        ->
+          $scope.show = false
+      )
   ]
   template: """
 <div>

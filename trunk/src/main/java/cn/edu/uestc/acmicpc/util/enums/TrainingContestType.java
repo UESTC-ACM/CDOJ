@@ -1,10 +1,11 @@
 package cn.edu.uestc.acmicpc.util.enums;
 
 /**
- * Article type
+ * Type of training contest.
  */
-public enum ArticleType implements EnumType {
-  NOTICE("Notice"), ARTICLE("Article"), COMMENT("Comment");
+public enum TrainingContestType implements EnumType {
+  CONTEST("Contest"), ADJUST("Rating adjust");
+
   private final String description;
 
   @Override
@@ -12,7 +13,7 @@ public enum ArticleType implements EnumType {
     return description;
   }
 
-  ArticleType(String description) {
+  private TrainingContestType(String description) {
     this.description = description;
   }
 }
