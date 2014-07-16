@@ -14,7 +14,6 @@ import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
@@ -59,7 +58,6 @@ public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
   @Autowired protected ProblemService problemService;
   @Autowired protected StatusService statusService;
   @Autowired protected UserSerialKeyService userSerialKeyService;
-  @Autowired protected GlobalService globalService;
   @Autowired protected EmailService emailService;
   @Autowired protected DepartmentService departmentService;
   @Autowired protected LanguageService languageService;
