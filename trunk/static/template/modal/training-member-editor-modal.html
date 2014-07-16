@@ -58,6 +58,7 @@
       <table class="table table-striped table-bordered">
         <thead>
         <tr>
+          <th></th>
           <th>Platform</th>
           <th>User name</th>
           <th>User id</th>
@@ -66,15 +67,22 @@
         <tbody>
         <tr ng-repeat="platform in trainingPlatformList">
           <td>
+            <a href="javascript:void(0);" ng-click="removePlatform(platform)">
+              <i class="fa fa-minus"></i>
+            </a>
+          </td>
+          <td>
             <select ng-model="platform.type"
-                    ng-options="type.trainingUserTypeId as type.description for type in $root.trainingUserTypeList"
+                    ng-options="platform.trainingPlatformTypeId as platform.description for platform in $root.trainingPlatformTypeList"
                     ng-required="true"
+                    ng-blur="updatePlatform(platform)"
                     style="width: 100%">
             </select>
           </td>
           <td>
             <input type="text"
                    class="cdoj-input"
+                   ng-blur="updatePlatform(platform)"
                    style="width: 100%;"
                    ng-model="platform.userName"
                 />
@@ -82,13 +90,14 @@
           <td>
             <input type="text"
                    class="cdoj-input"
+                   ng-blur="updatePlatform(platform)"
                    style="width: 100%;"
                    ng-model="platform.userId"
                 />
           </td>
         </tr>
         <tr>
-          <td colspan="3">
+          <td colspan="4">
             <a href="javascript:void(0);" ng-click="addPlatform()">
               <i class="fa fa-plus"></i>
             </a>

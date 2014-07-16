@@ -1,7 +1,7 @@
 cdoj
 .controller("TrainingMemberEditorController", [
-    "$scope", "$http", "$modalInstance", "action", "trainingUserData"
-    ($scope, $http, $modalInstance, action, trainingUserData) ->
+    "$scope", "$http", "$modalInstance", "action", "trainingUserData", "$window"
+    ($scope, $http, $modalInstance, action, trainingUserData, $window) ->
 
       $scope.action = action
       $scope.trainingUserDto = trainingUserData.trainingUserDto
@@ -45,6 +45,29 @@ cdoj
           (data) ->
             $scope.trainingPlatformList.add(data.trainingPlatformInfoDto)
         )
+
+      $scope.updatePlatform = (platform) ->
+        editTrainingPlatform(
+          action: "edit"
+          trainingPlatformInfoEditDto: platform
+          (data) ->
+            platform = data.trainingPlatformInfoDto
+        )
+
+      $scope.removePlatform = (platform) ->
+        if $window.confirm("Are you sure?")
+          editTrainingPlatform(
+            action: "remove"
+            trainingPlatformInfoEditDto: platform
+            (data) ->
+              $scope.trainingPlatformList =
+                _.reject(
+                  $scope.trainingPlatformList,
+                  (value) ->
+                    return value.trainingPlatformInfoId ==
+                      platform.trainingPlatformInfoId
+              )
+          )
 
       editTrainingUser = (postData) ->
         $http.post("/training/editTrainingUser", postData).success((data) ->
