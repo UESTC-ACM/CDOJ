@@ -151,3 +151,13 @@ GlobalConditions =
     type: null
     orderFields: "currentRating,trainingUserName"
     orderAsc: "true,false"
+  trainingContestCriteria:
+    currentPage: null
+    startId: null
+    endId: null
+    trainingId: null
+    keyword: null
+    trainingContestType: null
+    trainingPlatformType: null
+    orderFields: "trainingContestId"
+    orderAsc: "true"

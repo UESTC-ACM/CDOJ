@@ -1,16 +1,20 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.training;
 
+import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingContestCriteria;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingPlatformInfoCriteria;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingUserCriteria;
+import cn.edu.uestc.acmicpc.db.dto.field.TrainingContestFields;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingPlatformInfoFields;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
+import cn.edu.uestc.acmicpc.service.iface.TrainingContestService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingPlatformInfoService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingUserService;
@@ -44,6 +48,7 @@ public class TrainingController extends BaseController {
   private TrainingService trainingService;
   private TrainingUserService trainingUserService;
   private TrainingPlatformInfoService trainingPlatformInfoService;
+  private TrainingContestService trainingContestService;
   private UserService userService;
   private PictureService pictureService;
   private Settings settings;
@@ -52,12 +57,14 @@ public class TrainingController extends BaseController {
   public TrainingController(TrainingService trainingService,
       TrainingUserService trainingUserService,
       TrainingPlatformInfoService trainingPlatformInfoService,
+      TrainingContestService trainingContestService,
       UserService userService,
       PictureService pictureService,
       Settings settings) {
     this.trainingService = trainingService;
     this.trainingUserService = trainingUserService;
     this.trainingPlatformInfoService = trainingPlatformInfoService;
+    this.trainingContestService = trainingContestService;
     this.userService = userService;
     this.pictureService = pictureService;
     this.settings = settings;
@@ -288,6 +295,32 @@ public class TrainingController extends BaseController {
     }
 
     json.put("result", "success");
+    return json;
+  }
+
+  @RequestMapping("searchTrainingContest/{trainingId}")
+  @LoginPermit(NeedLogin = false)
+  public
+  @ResponseBody
+  Map<String, Object> searchTrainingContest(@RequestBody(required = false)TrainingContestCriteria trainingContestCriteria,
+      @PathVariable("trainingId") Integer trainingId) throws AppException {
+    Map<String, Object> json = new HashMap<>();
+
+    if (trainingContestCriteria == null) {
+      trainingContestCriteria = new TrainingContestCriteria();
+    }
+    trainingContestCriteria.setResultFields(TrainingContestFields.FIELDS_FOR_LIST_PAGE);
+    trainingContestCriteria.trainingId = trainingId;
+
+    List<TrainingContestDto> trainingContestDtoList = trainingContestService.getTrainingContestList(trainingContestCriteria);
+
+    PageInfo pageInfo = buildPageInfo((long) trainingContestDtoList.size(),
+        1L, (long) trainingContestDtoList.size(), null);
+
+    json.put("pageInfo", pageInfo);
+    json.put("list", trainingContestDtoList);
+    json.put("result", "success");
+
     return json;
   }
 }
