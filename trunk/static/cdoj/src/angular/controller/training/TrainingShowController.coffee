@@ -47,10 +47,12 @@ cdoj
           resolve:
             action: ->
               "new"
-            trainingUserDto: ->
-              trainingId: trainingDto.trainingId
-              trainingUserName: ""
-              type: 0
+            trainingUserData: ->
+              trainingUserDto:
+                trainingId: trainingDto.trainingId
+                trainingUserName: ""
+                type: 0
+              trainingPlatformList: []
         )
         modalInstance.result.then( ->
           $scope.$broadcast("list:refresh:trainingRankList")
