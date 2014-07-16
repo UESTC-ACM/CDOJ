@@ -3,13 +3,22 @@ package cn.edu.uestc.acmicpc.web.oj.controller.index;
 import cn.edu.uestc.acmicpc.db.condition.impl.MessageCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.service.iface.OnlineUsersService;
 import cn.edu.uestc.acmicpc.service.iface.RecentContestService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
+import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
+import cn.edu.uestc.acmicpc.util.enums.ContestType;
+import cn.edu.uestc.acmicpc.util.enums.GenderType;
+import cn.edu.uestc.acmicpc.util.enums.GradeType;
+import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
+import cn.edu.uestc.acmicpc.util.enums.TShirtsSizeType;
+import cn.edu.uestc.acmicpc.util.enums.TrainingPlatformType;
+import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
+import cn.edu.uestc.acmicpc.util.helper.EnumTypeUtil;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
@@ -30,19 +39,17 @@ import javax.servlet.http.HttpSession;
 public class IndexController extends BaseController {
 
   private DepartmentService departmentService;
-  private GlobalService globalService;
   private LanguageService languageService;
   private MessageService messageService;
   private OnlineUsersService onlineUsersService;
   private RecentContestService recentContestService;
 
   @Autowired
-  public IndexController(DepartmentService departmentService, GlobalService globalService,
-                         LanguageService languageService, MessageService messageService,
-                         OnlineUsersService onlineUsersService,
-                         RecentContestService recentContestService) {
+  public IndexController(DepartmentService departmentService,
+      LanguageService languageService, MessageService messageService,
+      OnlineUsersService onlineUsersService,
+      RecentContestService recentContestService) {
     this.departmentService = departmentService;
-    this.globalService = globalService;
     this.languageService = languageService;
     this.messageService = messageService;
     this.onlineUsersService = onlineUsersService;
@@ -115,15 +122,16 @@ public class IndexController extends BaseController {
   Map<String, Object> globalData() {
     Map<String, Object> result = new HashMap<>();
     result.put("departmentList", departmentService.getDepartmentList());
-    result.put("authenticationTypeList", globalService.getAuthenticationTypeList());
+    result.put("authenticationTypeList", EnumTypeUtil.getEnumTypeList("authenticationTypeId", AuthenticationType.values()));
     result.put("languageList", languageService.getLanguageList());
-    result.put("resultTypeList", globalService.getOnlineJudgeResultTypeList());
-    result.put("contestTypeList", globalService.getContestTypeList());
-    result.put("genderTypeList", globalService.getGenderTypeList());
-    result.put("gradeTypeList", globalService.getGradeTypeList());
-    result.put("tShirtsSizeTypeList", globalService.getTShirtsSizeTypeList());
-    result.put("contestRegistryStatusList", globalService.getContestRegistryStatusList());
-    result.put("trainingUserTypeList", globalService.getTrainingUserTypeList());
+    result.put("resultTypeList", EnumTypeUtil.getEnumTypeList("onlineJudgeResultTypeId", OnlineJudgeResultType.values()));
+    result.put("contestTypeList", EnumTypeUtil.getEnumTypeList("contestTypeId", ContestType.values()));
+    result.put("genderTypeList", EnumTypeUtil.getEnumTypeList("genderTypeId", GenderType.values()));
+    result.put("gradeTypeList", EnumTypeUtil.getEnumTypeList("gradeTypeId", GradeType.values()));
+    result.put("tShirtsSizeTypeList", EnumTypeUtil.getEnumTypeList("sizeTypeId", TShirtsSizeType.values()));
+    result.put("contestRegistryStatusList", EnumTypeUtil.getEnumTypeList("statusId", ContestRegistryStatusType.values()));
+    result.put("trainingUserTypeList", EnumTypeUtil.getEnumTypeList("trainingUserTypeId", TrainingUserType.values()));
+    result.put("trainingPlatformTypeList", EnumTypeUtil.getEnumTypeList("trainingPlatformTypeId", TrainingPlatformType.values()));
     result.put("result", "success");
     return result;
   }

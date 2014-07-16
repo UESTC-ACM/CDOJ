@@ -16,7 +16,6 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.ObjectUtil;
@@ -52,13 +51,9 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
   @Qualifier("mockProblemDao")
   private ProblemDao problemDao;
 
-  @Autowired
-  @Qualifier("mockGlobalService")
-  private GlobalService globalService;
-
   @BeforeMethod
   public void init() {
-    Mockito.reset(problemDao, globalService);
+    Mockito.reset(problemDao);
   }
 
   @Test

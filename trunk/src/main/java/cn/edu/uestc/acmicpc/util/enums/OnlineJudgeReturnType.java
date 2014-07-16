@@ -3,7 +3,7 @@ package cn.edu.uestc.acmicpc.util.enums;
 /**
  * Online judge return type.
  */
-public enum OnlineJudgeReturnType {
+public enum OnlineJudgeReturnType implements EnumType {
   OJ_WAIT("Queuing"),                             // 0
   OJ_AC("Accepted"),                              // 1
   OJ_PE("Presentation Error on test $case"),      // 2
@@ -26,11 +26,7 @@ public enum OnlineJudgeReturnType {
 
   private final String description;
 
-  /**
-   * Get enumerate value's description.
-   *
-   * @return description string for specific online judge return type
-   */
+  @Override
   public String getDescription() {
     return description;
   }
