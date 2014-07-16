@@ -11,7 +11,6 @@ import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
@@ -112,12 +111,6 @@ public class TestContext extends ApplicationContextConfig {
   @Primary
   public UserSerialKeyService mockUserSerialKeyService() {
     return mock(UserSerialKeyService.class);
-  }
-
-  @Bean
-  @Primary
-  public GlobalService mockGlobalService() {
-    return mock(GlobalService.class);
   }
 
   @Bean

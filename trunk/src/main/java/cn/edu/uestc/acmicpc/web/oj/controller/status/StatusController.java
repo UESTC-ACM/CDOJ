@@ -14,7 +14,6 @@ import cn.edu.uestc.acmicpc.service.iface.CodeService;
 import cn.edu.uestc.acmicpc.service.iface.CompileInfoService;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
-import cn.edu.uestc.acmicpc.service.iface.GlobalService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
@@ -27,6 +26,7 @@ import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.ArrayUtil;
+import cn.edu.uestc.acmicpc.util.helper.EnumTypeUtil;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -58,7 +58,6 @@ public class StatusController extends BaseController {
   private CompileInfoService compileInfoService;
   private ContestService contestService;
   private ContestProblemService contestProblemService;
-  private GlobalService globalService;
   private LanguageService languageService;
   private UserService userService;
   private Settings settings;
@@ -66,23 +65,21 @@ public class StatusController extends BaseController {
 
   @Autowired
   public StatusController(StatusService statusService,
-                          ProblemService problemService,
-                          CodeService codeService,
-                          CompileInfoService compileInfoService,
-                          ContestService contestService,
-                          ContestProblemService contestProblemService,
-                          GlobalService globalService,
-                          LanguageService languageService,
-                          UserService userService,
-                          Settings settings,
-                          MessageService messageService) {
+      ProblemService problemService,
+      CodeService codeService,
+      CompileInfoService compileInfoService,
+      ContestService contestService,
+      ContestProblemService contestProblemService,
+      LanguageService languageService,
+      UserService userService,
+      Settings settings,
+      MessageService messageService) {
     this.statusService = statusService;
     this.problemService = problemService;
     this.codeService = codeService;
     this.compileInfoService = compileInfoService;
     this.contestService = contestService;
     this.contestProblemService = contestProblemService;
-    this.globalService = globalService;
     this.languageService = languageService;
     this.userService = userService;
     this.settings = settings;
@@ -94,7 +91,7 @@ public class StatusController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> search(HttpSession session,
-                             @RequestBody StatusCondition statusCondition) {
+      @RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
       if (statusCondition.contestId == null) {
@@ -158,7 +155,7 @@ public class StatusController extends BaseController {
       List<StatusListDTO> statusListDTOList = statusService.getStatusList(statusCondition,
           pageInfo);
       for (StatusListDTO statusListDTO : statusListDTOList) {
-        statusListDTO.setReturnType(globalService.getReturnDescription(
+        statusListDTO.setReturnType(EnumTypeUtil.getReturnDescription(
             statusListDTO.getReturnTypeId(), statusListDTO.getCaseNumber()));
         if (statusListDTO.getReturnTypeId() != OnlineJudgeReturnType.OJ_AC.ordinal()) {
           statusListDTO.setTimeCost(null);
@@ -259,8 +256,8 @@ public class StatusController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> submit(HttpSession session,
-                             @RequestBody @Valid SubmitDTO submitDTO,
-                             BindingResult validateResult) {
+      @RequestBody @Valid SubmitDTO submitDTO,
+      BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
@@ -340,7 +337,7 @@ public class StatusController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> info(HttpSession session,
-                           @PathVariable Integer statusId) {
+      @PathVariable Integer statusId) {
     Map<String, Object> json = new HashMap<>();
     try {
       StatusInformationDTO statusInformationDTO = statusService.getStatusInformation(statusId);
@@ -402,7 +399,7 @@ public class StatusController extends BaseController {
   public
   @ResponseBody
   Map<String, Object> print(HttpSession session,
-                            @RequestBody SubmitDTO submitDTO) {
+      @RequestBody SubmitDTO submitDTO) {
     Map<String, Object> json = new HashMap<>();
     try {
       String codeContent = submitDTO.getCodeContent();
