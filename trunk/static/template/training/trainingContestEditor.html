@@ -75,7 +75,9 @@
 
             <div class="col-sm-10">
               <ui-training-contest-result-uploader
-                  result="trainingContestDto.rankList"></ui-training-contest-result-uploader>
+                  result="rankList"></ui-training-contest-result-uploader>
+              <ui-validate-info value="fieldInfo"
+                                for="rankList"></ui-validate-info>
             </div>
           </div>
 
@@ -83,14 +85,14 @@
             <table class="table table-striped table-bordered">
               <thead>
               <tr>
-                <th ng-repeat="column in trainingContestDto.rankList.fields track by $index"
+                <th ng-repeat="column in rankList.fields track by $index"
                     class="text-center"
                     style="min-width: 75px;">
                   {{column}}
                 </th>
               </tr>
               <tr>
-                <th ng-repeat="type in trainingContestDto.rankList.fieldType track by $index">
+                <th ng-repeat="type in rankList.fieldType track by $index">
                   <select ng-model="type"
                           ng-options="fieldType.trainingResultFieldTypeId as fieldType.description for fieldType in $root.trainingResultFieldTypeList"
                           ng-required="true"
@@ -99,7 +101,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr ng-repeat="user in trainingContestDto.rankList.users track by $index">
+              <tr ng-repeat="user in rankList.users track by $index">
                 <td ng-repeat="column in user.rawData track by $index">
                   {{column}}
                 </td>
@@ -109,6 +111,18 @@
           </div>
         </fieldset>
       </form>
+    </div>
+    <div class="col-md-12 text-center">
+      <button type="button"
+              class="btn btn-primary"
+              ng-if="action != 'new'"
+              ng-click="edit()">Edit
+      </button>
+      <button type="button"
+              class="btn btn-primary"
+              ng-if="action == 'new'"
+              ng-click="new()">Add
+      </button>
     </div>
   </div>
 </div>

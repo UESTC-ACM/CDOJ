@@ -58,7 +58,7 @@ cdoj
             ($q, $route, $http, $Error) ->
               deferred = $q.defer()
               action = $route.current.params.action
-              trainingId = $route.current.params.action
+              trainingId = $route.current.params.trainingId
               if action != "new"
                 # TODO
               else
@@ -70,10 +70,10 @@ cdoj
                     link: ""
                     type: 0
                     platformType: 0
-                    rankList:
-                      fields: []
-                      users: []
-                      fieldType: []
+                  rankList:
+                    fields: []
+                    users: []
+                    fieldType: []
                 )
               return deferred.promise
           ]

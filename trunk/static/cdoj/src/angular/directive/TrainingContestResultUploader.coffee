@@ -23,9 +23,7 @@ cdoj
             if data.success == true
               $scope.$apply(->
                 $scope.hint = "Successful!"
-                $scope.result.fields = data.fields
-                $scope.result.users = data.users
-                $scope.result.fieldType = data.fieldType
+                $scope.result = data.trainingRankList
                 $scope.hasError = false
               )
             else

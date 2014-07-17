@@ -30,6 +30,7 @@ import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
+import cn.edu.uestc.acmicpc.web.rank.TrainingRankList;
 import cn.edu.uestc.acmicpc.web.rank.TrainingRankListUser;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSON;
 import jxl.Sheet;
 import jxl.Workbook;
 
@@ -351,7 +353,7 @@ public class TrainingController extends BaseController {
       int totalColumns = sheet.getColumns();
 
       String[] fields = new String[totalColumns];
-      int[] fieldType = new int[totalColumns];
+      Integer[] fieldType = new Integer[totalColumns];
       for (int column = 0; column < totalColumns; column++) {
         fields[column] = sheet.getCell(column, 0).getContents();
         if (isUserName(fields[column])) {
@@ -366,8 +368,6 @@ public class TrainingController extends BaseController {
           fieldType[column] = TrainingResultFieldType.PROBLEM.ordinal();
         }
       }
-      json.put("fields", fields);
-      json.put("fieldType", fieldType);
 
       TrainingRankListUser[] users = new TrainingRankListUser[totalRows - 1];
       for (int row = 1; row < totalRows; row++) {
@@ -378,7 +378,12 @@ public class TrainingController extends BaseController {
         }
         users[row - 1] = trainingRankListUser;
       }
-      json.put("users", users);
+
+      TrainingRankList trainingRankList = new TrainingRankList();
+      trainingRankList.fields = fields;
+      trainingRankList.fieldType = fieldType;
+      trainingRankList.users = users;
+      json.put("trainingRankList", trainingRankList);
     } catch (Exception e) {
       throw new AppException("Error while parse rank list.");
     }
@@ -410,4 +415,39 @@ public class TrainingController extends BaseController {
         || value.compareToIgnoreCase("rank") == 0;
   }
 
+  @RequestMapping(value = "editTrainingContest")
+  @LoginPermit(AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> editTrainingContest(@JsonMap("action") String action,
+      @JsonMap("trainingContestEditDto") TrainingContestDto trainingContestEditDto,
+      @JsonMap("trainingRankList") TrainingRankList trainingRankList) throws AppException {
+    Map<String, Object> json = new HashMap<>();
+
+    TrainingContestDto trainingContestDto;
+    if (action.equals("new")) {
+      Integer trainingContestId = trainingContestService.createNewTrainingContest(trainingContestEditDto.getTrainingId());
+      trainingContestDto = trainingContestService.getTrainingContestDto(trainingContestId, TrainingContestFields.ALL_FIELDS);
+      if (trainingContestDto == null) {
+        throw new AppException("Error while creating training contest.");
+      }
+    } else {
+      trainingContestDto = trainingContestService.getTrainingContestDto(trainingContestEditDto.getTrainingContestId(), TrainingContestFields.ALL_FIELDS);
+      if (trainingContestDto == null) {
+        throw new AppException("Training contest not found.");
+      }
+    }
+
+    trainingContestDto.setTitle(trainingContestEditDto.getTitle());
+    trainingContestDto.setLink(trainingContestEditDto.getLink());
+    trainingContestDto.setType(trainingContestEditDto.getType());
+    trainingContestDto.setPlatformType(trainingContestEditDto.getPlatformType());
+    trainingContestDto.setRankList(JSON.toJSONString(trainingRankList));
+
+    trainingContestService.updateTrainingContest(trainingContestDto);
+
+    json.put("trainingContestId", trainingContestDto.getTrainingContestId());
+    json.put("result", "success");
+    return json;
+  }
 }
