@@ -15,7 +15,9 @@ import cn.edu.uestc.acmicpc.util.enums.GenderType;
 import cn.edu.uestc.acmicpc.util.enums.GradeType;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.util.enums.TShirtsSizeType;
+import cn.edu.uestc.acmicpc.util.enums.TrainingContestType;
 import cn.edu.uestc.acmicpc.util.enums.TrainingPlatformType;
+import cn.edu.uestc.acmicpc.util.enums.TrainingResultFieldType;
 import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.EnumTypeUtil;
@@ -132,6 +134,8 @@ public class IndexController extends BaseController {
     result.put("contestRegistryStatusList", EnumTypeUtil.getEnumTypeList("statusId", ContestRegistryStatusType.values()));
     result.put("trainingUserTypeList", EnumTypeUtil.getEnumTypeList("trainingUserTypeId", TrainingUserType.values()));
     result.put("trainingPlatformTypeList", EnumTypeUtil.getEnumTypeList("trainingPlatformTypeId", TrainingPlatformType.values()));
+    result.put("trainingContestTypeList", EnumTypeUtil.getEnumTypeList("trainingContestTypeId", TrainingContestType.values()));
+    result.put("trainingResultFieldTypeList", EnumTypeUtil.getEnumTypeList("trainingResultFieldTypeId", TrainingResultFieldType.values()));
     result.put("result", "success");
     return result;
   }

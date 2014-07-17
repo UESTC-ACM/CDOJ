@@ -1,9 +1,9 @@
 cdoj
-.directive("uiProblemDataUploader",
+.directive("uiTrainingContestResultUploader",
 ->
   restrict: "E"
   scope:
-    uploadUrl: "@"
+    result: "="
   controller: [
     "$scope", "$element"
     ($scope, $element) ->
@@ -12,17 +12,20 @@ cdoj
       dataUploader = new qq.FineUploaderBasic(
         button: $element[0]
         request:
-          endpoint: $scope.uploadUrl
+          endpoint: "/training/uploadTrainingContestResult"
           inputName: "uploadFile"
         validation:
-          allowedExtensions: ["zip"],
-          sizeLimit: 300 * 1024 * 1024 # 300 MB
+          allowedExtensions: ["xls"],
+          sizeLimit: 10 * 1024 * 1024 # 10 MB
         multiple: false
         callbacks:
           onComplete: (id, fileName, data) ->
             if data.success == true
               $scope.$apply(->
-                $scope.hint = "Total data: #{data.total}"
+                $scope.hint = "Successful!"
+                $scope.result.fields = data.fields
+                $scope.result.users = data.users
+                $scope.result.fieldType = data.fieldType
                 $scope.hasError = false
               )
             else
@@ -41,11 +44,10 @@ cdoj
       )
   ]
   template: """
-                <span class="btn"
+                <span class="btn btn-sm"
                     ng-class="{'btn-success': hasError == false,
 'btn-danger': hasError == true}">
                   <i class="fa fa-upload"></i><span ng-bind="hint"></span>
                 </span>
 """
-  replace: true
 )

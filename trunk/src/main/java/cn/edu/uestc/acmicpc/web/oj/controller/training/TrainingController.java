@@ -22,6 +22,7 @@ import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.JsonMap;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.TrainingResultFieldType;
 import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
@@ -29,13 +30,20 @@ import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
+import cn.edu.uestc.acmicpc.web.rank.TrainingRankListUser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import jxl.Sheet;
+import jxl.Workbook;
 
 import java.util.HashMap;
 import java.util.List;
@@ -302,7 +310,7 @@ public class TrainingController extends BaseController {
   @LoginPermit(NeedLogin = false)
   public
   @ResponseBody
-  Map<String, Object> searchTrainingContest(@RequestBody(required = false)TrainingContestCriteria trainingContestCriteria,
+  Map<String, Object> searchTrainingContest(@RequestBody(required = false) TrainingContestCriteria trainingContestCriteria,
       @PathVariable("trainingId") Integer trainingId) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
@@ -323,4 +331,83 @@ public class TrainingController extends BaseController {
 
     return json;
   }
+
+  @RequestMapping(value = "uploadTrainingContestResult", method = RequestMethod.POST)
+  @LoginPermit(AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> uploadTrainingContestResult(@RequestParam(value = "uploadFile", required = true) MultipartFile[] files) throws AppException {
+    Map<String, Object> json = new HashMap<>();
+
+    if (files.length > 1) {
+      throw new AppException("Fetch uploaded file error.");
+    }
+    MultipartFile file = files[0];
+
+    try {
+      Workbook workbook = Workbook.getWorkbook(file.getInputStream());
+      Sheet sheet = workbook.getSheet(0);
+      int totalRows = sheet.getRows();
+      int totalColumns = sheet.getColumns();
+
+      String[] fields = new String[totalColumns];
+      int[] fieldType = new int[totalColumns];
+      for (int column = 0; column < totalColumns; column++) {
+        fields[column] = sheet.getCell(column, 0).getContents();
+        if (isUserName(fields[column])) {
+          fieldType[column] = TrainingResultFieldType.USERNAME.ordinal();
+        } else if (isPenalty(fields[column])) {
+          fieldType[column] = TrainingResultFieldType.PENALTY.ordinal();
+        } else if (isSolved(fields[column])) {
+          fieldType[column] = TrainingResultFieldType.SOLVED.ordinal();
+        } else if (isUnused(fields[column])) {
+          fieldType[column] = TrainingResultFieldType.UNUSED.ordinal();
+        } else {
+          fieldType[column] = TrainingResultFieldType.PROBLEM.ordinal();
+        }
+      }
+      json.put("fields", fields);
+      json.put("fieldType", fieldType);
+
+      TrainingRankListUser[] users = new TrainingRankListUser[totalRows - 1];
+      for (int row = 1; row < totalRows; row++) {
+        TrainingRankListUser trainingRankListUser = new TrainingRankListUser();
+        trainingRankListUser.rawData = new String[totalColumns];
+        for (int column = 0; column < totalColumns; column++) {
+          trainingRankListUser.rawData[column] = sheet.getCell(column, row).getContents();
+        }
+        users[row - 1] = trainingRankListUser;
+      }
+      json.put("users", users);
+    } catch (Exception e) {
+      throw new AppException("Error while parse rank list.");
+    }
+
+    json.put("success", "true");
+    return json;
+  }
+
+  private boolean isUserName(String value) {
+    return value.compareToIgnoreCase("name") == 0
+        || value.compareToIgnoreCase("team") == 0
+        || value.compareToIgnoreCase("id") == 0
+        || value.compareToIgnoreCase("nick name") == 0
+        || value.compareToIgnoreCase("姓名") == 0
+        || value.compareToIgnoreCase("user") == 0;
+  }
+
+  private boolean isPenalty(String value) {
+    return value.compareToIgnoreCase("penalty") == 0;
+  }
+
+  private boolean isSolved(String value) {
+    return value.compareToIgnoreCase("solved") == 0
+        || value.compareToIgnoreCase("solve") == 0;
+  }
+
+  private boolean isUnused(String value) {
+    return value.compareToIgnoreCase("#") == 0
+        || value.compareToIgnoreCase("rank") == 0;
+  }
+
 }

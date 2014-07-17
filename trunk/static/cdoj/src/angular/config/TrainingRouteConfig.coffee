@@ -50,5 +50,32 @@ cdoj
               )
               return deferred.promise
           ]
+      ).when("/training/contest/:trainingId/edit/:action",
+        templateUrl: "template/training/trainingContestEditor.html"
+        controller: "TrainingContestEditorController"
+        resolve:
+          trainingContestData: ["$q", "$route", "$http", "Error",
+            ($q, $route, $http, $Error) ->
+              deferred = $q.defer()
+              action = $route.current.params.action
+              trainingId = $route.current.params.action
+              if action != "new"
+                # TODO
+              else
+                deferred.resolve(
+                  action: action
+                  trainingContestDto:
+                    trainingId: trainingId
+                    title: ""
+                    link: ""
+                    type: 0
+                    platformType: 0
+                    rankList:
+                      fields: []
+                      users: []
+                      fieldType: []
+                )
+              return deferred.promise
+          ]
       )
     ])
