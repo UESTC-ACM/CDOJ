@@ -20,7 +20,7 @@
                 Add new member
               </a>
               <a class="btn btn-danger btn-xs"
-                 href="/#/training/contest/{{trainingDto.trainingId}}/edit/new">
+                 href="/#/training/contest/edit/new/{{trainingDto.trainingId}}">
                 Add new contest
               </a>
             </div>
@@ -113,11 +113,11 @@
                     <td ng-if="$root.isAdmin"></td>
                   </tr>
                   <tr ng-repeat="trainingContest in list">
-                    <td><a href="/#/training/contest/{{trainingDto.trainingId}}/show/{{trainingContest.trainingContestId}}">{{trainingContest.title}}</a></td>
+                    <td><a href="/#/training/contest/show/{{trainingContest.trainingContestId}}">{{trainingContest.title}}</a></td>
                     <td ng-if="$root.isAdmin">
                       <div class="btn-toolbar" role="toolbar">
                         <div class="btn-group">
-                          <a href="/#/training/contest/{{trainingDto.trainingId}}/edit/{{trainingContest.trainingContestId}}"
+                          <a href="/#/training/contest/edit/{{trainingContest.trainingContestId}}"
                              class="btn btn-default btn-sm"
                              style="padding: 1px 5px;">
                             <i class="fa fa-pencil"></i>
