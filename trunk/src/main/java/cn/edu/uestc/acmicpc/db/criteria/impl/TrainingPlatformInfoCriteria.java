@@ -26,6 +26,7 @@ public class TrainingPlatformInfoCriteria extends BaseCriteria<TrainingPlatformI
   public String userId;
   public TrainingPlatformType type;
   public String keyword;
+  public Integer trainingId;
 
   @Override
   public DetachedCriteria getCriteria() throws AppException {
@@ -54,6 +55,9 @@ public class TrainingPlatformInfoCriteria extends BaseCriteria<TrainingPlatformI
           Restrictions.ilike("userId", keyword),
           Restrictions.ilike("trainingUser.trainingUserName", keyword)
       ));
+    }
+    if (trainingId != null) {
+      criteria.add(Restrictions.eq("trainingUser.trainingId", trainingId));
     }
 
     return criteria;

@@ -21,7 +21,7 @@ import cn.edu.uestc.acmicpc.service.iface.UserSerialKeyService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
-import cn.edu.uestc.acmicpc.util.enums.AuthorStatusType;
+import cn.edu.uestc.acmicpc.util.enums.ProblemSolveStatusType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
@@ -297,29 +297,29 @@ public class UserController extends BaseController {
       if (userCenterDTO == null) {
         throw new AppException("No such user!");
       }
-      Map<Integer, AuthorStatusType> problemStatus = new TreeMap<>();
+      Map<Integer, ProblemSolveStatusType> problemStatus = new TreeMap<>();
 
       List<Integer> results = problemService.getAllVisibleProblemIds();
       for (Integer result : results) {
-        problemStatus.put(result, AuthorStatusType.NONE);
+        problemStatus.put(result, ProblemSolveStatusType.NONE);
       }
       results = statusService.findAllUserTriedProblemIds(userCenterDTO.getUserId(),
           isAdmin(session));
       for (Integer result : results) {
         if (problemStatus.containsKey(result)) {
-          problemStatus.put(result, AuthorStatusType.FAIL);
+          problemStatus.put(result, ProblemSolveStatusType.FAIL);
         }
       }
       results = statusService.findAllUserAcceptedProblemIds(userCenterDTO.getUserId(),
           isAdmin(session));
       for (Integer result : results) {
         if (problemStatus.containsKey(result)) {
-          problemStatus.put(result, AuthorStatusType.PASS);
+          problemStatus.put(result, ProblemSolveStatusType.PASS);
         }
       }
 
       List<UserProblemStatusDTO> problemStatusList = new LinkedList<>();
-      for (Map.Entry<Integer, AuthorStatusType> status : problemStatus.entrySet()) {
+      for (Map.Entry<Integer, ProblemSolveStatusType> status : problemStatus.entrySet()) {
         problemStatusList.add(new UserProblemStatusDTO(status.getKey(), status.getValue().ordinal()));
       }
 

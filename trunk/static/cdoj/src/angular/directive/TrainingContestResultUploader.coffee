@@ -4,6 +4,9 @@ cdoj
   restrict: "E"
   scope:
     result: "="
+    type: "="
+    platformType: "="
+    trainingId: "="
   controller: [
     "$scope", "$element"
     ($scope, $element) ->
@@ -12,7 +15,8 @@ cdoj
       dataUploader = new qq.FineUploaderBasic(
         button: $element[0]
         request:
-          endpoint: "/training/uploadTrainingContestResult"
+          endpoint: "/training/uploadTrainingContestResult/" +
+            $scope.trainingId + "/" + $scope.type + "/" + $scope.platformType
           inputName: "uploadFile"
         validation:
           allowedExtensions: ["xls"],

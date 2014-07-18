@@ -22,11 +22,14 @@ import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.JsonMap;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.TrainingContestType;
+import cn.edu.uestc.acmicpc.util.enums.TrainingPlatformType;
 import cn.edu.uestc.acmicpc.util.enums.TrainingResultFieldType;
 import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
+import cn.edu.uestc.acmicpc.util.parser.TrainingContestResultParser;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
@@ -334,11 +337,14 @@ public class TrainingController extends BaseController {
     return json;
   }
 
-  @RequestMapping(value = "uploadTrainingContestResult", method = RequestMethod.POST)
+  @RequestMapping(value = "uploadTrainingContestResult/{trainingId}/{type}/{platformType}", method = RequestMethod.POST)
   @LoginPermit(AuthenticationType.ADMIN)
   public
   @ResponseBody
-  Map<String, Object> uploadTrainingContestResult(@RequestParam(value = "uploadFile", required = true) MultipartFile[] files) throws AppException {
+  Map<String, Object> uploadTrainingContestResult(@PathVariable("trainingId") Integer trainingId,
+      @PathVariable("type") Integer type,
+      @PathVariable("platformType") Integer platformType,
+      @RequestParam(value = "uploadFile", required = true) MultipartFile[] files) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
     if (files.length > 1) {
@@ -356,13 +362,13 @@ public class TrainingController extends BaseController {
       Integer[] fieldType = new Integer[totalColumns];
       for (int column = 0; column < totalColumns; column++) {
         fields[column] = sheet.getCell(column, 0).getContents();
-        if (isUserName(fields[column])) {
+        if (TrainingContestResultParser.isUserName(fields[column])) {
           fieldType[column] = TrainingResultFieldType.USERNAME.ordinal();
-        } else if (isPenalty(fields[column])) {
+        } else if (TrainingContestResultParser.isPenalty(fields[column])) {
           fieldType[column] = TrainingResultFieldType.PENALTY.ordinal();
-        } else if (isSolved(fields[column])) {
+        } else if (TrainingContestResultParser.isSolved(fields[column])) {
           fieldType[column] = TrainingResultFieldType.SOLVED.ordinal();
-        } else if (isUnused(fields[column])) {
+        } else if (TrainingContestResultParser.isUnused(fields[column])) {
           fieldType[column] = TrainingResultFieldType.UNUSED.ordinal();
         } else {
           fieldType[column] = TrainingResultFieldType.PROBLEM.ordinal();
@@ -383,6 +389,12 @@ public class TrainingController extends BaseController {
       trainingRankList.fields = fields;
       trainingRankList.fieldType = fieldType;
       trainingRankList.users = users;
+
+      TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(TrainingPlatformInfoFields.ALL_FIELDS);
+      trainingPlatformInfoCriteria.trainingId = trainingId;
+      List<TrainingPlatformInfoDto> platformList = trainingPlatformInfoService.getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
+      TrainingContestResultParser parser = new TrainingContestResultParser();
+      parser.parse(trainingRankList, TrainingContestType.values()[type], TrainingPlatformType.values()[platformType]);
       json.put("trainingRankList", trainingRankList);
     } catch (Exception e) {
       throw new AppException("Error while parse rank list.");
@@ -390,29 +402,6 @@ public class TrainingController extends BaseController {
 
     json.put("success", "true");
     return json;
-  }
-
-  private boolean isUserName(String value) {
-    return value.compareToIgnoreCase("name") == 0
-        || value.compareToIgnoreCase("team") == 0
-        || value.compareToIgnoreCase("id") == 0
-        || value.compareToIgnoreCase("nick name") == 0
-        || value.compareToIgnoreCase("姓名") == 0
-        || value.compareToIgnoreCase("user") == 0;
-  }
-
-  private boolean isPenalty(String value) {
-    return value.compareToIgnoreCase("penalty") == 0;
-  }
-
-  private boolean isSolved(String value) {
-    return value.compareToIgnoreCase("solved") == 0
-        || value.compareToIgnoreCase("solve") == 0;
-  }
-
-  private boolean isUnused(String value) {
-    return value.compareToIgnoreCase("#") == 0
-        || value.compareToIgnoreCase("rank") == 0;
   }
 
   @RequestMapping(value = "editTrainingContest")
