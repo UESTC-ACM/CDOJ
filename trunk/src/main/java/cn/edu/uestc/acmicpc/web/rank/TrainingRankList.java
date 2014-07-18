@@ -4,4 +4,5 @@ public class TrainingRankList {
   public String[] fields;
   public Integer[] fieldType;
   public TrainingRankListUser[] users;
+  public RankListProblem[] problems;
 }

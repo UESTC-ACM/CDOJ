@@ -74,6 +74,7 @@ cdoj
                     fields: []
                     users: []
                     fieldType: []
+                    problems: []
                 )
               return deferred.promise
           ]
