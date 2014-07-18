@@ -5,8 +5,8 @@ cdoj
   scope:
     uploadUrl: "@"
   controller: [
-    "$scope", "$element", "$window"
-    ($scope, $element, $window) ->
+    "$scope", "$element"
+    ($scope, $element) ->
       $scope.hint = "Upload"
       $scope.hasError = false
       dataUploader = new qq.FineUploaderBasic(
@@ -36,7 +36,8 @@ cdoj
               $scope.hint = "#{percentage} %"
             )
           onError: (id, fileName, errorReason) ->
-            $window.alert errorReason
+            $scope.hasError = false
+            $scope.hint = errorReason
       )
   ]
   template: """

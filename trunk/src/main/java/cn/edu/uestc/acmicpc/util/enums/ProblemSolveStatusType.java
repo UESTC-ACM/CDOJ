@@ -3,8 +3,8 @@ package cn.edu.uestc.acmicpc.util.enums;
 /**
  * Problem status for author problem flag.
  */
-public enum AuthorStatusType implements EnumType {
-  NONE("Not tried"), PASS("Passed"), FAIL("Tried but failed");
+public enum ProblemSolveStatusType implements EnumType {
+  NONE("Not tried"), PASS("Passed"), FAIL("Tried but failed"), FB("First blood");
 
   private final String description;
 
@@ -13,7 +13,7 @@ public enum AuthorStatusType implements EnumType {
     return this.description;
   }
 
-  private AuthorStatusType(String description) {
+  private ProblemSolveStatusType(String description) {
     this.description = description;
   }
 }

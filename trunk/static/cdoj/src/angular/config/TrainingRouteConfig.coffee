@@ -50,5 +50,46 @@ cdoj
               )
               return deferred.promise
           ]
+      ).when("/training/contest/:trainingId/edit/:action",
+        templateUrl: "template/training/trainingContestEditor.html"
+        controller: "TrainingContestEditorController"
+        resolve:
+          trainingContestData: ["$q", "$route", "$http", "Error",
+            ($q, $route, $http, $Error) ->
+              deferred = $q.defer()
+              action = $route.current.params.action
+              trainingId = $route.current.params.trainingId
+              if action != "new"
+                $http.post(
+                  "/training/trainingContestData/#{action}"
+                ).success((data) ->
+                  if data.result == "success"
+                    deferred.resolve(
+                      action: action
+                      trainingContestDto: data.trainingContestDto
+                      rankList: data.rankList
+                    )
+                  else
+                    $Error.error(data.error_msg)
+                ).error(->
+                  $Error.error("Network error!")
+                )
+              else
+                deferred.resolve(
+                  action: action
+                  trainingContestDto:
+                    trainingId: trainingId
+                    title: ""
+                    link: ""
+                    type: 0
+                    platformType: 0
+                  rankList:
+                    fields: []
+                    users: []
+                    fieldType: []
+                    problems: []
+                )
+              return deferred.promise
+          ]
       )
     ])

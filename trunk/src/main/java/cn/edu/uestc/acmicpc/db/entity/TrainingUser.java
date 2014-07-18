@@ -182,7 +182,7 @@ public class TrainingUser implements Serializable {
 
   private String ratingHistory;
 
-  @Column(name = "ratingHistory", nullable = false, length = 65535)
+  @Column(name = "ratingHistory", nullable = false, length = 16777215)
   @Basic
   public String getRatingHistory() {
     return ratingHistory;

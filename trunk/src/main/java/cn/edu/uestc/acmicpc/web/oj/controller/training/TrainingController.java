@@ -1,16 +1,20 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.training;
 
+import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingContestCriteria;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingCriteria;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingPlatformInfoCriteria;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingUserCriteria;
+import cn.edu.uestc.acmicpc.db.dto.field.TrainingContestFields;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingFields;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingPlatformInfoFields;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
+import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
+import cn.edu.uestc.acmicpc.service.iface.TrainingContestService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingPlatformInfoService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingUserService;
@@ -18,20 +22,33 @@ import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.annotation.JsonMap;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
+import cn.edu.uestc.acmicpc.util.enums.TrainingContestType;
+import cn.edu.uestc.acmicpc.util.enums.TrainingPlatformType;
+import cn.edu.uestc.acmicpc.util.enums.TrainingResultFieldType;
 import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
+import cn.edu.uestc.acmicpc.util.parser.TrainingContestResultParser;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
+import cn.edu.uestc.acmicpc.web.rank.TrainingRankList;
+import cn.edu.uestc.acmicpc.web.rank.TrainingRankListUser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.alibaba.fastjson.JSON;
+import jxl.Sheet;
+import jxl.Workbook;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +61,7 @@ public class TrainingController extends BaseController {
   private TrainingService trainingService;
   private TrainingUserService trainingUserService;
   private TrainingPlatformInfoService trainingPlatformInfoService;
+  private TrainingContestService trainingContestService;
   private UserService userService;
   private PictureService pictureService;
   private Settings settings;
@@ -52,12 +70,14 @@ public class TrainingController extends BaseController {
   public TrainingController(TrainingService trainingService,
       TrainingUserService trainingUserService,
       TrainingPlatformInfoService trainingPlatformInfoService,
+      TrainingContestService trainingContestService,
       UserService userService,
       PictureService pictureService,
       Settings settings) {
     this.trainingService = trainingService;
     this.trainingUserService = trainingUserService;
     this.trainingPlatformInfoService = trainingPlatformInfoService;
+    this.trainingContestService = trainingContestService;
     this.userService = userService;
     this.pictureService = pictureService;
     this.settings = settings;
@@ -287,6 +307,170 @@ public class TrainingController extends BaseController {
       );
     }
 
+    json.put("result", "success");
+    return json;
+  }
+
+  @RequestMapping("searchTrainingContest/{trainingId}")
+  @LoginPermit(NeedLogin = false)
+  public
+  @ResponseBody
+  Map<String, Object> searchTrainingContest(@RequestBody(required = false) TrainingContestCriteria trainingContestCriteria,
+      @PathVariable("trainingId") Integer trainingId) throws AppException {
+    Map<String, Object> json = new HashMap<>();
+
+    if (trainingContestCriteria == null) {
+      trainingContestCriteria = new TrainingContestCriteria();
+    }
+    trainingContestCriteria.setResultFields(TrainingContestFields.FIELDS_FOR_LIST_PAGE);
+    trainingContestCriteria.trainingId = trainingId;
+
+    List<TrainingContestDto> trainingContestDtoList = trainingContestService.getTrainingContestList(trainingContestCriteria);
+
+    PageInfo pageInfo = buildPageInfo((long) trainingContestDtoList.size(),
+        1L, (long) trainingContestDtoList.size(), null);
+
+    json.put("pageInfo", pageInfo);
+    json.put("list", trainingContestDtoList);
+    json.put("result", "success");
+
+    return json;
+  }
+
+  @RequestMapping(value = "uploadTrainingContestResult/{trainingId}/{type}/{platformType}", method = RequestMethod.POST)
+  @LoginPermit(AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> uploadTrainingContestResult(@PathVariable("trainingId") Integer trainingId,
+      @PathVariable("type") Integer type,
+      @PathVariable("platformType") Integer platformType,
+      @RequestParam(value = "uploadFile", required = true) MultipartFile[] files) throws AppException {
+    Map<String, Object> json = new HashMap<>();
+
+    if (files.length > 1) {
+      throw new AppException("Fetch uploaded file error.");
+    }
+    MultipartFile file = files[0];
+
+    try {
+      Workbook workbook = Workbook.getWorkbook(file.getInputStream());
+      Sheet sheet = workbook.getSheet(0);
+      int totalRows = sheet.getRows();
+      int totalColumns = sheet.getColumns();
+
+      String[] fields = new String[totalColumns];
+      Integer[] fieldType = new Integer[totalColumns];
+      for (int column = 0; column < totalColumns; column++) {
+        fields[column] = sheet.getCell(column, 0).getContents();
+        if (TrainingContestResultParser.isUserName(fields[column])) {
+          fieldType[column] = TrainingResultFieldType.USERNAME.ordinal();
+        } else if (TrainingContestResultParser.isPenalty(fields[column])) {
+          fieldType[column] = TrainingResultFieldType.PENALTY.ordinal();
+        } else if (TrainingContestResultParser.isSolved(fields[column])) {
+          fieldType[column] = TrainingResultFieldType.SOLVED.ordinal();
+        } else if (TrainingContestResultParser.isUnused(fields[column])) {
+          fieldType[column] = TrainingResultFieldType.UNUSED.ordinal();
+        } else {
+          fieldType[column] = TrainingResultFieldType.PROBLEM.ordinal();
+        }
+      }
+
+      TrainingRankListUser[] users = new TrainingRankListUser[totalRows - 1];
+      for (int row = 1; row < totalRows; row++) {
+        TrainingRankListUser trainingRankListUser = new TrainingRankListUser();
+        trainingRankListUser.rawData = new String[totalColumns];
+        for (int column = 0; column < totalColumns; column++) {
+          trainingRankListUser.rawData[column] = sheet.getCell(column, row).getContents();
+        }
+        users[row - 1] = trainingRankListUser;
+      }
+
+      TrainingRankList trainingRankList = new TrainingRankList();
+      trainingRankList.fields = fields;
+      trainingRankList.fieldType = fieldType;
+      trainingRankList.users = users;
+
+      TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(TrainingPlatformInfoFields.ALL_FIELDS);
+      trainingPlatformInfoCriteria.trainingId = trainingId;
+      if (type != TrainingContestType.ADJUST.ordinal()) {
+        trainingPlatformInfoCriteria.type = TrainingPlatformType.values()[platformType];
+      }
+      List<TrainingPlatformInfoDto> platformList = trainingPlatformInfoService.getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
+      TrainingContestResultParser parser = new TrainingContestResultParser(platformList);
+      parser.parse(trainingRankList, TrainingContestType.values()[type], TrainingPlatformType.values()[platformType]);
+
+      json.put("trainingRankList", trainingRankList);
+      json.put("success", "true");
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("success", "false");
+      json.put("error", "Error while parse rank list.");
+    }
+    return json;
+  }
+
+  @RequestMapping(value = "editTrainingContest")
+  @LoginPermit(AuthenticationType.ADMIN)
+  public
+  @ResponseBody
+  Map<String, Object> editTrainingContest(@JsonMap("action") String action,
+      @JsonMap("trainingContestEditDto") TrainingContestDto trainingContestEditDto,
+      @JsonMap("trainingRankList") TrainingRankList trainingRankList) throws AppException {
+    Map<String, Object> json = new HashMap<>();
+
+    if (trainingContestEditDto.getTitle().length() > 255 ||
+        trainingContestEditDto.getTitle().length() < 2) {
+      throw new FieldException("title", "Please enter 2-255 characters.");
+    }
+
+    TrainingContestDto trainingContestDto;
+    if (action.equals("new")) {
+      Integer trainingContestId = trainingContestService.createNewTrainingContest(trainingContestEditDto.getTrainingId());
+      trainingContestDto = trainingContestService.getTrainingContestDto(trainingContestId, TrainingContestFields.ALL_FIELDS);
+      if (trainingContestDto == null) {
+        throw new AppException("Error while creating training contest.");
+      }
+    } else {
+      trainingContestDto = trainingContestService.getTrainingContestDto(trainingContestEditDto.getTrainingContestId(), TrainingContestFields.ALL_FIELDS);
+      if (trainingContestDto == null) {
+        throw new AppException("Training contest not found.");
+      }
+    }
+
+    trainingContestDto.setTitle(trainingContestEditDto.getTitle());
+    trainingContestDto.setLink(trainingContestEditDto.getLink());
+    trainingContestDto.setType(trainingContestEditDto.getType());
+    trainingContestDto.setPlatformType(trainingContestEditDto.getPlatformType());
+    trainingContestDto.setRankList(JSON.toJSONString(trainingRankList));
+
+    trainingContestService.updateTrainingContest(trainingContestDto);
+
+    json.put("trainingContestId", trainingContestDto.getTrainingContestId());
+    json.put("result", "success");
+    return json;
+  }
+
+  @RequestMapping("trainingContestData/{trainingContestId}")
+  @LoginPermit(NeedLogin = false)
+  public
+  @ResponseBody
+  Map<String, Object> trainingContestData(@PathVariable("trainingContestId") Integer trainingContestId) throws AppException {
+    Map<String, Object> json = new HashMap<>();
+
+    TrainingContestDto trainingContestDto = trainingContestService.getTrainingContestDto(trainingContestId, TrainingContestFields.ALL_FIELDS);
+    if (trainingContestDto == null) {
+      throw new AppException("Training contest not found!");
+    }
+
+    json.put("trainingContestDto", trainingContestDto);
+    TrainingRankList trainingRankList;
+    if (trainingContestDto.getRankList().equals("")) {
+      trainingRankList = new TrainingRankList();
+    } else {
+      trainingRankList = JSON.parseObject(trainingContestDto.getRankList(), TrainingRankList.class);
+      trainingContestDto.setRankList(null);
+    }
+    json.put("rankList", trainingRankList);
     json.put("result", "success");
     return json;
   }
