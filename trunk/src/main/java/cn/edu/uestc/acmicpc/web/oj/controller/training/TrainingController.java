@@ -393,14 +393,16 @@ public class TrainingController extends BaseController {
       TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(TrainingPlatformInfoFields.ALL_FIELDS);
       trainingPlatformInfoCriteria.trainingId = trainingId;
       List<TrainingPlatformInfoDto> platformList = trainingPlatformInfoService.getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
-      TrainingContestResultParser parser = new TrainingContestResultParser();
+      TrainingContestResultParser parser = new TrainingContestResultParser(platformList);
       parser.parse(trainingRankList, TrainingContestType.values()[type], TrainingPlatformType.values()[platformType]);
-      json.put("trainingRankList", trainingRankList);
-    } catch (Exception e) {
-      throw new AppException("Error while parse rank list.");
-    }
 
-    json.put("success", "true");
+      json.put("trainingRankList", trainingRankList);
+      json.put("success", "true");
+    } catch (Exception e) {
+      e.printStackTrace();
+      json.put("success", "false");
+      json.put("error", "Error while parse rank list.");
+    }
     return json;
   }
 

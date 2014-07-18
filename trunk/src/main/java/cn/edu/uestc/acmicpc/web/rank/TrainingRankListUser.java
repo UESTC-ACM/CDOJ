@@ -10,4 +10,5 @@ public class TrainingRankListUser {
   public Long penalty;
   public TrainingRankListItem[] itemList;
   public String[] rawData;
+  public String userName;
 }

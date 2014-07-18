@@ -12,37 +12,39 @@ cdoj
     ($scope, $element) ->
       $scope.hint = "Upload"
       $scope.hasError = false
-      dataUploader = new qq.FineUploaderBasic(
-        button: $element[0]
-        request:
-          endpoint: "/training/uploadTrainingContestResult/" +
-            $scope.trainingId + "/" + $scope.type + "/" + $scope.platformType
-          inputName: "uploadFile"
-        validation:
-          allowedExtensions: ["xls"],
-          sizeLimit: 10 * 1024 * 1024 # 10 MB
-        multiple: false
-        callbacks:
-          onComplete: (id, fileName, data) ->
-            if data.success == true
+      $scope.$watch("type + platformType + trainingId", ->
+        dataUploader = new qq.FineUploaderBasic(
+          button: $element[0]
+          request:
+            endpoint: "/training/uploadTrainingContestResult/" +
+              $scope.trainingId + "/" + $scope.type + "/" + $scope.platformType
+            inputName: "uploadFile"
+          validation:
+            allowedExtensions: ["xls"],
+            sizeLimit: 10 * 1024 * 1024 # 10 MB
+          multiple: false
+          callbacks:
+            onComplete: (id, fileName, data) ->
+              if data.success == true
+                $scope.$apply(->
+                  $scope.hint = "Successful!"
+                  $scope.result = data.trainingRankList
+                  $scope.hasError = false
+                )
+              else
+                $scope.$apply(->
+                  $scope.hint = data.error
+                  $scope.hasError = true
+                )
+            onProgress: (id, fileName, uploadedBytes, totalBytes) ->
               $scope.$apply(->
-                $scope.hint = "Successful!"
-                $scope.result = data.trainingRankList
-                $scope.hasError = false
+                percentage = Math.round(uploadedBytes / totalBytes * 100)
+                $scope.hint = "#{percentage} %"
               )
-            else
-              $scope.$apply(->
-                $scope.hint = data.error
-                $scope.hasError = true
-              )
-          onProgress: (id, fileName, uploadedBytes, totalBytes) ->
-            $scope.$apply(->
-              percentage = Math.round(uploadedBytes / totalBytes * 100)
-              $scope.hint = "#{percentage} %"
-            )
-          onError: (id, fileName, errorReason) ->
-            $scope.hasError = false
-            $scope.hint = errorReason
+            onError: (id, fileName, errorReason) ->
+              $scope.hasError = false
+              $scope.hint = errorReason
+        )
       )
   ]
   template: """
