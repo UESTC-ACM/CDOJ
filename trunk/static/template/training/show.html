@@ -14,65 +14,110 @@
                  href="/#/training/editor/{{trainingDto.trainingId}}">
                 Edit
               </a>
-            </div>
-            <div class="col-md-12" style="margin-top: 16px;">
-              <markdown content="trainingDto.description"></markdown>
-            </div>
-          </div>
-        </tab>
-        <tab heading="Rank">
-          <div class="row">
-            <div class="col-md-12 text-center"
-                 style="margin-top: 16px;"
-                 ng-if="$root.isAdmin">
               <a class="btn btn-danger btn-xs"
                  href="javascript: void(0);"
                  ng-click="addNewMember()">
                 Add new member
               </a>
+              <a class="btn btn-danger btn-xs"
+                 href="/#/training/contest/{{trainingDto.trainingId}}/edit/new">
+                Add new contest
+              </a>
             </div>
-            <list condition="trainingCriteria"
-                  request-url="/training/searchTrainingUser/{{trainingDto.trainingId}}"
-                  name="trainingRankList">
+            <div class="col-md-12" style="margin-top: 16px;">
+              <markdown content="trainingDto.description"></markdown>
+            </div>
+            <div class="col-md-12">
+              <list condition="trainingUserCriteria"
+                    request-url="/training/searchTrainingUser/{{trainingDto.trainingId}}"
+                    name="trainingRankList">
+                <div class="col-md-12">
+                  <table class="table table-condensed">
+                    <thead>
+                    <tr>
+                      <th class="text-right">Rank</th>
+                      <th class="text-center">Name</th>
+                      <th class="text-center">Competitions</th>
+                      <th class="text-center">Rating</th>
+                      <th class="text-center">Volatility</th>
+                      <th class="text-center">Recent event</th>
+                      <th ng-if="$root.isAdmin" style="width: 30px;"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td></td>
+                      <td>
+                        <input type="text"
+                               style="width: 100%"
+                               ng-model="trainingUserCriteria.keyword"/>
+                      </td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td ng-if="$root.isAdmin"></td>
+                    </tr>
+                    <tr ng-repeat="trainingUser in list">
+                      <td class="text-right">{{trainingUser.rank}}</td>
+                      <td class="text-center">{{trainingUser.trainingUserName}}</td>
+                      <td class="text-center">{{trainingUser.competitions}}</td>
+                      <td class="text-center">{{trainingUser.currentRating}}</td>
+                      <td class="text-center">{{trainingUser.currentVolatility}}</td>
+                      <td class="text-center">{{trainingUser.recentEventName}}</td>
+
+                      <td ng-if="$root.isAdmin">
+                        <div class="btn-toolbar" role="toolbar">
+                          <div class="btn-group">
+                            <a href="javascript:void(0);"
+                               ng-click="editTrainingUser(trainingUser.trainingUserId)"
+                               class="btn btn-default btn-sm"
+                               style="padding: 1px 5px;">
+                              <i class="fa fa-pencil"></i>
+                            </a>
+                          </div>
+                        </div>
+                      </td>
+
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </list>
+            </div>
+          </div>
+        </tab>
+        <tab heading="History">
+          <div class="row">
+            <div class="col-md-12 text-center"
+                 style="margin-top: 16px;"
+                 ng-if="$root.isAdmin">
+            </div>
+            <list condition="trainingContestCriteria"
+                  request-url="/training/searchTrainingContest/{{trainingDto.trainingId}}"
+                  name="trainingHistory">
               <div class="col-md-12">
                 <table class="table table-condensed">
                   <thead>
                   <tr>
-                    <th class="text-right">Rank</th>
-                    <th class="text-center">Name</th>
-                    <th class="text-center">Competitions</th>
-                    <th class="text-center">Rating</th>
-                    <th class="text-center">Volatility</th>
-                    <th class="text-center">Recent event</th>
+                    <th class="text-center">Title</th>
                     <th ng-if="$root.isAdmin" style="width: 30px;"></th>
                   </tr>
                   </thead>
                   <tbody>
                   <tr>
-                    <td></td>
                     <td>
                       <input type="text"
                              style="width: 100%"
-                             ng-model="trainingCriteria.keyword"/>
+                             ng-model="trainingContestCriteria.keyword"/>
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td ng-if="$root.isAdmin"></td>
                   </tr>
-                  <tr ng-repeat="trainingUser in list">
-                    <td class="text-right">{{trainingUser.rank}}</td>
-                    <td class="text-center">{{trainingUser.trainingUserName}}</td>
-                    <td class="text-center">{{trainingUser.competitions}}</td>
-                    <td class="text-center">{{trainingUser.currentRating}}</td>
-                    <td class="text-center">{{trainingUser.currentVolatility}}</td>
-                    <td class="text-center">{{trainingUser.recentEventName}}</td>
-
+                  <tr ng-repeat="trainingContest in list">
+                    <td><a href="/#/training/contest/{{trainingDto.trainingId}}/show/{{trainingContest.trainingContestId}}">{{trainingContest.title}}</a></td>
                     <td ng-if="$root.isAdmin">
                       <div class="btn-toolbar" role="toolbar">
                         <div class="btn-group">
-                          <a href="javascript:void(0);"
-                             ng-click="editTrainingUser(trainingUser.trainingUserId)"
+                          <a href="/#/training/contest/{{trainingDto.trainingId}}/edit/{{trainingContest.trainingContestId}}"
                              class="btn btn-default btn-sm"
                              style="padding: 1px 5px;">
                             <i class="fa fa-pencil"></i>
@@ -80,16 +125,12 @@
                         </div>
                       </div>
                     </td>
-
                   </tr>
                   </tbody>
                 </table>
               </div>
             </list>
           </div>
-        </tab>
-        <tab heading="History">
-
         </tab>
       </tabset>
     </div>

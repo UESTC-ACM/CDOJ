@@ -96,7 +96,7 @@ public class TrainingUserServiceImpl extends AbstractService implements Training
     trainingUser.setTrainingUserName("");
     trainingUser.setType(TrainingUserType.PERSONAL.ordinal());
     trainingUser.setCurrentRating(1200.0);
-    trainingUser.setCurrentVolatility(350.0);
+    trainingUser.setCurrentVolatility(550.0);
     trainingUser.setCompetitions(0);
     trainingUser.setRank(0);
     trainingUser.setMinimumRating(1200.0);

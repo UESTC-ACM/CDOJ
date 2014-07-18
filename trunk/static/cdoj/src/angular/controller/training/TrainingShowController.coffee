@@ -9,9 +9,11 @@ cdoj
       $window.scrollTo(0, 0)
 
       $scope.trainingDto = trainingDto
-      _trainingUserCriteria = angular.copy($rootScope.trainingUserCriteria)
-      _trainingUserCriteria.trainingId = trainingDto.trainingId
-      $scope.trainingUserCriteria = _trainingUserCriteria
+      _trainingUserCriteria =
+      $scope.trainingUserCriteria =
+        angular.copy($rootScope.trainingUserCriteria)
+      $scope.trainingContestCriteria =
+        angular.copy($rootScope.trainingContestCriteria)
 
       $scope.editTrainingUser = (trainingUserId) ->
         modalInstance = $modal.open(
