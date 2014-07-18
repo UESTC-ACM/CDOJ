@@ -9,6 +9,7 @@ cdoj
       if $scope.action == "new"
         $scope.title = "Add new contest"
       else
+        $scope.action = "edit"
         $scope.title = "Edit"
       $scope.fieldInfo = []
 
@@ -18,7 +19,8 @@ cdoj
         {id: 2, description: "Problem"}
       ]
 
-      $scope.new = ->
+      $scope.edit = ->
+        console.log $scope.action, $scope.trainingContestDto, $scope.rankList
         $http.post("/training/editTrainingContest",
           action: $scope.action
           trainingContestEditDto: $scope.trainingContestDto

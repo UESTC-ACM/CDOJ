@@ -160,7 +160,7 @@
                     </th>
                   </tr>
                   <tr>
-                    <th bindonce ng-repeat="type in rankList.fieldType track by $index">
+                    <th ng-repeat="type in rankList.fieldType track by $index">
                       <select ng-model="type"
                               ng-options="fieldType.trainingResultFieldTypeId as fieldType.description for fieldType in $root.trainingResultFieldTypeList"
                               ng-required="true"
@@ -191,7 +191,7 @@
       <button type="button"
               class="btn btn-primary"
               ng-if="action == 'new'"
-              ng-click="new()">Add
+              ng-click="edit()">Add
       </button>
     </div>
   </div>

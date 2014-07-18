@@ -69,6 +69,8 @@ public class TrainingContestServiceImpl extends AbstractService implements Train
     if (trainingContestDto.getPlatformType() != null) {
       trainingContest.setPlatformType(trainingContestDto.getPlatformType());
     }
+
+    trainingContestDao.update(trainingContest);
   }
 
   @Override
