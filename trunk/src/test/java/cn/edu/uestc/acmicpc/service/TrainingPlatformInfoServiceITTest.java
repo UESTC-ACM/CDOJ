@@ -53,14 +53,18 @@ public class TrainingPlatformInfoServiceITTest extends AbstractTestNGSpringConte
         result.getType(),
         Integer.valueOf(TrainingPlatformType.TC.ordinal())
     );
+    Assert.assertEquals(
+        result.getTrainingUserName(),
+        "userA"
+    );
   }
 
   @Test
   public void testGetTrainingPlatformInfoList() throws AppException {
     TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(TrainingPlatformInfoFields.ALL_FIELDS);
     List<TrainingPlatformInfoDto> result = trainingPlatformInfoService.getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
-    Assert.assertEquals(result.size(), 7);
-    for (int i = 0; i < 7; i++) {
+    Assert.assertEquals(result.size(), 8);
+    for (int i = 0; i < 8; i++) {
       Assert.assertEquals(result.get(i).getTrainingPlatformInfoId(), Integer.valueOf(i + 1));
     }
   }
@@ -115,8 +119,8 @@ public class TrainingPlatformInfoServiceITTest extends AbstractTestNGSpringConte
     TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(TrainingPlatformInfoFields.ALL_FIELDS);
     trainingPlatformInfoCriteria.type = TrainingPlatformType.TC;
     List<TrainingPlatformInfoDto> result = trainingPlatformInfoService.getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
-    Assert.assertEquals(result.size(), 3);
-    for (int i = 0; i < 3; i++) {
+    Assert.assertEquals(result.size(), 4);
+    for (int i = 0; i < 4; i++) {
       Assert.assertEquals(result.get(i).getType(), Integer.valueOf(TrainingPlatformType.TC.ordinal()));
     }
   }
@@ -167,7 +171,7 @@ public class TrainingPlatformInfoServiceITTest extends AbstractTestNGSpringConte
 
   @Test
   public void testCreateTrainingPlatformInfo() throws AppException {
-    Integer exceptedId = 8;
+    Integer exceptedId = 9;
     Integer newId = trainingPlatformInfoService.createNewTrainingPlatformInfo(1);
     Assert.assertEquals(exceptedId, newId);
 

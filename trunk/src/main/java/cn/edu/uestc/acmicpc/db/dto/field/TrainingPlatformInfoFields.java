@@ -8,6 +8,7 @@ public enum TrainingPlatformInfoFields implements Fields {
       FieldProjection.Alias("trainingUserByTrainingUserId", "trainingUser"),
       FieldProjection.Property("trainingPlatformInfoId"),
       FieldProjection.Property("trainingUserId"),
+      FieldProjection.Property("trainingUser.trainingUserName", "trainingUserName"),
       FieldProjection.Property("userName"),
       FieldProjection.Property("userId"),
       FieldProjection.Property("type")

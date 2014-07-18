@@ -11,7 +11,7 @@ import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
-import cn.edu.uestc.acmicpc.util.enums.AuthorStatusType;
+import cn.edu.uestc.acmicpc.util.enums.ProblemSolveStatusType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
@@ -117,10 +117,10 @@ public class ProblemController extends BaseController {
               problemCondition, pageInfo);
 
       UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
-      Map<Integer, AuthorStatusType> problemStatus = getProblemStatus(currentUser, session);
+      Map<Integer, ProblemSolveStatusType> problemStatus = getProblemStatus(currentUser, session);
 
       for (ProblemListDTO problemListDTO : problemListDTOList) {
-        if (problemStatus.get(problemListDTO.getProblemId()) == AuthorStatusType.PASS) {
+        if (problemStatus.get(problemListDTO.getProblemId()) == ProblemSolveStatusType.PASS) {
           problemListDTO.setStatus(1);
         } else if (problemStatus.containsKey(problemListDTO.getProblemId())) {
           problemListDTO.setStatus(2);
@@ -314,20 +314,20 @@ public class ProblemController extends BaseController {
     return json;
   }
 
-  private Map<Integer, AuthorStatusType> getProblemStatus(UserDTO currentUser,
+  private Map<Integer, ProblemSolveStatusType> getProblemStatus(UserDTO currentUser,
                                                                  HttpSession session) {
-    Map<Integer, AuthorStatusType> problemStatus = new HashMap<>();
+    Map<Integer, ProblemSolveStatusType> problemStatus = new HashMap<>();
     try {
       if (currentUser != null) {
         List<Integer> triedProblems = statusService.
             findAllUserTriedProblemIds(currentUser.getUserId(), isAdmin(session));
         for (Integer result : triedProblems) {
-          problemStatus.put(result, AuthorStatusType.FAIL);
+          problemStatus.put(result, ProblemSolveStatusType.FAIL);
         }
         List<Integer> acceptedProblems = statusService.
             findAllUserAcceptedProblemIds(currentUser.getUserId(), isAdmin(session));
         for (Integer result : acceptedProblems) {
-          problemStatus.put(result, AuthorStatusType.PASS);
+          problemStatus.put(result, ProblemSolveStatusType.PASS);
         }
       }
     } catch (AppException ignored) {
