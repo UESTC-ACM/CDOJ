@@ -73,7 +73,7 @@ public class TrainingContest implements Serializable {
 
   private String rankList;
 
-  @Column(name = "rankList", nullable = false, length = 65535)
+  @Column(name = "rankList", nullable = false, length = 16777215)
   @Basic
   public String getRankList() {
     return rankList;

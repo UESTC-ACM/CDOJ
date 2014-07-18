@@ -112,6 +112,20 @@
                     </td>
                     <td ng-if="$root.isAdmin"></td>
                   </tr>
+                  <tr ng-repeat="trainingContest in list">
+                    <td><a href="/#/training/contest/{{trainingDto.trainingId}}/show/{{trainingContest.trainingContestId}}">{{trainingContest.title}}</a></td>
+                    <td ng-if="$root.isAdmin">
+                      <div class="btn-toolbar" role="toolbar">
+                        <div class="btn-group">
+                          <a href="/#/training/contest/{{trainingDto.trainingId}}/edit/{{trainingContest.trainingContestId}}"
+                             class="btn btn-default btn-sm"
+                             style="padding: 1px 5px;">
+                            <i class="fa fa-pencil"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
                   </tbody>
                 </table>
               </div>

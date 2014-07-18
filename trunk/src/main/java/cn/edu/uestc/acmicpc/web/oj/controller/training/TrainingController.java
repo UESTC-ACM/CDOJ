@@ -392,6 +392,9 @@ public class TrainingController extends BaseController {
 
       TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(TrainingPlatformInfoFields.ALL_FIELDS);
       trainingPlatformInfoCriteria.trainingId = trainingId;
+      if (type != TrainingContestType.ADJUST.ordinal()) {
+        trainingPlatformInfoCriteria.type = TrainingPlatformType.values()[platformType];
+      }
       List<TrainingPlatformInfoDto> platformList = trainingPlatformInfoService.getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
       TrainingContestResultParser parser = new TrainingContestResultParser(platformList);
       parser.parse(trainingRankList, TrainingContestType.values()[type], TrainingPlatformType.values()[platformType]);
@@ -414,6 +417,11 @@ public class TrainingController extends BaseController {
       @JsonMap("trainingContestEditDto") TrainingContestDto trainingContestEditDto,
       @JsonMap("trainingRankList") TrainingRankList trainingRankList) throws AppException {
     Map<String, Object> json = new HashMap<>();
+
+    if (trainingContestEditDto.getTitle().length() > 255 ||
+        trainingContestEditDto.getTitle().length() < 2) {
+      throw new FieldException("title", "Please enter 2-255 characters.");
+    }
 
     TrainingContestDto trainingContestDto;
     if (action.equals("new")) {
@@ -438,6 +446,31 @@ public class TrainingController extends BaseController {
     trainingContestService.updateTrainingContest(trainingContestDto);
 
     json.put("trainingContestId", trainingContestDto.getTrainingContestId());
+    json.put("result", "success");
+    return json;
+  }
+
+  @RequestMapping("trainingContestData/{trainingContestId}")
+  @LoginPermit(NeedLogin = false)
+  public
+  @ResponseBody
+  Map<String, Object> trainingContestData(@PathVariable("trainingContestId") Integer trainingContestId) throws AppException {
+    Map<String, Object> json = new HashMap<>();
+
+    TrainingContestDto trainingContestDto = trainingContestService.getTrainingContestDto(trainingContestId, TrainingContestFields.ALL_FIELDS);
+    if (trainingContestDto == null) {
+      throw new AppException("Training contest not found!");
+    }
+
+    json.put("trainingContestDto", trainingContestDto);
+    TrainingRankList trainingRankList;
+    if (trainingContestDto.getRankList().equals("")) {
+      trainingRankList = new TrainingRankList();
+    } else {
+      trainingRankList = JSON.parseObject(trainingContestDto.getRankList(), TrainingRankList.class);
+      trainingContestDto.setRankList(null);
+    }
+    json.put("rankList", trainingRankList);
     json.put("result", "success");
     return json;
   }

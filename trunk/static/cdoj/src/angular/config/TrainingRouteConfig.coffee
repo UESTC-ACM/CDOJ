@@ -60,7 +60,20 @@ cdoj
               action = $route.current.params.action
               trainingId = $route.current.params.trainingId
               if action != "new"
-                # TODO
+                $http.post(
+                  "/training/trainingContestData/#{action}"
+                ).success((data) ->
+                  if data.result == "success"
+                    deferred.resolve(
+                      action: action
+                      trainingContestDto: data.trainingContestDto
+                      rankList: data.rankList
+                    )
+                  else
+                    $Error.error(data.error_msg)
+                ).error(->
+                  $Error.error("Network error!")
+                )
               else
                 deferred.resolve(
                   action: action
