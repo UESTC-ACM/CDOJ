@@ -390,14 +390,7 @@ public class TrainingController extends BaseController {
       trainingRankList.fieldType = fieldType;
       trainingRankList.users = users;
 
-      TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(TrainingPlatformInfoFields.ALL_FIELDS);
-      trainingPlatformInfoCriteria.trainingId = trainingId;
-      if (type != TrainingContestType.ADJUST.ordinal()) {
-        trainingPlatformInfoCriteria.type = TrainingPlatformType.values()[platformType];
-      }
-      List<TrainingPlatformInfoDto> platformList = trainingPlatformInfoService.getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
-      TrainingContestResultParser parser = new TrainingContestResultParser(platformList);
-      parser.parse(trainingRankList, TrainingContestType.values()[type], TrainingPlatformType.values()[platformType]);
+      parseRankList(trainingRankList, trainingId, TrainingContestType.values()[type], TrainingPlatformType.values()[platformType]);
 
       json.put("trainingRankList", trainingRankList);
       json.put("success", "true");
@@ -407,6 +400,17 @@ public class TrainingController extends BaseController {
       json.put("error", "Error while parse rank list.");
     }
     return json;
+  }
+
+  private void parseRankList(TrainingRankList trainingRankList, Integer trainingId, TrainingContestType trainingContestType, TrainingPlatformType platformType) throws AppException {
+    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(TrainingPlatformInfoFields.ALL_FIELDS);
+    trainingPlatformInfoCriteria.trainingId = trainingId;
+    if (trainingContestType != TrainingContestType.ADJUST) {
+      trainingPlatformInfoCriteria.type = platformType;
+    }
+    List<TrainingPlatformInfoDto> platformList = trainingPlatformInfoService.getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
+    TrainingContestResultParser parser = new TrainingContestResultParser(platformList);
+    parser.parse(trainingRankList, trainingContestType, platformType);
   }
 
   @RequestMapping(value = "editTrainingContest")
@@ -472,6 +476,37 @@ public class TrainingController extends BaseController {
     }
     json.put("rankList", trainingRankList);
     json.put("result", "success");
+    return json;
+  }
+
+  @RequestMapping("calculateRating/{trainingId}")
+  public
+  @ResponseBody
+  Map<String, Object> calculateRating(@PathVariable("trainingId") Integer trainingId) throws AppException {
+    Map<String, Object> json = new HashMap<>();
+
+    TrainingDto trainingDto = trainingService.getTrainingDto(trainingId, TrainingFields.ALL_FIELDS);
+    if (trainingDto == null) {
+      throw new AppException("Training not found!");
+    }
+
+    TrainingContestCriteria trainingContestCriteria = new TrainingContestCriteria(TrainingContestFields.ALL_FIELDS);
+    trainingContestCriteria.trainingId = trainingId;
+    List<TrainingContestDto> contestList = trainingContestService.getTrainingContestList(trainingContestCriteria);
+
+    TrainingUserCriteria trainingUserCriteria = new TrainingUserCriteria(TrainingUserFields.ALL_FIELDS);
+    trainingUserCriteria.trainingId = trainingId;
+    List<TrainingUserDto> userList = trainingUserService.getTrainingUserList(trainingUserCriteria);
+
+    for (TrainingContestDto contest : contestList) {
+      // Parse rank list
+      TrainingRankList trainingRankList = JSON.parseObject(contest.getRankList(), TrainingRankList.class);
+      parseRankList(trainingRankList, trainingId, TrainingContestType.values()[contest.getType()], TrainingPlatformType.values()[contest.getPlatformType()]);
+      contest.setRankList(JSON.toJSONString(trainingRankList));
+
+
+    }
+
     return json;
   }
 }
