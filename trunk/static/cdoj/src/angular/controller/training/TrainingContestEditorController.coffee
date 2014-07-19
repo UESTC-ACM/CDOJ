@@ -27,9 +27,8 @@ cdoj
           trainingRankList: $scope.rankList
         ).success((data) ->
           if data.result == "success"
-            $window.location.href = "/#/training/contest/" +
-              $scope.trainingContestDto.trainingId +
-              "/show/" + data.trainingContestId
+            $window.location.href = "/#/training/contest/show/" +
+              data.trainingContestId
           else if data.result == "field_error"
             $scope.fieldInfo = data.field
           else
