@@ -67,7 +67,8 @@ public class TrainingContestResultParser {
       TrainingContestType contestType,
       TrainingPlatformType platformType) throws AppException {
     if (contestType == TrainingContestType.CONTEST) {
-      if (platformType == TrainingPlatformType.VJ) {
+      if (platformType == TrainingPlatformType.VJ ||
+          platformType == TrainingPlatformType.HDOJ) {
         VirtualJudgeRankListParser.parse(rankList, platformList);
       } else {
         // TODO
