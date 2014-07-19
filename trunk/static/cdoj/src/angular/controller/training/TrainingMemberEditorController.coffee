@@ -64,9 +64,10 @@ cdoj
                 _.reject(
                   $scope.trainingPlatformList,
                   (value) ->
-                    return value.trainingPlatformInfoId ==
-                      platform.trainingPlatformInfoId
-              )
+                    a = value.trainingPlatformInfoId
+                    b = platform.trainingPlatformInfoId
+                    return a == b
+                )
           )
 
       editTrainingUser = (postData) ->
