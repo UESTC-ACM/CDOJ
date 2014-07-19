@@ -10,18 +10,24 @@
             <div class="col-md-12 text-center"
                  style="margin-top: 16px;"
                  ng-if="$root.isAdmin">
-              <a class="btn btn-danger btn-xs"
+              <a class="btn btn-primary btn-xs"
                  href="/#/training/editor/{{trainingDto.trainingId}}">
                 Edit
               </a>
-              <a class="btn btn-danger btn-xs"
+              <a class="btn btn-warning btn-xs"
                  href="javascript: void(0);"
                  ng-click="addNewMember()">
                 Add new member
               </a>
               <a class="btn btn-danger btn-xs"
-                 href="/#/training/contest/{{trainingDto.trainingId}}/edit/new">
+                 href="/#/training/contest/edit/new/{{trainingDto.trainingId}}">
                 Add new contest
+              </a>
+              <a class="btn btn-success btn-xs"
+                 href="javascript: void(0);"
+                 ng-click="calculateRating()"
+                 ng-disabled="calculatingRating">
+                Calculate rating
               </a>
             </div>
             <div class="col-md-12" style="margin-top: 16px;">
@@ -61,9 +67,9 @@
                       <td class="text-right">{{trainingUser.rank}}</td>
                       <td class="text-center">{{trainingUser.trainingUserName}}</td>
                       <td class="text-center">{{trainingUser.competitions}}</td>
-                      <td class="text-center">{{trainingUser.currentRating}}</td>
-                      <td class="text-center">{{trainingUser.currentVolatility}}</td>
-                      <td class="text-center">{{trainingUser.recentEventName}}</td>
+                      <td class="text-center {{ratingColor(trainingUser.currentRating)}}">{{formatDouble(trainingUser.currentRating)}}</td>
+                      <td class="text-center">{{formatDouble(trainingUser.currentVolatility)}}</td>
+                      <td class="text-center"><a href="/#/training/contest/show/{{trainingUser.mostRecentEventId}}">{{trainingUser.mostRecentEventName}}</a></td>
 
                       <td ng-if="$root.isAdmin">
                         <div class="btn-toolbar" role="toolbar">
@@ -113,11 +119,11 @@
                     <td ng-if="$root.isAdmin"></td>
                   </tr>
                   <tr ng-repeat="trainingContest in list">
-                    <td><a href="/#/training/contest/{{trainingDto.trainingId}}/show/{{trainingContest.trainingContestId}}">{{trainingContest.title}}</a></td>
+                    <td><a href="/#/training/contest/show/{{trainingContest.trainingContestId}}">{{trainingContest.title}}</a></td>
                     <td ng-if="$root.isAdmin">
                       <div class="btn-toolbar" role="toolbar">
                         <div class="btn-group">
-                          <a href="/#/training/contest/{{trainingDto.trainingId}}/edit/{{trainingContest.trainingContestId}}"
+                          <a href="/#/training/contest/edit/{{trainingContest.trainingContestId}}"
                              class="btn btn-default btn-sm"
                              style="padding: 1px 5px;">
                             <i class="fa fa-pencil"></i>
