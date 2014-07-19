@@ -73,6 +73,7 @@ module.exports = (grunt) ->
           "bower_components/underscore.string/lib/underscore.string.js"
           "bower_components/google-code-prettify/src/prettify.js"
           "bower_components/marked/lib/marked.js"
+          "bower_components/d3/d3.js"
           "temp/angular/cdoj.angular.js"
         ]
         dest: "dist/js/cdoj.js"
@@ -93,6 +94,7 @@ module.exports = (grunt) ->
           "bower_components/sugar/release/sugar-full.min.js"
           "temp/js/underscore.min.js"
           "bower_components/underscore.string/dist/underscore.string.min.js"
+          "bower_components/d3/d3.min.js"
           "temp/js/not-minimized.min.js"
         ]
         dest: "dist/js/cdoj.min.js"

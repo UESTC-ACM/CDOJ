@@ -67,9 +67,9 @@
                       <td class="text-right">{{trainingUser.rank}}</td>
                       <td class="text-center">{{trainingUser.trainingUserName}}</td>
                       <td class="text-center">{{trainingUser.competitions}}</td>
-                      <td class="text-center">{{trainingUser.currentRating}}</td>
-                      <td class="text-center">{{trainingUser.currentVolatility}}</td>
-                      <td class="text-center">{{trainingUser.recentEventName}}</td>
+                      <td class="text-center {{ratingColor(trainingUser.currentRating)}}">{{formatDouble(trainingUser.currentRating)}}</td>
+                      <td class="text-center">{{formatDouble(trainingUser.currentVolatility)}}</td>
+                      <td class="text-center"><a href="/#/training/contest/show/{{trainingUser.mostRecentEventId}}">{{trainingUser.mostRecentEventName}}</a></td>
 
                       <td ng-if="$root.isAdmin">
                         <div class="btn-toolbar" role="toolbar">

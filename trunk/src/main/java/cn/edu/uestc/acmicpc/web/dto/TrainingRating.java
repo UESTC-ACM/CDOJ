@@ -4,22 +4,17 @@ package cn.edu.uestc.acmicpc.web.dto;
  * Training rating record
  */
 public class TrainingRating {
-  private Double rating;
-  private Double volatility;
+  public Double rating;
+  public Double volatility;
+  public Integer rank;
+  public Double ratingVary;
+  public Double volatilityVary;
 
-  public Double getRating() {
-    return rating;
-  }
-
-  public void setRating(Double rating) {
+  public TrainingRating(Double rating, Double volatility, Integer rank, Double ratingVary, Double volatilityVary) {
     this.rating = rating;
-  }
-
-  public Double getVolatility() {
-    return volatility;
-  }
-
-  public void setVolatility(Double volatility) {
     this.volatility = volatility;
+    this.rank = rank;
+    this.ratingVary = ratingVary;
+    this.volatilityVary = volatilityVary;
   }
 }

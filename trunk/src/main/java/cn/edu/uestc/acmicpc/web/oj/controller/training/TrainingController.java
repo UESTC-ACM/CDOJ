@@ -30,8 +30,10 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.parser.TrainingContestResultParser;
+import cn.edu.uestc.acmicpc.util.rating.RatingCalculator;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
+import cn.edu.uestc.acmicpc.web.dto.TrainingRating;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 import cn.edu.uestc.acmicpc.web.rank.TrainingRankList;
 import cn.edu.uestc.acmicpc.web.rank.TrainingRankListUser;
@@ -50,7 +52,10 @@ import com.alibaba.fastjson.JSON;
 import jxl.Sheet;
 import jxl.Workbook;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -498,15 +503,45 @@ public class TrainingController extends BaseController {
     trainingUserCriteria.trainingId = trainingId;
     List<TrainingUserDto> userList = trainingUserService.getTrainingUserList(trainingUserCriteria);
 
+    for (TrainingUserDto user : userList) {
+      user.setCurrentRating(1200.0);
+      user.setCurrentVolatility(550.0);
+      user.setRank(1);
+      user.setCompetitions(0);
+      user.setMaximumRating(1200.0);
+      user.setMinimumRating(1200.0);
+      user.setMostRecentEventId(null);
+      user.setMostRecentEventName("");
+      user.setRatingHistoryList(new LinkedList<TrainingRating>());
+    }
+
+    RatingCalculator ratingCalculator = new RatingCalculator(userList);
     for (TrainingContestDto contest : contestList) {
       // Parse rank list
       TrainingRankList trainingRankList = JSON.parseObject(contest.getRankList(), TrainingRankList.class);
       parseRankList(trainingRankList, trainingId, TrainingContestType.values()[contest.getType()], TrainingPlatformType.values()[contest.getPlatformType()]);
       contest.setRankList(JSON.toJSONString(trainingRankList));
+      trainingContestService.updateTrainingContest(contest);
 
-
+      ratingCalculator.calculate(contest, trainingRankList);
     }
 
+    // Sort by rating
+    Collections.sort(userList, new Comparator<TrainingUserDto>() {
+      @Override
+      public int compare(TrainingUserDto o1, TrainingUserDto o2) {
+        return o2.getCurrentRating().compareTo(o1.getCurrentRating());
+      }
+    });
+
+    int rank = 1;
+    for (TrainingUserDto userDto : userList) {
+      userDto.setRank(rank++);
+      userDto.setRatingHistory(JSON.toJSONString(userDto.getRatingHistoryList()));
+      trainingUserService.updateTrainingUser(userDto);
+    }
+
+    json.put("result", "success");
     return json;
   }
 }
