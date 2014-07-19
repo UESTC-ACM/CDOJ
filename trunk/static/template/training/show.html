@@ -10,11 +10,11 @@
             <div class="col-md-12 text-center"
                  style="margin-top: 16px;"
                  ng-if="$root.isAdmin">
-              <a class="btn btn-danger btn-xs"
+              <a class="btn btn-primary btn-xs"
                  href="/#/training/editor/{{trainingDto.trainingId}}">
                 Edit
               </a>
-              <a class="btn btn-danger btn-xs"
+              <a class="btn btn-warning btn-xs"
                  href="javascript: void(0);"
                  ng-click="addNewMember()">
                 Add new member
@@ -22,6 +22,12 @@
               <a class="btn btn-danger btn-xs"
                  href="/#/training/contest/edit/new/{{trainingDto.trainingId}}">
                 Add new contest
+              </a>
+              <a class="btn btn-success btn-xs"
+                 href="javascript: void(0);"
+                 ng-click="calculateRating()"
+                 ng-disabled="calculatingRating">
+                Calculate rating
               </a>
             </div>
             <div class="col-md-12" style="margin-top: 16px;">

@@ -59,4 +59,10 @@ cdoj
         modalInstance.result.then( ->
           $scope.$broadcast("list:refresh:trainingRankList")
         )
+
+      $scope.calculatingRating = false
+      $scope.calculateRating = ->
+        $scope.calculatingRating = true
+        $http.pos("/training/rating/")
+
   ])
