@@ -39,6 +39,7 @@
     "smalot-bootstrap-datetimepicker": "*",
     "sugar": "*",
     "underscore.string": "*",
-    "underscore": "*"
+    "underscore": "*",
+    "d3": "~3.4.11"
   }
 }

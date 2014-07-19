@@ -9,7 +9,6 @@ cdoj
       $window.scrollTo(0, 0)
 
       $scope.trainingDto = trainingDto
-      _trainingUserCriteria =
       $scope.trainingUserCriteria =
         angular.copy($rootScope.trainingUserCriteria)
       $scope.trainingContestCriteria =
@@ -38,7 +37,7 @@ cdoj
                 return deferred.promise
             ]
         )
-        modalInstance.result.then( ->
+        modalInstance.result.then(->
           $scope.$broadcast("list:refresh:trainingRankList")
         )
 
@@ -56,7 +55,39 @@ cdoj
                 type: 0
               trainingPlatformList: []
         )
-        modalInstance.result.then( ->
+        modalInstance.result.then(->
           $scope.$broadcast("list:refresh:trainingRankList")
         )
+
+      $scope.calculatingRating = false
+      $scope.calculateRating = ->
+        $scope.calculatingRating = true
+        $http.get(
+            "/training/calculateRating/" + $scope.trainingDto.trainingId
+        ).success((data) ->
+          $scope.calculatingRating = false
+          if data.result == "success"
+            $window.alert("Success!")
+            $scope.$broadcast("list:refresh:trainingRankList")
+          else
+            $window.alert(data.error_msg)
+        ).error(->
+          $scope.calculatingRating = false
+          $window.alert("Network error!")
+        )
+
+      $scope.ratingColor = (rating) ->
+        if (rating < 900)
+          return "rating-gray"
+        else if (rating < 1200)
+          return "rating-green"
+        else if (rating < 1500)
+          return "rating-blue"
+        else if (rating < 2200)
+          return "rating-yellow"
+        else
+          return "rating-red"
+
+      $scope.formatDouble = (rating) ->
+        return _.sprintf("%.0f", rating)
   ])

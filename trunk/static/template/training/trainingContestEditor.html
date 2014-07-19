@@ -70,6 +70,16 @@
         <fieldset>
           <legend>Result</legend>
 
+          <div class="col-md-12">
+            <div class="alert alert-danger" role="alert">
+              <strong>Attention!</strong>
+              <ul>
+                <li>For Virtual Judge rank list: Please remove redundant white space, <strong>especially</strong> chinese white space character.</li>
+                <li>For HDU rank list: Please remove first line in the xls file.</li>
+              </ul>
+            </div>
+          </div>
+
           <div class="form-group">
             <label class="control-label col-sm-2">Upload</label>
 
@@ -143,7 +153,7 @@
                                   }">
                       <span ng-if="item.status == 'FB' || item.status == 'PASS'" penalty="item.solvedTime" ui-penalty></span>
                       <br/>
-                      <span ng-if="item.tried > 0">(-{{item.tried}})</span>
+                      <span ng-if="item.tried > 1">(-{{item.tried - 1}})</span>
                     </td>
                   </tr>
                   </tbody>

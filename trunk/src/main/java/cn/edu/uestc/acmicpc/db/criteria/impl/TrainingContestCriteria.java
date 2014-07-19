@@ -54,13 +54,13 @@ public class TrainingContestCriteria extends BaseCriteria<TrainingContest, Train
       ));
     }
     if (trainingId != null) {
-      criteria.add(Restrictions.le("trainingId", trainingId));
+      criteria.add(Restrictions.eq("trainingId", trainingId));
     }
     if (trainingContestType != null) {
-      criteria.add(Restrictions.le("type", trainingContestType.ordinal()));
+      criteria.add(Restrictions.eq("type", trainingContestType.ordinal()));
     }
     if (trainingPlatformType != null) {
-      criteria.add(Restrictions.le("platformType", trainingPlatformType.ordinal()));
+      criteria.add(Restrictions.eq("platformType", trainingPlatformType.ordinal()));
     }
 
     return criteria;

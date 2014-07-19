@@ -149,8 +149,8 @@ GlobalConditions =
     trainingId: null
     keyword: null
     type: null
-    orderFields: "currentRating,trainingUserName"
-    orderAsc: "true,false"
+    orderFields: "rank,trainingUserName"
+    orderAsc: "true,true"
   trainingContestCriteria:
     currentPage: null
     startId: null
