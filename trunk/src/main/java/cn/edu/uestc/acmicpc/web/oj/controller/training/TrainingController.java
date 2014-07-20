@@ -468,17 +468,19 @@ public class TrainingController extends BaseController {
       }
     }
 
-    File targetFile = new File(settings.UPLOAD_FOLDER + "/" + fileName);
-    if (!targetFile.exists()) {
-      throw new AppException("Internal exception: uploaded xls file disappeared.");
-    }
-    TrainingRankList trainingRankList = parseXlsFile(targetFile, trainingContestEditDto.getTrainingId(), trainingContestEditDto.getType(), trainingContestEditDto.getPlatformType());
-
     trainingContestDto.setTitle(trainingContestEditDto.getTitle());
     trainingContestDto.setLink(trainingContestEditDto.getLink());
     trainingContestDto.setType(trainingContestEditDto.getType());
     trainingContestDto.setPlatformType(trainingContestEditDto.getPlatformType());
-    trainingContestDto.setRankList(JSON.toJSONString(trainingRankList));
+
+    if (fileName != null && !fileName.equals("")) {
+      File targetFile = new File(settings.UPLOAD_FOLDER + "/" + fileName);
+      if (!targetFile.exists()) {
+        throw new AppException("Internal exception: uploaded xls file disappeared.");
+      }
+      TrainingRankList trainingRankList = parseXlsFile(targetFile, trainingContestEditDto.getTrainingId(), trainingContestEditDto.getType(), trainingContestEditDto.getPlatformType());
+      trainingContestDto.setRankList(JSON.toJSONString(trainingRankList));
+    }
 
     trainingContestService.updateTrainingContest(trainingContestDto);
 

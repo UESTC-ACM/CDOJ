@@ -156,6 +156,7 @@
                       <span ng-if="item.status == 'FB' || item.status == 'PASS'" penalty="item.solvedTime" ui-penalty></span>
                       <br/>
                       <span ng-if="item.tried > 1">(-{{item.tried - 1}})</span>
+                      <span ng-if="item.tried == 0">&nbsp;</span>
                     </td>
                   </tr>
                   </tbody>
