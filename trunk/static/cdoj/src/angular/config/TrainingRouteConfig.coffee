@@ -66,6 +66,7 @@ cdoj
                     action: "edit"
                     trainingContestDto: data.trainingContestDto
                     rankList: data.rankList
+                    fileName: ""
                   )
                 else
                   $Error.error(data.error_msg)
@@ -95,6 +96,7 @@ cdoj
                   users: []
                   fieldType: []
                   problems: []
+                fileName: ""
               )
               return deferred.promise
           ]

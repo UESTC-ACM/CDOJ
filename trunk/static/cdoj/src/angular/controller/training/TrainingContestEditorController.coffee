@@ -6,6 +6,7 @@ cdoj
       $scope.action = trainingContestData.action
       $scope.trainingContestDto = trainingContestData.trainingContestDto
       $scope.rankList = trainingContestData.rankList
+      $scope.fileName = trainingContestData.fileName
       if $scope.action == "new"
         $scope.title = "Add new contest"
       else
@@ -20,11 +21,10 @@ cdoj
       ]
 
       $scope.edit = ->
-        console.log $scope.action, $scope.trainingContestDto, $scope.rankList
         $http.post("/training/editTrainingContest",
           action: $scope.action
           trainingContestEditDto: $scope.trainingContestDto
-          trainingRankList: $scope.rankList
+          fileName: $scope.fileName
         ).success((data) ->
           if data.result == "success"
             $window.location.href = "/#/training/contest/show/" +

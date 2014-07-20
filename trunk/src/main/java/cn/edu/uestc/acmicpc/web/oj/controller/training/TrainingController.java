@@ -51,7 +51,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.alibaba.fastjson.JSON;
 import jxl.Sheet;
 import jxl.Workbook;
+import jxl.read.biff.BiffException;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -358,45 +361,21 @@ public class TrainingController extends BaseController {
     MultipartFile file = files[0];
 
     try {
-      Workbook workbook = Workbook.getWorkbook(file.getInputStream());
-      Sheet sheet = workbook.getSheet(0);
-      int totalRows = sheet.getRows();
-      int totalColumns = sheet.getColumns();
+      String fileName = "training_" + trainingId + "_" + System.currentTimeMillis() + ".xls";
 
-      String[] fields = new String[totalColumns];
-      Integer[] fieldType = new Integer[totalColumns];
-      for (int column = 0; column < totalColumns; column++) {
-        fields[column] = sheet.getCell(column, 0).getContents();
-        if (TrainingContestResultParser.isUserName(fields[column])) {
-          fieldType[column] = TrainingResultFieldType.USERNAME.ordinal();
-        } else if (TrainingContestResultParser.isPenalty(fields[column])) {
-          fieldType[column] = TrainingResultFieldType.PENALTY.ordinal();
-        } else if (TrainingContestResultParser.isSolved(fields[column])) {
-          fieldType[column] = TrainingResultFieldType.SOLVED.ordinal();
-        } else if (TrainingContestResultParser.isUnused(fields[column])) {
-          fieldType[column] = TrainingResultFieldType.UNUSED.ordinal();
-        } else {
-          fieldType[column] = TrainingResultFieldType.PROBLEM.ordinal();
-        }
+      File targetFile = new File(settings.UPLOAD_FOLDER + "/" + fileName);
+      if (targetFile.exists() && !targetFile.delete()) {
+        throw new AppException("Internal exception: target file exists and can not be deleted.");
+      }
+      try {
+        file.transferTo(targetFile);
+      } catch (IOException e) {
+        throw new AppException("Error while save files");
       }
 
-      TrainingRankListUser[] users = new TrainingRankListUser[totalRows - 1];
-      for (int row = 1; row < totalRows; row++) {
-        TrainingRankListUser trainingRankListUser = new TrainingRankListUser();
-        trainingRankListUser.rawData = new String[totalColumns];
-        for (int column = 0; column < totalColumns; column++) {
-          trainingRankListUser.rawData[column] = sheet.getCell(column, row).getContents();
-        }
-        users[row - 1] = trainingRankListUser;
-      }
+      TrainingRankList trainingRankList = parseXlsFile(targetFile, trainingId, type, platformType);
 
-      TrainingRankList trainingRankList = new TrainingRankList();
-      trainingRankList.fields = fields;
-      trainingRankList.fieldType = fieldType;
-      trainingRankList.users = users;
-
-      parseRankList(trainingRankList, trainingId, TrainingContestType.values()[type], TrainingPlatformType.values()[platformType]);
-
+      json.put("fileName", fileName);
       json.put("trainingRankList", trainingRankList);
       json.put("success", "true");
     } catch (Exception e) {
@@ -405,6 +384,49 @@ public class TrainingController extends BaseController {
       json.put("error", "Error while parse rank list.");
     }
     return json;
+  }
+
+  private TrainingRankList parseXlsFile(File targetFile, Integer trainingId, Integer type, Integer platformType) throws AppException, IOException, BiffException {
+    Workbook workbook = Workbook.getWorkbook(targetFile);
+    Sheet sheet = workbook.getSheet(0);
+    int totalRows = sheet.getRows();
+    int totalColumns = sheet.getColumns();
+
+    String[] fields = new String[totalColumns];
+    Integer[] fieldType = new Integer[totalColumns];
+    for (int column = 0; column < totalColumns; column++) {
+      fields[column] = sheet.getCell(column, 0).getContents();
+      if (TrainingContestResultParser.isUserName(fields[column])) {
+        fieldType[column] = TrainingResultFieldType.USERNAME.ordinal();
+      } else if (TrainingContestResultParser.isPenalty(fields[column])) {
+        fieldType[column] = TrainingResultFieldType.PENALTY.ordinal();
+      } else if (TrainingContestResultParser.isSolved(fields[column])) {
+        fieldType[column] = TrainingResultFieldType.SOLVED.ordinal();
+      } else if (TrainingContestResultParser.isUnused(fields[column])) {
+        fieldType[column] = TrainingResultFieldType.UNUSED.ordinal();
+      } else {
+        fieldType[column] = TrainingResultFieldType.PROBLEM.ordinal();
+      }
+    }
+
+    TrainingRankListUser[] users = new TrainingRankListUser[totalRows - 1];
+    for (int row = 1; row < totalRows; row++) {
+      TrainingRankListUser trainingRankListUser = new TrainingRankListUser();
+      trainingRankListUser.rawData = new String[totalColumns];
+      for (int column = 0; column < totalColumns; column++) {
+        trainingRankListUser.rawData[column] = sheet.getCell(column, row).getContents();
+      }
+      users[row - 1] = trainingRankListUser;
+    }
+
+    TrainingRankList trainingRankList = new TrainingRankList();
+    trainingRankList.fields = fields;
+    trainingRankList.fieldType = fieldType;
+    trainingRankList.users = users;
+
+    parseRankList(trainingRankList, trainingId, TrainingContestType.values()[type], TrainingPlatformType.values()[platformType]);
+
+    return trainingRankList;
   }
 
   private void parseRankList(TrainingRankList trainingRankList, Integer trainingId, TrainingContestType trainingContestType, TrainingPlatformType platformType) throws AppException {
@@ -424,7 +446,7 @@ public class TrainingController extends BaseController {
   @ResponseBody
   Map<String, Object> editTrainingContest(@JsonMap("action") String action,
       @JsonMap("trainingContestEditDto") TrainingContestDto trainingContestEditDto,
-      @JsonMap("trainingRankList") TrainingRankList trainingRankList) throws AppException {
+      @JsonMap("fileName") String fileName) throws AppException, IOException, BiffException {
     Map<String, Object> json = new HashMap<>();
 
     if (trainingContestEditDto.getTitle().length() > 255 ||
@@ -445,6 +467,12 @@ public class TrainingController extends BaseController {
         throw new AppException("Training contest not found.");
       }
     }
+
+    File targetFile = new File(settings.UPLOAD_FOLDER + "/" + fileName);
+    if (!targetFile.exists()) {
+      throw new AppException("Internal exception: uploaded xls file disappeared.");
+    }
+    TrainingRankList trainingRankList = parseXlsFile(targetFile, trainingContestEditDto.getTrainingId(), trainingContestEditDto.getType(), trainingContestEditDto.getPlatformType());
 
     trainingContestDto.setTitle(trainingContestEditDto.getTitle());
     trainingContestDto.setLink(trainingContestEditDto.getLink());
