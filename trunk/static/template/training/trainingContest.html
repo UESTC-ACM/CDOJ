@@ -49,8 +49,7 @@
             {{user.solved}}
           </td>
           <td class="penalty" penalty="user.penalty" ui-penalty
-              style="vertical-align:middle;"
-              ng-class="{my: user.name == $root.currentUser.userName}"></td>
+              style="vertical-align:middle;"></td>
           <td class="item"
               bindonce ng-repeat="item in user.itemList"
               ng-class="{
@@ -60,7 +59,8 @@
                                   }">
             <span ng-if="item.status == 'FB' || item.status == 'PASS'" penalty="item.solvedTime" ui-penalty></span>
             <br/>
-            <span ng-if="item.tried > 1">(-{{item.tried - 1}})</span>
+            <span ng-if="item.tried > 0">(-{{item.tried}})</span>
+            <span ng-if="item.tried == 0">&nbsp;</span>
           </td>
         </tr>
         </tbody>
