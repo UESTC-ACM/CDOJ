@@ -4,6 +4,7 @@ cdoj
   restrict: "E"
   scope:
     result: "="
+    fileName: "="
     type: "="
     platformType: "="
     trainingId: "="
@@ -29,6 +30,7 @@ cdoj
                 $scope.$apply(->
                   $scope.hint = "Successful!"
                   $scope.result = data.trainingRankList
+                  $scope.fileName = data.fileName
                   $scope.hasError = false
                 )
               else

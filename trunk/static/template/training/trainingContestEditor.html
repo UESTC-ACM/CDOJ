@@ -74,8 +74,9 @@
             <div class="alert alert-danger" role="alert">
               <strong>Attention!</strong>
               <ul>
-                <li>For Virtual Judge rank list: Please remove redundant white space, <strong>especially</strong> chinese white space character.</li>
-                <li>For HDU rank list: Please remove first line in the xls file.</li>
+                <li>Please remove redundant white space, <strong>especially</strong> chinese white space character.</li>
+                <li>It needs one column to represent user name, one column to represent solved problems and one column to represent penalty time.</li>
+                <li>User name should be the same as the user name field in user's platform settings.</li>
               </ul>
             </div>
           </div>
@@ -88,6 +89,7 @@
                   result="rankList"
                   training-id="trainingContestDto.trainingId"
                   type="trainingContestDto.type"
+                  file-name="fileName"
                   platform-type="trainingContestDto.platformType"></ui-training-contest-result-uploader>
               <ui-validate-info value="fieldInfo"
                                 for="rankList"></ui-validate-info>

@@ -53,7 +53,12 @@ public class VirtualJudgeRankListParser {
         }
       }
       for (int id = 0; id < totalProblems; id++) {
-        rankList.problems[id].tried += itemList.get(id).tried;
+        if (itemList.get(id).status == ProblemSolveStatusType.PASS) {
+          rankList.problems[id].tried += itemList.get(id).tried + 1;
+        } else {
+          rankList.problems[id].tried += itemList.get(id).tried + 1;
+        }
+
         if (itemList.get(id).status == ProblemSolveStatusType.PASS) {
           rankList.problems[id].solved++;
           rankList.problems[id].firstSolvedTime = Math.min(rankList.problems[id].firstSolvedTime, itemList.get(id).solvedTime);
@@ -129,7 +134,7 @@ public class VirtualJudgeRankListParser {
       Integer ss = Integer.parseInt(matcher.group(3));
       return new TrainingRankListItem(ProblemSolveStatusType.PASS,
           hh * 60 * 60 + mm * 60 + ss,
-          1,
+          0,
           hh * 60 * 60 + mm * 60 + ss);
     }
     // hh:mm:ss(-tried)
@@ -142,7 +147,7 @@ public class VirtualJudgeRankListParser {
       Integer tried = Integer.parseInt(matcher.group(4));
       return new TrainingRankListItem(ProblemSolveStatusType.PASS,
           hh * 60 * 60 + mm * 60 + ss,
-          tried + 1,
+          tried,
           hh * 60 * 60 + mm * 60 + ss + tried * 20);
     }
     // (-tried)
