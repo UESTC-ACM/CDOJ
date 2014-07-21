@@ -236,12 +236,16 @@ public class TrainingController extends BaseController {
     if (trainingUserCriteria == null) {
       trainingUserCriteria = new TrainingUserCriteria();
     }
-    trainingUserCriteria.setResultFields(TrainingUserFields.FIELDS_FOR_LIST_PAGE);
+    trainingUserCriteria.setResultFields(TrainingUserFields.ALL_FIELDS);
     trainingUserCriteria.trainingId = trainingId;
 
     List<TrainingUserDto> trainingUserDtoList = trainingUserService.getTrainingUserList(trainingUserCriteria);
     for (int id = 0; id < trainingUserDtoList.size(); ++id) {
       trainingUserDtoList.get(id).setRank(id + 1);
+      String ratingHistory = trainingUserDtoList.get(id).getRatingHistory();
+      List<TrainingRating> ratingHistoryList = JSON.parseArray(ratingHistory, TrainingRating.class);
+      trainingUserDtoList.get(id).setRatingHistoryList(ratingHistoryList);
+      trainingUserDtoList.get(id).setRatingHistory(null);
     }
 
     PageInfo pageInfo = buildPageInfo((long) trainingUserDtoList.size(),

@@ -63,7 +63,7 @@ public class RatingCalculator {
       for (int i = 0; i < activeUsers.size(); i++) {
         TrainingUserDto user = activeUsers.get(i);
         List<TrainingRating> ratingHistory = user.getRatingHistoryList();
-        ratingHistory.add(new TrainingRating(user.getCurrentRating(), user.getCurrentVolatility(), rank.get(i), 0.0, 0.0));
+        ratingHistory.add(new TrainingRating(user.getCurrentRating(), user.getCurrentVolatility(), rank.get(i), 0.0, 0.0, contest.getTrainingContestId()));
         user.setCompetitions(ratingHistory.size());
       }
     } else {
@@ -135,7 +135,7 @@ public class RatingCalculator {
         newRating = Math.max(newRating, 1.0);
         newVolatility = Math.max(newVolatility, 101.0);
 
-        ratingList.add(new TrainingRating(newRating, newVolatility, rank.get(i), newRating - user.getCurrentRating(), newVolatility - user.getCurrentVolatility()));
+        ratingList.add(new TrainingRating(newRating, newVolatility, rank.get(i), newRating - user.getCurrentRating(), newVolatility - user.getCurrentVolatility(), contest.getTrainingContestId()));
         user.setCurrentRating(newRating);
         user.setCurrentVolatility(newVolatility);
         user.setCompetitions(ratingList.size());
