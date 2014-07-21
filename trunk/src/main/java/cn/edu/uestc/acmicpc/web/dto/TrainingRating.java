@@ -9,12 +9,17 @@ public class TrainingRating {
   public Integer rank;
   public Double ratingVary;
   public Double volatilityVary;
+  public Integer trainingContestId;
 
-  public TrainingRating(Double rating, Double volatility, Integer rank, Double ratingVary, Double volatilityVary) {
+  public TrainingRating() {
+  }
+
+  public TrainingRating(Double rating, Double volatility, Integer rank, Double ratingVary, Double volatilityVary, Integer trainingContestId) {
     this.rating = rating;
     this.volatility = volatility;
     this.rank = rank;
     this.ratingVary = ratingVary;
     this.volatilityVary = volatilityVary;
+    this.trainingContestId = trainingContestId;
   }
 }
