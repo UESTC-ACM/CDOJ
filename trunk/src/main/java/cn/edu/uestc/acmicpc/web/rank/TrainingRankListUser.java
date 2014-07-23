@@ -7,8 +7,11 @@ public class TrainingRankListUser {
   public Integer rank;
   public Integer solved;
   public Integer score;
+  public Integer successfulHack;
+  public Integer unsuccessfulHack;
   public Long penalty;
   public TrainingRankListItem[] itemList;
   public String[] rawData;
   public String userName;
+  public String type;
 }

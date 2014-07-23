@@ -4,67 +4,7 @@
       <h1>{{trainingContestDto.title}}</h1>
     </div>
     <div class="col-md-12">
-      <table id="rank-list" class="table" style="width: auto;">
-        <thead>
-        <tr>
-          <th class="text-center"
-              style="width: 55px; min-width: 55px; max-width: 55px;">
-            Rank
-          </th>
-          <th class="text-center"
-              style="width: 220px; min-width: 220px; max-width: 220px;">
-            ID
-          </th>
-          <th class="text-center"
-              style="width: 65px; min-width: 65px; max-width: 65px;">
-            Solved
-          </th>
-          <th class="text-center"
-              style="width: 75px; min-width: 75px; max-width: 75px;">
-            Penalty
-          </th>
-          <th class="text-center"
-              bindonce ng-repeat="problem in rankList.problems"
-              style="width: 70px; min-width: 70px; max-width: 70px;">
-            <a href="javascript:void(0);">{{problem.title}}</a>
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr bindonce ng-repeat="user in rankList.users track by $index" class="text-center">
-          <td class="rank"
-              style="vertical-align:middle;">
-            {{user.rank}}
-          </td>
-          <td class="user-name" ng-if="user.users.length == 0">
-            {{user.userName}}
-          </td>
-          <td class="user-name" ng-if="user.users.length > 0">
-                      <span bindonce ng-repeat="trainingUser in user.users track by $index">
-                        <a href="">{{trainingUser.trainingUserName}}</a>
-                      </span>
-          </td>
-          <td class="solved"
-              style="vertical-align:middle;">
-            {{user.solved}}
-          </td>
-          <td class="penalty" penalty="user.penalty" ui-penalty
-              style="vertical-align:middle;"></td>
-          <td class="item"
-              bindonce ng-repeat="item in user.itemList"
-              ng-class="{
-                                    'rank-list-first-blood': item.status == 'FB',
-                                    'rank-list-solved': item.status == 'PASS',
-                                    'rank-list-tried': item.status == 'FAIL'
-                                  }">
-            <span ng-if="item.status == 'FB' || item.status == 'PASS'" penalty="item.solvedTime" ui-penalty></span>
-            <br/>
-            <span ng-if="item.tried > 0">(-{{item.tried}})</span>
-            <span ng-if="item.tried == 0">&nbsp;</span>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <ui-training-rank-list rank-list="rankList" type="trainingContestDto.type" platform-type="trainingContestDto.platformType"></ui-training-rank-list>
     </div>
   </div>
 </div>
