@@ -25,6 +25,11 @@
       Score
     </th>
     <th class="text-center"
+        style="width: 65px; min-width: 65px; max-width: 65px;"
+        ng-if="type == 0 && platformType <= 1">
+      Hack
+    </th>
+    <th class="text-center"
         bindonce ng-repeat="problem in rankList.problems"
         style="width: 70px; min-width: 70px; max-width: 70px;">
       <a href="javascript:void(0);">{{problem.title}}</a>
@@ -57,6 +62,18 @@
         style="vertical-align:middle;"
         ng-if="type == 0 && platformType <= 1">
       {{user.score}}
+    </td>
+    <td style="vertical-align:middle;"
+        ng-if="type == 0 && platformType <= 1">
+      <span ng-if="user.successfulHack > 0 && user.unsuccessfulHack > 0">
+        <b class="font-success">+{{user.successfulHack}}</b>/<b class="font-danger">-{{user.unsuccessfulHack}}</b>
+      </span>
+      <span ng-if="user.successfulHack > 0 && user.unsuccessfulHack == 0">
+        <b class="font-success">+{{user.successfulHack}}</b>
+      </span>
+      <span ng-if="user.successfulHack == 0 &&user.unsuccessfulHack > 0">
+        <b class="font-danger">-{{user.unsuccessfulHack}}</b>
+      </span>
     </td>
     <td class="penalty" penalty="user.penalty" ui-penalty
         style="vertical-align:middle;"
