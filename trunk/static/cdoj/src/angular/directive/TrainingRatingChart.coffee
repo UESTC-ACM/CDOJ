@@ -85,7 +85,7 @@ cdoj
 
         # Draw background
         ratingValues = [minimalRating]
-        for rating in [0...3000] by 100
+        for rating in [900, 1200, 1500, 2200]
           if rating > minimalRating && rating < maximalRating
             ratingValues.add(rating)
         ratingValues.add(maximalRating)
@@ -107,6 +107,11 @@ cdoj
             else
               return "#FFCCCB"
           )
+        ratingValues = [minimalRating]
+        for rating in [0...4000] by 100
+          if rating > minimalRating && rating < maximalRating
+            ratingValues.add(rating)
+        ratingValues.add(maximalRating)
         for i in [1...ratingValues.length]
           rating = ratingValues[i]
           chart.append("line")
