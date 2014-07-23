@@ -24,7 +24,6 @@ import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.TrainingContestType;
 import cn.edu.uestc.acmicpc.util.enums.TrainingPlatformType;
-import cn.edu.uestc.acmicpc.util.enums.TrainingResultFieldType;
 import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
@@ -400,17 +399,7 @@ public class TrainingController extends BaseController {
     Integer[] fieldType = new Integer[totalColumns];
     for (int column = 0; column < totalColumns; column++) {
       fields[column] = sheet.getCell(column, 0).getContents();
-      if (TrainingContestResultParser.isUserName(fields[column])) {
-        fieldType[column] = TrainingResultFieldType.USERNAME.ordinal();
-      } else if (TrainingContestResultParser.isPenalty(fields[column])) {
-        fieldType[column] = TrainingResultFieldType.PENALTY.ordinal();
-      } else if (TrainingContestResultParser.isSolved(fields[column])) {
-        fieldType[column] = TrainingResultFieldType.SOLVED.ordinal();
-      } else if (TrainingContestResultParser.isUnused(fields[column])) {
-        fieldType[column] = TrainingResultFieldType.UNUSED.ordinal();
-      } else {
-        fieldType[column] = TrainingResultFieldType.PROBLEM.ordinal();
-      }
+      fieldType[column] = TrainingContestResultParser.getType(fields[column]).ordinal();
     }
 
     TrainingRankListUser[] users = new TrainingRankListUser[totalRows - 1];

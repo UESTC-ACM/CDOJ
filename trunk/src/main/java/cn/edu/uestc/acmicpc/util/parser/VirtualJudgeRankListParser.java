@@ -56,7 +56,7 @@ public class VirtualJudgeRankListParser {
         if (itemList.get(id).status == ProblemSolveStatusType.PASS) {
           rankList.problems[id].tried += itemList.get(id).tried + 1;
         } else {
-          rankList.problems[id].tried += itemList.get(id).tried + 1;
+          rankList.problems[id].tried += itemList.get(id).tried;
         }
 
         if (itemList.get(id).status == ProblemSolveStatusType.PASS) {
