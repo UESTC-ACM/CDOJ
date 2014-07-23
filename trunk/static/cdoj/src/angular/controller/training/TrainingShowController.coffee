@@ -1,7 +1,9 @@
 cdoj
 .controller("TrainingShowController", [
-    "$scope", "$http", "$rootScope", "$window", "trainingDto", "$modal"
-    ($scope, $http, $rootScope, $window, trainingDto, $modal) ->
+    "$scope", "$http", "$rootScope", "$window"
+    "trainingDto", "trainingUserList", "trainingContestList", "$modal"
+    ($scope, $http, $rootScope, $window
+     trainingDto, trainingUserList, trainingContestList, $modal) ->
       $scope.$emit(
         "permission:setPermission"
         $rootScope.AuthenticationType.NOOP
@@ -9,10 +11,8 @@ cdoj
       $window.scrollTo(0, 0)
 
       $scope.trainingDto = trainingDto
-      $scope.trainingUserCriteria =
-        angular.copy($rootScope.trainingUserCriteria)
-      $scope.trainingContestCriteria =
-        angular.copy($rootScope.trainingContestCriteria)
+      $scope.trainingUserList = trainingUserList
+      $scope.trainingContestList = trainingContestList
 
       $scope.editTrainingUser = (trainingUserId) ->
         modalInstance = $modal.open(

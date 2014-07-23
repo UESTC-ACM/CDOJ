@@ -7,6 +7,7 @@ public class TrainingRankListItem {
   public Integer solvedTime;
   public Integer tried;
   public Integer penalty;
+  public Integer score;
 
   public TrainingRankListItem() {
   }
@@ -16,5 +17,10 @@ public class TrainingRankListItem {
     this.solvedTime = solvedTime;
     this.tried = tried;
     this.penalty = penalty;
+  }
+
+  public TrainingRankListItem(ProblemSolveStatusType status, Integer score) {
+    this.status = status;
+    this.score = score;
   }
 }
