@@ -1,5 +1,6 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
+import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ContestDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
@@ -114,10 +115,10 @@ public class ContestServiceImpl extends AbstractService implements
   public List<ContestListDTO> getContestListDTOList(
       ContestCondition contestCondition,
       PageInfo pageInfo) throws AppException {
-    contestCondition.currentPage = pageInfo.getCurrentPage();
-    contestCondition.countPerPage = settings.RECORD_PER_PAGE;
+    Condition condition = contestCondition.getCondition();
+    condition.setPageInfo(pageInfo);
     return contestDao.findAll(ContestListDTO.class, ContestListDTO.builder(),
-        contestCondition.getCondition());
+        condition);
   }
 
   @Override
