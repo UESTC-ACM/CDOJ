@@ -24,7 +24,11 @@ buildscript {
 apply plugin: 'jettyEclipse'
 
 // Build cdoj subproject first
-jettyEclipseRun.dependsOn ":static/cdoj:build"
+jettyEclipseRun {
+  doFirst {
+    tasks.getByPath(":static/cdoj:build").execute()
+  }
+}
 
 task checkControllerDoNotContainDaos(type: Exec) {
   commandLine "python",
@@ -212,11 +216,11 @@ dependencies {
 
 test {
   doFirst {
-    jettyEclipseRun.daemon = true
-    jettyEclipseRun.execute()
+    jettyEclipse.daemon = true
+    task(":jettyEclipseRun").execute()
   }
   doLast {
-    jettyEclipseStop.execute()
+    task(":jettyEclipseStop").execute()
   }
   useTestNG()
 }
