@@ -31,6 +31,8 @@ public class TrainingContestResultParser {
       return TrainingResultFieldType.UNSUCCESSFUL_HACK;
     } else if (isType(value)) {
       return TrainingResultFieldType.TYPE;
+    } else if (isDeduct(value)) {
+      return TrainingResultFieldType.DEDUCT;
     } else {
       return TrainingResultFieldType.PROBLEM;
     }
@@ -76,6 +78,10 @@ public class TrainingContestResultParser {
         || value.compareToIgnoreCase("rank") == 0;
   }
 
+  public static boolean isDeduct(String value) {
+    return value.compareToIgnoreCase("deduct") == 0;
+  }
+
   interface AcceptedFunction {
     public boolean accepted(String userName, TrainingPlatformInfoDto platform);
   }
@@ -107,10 +113,10 @@ public class TrainingContestResultParser {
       TrainingContestType contestType,
       TrainingPlatformType platformType) throws AppException {
     if (contestType == TrainingContestType.CONTEST) {
-      if (platformType == TrainingPlatformType.VJ ||
-          platformType == TrainingPlatformType.HDOJ) {
+      if (platformType == TrainingPlatformType.VJ) {
         VirtualJudgeRankListParser.parse(rankList, platformList);
-      } else if (platformType == TrainingPlatformType.CF) {
+      } else if (platformType == TrainingPlatformType.CF ||
+          platformType == TrainingPlatformType.TC) {
         CodeforcesRankListParser.parse(rankList, platformList);
       }
     } else {

@@ -8,7 +8,7 @@ public class RankListProblem {
   public Integer solved;
   public Integer tried;
   public Integer firstSolvedTime;
-  public Integer maximalScore;
+  public Double maximalScore;
 
   public RankListProblem() {
   }
@@ -18,6 +18,6 @@ public class RankListProblem {
     this.solved = solved;
     this.tried = tried;
     this.firstSolvedTime = Integer.MAX_VALUE;
-    this.maximalScore = 0;
+    this.maximalScore = 0.0;
   }
 }

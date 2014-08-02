@@ -6,7 +6,7 @@ public class TrainingRankListUser {
   public TrainingUserDto[] users;
   public Integer rank;
   public Integer solved;
-  public Integer score;
+  public Double score;
   public Integer successfulHack;
   public Integer unsuccessfulHack;
   public Long penalty;
@@ -14,4 +14,5 @@ public class TrainingRankListUser {
   public String[] rawData;
   public String userName;
   public String type;
+  public Integer deductRating;
 }

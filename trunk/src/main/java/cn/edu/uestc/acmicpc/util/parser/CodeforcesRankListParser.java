@@ -46,7 +46,7 @@ public class CodeforcesRankListParser {
             }
           });
         } else if (rankList.fieldType[col] == TrainingResultFieldType.SCORE.ordinal()) {
-          user.score = Integer.valueOf(user.rawData[col]);
+          user.score = Double.valueOf(user.rawData[col]);
         } else if (rankList.fieldType[col] == TrainingResultFieldType.SUCCESSFUL_HACK.ordinal()) {
           user.successfulHack = Integer.valueOf(user.rawData[col]);
         } else if (rankList.fieldType[col] == TrainingResultFieldType.UNSUCCESSFUL_HACK.ordinal()) {
@@ -54,7 +54,7 @@ public class CodeforcesRankListParser {
         } else if (rankList.fieldType[col] == TrainingResultFieldType.TYPE.ordinal()) {
           user.type = user.rawData[col];
         } else if (rankList.fieldType[col] == TrainingResultFieldType.PROBLEM.ordinal()) {
-          Integer score = Integer.valueOf(user.rawData[col]);
+          Double score = Double.valueOf(user.rawData[col]);
           ProblemSolveStatusType state = ProblemSolveStatusType.NONE;
           if (score > 0) {
             state = ProblemSolveStatusType.PASS;
@@ -62,6 +62,12 @@ public class CodeforcesRankListParser {
             state = ProblemSolveStatusType.FAIL;
           }
           itemList.add(new TrainingRankListItem(state, score));
+        } else if (rankList.fieldType[col] == TrainingResultFieldType.DEDUCT.ordinal()) {
+          if (user.rawData[col].trim().compareTo("") == 0) {
+            user.deductRating = null;
+          } else {
+            user.deductRating = Integer.valueOf(user.rawData[col]);
+          }
         }
       }
       for (int id = 0; id < totalProblems; id++) {
