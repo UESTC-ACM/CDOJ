@@ -31,6 +31,8 @@ public class TrainingContestResultParser {
       return TrainingResultFieldType.UNSUCCESSFUL_HACK;
     } else if (isType(value)) {
       return TrainingResultFieldType.TYPE;
+    } else if (isDeduct(value)) {
+      return TrainingResultFieldType.DEDUCT;
     } else {
       return TrainingResultFieldType.PROBLEM;
     }
@@ -74,6 +76,10 @@ public class TrainingContestResultParser {
   public static boolean isUnused(String value) {
     return value.compareToIgnoreCase("#") == 0
         || value.compareToIgnoreCase("rank") == 0;
+  }
+
+  public static boolean isDeduct(String value) {
+    return value.compareToIgnoreCase("deduct") == 0;
   }
 
   interface AcceptedFunction {

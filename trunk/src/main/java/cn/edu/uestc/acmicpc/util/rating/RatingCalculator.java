@@ -44,26 +44,33 @@ public class RatingCalculator {
    * @param rankList
    */
   public void calculateByRank(TrainingContestDto contest, TrainingRankList rankList) throws AppException {
-    HashMap<Integer, Integer> userRankMap = new HashMap<>();
+    HashMap<Integer, TrainingRankListUser> userToRankListMap = new HashMap<>();
     for (TrainingRankListUser rankListUser : rankList.users) {
       for (TrainingUserDto usersInRankList : rankListUser.users) {
-        userRankMap.put(usersInRankList.getTrainingUserId(), rankListUser.rank);
+        userToRankListMap.put(usersInRankList.getTrainingUserId(), rankListUser);
       }
     }
 
     List<TrainingUserDto> activeUsers = new LinkedList<>();
-    List<Integer> rank = new LinkedList<>();
+    List<TrainingRankListUser> trainingRankListUser = new LinkedList<>();
 
-    for (Map.Entry<Integer, Integer> entry : userRankMap.entrySet()) {
+    for (Map.Entry<Integer, TrainingRankListUser> entry : userToRankListMap.entrySet()) {
       activeUsers.add(getTrainingUserDto(entry.getKey()));
-      rank.add(entry.getValue());
+      trainingRankListUser.add(entry.getValue());
     }
 
     if (activeUsers.size() <= 1) {
       for (int i = 0; i < activeUsers.size(); i++) {
         TrainingUserDto user = activeUsers.get(i);
         List<TrainingRating> ratingHistory = user.getRatingHistoryList();
-        ratingHistory.add(new TrainingRating(user.getCurrentRating(), user.getCurrentVolatility(), rank.get(i), 0.0, 0.0, contest.getTrainingContestId()));
+        ratingHistory.add(new TrainingRating(
+            user.getCurrentRating(),
+            user.getCurrentVolatility(),
+            trainingRankListUser.get(i).rank,
+            0.0,
+            0.0,
+            contest.getTrainingContestId()
+        ));
         user.setCompetitions(ratingHistory.size());
       }
     } else {
@@ -85,9 +92,9 @@ public class RatingCalculator {
       for (int i = 0; i < activeUsers.size(); i++) {
         int lose = 0, tie = 0;
         for (int j = 0; j < activeUsers.size(); j++) {
-          if (rank.get(i) > rank.get(j)) {
+          if (trainingRankListUser.get(i).rank > trainingRankListUser.get(j).rank) {
             lose++;
-          } else if (rank.get(i).equals(rank.get(j))) {
+          } else if (trainingRankListUser.get(i).rank.equals(trainingRankListUser.get(j).rank)) {
             tie++;
           }
         }
@@ -112,6 +119,18 @@ public class RatingCalculator {
         aPref[i] = -inv_norm((aRank[i] - 0.5) / activeUsers.size());
         ePref[i] = -inv_norm((eRank[i] - 0.5) / activeUsers.size());
       }
+
+      // Amount number of deducted rating
+      Integer totalDeductedRating = 0;
+      Integer totalUnDeductedUser = 0;
+      for (int i = 0; i < activeUsers.size(); i++) {
+        if (trainingRankListUser.get(i).deductRating != null) {
+          totalDeductedRating += trainingRankListUser.get(i).deductRating;
+        } else {
+          totalUnDeductedUser ++;
+        }
+      }
+
       for (int i = 0; i < activeUsers.size(); i++) {
         TrainingUserDto user = activeUsers.get(i);
         List<TrainingRating> ratingList = user.getRatingHistoryList();
@@ -132,10 +151,26 @@ public class RatingCalculator {
             square(newRating - user.getCurrentRating()) / weight +
                 square(user.getCurrentVolatility()) / (weight + 1.0)
         );
+
+        if (trainingRankListUser.get(i).deductRating != null) {
+          // Deduct rating manually
+          newRating -= trainingRankListUser.get(i).deductRating;
+        } else {
+          // Add to other users
+          newRating += totalDeductedRating / totalUnDeductedUser;
+        }
+
         newRating = Math.max(newRating, 1.0);
         newVolatility = Math.max(newVolatility, 101.0);
 
-        ratingList.add(new TrainingRating(newRating, newVolatility, rank.get(i), newRating - user.getCurrentRating(), newVolatility - user.getCurrentVolatility(), contest.getTrainingContestId()));
+        ratingList.add(new TrainingRating(
+            newRating,
+            newVolatility,
+            trainingRankListUser.get(i).rank,
+            newRating - user.getCurrentRating(),
+            newVolatility - user.getCurrentVolatility(),
+            contest.getTrainingContestId()
+        ));
         user.setCurrentRating(newRating);
         user.setCurrentVolatility(newVolatility);
         user.setCompetitions(ratingList.size());

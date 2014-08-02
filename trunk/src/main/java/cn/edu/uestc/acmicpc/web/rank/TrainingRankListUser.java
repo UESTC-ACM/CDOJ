@@ -14,4 +14,5 @@ public class TrainingRankListUser {
   public String[] rawData;
   public String userName;
   public String type;
+  public Integer deductRating;
 }
