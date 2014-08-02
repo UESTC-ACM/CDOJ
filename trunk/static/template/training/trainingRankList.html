@@ -35,6 +35,7 @@
       <a href="javascript:void(0);">{{problem.title}}</a>
     </th>
     <th class="text-center">Type</th>
+    <th class="text-center">Deduction</th>
   </tr>
   </thead>
   <tbody>
@@ -104,6 +105,9 @@
       <span ng-if="item.score != 0">{{item.score}}</span>
     </td>
     <td class="type">{{user.type}}</td>
+    <td class="deduct">
+      <span ng-if="user.deductRating > 0">{{user.deductRating}}</span>
+    </td>
   </tr>
   </tbody>
 </table>

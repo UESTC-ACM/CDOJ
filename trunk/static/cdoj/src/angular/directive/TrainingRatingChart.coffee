@@ -60,7 +60,7 @@ cdoj
           .rangePoints([margin.left, width - margin.right])
         xAxis = d3.svg.axis().scale(xScale).tickFormat(
           (d) ->
-            if d == 0 then "" else d
+            d + 1
         )
         chart.append("g")
         .attr(
