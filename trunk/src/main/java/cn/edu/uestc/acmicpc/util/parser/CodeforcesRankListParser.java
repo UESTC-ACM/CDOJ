@@ -62,6 +62,12 @@ public class CodeforcesRankListParser {
             state = ProblemSolveStatusType.FAIL;
           }
           itemList.add(new TrainingRankListItem(state, score));
+        } else if (rankList.fieldType[col] == TrainingResultFieldType.DEDUCT.ordinal()) {
+          if (user.rawData[col].trim().compareTo("") == 0) {
+            user.deductRating = null;
+          } else {
+            user.deductRating = Integer.valueOf(user.rawData[col]);
+          }
         }
       }
       for (int id = 0; id < totalProblems; id++) {

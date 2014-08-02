@@ -50,6 +50,12 @@ public class VirtualJudgeRankListParser {
           user.penalty = parsePenalty(user.rawData[col]);
         } else if (rankList.fieldType[col] == TrainingResultFieldType.PROBLEM.ordinal()) {
           itemList.add(parseTrainingRankListItem(user.rawData[col]));
+        } else if (rankList.fieldType[col] == TrainingResultFieldType.DEDUCT.ordinal()) {
+          if (user.rawData[col].trim().compareTo("") == 0) {
+            user.deductRating = null;
+          } else {
+            user.deductRating = Integer.valueOf(user.rawData[col]);
+          }
         }
       }
       for (int id = 0; id < totalProblems; id++) {
