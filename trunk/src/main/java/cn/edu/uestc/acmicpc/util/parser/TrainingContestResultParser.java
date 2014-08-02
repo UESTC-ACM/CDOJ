@@ -113,10 +113,10 @@ public class TrainingContestResultParser {
       TrainingContestType contestType,
       TrainingPlatformType platformType) throws AppException {
     if (contestType == TrainingContestType.CONTEST) {
-      if (platformType == TrainingPlatformType.VJ ||
-          platformType == TrainingPlatformType.HDOJ) {
+      if (platformType == TrainingPlatformType.VJ) {
         VirtualJudgeRankListParser.parse(rankList, platformList);
-      } else if (platformType == TrainingPlatformType.CF) {
+      } else if (platformType == TrainingPlatformType.CF ||
+          platformType == TrainingPlatformType.TC) {
         CodeforcesRankListParser.parse(rankList, platformList);
       }
     } else {
