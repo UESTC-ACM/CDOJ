@@ -6,8 +6,8 @@ cdoj
     trainingUserList: "="
     trainingContestList: "="
   controller: [
-    "$scope", "$http", "$window", "$element"
-    ($scope, $http, $window, $element) ->
+    "$scope", "$http", "$window", "$element", "$timeout"
+    ($scope, $http, $window, $element, $timeout) ->
       $scope.selectedUser = null
       $scope.selectUser = ->
         updateChart(
@@ -48,6 +48,30 @@ cdoj
       )
       background = chart.append("g").attr("class", "background")
       ratingLinesContainer = chart.append("g").attr("class", "rating-lines")
+      tooltipHiddenTimer = null
+      tooltip =
+        d3.select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("z-index", "99999")
+        .style("visibility", "hidden")
+        .style("border", "1px solid rgb(255, 221, 221)")
+        .style("padding", "2px")
+        .style("font-size", "12px")
+        .style("background-color", "rgba(0, 0, 0, 0.8)")
+        .style("color", "rgb(255, 255, 255)")
+        .html("")
+        .on("mouseover", ->
+          if tooltipHiddenTimer != null
+            $timeout.cancel(tooltipHiddenTimer)
+            tooltipHiddenTimer = null
+        )
+        .on("mouseout", ->
+          if tooltipHiddenTimer == null
+            tooltipHiddenTimer = $timeout(->
+              tooltip.style("visibility", "hidden")
+            , 300)
+        )
 
       updateChart = (trainingUserList, trainingContestList) ->
         if (trainingUserList.length == 0 ||
@@ -161,6 +185,17 @@ cdoj
             stroke: "black"
             "stroke-width": "1.5px"
           ).attr("d", line)
+        getRatingColor = (rating) ->
+          if (rating < 900)
+            return "#999999"
+          else if (rating < 1200)
+            return "#00A900"
+          else if (rating < 1500)
+            return "#6666FF"
+          else if (rating < 2200)
+            return "#DDCC00"
+          else
+            return "#EE0000"
         ratingLabel =
           ratingLineContainer
           .selectAll("path.rating-label")
@@ -179,17 +214,32 @@ cdoj
               yScale(d.rating) +
               ")"
           ).attr("fill", (d) ->
-            if (d.rating < 900)
-              return "#999999"
-            else if (d.rating < 1200)
-              return "#00A900"
-            else if (d.rating < 1500)
-              return "#6666FF"
-            else if (d.rating < 2200)
-              return "#DDCC00"
-            else
-              return "#EE0000"
+            getRatingColor(d.rating)
           ).attr("d", d3.svg.symbol().type("square"))
+          .on("mouseover", (d) ->
+            formatDouble = (val) ->
+              return _.sprintf("%.0f", val)
+            tooltip.style("visibility", "visible")
+            .style("top", (event.pageY-10)+"px")
+            .style("left",(event.pageX+10)+"px")
+            .html(->
+              """
+= <b style="color: #{getRatingColor(d.rating)};">
+#{formatDouble(d.rating)}
+</b> (#{if d.ratingVary > 0 then "+" else ""}#{formatDouble(d.ratingVary)})
+<br/>
+Rank: #{d.rank}
+<br/>
+<a href="/#/training/contest/show/#{d.trainingContestId}" target="_blank">
+View contest
+</a>
+              """
+            )
+          ).on("mouseout", ->
+            tooltipHiddenTimer = $timeout(->
+              tooltip.style("visibility", "hidden")
+            , 300)
+          )
 
       updateChart($scope.trainingUserList, $scope.trainingContestList)
   ]
