@@ -1,7 +1,9 @@
 <div id="training-rating-chart" style="width: 100%;">
-  <div ng-if="onLoading" class="text-center bg-info"
-       style="padding: 10px 0 15px 0;">
-    <h1>{{state}}</h1>
-  </div>
+  <select style="width: 300px; margin: 0 auto 0 auto;"
+          ng-change="selectUser()"
+          ng-model="selectedUser"
+          ng-options="user.trainingUserId as user.trainingUserName for user in trainingUserList">
+    <option value="">Show all users</option>
+  </select>
   <div id="rating-chart"></div>
 </div>

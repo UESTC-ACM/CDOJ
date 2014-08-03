@@ -8,13 +8,56 @@ cdoj
   controller: [
     "$scope", "$http", "$window", "$element"
     ($scope, $http, $window, $element) ->
-      drawChart = ->
-        if ($scope.trainingUserList.length == 0 ||
-          $scope.trainingContestList.length == 0) then return
+      $scope.selectedUser = null
+      $scope.selectUser = ->
+        updateChart(
+          _.filter($scope.trainingUserList, (user) ->
+            if $scope.selectedUser == null
+              return true
+            else
+              return user.trainingUserId == $scope.selectedUser
+          )
+          $scope.trainingContestList
+        )
 
-        trainingUserList = $scope.trainingUserList
-        trainingContestList = $scope.trainingContestList
+      # Set width and height
+      width = 1000
+      height = 600
+      margin =
+        top: 10
+        right: 10
+        bottom: 20
+        left: 50
+      # Initialize chart
+      chart =
+        d3.select("#rating-chart")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+      chart
+      .append("g")
+      .attr(
+        class: "x axis"
+        transform: "translate(0, " + (height - margin.bottom) + ")"
+      )
+      chart
+      .append("g")
+      .attr(
+        class: "y axis"
+        transform: "translate(" + margin.left + ", 0)"
+      )
+      background = chart.append("g").attr("class", "background")
+      ratingLinesContainer = chart.append("g").attr("class", "rating-lines")
 
+      updateChart = (trainingUserList, trainingContestList) ->
+        if (trainingUserList.length == 0 ||
+          trainingContestList.length == 0) then return
+        # Map contest id to x-position in x-axis
+        contestMap = {}
+        for contest, i in trainingContestList
+          contestMap[contest.trainingContestId] = i
+
+        # Calculate rating range
         minimalRating = d3.min(trainingUserList, (user) ->
           d3.min(user.ratingHistoryList, (rating) ->
             rating.rating
@@ -25,32 +68,10 @@ cdoj
             rating.rating
           )
         )
+
         ratingBetween = Math.max(500.0, maximalRating - minimalRating)
         minimalRating = Math.max(0, minimalRating - ratingBetween / 24)
         maximalRating = maximalRating + ratingBetween / 24
-        contestMap = {}
-        for contest, i in trainingContestList
-          contestMap[contest.trainingContestId] = i
-
-        $el = $($element)
-        width = Math.max(
-          1000,
-            trainingContestList.length * 35
-        )
-        height = 600
-        margin =
-          top: 10
-          right: 200
-          bottom: 20
-          left: 50
-
-        # Draw chart
-        chart =
-          d3.select("#rating-chart")
-          .append("svg")
-          .attr("width", width)
-          .attr("height", height)
-          .append("g")
 
         # Draw x-label
         xScale =
@@ -62,12 +83,7 @@ cdoj
           (d) ->
             d + 1
         )
-        chart.append("g")
-        .attr(
-          class: "x axis"
-          transform: "translate(0, " + (height - margin.bottom) + ")"
-        )
-        .call(xAxis)
+        chart.selectAll("g.x.axis").call(xAxis)
 
         # Draw y-label
         yScale =
@@ -76,21 +92,18 @@ cdoj
           .domain([minimalRating, maximalRating])
           .range([height - margin.bottom, 0 + margin.top])
         yAxis = d3.svg.axis().scale(yScale).orient("left")
-        chart.append("g")
-        .attr(
-          class: "y axis"
-          transform: "translate(" + margin.left + ", 0)"
-        )
-        .call(yAxis)
+        chart.selectAll("g.y.axis").call(yAxis)
 
         # Draw background
+        background.selectAll("rect").remove()
+        background.selectAll("line").remove()
         ratingValues = [minimalRating]
         for rating in [900, 1200, 1500, 2200]
           if rating > minimalRating && rating < maximalRating
             ratingValues.add(rating)
         ratingValues.add(maximalRating)
         for i in [1...ratingValues.length]
-          chart.append("rect")
+          background.append("rect")
           .attr("x", xScale(0))
           .attr("y", yScale(ratingValues[i]))
           .attr("width", width - margin.right - margin.left)
@@ -114,50 +127,57 @@ cdoj
         ratingValues.add(maximalRating)
         for i in [1...ratingValues.length]
           rating = ratingValues[i]
-          chart.append("line")
+          background.append("line")
           .attr("x1", xScale(0))
           .attr("y1", yScale(rating))
           .attr("x2", xScale(trainingContestList.length - 1))
           .attr("y2", yScale(rating))
           .attr("stroke", "#A9A9A9")
 
-        console.log(ratingValues)
-
         # Draw rating
-        _.each(trainingUserList, (data) ->
-          # Line coordinate map
-          line =
-            d3.svg.line()
-            .x((d) ->
-              xScale(contestMap[d.trainingContestId]))
-            .y((d) ->
-              yScale(d.rating))
-
-          # Draw rating line
-          chart.append("g")
+        line =
+          d3.svg.line()
+          .x((d) ->
+            xScale(contestMap[d.trainingContestId]))
+          .y((d) ->
+            yScale(d.rating))
+        # remove
+        ratingLinesContainer.selectAll("g.rating-line").remove()
+        ratingLines =
+          ratingLinesContainer.selectAll("g.rating-line").data(trainingUserList)
+        # Draw rating line for every user
+        ratingLineContainer =
+          ratingLines.enter()
+          .append("g")
           .attr("class", "rating-line")
+          .datum((d) ->
+            d.ratingHistoryList)
+        ratingLine =
+          ratingLineContainer
           .append("path")
-          .datum(data.ratingHistoryList)
           .attr("class", "rating")
           .attr(
             fill: "none"
             stroke: "black"
             "stroke-width": "1.5px"
           ).attr("d", line)
-
-          # Draw rating label
-          chart.append("g")
-          .attr("class", "rating-line-label")
-          .selectAll("path")
-          .data(data.ratingHistoryList)
-          .enter().append("path")
+        ratingLabel =
+          ratingLineContainer
+          .selectAll("path.rating-label")
+          .data((d) ->
+            d)
+          .enter()
+          .append("path")
+          .attr("class", "rating-label")
           .attr(
             stroke: "black"
             "stroke-width": "1.5px"
           ).attr("transform", (d) ->
             "translate(" +
-            xScale(contestMap[d.trainingContestId]) + ", " + yScale(d.rating) +
-            ")"
+              xScale(contestMap[d.trainingContestId]) +
+              ", " +
+              yScale(d.rating) +
+              ")"
           ).attr("fill", (d) ->
             if (d.rating < 900)
               return "#999999"
@@ -170,8 +190,8 @@ cdoj
             else
               return "#EE0000"
           ).attr("d", d3.svg.symbol().type("square"))
-        )
-      drawChart()
+
+      updateChart($scope.trainingUserList, $scope.trainingContestList)
   ]
   replace: true
   templateUrl: "template/training/trainingRatingChart.html"
