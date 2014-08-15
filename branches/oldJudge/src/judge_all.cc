@@ -74,11 +74,11 @@ int main(int argc, char *argv[], char *envp[])
 		    switch (problem::lang)
 		    {
 		        case judge_conf::LANG_C:
-		            FM_LOG_TRACE("start: gcc -static -w -O2 -DONLINE_JUDGE -o %s %s",
+		            FM_LOG_TRACE("start: gcc -static -w -O2 -DONLINE_JUDGE -o %s %s -lm",
 		                    problem::exec_file.c_str(), problem::source_file.c_str());
 		            execlp("gcc", "gcc", "-static", "-w", "-O2", "-DONLINE_JUDGE",
 		                   "-o", problem::exec_file.c_str(),
-		                   problem::source_file.c_str(),
+		                   problem::source_file.c_str(), "-lm",
 		                   NULL);
 		            break;
 
