@@ -40,6 +40,8 @@
     "sugar": "*",
     "underscore.string": "*",
     "underscore": "*",
-    "d3": "~3.4.11"
+    "d3": "~3.4.11",
+    "MathJax": "~2.4.0",
+    "font-awesome": "~4.2.0"
   }
 }
