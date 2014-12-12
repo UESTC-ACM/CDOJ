@@ -50,7 +50,7 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
   private String getResourceLocations(String folder, String name) {
     String path = environment.getProperty(name);
-    return "file://" + path + "/" + folder + "/**";
+    return "file://" + path + "/" + folder + "/";
   }
 
   @Override
