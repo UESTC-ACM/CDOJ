@@ -19,5 +19,8 @@
     "grunt-yui-compressor": "*",
     "grunt-coffeelint": "*",
     "bower": "*"
+  },
+  "scripts": {
+    "postinstall": "./node_modules/.bin/bower install"
   }
 }
