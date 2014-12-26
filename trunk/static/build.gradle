@@ -25,14 +25,9 @@ buildscript {
 }
 apply plugin: 'grunt'
 
-task bowerInstall(type: Exec) {
-  commandLine "node_modules/bower/bin/bower", "install"
-}
-
 task build << {
   nodeSetup.execute()
   installGrunt.execute()
   npmInstall.execute()
-  bowerInstall.execute()
   grunt_build.execute()
 }
