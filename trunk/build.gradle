@@ -31,29 +31,29 @@ jettyEclipseRun {
 }
 
 task checkControllerDoNotContainDaos(type: Exec) {
-  commandLine "python",
+  commandLine "python2",
       file("src/test/python/check_controller_not_contain_daos.py").absolutePath
 }
 
 task checkDtosDoNotContainEntities(type: Exec) {
-  commandLine "python",
+  commandLine "python2",
       file("src/test/python/check_dtos_not_contain_entities.py").absolutePath
 }
 
 task checkTestingCodeAllDoNotUseJunit(type: Exec) {
-  commandLine "python",
+  commandLine "python2",
       file("src/test/python/check_testing_code_all_not_use_junit.py").absolutePath
 }
 
 task generateDaos(type: Exec) {
-  commandLine "python",
+  commandLine "python2",
       file("src/main/python/generate_daos.py").absolutePath,
       "-i", "src/main/java/cn/edu/uestc/acmicpc/db/entity/",
       "-o", "/src/gen/java/cn/edu/uestc/acmicpc/db/dao"
 }
 
 task generateDtos(type: Exec) {
-  commandLine "python",
+  commandLine "python2",
       file("src/main/python/generate_dtos.py").absolutePath,
       "-i", "src/main/dto",
       "-o", "src/gen/java/cn/edu/uestc/acmicpc/db/dto/impl"
