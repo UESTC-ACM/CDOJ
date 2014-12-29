@@ -226,5 +226,5 @@ test {
 }
 
 jacoco {
-  toolVersion = "0.6.5.201403032054"
+  toolVersion = "0.7.0.201403182114"
 }
