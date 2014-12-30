@@ -1,18 +1,18 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.user;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserActivateDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminEditDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserProblemStatusDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserActivateDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserAdminEditDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserLoginDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserProblemStatusDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserRegisterDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDto;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
@@ -44,7 +44,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -52,22 +54,22 @@ import javax.validation.Valid;
 @RequestMapping("/user")
 public class UserController extends BaseController {
 
-  private UserService userService;
-  private ProblemService problemService;
-  private StatusService statusService;
-  private UserSerialKeyService userSerialKeyService;
-  private EmailService emailService;
-  private DepartmentService departmentService;
-  private Settings settings;
+  private final UserService userService;
+  private final ProblemService problemService;
+  private final StatusService statusService;
+  private final UserSerialKeyService userSerialKeyService;
+  private final EmailService emailService;
+  private final DepartmentService departmentService;
+  private final Settings settings;
 
   @Autowired
   public UserController(UserService userService,
-                        ProblemService problemService,
-                        StatusService statusService,
-                        UserSerialKeyService userSerialKeyService,
-                        EmailService emailService,
-                        DepartmentService departmentService,
-                        Settings settings) {
+      ProblemService problemService,
+      StatusService statusService,
+      UserSerialKeyService userSerialKeyService,
+      EmailService emailService,
+      DepartmentService departmentService,
+      Settings settings) {
     this.userService = userService;
     this.problemService = problemService;
     this.statusService = statusService;
@@ -79,28 +81,26 @@ public class UserController extends BaseController {
 
   @RequestMapping("login")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> login(HttpSession session,
-                            @RequestBody @Valid UserLoginDTO userLoginDTO,
-                            BindingResult validateResult) {
+  public @ResponseBody Map<String, Object> login(HttpSession session,
+      @RequestBody @Valid UserLoginDto userLoginDto,
+      BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        UserDTO userDTO = userService.getUserDTOByUserName(userLoginDTO.getUserName());
-        if (userDTO == null || !userLoginDTO.getPassword().equals(userDTO.getPassword())) {
+        UserDto userDto = userService.getUserDtoByUserName(userLoginDto.getUserName());
+        if (userDto == null || !Objects.equals(userLoginDto.getPassword(), userDto.getPassword())) {
           throw new FieldException("password", "User or password is wrong, please try again");
         }
-        userDTO.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
-        userService.updateUser(userDTO);
+        userDto.setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000));
+        userService.updateUser(userDto);
 
-        session.setAttribute("currentUser", userDTO);
-        json.put("userName", userDTO.getUserName());
-        json.put("type", userDTO.getType());
-        json.put("email", userDTO.getEmail());
+        session.setAttribute("currentUser", userDto);
+        json.put("userName", userDto.getUserName());
+        json.put("type", userDto.getType());
+        json.put("email", userDto.getEmail());
         json.put("result", "success");
       } catch (FieldException e) {
         putFieldErrorsIntoBindingResult(e, validateResult);
@@ -116,9 +116,7 @@ public class UserController extends BaseController {
 
   @RequestMapping("logout")
   @LoginPermit(NeedLogin = true)
-  public
-  @ResponseBody
-  Map<String, Object> logout(HttpSession session) {
+  public @ResponseBody Map<String, Object> logout(HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     // Clear sessions
     session.invalidate();
@@ -128,71 +126,69 @@ public class UserController extends BaseController {
 
   @RequestMapping("register")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> register(HttpSession session,
-                               @RequestBody @Valid UserRegisterDTO userRegisterDTO,
-                               BindingResult validateResult) {
+  public @ResponseBody Map<String, Object> register(HttpSession session,
+      @RequestBody @Valid UserRegisterDto userRegisterDto,
+      BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        if (userRegisterDTO.getPassword() == null) {
+        if (userRegisterDto.getPassword() == null) {
           throw new FieldException("password", "Please enter your password.");
         }
-        if (userRegisterDTO.getPasswordRepeat() == null) {
+        if (userRegisterDto.getPasswordRepeat() == null) {
           throw new FieldException("passwordRepeat", "Please repeat your password.");
         }
-        if (!userRegisterDTO.getPassword().equals(userRegisterDTO.getPasswordRepeat())) {
+        if (!Objects.equals(userRegisterDto.getPassword(), userRegisterDto.getPasswordRepeat())) {
           throw new FieldException("passwordRepeat", "Password do not match.");
         }
-        if (!StringUtil.trimAllSpace(userRegisterDTO.getNickName())
-            .equals(userRegisterDTO.getNickName())) {
+        if (!Objects.equals(StringUtil.trimAllSpace(userRegisterDto.getNickName()),
+            userRegisterDto.getNickName())) {
           throw new FieldException("nickName", "Nick name should not have useless blank.");
         }
-        if (userService.getUserDTOByUserName(userRegisterDTO.getUserName()) != null) {
+        if (userService.getUserDtoByUserName(userRegisterDto.getUserName()) != null) {
           throw new FieldException("userName", "User name has been used!");
         }
-        if (userService.getUserDTOByEmail(userRegisterDTO.getEmail()) != null) {
+        if (userService.getUserDtoByEmail(userRegisterDto.getEmail()) != null) {
           throw new FieldException("email", "Email has benn used!");
         }
-        if (departmentService.getDepartmentName(userRegisterDTO.getDepartmentId()) == null) {
+        if (departmentService.getDepartmentName(userRegisterDto.getDepartmentId()) == null) {
           throw new FieldException("departmentId", "Please choose a validate department.");
         }
 
-        UserDTO userDTO = UserDTO.builder()
-            .setUserName(userRegisterDTO.getUserName())
-            .setStudentId(userRegisterDTO.getStudentId())
-            .setPassword(userRegisterDTO.getPassword())
-            .setSchool(userRegisterDTO.getSchool())
-            .setNickName(userRegisterDTO.getNickName())
-            .setEmail(userRegisterDTO.getEmail())
+        UserDto userDto = UserDto.builder()
+            .setUserName(userRegisterDto.getUserName())
+            .setStudentId(userRegisterDto.getStudentId())
+            .setPassword(userRegisterDto.getPassword())
+            .setSchool(userRegisterDto.getSchool())
+            .setNickName(userRegisterDto.getNickName())
+            .setEmail(userRegisterDto.getEmail())
             .setSolved(0)
             .setTried(0)
             .setType(AuthenticationType.NORMAL.ordinal())
-            .setDepartmentId(userRegisterDTO.getDepartmentId())
+            .setDepartmentId(userRegisterDto.getDepartmentId())
             .setLastLogin(new Timestamp(new Date().getTime() / 1000 * 1000))
-            .setMotto(userRegisterDTO.getMotto())
+            .setMotto(userRegisterDto.getMotto())
             .setDepartmentName(departmentService.getDepartmentName(
-                userRegisterDTO.getDepartmentId()))
-            .setName(userRegisterDTO.getName())
-            .setSex(userRegisterDTO.getSex())
-            .setGrade(userRegisterDTO.getGrade())
-            .setPhone(userRegisterDTO.getPhone())
-            .setSize(userRegisterDTO.getSize())
+                userRegisterDto.getDepartmentId()))
+            .setName(userRegisterDto.getName())
+            .setSex(userRegisterDto.getSex())
+            .setGrade(userRegisterDto.getGrade())
+            .setPhone(userRegisterDto.getPhone())
+            .setSize(userRegisterDto.getSize())
             .build();
-        userService.createNewUser(userDTO);
+        userService.createNewUser(userDto);
 
-        userDTO = userService.getUserDTOByUserName(userRegisterDTO.getUserName());
-        if (userDTO == null) {
+        userDto = userService.getUserDtoByUserName(userRegisterDto.getUserName());
+        if (userDto == null) {
           throw new AppException("Register failed, please try again.");
         }
-        session.setAttribute("currentUser", userDTO);
-        json.put("userName", userDTO.getUserName());
-        json.put("type", userDTO.getType());
-        json.put("email", userDTO.getEmail());
+        session.setAttribute("currentUser", userDto);
+        json.put("userName", userDto.getUserName());
+        json.put("type", userDto.getType());
+        json.put("email", userDto.getEmail());
         json.put("result", "success");
       } catch (FieldException e) {
         putFieldErrorsIntoBindingResult(e, validateResult);
@@ -208,15 +204,13 @@ public class UserController extends BaseController {
 
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> search(@RequestBody UserCondition userCondition) {
+  public @ResponseBody Map<String, Object> search(@RequestBody UserCondition userCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
       Long count = userService.count(userCondition);
       PageInfo pageInfo = buildPageInfo(count, userCondition.currentPage,
           settings.RECORD_PER_PAGE, null);
-      List<UserListDTO> userList = userService.getUserListDTOList(userCondition, pageInfo);
+      List<UserListDto> userList = userService.getUserListDtoList(userCondition, pageInfo);
 
       json.put("pageInfo", pageInfo);
       json.put("result", "success");
@@ -233,19 +227,17 @@ public class UserController extends BaseController {
   }
 
   @RequestMapping("typeAheadItem/{userName}")
-  public
-  @ResponseBody
-  Map<String, Object> typeAheadResult(@PathVariable("userName") String userName) {
+  public @ResponseBody Map<String, Object> typeAheadResult(@PathVariable("userName") String userName) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO userDTO = userService.getUserDTOByUserName(userName);
-      AppExceptionUtil.assertNotNull(userDTO, "No such user!");
+      UserDto userDto = userService.getUserDtoByUserName(userName);
+      AppExceptionUtil.assertNotNull(userDto, "No such user!");
       json.put("result", "success");
-      json.put("user", UserTypeAheadDTO.builder()
-          .setUserId(userDTO.getUserId())
-          .setUserName(userDTO.getUserName())
-          .setNickName(userDTO.getNickName())
-          .setEmail(userDTO.getEmail())
+      json.put("user", UserTypeAheadDto.builder()
+          .setUserId(userDto.getUserId())
+          .setUserName(userDto.getUserName())
+          .setNickName(userDto.getNickName())
+          .setEmail(userDto.getEmail())
           .build());
     } catch (AppException e) {
       json.put("result", "error");
@@ -260,16 +252,13 @@ public class UserController extends BaseController {
 
   @RequestMapping("typeAheadList")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> typeAheadList(@RequestBody UserCondition userCondition) {
+  public @ResponseBody Map<String, Object> typeAheadList(@RequestBody UserCondition userCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
       Long count = userService.count(userCondition);
-      PageInfo pageInfo = buildPageInfo(count, 1L,
-          6L, null);
-      List<UserTypeAheadDTO> userList = userService.getUserTypeAheadDTOList(userCondition,
-          pageInfo);
+      PageInfo pageInfo = buildPageInfo(count, 1L, 6L, null);
+      List<UserTypeAheadDto> userList =
+          userService.getUserTypeAheadDtoList(userCondition, pageInfo);
 
       json.put("pageInfo", pageInfo);
       json.put("result", "success");
@@ -287,14 +276,12 @@ public class UserController extends BaseController {
 
   @RequestMapping("userCenterData/{userName}")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> userCenterData(HttpSession session,
-                                     @PathVariable("userName") String userName) {
+  public @ResponseBody Map<String, Object> userCenterData(HttpSession session,
+      @PathVariable("userName") String userName) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserCenterDTO userCenterDTO = userService.getUserCenterDTOByUserName(userName);
-      if (userCenterDTO == null) {
+      UserCenterDto userCenterDto = userService.getUserCenterDtoByUserName(userName);
+      if (userCenterDto == null) {
         throw new AppException("No such user!");
       }
       Map<Integer, ProblemSolveStatusType> problemStatus = new TreeMap<>();
@@ -303,14 +290,14 @@ public class UserController extends BaseController {
       for (Integer result : results) {
         problemStatus.put(result, ProblemSolveStatusType.NONE);
       }
-      results = statusService.findAllUserTriedProblemIds(userCenterDTO.getUserId(),
+      results = statusService.findAllUserTriedProblemIds(userCenterDto.getUserId(),
           isAdmin(session));
       for (Integer result : results) {
         if (problemStatus.containsKey(result)) {
           problemStatus.put(result, ProblemSolveStatusType.FAIL);
         }
       }
-      results = statusService.findAllUserAcceptedProblemIds(userCenterDTO.getUserId(),
+      results = statusService.findAllUserAcceptedProblemIds(userCenterDto.getUserId(),
           isAdmin(session));
       for (Integer result : results) {
         if (problemStatus.containsKey(result)) {
@@ -318,13 +305,14 @@ public class UserController extends BaseController {
         }
       }
 
-      List<UserProblemStatusDTO> problemStatusList = new LinkedList<>();
+      List<UserProblemStatusDto> problemStatusList = new LinkedList<>();
       for (Map.Entry<Integer, ProblemSolveStatusType> status : problemStatus.entrySet()) {
-        problemStatusList.add(new UserProblemStatusDTO(status.getKey(), status.getValue().ordinal()));
+        problemStatusList
+            .add(new UserProblemStatusDto(status.getKey(), status.getValue().ordinal()));
       }
 
       json.put("problemStatus", problemStatusList);
-      json.put("targetUser", userCenterDTO);
+      json.put("targetUser", userCenterDto);
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
@@ -335,54 +323,52 @@ public class UserController extends BaseController {
 
   @RequestMapping("edit")
   @LoginPermit(NeedLogin = true)
-  public
-  @ResponseBody
-  Map<String, Object> edit(HttpSession session,
-                           @RequestBody @Valid UserEditDTO userEditDTO,
-                           BindingResult validateResult) {
+  public @ResponseBody Map<String, Object> edit(HttpSession session,
+      @RequestBody @Valid UserEditDto userEditDto,
+      BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+        UserDto currentUser = (UserDto) session.getAttribute("currentUser");
 
-        if (!currentUser.getUserName().equals(userEditDTO.getUserName())) {
+        if (!Objects.equals(currentUser.getUserName(), userEditDto.getUserName())) {
           throw new AppException("You can only edit your information.");
         }
-        UserDTO userDTO = userService.getUserDTOByUserName(userEditDTO.getUserName());
-        if (userDTO == null) {
+        UserDto userDto = userService.getUserDtoByUserName(userEditDto.getUserName());
+        if (userDto == null) {
           throw new AppException("No such user.");
         }
-        if (userDTO.getType() == AuthenticationType.CONSTANT.ordinal()) {
+        if (userDto.getType() == AuthenticationType.CONSTANT.ordinal()) {
           throw new AppException("Permission denied!");
         }
-        if (!userEditDTO.getOldPassword().equals(currentUser.getPassword())) {
+        if (!Objects.equals(userEditDto.getOldPassword(), currentUser.getPassword())) {
           throw new FieldException("oldPassword", "Your password is wrong, please try again.");
         }
-        if (userEditDTO.getNewPassword() != null) {
-          if (userEditDTO.getNewPasswordRepeat() == null) {
+        if (userEditDto.getNewPassword() != null) {
+          if (userEditDto.getNewPasswordRepeat() == null) {
             throw new FieldException("newPasswordRepeat", "Please repeat your new password.");
           }
-          if (!userEditDTO.getNewPassword().equals(userEditDTO.getNewPasswordRepeat())) {
+          if (!Objects.equals(userEditDto.getNewPassword(), userEditDto.getNewPasswordRepeat())) {
             throw new FieldException("newPasswordRepeat", "Password do not match.");
           }
-          userDTO.setPassword(userEditDTO.getNewPassword());
+          userDto.setPassword(userEditDto.getNewPassword());
         }
 
-        userDTO.setNickName(userEditDTO.getNickName());
-        userDTO.setSchool(userEditDTO.getSchool());
-        userDTO.setDepartmentId(userEditDTO.getDepartmentId());
-        userDTO.setStudentId(userEditDTO.getStudentId());
-        userDTO.setMotto(userEditDTO.getMotto());
-        userDTO.setName(userEditDTO.getName());
-        userDTO.setSex(userEditDTO.getSex());
-        userDTO.setGrade(userEditDTO.getGrade());
-        userDTO.setPhone(userEditDTO.getPhone());
-        userDTO.setSize(userEditDTO.getSize());
+        userDto.setNickName(userEditDto.getNickName());
+        userDto.setSchool(userEditDto.getSchool());
+        userDto.setDepartmentId(userEditDto.getDepartmentId());
+        userDto.setStudentId(userEditDto.getStudentId());
+        userDto.setMotto(userEditDto.getMotto());
+        userDto.setName(userEditDto.getName());
+        userDto.setSex(userEditDto.getSex());
+        userDto.setGrade(userEditDto.getGrade());
+        userDto.setPhone(userEditDto.getPhone());
+        userDto.setSize(userEditDto.getSize());
 
-        userService.updateUser(userDTO);
+        userService.updateUser(userDto);
         json.put("result", "success");
       } catch (FieldException e) {
         putFieldErrorsIntoBindingResult(e, validateResult);
@@ -398,43 +384,43 @@ public class UserController extends BaseController {
 
   @RequestMapping("adminEdit")
   @LoginPermit(AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> adminEdit(@RequestBody @Valid UserAdminEditDTO userAdminEditDTO,
-                                BindingResult validateResult) {
+  public @ResponseBody Map<String, Object> adminEdit(
+      @RequestBody @Valid UserAdminEditDto userAdminEditDto,
+      BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        UserDTO userDTO = userService.getUserDTOByUserName(userAdminEditDTO.getUserName());
-        if (userDTO == null) {
+        UserDto userDto = userService.getUserDtoByUserName(userAdminEditDto.getUserName());
+        if (userDto == null) {
           throw new AppException("No such user.");
         }
-        if (userAdminEditDTO.getNewPassword() != null) {
-          if (userAdminEditDTO.getNewPasswordRepeat() == null) {
+        if (userAdminEditDto.getNewPassword() != null) {
+          if (userAdminEditDto.getNewPasswordRepeat() == null) {
             throw new FieldException("newPasswordRepeat", "Please repeat your new password.");
           }
-          if (!userAdminEditDTO.getNewPassword().equals(userAdminEditDTO.getNewPasswordRepeat())) {
+          if (!Objects.equals(userAdminEditDto.getNewPassword(),
+              userAdminEditDto.getNewPasswordRepeat())) {
             throw new FieldException("newPasswordRepeat", "Password do not match.");
           }
-          userDTO.setPassword(userAdminEditDTO.getNewPassword());
+          userDto.setPassword(userAdminEditDto.getNewPassword());
         }
 
-        userDTO.setNickName(userAdminEditDTO.getNickName());
-        userDTO.setSchool(userAdminEditDTO.getSchool());
-        userDTO.setDepartmentId(userAdminEditDTO.getDepartmentId());
-        userDTO.setStudentId(userAdminEditDTO.getStudentId());
-        userDTO.setMotto(userAdminEditDTO.getMotto());
-        userDTO.setType(userAdminEditDTO.getType());
-        userDTO.setName(userAdminEditDTO.getName());
-        userDTO.setSex(userAdminEditDTO.getSex());
-        userDTO.setGrade(userAdminEditDTO.getGrade());
-        userDTO.setPhone(userAdminEditDTO.getPhone());
-        userDTO.setSize(userAdminEditDTO.getSize());
+        userDto.setNickName(userAdminEditDto.getNickName());
+        userDto.setSchool(userAdminEditDto.getSchool());
+        userDto.setDepartmentId(userAdminEditDto.getDepartmentId());
+        userDto.setStudentId(userAdminEditDto.getStudentId());
+        userDto.setMotto(userAdminEditDto.getMotto());
+        userDto.setType(userAdminEditDto.getType());
+        userDto.setName(userAdminEditDto.getName());
+        userDto.setSex(userAdminEditDto.getSex());
+        userDto.setGrade(userAdminEditDto.getGrade());
+        userDto.setPhone(userAdminEditDto.getPhone());
+        userDto.setSize(userAdminEditDto.getSize());
 
-        userService.updateUser(userDTO);
+        userService.updateUser(userDto);
         json.put("result", "success");
       } catch (FieldException e) {
         putFieldErrorsIntoBindingResult(e, validateResult);
@@ -450,18 +436,17 @@ public class UserController extends BaseController {
 
   @RequestMapping("sendSerialKey/{userName}")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> sendSerialKey(@PathVariable("userName") String userName) {
+  public @ResponseBody Map<String, Object> sendSerialKey(@PathVariable("userName") String userName) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO userDTO = userService.getUserDTOByUserName(userName);
-      if (userDTO == null) {
+      UserDto userDto = userService.getUserDtoByUserName(userName);
+      if (userDto == null) {
         throw new AppException("No such user!");
       }
-      UserSerialKeyDTO userSerialKeyDTO = userSerialKeyService.generateUserSerialKey(userDTO.getUserId());
+      UserSerialKeyDto userSerialKeyDto = userSerialKeyService.generateUserSerialKey(userDto
+          .getUserId());
 
-      if (emailService.sendUserSerialKey(userSerialKeyDTO)) {
+      if (emailService.sendUserSerialKey(userSerialKeyDto)) {
         json.put("result", "success");
       } else {
         json.put("result", "failed");
@@ -475,24 +460,22 @@ public class UserController extends BaseController {
 
   @RequestMapping("profile/{userName}")
   @LoginPermit(NeedLogin = true)
-  public
-  @ResponseBody
-  Map<String, Object> profile(@PathVariable("userName") String userName,
-                              HttpSession session) {
+  public @ResponseBody Map<String, Object> profile(@PathVariable("userName") String userName,
+      HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+      UserDto currentUser = (UserDto) session.getAttribute("currentUser");
 
       if (currentUser.getType() != AuthenticationType.ADMIN.ordinal()) {
-        if (!currentUser.getUserName().equals(userName)) {
+        if (!Objects.equals(currentUser.getUserName(), userName)) {
           throw new AppException("You can only view your information.");
         }
       }
-      UserEditorDTO userEditorDTO = userService.getUserEditorDTOByUserName(userName);
-      if (userEditorDTO == null) {
+      UserEditorDto userEditorDto = userService.getUserEditorDtoByUserName(userName);
+      if (userEditorDto == null) {
         throw new AppException("No such user.");
       }
-      json.put("user", userEditorDTO);
+      json.put("user", userEditorDto);
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
@@ -503,45 +486,45 @@ public class UserController extends BaseController {
 
   @RequestMapping("resetPassword")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> resetPassword(@RequestBody @Valid UserActivateDTO userActivateDTO,
-                                    BindingResult validateResult) {
+  public @ResponseBody Map<String, Object> resetPassword(
+      @RequestBody @Valid UserActivateDto userActivateDto,
+      BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        if (userActivateDTO.getPassword() == null) {
+        if (userActivateDto.getPassword() == null) {
           throw new FieldException("password", "Please enter your password.");
         }
-        if (userActivateDTO.getPasswordRepeat() == null) {
+        if (userActivateDto.getPasswordRepeat() == null) {
           throw new FieldException("passwordRepeat", "Please repeat your password.");
         }
-        if (!userActivateDTO.getPassword().equals(userActivateDTO.getPasswordRepeat())) {
+        if (!Objects.equals(userActivateDto.getPassword(), userActivateDto.getPasswordRepeat())) {
           throw new FieldException("passwordRepeat", "Password do not match.");
         }
-        UserDTO userDTO = userService.getUserDTOByUserName(userActivateDTO.getUserName());
-        if (userDTO == null) {
+        UserDto userDto = userService.getUserDtoByUserName(userActivateDto.getUserName());
+        if (userDto == null) {
           throw new FieldException("userName", "No such user.");
         }
-        UserSerialKeyDTO userSerialKeyDTO = userSerialKeyService.findUserSerialKeyDTOByUserId(
-            userDTO.getUserId());
-        if (userSerialKeyDTO == null ||
-            new Date().getTime() - userSerialKeyDTO.getTime().getTime() > 1800000) {
+        UserSerialKeyDto userSerialKeyDto = userSerialKeyService.findUserSerialKeyDtoByUserId(
+            userDto.getUserId());
+        if (userSerialKeyDto == null ||
+            new Date().getTime() - userSerialKeyDto.getTime().getTime() > 1800000) {
           throw new FieldException("serialKey",
               "Serial Key exceed time limit! Please regenerate a new key.");
         }
-        if (!StringUtil.encodeSHA1(userSerialKeyDTO.getSerialKey()).equals(userActivateDTO.getSerialKey())) {
+        if (!Objects.equals(StringUtil.encodeSHA1(userSerialKeyDto.getSerialKey()),
+            userActivateDto.getSerialKey())) {
           throw new FieldException("serialKey", "Serial Key is wrong or has been used!");
         }
 
-        userDTO.setPassword(userActivateDTO.getPassword());
-        userService.updateUser(userDTO);
+        userDto.setPassword(userActivateDto.getPassword());
+        userService.updateUser(userDto);
 
-        userSerialKeyDTO.setSerialKey("This key has been used.");
-        userSerialKeyService.updateUserSerialKey(userSerialKeyDTO);
+        userSerialKeyDto.setSerialKey("This key has been used.");
+        userSerialKeyService.updateUserSerialKey(userSerialKeyDto);
         json.put("result", "success");
       } catch (FieldException e) {
         putFieldErrorsIntoBindingResult(e, validateResult);

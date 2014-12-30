@@ -9,6 +9,7 @@ import shutil
 
 entities = []
 
+
 def initEntities(dir_name):
     for item in os.listdir(dir_name):
         sub_path = os.path.join(dir_name, item)
@@ -18,6 +19,7 @@ def initEntities(dir_name):
         elif sub_path[-5:] == '.java':
             entity = sub_path[sub_path.rfind('/') + 1: -5]
             entities.append(entity)
+
 
 def generateDaoIface(entity):
     file_name = dao_iface_dir + entity + 'Dao.java'
@@ -34,6 +36,7 @@ public interface {0}Dao extends Dao<{0}, Integer> {{
 }}
 '''.format(entity)
     )
+
 
 def generateDaoImpl(entity):
     file_name = dao_impl_dir + entity + 'DaoImpl.java'
@@ -67,10 +70,12 @@ public class {0}DaoImpl extends DaoImpl<{0}, Integer> implements {0}Dao {{
 '''.format(entity)
     )
 
+
 def generateDaos():
     for item in entities:
         generateDaoIface(item)
         generateDaoImpl(item)
+
 
 def parseOpt(argv):
     help_info = "generate_daos.py -i <input> -o <output>"

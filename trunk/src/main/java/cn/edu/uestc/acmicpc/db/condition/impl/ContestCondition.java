@@ -65,7 +65,8 @@ public class ContestCondition extends BaseCondition {
       Condition keywordCondition = new Condition(Condition.JoinedType.OR);
       keywordCondition.addEntry("title", Condition.ConditionType.LIKE, keyword);
       keywordCondition.addEntry("description", Condition.ConditionType.LIKE, keyword);
-      // If the keyword is numeric, add a condition entry to match the contest id.
+      // If the keyword is numeric, add a condition entry to match the contest
+      // id.
       try {
         Integer keywordNumber = Integer.parseInt(keyword);
         keywordCondition.addEntry("contestId", Condition.ConditionType.EQUALS, keywordNumber);

@@ -7,11 +7,11 @@ public enum CodeFields implements Fields {
   ALL_FIELDS(
       FieldProjection.Property("codeId"),
       FieldProjection.Property("content"),
-      FieldProjection.Property("share")
-  );
+      FieldProjection.Property("share"));
 
   private final FieldProjection[] projections;
 
+  @Override
   public FieldProjection[] getProjections() {
     return projections;
   }

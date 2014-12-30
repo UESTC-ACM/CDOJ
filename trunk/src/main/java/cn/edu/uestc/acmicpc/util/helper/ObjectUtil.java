@@ -1,9 +1,6 @@
 package cn.edu.uestc.acmicpc.util.helper;
 
-import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import cn.edu.uestc.acmicpc.db.dto.base.BaseDto;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -16,12 +13,11 @@ import java.util.ArrayList;
  */
 public class ObjectUtil {
 
-  private static final Logger LOGGER = LogManager.getLogger(ObjectUtil.class);
-
   /**
    * Output object's fields and methods.
    *
-   * @param obj object to be printed
+   * @param obj
+   *          object to be printed
    * @return information about the object
    */
   @SuppressWarnings("rawtypes")
@@ -40,8 +36,9 @@ public class ObjectUtil {
     for (Method m : cls.getMethods()) {
       try {
         String name = m.getName();
-        if (!name.startsWith("get"))
+        if (!name.startsWith("get")) {
           continue;
+        }
         name = name.substring(3);
         list.add(String.format("%s : %s", name, m.invoke(obj).toString()));
       } catch (Exception ignored) {
@@ -55,7 +52,7 @@ public class ObjectUtil {
     return String.format("{\n%s\n}", ArrayUtil.join(list.toArray(), ",\n"));
   }
 
-  public static <T extends Serializable> boolean entityEquals(BaseDTO<T> dto, T object) {
+  public static <T extends Serializable> boolean entityEquals(BaseDto<T> dto, T object) {
     for (Method method : dto.getClass().getMethods()) {
       if (method.getName().startsWith("get") && !method.getName().equals("getClass")) {
         try {

@@ -62,7 +62,8 @@ public abstract class BaseCondition {
   /**
    * Creates a {@link BaseCondition} sub class with key field.
    *
-   * @param keyField key field's name.
+   * @param keyField
+   *          key field's name.
    */
   protected BaseCondition(String keyField) {
     this.keyField = keyField;

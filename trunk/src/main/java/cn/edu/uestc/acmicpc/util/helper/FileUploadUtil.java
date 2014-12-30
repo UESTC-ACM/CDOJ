@@ -1,8 +1,8 @@
 package cn.edu.uestc.acmicpc.util.helper;
 
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
-import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
+import cn.edu.uestc.acmicpc.web.dto.FileInformationDto;
+import cn.edu.uestc.acmicpc.web.dto.FileUploadDto;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,22 +10,21 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-
 /**
  * File uploading util methods.
  */
 public class FileUploadUtil {
 
-  public static FileInformationDTO uploadFile(FileUploadDTO fileUploadDTO,
-                                              String basePath,
-                                              String absoluteBasePath,
-                                              String directory) throws AppException {
+  public static FileInformationDto uploadFile(FileUploadDto fileUploadDto,
+      String basePath,
+      String absoluteBasePath,
+      String directory) throws AppException {
     if (!directory.endsWith("/")) {
       directory += "/";
     }
     String folder = basePath + directory;
     String absolutePath = absoluteBasePath + directory;
-    List<MultipartFile> files = fileUploadDTO.getFiles();
+    List<MultipartFile> files = fileUploadDto.getFiles();
     if (files == null || files.size() > 1) {
       throw new AppException("Fetch uploaded file error.");
     }
@@ -45,7 +44,7 @@ public class FileUploadUtil {
       throw new AppException("Error while save files");
     }
 
-    return FileInformationDTO.builder()
+    return FileInformationDto.builder()
         .setFileName(file.getOriginalFilename())
         .setFileURL(folder + newName)
         .build();

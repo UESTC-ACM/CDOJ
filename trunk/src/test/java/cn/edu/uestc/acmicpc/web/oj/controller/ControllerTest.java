@@ -8,8 +8,8 @@ import cn.edu.uestc.acmicpc.config.WebMVCConfig;
 import cn.edu.uestc.acmicpc.config.WebMVCResource;
 import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.department.DepartmentDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.language.LanguageDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.department.DepartmentDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.language.LanguageDto;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
@@ -50,8 +50,8 @@ public abstract class ControllerTest extends AbstractTestNGSpringContextTests {
 
   protected MockMvc mockMvc;
   protected MockHttpSession session;
-  protected List<DepartmentDTO> departmentList = new ArrayList<DepartmentDTO>();
-  @Mock protected List<LanguageDTO> languageList;
+  protected List<DepartmentDto> departmentList = new ArrayList<DepartmentDto>();
+  @Mock protected List<LanguageDto> languageList;
 
   @Autowired protected ArticleService articleService;
   @Autowired protected UserService userService;

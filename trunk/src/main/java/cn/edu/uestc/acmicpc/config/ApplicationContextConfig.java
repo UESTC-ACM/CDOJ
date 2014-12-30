@@ -201,7 +201,8 @@ public class ApplicationContextConfig {
   /**
    * Simply get property in PropertySource
    *
-   * @param name property name
+   * @param name
+   *          property name
    * @return property value
    */
   private String getProperty(final String name) {

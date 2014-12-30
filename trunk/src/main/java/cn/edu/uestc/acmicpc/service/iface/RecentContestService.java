@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.util.dto.RecentContestDTO;
+import cn.edu.uestc.acmicpc.util.dto.RecentContestDto;
 
 import java.util.List;
 
@@ -12,7 +12,8 @@ public interface RecentContestService {
   /**
    * Get recent contest list
    *
-   * @return list of {@link cn.edu.uestc.acmicpc.util.dto.RecentContestDTO} entity.
+   * @return list of {@link cn.edu.uestc.acmicpc.util.dto.RecentContestDto}
+   *         entity.
    */
-  public List<RecentContestDTO> getRecentContestList();
+  public List<RecentContestDto> getRecentContestList();
 }

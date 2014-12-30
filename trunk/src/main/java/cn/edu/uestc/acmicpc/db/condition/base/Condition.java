@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Conditions setting for {@link cn.edu.uestc.acmicpc.db.dao.iface.Dao#findAll(String, Condition)}
- * and {@link cn.edu.uestc.acmicpc.db.dao.iface.Dao#count(Condition)}.
+ * Conditions setting for
+ * {@link cn.edu.uestc.acmicpc.db.dao.iface.Dao#findAll(String, Condition)} and
+ * {@link cn.edu.uestc.acmicpc.db.dao.iface.Dao#count(Condition)}.
  * <p/>
  * <strong>For Developers</strong>:
  * <p/>
@@ -25,14 +26,14 @@ public class Condition {
   public static enum JoinedType {
     AND("and"), OR("or");
 
-    private final String singal;
+    private final String signal;
 
-    private JoinedType(String singal) {
-      this.singal = singal;
+    private JoinedType(String signal) {
+      this.signal = signal;
     }
 
-    public String getSingal() {
-      return singal;
+    public String getSignal() {
+      return signal;
     }
   }
 
@@ -113,7 +114,8 @@ public class Condition {
     /**
      * Creates an {@link Entry} entity according to {@link Condition} entity.
      *
-     * @param condition DB query condition.
+     * @param condition
+     *          DB query condition.
      * @return an {@link Entry} entity for DB query.
      * @throws AppException
      * @see Condition
@@ -126,10 +128,13 @@ public class Condition {
     /**
      * Creates an {@link Entry} entity according to query string.
      *
-     * @param fieldName     field name of DB table.
-     * @param conditionType condition type for DB query, see {@link ConditionType} for more
-     *                      details.
-     * @param value         field value as expected.
+     * @param fieldName
+     *          field name of DB table.
+     * @param conditionType
+     *          condition type for DB query, see {@link ConditionType} for more
+     *          details.
+     * @param value
+     *          field value as expected.
      * @return an {@link Entry} entity for DB query.
      * @throws AppException
      * @see ConditionType
@@ -207,7 +212,8 @@ public class Condition {
   /**
    * Create a DB query condition object with specific {@link JoinedType}.
    *
-   * @param joinedType DB joined type for query.
+   * @param joinedType
+   *          DB joined type for query.
    * @see JoinedType
    */
   public Condition(JoinedType joinedType) {
@@ -217,8 +223,10 @@ public class Condition {
   /**
    * Adds new order field into the order list.
    *
-   * @param field new order field name
-   * @param asc   whether new order field asc or not
+   * @param field
+   *          new order field name
+   * @param asc
+   *          whether new order field asc or not
    * @return condition itself.
    * @throws AppException
    */
@@ -271,13 +279,14 @@ public class Condition {
     result = result.replaceAll("'", "''");
     return result;
   }
+
   /**
    * Builds DB query string and append it into builder.
    *
    * @return if this condition's HQL is empty, return {@code false}.
    */
   private String buildHQLString() {
-    String flag = " " + joinedType.getSingal() + " ";
+    String flag = " " + joinedType.getSignal() + " ";
     StringBuilder builder = new StringBuilder();
     boolean first = true;
 

@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSONReader;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -30,7 +31,8 @@ public class JsonPathArgumentResolver implements HandlerMethodArgumentResolver {
   }
 
   @Override
-  public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+  public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+      NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
     HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 
     // Discard request with incorrect content-type
@@ -46,16 +48,17 @@ public class JsonPathArgumentResolver implements HandlerMethodArgumentResolver {
       modelMap.put(LOADED_FLAG, 0);
 
       Method method = parameter.getMethod();
-      Map<String, Class> objectTypeMap = new HashMap<>();
+      Map<String, Class<?>> objectTypeMap = new HashMap<>();
 
       int totalParameters = method.getParameterTypes().length;
       for (int parameterIndex = 0; parameterIndex < totalParameters; parameterIndex++) {
-        MethodParameter currentParameter = MethodParameter.forMethodOrConstructor(method, parameterIndex);
+        MethodParameter currentParameter = MethodParameter.forMethodOrConstructor(method,
+            parameterIndex);
         if (currentParameter.hasParameterAnnotation(JsonMap.class)) {
           objectTypeMap.put(
               currentParameter.getParameterAnnotation(JsonMap.class).value(),
               currentParameter.getParameterType()
-          );
+              );
         }
       }
 

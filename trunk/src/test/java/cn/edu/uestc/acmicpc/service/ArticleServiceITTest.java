@@ -29,13 +29,13 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
   private ArticleService articleService;
 
   @Test
-  public void testGetArticleDTO() throws AppException {
+  public void testGetArticleDto() throws AppException {
     Integer articleId = 2;
     Assert.assertEquals(articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS).getArticleId(), Integer.valueOf(2));
   }
 
   @Test
-  public void testGetArticleDTO_noSuchArticle() throws AppException {
+  public void testGetArticleDto_noSuchArticle() throws AppException {
     Integer articleId = 10;
     Assert.assertNull(articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS));
   }
@@ -382,8 +382,8 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
     ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.FIELDS_FOR_LIST_PAGE);
     articleCriteria.userId = 1;
     PageInfo pageInfo = PageInfo.create(300L, 3L, 10, 2L);
-    List<ArticleDto> articleListDTOs = articleService.getArticleList(articleCriteria, pageInfo);
-    Assert.assertEquals(articleListDTOs.size(), 1);
+    List<ArticleDto> articleListDtos = articleService.getArticleList(articleCriteria, pageInfo);
+    Assert.assertEquals(articleListDtos.size(), 1);
   }
 
   @Test
@@ -391,8 +391,8 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
     ArticleCriteria articleCriteria = new ArticleCriteria(ArticleFields.FIELDS_FOR_LIST_PAGE);
     articleCriteria.userId = 1;
     PageInfo pageInfo = PageInfo.create(300L, 3L, 10, 3L);
-    List<ArticleDto> articleListDTOs = articleService.getArticleList(articleCriteria, pageInfo);
-    Assert.assertEquals(articleListDTOs.size(), 0);
+    List<ArticleDto> articleListDtos = articleService.getArticleList(articleCriteria, pageInfo);
+    Assert.assertEquals(articleListDtos.size(), 0);
   }
 
   @Test

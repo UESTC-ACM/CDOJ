@@ -41,11 +41,16 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    registry.addResourceHandler("/dist/**").addResourceLocations(getResourceLocations("dist", "staticResources.path"));
-    registry.addResourceHandler("/bower_components/**").addResourceLocations(getResourceLocations("bower_components", "staticResources.path"));
-    registry.addResourceHandler("/font/**").addResourceLocations(getResourceLocations("font", "staticResources.path"));
-    registry.addResourceHandler("/template/**").addResourceLocations(getResourceLocations("template", "staticResources.path"));
-    registry.addResourceHandler("/images/**").addResourceLocations(getResourceLocations("", "images.path"));
+    registry.addResourceHandler("/dist/**").addResourceLocations(
+        getResourceLocations("dist", "staticResources.path"));
+    registry.addResourceHandler("/bower_components/**").addResourceLocations(
+        getResourceLocations("bower_components", "staticResources.path"));
+    registry.addResourceHandler("/font/**").addResourceLocations(
+        getResourceLocations("font", "staticResources.path"));
+    registry.addResourceHandler("/template/**").addResourceLocations(
+        getResourceLocations("template", "staticResources.path"));
+    registry.addResourceHandler("/images/**").addResourceLocations(
+        getResourceLocations("", "images.path"));
   }
 
   private String getResourceLocations(String folder, String name) {

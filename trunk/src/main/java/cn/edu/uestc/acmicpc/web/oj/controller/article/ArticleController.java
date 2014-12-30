@@ -3,7 +3,7 @@ package cn.edu.uestc.acmicpc.web.oj.controller.article;
 import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.util.annotation.JsonMap;
@@ -30,19 +30,20 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/article")
 public class ArticleController extends BaseController {
 
-  private ArticleService articleService;
-  private PictureService pictureService;
-  private Settings settings;
+  private final ArticleService articleService;
+  private final PictureService pictureService;
+  private final Settings settings;
 
   @Autowired
   public ArticleController(ArticleService articleService,
-                           PictureService pictureService, Settings settings) {
+      PictureService pictureService, Settings settings) {
     this.articleService = articleService;
     this.pictureService = pictureService;
     this.settings = settings;
@@ -50,10 +51,8 @@ public class ArticleController extends BaseController {
 
   @RequestMapping("data/{articleId}")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> data(@PathVariable("articleId") Integer articleId,
-                           HttpSession session) throws AppException {
+  public @ResponseBody Map<String, Object> data(@PathVariable("articleId") Integer articleId,
+      HttpSession session) throws AppException {
     Map<String, Object> json = new HashMap<>();
     ArticleDto articleDto = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS);
     AppExceptionUtil.assertNotNull(articleDto, "No such article.");
@@ -68,9 +67,8 @@ public class ArticleController extends BaseController {
 
   @RequestMapping("changeNoticeOrder")
   @LoginPermit(AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> changeNoticeOrder(@JsonMap("order") String orderList) throws AppException {
+  public @ResponseBody Map<String, Object> changeNoticeOrder(@JsonMap("order") String orderList)
+      throws AppException {
     Map<String, Object> json = new HashMap<>();
     String[] articleIdList = orderList.split(",");
     List<ArticleDto> articleList = new LinkedList<>();
@@ -107,10 +105,8 @@ public class ArticleController extends BaseController {
 
   @RequestMapping("commentSearch")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> commentSearch(HttpSession session,
-                                    @RequestBody ArticleCriteria articleCriteria) throws AppException {
+  public @ResponseBody Map<String, Object> commentSearch(HttpSession session,
+      @RequestBody ArticleCriteria articleCriteria) throws AppException {
     Map<String, Object> json = new HashMap<>();
     articleCriteria.setResultFields(ArticleFields.FIELDS_FOR_LIST_PAGE);
     if (!isAdmin(session)) {
@@ -122,21 +118,19 @@ public class ArticleController extends BaseController {
     PageInfo pageInfo = buildPageInfo(count, articleCriteria.currentPage,
         settings.RECORD_PER_PAGE, null);
 
-    List<ArticleDto> articleListDTOList = articleService.getArticleList(
+    List<ArticleDto> articleListDtoList = articleService.getArticleList(
         articleCriteria, pageInfo);
 
     json.put("pageInfo", pageInfo);
     json.put("result", "success");
-    json.put("list", articleListDTOList);
+    json.put("list", articleListDtoList);
     return json;
   }
 
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> search(HttpSession session,
-                             @RequestBody ArticleCriteria articleCriteria) throws AppException {
+  public @ResponseBody Map<String, Object> search(HttpSession session,
+      @RequestBody ArticleCriteria articleCriteria) throws AppException {
     Map<String, Object> json = new HashMap<>();
     articleCriteria.setResultFields(ArticleFields.FIELDS_FOR_LIST_PAGE);
     if (!isAdmin(session)) {
@@ -169,13 +163,12 @@ public class ArticleController extends BaseController {
 
   @RequestMapping("edit")
   @LoginPermit(NeedLogin = true)
-  public
-  @ResponseBody
-  Map<String, Object> edit(@JsonMap("articleEditDto") ArticleDto articleEditDto,
-                           @JsonMap("action") String action,
-                           HttpSession session) throws AppException {
+  public @ResponseBody Map<String, Object> edit(
+      @JsonMap("articleEditDto") ArticleDto articleEditDto,
+      @JsonMap("action") String action,
+      HttpSession session) throws AppException {
     Map<String, Object> json = new HashMap<>();
-    UserDTO currentUser = getCurrentUser(session);
+    UserDto currentUser = getCurrentUser(session);
 
     if (articleEditDto.getType() == ArticleType.COMMENT.ordinal()) {
       // Check comment content length
@@ -208,7 +201,8 @@ public class ArticleController extends BaseController {
       articleDto.setType(ArticleType.ARTICLE.ordinal());
       articleDto.setUserId(currentUser.getUserId());
     } else {
-      articleDto = articleService.getArticleDto(articleEditDto.getArticleId(), ArticleFields.ALL_FIELDS);
+      articleDto = articleService.getArticleDto(articleEditDto.getArticleId(),
+          ArticleFields.ALL_FIELDS);
       if (articleDto == null) {
         throw new AppException("No such article.");
       }
@@ -247,11 +241,9 @@ public class ArticleController extends BaseController {
 
   @RequestMapping("applyOperation/{id}/{field}/{value}")
   @LoginPermit(AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> applyOperation(@PathVariable("id") String targetId,
-                                     @PathVariable("field") String field,
-                                     @PathVariable("value") String value) throws AppException {
+  public @ResponseBody Map<String, Object> applyOperation(@PathVariable("id") String targetId,
+      @PathVariable("field") String field,
+      @PathVariable("value") String value) throws AppException {
     Map<String, Object> json = new HashMap<>();
     articleService.applyOperation(field, targetId, value);
     json.put("result", "success");

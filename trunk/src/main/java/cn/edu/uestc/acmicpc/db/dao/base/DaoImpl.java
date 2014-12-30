@@ -3,8 +3,8 @@ package cn.edu.uestc.acmicpc.db.dao.base;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.ConditionType;
 import cn.edu.uestc.acmicpc.db.dao.iface.Dao;
-import cn.edu.uestc.acmicpc.db.dto.base.BaseBuilder;
-import cn.edu.uestc.acmicpc.db.dto.base.BaseDTO;
+import cn.edu.uestc.acmicpc.db.dto.base.BaseDto;
+import cn.edu.uestc.acmicpc.db.dto.base.BaseDtoBuilder;
 import cn.edu.uestc.acmicpc.util.annotation.Fields;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
@@ -34,17 +34,19 @@ import java.util.Map;
  * <strong>WARN</strong>: This class is only a abstract class, please create
  * subclass by overriding {@code getReference} method.
  *
- * @param <Entity> Entity's type
- * @param <PK>     Primary key's type
+ * @param <E>
+ *          entity type
+ * @param <K>
+ *          primary key type
  */
 @Repository
-public abstract class DaoImpl<Entity extends Serializable, PK extends Serializable>
-    extends BaseDao implements Dao<Entity, PK> {
+public abstract class DaoImpl<E extends Serializable, K extends Serializable>
+    extends BaseDao implements Dao<E, K> {
 
   private static final Logger LOGGER = LogManager.getLogger(DaoImpl.class);
 
   @Override
-  public void addOrUpdate(Entity entity) throws AppException {
+  public void addOrUpdate(E entity) throws AppException {
     try {
       if (DatabaseUtil.getKeyValue(entity) == null) {
         add(entity);
@@ -61,12 +63,13 @@ public abstract class DaoImpl<Entity extends Serializable, PK extends Serializab
    *
    * @return primary key's type
    */
-  protected abstract Class<PK> getPKClass();
+  protected abstract Class<K> getPKClass();
 
   /**
    * Build HQL with class name.
    *
-   * @param condition DB condition entity.
+   * @param condition
+   *          DB condition entity.
    * @return HQL with class name.
    */
   private String buildHQLString(Condition condition) {
@@ -77,7 +80,8 @@ public abstract class DaoImpl<Entity extends Serializable, PK extends Serializab
   /**
    * Build HQL with class name, and the condition's order is considered..
    *
-   * @param condition DB condition entity.
+   * @param condition
+   *          DB condition entity.
    * @return HQL with class name.
    */
   private String buildHQLStringWithOrders(Condition condition) {
@@ -141,7 +145,7 @@ public abstract class DaoImpl<Entity extends Serializable, PK extends Serializab
   }
 
   @Override
-  public Serializable add(Entity entity) throws AppException {
+  public Serializable add(E entity) throws AppException {
     try {
       return getSession().save(entity);
     } catch (HibernateException e) {
@@ -152,12 +156,12 @@ public abstract class DaoImpl<Entity extends Serializable, PK extends Serializab
 
   @SuppressWarnings("unchecked")
   @Override
-  public Entity get(PK key) throws AppException {
+  public E get(K key) throws AppException {
     try {
       if (key == null) {
         return null;
       }
-      return (Entity) getSession().get(getReferenceClass(), key);
+      return (E) getSession().get(getReferenceClass(), key);
     } catch (HibernateException e) {
       LOGGER.error(e);
       throw new AppException("Invoke get method error.");
@@ -165,7 +169,7 @@ public abstract class DaoImpl<Entity extends Serializable, PK extends Serializab
   }
 
   @Override
-  public void update(Entity entity) throws AppException {
+  public void update(E entity) throws AppException {
     try {
       getSession().update(entity);
     } catch (HibernateException e) {
@@ -238,8 +242,8 @@ public abstract class DaoImpl<Entity extends Serializable, PK extends Serializab
 
   @Override
   public Object getEntityByUniqueField(String fieldName, Object value,
-                                       String propertyName,
-                                       boolean forceUnique) throws AppException {
+      String propertyName,
+      boolean forceUnique) throws AppException {
     Condition condition = new Condition();
     condition.addEntry(fieldName, ConditionType.EQUALS, value);
     List<?> results = findAll(propertyName, condition);
@@ -262,11 +266,11 @@ public abstract class DaoImpl<Entity extends Serializable, PK extends Serializab
    *
    * @return the reference Class
    */
-  protected abstract Class<Entity> getReferenceClass();
+  protected abstract Class<E> getReferenceClass();
 
   @Override
   public void updateEntitiesByCondition(Map<String, Object> properties,
-                                        Condition condition)
+      Condition condition)
       throws AppException {
     if (properties.isEmpty()) {
       return;
@@ -315,7 +319,7 @@ public abstract class DaoImpl<Entity extends Serializable, PK extends Serializab
    */
   @Override
   public void updateEntitiesByField(Map<String, Object> properties,
-                                    String field, String values) throws AppException {
+      String field, String values) throws AppException {
     if (properties.isEmpty()) {
       return;
     }
@@ -352,14 +356,15 @@ public abstract class DaoImpl<Entity extends Serializable, PK extends Serializab
 
   @Override
   public void updateEntitiesByField(String propertyField, Object propertyValue,
-                                    String field, String values) throws AppException {
+      String field, String values) throws AppException {
     Map<String, Object> properties = new HashMap<>();
     properties.put(propertyField, propertyValue);
     updateEntitiesByField(properties, field, values);
   }
 
   @Override
-  public void updateEntitiesByCondition(String propertyField, Object propertyValue, Condition condition) throws AppException {
+  public void updateEntitiesByCondition(String propertyField, Object propertyValue,
+      Condition condition) throws AppException {
     Map<String, Object> properties = new HashMap<>();
     properties.put(propertyField, propertyValue);
     updateEntitiesByCondition(properties, condition);
@@ -381,16 +386,16 @@ public abstract class DaoImpl<Entity extends Serializable, PK extends Serializab
   }
 
   @Override
-  public <T extends BaseDTO<Entity>> List<T> findAll(Class<T> clazz,
-                                                     BaseBuilder<T> builder,
-                                                     String hql, PageInfo pageInfo) throws AppException {
+  public <T extends BaseDto<E>> List<T> findAll(Class<T> clazz,
+      BaseDtoBuilder<T> builder,
+      String hql, PageInfo pageInfo) throws AppException {
     List<T> list = new ArrayList<>();
     AppExceptionUtil.assertTrue(clazz.isAnnotationPresent(Fields.class));
     String[] fields = clazz.getAnnotation(Fields.class).value();
     // TODO wrap the field by ``
     String queryField = ArrayUtil.join(fields, ",");
     List<?> result = findAll(queryField, hql, pageInfo);
-    for (Iterator<?> iterator = result.iterator(); iterator.hasNext(); ) {
+    for (Iterator<?> iterator = result.iterator(); iterator.hasNext();) {
       Object[] entity = (Object[]) iterator.next();
       Map<String, Object> properties = new HashMap<>();
       for (int i = 0; i < fields.length; i++) {
@@ -402,16 +407,16 @@ public abstract class DaoImpl<Entity extends Serializable, PK extends Serializab
   }
 
   @Override
-  public <T extends BaseDTO<Entity>> List<T> findAll(Class<T> clazz,
-                                                     BaseBuilder<T> builder,
-                                                     Condition condition) throws AppException {
+  public <T extends BaseDto<E>> List<T> findAll(Class<T> clazz,
+      BaseDtoBuilder<T> builder,
+      Condition condition) throws AppException {
     List<T> list = new ArrayList<>();
     AppExceptionUtil.assertTrue(clazz.isAnnotationPresent(Fields.class));
     String[] fields = clazz.getAnnotation(Fields.class).value();
     // TODO wrap the field by ``
     String queryField = ArrayUtil.join(fields, ",");
     List<?> result = findAll(queryField, condition);
-    for (Iterator<?> iterator = result.iterator(); iterator.hasNext(); ) {
+    for (Iterator<?> iterator = result.iterator(); iterator.hasNext();) {
       Object[] entity = (Object[]) iterator.next();
       Map<String, Object> properties = new HashMap<>();
       for (int i = 0; i < fields.length; i++) {
@@ -423,9 +428,9 @@ public abstract class DaoImpl<Entity extends Serializable, PK extends Serializab
   }
 
   @Override
-  public <T extends BaseDTO<Entity>> T getDTOByUniqueField(Class<T> clazz,
-                                                           BaseBuilder<T> builder,
-                                                           String field, Object value) throws AppException {
+  public <T extends BaseDto<E>> T getDtoByUniqueField(Class<T> clazz,
+      BaseDtoBuilder<T> builder,
+      String field, Object value) throws AppException {
     Condition condition = new Condition();
     if (value instanceof String) {
       condition.addEntry(field, ConditionType.STRING_EQUALS, value);
@@ -444,7 +449,7 @@ public abstract class DaoImpl<Entity extends Serializable, PK extends Serializab
 
   @Override
   public void increment(String incrementField,
-                        String field, String values) throws AppException {
+      String field, String values) throws AppException {
     StringBuilder stringBuilder = new StringBuilder();
     // TODO wrap the field by ``
     stringBuilder.append("update ").append(getReferenceClass().getSimpleName())
@@ -455,9 +460,10 @@ public abstract class DaoImpl<Entity extends Serializable, PK extends Serializab
     getQuery(hql, null).executeUpdate();
   }
 
+  @SuppressWarnings("unchecked")
   @Override
-  public <T extends BaseDTO<Entity>> List<T> findAll(DetachedCriteria criteria,
-                                                     PageInfo pageInfo) throws AppException {
+  public <T extends BaseDto<E>> List<T> findAll(DetachedCriteria criteria,
+      PageInfo pageInfo) throws AppException {
     Criteria executableCriteria = criteria.getExecutableCriteria(getSession());
     if (pageInfo != null) {
       executableCriteria = executableCriteria
@@ -468,7 +474,7 @@ public abstract class DaoImpl<Entity extends Serializable, PK extends Serializab
   }
 
   @Override
-  public <T extends BaseDTO<Entity>> T getDtoByUniqueField(DetachedCriteria criteria)
+  public <T extends BaseDto<E>> T getDtoByUniqueField(DetachedCriteria criteria)
       throws AppException {
     List<T> result = findAll(criteria, null);
     if (result.size() == 0) {

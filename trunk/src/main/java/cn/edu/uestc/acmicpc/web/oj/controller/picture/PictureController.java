@@ -1,12 +1,12 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.picture;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
-import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
+import cn.edu.uestc.acmicpc.web.dto.FileInformationDto;
+import cn.edu.uestc.acmicpc.web.dto.FileUploadDto;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
 import javax.servlet.http.HttpSession;
 
 /**
@@ -32,7 +34,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/picture")
 public class PictureController extends BaseController {
 
-  private PictureService pictureService;
+  private final PictureService pictureService;
 
   @Autowired
   public PictureController(PictureService pictureService) {
@@ -41,24 +43,22 @@ public class PictureController extends BaseController {
 
   @RequestMapping(value = "uploadProblemPicture/{problemId}", method = RequestMethod.POST)
   @LoginPermit(AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> uploadProblemPicture(@RequestParam(value = "uploadFile", required = true)
-                                           MultipartFile[] files,
-                                           @PathVariable("problemId") String problemId) {
+  public @ResponseBody Map<String, Object> uploadProblemPicture(
+      @RequestParam(value = "uploadFile", required = true) MultipartFile[] files,
+      @PathVariable("problemId") String problemId) {
     Map<String, Object> json = new HashMap<>();
     try {
       String directory = "problem/" + problemId + "/";
-      FileInformationDTO fileInformationDTO = pictureService.uploadPicture(
-          FileUploadDTO.builder()
+      FileInformationDto fileInformationDto = pictureService.uploadPicture(
+          FileUploadDto.builder()
               .setFiles(Arrays.asList(files))
               .build(),
           directory
-      );
+          );
 
       json.put("success", "true");
-      json.put("uploadedFile", fileInformationDTO.getFileName());
-      json.put("uploadedFileUrl", fileInformationDTO.getFileURL());
+      json.put("uploadedFile", fileInformationDto.getFileName());
+      json.put("uploadedFileUrl", fileInformationDto.getFileURL());
     } catch (AppException e) {
       e.printStackTrace();
       json.put("error", e.getMessage());
@@ -71,24 +71,22 @@ public class PictureController extends BaseController {
 
   @RequestMapping(value = "uploadContestPicture/{contestId}", method = RequestMethod.POST)
   @LoginPermit(AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> uploadContestPicture(@RequestParam(value = "uploadFile", required = true)
-                                           MultipartFile[] files,
-                                           @PathVariable("contestId") String contestId) {
+  public @ResponseBody Map<String, Object> uploadContestPicture(
+      @RequestParam(value = "uploadFile", required = true) MultipartFile[] files,
+      @PathVariable("contestId") String contestId) {
     Map<String, Object> json = new HashMap<>();
     try {
       String directory = "contest/" + contestId + "/";
-      FileInformationDTO fileInformationDTO = pictureService.uploadPicture(
-          FileUploadDTO.builder()
+      FileInformationDto fileInformationDto = pictureService.uploadPicture(
+          FileUploadDto.builder()
               .setFiles(Arrays.asList(files))
               .build(),
           directory
-      );
+          );
 
       json.put("success", "true");
-      json.put("uploadedFile", fileInformationDTO.getFileName());
-      json.put("uploadedFileUrl", fileInformationDTO.getFileURL());
+      json.put("uploadedFile", fileInformationDto.getFileName());
+      json.put("uploadedFileUrl", fileInformationDto.getFileURL());
     } catch (AppException e) {
       e.printStackTrace();
       json.put("error", e.getMessage());
@@ -99,27 +97,24 @@ public class PictureController extends BaseController {
     return json;
   }
 
-
   @RequestMapping(value = "uploadTrainingPicture/{trainingId}", method = RequestMethod.POST)
   @LoginPermit(AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> uploadTrainingPicture(@RequestParam(value = "uploadFile", required = true)
-                                            MultipartFile[] files,
-                                            @PathVariable("trainingId") String trainingId) {
+  public @ResponseBody Map<String, Object> uploadTrainingPicture(
+      @RequestParam(value = "uploadFile", required = true) MultipartFile[] files,
+      @PathVariable("trainingId") String trainingId) {
     Map<String, Object> json = new HashMap<>();
     try {
       String directory = "training/" + trainingId + "/";
-      FileInformationDTO fileInformationDTO = pictureService.uploadPicture(
-          FileUploadDTO.builder()
+      FileInformationDto fileInformationDto = pictureService.uploadPicture(
+          FileUploadDto.builder()
               .setFiles(Arrays.asList(files))
               .build(),
           directory
-      );
+          );
 
       json.put("success", "true");
-      json.put("uploadedFile", fileInformationDTO.getFileName());
-      json.put("uploadedFileUrl", fileInformationDTO.getFileURL());
+      json.put("uploadedFile", fileInformationDto.getFileName());
+      json.put("uploadedFileUrl", fileInformationDto.getFileURL());
     } catch (AppException e) {
       e.printStackTrace();
       json.put("error", e.getMessage());
@@ -132,30 +127,28 @@ public class PictureController extends BaseController {
 
   @RequestMapping(value = "uploadArticlePicture/{userName}/{articleId}", method = RequestMethod.POST)
   @LoginPermit(NeedLogin = true)
-  public
-  @ResponseBody
-  Map<String, Object> uploadArticlePicture(@RequestParam(value = "uploadFile", required = true)
-                                           MultipartFile[] files,
-                                           @PathVariable("userName") String userName,
-                                           @PathVariable("articleId") String articleId,
-                                           HttpSession session) {
+  public @ResponseBody Map<String, Object> uploadArticlePicture(
+      @RequestParam(value = "uploadFile", required = true) MultipartFile[] files,
+      @PathVariable("userName") String userName,
+      @PathVariable("articleId") String articleId,
+      HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO userDTO = getCurrentUser(session);
-      if (!userDTO.getUserName().equals(userName)) {
+      UserDto userDto = getCurrentUser(session);
+      if (!Objects.equals(userDto.getUserName(), userName)) {
         throw new AppException("Permission denied!");
       }
       String directory = "article/" + userName + "/" + articleId + "/";
-      FileInformationDTO fileInformationDTO = pictureService.uploadPicture(
-          FileUploadDTO.builder()
+      FileInformationDto fileInformationDto = pictureService.uploadPicture(
+          FileUploadDto.builder()
               .setFiles(Arrays.asList(files))
               .build(),
           directory
-      );
+          );
 
       json.put("success", "true");
-      json.put("uploadedFile", fileInformationDTO.getFileName());
-      json.put("uploadedFileUrl", fileInformationDTO.getFileURL());
+      json.put("uploadedFile", fileInformationDto.getFileName());
+      json.put("uploadedFileUrl", fileInformationDto.getFileURL());
     } catch (AppException e) {
       e.printStackTrace();
       json.put("error", e.getMessage());

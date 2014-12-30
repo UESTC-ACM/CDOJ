@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.judge.entity;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDto;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -68,18 +68,21 @@ public class Scheduler implements Runnable, ApplicationContextAware {
 
   /**
    * Search status in queuing.
+   *
+   * @param isFirstTime
+   *          whether is first time to search
    */
   private void searchForJudge(boolean isFirstTime) {
     try {
-      List<StatusForJudgeDTO> statusList = statusService.getQueuingStatus(isFirstTime);
-      for (StatusForJudgeDTO status : statusList) {
+      List<StatusForJudgeDto> statusList = statusService.getQueuingStatus(isFirstTime);
+      for (StatusForJudgeDto status : statusList) {
         status.setResult(OnlineJudgeReturnType.OJ_JUDGING.ordinal());
         status.setCaseNumber(0);
         JudgeItem judgeItem = applicationContext.getBean(JudgeItem.class);
-        judgeItem.setStatusForJudgeDTO(status);
-        statusService.updateStatusByStatusForJudgeDTO(status);
+        judgeItem.setStatusForJudgeDto(status);
+        statusService.updateStatusByStatusForJudgeDto(status);
         judgeQueue.put(judgeItem);
-        LOGGER.info("Put status#" + status.getStatusId() + " into judge queue.");
+        LOGGER.info("[Scheduler] Put status#" + status.getStatusId() + " into judge queue.");
       }
     } catch (AppException e) {
       LOGGER.error(e);

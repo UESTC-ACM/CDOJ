@@ -18,8 +18,8 @@ import java.util.Arrays;
  * In each sub-directory contains all information and test data of one problem</li>
  * </li>
  * <li>
- * In a sub-directory, a XML File named "problemInfo.xml" and input/output data named
- * with "*.in" and "*.out" </li>
+ * In a sub-directory, a XML File named "problemInfo.xml" and input/output data
+ * named with "*.in" and "*.out"</li>
  * </ul>
  * <p/>
  * <strong>For administrators</strong>:

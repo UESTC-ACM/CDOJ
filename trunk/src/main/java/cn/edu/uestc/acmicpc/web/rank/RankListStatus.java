@@ -14,13 +14,13 @@ public class RankListStatus {
   public Long time;
 
   public RankListStatus(Integer tried,
-                        Integer result,
-                        String problemTitle,
-                        String userName,
-                        String nickName,
-                        String email,
-                        String reallyName,
-                        Long time) {
+      Integer result,
+      String problemTitle,
+      String userName,
+      String nickName,
+      String email,
+      String reallyName,
+      Long time) {
     this.tried = tried;
     this.result = result;
     this.problemTitle = problemTitle;

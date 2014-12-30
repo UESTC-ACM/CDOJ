@@ -50,8 +50,7 @@ public class TrainingContestCriteria extends BaseCriteria<TrainingContest, Train
       keyword = "%" + keyword + "%";
       criteria.add(Restrictions.or(
           Restrictions.ilike("title", keyword),
-          Restrictions.ilike("link", keyword)
-      ));
+          Restrictions.ilike("link", keyword)));
     }
     if (trainingId != null) {
       criteria.add(Restrictions.eq("trainingId", trainingId));

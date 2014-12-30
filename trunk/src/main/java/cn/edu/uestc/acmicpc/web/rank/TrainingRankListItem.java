@@ -12,7 +12,11 @@ public class TrainingRankListItem {
   public TrainingRankListItem() {
   }
 
-  public TrainingRankListItem(ProblemSolveStatusType status, Integer solvedTime, Integer tried, Integer penalty) {
+  public TrainingRankListItem(
+      ProblemSolveStatusType status,
+      Integer solvedTime,
+      Integer tried,
+      Integer penalty) {
     this.status = status;
     this.solvedTime = solvedTime;
     this.tried = tried;

@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.web.aspect;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -42,11 +42,11 @@ public class AuthenticationAspect {
     LoginPermit permit = method.getAnnotation(LoginPermit.class);
 
     if (permit.NeedLogin()) {
-      UserDTO userDTO = (UserDTO) request.getSession().getAttribute("currentUser");
-      if (userDTO == null)
+      UserDto userDto = (UserDto) request.getSession().getAttribute("currentUser");
+      if (userDto == null)
         throw new AppException("Please login first.");
       if (permit.value() != AuthenticationType.NORMAL) {
-        if (userDTO.getType() != permit.value().ordinal()) {
+        if (userDto.getType() != permit.value().ordinal()) {
           throw new AppException("Permission denied");
         }
       }

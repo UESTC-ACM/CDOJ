@@ -26,11 +26,13 @@ import java.util.Set;
  * <p/>
  * <strong>For developers</strong>:
  * <p/>
- * This checker will not consider the folders in the zip file, that means if the zip file only
- * contains a folder and the folder contains a valid file structure, this checker will not check the
- * files in the folder. <strong>For administrators</strong>:
+ * This checker will not consider the folders in the zip file, that means if the
+ * zip file only contains a folder and the folder contains a valid file
+ * structure, this checker will not check the files in the folder. <strong>For
+ * administrators</strong>:
  * <p/>
- * Please put all data files in the zip file's root, rather than a specific folder.
+ * Please put all data files in the zip file's root, rather than a specific
+ * folder.
  */
 public class ZipDataChecker implements Checker<File> {
 

@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.web.rank;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public class RankListUser implements Comparable<RankListUser> {
   public String nickName;
   public String reallyName;
   public String email;
-  public List<TeamUserListDTO> teamUsers;
+  public List<TeamUserListDto> teamUsers;
   public Integer rank;
   public Integer solved;
   public Integer tried;

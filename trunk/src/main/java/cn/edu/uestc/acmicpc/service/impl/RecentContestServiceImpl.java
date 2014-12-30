@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.service.iface.RecentContestService;
-import cn.edu.uestc.acmicpc.util.dto.RecentContestDTO;
+import cn.edu.uestc.acmicpc.util.dto.RecentContestDto;
 
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Lazy;
@@ -34,8 +34,7 @@ public class RecentContestServiceImpl extends AbstractService implements RecentC
    */
   private final long INTERVAL = 3L;
 
-  private List<RecentContestDTO> recentContestList = new LinkedList<>();
-
+  private List<RecentContestDto> recentContestList = new LinkedList<>();
 
   @PostConstruct
   private void init() {
@@ -80,7 +79,7 @@ public class RecentContestServiceImpl extends AbstractService implements RecentC
         String jsonStr = new String(out.toByteArray());
 
         // Parse recent contest list from json string
-        recentContestList = JSON.parseArray(jsonStr, RecentContestDTO.class);
+        recentContestList = JSON.parseArray(jsonStr, RecentContestDto.class);
       }
     } catch (IOException ignored) {
       // Just ignore this exception and do not change the content.
@@ -88,7 +87,7 @@ public class RecentContestServiceImpl extends AbstractService implements RecentC
   }
 
   @Override
-  public List<RecentContestDTO> getRecentContestList() {
+  public List<RecentContestDto> getRecentContestList() {
     return recentContestList;
   }
 }

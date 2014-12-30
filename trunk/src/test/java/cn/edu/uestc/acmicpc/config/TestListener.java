@@ -27,7 +27,7 @@ public class TestListener extends TestListenerAdapter {
       builder.append(LogConstants.INFO_COLOR);
       builder.append("PASSED: ");
     }
-    builder.append(LogConstants.END_COLOUR);
+    builder.append(LogConstants.END_COLOR);
     builder.append(testContext.getName());
     System.out.println(builder.toString());
   }

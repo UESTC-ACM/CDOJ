@@ -14,7 +14,7 @@ public class ANSIConsoleAppender extends ConsoleAppender {
   protected void subAppend(LoggingEvent event) {
     this.qw.write(getColor(event.getLevel()));
     super.subAppend(event);
-    this.qw.write(LogConstants.END_COLOUR);
+    this.qw.write(LogConstants.END_COLOR);
 
     if (this.immediateFlush) {
       this.qw.flush();
@@ -22,25 +22,27 @@ public class ANSIConsoleAppender extends ConsoleAppender {
   }
 
   /**
-   * Get the appropriate control characters to change the color for the specified logging level.
+   * Get the appropriate control characters to change the color for the
+   * specified logging level.
    *
-   * @param level log level.
+   * @param level
+   *          log level.
    * @return color prefix for the level.
    */
   private String getColor(Level level) {
     switch (level.toInt()) {
-      case Priority.FATAL_INT:
-        return LogConstants.FATAL_COLOR;
-      case Priority.ERROR_INT:
-        return LogConstants.ERROR_COLOR;
-      case Priority.WARN_INT:
-        return LogConstants.WARN_COLOR;
-      case Priority.INFO_INT:
-        return LogConstants.INFO_COLOR;
-      case Priority.DEBUG_INT:
-        return LogConstants.DEBUG_COLOR;
-      default:
-        return LogConstants.TRACE_COLOR;
+    case Priority.FATAL_INT:
+      return LogConstants.FATAL_COLOR;
+    case Priority.ERROR_INT:
+      return LogConstants.ERROR_COLOR;
+    case Priority.WARN_INT:
+      return LogConstants.WARN_COLOR;
+    case Priority.INFO_INT:
+      return LogConstants.INFO_COLOR;
+    case Priority.DEBUG_INT:
+      return LogConstants.DEBUG_COLOR;
+    default:
+      return LogConstants.TRACE_COLOR;
     }
   }
 }

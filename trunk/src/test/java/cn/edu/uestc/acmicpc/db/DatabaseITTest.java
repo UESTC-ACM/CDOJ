@@ -8,7 +8,7 @@ import cn.edu.uestc.acmicpc.db.dao.iface.ContestDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.DepartmentDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.StatusDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDto;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -64,10 +64,10 @@ public class DatabaseITTest extends AbstractTestNGSpringContextTests {
     UserCondition userCondition = new UserCondition();
     userCondition.startId = 2;
     userCondition.endId = 2;
-    List<UserListDTO> result = userDao.findAll(UserListDTO.class, UserListDTO.builder(),
+    List<UserListDto> result = userDao.findAll(UserListDto.class, UserListDto.builder(),
         userCondition.getCondition());
     Assert.assertEquals(result.size(), 1);
-    UserListDTO dto = result.get(0);
+    UserListDto dto = result.get(0);
     Assert.assertEquals(dto.getUserId(), Integer.valueOf(2));
     Assert.assertEquals(dto.getUserName(), "admin");
     Assert.assertEquals(dto.getNickName(), "admin");
@@ -84,7 +84,7 @@ public class DatabaseITTest extends AbstractTestNGSpringContextTests {
     PageInfo pageInfo = PageInfo.create(103L, 3L, 0, 2L);
     Condition condition = userCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    List<UserListDTO> result = userDao.findAll(UserListDTO.class, UserListDTO.builder(),
+    List<UserListDto> result = userDao.findAll(UserListDto.class, UserListDto.builder(),
         condition);
     Assert.assertEquals(result.size(), 3);
     Assert.assertEquals(result.get(0).getUserId(), Integer.valueOf(4));
@@ -93,45 +93,45 @@ public class DatabaseITTest extends AbstractTestNGSpringContextTests {
   }
 
   @Test
-  public void testDAO_getDTOByUniqueField_null() throws AppException {
-    UserListDTO result = userDao.getDTOByUniqueField(UserListDTO.class,
-        UserListDTO.builder(), "userName", "wrongUser");
+  public void testDAO_getDtoByUniqueField_null() throws AppException {
+    UserListDto result = userDao.getDtoByUniqueField(UserListDto.class,
+        UserListDto.builder(), "userName", "wrongUser");
     Assert.assertNull(result);
   }
 
   @Test
-  public void testDAO_getDTOByUniqueField_successful_intType() throws AppException {
-    UserListDTO userDTO = userDao.getDTOByUniqueField(UserListDTO.class,
-        UserListDTO.builder(), "userId", 2);
-    Assert.assertEquals(Integer.valueOf(2), userDTO.getUserId());
-    Assert.assertEquals(userDTO.getUserName(), "admin");
-    Assert.assertEquals(userDTO.getNickName(), "admin");
-    Assert.assertEquals(userDTO.getEmail(), "acm_admin@uestc.edu.cn");
-    Assert.assertEquals(userDTO.getSolved(), Integer.valueOf(0));
-    Assert.assertEquals(userDTO.getTried(), Integer.valueOf(0));
-    Assert.assertEquals(userDTO.getType(), Integer.valueOf(1));
-    Assert.assertEquals(userDTO.getSchool(), "UESTC");
+  public void testDAO_getDtoByUniqueField_successful_intType() throws AppException {
+    UserListDto userDto = userDao.getDtoByUniqueField(UserListDto.class,
+        UserListDto.builder(), "userId", 2);
+    Assert.assertEquals(Integer.valueOf(2), userDto.getUserId());
+    Assert.assertEquals(userDto.getUserName(), "admin");
+    Assert.assertEquals(userDto.getNickName(), "admin");
+    Assert.assertEquals(userDto.getEmail(), "acm_admin@uestc.edu.cn");
+    Assert.assertEquals(userDto.getSolved(), Integer.valueOf(0));
+    Assert.assertEquals(userDto.getTried(), Integer.valueOf(0));
+    Assert.assertEquals(userDto.getType(), Integer.valueOf(1));
+    Assert.assertEquals(userDto.getSchool(), "UESTC");
   }
 
   @Test
-  public void testDAO_getDTOByUniqueField_successful_stringType() throws AppException {
-    UserListDTO userDTO = userDao.getDTOByUniqueField(UserListDTO.class,
-        UserListDTO.builder(), "userName", "admin");
-    Assert.assertEquals(userDTO.getUserId(), Integer.valueOf(2));
-    Assert.assertEquals(userDTO.getUserName(), "admin");
-    Assert.assertEquals(userDTO.getNickName(), "admin");
-    Assert.assertEquals(userDTO.getEmail(), "acm_admin@uestc.edu.cn");
-    Assert.assertEquals(userDTO.getSolved(), Integer.valueOf(0));
-    Assert.assertEquals(userDTO.getTried(), Integer.valueOf(0));
-    Assert.assertEquals(userDTO.getType(), Integer.valueOf(1));
-    Assert.assertEquals(userDTO.getSchool(), "UESTC");
+  public void testDAO_getDtoByUniqueField_successful_stringType() throws AppException {
+    UserListDto userDto = userDao.getDtoByUniqueField(UserListDto.class,
+        UserListDto.builder(), "userName", "admin");
+    Assert.assertEquals(userDto.getUserId(), Integer.valueOf(2));
+    Assert.assertEquals(userDto.getUserName(), "admin");
+    Assert.assertEquals(userDto.getNickName(), "admin");
+    Assert.assertEquals(userDto.getEmail(), "acm_admin@uestc.edu.cn");
+    Assert.assertEquals(userDto.getSolved(), Integer.valueOf(0));
+    Assert.assertEquals(userDto.getTried(), Integer.valueOf(0));
+    Assert.assertEquals(userDto.getType(), Integer.valueOf(1));
+    Assert.assertEquals(userDto.getSchool(), "UESTC");
   }
 
   @Test
-  public void testDAO_getDTOByUniqueField_failed() {
+  public void testDAO_getDtoByUniqueField_failed() {
     try {
-      userDao.getDTOByUniqueField(UserListDTO.class,
-          UserListDTO.builder(), "departmentId", 1);
+      userDao.getDtoByUniqueField(UserListDto.class,
+          UserListDto.builder(), "departmentId", 1);
       Assert.fail();
     } catch (AppException e) {
       Assert.assertEquals(e, new AppException("the value is not unique."));

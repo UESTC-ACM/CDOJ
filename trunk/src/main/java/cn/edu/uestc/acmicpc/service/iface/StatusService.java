@@ -1,10 +1,10 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDto;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -19,29 +19,34 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * list user's tried problem id.
    *
-   * @param userId user's id.
-   * @param isAdmin current user is administrator
+   * @param userId
+   *          user's id.
+   * @param isAdmin
+   *          current user is administrator
    * @return problem id list.
    * @throws AppException
    */
   public List<Integer> findAllUserTriedProblemIds(Integer userId,
-                                                  Boolean isAdmin) throws AppException;
+      Boolean isAdmin) throws AppException;
 
   /**
    * list user's accepted problem id.
    *
-   * @param userId user's id.
-   * @param isAdmin current user is administrator
+   * @param userId
+   *          user's id.
+   * @param isAdmin
+   *          current user is administrator
    * @return problem id list.
    * @throws AppException
    */
   public List<Integer> findAllUserAcceptedProblemIds(Integer userId,
-                                                     Boolean isAdmin) throws AppException;
+      Boolean isAdmin) throws AppException;
 
   /**
    * Counts user's tried problems.
    *
-   * @param userId user's id.
+   * @param userId
+   *          user's id.
    * @return number of problems this user has tried.
    * @throws AppException
    */
@@ -50,7 +55,8 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * Counts user's accepted problems.
    *
-   * @param userId user's id.
+   * @param userId
+   *          user's id.
    * @return number of problems this user get accepted.
    * @throws AppException
    */
@@ -59,7 +65,8 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * Counts users that tried specified problem.
    *
-   * @param problemId problem's id.
+   * @param problemId
+   *          problem's id.
    * @return number of users who tried this problem.
    * @throws AppException
    */
@@ -68,7 +75,8 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * Counts users that accepted specified problem.
    *
-   * @param problemId problem's id.
+   * @param problemId
+   *          problem's id.
    * @return number of users who get accepted for this problem.
    * @throws AppException
    */
@@ -77,7 +85,8 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * Counts the number of status fit in condition.
    *
-   * @param condition {@link StatusCondition} entity.
+   * @param condition
+   *          {@link StatusCondition} entity.
    * @return Total number of status fit in the condition.
    * @throws AppException
    */
@@ -86,62 +95,70 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * Get the status fit in condition and page range.
    *
-   * @param condition {@link StatusCondition} entity.
-   * @param pageInfo  {@link PageInfo} entity.
-   * @return List of {@link StatusListDTO} entities.
+   * @param condition
+   *          {@link StatusCondition} entity.
+   * @param pageInfo
+   *          {@link PageInfo} entity.
+   * @return List of {@link StatusListDto} entities.
    * @throws AppException
    */
-  public List<StatusListDTO> getStatusList(StatusCondition condition,
-                                           PageInfo pageInfo) throws AppException;
+  public List<StatusListDto> getStatusList(StatusCondition condition,
+      PageInfo pageInfo) throws AppException;
 
   /**
    * Get the status fit in condition.
    *
-   * @param condition {@link StatusCondition} entity.
-   * @return List of {@link StatusListDTO} entities.
+   * @param condition
+   *          {@link StatusCondition} entity.
+   * @return List of {@link StatusListDto} entities.
    * @throws AppException
    */
-  public List<StatusListDTO> getStatusList(StatusCondition condition) throws AppException;
+  public List<StatusListDto> getStatusList(StatusCondition condition) throws AppException;
 
   /**
    * Get the status that pending to judge.
    *
-   * @param isFirstTime whether is the first time the scheduler called.
-   * @return List of {@link StatusForJudgeDTO} entities.
+   * @param isFirstTime
+   *          whether is the first time the scheduler called.
+   * @return List of {@link StatusForJudgeDto} entities.
    * @throws AppException
    */
-  public List<StatusForJudgeDTO> getQueuingStatus(boolean isFirstTime) throws AppException;
+  public List<StatusForJudgeDto> getQueuingStatus(boolean isFirstTime) throws AppException;
 
   /**
-   * Updates status by {@link StatusForJudgeDTO} entity.
+   * Updates status by {@link StatusForJudgeDto} entity.
    *
-   * @param statusForJudgeDTO {@link StatusForJudgeDTO} entity.
+   * @param statusForJudgeDto
+   *          {@link StatusForJudgeDto} entity.
    * @throws AppException
    */
-  public void updateStatusByStatusForJudgeDTO(StatusForJudgeDTO statusForJudgeDTO)
+  public void updateStatusByStatusForJudgeDto(StatusForJudgeDto statusForJudgeDto)
       throws AppException;
 
   /**
-   * Create a new status with a specific {@link StatusDTO}.
+   * Create a new status with a specific {@link StatusDto}.
    *
-   * @param statusDTO {@link StatusDTO} entity.
+   * @param statusDto
+   *          {@link StatusDto} entity.
    * @throws AppException
    */
-  public void createNewStatus(StatusDTO statusDTO) throws AppException;
+  public void createNewStatus(StatusDto statusDto) throws AppException;
 
   /**
-   * Gets {@link StatusInformationDTO} by status id.
+   * Gets {@link StatusInformationDto} by status id.
    *
-   * @param statusId status' id for query.
+   * @param statusId
+   *          status' id for query.
    * @return status' information.
    * @throws AppException
    */
-  public StatusInformationDTO getStatusInformation(Integer statusId) throws AppException;
+  public StatusInformationDto getStatusInformation(Integer statusId) throws AppException;
 
   /**
    * Runs re-judge process with specific status condition.
    *
-   * @param statusCondition {@link StatusCondition} entity.
+   * @param statusCondition
+   *          {@link StatusCondition} entity.
    * @throws AppException
    */
   public void rejudge(StatusCondition statusCondition) throws AppException;
@@ -149,9 +166,11 @@ public interface StatusService extends DatabaseService<Status, Integer> {
   /**
    * Export all status fit in status condition.
    *
-   * @param statusCondition search condition
-   * @return list of {@link StatusInformationDTO} entities.
+   * @param statusCondition
+   *          search condition
+   * @return list of {@link StatusInformationDto} entities.
    * @throws AppException
    */
-  public List<StatusInformationDTO> getStatusInformationDTOList(StatusCondition statusCondition) throws AppException;
+  public List<StatusInformationDto> getStatusInformationDtoList(StatusCondition statusCondition)
+      throws AppException;
 }

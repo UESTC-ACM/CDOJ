@@ -14,7 +14,8 @@ public class ValidatorException extends Exception {
   /**
    * Creates a {@link ValidatorException} with multiple keys and values
    *
-   * @param json JSON Mapping
+   * @param json
+   *          JSON Mapping
    */
   public ValidatorException(Map<String, String> json) {
     super();
@@ -24,8 +25,10 @@ public class ValidatorException extends Exception {
   /**
    * Creates a {@link ValidatorException} with single key and value.
    *
-   * @param key   JSON key
-   * @param value JSON value
+   * @param key
+   *          JSON key
+   * @param value
+   *          JSON value
    */
   public ValidatorException(String key, String value) {
     super();

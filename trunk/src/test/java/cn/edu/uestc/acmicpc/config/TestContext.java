@@ -5,7 +5,7 @@ import static org.mockito.Mockito.when;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDto;
 import cn.edu.uestc.acmicpc.judge.JudgeService;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
@@ -159,29 +159,29 @@ public class TestContext extends ApplicationContextConfig {
   @Primary
   public SettingService mockSettingService() throws AppException {
     SettingService mockSettingService = mock(SettingService.class);
-    when(mockSettingService.getSettingDTO(Mockito.anyInt())).thenReturn(
-        SettingDTO.builder()
+    when(mockSettingService.getSettingDto(Mockito.anyInt())).thenReturn(
+        SettingDto.builder()
             .setName("name")
             .setDescription("description")
             .setValue("value")
             .build()
     );
-    when(mockSettingService.getSettingDTO(SettingsID.EMAIL.getId())).thenReturn(
-        SettingDTO.builder()
+    when(mockSettingService.getSettingDto(SettingsID.EMAIL.getId())).thenReturn(
+        SettingDto.builder()
             .setName("name")
             .setDescription("description")
             .setValue("{\"address\":\"cdoj_test@163.com\",\"userName\":\"cdoj_test@163.com\",\"password\":\"135678942570\",\"smtpServer\":\"smtp.163.com\"}")
             .build()
     );
-    when(mockSettingService.getSettingDTO(SettingsID.JUDGES.getId())).thenReturn(
-        SettingDTO.builder()
+    when(mockSettingService.getSettingDto(SettingsID.JUDGES.getId())).thenReturn(
+        SettingDto.builder()
             .setName("name")
             .setDescription("description")
             .setValue("[{\"name\":\"fish\"},{\"name\":\"mzry1992\"},{\"name\":\"gongbaoa\"},{\"name\":\"kennethsnow\"}]")
             .build()
     );
-    when(mockSettingService.getSettingDTO(SettingsID.RECORD_PER_PAGE.getId())).thenReturn(
-        SettingDTO.builder()
+    when(mockSettingService.getSettingDto(SettingsID.RECORD_PER_PAGE.getId())).thenReturn(
+        SettingDto.builder()
             .setName("name")
             .setDescription("description")
             .setValue("20")

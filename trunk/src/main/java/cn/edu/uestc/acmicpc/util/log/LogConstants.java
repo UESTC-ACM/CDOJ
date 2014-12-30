@@ -16,7 +16,7 @@ public class LogConstants {
   public static final String PREFIX = "\u001b[";
   public static final String SUFFIX = "m";
   public static final char SEPARATOR = ';';
-  public static final String END_COLOUR = PREFIX + SUFFIX;
+  public static final String END_COLOR = PREFIX + SUFFIX;
 
   public static final String FATAL_COLOR = PREFIX + BRIGHT + SEPARATOR
       + FOREGROUND_RED + SUFFIX;

@@ -23,7 +23,7 @@ import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.enums.TrainingPlatformType;
 import cn.edu.uestc.acmicpc.util.enums.TrainingUserType;
@@ -161,7 +161,7 @@ public class TrainingControllerTest extends ControllerTest {
         .build();
     jsonData.put("trainingEditDto", trainingEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
@@ -175,7 +175,7 @@ public class TrainingControllerTest extends ControllerTest {
     );
     when(pictureService.modifyPictureLocation(anyString(), anyString(), anyString())).thenReturn(trainingEditDto.getDescription());
     mockMvc.perform(post("/training/edit")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -197,12 +197,12 @@ public class TrainingControllerTest extends ControllerTest {
         .build();
     jsonData.put("trainingEditDto", trainingEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
     mockMvc.perform(post("/training/edit")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -223,14 +223,14 @@ public class TrainingControllerTest extends ControllerTest {
         .build();
     jsonData.put("trainingEditDto", trainingEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
     when(trainingService.createNewTraining(trainingEditDto.getTitle())).thenReturn(1);
     when(trainingService.getTrainingDto(1, TrainingFields.ALL_FIELDS)).thenReturn(null);
     mockMvc.perform(post("/training/edit")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -249,7 +249,7 @@ public class TrainingControllerTest extends ControllerTest {
         .build();
     jsonData.put("trainingEditDto", trainingEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
@@ -263,7 +263,7 @@ public class TrainingControllerTest extends ControllerTest {
     );
     when(pictureService.modifyPictureLocation(anyString(), anyString(), anyString())).thenReturn(trainingEditDto.getDescription());
     mockMvc.perform(post("/training/edit")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -286,7 +286,7 @@ public class TrainingControllerTest extends ControllerTest {
         .build();
     jsonData.put("trainingEditDto", trainingEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
@@ -294,7 +294,7 @@ public class TrainingControllerTest extends ControllerTest {
     when(trainingService.getTrainingDto(1, TrainingFields.ALL_FIELDS)).thenReturn(null);
     when(pictureService.modifyPictureLocation(anyString(), anyString(), anyString())).thenReturn(trainingEditDto.getDescription());
     mockMvc.perform(post("/training/edit")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -314,12 +314,12 @@ public class TrainingControllerTest extends ControllerTest {
         .build();
     jsonData.put("trainingUserEditDto", trainingUserEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
-    when(userService.getUserDTOByUserName(trainingUserEditDto.getUserName())).thenReturn(
-        UserDTO.builder()
+    when(userService.getUserDtoByUserName(trainingUserEditDto.getUserName())).thenReturn(
+        UserDto.builder()
             .setUserId(1)
             .setUserName(trainingUserEditDto.getUserName())
             .build()
@@ -333,7 +333,7 @@ public class TrainingControllerTest extends ControllerTest {
             .build()
     );
     mockMvc.perform(post("/training/editTrainingUser")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -357,12 +357,12 @@ public class TrainingControllerTest extends ControllerTest {
         .build();
     jsonData.put("trainingUserEditDto", trainingUserEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
     mockMvc.perform(post("/training/editTrainingUser")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -385,12 +385,12 @@ public class TrainingControllerTest extends ControllerTest {
         .build();
     jsonData.put("trainingUserEditDto", trainingUserEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
     mockMvc.perform(post("/training/editTrainingUser")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -413,15 +413,15 @@ public class TrainingControllerTest extends ControllerTest {
         .build();
     jsonData.put("trainingUserEditDto", trainingUserEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
-    when(userService.getUserDTOByUserName(trainingUserEditDto.getUserName())).thenReturn(
+    when(userService.getUserDtoByUserName(trainingUserEditDto.getUserName())).thenReturn(
         null
     );
     mockMvc.perform(post("/training/editTrainingUser")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -444,18 +444,18 @@ public class TrainingControllerTest extends ControllerTest {
         .build();
     jsonData.put("trainingUserEditDto", trainingUserEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
-    when(userService.getUserDTOByUserName(trainingUserEditDto.getUserName())).thenReturn(
-        UserDTO.builder()
+    when(userService.getUserDtoByUserName(trainingUserEditDto.getUserName())).thenReturn(
+        UserDto.builder()
             .setUserId(1)
             .setUserName(trainingUserEditDto.getUserName())
             .build()
     );
     mockMvc.perform(post("/training/editTrainingUser")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -478,18 +478,18 @@ public class TrainingControllerTest extends ControllerTest {
         .build();
     jsonData.put("trainingUserEditDto", trainingUserEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
-    when(userService.getUserDTOByUserName(trainingUserEditDto.getUserName())).thenReturn(
-        UserDTO.builder()
+    when(userService.getUserDtoByUserName(trainingUserEditDto.getUserName())).thenReturn(
+        UserDto.builder()
             .setUserId(1)
             .setUserName(trainingUserEditDto.getUserName())
             .build()
     );
     mockMvc.perform(post("/training/editTrainingUser")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -512,12 +512,12 @@ public class TrainingControllerTest extends ControllerTest {
         .build();
     jsonData.put("trainingUserEditDto", trainingUserEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
-    when(userService.getUserDTOByUserName(trainingUserEditDto.getUserName())).thenReturn(
-        UserDTO.builder()
+    when(userService.getUserDtoByUserName(trainingUserEditDto.getUserName())).thenReturn(
+        UserDto.builder()
             .setUserId(1)
             .setUserName(trainingUserEditDto.getUserName())
             .build()
@@ -527,7 +527,7 @@ public class TrainingControllerTest extends ControllerTest {
         null
     );
     mockMvc.perform(post("/training/editTrainingUser")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -548,12 +548,12 @@ public class TrainingControllerTest extends ControllerTest {
         .build();
     jsonData.put("trainingUserEditDto", trainingUserEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
-    when(userService.getUserDTOByUserName(trainingUserEditDto.getUserName())).thenReturn(
-        UserDTO.builder()
+    when(userService.getUserDtoByUserName(trainingUserEditDto.getUserName())).thenReturn(
+        UserDto.builder()
             .setUserId(1)
             .setUserName(trainingUserEditDto.getUserName())
             .build()
@@ -567,7 +567,7 @@ public class TrainingControllerTest extends ControllerTest {
             .build()
     );
     mockMvc.perform(post("/training/editTrainingUser")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -592,12 +592,12 @@ public class TrainingControllerTest extends ControllerTest {
         .build();
     jsonData.put("trainingUserEditDto", trainingUserEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
-    when(userService.getUserDTOByUserName(trainingUserEditDto.getUserName())).thenReturn(
-        UserDTO.builder()
+    when(userService.getUserDtoByUserName(trainingUserEditDto.getUserName())).thenReturn(
+        UserDto.builder()
             .setUserId(1)
             .setUserName(trainingUserEditDto.getUserName())
             .build()
@@ -606,7 +606,7 @@ public class TrainingControllerTest extends ControllerTest {
         null
     );
     mockMvc.perform(post("/training/editTrainingUser")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -719,7 +719,7 @@ public class TrainingControllerTest extends ControllerTest {
     jsonData.put("trainingPlatformInfoEditDto", TrainingPlatformInfoDto.builder()
         .setTrainingPlatformInfoId(1)
         .build());
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
@@ -727,7 +727,7 @@ public class TrainingControllerTest extends ControllerTest {
     mockMvc.perform(post("/training/editTrainingPlatformInfo")
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(jsonData))
-        .sessionAttr("currentUser", currentUserDTO))
+        .sessionAttr("currentUser", currentUserDto))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")));
   }
@@ -742,7 +742,7 @@ public class TrainingControllerTest extends ControllerTest {
         .setUserId("123")
         .setType(TrainingPlatformType.CF.ordinal())
         .build());
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
@@ -766,7 +766,7 @@ public class TrainingControllerTest extends ControllerTest {
     mockMvc.perform(post("/training/editTrainingPlatformInfo")
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(jsonData))
-        .sessionAttr("currentUser", currentUserDTO))
+        .sessionAttr("currentUser", currentUserDto))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")))
         .andExpect(jsonPath("$.trainingPlatformInfoDto", notNullValue()))
@@ -793,7 +793,7 @@ public class TrainingControllerTest extends ControllerTest {
         .setUserId("123")
         .setType(TrainingPlatformType.CF.ordinal())
         .build());
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
@@ -806,7 +806,7 @@ public class TrainingControllerTest extends ControllerTest {
     mockMvc.perform(post("/training/editTrainingPlatformInfo")
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(jsonData))
-        .sessionAttr("currentUser", currentUserDTO))
+        .sessionAttr("currentUser", currentUserDto))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("error")))
         .andExpect(jsonPath("$.error_msg", is("Error while creating training platform info.")));
@@ -823,7 +823,7 @@ public class TrainingControllerTest extends ControllerTest {
         .setUserId("123")
         .setType(TrainingPlatformType.CF.ordinal())
         .build());
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
@@ -846,7 +846,7 @@ public class TrainingControllerTest extends ControllerTest {
     mockMvc.perform(post("/training/editTrainingPlatformInfo")
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(jsonData))
-        .sessionAttr("currentUser", currentUserDTO))
+        .sessionAttr("currentUser", currentUserDto))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")))
         .andExpect(jsonPath("$.trainingPlatformInfoDto", notNullValue()))
@@ -874,7 +874,7 @@ public class TrainingControllerTest extends ControllerTest {
         .setUserId("123")
         .setType(TrainingPlatformType.CF.ordinal())
         .build());
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
@@ -886,7 +886,7 @@ public class TrainingControllerTest extends ControllerTest {
     mockMvc.perform(post("/training/editTrainingPlatformInfo")
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(jsonData))
-        .sessionAttr("currentUser", currentUserDTO))
+        .sessionAttr("currentUser", currentUserDto))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("error")))
         .andExpect(jsonPath("$.error_msg", is("Training platform info not found.")));

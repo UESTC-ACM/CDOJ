@@ -39,47 +39,47 @@ public class TrainingContestResultParser {
   }
 
   public static boolean isType(String value) {
-    return value.compareToIgnoreCase("Div") == 0;
+    return "Div".compareToIgnoreCase(value) == 0;
   }
 
   public static boolean isSuccessfulHack(String value) {
-    return value.compareTo("+") == 0;
+    return "+".compareTo(value) == 0;
   }
 
   public static boolean isUnsuccessfulHack(String value) {
-    return value.compareTo("-") == 0;
+    return "-".compareTo(value) == 0;
   }
 
   public static boolean isScore(String value) {
-    return value.compareToIgnoreCase("score") == 0;
+    return "score".compareToIgnoreCase(value) == 0;
   }
 
   public static boolean isUserName(String value) {
-    return value.compareToIgnoreCase("name") == 0
-        || value.compareToIgnoreCase("team") == 0
-        || value.compareToIgnoreCase("id") == 0
-        || value.compareToIgnoreCase("nick name") == 0
-        || value.compareToIgnoreCase("姓名") == 0
-        || value.compareToIgnoreCase("user") == 0
-        || value.compareToIgnoreCase("handle") == 0;
+    return "name".compareToIgnoreCase(value) == 0
+        || "team".compareToIgnoreCase(value) == 0
+        || "id".compareToIgnoreCase(value) == 0
+        || "nick name".compareToIgnoreCase(value) == 0
+        || "姓名".compareToIgnoreCase(value) == 0
+        || "user".compareToIgnoreCase(value) == 0
+        || "handle".compareToIgnoreCase(value) == 0;
   }
 
   public static boolean isPenalty(String value) {
-    return value.compareToIgnoreCase("penalty") == 0;
+    return "penalty".compareToIgnoreCase(value) == 0;
   }
 
   public static boolean isSolved(String value) {
-    return value.compareToIgnoreCase("solved") == 0
-        || value.compareToIgnoreCase("solve") == 0;
+    return "solved".compareToIgnoreCase(value) == 0
+        || "solve".compareToIgnoreCase(value) == 0;
   }
 
   public static boolean isUnused(String value) {
-    return value.compareToIgnoreCase("#") == 0
-        || value.compareToIgnoreCase("rank") == 0;
+    return "#".compareToIgnoreCase(value) == 0
+        || "rank".compareToIgnoreCase(value) == 0;
   }
 
   public static boolean isDeduct(String value) {
-    return value.compareToIgnoreCase("deduct") == 0;
+    return "deduct".compareToIgnoreCase(value) == 0;
   }
 
   interface AcceptedFunction {
@@ -101,7 +101,6 @@ public class TrainingContestResultParser {
     }
     trainingRankListUser.users = userList.toArray(new TrainingUserDto[userList.size()]);
   }
-
 
   private final List<TrainingPlatformInfoDto> platformList;
 

@@ -51,8 +51,7 @@ public class TrainingUserCriteria extends BaseCriteria<TrainingUser, TrainingUse
       keyword = "%" + keyword + "%";
       criteria.add(Restrictions.or(
           Restrictions.ilike("user.userName", keyword),
-          Restrictions.ilike("trainingUserName", keyword)
-      ));
+          Restrictions.ilike("trainingUserName", keyword)));
     }
     if (type != null) {
       criteria.add(Restrictions.eq("type", type));

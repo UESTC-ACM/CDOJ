@@ -2,8 +2,8 @@ package cn.edu.uestc.acmicpc.service;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDto;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -333,14 +333,14 @@ public class StatusServiceITTest extends AbstractTestNGSpringContextTests {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.problemId = 1;
     statusCondition.isForAdmin = true;
-    List<StatusListDTO> statusListDTOs = statusService.getStatusList(statusCondition);
-    Assert.assertEquals(statusListDTOs.size(), 6);
-    Assert.assertEquals(statusListDTOs.get(0).getStatusId(), Integer.valueOf(1));
-    Assert.assertEquals(statusListDTOs.get(1).getStatusId(), Integer.valueOf(2));
-    Assert.assertEquals(statusListDTOs.get(2).getStatusId(), Integer.valueOf(3));
-    Assert.assertEquals(statusListDTOs.get(3).getStatusId(), Integer.valueOf(4));
-    Assert.assertEquals(statusListDTOs.get(4).getStatusId(), Integer.valueOf(5));
-    Assert.assertEquals(statusListDTOs.get(5).getStatusId(), Integer.valueOf(6));
+    List<StatusListDto> statusListDtos = statusService.getStatusList(statusCondition);
+    Assert.assertEquals(statusListDtos.size(), 6);
+    Assert.assertEquals(statusListDtos.get(0).getStatusId(), Integer.valueOf(1));
+    Assert.assertEquals(statusListDtos.get(1).getStatusId(), Integer.valueOf(2));
+    Assert.assertEquals(statusListDtos.get(2).getStatusId(), Integer.valueOf(3));
+    Assert.assertEquals(statusListDtos.get(3).getStatusId(), Integer.valueOf(4));
+    Assert.assertEquals(statusListDtos.get(4).getStatusId(), Integer.valueOf(5));
+    Assert.assertEquals(statusListDtos.get(5).getStatusId(), Integer.valueOf(6));
   }
 
   @Test
@@ -349,8 +349,8 @@ public class StatusServiceITTest extends AbstractTestNGSpringContextTests {
     statusCondition.problemId = 1;
     statusCondition.isForAdmin = true;
     PageInfo pageInfo = PageInfo.create(300L, 4L, 10, 2L);
-    List<StatusListDTO> statusListDTOs = statusService.getStatusList(statusCondition, pageInfo);
-    Assert.assertEquals(statusListDTOs.size(), 2);
+    List<StatusListDto> statusListDtos = statusService.getStatusList(statusCondition, pageInfo);
+    Assert.assertEquals(statusListDtos.size(), 2);
   }
 
   @Test
@@ -359,17 +359,17 @@ public class StatusServiceITTest extends AbstractTestNGSpringContextTests {
     statusCondition.problemId = 1;
     statusCondition.isForAdmin = true;
     PageInfo pageInfo = PageInfo.create(300L, 4L, 10, 3L);
-    List<StatusListDTO> statusListDTOs = statusService.getStatusList(statusCondition, pageInfo);
-    Assert.assertEquals(statusListDTOs.size(), 0);
+    List<StatusListDto> statusListDtos = statusService.getStatusList(statusCondition, pageInfo);
+    Assert.assertEquals(statusListDtos.size(), 0);
   }
 
   @Test
   public void testGetStatusInformation() throws AppException {
     Integer statusId = 5;
-    StatusInformationDTO statusInformationDTO = statusService.getStatusInformation(statusId);
-    Assert.assertEquals(statusInformationDTO.getStatusId(), Integer.valueOf(5));
-    Assert.assertEquals(statusInformationDTO.getCodeContent(), "code");
-    Assert.assertEquals(statusInformationDTO.getUserId(), Integer.valueOf(2));
-    Assert.assertEquals(statusInformationDTO.getCompileInfoId(), Integer.valueOf(1));
+    StatusInformationDto statusInformationDto = statusService.getStatusInformation(statusId);
+    Assert.assertEquals(statusInformationDto.getStatusId(), Integer.valueOf(5));
+    Assert.assertEquals(statusInformationDto.getCodeContent(), "code");
+    Assert.assertEquals(statusInformationDto.getUserId(), Integer.valueOf(2));
+    Assert.assertEquals(statusInformationDto.getCompileInfoId(), Integer.valueOf(1));
   }
 }

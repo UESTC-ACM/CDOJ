@@ -5,7 +5,7 @@ apply plugin: 'jacoco'
 apply plugin: 'idea'
 
 group = 'cn.edu.uestc.acmicpc'
-version = '2.0'
+version = '2.2.3'
 
 description = """UESTC Online Judge"""
 
@@ -104,6 +104,7 @@ task generateTestPropertyFile(type: Exec) {
 task cleanResources << {
   delete "src/main/resources/resources.properties"
   delete "src/test/resources/resources.properties"
+  delete "src/gen/"
 }
 
 checkDtosDoNotContainEntities.dependsOn(generateDtos)
@@ -223,6 +224,10 @@ test {
     task(":jettyEclipseStop").execute()
   }
   useTestNG()
+}
+
+checkstyle {
+  toolVersion = "6.0"
 }
 
 jacoco {

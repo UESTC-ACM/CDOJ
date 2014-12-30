@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDto;
 import cn.edu.uestc.acmicpc.db.entity.Setting;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -12,15 +12,19 @@ public interface SettingService extends DatabaseService<Setting, Integer> {
   /**
    * Get settings detail by settings name.
    *
-   * @param settingId setting's id
-   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDTO} entity.
+   * @param settingId
+   *          setting's id
+   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDto} entity.
    */
-  public SettingDTO getSettingDTO(Integer settingId) throws AppException;
+  public SettingDto getSettingDto(Integer settingId) throws AppException;
 
   /**
-   * Update setting by content of {@link cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDTO} entity.
+   * Update setting by content of
+   * {@link cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDto} entity.
    *
-   * @param settingDTO {@link cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDTO} entity.
+   * @param settingDto
+   *          {@link cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDto}
+   *          entity.
    */
-  public void updateSettingBySettingDTO(SettingDTO settingDTO) throws AppException;
+  public void updateSettingBySettingDto(SettingDto settingDto) throws AppException;
 }

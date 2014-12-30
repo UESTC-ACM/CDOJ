@@ -12,7 +12,7 @@ import cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingPlatformInfoDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingContestService;
 import cn.edu.uestc.acmicpc.service.iface.TrainingPlatformInfoService;
@@ -65,13 +65,13 @@ import java.util.Map;
 @RequestMapping("/training")
 public class TrainingController extends BaseController {
 
-  private TrainingService trainingService;
-  private TrainingUserService trainingUserService;
-  private TrainingPlatformInfoService trainingPlatformInfoService;
-  private TrainingContestService trainingContestService;
-  private UserService userService;
-  private PictureService pictureService;
-  private Settings settings;
+  private final TrainingService trainingService;
+  private final TrainingUserService trainingUserService;
+  private final TrainingPlatformInfoService trainingPlatformInfoService;
+  private final TrainingContestService trainingContestService;
+  private final UserService userService;
+  private final PictureService pictureService;
+  private final Settings settings;
 
   @Autowired
   public TrainingController(TrainingService trainingService,
@@ -92,9 +92,8 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> search(@RequestBody(required = false) TrainingCriteria trainingCriteria) throws AppException {
+  public @ResponseBody Map<String, Object> search(
+      @RequestBody(required = false) TrainingCriteria trainingCriteria) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
     if (trainingCriteria == null) {
@@ -102,7 +101,8 @@ public class TrainingController extends BaseController {
     }
     trainingCriteria.setResultFields(TrainingFields.FIELDS_FOR_LIST_PAGE);
     Long count = trainingService.count(trainingCriteria);
-    PageInfo pageInfo = buildPageInfo(count, trainingCriteria.currentPage, settings.RECORD_PER_PAGE, null);
+    PageInfo pageInfo = buildPageInfo(count, trainingCriteria.currentPage,
+        settings.RECORD_PER_PAGE, null);
     List<TrainingDto> trainingDtoList = trainingService.getTrainingList(trainingCriteria, pageInfo);
 
     json.put("pageInfo", pageInfo);
@@ -114,9 +114,8 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("data/{trainingId}")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> data(@PathVariable("trainingId") Integer trainingId) throws AppException {
+  public @ResponseBody Map<String, Object> data(@PathVariable("trainingId") Integer trainingId)
+      throws AppException {
     Map<String, Object> json = new HashMap<>();
 
     TrainingDto trainingDto = trainingService.getTrainingDto(trainingId, TrainingFields.ALL_FIELDS);
@@ -132,9 +131,8 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("edit")
   @LoginPermit(value = AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> edit(@JsonMap("trainingEditDto") TrainingDto trainingEditDto,
+  public @ResponseBody Map<String, Object> edit(
+      @JsonMap("trainingEditDto") TrainingDto trainingEditDto,
       @JsonMap("action") String action) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
@@ -159,7 +157,8 @@ public class TrainingController extends BaseController {
           trainingEditDto.getDescription(), oldDirectory, newDirectory));
 
     } else {
-      trainingDto = trainingService.getTrainingDto(trainingEditDto.getTrainingId(), TrainingFields.ALL_FIELDS);
+      trainingDto = trainingService.getTrainingDto(trainingEditDto.getTrainingId(),
+          TrainingFields.ALL_FIELDS);
       if (trainingDto == null) {
         throw new AppException("Training not found.");
       }
@@ -178,9 +177,8 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("editTrainingUser")
   @LoginPermit(value = AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> editTrainingUser(@JsonMap("trainingUserEditDto") TrainingUserDto trainingUserEditDto,
+  public @ResponseBody Map<String, Object> editTrainingUser(
+      @JsonMap("trainingUserEditDto") TrainingUserDto trainingUserEditDto,
       @JsonMap("action") String action) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
@@ -190,25 +188,29 @@ public class TrainingController extends BaseController {
     }
 
     // Check user name
-    UserDTO userDTO = userService.getUserDTOByUserName(trainingUserEditDto.getUserName());
-    if (userDTO == null) {
+    UserDto userDto = userService.getUserDtoByUserName(trainingUserEditDto.getUserName());
+    if (userDto == null) {
       throw new FieldException("userName", "Invalid OJ user name.");
     }
-    trainingUserEditDto.setUserId(userDTO.getUserId());
+    trainingUserEditDto.setUserId(userDto.getUserId());
     // Check type
-    if (trainingUserEditDto.getType() < 0 || trainingUserEditDto.getType() >= TrainingUserType.values().length) {
+    if (trainingUserEditDto.getType() < 0
+        || trainingUserEditDto.getType() >= TrainingUserType.values().length) {
       throw new FieldException("type", "Invalid type.");
     }
 
     TrainingUserDto trainingUserDto;
     if (action.equals("new")) {
-      Integer trainingUserId = trainingUserService.createNewTrainingUser(trainingUserEditDto.getUserId(), trainingUserEditDto.getTrainingId());
-      trainingUserDto = trainingUserService.getTrainingUserDto(trainingUserId, TrainingUserFields.ALL_FIELDS);
+      Integer trainingUserId = trainingUserService.createNewTrainingUser(
+          trainingUserEditDto.getUserId(), trainingUserEditDto.getTrainingId());
+      trainingUserDto = trainingUserService.getTrainingUserDto(trainingUserId,
+          TrainingUserFields.ALL_FIELDS);
       if (trainingUserDto == null) {
         throw new AppException("Error while creating training user.");
       }
     } else {
-      trainingUserDto = trainingUserService.getTrainingUserDto(trainingUserEditDto.getTrainingUserId(), TrainingUserFields.ALL_FIELDS);
+      trainingUserDto = trainingUserService.getTrainingUserDto(
+          trainingUserEditDto.getTrainingUserId(), TrainingUserFields.ALL_FIELDS);
       if (trainingUserDto == null) {
         throw new AppException("Training user not found.");
       }
@@ -226,9 +228,8 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("searchTrainingUser/{trainingId}")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> searchTrainingUser(@RequestBody(required = false) TrainingUserCriteria trainingUserCriteria,
+  public @ResponseBody Map<String, Object> searchTrainingUser(
+      @RequestBody(required = false) TrainingUserCriteria trainingUserCriteria,
       @PathVariable("trainingId") Integer trainingId) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
@@ -238,7 +239,8 @@ public class TrainingController extends BaseController {
     trainingUserCriteria.setResultFields(TrainingUserFields.ALL_FIELDS);
     trainingUserCriteria.trainingId = trainingId;
 
-    List<TrainingUserDto> trainingUserDtoList = trainingUserService.getTrainingUserList(trainingUserCriteria);
+    List<TrainingUserDto> trainingUserDtoList = trainingUserService
+        .getTrainingUserList(trainingUserCriteria);
     for (int id = 0; id < trainingUserDtoList.size(); ++id) {
       trainingUserDtoList.get(id).setRank(id + 1);
       String ratingHistory = trainingUserDtoList.get(id).getRatingHistory();
@@ -259,19 +261,21 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("trainingUserData/{trainingUserId}")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> trainingUserData(@PathVariable("trainingUserId") Integer trainingUserId) throws AppException {
+  public @ResponseBody Map<String, Object> trainingUserData(
+      @PathVariable("trainingUserId") Integer trainingUserId) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
-    TrainingUserDto trainingUserDto = trainingUserService.getTrainingUserDto(trainingUserId, TrainingUserFields.ALL_FIELDS);
+    TrainingUserDto trainingUserDto = trainingUserService.getTrainingUserDto(trainingUserId,
+        TrainingUserFields.ALL_FIELDS);
     if (trainingUserDto == null) {
       throw new AppException("Training user not found!");
     }
 
-    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(TrainingPlatformInfoFields.ALL_FIELDS);
+    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(
+        TrainingPlatformInfoFields.ALL_FIELDS);
     trainingPlatformInfoCriteria.trainingUserId = trainingUserId;
-    List<TrainingPlatformInfoDto> trainingPlatformInfoDtoList = trainingPlatformInfoService.getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
+    List<TrainingPlatformInfoDto> trainingPlatformInfoDtoList = trainingPlatformInfoService
+        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
 
     json.put("trainingUserDto", trainingUserDto);
     json.put("trainingPlatformInfoDtoList", trainingPlatformInfoDtoList);
@@ -282,24 +286,28 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("editTrainingPlatformInfo")
   @LoginPermit(value = AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> editTrainingPlatformInfo(@JsonMap("trainingPlatformInfoEditDto") TrainingPlatformInfoDto trainingPlatformInfoEditDto,
+  public @ResponseBody Map<String, Object> editTrainingPlatformInfo(
+      @JsonMap("trainingPlatformInfoEditDto") TrainingPlatformInfoDto trainingPlatformInfoEditDto,
       @JsonMap("action") String action) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
     if (action.equals("remove")) {
-      trainingPlatformInfoService.removeTrainingPlatformInfo(trainingPlatformInfoEditDto.getTrainingPlatformInfoId());
+      trainingPlatformInfoService.removeTrainingPlatformInfo(trainingPlatformInfoEditDto
+          .getTrainingPlatformInfoId());
     } else {
       TrainingPlatformInfoDto trainingPlatformInfoDto;
       if (action.equals("new")) {
-        Integer trainingPlatformInfoId = trainingPlatformInfoService.createNewTrainingPlatformInfo(trainingPlatformInfoEditDto.getTrainingUserId());
-        trainingPlatformInfoDto = trainingPlatformInfoService.getTrainingPlatformInfoDto(trainingPlatformInfoId, TrainingPlatformInfoFields.ALL_FIELDS);
+        Integer trainingPlatformInfoId = trainingPlatformInfoService
+            .createNewTrainingPlatformInfo(trainingPlatformInfoEditDto.getTrainingUserId());
+        trainingPlatformInfoDto = trainingPlatformInfoService.getTrainingPlatformInfoDto(
+            trainingPlatformInfoId, TrainingPlatformInfoFields.ALL_FIELDS);
         if (trainingPlatformInfoDto == null) {
           throw new AppException("Error while creating training platform info.");
         }
       } else {
-        trainingPlatformInfoDto = trainingPlatformInfoService.getTrainingPlatformInfoDto(trainingPlatformInfoEditDto.getTrainingPlatformInfoId(), TrainingPlatformInfoFields.ALL_FIELDS);
+        trainingPlatformInfoDto = trainingPlatformInfoService.getTrainingPlatformInfoDto(
+            trainingPlatformInfoEditDto.getTrainingPlatformInfoId(),
+            TrainingPlatformInfoFields.ALL_FIELDS);
         if (trainingPlatformInfoDto == null) {
           throw new AppException("Training platform info not found.");
         }
@@ -314,8 +322,8 @@ public class TrainingController extends BaseController {
           trainingPlatformInfoService.getTrainingPlatformInfoDto(
               trainingPlatformInfoDto.getTrainingPlatformInfoId(),
               TrainingPlatformInfoFields.ALL_FIELDS
-          )
-      );
+              )
+          );
     }
 
     json.put("result", "success");
@@ -324,9 +332,8 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("searchTrainingContest/{trainingId}")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> searchTrainingContest(@RequestBody(required = false) TrainingContestCriteria trainingContestCriteria,
+  public @ResponseBody Map<String, Object> searchTrainingContest(
+      @RequestBody(required = false) TrainingContestCriteria trainingContestCriteria,
       @PathVariable("trainingId") Integer trainingId) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
@@ -336,7 +343,8 @@ public class TrainingController extends BaseController {
     trainingContestCriteria.setResultFields(TrainingContestFields.FIELDS_FOR_LIST_PAGE);
     trainingContestCriteria.trainingId = trainingId;
 
-    List<TrainingContestDto> trainingContestDtoList = trainingContestService.getTrainingContestList(trainingContestCriteria);
+    List<TrainingContestDto> trainingContestDtoList = trainingContestService
+        .getTrainingContestList(trainingContestCriteria);
 
     PageInfo pageInfo = buildPageInfo((long) trainingContestDtoList.size(),
         1L, (long) trainingContestDtoList.size(), null);
@@ -350,12 +358,12 @@ public class TrainingController extends BaseController {
 
   @RequestMapping(value = "uploadTrainingContestResult/{trainingId}/{type}/{platformType}", method = RequestMethod.POST)
   @LoginPermit(AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> uploadTrainingContestResult(@PathVariable("trainingId") Integer trainingId,
+  public @ResponseBody Map<String, Object> uploadTrainingContestResult(
+      @PathVariable("trainingId") Integer trainingId,
       @PathVariable("type") Integer type,
       @PathVariable("platformType") Integer platformType,
-      @RequestParam(value = "uploadFile", required = true) MultipartFile[] files) throws AppException {
+      @RequestParam(value = "uploadFile", required = true) MultipartFile[] files)
+      throws AppException {
     Map<String, Object> json = new HashMap<>();
 
     if (files.length > 1) {
@@ -389,7 +397,8 @@ public class TrainingController extends BaseController {
     return json;
   }
 
-  private TrainingRankList parseXlsFile(File targetFile, Integer trainingId, Integer type, Integer platformType) throws AppException, IOException, BiffException {
+  private TrainingRankList parseXlsFile(File targetFile, Integer trainingId, Integer type,
+      Integer platformType) throws AppException, IOException, BiffException {
     Workbook workbook = Workbook.getWorkbook(targetFile);
     Sheet sheet = workbook.getSheet(0);
     int totalRows = sheet.getRows();
@@ -417,27 +426,30 @@ public class TrainingController extends BaseController {
     trainingRankList.fieldType = fieldType;
     trainingRankList.users = users;
 
-    parseRankList(trainingRankList, trainingId, TrainingContestType.values()[type], TrainingPlatformType.values()[platformType]);
+    parseRankList(trainingRankList, trainingId, TrainingContestType.values()[type],
+        TrainingPlatformType.values()[platformType]);
 
     return trainingRankList;
   }
 
-  private void parseRankList(TrainingRankList trainingRankList, Integer trainingId, TrainingContestType trainingContestType, TrainingPlatformType platformType) throws AppException {
-    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(TrainingPlatformInfoFields.ALL_FIELDS);
+  private void parseRankList(TrainingRankList trainingRankList, Integer trainingId,
+      TrainingContestType trainingContestType, TrainingPlatformType platformType)
+      throws AppException {
+    TrainingPlatformInfoCriteria trainingPlatformInfoCriteria = new TrainingPlatformInfoCriteria(
+        TrainingPlatformInfoFields.ALL_FIELDS);
     trainingPlatformInfoCriteria.trainingId = trainingId;
     if (trainingContestType != TrainingContestType.ADJUST) {
       trainingPlatformInfoCriteria.type = platformType;
     }
-    List<TrainingPlatformInfoDto> platformList = trainingPlatformInfoService.getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
+    List<TrainingPlatformInfoDto> platformList = trainingPlatformInfoService
+        .getTrainingPlatformInfoList(trainingPlatformInfoCriteria);
     TrainingContestResultParser parser = new TrainingContestResultParser(platformList);
     parser.parse(trainingRankList, trainingContestType, platformType);
   }
 
   @RequestMapping(value = "editTrainingContest")
   @LoginPermit(AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> editTrainingContest(@JsonMap("action") String action,
+  public @ResponseBody Map<String, Object> editTrainingContest(@JsonMap("action") String action,
       @JsonMap("trainingContestEditDto") TrainingContestDto trainingContestEditDto,
       @JsonMap("fileName") String fileName) throws AppException, IOException, BiffException {
     Map<String, Object> json = new HashMap<>();
@@ -449,13 +461,16 @@ public class TrainingController extends BaseController {
 
     TrainingContestDto trainingContestDto;
     if (action.equals("new")) {
-      Integer trainingContestId = trainingContestService.createNewTrainingContest(trainingContestEditDto.getTrainingId());
-      trainingContestDto = trainingContestService.getTrainingContestDto(trainingContestId, TrainingContestFields.ALL_FIELDS);
+      Integer trainingContestId = trainingContestService
+          .createNewTrainingContest(trainingContestEditDto.getTrainingId());
+      trainingContestDto = trainingContestService.getTrainingContestDto(trainingContestId,
+          TrainingContestFields.ALL_FIELDS);
       if (trainingContestDto == null) {
         throw new AppException("Error while creating training contest.");
       }
     } else {
-      trainingContestDto = trainingContestService.getTrainingContestDto(trainingContestEditDto.getTrainingContestId(), TrainingContestFields.ALL_FIELDS);
+      trainingContestDto = trainingContestService.getTrainingContestDto(
+          trainingContestEditDto.getTrainingContestId(), TrainingContestFields.ALL_FIELDS);
       if (trainingContestDto == null) {
         throw new AppException("Training contest not found.");
       }
@@ -471,7 +486,9 @@ public class TrainingController extends BaseController {
       if (!targetFile.exists()) {
         throw new AppException("Internal exception: uploaded xls file disappeared.");
       }
-      TrainingRankList trainingRankList = parseXlsFile(targetFile, trainingContestEditDto.getTrainingId(), trainingContestEditDto.getType(), trainingContestEditDto.getPlatformType());
+      TrainingRankList trainingRankList = parseXlsFile(targetFile,
+          trainingContestEditDto.getTrainingId(), trainingContestEditDto.getType(),
+          trainingContestEditDto.getPlatformType());
       trainingContestDto.setRankList(JSON.toJSONString(trainingRankList));
     }
 
@@ -484,12 +501,12 @@ public class TrainingController extends BaseController {
 
   @RequestMapping("trainingContestData/{trainingContestId}")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> trainingContestData(@PathVariable("trainingContestId") Integer trainingContestId) throws AppException {
+  public @ResponseBody Map<String, Object> trainingContestData(
+      @PathVariable("trainingContestId") Integer trainingContestId) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
-    TrainingContestDto trainingContestDto = trainingContestService.getTrainingContestDto(trainingContestId, TrainingContestFields.ALL_FIELDS);
+    TrainingContestDto trainingContestDto = trainingContestService.getTrainingContestDto(
+        trainingContestId, TrainingContestFields.ALL_FIELDS);
     if (trainingContestDto == null) {
       throw new AppException("Training contest not found!");
     }
@@ -508,9 +525,8 @@ public class TrainingController extends BaseController {
   }
 
   @RequestMapping("calculateRating/{trainingId}")
-  public
-  @ResponseBody
-  Map<String, Object> calculateRating(@PathVariable("trainingId") Integer trainingId) throws AppException {
+  public @ResponseBody Map<String, Object> calculateRating(
+      @PathVariable("trainingId") Integer trainingId) throws AppException {
     Map<String, Object> json = new HashMap<>();
 
     TrainingDto trainingDto = trainingService.getTrainingDto(trainingId, TrainingFields.ALL_FIELDS);
@@ -518,11 +534,14 @@ public class TrainingController extends BaseController {
       throw new AppException("Training not found!");
     }
 
-    TrainingContestCriteria trainingContestCriteria = new TrainingContestCriteria(TrainingContestFields.ALL_FIELDS);
+    TrainingContestCriteria trainingContestCriteria = new TrainingContestCriteria(
+        TrainingContestFields.ALL_FIELDS);
     trainingContestCriteria.trainingId = trainingId;
-    List<TrainingContestDto> contestList = trainingContestService.getTrainingContestList(trainingContestCriteria);
+    List<TrainingContestDto> contestList = trainingContestService
+        .getTrainingContestList(trainingContestCriteria);
 
-    TrainingUserCriteria trainingUserCriteria = new TrainingUserCriteria(TrainingUserFields.ALL_FIELDS);
+    TrainingUserCriteria trainingUserCriteria = new TrainingUserCriteria(
+        TrainingUserFields.ALL_FIELDS);
     trainingUserCriteria.trainingId = trainingId;
     List<TrainingUserDto> userList = trainingUserService.getTrainingUserList(trainingUserCriteria);
 
@@ -541,8 +560,10 @@ public class TrainingController extends BaseController {
     RatingCalculator ratingCalculator = new RatingCalculator(userList);
     for (TrainingContestDto contest : contestList) {
       // Parse rank list
-      TrainingRankList trainingRankList = JSON.parseObject(contest.getRankList(), TrainingRankList.class);
-      parseRankList(trainingRankList, trainingId, TrainingContestType.values()[contest.getType()], TrainingPlatformType.values()[contest.getPlatformType()]);
+      TrainingRankList trainingRankList = JSON.parseObject(contest.getRankList(),
+          TrainingRankList.class);
+      parseRankList(trainingRankList, trainingId, TrainingContestType.values()[contest.getType()],
+          TrainingPlatformType.values()[contest.getPlatformType()]);
       contest.setRankList(JSON.toJSONString(trainingRankList));
       trainingContestService.updateTrainingContest(contest);
 

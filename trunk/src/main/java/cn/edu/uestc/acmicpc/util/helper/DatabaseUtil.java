@@ -16,26 +16,32 @@ public class DatabaseUtil {
   /**
    * Put all criterion in the criterion list into criteria object.
    *
-   * @param criteria      criteria object
-   * @param criterionList criterion list
+   * @param criteria
+   *          criteria object
+   * @param criterionList
+   *          criterion list
    */
   public static void putCriterionIntoCriteria(Criteria criteria, Iterable<Criterion> criterionList) {
-    if (criteria == null || criterionList == null)
+    if (criteria == null || criterionList == null) {
       return;
-    for (Criterion criterion : criterionList)
+    }
+    for (Criterion criterion : criterionList) {
       criteria.add(criterion);
+    }
   }
 
   /**
    * Get entity's key value.
    *
-   * @param object entity object
+   * @param object
+   *          entity object
    * @return entity's key value, if object is not a entity, return {@code null}.
    */
   public static Object getKeyValue(Object object) {
     KeyField keyField = object.getClass().getAnnotation(KeyField.class);
-    if (keyField == null)
+    if (keyField == null) {
       return null;
+    }
     String methodName =
         StringUtil.getGetterOrSetter(StringUtil.MethodType.GETTER, keyField.value());
     try {

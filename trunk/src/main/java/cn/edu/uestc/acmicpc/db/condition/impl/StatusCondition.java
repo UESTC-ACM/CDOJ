@@ -81,8 +81,8 @@ public class StatusCondition extends BaseCondition {
   public Integer contestId;
 
   /**
-   * If it's for administrators, we will show all submissions, otherwise, we only
-   * show normal users' submissions.
+   * If it's for administrators, we will show all submissions, otherwise, we
+   * only show normal users' submissions.
    */
   public boolean isForAdmin = false;
 

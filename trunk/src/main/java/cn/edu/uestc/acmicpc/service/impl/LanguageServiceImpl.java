@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.dao.iface.LanguageDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.language.LanguageDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.language.LanguageDto;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -20,7 +20,7 @@ import javax.annotation.PostConstruct;
 public class LanguageServiceImpl extends AbstractService implements LanguageService {
 
   private final LanguageDao languageDao;
-  private List<LanguageDTO> languageDTOList;
+  private List<LanguageDto> languageDtoList;
 
   @Autowired
   public LanguageServiceImpl(LanguageDao languageDao) {
@@ -30,39 +30,39 @@ public class LanguageServiceImpl extends AbstractService implements LanguageServ
   @PostConstruct
   public void init() throws AppException {
     try {
-      languageDTOList = languageDao.findAll(LanguageDTO.class, LanguageDTO.builder(),
+      languageDtoList = languageDao.findAll(LanguageDto.class, LanguageDto.builder(),
           new Condition());
     } catch (NullPointerException e) {
-      languageDTOList = new LinkedList<>();
+      languageDtoList = new LinkedList<>();
     }
   }
 
   @Override
-  public List<LanguageDTO> getLanguageList() {
-    return languageDTOList;
+  public List<LanguageDto> getLanguageList() {
+    return languageDtoList;
   }
 
-  private LanguageDTO getLanguage(Integer languageId) {
-    for (LanguageDTO languageDTO : languageDTOList)
-      if (languageDTO.getLanguageId().equals(languageId))
-        return languageDTO;
+  private LanguageDto getLanguage(Integer languageId) {
+    for (LanguageDto languageDto : languageDtoList)
+      if (languageDto.getLanguageId().equals(languageId))
+        return languageDto;
     return null;
   }
 
   @Override
   public String getExtension(Integer languageId) {
-    LanguageDTO languageDTO = getLanguage(languageId);
-    if (languageDTO == null)
+    LanguageDto languageDto = getLanguage(languageId);
+    if (languageDto == null)
       return null;
-    return languageDTO.getExtension();
+    return languageDto.getExtension();
   }
 
   @Override
   public String getLanguageName(Integer languageId) {
-    LanguageDTO languageDTO = getLanguage(languageId);
-    if (languageDTO == null)
+    LanguageDto languageDto = getLanguage(languageId);
+    if (languageDto == null)
       return null;
-    return languageDTO.getName();
+    return languageDto.getName();
   }
 
   @Override

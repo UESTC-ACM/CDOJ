@@ -7,8 +7,10 @@ import java.io.Serializable;
 /**
  * Online judge global service.
  *
- * @param <E> Entity type
- * @param <K> Key type
+ * @param <E>
+ *          Entity type
+ * @param <K>
+ *          Key type
  */
 public interface DatabaseService<E extends Serializable, K extends Serializable> {
 

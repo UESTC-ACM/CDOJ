@@ -10,8 +10,6 @@ import java.util.Map;
 
 /**
  * Basic node object used by xml parser.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
  */
 public class XmlNode implements Iterable<XmlNode> {
 
@@ -36,58 +34,68 @@ public class XmlNode implements Iterable<XmlNode> {
   private Map<String, String> attributes;
 
   /**
-   * Add new attribute into the attribute list, if the attribute list is {@code null} or there is
-   * same attribute in the list, throw {@link AppException}.
+   * Add new attribute into the attribute list, if the attribute list is
+   * {@code null} or there is same attribute in the list, throw
+   * {@link AppException}.
    *
-   * @param key   the name of the attribute we want to add
-   * @param value attribute innerText
+   * @param key
+   *          the name of the attribute we want to add
+   * @param value
+   *          attribute innerText
    * @throws AppException
    */
   public void addAttribute(String key, String value) throws AppException {
-    if (getAttributes() == null)
+    if (getAttributes() == null) {
       throw new AppException("The attribute list is null.");
-    else if (getAttributes().containsKey(key))
+    } else if (getAttributes().containsKey(key)) {
       throw new AppException("There is same attribute in the attribute list.");
-    else
+    } else {
       getAttributes().put(key, value);
+    }
   }
 
   /**
-   * Remove specified attribute from the attribute list, if the attribute is {@code null} or there
-   * is such attribute in the list, throw {@link AppException}.
+   * Remove specified attribute from the attribute list, if the attribute is
+   * {@code null} or there is such attribute in the list, throw
+   * {@link AppException}.
    *
-   * @param key the name of the attribute we want to remove
+   * @param key
+   *          the name of the attribute we want to remove
    * @throws AppException
    */
   public void removeAttribute(String key) throws AppException {
-    if (getAttributes() == null)
+    if (getAttributes() == null) {
       throw new AppException("The attribute list is null.");
-    else if (!getAttributes().containsKey(key))
+    } else if (!getAttributes().containsKey(key)) {
       throw new AppException("There is such attribute in the attribute list.");
-    else
+    } else {
       getAttributes().remove(key);
+    }
   }
 
   /**
-   * Get specified attribute innerText from the attribute list, if the attribute list is
-   * {@code null} or there is no such attribute in the attribute list, return empty string,
-   * otherwise return the innerText of this attribute.
+   * Get specified attribute innerText from the attribute list, if the attribute
+   * list is {@code null} or there is no such attribute in the attribute list,
+   * return empty string, otherwise return the innerText of this attribute.
    *
-   * @param key the attribute name
+   * @param key
+   *          the attribute name
    * @return the innerText of the attribute
    * @throws AppException
    */
   public String getAttribute(String key) throws AppException {
-    if (getAttributes() == null)
+    if (getAttributes() == null) {
       throw new AppException("The attribute list is null.");
-    else if (!getAttributes().containsKey(key))
+    } else if (!getAttributes().containsKey(key)) {
       return "";
-    else
+    } else {
       return getAttributes().get(key);
+    }
   }
 
   /**
-   * Construct a xml node and initialize the child nodes list and attribute list.
+   * Construct a xml node and initialize the child nodes list and attribute
+   * list.
    */
   public XmlNode() {
     setChildList(new LinkedList<XmlNode>());
@@ -95,20 +103,26 @@ public class XmlNode implements Iterable<XmlNode> {
   }
 
   /**
-   * Add a new child node into the child nodes list, if the child node or child nodes list is
-   * {@code null}, or this is same node in the child node list, throw {@link AppException}.
+   * Add a new child node into the child nodes list, if the child node or child
+   * nodes list is {@code null}, or this is same node in the child node list,
+   * throw {@link AppException}.
    *
-   * @param child new child node
+   * @param child
+   *          new child node
    * @throws AppException
    */
   public void addChild(XmlNode child) throws AppException {
-    if (getChildList() == null)
+    if (getChildList() == null) {
       throw new AppException("The child node list does not exist.");
-    if (child == null)
+    }
+    if (child == null) {
       throw new AppException("The new node is null.");
-    for (XmlNode node : getChildList())
-      if (node == child)
+    }
+    for (XmlNode node : getChildList()) {
+      if (node == child) {
         throw new AppException("This node is contained in the child node list.");
+      }
+    }
     getChildList().add(child);
   }
 

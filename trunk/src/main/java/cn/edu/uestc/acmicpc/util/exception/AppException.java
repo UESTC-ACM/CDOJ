@@ -21,7 +21,8 @@ public class AppException extends Exception implements Serializable {
    * Construct a new exception with the specified detail message and
    * {@code null} cause.
    *
-   * @param message the detail message
+   * @param message
+   *          the detail message
    */
   public AppException(String message) {
     super(message);
@@ -30,8 +31,10 @@ public class AppException extends Exception implements Serializable {
   /**
    * Construct a new exception with the specified detail message and cause.
    *
-   * @param message the detail message
-   * @param cause   the cause
+   * @param message
+   *          the detail message
+   * @param cause
+   *          the cause
    */
   public AppException(String message, Throwable cause) {
     super(message, cause);
@@ -41,7 +44,8 @@ public class AppException extends Exception implements Serializable {
    * Construct a new exception with the specified cause and {@code null} detail
    * message.
    *
-   * @param cause the cause
+   * @param cause
+   *          the cause
    */
   public AppException(Throwable cause) {
     super(cause);
@@ -52,13 +56,17 @@ public class AppException extends Exception implements Serializable {
    * suppression enabled or disabled, and writable stack trace enabled or
    * disabled.
    *
-   * @param message            the detail message
-   * @param cause              the cause
-   * @param enableSuppression  whether or not suppression is enabled or disabled
-   * @param writableStackTrace whether or not the stack trace should be writable
+   * @param message
+   *          the detail message
+   * @param cause
+   *          the cause
+   * @param enableSuppression
+   *          whether or not suppression is enabled or disabled
+   * @param writableStackTrace
+   *          whether or not the stack trace should be writable
    */
   public AppException(String message, Throwable cause, boolean enableSuppression,
-                      boolean writableStackTrace) {
+      boolean writableStackTrace) {
     super(message, cause, enableSuppression, writableStackTrace);
   }
 

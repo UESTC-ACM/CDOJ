@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.service;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.dao.iface.LanguageDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.language.LanguageDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.language.LanguageDto;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
@@ -25,7 +25,7 @@ public class LanguageServiceITTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void testGetLanguageList() throws AppException {
-    List<LanguageDTO> languageList = languageService.getLanguageList();
+    List<LanguageDto> languageList = languageService.getLanguageList();
     Assert.assertEquals(languageList.size(), 3);
   }
 

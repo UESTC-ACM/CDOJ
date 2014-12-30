@@ -14,5 +14,4 @@ public class ErrorController extends BaseController {
 
   public ErrorController() {
   }
-
 }

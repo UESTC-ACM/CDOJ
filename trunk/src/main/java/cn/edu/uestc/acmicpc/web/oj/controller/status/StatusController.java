@@ -2,14 +2,14 @@ package cn.edu.uestc.acmicpc.web.oj.controller.status;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.CodeDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.SubmitDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.SubmitDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.CodeService;
 import cn.edu.uestc.acmicpc.service.iface.CompileInfoService;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
@@ -45,6 +45,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -52,16 +53,16 @@ import javax.validation.Valid;
 @RequestMapping("/status")
 public class StatusController extends BaseController {
 
-  private StatusService statusService;
-  private ProblemService problemService;
-  private CodeService codeService;
-  private CompileInfoService compileInfoService;
-  private ContestService contestService;
-  private ContestProblemService contestProblemService;
-  private LanguageService languageService;
-  private UserService userService;
-  private Settings settings;
-  private MessageService messageService;
+  private final StatusService statusService;
+  private final ProblemService problemService;
+  private final CodeService codeService;
+  private final CompileInfoService compileInfoService;
+  private final ContestService contestService;
+  private final ContestProblemService contestProblemService;
+  private final LanguageService languageService;
+  private final UserService userService;
+  private final Settings settings;
+  private final MessageService messageService;
 
   @Autowired
   public StatusController(StatusService statusService,
@@ -88,9 +89,7 @@ public class StatusController extends BaseController {
 
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> search(HttpSession session,
+  public @ResponseBody Map<String, Object> search(HttpSession session,
       @RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
@@ -103,8 +102,9 @@ public class StatusController extends BaseController {
       if (!isAdmin(session)) {
         statusCondition.isForAdmin = false;
         if (statusCondition.contestId != -1) {
-          ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(statusCondition.contestId);
-          if (contestShowDTO == null) {
+          ContestShowDto contestShowDto = contestService
+              .getContestShowDtoByContestId(statusCondition.contestId);
+          if (contestShowDto == null) {
             throw new AppException("No such contest.");
           }
           // Check permission
@@ -117,7 +117,7 @@ public class StatusController extends BaseController {
             statusCondition.userIdList = ArrayUtil.join(memberList.toArray(), ",");
           } else {
             // Only show current user's status
-            UserDTO currentUser = getCurrentUser(session);
+            UserDto currentUser = getCurrentUser(session);
             if (currentUser == null) {
               // Avoid null point exception.
               statusCondition.userId = 0;
@@ -126,8 +126,8 @@ public class StatusController extends BaseController {
             }
           }
           // Only show status submitted in contest
-          statusCondition.startTime = contestShowDTO.getStartTime();
-          statusCondition.endTime = contestShowDTO.getEndTime();
+          statusCondition.startTime = contestShowDto.getStartTime();
+          statusCondition.endTime = contestShowDto.getEndTime();
           // Some problems is stashed when contest is running
           statusCondition.isVisible = null;
         } else {
@@ -136,8 +136,9 @@ public class StatusController extends BaseController {
         }
       } else {
         if (statusCondition.contestId != -1) {
-          ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(statusCondition.contestId);
-          if (contestShowDTO == null) {
+          ContestShowDto contestShowDto = contestService
+              .getContestShowDtoByContestId(statusCondition.contestId);
+          if (contestShowDto == null) {
             throw new AppException("No such contest.");
           }
         }
@@ -152,20 +153,20 @@ public class StatusController extends BaseController {
       }
       PageInfo pageInfo = buildPageInfo(count, statusCondition.currentPage,
           recordPerPage, null);
-      List<StatusListDTO> statusListDTOList = statusService.getStatusList(statusCondition,
+      List<StatusListDto> statusListDtoList = statusService.getStatusList(statusCondition,
           pageInfo);
-      for (StatusListDTO statusListDTO : statusListDTOList) {
-        statusListDTO.setReturnType(EnumTypeUtil.getReturnDescription(
-            statusListDTO.getReturnTypeId(), statusListDTO.getCaseNumber()));
-        if (statusListDTO.getReturnTypeId() != OnlineJudgeReturnType.OJ_AC.ordinal()) {
-          statusListDTO.setTimeCost(null);
-          statusListDTO.setMemoryCost(null);
+      for (StatusListDto statusListDto : statusListDtoList) {
+        statusListDto.setReturnType(EnumTypeUtil.getReturnDescription(
+            statusListDto.getReturnTypeId(), statusListDto.getCaseNumber()));
+        if (statusListDto.getReturnTypeId() != OnlineJudgeReturnType.OJ_AC.ordinal()) {
+          statusListDto.setTimeCost(null);
+          statusListDto.setMemoryCost(null);
         }
       }
 
       json.put("pageInfo", pageInfo);
       json.put("result", "success");
-      json.put("list", statusListDTOList);
+      json.put("list", statusListDtoList);
     } catch (AppException e) {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
@@ -179,9 +180,8 @@ public class StatusController extends BaseController {
 
   @RequestMapping("rejudgeStatusCount")
   @LoginPermit(AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> rejudgeStatusCount(@RequestBody StatusCondition statusCondition) {
+  public @ResponseBody Map<String, Object> rejudgeStatusCount(
+      @RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
       // Current user is administrator
@@ -214,17 +214,15 @@ public class StatusController extends BaseController {
 
   @RequestMapping("rejudge")
   @LoginPermit(AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> rejudge(@RequestBody StatusCondition statusCondition) {
+  public @ResponseBody Map<String, Object> rejudge(@RequestBody StatusCondition statusCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
       if (statusCondition.userName != null) {
-        UserDTO userDTO = userService.getUserDTOByUserName(statusCondition.userName);
-        if (userDTO == null) {
+        UserDto userDto = userService.getUserDtoByUserName(statusCondition.userName);
+        if (userDto == null) {
           throw new AppException("User not found for given user name.");
         }
-        statusCondition.userId = userDTO.getUserId();
+        statusCondition.userId = userDto.getUserId();
       }
       if (statusCondition.result == null ||
           statusCondition.result == OnlineJudgeResultType.OJ_ALL ||
@@ -253,10 +251,8 @@ public class StatusController extends BaseController {
 
   @RequestMapping("submit")
   @LoginPermit(NeedLogin = true)
-  public
-  @ResponseBody
-  Map<String, Object> submit(HttpSession session,
-      @RequestBody @Valid SubmitDTO submitDTO,
+  public @ResponseBody Map<String, Object> submit(HttpSession session,
+      @RequestBody @Valid SubmitDto submitDto,
       BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
@@ -264,64 +260,66 @@ public class StatusController extends BaseController {
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+        UserDto currentUser = (UserDto) session.getAttribute("currentUser");
 
-        if (submitDTO.getLanguageId() == null) {
+        if (submitDto.getLanguageId() == null) {
           throw new AppException("Please select a language.");
         }
-        if (languageService.getLanguageName(submitDTO.getLanguageId()) == null) {
+        if (languageService.getLanguageName(submitDto.getLanguageId()) == null) {
           throw new AppException("No such language.");
         }
 
-        if (submitDTO.getProblemId() == null) {
+        if (submitDto.getProblemId() == null) {
           throw new AppException("Wrong problem id.");
         }
-        ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(submitDTO.getProblemId());
-        if (problemDTO == null) {
+        ProblemDto problemDto = problemService.getProblemDtoByProblemId(submitDto.getProblemId());
+        if (problemDto == null) {
           throw new AppException("Wrong problem id.");
         }
         // Status in contest
-        if (submitDTO.getContestId() != null) {
-          ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(submitDTO.getContestId());
-          if (contestShowDTO == null) {
+        if (submitDto.getContestId() != null) {
+          ContestShowDto contestShowDto = contestService.getContestShowDtoByContestId(submitDto
+              .getContestId());
+          if (contestShowDto == null) {
             throw new AppException("Wrong contest id.");
           }
-          if (!contestProblemService.checkContestProblemInContest(submitDTO.getProblemId(), submitDTO.getContestId())) {
+          if (!contestProblemService.checkContestProblemInContest(submitDto.getProblemId(),
+              submitDto.getContestId())) {
             throw new AppException("Wrong problem id.");
           }
           if (!isAdmin(session)) {
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-            if (currentTime.before(contestShowDTO.getStartTime()) ||
-                currentTime.after(contestShowDTO.getEndTime())) {
+            if (currentTime.before(contestShowDto.getStartTime()) ||
+                currentTime.after(contestShowDto.getEndTime())) {
               throw new AppException("Out of time!");
             }
-            checkContestPermission(session, submitDTO.getContestId());
+            checkContestPermission(session, submitDto.getContestId());
           }
         } else {
           // We don't allow normal user to submit code to a stashed problem.
           if (!isAdmin(session)) {
-            if (!problemDTO.getIsVisible()) {
+            if (!problemDto.getIsVisible()) {
               throw new AppException("You have no permission to submit this problem.");
             }
           }
         }
 
         Integer codeId = codeService.createNewCode(CodeDto.builder()
-            .setContent(submitDTO.getCodeContent())
+            .setContent(submitDto.getCodeContent())
             .setShare(false)
             .build());
         if (codeId == null) {
           throw new AppException("Error while saving you code.");
         }
 
-        statusService.createNewStatus(StatusDTO.builder()
+        statusService.createNewStatus(StatusDto.builder()
             .setCodeId(codeId)
-            .setContestId(submitDTO.getContestId())
-            .setLanguageId(submitDTO.getLanguageId())
-            .setProblemId(submitDTO.getProblemId())
+            .setContestId(submitDto.getContestId())
+            .setLanguageId(submitDto.getLanguageId())
+            .setProblemId(submitDto.getProblemId())
             .setTime(new Timestamp(new Date().getTime()))
             .setUserId(currentUser.getUserId())
-            .setLength(submitDTO.getCodeContent().length())
+            .setLength(submitDto.getCodeContent().length())
             .build());
         json.put("result", "success");
       } catch (AppException e) {
@@ -334,31 +332,30 @@ public class StatusController extends BaseController {
 
   @RequestMapping("info/{statusId}")
   @LoginPermit(NeedLogin = true)
-  public
-  @ResponseBody
-  Map<String, Object> info(HttpSession session,
+  public @ResponseBody Map<String, Object> info(HttpSession session,
       @PathVariable Integer statusId) {
     Map<String, Object> json = new HashMap<>();
     try {
-      StatusInformationDTO statusInformationDTO = statusService.getStatusInformation(statusId);
-      if (statusInformationDTO == null) {
+      StatusInformationDto statusInformationDto = statusService.getStatusInformation(statusId);
+      if (statusInformationDto == null) {
         throw new AppException("No such status.");
       }
       if (!isAdmin(session)) {
-        UserDTO currentUser = getCurrentUser(session);
-        if (statusInformationDTO.getContestId() == null) {
+        UserDto currentUser = getCurrentUser(session);
+        if (statusInformationDto.getContestId() == null) {
           // Status not in contest
-          if (!currentUser.getUserId().equals(statusInformationDTO.getUserId())) {
+          if (!currentUser.getUserId().equals(statusInformationDto.getUserId())) {
             throw new AppException("You have no permission to view this code.");
           }
         } else {
           // Status in contest
-          checkContestPermission(session, statusInformationDTO.getContestId());
-          Byte type = getContestType(session, statusInformationDTO.getContestId());
+          checkContestPermission(session, statusInformationDto.getContestId());
+          Byte type = getContestType(session, statusInformationDto.getContestId());
           if (type == ContestType.INVITED.ordinal()) {
             // Only show current user and his member's status
             // Find current user's teamId
-            List<Integer> teamMembers = getContestTeamMembers(session, statusInformationDTO.getContestId());
+            List<Integer> teamMembers = getContestTeamMembers(session,
+                statusInformationDto.getContestId());
             // Check permission
             Boolean valid = false;
             for (Integer memberId : teamMembers) {
@@ -371,17 +368,17 @@ public class StatusController extends BaseController {
             }
           } else {
             // Status in normal contest
-            if (!currentUser.getUserId().equals(statusInformationDTO.getUserId())) {
+            if (!currentUser.getUserId().equals(statusInformationDto.getUserId())) {
               throw new AppException("You have no permission to view this code.");
             }
           }
         }
       }
       json.put("result", "success");
-      json.put("code", statusInformationDTO.getCodeContent());
-      if (statusInformationDTO.getCompileInfoId() != null) {
+      json.put("code", statusInformationDto.getCodeContent());
+      if (statusInformationDto.getCompileInfoId() != null) {
         json.put("compileInfo", compileInfoService.getCompileInfo(
-            statusInformationDTO.getCompileInfoId()));
+            statusInformationDto.getCompileInfoId()));
       }
     } catch (AppException e) {
       json.put("result", "error");
@@ -396,18 +393,16 @@ public class StatusController extends BaseController {
 
   @RequestMapping("print")
   @LoginPermit(NeedLogin = true)
-  public
-  @ResponseBody
-  Map<String, Object> print(HttpSession session,
-      @RequestBody SubmitDTO submitDTO) {
+  public @ResponseBody Map<String, Object> print(HttpSession session,
+      @RequestBody SubmitDto submitDto) {
     Map<String, Object> json = new HashMap<>();
     try {
-      String codeContent = submitDTO.getCodeContent();
+      String codeContent = submitDto.getCodeContent();
       if (StringUtil.isNullOrWhiteSpace(codeContent)) {
         throw new AppException("Please print something.");
       }
 
-      UserDTO currentUser = getCurrentUser(session);
+      UserDto currentUser = getCurrentUser(session);
       StringBuilder messageContentBuilder = new StringBuilder();
       messageContentBuilder.append("```\n")
           .append("/**\n")
@@ -418,9 +413,9 @@ public class StatusController extends BaseController {
           .append("  */\n")
           .append(codeContent)
           .append("```");
-      messageService.createNewMessage(MessageDTO.builder()
+      messageService.createNewMessage(MessageDto.builder()
           .setSenderId(currentUser.getUserId())
-          .setReceiverId(1)  // Administrator
+          .setReceiverId(1) // Administrator
           .setTime(new Timestamp(System.currentTimeMillis()))
           .setIsOpened(false)
           .setTitle("Print request.")

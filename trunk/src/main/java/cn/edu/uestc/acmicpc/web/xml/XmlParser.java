@@ -11,9 +11,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
- * Simple xml parser in order to mapping the xml file into a {@link XmlNode} object.
- *
- * @author <a href="mailto:lyhypacm@gmail.com">fish</a>
+ * Simple XML parser in order to mapping the xml file into a {@link XmlNode}
+ * object.
  */
 public class XmlParser {
 
@@ -22,7 +21,8 @@ public class XmlParser {
   /**
    * Construct a {@link XmlParser} and set specified xml file name.
    *
-   * @param fileName the name of the xml file
+   * @param fileName
+   *          the name of the XML file
    */
   public XmlParser(String fileName) {
     this.fileName = fileName;
@@ -43,11 +43,11 @@ public class XmlParser {
       NodeList nodeList = document.getChildNodes();
       for (int i = 0; i < nodeList.getLength(); ++i) {
         Node node = nodeList.item(i);
-        XmlNode child =
-            node.getNodeType() == Node.DOCUMENT_TYPE_NODE
-                || node.getNodeType() == Node.COMMENT_NODE ? null : parseNode(nodeList.item(i));
-        if (child != null)
+        XmlNode child = node.getNodeType() == Node.DOCUMENT_TYPE_NODE
+            || node.getNodeType() == Node.COMMENT_NODE ? null : parseNode(node);
+        if (child != null) {
           root.addChild(child);
+        }
       }
     } catch (AppException e) {
       throw e;
@@ -61,29 +61,33 @@ public class XmlParser {
   /**
    * parse the node and set node's attributes and child nodes.
    *
-   * @param node the node to be parsed
+   * @param node
+   *          the node to be parsed
    * @return a {@link XmlNode} object with all child nodes and attributes
    * @throws AppException
    */
   private XmlNode parseNode(Node node) throws AppException {
     if (node.getNodeType() == Node.DOCUMENT_TYPE_NODE || node.getNodeType() == Node.COMMENT_NODE
-        || node.getNodeType() == Node.TEXT_NODE)
+        || node.getNodeType() == Node.TEXT_NODE) {
       return null;
+    }
     XmlNode result = new XmlNode();
     NamedNodeMap namedNodeMap = node.getAttributes();
     NodeList nodeList = node.getChildNodes();
 
     for (int i = 0; i < namedNodeMap.getLength(); ++i) {
-      String key = namedNodeMap.item(i).getNodeName();
-      String value = namedNodeMap.item(i).getNodeValue();
+      Node current = namedNodeMap.item(i);
+      String key = current.getNodeName();
+      String value = current.getNodeValue();
       result.addAttribute(key, value);
     }
 
     for (int i = 0; i < nodeList.getLength(); ++i) {
       Node current = nodeList.item(i);
       XmlNode child = parseNode(current);
-      if (child != null)
+      if (child != null) {
         result.addChild(child);
+      }
     }
     result.setTagName(node.getNodeName());
     result.setInnerText(node.getTextContent());

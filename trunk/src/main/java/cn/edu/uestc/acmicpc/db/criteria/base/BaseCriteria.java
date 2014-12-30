@@ -13,8 +13,13 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 /**
  * We can use this class to get {@link DetachedCriteria} entity.
+ *
+ * @param <E>
+ *          entity type
+ * @param <D>
+ *          data transfer object type
  */
-public abstract class BaseCriteria<Entity, Dto> {
+public abstract class BaseCriteria<E, D> {
 
   /**
    * Current page id.
@@ -40,28 +45,28 @@ public abstract class BaseCriteria<Entity, Dto> {
   /**
    * Reference class
    */
-  private Class<Entity> referenceClass;
+  private final Class<E> referenceClass;
 
   /**
    * Result class, this class should generate by protocol buffer
    */
-  private Class<Dto> resultClass;
+  private final Class<D> resultClass;
 
   /**
    * Specify the fields we need when build query criteria
    */
   private Fields resultFields;
 
-  protected BaseCriteria(Class<Entity> referenceClass,
-                         Class<Dto> resultClass,
-                         Fields resultFields) {
+  protected BaseCriteria(Class<E> referenceClass,
+      Class<D> resultClass,
+      Fields resultFields) {
     this.referenceClass = referenceClass;
     this.resultClass = resultClass;
     this.resultFields = resultFields;
   }
 
-  protected BaseCriteria(Class<Entity> referenceClass,
-                         Class<Dto> resultClass) {
+  protected BaseCriteria(Class<E> referenceClass,
+      Class<D> resultClass) {
     this.referenceClass = referenceClass;
     this.resultClass = resultClass;
   }
@@ -93,7 +98,7 @@ public abstract class BaseCriteria<Entity, Dto> {
           projectionList = projectionList.add(
               Projections.property(fieldProjection.getField()),
               fieldProjection.getAlias()
-          );
+              );
         }
       }
       criteria.setProjection(projectionList);

@@ -2,9 +2,9 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.TeamUserDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDto;
 import cn.edu.uestc.acmicpc.db.entity.TeamUser;
 import cn.edu.uestc.acmicpc.service.iface.TeamUserService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -33,23 +33,26 @@ public class TeamUserServiceImpl extends AbstractService implements TeamUserServ
   }
 
   @Override
-  public Integer createNewTeamUser(TeamUserDTO teamUserDTO) throws AppException {
+  public Integer createNewTeamUser(TeamUserDto teamUserDto) throws AppException {
     TeamUser teamUser = new TeamUser();
-    teamUser.setTeamId(teamUserDTO.getTeamId());
-    teamUser.setUserId(teamUserDTO.getUserId());
-    teamUser.setAllow(teamUserDTO.getAllow());
+    teamUser.setTeamId(teamUserDto.getTeamId());
+    teamUser.setUserId(teamUserDto.getUserId());
+    teamUser.setAllow(teamUserDto.getAllow());
     teamUserDao.add(teamUser);
     return teamUser.getTeamUserId();
   }
 
   @Override
-  public TeamUserDTO getTeamUserDTO(Integer teamUserId) throws AppException {
-    return teamUserDao.getDTOByUniqueField(TeamUserDTO.class, TeamUserDTO.builder(), "teamUserId", teamUserId);
+  public TeamUserDto getTeamUserDto(Integer teamUserId) throws AppException {
+    return teamUserDao.getDtoByUniqueField(TeamUserDto.class, TeamUserDto.builder(), "teamUserId",
+        teamUserId);
   }
 
   @Override
-  public List<TeamUserListDTO> getTeamUserList(TeamUserCondition teamUserCondition) throws AppException {
-    return teamUserDao.findAll(TeamUserListDTO.class, TeamUserListDTO.builder(), teamUserCondition.getCondition());
+  public List<TeamUserListDto> getTeamUserList(TeamUserCondition teamUserCondition)
+      throws AppException {
+    return teamUserDao.findAll(TeamUserListDto.class, TeamUserListDto.builder(),
+        teamUserCondition.getCondition());
   }
 
   @Override
@@ -61,10 +64,10 @@ public class TeamUserServiceImpl extends AbstractService implements TeamUserServ
   }
 
   @Override
-  public List<TeamUserListDTO> getTeamUserList(Integer teamId) throws AppException {
+  public List<TeamUserListDto> getTeamUserList(Integer teamId) throws AppException {
     TeamUserCondition teamUserCondition = new TeamUserCondition();
     teamUserCondition.teamId = teamId;
-    return teamUserDao.findAll(TeamUserListDTO.class, TeamUserListDTO.builder(),
+    return teamUserDao.findAll(TeamUserListDto.class, TeamUserListDto.builder(),
         teamUserCondition.getCondition());
   }
 
@@ -74,7 +77,9 @@ public class TeamUserServiceImpl extends AbstractService implements TeamUserServ
   }
 
   @Override
-  public List<TeamUserReportDTO> exportTeamUserReport(TeamUserCondition teamUserCondition) throws AppException {
-    return teamUserDao.findAll(TeamUserReportDTO.class, TeamUserReportDTO.builder(), teamUserCondition.getCondition());
+  public List<TeamUserReportDto> exportTeamUserReport(TeamUserCondition teamUserCondition)
+      throws AppException {
+    return teamUserDao.findAll(TeamUserReportDto.class, TeamUserReportDto.builder(),
+        teamUserCondition.getCondition());
   }
 }
