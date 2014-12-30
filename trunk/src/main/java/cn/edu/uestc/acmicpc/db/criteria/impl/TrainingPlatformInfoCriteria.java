@@ -13,7 +13,8 @@ import org.hibernate.criterion.Restrictions;
 /**
  * TrainingPlatform database criteria entity.
  */
-public class TrainingPlatformInfoCriteria extends BaseCriteria<TrainingPlatformInfo, TrainingPlatformInfoDto> {
+public class TrainingPlatformInfoCriteria extends
+    BaseCriteria<TrainingPlatformInfo, TrainingPlatformInfoDto> {
 
   public TrainingPlatformInfoCriteria(Fields resultFields) {
     super(TrainingPlatformInfo.class, TrainingPlatformInfoDto.class, resultFields);
@@ -54,7 +55,7 @@ public class TrainingPlatformInfoCriteria extends BaseCriteria<TrainingPlatformI
           Restrictions.ilike("userName", keyword),
           Restrictions.ilike("userId", keyword),
           Restrictions.ilike("trainingUser.trainingUserName", keyword)
-      ));
+          ));
     }
     if (trainingId != null) {
       criteria.add(Restrictions.eq("trainingUser.trainingId", trainingId));

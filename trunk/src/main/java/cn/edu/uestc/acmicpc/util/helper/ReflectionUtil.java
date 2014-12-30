@@ -7,12 +7,13 @@ import java.lang.reflect.Method;
  */
 public class ReflectionUtil {
 
-  @SuppressWarnings({"unchecked", "rawtypes"})
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public static Method getMethodByAnnotation(Class<?> clazz, Class annotation) {
     Method[] methods = clazz.getMethods();
     for (Method method : methods) {
-      if (method.getAnnotation(annotation) != null)
+      if (method.getAnnotation(annotation) != null) {
         return method;
+      }
     }
     return null;
   }
@@ -20,8 +21,10 @@ public class ReflectionUtil {
   /**
    * Convert a string value to specific type.
    *
-   * @param value      string value
-   * @param targetType target type class
+   * @param value
+   *          string value
+   * @param targetType
+   *          target type class
    * @return target value
    */
   public static Object valueOf(String value, Class<?> targetType) {

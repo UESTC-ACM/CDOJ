@@ -7,8 +7,8 @@ import cn.edu.uestc.acmicpc.util.exception.AppExceptionUtil;
 import cn.edu.uestc.acmicpc.util.helper.FileUtil;
 import cn.edu.uestc.acmicpc.util.helper.ZipUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
-import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
-import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
+import cn.edu.uestc.acmicpc.web.dto.FileInformationDto;
+import cn.edu.uestc.acmicpc.web.dto.FileUploadDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,9 +41,9 @@ public class FileServiceImpl extends AbstractService implements FileService {
   }
 
   @Override
-  public Integer uploadProblemDataFile(FileUploadDTO fileUploadDTO, String problemId)
+  public Integer uploadProblemDataFile(FileUploadDto fileUploadDto, String problemId)
       throws AppException {
-    List<MultipartFile> files = fileUploadDTO.getFiles();
+    List<MultipartFile> files = fileUploadDto.getFiles();
     if (files == null || files.size() > 1) {
       throw new AppException("Fetch uploaded file error.");
     }
@@ -131,7 +131,8 @@ public class FileServiceImpl extends AbstractService implements FileService {
     if (foundSpj) {
       Runtime runtime = Runtime.getRuntime();
       try {
-        Process process = runtime.exec(String.format("g++ %s/spj.cc -o %s/spj -O2", dataPath, dataPath));
+        Process process = runtime.exec(String.format("g++ %s/spj.cc -o %s/spj -O2", dataPath,
+            dataPath));
         process.waitFor();
         if (process.exitValue() != 0) {
           throw new AppException("Error while compile spj.cc");
@@ -151,8 +152,8 @@ public class FileServiceImpl extends AbstractService implements FileService {
   }
 
   @Override
-  public FileInformationDTO uploadContestArchive(FileUploadDTO fileUploadDTO) throws AppException {
-    List<MultipartFile> files = fileUploadDTO.getFiles();
+  public FileInformationDto uploadContestArchive(FileUploadDto fileUploadDto) throws AppException {
+    List<MultipartFile> files = fileUploadDto.getFiles();
     if (files == null || files.size() > 1) {
       throw new AppException("Fetch uploaded file error.");
     }
@@ -166,7 +167,7 @@ public class FileServiceImpl extends AbstractService implements FileService {
     } catch (IOException e) {
       throw new AppException("Error while save files");
     }
-    return FileInformationDTO.builder()
+    return FileInformationDto.builder()
         .setFileName(targetFile.getName())
         .build();
   }

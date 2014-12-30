@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.base;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
@@ -13,6 +13,7 @@ import org.springframework.validation.FieldError;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import javax.servlet.http.HttpSession;
 
 /**
@@ -21,23 +22,27 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class BaseController {
 
-  protected UserDTO getCurrentUser(HttpSession session) throws AppException {
-    return (UserDTO) session.getAttribute("currentUser");
+  protected UserDto getCurrentUser(HttpSession session) throws AppException {
+    return (UserDto) session.getAttribute("currentUser");
   }
 
   protected Boolean isAdmin(HttpSession session) throws AppException {
-    UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
-    return userDTO != null && userDTO.getType() == AuthenticationType.ADMIN.ordinal();
+    UserDto userDto = (UserDto) session.getAttribute("currentUser");
+    return userDto != null && userDto.getType() == AuthenticationType.ADMIN.ordinal();
   }
 
   protected Boolean checkPermission(HttpSession session, Integer userId) throws AppException {
-    UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
-    return userDTO != null && (userDTO.getUserId().equals(userId) || userDTO.getType() == AuthenticationType.ADMIN.ordinal());
+    UserDto userDto = (UserDto) session.getAttribute("currentUser");
+    return userDto != null
+        && (userDto.getUserId().equals(userId) || userDto.getType() == AuthenticationType.ADMIN
+            .ordinal());
   }
 
   protected Boolean checkPermission(HttpSession session, String userName) throws AppException {
-    UserDTO userDTO = (UserDTO) session.getAttribute("currentUser");
-    return userDTO != null && (userDTO.getUserName().equals(userName) || userDTO.getType() == AuthenticationType.ADMIN.ordinal());
+    UserDto userDto = (UserDto) session.getAttribute("currentUser");
+    return userDto != null
+        && (userDto.getUserName().equals(userName) || userDto.getType() == AuthenticationType.ADMIN
+            .ordinal());
   }
 
   protected void checkContestPermission(HttpSession session, Integer contestId) throws AppException {
@@ -68,7 +73,7 @@ public class BaseController {
   }
 
   protected void setContestTeamMembers(HttpSession session, Integer contestId,
-                                       Set<Integer> members) {
+      Set<Integer> members) {
     String attributeName = "ContestPermission#" + contestId + "#members";
     session.setAttribute(attributeName, members);
   }
@@ -76,32 +81,40 @@ public class BaseController {
   /**
    * Put field errors into binding result
    *
-   * @param fieldException field exception
-   * @param validateResult prev validate result
+   * @param fieldException
+   *          field exception
+   * @param validateResult
+   *          prev validate result
    */
   protected void putFieldErrorsIntoBindingResult(FieldException fieldException,
-                                                 BindingResult validateResult) {
+      BindingResult validateResult) {
     for (FieldError error : fieldException) {
       validateResult.addError(error);
     }
   }
 
   /**
-   * Build a page html content according to number of records, records per page, base URL and
-   * display distance.
+   * Build a page html content according to number of records, records per page,
+   * base URL and display distance.
    * <p/>
-   * <strong>Example:</strong> Get total and set it into {@code buildPageInfo} method: <br />
+   * <strong>Example:</strong> Get total and set it into {@code buildPageInfo}
+   * method: <br />
    * {@code PageInfo pageInfo = buildPageInfo(articleDAO.count(), RECORD_PER_PAGE,
    * getContextPath("") + "/Problem", null);}
    *
-   * @param count           total number of records
-   * @param currentPage     current page number
-   * @param countPerPage    number of records per page
-   * @param displayDistance display distance for page numbers
-   * @return return a PageInfo object and put the HTML content into request attribute list.
+   * @param count
+   *          total number of records
+   * @param currentPage
+   *          current page number
+   * @param countPerPage
+   *          number of records per page
+   * @param displayDistance
+   *          display distance for page numbers
+   * @return return a PageInfo object and put the HTML content into request
+   *         attribute list.
    */
   protected PageInfo buildPageInfo(Long count, Long currentPage, Long countPerPage,
-                                   Integer displayDistance) {
+      Integer displayDistance) {
     return PageInfo.create(count, countPerPage, displayDistance == null ? 2 : displayDistance,
         currentPage);
   }

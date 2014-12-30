@@ -26,23 +26,25 @@ public class CodeServiceImpl extends AbstractService implements CodeService {
 
   @Override
   public CodeDto getCodeDto(Integer codeId,
-                                    CodeFields codeFields) throws AppException {
+      CodeFields codeFields) throws AppException {
     CodeCriteria codeCriteria = new CodeCriteria(CodeFields.ALL_FIELDS);
     codeCriteria.codeId = codeId;
     return codeDao.getDtoByUniqueField(codeCriteria.getCriteria());
   }
 
-  private void updateCodeByCodeDTO(Code code, CodeDto codeDto) {
-    if (codeDto.getContent() != null)
+  private void updateCodeByCodeDto(Code code, CodeDto codeDto) {
+    if (codeDto.getContent() != null) {
       code.setContent(codeDto.getContent());
-    if (codeDto.getShare() != null)
+    }
+    if (codeDto.getShare() != null) {
       code.setShare(codeDto.getShare());
+    }
   }
 
   @Override
   public Integer createNewCode(CodeDto codeDto) throws AppException {
     Code code = new Code();
-    updateCodeByCodeDTO(code, codeDto);
+    updateCodeByCodeDto(code, codeDto);
     codeDao.add(code);
     return code.getCodeId();
   }

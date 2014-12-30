@@ -36,7 +36,7 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
 
   @Override
   public ArticleDto getArticleDto(Integer articleId,
-                                  ArticleFields articleFields)
+      ArticleFields articleFields)
       throws AppException {
     ArticleCriteria articleCriteria = new ArticleCriteria(articleFields);
     articleCriteria.startId = articleId;
@@ -51,7 +51,7 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
 
   @Override
   public List<ArticleDto> getArticleList(ArticleCriteria articleCriteria,
-                                             PageInfo pageInfo) throws AppException {
+      PageInfo pageInfo) throws AppException {
     return articleDao.findAll(articleCriteria.getCriteria(), pageInfo);
   }
 
@@ -77,7 +77,7 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
     return article.getArticleId();
   }
 
-  private void updateArticleByArticleDTO(Article article, ArticleDto articleDto) {
+  private void updateArticleByArticleDto(Article article, ArticleDto articleDto) {
     if (articleDto.getParentId() != null) {
       article.setParentId(articleDto.getParentId());
     }
@@ -119,7 +119,7 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
     AppExceptionUtil.assertNotNull(articleDto.getArticleId());
     Article article = articleDao.get(articleDto.getArticleId());
     AppExceptionUtil.assertNotNull(article);
-    updateArticleByArticleDTO(article, articleDto);
+    updateArticleByArticleDto(article, articleDto);
     articleDao.update(article);
   }
 

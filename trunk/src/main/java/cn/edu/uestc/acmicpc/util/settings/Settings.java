@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.util.settings;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDto;
 import cn.edu.uestc.acmicpc.service.iface.SettingService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.FileUtil;
@@ -123,13 +123,13 @@ public class Settings {
   }
 
   private String getStringValueSettingByName(SettingsID settingsID) throws AppException {
-    SettingDTO settingDTO = settingService.getSettingDTO(settingsID.getId());
-    return settingDTO.getValue();
+    SettingDto settingDto = settingService.getSettingDto(settingsID.getId());
+    return settingDto.getValue();
   }
 
   private Long getLongValueSettingByName(SettingsID settingsID) throws AppException {
-    SettingDTO settingDTO = settingService.getSettingDTO(settingsID.getId());
-    return Long.parseLong(settingDTO.getValue());
+    SettingDto settingDto = settingService.getSettingDto(settingsID.getId());
+    return Long.parseLong(settingDto.getValue());
   }
 
 }

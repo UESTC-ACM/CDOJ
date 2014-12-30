@@ -15,7 +15,8 @@ public class StringUtil {
   /**
    * Trim all space, include chinese blank character.
    *
-   * @param str origin string
+   * @param str
+   *          origin string
    * @return result
    */
   public static String trimAllSpace(String str) {
@@ -25,7 +26,8 @@ public class StringUtil {
   /**
    * Create @user link
    *
-   * @param userName user's name
+   * @param userName
+   *          user's name
    * @return result
    */
   public static String getAtLink(String userName) {
@@ -35,8 +37,10 @@ public class StringUtil {
   /**
    * get Setter or Getter name, return {@code null} if exception occurred.
    *
-   * @param methodType method type for getter or setter
-   * @param name       field name
+   * @param methodType
+   *          method type for getter or setter
+   * @param name
+   *          field name
    * @return method name
    */
   public static String getGetterOrSetter(MethodType methodType, String name) {
@@ -55,15 +59,17 @@ public class StringUtil {
   /**
    * Get specific field name from it's getter or setter name
    *
-   * @param methodName method's name
+   * @param methodName
+   *          method's name
    * @return filed's name
    */
   public static String getFieldNameFromGetterOrSetter(String methodName) {
     if (methodName.startsWith("get") || methodName.startsWith("set")) {
       StringBuilder stringBuilder = new StringBuilder();
       stringBuilder.append(Character.toLowerCase(methodName.charAt(3)));
-      if (methodName.length() > 4)
+      if (methodName.length() > 4) {
         stringBuilder.append(methodName.substring(4));
+      }
       return stringBuilder.toString();
     } else {
       return null;
@@ -79,21 +85,25 @@ public class StringUtil {
    * <p/>
    * <strong>EXAMPLE</strong> repeat("hello#", 2) it means "hello#hello#"
    *
-   * @param s     the basic string we should deal with
-   * @param count the time that we want to repeat
+   * @param s
+   *          the basic string we should deal with
+   * @param count
+   *          the time that we want to repeat
    * @return the result string we need to get
    */
   public static String repeat(String s, int count) {
     StringBuilder stringBuilder = new StringBuilder();
-    for (int i = 0; i < count; ++i)
+    for (int i = 0; i < count; ++i) {
       stringBuilder.append(s);
+    }
     return stringBuilder.toString();
   }
 
   /**
    * check whether a string is null or empty
    *
-   * @param s the string to be checked
+   * @param s
+   *          the string to be checked
    * @return if the string is null or empty, return true
    */
   public static boolean isNullOrEmpty(String s) {
@@ -103,7 +113,8 @@ public class StringUtil {
   /**
    * check whether a string is null or only contains white spaces
    *
-   * @param s the string to be checked
+   * @param s
+   *          the string to be checked
    * @return if the string is null or only contains white spaces, return true
    */
   public static boolean isNullOrWhiteSpace(String s) {
@@ -113,7 +124,8 @@ public class StringUtil {
   /**
    * encode a string with SHA1
    *
-   * @param text the basic text we want to encode
+   * @param text
+   *          the basic text we want to encode
    * @return the text after encoding
    */
   public static String encodeSHA1(String text) {
@@ -121,8 +133,8 @@ public class StringUtil {
       MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
       messageDigest.update(text.getBytes("UTF-8"));
       byte[] result = messageDigest.digest();
-      char hexDigit[] = {'0', '1', '2', '3', '4', '5', '6', '7',
-          '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+      char hexDigit[] = { '0', '1', '2', '3', '4', '5', '6', '7',
+          '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
       StringBuilder buf = new StringBuilder();
       for (byte aResult : result) {
         buf.append(hexDigit[(aResult >> 4) & 0x0f]);
@@ -139,7 +151,8 @@ public class StringUtil {
   /**
    * generate a file name depend on current time
    *
-   * @param filename basic file name
+   * @param filename
+   *          basic file name
    * @return the file name generated
    */
   public static String generateFileName(String filename) {
@@ -152,7 +165,8 @@ public class StringUtil {
   /**
    * get a file's extension name
    *
-   * @param filename the file's name
+   * @param filename
+   *          the file's name
    * @return the extension name of the file
    */
   public static String getFilenameExt(String filename) {
@@ -161,10 +175,13 @@ public class StringUtil {
   }
 
   /**
-   * If {@code str1} is not {@code null} return {@code str1}, otherwise return {@code str2}.
+   * If {@code str1} is not {@code null} return {@code str1}, otherwise return
+   * {@code str2}.
    *
-   * @param str1 main string
-   * @param str2 backup string
+   * @param str1
+   *          main string
+   * @param str2
+   *          backup string
    * @return expected value
    */
   public static String choose(String str1, String str2) {
@@ -174,8 +191,10 @@ public class StringUtil {
   /**
    * Check whether the file can match types list
    *
-   * @param fileName file name
-   * @param types    type list splitting with ';'
+   * @param fileName
+   *          file name
+   * @param types
+   *          type list splitting with ';'
    * @return if this file can be upload, return {@code true}
    */
   public static boolean containTypes(String fileName, String types) {
@@ -187,15 +206,18 @@ public class StringUtil {
   /**
    * Compare two string, skipping all white spaces.
    *
-   * @param first  first string to be compared
-   * @param second second string to be compared
-   * @return if first string is smaller second string, return {@code -1}, if first string is larger
-   * than second string, return {@code 1}, otherwise return {@code 0}.
+   * @param first
+   *          first string to be compared
+   * @param second
+   *          second string to be compared
+   * @return if first string is smaller second string, return {@code -1}, if
+   *         first string is larger than second string, return {@code 1},
+   *         otherwise return {@code 0}.
    */
   public static int compareSkipSpaces(String first, String second) {
     char[] firstCharArray = first.toCharArray();
     char[] secondCharArray = second.toCharArray();
-    for (int i = 0, j = 0; ; ) {
+    for (int i = 0, j = 0;;) {
       if (i < firstCharArray.length && Character.isWhitespace(firstCharArray[i])) {
         ++i;
       } else if (j < secondCharArray.length && Character.isWhitespace(secondCharArray[j])) {
@@ -222,8 +244,10 @@ public class StringUtil {
   /**
    * Get status information description by case number.
    *
-   * @param type        status type
-   * @param currentCase current case number
+   * @param type
+   *          status type
+   * @param currentCase
+   *          current case number
    * @return target description
    */
   public static String getStatusDescription(OnlineJudgeReturnType type, int currentCase) {

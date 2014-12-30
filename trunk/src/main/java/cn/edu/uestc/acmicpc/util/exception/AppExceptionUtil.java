@@ -8,7 +8,8 @@ public class AppExceptionUtil {
   /**
    * Checks a object is not null.
    *
-   * @param object object to check not null.
+   * @param object
+   *          object to check not null.
    * @throws AppException
    */
   public static void assertNotNull(Object object) throws AppException {
@@ -18,8 +19,10 @@ public class AppExceptionUtil {
   /**
    * Checks a object is not null.
    *
-   * @param object object to check not null.
-   * @param message message will return
+   * @param object
+   *          object to check not null.
+   * @param message
+   *          message will return
    * @throws AppException
    */
   public static void assertNotNull(Object object, String message) throws AppException {
@@ -31,7 +34,8 @@ public class AppExceptionUtil {
   /**
    * Checks a statement is true.
    *
-   * @param statement statement to check
+   * @param statement
+   *          statement to check
    * @throws AppException
    */
   public static void assertTrue(boolean statement) throws AppException {
@@ -41,8 +45,10 @@ public class AppExceptionUtil {
   /**
    * Checks a statement is true.
    *
-   * @param statement statement to check
-   * @param message message will return
+   * @param statement
+   *          statement to check
+   * @param message
+   *          message will return
    * @throws AppException
    */
   public static void assertTrue(boolean statement, String message) throws AppException {

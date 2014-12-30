@@ -6,11 +6,15 @@ package cn.edu.uestc.acmicpc.util.settings;
 public enum SettingsID {
   HOST(1),
   ENCODING(2),
-  @Deprecated UPLOAD_FOLDER(3),
-  @Deprecated PICTURE_FOLDER(4),
+  @Deprecated
+  UPLOAD_FOLDER(3),
+  @Deprecated
+  PICTURE_FOLDER(4),
   JUDGE_CORE(5),
-  @Deprecated DATA_PATH(6),
-  @Deprecated WORK_PATH(7),
+  @Deprecated
+  DATA_PATH(6),
+  @Deprecated
+  WORK_PATH(7),
   JUDGES(8),
   EMAIL(9),
   RECORD_PER_PAGE(10);

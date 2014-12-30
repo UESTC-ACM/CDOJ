@@ -27,7 +27,8 @@ public class BaseDao {
   /**
    * Get current database session.
    *
-   * @return if the IoC works, return current session, otherwise open a new session
+   * @return if the IoC works, return current session, otherwise open a new
+   *         session
    */
   protected Session getSession() {
     Session session;

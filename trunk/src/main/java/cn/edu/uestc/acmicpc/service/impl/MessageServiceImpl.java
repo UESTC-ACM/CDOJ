@@ -3,9 +3,9 @@ package cn.edu.uestc.acmicpc.service.impl;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.MessageCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.MessageDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDto;
 import cn.edu.uestc.acmicpc.db.entity.Message;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -36,25 +36,25 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
   }
 
   @Override
-  public Integer createNewMessage(MessageDTO messageDTO) throws AppException {
-    AppExceptionUtil.assertNotNull(messageDTO.getSenderId());
-    AppExceptionUtil.assertNotNull(messageDTO.getReceiverId());
+  public Integer createNewMessage(MessageDto messageDto) throws AppException {
+    AppExceptionUtil.assertNotNull(messageDto.getSenderId());
+    AppExceptionUtil.assertNotNull(messageDto.getReceiverId());
     Message message = new Message();
-    message.setTitle(messageDTO.getTitle());
-    message.setContent(messageDTO.getContent());
-    message.setTime(messageDTO.getTime());
-    message.setIsOpened(messageDTO.getIsOpened());
-    message.setSenderId(messageDTO.getSenderId());
-    message.setReceiverId(messageDTO.getReceiverId());
+    message.setTitle(messageDto.getTitle());
+    message.setContent(messageDto.getContent());
+    message.setTime(messageDto.getTime());
+    message.setIsOpened(messageDto.getIsOpened());
+    message.setSenderId(messageDto.getSenderId());
+    message.setReceiverId(messageDto.getReceiverId());
     message.setMessageId(null);
     messageDao.add(message);
     return message.getMessageId();
   }
 
   @Override
-  public MessageDTO getMessageDTO(Integer messageId) throws AppException {
+  public MessageDto getMessageDto(Integer messageId) throws AppException {
     AppExceptionUtil.assertNotNull(messageId);
-    return messageDao.getDTOByUniqueField(MessageDTO.class, MessageDTO.builder(), "messageId",
+    return messageDao.getDtoByUniqueField(MessageDto.class, MessageDto.builder(), "messageId",
         messageId);
   }
 
@@ -64,18 +64,20 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
   }
 
   @Override
-  public List<MessageForReceiverDTO> getMessageForReceiverDTOList(MessageCondition messageCondition
+  public List<MessageForReceiverDto> getMessageForReceiverDtoList(MessageCondition messageCondition
       , PageInfo pageInfo) throws AppException {
     Condition condition = messageCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return messageDao.findAll(MessageForReceiverDTO.class, MessageForReceiverDTO.builder(), condition);
+    return messageDao.findAll(MessageForReceiverDto.class, MessageForReceiverDto.builder(),
+        condition);
   }
 
   @Override
-  public List<MessageForUserDTO> getMessageForUserDTOList(MessageCondition messageCondition, PageInfo pageInfo) throws AppException {
+  public List<MessageForUserDto> getMessageForUserDtoList(MessageCondition messageCondition,
+      PageInfo pageInfo) throws AppException {
     Condition condition = messageCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return messageDao.findAll(MessageForUserDTO.class, MessageForUserDTO.builder(), condition);
+    return messageDao.findAll(MessageForUserDto.class, MessageForUserDto.builder(), condition);
   }
 
   @Override

@@ -11,11 +11,11 @@ public enum TrainingPlatformInfoFields implements Fields {
       FieldProjection.Property("trainingUser.trainingUserName", "trainingUserName"),
       FieldProjection.Property("userName"),
       FieldProjection.Property("userId"),
-      FieldProjection.Property("type")
-  );
+      FieldProjection.Property("type"));
 
   private final FieldProjection[] projections;
 
+  @Override
   public FieldProjection[] getProjections() {
     return projections;
   }

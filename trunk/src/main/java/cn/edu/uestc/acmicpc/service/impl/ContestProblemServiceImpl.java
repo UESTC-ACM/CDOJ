@@ -2,9 +2,9 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ContestProblemDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemDetailDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemSummaryDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemDetailDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemSummaryDto;
 import cn.edu.uestc.acmicpc.db.entity.ContestProblem;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -35,24 +35,26 @@ public class ContestProblemServiceImpl extends AbstractService implements Contes
   }
 
   @Override
-  public ContestProblemDTO getContestProblemDTO(Integer contestProblemId) throws AppException {
+  public ContestProblemDto getContestProblemDto(Integer contestProblemId) throws AppException {
     AppExceptionUtil.assertNotNull(contestProblemId);
-    return contestProblemDao.getDTOByUniqueField(ContestProblemDTO.class, ContestProblemDTO.builder(),
+    return contestProblemDao.getDtoByUniqueField(ContestProblemDto.class,
+        ContestProblemDto.builder(),
         "contestProblemId", contestProblemId);
   }
 
   @Override
-  public List<ContestProblemDetailDTO> getContestProblemDetailDTOListByContestId(Integer contestId)
+  public List<ContestProblemDetailDto> getContestProblemDetailDtoListByContestId(Integer contestId)
       throws AppException {
     ContestProblemCondition contestCondition = new ContestProblemCondition();
     contestCondition.contestId = contestId;
-    List<ContestProblemDetailDTO> contestProblemList = contestProblemDao.findAll(ContestProblemDetailDTO.class, ContestProblemDetailDTO.builder(),
+    List<ContestProblemDetailDto> contestProblemList = contestProblemDao.findAll(
+        ContestProblemDetailDto.class, ContestProblemDetailDto.builder(),
         contestCondition.getCondition());
 
-    Collections.sort(contestProblemList, new Comparator<ContestProblemDetailDTO>() {
+    Collections.sort(contestProblemList, new Comparator<ContestProblemDetailDto>() {
 
       @Override
-      public int compare(ContestProblemDetailDTO a, ContestProblemDetailDTO b) {
+      public int compare(ContestProblemDetailDto a, ContestProblemDetailDto b) {
         return a.getOrder().compareTo(b.getOrder());
       }
     });
@@ -61,19 +63,20 @@ public class ContestProblemServiceImpl extends AbstractService implements Contes
   }
 
   @Override
-  public List<ContestProblemSummaryDTO> getContestProblemSummaryDTOListByContestId(
+  public List<ContestProblemSummaryDto> getContestProblemSummaryDtoListByContestId(
       Integer contestId) throws AppException {
     ContestProblemCondition contestCondition = new ContestProblemCondition();
     contestCondition.contestId = contestId;
     contestCondition.orderFields = "order";
     contestCondition.orderAsc = "true";
-    List<ContestProblemSummaryDTO> contestProblemList = contestProblemDao.findAll(ContestProblemSummaryDTO.class, ContestProblemSummaryDTO.builder(),
+    List<ContestProblemSummaryDto> contestProblemList = contestProblemDao.findAll(
+        ContestProblemSummaryDto.class, ContestProblemSummaryDto.builder(),
         contestCondition.getCondition());
 
-    Collections.sort(contestProblemList, new Comparator<ContestProblemSummaryDTO>() {
+    Collections.sort(contestProblemList, new Comparator<ContestProblemSummaryDto>() {
 
       @Override
-      public int compare(ContestProblemSummaryDTO a, ContestProblemSummaryDTO b) {
+      public int compare(ContestProblemSummaryDto a, ContestProblemSummaryDto b) {
         return a.getOrder().compareTo(b.getOrder());
       }
     });
@@ -88,23 +91,24 @@ public class ContestProblemServiceImpl extends AbstractService implements Contes
   }
 
   @Override
-  public Integer createNewContestProblem(ContestProblemDTO contestProblemDTO) throws AppException {
+  public Integer createNewContestProblem(ContestProblemDto contestProblemDto) throws AppException {
     ContestProblem contestProblem = new ContestProblem();
     contestProblem.setContestProblemId(null);
-    contestProblem.setContestId(contestProblemDTO.getContestId());
-    contestProblem.setOrder(contestProblemDTO.getOrder());
-    contestProblem.setProblemId(contestProblemDTO.getProblemId());
+    contestProblem.setContestId(contestProblemDto.getContestId());
+    contestProblem.setOrder(contestProblemDto.getOrder());
+    contestProblem.setProblemId(contestProblemDto.getProblemId());
     contestProblemDao.add(contestProblem);
     return contestProblem.getContestProblemId();
   }
 
   @Override
   public Boolean checkContestProblemInContest(Integer contestProblemId,
-                                              Integer contestId) throws AppException {
+      Integer contestId) throws AppException {
     ContestProblemCondition contestCondition = new ContestProblemCondition();
     contestCondition.contestId = contestId;
     contestCondition.problemId = contestProblemId;
-    return !contestProblemDao.findAll(ContestProblemDetailDTO.class, ContestProblemDetailDTO.builder(),
+    return !contestProblemDao.findAll(ContestProblemDetailDto.class,
+        ContestProblemDetailDto.builder(),
         contestCondition.getCondition()).isEmpty();
   }
 

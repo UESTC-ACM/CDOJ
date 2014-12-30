@@ -24,12 +24,15 @@ public class CSVUtil {
   /**
    * Check all fields exists in the header line
    *
-   * @param columnMap column maps
-   * @param clazz specified class
+   * @param columnMap
+   *          column maps
+   * @param clazz
+   *          specified class
    * @throws AppException
    */
-  public static void checkHeaderLineContainsAllFields(Map<String, Integer> columnMap, Class clazz) throws AppException {
-    for (Field field: clazz.getFields()) {
+  public static void checkHeaderLineContainsAllFields(Map<String, Integer> columnMap, Class<?> clazz)
+      throws AppException {
+    for (Field field : clazz.getFields()) {
       if (field.isAnnotationPresent(CSVMap.class)) {
         CSVMap csvMap = field.getAnnotation(CSVMap.class);
         String column = csvMap.value();
@@ -44,14 +47,15 @@ public class CSVUtil {
     }
   }
 
-  public static <T> T parse(String[] line, Map<String, Integer> columnMap, Class<T> clazz) throws AppException {
+  public static <T> T parse(String[] line, Map<String, Integer> columnMap, Class<T> clazz)
+      throws AppException {
     T result;
     try {
       result = clazz.newInstance();
     } catch (Exception e) {
       throw new AppException("Could not create instance of " + clazz.getName() + "!");
     }
-    for (Field field: clazz.getFields()) {
+    for (Field field : clazz.getFields()) {
       if (field.isAnnotationPresent(CSVMap.class)) {
         CSVMap csvMap = field.getAnnotation(CSVMap.class);
         String column = csvMap.value();
@@ -63,7 +67,8 @@ public class CSVUtil {
         try {
           field.set(result, line[position]);
         } catch (IllegalAccessException e) {
-          throw new AppException("Could not set value to " + clazz.getName() + "." + field.getName() + "!");
+          throw new AppException("Could not set value to " + clazz.getName() + "."
+              + field.getName() + "!");
         }
       }
     }
@@ -76,8 +81,9 @@ public class CSVUtil {
     }
 
     List<T> list = new LinkedList<>();
+    CSVReader reader = null;
     try {
-      CSVReader reader = new CSVReader(new FileReader(csvFile), ',', '"');
+      reader = new CSVReader(new FileReader(csvFile), ',', '"');
 
       // Loading header line
       String[] headerLine = reader.readNext();
@@ -93,7 +99,7 @@ public class CSVUtil {
       checkHeaderLineContainsAllFields(columnMap, clazz);
 
       // Loading content
-      String [] nextLine;
+      String[] nextLine;
       while ((nextLine = reader.readNext()) != null) {
         list.add(parse(nextLine, columnMap, clazz));
       }
@@ -101,6 +107,14 @@ public class CSVUtil {
       throw new AppException("Error while opening csv file!");
     } catch (IOException e) {
       throw new AppException("Error while reading csv file!");
+    } finally {
+      if (reader != null) {
+        try {
+          reader.close();
+        } catch (IOException e) {
+          throw new AppException("Error while reading csv file!");
+        }
+      }
     }
 
     return list;

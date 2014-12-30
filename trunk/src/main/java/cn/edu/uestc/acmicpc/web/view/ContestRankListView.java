@@ -1,8 +1,8 @@
 package cn.edu.uestc.acmicpc.web.view;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReportDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamReportDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDto;
 import cn.edu.uestc.acmicpc.util.enums.ContestType;
 import cn.edu.uestc.acmicpc.web.rank.RankList;
 import cn.edu.uestc.acmicpc.web.rank.RankListItem;
@@ -22,6 +22,7 @@ import jxl.write.WriteException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -38,13 +39,13 @@ public class ContestRankListView extends AbstractJExcelView {
   /**
    * Map the team list by team name
    */
-  private Map<String, ContestTeamReportDTO> teamMap;
+  private Map<String, ContestTeamReportDto> teamMap;
 
   @Override
   protected void buildExcelDocument(Map<String, Object> model,
-                                    WritableWorkbook workbook,
-                                    HttpServletRequest request,
-                                    HttpServletResponse response) throws Exception {
+      WritableWorkbook workbook,
+      HttpServletRequest request,
+      HttpServletResponse response) throws Exception {
     // Set file name
     response.setHeader("Content-Disposition", "attachment; filename=\"Rank list.xls\"");
 
@@ -62,7 +63,7 @@ public class ContestRankListView extends AbstractJExcelView {
 
     // Get data in model
     RankList rankList = (RankList) model.get("rankList");
-    ContestDTO contest = (ContestDTO) model.get("contest");
+    ContestDto contest = (ContestDto) model.get("contest");
     Byte contestType = (Byte) model.get("type");
     // Last used column
     Integer lastColumn;
@@ -74,9 +75,9 @@ public class ContestRankListView extends AbstractJExcelView {
       lastColumn = setInvitedContestHeaderRow(sheet, rankList.problemList);
       currentRow += 2;
       // Get team list in model
-      List<ContestTeamReportDTO> teamList = (List<ContestTeamReportDTO>) model.get("teamList");
+      List<ContestTeamReportDto> teamList = (List<ContestTeamReportDto>) model.get("teamList");
       teamMap = new HashMap<>();
-      for (ContestTeamReportDTO team : teamList) {
+      for (ContestTeamReportDto team : teamList) {
         teamMap.put(team.getTeamName(), team);
       }
       // Generate rank list by team.
@@ -99,7 +100,7 @@ public class ContestRankListView extends AbstractJExcelView {
   }
 
   private void putUser(WritableSheet sheet,
-                       RankListUser user) throws WriteException {
+      RankListUser user) throws WriteException {
     // create header row
     // #
     sheet.addCell(new Label(0, currentRow, user.rank.toString()));
@@ -121,10 +122,10 @@ public class ContestRankListView extends AbstractJExcelView {
   /**
    * Write rank list row by team format.
    *
-   * @param team team entity.
+   * @param team
+   *          team entity.
    */
-  private void putTeam(WritableSheet sheet,
-                       RankListUser team) throws WriteException {
+  private void putTeam(WritableSheet sheet, RankListUser team) throws WriteException {
     Integer startRow = currentRow;
     // create header row
     // #
@@ -133,11 +134,11 @@ public class ContestRankListView extends AbstractJExcelView {
     sheet.addCell(new Label(1, startRow, team.name));
 
     // Team member
-    ContestTeamReportDTO teamDetail = teamMap.get(team.name);
-    for (TeamUserReportDTO user : teamDetail.getTeamUsers()) {
+    ContestTeamReportDto teamDetail = teamMap.get(team.name);
+    for (TeamUserReportDto user : teamDetail.getTeamUsers()) {
       putTeamUser(sheet, user, teamDetail);
     }
-    for (TeamUserReportDTO user : teamDetail.getInvitedUsers()) {
+    for (TeamUserReportDto user : teamDetail.getInvitedUsers()) {
       putTeamUser(sheet, user, teamDetail);
     }
 
@@ -156,10 +157,10 @@ public class ContestRankListView extends AbstractJExcelView {
   }
 
   private void putRankListItem(WritableSheet sheet,
-                               RankListItem[] items,
-                               Integer startColumn,
-                               Integer startRow,
-                               Integer endRow) throws WriteException {
+      RankListItem[] items,
+      Integer startColumn,
+      Integer startRow,
+      Integer endRow) throws WriteException {
     Integer currentColumn = startColumn;
     for (RankListItem item : items) {
       String content;
@@ -186,7 +187,8 @@ public class ContestRankListView extends AbstractJExcelView {
   /**
    * Format penalty time.
    *
-   * @param time penalty time.
+   * @param time
+   *          penalty time.
    * @return formatted penalty time.
    */
   private String formatPenaltyTime(Long time) {
@@ -201,14 +203,17 @@ public class ContestRankListView extends AbstractJExcelView {
   /**
    * Put team user.
    *
-   * @param sheet excel sheet.
-   * @param user  {@link TeamUserReportDTO} entity.
-   * @param team  {@link ContestTeamReportDTO} entity.
+   * @param sheet
+   *          excel sheet.
+   * @param user
+   *          {@link TeamUserReportDto} entity.
+   * @param team
+   *          {@link ContestTeamReportDto} entity.
    * @throws WriteException
    */
   private void putTeamUser(WritableSheet sheet,
-                           TeamUserReportDTO user,
-                           ContestTeamReportDTO team)
+      TeamUserReportDto user,
+      ContestTeamReportDto team)
       throws WriteException {
     WritableCellFormat cellFormat = new WritableCellFormat();
     if (user.getAllow()) {
@@ -237,7 +242,7 @@ public class ContestRankListView extends AbstractJExcelView {
   }
 
   private Integer setNormalContestHeaderRow(WritableSheet sheet,
-                                            RankListProblem[] problemList) throws WriteException {
+      RankListProblem[] problemList) throws WriteException {
     // create header row
     // #
     sheet.addCell(new Label(0, currentRow, "#"));
@@ -264,13 +269,15 @@ public class ContestRankListView extends AbstractJExcelView {
   /**
    * Set header row and return the last used column ID.
    *
-   * @param sheet       excel sheet.
-   * @param problemList problem list.
+   * @param sheet
+   *          excel sheet.
+   * @param problemList
+   *          problem list.
    * @return last used column ID.
    * @throws WriteException
    */
   private Integer setInvitedContestHeaderRow(WritableSheet sheet,
-                                             RankListProblem[] problemList) throws WriteException {
+      RankListProblem[] problemList) throws WriteException {
     // create header row
     // #
     sheet.addCell(new Label(0, currentRow, "#"));
@@ -309,19 +316,23 @@ public class ContestRankListView extends AbstractJExcelView {
   /**
    * Add problem column head.
    *
-   * @param sheet       excel sheet.
-   * @param problemList problem list.
-   * @param startColumn current last used column ID.
+   * @param sheet
+   *          excel sheet.
+   * @param problemList
+   *          problem list.
+   * @param startColumn
+   *          current last used column ID.
    * @return last used column ID.
    * @throws WriteException
    */
   private Integer setProblemHeaderRow(WritableSheet sheet,
-                                      RankListProblem[] problemList,
-                                      Integer startColumn) throws WriteException {
+      RankListProblem[] problemList,
+      Integer startColumn) throws WriteException {
     Integer currentColumn = startColumn;
     for (int order = 0; order < problemList.length; order++) {
       sheet.addCell(new Label(currentColumn, currentRow, "" + (char) ('A' + order)));
-      sheet.addCell(new Label(currentColumn, currentRow + 1, problemList[order].solved + "/" + problemList[order].tried));
+      sheet.addCell(new Label(currentColumn, currentRow + 1, problemList[order].solved + "/"
+          + problemList[order].tried));
 
       currentColumn++;
     }

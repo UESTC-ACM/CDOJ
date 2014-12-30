@@ -14,29 +14,39 @@ import java.util.List;
 public interface TrainingContestService extends DatabaseService<TrainingContest, Integer> {
 
   /**
-   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto} by training contest id.
+   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto} by training
+   * contest id.
    *
-   * @param trainingContestId record's id.
-   * @param trainingContestFields request fields.
-   * @return result {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto} entity.
+   * @param trainingContestId
+   *          record's id.
+   * @param trainingContestFields
+   *          request fields.
+   * @return result {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto}
+   *         entity.
    * @throws AppException
    */
   public TrainingContestDto getTrainingContestDto(Integer trainingContestId,
       TrainingContestFields trainingContestFields) throws AppException;
 
   /**
-   * Get all {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto} fit in criteria.
+   * Get all {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto} fit in
+   * criteria.
    *
-   * @param trainingContestCriteria search criteria
+   * @param trainingContestCriteria
+   *          search criteria
    * @return all records in database fit in the criteria.
    * @throws AppException
    */
-  public List<TrainingContestDto> getTrainingContestList(TrainingContestCriteria trainingContestCriteria) throws AppException;
+  public List<TrainingContestDto> getTrainingContestList(
+      TrainingContestCriteria trainingContestCriteria) throws AppException;
 
   /**
-   * Update training contest record by none-null fields in {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto} entity.
+   * Update training contest record by none-null fields in
+   * {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto} entity.
    *
-   * @param trainingContestDto {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto} entity with none-null id.
+   * @param trainingContestDto
+   *          {@link cn.edu.uestc.acmicpc.db.dto.impl.TrainingContestDto} entity
+   *          with none-null id.
    * @throws AppException
    */
   public void updateTrainingContest(TrainingContestDto trainingContestDto) throws AppException;
@@ -44,7 +54,8 @@ public interface TrainingContestService extends DatabaseService<TrainingContest,
   /**
    * Create a new training contest record with specified training id.
    *
-   * @param trainingId training id.
+   * @param trainingId
+   *          training id.
    * @return Id of new record.
    * @throws AppException
    */

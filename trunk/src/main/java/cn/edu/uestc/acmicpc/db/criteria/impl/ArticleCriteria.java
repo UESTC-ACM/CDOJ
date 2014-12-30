@@ -104,7 +104,7 @@ public class ArticleCriteria extends BaseCriteria<Article, ArticleDto> {
           Restrictions.ilike("content", keyword),
           Restrictions.ilike("owner.userName", keyword),
           Restrictions.ilike("owner.nickName", keyword)
-      ));
+          ));
     }
 
     return criteria;

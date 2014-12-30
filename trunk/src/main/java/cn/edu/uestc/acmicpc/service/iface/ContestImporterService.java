@@ -1,8 +1,8 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
-import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
+import cn.edu.uestc.acmicpc.web.dto.FileInformationDto;
 
 /**
  * Contest importer service interface.
@@ -10,11 +10,14 @@ import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
 public interface ContestImporterService {
 
   /**
-   * Parse contest information via a ZIP fileInformationDTO.
+   * Parse contest information via a ZIP fileInformationDto.
    *
-   * @param fileInformationDTO contest archive ZIP.
-   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO} a new contest DTO.
+   * @param fileInformationDto
+   *          contest archive ZIP.
+   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto} a new
+   *         contest Dto.
    * @throws AppException
    */
-  public ContestDTO parseContestZipArchive(FileInformationDTO fileInformationDTO) throws AppException;
+  public ContestDto parseContestZipArchive(FileInformationDto fileInformationDto)
+      throws AppException;
 }

@@ -13,18 +13,21 @@ public interface CodeService extends DatabaseService<Code, Integer> {
   /**
    * Get {@link CodeDto} by code id.
    *
-   * @param codeId code's id.
-   * @param codeFields fields which is needed.
+   * @param codeId
+   *          code's id.
+   * @param codeFields
+   *          fields which is needed.
    * @return {@link CodeDto} entity.
    * @throws AppException
    */
   public CodeDto getCodeDto(Integer codeId,
-                            CodeFields codeFields) throws AppException;
+      CodeFields codeFields) throws AppException;
 
   /**
    * Create a new code record by {@link CodeDto}.
    *
-   * @param codeDto {@link CodeDto} entity.
+   * @param codeDto
+   *          {@link CodeDto} entity.
    * @return record's id.
    * @throws AppException
    */

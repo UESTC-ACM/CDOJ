@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDto;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -32,7 +32,7 @@ public class EmailServiceImpl extends AbstractService implements EmailService {
 
   @Autowired
   public EmailServiceImpl(Settings settings,
-                          UserService userService) {
+      UserService userService) {
     this.settings = settings;
     this.userService = userService;
   }
@@ -60,7 +60,8 @@ public class EmailServiceImpl extends AbstractService implements EmailService {
     // properties.setProperty("mail.smtp.starttls.enable", "true");
     properties.setProperty("mail.smtp.host", settings.EMAIL.getSmtpServer());
     properties.setProperty("mail.smtp.auth", "true");
-    Authenticator auth = new AJavaAuthenticator(settings.EMAIL.getUserName(), settings.EMAIL.getPassword());
+    Authenticator auth = new AJavaAuthenticator(settings.EMAIL.getUserName(),
+        settings.EMAIL.getPassword());
     Session session = Session.getDefaultInstance(properties, auth);
     try {
       Message message = new MimeMessage(session);
@@ -77,16 +78,16 @@ public class EmailServiceImpl extends AbstractService implements EmailService {
   }
 
   @Override
-  public Boolean sendUserSerialKey(UserSerialKeyDTO userSerialKey) throws AppException {
-    UserDTO userDTO = userService.getUserDTOByUserId(userSerialKey.getUserId());
-    if (userDTO == null) {
+  public Boolean sendUserSerialKey(UserSerialKeyDto userSerialKey) throws AppException {
+    UserDto userDto = userService.getUserDtoByUserId(userSerialKey.getUserId());
+    if (userDto == null) {
       throw new AppException("No such user!");
     }
     String url = settings.HOST
-        + "/#/user/activate/" + userDTO.getUserName()
+        + "/#/user/activate/" + userDto.getUserName()
         + "/" + StringUtil.encodeSHA1(userSerialKey.getSerialKey());
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append("Dear ").append(userDTO.getUserName()).append(" :\n\n");
+    stringBuilder.append("Dear ").append(userDto.getUserName()).append(" :\n\n");
     stringBuilder
         .append("To reset your password, simply click on the link below or paste into the url field on your favorite browser:\n\n");
     stringBuilder.append(url).append("\n\n");
@@ -96,6 +97,6 @@ public class EmailServiceImpl extends AbstractService implements EmailService {
         .append("If you have any questions about the system, feel free to contact us anytime at acm@uestc.edu.cn.\n\n");
     stringBuilder.append("The UESTC OJ Team.\n");
 
-    return send(userDTO.getEmail(), "UESTC Online Judge", stringBuilder.toString());
+    return send(userDto.getEmail(), "UESTC Online Judge", stringBuilder.toString());
   }
 }

@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.web.view;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReportDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamReportDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDto;
 import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
 
 import org.springframework.web.servlet.view.document.AbstractJExcelView;
@@ -14,37 +14,39 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ContestRegistryReportView extends AbstractJExcelView {
 
   /**
-   * There are three sheets in total:
-   * sheets[ContestRegistryStatus.PENDING]: All pending teams
-   * sheets[ContestRegistryStatus.ACCEPTED]: All accepted teams
+   * There are three sheets in total:<br>
+   * sheets[ContestRegistryStatus.PENDING]: All pending teams<br>
+   * sheets[ContestRegistryStatus.ACCEPTED]: All accepted teams<br>
    * sheets[ContestRegistryStatus.REFUSED]: All refused teams
    */
   private final Integer TOTAL_SHEETS = 3;
-  private WritableSheet sheets[] = new WritableSheet[TOTAL_SHEETS];
+  private final WritableSheet sheets[] = new WritableSheet[TOTAL_SHEETS];
 
   /**
    * Current row id
    */
-  private Integer currentRow[] = new Integer[TOTAL_SHEETS];
+  private final Integer currentRow[] = new Integer[TOTAL_SHEETS];
 
   /**
    * Total teams in each sheets
    */
-  private Integer totalTeams[] = new Integer[TOTAL_SHEETS];
+  private final Integer totalTeams[] = new Integer[TOTAL_SHEETS];
 
   @Override
   protected void buildExcelDocument(Map<String, Object> model,
-                                    WritableWorkbook workbook,
-                                    HttpServletRequest request,
-                                    HttpServletResponse response)
+      WritableWorkbook workbook,
+      HttpServletRequest request,
+      HttpServletResponse response)
       throws Exception {
     // Set file name
     response.setHeader("Content-Disposition", "attachment; filename=\"Registry report.xls\"");
@@ -60,13 +62,10 @@ public class ContestRegistryReportView extends AbstractJExcelView {
 
     String result = (String) model.get("result");
     if (result.equals("success")) {
-      for (int id = 0; id < TOTAL_SHEETS; id++) {
-        // Start from third row
-        currentRow[id] = 2;
-        totalTeams[id] = 0;
-      }
-      List<ContestTeamReportDTO> teamList = (List<ContestTeamReportDTO>) model.get("list");
-      for (ContestTeamReportDTO team: teamList) {
+      Arrays.fill(currentRow, 0, TOTAL_SHEETS, 2);
+      Arrays.fill(totalTeams, 0, TOTAL_SHEETS, 0);
+      List<ContestTeamReportDto> teamList = (List<ContestTeamReportDto>) model.get("list");
+      for (ContestTeamReportDto team : teamList) {
         putTeam(team);
       }
     } else {
@@ -89,15 +88,15 @@ public class ContestRegistryReportView extends AbstractJExcelView {
     }
   }
 
-  private void putTeam(ContestTeamReportDTO team)
+  private void putTeam(ContestTeamReportDto team)
       throws WriteException {
     Integer sheetId = team.getStatus();
     Integer startRow = currentRow[sheetId];
     WritableSheet sheet = sheets[sheetId];
-    for (TeamUserReportDTO user: team.getTeamUsers()) {
+    for (TeamUserReportDto user : team.getTeamUsers()) {
       putUser(user, team);
     }
-    for (TeamUserReportDTO user: team.getInvitedUsers()) {
+    for (TeamUserReportDto user : team.getInvitedUsers()) {
       putUser(user, team);
     }
     // Write team information
@@ -110,8 +109,8 @@ public class ContestRegistryReportView extends AbstractJExcelView {
     sheet.mergeCells(2, startRow, 2, currentRow[sheetId] - 1);
   }
 
-  private void putUser(TeamUserReportDTO user, ContestTeamReportDTO team)
-      throws WriteException  {
+  private void putUser(TeamUserReportDto user, ContestTeamReportDto team)
+      throws WriteException {
     Integer sheetId = team.getStatus();
 
     WritableSheet sheet = sheets[sheetId];

@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.index;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.MessageCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.DepartmentService;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 /**
@@ -40,11 +41,11 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/")
 public class IndexController extends BaseController {
 
-  private DepartmentService departmentService;
-  private LanguageService languageService;
-  private MessageService messageService;
-  private OnlineUsersService onlineUsersService;
-  private RecentContestService recentContestService;
+  private final DepartmentService departmentService;
+  private final LanguageService languageService;
+  private final MessageService messageService;
+  private final OnlineUsersService onlineUsersService;
+  private final RecentContestService recentContestService;
 
   @Autowired
   public IndexController(DepartmentService departmentService,
@@ -73,9 +74,7 @@ public class IndexController extends BaseController {
 
   @RequestMapping("recentContest")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> recentContestList() {
+  public @ResponseBody Map<String, Object> recentContestList() {
     Map<String, Object> result = new HashMap<>();
     result.put("recentContestList", recentContestService.getRecentContestList());
     return result;
@@ -83,12 +82,10 @@ public class IndexController extends BaseController {
 
   @RequestMapping("data")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> data(HttpSession session) {
+  public @ResponseBody Map<String, Object> data(HttpSession session) {
     Map<String, Object> result = new HashMap<>();
     try {
-      UserDTO currentUser = getCurrentUser(session);
+      UserDto currentUser = getCurrentUser(session);
       if (currentUser == null) {
         result.put("hasLogin", false);
       } else {
@@ -104,7 +101,7 @@ public class IndexController extends BaseController {
         // Show first 10 unread messages
         PageInfo pageInfo = buildPageInfo(totalUnreadMessage, 1L,
             10L, null);
-        result.put("unreadMessages", messageService.getMessageForReceiverDTOList(messageCondition,
+        result.put("unreadMessages", messageService.getMessageForReceiverDtoList(messageCondition,
             pageInfo));
       }
       Integer onlineUsersCount = onlineUsersService.getNumberOfOnlineUsers();
@@ -119,23 +116,33 @@ public class IndexController extends BaseController {
 
   @RequestMapping(value = "globalData")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> globalData() {
+  public @ResponseBody Map<String, Object> globalData() {
     Map<String, Object> result = new HashMap<>();
     result.put("departmentList", departmentService.getDepartmentList());
-    result.put("authenticationTypeList", EnumTypeUtil.getEnumTypeList("authenticationTypeId", AuthenticationType.values()));
+    result.put("authenticationTypeList",
+        EnumTypeUtil.getEnumTypeList("authenticationTypeId", AuthenticationType.values()));
     result.put("languageList", languageService.getLanguageList());
-    result.put("resultTypeList", EnumTypeUtil.getEnumTypeList("onlineJudgeResultTypeId", OnlineJudgeResultType.values()));
-    result.put("contestTypeList", EnumTypeUtil.getEnumTypeList("contestTypeId", ContestType.values()));
+    result.put("resultTypeList",
+        EnumTypeUtil.getEnumTypeList("onlineJudgeResultTypeId", OnlineJudgeResultType.values()));
+    result.put("contestTypeList",
+        EnumTypeUtil.getEnumTypeList("contestTypeId", ContestType.values()));
     result.put("genderTypeList", EnumTypeUtil.getEnumTypeList("genderTypeId", GenderType.values()));
     result.put("gradeTypeList", EnumTypeUtil.getEnumTypeList("gradeTypeId", GradeType.values()));
-    result.put("tShirtsSizeTypeList", EnumTypeUtil.getEnumTypeList("sizeTypeId", TShirtsSizeType.values()));
-    result.put("contestRegistryStatusList", EnumTypeUtil.getEnumTypeList("statusId", ContestRegistryStatusType.values()));
-    result.put("trainingUserTypeList", EnumTypeUtil.getEnumTypeList("trainingUserTypeId", TrainingUserType.values()));
-    result.put("trainingPlatformTypeList", EnumTypeUtil.getEnumTypeList("trainingPlatformTypeId", TrainingPlatformType.values()));
-    result.put("trainingContestTypeList", EnumTypeUtil.getEnumTypeList("trainingContestTypeId", TrainingContestType.values()));
-    result.put("trainingResultFieldTypeList", EnumTypeUtil.getEnumTypeList("trainingResultFieldTypeId", TrainingResultFieldType.values()));
+    result.put("tShirtsSizeTypeList",
+        EnumTypeUtil.getEnumTypeList("sizeTypeId", TShirtsSizeType.values()));
+    result.put("contestRegistryStatusList",
+        EnumTypeUtil.getEnumTypeList("statusId", ContestRegistryStatusType.values()));
+    result.put("trainingUserTypeList",
+        EnumTypeUtil.getEnumTypeList("trainingUserTypeId", TrainingUserType.values()));
+    result.put("trainingPlatformTypeList",
+        EnumTypeUtil.getEnumTypeList("trainingPlatformTypeId", TrainingPlatformType.values()));
+    result.put("trainingContestTypeList",
+        EnumTypeUtil.getEnumTypeList("trainingContestTypeId", TrainingContestType.values()));
+    result
+        .put(
+            "trainingResultFieldTypeList",
+            EnumTypeUtil.getEnumTypeList("trainingResultFieldTypeId",
+                TrainingResultFieldType.values()));
     result.put("result", "success");
     return result;
   }

@@ -2,7 +2,7 @@ package cn.edu.uestc.acmicpc.service;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -28,25 +28,25 @@ public class UserServiceITTest extends AbstractTestNGSpringContextTests {
 
   @Test
   public void testGetUserByUserId() throws AppException {
-    UserDTO user = userService.getUserDTOByUserId(2);
+    UserDto user = userService.getUserDtoByUserId(2);
     Assert.assertEquals(user.getUserName(), "admin");
   }
 
   @Test
   public void testGetUserByUserName() throws AppException {
-    UserDTO user = userService.getUserDTOByUserName("admin");
+    UserDto user = userService.getUserDtoByUserName("admin");
     Assert.assertEquals(user.getUserName(), "admin");
   }
 
   @Test
   public void testGetUserByUserEmail() throws AppException {
-    UserDTO user = userService.getUserDTOByEmail("acm_admin@uestc.edu.cn");
+    UserDto user = userService.getUserDtoByEmail("acm_admin@uestc.edu.cn");
     Assert.assertEquals(user.getEmail(), "acm_admin@uestc.edu.cn");
   }
 
   @Test
   public void testUpdateUser() throws AppException, FieldNotUniqueException {
-    UserDTO user = userService.getUserDTOByUserName("administrator");
+    UserDto user = userService.getUserDtoByUserName("administrator");
     user.setLastLogin(new Timestamp(new Date().getTime()));
     userService.updateUser(user);
   }

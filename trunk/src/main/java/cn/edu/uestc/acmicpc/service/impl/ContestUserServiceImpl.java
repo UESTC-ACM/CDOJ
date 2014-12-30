@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.dao.iface.ContestUserDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.contestUser.ContestUserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestUser.ContestUserDto;
 import cn.edu.uestc.acmicpc.db.entity.ContestUser;
 import cn.edu.uestc.acmicpc.service.iface.ContestUserService;
 import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
@@ -32,19 +32,19 @@ public class ContestUserServiceImpl extends AbstractService implements ContestUs
   }
 
   @Override
-  public Integer createNewContestUser(ContestUserDTO contestUserDTO) throws AppException {
+  public Integer createNewContestUser(ContestUserDto contestUserDto) throws AppException {
     ContestUser contestUser = new ContestUser();
-    if (contestUserDTO.getUserId() != null) {
-      contestUser.setUserId(contestUserDTO.getUserId());
+    if (contestUserDto.getUserId() != null) {
+      contestUser.setUserId(contestUserDto.getUserId());
     }
-    if (contestUserDTO.getStatus() != null) {
-      contestUser.setStatus(contestUserDTO.getStatus());
+    if (contestUserDto.getStatus() != null) {
+      contestUser.setStatus(contestUserDto.getStatus());
     }
-    if (contestUserDTO.getContestId() != null) {
-      contestUser.setContestId(contestUserDTO.getContestId());
+    if (contestUserDto.getContestId() != null) {
+      contestUser.setContestId(contestUserDto.getContestId());
     }
-    if (contestUserDTO.getComment() != null) {
-      contestUser.setComment(contestUserDTO.getComment());
+    if (contestUserDto.getComment() != null) {
+      contestUser.setComment(contestUserDto.getComment());
     }
     contestUserDao.add(contestUser);
     return contestUser.getUserId();
@@ -65,9 +65,11 @@ public class ContestUserServiceImpl extends AbstractService implements ContestUs
   }
 
   @Override
-  public Boolean fetchOnsiteUsersByUserIdAndContestId(Integer userId, Integer contestId) throws AppException {
+  public Boolean fetchOnsiteUsersByUserIdAndContestId(Integer userId, Integer contestId)
+      throws AppException {
     StringBuilder hqlBuilder = new StringBuilder();
-    hqlBuilder.append("select contestUser.contestUserId from ContestUser contestUser, User user where")
+    hqlBuilder
+        .append("select contestUser.contestUserId from ContestUser contestUser, User user where")
         // Contest id
         .append(" contestUser.contestId = ").append(contestId)
         // User should be accepted

@@ -3,8 +3,8 @@ package cn.edu.uestc.acmicpc.service.impl;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ProblemDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDto;
 import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -47,11 +47,11 @@ public class ProblemServiceImpl extends AbstractService implements
   }
 
   @Override
-  public ProblemDTO getProblemDTOByProblemId(Integer problemId)
+  public ProblemDto getProblemDtoByProblemId(Integer problemId)
       throws AppException {
     AppExceptionUtil.assertNotNull(problemId);
-    return problemDao.getDTOByUniqueField(ProblemDTO.class,
-        ProblemDTO.builder(), "problemId",
+    return problemDao.getDtoByUniqueField(ProblemDto.class,
+        ProblemDto.builder(), "problemId",
         problemId);
   }
 
@@ -61,12 +61,12 @@ public class ProblemServiceImpl extends AbstractService implements
   }
 
   @Override
-  public List<ProblemListDTO> getProblemListDTOList(
+  public List<ProblemListDto> getProblemListDtoList(
       ProblemCondition problemCondition,
       PageInfo pageInfo) throws AppException {
     Condition condition = problemCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return problemDao.findAll(ProblemListDTO.class, ProblemListDTO.builder(),
+    return problemDao.findAll(ProblemListDto.class, ProblemListDto.builder(),
         condition);
   }
 
@@ -118,71 +118,72 @@ public class ProblemServiceImpl extends AbstractService implements
     return problem.getProblemId();
   }
 
-  private void updateProblemByProblemDTO(Problem problem, ProblemDTO problemDTO) {
-    if (problemDTO.getTitle() != null)
-      problem.setTitle(problemDTO.getTitle());
-    if (problemDTO.getDescription() != null)
-      problem.setDescription(problemDTO.getDescription());
-    if (problemDTO.getInput() != null)
-      problem.setInput(problemDTO.getInput());
-    if (problemDTO.getOutput() != null)
-      problem.setOutput(problemDTO.getOutput());
-    if (problemDTO.getSampleInput() != null)
-      problem.setSampleInput(problemDTO.getSampleInput());
-    if (problemDTO.getSampleOutput() != null)
-      problem.setSampleOutput(problemDTO.getSampleOutput());
-    if (problemDTO.getHint() != null)
-      problem.setHint(problemDTO.getHint());
-    if (problemDTO.getSource() != null)
-      problem.setSource(problemDTO.getSource());
-    if (problemDTO.getTimeLimit() != null)
-      problem.setTimeLimit(problemDTO.getTimeLimit());
-    if (problemDTO.getMemoryLimit() != null)
-      problem.setMemoryLimit(problemDTO.getMemoryLimit());
-    if (problemDTO.getSolved() != null)
-      problem.setSolved(problemDTO.getSolved());
-    if (problemDTO.getTried() != null)
-      problem.setTried(problemDTO.getTried());
-    if (problemDTO.getIsSpj() != null)
-      problem.setIsSpj(problemDTO.getIsSpj());
-    if (problemDTO.getIsVisible() != null)
-      problem.setIsVisible(problemDTO.getIsVisible());
-    if (problemDTO.getOutputLimit() != null)
-      problem.setOutputLimit(problemDTO.getOutputLimit());
-    if (problemDTO.getJavaTimeLimit() != null)
-      problem.setJavaTimeLimit(problemDTO.getJavaTimeLimit());
-    if (problemDTO.getJavaMemoryLimit() != null)
-      problem.setJavaMemoryLimit(problemDTO.getJavaMemoryLimit());
-    if (problemDTO.getDataCount() != null)
-      problem.setDataCount(problemDTO.getDataCount());
-    if (problemDTO.getDifficulty() != null)
-      problem.setDifficulty(problemDTO.getDifficulty());
+  private void updateProblemByProblemDto(Problem problem, ProblemDto problemDto) {
+    if (problemDto.getTitle() != null)
+      problem.setTitle(problemDto.getTitle());
+    if (problemDto.getDescription() != null)
+      problem.setDescription(problemDto.getDescription());
+    if (problemDto.getInput() != null)
+      problem.setInput(problemDto.getInput());
+    if (problemDto.getOutput() != null)
+      problem.setOutput(problemDto.getOutput());
+    if (problemDto.getSampleInput() != null)
+      problem.setSampleInput(problemDto.getSampleInput());
+    if (problemDto.getSampleOutput() != null)
+      problem.setSampleOutput(problemDto.getSampleOutput());
+    if (problemDto.getHint() != null)
+      problem.setHint(problemDto.getHint());
+    if (problemDto.getSource() != null)
+      problem.setSource(problemDto.getSource());
+    if (problemDto.getTimeLimit() != null)
+      problem.setTimeLimit(problemDto.getTimeLimit());
+    if (problemDto.getMemoryLimit() != null)
+      problem.setMemoryLimit(problemDto.getMemoryLimit());
+    if (problemDto.getSolved() != null)
+      problem.setSolved(problemDto.getSolved());
+    if (problemDto.getTried() != null)
+      problem.setTried(problemDto.getTried());
+    if (problemDto.getIsSpj() != null)
+      problem.setIsSpj(problemDto.getIsSpj());
+    if (problemDto.getIsVisible() != null)
+      problem.setIsVisible(problemDto.getIsVisible());
+    if (problemDto.getOutputLimit() != null)
+      problem.setOutputLimit(problemDto.getOutputLimit());
+    if (problemDto.getJavaTimeLimit() != null)
+      problem.setJavaTimeLimit(problemDto.getJavaTimeLimit());
+    if (problemDto.getJavaMemoryLimit() != null)
+      problem.setJavaMemoryLimit(problemDto.getJavaMemoryLimit());
+    if (problemDto.getDataCount() != null)
+      problem.setDataCount(problemDto.getDataCount());
+    if (problemDto.getDifficulty() != null)
+      problem.setDifficulty(problemDto.getDifficulty());
   }
 
   @Override
-  public void updateProblem(ProblemDTO problemDTO) throws AppException {
-    Problem problem = problemDao.get(problemDTO.getProblemId());
+  public void updateProblem(ProblemDto problemDto) throws AppException {
+    Problem problem = problemDao.get(problemDto.getProblemId());
     AppExceptionUtil.assertNotNull(problem);
     AppExceptionUtil.assertNotNull(problem.getProblemId());
-    updateProblemByProblemDTO(problem, problemDTO);
+    updateProblemByProblemDto(problem, problemDto);
     problemDao.update(problem);
   }
 
   @Override
-  public ArrayList<ProblemDTO> createProblems(ArrayList<ProblemDTO> problemDTOs) throws AppException {
-    for (ProblemDTO problemDTO : problemDTOs) {
-      Integer problemId = problemDTO.getProblemId();
+  public ArrayList<ProblemDto> createProblems(ArrayList<ProblemDto> problemDtos)
+      throws AppException {
+    for (ProblemDto problemDto : problemDtos) {
+      Integer problemId = problemDto.getProblemId();
       if (problemId != null) {
         if (!checkProblemExists(problemId)) {
           throw new AppException("No problem #" + problemId + ".");
         }
       } else {
         problemId = createNewProblem();
-        problemDTO.setProblemId(problemId);
-        updateProblem(problemDTO);
+        problemDto.setProblemId(problemId);
+        updateProblem(problemDto);
       }
     }
-    return problemDTOs;
+    return problemDtos;
   }
 
   @SuppressWarnings("unchecked")
@@ -197,7 +198,7 @@ public class ProblemServiceImpl extends AbstractService implements
 
   @Override
   public void updateProblemByProblemId(Map<String, Object> properties,
-                                       Integer problemId) throws AppException {
+      Integer problemId) throws AppException {
     problemDao.updateEntitiesByField(properties, "problemId",
         problemId.toString());
   }

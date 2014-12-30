@@ -4,8 +4,8 @@ import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.helper.FileUploadUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
-import cn.edu.uestc.acmicpc.web.dto.FileInformationDTO;
-import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
+import cn.edu.uestc.acmicpc.web.dto.FileInformationDto;
+import cn.edu.uestc.acmicpc.web.dto.FileUploadDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,15 +25,15 @@ public class PictureServiceImpl extends AbstractService implements PictureServic
   }
 
   @Override
-  public FileInformationDTO uploadPicture(FileUploadDTO fileUploadDTO,
-                                          String directory) throws AppException {
-    return FileUploadUtil.uploadFile(fileUploadDTO, "/images/",
+  public FileInformationDto uploadPicture(FileUploadDto fileUploadDto,
+      String directory) throws AppException {
+    return FileUploadUtil.uploadFile(fileUploadDto, "/images/",
         settings.PICTURE_FOLDER, directory);
   }
 
   @Override
   public String modifyPictureLocation(String content, String oldDirectory,
-                                      String newDirectory) throws AppException {
+      String newDirectory) throws AppException {
     String imagePatternString = "!\\[(.*)\\]\\(/images/" + oldDirectory + "(\\S*)\\)";
     Pattern imagePattern = Pattern.compile(imagePatternString);
     Matcher matcher = imagePattern.matcher(content);

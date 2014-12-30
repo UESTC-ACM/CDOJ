@@ -1,9 +1,9 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.MessageCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDto;
 import cn.edu.uestc.acmicpc.db.entity.Message;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -16,57 +16,72 @@ import java.util.List;
 public interface MessageService extends DatabaseService<Message, Integer> {
 
   /**
-   * Create a message by {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO} entity.
+   * Create a message by
+   * {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto} entity.
    *
-   * @param messageDTO {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO} entity.
+   * @param messageDto
+   *          {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto}
+   *          entity.
    * @return new messages record's id.
    * @throws AppException
    */
-  public Integer createNewMessage(MessageDTO messageDTO) throws AppException;
+  public Integer createNewMessage(MessageDto messageDto) throws AppException;
 
   /**
-   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO} entity by message's id
+   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto} entity by
+   * message's id
    *
-   * @param messageId message's id
-   * @return {@link MessageDTO} entity
+   * @param messageId
+   *          message's id
+   * @return {@link MessageDto} entity
    * @throws AppException
    */
-  public MessageDTO getMessageDTO(Integer messageId) throws AppException;
+  public MessageDto getMessageDto(Integer messageId) throws AppException;
 
   /**
    * Counts the number of messages fit in condition.
    *
-   * @param condition {@link MessageCondition} entity.
+   * @param condition
+   *          {@link MessageCondition} entity.
    * @return total number of users fit in the condition.
    * @throws AppException
    */
   public Long count(MessageCondition condition) throws AppException;
 
   /**
-   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDTO} list
+   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDto}
+   * list
    *
-   * @param messageCondition condition
-   * @param pageInfo         page info
-   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDTO} list
+   * @param messageCondition
+   *          condition
+   * @param pageInfo
+   *          page info
+   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForReceiverDto}
+   *         list
    * @throws AppException
    */
-  public List<MessageForReceiverDTO> getMessageForReceiverDTOList(MessageCondition messageCondition
+  public List<MessageForReceiverDto> getMessageForReceiverDtoList(MessageCondition messageCondition
       , PageInfo pageInfo) throws AppException;
 
   /**
-   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDTO} list
+   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDto} list
    *
-   * @param messageCondition condition
-   * @param pageInfo         page info
-   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDTO} list
+   * @param messageCondition
+   *          condition
+   * @param pageInfo
+   *          page info
+   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDto}
+   *         list
    * @throws AppException
    */
-  public List<MessageForUserDTO> getMessageForUserDTOList(MessageCondition messageCondition, PageInfo pageInfo) throws AppException;
+  public List<MessageForUserDto> getMessageForUserDtoList(MessageCondition messageCondition,
+      PageInfo pageInfo) throws AppException;
 
   /**
    * Mark one message as opened.
    *
-   * @param messageId message's id
+   * @param messageId
+   *          message's id
    * @throws AppException
    */
   public void read(Integer messageId) throws AppException;

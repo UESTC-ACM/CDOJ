@@ -32,15 +32,18 @@ public class TrainingContestServiceImpl extends AbstractService implements Train
   }
 
   @Override
-  public TrainingContestDto getTrainingContestDto(Integer trainingContestId, TrainingContestFields trainingContestFields) throws AppException {
+  public TrainingContestDto getTrainingContestDto(Integer trainingContestId,
+      TrainingContestFields trainingContestFields) throws AppException {
     AppExceptionUtil.assertNotNull(trainingContestId);
-    TrainingContestCriteria trainingContestCriteria = new TrainingContestCriteria(trainingContestFields);
+    TrainingContestCriteria trainingContestCriteria = new TrainingContestCriteria(
+        trainingContestFields);
     trainingContestCriteria.startId = trainingContestCriteria.endId = trainingContestId;
     return trainingContestDao.getDtoByUniqueField(trainingContestCriteria.getCriteria());
   }
 
   @Override
-  public List<TrainingContestDto> getTrainingContestList(TrainingContestCriteria trainingContestCriteria) throws AppException {
+  public List<TrainingContestDto> getTrainingContestList(
+      TrainingContestCriteria trainingContestCriteria) throws AppException {
     return trainingContestDao.findAll(trainingContestCriteria.getCriteria(), null);
   }
 
@@ -48,7 +51,8 @@ public class TrainingContestServiceImpl extends AbstractService implements Train
   public void updateTrainingContest(TrainingContestDto trainingContestDto) throws AppException {
     AppExceptionUtil.assertNotNull(trainingContestDto);
     AppExceptionUtil.assertNotNull(trainingContestDto.getTrainingContestId());
-    TrainingContest trainingContest = trainingContestDao.get(trainingContestDto.getTrainingContestId());
+    TrainingContest trainingContest = trainingContestDao.get(trainingContestDto
+        .getTrainingContestId());
     AppExceptionUtil.assertNotNull(trainingContest);
 
     if (trainingContestDto.getTrainingId() != null) {

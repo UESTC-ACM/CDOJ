@@ -5,19 +5,24 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 /**
  * Checker for file uploader or unzip tools.
  * <p/>
- * We can use {@code Checker} Entity when upload files or unzip a {@code zip} file.
+ * We can use {@code Checker} Entity when upload files or unzip a {@code zip}
+ * file.
  * <p/>
  * Override {@code check} method for checker working.
  *
- * @param <Entity> Entity type
+ * @param <E>
+ *          Entity type
  */
-public interface Checker<Entity> {
+public interface Checker<E> {
 
   /**
-   * Check certain entity, if the entity is invalid, throws an {@code AppException} object.
+   * Check certain entity, if the entity is invalid, throws an
+   * {@code AppException} object.
    *
-   * @param entity entity to be checked
-   * @throws AppException if the entity is invalid.
+   * @param entity
+   *          entity to be checked
+   * @throws AppException
+   *           if the entity is invalid.
    */
-  public void check(Entity entity) throws AppException;
+  public void check(E entity) throws AppException;
 }

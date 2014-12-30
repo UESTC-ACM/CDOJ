@@ -1,11 +1,11 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDto;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
@@ -19,71 +19,80 @@ import java.util.Map;
 public interface UserService extends DatabaseService<User, Integer> {
 
   /**
-   * Get {@link UserDTO} by user id.
+   * Get {@link UserDto} by user id.
    *
-   * @param userId user's id.
-   * @return {@link UserDTO} entity.
+   * @param userId
+   *          user's id.
+   * @return {@link UserDto} entity.
    * @throws AppException
    */
-  public UserDTO getUserDTOByUserId(Integer userId) throws AppException;
+  public UserDto getUserDtoByUserId(Integer userId) throws AppException;
 
   /**
-   * Get {@link UserDTO} by user name.
+   * Get {@link UserDto} by user name.
    *
-   * @param userName user's name.
-   * @return {@link UserDTO} entity.
+   * @param userName
+   *          user's name.
+   * @return {@link UserDto} entity.
    * @throws AppException
    */
-  public UserDTO getUserDTOByUserName(String userName) throws AppException;
+  public UserDto getUserDtoByUserName(String userName) throws AppException;
 
   /**
-   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDTO} by user name.
+   * Get {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDto} by user
+   * name.
    *
-   * @param userName user's name.
-   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDTO} entity.
+   * @param userName
+   *          user's name.
+   * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDto} entity.
    * @throws AppException
    */
-  public UserEditorDTO getUserEditorDTOByUserName(String userName) throws AppException;
+  public UserEditorDto getUserEditorDtoByUserName(String userName) throws AppException;
 
   /**
-   * Get {@link UserCenterDTO} by user name.
+   * Get {@link UserCenterDto} by user name.
    *
-   * @param userName user's name.
-   * @return {@link UserDTO} entity.
+   * @param userName
+   *          user's name.
+   * @return {@link UserDto} entity.
    * @throws AppException
    */
-  public UserCenterDTO getUserCenterDTOByUserName(String userName) throws AppException;
+  public UserCenterDto getUserCenterDtoByUserName(String userName) throws AppException;
 
   /**
-   * Get {@link UserDTO} by user email.
+   * Get {@link UserDto} by user email.
    *
-   * @param email user's email.
-   * @return {@link UserDTO} entity.
+   * @param email
+   *          user's email.
+   * @return {@link UserDto} entity.
    * @throws AppException
    */
-  public UserDTO getUserDTOByEmail(String email) throws AppException;
+  public UserDto getUserDtoByEmail(String email) throws AppException;
 
   /**
-   * Update user by {@link UserDTO} entity.
+   * Update user by {@link UserDto} entity.
    *
-   * @param userDTO {@link UserDTO} entity.
+   * @param userDto
+   *          {@link UserDto} entity.
    * @throws AppException
    */
-  public void updateUser(UserDTO userDTO) throws AppException;
+  public void updateUser(UserDto userDto) throws AppException;
 
   /**
-   * Create a new user record {@link UserDTO} entity.
+   * Create a new user record {@link UserDto} entity.
    *
-   * @param userDTO {@link UserDTO} entity.
+   * @param userDto
+   *          {@link UserDto} entity.
    * @return New user's user ID.
    * @throws AppException
    */
-  public Integer createNewUser(UserDTO userDTO) throws AppException;
+  public Integer createNewUser(UserDto userDto) throws AppException;
 
   /**
    * Counts the number of users fit in condition.
    *
-   * @param condition {@link UserCondition} entity.
+   * @param condition
+   *          {@link UserCondition} entity.
    * @return total number of users fit in the condition.
    * @throws AppException
    */
@@ -92,38 +101,48 @@ public interface UserService extends DatabaseService<User, Integer> {
   /**
    * Get the users fit in condition and page range.
    *
-   * @param condition {@link UserCondition} entity.
-   * @param pageInfo  {@link PageInfo} entity.
-   * @return List of {@link UserListDTO} entities.
+   * @param condition
+   *          {@link UserCondition} entity.
+   * @param pageInfo
+   *          {@link PageInfo} entity.
+   * @return List of {@link UserListDto} entities.
    * @throws AppException
    */
-  public List<UserListDTO> getUserListDTOList(UserCondition condition, PageInfo pageInfo)
+  public List<UserListDto> getUserListDtoList(UserCondition condition, PageInfo pageInfo)
       throws AppException;
 
   /**
    * Get the users fit in condition and page range.
    *
-   * @param condition {@link UserCondition} entity.
-   * @param pageInfo  {@link PageInfo} entity.
-   * @return List of {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDTO} entities
+   * @param condition
+   *          {@link UserCondition} entity.
+   * @param pageInfo
+   *          {@link PageInfo} entity.
+   * @return List of
+   *         {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDto}
+   *         entities
    * @throws AppException
    */
-  public List<UserTypeAheadDTO> getUserTypeAheadDTOList(UserCondition condition, PageInfo pageInfo)
+  public List<UserTypeAheadDto> getUserTypeAheadDtoList(UserCondition condition, PageInfo pageInfo)
       throws AppException;
 
   /**
    * Update some fields of one user according the user id.
    *
-   * @param properties field name and field value map.
-   * @param userId     user's id.
+   * @param properties
+   *          field name and field value map.
+   * @param userId
+   *          user's id.
    * @throws AppException
    */
-  public void updateUserByUserId(Map<String, Object> properties, Integer userId) throws AppException;
+  public void updateUserByUserId(Map<String, Object> properties, Integer userId)
+      throws AppException;
 
   /**
    * Check whether a user exists.
    *
-   * @param userName user's name
+   * @param userName
+   *          user's name
    * @return true if exists
    * @throws AppException
    */
@@ -132,26 +151,30 @@ public interface UserService extends DatabaseService<User, Integer> {
   /**
    * Check whether a user exists.
    *
-   * @param userId user's id
+   * @param userId
+   *          user's id
    * @return true if exists
    * @throws AppException
    */
   public Boolean checkUserExists(Integer userId) throws AppException;
 
   /**
-   * Create onsite users by {@link UserDTO} list.
+   * Create onsite users by {@link UserDto} list.
    *
-   * @param userList {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO} list
+   * @param userList
+   *          {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto} list
    * @throws AppException
    */
-  public List<Integer> createOnsiteUsersByUserList(List<UserDTO> userList) throws AppException;
+  public List<Integer> createOnsiteUsersByUserList(List<UserDto> userList) throws AppException;
 
   /**
-   * Fetch all onsite users by contest's id. return as a list of {@link UserDTO} entities.
+   * Fetch all onsite users by contest's id. return as a list of {@link UserDto}
+   * entities.
    *
-   * @param contestId contest's id.
-   * @return list of {@link UserDTO} entities.
+   * @param contestId
+   *          contest's id.
+   * @return list of {@link UserDto} entities.
    * @throws AppException
    */
-  public List<UserDTO> fetchAllOnsiteUsersByContestId(Integer contestId) throws AppException;
+  public List<UserDto> fetchAllOnsiteUsersByContestId(Integer contestId) throws AppException;
 }

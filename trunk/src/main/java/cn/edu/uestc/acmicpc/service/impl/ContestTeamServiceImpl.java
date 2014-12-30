@@ -3,9 +3,9 @@ package cn.edu.uestc.acmicpc.service.impl;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestTeamCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ContestTeamDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamReportDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamListDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamReportDto;
 import cn.edu.uestc.acmicpc.db.entity.ContestTeam;
 import cn.edu.uestc.acmicpc.service.iface.ContestTeamService;
 import cn.edu.uestc.acmicpc.util.enums.ContestRegistryStatusType;
@@ -40,7 +40,7 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
 
   @Override
   public Boolean checkUserCanRegisterInContest(Integer userId,
-                                               Integer contestId) throws AppException {
+      Integer contestId) throws AppException {
     StringBuilder hqlBuilder = new StringBuilder();
     hqlBuilder.append("from ContestTeam contestTeam, TeamUser teamUser where")
         .append(" contestTeam.teamId = teamUser.teamId")
@@ -71,54 +71,56 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
   }
 
   @Override
-  public List<ContestTeamListDTO> getContestTeamList(ContestTeamCondition contestTeamCondition,
-                                                     PageInfo pageInfo) throws AppException {
+  public List<ContestTeamListDto> getContestTeamList(ContestTeamCondition contestTeamCondition,
+      PageInfo pageInfo) throws AppException {
     Condition condition = contestTeamCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return contestTeamDao.findAll(ContestTeamListDTO.class, ContestTeamListDTO.builder(),
+    return contestTeamDao.findAll(ContestTeamListDto.class, ContestTeamListDto.builder(),
         condition);
   }
 
   @Override
-  public ContestTeamDTO getContestTeamDTO(Integer contestTeamId) throws AppException {
+  public ContestTeamDto getContestTeamDto(Integer contestTeamId) throws AppException {
     AppExceptionUtil.assertNotNull(contestTeamId);
-    return contestTeamDao.getDTOByUniqueField(ContestTeamDTO.class, ContestTeamDTO.builder(),
+    return contestTeamDao.getDtoByUniqueField(ContestTeamDto.class, ContestTeamDto.builder(),
         "contestTeamId", contestTeamId);
   }
 
   @Override
-  public void updateContestTeam(ContestTeamDTO contestTeamDTO) throws AppException {
-    AppExceptionUtil.assertNotNull(contestTeamDTO);
-    AppExceptionUtil.assertNotNull(contestTeamDTO.getContestTeamId());
-    ContestTeam contestTeam = contestTeamDao.get(contestTeamDTO.getContestTeamId());
+  public void updateContestTeam(ContestTeamDto contestTeamDto) throws AppException {
+    AppExceptionUtil.assertNotNull(contestTeamDto);
+    AppExceptionUtil.assertNotNull(contestTeamDto.getContestTeamId());
+    ContestTeam contestTeam = contestTeamDao.get(contestTeamDto.getContestTeamId());
     AppExceptionUtil.assertNotNull(contestTeam.getContestTeamId());
-    if (contestTeamDTO.getComment() != null) {
-      contestTeam.setComment(contestTeamDTO.getComment());
+    if (contestTeamDto.getComment() != null) {
+      contestTeam.setComment(contestTeamDto.getComment());
     }
-    if (contestTeamDTO.getStatus() != null) {
-      contestTeam.setStatus(contestTeamDTO.getStatus());
+    if (contestTeamDto.getStatus() != null) {
+      contestTeam.setStatus(contestTeamDto.getStatus());
     }
     contestTeamDao.update(contestTeam);
   }
 
   @Override
-  public List<ContestTeamReportDTO> exportContestTeamReport(Integer contestId) throws AppException {
+  public List<ContestTeamReportDto> exportContestTeamReport(Integer contestId) throws AppException {
     ContestTeamCondition contestTeamCondition = new ContestTeamCondition();
     contestTeamCondition.contestId = contestId;
-    return contestTeamDao.findAll(ContestTeamReportDTO.class,
-        ContestTeamReportDTO.builder(), contestTeamCondition.getCondition());
+    return contestTeamDao.findAll(ContestTeamReportDto.class,
+        ContestTeamReportDto.builder(), contestTeamCondition.getCondition());
   }
 
   @Override
-  public Integer getTeamIdByUserIdAndContestId(Integer userId, Integer contestId) throws AppException {
+  public Integer getTeamIdByUserIdAndContestId(Integer userId, Integer contestId)
+      throws AppException {
     StringBuilder hqlBuilder = new StringBuilder();
-    hqlBuilder.append("select contestTeam.teamId from ContestTeam contestTeam, TeamUser teamUser where")
+    hqlBuilder
+        .append("select contestTeam.teamId from ContestTeam contestTeam, TeamUser teamUser where")
         // Contest id
         .append(" contestTeam.contestId = ").append(contestId)
         // Team should be accepted
         .append(" and contestTeam.status = ").append(ContestRegistryStatusType.ACCEPTED.ordinal())
         .append(" and contestTeam.teamId = teamUser.teamId")
-            // User id
+        // User id
         .append(" and teamUser.userId = ").append(userId)
         // User should be allowed
         .append(" and teamUser.allow = true");

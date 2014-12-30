@@ -3,12 +3,12 @@ package cn.edu.uestc.acmicpc.service.impl;
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestTeamCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contestProblem.ContestProblemSummaryDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestproblem.ContestProblemSummaryDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamListDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
 import cn.edu.uestc.acmicpc.service.iface.ContestProblemService;
 import cn.edu.uestc.acmicpc.service.iface.ContestRankListService;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
@@ -38,7 +38,7 @@ import java.util.Map;
 public class ContestRankListServiceImpl extends AbstractService implements ContestRankListService {
 
   private final Map<String, RankList> rankListPool = new HashMap<>();
-  private final long FETCH_INTERVAL = 10 * 1000; //10 seconds
+  private final long FETCH_INTERVAL = 10 * 1000; // 10 seconds
 
   private ContestProblemService contestProblemService;
   private StatusService statusService;
@@ -48,10 +48,10 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
 
   @Autowired
   public ContestRankListServiceImpl(ContestProblemService contestProblemService,
-                                    StatusService statusService,
-                                    ContestService contestService,
-                                    ContestTeamService contestTeamService,
-                                    TeamUserService teamUserService) {
+      StatusService statusService,
+      ContestService contestService,
+      ContestTeamService contestTeamService,
+      TeamUserService teamUserService) {
     this.contestProblemService = contestProblemService;
     this.statusService = statusService;
     this.contestService = contestService;
@@ -59,7 +59,7 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
     this.teamUserService = teamUserService;
   }
 
-  private List<StatusListDTO> fetchStatusList(Integer contestId) throws AppException {
+  private List<StatusListDto> fetchStatusList(Integer contestId) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.contestId = contestId;
     statusCondition.isForAdmin = false;
@@ -69,12 +69,12 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
     return statusService.getStatusList(statusCondition);
   }
 
-  private List<ContestTeamListDTO> fetchTeamList(Integer contestId) throws AppException {
-    ContestDTO contestDTO = contestService.getContestDTOByContestId(contestId);
-    if (contestDTO.getType() == ContestType.INHERIT.ordinal()) {
-      contestDTO = contestService.getContestDTOByContestId(contestDTO.getParentId());
+  private List<ContestTeamListDto> fetchTeamList(Integer contestId) throws AppException {
+    ContestDto contestDto = contestService.getContestDtoByContestId(contestId);
+    if (contestDto.getType() == ContestType.INHERIT.ordinal()) {
+      contestDto = contestService.getContestDtoByContestId(contestDto.getParentId());
     }
-    contestId = contestDTO.getContestId();
+    contestId = contestDto.getContestId();
 
     ContestTeamCondition contestTeamCondition = new ContestTeamCondition();
     contestTeamCondition.contestId = contestId;
@@ -82,12 +82,12 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
     contestTeamCondition.status = ContestRegistryStatusType.ACCEPTED.ordinal();
 
     // Fetch all
-    List<ContestTeamListDTO> contestTeamList = contestTeamService.getContestTeamList(
+    List<ContestTeamListDto> contestTeamList = contestTeamService.getContestTeamList(
         contestTeamCondition, null);
 
     if (contestTeamList.size() > 0) {
       List<Integer> teamIdList = new LinkedList<>();
-      for (ContestTeamListDTO team : contestTeamList) {
+      for (ContestTeamListDto team : contestTeamList) {
         teamIdList.add(team.getTeamId());
       }
       TeamUserCondition teamUserCondition = new TeamUserCondition();
@@ -95,17 +95,17 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
       teamUserCondition.orderAsc = "true";
       teamUserCondition.teamIdList = ArrayUtil.join(teamIdList.toArray(), ",");
       // Search team users
-      List<TeamUserListDTO> teamUserList = teamUserService.getTeamUserList(teamUserCondition);
+      List<TeamUserListDto> teamUserList = teamUserService.getTeamUserList(teamUserCondition);
 
       // Put users into teams
-      for (ContestTeamListDTO team : contestTeamList) {
-        team.setTeamUsers(new LinkedList<TeamUserListDTO>());
-        team.setInvitedUsers(new LinkedList<TeamUserListDTO>());
-        for (TeamUserListDTO teamUserListDTO : teamUserList) {
-          if (team.getTeamId().compareTo(teamUserListDTO.getTeamId()) == 0) {
+      for (ContestTeamListDto team : contestTeamList) {
+        team.setTeamUsers(new LinkedList<TeamUserListDto>());
+        team.setInvitedUsers(new LinkedList<TeamUserListDto>());
+        for (TeamUserListDto teamUserListDto : teamUserList) {
+          if (team.getTeamId().compareTo(teamUserListDto.getTeamId()) == 0) {
             // Put users
-            if (teamUserListDTO.getAllow()) {
-              team.getTeamUsers().add(teamUserListDTO);
+            if (teamUserListDto.getAllow()) {
+              team.getTeamUsers().add(teamUserListDto);
             }
           }
         }
@@ -117,27 +117,27 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
 
   @Override
   public synchronized RankList getRankList(Integer contestId,
-                                           Integer contestType,
-                                           Boolean frozen, Integer frozenTime) throws AppException {
+      Integer contestType,
+      Boolean frozen, Integer frozenTime) throws AppException {
     String rankListName = contestId.toString() + ":" + frozen;
     RankList lastModified = rankListPool.get(rankListName);
     if (lastModified == null ||
         (System.currentTimeMillis() - lastModified.lastFetched.getTime()) > FETCH_INTERVAL) {
-      ContestShowDTO contestShowDTO = contestService.getContestShowDTOByContestId(contestId);
-      if (contestShowDTO == null) {
+      ContestShowDto contestShowDto = contestService.getContestShowDtoByContestId(contestId);
+      if (contestShowDto == null) {
         throw new AppException("No such contest.");
       }
 
       // Fetch problem list
-      List<ContestProblemSummaryDTO> contestProblemList = contestProblemService.
-          getContestProblemSummaryDTOListByContestId(contestId);
+      List<ContestProblemSummaryDto> contestProblemList = contestProblemService.
+          getContestProblemSummaryDtoListByContestId(contestId);
 
       // Fetch status list
-      List<StatusListDTO> statusList = fetchStatusList(contestId);
+      List<StatusListDto> statusList = fetchStatusList(contestId);
 
       RankListBuilder rankListBuilder = new RankListBuilder();
       // Set problem
-      for (ContestProblemSummaryDTO problem : contestProblemList) {
+      for (ContestProblemSummaryDto problem : contestProblemList) {
         rankListBuilder.addRankListProblem(problem.getProblemId().toString());
       }
 
@@ -145,20 +145,21 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
         // Invited type contest, should include team information
         rankListBuilder.enableTeamMode();
 
-        for (ContestTeamListDTO team: fetchTeamList(contestId)) {
+        for (ContestTeamListDto team : fetchTeamList(contestId)) {
           rankListBuilder.addRankListTeam(team);
         }
       }
 
       // Set status
-      for (StatusListDTO status : statusList) {
-        if (contestShowDTO.getStartTime().after(status.getTime()) ||
-            contestShowDTO.getEndTime().before(status.getTime())) {
+      for (StatusListDto status : statusList) {
+        if (contestShowDto.getStartTime().after(status.getTime()) ||
+            contestShowDto.getEndTime().before(status.getTime())) {
           // Out of time.
           continue;
         }
         Boolean isFrozen = false;
-        if (frozen && contestShowDTO.getEndTime().getTime() - status.getTime().getTime() <= frozenTime) {
+        if (frozen
+            && contestShowDto.getEndTime().getTime() - status.getTime().getTime() <= frozenTime) {
           isFrozen = true;
         }
         rankListBuilder.addStatus(new RankListStatus(
@@ -169,7 +170,7 @@ public class ContestRankListServiceImpl extends AbstractService implements Conte
             status.getNickName(), // Nick name
             status.getEmail(), // Email
             status.getName(),
-            status.getTime().getTime() - contestShowDTO.getStartTime().getTime()),
+            status.getTime().getTime() - contestShowDto.getStartTime().getTime()),
             isFrozen); // Time
       }
 

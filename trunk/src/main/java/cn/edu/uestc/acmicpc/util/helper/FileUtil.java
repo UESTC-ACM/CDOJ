@@ -20,8 +20,10 @@ public class FileUtil {
   /**
    * Save string into the specific file.
    *
-   * @param content  string content
-   * @param filePath file's path
+   * @param content
+   *          string content
+   * @param filePath
+   *          file's path
    */
   public static void saveToFile(String content, String filePath) {
     try {
@@ -36,8 +38,10 @@ public class FileUtil {
   /**
    * Save inputStream's content into outputStream.
    *
-   * @param inputStream  input stream to read
-   * @param outputStream output stream to write
+   * @param inputStream
+   *          input stream to read
+   * @param outputStream
+   *          output stream to write
    * @throws IOException
    */
   public static void saveToFile(InputStream inputStream, OutputStream outputStream)
@@ -55,18 +59,22 @@ public class FileUtil {
   }
 
   /**
-   * Recursively delete the contents of {@code targetFile}, but not the {@code targetFile} itself.
+   * Recursively delete the contents of {@code targetFile}, but not the
+   * {@code targetFile} itself.
    * <p/>
-   * If the {@code targetFile} does not exist or it is not a directory, return {@code 0}.
+   * If the {@code targetFile} does not exist or it is not a directory, return
+   * {@code 0}.
    *
-   * @param targetFile file to delete.
+   * @param targetFile
+   *          file to delete.
    * @return the total number of files deleted
    */
   public static int deleteContents(File targetFile) {
-    if (targetFile.exists() && targetFile.isDirectory())
+    if (targetFile.exists() && targetFile.isDirectory()) {
       return org.aspectj.util.FileUtil.deleteContents(targetFile);
-    else
+    } else {
       return 0;
+    }
   }
 
   /**
@@ -74,7 +82,8 @@ public class FileUtil {
    * <p/>
    * <strong>WARN</strong>: this operation cannot be reverted.
    *
-   * @param path absolute path value
+   * @param path
+   *          absolute path value
    */
   public static void clearDirectory(String path) {
     clearDirectory(new File(path));
@@ -83,7 +92,8 @@ public class FileUtil {
   /**
    * Create directory if not exists.
    *
-   * @param path absolute path value
+   * @param path
+   *          absolute path value
    * @throws AppException
    */
   public static void createDirectoryIfNotExists(String path) throws AppException {
@@ -94,11 +104,14 @@ public class FileUtil {
       }
     }
   }
+
   /**
    * Move a directory into specific location.
    *
-   * @param fromDir origin directory location
-   * @param toDir   destination location
+   * @param fromDir
+   *          origin directory location
+   * @param toDir
+   *          destination location
    * @throws IOException
    */
   public static void moveDirectory(File fromDir, File toDir) throws IOException {
@@ -109,22 +122,26 @@ public class FileUtil {
   /**
    * Count number of files in the folder.
    *
-   * @param file file pointer
+   * @param file
+   *          file pointer
    * @return number of files in the folder
    */
   public static int countFiles(File file) {
-    if (!file.exists())
+    if (!file.exists()) {
       return 0;
+    }
     File[] files = file.listFiles();
-    if (files == null)
+    if (files == null) {
       return 0;
+    }
     return files.length;
   }
 
   /**
    * Delete specific directory.
    *
-   * @param file directory file pointer
+   * @param file
+   *          directory file pointer
    */
   private static void clearDirectory(File file) {
     if (file.exists()) {
@@ -136,15 +153,17 @@ public class FileUtil {
   /**
    * Get file's name without file extension.
    *
-   * @param file file entity
+   * @param file
+   *          file entity
    * @return file's name
    */
   public static String getFileName(File file) {
     String fileName = file.getName();
     int idx = fileName.lastIndexOf('.');
-    if (idx == -1)
+    if (idx == -1) {
       return fileName;
-    else
+    } else {
       return fileName.substring(0, idx);
+    }
   }
 }

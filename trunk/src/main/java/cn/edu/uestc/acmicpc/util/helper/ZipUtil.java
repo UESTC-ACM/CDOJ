@@ -17,13 +17,19 @@ public class ZipUtil {
   /**
    * Unzip the zip file and put all the files in the zip file to the path.
    * <p/>
-   * <strong>WARN:</strong> If the file list can not pass the checker's validation, delete all the
-   * contents in the {@code path}, and the {@code path} itself.
+   * <strong>WARN:</strong> If the file list can not pass the checker's
+   * validation, delete all the contents in the {@code path}, and the
+   * {@code path} itself.
    *
-   * @param zipFile zipFile object
-   * @param path    target path
-   * @param checker checker to validate ZIP files.
-   * @throws AppException if exception occurred, convert them into {@code AppException} object.
+   * @param zipFile
+   *          zipFile object
+   * @param path
+   *          target path
+   * @param checker
+   *          checker to validate ZIP files.
+   * @throws AppException
+   *           if exception occurred, convert them into {@code AppException}
+   *           object.
    */
   public static void unzipFile(ZipFile zipFile, String path, Checker<File> checker)
       throws AppException {
@@ -32,15 +38,17 @@ public class ZipUtil {
       while (enumeration.hasMoreElements()) {
         ZipEntry zipEntry = (ZipEntry) enumeration.nextElement();
         if (zipEntry.isDirectory()) {
-          if (!new File(path + "/" + zipEntry.getName()).mkdirs())
+          if (!new File(path + "/" + zipEntry.getName()).mkdirs()) {
             throw new Exception();
+          }
           continue;
         }
         File file = new File(path + "/" + zipEntry.getName());
         File parent = file.getParentFile();
         if (parent != null && !parent.exists()) {
-          if (!parent.mkdirs())
+          if (!parent.mkdirs()) {
             throw new AppException();
+          }
         }
         FileUtil.saveToFile(zipFile.getInputStream(zipEntry), new FileOutputStream(file));
       }

@@ -20,7 +20,7 @@ import cn.edu.uestc.acmicpc.config.WebMVCConfig;
 import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.util.enums.ArticleType;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -138,12 +138,12 @@ public class ArticleControllerTest extends ControllerTest {
         .build();
     when(articleService.getArticleDto(100, ArticleFields.ALL_FIELDS))
         .thenReturn(articleDto);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .build();
     mockMvc.perform(get("/article/data/{articleId}", 100)
-        .sessionAttr("currentUser", currentUserDTO))
-        .andExpect(request().sessionAttribute("currentUser", currentUserDTO))
+        .sessionAttr("currentUser", currentUserDto))
+        .andExpect(request().sessionAttribute("currentUser", currentUserDto))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")))
         .andExpect(jsonPath("$.article", notNullValue()))
@@ -205,11 +205,11 @@ public class ArticleControllerTest extends ControllerTest {
     when(articleService.count(any(ArticleCriteria.class))).thenReturn(5L);
     when(articleService.getArticleList(any(ArticleCriteria.class), any(PageInfo.class))).thenReturn(result);
 
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .build();
     mockMvc.perform(post("/article/commentSearch")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(articleCriteria)))
         .andExpect(status().isOk())
@@ -291,11 +291,11 @@ public class ArticleControllerTest extends ControllerTest {
     when(articleService.count(any(ArticleCriteria.class))).thenReturn(5L);
     when(articleService.getArticleList(any(ArticleCriteria.class), any(PageInfo.class))).thenReturn(result);
 
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .build();
     mockMvc.perform(post("/article/search")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(JSON.toJSONBytes(articleCriteria)))
         .andExpect(status().isOk())
@@ -340,11 +340,11 @@ public class ArticleControllerTest extends ControllerTest {
 
   @Test
   public void testOperationSuccessful() throws Exception {
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .build();
     mockMvc.perform(get("/article/applyOperation/{id}/{field}/{value}", 1, "isVisible", "false")
-        .sessionAttr("currentUser", currentUserDTO))
+        .sessionAttr("currentUser", currentUserDto))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("success")));
   }
@@ -352,11 +352,11 @@ public class ArticleControllerTest extends ControllerTest {
   @Test
   public void testOperationWithAppException() throws Exception {
     doThrow(new AppException("error message")).when(articleService).applyOperation(anyString(), anyString(), anyString());
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .build();
     mockMvc.perform(get("/article/applyOperation/{id}/{field}/{value}", 1, "isVisible", "false")
-        .sessionAttr("currentUser", currentUserDTO))
+        .sessionAttr("currentUser", currentUserDto))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.result", is("error")))
         .andExpect(jsonPath("$.error_msg", is("error message")));
@@ -364,7 +364,7 @@ public class ArticleControllerTest extends ControllerTest {
 
   @Test
   public void testChangeNoticeOrderSuccessful() throws Exception {
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .build();
     when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
@@ -385,7 +385,7 @@ public class ArticleControllerTest extends ControllerTest {
     );
 
     mockMvc.perform(post("/article/changeNoticeOrder")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content("{\"order\":\"3,2,1\"}"))
         .andExpect(status().isOk())
@@ -404,11 +404,11 @@ public class ArticleControllerTest extends ControllerTest {
 
   @Test
   public void testChangeNoticeOrderWithEmptyString() throws Exception {
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .build();
     mockMvc.perform(post("/article/changeNoticeOrder")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content("{\"order\":\"\"}"))
         .andExpect(status().isOk())
@@ -417,11 +417,11 @@ public class ArticleControllerTest extends ControllerTest {
 
   @Test
   public void testChangeNoticeOrderWithNoneInteger() throws Exception {
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .build();
     mockMvc.perform(post("/article/changeNoticeOrder")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content("{\"order\":\"a\"}"))
         .andExpect(status().isOk())
@@ -431,12 +431,12 @@ public class ArticleControllerTest extends ControllerTest {
 
   @Test
   public void testChangeNoticeOrderWithInexistentArticle() throws Exception {
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .build();
     when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(null);
     mockMvc.perform(post("/article/changeNoticeOrder")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content("{\"order\":\"1\"}"))
         .andExpect(status().isOk())
@@ -464,7 +464,7 @@ public class ArticleControllerTest extends ControllerTest {
         .build();
     jsonData.put("articleEditDto", articleEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.NORMAL.ordinal())
         .setUserId(100)
         .build();
@@ -472,7 +472,7 @@ public class ArticleControllerTest extends ControllerTest {
         articleDtoInCommentEditTest
     );
     mockMvc.perform(post("/article/edit")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -486,7 +486,7 @@ public class ArticleControllerTest extends ControllerTest {
     Assert.assertEquals(articleDtoArgumentCaptor.getValue().getType(),
         Integer.valueOf(ArticleType.COMMENT.ordinal())
     );
-    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getUserId(), currentUserDTO.getUserId());
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getUserId(), currentUserDto.getUserId());
     Assert.assertEquals(articleDtoArgumentCaptor.getValue().getProblemId(), articleEditDto.getProblemId());
     Assert.assertEquals(articleDtoArgumentCaptor.getValue().getContestId(), articleEditDto.getContestId());
     Assert.assertEquals(articleDtoArgumentCaptor.getValue().getParentId(), articleEditDto.getParentId());
@@ -505,7 +505,7 @@ public class ArticleControllerTest extends ControllerTest {
             .build()
     );
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.NORMAL.ordinal())
         .setUserId(99)
         .build();
@@ -513,7 +513,7 @@ public class ArticleControllerTest extends ControllerTest {
         articleDtoInCommentEditTest
     );
     mockMvc.perform(post("/article/edit")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -534,7 +534,7 @@ public class ArticleControllerTest extends ControllerTest {
             .build()
     );
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.NORMAL.ordinal())
         .setUserId(100)
         .build();
@@ -542,7 +542,7 @@ public class ArticleControllerTest extends ControllerTest {
         articleDtoInCommentEditTest
     );
     mockMvc.perform(post("/article/edit")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -562,7 +562,7 @@ public class ArticleControllerTest extends ControllerTest {
             .build()
     );
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.NORMAL.ordinal())
         .setUserId(100)
         .build();
@@ -570,7 +570,7 @@ public class ArticleControllerTest extends ControllerTest {
         articleDtoInCommentEditTest
     );
     mockMvc.perform(post("/article/edit")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -591,7 +591,7 @@ public class ArticleControllerTest extends ControllerTest {
             .build()
     );
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.NORMAL.ordinal())
         .setUserId(100)
         .build();
@@ -599,7 +599,7 @@ public class ArticleControllerTest extends ControllerTest {
         articleDtoInCommentEditTest
     );
     mockMvc.perform(post("/article/edit")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -620,7 +620,7 @@ public class ArticleControllerTest extends ControllerTest {
             .build()
     );
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.NORMAL.ordinal())
         .setUserId(100)
         .build();
@@ -628,7 +628,7 @@ public class ArticleControllerTest extends ControllerTest {
         null
     );
     mockMvc.perform(post("/article/edit")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -647,16 +647,16 @@ public class ArticleControllerTest extends ControllerTest {
         .build();
     jsonData.put("articleEditDto", articleEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.NORMAL.ordinal())
         .setUserId(100)
         .build();
-    when(articleService.createNewArticle(currentUserDTO.getUserId())).thenReturn(1);
+    when(articleService.createNewArticle(currentUserDto.getUserId())).thenReturn(1);
     when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
         articleDtoInCommentEditTest
     );
     mockMvc.perform(post("/article/edit")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -676,16 +676,16 @@ public class ArticleControllerTest extends ControllerTest {
         .build();
     jsonData.put("articleEditDto", articleEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.NORMAL.ordinal())
         .setUserId(100)
         .build();
-    when(articleService.createNewArticle(currentUserDTO.getUserId())).thenReturn(1);
+    when(articleService.createNewArticle(currentUserDto.getUserId())).thenReturn(1);
     when(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)).thenReturn(
         null
     );
     mockMvc.perform(post("/article/edit")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -705,7 +705,7 @@ public class ArticleControllerTest extends ControllerTest {
         .build();
     jsonData.put("articleEditDto", articleEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.NORMAL.ordinal())
         .setUserId(100)
         .build();
@@ -719,7 +719,7 @@ public class ArticleControllerTest extends ControllerTest {
             .build()
     );
     mockMvc.perform(post("/article/edit")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -733,7 +733,7 @@ public class ArticleControllerTest extends ControllerTest {
     Assert.assertEquals(articleDtoArgumentCaptor.getValue().getType(),
         Integer.valueOf(ArticleType.ARTICLE.ordinal())
     );
-    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getUserId(), currentUserDTO.getUserId());
+    Assert.assertEquals(articleDtoArgumentCaptor.getValue().getUserId(), currentUserDto.getUserId());
   }
 
   @Test
@@ -748,7 +748,7 @@ public class ArticleControllerTest extends ControllerTest {
         .build();
     jsonData.put("articleEditDto", articleEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.NORMAL.ordinal())
         .setUserId(100)
         .build();
@@ -762,7 +762,7 @@ public class ArticleControllerTest extends ControllerTest {
             .build()
     );
     mockMvc.perform(post("/article/edit")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -785,7 +785,7 @@ public class ArticleControllerTest extends ControllerTest {
         .build();
     jsonData.put("articleEditDto", articleEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.ADMIN.ordinal())
         .setUserId(100)
         .build();
@@ -799,7 +799,7 @@ public class ArticleControllerTest extends ControllerTest {
             .build()
     );
     mockMvc.perform(post("/article/edit")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())
@@ -823,7 +823,7 @@ public class ArticleControllerTest extends ControllerTest {
         .build();
     jsonData.put("articleEditDto", articleEditDto);
     String jsonDataString = JSON.toJSONString(jsonData);
-    UserDTO currentUserDTO = UserDTO.builder()
+    UserDto currentUserDto = UserDto.builder()
         .setType(AuthenticationType.NORMAL.ordinal())
         .setUserId(100)
         .build();
@@ -837,7 +837,7 @@ public class ArticleControllerTest extends ControllerTest {
             .build()
     );
     mockMvc.perform(post("/article/edit")
-        .sessionAttr("currentUser", currentUserDTO)
+        .sessionAttr("currentUser", currentUserDto)
         .contentType(APPLICATION_JSON_UTF8)
         .content(jsonDataString))
         .andExpect(status().isOk())

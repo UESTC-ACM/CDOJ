@@ -1,9 +1,9 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.message;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.MessageCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.message.MessageForUserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.MessageService;
 import cn.edu.uestc.acmicpc.util.annotation.LoginPermit;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -23,13 +23,15 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
 import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/message")
 public class MessageController extends BaseController {
-  private MessageService messageService;
-  private Settings settings;
+  private final MessageService messageService;
+  private final Settings settings;
 
   @Autowired
   public MessageController(MessageService messageService, Settings settings) {
@@ -39,23 +41,22 @@ public class MessageController extends BaseController {
 
   @RequestMapping("fetch/{messageId}")
   @LoginPermit(NeedLogin = true)
-  public
-  @ResponseBody
-  Map<String, Object> fetch(HttpSession session,
-                            @PathVariable("messageId") Integer messageId) {
+  public @ResponseBody Map<String, Object> fetch(HttpSession session,
+      @PathVariable("messageId") Integer messageId) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO currentUser = getCurrentUser(session);
-      MessageDTO messageDTO = messageService.getMessageDTO(messageId);
-      AppExceptionUtil.assertNotNull(messageDTO, "No such message.");
-      if (!currentUser.getUserId().equals(messageDTO.getSenderId()) &&
-          !currentUser.getUserId().equals(messageDTO.getReceiverId())) {
+      UserDto currentUser = getCurrentUser(session);
+      MessageDto messageDto = messageService.getMessageDto(messageId);
+      AppExceptionUtil.assertNotNull(messageDto, "No such message.");
+      if (!Objects.equals(currentUser.getUserId(), messageDto.getSenderId()) &&
+          !Objects.equals(currentUser.getUserId(), messageDto.getReceiverId())) {
         throw new AppException("Permission denied.");
       }
-      if (currentUser.getUserId().equals(messageDTO.getReceiverId()) && !messageDTO.getIsOpened()) {
-        messageService.read(messageDTO.getMessageId());
+      if (Objects.equals(currentUser.getUserId(), messageDto.getReceiverId())
+          && !messageDto.getIsOpened()) {
+        messageService.read(messageDto.getMessageId());
       }
-      json.put("message", messageDTO);
+      json.put("message", messageDto);
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
@@ -70,13 +71,11 @@ public class MessageController extends BaseController {
 
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> search(HttpSession session,
-                             @RequestBody MessageCondition messageCondition) {
+  public @ResponseBody Map<String, Object> search(HttpSession session,
+      @RequestBody MessageCondition messageCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
-      UserDTO currentUser = getCurrentUser(session);
+      UserDto currentUser = getCurrentUser(session);
       Boolean valid = false;
       if (currentUser != null) {
         if (messageCondition.userId != null) {
@@ -93,7 +92,8 @@ public class MessageController extends BaseController {
         Long count = messageService.count(messageCondition);
         PageInfo pageInfo = buildPageInfo(count, messageCondition.currentPage,
             settings.RECORD_PER_PAGE, null);
-        List<MessageForUserDTO> messageList = messageService.getMessageForUserDTOList(messageCondition, pageInfo);
+        List<MessageForUserDto> messageList = messageService.getMessageForUserDtoList(
+            messageCondition, pageInfo);
         json.put("list", messageList);
         json.put("pageInfo", pageInfo);
       } else {

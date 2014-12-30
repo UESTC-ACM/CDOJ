@@ -3,9 +3,9 @@ package cn.edu.uestc.acmicpc.service.impl;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.ContestDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDto;
 import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.service.iface.ContestService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -48,19 +48,19 @@ public class ContestServiceImpl extends AbstractService implements
   }
 
   @Override
-  public ContestDTO getContestDTOByContestId(
+  public ContestDto getContestDtoByContestId(
       Integer contestId)
       throws AppException {
     AppExceptionUtil.assertNotNull(contestId);
-    return contestDao.getDTOByUniqueField(ContestDTO.class,
-        ContestDTO.builder(), "contestId", contestId);
+    return contestDao.getDtoByUniqueField(ContestDto.class,
+        ContestDto.builder(), "contestId", contestId);
   }
 
   @Override
-  public ContestShowDTO getContestShowDTOByContestId(Integer contestId) throws AppException {
+  public ContestShowDto getContestShowDtoByContestId(Integer contestId) throws AppException {
     AppExceptionUtil.assertNotNull(contestId);
-    return contestDao.getDTOByUniqueField(ContestShowDTO.class,
-        ContestShowDTO.builder(), "contestId", contestId);
+    return contestDao.getDtoByUniqueField(ContestShowDto.class,
+        ContestShowDto.builder(), "contestId", contestId);
   }
 
   @Override
@@ -71,38 +71,38 @@ public class ContestServiceImpl extends AbstractService implements
     return contestDao.count(contestCondition.getCondition()) == 1;
   }
 
-  private void updateContestByContestDTO(Contest contest, ContestDTO contestDTO) {
-    if (contestDTO.getDescription() != null) {
-      contest.setDescription(contestDTO.getDescription());
+  private void updateContestByContestDto(Contest contest, ContestDto contestDto) {
+    if (contestDto.getDescription() != null) {
+      contest.setDescription(contestDto.getDescription());
     }
-    if (contestDTO.getIsVisible() != null) {
-      contest.setIsVisible(contestDTO.getIsVisible());
+    if (contestDto.getIsVisible() != null) {
+      contest.setIsVisible(contestDto.getIsVisible());
     }
-    if (contestDTO.getLength() != null) {
-      contest.setLength(contestDTO.getLength());
+    if (contestDto.getLength() != null) {
+      contest.setLength(contestDto.getLength());
     }
-    if (contestDTO.getTime() != null) {
-      contest.setTime(contestDTO.getTime());
+    if (contestDto.getTime() != null) {
+      contest.setTime(contestDto.getTime());
     }
-    if (contestDTO.getTitle() != null) {
-      contest.setTitle(contestDTO.getTitle());
+    if (contestDto.getTitle() != null) {
+      contest.setTitle(contestDto.getTitle());
     }
-    if (contestDTO.getType() != null) {
-      contest.setType(contestDTO.getType());
+    if (contestDto.getType() != null) {
+      contest.setType(contestDto.getType());
     }
-    contest.setPassword(contestDTO.getPassword());
-    contest.setParentId(contestDTO.getParentId());
-    if (contestDTO.getFrozenTime() != null) {
-      contest.setFrozenTime(contestDTO.getFrozenTime());
+    contest.setPassword(contestDto.getPassword());
+    contest.setParentId(contestDto.getParentId());
+    if (contestDto.getFrozenTime() != null) {
+      contest.setFrozenTime(contestDto.getFrozenTime());
     }
   }
 
   @Override
-  public void updateContest(ContestDTO contestDTO) throws AppException {
-    Contest contest = contestDao.get(contestDTO.getContestId());
+  public void updateContest(ContestDto contestDto) throws AppException {
+    Contest contest = contestDao.get(contestDto.getContestId());
     AppExceptionUtil.assertNotNull(contest);
     AppExceptionUtil.assertNotNull(contest.getContestId());
-    updateContestByContestDTO(contest, contestDTO);
+    updateContestByContestDto(contest, contestDto);
     contestDao.update(contest);
   }
 
@@ -112,12 +112,12 @@ public class ContestServiceImpl extends AbstractService implements
   }
 
   @Override
-  public List<ContestListDTO> getContestListDTOList(
+  public List<ContestListDto> getContestListDtoList(
       ContestCondition contestCondition,
       PageInfo pageInfo) throws AppException {
     Condition condition = contestCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return contestDao.findAll(ContestListDTO.class, ContestListDTO.builder(),
+    return contestDao.findAll(ContestListDto.class, ContestListDto.builder(),
         condition);
   }
 

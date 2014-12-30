@@ -3,10 +3,10 @@ package cn.edu.uestc.acmicpc.service.impl;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.StatusCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.StatusDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusInformationDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusListDto;
 import cn.edu.uestc.acmicpc.db.entity.Status;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeResultType;
@@ -93,58 +93,59 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   }
 
   @Override
-  public List<StatusListDTO> getStatusList(StatusCondition statusCondition,
-                                           PageInfo pageInfo) throws AppException {
+  public List<StatusListDto> getStatusList(StatusCondition statusCondition,
+      PageInfo pageInfo) throws AppException {
     Condition condition = statusCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return statusDao.findAll(StatusListDTO.class, StatusListDTO.builder(),
+    return statusDao.findAll(StatusListDto.class, StatusListDto.builder(),
         condition);
   }
 
   @Override
-  public List<StatusListDTO> getStatusList(StatusCondition condition) throws AppException {
-    return statusDao.findAll(StatusListDTO.class, StatusListDTO.builder(), condition.getCondition());
+  public List<StatusListDto> getStatusList(StatusCondition condition) throws AppException {
+    return statusDao
+        .findAll(StatusListDto.class, StatusListDto.builder(), condition.getCondition());
   }
 
-  private void updateStatusByStatusDTO(Status status, StatusDTO statusDTO) {
-    if (statusDTO.getResult() != null)
-      status.setResult(statusDTO.getResult());
-    if (statusDTO.getMemoryCost() != null)
-      status.setMemoryCost(statusDTO.getMemoryCost());
-    if (statusDTO.getTimeCost() != null)
-      status.setTimeCost(statusDTO.getTimeCost());
-    if (statusDTO.getLength() != null)
-      status.setLength(statusDTO.getLength());
-    if (statusDTO.getTime() != null)
-      status.setTime(statusDTO.getTime());
-    if (statusDTO.getCaseNumber() != null)
-      status.setCaseNumber(statusDTO.getCaseNumber());
-    if (statusDTO.getCodeId() != null)
-      status.setCodeId(statusDTO.getCodeId());
-    if (statusDTO.getCompileInfoId() != null)
-      status.setCompileInfoId(statusDTO.getCompileInfoId());
-    if (statusDTO.getContestId() != null)
-      status.setContestId(statusDTO.getContestId());
-    if (statusDTO.getLanguageId() != null)
-      status.setLanguageId(statusDTO.getLanguageId());
-    if (statusDTO.getProblemId() != null)
-      status.setProblemId(statusDTO.getProblemId());
-    if (statusDTO.getUserId() != null)
-      status.setUserId(statusDTO.getUserId());
+  private void updateStatusByStatusDto(Status status, StatusDto statusDto) {
+    if (statusDto.getResult() != null)
+      status.setResult(statusDto.getResult());
+    if (statusDto.getMemoryCost() != null)
+      status.setMemoryCost(statusDto.getMemoryCost());
+    if (statusDto.getTimeCost() != null)
+      status.setTimeCost(statusDto.getTimeCost());
+    if (statusDto.getLength() != null)
+      status.setLength(statusDto.getLength());
+    if (statusDto.getTime() != null)
+      status.setTime(statusDto.getTime());
+    if (statusDto.getCaseNumber() != null)
+      status.setCaseNumber(statusDto.getCaseNumber());
+    if (statusDto.getCodeId() != null)
+      status.setCodeId(statusDto.getCodeId());
+    if (statusDto.getCompileInfoId() != null)
+      status.setCompileInfoId(statusDto.getCompileInfoId());
+    if (statusDto.getContestId() != null)
+      status.setContestId(statusDto.getContestId());
+    if (statusDto.getLanguageId() != null)
+      status.setLanguageId(statusDto.getLanguageId());
+    if (statusDto.getProblemId() != null)
+      status.setProblemId(statusDto.getProblemId());
+    if (statusDto.getUserId() != null)
+      status.setUserId(statusDto.getUserId());
   }
 
   @Override
-  public void createNewStatus(StatusDTO statusDTO) throws AppException {
+  public void createNewStatus(StatusDto statusDto) throws AppException {
     Status status = new Status();
-    updateStatusByStatusDTO(status, statusDTO);
+    updateStatusByStatusDto(status, statusDto);
     statusDao.add(status);
   }
 
   @Override
-  public StatusInformationDTO getStatusInformation(Integer statusId)
+  public StatusInformationDto getStatusInformation(Integer statusId)
       throws AppException {
-    return statusDao.getDTOByUniqueField(StatusInformationDTO.class,
-        StatusInformationDTO.builder(), "statusId", statusId);
+    return statusDao.getDtoByUniqueField(StatusInformationDto.class,
+        StatusInformationDto.builder(), "statusId", statusId);
   }
 
   @Override
@@ -164,13 +165,14 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   }
 
   @Override
-  public List<StatusInformationDTO> getStatusInformationDTOList(StatusCondition statusCondition) throws AppException {
-    return statusDao.findAll(StatusInformationDTO.class,
-        StatusInformationDTO.builder(), statusCondition.getCondition());
+  public List<StatusInformationDto> getStatusInformationDtoList(StatusCondition statusCondition)
+      throws AppException {
+    return statusDao.findAll(StatusInformationDto.class,
+        StatusInformationDto.builder(), statusCondition.getCondition());
   }
 
   @Override
-  public List<StatusForJudgeDTO> getQueuingStatus(boolean isFirstTime) throws AppException {
+  public List<StatusForJudgeDto> getQueuingStatus(boolean isFirstTime) throws AppException {
     StatusCondition statusCondition = new StatusCondition();
     statusCondition.results.add(OnlineJudgeResultType.OJ_WAIT);
     if (isFirstTime) {
@@ -179,25 +181,25 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
     statusCondition.isForAdmin = true;
     statusCondition.orderFields = "statusId";
     statusCondition.orderAsc = "true";
-    return statusDao.findAll(StatusForJudgeDTO.class,
-        StatusForJudgeDTO.builder(), statusCondition.getCondition());
+    return statusDao.findAll(StatusForJudgeDto.class,
+        StatusForJudgeDto.builder(), statusCondition.getCondition());
   }
 
   @Override
-  public void updateStatusByStatusForJudgeDTO(
-      StatusForJudgeDTO statusForJudgeDTO) throws AppException {
+  public void updateStatusByStatusForJudgeDto(
+      StatusForJudgeDto statusForJudgeDto) throws AppException {
     Map<String, Object> properties = new HashMap<>();
-    if (statusForJudgeDTO.getResult() != null)
-      properties.put("result", statusForJudgeDTO.getResult());
-    if (statusForJudgeDTO.getCaseNumber() != null)
-      properties.put("caseNumber", statusForJudgeDTO.getCaseNumber());
-    if (statusForJudgeDTO.getTimeCost() != null)
-      properties.put("timeCost", statusForJudgeDTO.getTimeCost());
-    if (statusForJudgeDTO.getMemoryCost() != null)
-      properties.put("memoryCost", statusForJudgeDTO.getMemoryCost());
-    if (statusForJudgeDTO.getCompileInfoId() != null)
-      properties.put("compileInfoId", statusForJudgeDTO.getCompileInfoId());
-    statusDao.updateEntitiesByField(properties, "statusId", statusForJudgeDTO
+    if (statusForJudgeDto.getResult() != null)
+      properties.put("result", statusForJudgeDto.getResult());
+    if (statusForJudgeDto.getCaseNumber() != null)
+      properties.put("caseNumber", statusForJudgeDto.getCaseNumber());
+    if (statusForJudgeDto.getTimeCost() != null)
+      properties.put("timeCost", statusForJudgeDto.getTimeCost());
+    if (statusForJudgeDto.getMemoryCost() != null)
+      properties.put("memoryCost", statusForJudgeDto.getMemoryCost());
+    if (statusForJudgeDto.getCompileInfoId() != null)
+      properties.put("compileInfoId", statusForJudgeDto.getCompileInfoId());
+    statusDao.updateEntitiesByField(properties, "statusId", statusForJudgeDto
         .getStatusId().toString());
   }
 

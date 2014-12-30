@@ -2,9 +2,9 @@ package cn.edu.uestc.acmicpc.service.impl;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.TeamCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.TeamDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamTypeAHeadDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamListDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamTypeAHeadDto;
 import cn.edu.uestc.acmicpc.db.entity.Team;
 import cn.edu.uestc.acmicpc.service.iface.TeamService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -37,9 +37,10 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
   @Override
   public Boolean checkTeamExists(String teamName) throws AppException {
     AppExceptionUtil.assertNotNull(teamName);
-    TeamDTO teamDTO = teamDao.getDTOByUniqueField(TeamDTO.class, TeamDTO.builder(), "teamName", teamName);
-    if (teamDTO != null) {
-      AppExceptionUtil.assertTrue(teamDTO.getTeamName().compareTo(teamName) == 0);
+    TeamDto teamDto = teamDao.getDtoByUniqueField(TeamDto.class, TeamDto.builder(), "teamName",
+        teamName);
+    if (teamDto != null) {
+      AppExceptionUtil.assertTrue(teamDto.getTeamName().compareTo(teamName) == 0);
       return true;
     }
     return false;
@@ -56,8 +57,8 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
   }
 
   @Override
-  public TeamDTO getTeamDTOByTeamId(Integer teamId) throws AppException {
-    return teamDao.getDTOByUniqueField(TeamDTO.class, TeamDTO.builder(), "teamId", teamId);
+  public TeamDto getTeamDtoByTeamId(Integer teamId) throws AppException {
+    return teamDao.getDtoByUniqueField(TeamDto.class, TeamDto.builder(), "teamId", teamId);
   }
 
   @Override
@@ -75,7 +76,8 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
     Boolean needAnd = false;
     if (teamCondition.userId != null) {
       needAnd = true;
-      hqlBuilder.append(" team.teamId = teamUser.teamId and teamUser.userId = ").append(teamCondition.userId);
+      hqlBuilder.append(" team.teamId = teamUser.teamId and teamUser.userId = ").append(
+          teamCondition.userId);
     }
     if (teamCondition.teamId != null) {
       if (needAnd) {
@@ -109,29 +111,29 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
   }
 
   @Override
-  public List<TeamTypeAHeadDTO> getTeamTypeAHeadList(TeamCondition teamCondition,
-                                                     PageInfo pageInfo) throws AppException {
-    return teamDao.findAll(TeamTypeAHeadDTO.class, TeamTypeAHeadDTO.builder(),
+  public List<TeamTypeAHeadDto> getTeamTypeAHeadList(TeamCondition teamCondition,
+      PageInfo pageInfo) throws AppException {
+    return teamDao.findAll(TeamTypeAHeadDto.class, TeamTypeAHeadDto.builder(),
         getHQLString(teamCondition), pageInfo);
   }
 
   @Override
   public Integer getTeamIdByTeamName(String teamName) throws AppException {
-    TeamDTO teamDTO = teamDao.getDTOByUniqueField(TeamDTO.class, TeamDTO.builder(), "teamName",
+    TeamDto teamDto = teamDao.getDtoByUniqueField(TeamDto.class, TeamDto.builder(), "teamName",
         teamName);
-    AppExceptionUtil.assertNotNull(teamDTO, "Team not found.");
-    return teamDTO.getTeamId();
+    AppExceptionUtil.assertNotNull(teamDto, "Team not found.");
+    return teamDto.getTeamId();
   }
 
   @Override
-  public void deleteTeam(TeamDTO teamDTO) throws AppException {
-    teamDao.deleteEntitiesByField("teamId", teamDTO.getTeamId().toString());
+  public void deleteTeam(TeamDto teamDto) throws AppException {
+    teamDao.deleteEntitiesByField("teamId", teamDto.getTeamId().toString());
   }
 
   @Override
-  public List<TeamListDTO> getTeamList(TeamCondition teamCondition, PageInfo pageInfo)
+  public List<TeamListDto> getTeamList(TeamCondition teamCondition, PageInfo pageInfo)
       throws AppException {
-    return teamDao.findAll(TeamListDTO.class, TeamListDTO.builder(), getHQLString(teamCondition),
+    return teamDao.findAll(TeamListDto.class, TeamListDto.builder(), getHQLString(teamCondition),
         pageInfo);
   }
 }

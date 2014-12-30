@@ -3,11 +3,11 @@ package cn.edu.uestc.acmicpc.service.impl;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserEditorDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserTypeAheadDto;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
 import cn.edu.uestc.acmicpc.util.enums.AuthenticationType;
@@ -40,57 +40,57 @@ public class UserServiceImpl extends AbstractService implements UserService {
     this.userDao = userDao;
   }
 
-  private void updateUserByUserDTO(User user, UserDTO userDTO) {
-    if (userDTO.getUserName() != null) {
-      user.setUserName(userDTO.getUserName());
+  private void updateUserByUserDto(User user, UserDto userDto) {
+    if (userDto.getUserName() != null) {
+      user.setUserName(userDto.getUserName());
     }
-    if (userDTO.getStudentId() != null) {
-      user.setStudentId(userDTO.getStudentId());
+    if (userDto.getStudentId() != null) {
+      user.setStudentId(userDto.getStudentId());
     }
-    if (userDTO.getPassword() != null) {
-      user.setPassword(userDTO.getPassword());
+    if (userDto.getPassword() != null) {
+      user.setPassword(userDto.getPassword());
     }
-    if (userDTO.getSchool() != null) {
-      user.setSchool(userDTO.getSchool());
+    if (userDto.getSchool() != null) {
+      user.setSchool(userDto.getSchool());
     }
-    if (userDTO.getNickName() != null) {
-      user.setNickName(userDTO.getNickName());
+    if (userDto.getNickName() != null) {
+      user.setNickName(userDto.getNickName());
     }
-    if (userDTO.getEmail() != null) {
-      user.setEmail(userDTO.getEmail());
+    if (userDto.getEmail() != null) {
+      user.setEmail(userDto.getEmail());
     }
-    if (userDTO.getSolved() != null) {
-      user.setSolved(userDTO.getSolved());
+    if (userDto.getSolved() != null) {
+      user.setSolved(userDto.getSolved());
     }
-    if (userDTO.getTried() != null) {
-      user.setTried(userDTO.getTried());
+    if (userDto.getTried() != null) {
+      user.setTried(userDto.getTried());
     }
-    if (userDTO.getType() != null) {
-      user.setType(userDTO.getType());
+    if (userDto.getType() != null) {
+      user.setType(userDto.getType());
     }
-    if (userDTO.getDepartmentId() != null) {
-      user.setDepartmentId(userDTO.getDepartmentId());
+    if (userDto.getDepartmentId() != null) {
+      user.setDepartmentId(userDto.getDepartmentId());
     }
-    if (userDTO.getLastLogin() != null) {
-      user.setLastLogin(userDTO.getLastLogin());
+    if (userDto.getLastLogin() != null) {
+      user.setLastLogin(userDto.getLastLogin());
     }
-    if (userDTO.getMotto() != null) {
-      user.setMotto(userDTO.getMotto());
+    if (userDto.getMotto() != null) {
+      user.setMotto(userDto.getMotto());
     }
-    if (userDTO.getName() != null) {
-      user.setName(userDTO.getName());
+    if (userDto.getName() != null) {
+      user.setName(userDto.getName());
     }
-    if (userDTO.getSex() != null) {
-      user.setSex(userDTO.getSex());
+    if (userDto.getSex() != null) {
+      user.setSex(userDto.getSex());
     }
-    if (userDTO.getGrade() != null) {
-      user.setGrade(userDTO.getGrade());
+    if (userDto.getGrade() != null) {
+      user.setGrade(userDto.getGrade());
     }
-    if (userDTO.getPhone() != null) {
-      user.setPhone(userDTO.getPhone());
+    if (userDto.getPhone() != null) {
+      user.setPhone(userDto.getPhone());
     }
-    if (userDTO.getSize() != null) {
-      user.setSize(userDTO.getSize());
+    if (userDto.getSize() != null) {
+      user.setSize(userDto.getSize());
     }
   }
 
@@ -100,61 +100,61 @@ public class UserServiceImpl extends AbstractService implements UserService {
   }
 
   @Override
-  public void updateUser(UserDTO userDTO) throws AppException {
-    User user = userDao.get(userDTO.getUserId());
+  public void updateUser(UserDto userDto) throws AppException {
+    User user = userDao.get(userDto.getUserId());
     AppExceptionUtil.assertNotNull(user);
     AppExceptionUtil.assertNotNull(user.getUserId());
-    updateUserByUserDTO(user, userDTO);
+    updateUserByUserDto(user, userDto);
     userDao.update(user);
   }
 
   @Override
-  public Integer createNewUser(UserDTO userDTO) throws AppException {
+  public Integer createNewUser(UserDto userDto) throws AppException {
     User user = new User();
-    updateUserByUserDTO(user, userDTO);
+    updateUserByUserDto(user, userDto);
     userDao.add(user);
     return user.getUserId();
   }
 
   @Override
-  public List<UserListDTO> getUserListDTOList(UserCondition userCondition,
-                                              PageInfo pageInfo) throws AppException {
+  public List<UserListDto> getUserListDtoList(UserCondition userCondition,
+      PageInfo pageInfo) throws AppException {
     Condition condition = userCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return userDao.findAll(UserListDTO.class, UserListDTO.builder(), condition);
+    return userDao.findAll(UserListDto.class, UserListDto.builder(), condition);
   }
 
   @Override
-  public List<UserTypeAheadDTO> getUserTypeAheadDTOList(UserCondition userCondition,
-                                                        PageInfo pageInfo) throws AppException {
+  public List<UserTypeAheadDto> getUserTypeAheadDtoList(UserCondition userCondition,
+      PageInfo pageInfo) throws AppException {
     Condition condition = userCondition.getCondition();
     condition.setPageInfo(pageInfo);
-    return userDao.findAll(UserTypeAheadDTO.class, UserTypeAheadDTO.builder(), condition);
+    return userDao.findAll(UserTypeAheadDto.class, UserTypeAheadDto.builder(), condition);
   }
 
   @Override
-  public UserDTO getUserDTOByUserName(String userName) throws AppException {
-    return userDao.getDTOByUniqueField(UserDTO.class, UserDTO.builder(),
+  public UserDto getUserDtoByUserName(String userName) throws AppException {
+    return userDao.getDtoByUniqueField(UserDto.class, UserDto.builder(),
         "userName", userName);
   }
 
   @Override
-  public UserDTO getUserDTOByEmail(String email) throws AppException {
-    return userDao.getDTOByUniqueField(UserDTO.class, UserDTO.builder(),
+  public UserDto getUserDtoByEmail(String email) throws AppException {
+    return userDao.getDtoByUniqueField(UserDto.class, UserDto.builder(),
         "email", email);
   }
 
   @Override
-  public UserDTO getUserDTOByUserId(Integer userId) throws AppException {
-    return userDao.getDTOByUniqueField(UserDTO.class, UserDTO.builder(),
+  public UserDto getUserDtoByUserId(Integer userId) throws AppException {
+    return userDao.getDtoByUniqueField(UserDto.class, UserDto.builder(),
         "userId", userId);
   }
 
   @Override
-  public UserCenterDTO getUserCenterDTOByUserName(String userName)
+  public UserCenterDto getUserCenterDtoByUserName(String userName)
       throws AppException {
-    return userDao.getDTOByUniqueField(UserCenterDTO.class,
-        UserCenterDTO.builder(), "userName",
+    return userDao.getDtoByUniqueField(UserCenterDto.class,
+        UserCenterDto.builder(), "userName",
         userName);
   }
 
@@ -171,45 +171,45 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
   @Override
   public Boolean checkUserExists(String userName) throws AppException {
-    UserDTO userDTO = getUserDTOByUserName(userName);
-    return userDTO != null;
+    UserDto userDto = getUserDtoByUserName(userName);
+    return userDto != null;
   }
 
   @Override
   public Boolean checkUserExists(Integer userId) throws AppException {
-    UserDTO userDTO = getUserDTOByUserId(userId);
-    return userDTO != null;
+    UserDto userDto = getUserDtoByUserId(userId);
+    return userDto != null;
   }
 
   @Override
-  public List<Integer> createOnsiteUsersByUserList(List<UserDTO> userList) throws AppException {
+  public List<Integer> createOnsiteUsersByUserList(List<UserDto> userList) throws AppException {
     // Property userName, password, nickName and name is already exists.
     List<Integer> userIdList = new LinkedList<>();
-    for (UserDTO userDTO: userList) {
-      userDTO.setStudentId("123456");
-      userDTO.setSchool("UESTC");
+    for (UserDto userDto : userList) {
+      userDto.setStudentId("123456");
+      userDto.setSchool("UESTC");
       // Avoid conflict email address.
-      userDTO.setEmail(userDTO.getUserName() + userDTO.getPassword() + "@cdoj.com");
-      userDTO.setSolved(0);
-      userDTO.setTried(0);
+      userDto.setEmail(userDto.getUserName() + userDto.getPassword() + "@cdoj.com");
+      userDto.setSolved(0);
+      userDto.setTried(0);
       // Constant user
-      userDTO.setType(AuthenticationType.CONSTANT.ordinal());
-      userDTO.setMotto("");
-      userDTO.setLastLogin(new Timestamp(new Date().getTime()));
-      userDTO.setDepartmentId(1);
-      userDTO.setSex(GenderType.FEMALE.ordinal());
-      userDTO.setGrade(GradeType.FRESHMAN.ordinal());
-      userDTO.setPhone("123");
-      userDTO.setSize(TShirtsSizeType.M.ordinal());
+      userDto.setType(AuthenticationType.CONSTANT.ordinal());
+      userDto.setMotto("");
+      userDto.setLastLogin(new Timestamp(new Date().getTime()));
+      userDto.setDepartmentId(1);
+      userDto.setSex(GenderType.FEMALE.ordinal());
+      userDto.setGrade(GradeType.FRESHMAN.ordinal());
+      userDto.setPhone("123");
+      userDto.setSize(TShirtsSizeType.M.ordinal());
 
-      Integer newUserID = createNewUser(userDTO);
+      Integer newUserID = createNewUser(userDto);
       userIdList.add(newUserID);
     }
     return userIdList;
   }
 
   @Override
-  public List<UserDTO> fetchAllOnsiteUsersByContestId(Integer contestId) throws AppException {
+  public List<UserDto> fetchAllOnsiteUsersByContestId(Integer contestId) throws AppException {
     StringBuilder hqlBuilder = new StringBuilder();
     hqlBuilder
         .append("from User where")
@@ -218,14 +218,14 @@ public class UserServiceImpl extends AbstractService implements UserService {
         .append(contestId)
         .append(" )")
         .append(")");
-    return userDao.findAll(UserDTO.class, UserDTO.builder(), hqlBuilder.toString(), null);
+    return userDao.findAll(UserDto.class, UserDto.builder(), hqlBuilder.toString(), null);
   }
 
   @Override
-  public UserEditorDTO getUserEditorDTOByUserName(String userName)
+  public UserEditorDto getUserEditorDtoByUserName(String userName)
       throws AppException {
-    return userDao.getDTOByUniqueField(UserEditorDTO.class,
-        UserEditorDTO.builder(), "userName", userName);
+    return userDao.getDtoByUniqueField(UserEditorDto.class,
+        UserEditorDto.builder(), "userName", userName);
   }
 
 }

@@ -26,7 +26,8 @@ public class TrainingUserServiceImpl extends AbstractService implements Training
   }
 
   @Override
-  public TrainingUserDto getTrainingUserDto(Integer trainingUserId, TrainingUserFields trainingUserFields) throws AppException {
+  public TrainingUserDto getTrainingUserDto(Integer trainingUserId,
+      TrainingUserFields trainingUserFields) throws AppException {
     AppExceptionUtil.assertNotNull(trainingUserId);
     TrainingUserCriteria trainingUserCriteria = new TrainingUserCriteria(trainingUserFields);
     trainingUserCriteria.startId = trainingUserCriteria.endId = trainingUserId;
@@ -34,7 +35,8 @@ public class TrainingUserServiceImpl extends AbstractService implements Training
   }
 
   @Override
-  public List<TrainingUserDto> getTrainingUserList(TrainingUserCriteria trainingUserCriteria) throws AppException {
+  public List<TrainingUserDto> getTrainingUserList(TrainingUserCriteria trainingUserCriteria)
+      throws AppException {
     return trainingUserDao.findAll(trainingUserCriteria.getCriteria(), null);
   }
 

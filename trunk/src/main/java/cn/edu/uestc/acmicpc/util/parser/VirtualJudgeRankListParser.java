@@ -18,7 +18,8 @@ import java.util.regex.Pattern;
 
 public class VirtualJudgeRankListParser {
 
-  public static void parse(TrainingRankList rankList, List<TrainingPlatformInfoDto> platformList) throws AppException {
+  public static void parse(TrainingRankList rankList, List<TrainingPlatformInfoDto> platformList)
+      throws AppException {
     // Count problem number
     int totalProblems = 0;
     for (int col = 0; col < rankList.fieldType.length; col++) {
@@ -28,7 +29,7 @@ public class VirtualJudgeRankListParser {
     }
     rankList.problems = new RankListProblem[totalProblems];
     for (int id = 0; id < totalProblems; id++) {
-      rankList.problems[id] = new RankListProblem("" + (char)('A' + id), 0, 0);
+      rankList.problems[id] = new RankListProblem("" + (char) ('A' + id), 0, 0);
     }
 
     // Parse raw data
@@ -38,12 +39,13 @@ public class VirtualJudgeRankListParser {
         if (rankList.fieldType[col] == TrainingResultFieldType.USERNAME.ordinal()) {
           // parse user name
           user.userName = user.rawData[col];
-          TrainingContestResultParser.parseUserName(user, user.rawData[col], platformList, new TrainingContestResultParser.AcceptedFunction() {
-            @Override
-            public boolean accepted(String userName, TrainingPlatformInfoDto platform) {
-              return platform.getUserName().equals(userName);
-            }
-          });
+          TrainingContestResultParser.parseUserName(user, user.rawData[col], platformList,
+              new TrainingContestResultParser.AcceptedFunction() {
+                @Override
+                public boolean accepted(String userName, TrainingPlatformInfoDto platform) {
+                  return platform.getUserName().equals(userName);
+                }
+              });
         } else if (rankList.fieldType[col] == TrainingResultFieldType.SOLVED.ordinal()) {
           user.solved = Integer.valueOf(user.rawData[col]);
         } else if (rankList.fieldType[col] == TrainingResultFieldType.PENALTY.ordinal()) {
@@ -67,7 +69,8 @@ public class VirtualJudgeRankListParser {
 
         if (itemList.get(id).status == ProblemSolveStatusType.PASS) {
           rankList.problems[id].solved++;
-          rankList.problems[id].firstSolvedTime = Math.min(rankList.problems[id].firstSolvedTime, itemList.get(id).solvedTime);
+          rankList.problems[id].firstSolvedTime = Math.min(rankList.problems[id].firstSolvedTime,
+              itemList.get(id).solvedTime);
         }
       }
       user.itemList = itemList.toArray(new TrainingRankListItem[itemList.size()]);
@@ -97,7 +100,8 @@ public class VirtualJudgeRankListParser {
     // Set rank
     int currentRank = 1;
     for (int i = 0; i < rankList.users.length; i++) {
-      if (i <= 0 || !rankList.users[i].solved.equals(rankList.users[i - 1].solved) || !rankList.users[i].penalty.equals(rankList.users[i - 1].penalty)) {
+      if (i <= 0 || !rankList.users[i].solved.equals(rankList.users[i - 1].solved)
+          || !rankList.users[i].penalty.equals(rankList.users[i - 1].penalty)) {
         currentRank = i + 1;
       }
       rankList.users[i].rank = currentRank;

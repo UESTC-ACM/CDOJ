@@ -1,6 +1,6 @@
 package cn.edu.uestc.acmicpc.judge.entity;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.status.StatusForJudgeDto;
 import cn.edu.uestc.acmicpc.service.iface.CompileInfoService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
 import cn.edu.uestc.acmicpc.service.iface.StatusService;
@@ -22,7 +22,7 @@ import java.util.Map;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class JudgeItem {
 
-  private StatusForJudgeDTO status;
+  private StatusForJudgeDto status;
   private String compileInfo;
   private final CompileInfoService compileInfoService;
   private final StatusService statusService;
@@ -41,11 +41,11 @@ public class JudgeItem {
     this.problemService = problemService;
   }
 
-  public void setStatusForJudgeDTO(StatusForJudgeDTO status) {
+  public void setStatusForJudgeDto(StatusForJudgeDto status) {
     this.status = status;
   }
 
-  public StatusForJudgeDTO getStatusForJudgeDTO() {
+  public StatusForJudgeDto getStatusForJudgeDto() {
     return status;
   }
 
@@ -64,14 +64,16 @@ public class JudgeItem {
   /**
    * Update database for item.
    *
-   * @param updateStatus if set {@code true}, update status' information.
+   * @param updateStatus
+   *          if set {@code true}, update status' information.
    */
   public void update(boolean updateStatus) {
     try {
       if (compileInfo != null) {
         // Compile error!
-        if (compileInfo.length() > 30000)
+        if (compileInfo.length() > 30000) {
           compileInfo = compileInfo.substring(0, 30000);
+        }
         if (status.getCompileInfoId() != null) {
           // Update old compile info (if exists)
           compileInfoService.updateCompileInfoContent(
@@ -84,7 +86,7 @@ public class JudgeItem {
           status.setCompileInfoId(newCompileInfoId);
         }
       }
-      statusService.updateStatusByStatusForJudgeDTO(status);
+      statusService.updateStatusByStatusForJudgeDto(status);
     } catch (AppException ignored) {
       // TODO(fish) Why not set result as OJ_REJUDGING or something else
       // to rejudge it.

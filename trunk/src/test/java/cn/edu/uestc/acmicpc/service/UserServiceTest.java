@@ -11,9 +11,9 @@ import cn.edu.uestc.acmicpc.db.condition.base.Condition;
 import cn.edu.uestc.acmicpc.db.condition.base.Condition.JoinedType;
 import cn.edu.uestc.acmicpc.db.condition.impl.UserCondition;
 import cn.edu.uestc.acmicpc.db.dao.iface.UserDao;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserCenterDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserListDto;
 import cn.edu.uestc.acmicpc.db.entity.User;
 import cn.edu.uestc.acmicpc.service.iface.EmailService;
 import cn.edu.uestc.acmicpc.service.iface.UserService;
@@ -57,97 +57,97 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
   }
 
   @Test
-  public void testGetUserDTOByUserId() throws AppException {
-    UserDTO userDTO = UserDTO.builder().build();
-    when(userDao.getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
-        eq("userId"), eq(userDTO.getUserId()))).thenReturn(userDTO);
-    Assert.assertEquals(userService.getUserDTOByUserId(userDTO.getUserId()), userDTO);
-    verify(userDao).getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
-        eq("userId"), eq(userDTO.getUserId()));
+  public void testGetUserDtoByUserId() throws AppException {
+    UserDto userDto = UserDto.builder().build();
+    when(userDao.getDtoByUniqueField(eq(UserDto.class), Mockito.<UserDto.Builder>any(),
+        eq("userId"), eq(userDto.getUserId()))).thenReturn(userDto);
+    Assert.assertEquals(userService.getUserDtoByUserId(userDto.getUserId()), userDto);
+    verify(userDao).getDtoByUniqueField(eq(UserDto.class), Mockito.<UserDto.Builder>any(),
+        eq("userId"), eq(userDto.getUserId()));
   }
 
   @Test
-  public void testGetUserDTOByUserName() throws AppException {
-    UserDTO userDTO = UserDTO.builder().build();
-    when(userDao.getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
-        eq("userName"), eq(userDTO.getUserName()))).thenReturn(userDTO);
-    Assert.assertEquals(userService.getUserDTOByUserName(userDTO.getUserName()), userDTO);
-    verify(userDao).getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
-        eq("userName"), eq(userDTO.getUserName()));
+  public void testGetUserDtoByUserName() throws AppException {
+    UserDto userDto = UserDto.builder().build();
+    when(userDao.getDtoByUniqueField(eq(UserDto.class), Mockito.<UserDto.Builder>any(),
+        eq("userName"), eq(userDto.getUserName()))).thenReturn(userDto);
+    Assert.assertEquals(userService.getUserDtoByUserName(userDto.getUserName()), userDto);
+    verify(userDao).getDtoByUniqueField(eq(UserDto.class), Mockito.<UserDto.Builder>any(),
+        eq("userName"), eq(userDto.getUserName()));
   }
 
   @Test
-  public void testGetUserCenterDTOByUserName() throws AppException {
-    UserCenterDTO userCenterDTO = UserCenterDTO.builder().build();
-    when(userDao.getDTOByUniqueField(eq(UserCenterDTO.class), Mockito.<UserCenterDTO.Builder>any(),
-        eq("userName"), eq(userCenterDTO.getUserName()))).thenReturn(userCenterDTO);
-    Assert.assertEquals(userService.getUserCenterDTOByUserName(userCenterDTO.getUserName()),
-        userCenterDTO);
-    verify(userDao).getDTOByUniqueField(eq(UserCenterDTO.class),
-        Mockito.<UserCenterDTO.Builder>any(), eq("userName"), eq(userCenterDTO.getUserName()));
+  public void testGetUserCenterDtoByUserName() throws AppException {
+    UserCenterDto userCenterDto = UserCenterDto.builder().build();
+    when(userDao.getDtoByUniqueField(eq(UserCenterDto.class), Mockito.<UserCenterDto.Builder>any(),
+        eq("userName"), eq(userCenterDto.getUserName()))).thenReturn(userCenterDto);
+    Assert.assertEquals(userService.getUserCenterDtoByUserName(userCenterDto.getUserName()),
+        userCenterDto);
+    verify(userDao).getDtoByUniqueField(eq(UserCenterDto.class),
+        Mockito.<UserCenterDto.Builder>any(), eq("userName"), eq(userCenterDto.getUserName()));
   }
 
   @Test
-  public void testGetUserDTOByEmail() throws AppException {
-    UserDTO userDTO = UserDTO.builder().build();
-    when(userDao.getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
-        eq("email"), eq(userDTO.getEmail()))).thenReturn(userDTO);
-    Assert.assertEquals(userService.getUserDTOByEmail(userDTO.getEmail()), userDTO);
-    verify(userDao).getDTOByUniqueField(eq(UserDTO.class), Mockito.<UserDTO.Builder>any(),
-        eq("email"), eq(userDTO.getEmail()));
+  public void testGetUserDtoByEmail() throws AppException {
+    UserDto userDto = UserDto.builder().build();
+    when(userDao.getDtoByUniqueField(eq(UserDto.class), Mockito.<UserDto.Builder>any(),
+        eq("email"), eq(userDto.getEmail()))).thenReturn(userDto);
+    Assert.assertEquals(userService.getUserDtoByEmail(userDto.getEmail()), userDto);
+    verify(userDao).getDtoByUniqueField(eq(UserDto.class), Mockito.<UserDto.Builder>any(),
+        eq("email"), eq(userDto.getEmail()));
   }
 
   @Test
   public void testUpdateUser() throws AppException {
-    UserDTO userDTO = UserDTO.builder().build();
+    UserDto userDto = UserDto.builder().build();
     User user = new User();
-    user.setUserId(userDTO.getUserId());
-    when(userDao.get(userDTO.getUserId())).thenReturn(user);
-    userService.updateUser(userDTO);
+    user.setUserId(userDto.getUserId());
+    when(userDao.get(userDto.getUserId())).thenReturn(user);
+    userService.updateUser(userDto);
     ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
     verify(userDao).update(captor.capture());
-    Assert.assertTrue(ObjectUtil.entityEquals(userDTO, captor.getValue()));
-    verify(userDao).get(userDTO.getUserId());
+    Assert.assertTrue(ObjectUtil.entityEquals(userDto, captor.getValue()));
+    verify(userDao).get(userDto.getUserId());
   }
 
   @Test(expectedExceptions = AppException.class)
   public void testUpdateUser_userNotFound() throws AppException {
-    UserDTO userDTO = UserDTO.builder().build();
-    when(userDao.get(userDTO.getUserId())).thenReturn(null);
-    userService.updateUser(userDTO);
+    UserDto userDto = UserDto.builder().build();
+    when(userDao.get(userDto.getUserId())).thenReturn(null);
+    userService.updateUser(userDto);
     Assert.fail();
   }
 
   @Test(expectedExceptions = AppException.class)
   public void testUpdateUser_userFoundWithNullId() throws AppException {
-    UserDTO userDTO = UserDTO.builder().build();
+    UserDto userDto = UserDto.builder().build();
     User user = mock(User.class);
-    when(userDao.get(userDTO.getUserId())).thenReturn(user);
+    when(userDao.get(userDto.getUserId())).thenReturn(user);
     when(user.getUserId()).thenReturn(null);
-    userService.updateUser(userDTO);
+    userService.updateUser(userDto);
     Assert.fail();
   }
 
   @Test
   public void testCreateNewUser() throws AppException {
-    UserDTO userDTO = UserDTO.builder().build();
-    userService.createNewUser(userDTO);
+    UserDto userDto = UserDto.builder().build();
+    userService.createNewUser(userDto);
     ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
     verify(userDao).add(captor.capture());
     User user = captor.getValue();
     // the user is not persisted.
     Assert.assertNull(user.getUserId());
-    user.setUserId(userDTO.getUserId());
-    Assert.assertTrue(ObjectUtil.entityEquals(userDTO, user));
+    user.setUserId(userDto.getUserId());
+    Assert.assertTrue(ObjectUtil.entityEquals(userDto, user));
   }
 
   @Test
   public void testSearch() throws AppException {
     ArgumentCaptor<Condition> captor = ArgumentCaptor.forClass(Condition.class);
     PageInfo pageInfo = PageInfo.create(300L, 20L, 10, 2L);
-    userService.getUserListDTOList(new UserCondition(), pageInfo);
-    verify(userDao).findAll(eq(UserListDTO.class),
-        isA(UserListDTO.Builder.class), captor.capture());
+    userService.getUserListDtoList(new UserCondition(), pageInfo);
+    verify(userDao).findAll(eq(UserListDto.class),
+        isA(UserListDto.Builder.class), captor.capture());
     Condition condition = captor.getValue();
     Assert.assertEquals(condition.getJoinedType(), JoinedType.AND);
     Assert.assertEquals(condition.getPageInfo(), pageInfo);

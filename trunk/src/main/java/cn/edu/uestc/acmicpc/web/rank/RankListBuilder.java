@@ -1,7 +1,7 @@
 package cn.edu.uestc.acmicpc.web.rank;
 
-import cn.edu.uestc.acmicpc.db.dto.impl.contestTeam.ContestTeamListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.contestteam.ContestTeamListDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
 import cn.edu.uestc.acmicpc.util.enums.OnlineJudgeReturnType;
 
 import java.sql.Timestamp;
@@ -15,13 +15,13 @@ import java.util.Map;
  * Rank list builder
  */
 public class RankListBuilder {
-  private List<RankListProblem> problemList;
-  private List<RankListUser> userList;
-  private List<ContestTeamListDTO> teamList;
-  private Map<String, RankListProblem> problemMap;
-  private Map<String, RankListUser> userMap;
-  private Map<String, Integer> problemIndexMap;
-  private Map<String, ContestTeamListDTO> teamMap;
+  private final List<RankListProblem> problemList;
+  private final List<RankListUser> userList;
+  private final List<ContestTeamListDto> teamList;
+  private final Map<String, RankListProblem> problemMap;
+  private final Map<String, RankListUser> userMap;
+  private final Map<String, Integer> problemIndexMap;
+  private final Map<String, ContestTeamListDto> teamMap;
   private Boolean teamMode;
 
   public RankListBuilder() {
@@ -39,9 +39,9 @@ public class RankListBuilder {
     teamMode = true;
   }
 
-  public void addRankListTeam(ContestTeamListDTO team) {
-    for (TeamUserListDTO teamUserListDTO: team.getTeamUsers()) {
-      teamMap.put(teamUserListDTO.getUserName(), team);
+  public void addRankListTeam(ContestTeamListDto team) {
+    for (TeamUserListDto teamUserListDto : team.getTeamUsers()) {
+      teamMap.put(teamUserListDto.getUserName(), team);
     }
   }
 
@@ -61,9 +61,9 @@ public class RankListBuilder {
   }
 
   private RankListUser getRankListUser(String userName,
-                                       String nickName,
-                                       String email,
-                                       String reallyName) {
+      String nickName,
+      String email,
+      String reallyName) {
     if (!teamMode) {
       RankListUser user = userMap.get(userName);
       if (user == null) {
@@ -93,7 +93,7 @@ public class RankListBuilder {
       }
       return user;
     } else {
-      ContestTeamListDTO team = teamMap.get(userName);
+      ContestTeamListDto team = teamMap.get(userName);
       if (team == null) {
         return null;
       }
@@ -134,7 +134,8 @@ public class RankListBuilder {
       return;
     }
     RankListProblem problem = problemList.get(problemIndex);
-    RankListUser user = getRankListUser(status.userName, status.nickName, status.email, status.reallyName);
+    RankListUser user = getRankListUser(status.userName, status.nickName, status.email,
+        status.reallyName);
     if (user == null) {
       // Ignore
       return;

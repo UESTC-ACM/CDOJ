@@ -29,16 +29,20 @@ public class EnumTypeUtil {
   }
 
   public static String getAuthenticationName(Integer type) {
-    for (AuthenticationType authenticationType : AuthenticationType.values())
-      if (authenticationType.ordinal() == type)
+    for (AuthenticationType authenticationType : AuthenticationType.values()) {
+      if (authenticationType.ordinal() == type) {
         return authenticationType.getDescription();
+      }
+    }
     return null;
   }
 
   public static String getReturnDescription(Integer returnTypeId, Integer caseNumber) {
-    for (OnlineJudgeReturnType returnType : OnlineJudgeReturnType.values())
-      if (returnType.ordinal() == returnTypeId)
+    for (OnlineJudgeReturnType returnType : OnlineJudgeReturnType.values()) {
+      if (returnType.ordinal() == returnTypeId) {
         return StringUtil.getStatusDescription(returnType, caseNumber);
+      }
+    }
     return null;
   }
 }

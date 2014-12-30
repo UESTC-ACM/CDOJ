@@ -1,10 +1,10 @@
 package cn.edu.uestc.acmicpc.web.oj.controller.problem;
 
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDTO;
-import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDTO;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemEditDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDto;
+import cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto;
 import cn.edu.uestc.acmicpc.service.iface.FileService;
 import cn.edu.uestc.acmicpc.service.iface.PictureService;
 import cn.edu.uestc.acmicpc.service.iface.ProblemService;
@@ -16,7 +16,7 @@ import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.util.exception.FieldException;
 import cn.edu.uestc.acmicpc.util.helper.StringUtil;
 import cn.edu.uestc.acmicpc.util.settings.Settings;
-import cn.edu.uestc.acmicpc.web.dto.FileUploadDTO;
+import cn.edu.uestc.acmicpc.web.dto.FileUploadDto;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 import cn.edu.uestc.acmicpc.web.oj.controller.base.BaseController;
 
@@ -35,6 +35,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -42,18 +43,18 @@ import javax.validation.Valid;
 @RequestMapping("/problem")
 public class ProblemController extends BaseController {
 
-  private ProblemService problemService;
-  private StatusService statusService;
-  private PictureService pictureService;
-  private FileService fileService;
-  private Settings settings;
+  private final ProblemService problemService;
+  private final StatusService statusService;
+  private final PictureService pictureService;
+  private final FileService fileService;
+  private final Settings settings;
 
   @Autowired
   public ProblemController(ProblemService problemService,
-                           StatusService statusService,
-                           PictureService pictureService,
-                           FileService fileService,
-                           Settings settings) {
+      StatusService statusService,
+      PictureService pictureService,
+      FileService fileService,
+      Settings settings) {
     this.problemService = problemService;
     this.statusService = statusService;
     this.pictureService = pictureService;
@@ -63,21 +64,19 @@ public class ProblemController extends BaseController {
 
   @RequestMapping("data/{problemId}")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> data(@PathVariable("problemId") Integer problemId,
-                           HttpSession session) {
+  public @ResponseBody Map<String, Object> data(@PathVariable("problemId") Integer problemId,
+      HttpSession session) {
     Map<String, Object> json = new HashMap<>();
     try {
-      ProblemDTO problemDTO = problemService.getProblemDTOByProblemId(problemId);
-      if (problemDTO == null) {
+      ProblemDto problemDto = problemService.getProblemDtoByProblemId(problemId);
+      if (problemDto == null) {
         throw new AppException("No such problem.");
       }
-      if (!problemDTO.getIsVisible() && !isAdmin(session)) {
+      if (!problemDto.getIsVisible() && !isAdmin(session)) {
         throw new AppException("No such problem.");
       }
 
-      json.put("problem", problemDTO);
+      json.put("problem", problemDto);
       json.put("result", "success");
     } catch (AppException e) {
       json.put("result", "error");
@@ -99,10 +98,8 @@ public class ProblemController extends BaseController {
    */
   @RequestMapping("search")
   @LoginPermit(NeedLogin = false)
-  public
-  @ResponseBody
-  Map<String, Object> search(HttpSession session,
-                             @RequestBody ProblemCondition problemCondition) {
+  public @ResponseBody Map<String, Object> search(HttpSession session,
+      @RequestBody ProblemCondition problemCondition) {
     Map<String, Object> json = new HashMap<>();
     try {
       if (!isAdmin(session)) {
@@ -112,24 +109,24 @@ public class ProblemController extends BaseController {
       PageInfo pageInfo = buildPageInfo(count, problemCondition.currentPage,
           settings.RECORD_PER_PAGE, null);
 
-      List<ProblemListDTO> problemListDTOList = problemService
-          .getProblemListDTOList(
+      List<ProblemListDto> problemListDtoList = problemService
+          .getProblemListDtoList(
               problemCondition, pageInfo);
 
-      UserDTO currentUser = (UserDTO) session.getAttribute("currentUser");
+      UserDto currentUser = (UserDto) session.getAttribute("currentUser");
       Map<Integer, ProblemSolveStatusType> problemStatus = getProblemStatus(currentUser, session);
 
-      for (ProblemListDTO problemListDTO : problemListDTOList) {
-        if (problemStatus.get(problemListDTO.getProblemId()) == ProblemSolveStatusType.PASS) {
-          problemListDTO.setStatus(1);
-        } else if (problemStatus.containsKey(problemListDTO.getProblemId())) {
-          problemListDTO.setStatus(2);
+      for (ProblemListDto problemListDto : problemListDtoList) {
+        if (problemStatus.get(problemListDto.getProblemId()) == ProblemSolveStatusType.PASS) {
+          problemListDto.setStatus(1);
+        } else if (problemStatus.containsKey(problemListDto.getProblemId())) {
+          problemListDto.setStatus(2);
         }
       }
 
       json.put("pageInfo", pageInfo);
       json.put("result", "success");
-      json.put("list", problemListDTOList);
+      json.put("list", problemListDtoList);
     } catch (AppException e) {
       json.put("result", "error");
       json.put("error_msg", e.getMessage());
@@ -144,18 +141,19 @@ public class ProblemController extends BaseController {
   /**
    * Modify special field of problem
    *
-   * @param targetId problem id
-   * @param field    field want to modified
-   * @param value    value
+   * @param targetId
+   *          problem id
+   * @param field
+   *          field want to modified
+   * @param value
+   *          value
    * @return JSON
    */
   @RequestMapping("operator/{id}/{field}/{value}")
   @LoginPermit(AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> operator(@PathVariable("id") String targetId,
-                               @PathVariable("field") String field,
-                               @PathVariable("value") String value) {
+  public @ResponseBody Map<String, Object> operator(@PathVariable("id") String targetId,
+      @PathVariable("field") String field,
+      @PathVariable("value") String value) {
     Map<String, Object> json = new HashMap<>();
     try {
       problemService.operator(field, targetId, value);
@@ -170,10 +168,8 @@ public class ProblemController extends BaseController {
 
   @RequestMapping("query/{id}/{field}")
   @LoginPermit(AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> query(@PathVariable("id") String targetId,
-                            @PathVariable("field") String field) {
+  public @ResponseBody Map<String, Object> query(@PathVariable("id") String targetId,
+      @PathVariable("field") String field) {
     Map<String, Object> json = new HashMap<>();
     try {
       json.put("list", problemService.query(field, targetId));
@@ -189,79 +185,80 @@ public class ProblemController extends BaseController {
   /**
    * Edit problem
    *
-   * @param problemEditDTO uploaded information
-   * @param validateResult validate result
-   * @return
+   * @param problemEditDto
+   *          uploaded information
+   * @param validateResult
+   *          validate result
    */
   @RequestMapping("edit")
   @LoginPermit(AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> edit(@RequestBody @Valid ProblemEditDTO problemEditDTO,
-                           BindingResult validateResult) {
+  public @ResponseBody Map<String, Object> edit(@RequestBody @Valid ProblemEditDto problemEditDto,
+      BindingResult validateResult) {
     Map<String, Object> json = new HashMap<>();
     if (validateResult.hasErrors()) {
       json.put("result", "field_error");
       json.put("field", validateResult.getFieldErrors());
     } else {
       try {
-        if (StringUtil.trimAllSpace(problemEditDTO.getTitle()).equals(""))
+        if (StringUtil.trimAllSpace(problemEditDto.getTitle()).equals("")) {
           throw new FieldException("title", "Please enter a validate title.");
-        ProblemDTO problemDTO;
-        if (problemEditDTO.getAction().compareTo("new") == 0) {
+        }
+        ProblemDto problemDto;
+        if (problemEditDto.getAction().compareTo("new") == 0) {
           Integer problemId = problemService.createNewProblem();
-          problemDTO = problemService.getProblemDTOByProblemId(problemId);
-          if (problemDTO == null || !problemDTO.getProblemId().equals(problemId)) {
+          problemDto = problemService.getProblemDtoByProblemId(problemId);
+          if (problemDto == null || !problemDto.getProblemId().equals(problemId)) {
             throw new AppException("Error while creating problem.");
           }
           // Move pictures
           String oldDirectory = "problem/new/";
           String newDirectory = "problem/" + problemId + "/";
-          problemEditDTO.setDescription(pictureService.modifyPictureLocation(
-              problemEditDTO.getDescription(), oldDirectory, newDirectory));
-          problemEditDTO.setInput(pictureService.modifyPictureLocation(
-              problemEditDTO.getInput(), oldDirectory, newDirectory));
-          problemEditDTO.setOutput(pictureService.modifyPictureLocation(
-              problemEditDTO.getOutput(), oldDirectory, newDirectory));
-          problemEditDTO.setHint(pictureService.modifyPictureLocation(
-              problemEditDTO.getHint(), oldDirectory, newDirectory));
+          problemEditDto.setDescription(pictureService.modifyPictureLocation(
+              problemEditDto.getDescription(), oldDirectory, newDirectory));
+          problemEditDto.setInput(pictureService.modifyPictureLocation(
+              problemEditDto.getInput(), oldDirectory, newDirectory));
+          problemEditDto.setOutput(pictureService.modifyPictureLocation(
+              problemEditDto.getOutput(), oldDirectory, newDirectory));
+          problemEditDto.setHint(pictureService.modifyPictureLocation(
+              problemEditDto.getHint(), oldDirectory, newDirectory));
         } else {
-          problemDTO = problemService.getProblemDTOByProblemId(problemEditDTO.getProblemId());
-          if (problemDTO == null)
+          problemDto = problemService.getProblemDtoByProblemId(problemEditDto.getProblemId());
+          if (problemDto == null) {
             throw new AppException("No such problem.");
+          }
         }
 
-        problemDTO.setTitle(problemEditDTO.getTitle());
-        problemDTO.setDescription(problemEditDTO.getDescription());
-        problemDTO.setInput(problemEditDTO.getInput());
-        problemDTO.setOutput(problemEditDTO.getOutput());
-        problemDTO.setSampleInput(problemEditDTO.getSampleInput());
-        problemDTO.setSampleOutput(problemEditDTO.getSampleOutput());
-        problemDTO.setHint(problemEditDTO.getHint());
-        problemDTO.setSource(problemEditDTO.getSource());
+        problemDto.setTitle(problemEditDto.getTitle());
+        problemDto.setDescription(problemEditDto.getDescription());
+        problemDto.setInput(problemEditDto.getInput());
+        problemDto.setOutput(problemEditDto.getOutput());
+        problemDto.setSampleInput(problemEditDto.getSampleInput());
+        problemDto.setSampleOutput(problemEditDto.getSampleOutput());
+        problemDto.setHint(problemEditDto.getHint());
+        problemDto.setSource(problemEditDto.getSource());
 
-        problemDTO.setTimeLimit(problemEditDTO.getTimeLimit());
-        problemDTO.setJavaTimeLimit(problemEditDTO.getJavaTimeLimit());
-        problemDTO.setMemoryLimit(problemEditDTO.getMemoryLimit());
-        problemDTO.setJavaMemoryLimit(problemEditDTO.getJavaMemoryLimit());
-        problemDTO.setOutputLimit(problemEditDTO.getOutputLimit());
-        problemDTO.setIsSpj(problemEditDTO.getIsSpj());
+        problemDto.setTimeLimit(problemEditDto.getTimeLimit());
+        problemDto.setJavaTimeLimit(problemEditDto.getJavaTimeLimit());
+        problemDto.setMemoryLimit(problemEditDto.getMemoryLimit());
+        problemDto.setJavaMemoryLimit(problemEditDto.getJavaMemoryLimit());
+        problemDto.setOutputLimit(problemEditDto.getOutputLimit());
+        problemDto.setIsSpj(problemEditDto.getIsSpj());
 
         Integer dataCount;
-        if (problemEditDTO.getAction().equals("new")) {
+        if (problemEditDto.getAction().equals("new")) {
           dataCount = fileService.moveProblemDataFile("new",
-              problemDTO.getProblemId());
+              problemDto.getProblemId());
         } else {
-          dataCount = fileService.moveProblemDataFile(problemDTO.getProblemId().toString(),
-              problemDTO.getProblemId());
+          dataCount = fileService.moveProblemDataFile(problemDto.getProblemId().toString(),
+              problemDto.getProblemId());
         }
         if (dataCount != 0) {
-          problemDTO.setDataCount(dataCount);
+          problemDto.setDataCount(dataCount);
         }
 
-        problemService.updateProblem(problemDTO);
+        problemService.updateProblem(problemDto);
         json.put("result", "success");
-        json.put("problemId", problemDTO.getProblemId());
+        json.put("problemId", problemDto.getProblemId());
       } catch (FieldException e) {
         putFieldErrorsIntoBindingResult(e, validateResult);
         json.put("result", "field_error");
@@ -277,9 +274,7 @@ public class ProblemController extends BaseController {
   @RequestMapping(value = "uploadProblemDataFile/{problemId}",
       method = RequestMethod.POST)
   @LoginPermit(AuthenticationType.ADMIN)
-  public
-  @ResponseBody
-  Map<String, Object> uploadProblemDataFile(
+  public @ResponseBody Map<String, Object> uploadProblemDataFile(
       @PathVariable("problemId") String sProblemId,
       @RequestParam(value = "uploadFile", required = true) MultipartFile[] files) {
     Map<String, Object> json = new HashMap<>();
@@ -297,7 +292,7 @@ public class ProblemController extends BaseController {
       }
 
       Integer dataCount = fileService.uploadProblemDataFile(
-          FileUploadDTO.builder()
+          FileUploadDto.builder()
               .setFiles(Arrays.asList(files))
               .build(),
           sProblemId);
@@ -314,8 +309,8 @@ public class ProblemController extends BaseController {
     return json;
   }
 
-  private Map<Integer, ProblemSolveStatusType> getProblemStatus(UserDTO currentUser,
-                                                                 HttpSession session) {
+  private Map<Integer, ProblemSolveStatusType> getProblemStatus(UserDto currentUser,
+      HttpSession session) {
     Map<Integer, ProblemSolveStatusType> problemStatus = new HashMap<>();
     try {
       if (currentUser != null) {
