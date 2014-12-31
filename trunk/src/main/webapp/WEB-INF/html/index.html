@@ -91,7 +91,7 @@
         </li>
         <li ng-if="$root.hasLogin">
           <div id="cdoj-user" dropdown style="margin-left: 15px;">
-            <a href class="dropdown-toggle">
+            <a href class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
               <img id="cdoj-user-avatar"
                    ui-avatar
                    email="currentUser.email"/>
@@ -140,7 +140,7 @@ border-top-right-radius: 0;">
           </div>
         </li>
         <li dropdown ng-if="$root.hasLogin == false">
-          <a href class="dropdown-toggle">
+          <a href class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
             Sign in
           </a>
           <ul ui-dropdown-menu class="dropdown-menu cdoj-form-menu" style="width: 340px;">
