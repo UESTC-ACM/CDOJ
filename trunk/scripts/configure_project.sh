@@ -21,8 +21,8 @@ fi
 cp $1 $2
 echo "db.username=$3" >> $2
 echo "db.password=$4" >> $2
-echo "staticResources.path=$5" >> $2
-echo "images.path=$6" >> $2
-echo "data.path=$7" >> $2
-echo "upload.path=$8" >> $2
-echo "judge.workPath=$9" >> $2
+echo "staticResources.path=$5" | sed 's/\\/\\\\/g' >> $2
+echo "images.path=$6" | sed 's/\\/\\\\/g' >> $2
+echo "data.path=$7" | sed 's/\\/\\\\/g' >> $2
+echo "upload.path=$8" | sed 's/\\/\\\\/g' >> $2
+echo "judge.workPath=$9" | sed 's/\\/\\\\/g' >> $2
