@@ -34,10 +34,8 @@ public class Judge implements Runnable {
 
   public void setWorkPath(String workPath) throws AppException {
     File dir = new File(workPath);
-    if (!dir.exists()) {
-      if (!dir.mkdirs()) {
-        throw new AppException("Cannot create work directory");
-      }
+    if (!dir.exists() && !dir.mkdirs()) {
+      throw new AppException("Cannot create work directory");
     }
     this.workPath = workPath;
   }
@@ -59,10 +57,8 @@ public class Judge implements Runnable {
 
   public void setTempPath(String tempPath) throws AppException {
     File dir = new File(tempPath);
-    if (!dir.exists()) {
-      if (!dir.mkdirs()) {
-        throw new AppException("Cannot create temp directory");
-      }
+    if (!dir.exists() && !dir.mkdirs()) {
+      throw new AppException("Cannot create temp directory");
     }
     this.tempPath = tempPath;
   }
@@ -85,7 +81,7 @@ public class Judge implements Runnable {
   public void run() {
     try {
       while (true) {
-        if (judgeQueue.size() > 0) {
+        if (!judgeQueue.isEmpty()) {
           judge(judgeQueue.take());
         } else {
           Thread.sleep(200);
