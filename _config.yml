@@ -3,7 +3,9 @@ description: "UESTC ACM/ICPC Online Judge system"
 
 url: "http://uestc-acm.github.io/CDOJ"
 
-markdown: rdiscount
+markdown: kramdown
 permalink: pretty
-pygments: true
+highlighter: pygments
 
+sass:
+  style: :compressed
