@@ -46,7 +46,7 @@ public class ContestUserServiceImpl extends AbstractService implements ContestUs
     if (contestUserDto.getComment() != null) {
       contestUser.setComment(contestUserDto.getComment());
     }
-    contestUserDao.add(contestUser);
+    contestUserDao.addOrUpdate(contestUser);
     return contestUser.getUserId();
   }
 
@@ -64,6 +64,7 @@ public class ContestUserServiceImpl extends AbstractService implements ContestUs
     contestUserDao.deleteEntitiesByField("contestId", contestId.toString());
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public Boolean fetchOnsiteUsersByUserIdAndContestId(Integer userId, Integer contestId)
       throws AppException {

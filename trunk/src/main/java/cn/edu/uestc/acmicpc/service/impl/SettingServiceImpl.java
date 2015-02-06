@@ -45,6 +45,6 @@ public class SettingServiceImpl extends AbstractService implements SettingServic
     if (settingDto.getValue() != null) {
       setting.setValue(settingDto.getValue());
     }
-    settingDao.update(setting);
+    settingDao.addOrUpdate(setting);
   }
 }

@@ -163,6 +163,7 @@ public interface UserService extends DatabaseService<User, Integer> {
    *
    * @param userList
    *          {@link cn.edu.uestc.acmicpc.db.dto.impl.user.UserDto} list
+   * @return
    * @throws AppException
    */
   public List<Integer> createOnsiteUsersByUserList(List<UserDto> userList) throws AppException;

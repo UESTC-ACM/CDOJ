@@ -46,12 +46,12 @@ public abstract class DaoImpl<E extends Serializable, K extends Serializable>
   private static final Logger LOGGER = LogManager.getLogger(DaoImpl.class);
 
   @Override
-  public void addOrUpdate(E entity) throws AppException {
+  public E addOrUpdate(E entity) throws AppException {
     try {
       if (DatabaseUtil.getKeyValue(entity) == null) {
-        add(entity);
+        return add(entity);
       } else {
-        update(entity);
+        return update(entity);
       }
     } catch (HibernateException e) {
       throw new AppException("Invoke addOrUpdate method error.");
@@ -99,20 +99,6 @@ public abstract class DaoImpl<E extends Serializable, K extends Serializable>
     return query;
   }
 
-  @Deprecated
-  private List<?> findAll(Condition condition) throws AppException {
-    if (condition == null) {
-      condition = new Condition();
-    }
-    try {
-      String hql = buildHQLStringWithOrders(condition);
-      return getQuery(hql, condition.getPageInfo()).list();
-    } catch (HibernateException e) {
-      LOGGER.error(e.getMessage(), e);
-      throw new AppException("Invoke findAll method error.");
-    }
-  }
-
   @Override
   public Long customCount(String fieldName, Condition condition)
       throws AppException {
@@ -144,10 +130,10 @@ public abstract class DaoImpl<E extends Serializable, K extends Serializable>
     return customCount("*", condition);
   }
 
-  @Override
-  public Serializable add(E entity) throws AppException {
+  @SuppressWarnings("unchecked")
+  private E add(E entity) throws AppException {
     try {
-      return getSession().save(entity);
+      return (E) getSession().save(entity);
     } catch (HibernateException e) {
       LOGGER.error(e);
       throw new AppException("Invoke add method error.");
@@ -168,20 +154,14 @@ public abstract class DaoImpl<E extends Serializable, K extends Serializable>
     }
   }
 
-  @Override
-  public void update(E entity) throws AppException {
+  private E update(E entity) throws AppException {
     try {
       getSession().update(entity);
+      return entity;
     } catch (HibernateException e) {
       LOGGER.error(e);
       throw new AppException("Invoke update method error.");
     }
-  }
-
-  @Override
-  @Deprecated
-  public List<?> findAll() throws AppException {
-    return findAll(new Condition());
   }
 
   @Override

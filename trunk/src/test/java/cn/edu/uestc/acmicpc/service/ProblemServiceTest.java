@@ -83,7 +83,7 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
     when(problemDao.get(problemDto.getProblemId())).thenReturn(problem);
     problemService.updateProblem(problemDto);
     ArgumentCaptor<Problem> captor = ArgumentCaptor.forClass(Problem.class);
-    verify(problemDao).update(captor.capture());
+    verify(problemDao).addOrUpdate(captor.capture());
     Assert.assertTrue(ObjectUtil.entityEquals(problemDto, captor.getValue()));
     verify(problemDao).get(problemDto.getProblemId());
   }
@@ -110,7 +110,7 @@ public class ProblemServiceTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testCreateNewProblem() throws AppException {
     ArgumentCaptor<Problem> captor = ArgumentCaptor.forClass(Problem.class);
-    when(problemDao.add(captor.capture())).thenAnswer(new Answer<Problem>() {
+    when(problemDao.addOrUpdate(captor.capture())).thenAnswer(new Answer<Problem>() {
       @Override
       public Problem answer(InvocationOnMock invocation) {
         Object[] args = invocation.getArguments();

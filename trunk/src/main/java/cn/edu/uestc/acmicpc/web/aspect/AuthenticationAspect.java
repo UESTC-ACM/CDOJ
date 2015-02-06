@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -35,6 +36,7 @@ public class AuthenticationAspect {
     this.request = request;
   }
 
+  @SuppressWarnings("unchecked")
   @Around("@annotation(cn.edu.uestc.acmicpc.util.annotation.LoginPermit)")
   public Map<String, Object> checkAuth(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
     MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
@@ -43,8 +45,9 @@ public class AuthenticationAspect {
 
     if (permit.NeedLogin()) {
       UserDto userDto = (UserDto) request.getSession().getAttribute("currentUser");
-      if (userDto == null)
+      if (userDto == null) {
         throw new AppException("Please login first.");
+      }
       if (permit.value() != AuthenticationType.NORMAL) {
         if (userDto.getType() != permit.value().ordinal()) {
           throw new AppException("Permission denied");

@@ -40,8 +40,10 @@ public class RatingCalculator {
 
   /**
    * Calculate rating by user's rank.
+   * @param contest
    *
    * @param rankList
+   * @throws AppException
    */
   public void calculateByRank(TrainingContestDto contest, TrainingRankList rankList)
       throws AppException {

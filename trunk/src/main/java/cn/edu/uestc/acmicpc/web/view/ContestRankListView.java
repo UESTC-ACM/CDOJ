@@ -41,6 +41,7 @@ public class ContestRankListView extends AbstractJExcelView {
    */
   private Map<String, ContestTeamReportDto> teamMap;
 
+  @SuppressWarnings("unchecked")
   @Override
   protected void buildExcelDocument(Map<String, Object> model,
       WritableWorkbook workbook,

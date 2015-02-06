@@ -105,14 +105,14 @@ public class UserServiceImpl extends AbstractService implements UserService {
     AppExceptionUtil.assertNotNull(user);
     AppExceptionUtil.assertNotNull(user.getUserId());
     updateUserByUserDto(user, userDto);
-    userDao.update(user);
+    userDao.addOrUpdate(user);
   }
 
   @Override
   public Integer createNewUser(UserDto userDto) throws AppException {
     User user = new User();
     updateUserByUserDto(user, userDto);
-    userDao.add(user);
+    userDao.addOrUpdate(user);
     return user.getUserId();
   }
 

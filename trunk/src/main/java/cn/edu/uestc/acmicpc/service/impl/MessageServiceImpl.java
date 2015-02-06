@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 public class MessageServiceImpl extends AbstractService implements MessageService {
 
-  private MessageDao messageDao;
+  private final MessageDao messageDao;
 
   @Autowired
   public MessageServiceImpl(MessageDao messageDao) {
@@ -47,7 +47,7 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
     message.setSenderId(messageDto.getSenderId());
     message.setReceiverId(messageDto.getReceiverId());
     message.setMessageId(null);
-    messageDao.add(message);
+    messageDao.addOrUpdate(message);
     return message.getMessageId();
   }
 

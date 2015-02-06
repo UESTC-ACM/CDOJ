@@ -64,7 +64,6 @@ public class ProblemDatabaseITTest extends AbstractTestNGSpringContextTests {
     Assert.assertEquals(problemDao.count(condition.getCondition()), Long.valueOf(2));
   }
 
-  @SuppressWarnings({"unchecked", "deprecation"})
   @Test
   public void testProblemCondition_emptyTitle() throws AppException {
     Condition condition = new Condition();
@@ -89,7 +88,7 @@ public class ProblemDatabaseITTest extends AbstractTestNGSpringContextTests {
     problem.setSource("Source " + randomId.toString());
     problem.setIsSpj(new Random().nextBoolean());
     problem.setIsVisible(new Random().nextBoolean());
-    problemDao.add(problem);
+    problemDao.addOrUpdate(problem);
     Assert.assertNotNull(problem.getProblemId());
   }
 }

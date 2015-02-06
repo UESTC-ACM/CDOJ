@@ -44,7 +44,7 @@ public class CompileInfoServiceImpl extends AbstractService implements CompileIn
       throws AppException {
     CompileInfo compileInfo = new CompileInfo();
     compileInfo.setContent(content);
-    compileInfoDao.add(compileInfo);
+    compileInfoDao.addOrUpdate(compileInfo);
     return compileInfo.getCompileInfoId();
   }
 }

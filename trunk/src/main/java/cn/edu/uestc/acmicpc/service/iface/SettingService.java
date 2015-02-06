@@ -15,6 +15,7 @@ public interface SettingService extends DatabaseService<Setting, Integer> {
    * @param settingId
    *          setting's id
    * @return {@link cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDto} entity.
+   * @throws AppException
    */
   public SettingDto getSettingDto(Integer settingId) throws AppException;
 
@@ -25,6 +26,7 @@ public interface SettingService extends DatabaseService<Setting, Integer> {
    * @param settingDto
    *          {@link cn.edu.uestc.acmicpc.db.dto.impl.setting.SettingDto}
    *          entity.
+   * @throws AppException
    */
   public void updateSettingBySettingDto(SettingDto settingDto) throws AppException;
 }
