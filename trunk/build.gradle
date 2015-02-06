@@ -3,6 +3,7 @@ apply plugin: 'war'
 apply plugin: 'checkstyle'
 apply plugin: 'jacoco'
 apply plugin: 'idea'
+apply plugin: 'eclipse'
 
 group = 'cn.edu.uestc.acmicpc'
 version = '2.2.3'
