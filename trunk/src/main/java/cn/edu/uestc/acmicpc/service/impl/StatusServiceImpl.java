@@ -108,37 +108,49 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   }
 
   private void updateStatusByStatusDto(Status status, StatusDto statusDto) {
-    if (statusDto.getResult() != null)
+    if (statusDto.getResult() != null) {
       status.setResult(statusDto.getResult());
-    if (statusDto.getMemoryCost() != null)
+    }
+    if (statusDto.getMemoryCost() != null) {
       status.setMemoryCost(statusDto.getMemoryCost());
-    if (statusDto.getTimeCost() != null)
+    }
+    if (statusDto.getTimeCost() != null) {
       status.setTimeCost(statusDto.getTimeCost());
-    if (statusDto.getLength() != null)
+    }
+    if (statusDto.getLength() != null) {
       status.setLength(statusDto.getLength());
-    if (statusDto.getTime() != null)
+    }
+    if (statusDto.getTime() != null) {
       status.setTime(statusDto.getTime());
-    if (statusDto.getCaseNumber() != null)
+    }
+    if (statusDto.getCaseNumber() != null) {
       status.setCaseNumber(statusDto.getCaseNumber());
-    if (statusDto.getCodeId() != null)
+    }
+    if (statusDto.getCodeId() != null) {
       status.setCodeId(statusDto.getCodeId());
-    if (statusDto.getCompileInfoId() != null)
+    }
+    if (statusDto.getCompileInfoId() != null) {
       status.setCompileInfoId(statusDto.getCompileInfoId());
-    if (statusDto.getContestId() != null)
+    }
+    if (statusDto.getContestId() != null) {
       status.setContestId(statusDto.getContestId());
-    if (statusDto.getLanguageId() != null)
+    }
+    if (statusDto.getLanguageId() != null) {
       status.setLanguageId(statusDto.getLanguageId());
-    if (statusDto.getProblemId() != null)
+    }
+    if (statusDto.getProblemId() != null) {
       status.setProblemId(statusDto.getProblemId());
-    if (statusDto.getUserId() != null)
+    }
+    if (statusDto.getUserId() != null) {
       status.setUserId(statusDto.getUserId());
+    }
   }
 
   @Override
   public void createNewStatus(StatusDto statusDto) throws AppException {
     Status status = new Status();
     updateStatusByStatusDto(status, statusDto);
-    statusDao.add(status);
+    statusDao.addOrUpdate(status);
   }
 
   @Override
@@ -189,16 +201,21 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   public void updateStatusByStatusForJudgeDto(
       StatusForJudgeDto statusForJudgeDto) throws AppException {
     Map<String, Object> properties = new HashMap<>();
-    if (statusForJudgeDto.getResult() != null)
+    if (statusForJudgeDto.getResult() != null) {
       properties.put("result", statusForJudgeDto.getResult());
-    if (statusForJudgeDto.getCaseNumber() != null)
+    }
+    if (statusForJudgeDto.getCaseNumber() != null) {
       properties.put("caseNumber", statusForJudgeDto.getCaseNumber());
-    if (statusForJudgeDto.getTimeCost() != null)
+    }
+    if (statusForJudgeDto.getTimeCost() != null) {
       properties.put("timeCost", statusForJudgeDto.getTimeCost());
-    if (statusForJudgeDto.getMemoryCost() != null)
+    }
+    if (statusForJudgeDto.getMemoryCost() != null) {
       properties.put("memoryCost", statusForJudgeDto.getMemoryCost());
-    if (statusForJudgeDto.getCompileInfoId() != null)
+    }
+    if (statusForJudgeDto.getCompileInfoId() != null) {
       properties.put("compileInfoId", statusForJudgeDto.getCompileInfoId());
+    }
     statusDao.updateEntitiesByField(properties, "statusId", statusForJudgeDto
         .getStatusId().toString());
   }

@@ -73,7 +73,7 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
     article.setType(1);
     article.setIsVisible(true);
     article.setUserId(authorId);
-    articleDao.add(article);
+    articleDao.addOrUpdate(article);
     return article.getArticleId();
   }
 
@@ -120,7 +120,7 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
     Article article = articleDao.get(articleDto.getArticleId());
     AppExceptionUtil.assertNotNull(article);
     updateArticleByArticleDto(article, articleDto);
-    articleDao.update(article);
+    articleDao.addOrUpdate(article);
   }
 
   @Override

@@ -114,49 +114,68 @@ public class ProblemServiceImpl extends AbstractService implements
     problem.setJavaMemoryLimit(65535);
     problem.setDataCount(0);
     problem.setDifficulty(1);
-    problemDao.add(problem);
+    problemDao.addOrUpdate(problem);
     return problem.getProblemId();
   }
 
   private void updateProblemByProblemDto(Problem problem, ProblemDto problemDto) {
-    if (problemDto.getTitle() != null)
+    if (problemDto.getTitle() != null) {
       problem.setTitle(problemDto.getTitle());
-    if (problemDto.getDescription() != null)
+    }
+    if (problemDto.getDescription() != null) {
       problem.setDescription(problemDto.getDescription());
-    if (problemDto.getInput() != null)
+    }
+    if (problemDto.getInput() != null) {
       problem.setInput(problemDto.getInput());
-    if (problemDto.getOutput() != null)
+    }
+    if (problemDto.getOutput() != null) {
       problem.setOutput(problemDto.getOutput());
-    if (problemDto.getSampleInput() != null)
+    }
+    if (problemDto.getSampleInput() != null) {
       problem.setSampleInput(problemDto.getSampleInput());
-    if (problemDto.getSampleOutput() != null)
+    }
+    if (problemDto.getSampleOutput() != null) {
       problem.setSampleOutput(problemDto.getSampleOutput());
-    if (problemDto.getHint() != null)
+    }
+    if (problemDto.getHint() != null) {
       problem.setHint(problemDto.getHint());
-    if (problemDto.getSource() != null)
+    }
+    if (problemDto.getSource() != null) {
       problem.setSource(problemDto.getSource());
-    if (problemDto.getTimeLimit() != null)
+    }
+    if (problemDto.getTimeLimit() != null) {
       problem.setTimeLimit(problemDto.getTimeLimit());
-    if (problemDto.getMemoryLimit() != null)
+    }
+    if (problemDto.getMemoryLimit() != null) {
       problem.setMemoryLimit(problemDto.getMemoryLimit());
-    if (problemDto.getSolved() != null)
+    }
+    if (problemDto.getSolved() != null) {
       problem.setSolved(problemDto.getSolved());
-    if (problemDto.getTried() != null)
+    }
+    if (problemDto.getTried() != null) {
       problem.setTried(problemDto.getTried());
-    if (problemDto.getIsSpj() != null)
+    }
+    if (problemDto.getIsSpj() != null) {
       problem.setIsSpj(problemDto.getIsSpj());
-    if (problemDto.getIsVisible() != null)
+    }
+    if (problemDto.getIsVisible() != null) {
       problem.setIsVisible(problemDto.getIsVisible());
-    if (problemDto.getOutputLimit() != null)
+    }
+    if (problemDto.getOutputLimit() != null) {
       problem.setOutputLimit(problemDto.getOutputLimit());
-    if (problemDto.getJavaTimeLimit() != null)
+    }
+    if (problemDto.getJavaTimeLimit() != null) {
       problem.setJavaTimeLimit(problemDto.getJavaTimeLimit());
-    if (problemDto.getJavaMemoryLimit() != null)
+    }
+    if (problemDto.getJavaMemoryLimit() != null) {
       problem.setJavaMemoryLimit(problemDto.getJavaMemoryLimit());
-    if (problemDto.getDataCount() != null)
+    }
+    if (problemDto.getDataCount() != null) {
       problem.setDataCount(problemDto.getDataCount());
-    if (problemDto.getDifficulty() != null)
+    }
+    if (problemDto.getDifficulty() != null) {
       problem.setDifficulty(problemDto.getDifficulty());
+    }
   }
 
   @Override
@@ -165,7 +184,7 @@ public class ProblemServiceImpl extends AbstractService implements
     AppExceptionUtil.assertNotNull(problem);
     AppExceptionUtil.assertNotNull(problem.getProblemId());
     updateProblemByProblemDto(problem, problemDto);
-    problemDao.update(problem);
+    problemDao.addOrUpdate(problem);
   }
 
   @Override
@@ -186,7 +205,6 @@ public class ProblemServiceImpl extends AbstractService implements
     return problemDtos;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public Boolean checkProblemExists(Integer problemId) throws AppException {
     AppExceptionUtil.assertNotNull(problemId);

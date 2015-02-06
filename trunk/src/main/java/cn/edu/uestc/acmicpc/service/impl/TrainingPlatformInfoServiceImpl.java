@@ -63,7 +63,7 @@ public class TrainingPlatformInfoServiceImpl extends AbstractService implements
       trainingPlatformInfo.setType(trainingPlatformInfoDto.getType());
     }
 
-    trainingPlatformInfoDao.update(trainingPlatformInfo);
+    trainingPlatformInfoDao.addOrUpdate(trainingPlatformInfo);
   }
 
   @Override
@@ -73,7 +73,7 @@ public class TrainingPlatformInfoServiceImpl extends AbstractService implements
     trainingPlatformInfo.setUserName("");
     trainingPlatformInfo.setUserId("");
     trainingPlatformInfo.setType(0);
-    trainingPlatformInfoDao.add(trainingPlatformInfo);
+    trainingPlatformInfoDao.addOrUpdate(trainingPlatformInfo);
     return trainingPlatformInfo.getTrainingPlatformInfoId();
   }
 

@@ -45,7 +45,7 @@ public class CodeServiceImpl extends AbstractService implements CodeService {
   public Integer createNewCode(CodeDto codeDto) throws AppException {
     Code code = new Code();
     updateCodeByCodeDto(code, codeDto);
-    codeDao.add(code);
+    codeDao.addOrUpdate(code);
     return code.getCodeId();
   }
 

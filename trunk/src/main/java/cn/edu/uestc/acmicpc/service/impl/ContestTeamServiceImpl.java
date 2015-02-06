@@ -26,7 +26,7 @@ import java.util.List;
 @Primary
 public class ContestTeamServiceImpl extends AbstractService implements ContestTeamService {
 
-  private ContestTeamDao contestTeamDao;
+  private final ContestTeamDao contestTeamDao;
 
   @Autowired
   public ContestTeamServiceImpl(ContestTeamDao contestTeamDao) {
@@ -61,7 +61,7 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
     contestTeam.setContestId(contestId);
     contestTeam.setStatus(ContestRegistryStatusType.PENDING.ordinal());
     contestTeam.setComment("");
-    contestTeamDao.add(contestTeam);
+    contestTeamDao.addOrUpdate(contestTeam);
     return contestTeam.getContestTeamId();
   }
 
@@ -98,7 +98,7 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
     if (contestTeamDto.getStatus() != null) {
       contestTeam.setStatus(contestTeamDto.getStatus());
     }
-    contestTeamDao.update(contestTeam);
+    contestTeamDao.addOrUpdate(contestTeam);
   }
 
   @Override
@@ -109,6 +109,7 @@ public class ContestTeamServiceImpl extends AbstractService implements ContestTe
         ContestTeamReportDto.builder(), contestTeamCondition.getCondition());
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public Integer getTeamIdByUserIdAndContestId(Integer userId, Integer contestId)
       throws AppException {

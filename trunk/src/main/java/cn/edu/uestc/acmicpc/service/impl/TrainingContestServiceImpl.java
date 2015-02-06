@@ -74,7 +74,7 @@ public class TrainingContestServiceImpl extends AbstractService implements Train
       trainingContest.setPlatformType(trainingContestDto.getPlatformType());
     }
 
-    trainingContestDao.update(trainingContest);
+    trainingContestDao.addOrUpdate(trainingContest);
   }
 
   @Override
@@ -86,7 +86,7 @@ public class TrainingContestServiceImpl extends AbstractService implements Train
     trainingContest.setRankList("");
     trainingContest.setType(TrainingContestType.CONTEST.ordinal());
     trainingContest.setPlatformType(TrainingPlatformType.TC.ordinal());
-    trainingContestDao.add(trainingContest);
+    trainingContestDao.addOrUpdate(trainingContest);
     return trainingContest.getTrainingContestId();
   }
 }

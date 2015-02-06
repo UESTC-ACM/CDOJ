@@ -59,7 +59,7 @@ public class TrainingServiceImpl extends AbstractService implements TrainingServ
       training.setDescription(trainingDto.getDescription());
     }
 
-    trainingDao.update(training);
+    trainingDao.addOrUpdate(training);
   }
 
   @Override
@@ -67,7 +67,7 @@ public class TrainingServiceImpl extends AbstractService implements TrainingServ
     Training training = new Training();
     training.setTitle(title);
     training.setDescription("");
-    trainingDao.add(training);
+    trainingDao.addOrUpdate(training);
     return training.getTrainingId();
   }
 

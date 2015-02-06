@@ -52,6 +52,7 @@ public class BaseController {
     }
   }
 
+  @SuppressWarnings("unchecked")
   protected List<Integer> getContestTeamMembers(HttpSession session, Integer contestId) {
     String attributeName = "ContestPermission#" + contestId + "#members";
     return new ArrayList<Integer>((Set<Integer>) session.getAttribute(attributeName));

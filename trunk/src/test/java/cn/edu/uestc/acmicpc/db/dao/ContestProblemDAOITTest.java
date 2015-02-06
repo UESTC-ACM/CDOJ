@@ -26,6 +26,6 @@ public class ContestProblemDAOITTest extends AbstractTestNGSpringContextTests {
     contestProblem.setContestId(1);
     contestProblem.setProblemId(1);
     contestProblem.setOrder(0);
-    contestProblemDao.add(contestProblem);
+    contestProblemDao.addOrUpdate(contestProblem);
   }
 }

@@ -66,6 +66,7 @@ public class IndexController extends BaseController {
 
   /**
    * Force redirect to this page when user use IE 6 7 8
+   * @return
    */
   @RequestMapping("fuckIE")
   public String fuckIE() {

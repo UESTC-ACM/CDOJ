@@ -23,23 +23,14 @@ import java.util.Map;
 public interface Dao<E extends Serializable, K extends Serializable> {
 
   /**
-   * Add entity into database, and return number of Row changed.
-   *
-   * @param entity
-   *          entity to be added.
-   * @return number of rows changed.
-   * @throws AppException
-   */
-  Serializable add(E entity) throws AppException;
-
-  /**
    * Add entity or update entity, according to key value of the entity.
    *
    * @param entity
    *          entity to be added or updated
+   * @return the saved entity
    * @throws AppException
    */
-  void addOrUpdate(E entity) throws AppException;
+  E addOrUpdate(E entity) throws AppException;
 
   /**
    * Get entity by key value.
@@ -50,26 +41,6 @@ public interface Dao<E extends Serializable, K extends Serializable> {
    * @throws AppException
    */
   E get(K key) throws AppException;
-
-  /**
-   * Update an entity object.
-   *
-   * @param entity
-   *          entity to be updated
-   * @throws AppException
-   */
-  public void update(E entity) throws AppException;
-
-  /**
-   * List all entities in tables.
-   *
-   * @return entity list in tables.
-   * @throws AppException
-   * @deprecated this method is not supported in new API, please use
-   *             {@link Dao#findAll(Class, BaseDtoBuilder, Condition)}
-   */
-  @Deprecated
-  List<?> findAll() throws AppException;
 
   /**
    * List all entities in tables by HQL.
@@ -218,6 +189,7 @@ public interface Dao<E extends Serializable, K extends Serializable> {
    *          specific field name
    * @param values
    *          records need to update
+   * @throws AppException
    */
   void updateEntitiesByField(Map<String, Object> properties, String field, String values)
       throws AppException;
@@ -229,6 +201,7 @@ public interface Dao<E extends Serializable, K extends Serializable> {
    *          specific field name
    * @param value
    *          records need to delete
+   * @throws AppException
    */
   void deleteEntitiesByField(String field, String value) throws AppException;
 
@@ -243,6 +216,7 @@ public interface Dao<E extends Serializable, K extends Serializable> {
    *          specific field name
    * @param values
    *          records need to update
+   * @throws AppException
    */
   void updateEntitiesByField(String propertyField, Object propertyValue, String field, String values)
       throws AppException;
@@ -256,6 +230,7 @@ public interface Dao<E extends Serializable, K extends Serializable> {
    *          field value
    * @param condition
    *          specific condition entity
+   * @throws AppException
    */
   void updateEntitiesByCondition(String propertyField, Object propertyValue, Condition condition)
       throws AppException;
@@ -307,6 +282,8 @@ public interface Dao<E extends Serializable, K extends Serializable> {
    *          Dto's builder, should extends from {@link BaseDtoBuilder}.
    * @param hql
    *          HQL statement.
+   * @param pageInfo
+   *          page constraint.
    * @return Dto list for this query.
    * @throws AppException
    */

@@ -87,7 +87,7 @@ public class TrainingUserServiceImpl extends AbstractService implements Training
       trainingUser.setRatingHistory(trainingUserDto.getRatingHistory());
     }
 
-    trainingUserDao.update(trainingUser);
+    trainingUserDao.addOrUpdate(trainingUser);
   }
 
   @Override
@@ -104,7 +104,7 @@ public class TrainingUserServiceImpl extends AbstractService implements Training
     trainingUser.setMinimumRating(1200.0);
     trainingUser.setMaximumRating(1200.0);
     trainingUser.setRatingHistory("[]");
-    trainingUserDao.add(trainingUser);
+    trainingUserDao.addOrUpdate(trainingUser);
     return trainingUser.getTrainingUserId();
   }
 

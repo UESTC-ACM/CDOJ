@@ -97,7 +97,7 @@ public class ContestProblemServiceImpl extends AbstractService implements Contes
     contestProblem.setContestId(contestProblemDto.getContestId());
     contestProblem.setOrder(contestProblemDto.getOrder());
     contestProblem.setProblemId(contestProblemDto.getProblemId());
-    contestProblemDao.add(contestProblem);
+    contestProblemDao.addOrUpdate(contestProblem);
     return contestProblem.getContestProblemId();
   }
 

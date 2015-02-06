@@ -13,6 +13,9 @@ public interface ContestRankListService {
    *
    * @param contestId
    *          contest's id.
+   * @param contestType
+   * @param frozen
+   * @param frozenTime
    * @return {@link RankList} entity.
    * @throws AppException
    */

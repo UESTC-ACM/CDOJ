@@ -52,7 +52,7 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
     team.setTeamId(null);
     team.setTeamName(teamName);
     team.setLeaderId(leaderId);
-    teamDao.add(team);
+    teamDao.addOrUpdate(team);
     return team.getTeamId();
   }
 
@@ -66,6 +66,7 @@ public class TeamServiceImpl extends AbstractService implements TeamService {
     return teamDao.count(getHQLString(teamCondition));
   }
 
+  @Override
   public String getHQLString(TeamCondition teamCondition) throws AppException {
     StringBuilder hqlBuilder = new StringBuilder();
     hqlBuilder.append("from Team team");

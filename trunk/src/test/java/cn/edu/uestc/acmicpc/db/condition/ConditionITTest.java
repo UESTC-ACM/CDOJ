@@ -29,7 +29,6 @@ public class ConditionITTest extends AbstractTestNGSpringContextTests {
   @Autowired
   private UserDao userDao;
 
-  @SuppressWarnings({"unchecked", "deprecation"})
   @Test
   public void testCondition_emptyEntrySet() throws AppException {
     Condition condition = new Condition();
@@ -40,7 +39,6 @@ public class ConditionITTest extends AbstractTestNGSpringContextTests {
     }
   }
 
-  @SuppressWarnings({"unchecked", "deprecation"})
   @Test
   public void testCondition_emptyEntrySetWithDescId() throws AppException {
     Condition condition = new Condition();

@@ -189,6 +189,7 @@ public class ProblemController extends BaseController {
    *          uploaded information
    * @param validateResult
    *          validate result
+   * @return
    */
   @RequestMapping("edit")
   @LoginPermit(AuthenticationType.ADMIN)

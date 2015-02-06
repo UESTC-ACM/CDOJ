@@ -38,7 +38,7 @@ public class TeamUserServiceImpl extends AbstractService implements TeamUserServ
     teamUser.setTeamId(teamUserDto.getTeamId());
     teamUser.setUserId(teamUserDto.getUserId());
     teamUser.setAllow(teamUserDto.getAllow());
-    teamUserDao.add(teamUser);
+    teamUserDao.addOrUpdate(teamUser);
     return teamUser.getTeamUserId();
   }
 

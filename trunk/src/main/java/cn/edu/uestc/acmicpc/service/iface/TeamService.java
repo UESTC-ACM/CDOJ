@@ -21,6 +21,7 @@ public interface TeamService extends DatabaseService<Team, Integer> {
    * @param teamName
    *          team name
    * @return true if exists
+   * @throws AppException
    */
   public Boolean checkTeamExists(String teamName) throws AppException;
 

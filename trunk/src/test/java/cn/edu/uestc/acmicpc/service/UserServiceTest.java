@@ -105,7 +105,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     when(userDao.get(userDto.getUserId())).thenReturn(user);
     userService.updateUser(userDto);
     ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
-    verify(userDao).update(captor.capture());
+    verify(userDao).addOrUpdate(captor.capture());
     Assert.assertTrue(ObjectUtil.entityEquals(userDto, captor.getValue()));
     verify(userDao).get(userDto.getUserId());
   }
@@ -133,7 +133,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
     UserDto userDto = UserDto.builder().build();
     userService.createNewUser(userDto);
     ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
-    verify(userDao).add(captor.capture());
+    verify(userDao).addOrUpdate(captor.capture());
     User user = captor.getValue();
     // the user is not persisted.
     Assert.assertNull(user.getUserId());

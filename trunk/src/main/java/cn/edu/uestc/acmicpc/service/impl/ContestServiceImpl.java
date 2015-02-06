@@ -25,6 +25,7 @@ public class ContestServiceImpl extends AbstractService implements
     ContestService {
 
   private final ContestDao contestDao;
+  @SuppressWarnings("unused")
   private final Settings settings;
 
   @Autowired
@@ -103,7 +104,7 @@ public class ContestServiceImpl extends AbstractService implements
     AppExceptionUtil.assertNotNull(contest);
     AppExceptionUtil.assertNotNull(contest.getContestId());
     updateContestByContestDto(contest, contestDto);
-    contestDao.update(contest);
+    contestDao.addOrUpdate(contest);
   }
 
   @Override
@@ -136,7 +137,7 @@ public class ContestServiceImpl extends AbstractService implements
   @Override
   public Integer createNewContest() throws AppException {
     Contest contest = new Contest();
-    contestDao.add(contest);
+    contestDao.addOrUpdate(contest);
     return contest.getContestId();
   }
 

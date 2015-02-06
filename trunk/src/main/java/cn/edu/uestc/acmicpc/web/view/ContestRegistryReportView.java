@@ -42,6 +42,7 @@ public class ContestRegistryReportView extends AbstractJExcelView {
    */
   private final Integer totalTeams[] = new Integer[TOTAL_SHEETS];
 
+  @SuppressWarnings("unchecked")
   @Override
   protected void buildExcelDocument(Map<String, Object> model,
       WritableWorkbook workbook,
