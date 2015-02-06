@@ -17,10 +17,10 @@ import java.util.Map;
  *
  * @param <E>
  *          entity type
- * @param <PK>
+ * @param <K>
  *          primary key type
  */
-public interface Dao<E extends Serializable, PK extends Serializable> {
+public interface Dao<E extends Serializable, K extends Serializable> {
 
   /**
    * Add entity into database, and return number of Row changed.
@@ -49,7 +49,7 @@ public interface Dao<E extends Serializable, PK extends Serializable> {
    * @return entity which key value matches
    * @throws AppException
    */
-  E get(PK key) throws AppException;
+  E get(K key) throws AppException;
 
   /**
    * Update an entity object.
