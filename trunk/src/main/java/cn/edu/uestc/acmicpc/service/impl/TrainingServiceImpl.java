@@ -70,9 +70,4 @@ public class TrainingServiceImpl extends AbstractService implements TrainingServ
     trainingDao.addOrUpdate(training);
     return training.getTrainingId();
   }
-
-  @Override
-  public TrainingDao getDao() {
-    return trainingDao;
-  }
 }

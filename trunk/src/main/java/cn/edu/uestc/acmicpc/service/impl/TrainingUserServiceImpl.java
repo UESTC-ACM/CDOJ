@@ -107,9 +107,4 @@ public class TrainingUserServiceImpl extends AbstractService implements Training
     trainingUserDao.addOrUpdate(trainingUser);
     return trainingUser.getTrainingUserId();
   }
-
-  @Override
-  public TrainingUserDao getDao() {
-    return trainingUserDao;
-  }
 }

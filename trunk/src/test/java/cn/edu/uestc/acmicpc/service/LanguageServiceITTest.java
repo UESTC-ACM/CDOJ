@@ -1,7 +1,6 @@
 package cn.edu.uestc.acmicpc.service;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
-import cn.edu.uestc.acmicpc.db.dao.iface.LanguageDao;
 import cn.edu.uestc.acmicpc.db.dto.impl.language.LanguageDto;
 import cn.edu.uestc.acmicpc.service.iface.LanguageService;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
@@ -55,10 +54,5 @@ public class LanguageServiceITTest extends AbstractTestNGSpringContextTests {
     Integer languageId = 4;
     String languageName = languageService.getLanguageName(languageId);
     Assert.assertNull(languageName);
-  }
-
-  @Test
-  public void testGetDAO() throws AppException {
-    Assert.assertTrue(languageService.getDao() instanceof LanguageDao);
   }
 }

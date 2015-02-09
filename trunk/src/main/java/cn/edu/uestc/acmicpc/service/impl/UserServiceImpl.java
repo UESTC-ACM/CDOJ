@@ -95,11 +95,6 @@ public class UserServiceImpl extends AbstractService implements UserService {
   }
 
   @Override
-  public UserDao getDao() {
-    return userDao;
-  }
-
-  @Override
   public void updateUser(UserDto userDto) throws AppException {
     User user = userDao.get(userDto.getUserId());
     AppExceptionUtil.assertNotNull(user);

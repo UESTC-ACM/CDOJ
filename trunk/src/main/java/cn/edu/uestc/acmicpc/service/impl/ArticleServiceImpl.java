@@ -30,11 +30,6 @@ public class ArticleServiceImpl extends AbstractService implements ArticleServic
   }
 
   @Override
-  public ArticleDao getDao() {
-    return articleDao;
-  }
-
-  @Override
   public ArticleDto getArticleDto(Integer articleId,
       ArticleFields articleFields)
       throws AppException {

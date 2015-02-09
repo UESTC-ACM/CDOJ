@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 /**
@@ -43,30 +44,29 @@ public class LanguageServiceImpl extends AbstractService implements LanguageServ
   }
 
   private LanguageDto getLanguage(Integer languageId) {
-    for (LanguageDto languageDto : languageDtoList)
-      if (languageDto.getLanguageId().equals(languageId))
+    for (LanguageDto languageDto : languageDtoList) {
+      if (languageDto.getLanguageId().equals(languageId)) {
         return languageDto;
+      }
+    }
     return null;
   }
 
   @Override
   public String getExtension(Integer languageId) {
     LanguageDto languageDto = getLanguage(languageId);
-    if (languageDto == null)
+    if (languageDto == null) {
       return null;
+    }
     return languageDto.getExtension();
   }
 
   @Override
   public String getLanguageName(Integer languageId) {
     LanguageDto languageDto = getLanguage(languageId);
-    if (languageDto == null)
+    if (languageDto == null) {
       return null;
+    }
     return languageDto.getName();
-  }
-
-  @Override
-  public LanguageDao getDao() {
-    return this.languageDao;
   }
 }

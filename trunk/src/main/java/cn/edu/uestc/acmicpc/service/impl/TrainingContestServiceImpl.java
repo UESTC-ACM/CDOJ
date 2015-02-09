@@ -17,18 +17,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TrainingContestServiceImpl extends AbstractService implements TrainingContestService {
+public class TrainingContestServiceImpl extends AbstractService
+    implements TrainingContestService {
 
   private final TrainingContestDao trainingContestDao;
 
   @Autowired
   public TrainingContestServiceImpl(TrainingContestDao trainingContestDao) {
     this.trainingContestDao = trainingContestDao;
-  }
-
-  @Override
-  public TrainingContestDao getDao() {
-    return trainingContestDao;
   }
 
   @Override

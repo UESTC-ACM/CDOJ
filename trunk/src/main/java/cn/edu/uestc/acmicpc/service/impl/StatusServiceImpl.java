@@ -161,11 +161,6 @@ public class StatusServiceImpl extends AbstractService implements StatusService 
   }
 
   @Override
-  public StatusDao getDao() {
-    return statusDao;
-  }
-
-  @Override
   public void rejudge(StatusCondition statusCondition) throws AppException {
     Map<String, Object> properties = new HashMap<>();
     properties.put("result", OnlineJudgeReturnType.OJ_REJUDGING.ordinal());

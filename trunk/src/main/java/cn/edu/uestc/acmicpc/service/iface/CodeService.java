@@ -2,13 +2,12 @@ package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.dto.field.CodeFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.CodeDto;
-import cn.edu.uestc.acmicpc.db.entity.Code;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * Code service interface.
  */
-public interface CodeService extends DatabaseService<Code, Integer> {
+public interface CodeService {
 
   /**
    * Get {@link CodeDto} by code id.

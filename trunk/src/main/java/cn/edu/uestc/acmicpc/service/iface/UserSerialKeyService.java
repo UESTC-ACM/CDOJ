@@ -1,13 +1,12 @@
 package cn.edu.uestc.acmicpc.service.iface;
 
 import cn.edu.uestc.acmicpc.db.dto.impl.userSerialKey.UserSerialKeyDto;
-import cn.edu.uestc.acmicpc.db.entity.UserSerialKey;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 /**
  * User serial key service interface.
  */
-public interface UserSerialKeyService extends DatabaseService<UserSerialKey, Integer> {
+public interface UserSerialKeyService {
 
   /**
    * Get {@link UserSerialKeyDto} by user id.

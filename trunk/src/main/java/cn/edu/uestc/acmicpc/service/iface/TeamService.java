@@ -4,7 +4,6 @@ import cn.edu.uestc.acmicpc.db.condition.impl.TeamCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.team.TeamTypeAHeadDto;
-import cn.edu.uestc.acmicpc.db.entity.Team;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -13,7 +12,7 @@ import java.util.List;
 /**
  * Team service interface.
  */
-public interface TeamService extends DatabaseService<Team, Integer> {
+public interface TeamService {
 
   /**
    * Check whether a team exists.

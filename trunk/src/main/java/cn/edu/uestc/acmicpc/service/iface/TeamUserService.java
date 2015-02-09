@@ -4,7 +4,6 @@ import cn.edu.uestc.acmicpc.db.condition.impl.TeamUserCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.teamUser.TeamUserReportDto;
-import cn.edu.uestc.acmicpc.db.entity.TeamUser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.List;
 /**
  * Team user service interface.
  */
-public interface TeamUserService extends DatabaseService<TeamUser, Integer> {
+public interface TeamUserService {
 
   /**
    * Create a new record by

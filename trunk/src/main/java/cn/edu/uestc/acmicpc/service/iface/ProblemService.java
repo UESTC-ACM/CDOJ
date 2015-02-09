@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.service.iface;
 import cn.edu.uestc.acmicpc.db.condition.impl.ProblemCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.problem.ProblemListDto;
-import cn.edu.uestc.acmicpc.db.entity.Problem;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -14,7 +13,7 @@ import java.util.Map;
 /**
  * Problem service interface.
  */
-public interface ProblemService extends DatabaseService<Problem, Integer> {
+public interface ProblemService {
 
   /**
    * Gets all visible problems' id without any statements.
