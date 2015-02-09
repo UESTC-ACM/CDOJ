@@ -189,7 +189,7 @@ dependencies {
   compile "$jettyGroup:jetty-util:$jettyVersion"
 
   final hibernateGroup = 'org.hibernate'
-  final hibernateVersion = '4.+'
+  final hibernateVersion = '4.3.0.Final'
   compile "$hibernateGroup:hibernate-core:$hibernateVersion"
   compile "$hibernateGroup:hibernate-validator:$hibernateVersion"
   compile "mysql:mysql-connector-java:5.1.22"
