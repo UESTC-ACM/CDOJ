@@ -30,11 +30,6 @@ public class ContestProblemServiceImpl extends AbstractService implements Contes
   }
 
   @Override
-  public ContestProblemDao getDao() {
-    return contestProblemDao;
-  }
-
-  @Override
   public ContestProblemDto getContestProblemDto(Integer contestProblemId) throws AppException {
     AppExceptionUtil.assertNotNull(contestProblemId);
     return contestProblemDao.getDtoByUniqueField(ContestProblemDto.class,

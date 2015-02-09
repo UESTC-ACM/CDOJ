@@ -4,7 +4,6 @@ import cn.edu.uestc.acmicpc.db.condition.impl.ContestCondition;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestListDto;
 import cn.edu.uestc.acmicpc.db.dto.impl.contest.ContestShowDto;
-import cn.edu.uestc.acmicpc.db.entity.Contest;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -13,7 +12,7 @@ import java.util.List;
 /**
  * Contest service interface.
  */
-public interface ContestService extends DatabaseService<Contest, Integer> {
+public interface ContestService {
 
   /**
    * Get all visible contests' id.

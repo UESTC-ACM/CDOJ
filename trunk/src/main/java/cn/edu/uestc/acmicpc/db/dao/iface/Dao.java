@@ -17,10 +17,8 @@ import java.util.Map;
  *
  * @param <E>
  *          entity type
- * @param <K>
- *          primary key type
  */
-public interface Dao<E extends Serializable, K extends Serializable> {
+public interface Dao<E extends Serializable> {
 
   /**
    * Add entity or update entity, according to key value of the entity.
@@ -40,7 +38,7 @@ public interface Dao<E extends Serializable, K extends Serializable> {
    * @return entity which key value matches
    * @throws AppException
    */
-  E get(K key) throws AppException;
+  E get(Integer key) throws AppException;
 
   /**
    * List all entities in tables by HQL.

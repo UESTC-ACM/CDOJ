@@ -28,11 +28,6 @@ public class TeamUserServiceImpl extends AbstractService implements TeamUserServ
   }
 
   @Override
-  public TeamUserDao getDao() {
-    return teamUserDao;
-  }
-
-  @Override
   public Integer createNewTeamUser(TeamUserDto teamUserDto) throws AppException {
     TeamUser teamUser = new TeamUser();
     teamUser.setTeamId(teamUserDto.getTeamId());

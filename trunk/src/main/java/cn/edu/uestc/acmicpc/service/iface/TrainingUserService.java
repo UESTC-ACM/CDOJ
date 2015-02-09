@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.service.iface;
 import cn.edu.uestc.acmicpc.db.criteria.impl.TrainingUserCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.TrainingUserFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.TrainingUserDto;
-import cn.edu.uestc.acmicpc.db.entity.TrainingUser;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
 /**
  * Training user service interface.
  */
-public interface TrainingUserService extends DatabaseService<TrainingUser, Integer> {
+public interface TrainingUserService {
 
   /**
    * Get {@link TrainingUserDto} by Training user id.

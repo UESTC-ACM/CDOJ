@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TrainingPlatformInfoServiceImpl extends AbstractService implements
-    TrainingPlatformInfoService {
+public class TrainingPlatformInfoServiceImpl extends AbstractService
+    implements TrainingPlatformInfoService {
 
   private final TrainingPlatformInfoDao trainingPlatformInfoDao;
 
@@ -81,10 +81,5 @@ public class TrainingPlatformInfoServiceImpl extends AbstractService implements
   public void removeTrainingPlatformInfo(Integer trainingPlatformInfoId) throws AppException {
     trainingPlatformInfoDao.deleteEntitiesByField("trainingPlatformInfoId",
         trainingPlatformInfoId.toString());
-  }
-
-  @Override
-  public TrainingPlatformInfoDao getDao() {
-    return trainingPlatformInfoDao;
   }
 }

@@ -3,7 +3,6 @@ package cn.edu.uestc.acmicpc.service.iface;
 import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
-import cn.edu.uestc.acmicpc.db.entity.Article;
 import cn.edu.uestc.acmicpc.util.exception.AppException;
 import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
@@ -12,7 +11,7 @@ import java.util.List;
 /**
  * Article service interface.
  */
-public interface ArticleService extends DatabaseService<Article, Integer> {
+public interface ArticleService {
 
   /**
    * Update article by {@link ArticleDto}.

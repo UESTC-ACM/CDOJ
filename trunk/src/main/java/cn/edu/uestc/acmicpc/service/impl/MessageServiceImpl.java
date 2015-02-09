@@ -31,11 +31,6 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
   }
 
   @Override
-  public MessageDao getDao() {
-    return messageDao;
-  }
-
-  @Override
   public Integer createNewMessage(MessageDto messageDto) throws AppException {
     AppExceptionUtil.assertNotNull(messageDto.getSenderId());
     AppExceptionUtil.assertNotNull(messageDto.getReceiverId());

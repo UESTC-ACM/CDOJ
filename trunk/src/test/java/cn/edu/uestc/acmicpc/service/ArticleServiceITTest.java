@@ -2,7 +2,6 @@ package cn.edu.uestc.acmicpc.service;
 
 import cn.edu.uestc.acmicpc.config.IntegrationTestContext;
 import cn.edu.uestc.acmicpc.db.criteria.impl.ArticleCriteria;
-import cn.edu.uestc.acmicpc.db.dao.iface.ArticleDao;
 import cn.edu.uestc.acmicpc.db.dto.field.ArticleFields;
 import cn.edu.uestc.acmicpc.db.dto.impl.ArticleDto;
 import cn.edu.uestc.acmicpc.service.iface.ArticleService;
@@ -12,7 +11,9 @@ import cn.edu.uestc.acmicpc.web.dto.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -20,10 +21,13 @@ import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * Integration test cases for {@link cn.edu.uestc.acmicpc.service.iface.ArticleService}.
+ * Integration test cases for
+ * {@link cn.edu.uestc.acmicpc.service.iface.ArticleService}.
  */
-@ContextConfiguration(classes = {IntegrationTestContext.class})
-public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+@Transactional
+@ContextConfiguration(classes = { IntegrationTestContext.class })
+public class ArticleServiceITTest extends AbstractTransactionalTestNGSpringContextTests {
 
   @Autowired
   private ArticleService articleService;
@@ -31,7 +35,8 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testGetArticleDto() throws AppException {
     Integer articleId = 2;
-    Assert.assertEquals(articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS).getArticleId(), Integer.valueOf(2));
+    Assert.assertEquals(articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS)
+        .getArticleId(), Integer.valueOf(2));
   }
 
   @Test
@@ -204,9 +209,11 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testIncrementClicked() throws AppException {
     Integer articleId = 1;
-    Integer beforeIncrement = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS).getClicked();
+    Integer beforeIncrement = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS)
+        .getClicked();
     articleService.incrementClicked(articleId);
-    Integer afterIncrement = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS).getClicked();
+    Integer afterIncrement = articleService.getArticleDto(articleId, ArticleFields.ALL_FIELDS)
+        .getClicked();
     Assert.assertEquals(Integer.valueOf(beforeIncrement + 1), afterIncrement);
   }
 
@@ -220,7 +227,8 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
         .setTitle(titleToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getTitle(), titleToUpdate);
+    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getTitle(),
+        titleToUpdate);
     articleDto.setTitle(titleOrigin);
     articleService.updateArticle(articleDto);
   }
@@ -228,14 +236,16 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testUpdateArticle_parentId() throws AppException {
     Integer parentIdToUpdate = 1;
-    Integer parentIdOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getParentId();
+    Integer parentIdOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS)
+        .getParentId();
     Assert.assertNotEquals(parentIdOrigin, parentIdToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
         .setArticleId(3)
         .setParentId(parentIdToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getParentId(), parentIdToUpdate);
+    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getParentId(),
+        parentIdToUpdate);
     articleService.applyOperation("parentId", "3", null);
   }
 
@@ -249,7 +259,8 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
         .setType(typeToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getType(), typeToUpdate);
+    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getType(),
+        typeToUpdate);
     articleDto.setType(typeOrigin);
     articleService.updateArticle(articleDto);
   }
@@ -264,7 +275,8 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
         .setContent(contentToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getContent(), contentToUpdate);
+    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getContent(),
+        contentToUpdate);
     articleDto.setContent(contentOrigin);
     articleService.updateArticle(articleDto);
   }
@@ -279,7 +291,8 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
         .setClicked(clickedToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getClicked(), clickedToUpdate);
+    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getClicked(),
+        clickedToUpdate);
     articleDto.setClicked(clickedOrigin);
     articleService.updateArticle(articleDto);
   }
@@ -287,14 +300,16 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testUpdateArticle_isVisible() throws AppException {
     Boolean isVisibleToUpdate = false;
-    Boolean isVisibleOrigin = articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getIsVisible();
+    Boolean isVisibleOrigin = articleService.getArticleDto(1, ArticleFields.ALL_FIELDS)
+        .getIsVisible();
     Assert.assertNotEquals(isVisibleOrigin, isVisibleToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
         .setArticleId(1)
         .setIsVisible(isVisibleToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getIsVisible(), isVisibleToUpdate);
+    Assert.assertEquals(articleService.getArticleDto(1, ArticleFields.ALL_FIELDS).getIsVisible(),
+        isVisibleToUpdate);
     articleDto.setIsVisible(isVisibleOrigin);
     articleService.updateArticle(articleDto);
   }
@@ -302,14 +317,16 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testUpdateArticle_problemId() throws AppException {
     Integer problemIdToUpdate = 1;
-    Integer problemIdOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getProblemId();
+    Integer problemIdOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS)
+        .getProblemId();
     Assert.assertNotEquals(problemIdOrigin, problemIdToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
         .setArticleId(3)
         .setProblemId(problemIdToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getProblemId(), problemIdToUpdate);
+    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getProblemId(),
+        problemIdToUpdate);
     articleService.applyOperation("problemId", "3", null);
   }
 
@@ -323,7 +340,8 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
         .setUserId(userIdToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getUserId(), userIdToUpdate);
+    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getUserId(),
+        userIdToUpdate);
     articleDto.setUserId(userIdOrigin);
     articleService.updateArticle(articleDto);
   }
@@ -331,14 +349,16 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
   @Test
   public void testUpdateArticle_contestId() throws AppException {
     Integer contestIdToUpdate = 1;
-    Integer contestIdOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getContestId();
+    Integer contestIdOrigin = articleService.getArticleDto(3, ArticleFields.ALL_FIELDS)
+        .getContestId();
     Assert.assertNotEquals(contestIdOrigin, contestIdToUpdate);
     ArticleDto articleDto = ArticleDto.builder()
         .setArticleId(3)
         .setContestId(contestIdToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getContestId(), contestIdToUpdate);
+    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getContestId(),
+        contestIdToUpdate);
     articleService.applyOperation("contestId", "3", null);
   }
 
@@ -352,7 +372,8 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
         .setOrder(orderToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getOrder(), orderToUpdate);
+    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getOrder(),
+        orderToUpdate);
     articleDto.setOrder(orderOrigin);
     articleService.updateArticle(articleDto);
   }
@@ -367,14 +388,10 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
         .setTime(timeToUpdate)
         .build();
     articleService.updateArticle(articleDto);
-    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getTime(), timeToUpdate);
+    Assert.assertEquals(articleService.getArticleDto(3, ArticleFields.ALL_FIELDS).getTime(),
+        timeToUpdate);
     articleDto.setTime(timeOrigin);
     articleService.updateArticle(articleDto);
-  }
-
-  @Test
-  public void testGetDAO() throws AppException {
-    Assert.assertTrue(articleService.getDao() instanceof ArticleDao);
   }
 
   @Test
@@ -400,8 +417,5 @@ public class ArticleServiceITTest extends AbstractTestNGSpringContextTests {
     Long exceptedId = articleService.count(new ArticleCriteria(ArticleFields.ALL_FIELDS)) + 1;
     Integer newId = articleService.createNewArticle(1);
     Assert.assertEquals(newId.intValue(), exceptedId.intValue());
-
-    ArticleDao articleDao = (ArticleDao)articleService.getDao();
-    articleDao.deleteEntitiesByField("articleId", exceptedId.toString());
   }
 }

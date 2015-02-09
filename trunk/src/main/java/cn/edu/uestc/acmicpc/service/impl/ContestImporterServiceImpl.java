@@ -35,7 +35,7 @@ import java.util.Set;
 import java.util.zip.ZipFile;
 
 @Service
-public class ContestImporterServiceImpl extends AbstractService implements ContestImporterService {
+public class ContestImporterServiceImpl implements ContestImporterService {
 
   private final Settings settings;
 

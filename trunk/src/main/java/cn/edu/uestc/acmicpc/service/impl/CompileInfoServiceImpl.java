@@ -28,11 +28,6 @@ public class CompileInfoServiceImpl extends AbstractService implements CompileIn
   }
 
   @Override
-  public CompileInfoDao getDao() {
-    return compileInfoDao;
-  }
-
-  @Override
   public void updateCompileInfoContent(Integer compileInfoId, String content)
       throws AppException {
     compileInfoDao.updateEntitiesByField("content", content, "compileInfoId",
