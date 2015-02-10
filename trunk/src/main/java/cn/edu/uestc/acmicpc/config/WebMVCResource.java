@@ -20,12 +20,7 @@ import java.util.List;
 public class WebMVCResource {
 
   public static ViewResolver viewResolver() {
-    InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-
-    viewResolver.setPrefix("/WEB-INF/html/");
-    viewResolver.setSuffix(".html");
-
-    return viewResolver;
+    return new InternalResourceViewResolver();
   }
 
   public static HttpMessageConverter<?>[] messageConverters() {
