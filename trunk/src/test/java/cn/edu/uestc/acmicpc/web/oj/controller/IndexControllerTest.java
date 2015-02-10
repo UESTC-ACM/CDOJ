@@ -29,11 +29,4 @@ public class IndexControllerTest extends ControllerTest {
     super.init();
     mockMvc = initControllers(indexController);
   }
-
-  @Test
-  public void testVisitIndex() throws Exception {
-    mockMvc.perform(get("/"))
-        .andExpect(status().isOk())
-        .andExpect(view().name("index"));
-  }
 }
