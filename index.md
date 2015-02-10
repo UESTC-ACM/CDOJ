@@ -8,7 +8,7 @@ This is a online judge system for `ACM/ICPC`, and it currently runs at [UESTC AC
 
 ### How to run the project in your own computer?
 
-First of all, you need a `i686 Linux` and install `jdk8`, `gradle 2.6+`, `protocbuf-compiler 2.5+` and `mysql5.5+` in your PC.
+First of all, you need a `i686 Linux` and install `jdk8`, `gradle 2.2+` and `mysql5.5+` in your PC.
 
 Then you can fetch sources from our repository, and run the commond below.
 
